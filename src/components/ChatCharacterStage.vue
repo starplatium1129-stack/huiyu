@@ -4,7 +4,7 @@
     <div
       ref="stageRef"
       class="portrait-stage"
-      :class="[{ speaking, 'live2d-ready': live2dReady || anime.active.value }, `emotion-${emotion}`]"
+      :class="[{ speaking, 'live2d-ready': paintedModel }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
@@ -18,15 +18,15 @@
         <small>{{ character.roomMood }}</small>
       </div>
       <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :class="{ 'portrait-decoded': portraitLoaded }" :alt="character.name" />
-      <div v-if="!portraitLoaded && !portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-loading" role="status">
+      <div v-if="!portraitLoaded && !portraitFailed && !paintedModel" class="stage-portrait-feedback stage-portrait-loading" role="status">
         <ArchiveIcon name="image" /><div><strong>{{ character.name }}</strong><span>{{ portraitImage.src ? '正在加载立绘…' : '暂无静态立绘，可加载动态立绘' }}</span></div>
       </div>
-      <div v-if="portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-missing" data-companion-interactive role="status">
+      <div v-if="portraitFailed && !paintedModel" class="stage-portrait-feedback stage-portrait-missing" data-companion-interactive role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
         <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
       </div>
-      <div ref="animeHostRef" class="anime25d-host" :hidden="!anime.active.value" aria-hidden="true"></div>
+      <div ref="animeHostRef" class="anime25d-host" :hidden="!anime.active.value || stageSuspended" aria-hidden="true"></div>
       <div ref="live2dHostRef" class="live2d-host" aria-hidden="true"></div>
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
@@ -176,6 +176,7 @@ import {
   resolveCompanionAvatar,
 } from '@/utils/companionRegistry'
 import { useLive2D } from '@/composables/useLive2D'
+import { useMotionPreference } from '@/composables/useMotionPreference'
 import { useCharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
 import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
@@ -208,7 +209,8 @@ const emit = defineEmits<{
 
 const stageRef = ref<HTMLElement>()
 const animeHostRef = ref<HTMLElement>()
-const anime = useAnime25DStage(() => props.activeId, animeHostRef, useCompanionInput()?.captureCanvas)
+const companionInput = useCompanionInput()
+const anime = useAnime25DStage(() => props.activeId, animeHostRef, companionInput?.captureCanvas)
 watch(() => props.presence, value => anime.setPresence(value || 'available'), { immediate: true })
 const staticPortraitSource = computed(() => {
   if (props.surface === 'companion') {
@@ -275,11 +277,22 @@ const live2d = useLive2D((status) => {
   avatarRetryable.value = status.retryable
 })
 const live2dReady = computed(() => live2d.ready.value && live2d.loadedCharacter.value === props.activeId)
+const reducedMotion = useMotionPreference()
+const stageSuspended = computed(() => props.suspended || modelStudioOpen.value)
+const nativePaused = computed(() => live2d.backendKind.value === 'native' && reducedMotion.value)
+const paintedModel = computed(() => !stageSuspended.value && (anime.active.value || live2dReady.value && !nativePaused.value))
+if (companionInput) watch([paintedModel, live2dReady, live2d.backendKind, () => props.activeId], ([painted, ready, backend], _, cleanup) => {
+  if (painted && ready && backend === 'browser') {
+    const stop = live2d.onCanvasFrame(companionInput.captureCanvas)
+    if (stop) cleanup(stop)
+  }
+}, { flush: 'post' })
 const presentationReady = computed<CompanionReadyKind | undefined>(() => {
   if (!live2dInitialized.value || anime.restoring.value) return
-  const canRenderNative = live2dReady.value || !['fallback', 'degraded'].includes(avatarState.value)
-  if (props.autoLoad && !props.suspended && !anime.selected.value && canRenderNative) return 'native'
-  if (anime.active.value || portraitLoaded.value) return 'static'
+  const canRenderNative = live2d.backendKind.value === 'native' &&
+    (live2dReady.value || !['static', 'fallback', 'degraded'].includes(avatarState.value))
+  if ((props.autoLoad || live2dReady.value) && !stageSuspended.value && !nativePaused.value && !anime.selected.value && canRenderNative) return 'native'
+  if (paintedModel.value || portraitLoaded.value) return 'static'
   if (portraitFailed.value) return 'failed'
 })
 watch(anime.selected, value => { if (value) { enableRequest++; live2d.disable(true) } else if (!anime.restoring.value && live2dInitialized.value && props.autoLoad) void enableCharacter(true) }, { flush: 'sync' })
@@ -391,9 +404,7 @@ function releasePointerFocus() { anime.releasePointerFocus(); live2d.releasePoin
 let desktopBatteryPower: boolean | null = null
 function applyDesktopPerformanceMode() {
   if (desktopBatteryPower === null) return
-  // 原生后端：电池 30fps，接电恢复 165fps；browser 后端维持 60fps 上限。
-  const native = live2d.backendKind.value === 'native'
-  live2d.setMaxFps(desktopBatteryPower ? 30 : (native ? 165 : 60))
+  live2d.setMaxFps(desktopBatteryPower ? 30 : 0)
 }
 function setDesktopPerformanceMode(onBatteryPower: boolean) {
   anime.setBattery(onBatteryPower)

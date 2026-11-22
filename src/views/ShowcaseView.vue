@@ -92,7 +92,7 @@
       <dialog ref="dialogEl" class="art-viewer showcase-viewer" :class="{ 'info-open': viewerInfoOpen }" data-image-transition aria-label="样张查看器" @click.self="closeViewer" @cancel.prevent="viewerInfoOpen ? closeViewerInfo() : closeViewer()">
         <template v-if="viewerMounted && currentEntry">
           <ArtworkViewerStage :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing" :original="originalViewer"
-            :src="imgSrc(currentEntry)" :preview-src="viewerSurface.previewSrc.value" :thumb-urls="viewerThumbs" :title="entry => entry.title"
+            :src="imgSrc(currentEntry)" :preview-src="viewerSurface.previewSrc.value" :thumbnail-for="thumbSrc" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
             @error="viewerImageFailed = true" @close-button="viewerClose = $event">
             <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
@@ -192,7 +192,7 @@ const { entries, loading: manifestLoading, error: reloadError } = assets
 const orderedEntries = computed(() => orderShowcaseEntries(entries.value, charLabel))
 const albums = useShowcaseAlbums(orderedEntries, () => sceneStore.directoryCharacters)
 const albumSelection = ref('all')
-const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
+const selectedAlbum = computed(() => albumSelection.value === 'all' ? undefined : albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
 const featured = computed(() => new Set([...(sceneStore.curation.signatureSceneIds ?? []), ...(sceneStore.curation.curatedSceneIds ?? [])]))
 const { featuredArtistIds, toggleFeaturedArtist } = useFeaturedArtists()
@@ -346,14 +346,13 @@ const filtered = computed(() => {
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(entry => entry.id))
-const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
+const currentIdx = computed(() => currentId.value ? filtered.value.findIndex(e => e.id === currentId.value) : -1)
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 // Let catalogue replacement and linked-scene filter resets settle before closing.
 watch(currentEntry, entry => {
   if (!entry && viewerMounted.value && viewActive && !unmounted) closeViewer()
 }, { flush: 'post' })
 watch(currentId, () => { viewerInfoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0) }, { flush: 'post' })
-const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry => [entry.id, thumbSrc(entry)])))
 const directoryReady = ref(false), directoryError = ref('')
 async function readDirectory() {
   const version = sceneStore.version

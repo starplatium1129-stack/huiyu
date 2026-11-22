@@ -4,13 +4,13 @@
   --pop-char-accent:color-mix(in srgb,var(--character-accent,var(--character-ornament,var(--accent))) 62%,var(--text-primary));
   padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-7);
 }
-:global(:root[data-theme='light']) .popular-scene-library {
+:root[data-theme='light'] .popular-scene-library {
   --pop-char-accent:color-mix(in srgb,var(--character-accent,var(--character-ornament,var(--accent))) 42%,var(--ink-base));
 }
 .popular-scene-library .library-header { align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
 .popular-scene-library .library-heading-copy { min-width:0; }
 .popular-scene-library .library-header .page-title { margin:0; font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
-:global(:root[data-theme-style='terraria']) .popular-scene-library .library-header .page-title { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .popular-scene-library .library-header .page-title { font-family:var(--font-display); }
 .popular-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .popular-scene-library .library-detail:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 .popular-scene-library .page-kicker { margin:0 0 var(--s-2); color:var(--text-muted); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); letter-spacing:.14em; }
@@ -41,7 +41,7 @@
 .popular-scene-library .library-detail .pop-hero-copy { display:grid; gap:var(--s-1); padding:0; min-width:0; }
 .popular-scene-library .pop-hero-copy .page-kicker { margin:0; color:var(--pop-char-accent); font-weight:600; letter-spacing:.06em; }
 .popular-scene-library .library-detail .pop-hero-copy h2 { margin:0; color:var(--text-primary); font:600 clamp(24px,2.4vw,34px)/1.28 var(--font-serif); overflow-wrap:anywhere; }
-:global(:root[data-theme-style='terraria']) .popular-scene-library .library-detail .pop-hero-copy h2 { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .popular-scene-library .library-detail .pop-hero-copy h2 { font-family:var(--font-display); }
 .pop-hero-jp { margin:0; color:var(--text-muted); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-serif-jp); letter-spacing:.06em; overflow-wrap:anywhere; }
 .pop-hero-note {
   margin:var(--s-2) 0 0; padding-left:var(--s-3);

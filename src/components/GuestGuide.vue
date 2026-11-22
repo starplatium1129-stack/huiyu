@@ -1,5 +1,6 @@
 <template>
   <StudioDialog
+    v-if="presented"
     v-model:open="visible"
     title="欢迎来到绘遇"
     size="md"
@@ -44,8 +45,7 @@
 
 <script setup lang="ts">
 import StudioDialog from '@/components/ui/StudioDialog.vue'
-import CreationDestinations from '@/components/home/CreationDestinations.vue'
-import { nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
+import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import { appearanceFocusOrigin } from '@/composables/useDesktopInteraction'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -63,6 +63,8 @@ const descriptionId = useId()
  * 反而永远看不到引导。`?guest=1` 保留作「强制再看一次」的开关。
  */
 const shouldShow = forcedGuest || (isLocalHost && !settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING))
+const CreationDestinations = defineAsyncComponent(() => import('@/components/home/CreationDestinations.vue'))
+const presented = ref(false)
 const visible = ref(false)
 const dismissButton = ref<HTMLButtonElement | null>(null)
 const setupButton = ref<HTMLButtonElement | null>(null)
@@ -70,6 +72,7 @@ let openOrigin: HTMLElement | null = null
 
 function openGuide() {
   openOrigin = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  presented.value = true
   visible.value = true
 }
 

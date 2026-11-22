@@ -250,7 +250,7 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 可见缩略图与按显示像素生成的预览 ---------- */
     const THUMB_CONCURRENCY = 8;
-    const { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
+    const { returnThumbIds, viewportItems, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
         shell: shellEl, items: () => pagedVisible.value,
         active: () => !unmounted && viewActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
         epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => {
@@ -273,7 +273,7 @@ export function useGalleryWorkspace() {
                 // Watchers and mounting share one batch; a changed page reschedules
                 // its remaining reads without fetching the same missing preview twice.
                 const demanded = trashMode.value ? [] : collectionPreviewItems.value ?? (returnThumbIds.size
-                    ? pagedVisible.value.filter(item => returnThumbIds.has(String(item.id))) : pagedVisible.value.slice(0, 12));
+                    ? viewportItems() : pagedVisible.value.slice(0, 12));
                 const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls.value[item.id] && !thumbUrls.value[item.id]).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {

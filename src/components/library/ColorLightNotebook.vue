@@ -53,6 +53,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 
 const emit = defineEmits<{ choose: [mood: string] }>()
+const props = defineProps<{ active: boolean }>()
 // Visually inspected published All-rated references. No recolouring or synthetic comparison.
 const PAIRS = [
   { name: '暖金与雨蓝', question: '同样把人物放在画面中央，温度不同，故事的距离也会不同。', samples: [
@@ -76,7 +77,7 @@ function selectPair(index: number, event: MouseEvent) {
   active.value = index
 }
 const current = computed(() => PAIRS[active.value]!)
-const { loading, error: referenceError, reload, referenceUrl, retryReference } = useMoodReferences()
+const { loading, error: referenceError, reload, referenceUrl, retryReference } = useMoodReferences(() => props.active)
 function retryCover(id: string, event: MouseEvent) {
   const origin = event.currentTarget
   if (origin instanceof HTMLElement && document.activeElement === origin)

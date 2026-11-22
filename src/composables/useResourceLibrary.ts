@@ -4,7 +4,7 @@ import { ApiClientError } from '../api/client'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { ResourceAction, ResourceStatus } from '../../types/resources'
 
-export function useResourceLibrary() {
+export function useResourceLibrary(active: () => boolean) {
   const isLocal = isLocalStudioHost()
   const status = ref<ResourceStatus | null>(null)
   const error = ref('')
@@ -59,17 +59,21 @@ export function useResourceLibrary() {
     return `${stage}：${format(task.bytes)} / ${format(task.total)}（单文件进度）`
   })
 
-  const hidden = () => typeof document !== 'undefined' && document.hidden
-  function visibilityChanged() {
+  const hidden = () => !active() || (typeof document !== 'undefined' && document.hidden)
+  function syncVisibility() {
     clearTimeout(poll)
-    if (!hidden()) void refresh()
+    if (!hidden()) { void refresh(); return }
+    if (request) {
+      generation++
+      request.abort(); request = null; loading.value = false
+    }
   }
   function schedule() {
     clearTimeout(poll)
     if (!stopped && isLocal && !hidden()) poll = setTimeout(() => void refresh(), status.value?.busy ? 750 : 5000)
   }
   async function refresh(fresh = false) {
-    if (!isLocal || stopped || submitting.value || request && !fresh) return
+    if (!isLocal || stopped || hidden() || submitting.value || request && !fresh) return
     if (request) { generation++; request.abort() }
     const ticket = generation
     request = new AbortController()
@@ -131,12 +135,12 @@ export function useResourceLibrary() {
     finally { submitting.value = false; command = null; if (!stopped) await refresh() }
   }
   function stop() {
-    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', visibilityChanged)
+    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', syncVisibility)
     stopped = true; generation++; clearTimeout(poll); request?.abort(); command?.abort(); loading.value = false }
   return { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
-    taskMessage, taskDetail, refresh, run, cancel, start() {
+    taskMessage, taskDetail, refresh, run, cancel, syncVisibility, start() {
       stopped = false
-      if (isLocal && typeof document !== 'undefined') document.addEventListener('visibilitychange', visibilityChanged)
+      if (isLocal && typeof document !== 'undefined') document.addEventListener('visibilitychange', syncVisibility)
       if (!hidden()) void refresh()
     }, stop }
 }

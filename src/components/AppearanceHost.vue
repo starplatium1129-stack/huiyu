@@ -1,5 +1,5 @@
 <template>
-  <component :is="panel" v-if="panel" ref="preferences" hide-triggers />
+  <component :is="panel" v-if="panel" ref="preferences" />
 </template>
 
 <script setup lang="ts">

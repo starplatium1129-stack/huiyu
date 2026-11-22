@@ -49,14 +49,7 @@ fn start_overlay(app: &AppHandle, assets_root: std::path::PathBuf, prewarm: bool
 
 pub fn prewarm(app: &AppHandle) {
     if crate::live2d_process::enabled() { return; }
-    let assets_root = overlay_assets_root(app);
-    start_overlay(app, assets_root.clone(), true);
-    let cache = app.state::<crate::state::AppState>().paths.runtime_root.join("live2d-cache");
-    thread::spawn(move || {
-        if let Err(error) = texture_cache::warm_default(&assets_root, &cache) {
-            eprintln!("[live2d] texture warmup: {error}");
-        }
-    });
+    start_overlay(app, overlay_assets_root(app), true);
 }
 
 pub fn first_frame_ready(app: &AppHandle) -> bool {
@@ -214,7 +207,7 @@ pub async fn aics_live2d_set_mouth_level(app: AppHandle, level: f64) -> Result<(
 
 #[tauri::command]
 pub async fn aics_live2d_set_max_fps(app: AppHandle, fps: f64) -> Result<(), String> {
-    let fps = if fps.is_finite() { fps.round().clamp(1.0, 1000.0) as u32 } else { 60 };
+    let fps = if fps == 0.0 { 0 } else if fps.is_finite() { fps.round().clamp(1.0, 1000.0) as u32 } else { 60 };
     if crate::live2d_process::enabled() { return crate::live2d_process::call(&app, ProcessCommand::SetMaxFps { fps }).await.map(|_| ()); }
     let state = ensure_overlay(&app, overlay_assets_root(&app));
     send_command_async(&state, OverlayCommand::SetMaxFps(fps)).await

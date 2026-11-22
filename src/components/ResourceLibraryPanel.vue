@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -57,7 +57,8 @@ import SetupTransferProgress from '@/components/control/SetupTransferProgress.vu
 import ResourceInstallEntry from '@/components/control/ResourceInstallEntry.vue'
 import { hasResourceAssistant } from '@/platform/desktop/resourceAssistant'
 import { useResourceLibrary } from '../composables/useResourceLibrary'
-const library = useResourceLibrary()
+const props = defineProps<{ active: boolean }>()
+const library = useResourceLibrary(() => props.active)
 const desktop = hasResourceAssistant()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
   taskMessage, taskDetail, refresh, run, cancel } = library
@@ -68,6 +69,7 @@ function recheck() {
   void refresh(true)
 }
 onMounted(library.start)
+watch(() => props.active, library.syncVisibility)
 onUnmounted(library.stop)
 </script>
 

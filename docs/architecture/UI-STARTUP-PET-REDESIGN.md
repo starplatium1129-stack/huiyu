@@ -3,6 +3,8 @@
 > 状态：已定稿待实施（技术交接文档）  
 > 适用范围：绘遇 · HUIYU 全站前端、桌面 Tauri 壳层与原生 Live2D 桌宠渲染层  
 > 协作与验证基准：[AGENTS.md](../../AGENTS.md) · [DESIGN.md](../../DESIGN.md)
+>
+> 桌面导航已恢复为独立窗口标题栏和页面导航两排。本文的单层顶栏方案是历史记录，当前布局见 [DESIGN.md](../../DESIGN.md#layout)。
 
 ---
 

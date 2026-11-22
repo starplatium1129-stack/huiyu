@@ -1,7 +1,5 @@
 <template>
-  <button v-if="!hideTriggers" class="appearance-entry" type="button" @click="launch('appearance')"><ArchiveIcon name="palette" />外观与动态效果</button>
-  <button v-if="!hideTriggers" class="appearance-entry" type="button" @click="launch('keyboard')"><ArchiveIcon name="gear" />键盘快捷键 <kbd>F1</kbd></button>
-  <Teleport v-if="!launcherOnly" to="body">
+  <Teleport to="body">
     <dialog ref="dialog" class="appearance-dialog" aria-labelledby="appearance-title" @close="onClosed" @cancel.prevent="close()" @click="backdropClose">
       <header class="appearance-heading">
         <div><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">自动保存</p></div>
@@ -32,8 +30,6 @@ type AppearanceRequest = { section: AppearanceSection; trigger: HTMLElement | nu
 type FocusReturn = { trigger: HTMLElement | null; path: string; version: number }
 const panel: ShallowRef<Component | null> = shallowRef(null)
 let panelDownload: Promise<{ default: Component }> | null = null, disposed = false
-const props = withDefaults(defineProps<{ launcherOnly?: boolean; hideTriggers?: boolean }>(), { launcherOnly: false, hideTriggers: false })
-const emit = defineEmits<{ open: [] }>()
 const request = shallowRef<AppearanceRequest>()
 const section = computed(() => request.value?.section ?? 'appearance')
 const failed = ref(false), retried = ref(false)
@@ -42,12 +38,8 @@ const route = useRoute()
 let opening = 0
 let focusReturn: FocusReturn | null = null
 const fluidDialog = useFluidDialog(dialog)
-function launch(section: AppearanceSection) {
-  window.dispatchEvent(new CustomEvent('atelier:appearance-open', { detail: { section } }))
-  emit('open')
-}
 async function open(section: AppearanceSection, trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null) {
-  if (disposed || props.launcherOnly) return
+  if (disposed) return
   focusReturn = null
   const version = ++opening, wasOpen = !!dialog.value?.open
   const changingSection = request.value?.section !== section
@@ -126,21 +118,12 @@ function keyboard(event: KeyboardEvent) {
 }
 watch(() => route.fullPath, () => { if (request.value) close(false) }, { flush: 'sync' })
 onMounted(() => {
-  if (props.launcherOnly) return
   window.addEventListener('keydown', keyboard, true)
 })
 onUnmounted(() => {
   disposed = true
   focusReturn = null
   opening++
-  if (props.launcherOnly) return
   window.removeEventListener('keydown', keyboard, true)
 })
 </script>
-
-<style>
-@reference "../assets/css/tailwind.css";
-.appearance-entry { @apply tw:flex tw:items-center tw:gap-s-2; grid-column: 1 / -1; @apply tw:p-s-3; border: 0; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-left tw:cursor-pointer; }
-.appearance-entry:hover { background: transparent; @apply tw:text-primary; }
-.appearance-entry kbd { margin-inline-start: auto; }
-</style>

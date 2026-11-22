@@ -10,6 +10,7 @@ interface ImageObserver {
 
 // A page can contain many cards, so share observers and the image-work budget.
 const observed = new Map<Element, ImageObserver>()
+const inViewport = new Set<Element>()
 let intersection: IntersectionObserver | undefined, resize: ResizeObserver | undefined
 let densityQuery: MediaQueryList | undefined, workers = 0
 const waiting = new Set<() => void>()
@@ -23,11 +24,21 @@ function densityChanged() {
   watchDensity()
   for (const observer of observed.values()) observer.density()
 }
+function visibilityChanged() {
+  for (const element of inViewport) observed.get(element)?.visible(!document.hidden)
+}
 function observeImage(element: HTMLImageElement, observer: ImageObserver) {
+  if (!observed.size) document.addEventListener('visibilitychange', visibilityChanged)
   observed.set(element, observer)
   intersection ??= new IntersectionObserver(entries => {
-    for (const entry of entries) observed.get(entry.target)?.visible(entry.isIntersecting)
-  }, { rootMargin: '600px 0px' })
+    for (const entry of entries) {
+      const owner = observed.get(entry.target)
+      if (!owner) continue
+      if (entry.isIntersecting) inViewport.add(entry.target)
+      else inViewport.delete(entry.target)
+      owner.visible(entry.isIntersecting && !document.hidden)
+    }
+  })
   resize ??= new ResizeObserver(entries => {
     for (const entry of entries) observed.get(entry.target)?.resize(entry.contentRect.width, entry.contentRect.height)
   })
@@ -35,8 +46,9 @@ function observeImage(element: HTMLImageElement, observer: ImageObserver) {
   intersection.observe(element); resize.observe(element)
 }
 function unobserveImage(element: HTMLImageElement) {
-  observed.delete(element); intersection?.unobserve(element); resize?.unobserve(element)
+  observed.delete(element); inViewport.delete(element); intersection?.unobserve(element); resize?.unobserve(element)
   if (observed.size) return
+  document.removeEventListener('visibilitychange', visibilityChanged)
   intersection?.disconnect(); resize?.disconnect(); intersection = undefined; resize = undefined
   densityQuery?.removeEventListener('change', densityChanged); densityQuery = undefined
 }
@@ -94,9 +106,9 @@ export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, orig
     return width * (window.devicePixelRatio || 1) * 1.06
   }
   function requestPreview() {
+    if (!active || !visible || request || !image || !source.value) return
     const required = requiredWidth(), currentImage = image, currentSource = source.value
-    if (!active || !visible || !currentImage || !currentSource || !required
-      || required <= currentImage.naturalWidth || required <= satisfied || request) return
+    if (!required || required <= currentImage.naturalWidth || required <= satisfied) return
     const width = Math.ceil(required / 560) * 560
     if (failed >= width) return
     const controller = new AbortController()

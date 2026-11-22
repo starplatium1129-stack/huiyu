@@ -82,7 +82,7 @@ const props = defineProps<{
   setExpression?: (id: string) => Promise<boolean>
 }>()
 const emit = defineEmits<{
-  close: []; settings: []; chat: []; atelier: []; watch: []; pin: []; hide: []; appearance: []
+  close: []; settings: []; chat: []; atelier: []; watch: []; pin: []; move: []; hide: []; appearance: []
   character: [id: string]; motion: [id: string]
 }>()
 type Category = 'motions' | 'expressions'
@@ -103,6 +103,7 @@ const actions: Action[] = [
   { id: 'expressions', short: '表情', label: '角色表情', icon: 'happy', category: 'expressions' },
   { id: 'motions', short: '动作', label: '互动动作', icon: 'spark', category: 'motions' },
   { id: 'pin', short: '置顶', label: '置顶窗口', icon: 'pin', toggle: true },
+  { id: 'move', short: '移动', label: '移动桌宠，可用方向键调整，回车确定或 Esc 取消', icon: 'expand' },
   { id: 'watch', short: '看屏', label: '打开陪看设置', icon: 'eye' },
   { id: 'hide', short: '隐藏', label: '隐藏桌宠', icon: 'moon' },
 ]
@@ -129,6 +130,7 @@ function activate(action: Action, event: MouseEvent) {
   else if (action.id === 'atelier') emit('atelier')
   else if (action.id === 'watch') emit('watch')
   else if (action.id === 'pin') emit('pin')
+  else if (action.id === 'move') emit('move')
   else if (action.id === 'hide') { emit('hide'); emit('close') }
 }
 const loadCharacterDialog = async () => {

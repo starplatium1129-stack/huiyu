@@ -1,6 +1,6 @@
-import { computed, onActivated, onScopeDispose, readonly, ref, shallowRef, watch } from 'vue'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { apiClient } from '@/api/client'
+import { computed, onActivated, onDeactivated, onScopeDispose, readonly, ref, shallowRef, watch } from 'vue'
+import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { readResponse } from '@/api/httpResponse'
 import { canonicalShowcaseId, parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
 
 // Keep catalogue identity across page visits, without retaining images or page instances.
@@ -22,24 +22,117 @@ function catalogueEntry(id: string) {
 const versions = shallowRef<ReadonlyMap<string, number>>(new Map())
 const sessionVersion = ref(Date.now())
 let identity: string | undefined, nextRequest = 0, publishedRequest = 0
+let snapshot: { etag: string | null; entries: readonly ShowcaseEntry[] } | undefined
+type CatalogueRead = { controller: AbortController; result: Promise<readonly ShowcaseEntry[]>; readers: number }
+let pending: CatalogueRead | undefined
 function syncIdentity() {
   const next = runtimeResourceIdentity()
   if (identity === next) return
   identity = next
+  pending?.controller.abort()
+  pending = undefined
+  snapshot = undefined
+  publishedRequest = ++nextRequest
   catalogue.value = new Map(); versions.value = new Map()
-  sessionVersion.value = Date.now(); publishedRequest = 0
+  sessionVersion.value = Date.now()
+}
+
+function updateCatalogue(entries: readonly ShowcaseEntry[], counts: Map<unknown, number>, refreshImages: boolean) {
+  const nextVersions = new Map(versions.value)
+  const nextEntries = new Map<string, ShowcaseEntry>()
+  let versionChanged = false
+  for (const entry of entries) {
+    if (counts.get(entry.id) !== 1) continue
+    const previous = catalogue.value.get(entry.id)
+    const keys = Object.keys(entry) as Array<keyof ShowcaseEntry>
+    const unchanged = previous && Object.keys(previous).length === keys.length && keys.every(key => {
+      const value = entry[key], before = previous[key]
+      return before === value || typeof value === 'object' && JSON.stringify(before) === JSON.stringify(value)
+    })
+    nextEntries.set(entry.id, unchanged ? previous : entry)
+    if (refreshImages || (previous && !unchanged)) {
+      nextVersions.set(entry.id, Math.max(Date.now(), (nextVersions.get(entry.id) ?? sessionVersion.value) + 1))
+      versionChanged = true
+    }
+  }
+  for (const id of nextVersions.keys()) if (!nextEntries.has(id)) { nextVersions.delete(id); versionChanged = true }
+  const previousEntries = [...catalogue.value.values()]
+  if (previousEntries.length !== nextEntries.size || [...nextEntries.values()].some((entry, index) => entry !== previousEntries[index]))
+    catalogue.value = nextEntries
+  if (versionChanged) versions.value = nextVersions
+}
+
+async function readCatalogue(signal: AbortSignal, fresh: boolean, refreshImages: boolean): Promise<readonly ShowcaseEntry[]> {
+  const revision = ++nextRequest
+  const source = identity
+  const previous = snapshot
+  const path = '/scene-showcase/manifest.json'
+  // Revalidate on return without transferring or parsing unchanged prompts and metadata.
+  if (previous?.etag && !fresh && !refreshImages) {
+    const head = await runtimeFetch(path, { method: 'HEAD', signal, cache: 'no-cache' }).catch(() => {
+      signal.throwIfAborted()
+      return null // Some static hosts allow GET only.
+    })
+    if (head?.ok && head.headers.get('etag') === previous.etag) {
+      signal.throwIfAborted()
+      if (source !== identity || !snapshot) throw new DOMException('样张来源已更改', 'AbortError')
+      publishedRequest = Math.max(publishedRequest, revision)
+      return snapshot.entries
+    }
+  }
+  const response = await runtimeFetch(fresh ? path + '?refresh=1' : path, { signal, cache: 'no-cache' })
+  const raw = await readResponse(response, signal)
+  if (source !== identity) throw new DOMException('样张来源已更改', 'AbortError')
+  if (revision < publishedRequest) {
+    if (snapshot) return snapshot.entries
+    throw new DOMException('样张来源已更改', 'AbortError')
+  }
+  const entries = parseShowcaseManifest(raw).entries
+  // Asset lookup rejects ambiguous IDs. The journal retains the manifest parser's first valid row.
+  const counts = new Map<unknown, number>()
+  for (const item of raw.entries as Array<{ id?: unknown } | null>) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
+  updateCatalogue(entries, counts, refreshImages)
+  snapshot = { etag: response.headers.get('etag'), entries: entries.map(entry => catalogue.value.get(entry.id) ?? entry) }
+  publishedRequest = revision
+  return snapshot.entries
+}
+
+/** A single parse and publication per read, with independent page lifetimes. */
+export async function readShowcaseEntries(signal: AbortSignal, fresh = false, refreshImages = false): Promise<readonly ShowcaseEntry[]> {
+  signal.throwIfAborted()
+  syncIdentity()
+  if (!pending || pending.controller.signal.aborted || fresh || refreshImages) {
+    const controller = new AbortController()
+    const result = readCatalogue(controller.signal, fresh, refreshImages).finally(() => {
+      if (pending?.controller === controller) pending = undefined
+    })
+    pending = { controller, result, readers: 0 }
+  }
+  const read = pending
+  read.readers++
+  let onAbort!: () => void
+  const cancelled = new Promise<never>((_, reject) => {
+    onAbort = () => reject(signal.reason)
+    signal.addEventListener('abort', onAbort, { once: true })
+  })
+  try { return await Promise.race([read.result, cancelled]) }
+  finally {
+    signal.removeEventListener('abort', onAbort)
+    if (--read.readers === 0) read.controller.abort()
+  }
 }
 
 /** The manifest owns asset identity and paths, including images saved by older clients. */
-export function useShowcaseAssets(errorMessage = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback) {
+export function useShowcaseAssets(
+  errorMessage = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback,
+  enabled: () => boolean = () => true,
+) {
   const loading = ref(false), error = ref('')
   let alive = true, request: AbortController | undefined
-  let activated = false
+  let activated = false, active = true
   onScopeDispose(() => { alive = false; request?.abort() })
 
   async function reload(fresh = false, refreshImages = false) {
-    syncIdentity()
-    const source = identity, revision = ++nextRequest
     request?.abort()
     const controller = new AbortController()
     request = controller
@@ -47,42 +140,7 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
     let timedOut = false
     const timeout = setTimeout(() => { timedOut = true; controller.abort() }, 10_000)
     try {
-      // Share automatic reads without retaining a TTL cache. Uploads force a new
-      // transport so they cannot join a manifest read that predates the write.
-      const path = `/scene-showcase/manifest.json${fresh ? '?refresh=1' : ''}`
-      const raw = await apiClient.request<{ entries?: Array<{ id?: unknown } | null> }>(path, {
-        signal: controller.signal, cache: 'no-cache', cachePolicy: fresh ? 'refresh' : 'default', timeoutMs: 0,
-      })
-      const counts = new Map<unknown, number>()
-      for (const item of raw.entries ?? []) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
-      const accepted = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
-      if (alive && request === controller && !controller.signal.aborted && source === identity && revision >= publishedRequest) {
-        const nextVersions = new Map(versions.value)
-        const nextEntries = new Map<string, ShowcaseEntry>()
-        let versionChanged = false
-        for (const entry of accepted) {
-          const previous = catalogue.value.get(entry.id)
-          // Prompt/story text is already normalized at the boundary. Compare
-          // strings directly instead of allocating two escaped JSON copies.
-          const keys = Object.keys(entry) as Array<keyof ShowcaseEntry>
-          const unchanged = previous && Object.keys(previous).length === keys.length && keys.every(key => {
-            const value = entry[key], before = previous[key]
-            return before === value || typeof value === 'object' && JSON.stringify(before) === JSON.stringify(value)
-          })
-          nextEntries.set(entry.id, unchanged ? previous : entry)
-          if (refreshImages || (previous && !unchanged)) {
-            nextVersions.set(entry.id, Math.max(Date.now(), (nextVersions.get(entry.id) ?? sessionVersion.value) + 1))
-            versionChanged = true
-          }
-        }
-        for (const id of nextVersions.keys()) if (!nextEntries.has(id)) { nextVersions.delete(id); versionChanged = true }
-        // A successful revalidation must not rerender every cached image library.
-        const previousEntries = [...catalogue.value.values()]
-        if (previousEntries.length !== nextEntries.size || [...nextEntries.values()].some((entry, index) => entry !== previousEntries[index]))
-          catalogue.value = nextEntries
-        if (versionChanged) versions.value = nextVersions
-        publishedRequest = revision
-      }
+      await readShowcaseEntries(controller.signal, fresh, refreshImages)
     } catch (cause) {
       if (alive && request === controller && (timedOut || !controller.signal.aborted))
         error.value = timedOut ? '读取样张清单超时，请检查连接后重试' : errorMessage(cause, '样张清单暂时无法读取')
@@ -92,15 +150,18 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
       if (request === controller) { request = undefined; loading.value = false }
     }
   }
-  watch(runtimeResourceIdentity, () => {
+  watch([runtimeResourceIdentity, enabled], ([, needed]) => {
     syncIdentity()
-    void reload().catch(() => {})
+    if (active && needed) void reload().catch(() => {})
+    else { request?.abort(); error.value = '' }
   }, { immediate: true })
   onActivated(() => {
+    active = true
     // Initial load belongs to the identity watcher. Returning may reveal newly saved assets.
-    if (activated) void reload().catch(() => {})
+    if (activated && enabled()) void reload().catch(() => {})
     activated = true
   })
+  onDeactivated(() => { active = false; request?.abort() })
 
   function assetUrl(id: string, kind: 'image' | 'thumb'): string {
     const entry = catalogueEntry(id)

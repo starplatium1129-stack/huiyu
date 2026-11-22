@@ -144,6 +144,18 @@ impl Catalog {
         Ok(value)
     }
     pub(super) fn projection_owned(&self, name: &str) -> Result<Option<Value>> {
+        if name == "character-archive.json" {
+            // The bookshelf and biography never read the relationship atlas.
+            let mut query = self.connection.prepare(
+                "SELECT json_remove(payload->'$.profile', '$.relationshipGraph')
+                 FROM content_records WHERE kind='character' AND deleted=0 AND json_type(payload,'$.profile')='object'
+                 ORDER BY sort_order,id",
+            )?;
+            let profiles = query
+                .query_map([], |row| json_column(row, 0))?
+                .collect::<rusqlite::Result<Vec<_>>>()?;
+            return Ok(Some(Value::Array(profiles)));
+        }
         if name == "popular-directory.json" {
             let mut statement = self.connection.prepare(
                 "SELECT json_object(
@@ -351,6 +363,7 @@ impl Catalog {
 pub(super) fn projected_file(name: &str) -> bool {
     [
         "popular-directory.json",
+        "character-archive.json",
         "scene-titles.json",
         "characters.json",
         "popular-characters.json",

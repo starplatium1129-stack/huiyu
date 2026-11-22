@@ -31,7 +31,6 @@
 /* On the desk the pointer stays over a fixed target; the rim, label and glyph supply the press. */
 :root body .pb.atelier-workspace :is(button,a):is(.btn,[data-spring-button]) { --control-hover-lift:0px; }
 .pb.atelier-workspace .btn:active:not(:disabled):not([aria-disabled='true']) { transform:none; }
-.pb.atelier-workspace :is(.btn,[data-spring-button]) > .studio-button-feedback { background:color-mix(in srgb,currentColor 15%,transparent); }
 .pb.atelier-workspace .result-image { opacity:1; transform:none; }
 .pb.atelier-workspace .stage-archive-badge { display:inline-flex; align-items:center; gap:var(--s-2); border:0; color:var(--text-secondary); font:var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .pb.atelier-workspace .stage-archive-badge[data-archived='true'] { color:var(--success-text); }

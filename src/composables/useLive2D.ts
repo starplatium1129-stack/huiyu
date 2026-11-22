@@ -44,11 +44,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
   }
 
   function setMaxFps(value: number) {
-    // 原生后端接电目标 165fps（渲染线程 vsync 决定实际帧率），不能被默认
-    // 60 覆盖；browser 后端保持原有 120 上限不变。
-    const isNative = ctx.backendKind.value === 'native' && ctx.backend?.kind === 'native'
-    const cap = isNative ? 165 : 120
-    ctx.maxFps = Math.max(24, Math.min(cap, Math.round(value) || 60))
+    // Zero follows the display, including when the desktop falls back to Pixi's RAF ticker.
+    ctx.maxFps = value === 0 ? 0 : Math.max(24, Math.min(1000, Math.round(value) || 60))
     ctx.session?.setMaxFps(ctx.maxFps)
   }
 
@@ -139,6 +136,7 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     ready: ctx.ready, enabled: ctx.enabled, character: ctx.character, loadedCharacter: ctx.loadedCharacter,
     mouthValue: ctx.mouthValue, interactionHint: ctx.interactionHint, outfit: ctx.outfit, quality: ctx.quality,
     backendKind: ctx.backendKind, backendFallback: ctx.backendFallback, adapterReport: ctx.adapterReport,
+    onCanvasFrame: (listener: (canvas: HTMLCanvasElement) => void) => ctx.session?.onCanvasFrame?.(listener),
     init: lifecycle.init, enable: lifecycle.enable, disable: lifecycle.disable,
     setCharacter: lifecycle.setCharacter, setMouth, setAudioLevel, setVolume, setExpression, setOutfit: lifecycle.setOutfit, setQuality: lifecycle.setQuality, setSpeaking,
     attachEmotionRuntime, setPaused: lifecycle.setPaused, setMaxFps, recover: lifecycle.recover,

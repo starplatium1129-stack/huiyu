@@ -68,7 +68,7 @@
 .pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding:var(--s-3); }
 .pop-card-category { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:text-muted tw:text-label-xs; }
 .pop-card-head h3 { @apply tw:m-0 tw:text-primary; font:600 var(--fs-body)/1.35 var(--font-serif); overflow-wrap:anywhere; }
-:global(:root[data-theme-style='terraria']) .pop-card-head h3 { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .pop-card-head h3 { font-family:var(--font-display); }
 .pop-card-excerpt {
   margin:0;
   display:-webkit-box;

@@ -38,7 +38,7 @@
 .appearance-shortcuts > div { @apply tw:grid tw:gap-s-2 tw:pb-s-3; border-bottom: 1px solid var(--border-soft); }
 .appearance-shortcuts dt { @apply tw:text-primary; }
 .appearance-shortcuts dd { @apply tw:m-0 tw:text-secondary tw:text-label; }
-.appearance-dialog :focus-visible, .appearance-entry:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.appearance-dialog :focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .appearance-dialog .appearance-content:focus-visible { box-shadow:inset 0 0 0 2px var(--focus-color); }
 html[data-reduced-glass="true"] .appearance-dialog::backdrop { backdrop-filter: none; }
 @media (forced-colors: active) {

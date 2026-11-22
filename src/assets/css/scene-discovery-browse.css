@@ -8,7 +8,7 @@
 .scene-atlas[data-companion='natsume'] { --companion-accent:var(--natsume-amber); }
 .scene-atlas-copy { grid-area:copy; min-width:0; }
 .scene-atlas .title { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
-:global(:root[data-theme-style='terraria']) .scene-atlas .title { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .scene-atlas .title { font-family:var(--font-display); }
 .scene-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-4); min-width:0; }
 .scene-atlas-portrait {
@@ -16,7 +16,7 @@
   border-radius:var(--r-xl);
   background:radial-gradient(circle at 50% 54%,color-mix(in srgb,var(--companion-accent) 20%,transparent) 0%,transparent 70%);
 }
-:global(:root[data-theme-style='terraria']) .scene-atlas-portrait { background:none; border-radius:0; }
+:root[data-theme-style='terraria'] .scene-atlas-portrait { background:none; border-radius:0; }
 .scene-atlas-portrait img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .scene-atlas-portrait img.current { opacity:1; }
 .scene-atlas-portrait .companion-fallback { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; gap:var(--s-2); padding:var(--s-2); color:var(--text-secondary); text-align:center; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
@@ -35,7 +35,7 @@
   box-shadow:inset 0 1px 0 var(--glass-highlight);
   overflow-wrap:anywhere;
 }
-:global(:root[data-theme-style='terraria']) .companion-speech { border-radius:0; background:var(--bg-surface); font-family:var(--font-sans); }
+:root[data-theme-style='terraria'] .companion-speech { border-radius:0; background:var(--bg-surface); font-family:var(--font-sans); }
 .companion-label { color:var(--text-muted); font-size:var(--fs-label-xs); }
 .companion-switch { flex-wrap:wrap; width:fit-content; max-width:100%; }
 .companion-avatar { display:block; flex:0 0 32px; width:32px; height:32px; object-fit:contain; }

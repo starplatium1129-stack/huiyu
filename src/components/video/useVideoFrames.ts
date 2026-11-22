@@ -49,6 +49,9 @@ export function useVideoFrames(deps: VideoFramesDeps) {
 
   function owned() { return sameTempResultOwner(owner) }
   function available() { return !disposed && active && deps.available() && owned() }
+  function showsPreview(slot: Slot) {
+    return deps.selectedMode.value === 'first-last-frame' || (slot === first && deps.selectedMode.value === 'image')
+  }
   function track(controller: AbortController) { uploads.add(controller); uploadingImage.value = true }
   function finish(controller: AbortController) { uploads.delete(controller); uploadingImage.value = uploads.size > 0 }
   function stopSlot(slot: Slot) { slot.version++; slot.upload?.abort(); slot.upload = null }
@@ -63,11 +66,11 @@ export function useVideoFrames(deps: VideoFramesDeps) {
 
   /** A failed read keeps its ID. Only a current, empty original proves it is lost. */
   async function restorePreview(slot: Slot, original?: Blob) {
-    if (!available()) return
+    if (!available() || !showsPreview(slot)) return
     const id = slot.id.value, blob = slot.blob.value, version = slot.version
     if (!id && !blob && !original) { slot.preview.release(); return }
     const repository = artworkRepository, mediaSession = imageMediaSession()
-    const current = () => available() && version === slot.version && id === slot.id.value && blob === slot.blob.value
+    const current = () => available() && showsPreview(slot) && version === slot.version && id === slot.id.value && blob === slot.blob.value
       && repository === artworkRepository && mediaSession === imageMediaSession()
     await slot.preview.load({ current, preserve: true, async read(signal, selectedRepository) {
       signal.throwIfAborted()
@@ -141,10 +144,12 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   async function restorePreviews() {
     if (!available()) return
     await Promise.all([first, last].map(async slot => {
+      if (!showsPreview(slot)) { slot.preview.release(); return }
       if (slot.pending.value) await prepareFile(slot, slot.pending.value)
-      if (!slot.upload && !slot.preview.url.value) await restorePreview(slot)
+      if (!slot.upload && !slot.preview.loading.value && !slot.preview.url.value) await restorePreview(slot)
     }))
   }
+  watch(deps.selectedMode, () => { void restorePreviews() })
 
   /** Transfer the existing prompt/story/blueprint intent without rewriting it. */
   function composeVideoPrompt(ctx: VideoCtxPayload): string {

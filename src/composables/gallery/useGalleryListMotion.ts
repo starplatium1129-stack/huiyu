@@ -1,4 +1,4 @@
-import { nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, watch, type Ref } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, watch, type Ref } from 'vue'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import type { ArtworkRecord } from '@/types/artwork'
 import { createContentSpring, type ContentSpring, type SpringPresentation } from '@/utils/contentSpring'
@@ -143,7 +143,7 @@ export function useGalleryListMotion(
     listChanged = false; previousIds.clear()
     finishHandoff()
   }
-  const ids = () => items().map(item => String(item.id))
+  const ids = computed(() => items().map(item => String(item.id)))
   watch(ids, (next, previous) => {
     // Appending a page retains placement; decoding thumbnails never changes IDs.
     if (next.length === previous.length && previous.every((id, index) => next[index] === id)) return
@@ -157,7 +157,7 @@ export function useGalleryListMotion(
   watch([ids, loading], () => {
     if (!viewActive || !active()) return
     // Restoring/reintroducing an ID ends its stale deletion visual immediately.
-    for (const item of items()) stopDust(String(item.id))
+    if (dust.size) for (const id of ids.value) stopDust(id)
     settle()
   }, { flush: 'post' })
   watch([canAnimate, lowEffects, active], () => { if (!viewActive || !active() || !canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })

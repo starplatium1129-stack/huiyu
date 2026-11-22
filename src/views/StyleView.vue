@@ -27,7 +27,8 @@
         <RuntimeImage :src="referenceUrl(m.sceneId)" v-slot="{ image, loaded, failed }">
           <div class="style-sample-frame" :class="{ 'is-failed': failed }">
             <RouterLink class="style-sample" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
-              <img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
+              <img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818"
+                :loading="moodIndex === 0 ? 'eager' : 'lazy'" :fetchpriority="moodIndex === 0 ? 'high' : 'auto'" decoding="async" />
               <span v-if="!loaded" class="style-sample-missing" role="status">
                 <span class="style-palette-proof" aria-hidden="true"><MoodPaletteFan :colors="m.colors" /></span>
                 <span>{{ failed ? '参考图片加载失败' : image.src ? '正在载入画页…' : loading ? '正在翻开画册…' : '氛围参考暂未连接' }}</span><small v-if="failed || (!image.src && !loading)">仍可选用下方配色</small>

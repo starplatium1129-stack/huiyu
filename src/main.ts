@@ -46,21 +46,23 @@ void (async () => {
   if (isDesktopHost()) setStartupProfile(platformReady)
   else void platformReady.catch(error => console.warn('资料初始化暂不可用', error))
   initializeTheme()
-  // Shell mounts once the document lease and first theme are ready. Route
-  // content waits for the appropriate storage authority, which connects in parallel.
-  const [[{ default: App }, { default: router }]] = await Promise.all([
-    Promise.all([appPromise, routerPromise]),
+  // Resolve the actual landing route while the document lease and theme are
+  // being acquired. All three must still complete before mounting a writable UI.
+  const [shell] = await Promise.all([
+    Promise.all([appPromise, routerPromise]).then(async ([{ default: App }, { default: router }]) => {
+      if (disposed) return
+      installRouteRecovery(router)
+      stopNavigationFeedback = installNavigationFeedback(router)
+      const app = createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router)
+      // A failed initial import still mounts the recovery banner.
+      await router.isReady().catch(() => {})
+      return { app, router }
+    }),
     initializeDesktopPreferences(),
     startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)),
   ])
-  installRouteRecovery(router)
-  stopNavigationFeedback = installNavigationFeedback(router)
-  if (disposed) return
-  const app = createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router)
-  // Keep first-paint feedback until the initial lazy route can replace it.
-  // A failed import still mounts RouteRecoveryBanner so retry remains reachable.
-  await router.isReady().catch(() => {})
-  if (disposed) return
+  if (!shell || disposed) return
+  const { app, router } = shell
   app.mount('#app')
   let fontFrame = requestAnimationFrame(() => {
     fontFrame = requestAnimationFrame(() => {

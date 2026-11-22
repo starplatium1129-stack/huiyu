@@ -1,5 +1,5 @@
 <template>
-  <SceneArtworkViewer ref="viewer" v-model="selectedId" :items="previews" :source-image="sourceImage" @after-close="releaseStory">
+  <SceneArtworkViewer ref="viewer" v-model="selectedId" :items="scene ? previews : []" :source-image="sourceImage" @after-close="releaseStory">
     <template v-if="displayedScene" #info>
       <div class="viewer-meta">{{ sceneCharacterName(displayedScene) }} · {{ sceneSeasonLabel(displayedScene.season) }} · {{ sceneTimeLabel(displayedScene.timeOfDay) }} · {{ displayedScene.emotion }}</div>
       <section class="viewer-section"><h3>场景故事</h3><p class="viewer-story scene-story">{{ displayedScene.story || '' }}</p></section>

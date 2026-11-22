@@ -13,7 +13,7 @@ export function useChatHistoryWindow(element: Ref<HTMLElement | undefined | null
   const visibleMessages = computed(() => messages.value.slice(start.value, start.value + WINDOW_SIZE))
   const hasEarlier = computed(() => start.value > 0)
   const hasLater = computed(() => start.value + WINDOW_SIZE < messages.value.length)
-  const reading = useConversationReading(element, () => messages.value, context)
+  const reading = useConversationReading(element, () => messages.value.length > 0, context)
   const paging = ref(false)
   let generation = 0
   watch(reading.following, following => {

@@ -1,4 +1,4 @@
-import { nextTick, type Ref } from 'vue'
+import { computed, nextTick, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -30,6 +30,15 @@ interface PreviewRead { item: ArtworkRecord; repository: typeof artworkRepositor
 /** Wall previews own bounded display-sized images; the viewer owns originals. */
 export function useGalleryCardPreviews(options: CardPreviewOptions) {
   const returnThumbIds = new Set<string>()
+  const itemsById = computed(() => new Map(options.items().map(item => [String(item.id), item])))
+  function viewportItems() {
+    const items: ArtworkRecord[] = []
+    for (const id of returnThumbIds) {
+      const item = itemsById.value.get(id)
+      if (item) items.push(item)
+    }
+    return items
+  }
   const cards = new Map<Element, ArtworkRecord>()
   const widths = new Map<string | number, number>()
   const layoutWidths = new Map<Element, number>()
@@ -250,7 +259,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       trim(); options.trimThumbnails(); void options.hydrateThumbnails()
     }, { rootMargin: '600px 0px' })
     resize ??= new ResizeObserver(entries => { for (const entry of entries) measure(entry.target, entry.contentRect.width) })
-    const byId = new Map(options.items().map(item => [String(item.id), item]))
+    const byId = itemsById.value
     for (const element of elements) {
       const item = byId.get(element.dataset.cardId || '')
       if (!item) continue
@@ -274,5 +283,5 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
     for (const id of cache.keys()) if (!retain.has(String(id))) releaseCardImage(id)
     for (const id of satisfied.keys()) if (!retain.has(String(id))) satisfied.delete(id)
   }
-  return { returnThumbIds, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage }
+  return { returnThumbIds, viewportItems, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage }
 }

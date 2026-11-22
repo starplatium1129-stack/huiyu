@@ -29,8 +29,8 @@
             <button type="button" :aria-pressed="archiveSection === 'profile'" @click="archiveSection = 'profile'">人物档案</button>
             <button type="button" :aria-pressed="archiveSection === 'relations'" @click="archiveSection = 'relations'">人物关系</button>
           </div>
-          <AsyncPanel v-if="archiveSection === 'relations' && current" :loader="loadRelationsPanel" label="人物关系图" v-slot="{ component }">
-            <component :is="component" :profiles="characters" :character-id="current.id" @open-profile="openRelatedProfile" />
+          <AsyncPanel v-if="archiveSection === 'relations' && current" :key="sceneStore.version" :loader="loadRelationsPanel" label="人物关系图" v-slot="{ component }">
+            <component :is="component" :profiles="relationProfiles" :character-id="current.id" @open-profile="openRelatedProfile" />
           </AsyncPanel>
           <div v-else v-content-motion:up="current?.id">
       <section v-if="current" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
@@ -208,7 +208,7 @@ import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
-import { ref, computed, nextTick, onActivated, onBeforeUnmount, onMounted, watch } from 'vue'
+import { ref, computed, nextTick, onActivated, onBeforeUnmount, onMounted, toRaw, watch } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
@@ -231,9 +231,13 @@ import {
 } from '@/utils/characterProfiles'
 
 const sceneStore = useSceneStore()
-const characters = computed(() => parseCharacterProfiles(sceneStore.characters))
+const characters = computed(() => parseCharacterProfiles(sceneStore.archiveProfiles))
+const relationProfiles = computed(() => parseCharacterProfiles(toRaw(sceneStore.characters)))
 const archiveSection = ref<'profile' | 'relations'>('profile')
-const loadRelationsPanel = () => import('@/components/library/CharacterRelationsPanel.vue')
+async function loadRelationsPanel() {
+  const [panel] = await Promise.all([import('@/components/library/CharacterRelationsPanel.vue'), sceneStore.loadCharacterProfiles()])
+  return panel
+}
 async function openRelatedProfile(id: string) {
   archiveSection.value = 'profile'; selectCharacter(id)
   await nextTick()
@@ -255,7 +259,7 @@ const { current, showShelf, lastViewedId, selectCharacter: navigateCharacter, sh
 )
 const characterAtmosphereStyle = useCharacterAtmosphere(
   () => (showShelf.value ? '' : current.value?.id || ''),
-  () => sceneStore.characters,
+  () => sceneStore.archiveProfiles,
 )
 watch([showShelf, () => current.value?.id], ([shelf, id]) => {
   if (shelf || !id) clearCharacterAtmosphere()
@@ -444,8 +448,7 @@ async function loadProfiles() {
   loading.value = !characters.value.length
   loadError.value = ''
   try {
-    // 角色档案首屏只需要目录壳；场景/蓝图画布随后后台补齐，不能阻塞粒子展台挂载。
-    await sceneStore.loadCharacterShell()
+    await sceneStore.loadCharacterArchive()
   } catch (e) {
     if (version !== sceneStore.version) return
     console.warn('character data load failed', e)

@@ -157,6 +157,7 @@ fn main() {
             bridge::get_startup_mode,
             bridge::set_startup_mode,
             bridge::companion_mark_ready,
+            companion_window::start_companion_move,
             bridge::companion_set_interactive_regions,
             bridge::companion_set_static_mask,
             bridge::hide,
@@ -379,8 +380,12 @@ fn main() {
                 }
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
-                tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_) => {
+                change @ (tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_)) => {
                     if label == "companion" { chat_dock::follow(app_handle); }
+                    // The native move loop owns the position until release. Resizes
+                    // still reach the WebView immediately on a per-monitor DPI change.
+                    if matches!(change, tauri::WindowEvent::Moved(_)) && label == "companion"
+                        && app_handle.state::<AppState>().companion_input.lock().unwrap().moving { return; }
                     window_persistence::changed(app_handle, &label);
                     if label == "atelier" {
                         if let Some(window) = app_handle.get_webview_window("atelier") {

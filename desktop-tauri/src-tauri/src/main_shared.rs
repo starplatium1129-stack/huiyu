@@ -234,6 +234,8 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
     let placement = companion_bounds(app, &state);
     let bounds = &placement.logical;
     let source = crate::ui_entry::source(app, gateway_url, "/companion").map_err(|error| tauri::Error::Io(std::io::Error::other(error)))?;
+    // WebView creation waits for the UI thread, which also reads preferences.
+    let always_on_top = state.preferences.lock().unwrap().always_on_top;
     let win = webview_builder(app, "companion", source)
         .title("绘遇 Companion")
         .inner_size(bounds.width as f64, bounds.height as f64)
@@ -242,16 +244,13 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
         .transparent(true)
         .background_color(tauri::window::Color(0, 0, 0, 0))
         .focused(false)
-        .always_on_top(state.preferences.lock().unwrap().always_on_top)
+        .always_on_top(always_on_top)
         .skip_taskbar(true)
         .shadow(false)
         .build()?;
     if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion bounds failed: {error}")); }
     #[cfg(windows)]
     if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion icons failed: {error}")); }
-    if let Err(error) = win.set_ignore_cursor_events(true) {
-        state.warn(&format!("initialize mouse passthrough failed: {error}"));
-    }
     if let Some(bounds) = webview_bounds(&win) {
         let _ = win.emit("aics:window-bounds", bounds);
     }
@@ -418,7 +417,9 @@ pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
     // Retain capabilities for an already loaded trusted document while the
     // runtime reconnects. Every new navigation still verifies fresh identity.
     let expected = state.gateway_url.lock().unwrap().clone();
-    registered_desktop_origin(&expected, crate::ui_entry::bundled(app), url)
+    // Frequent pointer IPC from the loopback origin needs no migration-file read.
+    let bundled = crate::ui_entry::native_origin(url) && crate::ui_entry::bundled(app);
+    registered_desktop_origin(&expected, bundled, url)
 }
 
 /// Static capabilities grant no remote origin. Add only the proven startup origin.

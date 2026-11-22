@@ -1,12 +1,13 @@
 import type { Router } from 'vue-router'
 import { settingsRepository } from '@/storage/settingsRepository'
+import { whenStartupProfileReady } from '@/platform/startupProfile'
 import { DESKTOP_LAST_PAGE_SETTING, DESKTOP_START_PAGE_SETTING, isDesktopPage } from '@/storage/desktopPreferences'
 
 /** 只恢复工作页，不保存生成参数、查询串或临时授权信息。 */
 export function attachDesktopWorkspace(router: Router) {
   let disposed = false
   let unsubscribe: (() => void) | undefined
-  void router.isReady().then(async () => {
+  void Promise.all([router.isReady(), whenStartupProfileReady()]).then(async () => {
     if (disposed) return
     const initial = router.currentRoute.value
     const choice = settingsRepository.get(DESKTOP_START_PAGE_SETTING)

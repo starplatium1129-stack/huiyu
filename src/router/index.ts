@@ -5,10 +5,8 @@ import { confirmAction } from '@/composables/useConfirm'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import { needsDocumentReload } from './documentPolicy'
-import { createRoutePrefetcher } from './prefetch'
-import { captureScrollAnchor, restoreScrollAnchor } from '@/utils/scrollAnchor'
+import { captureScrollAnchor, restoreScrollAnchor, watchForUserScroll } from '@/utils/scrollAnchor'
 import { loadRoom, type RoomPage } from './roomResources'
-export { prefetchRouteResources } from './prefetch'
 
 /** Keep a bounded window-scroll snapshot for explicit SPA returns to cached pages. */
 const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/popular-scenes', '/showcase', '/gallery', '/prompt-builder', '/video-studio'])
@@ -41,11 +39,13 @@ function scheduleScrollRestore(path: string, position: { left: number; top: numb
   // 锚点恢复原语与场景库筛选共用（src/utils/scrollAnchor.ts）；离开目标地址就放弃。
   // 取消句柄是本模块自己的，不再影响场景库那一路的待恢复锚点。
   cancelPendingScrollRestore()
-  cancelRouteScrollRestore = restoreScrollAnchor(position, {
+  const stopInput = watchForUserScroll(cancelPendingScrollRestore)
+  const stop = restoreScrollAnchor(position, {
     shouldContinue: () => currentLocation() === path,
-    onRestored: () => { cancelRouteScrollRestore = null },
-    onAbandoned: () => { cancelRouteScrollRestore = null },
+    onRestored: cancelPendingScrollRestore,
+    onAbandoned: cancelPendingScrollRestore,
   })
+  cancelRouteScrollRestore = () => { stopInput(); stop() }
 }
 
 /**
@@ -147,20 +147,6 @@ router.beforeEach((to, from) => {
   cancelPendingScrollRestore()
   if (from.path !== to.path) rememberRouteScroll(from.fullPath)
 })
-
-/**
- * Warm a lazy route without changing location. Used on internal-link intent.
- *
- * Live2D 路径同样预热（2026-08-30 UX 审计 P1）：进出它们确实要整页刷新
- * （CSP 需要 unsafe-eval），但刷新之后浏览器仍要重新取一遍 chunk——预热过的
- * 会命中 HTTP 缓存，整页刷新因此快一截，这正是「/chat 是全程最慢一步」的
- * 主要来源。
- *
- * 安全性：ChatView 的静态依赖链里没有 PixiJS / wl-live2d（它们是运行时按需
- * 加载的），所以模块求值不需要 eval，在严格 CSP 的文档里预热也不会抛错；
- * 真抛了也被下面的 catch 吞掉，而整页刷新后会用新文档重新加载，不受影响。
- */
-export const prefetchRoute = createRoutePrefetcher(router)
 
 router.beforeEach(async (to, from) => {
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效

@@ -1,4 +1,4 @@
-import { onMounted, onScopeDispose, shallowRef, toRaw, watch } from 'vue'
+import { onScopeDispose, shallowRef, toRaw, watch } from 'vue'
 import { apiClient } from '@/api/client'
 import { catalogApi } from '@/api/catalogApi'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
@@ -6,7 +6,8 @@ import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { SCENE_DATA_TIMEOUT_MS, useSceneStore, type CurationData, type Scene, type SceneIndex } from '@/stores/sceneStore'
 import { readRecent } from '@/utils/sceneUX'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
+import type { ShowcaseEntry } from '@/utils/showcaseManifest'
+import { readShowcaseEntries } from './scene/useShowcaseAssets'
 
 type HomeScene = Scene & { title?: string; mature?: boolean }
 export interface HomeJournalEntry {
@@ -61,7 +62,7 @@ function selectScenes(curation: CurationData, available: ReadonlySet<string>, re
 }
 
 /** The home cards need only their selected records. */
-export function useHomeSceneHighlights() {
+export function useHomeSceneHighlights(enabled: () => boolean) {
   const store = useSceneStore()
   const featuredScenes = shallowRef<HomeJournalEntry[]>([]), recentScenes = shallowRef<HomeScene[]>([])
   const loading = shallowRef(false), error = shallowRef(''), canRefresh = shallowRef(false)
@@ -82,11 +83,11 @@ export function useHomeSceneHighlights() {
     let fullCatalogRequested = false
     const current = () => !disposed && !signal.aborted && store.version === version && runtimeResourceIdentity() === identity
     // Keep the published card metadata without retaining prompts or generation history.
-    const samplesRequest = snapshot.samples ? Promise.resolve(snapshot.samples) : apiClient.request('/scene-showcase/manifest.json', {
-      signal, timeoutMs: SCENE_DATA_TIMEOUT_MS, cache: 'no-cache',
-    }).then(raw => {
+    const samplesRequest = snapshot.samples ? Promise.resolve(snapshot.samples) : readShowcaseEntries(
+      AbortSignal.any([signal, AbortSignal.timeout(SCENE_DATA_TIMEOUT_MS)]),
+    ).then(entries => {
       const samples = new Map<string, HomeSample>()
-      for (const entry of parseShowcaseManifest(raw).entries) {
+      for (const entry of entries) {
         if ((entry.type !== 'scene' && entry.type !== 'popular') || entry.rating === 'R18') continue
         const image = entry.image || `images/${entry.id}.jpg`
         if (/^images\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(image))
@@ -189,8 +190,10 @@ export function useHomeSceneHighlights() {
       if (request === controller) { request = undefined; loading.value = false }
     }
   }
-  onMounted(() => { void load() })
-  watch([() => store.version, runtimeResourceIdentity], () => { void load() })
+  watch([enabled, () => store.version, runtimeResourceIdentity], ([ready]) => {
+    if (ready) void load()
+    else request?.abort()
+  }, { immediate: true })
   onScopeDispose(() => { disposed = true; request?.abort() })
   return { featuredScenes, recentScenes, loading, error, canRefresh, refresh: () => { if (!loading.value) void load() } }
 }

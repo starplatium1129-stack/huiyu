@@ -10,8 +10,7 @@ const listeners = new Set<(state: DesktopConnectionState) => void>()
 let refreshPending: Promise<void> | null = null
 let refreshSequence = 0
 let epochController = new AbortController()
-let started = false
-let stop = () => {}
+let runtimeSetup: { stop: () => void; ready: Promise<void> } | undefined
 export function getDesktopRuntime(): DesktopConnectionState { return state }
 export function desktopRuntimeIdentity(bootstrap = state.bootstrap): string {
   const runtime = bootstrap?.runtime, workspace = runtime?.workspace
@@ -60,20 +59,20 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
 export function refreshDesktopRuntime(force = false): Promise<void> {
   if (refreshPending && !force) return refreshPending
   const sequence = ++refreshSequence
-  refreshPending = (async () => {
+  refreshPending = (async (): Promise<void> => {
     let timer: ReturnType<typeof setTimeout> | undefined
     try {
       const bootstrap = await Promise.race([readDesktopBootstrap(), new Promise<never>((_, reject) => {
         timer = setTimeout(() => reject(new Error('桌面握手超时')), 4000)
       })])
-      if (sequence !== refreshSequence) return
+      if (sequence !== refreshSequence) return refreshPending ?? undefined
       const next = { connection: bootstrap.connection, bootstrap }
       const changed = state.connection !== next.connection || desktopRuntimeIdentity() !== desktopRuntimeIdentity(bootstrap)
       setRuntimeOrigin(bootstrap.runtime?.origin ?? null, true, bootstrap.runtime?.runtimeEpoch)
       if (changed) { epochController.abort(); epochController = new AbortController(); configureApiTransport(desktopRuntimeFetch) }
       publish(next)
     } catch {
-      if (sequence !== refreshSequence) return
+      if (sequence !== refreshSequence) return refreshPending ?? undefined
       setRuntimeOrigin(null, true)
       epochController.abort(); epochController = new AbortController()
       configureApiTransport(desktopRuntimeFetch)
@@ -84,9 +83,8 @@ export function refreshDesktopRuntime(force = false): Promise<void> {
 }
 
 /** Establish the fail-closed transport before the first request can start. */
-export function initializeDesktopRuntime(): () => void {
-  if (started) return stop
-  started = true
+export function initializeDesktopRuntime() {
+  if (runtimeSetup) return runtimeSetup
   epochController = new AbortController()
   setRuntimeFetch(desktopRuntimeFetch)
   setRuntimeOrigin(null, true)
@@ -101,13 +99,25 @@ export function initializeDesktopRuntime(): () => void {
   }, 10_000)
   let unlisten: (() => void) | undefined
   const events = hostApi()?.event
-  void events?.listen('aics:gateway-ready', () => { if (!disposed) void refreshDesktopRuntime() }).then(remove => { if (disposed) remove(); else unlisten = remove })
-  stop = () => {
+  // Subscribe before taking the first snapshot. A later ready event supersedes
+  // a stale in-flight snapshot instead of waiting for the periodic renewal.
+  const ready = (async () => {
+    try {
+      const remove = await events?.listen('aics:gateway-ready', () => {
+        if (!disposed && unlisten) void refreshDesktopRuntime(true)
+      })
+      if (disposed) { remove?.(); return }
+      unlisten = remove
+    } catch (error) { console.warn('网关就绪通知暂不可用', error) }
+    if (!disposed) await refreshDesktopRuntime()
+  })()
+  const stop = () => {
     if (disposed) return
-    disposed = true; started = false
+    disposed = true; runtimeSetup = undefined
     // A pending host handshake belongs to this lifetime, not a later initialization.
     refreshSequence++; refreshPending = null
     clearInterval(timer); unlisten?.(); epochController.abort(); listeners.clear()
   }
-  return stop
+  runtimeSetup = { stop, ready }
+  return runtimeSetup
 }

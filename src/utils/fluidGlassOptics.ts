@@ -1,36 +1,9 @@
+import type { LensDimensions } from './fluidGlassLens.worker'
+
 const CHROME_SELECTOR = '.nav, .companion-toolbar, .studio-popover[data-fluid-glass], .studio-select-content[data-fluid-glass], .chat-more-menu[data-fluid-glass], .wardrobe-menu[data-fluid-glass], .gallery-selection-dock[data-fluid-glass], .gallery-orbit-navigation[data-fluid-glass]'
 const OPTICS_SELECTOR = CHROME_SELECTOR
 const SVG_NS = 'http://www.w3.org/2000/svg'
 let sequence = 0
-
-/** Encode a rounded lens into red/green offsets; its centre stays undistorted.
- * This is a small geometry texture, never a screenshot or a copy of UI content. */
-function lensMap(width: number, height: number, radius: number, rim: number) {
-  const ratio = Math.min(1, 1024 / width, 768 / height, Math.sqrt(180000 / (width * height)))
-  const canvas = document.createElement('canvas')
-  canvas.width = Math.max(1, Math.ceil(width * ratio)); canvas.height = Math.max(1, Math.ceil(height * ratio))
-  const context = canvas.getContext('2d')
-  if (!context) return
-  const pixels = context.createImageData(canvas.width, canvas.height)
-  for (let y = 0; y < canvas.height; y++) {
-    for (let x = 0; x < canvas.width; x++) {
-      const px = (x + .5) * width / canvas.width - width / 2
-      const py = (y + .5) * height / canvas.height - height / 2
-      const qx = Math.abs(px) - (width / 2 - radius), qy = Math.abs(py) - (height / 2 - radius)
-      const cx = Math.max(qx, 0), cy = Math.max(qy, 0), length = Math.hypot(cx, cy)
-      const depth = -(length + Math.min(Math.max(qx, qy), 0) - radius)
-      const bend = Math.pow(1 - Math.max(0, Math.min(1, depth / rim)), 1.8)
-      const nx = length > 0 ? cx / length : qx >= qy ? 1 : 0
-      const ny = length > 0 ? cy / length : qy > qx ? 1 : 0
-      const index = (y * canvas.width + x) * 4
-      pixels.data[index] = Math.round(128 - Math.sign(px) * nx * bend * 127)
-      pixels.data[index + 1] = Math.round(128 - Math.sign(py) * ny * bend * 127)
-      pixels.data[index + 2] = 128; pixels.data[index + 3] = 255
-    }
-  }
-  context.putImageData(pixels, 0, 0)
-  return canvas.toDataURL()
-}
 
 /** Static backdrop refraction is sized only on mount/resize. Pointer motion
  * continues to use the existing transform/opacity light, never animated filters. */
@@ -42,7 +15,12 @@ export function mountFluidGlassOptics(): () => void {
   const defs = document.createElementNS(SVG_NS, 'defs')
   definitions.append(defs); document.body.append(definitions)
   const filters = window.CSS.supports('backdrop-filter', 'url("#fluid-glass")')
-  const surfaces = new Map<HTMLElement, { filter?: SVGFilterElement; geometry: string }>()
+  type Surface = { filter?: SVGFilterElement; geometry: string; requested?: LensDimensions }
+  const surfaces = new Map<HTMLElement, Surface>()
+  const maps = new Map<string, string | null>()
+  let worker: Worker | undefined
+  let workingOn: string | undefined
+  let canGenerate = filters && typeof Worker !== 'undefined' && typeof OffscreenCanvas !== 'undefined'
   const pending = new Set<HTMLElement>()
   let frame = 0
   function queue(element: HTMLElement) {
@@ -72,6 +50,67 @@ export function mountFluidGlassOptics(): () => void {
       sizes.observe(element); queue(element)
     }
   }
+  function applyMap(element: HTMLElement, state: Surface, { width, height, rim }: LensDimensions, map: string) {
+    const filter = state.filter ?? document.createElementNS(SVG_NS, 'filter')
+    if (!state.filter) { filter.id = `atelier-glass-${++sequence}`; defs.append(filter); state.filter = filter }
+    filter.setAttribute('filterUnits', 'userSpaceOnUse'); filter.setAttribute('primitiveUnits', 'userSpaceOnUse')
+    filter.setAttribute('x', '-24'); filter.setAttribute('y', '-24')
+    filter.setAttribute('width', String(width + 48)); filter.setAttribute('height', String(height + 48))
+    filter.setAttribute('color-interpolation-filters', 'sRGB')
+    const blur = document.createElementNS(SVG_NS, 'feGaussianBlur')
+    blur.setAttribute('in', 'SourceGraphic'); blur.setAttribute('stdDeviation', '3.2'); blur.setAttribute('result', 'softened')
+    const image = document.createElementNS(SVG_NS, 'feImage')
+    image.setAttribute('x', '0'); image.setAttribute('y', '0')
+    image.setAttribute('href', map); image.setAttribute('width', String(width)); image.setAttribute('height', String(height))
+    image.setAttribute('preserveAspectRatio', 'none'); image.setAttribute('result', 'lens')
+    const bend = document.createElementNS(SVG_NS, 'feDisplacementMap')
+    bend.setAttribute('in', 'softened'); bend.setAttribute('in2', 'lens'); bend.setAttribute('scale', String(rim * 2.2))
+    bend.setAttribute('xChannelSelector', 'R'); bend.setAttribute('yChannelSelector', 'G')
+    filter.replaceChildren(blur, image, bend)
+    element.style.setProperty('--fluid-glass-filter', `url("#${filter.id}")`)
+    element.classList.add('fluid-glass-refractive')
+  }
+
+  function stopWorker() {
+    canGenerate = false
+    worker?.terminate()
+    worker = undefined
+    workingOn = undefined
+  }
+
+  // Keep one job in flight. Resizing or removing a surface replaces its request
+  // before the worker picks it up; reopened surfaces reuse a bounded map cache.
+  function updateMaps() {
+    let next: Surface | undefined
+    for (const [element, state] of surfaces) {
+      if (!state.requested || !element.isConnected) continue
+      const map = maps.get(state.geometry)
+      if (map === undefined) {
+        next ??= state
+      } else {
+        if (map) applyMap(element, state, state.requested, map)
+        state.requested = undefined
+      }
+    }
+    if (!next || workingOn || !canGenerate) return
+    try {
+      if (!worker) {
+        worker = new Worker(new URL('./fluidGlassLens.worker.ts', import.meta.url), { type: 'module' })
+        worker.onerror = stopWorker
+        worker.onmessageerror = stopWorker
+        worker.onmessage = (event: MessageEvent<string | null>) => {
+          if (!workingOn) return
+          if (maps.size >= 8) maps.delete(maps.keys().next().value!)
+          maps.set(workingOn, event.data)
+          workingOn = undefined
+          updateMaps()
+        }
+      }
+      workingOn = next.geometry
+      worker.postMessage(next.requested)
+    } catch { stopWorker() }
+  }
+
   function paint() {
     frame = 0
     // Finish geometry reads before adding filters/classes to avoid layout thrash.
@@ -89,28 +128,10 @@ export function mountFluidGlassOptics(): () => void {
       const geometry = `${width}:${height}:${radius}`
       if (state.geometry === geometry) continue
       const rim = Math.min(12, Math.max(4, Math.min(width, height) * .16))
-      const map = lensMap(width, height, radius, rim)
-      if (!map) continue
       state.geometry = geometry
-      const filter = state.filter ?? document.createElementNS(SVG_NS, 'filter')
-      if (!state.filter) { filter.id = `atelier-glass-${++sequence}`; defs.append(filter); state.filter = filter }
-      filter.setAttribute('filterUnits', 'userSpaceOnUse'); filter.setAttribute('primitiveUnits', 'userSpaceOnUse')
-      filter.setAttribute('x', '-24'); filter.setAttribute('y', '-24')
-      filter.setAttribute('width', String(width + 48)); filter.setAttribute('height', String(height + 48))
-      filter.setAttribute('color-interpolation-filters', 'sRGB')
-      const blur = document.createElementNS(SVG_NS, 'feGaussianBlur')
-      blur.setAttribute('in', 'SourceGraphic'); blur.setAttribute('stdDeviation', '3.2'); blur.setAttribute('result', 'softened')
-      const image = document.createElementNS(SVG_NS, 'feImage')
-      image.setAttribute('x', '0'); image.setAttribute('y', '0')
-      image.setAttribute('href', map); image.setAttribute('width', String(width)); image.setAttribute('height', String(height))
-      image.setAttribute('preserveAspectRatio', 'none'); image.setAttribute('result', 'lens')
-      const bend = document.createElementNS(SVG_NS, 'feDisplacementMap')
-      bend.setAttribute('in', 'softened'); bend.setAttribute('in2', 'lens'); bend.setAttribute('scale', String(rim * 2.2))
-      bend.setAttribute('xChannelSelector', 'R'); bend.setAttribute('yChannelSelector', 'G')
-      filter.replaceChildren(blur, image, bend)
-      element.style.setProperty('--fluid-glass-filter', `url("#${filter.id}")`)
-      element.classList.add('fluid-glass-refractive')
+      state.requested = { width, height, radius, rim }
     }
+    updateMaps()
   }
   const changes = new MutationObserver(records => {
     const relevant = records.some(record => record.type === 'attributes' || [...record.addedNodes, ...record.removedNodes].some(node =>
@@ -121,6 +142,7 @@ export function mountFluidGlassOptics(): () => void {
   discover()
   return () => {
     changes.disconnect(); sizes.disconnect(); cancelAnimationFrame(frame); pending.clear()
+    stopWorker(); maps.clear()
     for (const element of surfaces.keys()) release(element)
     definitions.remove()
   }

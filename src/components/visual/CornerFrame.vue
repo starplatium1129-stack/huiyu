@@ -58,7 +58,7 @@ withDefaults(defineProps<{
 .archive-corner-frame.corner-editorial .bl::after { bottom: 3px; left: 3px; }
 .archive-corner-frame.corner-editorial .br::after { bottom: 3px; right: 3px; }
 
-:global(:root[data-theme-style="terraria"]) .archive-corner-frame {
+:root[data-theme-style="terraria"] .archive-corner-frame {
   display: none;
 }
 @media (forced-colors: active) {

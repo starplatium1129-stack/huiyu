@@ -26,7 +26,7 @@
       <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
 
-    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" heading-level="h3" :character="selectedId" title="正在加载角色场景…" />
+    <ArchiveStatePanel v-if="loading || (samplesPending && ratingFilter !== 'all')" kind="loading" heading-level="h3" :character="selectedId" title="正在加载角色场景…" />
     <ArchiveStatePanel v-else-if="loadError" kind="error" heading-level="h3" :character="selectedId" title="角色场景加载失败" :message="loadError">
       <button class="btn btn-primary" type="button" @click="retryScenes">重新加载</button>
     </ArchiveStatePanel>
@@ -121,7 +121,7 @@
     </div>
       </div>
     </div>
-    <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" :source-image="previewSource" @after-close="previewBlueprint = null">
+    <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewId ? previewItems : []" :source-image="previewSource" @after-close="previewBlueprint = null">
       <template v-if="previewBlueprint" #info>
         <div class="viewer-meta">{{ selectedCharacter?.displayName }} · {{ previewBlueprint.category }} · {{ timeLabel(previewBlueprint.timeOfDay) }}</div>
         <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayBlueprintDescription(previewBlueprint) }}</p></section>
@@ -303,10 +303,12 @@ const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(blueprint => blueprint.id))
 const imageRatios = ref<Record<string, { src: string; ratio: number }>>({})
 function previewRatio(blueprint: SceneBlueprint) {
-  const size = thumbDimensions(showcaseId(blueprint))
-  const [width, height] = blueprint.recommendedSize.split('x').map(Number)
   const measured = imageRatios.value[blueprint.id]
-  return measured?.src === thumbSrc(blueprint) ? measured.ratio : size ? size.width / size.height : width / height
+  if (measured && measured.src === thumbSrc(blueprint)) return measured.ratio
+  const size = thumbDimensions(showcaseId(blueprint))
+  if (size) return size.width / size.height
+  const [width, height] = blueprint.recommendedSize.split('x').map(Number)
+  return width / height
 }
 function measurePreview(blueprint: SceneBlueprint, event: Event) {
   const image = event.target as HTMLImageElement

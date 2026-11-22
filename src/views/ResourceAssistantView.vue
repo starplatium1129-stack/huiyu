@@ -137,7 +137,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer-reveal-leave-to { transform:translateY(-4px); opacity:0; }
 @media (hover:hover) and (pointer:fine) { .installer-picker:not(:disabled):hover { transform:translateY(-2px); border-color:var(--accent); } }
 @media (max-width:760px) { .installer-layout { grid-template-columns:1fr; } .installer-story { display:none; } .installer-content { min-height:calc(100dvh - 73px); padding:var(--s-6); } }
-:global(:root:is([data-motion=reduce],[data-motion=reduced])) .installer :is(*, *::before, *::after) { transition:none; }
-@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion=full])) .installer :is(*, *::before, *::after) { transition:none; } }
+:root:is([data-motion=reduce],[data-motion=reduced]) .installer :is(*, *::before, *::after) { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion=full]) .installer :is(*, *::before, *::after) { transition:none; } }
 @media (forced-colors:active) { .installer-track { border:1px solid CanvasText; } .installer-track > span,.installer-steps li[data-active=true] > span { background:Highlight; color:HighlightText; } .installer :is(button, summary):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

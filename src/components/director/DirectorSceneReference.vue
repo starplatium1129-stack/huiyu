@@ -55,7 +55,7 @@ const scene = computed(() => {
       }
     : null
 })
-const { loading, entryFor, thumbUrl, imageUrl: originalUrl } = useShowcaseAssets()
+const { loading, entryFor, thumbUrl, imageUrl: originalUrl } = useShowcaseAssets(undefined, () => attached.value && !!scene.value)
 const entry = computed(() => {
   const item = scene.value ? entryFor(scene.value.id) : undefined
   return item?.type === 'scene' || item?.type === 'popular' ? item : undefined

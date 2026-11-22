@@ -24,29 +24,39 @@ const SCENE_THEMES = ['校园', '日常', '恋爱', '旅行', '祭典・节日',
 type AlbumCharacter = Pick<PopularCharacter, 'id' | 'franchise'>
 
 function collection(id: string, group: ShowcaseAlbum['group'], album: Pick<ShowcaseAlbum, 'type' | 'title' | 'description'>, members: readonly ShowcaseEntry[]): ShowcaseAlbum {
-  return { ...album, id, group, count: members.length, entryIds: members.map(entry => entry.id),
-    covers: members.filter(entry => entry.rating === 'All').slice(0, 3) }
+  const covers: ShowcaseEntry[] = []
+  const entryIds = members.map(entry => {
+    if (covers.length < 3 && entry.rating === 'All') covers.push(entry)
+    return entry.id
+  })
+  return { ...album, id, group, count: members.length, entryIds, covers }
 }
 
 /** 只从已加载的受控展示目录派生；相册封面不提升任何条目的浏览权限。 */
 function buildShowcaseAlbums(entries: readonly ShowcaseEntry[], characters: readonly AlbumCharacter[] = []): ShowcaseAlbum[] {
+  const sources = new Map(characters.map(character => [character.id, franchiseKey(character.franchise)]))
+  const types = new Map<string, ShowcaseEntry[]>(), categories = new Map<string, ShowcaseEntry[]>(), series = new Map<string, ShowcaseEntry[]>()
+  function add(groups: Map<string, ShowcaseEntry[]>, key: string, entry: ShowcaseEntry) {
+    const members = groups.get(key)
+    if (members) members.push(entry)
+    else groups.set(key, [entry])
+  }
+  for (const entry of entries) {
+    add(types, entry.type, entry)
+    if (entry.type === 'scene') add(categories, entry.category.split('/')[0].replace('日常生活', '日常'), entry)
+    if (entry.type === 'popular') {
+      const work = sources.get(entry.char)
+      if (work) add(series, work, entry)
+    }
+  }
   const overview = ALBUMS.flatMap(album => {
-    const members = entries.filter(entry => entry.type === album.type)
-    if (!members.length) return []
-    return [collection(album.type, 'overview', album, members)]
+    const members = types.get(album.type)
+    return members ? [collection(album.type, 'overview', album, members)] : []
   })
   const themes = SCENE_THEMES.flatMap(theme => {
-    const members = entries.filter(entry => entry.type === 'scene' && entry.category.split('/')[0].replace('日常生活', '日常') === theme)
-    return members.length ? [collection(`theme:${theme}`, 'theme', { type: 'scene', title: theme, description: '场景主题' }, members)] : []
+    const members = categories.get(theme)
+    return members ? [collection(`theme:${theme}`, 'theme', { type: 'scene', title: theme, description: '场景主题' }, members)] : []
   })
-  const sources = new Map(characters.map(character => [character.id, franchiseKey(character.franchise)]))
-  const series = new Map<string, ShowcaseEntry[]>()
-  for (const entry of entries) {
-    const source = sources.get(entry.char)
-    if (entry.type !== 'popular' || !source) continue
-    const members = series.get(source) ?? []
-    members.push(entry); series.set(source, members)
-  }
   const franchises = [...series].map(([source, members]) => collection(`franchise:${source}`, 'franchise', {
     type: 'popular', title: franchiseLabel(source), description: `${new Set(members.map(entry => entry.char)).size} 位角色 · 作品系列`,
   }, members)).sort((a, b) => b.count - a.count || a.title.localeCompare(b.title, 'zh-CN'))

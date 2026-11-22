@@ -11,15 +11,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, reactive, ref, watch, type CSSProperties } from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, onUnmounted, reactive, ref, type CSSProperties } from 'vue'
 
 interface AuraSnapshot {
   key: string
   style: CSSProperties
 }
-
-const route = useRoute()
 
 function readAtmosphere(): AuraSnapshot {
   if (typeof document === 'undefined') {
@@ -70,10 +67,6 @@ function crossfadeIfChanged() {
   })
 }
 
-watch(() => route.path, () => {
-  crossfadeIfChanged()
-})
-
 onMounted(() => {
   crossfadeIfChanged()
   if (typeof MutationObserver !== 'undefined') {
@@ -112,16 +105,16 @@ onUnmounted(() => {
 .atmosphere-layer.is-active {
   opacity: 1;
 }
-:global(:root[data-theme="light"]) .atmosphere-layer {
+:root[data-theme="light"] .atmosphere-layer {
   background:
     radial-gradient(ellipse min(48vw, 46rem) min(38vh, 30rem) at 6% 0%, color-mix(in srgb, var(--layer-aura, var(--accent-glow)) 24%, transparent), transparent 74%),
     radial-gradient(ellipse min(38vw, 34rem) min(34vh, 26rem) at 96% 6%, color-mix(in srgb, var(--layer-aura-secondary, var(--archive-blue-soft)) 18%, transparent), transparent 74%),
     radial-gradient(ellipse min(64vw, 56rem) min(22vh, 16rem) at 50% -4%, color-mix(in srgb, var(--bg-surface) 70%, transparent), transparent 72%);
 }
 @media (prefers-reduced-motion: reduce) {
-  :global(:root:not([data-motion="full"])) .atmosphere-layer { transition-duration: 120ms; }
+  :root:not([data-motion="full"]) .atmosphere-layer { transition-duration: 120ms; }
 }
-:global(:root:is([data-motion="reduce"], [data-motion="reduced"], [data-reduced-motion="true"])) .atmosphere-layer {
+:root:is([data-motion="reduce"], [data-motion="reduced"], [data-reduced-motion="true"]) .atmosphere-layer {
   transition-duration: 120ms;
 }
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {

@@ -60,6 +60,6 @@ const groups = computed(() => [
 .album-placeholder > .archive-icon { @apply tw:text-title; }
 .album-picture img.album-cover-hd { position:absolute; inset:0; opacity:0; pointer-events:none; transition:opacity var(--motion-surface) var(--ease-out); }
 .album-picture img.album-cover-hd.is-ready { opacity:1; }
-@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full'])) .album-picture img.album-cover-hd { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .album-picture img.album-cover-hd { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .album-picture img.album-cover-hd { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .album-picture img.album-cover-hd { transition:none; }
 </style>

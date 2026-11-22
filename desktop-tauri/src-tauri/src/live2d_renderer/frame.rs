@@ -97,12 +97,14 @@ pub(crate) fn send_command(state: &Arc<Live2DOverlayState>, cmd: OverlayCommand)
 
 
 pub(crate) fn state_snapshot(state: &Live2DOverlayState) -> serde_json::Value {
+    let display_hz = state.display_hz.load(Ordering::Relaxed);
     serde_json::json!({
         "active": true,
         "rect": *state.rect.lock().unwrap(),
         "visible": state.visible.load(Ordering::SeqCst),
         "frameCount": state.frame_count.load(Ordering::SeqCst),
-        "targetFps": state.target_fps.load(Ordering::SeqCst),
+        "targetFps": frame_pacing::model_fps(state.fps_limit.load(Ordering::Relaxed), display_hz),
+        "displayRefreshHz": display_hz,
         "ready": state.model_ready.load(Ordering::SeqCst),
         "windowReady": state.window_ready.load(Ordering::SeqCst),
         "rendererAttached": state.renderer_attached.load(Ordering::SeqCst),

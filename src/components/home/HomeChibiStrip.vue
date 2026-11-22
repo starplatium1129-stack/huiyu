@@ -258,7 +258,7 @@ onDeactivated(() => {
   --stamp-color: var(--natsume-amber);
 }
 
-:global(:root[data-theme='light']) .chibi-polaroid {
+:root[data-theme='light'] .chibi-polaroid {
   background: var(--bg-surface);
   border-color: var(--border-strong);
   box-shadow: var(--shadow-glass-md);
@@ -376,7 +376,7 @@ onDeactivated(() => {
   box-shadow: inset 0 1px 0 var(--glass-highlight);
 }
 
-:global(:root[data-theme='light']) .chibi-lightbox-polaroid {
+:root[data-theme='light'] .chibi-lightbox-polaroid {
   background: var(--bg-base);
 }
 
@@ -436,7 +436,7 @@ onDeactivated(() => {
   letter-spacing: 0.03em;
 }
 
-:global(:root[data-theme-style='terraria']) .home-chibi-section {
+:root[data-theme-style='terraria'] .home-chibi-section {
   display: none;
 }
 
@@ -458,21 +458,21 @@ onDeactivated(() => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :global(:root:not([data-motion='full'])) .chibi-polaroid {
+  :root:not([data-motion='full']) .chibi-polaroid {
     transition: none;
   }
-  :global(:root:not([data-motion='full'])) .chibi-polaroid:hover,
-  :global(:root:not([data-motion='full'])) .chibi-polaroid:active {
+  :root:not([data-motion='full']) .chibi-polaroid:hover,
+  :root:not([data-motion='full']) .chibi-polaroid:active {
     transform: rotate(var(--polaroid-tilt, 0deg));
   }
 }
 
-:global(:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true'])) .chibi-polaroid {
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .chibi-polaroid {
   transition: none;
 }
 
-:global(:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true'])) .chibi-polaroid:hover,
-:global(:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true'])) .chibi-polaroid:active {
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .chibi-polaroid:hover,
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .chibi-polaroid:active {
   transform: rotate(var(--polaroid-tilt, 0deg));
 }
 

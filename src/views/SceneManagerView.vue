@@ -170,8 +170,6 @@ const listFilters = ref<InstanceType<typeof CatalogListFilters> | null>(null)
 const compact = useMediaQuery('(max-width: 820px)')
 const browsing = ref(true)
 const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
-const { entryFor, thumbUrl, reload: reloadAssets } = useShowcaseAssets()
-watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
 const loadCharacterArt = () => import('@/components/maintenance/CharacterArtManager.vue')
 const artManager = ref<InstanceType<typeof import('@/components/maintenance/CharacterArtManager.vue')['default']> | null>(null)
 const switchingSection = ref(false)
@@ -187,6 +185,8 @@ const supportSections = [
 ] as const
 const { kind, changeKind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, lastOnboardedCharacter, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance(editorPane)
 watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
+const needsSamples = computed(() => section.value === 'records' && (kind.value === 'scene' || kind.value === 'blueprint'))
+const { entryFor, thumbUrl, reload: reloadAssets } = useShowcaseAssets(undefined, () => needsSamples.value)
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : supportSections.find(tool => tool.value === section.value)?.label)
 const destinations = computed(() => [
@@ -205,7 +205,7 @@ const listStatus = computed(() => {
 })
 const saveStatus = computed(() => busy.value ? '正在处理…' : dirtyEditor.value ? '编辑未保存' : pending.value.length ? pending.value.length + ' 项待保存' : selected.value?.revision ? '已保存' : '新建草稿')
 function kindIcon(value: CatalogKind): ArchiveIconName { return kinds.find(entry => entry.value === value)!.icon }
-function refreshContent() { void load(); void reloadAssets().catch(() => {}) }
+function refreshContent() { void load(); if (needsSamples.value) void reloadAssets().catch(() => {}) }
 async function focusEditor() {
   await nextTick()
   if (section.value !== 'records' || !showEditor.value) return
@@ -258,31 +258,19 @@ const selectedCategoryLabel = computed(() => {
   const raw = selectedDataRecord.value?.category
   return typeof raw === 'string' && raw ? catalogCategory(raw) : ''
 })
+const selectedSampleId = computed(() => {
+  const record = selected.value
+  if (record?.kind !== 'scene' && record?.kind !== 'blueprint') return ''
+  return catalogShowcaseId({ kind: record.kind, id: record.id, characterId: selectedCharacterId.value })
+})
 const selectedPreviewImage = computed(() => {
-  if (!selected.value) return ''
-  if (selected.value.kind === 'character') return popularPortraitSrc(selected.value.id)
-  if (selected.value.kind === 'outfit') return popularPortraitSrc(selectedCharacterId.value)
-  if (selected.value.kind === 'scene' || selected.value.kind === 'blueprint') {
-    const summary: CatalogSummary = {
-      kind: selected.value.kind,
-      id: selected.value.id,
-      title: recordTitle(selected.value),
-      characterId: selectedCharacterId.value,
-      category: typeof selectedDataRecord.value?.category === 'string' ? selectedDataRecord.value.category : '',
-      rating: typeof selectedDataRecord.value?.rating === 'string' ? selectedDataRecord.value.rating : '',
-      sortOrder: selected.value.sortOrder ?? 0,
-      revision: selected.value.revision ?? 0,
-      createdAt: selected.value.createdAt ?? null,
-      updatedAt: selected.value.updatedAt ?? null,
-    }
-    return thumbUrl(catalogShowcaseId(summary))
-  }
-  return ''
+  if (selected.value?.kind === 'character') return popularPortraitSrc(selected.value.id)
+  if (selected.value?.kind === 'outfit') return popularPortraitSrc(selectedCharacterId.value)
+  return selectedSampleId.value ? thumbUrl(selectedSampleId.value) : ''
 })
 const selectedPreviewAdult = computed(() => {
-  if (!selected.value) return false
-  const rawRating = typeof selectedDataRecord.value?.rating === 'string' ? selectedDataRecord.value.rating : ''
-  return rawRating === 'R18'
+  const sampleRating = selectedSampleId.value ? entryFor(selectedSampleId.value)?.rating : undefined
+  return (sampleRating ?? selectedDataRecord.value?.rating) === 'R18'
 })
 function rowSubtitle(item: CatalogSummary) {
   if (item.kind === 'document') return ({ tags: '常用关键词与显示名称', curation: '精选故事与展示顺序', 'tag-dictionary-policy': '让同义词指向正确的内容', 'prompt-pinned-scenes': '已确认的内容，在此查看', loras: '绘图资源，在此查看', 'retired-scenes': '保留已经归档的故事' } as Record<string, string>)[item.id] || '创作资料'

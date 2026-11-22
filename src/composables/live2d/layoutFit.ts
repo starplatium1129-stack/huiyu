@@ -115,6 +115,7 @@ export function createLayoutFitController(
       const scale = Math.min(ws, hs) * 0.995
       ctx.session?.setStageScale(scale > 0 ? scale : 1)
       fit()
+      if (prefersReducedMotion()) ctx.session?.setPaused(true, true)
     } catch {}
   }
 

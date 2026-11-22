@@ -30,7 +30,7 @@ const rating = ref<string | number>('all')
 const category = ref<'all' | VideoPresetCategory>('all')
 const presetsExpanded = ref(false)
 const categories = computed(() => presetCategoriesFor(props.mode, rating.value))
-const groups = computed(() => videoPromptGroups(props.mode, rating.value, recipe.value))
+const groups = computed(() => videoPromptGroups(props.mode, rating.value, rating.value === 'all' ? undefined : recipe.value))
 const ratingPresets = computed(() => videoPromptPresets[props.mode].filter(preset => matchesVideoPresetRating(preset, rating.value)))
 const filteredPresets = computed(() => category.value === 'all'
   ? ratingPresets.value
@@ -221,7 +221,7 @@ function selectedChoiceLabel(choices: readonly { value: string; label: string }[
     <details class="workbench-details" open>
       <StudioDisclosureSummary class="workbench-summary">调整积木</StudioDisclosureSummary>
       <div class="workbench-slots" data-disclosure-content>
-        <fieldset v-for="group in groups" :key="group.slot" class="workbench-group workbench-slot" :disabled="disabled">
+        <fieldset v-for="group in groups" :key="group.slot" v-memo="[mode, rating, recipe[group.slot], disabled]" class="workbench-group workbench-slot" :disabled="disabled">
           <legend class="field-label workbench-slot-legend">
             <span>{{ group.label }}</span>
             <small v-if="selectedSlotLabel(group)" class="workbench-slot-active">{{ selectedSlotLabel(group) }}</small>

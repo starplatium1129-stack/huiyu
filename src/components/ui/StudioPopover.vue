@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { nextTick, onActivated, onBeforeUnmount, onDeactivated, ref } from 'vue'
+import { nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, Transition } from 'vue'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 
-const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; side?: 'top' | 'right' | 'bottom' | 'left'; prioritizePosition?: boolean; portalTo?: HTMLElement | null }>(), { align:'end', side:'bottom', prioritizePosition:false, contentClass:'' })
+const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; side?: 'top' | 'right' | 'bottom' | 'left'; prioritizePosition?: boolean; portalTo?: HTMLElement | null; instant?: boolean }>(), { align:'end', side:'bottom', prioritizePosition:false, contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const trigger = ref<{ $el?: unknown } | HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)
@@ -30,14 +30,14 @@ function focusTrigger() {
 
 // Cached and unmounted owners must not restore focus from an exiting portal.
 function onCloseAutoFocus(event: Event) {
-  if (!viewActive || open.value) {
-    event.preventDefault()
-  } else {
-    void nextTick(() => {
-      if (document.activeElement === document.body) focusTrigger()
-    })
-  }
+  if (!viewActive || open.value) event.preventDefault()
   emit('closeAutoFocus', event)
+  // The opener may hand focus to a destination or another dialog. An instant
+  // popover has no exiting surface and Reka already handles ordinary returns.
+  if (event.defaultPrevented || props.instant) return
+  void nextTick(() => {
+    if (viewActive && !open.value && document.activeElement === document.body) focusTrigger()
+  })
 }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
@@ -66,13 +66,13 @@ function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: Ke
 <template>
   <PopoverRoot v-model:open="open">
     <PopoverTrigger ref="trigger" as-child @keydown.esc.capture="onEscape"><slot name="trigger" /></PopoverTrigger>
-    <PopoverPortal :to="portalTarget">
-      <FluidTransition small panel=".studio-popover">
-      <PopoverContent v-if="open" force-mount :align="align" :side="side" :prioritize-position="prioritizePosition" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
-        hide-when-detached as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
-        <div ref="content" data-fluid-glass :aria-label="label" :aria-labelledby="undefined" class="studio-popover" :class="contentClass" @keydown.esc.capture="onEscape"><slot /></div>
-      </PopoverContent>
-      </FluidTransition>
+    <PopoverPortal v-if="!instant || open" :to="portalTarget" :force-mount="instant">
+      <component :is="instant ? Transition : FluidTransition" v-bind="instant ? { css:false } : { small:true, panel:'.studio-popover' }">
+        <PopoverContent v-if="open" force-mount :align="align" :side="side" :prioritize-position="prioritizePosition" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
+          hide-when-detached as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
+          <div ref="content" data-fluid-glass :aria-label="label" :aria-labelledby="undefined" class="studio-popover" :class="contentClass" @keydown.esc.capture="onEscape"><slot /></div>
+        </PopoverContent>
+      </component>
     </PopoverPortal>
   </PopoverRoot>
 </template>

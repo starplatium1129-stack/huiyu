@@ -3,7 +3,7 @@ import { cancelKeyframe, generateKeyframe, listKeyframeModels } from '@/api/keyf
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import type { captureStudioProjectRepository, StudioAssetVersion, StudioProjectSnapshot } from '@/storage/studioProjectRepository'
-import { assetLabels, referenceIssue } from './projectAssets'
+import { assetLabels, projectAssetIndex, referenceIssue } from './projectAssets'
 import {
   batchJobs,
   candidatePrompt,
@@ -132,7 +132,7 @@ export function useKeyframeWorkbench(props: Options) {
     const form = draft.value.form,
       next = [...form.references]
     for (const id of ids) {
-      const version = props.data.versions.find((item) => item.id === id)
+      const version = byId(id)
       const issue = referenceIssue(version)
       if (issue) {
         notice.value = issue
@@ -154,7 +154,7 @@ export function useKeyframeWorkbench(props: Options) {
     const [id] = refs.splice(index, 1)
     if (id) refs.splice(index + step, 0, id)
   }
-  const byId = (id: string) => props.data.versions.find((v) => v.id === id)
+  const byId = (id: string) => projectAssetIndex(props.data).versions.get(id)
   async function executeCandidate(
     job: Candidate, form: WorkbenchForm, index: number, count: number, signal: AbortSignal,
     prepared?: StudioAssetVersion
@@ -386,7 +386,6 @@ export function useKeyframeWorkbench(props: Options) {
     }
   }
   onMounted(() => {
-    void loadModels()
     if (remaining.value && !draft.value.batch?.paused) void run()
   })
   onScopeDispose(() => {

@@ -1,7 +1,6 @@
 /** Interaction tuning adapted from Caho1/open-claude-ui, MIT © 2026 Caho1.
  * Source: 638800b8a4cee4513c8763c3df0ecf8a77b32379/code-examples/ClaudeMotionPresets.ts
  * License: assets/licenses/open-claude-ui.txt. */
-export const BUTTON_SPRING = { type: 'spring', stiffness: 600, damping: 30, mass: 1 } as const
 /** Faster first arrival with a visible single rebound; input never waits for settling. */
 const SURFACE_SPRING = { stiffness: 720, damping: 32, mass: 1 } as const
 export const SURFACE_FREQUENCY = Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SPRING.mass) / (2 * Math.PI)
@@ -12,5 +11,3 @@ export const SELECTION_SPRING = { frequency: 5.5, damping: .86 } as const
  * tail, with a continuous clock instead of CSS reverse-duration shortening. */
 export const TOGGLE_SPRING = { frequency: 3, damping: 1 } as const
 export const GALLERY_SPRING = { frequency: 3.6, damping: .82 } as const
-/** Page arrivals need a readable travel phase, without bouncing large text surfaces. */
-export const ROUTE_SPRING = { frequency: 3.2, damping: 1 } as const

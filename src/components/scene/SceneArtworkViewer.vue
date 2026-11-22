@@ -7,7 +7,7 @@
         @keydown="navigate">
         <template v-if="current">
           <ArtworkViewerStage :items="displayedItems" :index="displayedIndex" :active="!!selectedId" :original="original"
-            :src="current.src" :preview-src="surface.previewSrc.value || current.previewSrc" :card-urls="previews"
+            :src="current.src" :preview-src="surface.previewSrc.value || current.previewSrc" :thumbnail-for="item => item.previewSrc"
             :title="item => item.title" @close="selectedId = null" @select="select"
             @close-button="closeButton = $event" @toggle-original="original = !original"
             @dismiss-info="closeInfo">
@@ -45,7 +45,7 @@ export interface SceneArtworkPreview {
 </script>
 
 <script setup lang="ts">
-import { computed, onDeactivated, ref, useId, watch } from 'vue'
+import { computed, onDeactivated, ref, shallowRef, useId, watch } from 'vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
@@ -60,9 +60,8 @@ const viewerEl = ref<HTMLElement | null>(null), closeButton = ref<HTMLElement | 
 const infoToggle = ref<HTMLElement | null>(null), infoClose = ref<HTMLElement | null>(null)
 const infoId = useId(), titleId = useId()
 const infoOpen = ref(false), original = ref(false)
-const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
+const displayedItems = shallowRef<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
-const previews = computed(() => Object.fromEntries(displayedItems.value.map(item => [item.id, item.previewSrc])))
 const surface = useArtworkViewerSurface({
   active: () => !!selectedId.value, imageKey: () => selectedId.value, mode: () => original.value,
   source: id => props.sourceImage?.(String(id)) ?? null,
@@ -89,7 +88,7 @@ watch(() => [selectedId.value, props.items] as const, ([id, items], previous) =>
   const index = items.findIndex(item => item.id === id)
   if (index < 0) { selectedId.value = null; return }
   if (!previous?.[0]) { original.value = false; infoOpen.value = false }
-  displayedItems.value = items.slice(); displayedIndex.value = index
+  displayedItems.value = items; displayedIndex.value = index
   if (id !== previous?.[0]) infoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0)
 }, { immediate: true, flush: 'post' })
 useFocusTrap(viewerEl, () => !!selectedId.value, { initialFocus: closeButton, onEscape: () => { selectedId.value = null } })

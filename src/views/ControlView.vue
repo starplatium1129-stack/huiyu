@@ -1,14 +1,10 @@
 <template>
-  <div class="control-page" :data-desktop="desktop || undefined">
+  <div class="control-page">
     <a class="skip-link" href="#control-main" @click.prevent="focusMain">跳到主要内容</a>
-    <header class="control-window-bar" :data-tauri-drag-region="desktop ? 'deep' : undefined">
-      <div class="control-compact-nav" data-tauri-drag-region="false">
-        <RouterLink to="/" aria-label="返回绘遇"><BrandLogo class="nav-logo" /></RouterLink>
-        <StudioSelect :model-value="activeSection" label="控制面板分区" :groups="compactOptions" @update:model-value="selectSection" @trigger-hidden="focusNavigation" />
-        <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
-      </div>
-      <span class="control-window-label">控制面板</span>
-      <DesktopWindowControls v-if="desktop" />
+    <header class="control-compact-nav">
+      <RouterLink to="/" aria-label="返回绘遇"><BrandLogo class="nav-logo" /></RouterLink>
+      <StudioSelect :model-value="activeSection" label="控制面板分区" :groups="compactOptions" @update:model-value="selectSection" @trigger-hidden="focusNavigation" />
+      <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
     </header>
     <div class="control-layout">
       <aside class="control-rail" aria-label="控制面板导航">
@@ -45,9 +41,9 @@
               <AsyncPanel v-else-if="item.id === 'control-setup'" :loader="loadSetup" label="绘图与模型" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-voice'" :loader="loadVoice" label="语音与朗读" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
-              <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="资源与素材" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="资源与素材" v-slot="{ component }"><component :is="component" :active="activeSection === item.id" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
-                <section class="panel-card"><h2 class="panel-heading">外观与交互</h2><AppearancePreferences launcher-only /></section>
+                <section class="panel-card"><h2 class="panel-heading">外观与交互</h2><AppearanceLaunchers /></section>
                 <DesktopPreferences />
               </div>
               <AsyncPanel v-else-if="item.id === 'control-services'" :loader="loadServices" label="服务与连接" v-slot="{ component }"><component :is="component" :active="activeSection === item.id" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
@@ -62,9 +58,9 @@
 </template>
 <script setup lang="ts">
 import '@/assets/css/fluid-workspaces.css'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import AppearancePreferences from '@/components/AppearancePreferences.vue'
+import AppearanceLaunchers from '@/components/AppearanceLaunchers.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -72,8 +68,6 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import DesktopWindowControls from '@/components/DesktopWindowControls.vue'
-import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import ControlWelcome from '@/components/control/ControlWelcome.vue'
@@ -82,10 +76,10 @@ import { controlSections, useControlNavigation } from '@/composables/useControlN
 import { provideControlContext } from '@/composables/useControlContext'
 import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
 const router = useRouter()
-const desktop = Boolean(getDesktopCapabilities())
 const { status } = provideControlContext()
 const { statusError, serviceChecking, opBusy, pollStatus } = status
 const { activeSection, currentSection, groups, visited, focusNavigation, panelReady } = useControlNavigation(status.imageProvider)
+watch(() => activeSection.value === 'control-share', status.setShareVisible, { immediate: true })
 const { localSetupRequested } = useLocalSetupPanelLoading()
 const compactOptions = groups.map(group => ({ label: group.label, options: group.sections.map(section => ({ value: section.id, label: section.label })) }))
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')

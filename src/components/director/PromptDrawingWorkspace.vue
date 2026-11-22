@@ -144,7 +144,7 @@
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">参数</RouterLink>
     </nav>
-    <div ref="layoutRoot" class="director-workspace" :style="directorLayout.style.value">
+    <div ref="layoutRoot" class="director-workspace">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
       <Teleport :to="inspectorActions" :disabled="!actionBarDocked">
         <GenerationActionBar
@@ -195,7 +195,7 @@
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
           @generate="callGenerate()"
-          @openRecovery="inspector?.selectSection(drawEngine === 'sd' ? 'delivery' : 'render', true)"
+          @openRecovery="openRecovery"
           @exploreScenes="openMaterials('scenes')"
           @editDescription="editDescription"
           @saveResult="saveResult"
@@ -215,7 +215,7 @@
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
       <div class="director-col col-left" id="drawing-materials" @keydown.esc="closeCompactMaterials">
-        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :compact="directorLayout.compact.value" :scene-context="String(route.query.scene || route.query.blueprint || '')" @back="closeCompactMaterials">
+        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :visible="materialsVisible" :compact="directorLayout.compact.value" :scene-context="String(route.query.scene || route.query.blueprint || '')" @back="closeCompactMaterials">
         <template #story>
 
         <AsyncPanel :loader="loadStoryPanel" label="故事与画面描述" v-slot="{ component }"><component :is="component" @ready="focusDescription" /></AsyncPanel>
@@ -248,7 +248,7 @@
         </DirectorMaterialDrawer>
       </div>
 
-      <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :queue-count="sdQueue.total.value" :busy="generationBusy">
+      <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :visible="inspectorVisible" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
           <div id="stepResult">
           <DrawingEngineSelect :model-value="drawEngine" :disabled="generationBusy || !!native.session.value?.saving.value"
@@ -439,7 +439,9 @@ const animaSizeLimits = computed(() => drawEngine.value === 'anima'
 const getBlueprint = () => currentBlueprintData.value
 const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value ? []
   : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))
-const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && !pb.focusMode && !directorLayout.collapsed.value.inspector)
+const materialsVisible = computed(() => !pb.focusMode && (!directorLayout.desktop.value || !directorLayout.collapsed.value.materials))
+const inspectorVisible = computed(() => !pb.focusMode && (!directorLayout.desktop.value || !directorLayout.collapsed.value.inspector))
+const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && inspectorVisible.value)
 const descriptionInHeader = computed(() => pb.focusMode)
 const exampleEditButton = ref<HTMLButtonElement | null>(null)
 const drawingSetupRoute = computed(() => {
@@ -524,6 +526,12 @@ async function openMaterials(section: string) {
   directorLayout.show('materials')
   await nextTick()
   await materialDrawer.value?.selectSection(section)
+}
+async function openRecovery() {
+  pb.focusMode = false
+  if (directorLayout.desktop.value) directorLayout.show('inspector')
+  await nextTick()
+  await inspector.value?.selectSection(drawEngine.value === 'sd' ? 'delivery' : 'render', true)
 }
 async function toggleLayout(side: 'materials' | 'inspector') {
   directorLayout.toggle(side)

@@ -376,7 +376,6 @@ export function createLifecycleController(
 
   function setVisible(value: boolean) {
     const visible = Boolean(value && ctx.ready.value && ctx.loadedCharacter.value === ctx.character.value)
-    ctx.stageEl?.classList.toggle('live2d-ready', visible)
     if (ctx.model) ctx.model.visible = visible
     if (!visible && ctx.session?.capability.parameterOverride === false) ctx.session.setPaused(true)
   }
@@ -457,7 +456,6 @@ export function createLifecycleController(
     ctx.blinkScheduler.reset()
     ctx.lastParamFrame = 0
     ctx.loadedCharacter.value = ''
-    ctx.stageEl?.classList.remove('live2d-ready')
     if (ctx.nativeHitTestUnsubscribe) { ctx.nativeHitTestUnsubscribe(); ctx.nativeHitTestUnsubscribe = null }
     if (ctx.nativeMotionFailedUnsubscribe) { ctx.nativeMotionFailedUnsubscribe(); ctx.nativeMotionFailedUnsubscribe = null }
     if (currentSession && typeof currentSession.destroy === 'function') { try { currentSession.destroy() } catch {} }

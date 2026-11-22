@@ -7,6 +7,7 @@
   ],
   "permissions": [
     "allow-companion-mark-ready",
+    "allow-start-companion-move",
     "allow-companion-set-interactive-regions",
     "allow-companion-set-static-mask",
     "allow-aics-live2d-set-character",

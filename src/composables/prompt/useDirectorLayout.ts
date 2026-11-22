@@ -58,20 +58,43 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
       scrollPositions.set(surface, { left: surface.scrollLeft, top: surface.scrollTop })
     }
   }, { capture: true })
-  let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number; before: LayoutPreference; materialsOpen: boolean } | null = null
+  let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number; preview: number | null } | null = null
   let pendingWidth: number | null = null
   let suppressClick = false, suppressDoubleClick = false
-  const preferredInspectorWidth = computed(() => preferences.value.inspector ?? (viewport.value <= 1440 ? 320 : 368))
   // Resizing may use spare canvas width, including a compact portrait workspace.
   const available = computed(() => Math.max(0, width.value - 440 - 48))
-  const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? (viewport.value <= 1440 ? 300 : 336),
-    available.value - (preferences.value.hideInspector ? 0 : Math.min(preferredInspectorWidth.value, Math.max(280, available.value - 240))))))
-  const inspectorWidth = computed(() => compact.value ? 320 : Math.max(280, Math.min(preferredInspectorWidth.value,
-    available.value - (preferences.value.hideMaterials ? 0 : materialsWidth.value))))
   // Theme navigation and page framing reduce the actual workspace even before
   // a user resizes either rail. Clamp defaults too, without rewriting preferences.
-  const style = computed(() => ({ '--director-material-width': `${materialsWidth.value}px`, '--director-inspector-width': `${inspectorWidth.value}px` }))
+  function fitWidths(material: number | null, inspector: number | null) {
+    const preferredInspector = inspector ?? (viewport.value <= 1440 ? 320 : 368)
+    const reserved = preferences.value.hideInspector ? 0 : Math.min(preferredInspector, Math.max(280, available.value - 240))
+    const materials = Math.max(240, Math.min(material ?? (viewport.value <= 1440 ? 300 : 336), available.value - reserved))
+    return {
+      materials,
+      inspector: compact.value ? 320 : Math.max(280, Math.min(preferredInspector, available.value - (preferences.value.hideMaterials ? 0 : materials))),
+    }
+  }
+  const settledWidths = computed(() => fitWidths(preferences.value.materials, preferences.value.inspector))
+  const materialsWidth = computed(() => settledWidths.value.materials)
+  const inspectorWidth = computed(() => settledWidths.value.inspector)
   const collapsed = computed(() => ({ materials: compact.value ? !compactMaterialsOpen.value : preferences.value.hideMaterials, inspector: preferences.value.hideInspector }))
+  function paintWidths() {
+    if (!root.value) return
+    let fit = settledWidths.value
+    if (activePointer && activePointer.preview !== null) {
+      const { side, preview } = activePointer
+      fit = fitWidths(side === 'materials' ? preview : preferences.value.materials, side === 'inspector' ? preview : preferences.value.inspector)
+    }
+    root.value.style.setProperty('--director-material-width', `${fit.materials}px`)
+    root.value.style.setProperty('--director-inspector-width', `${fit.inspector}px`)
+    if (activePointer) {
+      const handle = activePointer.element
+      const value = Math.round(fit[activePointer.side])
+      handle.setAttribute('aria-valuenow', String(value))
+      handle.setAttribute('aria-valuetext', `${value} 像素`)
+    }
+  }
+  watch([root, settledWidths], paintWidths, { flush: 'post' })
   function save() {
     void saveSettingValue(DIRECTOR_LAYOUT_KEY, JSON.stringify(preferences.value))
   }
@@ -79,16 +102,20 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (!observing || !root.value?.isConnected) return
     width.value = root.value.clientWidth || 960; viewport.value = window.innerWidth
   }
-  function setWidth(side: Side, value: number) {
+  function boundedWidth(side: Side, value: number) {
     const otherSide = side === 'materials' ? 'inspector' : 'materials'
     const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
-    preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
+    return Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
   /* compositor-exempt: real rail resizing must reflow text and the canvas.
      Only the active gesture submits widths per frame; existing size limits remain. */
   function applyResize() {
     const value = pendingWidth; pendingWidth = null
-    if (activePointer && value !== null) setWidth(activePointer.side, value)
+    if (!activePointer || value === null) return
+    const next = boundedWidth(activePointer.side, value)
+    if (activePointer.preview === next) return
+    activePointer.preview = next
+    paintWidths()
   }
   function finish(event?: PointerEvent) {
     const active = activePointer
@@ -99,12 +126,11 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (commit) applyResize()
     else pendingWidth = null
     const resized = dragging.value !== null
-    activePointer = null; dragging.value = null
     suppressClick = resized || !commit
-    if (!commit) {
-      preferences.value = active.before
-      compactMaterialsOpen.value = active.materialsOpen
-    }
+    if (commit && active.preview !== null) preferences.value[active.side] = boundedWidth(active.side, active.preview)
+    active.preview = null
+    paintWidths()
+    activePointer = null; dragging.value = null
     if (active.element.hasPointerCapture(active.id)) active.element.releasePointerCapture(active.id)
     if (commit && resized) save()
   }
@@ -124,7 +150,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (!observing || activePointer || event.button !== 0 || !event.isPrimary) return
     measure()
     const element = event.currentTarget as HTMLElement
-    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side), before: { ...preferences.value }, materialsOpen: compactMaterialsOpen.value }
+    activePointer = { element, id: event.pointerId, side, x: event.clientX, width: currentWidth(side), preview: null }
     suppressClick = false
     element.setPointerCapture(event.pointerId)
     element.focus({ preventScroll: true })
@@ -145,12 +171,14 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     finish()
     const step = event.shiftKey ? 40 : 10
     const current = currentWidth(side)
+    let value: number
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       const sign = event.key === 'ArrowRight' ? 1 : -1
-      setWidth(side, current + sign * step * (side === 'materials' ? 1 : -1))
-    } else if (event.key === 'Home') setWidth(side, side === 'materials' ? 240 : 280)
-    else if (event.key === 'End') setWidth(side, 560)
+      value = current + sign * step * (side === 'materials' ? 1 : -1)
+    } else if (event.key === 'Home') value = side === 'materials' ? 240 : 280
+    else if (event.key === 'End') value = 560
     else return
+    preferences.value[side] = boundedWidth(side, value)
     event.preventDefault(); save()
   }
   function toggle(side: Side) {
@@ -208,5 +236,5 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   })
   onDeactivated(stopObserving)
   onBeforeUnmount(() => { stopObserving(); scrollPositions.clear() })
-  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, click, key, toggle, show, reset }
+  return { collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, click, key, toggle, show, reset }
 }

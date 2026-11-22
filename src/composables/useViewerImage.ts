@@ -93,11 +93,20 @@ export function useViewerImage(props: Readonly<{
     const preserve = !changedOwner && (retainedPainted || retrying.value || !imageFailed.value && ((preview && preview === previousPreview && resolvedPreview === previousResolvedPreview)
       || (imageReady.value && (key !== undefined || !changedSource))))
     if (preserve && !imageFailed.value) return
-    imageRevision.value++
+    // A new, already visible thumbnail can replace the request in the same img.
+    // Keeping the decoded node lets the browser hand off its pending request
+    // without a blank frame. A new runtime or explicit retry still gets a fresh node.
+    const reusePictureNode = key !== previousKey && identity === previousIdentity && !!preview
+      && imageReady.value && !imageFailed.value && imageEl.value?.complete
+    const alreadyDecoded = !!reusePictureNode && imageEl.value?.getAttribute('src') === resolvedPreview
+    if (!reusePictureNode) imageRevision.value++
     displayedSrc.value = props.previewSrc || props.src
-    imageAttempt.value = 0; imageReady.value = false; imageFailed.value = false
+    imageAttempt.value = 0; imageReady.value = alreadyDecoded; imageFailed.value = false
     if (!preserve) callbacks.reset()
-  }, { flush:'sync' })
+    // Two saved records can reference the same image. No second load event
+    // fires if its already decoded request stays on the same DOM node.
+    if (alreadyDecoded) callbacks.loaded()
+  })
   return { imageEl, fullImageEl, displayedSrc, fullImageFailed, imageAttempt, fullAttempt, imageRevision, retrying, imageReady, imageFailed,
     requestSrc, onImageLoad, onImageError, upgradeImage, onFullImageError, retryImage }
 }

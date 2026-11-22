@@ -104,13 +104,3 @@ pub(super) fn load(
     }
     Ok(())
 }
-
-pub(crate) fn warm_default(assets: &Path, cache: &Path) -> Result<(), String> {
-    let model = super::live2d_assets::resolve_model(assets, None, "nene", "")?;
-    let bytes = fs::read(model.manifest).map_err(|error| error.to_string())?;
-    let manifest = super::model::parse_model3(&bytes)?;
-    if let Some(files) = manifest.file_references {
-        load(&model.directory, &files.textures, 1, Some(cache), drop)?;
-    }
-    Ok(())
-}

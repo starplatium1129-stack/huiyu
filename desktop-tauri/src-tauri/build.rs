@@ -19,6 +19,7 @@ fn main() {
                 "get_startup_mode",
                 "set_startup_mode",
                 "companion_mark_ready",
+                "start_companion_move",
                 "companion_set_interactive_regions",
                 "companion_set_static_mask",
                 "hide",

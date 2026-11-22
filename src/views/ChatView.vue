@@ -118,7 +118,7 @@
           <button v-else-if="chatProvider === 'muse'" class="btn btn-primary btn-sm" type="button" @click="openRoomPanel('settings')">查看 Muse 连接</button>
           <button v-else class="btn btn-primary btn-sm" type="button" @click="apiSettingsOpen = true; openRoomPanel('settings')">选择模型</button>
         </div>
-        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" :aria-busy="busy" aria-label="对话记录">
+        <div v-if="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" :aria-busy="busy" aria-label="对话记录">
           <div v-if="!currentMessages.length" class="chat-empty">
             <div class="room-welcome-art" aria-hidden="true"><RuntimeImage class="room-empty-avatar" :src="avatar" alt="" /></div>
             <h2 class="room-empty-title">和{{ currentCharacter.name }}聊一会儿</h2>
@@ -133,7 +133,7 @@
           <ChatMessageRow v-for="msg in visibleMessages" tabindex="-1" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
             role="group" :aria-label="msg.role === 'user' ? '你的消息' : `${currentCharacter.name}的回复`"
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
-            :arrival="arrivingMessages.has(msg.mid)" :activity="activityText"
+            :arrival="arrivingMessages.has(msg.mid)" :activity="msg.mid === streamingMid ? activityText : undefined"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
             :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
             @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
@@ -321,8 +321,8 @@ const cardFile = ref<HTMLInputElement>()
 const allowCardImport = () => isLocalHost.value && !busy.value && !storyBusy.value && !chatMutationBusy.value && !storage.writeBlocked.value
 const cardImport = useChatCardImport(allowCardImport, () => activeChar.value, switchCharacter, setError)
 const cardImportLocked = computed(() => !allowCardImport() || cardImport.pending.value)
-const lastUserMessage = computed(() => currentMessages.value.filter(message => message.role === 'user').at(-1))
-const lastAssistantMessage = computed(() => currentMessages.value.filter(message => message.role === 'assistant').at(-1))
+const lastUserMessage = computed(() => currentMessages.value.findLast(message => message.role === 'user'))
+const lastAssistantMessage = computed(() => currentMessages.value.findLast(message => message.role === 'assistant'))
 
 type RoomPanel = 'archive' | 'memory' | 'profile' | 'settings'
 const roomPanel = ref<RoomPanel | null>(null)

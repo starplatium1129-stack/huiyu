@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { nextTick, onDeactivated, onMounted, ref, watch } from 'vue'
+import { nextTick, onDeactivated, ref, useId, watch } from 'vue'
 import { createReusableTemplate, useResizeObserver } from '@vueuse/core'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
-import AppearancePreferences from '@/components/AppearancePreferences.vue'
+import AppearanceLaunchers from './AppearanceLaunchers.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 
 defineProps<{
   compact: boolean
@@ -17,10 +15,11 @@ defineProps<{
 }>()
 const open = defineModel<boolean>('open', { default:false })
 const [DefineLinks, MenuLinks] = createReusableTemplate()
-const emit = defineEmits<{ ready: []; navigate: []; guide: []; appearance: []; closeAutoFocus:[event:Event] }>()
+const emit = defineEmits<{ navigate: []; guide: []; appearance: []; closeAutoFocus:[event:Event] }>()
 const menuContent = ref<HTMLElement | null>(null)
 const inlineContent = ref<HTMLElement | null>(null)
 const inlineTrigger = ref<HTMLButtonElement | null>(null)
+const inlineId = useId()
 watch(inlineContent, panel => {
   if (panel) panel.querySelector<HTMLElement>('.nav-back-button')?.focus({ preventScroll:true })
 }, { flush:'post' })
@@ -30,15 +29,20 @@ async function back() {
   inlineTrigger.value?.focus({ preventScroll:true })
 }
 useResizeObserver(menuContent, () => {
+  const panel = menuContent.value
   const active = document.activeElement
-  if (open.value && active instanceof HTMLElement && menuContent.value?.contains(active)) {
-    active.scrollIntoView({ block:'nearest', inline:'nearest', behavior:'instant' })
-  }
+  if (!open.value || !panel || !(active instanceof HTMLElement) || !panel.contains(active)
+    || panel.scrollHeight <= panel.clientHeight) return
+  // A short window can clip keyboard focus. Scroll only the menu and only as far as needed.
+  const top = panel.getBoundingClientRect().top + panel.clientTop
+  const item = active.getBoundingClientRect()
+  const before = item.top - top
+  const after = item.bottom - (top + panel.clientHeight)
+  if (before < 0 || after > 0) panel.scrollBy({ top: before < 0 ? before : after, behavior: 'instant' })
 }, { box:'border-box' })
-onMounted(() => emit('ready'))
 onDeactivated(() => { menuContent.value = null })
 function onCloseAutoFocus(event: Event) {
-  menuContent.value = null
+  if (event.target === menuContent.value) menuContent.value = null
   emit('closeAutoFocus', event)
 }
 function focusFirstPage(event: Event) {
@@ -54,30 +58,27 @@ function focusFirstPage(event: Event) {
   <DefineLinks>
     <section v-for="group in groups" :key="group.heading" class="nav-more-group" :aria-label="group.heading">
       <h3 class="nav-more-group-label">{{ group.heading }}</h3>
-      <StudioTooltip
-        v-for="item in group.items"
-        :key="item.id"
-        :content="openBesideTask(item.to) ? '在新窗口打开，当前创作任务继续运行' : undefined"
-      >
-        <RouterLink :to="item.to"
-          :target="openBesideTask(item.to) ? '_blank' : undefined"
-          :rel="openBesideTask(item.to) ? 'noopener' : undefined"
-          :class="{ active:activeId === item.id }" :aria-current="activeId === item.id ? 'page' : undefined"
-          :data-pending="pendingPath === item.to || undefined" :data-intent="intentPath === item.to || undefined"
-          @click="emit('navigate')">
-          <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-          <small v-if="activeId === item.id" class="nav-current-label">当前</small>
-        </RouterLink>
-      </StudioTooltip>
+      <RouterLink v-for="item in group.items" :key="item.id" :to="item.to"
+        :target="openBesideTask(item.to) ? '_blank' : undefined"
+        :rel="openBesideTask(item.to) ? 'noopener' : undefined"
+        :class="{ active:activeId === item.id }" :aria-current="activeId === item.id ? 'page' : undefined"
+        :data-pending="pendingPath === item.to || undefined" :data-intent="intentPath === item.to || undefined"
+        @click="emit('navigate')">
+        <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
+        <small v-if="activeId === item.id" class="nav-current-label">当前</small>
+        <small v-if="openBesideTask(item.to)" class="nav-current-label">新窗口<span class="sr-only">，当前创作任务继续运行</span></small>
+      </RouterLink>
     </section>
     <div class="nav-more-utilities">
       <button class="nav-help" type="button" @click="emit('guide')"><ArchiveIcon name="book" />新手引导</button>
-      <AppearancePreferences launcher-only @open="emit('appearance')" />
+      <AppearanceLaunchers @open="emit('appearance')" />
     </div>
   </DefineLinks>
   <template v-if="compact">
-    <button v-if="!open" ref="inlineTrigger" type="button" class="nav-more-trigger" aria-expanded="false" @click="open = true"><span class="nav-more-label">更多</span><StudioToggleIcon :active="false" class="nav-more-chevron" /></button>
-    <section v-else ref="inlineContent" class="nav-more-menu nav-more-inline" aria-label="更多页面">
+    <button v-show="!open" ref="inlineTrigger" type="button" class="nav-more-trigger" :aria-expanded="open" :aria-controls="open ? inlineId : undefined" @click="open = true">
+      <span class="nav-more-label">更多</span><ArchiveIcon name="chevron-down" class="nav-more-chevron" />
+    </button>
+    <section v-if="open" :id="inlineId" ref="inlineContent" class="nav-more-menu nav-more-inline" aria-label="更多页面">
       <header class="nav-more-heading">
         <strong>更多页面</strong>
         <button class="btn btn-quiet btn-sm nav-back-button" type="button" @click="back">返回主菜单</button>
@@ -85,8 +86,8 @@ function focusFirstPage(event: Event) {
       <MenuLinks />
     </section>
   </template>
-  <StudioPopover v-else v-model:open="open" label="更多页面" content-class="nav-more-menu" @open-auto-focus="focusFirstPage" @close-auto-focus="onCloseAutoFocus">
-    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><StudioToggleIcon :active="open" class="nav-more-chevron" /></button></template>
+  <StudioPopover v-else v-model:open="open" instant label="更多页面" content-class="nav-more-menu" @open-auto-focus="focusFirstPage" @close-auto-focus="onCloseAutoFocus">
+    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button></template>
     <header class="nav-more-heading"><strong>更多页面</strong><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭更多页面" @click="open = false"><ArchiveIcon name="close" /></button></header>
     <MenuLinks />
   </StudioPopover>
@@ -94,6 +95,11 @@ function focusFirstPage(event: Event) {
 
 <style>
 @reference "../assets/css/tailwind.css";
+.nav-more-trigger > .nav-more-chevron { transition: transform var(--motion-control) var(--ease-out); }
+.nav-more-trigger[aria-expanded='true'] > .nav-more-chevron { transform: rotate(180deg); }
+/* Focus and hit targets are ready immediately, including on the compact menu. */
+.nav-more-menu { animation:nav-more-arrive var(--motion-hover) var(--ease-out); }
+@keyframes nav-more-arrive { from { opacity:.55; } to { opacity:1; } }
 /* This surface is portalled, so its links cannot inherit .nav-links rules. */
 .studio-popover.nav-more-menu { @apply tw:grid tw:gap-s-3 tw:p-s-3; grid-template-columns:repeat(3,minmax(0,1fr)); width:min(580px,calc(100vw - 32px)); scroll-padding-block:var(--s-2); }
 /* The optional liquid material owns its tint and rim; painted mode stays opaque. */
@@ -127,8 +133,12 @@ function focusFirstPage(event: Event) {
 .nav-more-menu a:focus-visible > :is(span,.archive-icon),.nav-more-menu button:focus-visible > .archive-icon { transform:none; transition:none; }
 .nav-more-menu :is(a,button):focus-visible::before { transition:none; }
 @media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .nav-more-menu { animation:none; }
+  :root:not([data-motion='full']) .nav-more-trigger > .nav-more-chevron { transition:none; }
   :root:not([data-motion='full']) .nav-more-menu :is(a,button)::before,:root:not([data-motion='full']) .nav-more-menu a > :is(span,.archive-icon),:root:not([data-motion='full']) .nav-more-menu button > .archive-icon { transform:none; transition:none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-trigger > .nav-more-chevron { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu :is(a,button)::before,:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu a > :is(span,.archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu button > .archive-icon { transform:none; transition:none; }
 @media (forced-colors:active) { .nav-more-menu :is(a,button)::before { display:none; } .nav-more-menu :is(a,button):is(:hover,.active) { outline:1px solid Highlight; } }
 .nav-more-inline { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:var(--s-3); }

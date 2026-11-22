@@ -247,7 +247,6 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useScenarioCasting } from '@/composables/scene/useScenarioCasting'
 import { scenarioCastPrompt } from '@/utils/scenarioCasting'
 import { useMoodReferences } from '@/composables/useMoodReferences'
-import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { characterArtEntry } from '@/platform/characterArtState'
@@ -362,8 +361,8 @@ const COVER_IDS: Record<string, Record<ScenarioCharacter, string>> = {
   rainy: { nene: 'sc007', natsume: 'sc069' },
   sakura: { nene: 'sc002', natsume: 'sc013' },
 }
-const { loading: loadingReferences, error: referenceError, reload: reloadReferences, referenceUrl, retryReference } = useMoodReferences()
-const { entries: showcaseEntries, thumbUrl: showcaseThumbUrl } = useShowcaseAssets()
+const { loading: loadingReferences, error: referenceError, reload: reloadReferences, referenceUrl, retryReference,
+  entries: showcaseEntries, thumbUrl: showcaseThumbUrl } = useMoodReferences()
 const referenceRetryStarted = ref(false)
 const portraitRetryVersion = ref<number | undefined>(undefined)
 

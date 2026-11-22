@@ -219,6 +219,7 @@ pub(super) async fn serve(
                 [
                     ("content-type", "application/json; charset=utf-8"),
                     ("cache-control", "private, no-cache"),
+                    ("access-control-expose-headers", "ETag"),
                 ],
                 bytes,
             )

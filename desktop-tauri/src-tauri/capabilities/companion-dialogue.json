@@ -3,6 +3,6 @@
   "identifier": "companion-dialogue",
   "description": "Only the local companion dialogue may adjust its own content bounds.",
   "windows": ["companion-chat"],
-  "permissions": ["allow-resize-companion-dialogue"],
+  "permissions": ["allow-resize-companion-dialogue", "allow-start-companion-move"],
   "local": true
 }

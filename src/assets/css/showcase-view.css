@@ -3,7 +3,7 @@
 .showcase-heading { @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap; gap:var(--s-3) var(--s-5); padding-block:0 var(--s-3); }
 .heading-title { @apply tw:flex tw:items-baseline tw:flex-wrap; gap:var(--s-2) var(--s-4); margin:0; }
 .showcase-heading h1 { font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); margin:0; letter-spacing:0; }
-:global(:root[data-theme-style='terraria']) .showcase-heading h1 { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .showcase-heading h1 { font-family:var(--font-display); }
 .showcase-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
 .showcase-heading .showcase-invitation { margin-top:var(--s-2); font-family:var(--font-serif); }
 .collection-count { @apply tw:whitespace-nowrap tw:text-label tw:text-muted; }

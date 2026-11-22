@@ -72,7 +72,7 @@
           <button type="button" :aria-pressed="videoOpen" @click="setVideoOpen(true)"><ArchiveIcon name="clap" />分镜视频</button>
         </div>
         <KeyframeWorkbench
-          v-show="!videoOpen"
+          :active="!videoOpen"
           :key="workbenchKey"
           ref="workbench"
           :repo="repo"
@@ -286,12 +286,14 @@ async function importReferences(files: File[], kind: StudioAssetKind = 'keyframe
   await nextTick()
   return ids
 }
-function addReference(id: string) {
-  setVideoOpen(false)
+async function addReference(id: string) {
+  await setVideoOpen(false)
+  await nextTick()
   workbench.value?.addReferences([id])
 }
 async function reuseOutfit(id: string) {
   await setVideoOpen(false)
+  await nextTick()
   await workbench.value?.reuseLook(id, 'scene')
 }
 async function bindCandidate(id: string, slot: 'first' | 'last') {

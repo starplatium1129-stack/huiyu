@@ -2,7 +2,7 @@
   <article class="page notfound-page tw:flex tw:min-h-[60vh] tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:text-center">
     <div class="notfound-art-frame">
       <RuntimeImage :src="lostNatsume" v-slot="{ image, loaded, failed }">
-        <img v-if="image.src && !failed" v-bind="image" class="notfound-chibi" :class="{ ready: loaded }" alt="寻找方向的地图插画" width="1774" height="887" loading="eager" decoding="async" />
+        <img v-if="image.src && !failed" v-bind="image" class="notfound-chibi" alt="寻找方向的地图插画" width="1408" height="704" fetchpriority="high" decoding="async" />
         <div v-if="!loaded" class="notfound-chibi-fallback" role="status">
           <ArchiveIcon name="image" />
           <span class="notfound-fallback-text tw:text-label-sm tw:tracking-[.1em]">{{ failed ? '插图暂未加载' : '正在展开地图…' }}</span>
@@ -39,11 +39,9 @@ const path = computed(() => route.fullPath)
 
 .notfound-art-frame { position:relative; width:min(700px,82vw); height:min(350px,44vh); flex:none; }
 .notfound-chibi {
-  display:block; width:100%; height:100%; object-fit:contain; opacity:0;
-  transition:opacity var(--motion-surface) var(--ease-out);
+  display:block; width:100%; height:100%; object-fit:contain;
   border:0; background:transparent; box-shadow:none;
 }
-.notfound-chibi.ready { opacity:1; }
 .notfound-page .title { margin:0; font:500 clamp(28px,2.5vw,42px)/var(--lh-tight) var(--font-serif); }
 .notfound-page .subtitle,.notfound-address { margin:0; }
 
@@ -60,6 +58,4 @@ const path = computed(() => route.fullPath)
 .notfound-chibi-fallback .archive-icon {
   @apply tw:h-[40px] tw:w-[40px];
 }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .notfound-chibi { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .notfound-chibi { transition:none; }
 </style>

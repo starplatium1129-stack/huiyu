@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 
 const createArt = useThemeIllustration(createOriginal, 'draw')
-const { thumbUrl } = useShowcaseAssets()
-const failedPreviews = ref(new Set<string>())
+const stepsList = ref<HTMLOListElement | null>(null)
+const showPreviews = ref(typeof IntersectionObserver === 'undefined')
+const { stop } = useIntersectionObserver(stepsList, entries => {
+  if (!entries.some(entry => entry.isIntersecting)) return
+  showPreviews.value = true
+  stop()
+}, { rootMargin: '120px' })
+const { thumbUrl, entryFor } = useShowcaseAssets(undefined, () => showPreviews.value)
 
 const steps = [
   {
@@ -84,7 +92,7 @@ const steps = [
       </div>
     </section>
 
-    <ol class="guide-steps" role="list" aria-label="从灵感到作品的四步">
+    <ol ref="stepsList" class="guide-steps" role="list" aria-label="从灵感到作品的四步">
       <li v-for="(step, index) in steps" :key="step.title" class="guide-step">
         <span class="guide-step-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
         <section class="guide-step-card" :aria-labelledby="`guide-step-${index}`">
@@ -96,17 +104,15 @@ const steps = [
             </div>
             <figure class="guide-step-preview" aria-hidden="true">
               <span class="guide-step-preview-thumb">
-                <img
-                  v-if="!failedPreviews.has(step.sampleId)"
-                  :src="thumbUrl(step.sampleId)"
+                <RuntimeImage
+                  :src="showPreviews ? thumbUrl(step.sampleId) : ''"
+                  :class="{ 'is-restricted': showPreviews && entryFor(step.sampleId)?.rating === 'R18' }"
                   alt=""
                   width="56"
                   height="72"
                   loading="lazy"
                   decoding="async"
-                  @error="failedPreviews.add(step.sampleId)"
-                />
-                <ArchiveIcon v-else :name="step.icon" />
+                ><template #fallback><ArchiveIcon :name="step.icon" /></template></RuntimeImage>
               </span>
               <figcaption class="guide-step-preview-copy">
                 <strong>{{ step.sampleTitle }}</strong>
@@ -145,7 +151,8 @@ const steps = [
 .guide-step-main { min-width:0; }
 .guide-step-preview { display:flex; align-items:center; gap:var(--s-3); margin:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
 .guide-step-preview-thumb { width:48px; height:62px; flex:none; display:grid; place-items:center; border-radius:var(--r-sm); overflow:hidden; border:1px solid var(--border-soft); background:var(--bg-surface); color:var(--accent); }
-.guide-step-preview-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+.guide-step-preview-thumb :deep(img) { width:100%; height:100%; object-fit:cover; display:block; }
+.guide-step-preview-thumb :deep(img.is-restricted) { filter:blur(12px); }
 .guide-step-preview-copy { display:grid; gap:2px; min-width:0; }
 .guide-step-preview-copy strong { color:var(--text-primary); font:500 var(--fs-label-xs)/1.35 var(--font-serif); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .guide-step-preview-copy small { color:var(--text-muted); font-size:var(--fs-label-xs); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }

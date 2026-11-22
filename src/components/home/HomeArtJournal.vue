@@ -39,7 +39,7 @@ import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useListTransition } from '@/composables/useListTransition'
 import type { HomeJournalEntry } from '@/composables/useHomeSceneHighlights'
 const props = defineProps<{ scenes: HomeJournalEntry[]; loading?: boolean; error?: string; canRefresh?: boolean }>()
-const emit = defineEmits<{ refresh: [] }>()
+const emit = defineEmits<{ refresh: []; approach: [] }>()
 const section = ref<HTMLElement | null>(null), imagesReady = ref(false)
 const refreshButton = ref<HTMLButtonElement | null>(null)
 const listRoot = ref<HTMLElement | null>(null)
@@ -51,7 +51,10 @@ watch(() => props.loading, async (loading, previous) => {
     (listRoot.value?.querySelector<HTMLElement>('a') ?? section.value?.querySelector<HTMLElement>('.journal-more'))?.focus({ preventScroll: true })
 })
 let observer: IntersectionObserver | undefined
-function activateImages() { imagesReady.value = true; observer?.disconnect() }
+function activateImages() {
+  if (imagesReady.value) return
+  imagesReady.value = true; observer?.disconnect(); emit('approach')
+}
 onMounted(() => {
   if (!('IntersectionObserver' in window)) { activateImages(); return }
   // Keep the original sample quality, but do not let native lazy loading fetch

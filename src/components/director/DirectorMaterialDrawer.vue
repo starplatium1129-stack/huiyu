@@ -14,7 +14,7 @@
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
     <TabsContent v-for="item in sections" :key="item.id" :value="item.id" force-mount as-child><div v-show="active === item.id" :id="`material-${item.id}`"
       v-content-motion:up="active === item.id" class="material-content" :aria-labelledby="`material-tab-${item.id}`">
-      <DeferredPanel :active="active === item.id"><slot :name="item.id" :active="active === item.id" /></DeferredPanel>
+      <DeferredPanel :active="visible && active === item.id"><slot :name="item.id" :active="visible && active === item.id" /></DeferredPanel>
     </div></TabsContent>
     <div class="material-footer"><slot name="footer" /></div>
   </section></TabsRoot>
@@ -28,7 +28,7 @@ import ArchiveIcon, { type ArchiveIconName } from '../visual/ArchiveIcon.vue'
 import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import { scrollBehavior } from '@/utils/motionPreference'
 
-const props = defineProps<{ expert: boolean; compact?: boolean; sceneContext?: string }>()
+const props = defineProps<{ expert: boolean; visible: boolean; compact?: boolean; sceneContext?: string }>()
 defineEmits<{ back: [event: MouseEvent] }>()
 const active = ref(props.sceneContext ? 'scenes' : 'character')
 async function selectSection(section: string) {

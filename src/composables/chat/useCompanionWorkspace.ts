@@ -1,4 +1,5 @@
 import { companionWindow, getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { useCompanionInput } from './useCompanionInput'
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
 import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
@@ -23,7 +24,8 @@ import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 import { loadCompanionDirectory, savedCompanionCharacter } from '@/router/companionResources'
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const desktopBridge = getDesktopCapabilities();
+    const desktopBridge = getDesktopCapabilities('companion');
+    const companionInput = useCompanionInput();
     let admitConversation: (() => void) | undefined;
     let cancelConversationIdle: (() => void) | undefined;
     const presentation = desktopBridge ? {
@@ -70,7 +72,7 @@ export function useCompanionWorkspace() {
         : storage.state.settings.live2dEnabled);
     const recentMessages = computed(() => companionMessages.value.slice(-2));
     const { showLatest: hasNewMessages, latest: latestMessages } = useConversationReading(
-        chatListRef, () => recentMessages.value, computed(() => `${activeChar.value}:${branchId.value}`),
+        chatListRef, () => recentMessages.value.length > 0, computed(() => `${activeChar.value}:${branchId.value}`),
     );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
     // 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
@@ -341,13 +343,13 @@ export function useCompanionWorkspace() {
     watch(desktopStageActive, visible => characterStageRef.value?.setDesktopVisible?.(visible), { flush: 'sync' });
     onMounted(async () => {
         document.documentElement.classList.add('companion-mode');
+        document.documentElement.classList.toggle('companion-desktop', Boolean(desktopBridge));
         window.addEventListener('pointerdown', noteActivity, { passive: true });
         window.addEventListener('keydown', onWindowKeydown, { passive: false });
         window.addEventListener('keyup', onWindowKeyup, { passive: false });
         window.addEventListener('wheel', noteActivity, { passive: true });
         reconcileAutoListen();
         if (desktopBridge) {
-            document.documentElement.classList.add('companion-desktop');
             // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
             publishLiveState();
             chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand);
@@ -356,8 +358,10 @@ export function useCompanionWorkspace() {
             if (desktopBridge.onWindowBoundsChanged) {
                 windowBoundsSubscription = desktopBridge.onWindowBoundsChanged(bounds => {
                     boundsRevision++;
+                    const previous = desktopWindowBounds.value;
+                    // The native model follows its HWND. Only a viewport resize needs Vue layout.
+                    if (previous?.width === bounds.width && previous.height === bounds.height) return;
                     desktopWindowBounds.value = bounds;
-                    characterStageRef.value?.setDesktopWindowBounds?.(bounds);
                 });
             }
             powerModeSubscription = desktopBridge.onPowerModeChanged(onBattery => { powerRevision++; setDesktopPowerMode(onBattery); });
@@ -367,6 +371,7 @@ export function useCompanionWorkspace() {
             // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
             // 窗口内由舞台 DOM 事件驱动（更平滑），这里跳过 inWindow 更新。
             globalMouseSubscription = desktopBridge.onGlobalMouse(state => {
+                companionInput?.setPointer(state.x, state.y, state.bounds);
                 if (state.inWindow || !desktopWindowVisible.value)
                     return;
                 characterStageRef.value?.setGlobalPointer?.(state.x, state.y, state.bounds);

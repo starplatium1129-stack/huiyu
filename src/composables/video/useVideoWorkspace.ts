@@ -504,7 +504,7 @@ onMounted(() => {
     // The shared watcher also saves in shots mode; hydrate single-video fields before it can persist them.
     if (shotsEntry) selectedMode.value = 'shots'
     else await consumeVideoCtx()
-    await restorePreviews()
+    void restorePreviews()
     initialRestorePending = false
     if (disposed || !pageActive) return
     // 新任务按原请求键恢复；旧 ID 仅沿原任务读取。

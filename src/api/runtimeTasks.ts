@@ -301,17 +301,45 @@ export async function downloadTaskMedia(url: string, filename = '绘遇结果', 
 }
 /** One application subscription; page controllers own only their cancellable reads. */
 export function startRuntimeTaskPolling(): () => void {
-  let controller = new AbortController(), loading = false
-  const refresh = async () => { if (loading || !hasRuntimeTasks()) return; loading = true; try { await refreshRuntimeTasks(controller.signal) } catch {} finally { loading = false } }
-  const unsubscribe = onDesktopRuntime(() => {
+  let timer: number | undefined
+  let pending: AbortController | undefined
+  function stopReading() {
+    window.clearInterval(timer)
+    timer = undefined
+    pending?.abort()
+    pending = undefined
+  }
+  async function refresh() {
+    if (pending) return
+    const current = new AbortController()
+    pending = current
+    try { await refreshRuntimeTasks(current.signal) }
+    catch { /* refreshRuntimeTasks publishes the current failure to the inbox. */ }
+    finally { if (pending === current) pending = undefined }
+  }
+  function reconcile() {
+    if (document.hidden || !runtimeTasksEnabled.value || getDesktopRuntime().connection !== 'ready') {
+      stopReading()
+      return
+    }
+    timer ??= window.setInterval(refresh, 2500)
+    void refresh()
+  }
+  const unsubscribe = onDesktopRuntime(state => {
     runtimeTasksEnabled.value = hasRuntimeTasks()
     const next = epoch()
-    const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId || ''
-    if (workspace && activeWorkspace && workspace !== activeWorkspace) resetRuntimeTaskWorkspace()
+    const workspace = state.bootstrap?.runtime?.workspace?.workspaceId || ''
+    const changedWorkspace = Boolean(workspace && activeWorkspace && workspace !== activeWorkspace)
+    if (changedWorkspace) { resetRuntimeTaskWorkspace(); readEpoch = ''; readRevision = 0 }
     if (workspace) activeWorkspace = workspace
-    if (activeEpoch !== next) { activeEpoch = next; activeRead++; controller.abort(); controller = new AbortController(); if (!runtimeTasksEnabled.value) clearRuntimeTasks() }
-    if (runtimeTasksEnabled.value) void refresh()
+    if (activeEpoch !== next || changedWorkspace) {
+      activeEpoch = next
+      activeRead++
+      stopReading()
+      if (!runtimeTasksEnabled.value) clearRuntimeTasks()
+    }
+    reconcile()
   })
-  const timer = setInterval(() => { void refresh() }, 2500)
-  return () => { unsubscribe(); controller.abort(); clearInterval(timer) }
+  document.addEventListener('visibilitychange', reconcile)
+  return () => { unsubscribe(); document.removeEventListener('visibilitychange', reconcile); stopReading() }
 }

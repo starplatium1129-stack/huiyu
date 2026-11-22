@@ -13,7 +13,7 @@
 - **`StudioPopover`**：非模态锚定浮层；通过 `#trigger` 锚定按钮，保留碰撞与返焦，不外包 `StudioTooltip`；恢复文件选择与进模态时显式交接焦点。
 - **`StudioTooltip`**：可禁用控件用 `anchor` 包裹（内部通过 `MutationObserver` 同步 `disabled`/`aria-disabled` 代理）；`StudioSelect` 提示放自身，不外包触发器；tooltip portal 挂载至所属 `<dialog>`。
 - **`StudioMediaPlayer`**：保留原生解码媒体元素，由共享层绘制控栏。
-- **样式分工**：`studio-fields.css` 管输入字段几何与状态；`native-controls.css` 管 autofill、光标、步进、range 与原生选框；次级导航 `AppMoreMenu` 通过 `StudioPopover` 懒加载（失败保留主导航可用）。
+- `studio-fields.css` 管输入字段几何与状态，`native-controls.css` 管 autofill、光标、步进、range 与原生选框。顶栏就绪时即可展开 `AppMoreMenu`，由 `StudioPopover` 管理定位与焦点，外观设置按需加载。
 - **模态与焦点**：沿用 `useFluidDialog`（滚动锁、入场与返焦），模态内 select/popover/tooltip 通过 `useModalPortalHost` 挂载所属模态。
 
 ## 控件、排版与表单实施

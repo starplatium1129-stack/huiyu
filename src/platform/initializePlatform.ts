@@ -29,7 +29,8 @@ export async function initializePlatform(): Promise<{ stop: () => void; afterMou
   // Join the migration barrier before requesting the single authority snapshot.
   try { initializeMigrationParticipant({ windowId: getDesktopWindowRole(), isBusy: () => windowTasksBusy() || hasPendingProfileWrites() }) }
   catch (error) { console.warn('跨窗口迁移当前不可用', error) }
-  const handshake = desktopHost ? (stopRuntime = initializeDesktopRuntime(), refreshDesktopRuntime()) : undefined
+  const desktopRuntime = desktopHost ? initializeDesktopRuntime() : undefined
+  if (desktopRuntime) stopRuntime = desktopRuntime.stop
   const createDesktopArtworkRepository = desktopHost
     ? (await import('./desktop/artworkRepository')).createDesktopArtworkRepository : null
   if (createDesktopArtworkRepository) {
@@ -73,7 +74,7 @@ export async function initializePlatform(): Promise<{ stop: () => void; afterMou
         syncQueued = false; syncFailure = undefined; await sync(domains)
       }).catch(error => { syncFailure = error; failure() })
     }
-    ;[stopChanges] = await Promise.all([onProfileChange(queueSync), handshake])
+    ;[stopChanges] = await Promise.all([onProfileChange(queueSync), desktopRuntime?.ready])
     queueSync()
     await syncing
     let connected = getDesktopRuntime().connection === 'ready'

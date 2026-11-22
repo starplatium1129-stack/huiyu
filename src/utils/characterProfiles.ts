@@ -66,10 +66,17 @@ export function parseCharacterProfiles(value: unknown): CharacterProfile[] {
     const name = optionalString(item.name)
     if (!id || !name || seen.has(id)) return []
     seen.add(id)
+    const rawGraph = item.relationshipGraph
+    let graph: CharacterProfile['relationshipGraph']
     return [{
       id,
       name,
-      relationshipGraph: item.relationshipGraph === undefined ? undefined : parseCharacterRelationGraph(item.relationshipGraph),
+      // Only the relations panel needs this graph. Keep a rejected graph (null)
+      // distinct from a missing one and validate each snapshot at most once.
+      get relationshipGraph() {
+        if (rawGraph !== undefined && graph === undefined) graph = parseCharacterRelationGraph(rawGraph)
+        return graph
+      },
       type: optionalString(item.type),
       icon: optionalString(item.icon) ?? '',
       source: optionalString(item.source) ?? '',

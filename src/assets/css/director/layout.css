@@ -124,7 +124,7 @@
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
 }
-:root:not(.aics-desktop-shell) .pb.journal-workspace.focus-mode { --drawing-navigation-height:0px; }
+.pb.journal-workspace.focus-mode { --drawing-navigation-height:0px; }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }
 
 /* Keep the canvas frame in the route while its image tools load on demand. */

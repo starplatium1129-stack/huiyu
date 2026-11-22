@@ -120,7 +120,7 @@ export interface Live2DStageSession {
 
   /** 暂停/恢复渲染循环（浏览器：Pixi ticker；原生：Rust 渲染循环） */
   setPaused(paused: boolean, renderFirstFrame?: boolean): void
-  /** 帧率上限（浏览器：ticker.maxFPS；原生：Rust 侧 fps clamp） */
+  /** 帧率上限。0 跟随显示器，正数为模型动画的上限。 */
   setMaxFps(fps: number): void
 
   /** 舞台画布逻辑尺寸（focus 归位与布局用） */
@@ -137,6 +137,8 @@ export interface Live2DStageSession {
   ): void
   /** 浏览器：取 canvas 元素（webglcontextlost/restored 绑定）；原生：null */
   canvasElement(): HTMLElement | null
+  /** Subscribe to painted browser frames while the WebGL drawing buffer is still valid. */
+  onCanvasFrame?(listener: (canvas: HTMLCanvasElement) => void): () => void
   /** 浏览器专属：画布逻辑坐标处是否有可见像素，先于分区和默认动作判断。 */
   containsVisiblePoint?(x: number, y: number): boolean
   resizeCanvas?(width: number, height: number): void

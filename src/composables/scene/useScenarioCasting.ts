@@ -1,4 +1,4 @@
-import { computed, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 
@@ -17,18 +17,21 @@ export function useScenarioCasting(baseCharacter: Ref<string>) {
     set: (id: string) => { void router.replace({ query: { ...route.query, outfit: id } }) },
   })
   const outfit = computed(() => character.value?.outfits.find(outfit => outfit.id === outfitId.value))
-  const options = computed(() => [{ value: '', label: '使用故事原角色' }, ...scenes.popularCharacters.map(character => ({ value: character.id, label: character.displayName }))])
+  const options = computed(() => [{ value: '', label: '使用故事原角色' }, ...scenes.directoryCharacters.map(character => ({ value: character.id, label: character.displayName }))])
   const outfitOptions = computed(() => character.value?.outfits.map(outfit => ({ value: outfit.id, label: outfit.name })) || [])
   const ready = computed(() => !castId.value || Boolean(character.value && outfit.value))
   const query = computed(() => castId.value ? { char: baseCharacter.value, cast: castId.value, outfit: outfitId.value } : { char: baseCharacter.value })
+  let revision = 0
   async function reload() {
-    if (loading.value) return
+    const request = ++revision
     loading.value = true; error.value = ''
-    try { await scenes.loadPopularCharacters() }
-    catch (cause) { error.value = cause instanceof Error ? cause.message : '角色目录读取失败，可重新读取' }
-    finally { loading.value = false }
+    try {
+      await Promise.all([scenes.loadCharacterDirectory(), castId.value ? scenes.loadPopularCharacters() : undefined])
+    } catch (cause) {
+      if (request === revision) error.value = cause instanceof Error ? cause.message : '角色目录读取失败，可重新读取'
+    } finally { if (request === revision) loading.value = false }
   }
-  onMounted(() => { void reload() })
-  watch(castId, () => { if (!character.value && !loading.value) void reload() })
+  watch([castId, () => scenes.version], () => { void reload() }, { immediate: true })
+  onScopeDispose(() => { revision++ })
   return { castId, outfitId, character, outfit, options, outfitOptions, ready, query, error, loading, reload }
 }

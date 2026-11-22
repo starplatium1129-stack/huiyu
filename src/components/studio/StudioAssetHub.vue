@@ -41,35 +41,35 @@
     </p>
     <ul v-else class="studio-assets">
       <li
-        v-for="asset in visibleAssets"
+        v-for="{ asset, active, options } in visibleAssets"
         :key="asset.id"
-        :class="{ 'is-selected': activeVersion(asset)?.id === selected }"
+        :class="{ 'is-selected': active?.id === selected }"
       >
-        <template v-if="activeVersion(asset)">
+        <template v-if="active">
           <button
             class="studio-asset-pick"
             type="button"
-            :draggable="imageVersion(activeVersion(asset))"
-            :aria-pressed="activeVersion(asset)?.id === selected"
+            :draggable="imageVersion(active)"
+            :aria-pressed="active.id === selected"
             @dragstart="drag($event, asset)"
             @click="select(asset)"
           >
-            <StudioAssetThumb :version="activeVersion(asset)" /><span
+            <StudioAssetThumb :version="active" /><span
               ><strong>{{ asset.title }}</strong
-              ><small>{{ assetLabels[asset.kind] }} · v{{ activeVersion(asset)?.number }}</small></span
+              ><small>{{ assetLabels[asset.kind] }} · v{{ active.number }}</small></span
             >
           </button>
           <div class="studio-asset-actions">
             <StudioSelect
-              v-if="versionsOf(asset).length > 1"
+              v-if="options.length > 1"
               :label="asset.title + ' 的版本'"
               size="sm"
-              :model-value="activeVersion(asset)?.id || ''"
-              :options="versionsOf(asset).map((v) => ({ value: v.id, label: 'v' + v.number }))"
+              :model-value="active.id"
+              :options="options"
               @update:model-value="changeVersion(asset, String($event))"
             />
             <button
-              v-if="asset.kind === 'outfit' && imageVersion(activeVersion(asset))"
+              v-if="asset.kind === 'outfit' && imageVersion(active)"
               type="button"
               class="btn btn-ghost btn-sm"
               @click="reuseOutfit(asset)"
@@ -77,7 +77,7 @@
               用这套拍场景
             </button>
             <button
-              v-if="imageVersion(activeVersion(asset))"
+              v-if="imageVersion(active)"
               type="button"
               class="btn btn-ghost btn-sm"
               @click="addReference(asset)"
@@ -131,6 +131,7 @@ import {
   galleryOriginal,
   imageAccept,
   imageVersion,
+  projectAssetIndex,
   referenceIssue,
   versionLabel,
 } from './projectAssets'
@@ -174,15 +175,23 @@ const versions = computed(() => {
   for (const group of grouped.values()) group.sort((left, right) => right.number - left.number)
   return grouped
 })
-const chosen = computed(() => props.data.versions.find(version => version.id === props.selected))
+const chosen = computed(() => projectAssetIndex(props.data).versions.get(props.selected))
 const versionsOf = (asset: StudioAsset) => versions.value.get(asset.id) || []
-const activeVersion = (asset: StudioAsset) =>
-  versionsOf(asset).find((v) => v.id === selectedVersions.value[asset.id]) || versionsOf(asset)[0]
-const filteredAssets = computed(() =>
-  props.data.assets.filter((asset) => (!filterKind.value || asset.kind === filterKind.value)
-    && asset.title.toLocaleLowerCase().includes(filter.value.trim().toLocaleLowerCase()))
-)
-const visibleAssets = computed(() => filteredAssets.value.slice(0, limit.value))
+function activeVersion(asset: StudioAsset) {
+  const id = selectedVersions.value[asset.id]
+  const selected = id ? projectAssetIndex(props.data).versions.get(id) : undefined
+  return selected?.assetId === asset.id ? selected : versionsOf(asset)[0]
+}
+const filteredAssets = computed(() => {
+  const query = filter.value.trim().toLocaleLowerCase()
+  return props.data.assets.filter(asset => (!filterKind.value || asset.kind === filterKind.value)
+    && (!query || asset.title.toLocaleLowerCase().includes(query)))
+})
+const visibleAssets = computed(() => filteredAssets.value.slice(0, limit.value).map(asset => ({
+  asset,
+  active: activeVersion(asset),
+  options: versionsOf(asset).map(version => ({ value: version.id, label: 'v' + version.number })),
+})))
 watch([filter, filterKind], () => {
   limit.value = 12
 })

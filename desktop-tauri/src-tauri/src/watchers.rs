@@ -1,4 +1,4 @@
-use std::sync::{atomic::Ordering, Arc};
+use std::sync::{atomic::{AtomicBool, Ordering}, Arc};
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -19,24 +19,23 @@ pub fn start_global_mouse_watch(app: AppHandle) {
     thread::spawn(move || {
         let state = app.state::<AppState>();
         let mut last_mouse: Option<GlobalMouse> = None;
-        let mut last_passthrough = None;
+        let applying_input = Arc::new(AtomicBool::new(false));
         let mut last_buttons = (false, false);
-        let mut last_generation = 0;
         loop {
-            thread::sleep(Duration::from_millis(33));
             if state.quitting.load(Ordering::Relaxed) { break; }
+            if !state.companion_presentation.lock().unwrap().shown {
+                last_mouse = None;
+                last_buttons = (false, false);
+                thread::sleep(Duration::from_millis(200));
+                continue;
+            }
+            thread::sleep(Duration::from_millis(33));
             let Some(window) = app.get_webview_window("companion") else { continue; };
             let Ok(hwnd) = window.hwnd() else { continue; };
             if unsafe { IsWindowVisible(hwnd.0) } == 0 {
                 last_mouse = None;
-                last_passthrough = None;
                 last_buttons = (false, false);
                 continue;
-            }
-            let generation = state.companion_presentation.lock().unwrap().generation();
-            if generation != last_generation {
-                last_generation = generation;
-                last_passthrough = None;
             }
 
             let mut pt = POINT { x: 0, y: 0 };
@@ -57,7 +56,12 @@ pub fn start_global_mouse_watch(app: AppHandle) {
             let buttons = unsafe { (GetAsyncKeyState(VK_LBUTTON as i32) < 0, GetAsyncKeyState(VK_RBUTTON as i32) < 0) };
             let (locked, in_panel, in_portrait, has_panels) = {
                 let mut input = state.companion_input.lock().unwrap();
-                if !buttons.0 { input.locked = false; }
+                if input.moving {
+                    last_mouse = None;
+                    last_buttons = buttons;
+                    continue;
+                }
+                if input.locked && !crate::companion_window::primary_button_down() { input.locked = false; }
                 let in_panel = inside && input.panels.iter().any(|rect| rect.contains(local.0, local.1));
                 let in_portrait = inside && (input.static_mask.as_ref().is_some_and(|mask| mask.hit(local.0, local.1))
                     || input.process_frame.is_some_and(|rect| rect.contains(local.0, local.1)) && crate::live2d_process::current().is_some());
@@ -69,8 +73,18 @@ pub fn start_global_mouse_watch(app: AppHandle) {
                 .is_some_and(|overlay| overlay.hit_opaque_pixel(pt.x, pt.y));
             let ignore = state.ignore_mouse_events.load(Ordering::Relaxed);
             let passthrough = ignore || !(locked || in_panel || in_portrait || in_model);
-            if last_passthrough != Some(passthrough) && window.set_ignore_cursor_events(passthrough).is_ok() {
-                last_passthrough = Some(passthrough);
+            if crate::companion_window::mouse_passthrough(hwnd.0) != passthrough && !applying_input.swap(true, Ordering::AcqRel) {
+                let applying = applying_input.clone();
+                let window = window.clone();
+                if app.run_on_main_thread(move || {
+                    if let Ok(hwnd) = window.hwnd() {
+                        let moving = window.state::<AppState>().companion_input.lock().unwrap().moving;
+                        if !moving && unsafe { IsWindowVisible(hwnd.0) } != 0 {
+                            crate::companion_window::set_mouse_passthrough(hwnd.0, passthrough);
+                        }
+                    }
+                    applying.store(false, Ordering::Release);
+                }).is_err() { applying_input.store(false, Ordering::Release); }
             }
             if pressed && has_panels && passthrough { let _ = window.emit("aics:companion-dismiss", ()); }
             let mouse = GlobalMouse {

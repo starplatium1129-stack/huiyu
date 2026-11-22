@@ -11,7 +11,7 @@
 .gallery-breadcrumb button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
 .gallery-title { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
-:global(:root[data-theme-style='terraria']) .gallery-title { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .gallery-title { font-family:var(--font-display); }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
 .gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; min-width:0; max-width:100%; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .gallery-count strong { @apply tw:text-primary; min-width:0; white-space:normal; overflow-wrap:anywhere; font:600 var(--fs-body) var(--font-display); }
@@ -67,7 +67,7 @@
   letter-spacing:.04em;
 }
 .gallery-section:first-child { margin-top:0; }
-:global(:root[data-theme-style='terraria']) .gallery-section { font-family:var(--font-display); }
+:root[data-theme-style='terraria'] .gallery-section { font-family:var(--font-display); }
 .gallery-more { @apply tw:flex tw:items-center tw:justify-center tw:gap-s-2; margin:var(--s-5) 0 0; @apply tw:p-s-3 tw:text-muted; font:600 var(--fs-label-xs) var(--font-mono); letter-spacing:.06em; }
 .gallery-section::after { content:""; @apply tw:h-[1px]; flex:1; background:var(--border-soft); }
 

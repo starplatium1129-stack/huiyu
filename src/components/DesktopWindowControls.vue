@@ -1,5 +1,5 @@
 <template>
-  <div v-if="bridge" class="window-controls" role="group" aria-label="窗口操作" data-tauri-drag-region="false">
+  <div v-if="bridge" class="window-controls" role="group" aria-label="窗口操作">
     <StudioTooltip content="最小化">
       <button type="button" aria-label="最小化" @click="run('minimizeWindow')">
         <ArchiveIcon name="window-minimize" />
@@ -61,17 +61,16 @@ onUnmounted(stop)
 </script>
 
 <style scoped>
-.window-controls { display:flex; align-items:center; flex:none; gap:2px; }
+.window-controls { display:flex; align-items:stretch; flex:none; -webkit-app-region:no-drag; }
 .window-controls button {
   display:grid; place-items:center; flex:none; padding:0;
-  width:32px; height:var(--control-height-sm); border:0; border-radius:var(--r-sm);
-  background:transparent; color:var(--text-secondary);
+  width:46px; border:0; border-radius:0;
+  background:transparent; color:var(--text-secondary); cursor:default;
 }
 .window-controls .archive-icon { width:15px; height:15px; }
 .window-controls button:hover { background:var(--bg-elevated); color:var(--text-primary); }
 .window-controls button:active { background:var(--bg-hover); }
 .window-controls button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .window-controls .window-close:hover { background:var(--bg-elevated); color:var(--danger-text); }
-@media (pointer:coarse) { .window-controls button { width:44px; height:44px; } }
 @media (forced-colors:active) { .window-controls button:focus-visible { outline:2px solid Highlight; } }
 </style>

@@ -1,36 +1,30 @@
 import { computed, nextTick, onBeforeUnmount, ref, watch, type Ref } from 'vue'
 
 /** Keep a reader's position while replies stream; only follow when already at the end. */
-export function useConversationReading(element: Ref<HTMLElement | undefined | null>, revision: () => unknown, character: Ref<string>) {
+export function useConversationReading(element: Ref<HTMLElement | undefined | null>, hasMessages: () => boolean, character: Ref<string>) {
   const following = ref(true)
-  const hasNew = ref(false)
   let followFrame = 0
   function cancelFollow() { cancelAnimationFrame(followFrame); followFrame = 0 }
-  function scrollLatest() {
-    const el = element.value
-    if (el) { const items = revision(); el.scrollTop = Array.isArray(items) && !items.length ? 0 : el.scrollHeight }
-  }
-  const changes = new MutationObserver(() => {
-    if (!following.value || followFrame) return
+  function scheduleFollow() {
+    if (!element.value || document.hidden || !following.value || followFrame) return
     followFrame = requestAnimationFrame(() => {
       followFrame = 0
-      if (following.value) scrollLatest()
+      const el = element.value
+      if (el && following.value) el.scrollTop = hasMessages() ? el.scrollHeight : 0
     })
-  })
+  }
+  const changes = new MutationObserver(scheduleFollow)
   function onScroll() {
     const el = element.value
     if (!el) return
     following.value = el.scrollHeight - el.scrollTop - el.clientHeight < 96
-    if (following.value) hasNew.value = false
-    else cancelFollow()
+    if (!following.value) cancelFollow()
   }
   function pause() { following.value = false; cancelFollow() }
   async function latest() {
     following.value = true
-    hasNew.value = false
     await nextTick()
-    cancelFollow()
-    scrollLatest()
+    scheduleFollow()
   }
   watch(element, (el, old) => {
     old?.removeEventListener('scroll', onScroll)
@@ -42,12 +36,13 @@ export function useConversationReading(element: Ref<HTMLElement | undefined | nu
       void latest()
     }
   }, { flush: 'post' })
-  // Only subscribe to message data until the first unread change. DOM updates
-  // own following; local image/menu feedback must not mark messages unread.
-  watch(() => following.value || hasNew.value ? null : revision(), (items, previous) => {
-    if (items !== null && previous !== null) hasNew.value = true
-  }, { deep: true })
   watch(character, latest)
-  onBeforeUnmount(() => { element.value?.removeEventListener('scroll', onScroll); changes.disconnect(); cancelFollow() })
-  return { hasNew, showLatest: computed(() => !following.value || hasNew.value), following, pause, latest }
+  document.addEventListener('visibilitychange', scheduleFollow)
+  onBeforeUnmount(() => {
+    element.value?.removeEventListener('scroll', onScroll)
+    document.removeEventListener('visibilitychange', scheduleFollow)
+    changes.disconnect()
+    cancelFollow()
+  })
+  return { showLatest: computed(() => !following.value), following, pause, latest }
 }

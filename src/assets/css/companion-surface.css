@@ -63,6 +63,15 @@ html.companion-desktop .companion-page.companion-redesign .portrait-main {
   object-fit:contain; object-position:center; transform:none;
 }
 html.companion-desktop .companion-redesign .card-portrait .character-info { display:none; }
+html.companion-desktop .companion-redesign :is(.portrait-stage, .card-portrait) {
+  touch-action:none;
+  -webkit-user-select:none;
+  user-select:none;
+  cursor:var(--cursor-grab, grab);
+}
+html.companion-desktop .companion-redesign :is(.portrait-stage, .card-portrait):active { cursor:var(--cursor-grabbing, grabbing); }
+/* Route the entire painted image to its stage; HTML image dragging cancels pointer capture. */
+html.companion-desktop .companion-redesign :is(.portrait-stage .portrait-main, .card-portrait img) { pointer-events:none; }
 html.companion-desktop .companion-redesign .live2d-enable-cta,
 html.companion-desktop .companion-redesign .avatar-status:not(:is([data-state='fallback'],[data-state='degraded'])) { display:none; }
 html.companion-desktop .companion-page.companion-redesign .avatar-status:is([data-state='fallback'],[data-state='degraded']) {

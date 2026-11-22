@@ -6,7 +6,7 @@ export function useOfflineResourceAssistant() {
   const state = shallowRef<OfflineInstallState | null>(null)
   const error = ref(''), actionError = ref(''), submitting = ref(false), now = ref(Date.now())
   const available = hasResourceAssistant()
-  let disposed = false, polling = false, poll: ReturnType<typeof setTimeout> | undefined
+  let disposed = false, polling = false, refreshAgain = false, poll: ReturnType<typeof setTimeout> | undefined
   const busy = computed(() => submitting.value || !!state.value?.busy)
   const complete = computed(() => state.value?.stage === 'completed')
   const canInstall = computed(() => !!state.value?.preview && !busy.value && !complete.value && !state.value?.drainFailed)
@@ -50,23 +50,48 @@ export function useOfflineResourceAssistant() {
     return raw.length > 240 ? '安装未能完成，可展开详细信息查看原因并重试。' : raw
   })
   async function refresh() {
-    if (!available || disposed || polling) return
+    clearTimeout(poll)
+    if (!available || disposed || document.hidden) return
+    if (polling) { refreshAgain = true; return }
     polling = true
-    try { const next = await readResourceAssistant(); if (!disposed) { state.value = next; error.value = '' } }
+    try {
+      const next = await readResourceAssistant()
+      if (!disposed && !document.hidden) {
+        state.value = next
+        now.value = Date.now()
+        error.value = ''
+      }
+    }
     catch (cause) { if (!disposed) error.value = String(cause) }
     finally {
       polling = false
-      if (!disposed) poll = setTimeout(() => { now.value = Date.now(); void refresh() }, state.value?.busy ? 500 : 1500)
+      if (!disposed && !document.hidden) {
+        if (refreshAgain) poll = setTimeout(refresh, 0)
+        else if (submitting.value || state.value?.busy || error.value) poll = setTimeout(refresh, error.value ? 2500 : 500)
+      }
+      refreshAgain = false
     }
   }
   async function act(action: () => Promise<void>) {
     if (submitting.value) return
     submitting.value = true; error.value = ''; actionError.value = ''
-    try { await action() } catch (cause) { if (!disposed) actionError.value = String(cause) }
-    finally { submitting.value = false; clearTimeout(poll); await refresh() }
+    try {
+      const command = action()
+      void refresh()
+      await command
+    } catch (cause) { if (!disposed) actionError.value = String(cause) }
+    finally { submitting.value = false; await refresh() }
   }
-  onMounted(() => { void refresh() })
-  onUnmounted(() => { disposed = true; clearTimeout(poll) })
+  function syncVisibility() { if (document.hidden) clearTimeout(poll); else void refresh() }
+  onMounted(() => {
+    if (available) document.addEventListener('visibilitychange', syncVisibility)
+    void refresh()
+  })
+  onUnmounted(() => {
+    disposed = true
+    clearTimeout(poll)
+    document.removeEventListener('visibilitychange', syncVisibility)
+  })
   return { state, error, available, busy, complete, canInstall, percent, elapsed, heading, detail, issue, refresh,
     pick: () => act(() => pickResourceArchive()), pickDirectory: () => act(() => pickResourceArchive(true)), install: () => act(installResourceArchive),
     cancel: () => act(cancelResourceInstall), finish: () => act(finishResourceInstall) }

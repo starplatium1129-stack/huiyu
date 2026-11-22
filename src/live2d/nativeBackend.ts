@@ -202,8 +202,7 @@ export function createNativeLive2DBackend(): Live2DStageBackend {
         },
         setMaxFps(fps) {
           if (destroyed) return
-          // 原生渲染线程接电目标 165fps；上限放行到 165，不被浏览器 120 限制。
-          const value = Math.max(24, Math.min(165, Math.round(fps) || 60))
+          const value = fps === 0 ? 0 : Math.max(24, Math.min(1000, Math.round(fps) || 60))
           if (pushedFps?.value === value) return
           const request = { value }
           pushedFps = request

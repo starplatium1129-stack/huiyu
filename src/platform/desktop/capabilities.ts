@@ -5,7 +5,7 @@ import { getDesktopWindowRole } from './runtime.ts'
 const capabilities: CompanionDesktopBridge = {
   readChatCredential: endpoint => invoke('chat_credential_read', { endpoint }),
   writeChatCredential: (endpoint, secret) => invoke('chat_credential_write', { endpoint, secret }),
-  startDragging: () => hostApi()!.window.getCurrentWindow().startDragging(),
+  startDragging: (request = { kind: 'pointer' }) => invoke<boolean>('start_companion_move', { request }),
   hide: () => { void invoke('hide') },
   openAtelier: (pathname = '/') => { void invoke('open_atelier', { pathname }) },
   openChat: () => invoke('open_companion_chat'),
@@ -48,8 +48,8 @@ const capabilities: CompanionDesktopBridge = {
   closeWindow: () => invoke('window_close'), getWindowState: () => invoke('get_window_state'),
   onMaximizedChanged: listener => on('aics:maximized', listener), offMaximizedChanged: off,
 }
-export function getDesktopCapabilities(): CompanionDesktopBridge | undefined {
-  return hostApi() ? capabilities : undefined
+export function getDesktopCapabilities(role?: 'companion' | 'companion-chat'): CompanionDesktopBridge | undefined {
+  return hostApi() && (!role || getDesktopWindowRole() === role) ? capabilities : undefined
 }
 
 type CompanionSignals = {

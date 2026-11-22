@@ -8,7 +8,7 @@ function showScrollbar(event: Event) {
   if (!(target instanceof Element)) return
   const previous = active.get(target)
   if (previous !== undefined) clearTimeout(previous)
-  target.setAttribute('data-scrollbar-active', '')
+  else target.setAttribute('data-scrollbar-active', '')
   active.set(target, setTimeout(() => {
     target.removeAttribute('data-scrollbar-active')
     active.delete(target)

@@ -1,16 +1,32 @@
 import { computed, ref, watch, type Ref } from 'vue'
 import { MarkerType, type Edge, type Node } from '@vue-flow/core'
 import type { CharacterProfile } from '@/types/character'
-import type { CharacterRelation, RelationPerson } from '@/types/characterRelations'
-import { relationProfile } from '@/utils/characterRelations'
+import type { CharacterRelation, CharacterRelationGraph, RelationPerson } from '@/types/characterRelations'
+import { indexRelationProfiles } from '@/utils/characterRelations'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, characterId: Ref<string>) {
-  const graph = computed(() => profiles.value.map(profile => profile.relationshipGraph).find(graph =>
-    graph?.people.some(person => relationProfile(person, graph.work, profiles.value)?.id === characterId.value)) ?? null)
+  const resolveProfile = computed(() => indexRelationProfiles(profiles.value))
+  const graphLookup = computed(() => {
+    const rows = profiles.value, resolve = resolveProfile.value
+    const known = new Map<string, CharacterRelationGraph>()
+    let next = 0
+    return (id: string) => {
+      while (!known.has(id) && next < rows.length) {
+        const candidate = rows[next++].relationshipGraph
+        if (!candidate) continue
+        for (const person of candidate.people) {
+          const profile = resolve(person, candidate.work)
+          if (profile && !known.has(profile.id)) known.set(profile.id, candidate)
+        }
+      }
+      return known.get(id) ?? null
+    }
+  })
+  const graph = computed(() => graphLookup.value(characterId.value))
   const invalid = computed(() => profiles.value.find(profile => profile.id === characterId.value)?.relationshipGraph === null)
-  const profileFor = (person: RelationPerson) => relationProfile(person, graph.value?.work || '', profiles.value)
+  const profileFor = (person: RelationPerson) => resolveProfile.value(person, graph.value?.work || '')
   const personForProfile = computed(() => graph.value?.people.find(person => profileFor(person)?.id === characterId.value)?.id || '')
   const centerId = ref(''), selectedPersonId = ref(''), selectedRelationId = ref('')
   const selectedPair = ref<{ source: string; target: string; relationIds: string[] } | null>(null)
@@ -27,8 +43,12 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
   }, { immediate: true })
 
   const safeRelations = computed(() => graph.value?.relations.filter(relation => showSpoilers.value || !relation.spoiler) || [])
-  const safePeople = computed(() => graph.value?.people.filter(person => person.id === personForProfile.value
-    || safeRelations.value.some(relation => relation.source === person.id || relation.target === person.id)) || [])
+  const safePeople = computed(() => {
+    const connected = new Set([personForProfile.value])
+    for (const relation of safeRelations.value) { connected.add(relation.source); connected.add(relation.target) }
+    return graph.value?.people.filter(person => connected.has(person.id)) || []
+  })
+  const safePeopleById = computed(() => new Map(safePeople.value.map(person => [person.id, person])))
   const pendingPeople = computed(() => safePeople.value.filter(person => !profileFor(person)))
   const matchingPeople = computed(() => {
     const query = personQuery.value.trim().toLocaleLowerCase()
@@ -39,13 +59,16 @@ export function useCharacterRelations(profiles: Ref<CharacterProfile[]>, charact
     if (scope.value === 'nearby' && relation.source !== centerId.value && relation.target !== centerId.value) return false
     if (!pendingOnly.value) return true
     return [relation.source, relation.target].some(id => {
-      const person = safePeople.value.find(person => person.id === id)
+      const person = safePeopleById.value.get(id)
       return person && !profileFor(person)
     })
   }))
-  const visiblePeople = computed(() => safePeople.value.filter(person => person.id === centerId.value
-    || visibleRelations.value.some(relation => relation.source === person.id || relation.target === person.id)
-    || (scope.value === 'work' && !pendingOnly.value)))
+  const visiblePeople = computed(() => {
+    if (scope.value === 'work' && !pendingOnly.value) return safePeople.value
+    const connected = new Set([centerId.value])
+    for (const relation of visibleRelations.value) { connected.add(relation.source); connected.add(relation.target) }
+    return safePeople.value.filter(person => connected.has(person.id))
+  })
   function isSelectedPair(relation: CharacterRelation) {
     return !!selectedPair.value?.relationIds.includes(relation.id)
   }

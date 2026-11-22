@@ -67,7 +67,7 @@
       <StudioDisclosureSummary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>色彩搭配与光影参考</small></span></StudioDisclosureSummary>
       <div class="color-reading-body" data-disclosure-content>
       <template v-if="notebookRevealed">
-    <AsyncPanel :loader="loadNotebook" label="光色手帖" v-slot="{ component }"><component :is="component" @choose="chooseMood" /></AsyncPanel>
+    <AsyncPanel :loader="loadNotebook" label="光色手帖" v-slot="{ component }"><component :is="component" :active="notebookOpen" @choose="chooseMood" /></AsyncPanel>
     <h2 class="section-title">美术指导 · 色彩语言</h2>
     <div class="art-ref">
       <div class="art-ref-card good">

@@ -6,6 +6,7 @@ import { parseCharacterProfiles, isPopularPortraitPending } from '@/utils/charac
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { safeImageUrl } from '@/composables/gallery/galleryHelpers'
 import type {
+  StudioAsset,
   StudioAssetImport,
   StudioAssetKind,
   StudioAssetVersion,
@@ -35,9 +36,27 @@ export function referenceIssue(version?: StudioAssetVersion): string {
   if (version.bytes > 16 * 1024 * 1024) return '请将参考图缩小到 16 MiB 以内后再导入。'
   return ''
 }
+// Repository reads publish a new snapshot. Every panel can reuse its lookups
+// until the next refresh, including the version labels in long option lists.
+const indexes = new WeakMap<StudioProjectSnapshot, {
+  assets: ReadonlyMap<string, StudioAsset>
+  versions: ReadonlyMap<string, StudioAssetVersion>
+}>()
+export function projectAssetIndex(data: StudioProjectSnapshot) {
+  let index = indexes.get(data)
+  if (!index) {
+    index = {
+      assets: new Map(data.assets.map(asset => [asset.id, asset])),
+      versions: new Map(data.versions.map(version => [version.id, version])),
+    }
+    indexes.set(data, index)
+  }
+  return index
+}
 export function versionLabel(data: StudioProjectSnapshot, id: string): string {
-  const version = data.versions.find((item) => item.id === id)
-  const asset = data.assets.find((item) => item.id === version?.assetId)
+  const { assets, versions } = projectAssetIndex(data)
+  const version = versions.get(id)
+  const asset = version && assets.get(version.assetId)
   return version && asset ? `${asset.title} · v${version.number}` : '素材版本读取失败'
 }
 async function localImage(path: string, signal: AbortSignal): Promise<Blob> {

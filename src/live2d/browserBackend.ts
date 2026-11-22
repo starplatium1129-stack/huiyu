@@ -60,6 +60,8 @@ interface WlLive2DApp {
     resizeTo?: HTMLElement | Window | null
     screen?: { width: number; height: number }
     renderer?: {
+      on(event: 'postrender', listener: () => void): void
+      off(event: 'postrender', listener: () => void): void
       resize(width: number, height: number): void
       width: number
       height: number
@@ -208,6 +210,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
       let paused = false
       let rendered = false
       let rawModel: WlLive2DModel | null = null
+      let stopFrameCapture: (() => void) | undefined
       let screenSize = { width: options.canvasWidth, height: options.canvasHeight }
       // Own the model clock together with rendering. The library otherwise
       // advances it on Pixi's shared ticker even while this app is paused.
@@ -327,6 +330,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           const w = Math.max(1, Math.round(width)), h = Math.max(1, Math.round(height))
           if (screenSize.width === w && screenSize.height === h) return
           app.app.renderer.resize(w, h)
+          rendered = false
           screenSize = { width: w, height: h }
           const host = document.querySelector<HTMLElement>(options.selector)
           const wrapper = host?.firstElementChild as HTMLElement | null
@@ -344,6 +348,24 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           if (typeof document === 'undefined') return null
           const host = document.querySelector<HTMLElement>(options.selector)
           return host?.querySelector('canvas') ?? null
+        },
+        onCanvasFrame(listener) {
+          stopFrameCapture?.()
+          const canvas = session.canvasElement()
+          const renderer = application?.renderer
+          if (destroyed || !(canvas instanceof HTMLCanvasElement) || !renderer) return () => {}
+          const capture = () => { if (!destroyed && rawModel?.visible) listener(canvas) }
+          const stop = () => {
+            if (stopFrameCapture !== stop) return
+            stopFrameCapture = undefined
+            renderer.off('postrender', capture)
+          }
+          renderer.on('postrender', capture)
+          stopFrameCapture = stop
+          // A hidden startup window or reduced motion can pause the ticker.
+          // Publish its first fitted frame once, without advancing the model.
+          application.render?.()
+          return stop
         },
         containsVisiblePoint(x, y) {
           const renderer = app.app?.renderer
@@ -368,6 +390,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         destroy() {
           if (destroyed) return
           destroyed = true
+          stopFrameCapture?.()
           if (privateTicker?.started) privateTicker.stop()
           privateTicker?.remove?.(advanceModel)
           // wl-live2d 1.0.8 destroys only app.renderer, skipping Application's

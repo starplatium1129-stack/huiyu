@@ -70,26 +70,20 @@ impl RenderContext {
             .texture
             .create_view(&wgpu::TextureViewDescriptor::default());
         let bounds = self.fit_bounds.ok_or("model framing not initialized")?;
-        // 2x 超采样（对齐浏览器 wl-live2d resolution:2）：模型按两倍渲染尺寸
-        // 拟合到离屏目标，再线性降采样回 surface——边缘 SSAA + 纹理细节翻倍。
-        // 环境变量 L2D_SUPERSAMPLE=0 可关闭（诊断/低配）。
-        let supersample = std::env::var("L2D_SUPERSAMPLE")
-            .map(|v| v != "0")
-            .unwrap_or(true);
-        let (rw, rh) = if supersample {
-            (
-                (rect.width as f32 * 2.0).max(1.0),
-                (rect.height as f32 * 2.0).max(1.0),
-            )
-        } else {
-            (rect.width as f32, rect.height as f32)
-        };
+        // Full-HD is the offscreen pixel budget. Large physical windows
+        // already display fine edges at native resolution.
+        static SUPERSAMPLE: std::sync::OnceLock<Option<bool>> = std::sync::OnceLock::new();
+        let override_ssaa = SUPERSAMPLE.get_or_init(|| std::env::var("L2D_SUPERSAMPLE").ok().map(|value| value != "0"));
+        let budget_allows = u64::from(rect.width) * u64::from(rect.height) <= 1920 * 1080 / 4;
+        let max_side = self.device.limits().max_texture_dimension_2d;
+        let supersample = override_ssaa.unwrap_or(budget_allows)
+            && rect.width.max(rect.height) <= max_side / 2;
+        let disp_scale = if supersample { 2.0 } else { 1.0 };
+        let (rw, rh) = (rect.width as f32 * disp_scale, rect.height as f32 * disp_scale);
         let framing = *state.framing.lock().unwrap();
         let transform = framing.transform(bounds, rw, rh);
         let (min_x, min_y) = transform.canvas_to_screen(bounds.0[0], bounds.0[1], rw, rh);
         let (max_x, max_y) = transform.canvas_to_screen(bounds.1[0], bounds.1[1], rw, rh);
-        // 诊断边界换算回显示空间（超采样渲染是 rw/rh 上的坐标）。
-        let disp_scale = if supersample { 2.0 } else { 1.0 };
         let bx = ((min_x.min(max_x)).floor().max(0.0) / disp_scale) as i32;
         let by = ((min_y.min(max_y)).floor().max(0.0) / disp_scale) as i32;
         let bw = (((max_x - min_x).abs().ceil() as f32) / disp_scale) as u32;
@@ -141,88 +135,23 @@ impl RenderContext {
         Ok(true)
     }
 
-    /// 归一化坐标（0..1，overlay 相对）→ 可见像素内的作者 HitArea 命中。
-    /// 超采样开启时渲染空间是 2x 离屏目标，命中映射必须换算到同一空间。
-    pub(super) fn hit_test(
-        &mut self,
-        rect: OverlayRect,
-        framing: crate::live2d_framing::StageFraming,
-        nx: f32,
-        ny: f32,
-    ) -> Vec<String> {
-        let Some(model) = self.model.as_ref() else {
-            return vec![];
-        };
-        if rect.width == 0
-            || rect.height == 0
-            || !nx.is_finite()
-            || !ny.is_finite()
-            || !(0.0..1.0).contains(&nx)
-            || !(0.0..1.0).contains(&ny)
-        {
+    /// Select the authored interaction only where the presented model is painted.
+    pub(super) fn hit_test(&self, state: &Live2DOverlayState, nx: f32, ny: f32) -> Vec<String> {
+        let rect = *state.rect.lock().unwrap();
+        if !state.visible.load(Ordering::Acquire) || !(0.0..1.0).contains(&nx) || !(0.0..1.0).contains(&ny) {
             return vec![];
         }
-        let supersample = std::env::var("L2D_SUPERSAMPLE")
-            .map(|v| v != "0")
-            .unwrap_or(true);
-        let (rw, rh) = if supersample {
-            (rect.width as f32 * 2.0, rect.height as f32 * 2.0)
-        } else {
-            (rect.width as f32, rect.height as f32)
-        };
-        let Some(bounds) = self.fit_bounds else {
+        let framing = *state.framing.lock().unwrap();
+        let (width, height) = (rect.width as f32, rect.height as f32);
+        let (x, y) = (nx * width, ny * height);
+        if !state.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| mask.hit(rect, framing, x as i32, y as i32)) {
             return vec![];
-        };
-        let transform = framing.transform(bounds, rw, rh);
-        let (canvas_x, canvas_y) = transform.screen_to_canvas(nx * rw, ny * rh, rw, rh);
-        // 作者 HitArea id 表：由 setCharacter 时解析 model3.json 缓存。
-        // 当前返回命中 id 列表（空 = 未命中或模型未加载）。
-        let hit_ids = self.hit_area_ids();
-        let mut areas = Vec::new();
-        if std::env::var("L2D_DEBUG_HIT").is_ok() {
-            eprintln!("[hit] rect={rect:?}");
-            eprintln!(
-                "[hit] bounds_min={:?} bounds_max={:?} scale={} canvas=({canvas_x:.3},{canvas_y:.3})",
-                bounds.0, bounds.1, transform.scale
-            );
         }
-        for id in &hit_ids {
-            if model.hit_test(id, canvas_x, canvas_y) {
-                if std::env::var("L2D_DEBUG_HIT").is_ok() {
-                    eprintln!("[hit] HIT {id}");
-                }
-                areas.push(id.clone());
-            }
-        }
-        if areas.is_empty() {
-            return areas;
-        }
-        // Authored HitAreas are bounding boxes, including Natsume's invisible
-        // outer frame. They select an action only where the model is painted.
-        let Some(renderer) = self.renderer.as_mut() else {
-            return vec![];
-        };
-        match renderer.render_alpha_at(
-            model,
-            &transform,
-            &self.textures,
-            rw as u32,
-            rh as u32,
-            (nx * rw).floor() as u32,
-            (ny * rh).floor() as u32,
-        ) {
-            Ok(alpha) if alpha > 8 => areas,
-            Ok(_) => vec![],
-            Err(error) => {
-                eprintln!("[live2d] hit pixel readback failed: {error}");
-                vec![]
-            }
-        }
-    }
-
-    /// HitArea 名列表：setCharacter 时从 model3.json HitAreas 动态解析（宁宁/夏目通用），
-    /// 空列表 = 模型未加载。
-    pub(super) fn hit_area_ids(&self) -> Vec<String> {
-        self.hit_area_names.clone()
+        let (Some(model), Some(bounds)) = (self.model.as_ref(), self.fit_bounds) else { return vec![]; };
+        // Uniform supersampling cancels out when converting normalized input
+        // to model coordinates, so this always uses the physical display size.
+        let transform = framing.transform(bounds, width, height);
+        let (canvas_x, canvas_y) = transform.screen_to_canvas(x, y, width, height);
+        self.hit_area_names.iter().filter(|id| model.hit_test(id, canvas_x, canvas_y)).cloned().collect()
     }
 }

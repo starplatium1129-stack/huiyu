@@ -8,7 +8,7 @@
     <main id="main" class="page-main tw:relative tw:z-(--z-raised) tw:flex-1 tw:min-w-0 tw:grid" tabindex="-1" :aria-busy="startupProfilePending || !!pendingPath || undefined">
       <p v-if="startupProfilePending" class="startup-profile-status" role="status">正在连接本机资料…</p>
       <RouterView v-else v-slot="{ Component, route }">
-        <Transition appear :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled" @leave-cancelled="onLeaveCancelled">
+        <Transition appear :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled">
           <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放有缩略图的原图，
                仅为返回范围内缺少缩略图的作品保留原图预览。 -->
           <KeepAlive :include="['SceneExplorerView', 'GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
@@ -61,7 +61,7 @@ import { startupProfilePending } from '@/platform/startupProfile'
 const currentRoute = useRoute()
 const documentationUrl = computed(() => resolveRuntimeUrl('/docs/index.html'))
 function focusMain() { document.getElementById('main')?.focus({ preventScroll: true }) }
-const { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled } = useRouteTransition(() => currentRoute.path)
+const { onBeforeEnter, onEnter, onLeave, onEnterCancelled } = useRouteTransition()
 const { pendingPath } = useNavigationFeedback()
 // 页脚年份跟随当前年份，避免手写年份过期
 const currentYear = new Date().getFullYear()
@@ -75,12 +75,7 @@ const currentYear = new Date().getFullYear()
 .startup-profile-status { align-self:start; margin:var(--s-6) var(--workspace-gutter); color:var(--text-secondary); }
 .route-view {
   grid-area: 1 / 1;
-  /* Anchor depth motion at the page top, not halfway down a long document. */
-  transform-origin: 50% 0;
 }
-/* Leaving routes are inert until their fade completes. Keep them visible but
-   out of grid sizing so two long pages do not repeatedly size the same row. */
-.route-view[inert] { position: absolute; inset: 0 0 auto; }
 /* 用 skip-link 跳进来时要有可见落点，但鼠标点击不该出现描边 */
 .page-main:focus-visible {
   outline: none;
@@ -111,7 +106,7 @@ const currentYear = new Date().getFullYear()
 .seal-kanji {
   font-family: var(--font-serif-jp);
 }
-:global(:root[data-theme-style="terraria"]) .site-footer-seal {
+:root[data-theme-style="terraria"] .site-footer-seal {
   display: none;
 }
 @media (forced-colors: active) {

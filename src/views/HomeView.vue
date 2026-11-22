@@ -17,11 +17,9 @@
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
           </div>
         </div>
-        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :data-portrait-dir="museDirection" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
-          <img v-if="neneHero.src && !heroFailed.nene" :fetchpriority="homeMuse === 'nene' ? 'high' : 'low'"
-            v-bind="neneHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
-          <img v-if="natsumeHero.src && !heroFailed.natsume" :fetchpriority="homeMuse === 'natsume' ? 'high' : 'low'"
-            v-bind="natsumeHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
+        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed && !displayedMuse }" :data-portrait-dir="museDirection" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed && !heroLoaded">
+          <img v-if="heroImage.src && !heroFailed" v-bind="heroImage" class="hero-preload"
+            alt="" aria-hidden="true" loading="eager" fetchpriority="high" decoding="async" />
           <Transition :name="heroImmediate ? '' : 'anime-portrait'">
             <img
               v-if="displayedMuse && paintedHeroes[displayedMuse]"
@@ -34,15 +32,15 @@
               width="1024"
               height="1497"
               fetchpriority="high"
-              decoding="sync"
+              decoding="async"
             />
           </Transition>
-          <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
+          <div v-if="heroFailed" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
             <ArchiveIcon name="image" />
             <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的主视觉暂时无法加载。</p></div>
             <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重新加载</button>
           </div>
-          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在加载{{ heroName }}的主视觉…</p>
+          <p v-else-if="!heroLoaded" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在加载{{ heroName }}的主视觉…</p>
         </aside>
       </div>
     </section>
@@ -54,7 +52,7 @@
         <RouterLink to="/gallery" class="link">查看全部 →</RouterLink>
       </div>
       <div ref="recentGrid" class="recent-grid stagger-container">
-        <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
+        <ArchiveStatePanel v-if="(recentWorksLoading && !recentWorks.length) || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
           <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
         </ArchiveStatePanel>
         <button
@@ -64,10 +62,7 @@
           type="button" :aria-label="'查看完整作品：' + (h.sceneTitle || h.scene || '未命名')" @click="openRecentPreview(h, $event)"
         >
           <div class="recent-cover" :data-artwork-id="h.id" :data-image-id="h.image_id">
-            <RuntimeImage :src="coverUrl(h)" v-slot="{ image, loaded, failed }">
-              <img v-if="image.src && !failed" v-bind="image" alt="" class="recent-cover-img" :class="{ ready: loaded }" loading="lazy" decoding="async" />
-              <ArchiveIcon v-if="!loaded" name="image" class="placeholder" />
-            </RuntimeImage>
+            <HomeArtworkCover :key="h.image_id" :src="coverUrl(h)" @painted="markPainted(h, $event)" @retired="releaseUnusedCovers" />
           </div>
           <div class="recent-body">
             <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
@@ -75,7 +70,7 @@
           </div>
         </button>
       </div>
-      <SavedArtworkPreview v-if="recentPreview" :item="recentPreview" :items="recentWorks" :source="recentPreviewSource" :source-for="recentImageSource" :thumbnail="coverUrl" :request="recentPreviewRequest"
+      <SavedArtworkPreview v-if="recentPreview" :item="recentPreview" :items="recentWorks" :source="recentPreviewSource" :source-for="recentImageSource" :thumbnail="previewUrl" :request="recentPreviewRequest"
         @close="recentPreview = null" @resume="resumeRecent" />
     </section>
     <!-- 最近用过的场景 -->
@@ -97,7 +92,7 @@
       </div>
     </section>
 
-    <HomeArtJournal :scenes="featuredScenes" :loading="journalLoading" :error="journalError" :can-refresh="canRefreshJournal" @refresh="refreshJournal" />
+    <HomeArtJournal :scenes="featuredScenes" :loading="!journalReady || journalLoading" :error="journalError" :can-refresh="canRefreshJournal" @approach="journalReady = true" @refresh="refreshJournal" />
 
     <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
@@ -180,10 +175,10 @@ const recentPreviewRequest = ref(0)
 const recentGrid = ref<HTMLElement | null>(null)
 const router = useRouter()
 function recentImageSource(id: string | number) {
-  return recentGrid.value?.querySelector<HTMLImageElement>(`.recent-cover[data-artwork-id="${CSS.escape(String(id))}"] img`) ?? null
+  return recentGrid.value?.querySelector<HTMLImageElement>(`.recent-cover[data-artwork-id="${CSS.escape(String(id))}"] img[data-painted]`) ?? null
 }
 function openRecentPreview(item: ArtworkRecord, event: MouseEvent) {
-  recentPreviewSource.value = (event.currentTarget as HTMLElement).querySelector('img')
+  recentPreviewSource.value = (event.currentTarget as HTMLElement).querySelector('img[data-painted]')
   recentPreview.value = item
   recentPreviewRequest.value++
 }
@@ -193,6 +188,7 @@ const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
+import HomeArtworkCover from '@/components/home/HomeArtworkCover.vue'
 import HomeChibiStrip from '@/components/home/HomeChibiStrip.vue'
 import StudioActionLink from '@/components/ui/StudioActionLink.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -262,7 +258,8 @@ const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('')
 
-const { recentWorks, loading: recentWorksLoading, error: recentWorksError, sourceRevision: recentSourceRevision, coverUrl, load: loadRecentWorks } = useHomeRecentWorks(recentGrid)
+const { recentWorks, loading: recentWorksLoading, error: recentWorksError, sourceRevision: recentSourceRevision,
+  coverUrl, previewUrl, load: loadRecentWorks, markPainted, releaseUnusedCovers } = useHomeRecentWorks(recentGrid)
 watch(recentSourceRevision, () => {
   // Also retire the click while the async preview component is still loading.
   recentPreview.value = null; recentPreviewSource.value = null; recentPreviewRequest.value++
@@ -276,8 +273,9 @@ async function retryRecentWorks(event: MouseEvent) {
     page.querySelector<HTMLElement>('.home-resume .recent-card, .recent-empty-state .btn')?.focus({ preventScroll: true })
   }
 }
-const { recentScenes, featuredScenes, loading: journalLoading, error: journalError, canRefresh: canRefreshJournal, refresh: refreshJournal } = useHomeSceneHighlights()
-const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl, imageUrl: sampleImageUrl } = useShowcaseAssets()
+const journalReady = ref(false)
+const { recentScenes, featuredScenes, loading: journalLoading, error: journalError, canRefresh: canRefreshJournal, refresh: refreshJournal } = useHomeSceneHighlights(() => journalReady.value)
+const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl, imageUrl: sampleImageUrl } = useShowcaseAssets(undefined, () => journalReady.value)
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const museDirection = ref<'next' | 'prev'>('next')
@@ -298,24 +296,15 @@ const creationEntries = computed(() => [
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
 const { heroes } = useHomeHeroes()
-const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
-const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
-const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
-const heroLoaded = computed(() => ({ nene: neneLoaded.value, natsume: natsumeLoaded.value }))
+const { image: heroImage, loaded: heroLoaded, failed: heroFailed, retry: reloadHero } = useRuntimeImage(() => heroes.value[homeMuse.value].image)
 const displayedMuse = ref<'nene' | 'natsume' | null>(null)
 const paintedHeroes = reactive<Partial<Record<'nene' | 'natsume', { src: string; crossorigin?: '' | 'anonymous' | 'use-credentials' }>>>({})
 const portraitName = computed(() => (displayedMuse.value || homeMuse.value) === 'nene' ? '绫地宁宁' : '四季夏目')
-// The visible nodes keep their last decoded URL while a replacement loads on
-// the native staging nodes. Only two painted sources survive, until unmount.
-watch(neneLoaded, loaded => {
-  if (loaded) paintedHeroes.nene = { src: neneHero.value.src, crossorigin: neneHero.value.crossorigin }
-}, { immediate: true, flush: 'sync' })
-watch(natsumeLoaded, loaded => {
-  if (loaded) paintedHeroes.natsume = { src: natsumeHero.value.src, crossorigin: natsumeHero.value.crossorigin }
-}, { immediate: true, flush: 'sync' })
-watch([homeMuse, () => paintedHeroes[homeMuse.value]], ([muse, painted]) => {
-  if (painted) displayedMuse.value = muse
-}, { immediate: true, flush: 'sync' })
+// Prioritize the chosen portrait, keeping the last decoded image during swaps.
+watch([homeMuse, heroLoaded], ([muse, loaded]) => {
+  if (loaded) paintedHeroes[muse] = { src: heroImage.value.src, crossorigin: heroImage.value.crossorigin }
+  if (paintedHeroes[muse]?.src === heroImage.value.src) displayedMuse.value = muse
+}, { immediate: true })
 watch(runtimeResourceIdentity, () => { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null }, { flush: 'sync' })
 function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
   if (muse !== homeMuse.value) {
@@ -327,8 +316,7 @@ function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
 function retryHero(event: MouseEvent) {
   const origin = event.currentTarget
   const hero = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.home-hero') : null
-  if (homeMuse.value === 'nene' && neneFailed.value) retryNene()
-  else if (homeMuse.value === 'natsume' && natsumeFailed.value) retryNatsume()
+  reloadHero()
   if (hero) void nextTick(() => {
     // The retry button leaves with its error state; preserve only the focus
     // it owned, and never pull the user back from a newly focused control.
@@ -337,7 +325,6 @@ function retryHero(event: MouseEvent) {
     }
   })
 }
-watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); else if (muse === 'natsume' && natsumeFailed.value) retryNatsume() })
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.directoryCharacters)

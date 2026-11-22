@@ -66,19 +66,16 @@
               :key="`${l.id}-${sample.id}`"
               :to="`/showcase?scene=${sample.id}`"
               class="lora-sample-thumb"
+              :class="{ 'sample-r18': entryFor(sample.id)?.rating === 'R18' }"
               :aria-label="`查看样张：${sample.title}`"
             >
-              <img
-                v-if="!failedSamples.has(sample.id)"
-                :src="thumbUrl(sample.id)"
-                :alt="sample.title"
-                width="56"
-                height="72"
-                loading="lazy"
-                decoding="async"
-                @error="failedSamples.add(sample.id)"
-              />
-              <span v-else class="lora-sample-fallback"><ArchiveIcon name="image" /></span>
+              <RuntimeImage :src="thumbUrl(sample.id)" v-slot="{ image, failed }">
+                <span v-if="image.src && !failed" class="lora-sample-art">
+                  <img v-bind="image" :alt="sample.title" width="56" height="72" loading="lazy" decoding="async" />
+                  <SensitivePreviewVeil v-if="entryFor(sample.id)?.rating === 'R18'" :src="image.src" :crossorigin="image.crossorigin" />
+                </span>
+                <span v-else class="lora-sample-fallback"><ArchiveIcon name="image" /></span>
+              </RuntimeImage>
               <span class="lora-sample-caption">{{ sample.title }}</span>
             </RouterLink>
           </div>
@@ -137,6 +134,9 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useListTransition } from '@/composables/useListTransition'
+import { useBrowseSearch } from '@/composables/useBrowseSearch'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -152,24 +152,22 @@ import {
   type LoraCatalogEntry,
 } from '@/utils/loraCatalog'
 
-const { thumbUrl } = useShowcaseAssets()
-
 const sceneStore = useSceneStore()
 const route = useRoute()
 const router = useRouter()
 function routeFilter(key: 'q' | 'engine') { const value = route.query[key]; return typeof value === 'string' ? value : '' }
 const loras = computed(() => parseLoraCatalog(sceneStore.loras))
-const modelQuery = ref(routeFilter('q'))
+const { query: modelQuery, settledQuery, restoreQuery } = useBrowseSearch(routeFilter('q'))
 const engine = ref(routeFilter('engine'))
 let restoringFilters = false
 watch([() => route.path, () => route.query.q, () => route.query.engine], () => {
   if (route.path !== '/lora') return
   restoringFilters = true
-  modelQuery.value = routeFilter('q')
+  if (settledQuery.value !== routeFilter('q')) restoreQuery(routeFilter('q'))
   engine.value = routeFilter('engine')
   restoringFilters = false
 }, { flush: 'sync' })
-watch([modelQuery, engine], ([q, selectedEngine]) => {
+watch([settledQuery, engine], ([q, selectedEngine]) => {
   if (restoringFilters || route.path !== '/lora' || (q === routeFilter('q') && selectedEngine === routeFilter('engine'))) return
   const query = { ...route.query }
   if (q) query.q = q
@@ -179,7 +177,6 @@ watch([modelQuery, engine], ([q, selectedEngine]) => {
   void router.replace({ path: route.path, query, hash: route.hash }).catch(() => {})
 }, { flush: 'sync' })
 const failedAvatars = ref(new Set<string>())
-const failedSamples = ref(new Set<string>())
 const MODEL_SAMPLE_SETS: Record<string, ReadonlyArray<{ id: string; title: string }>> = {
   nene: [
     { id: 'sc002', title: '樱花树下的约定' },
@@ -217,7 +214,7 @@ const engineOptions = computed(() => {
   return [{ value:'', label:'全部引擎', count:loras.value.length }, ...[...counts].map(([value, count]) => ({ value, label:value, count }))]
 })
 const visibleLoras = computed(() => {
-  const term = modelQuery.value.trim().toLocaleLowerCase()
+  const term = settledQuery.value.trim().toLocaleLowerCase()
   return loras.value.filter(model => (!engine.value || modelGuide(model).engine === engine.value) && (!term || [model.name, model.character, model.baseModel, model.description,
     modelGuide(model).name, modelGuide(model).engine, ...model.triggerWords].join(' ').toLocaleLowerCase().includes(term)))
     .sort((a, b) => Number(Boolean(modelCharacter(b.id))) - Number(Boolean(modelCharacter(a.id))))
@@ -237,6 +234,7 @@ function modelAvatar(id: string) { return MODEL_GUIDES[id]?.avatar }
 function modelGuide(model: LoraCatalogEntry) {
   return MODEL_GUIDES[model.id] ?? { name: model.character || '角色模型', engine: '引擎未标注', purpose: '角色模型资料', icon: 'model' as const }
 }
+const { entryFor, thumbUrl } = useShowcaseAssets(undefined, () => visibleLoras.value.some(model => modelSamples(model).length > 0))
 useListTransition(listRoot, () => visibleLoras.value.map(model => model.id))
 
 async function loadCatalog() {
@@ -281,7 +279,9 @@ onMounted(() => { void loadCatalog() })
 .lora-sample-thumb { display:flex; align-items:center; gap:var(--s-2); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); text-decoration:none; min-width:0; }
 .lora-sample-thumb:hover { border-color:var(--border-strong); color:var(--text-primary); }
 .lora-sample-thumb:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.lora-sample-thumb img, .lora-sample-fallback { flex:0 0 42px; width:42px; height:54px; border-radius:var(--r-xs); object-fit:cover; background:var(--bg-elevated); }
+.lora-sample-art, .lora-sample-fallback { flex:0 0 42px; width:42px; height:54px; border-radius:var(--r-xs); overflow:hidden; background:var(--bg-elevated); }
+.lora-sample-art img { display:block; width:100%; height:100%; object-fit:cover; }
+.lora-sample-art { position:relative; --sensitive-preview-position:center; }
 .lora-sample-fallback { display:grid; place-items:center; color:var(--text-muted); }
 .lora-sample-caption { min-width:0; font-size:var(--fs-label-xs); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .model-result-count { margin-inline-start:auto; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; white-space:nowrap; }

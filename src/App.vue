@@ -1,12 +1,13 @@
 <template>
   <TooltipProvider :delay-duration="400">
+    <DesktopTitleBar v-if="atelierWindow && !isCompanion" />
     <RuntimeConnectionNotice />
     <RouteRecoveryBanner />
     <DesktopUpdateBanner v-if="desktop && !isCompanion" />
     <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
       <RouterView v-slot="{ Component }">
-        <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
-          <KeepAlive include="AppLayout"><component :is="Component" v-if="!startupProfilePending || route.matched[0]?.path === '/'" :data-route-path="route.fullPath" /></KeepAlive>
+        <Transition appear :css="false" @before-enter="layoutMotion.onBeforeEnter" @enter="layoutMotion.onEnter" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled">
+          <KeepAlive include="AppLayout"><component :is="Component" v-if="!startupProfilePending || route.matched[0]?.path === '/'" :key="route.matched[0]?.path" :data-route-path="route.fullPath" /></KeepAlive>
         </Transition>
       </RouterView>
     </div>
@@ -34,6 +35,7 @@ import { startupProfilePending } from '@/platform/startupProfile'
 import AppearanceHost from '@/components/AppearanceHost.vue'
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearchHost.vue'
+import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RuntimeConnectionNotice from '@/components/RuntimeConnectionNotice.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
@@ -43,6 +45,7 @@ import { routeRecovery } from '@/composables/useRouteRecovery'
 
 const route = useRoute()
 const desktop = Boolean(getDesktopCapabilities())
+const atelierWindow = desktop && getDesktopWindowRole() === 'atelier'
 const confirmation = useConfirmState()
 const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDialog.vue').catch(error => {
   resolveConfirm(confirmation.value.requestId, false)
@@ -62,17 +65,7 @@ onErrorCaptured((error, instance, info) => {
   if (routeRecovery.value?.kind !== 'route') routeRecovery.value = { kind: 'panel', target: route.fullPath }
   return false
 })
-const layoutMotion = useRouteTransition(() => route.path)
-function beforeEnterLayout(element: Element) {
-  ;(element as HTMLElement).inert = false
-  if (!element.classList.contains('page-root')) layoutMotion.onBeforeEnter(element)
-}
-function enterLayout(element: Element, done: () => void) {
-  // AppLayout already animates its inner route. Standalone windows fade only;
-  // translating their root would move native-overlay anchors and fixed controls.
-  if (element.classList.contains('page-root')) layoutMotion.completeEnter(element, done)
-  else layoutMotion.onEnter(element, done)
-}
+const layoutMotion = useRouteTransition()
 let detachDesktopWorkspace: (() => void) | undefined
 let detachDesktopNavigation: (() => void) | undefined
 onMounted(() => {
@@ -98,7 +91,8 @@ onMounted(() => {
   // 还是上一个场景的提示词」。恢复时用地址栏重建路由，触发正确的组件挂载。
   const onPageShow = (event: PageTransitionEvent) => {
     if (!event.persisted) return
-    const address = window.location.pathname + window.location.search + window.location.hash
+    const address = import.meta.env.MODE === 'desktop' ? window.location.hash.slice(1) || '/'
+      : window.location.pathname + window.location.search + window.location.hash
     if (router.currentRoute.value.fullPath !== address) {
       void router.replace(address)
     }
@@ -116,5 +110,4 @@ onUnmounted(() => stopThumbnailWarmup?.())
   grid-area: 1 / 1;
   min-width: 0;
 }
-.route-stage > [inert] { position: absolute; inset: 0 0 auto; }
 </style>

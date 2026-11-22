@@ -33,7 +33,7 @@ export function useCompanionChatWindow() {
 
 /** 无桥降级：允许纯浏览器里用本地 storage 观看/本地切角色（发送需桌宠桥） */
 const storage = useChatStorage(() => { /* 聊天窗静默收集失败即可 */ })
-const bridge = getDesktopCapabilities()
+const bridge = getDesktopCapabilities('companion-chat')
 /** 浏览器形态（无桥）下 /companion-chat 是死路：window.close() 对非脚本打开的
  *  窗口无效，页面里也没有任何路由出口。这里给一个真正走得通的返回。 */
 const router = useRouter()
@@ -373,7 +373,7 @@ if (!CSS.supports('field-sizing', 'content')) {
   onUnmounted(() => window.removeEventListener('resize', resizeComposer))
 }
 
-const { showLatest: hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
+const { showLatest: hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value.length > 0, computed(() => `${activeChar.value}:${branchId.value}`))
 const docked = ref(true), docking = ref(false)
 let dockRevision = 0
 async function startWindowDrag(event: MouseEvent) {

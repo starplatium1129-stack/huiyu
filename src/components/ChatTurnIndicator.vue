@@ -23,10 +23,10 @@ defineProps<{ label: string; animated?: boolean }>()
 @starting-style {
   .chat-turn-indicator { opacity:0; transform:translateY(3px); }
 }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .chat-turn-indicator { transition:none; }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced'])) .chat-turn-dots i { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .chat-turn-indicator { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .chat-turn-dots i { animation:none; }
 @media (prefers-reduced-motion:reduce) {
-  :global(:root:not([data-motion='full'])) .chat-turn-indicator { transition:none; }
-  :global(:root:not([data-motion='full'])) .chat-turn-dots i { animation:none; }
+  :root:not([data-motion='full']) .chat-turn-indicator { transition:none; }
+  :root:not([data-motion='full']) .chat-turn-dots i { animation:none; }
 }
 </style>

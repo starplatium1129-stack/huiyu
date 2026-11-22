@@ -115,6 +115,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   let statusRequest: AbortController | null = null
   let logsRequest: AbortController | null = null
   let shareRequest: AbortController | null = null
+  let shareVisible = false
 
   watch(operationSubmitting, submitting => { if (submitting) statusRevision++ }, { flush: 'sync' })
 
@@ -207,12 +208,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
     // The invitation is only returned by the local-only share endpoint.
-    if (data.shareLinkAvailable) void loadShareLink()
-    else {
-      shareRequest?.abort()
-      shareRequest = null
-      shareLink.value = ''
-    }
+    syncShareLink()
     if (data.localLink) localLink.value = data.localLink
     if (data.uptime != null) uptime.value = '网站已运行 ' + fmt(data.uptime)
     if (data.scripts) scripts.value = { ...scripts.value, ...data.scripts }
@@ -280,9 +276,21 @@ export function useControlStatus({ showToast }: StatusHooks) {
     serviceChecking.value = false
   }
 
-  async function loadShareLink() {
-    if (disposed) return
+  function setShareVisible(visible: boolean) {
+    shareVisible = visible
+    syncShareLink()
+  }
+  function syncShareLink() {
+    if (shareVisible && lastStatus?.shareLinkAvailable) {
+      void loadShareLink()
+      return
+    }
     shareRequest?.abort()
+    shareRequest = null
+    shareLink.value = ''
+  }
+  async function loadShareLink() {
+    if (disposed || shareRequest) return
     const controller = new AbortController()
     shareRequest = controller
     try {
@@ -430,7 +438,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     opBusy, opDisconnected, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
     lastStatus: () => lastStatus,
     captureConfigEdits, acknowledgeConfigEdits,
-    pollStatus, pollLogs, clearLogs, startPolling, stopPolling,
+    pollStatus, pollLogs, clearLogs, startPolling, stopPolling, setShareVisible,
     lineClass,
   }
 }

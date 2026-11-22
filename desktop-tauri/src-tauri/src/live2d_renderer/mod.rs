@@ -37,7 +37,7 @@ mod window;
 mod commands;
 mod frame;
 mod alpha_mask;
-pub(crate) mod texture_cache;
+mod texture_cache;
 
 pub(crate) use window::overlay_window_thread;
 pub(crate) use frame::{apply_frame, set_revealed, state_snapshot, send_command};
@@ -67,7 +67,7 @@ impl OverlayRect {
     }
 }
 
-/// 连续拿不到可绘制 surface 的帧数上限（165fps 下约 0.2 秒）。
+/// 连续拿不到可绘制 surface 的帧数上限。
 /// 原实现在 Outdated/Lost 分支"configure 后直接 return"，既没有计数也没有
 /// 任何日志：一旦 swapchain 持续拿不到帧就陷入每帧 configure、永不绘制的
 /// 死循环，画面停在未定义内容上（实机即"老电视雪花"），而 frameCount 停增
@@ -97,7 +97,7 @@ pub struct Live2DOverlayState {
     pub visible: AtomicBool,
     pub revealed: AtomicBool,
     pub first_frame_ready: AtomicBool,
-    pub alpha_mask: RwLock<Option<AlphaMaskSnapshot>>,
+    alpha_mask: RwLock<Option<alpha_mask::PaintedPixels>>,
     pub opacity: AtomicU32,
     /// HWND 以 isize 存储（HWND = *mut c_void 非 Send）。
     pub hwnd: Mutex<Option<isize>>,
@@ -118,7 +118,8 @@ pub struct Live2DOverlayState {
     /// 模型可见内容的大致屏幕矩形，仅用于诊断。
     pub model_bounds: Mutex<Option<OverlayRect>>,
     /// 原生渲染循环目标帧率。
-    pub target_fps: AtomicU32,
+    pub fps_limit: AtomicU32,
+    pub display_hz: AtomicU32,
     /// 模型 ready 标记：仅在 setCharacter 成功后允许绘制模型。
     pub model_ready: AtomicBool,
     /// 最近一次规范化口型意图与角色映射值，仅供只读发布验收诊断。
@@ -152,7 +153,8 @@ impl Default for Live2DOverlayState {
             character: Mutex::new(None),
             frame_count: AtomicU64::new(0),
             model_bounds: Mutex::new(None),
-            target_fps: AtomicU32::new(165),
+            fps_limit: AtomicU32::new(0),
+            display_hz: AtomicU32::new(frame_pacing::FALLBACK_HZ),
             model_ready: AtomicBool::new(false),
             last_mouth_level: AtomicU32::new(0.0f32.to_bits()),
             last_mapped_mouth_value: AtomicU32::new(0.0f32.to_bits()),
@@ -167,9 +169,9 @@ impl Live2DOverlayState {
         if !self.visible.load(Ordering::Acquire) || !self.revealed.load(Ordering::Acquire) { return false; }
         let rect = *self.rect.lock().unwrap();
         if !rect.contains(screen_x, screen_y) { return false; }
+        let framing = *self.framing.lock().unwrap();
         self.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| {
-            mask.rect.width == rect.width && mask.rect.height == rect.height
-                && mask.hit(screen_x - rect.x, screen_y - rect.y)
+            mask.hit(rect, framing, screen_x - rect.x, screen_y - rect.y)
         })
     }
 }

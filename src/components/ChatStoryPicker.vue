@@ -28,5 +28,5 @@ const parent = computed(() => props.branches.find(branch => branch.id === props.
 .chat-story-label .archive-icon { width:16px; height:16px; }
 .chat-story-select { flex:1; min-width:0; }
 .chat-story-picker > button { flex:none; }
-:global(.companion-dialogue-window) .chat-story-picker { margin-bottom:var(--s-2); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); }
+.companion-dialogue-window .chat-story-picker { margin-bottom:var(--s-2); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); }
 </style>

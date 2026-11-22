@@ -126,9 +126,7 @@ pub(crate) fn overlay_window_thread(
     state.window_ready.store(true, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
 
-    // 目标帧率：默认 165（vsync 由 surface present 决定，165Hz 屏即 165fps），
-    // 可用 L2D_TARGET_FPS 覆盖；前端也可通过 setMaxFps 动态调整。
-    state.target_fps.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::SeqCst);
+    state.fps_limit.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::Relaxed);
 
     let mut ctx = if environment.prewarm {
         RenderContext::new().and_then(|mut ctx| {
@@ -137,6 +135,10 @@ pub(crate) fn overlay_window_thread(
         }).map_err(|error| eprintln!("[live2d] prewarm: {error}")).ok()
     } else { None };
     let mut last_frame = Instant::now();
+    let mut next_frame = last_frame;
+    let mut next_display_check = last_frame;
+    let mut follow_until = last_frame;
+    let mut display_hz = frame_pacing::FALLBACK_HZ;
     let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
     let mut running = true;
     // 线程退出原因：None 表示 WM_QUIT 正常退出（窗口销毁，如进程退出），
@@ -144,6 +146,7 @@ pub(crate) fn overlay_window_thread(
     let mut stopped_reason: Option<String> = None;
     while running && !state.shutdown.load(Ordering::SeqCst) {
         let iteration_started = Instant::now();
+        let mut next_tick = None;
         unsafe {
             let mut msg = std::mem::zeroed::<MSG>();
             while PeekMessageW(&mut msg, std::ptr::null_mut(), 0, 0, PM_REMOVE) > 0 {
@@ -192,10 +195,15 @@ pub(crate) fn overlay_window_thread(
         }
         if let Some(ctx) = ctx.as_mut().filter(|_| running && state.visible.load(Ordering::SeqCst)) {
             let mut rect = *state.rect.lock().unwrap();
-            if let (Some(companion), Some(offset)) = (
-                *state.companion_hwnd.lock().unwrap(),
-                *state.companion_offset.lock().unwrap(),
-            ) {
+            let companion = *state.companion_hwnd.lock().unwrap();
+            if iteration_started >= next_display_check {
+                // The companion selects the monitor even while the overlay is parked offscreen.
+                let anchor = companion.map_or(hwnd, |handle| handle as HWND);
+                display_hz = frame_pacing::display_refresh_hz(anchor);
+                state.display_hz.store(display_hz, Ordering::Relaxed);
+                next_display_check = iteration_started + Duration::from_secs(1);
+            }
+            if let (Some(companion), Some(offset)) = (companion, *state.companion_offset.lock().unwrap()) {
                 let companion = companion as HWND;
                 if let Some(point) = companion_origin(companion) {
                     let followed = followed_overlay_rect(
@@ -207,6 +215,8 @@ pub(crate) fn overlay_window_thread(
                     let moved = followed.x != rect.x || followed.y != rect.y;
                     let sync_z_order = last_z_order_sync.elapsed() >= Duration::from_millis(250);
                     if (moved || sync_z_order) && state.revealed.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
+                        let mut flags = SWP_NOACTIVATE | SWP_NOSIZE;
+                        if !sync_z_order { flags |= windows_sys::Win32::UI::WindowsAndMessaging::SWP_NOZORDER; }
                         unsafe {
                             SetWindowPos(
                                 hwnd,
@@ -215,42 +225,62 @@ pub(crate) fn overlay_window_thread(
                                 followed.y,
                                 0,
                                 0,
-                                SWP_NOACTIVATE | SWP_NOSIZE,
+                                flags,
                             );
                         }
-                        last_z_order_sync = Instant::now();
+                        if sync_z_order { last_z_order_sync = iteration_started; }
                     }
                     if moved {
                         *state.rect.lock().unwrap() = followed;
                         rect = followed;
+                        follow_until = iteration_started + Duration::from_millis(120);
                     }
                 }
             }
+            // Keep the last presented image attached to the moving input window
+            // at display cadence, even if model updates are capped to save power.
+            let fps_limit = state.fps_limit.load(Ordering::Relaxed);
+            let model_hz = frame_pacing::model_fps(fps_limit, display_hz);
+            let period = frame_pacing::interval(model_hz);
             let now = Instant::now();
-            let dt = (now - last_frame).as_secs_f32().min(0.1);
-            last_frame = now;
-            ctx.step(dt);
-            ctx.advance_motion(dt);
-            match ctx.render_frame(&state, hwnd, rect) {
-                Ok(true) => {
-                    state.frame_count.fetch_add(1, Ordering::Relaxed);
-                    if state.visible.load(Ordering::Acquire) && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
-                        if state.revealed.load(Ordering::Acquire) {
-                            let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
-                            frame::place_overlay(&state, hwnd, companion, rect);
+            if now >= next_frame {
+                next_frame += period;
+                if next_frame <= now { next_frame = now + period; }
+                let dt = (now - last_frame).as_secs_f32().min(0.1);
+                last_frame = now;
+                ctx.step(dt);
+                ctx.advance_motion(dt);
+                match ctx.render_frame(&state, hwnd, rect) {
+                    Ok(true) => {
+                        state.frame_count.fetch_add(1, Ordering::Relaxed);
+                        if fps_limit == 0 && state.revealed.load(Ordering::Acquire) {
+                            // Acquire wakes on the display's actual vblank. Allow it to
+                            // clock normal frames; bound rapid returns if DWM is occluded.
+                            next_frame = iteration_started + period.mul_f32(0.75);
                         }
-                        if let Some(events) = app { let _ = events.emit("aics:live2d:first-frame", ()); }
+                        if state.visible.load(Ordering::Acquire) && !state.first_frame_ready.load(Ordering::Acquire)
+                            && state.alpha_mask.read().unwrap().is_some()
+                            && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
+                            if state.revealed.load(Ordering::Acquire) {
+                                let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
+                                frame::place_overlay(&state, hwnd, companion, rect);
+                            }
+                            if let Some(events) = app { let _ = events.emit("aics:live2d:first-frame", ()); }
+                        }
+                    }
+                    Ok(false) => {}
+                    Err(e) => {
+                        eprintln!("[live2d] render frame: {e}");
+                        stopped_reason = Some(format!("render frame failed: {e}"));
+                        running = false;
                     }
                 }
-                Ok(false) => {}
-                Err(e) => {
-                    eprintln!("[live2d] render frame: {e}");
-                    stopped_reason = Some(format!("render frame failed: {e}"));
-                    running = false;
-                }
             }
+            next_tick = Some(if now < follow_until {
+                next_frame.min(iteration_started + frame_pacing::interval(display_hz))
+            } else { next_frame });
         }
-        if let Some(cmd) = if running { frame_pacing::wait(&rx, ctx.is_some() && state.visible.load(Ordering::SeqCst), state.target_fps.load(Ordering::Relaxed), iteration_started.elapsed()) } else { None } {
+        if let Some(cmd) = if running { frame_pacing::wait(&rx, next_tick) } else { None } {
             handle_command(&state, &mut ctx, &environment, hwnd, cmd);
         }
     }

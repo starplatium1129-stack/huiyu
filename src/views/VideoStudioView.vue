@@ -49,7 +49,7 @@
         <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
       </StudioDisclosureSummary>
       <div class="video-env-drawer-grid" data-disclosure-content>
-        <div class="video-environment-panel">
+        <div v-if="envDrawerOpen" class="video-environment-panel">
           <div v-if="statusError" class="video-inline-message error" role="alert">{{ statusError }}</div>
           <template v-else-if="activeModel">
             <div class="video-model-summary">
@@ -80,7 +80,7 @@
             </RouterLink>
           </div>
         </div>
-        <div class="video-model-catalog">
+        <div v-if="envDrawerOpen" class="video-model-catalog">
           <div class="video-env-catalog-head">更换生成模型</div>
           <div class="video-model-options">
             <button

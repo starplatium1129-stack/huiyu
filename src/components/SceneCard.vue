@@ -24,7 +24,7 @@
       <SensitivePreviewVeil v-if="sampleRating === 'R18' && thumbImage.src && !thumbFailed"
         :src="thumbImage.src" :crossorigin="thumbImage.crossorigin" />
       <span v-if="sampleRating === 'R18' && thumbImage.src && !thumbFailed" class="sc-sensitive-cue" aria-hidden="true"><strong>R18</strong><span>悬停预览</span></span>
-      <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '服务未连接' : '样张待补充' }}</span>
+      <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ previewPending ? '正在读取样张…' : !thumbImage.src && thumbId ? '样张暂不可用' : '样张待补充' }}</span>
       <span v-if="contentRating === 'R18' && (sampleRating !== 'R18' || !thumbImage.src || thumbFailed)" class="sc-badge sc-rating r18">R18</span>
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       </ShowcasePreviewSource>
@@ -87,6 +87,7 @@ const props = withDefaults(defineProps<{
   sampleRating?: string
   thumbUrl?: string
   imageUrl?: string
+  previewPending?: boolean
   previewDimensions?: { width: number; height: number }
   ariaLabel?: string
   ariaExpanded?: boolean
@@ -126,9 +127,10 @@ watch([thumbSrc, runtimeResourceIdentity], ([src]) => {
 }, { flush: 'sync' })
 const previewStyle = computed(() => {
   if (!props.completePreview) return undefined
-  const [width, height] = sceneRecommendedSize(props.scene).split('x').map(Number)
   const size = naturalDimensions.value || props.previewDimensions
-  return { '--scene-preview-ratio': size ? size.width / size.height : width / height }
+  if (size) return { '--scene-preview-ratio': size.width / size.height }
+  const [width, height] = sceneRecommendedSize(props.scene).split('x').map(Number)
+  return { '--scene-preview-ratio': width / height }
 })
 function measurePreview(event: Event) {
   const image = event.target as HTMLImageElement

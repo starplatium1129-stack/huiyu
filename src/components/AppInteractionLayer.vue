@@ -4,68 +4,28 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
-import { prefetchRoute, prefetchRouteResources } from '@/router'
 import { announceNavigationIntent, useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { playInterfaceTone } from '@/composables/useInterfaceFeedback'
-import { useButtonFeedback } from '@/composables/useButtonFeedback'
 
 const { loading } = useNavigationFeedback()
-useButtonFeedback()
-let hoverTimer = 0
-type Connection = { saveData?: boolean; effectiveType?: string }
 
-function intentLink(event: Event): HTMLAnchorElement | null {
+function announceLink(event: Event) {
   const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
-  if (!el || (el.target && el.target.toLowerCase() !== '_self') || el.hasAttribute('download')) return null
+  if (!el || (el.target && el.target.toLowerCase() !== '_self') || el.hasAttribute('download')) return
   const url = new URL(el.href, location.href)
-  const destination = `${url.pathname}${url.search}${url.hash}`
-  const current = `${location.pathname}${location.search}${location.hash}`
-  if (url.origin !== location.origin || destination === current) return null
-  return el
+  if (url.origin !== location.origin || url.href === location.href) return
+  announceNavigationIntent(import.meta.env.MODE === 'desktop' ? url.hash.slice(1) || '/' : `${url.pathname}${url.search}${url.hash}`)
 }
-function cancelHover() { clearTimeout(hoverTimer) }
-function routeDestination(el: HTMLAnchorElement): string {
-  const url = new URL(el.href, location.href)
-  if (import.meta.env.MODE === 'desktop') return url.hash.slice(1) || '/'
-  return `${url.pathname}${url.search}${url.hash}`
-}
-function canSpeculate() {
-  const connection = (navigator as Navigator & { connection?: Connection }).connection
-  return !connection?.saveData && !/^(slow-)?2g$/.test(connection?.effectiveType ?? '')
-}
-function prefetch(event: Event) {
-  if (event instanceof PointerEvent && event.type === 'pointerdown'
-    && (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented)) return
-  const el = intentLink(event)
-  if (!el) return
-  if (event.type === 'pointerdown') {
-    const destination = routeDestination(el)
-    announceNavigationIntent(destination)
-    if (canSpeculate()) prefetchRouteResources(destination)
-  }
-  const connection = (navigator as Navigator & { connection?: Connection }).connection
-  if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? '')) return
-  if (event instanceof PointerEvent && event.type === 'pointerover' && event.relatedTarget instanceof Node && el.contains(event.relatedTarget)) return
-  cancelHover()
-  const warm = () => {
-    void prefetchRoute(routeDestination(el))
-  }
-  // Crossing the navigation is not intent; focus and pointer-down are.
-  if (event.type === 'pointerover') hoverTimer = window.setTimeout(warm, 90)
-  else warm()
-}
-function pointerOut(event: PointerEvent) {
-  const el = intentLink(event)
-  if (el && (!(event.relatedTarget instanceof Node) || !el.contains(event.relatedTarget))) cancelHover()
+// Show press feedback immediately. Let the selected route load its own code
+// and catalogs, so moving across links or focusing a newly opened menu is cheap.
+function pointerActivate(event: PointerEvent) {
+  if (event.button !== 0 || !event.isPrimary || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented) return
+  announceLink(event)
 }
 function keyboardActivate(event: KeyboardEvent) {
   // Space scrolls a native link; modified Enter belongs to another browsing context.
   if (event.key !== 'Enter' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented) return
-  const el = intentLink(event)
-  if (!el) return
-  const destination = routeDestination(el)
-  announceNavigationIntent(destination)
-  if (canSpeculate()) prefetchRouteResources(destination)
+  announceLink(event)
 }
 function click(event: MouseEvent) {
   const el = event.target instanceof Element ? event.target.closest('button,a[href],summary') : null
@@ -73,19 +33,12 @@ function click(event: MouseEvent) {
   playInterfaceTone(el.matches('.btn-danger,[data-tone="danger"]') ? 'warning' : el.matches('.btn-primary') ? 'confirm' : 'tap')
 }
 onMounted(() => {
-  document.addEventListener('pointerover', prefetch, { passive: true })
-  document.addEventListener('pointerout', pointerOut, { passive: true })
-  document.addEventListener('focusin', prefetch)
-  document.addEventListener('pointerdown', prefetch, { passive: true })
+  document.addEventListener('pointerdown', pointerActivate, { passive: true })
   document.addEventListener('keydown', keyboardActivate)
   document.addEventListener('click', click)
 })
 onUnmounted(() => {
-  cancelHover()
-  document.removeEventListener('pointerover', prefetch)
-  document.removeEventListener('pointerout', pointerOut)
-  document.removeEventListener('focusin', prefetch)
-  document.removeEventListener('pointerdown', prefetch)
+  document.removeEventListener('pointerdown', pointerActivate)
   document.removeEventListener('keydown', keyboardActivate)
   document.removeEventListener('click', click)
 })

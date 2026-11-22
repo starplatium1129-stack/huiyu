@@ -8,7 +8,7 @@
 .pb .image-tool-list > .studio-tooltip-anchor[data-anchor],.pb .image-tools .image-tool-entry { display:grid; width:100%; min-width:0; }
 .pb .image-tools .image-tool-action { display:flex; align-items:center; justify-content:flex-start; gap:var(--s-3); width:100%; min-width:0; min-height:48px; margin:0; padding:var(--s-3); border:0; border-radius:var(--r-sm); background:transparent; box-shadow:none; color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); text-align:start; white-space:normal; }
 .pb .image-tools .image-tool-action > .archive-icon { width:18px; height:18px; flex:none; color:var(--text-secondary); }
-.pb .image-tools .image-tool-action > span:not(.studio-button-feedback) { min-width:0; overflow-wrap:anywhere; }
+.pb .image-tools .image-tool-action > span { min-width:0; overflow-wrap:anywhere; }
 .pb .image-tools .image-tool-action > small { margin-inline-start:auto; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); white-space:nowrap; }
 .pb .image-tools .image-tool-action .image-tool-chevron { width:14px; height:14px; margin-inline-start:auto; transform:rotate(-90deg); }
 .pb .image-tools .image-tool-action > small + .image-tool-chevron { margin-inline-start:0; }

@@ -17,8 +17,10 @@ const glassMode = ref<GlassMode>('light')
 const glassTint = ref(35)
 const effectiveGlassMode = ref<GlassMode>('light')
 let initialized = false
+let lastAppearance: string | null | undefined
 
 function save() {
+  lastAppearance = undefined
   try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, style: themeStyle.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value, glassTint: glassTint.value })) } catch { /* Optional preferences must never block the workspace. */ }
 }
 function normalizedGlassTint(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 35 }
@@ -41,11 +43,16 @@ export function initializeDesktopPreferences() {
   const { theme } = useTheme()
   let applyingTheme = false
   let reading = false
+  let lastLegacy: string | null | undefined
   function read() {
     reading = true
     try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || 'null')
+      const raw = localStorage.getItem(KEY)
       const legacy = localStorage.getItem(THEME_SETTING.key)
+      if (raw === lastAppearance && legacy === lastLegacy) return false
+      lastAppearance = raw
+      lastLegacy = legacy
+      const saved = JSON.parse(raw || 'null')
       themeMode.value = ['system', 'dark', 'light'].includes(saved?.theme) ? saved.theme : legacy === 'dark' || legacy === 'light' ? legacy : 'system'
       themeStyle.value = saved?.style === 'terraria' ? 'terraria' : 'atelier'
       motionMode.value = ['system', 'full', 'reduce'].includes(saved?.motion) ? saved.motion : 'system'
@@ -54,6 +61,7 @@ export function initializeDesktopPreferences() {
       glassTint.value = normalizedGlassTint(saved?.glassTint)
     } catch { themeMode.value = theme.value; themeStyle.value = 'atelier'; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light'; glassTint.value = 35 }
     finally { reading = false }
+    return true
   }
   function apply() {
     const palette = themeMode.value === 'system' ? dark.matches ? 'dark' : 'light' : themeMode.value
@@ -61,16 +69,21 @@ export function initializeDesktopPreferences() {
     if (theme.value !== palette) applyTheme(palette)
     applyingTheme = false
     const root = document.documentElement
-    root.dataset.themeStyle = themeStyle.value
-    root.dataset.motion = motionMode.value
-    root.dataset.reducedMotion = String(motionMode.value === 'reduce' || motionMode.value === 'system' && reduce.matches)
+    const reduced = String(motionMode.value === 'reduce' || motionMode.value === 'system' && reduce.matches)
+    const motionChanged = root.dataset.motion !== motionMode.value || root.dataset.reducedMotion !== reduced
+    if (root.dataset.themeStyle !== themeStyle.value) root.dataset.themeStyle = themeStyle.value
+    if (motionChanged) {
+      root.dataset.motion = motionMode.value
+      root.dataset.reducedMotion = reduced
+    }
     const lowGlass = themeStyle.value === 'terraria' || reducedGlass.value || contrast.matches || transparency.matches || forcedColors.matches
-    root.dataset.reducedGlass = String(lowGlass)
-    root.dataset.fluidEffects = lowGlass ? 'low' : 'full'
+    if (root.dataset.reducedGlass !== String(lowGlass)) root.dataset.reducedGlass = String(lowGlass)
+    const effects = lowGlass ? 'low' : 'full'
+    if (root.dataset.fluidEffects !== effects) root.dataset.fluidEffects = effects
     effectiveGlassMode.value = lowGlass ? 'light' : glassMode.value
-    root.dataset.glassMaterial = effectiveGlassMode.value
+    if (root.dataset.glassMaterial !== effectiveGlassMode.value) root.dataset.glassMaterial = effectiveGlassMode.value
     root.style.setProperty('--glass-tint', String(glassTint.value / 100))
-    window.dispatchEvent(new Event('atelier:motion-preference'))
+    if (motionChanged) window.dispatchEvent(new Event('atelier:motion-preference'))
     return loadThemeStyle()
   }
   read()
@@ -83,8 +96,9 @@ export function initializeDesktopPreferences() {
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
-  window.addEventListener('storage', event => { if (event.key === KEY || event.key === null) { read(); apply() } })
-  window.addEventListener('huiyu:profile-sync-complete', () => { read(); apply() })
+  function syncAppearance() { if (read()) apply() }
+  window.addEventListener('storage', event => { if (event.key === KEY || event.key === null) syncAppearance() })
+  window.addEventListener('huiyu:profile-sync-complete', syncAppearance)
   return appearanceReady
 }
 
@@ -121,7 +135,7 @@ export function desktopShortcutAllowed(event: KeyboardEvent) {
 
 /** Installs local document shortcuts; never registers operating-system hotkeys. */
 export function installDesktopInteraction(router: Router) {
-  const remembered = new Map<string, { element: HTMLElement; id: string }>()
+  const remembered = new Map<string, { element: WeakRef<HTMLElement>; id: string }>()
   let keyboardNavigation = false, disposed = false, focusRevision = 0
   let focusFrame: number | undefined
   function cancelPendingFocus() {
@@ -129,18 +143,19 @@ export function installDesktopInteraction(router: Router) {
     if (focusFrame !== undefined) cancelAnimationFrame(focusFrame)
     focusFrame = undefined
   }
-  const main = () => document.querySelector<HTMLElement>('.companion-chat-body,.companion-conversation') || document.querySelector<HTMLElement>('main')
+  const main = () => document.getElementById('main') ?? document.querySelector<HTMLElement>('.companion-chat-body,.companion-conversation') ?? document.querySelector<HTMLElement>('main')
   const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
   const modalOpen = () => [...document.querySelectorAll<HTMLElement>('dialog[open], [aria-modal="true"]')].some(usableFocus)
   function remember(event: FocusEvent) {
     const element = event.target
-    if (element instanceof HTMLElement && main()?.contains(element)) remembered.set(router.currentRoute.value.path, { element, id: element.id })
+    if (element instanceof HTMLElement && main()?.contains(element)) remembered.set(router.currentRoute.value.path, { element: new WeakRef(element), id: element.id })
   }
   function contentFocus() {
     const content = main()
     if (!content) return
     const saved = remembered.get(router.currentRoute.value.path)
-    const candidate = saved && (usableFocus(saved.element) ? saved.element : document.getElementById(saved.id))
+    const previous = saved?.element.deref() ?? null
+    const candidate = usableFocus(previous) ? previous : saved?.id ? document.getElementById(saved.id) : null
     const heading = [...content.querySelectorAll<HTMLElement>('h1')].reverse().find(usableFocus)
     const target = candidate && content.contains(candidate) && usableFocus(candidate) ? candidate : heading || content
     if (!target.matches('a[href],button,input,select,textarea,[tabindex]')) target.tabIndex = -1

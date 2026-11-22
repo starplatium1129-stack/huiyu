@@ -1,5 +1,5 @@
 use std::io::{BufRead, BufReader, Read, Write};
-use std::net::{TcpStream, ToSocketAddrs};
+use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::process::{Child, Command, Stdio};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -20,6 +20,8 @@ pub const DESKTOP_GATEWAY_PROTOCOL: i64 = 1;
 pub const GATEWAY_HOST: &str = "127.0.0.1";
 const MAX_HEALTH_RESPONSE_BYTES: usize = 16 * 1024;
 const STARTUP_TIMEOUT: Duration = Duration::from_secs(20);
+const HEALTH_TIMEOUT: Duration = Duration::from_millis(1200);
+const STARTUP_PROBE_INTERVAL: Duration = Duration::from_millis(80);
 
 #[derive(Debug, Clone)]
 pub struct GatewayHealth {
@@ -36,16 +38,16 @@ pub struct GatewayHostResponse {
     pub owned: bool,
 }
 
-fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: &str) -> Option<String> {
+fn http_get(base_url: &str, path: &str, connect_timeout: Duration, challenge: &str) -> Option<String> {
     let host_port = base_url
         .trim_start_matches("http://")
         .trim_start_matches("https://")
         .to_string();
-    let deadline = Instant::now().checked_add(timeout)?;
+    let deadline = Instant::now().checked_add(HEALTH_TIMEOUT)?;
     let address = host_port.to_socket_addrs().ok()?.next()?;
-    let mut stream = TcpStream::connect_timeout(&address, timeout).ok()?;
-    stream.set_read_timeout(Some(timeout)).ok()?;
-    stream.set_write_timeout(Some(timeout)).ok()?;
+    let mut stream = TcpStream::connect_timeout(&address, connect_timeout).ok()?;
+    stream.set_read_timeout(Some(HEALTH_TIMEOUT)).ok()?;
+    stream.set_write_timeout(Some(HEALTH_TIMEOUT)).ok()?;
     let request = format!(
         "GET {path} HTTP/1.1\r\nHost: {host_port}\r\nX-AICS-Desktop-Challenge: {challenge}\r\nConnection: close\r\n\r\n"
     );
@@ -91,7 +93,7 @@ pub fn is_desktop_gateway_compatible(health: &GatewayHealth) -> bool {
 }
 
 pub fn is_port_available(host: &str, port: u16) -> bool {
-    TcpStream::connect((host, port)).is_err()
+    TcpListener::bind((host, port)).is_ok()
 }
 
 pub fn find_available_port(host: &str, start_port: u16, attempts: u16) -> Option<u16> {
@@ -179,7 +181,7 @@ impl GatewaySupervisor {
         if !is_current() { return Ok(None); }
         // Each bootstrap proves this snapshot with a fresh challenge. A cached
         // authenticated flag cannot authorize a private host action.
-        let healthy = authenticated_health(&origin, &secret);
+        let healthy = authenticated_health(&origin, &secret, HEALTH_TIMEOUT);
         if !is_current() { return Ok(None); }
         self.authenticated.store(healthy, Ordering::SeqCst);
         if !healthy { return Ok(None); }
@@ -200,11 +202,15 @@ impl GatewaySupervisor {
     }
 
     pub async fn is_healthy_async(&self) -> bool {
+        self.probe_health(HEALTH_TIMEOUT).await
+    }
+
+    async fn probe_health(&self, connect_timeout: Duration) -> bool {
         let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
         let base = self.base_url();
         let generation = self.stop_generation.load(Ordering::SeqCst);
         let (target, secret) = (base.clone(), token.clone());
-        let healthy = tauri::async_runtime::spawn_blocking(move || authenticated_health(&target, &secret))
+        let healthy = tauri::async_runtime::spawn_blocking(move || authenticated_health(&target, &secret, connect_timeout))
             .await.unwrap_or(false);
         // A probe from before stop/restart cannot authenticate the replacement.
         if self.stop_generation.load(Ordering::SeqCst) != generation
@@ -218,7 +224,7 @@ impl GatewaySupervisor {
 
     fn check_authenticated_health(&self) -> bool {
         let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
-        authenticated_health(&self.base_url(), &token)
+        authenticated_health(&self.base_url(), &token, HEALTH_TIMEOUT)
     }
 
     pub async fn start(&self) -> Result<String, String> {
@@ -346,7 +352,9 @@ impl GatewaySupervisor {
                 let _ = self.stop().await;
                 return Err("Gateway exited during startup".into());
             }
-            if self.is_healthy_async().await {
+            // A cold child may not have bound the port yet. Retry the connection
+            // promptly, but give an accepted request its full authentication deadline.
+            if self.probe_health(STARTUP_PROBE_INTERVAL).await {
                 let slot = self.child.lock().unwrap();
                 if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
                     drop(slot);
@@ -360,7 +368,7 @@ impl GatewaySupervisor {
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
             }
-            tokio::time::sleep(Duration::from_millis(250)).await;
+            tokio::time::sleep(STARTUP_PROBE_INTERVAL).await;
         }
     }
 
@@ -440,9 +448,9 @@ impl GatewaySupervisor {
     }
 }
 
-fn authenticated_health(base: &str, token: &str) -> bool {
+fn authenticated_health(base: &str, token: &str, connect_timeout: Duration) -> bool {
     let Ok(challenge) = identity::random_secret() else { return false; };
-    read_health(base, Duration::from_millis(1200), &challenge)
+    read_health(base, connect_timeout, &challenge)
         .map(|health| is_desktop_gateway_compatible(&health) && identity::verify_proof(token, &challenge, &health.desktop_proof))
         .unwrap_or(false)
 }

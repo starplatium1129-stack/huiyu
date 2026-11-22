@@ -11,7 +11,7 @@ import {
   canvasSupported, defaultForm, type KeyframeDraft, type KeyframeGuideDraft, type GuideMode, type WorkbenchForm,
 } from './keyframeDraft'
 import { clothingParts, expressionTags, framingTags, poseTags, settingTags } from './keyframePresets'
-import { referenceIssue, versionLabel } from './projectAssets'
+import { projectAssetIndex, referenceIssue, versionLabel } from './projectAssets'
 
 const startingOutfits = ['sailor_uniform', 'evening_dress', 'casual_trench', 'yukata_floral']
 const commonOutfits = [
@@ -33,12 +33,12 @@ const lookKinds = new Set(['outfit', 'expression', 'pose'])
 
 export function useGuidedKeyframes(
   data: () => StudioProjectSnapshot, draft: Ref<KeyframeDraft>, model: Readonly<Ref<KeyframeModel | undefined>>,
-  locked: Readonly<Ref<boolean>>,
+  locked: Readonly<Ref<boolean>>, visited: Readonly<Ref<boolean>>,
 ) {
   const sceneStore = useSceneStore()
   const guide = computed(() => draft.value.guide)
-  const assets = computed(() => new Map(data().assets.map(asset => [asset.id, asset])))
-  const versions = computed(() => new Map(data().versions.map(version => [version.id, version])))
+  const assets = computed(() => projectAssetIndex(data()).assets)
+  const versions = computed(() => projectAssetIndex(data()).versions)
   const imageVersions = computed(() => data().versions.filter(version => !referenceIssue(version)))
   const kindOf = (version: StudioAssetVersion) => assets.value.get(version.assetId)?.kind
   const rawCharacter = (version: StudioAssetVersion) => kindOf(version) === 'character' && !originOf(version)?.neutralAnchor
@@ -68,7 +68,7 @@ export function useGuidedKeyframes(
       wardrobeLoading.value = false
     }
   }
-  watch(catalogId, (id) => { if (id) void loadWardrobe() }, { immediate: true })
+  watch(() => visited.value ? catalogId.value : '', id => { if (id) void loadWardrobe() }, { immediate: true })
   const characterOutfits = computed<KeyframeTag[]>(() => {
     if (!catalogId.value) return []
     return catalogWardrobe(sceneStore.characters, sceneStore.popularCharacters, catalogId.value).flatMap((recipe) => {

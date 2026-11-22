@@ -9,11 +9,16 @@ export type DesktopStartupMode = 'companion' | 'atelier' | 'both' | 'tray'
 export type CompanionReadyKind = 'native' | 'static' | 'failed'
 export interface CompanionRect { x: number; y: number; width: number; height: number }
 export interface CompanionAlphaMask { rect: CompanionRect; maskWidth: number; maskHeight: number; data: number[] }
+interface CompanionViewportPoint { x: number; y: number }
+export type CompanionWindowMove =
+  | { kind: 'menu' }
+  | { kind: 'pointer'; grab?: CompanionViewportPoint }
+  | { kind: 'released'; grab: CompanionViewportPoint; end: CompanionViewportPoint }
 
 export interface CompanionDesktopBridge {
   readChatCredential?(endpoint: string): Promise<string | null>
   writeChatCredential?(endpoint: string, secret: string): Promise<void>
-  startDragging?(): Promise<void>
+  startDragging?(request?: CompanionWindowMove): Promise<boolean>
   hide(): void
   openAtelier(pathname?: string): void
   openChat(): Promise<unknown>

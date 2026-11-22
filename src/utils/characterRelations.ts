@@ -39,11 +39,27 @@ export function parseCharacterRelationGraph(value: unknown): CharacterRelationGr
   return { version: 1, work: value.work, people, relations }
 }
 
-export function relationProfile(person: RelationPerson, work: string, profiles: CharacterProfile[]): CharacterProfile | undefined {
-  const bound = profiles.find(profile => profile.id === (person.characterId || person.id))
-  if (bound) return bound
-  // A future profile can resolve a placeholder by its exact original name within the same work.
-  const names = new Set([person.name, ...person.aliases].map(normalizeName))
-  return profiles.find(profile => franchiseKey(profile.source) === franchiseKey(work)
-    && [profile.name, ...profile.alias].some(name => names.has(normalizeName(name))))
+export function indexRelationProfiles(profiles: CharacterProfile[]) {
+  const ids = new Map<string, CharacterProfile>()
+  const works = new Map<string, Map<string, number>>()
+  profiles.forEach((profile, index) => {
+    ids.set(profile.id, profile)
+    const work = franchiseKey(profile.source)
+    let names = works.get(work)
+    if (!names) { names = new Map(); works.set(work, names) }
+    for (const name of [profile.name, ...profile.alias]) {
+      const key = normalizeName(name)
+      if (!names.has(key)) names.set(key, index)
+    }
+  })
+  return (person: RelationPerson, work: string): CharacterProfile | undefined => {
+    const bound = ids.get(person.characterId || person.id)
+    if (bound) return bound
+    const names = works.get(franchiseKey(work))
+    if (!names) return undefined
+    // Older unbound people match the first catalog profile sharing a name in this work.
+    let first = profiles.length
+    for (const name of [person.name, ...person.aliases]) first = Math.min(first, names.get(normalizeName(name)) ?? first)
+    return profiles[first]
+  }
 }

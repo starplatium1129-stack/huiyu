@@ -6,7 +6,7 @@
   --scenario-art-zoom: 1.04;
   --scenario-art-press: .98;
 }
-:global(:root[data-theme="light"]) .scenario-page {
+:root[data-theme="light"] .scenario-page {
   --character-ink: color-mix(in srgb, var(--character-accent, var(--accent)) 42%, var(--ink-base));
 }
 

@@ -49,7 +49,7 @@ function markFailed(event: Event) {
 .storyboard-sprocket { display:block; width:100%; height:8px; flex:none; background-color:var(--bg-deep); background-image:repeating-linear-gradient(90deg, transparent 0 6px, color-mix(in srgb, var(--border-strong) 45%, transparent) 6px 12px, transparent 12px 18px); background-size:18px 4px; background-repeat:repeat-x; background-position:center; border-bottom:1px solid var(--border-soft); }
 .storyboard-sprocket.is-bottom { margin-top:auto; border-bottom:0; border-top:1px solid var(--border-soft); }
 .storyboard-cut { font:600 var(--fs-mono-xs)/1 var(--font-mono); color:var(--accent); font-style:normal; letter-spacing:.06em; }
-:global(:root[data-theme-style='terraria']) .storyboard-sprocket { display:none; }
+:root[data-theme-style='terraria'] .storyboard-sprocket { display:none; }
 @media (forced-colors:active) { .storyboard-sprocket { display:none; } }
 .storyboard-media { aspect-ratio:16 / 10; background:var(--bg-deep); }
 .storyboard-media img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }

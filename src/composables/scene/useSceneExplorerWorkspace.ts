@@ -237,11 +237,19 @@ export function useSceneExplorerWorkspace() {
             return !analysis || uxMatchesSearch(documents!.get(s)!, analysis);
         });
     });
-    const themeCounts = computed<Record<string, number>>(() => Object.fromEntries(THEME_DEFS.map(({ id }) => [id,
-        themeCandidates.value.filter(s => matchesTheme(s, id)).length])));
+    const themeCounts = computed<Record<string, number>>(() => {
+        const counts = new Map<string, number>();
+        const candidates = themeCandidates.value;
+        for (const scene of candidates) {
+            const category = primaryCategory(scene);
+            counts.set(category, (counts.get(category) ?? 0) + 1);
+        }
+        return Object.fromEntries(THEME_DEFS.map(theme => [theme.id, theme.id === 'all'
+            ? candidates.length : theme.categories.reduce((total, category) => total + (counts.get(category) ?? 0), 0)]));
+    });
     function themeCount(id: string) { return themeCounts.value[id] || 0; }
     const filtered = computed(() => {
-        const r = themeCandidates.value.filter(s => matchesTheme(s, activeTheme.value));
+        const r = activeTheme.value === 'all' ? themeCandidates.value : themeCandidates.value.filter(s => matchesTheme(s, activeTheme.value));
         const analysis = searching.value ? queryAnalysis.value : undefined;
         const documents = searchDocuments.value;
         // 相关度先算一遍存 Map:原先在比较器里每次比较都调 uxSearchScore 两次,

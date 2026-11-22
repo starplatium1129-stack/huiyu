@@ -66,7 +66,7 @@
           />
           <div class="companion-pop-group" data-preference-pane="more">
             <strong>界面偏好</strong>
-            <AppearancePreferences launcher-only @open="settingsOpen = false" />
+            <AppearanceLaunchers @open="settingsOpen = false" />
           </div>
           <div class="companion-pop-group" data-preference-pane="more">
             <strong>工作台</strong>
@@ -283,7 +283,7 @@
         @chat="petGestures.controlsOpen.value = false; openChatWindow()"
         @atelier="petGestures.controlsOpen.value = false; desktopBridge.openAtelier()"
         @watch="petGestures.controlsOpen.value = false; screenWatchOpen = true"
-        @pin="togglePin" @hide="desktopBridge.hide"
+        @pin="togglePin" @move="petGestures.moveFromMenu" @hide="desktopBridge.hide"
         @character="switchPetCharacter" @motion="characterStageRef?.playPetMotion?.($event)" />
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
       <CompanionDesktopFloat
@@ -312,7 +312,7 @@ const CompanionOrbitMenu = defineAsyncComponent(() => import('@/components/Compa
 const CompanionClipboardCard = defineAsyncComponent(() => import('@/components/CompanionClipboardCard.vue'))
 const CompanionImportRecovery = defineAsyncComponent(() => import('@/components/CompanionImportRecovery.vue'))
 const CompanionImportRecoveryDialog = defineAsyncComponent(() => import('@/components/CompanionImportRecoveryDialog.vue'))
-const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
+const AppearanceLaunchers = defineAsyncComponent(() => import('@/components/AppearanceLaunchers.vue'))
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
 const loadCharacterPicker = () => import('@/components/CompanionCharacterPicker.vue')

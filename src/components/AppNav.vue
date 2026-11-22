@@ -1,21 +1,22 @@
 <!-- Lucian UX/UI Prompt #212 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#212 -->
 <template>
-  <nav ref="navEl" class="nav u212" aria-label="主导航" :data-tauri-drag-region="desktop ? 'deep' : undefined" :data-scroll-hidden="headerHidden" :data-scrolled="headerScrolled" :data-reduced-motion="headerReduced" @focusin="revealHeader">
+  <nav ref="navEl" class="nav u212" aria-label="主导航" :data-scroll-hidden="headerHidden" :data-scrolled="headerScrolled" :data-reduced-motion="headerReduced" @focusin="revealHeader">
     <div class="nav-inner">
       <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
            中键新标签页,而 Space 激活链接也不是标准行为 -->
-      <RouterLink to="/" class="nav-brand" data-tauri-drag-region="false">
+      <RouterLink to="/" class="nav-brand">
         <BrandLogo class="nav-logo" />
+        <span class="nav-brand-note" aria-hidden="true">创作工作室</span>
       </RouterLink>
 
-      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen, 'show-secondary': menuOpen && moreOpen && moreLoaded }" @keydown="onNavigationKey">
+      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen, 'show-secondary': menuOpen && moreOpen }" @keydown="onNavigationKey">
         <AnimatedSelection target=":scope > a.active" variant="underline" stretch />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"
           :key="item.id"
           :to="item.to"
-          data-tauri-drag-region="false"
+          :aria-label="item.id === 'chat' ? '房间 · 角色聊天' : undefined"
           :target="openBesideTask(item.to) ? '_blank' : undefined"
           :rel="openBesideTask(item.to) ? 'noopener' : undefined"
           :class="{ active: activeId === item.id }"
@@ -28,24 +29,18 @@
           <span class="nav-item-label">{{ item.label }}</span>
         </RouterLink>
 
-        <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
-        <div ref="moreEl" class="nav-more" data-tauri-drag-region="false" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined" @pointerenter="prepareMore" @focusin="prepareMore"
+        <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined"
           :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
           :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
-          <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
-            <button type="button" class="nav-more-trigger"
-              :aria-expanded="moreOpen" :aria-busy="moreReady"
-              @click="openMore"><span class="nav-more-label">更多</span><StudioToggleIcon :active="moreOpen" class="nav-more-chevron" /></button>
-          </StudioTooltip>
-          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :compact="menuOpen" :groups="archiveGroups" :active-id="activeId"
+          <AppMoreMenu v-model:open="moreOpen" :compact="compactLayout" :groups="archiveGroups" :active-id="activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
-            @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
+            @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
             @close-auto-focus="onMoreCloseAutoFocus" />
         </div>
       </div>
 
       <!-- 高频工具在紧凑窗口中也保持可达。 -->
-      <div class="nav-utilities" role="group" aria-label="工作台工具" data-tauri-drag-region="false">
+      <div class="nav-utilities" role="group" aria-label="工作台工具">
         <button
           type="button"
           class="nav-search tw:cursor-pointer" data-spring-button
@@ -54,6 +49,7 @@
           @click="openSearch"
         ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>
         <TaskCenterButton />
+        <span class="nav-utility-divider" aria-hidden="true"></span>
         <AppThemeToggle />
         <AppSoundToggle />
       </div>
@@ -62,13 +58,11 @@
         ref="menuToggleEl"
         type="button"
         class="nav-menu-toggle"
-        data-tauri-drag-region="false"
         aria-controls="primary-navigation"
         :aria-expanded="menuOpen ? 'true' : 'false'"
         :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'"
         @click="toggleMenu"
       ><ArchiveIcon :name="menuOpen ? 'close' : 'menu'" /></button>
-      <DesktopWindowControls v-if="desktop" class="nav-window-controls" />
     </div>
     <span ref="readingProgress" class="u212-progress" aria-hidden="true" />
   </nav>
@@ -76,8 +70,9 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/BrandLogo.vue'
-import { ref, computed, shallowRef, watch, onActivated, onDeactivated, onMounted, onUnmounted, nextTick, type Component } from 'vue'
+import { ref, computed, watch, onActivated, onDeactivated, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
+import AppMoreMenu from './AppMoreMenu.vue'
 import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
 import TaskCenterButton from './tasks/TaskCenterButton.vue'
@@ -86,19 +81,12 @@ import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { needsDocumentReload } from '@/router/documentPolicy'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import { openGlobalSearch } from '@/composables/useGlobalSearch'
-import { useToast } from '@/composables/useToast'
-import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
+import ArchiveIcon from './visual/ArchiveIcon.vue'
+import { archiveGroups, primaryNav, secondaryNav } from '@/router/navigationItems'
 import { useScrollHeader } from '@/composables/useScrollHeader'
-import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
-import DesktopWindowControls from './DesktopWindowControls.vue'
 
 const route = useRoute()
-const desktop = Boolean(getDesktopCapabilities())
 const searchShortcut = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K'
-const { show: showToast } = useToast()
-const AppMoreMenu = shallowRef<Component | null>(null)
 const { activeCount } = useTaskCenter()
 const { pendingPath, intentRoutePath } = useNavigationFeedback()
 function openBesideTask(path: string) { return activeCount.value > 0 && needsDocumentReload(route.path, path) && !location.hostname.includes('tauri') }
@@ -108,15 +96,12 @@ const moreEl = ref<HTMLDivElement | null>(null)
 const moreOpen = ref(false)
 const navEl = ref<HTMLElement | null>(null)
 const menuToggleEl = ref<HTMLButtonElement | null>(null)
-const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value, desktop)
-const moreReady = ref(false)
-const moreLoaded = ref(false)
-const moreError = ref(false)
+const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value)
 let moreHandoff = false
-let menuDownload: Promise<{ default: Component }> | null = null
 let navigationActive = false
 let lastNavigationFocus: HTMLElement | null = null
 const compactNavigation = matchMedia('(max-width:1000px)')
+const compactLayout = ref(compactNavigation.matches)
 // Match the shared navigation breakpoint: hidden anchors must release their menus and focus.
 async function onNavigationLayoutChange(event: MediaQueryListEvent) {
   if (!navigationActive) return
@@ -124,7 +109,8 @@ async function onNavigationLayoutChange(event: MediaQueryListEvent) {
   const active = document.activeElement
   const origin = active instanceof HTMLElement && isNavigationTarget(active) ? active
     : active === document.body && lastNavigationFocus?.isConnected && !lastNavigationFocus.getClientRects().length ? lastNavigationFocus : null
-  const moreWasOpen = moreOpen.value
+  const returnToMore = moreOpen.value || Boolean(origin && moreEl.value?.contains(origin))
+  compactLayout.value = compact
   closeMenu()
   if (!origin) return
   await nextTick()
@@ -132,61 +118,13 @@ async function onNavigationLayoutChange(event: MediaQueryListEvent) {
   const current = document.activeElement
   if (current === document.body ? lastNavigationFocus !== origin : current !== active && current !== origin) return
   const target = compact ? menuToggleEl.value
-    : moreWasOpen ? moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
+    : returnToMore ? moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
       : origin && linksEl.value?.contains(origin) ? origin
         : linksEl.value?.querySelector<HTMLElement>('a[aria-current="page"]') ?? linksEl.value?.querySelector<HTMLElement>('a[href]')
   if (target?.isConnected && target.getClientRects().length) target.focus({ preventScroll:true })
 }
-function downloadMore() {
-  return menuDownload ??= import('./AppMoreMenu.vue').catch(error => { menuDownload = null; throw error })
-}
-function prepareMore() { if (!AppMoreMenu.value) void downloadMore().catch(() => {}) }
 watch(moreOpen, open => { if (open) moreHandoff = false }, { flush:'sync' })
-
-interface NavItem {
-  id: string
-  label: string
-  to: string
-  icon: ArchiveIconName
-}
-
-const primaryNav: NavItem[] = [
-  { id: 'home', label: '首页', to: '/', icon: 'gallery' },
-  { id: 'director', label: '绘制', to: '/prompt-builder', icon: 'spark' },
-  { id: 'character', label: '角色', to: '/character', icon: 'character' },
-  { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
-  { id: 'gallery', label: '作品', to: '/gallery', icon: 'gallery' },
-]
-const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
-  {
-    heading: '创作工具',
-    items: [
-      { id: 'studio-projects', label: '创作项目', to: '/studio-projects', icon: 'folder' },
-      { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
-      { id: 'scenario', label: '剧本模式', to: '/scenario', icon: 'clap' },
-      { id: 'color-script', label: '色彩情绪', to: '/color-script', icon: 'palette' },
-    ],
-  },
-  {
-    heading: '素材资料',
-    items: [
-      { id: 'chat', label: '角色房间', to: '/chat', icon: 'chat' },
-      { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
-      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
-      { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
-      { id: 'lora', label: '模型资料', to: '/lora', icon: 'model' },
-    ],
-  },
-  {
-    heading: '工作室',
-    items: [
-      { id: 'manager',   label: '内容维护', to: '/scene-manager', icon: 'manager' },
-      { id: 'control',   label: '控制面板', to: '/control',       icon: 'gear' },
-      { id: 'guide', label: '使用指南', to: '/guide', icon: 'book' },
-    ],
-  },
-]
-const secondaryNav: NavItem[] = archiveGroups.flatMap(g => g.items)
+watch(() => route.fullPath, closeMenu)
 
 const activeId = computed(() => [...primaryNav, ...secondaryNav].find(item => item.to === route.path)?.id ?? '')
 
@@ -196,26 +134,6 @@ function closeMenu() {
   if (moreOpen.value) moreHandoff = true
   menuOpen.value = false
   moreOpen.value = false
-}
-async function openMore() {
-  if (moreReady.value) { moreOpen.value = !moreOpen.value; return }
-  moreReady.value = true; moreOpen.value = true; moreError.value = false
-  const trigger = moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
-  try {
-    const menu = await downloadMore()
-    if (!navigationActive) return
-    const restoreTrigger = !moreOpen.value && document.activeElement === trigger
-    AppMoreMenu.value = menu.default
-    await nextTick()
-    if (restoreTrigger && document.activeElement === document.body) moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus({ preventScroll:true })
-  }
-  catch {
-    if (!navigationActive) return
-    const requested = moreOpen.value
-    moreOpen.value = false; moreError.value = true
-    if (requested) showToast('菜单暂未加载，请刷新页面后重试。其余导航仍可使用。', 'error', 6000)
-  }
-  finally { moreReady.value = false }
 }
 function onMoreCloseAutoFocus(event: Event) {
   // Route navigation and settings dialogs own focus after selecting an entry.
@@ -237,23 +155,22 @@ async function openGuide() {
   const mobile = menuOpen.value
   closeMenu()
   await nextTick()
-  ;(mobile ? menuToggleEl.value : moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger'))?.focus()
+  ;(mobile ? menuToggleEl.value : moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger'))?.focus({ preventScroll:true })
   window.dispatchEvent(new Event('atelier:welcome'))
 }
 
 function openSearch(event: MouseEvent) {
-  if (menuOpen.value) { closeMenu(); menuToggleEl.value?.focus() }
+  if (menuOpen.value) { closeMenu(); menuToggleEl.value?.focus({ preventScroll:true }) }
   openGlobalSearch(event.detail ? 'pointer' : 'keyboard')
 }
 
 function onDocClick(e: MouseEvent) {
-  // Lazy loading can replace the trigger before this click reaches document.
+  if (!menuOpen.value && !lastNavigationFocus) return
   const path = e.composedPath()
   const inLinks = Boolean(linksEl.value && path.includes(linksEl.value))
   const inToggle = Boolean(menuToggleEl.value && path.includes(menuToggleEl.value))
   const inMore = path.some(node => node instanceof Element && node.classList.contains('nav-more-menu'))
   if (!inLinks && !inToggle && !inMore) lastNavigationFocus = null
-  dismissPendingMore(e)
   if (menuOpen.value && !inMore && !inLinks && !inToggle) closeMenu()
 }
 function isNavigationTarget(target: EventTarget | null) {
@@ -261,29 +178,21 @@ function isNavigationTarget(target: EventTarget | null) {
     || target instanceof Element && target.closest('.nav-more-menu'))
 }
 function onDocFocus(event: FocusEvent) {
-  dismissPendingMore(event)
   // CSS hiding a focused link can fall back to body before the media query callback.
   if (event.target instanceof HTMLElement && event.target !== document.body) {
     lastNavigationFocus = isNavigationTarget(event.target) ? event.target : null
     if (menuOpen.value && !lastNavigationFocus) closeMenu()
   }
 }
-function dismissPendingMore(event: Event) {
-  if (!moreReady.value || !moreOpen.value) return
-  const path = event.composedPath()
-  const inTrigger = Boolean(moreEl.value && path.includes(moreEl.value))
-  const inContent = path.some(node => node instanceof Element && node.classList.contains('nav-more-menu'))
-  if (!inTrigger && !inContent) moreOpen.value = false
-}
 function onDocKey(e: KeyboardEvent) {
   if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
   if (moreOpen.value) {
     moreOpen.value = false
-    void nextTick(() => moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus())
+    void nextTick(() => moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus({ preventScroll:true }))
     e.preventDefault()
   } else if (menuOpen.value) {
     closeMenu()
-    menuToggleEl.value?.focus()
+    menuToggleEl.value?.focus({ preventScroll:true })
     e.preventDefault()
   }
 }
@@ -302,6 +211,7 @@ function onNavigationKey(event: KeyboardEvent) {
 
 function activateNavigation() {
   if (navigationActive) return
+  compactLayout.value = compactNavigation.matches
   navigationActive = true
   document.addEventListener('click', onDocClick)
   document.addEventListener('keydown', onDocKey)
@@ -325,20 +235,20 @@ onUnmounted(deactivateNavigation)
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.u212 { top:0; transition:transform var(--motion-surface) var(--ease-out); }
-.u212[data-scroll-hidden='true'] { transform:translateY(-100%); pointer-events:none; }
+.u212 { top:var(--desktop-chrome-height,0px); transition:transform var(--motion-surface) var(--ease-out); }
+.u212[data-scroll-hidden='true'] { transform:translateY(calc(-100% - var(--desktop-chrome-height,0px))); pointer-events:none; }
 .u212-progress { position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; opacity:0; pointer-events:none; transition:opacity .3s; }
 .u212[data-scrolled='true'] .u212-progress { opacity:1; }
 .u212[data-reduced-motion='true'], .u212[data-reduced-motion='true'] .u212-progress { transition:none; }
 
 .nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
-.nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
+.nav-more[data-pending="true"] :deep(.nav-more-trigger), .nav-more[data-intent="true"] :deep(.nav-more-trigger) {
   outline: none;
   box-shadow: var(--focus-shadow);
   background: var(--bg-elevated);
   @apply tw:text-primary;
 }
-.nav-links a:focus-visible, .nav-more .nav-more-trigger:focus-visible {
+.nav-links a:focus-visible, .nav-more :deep(.nav-more-trigger:focus-visible) {
   outline: none;
   box-shadow: var(--focus-shadow);
 }
@@ -349,11 +259,12 @@ onUnmounted(deactivateNavigation)
   @apply tw:block tw:w-auto; height: 2.2rem; max-width: 12.7rem;
 }
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
+.nav-brand-note { display:none; color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:400; padding-left:var(--s-3); border-left:1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; --selection-ink: var(--accent); border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background:none; border-color:transparent; }
 .nav-links :deep(.animated-selection--underline::after) { inset:auto 18% 3px; background: var(--selection-ink, var(--accent)); }
 .nav-links > a { white-space:nowrap; isolation:isolate; }
-/* The shared hover lift pairs with the character-colored selection underline. */
+/* Press feedback moves the contents within a stationary navigation target. */
 .nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }
 .nav-logo,.nav-item-label,.nav-more :deep(.nav-more-label),.nav-links > a > .archive-icon,.nav-utilities :deep(button > .archive-icon),.nav-utilities :deep(.task-center-button > span),.nav-menu-toggle > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
 .nav-links > a:hover { background:transparent; }
@@ -394,7 +305,10 @@ onUnmounted(deactivateNavigation)
 .nav-utilities .nav-search { padding:0 var(--s-3); border-radius:var(--r-pill); border-color:var(--border-soft); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
 .nav-search-content { display:inline-flex; align-items:center; gap:var(--s-2); min-width:0; }
 .nav-search kbd { display:none; padding:2px var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-xs); background:var(--bg-elevated); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.2 var(--font-mono); white-space:nowrap; }
-@media (min-width:1201px) { .nav-search kbd { display:inline-block; } }
+@media (min-width:1600px) {
+  .nav-brand-note { display:block; }
+  .nav-search kbd { display:inline-block; }
+}
 .nav-utilities :deep(.app-theme-toggle) { width: var(--control-height); padding: 0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
@@ -410,16 +324,7 @@ onUnmounted(deactivateNavigation)
   @apply tw:text-primary;
 }
 .nav-utilities :deep(button:focus-visible) { outline: none; box-shadow: var(--focus-shadow); transition: none; }
-.nav-window-controls { padding-inline-start:var(--s-2); border-inline-start:1px solid var(--border-soft); }
-:global(html.aics-desktop-shell) .nav-inner { gap:var(--s-2); }
-:global(html.aics-desktop-shell) .nav-utilities { border:0; padding:0; }
-:global(html.aics-desktop-shell) .nav-utilities :deep(button) { height:var(--control-height-sm); min-height:var(--control-height-sm); }
-:global(html.aics-desktop-shell) .nav-utilities :deep(.sound-toggle), :global(html.aics-desktop-shell) .nav-utilities :deep(.app-theme-toggle) { width:var(--control-height-sm); }
-:global(html.aics-desktop-shell) .nav-links > a { padding-block:var(--s-2); }
-:global(html.aics-desktop-shell) .nav-more :deep(.nav-more-trigger) { min-height:var(--control-height-sm); }
-@media (min-width:1440px) {
-  :global(html[data-theme-style="terraria"]) .nav-window-controls { border:0; padding:0; justify-content:center; }
-}
+.nav-utility-divider { width:1px; height:16px; margin:0 var(--s-1); background:var(--border-soft); }
 
 @media (max-width: 1000px) {
   .u212 { container:app-navigation / inline-size; }
@@ -435,7 +340,6 @@ onUnmounted(deactivateNavigation)
   .nav-more { min-width: 0; grid-column: auto; }
   .nav-links.show-secondary > :is(a,.animated-selection) { display:none; }
   .nav-links.show-secondary > .nav-more { grid-column:1 / -1; }
-  .nav-more > :deep(.studio-tooltip-anchor[data-anchor]) { width: 100%; }
   .nav-more :deep(.nav-more-trigger) {
     justify-content: space-between;
     width: 100%;

@@ -4,7 +4,7 @@ export function catalogInvalidation(diffs: CatalogReceipt['diffs']) {
   const metadata = new Set<string>(), shards = new Set<'nene' | 'natsume' | 'shared' | 'core'>(), blueprints = new Set<string>()
   for (const diff of diffs) {
     if (diff.kind === 'character') {
-      metadata.add('characters.json'); metadata.add('popular-characters.json'); metadata.add('popular-directory.json')
+      metadata.add('characters.json'); metadata.add('character-archive.json'); metadata.add('popular-characters.json'); metadata.add('popular-directory.json')
     } else if (diff.kind === 'outfit') metadata.add('popular-characters.json')
     else if (diff.kind === 'blueprint') {
       for (const record of [diff.before, diff.after]) {

@@ -9,7 +9,7 @@ import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
 import { defineStore } from 'pinia'
-import { nextTick, ref, shallowRef, watch } from 'vue'
+import { nextTick, ref, shallowRef, toRaw, watch } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
@@ -115,6 +115,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const scenes = ref<Scene[]>([])
   const curation = ref<CurationData>({})
   const characters = ref<Array<Record<string, unknown>>>([])
+  const archiveProfiles = shallowRef<Array<Record<string, unknown>>>([])
   const loras = ref<LoraMeta[]>([])
   const tags = ref<TagMeta[]>([])
   const presets = ref<Record<string, unknown> | unknown[]>([])
@@ -163,6 +164,20 @@ export const useSceneStore = defineStore('scenes', () => {
     },
     parse: raw => requireDataRecords(requireDataCollection(raw, 'characters'), '角色目录').map(characterDirectoryEntry),
     apply: data => { directoryCharacters.value = data as CharacterDirectoryEntry[]; adoptCatalogPendingPortraits(data) },
+  }
+  const archiveSpec: MetaSpec = {
+    file: 'character-archive.json', required: true,
+    read: async (epoch, version) => {
+      const fullProfiles = async () => {
+        const read = await loadMetaSpec(metadata('characters.json'), epoch, version)
+        if (!read.ok) throw read.error
+        return toRaw(characters.value)
+      }
+      return metaOk.has('characters.json') || !isLocalStudioHost()
+        ? fullProfiles() : fetchJson('character-archive.json', version, fullProfiles)
+    },
+    parse: raw => requireDataRecords(raw, '角色档案'),
+    apply: data => { archiveProfiles.value = data as Array<Record<string, unknown>>; adoptCatalogPendingPortraits(data) },
   }
   const titlesSpec: MetaSpec = {
     file: 'scene-titles.json', required: true,
@@ -241,6 +256,8 @@ export const useSceneStore = defineStore('scenes', () => {
   }
   const metadata = (file: string) => META_SPECS.find(spec => spec.file === file)!
   const loadLoraCatalog = () => loadOne(metadata('loras.json'))
+  const loadCharacterArchive = () => loadOne(archiveSpec)
+  const loadCharacterProfiles = () => loadOne(metadata('characters.json'))
   const loadPresetCatalog = () => loadOne(metadata('presets.json'))
   const loadPopularCharacters = () => loadOne(metadata('popular-characters.json'))
   const loadCharacterDirectory = () => loadOne(directorySpec)
@@ -308,7 +325,7 @@ export const useSceneStore = defineStore('scenes', () => {
     blueprintCatalog.invalidate(scope?.blueprints)
     if (sourceChanged) {
       directoryCharacters.value = []; sceneTitles.value = new Map(); cachedCuration = {}
-      scenes.value = []; curation.value = {}; characters.value = []; loras.value = []
+      scenes.value = []; curation.value = {}; characters.value = []; archiveProfiles.value = []; loras.value = []
       adoptCatalogPendingPortraits([])
       tags.value = []; presets.value = []; popularCharacters.value = []
       error.value = null
@@ -342,10 +359,6 @@ export const useSceneStore = defineStore('scenes', () => {
 
   function resolveShard(char: string): ShardChar {
     return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
-  }
-
-  async function prefetchCoreScenes(): Promise<void> {
-    await Promise.all([loadCuration(), loadShard('shared'), loadShard('core')])
   }
 
   /** Browsing needs scene shards and curation, not the studio's model/tag/blueprint catalogs. */
@@ -395,7 +408,8 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets,
     popularCharacters, sceneBlueprints, hasBlueprintCharacter,
     loading, error, loaded, version, metaFailedFiles,
+    archiveProfiles, loadCharacterArchive, loadCharacterProfiles,
     directoryCharacters, sceneTitles, loadCharacterDirectory, loadSceneTitles, loadCuration, loadPopularCharacters,
-    load, prefetchCoreScenes, loadBrowserScenes, loadBlueprintCharacter, loadCharacterShell, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
+    load, loadBrowserScenes, loadBlueprintCharacter, loadCharacterShell, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
   }
 })

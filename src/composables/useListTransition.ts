@@ -1,7 +1,7 @@
 // Inspira UI AnimatedList pattern, adapted to finite, record-keyed collections.
 // https://github.com/unovue/inspira-ui/blob/04c57ab62b9713872ebbf68988dff1836ed3d764/app/components/inspira/ui/animated-list/AnimatedList.vue
 // MIT Copyright (c) 2024-2026 rahulv.dev; notice: assets/licenses/inspira-ui.txt.
-import { onActivated, onDeactivated, onMounted, onScopeDispose, watch, type Ref } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, onScopeDispose, watch, type Ref } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { createContentSpring, type ContentSpring, type SpringPresentation } from '@/utils/contentSpring'
 
@@ -13,6 +13,7 @@ type Snapshot = { root: HTMLElement; ids: Set<string>; positions: Map<string, Po
 
 /** Retained cards move; only newly visible records enter. Initial routes own their reveal. */
 export function useListTransition(root: Ref<HTMLElement | null>, ids: () => readonly string[]) {
+  const keys = computed(ids)
   const animations = new Map<HTMLElement, ContentSpring>()
   let snapshot: Snapshot | null = null
   let active = false
@@ -44,7 +45,10 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
   }
   function visibleCards(element: HTMLElement) {
     const cards: Array<{ element: HTMLElement; id: string; rect: DOMRect }> = []
-    for (const card of Array.from(element.children).slice(0, MAX_MEASURED)) {
+    const children = element.children
+    const limit = Math.min(children.length, MAX_MEASURED)
+    for (let index = 0; index < limit; index++) {
+      const card = children[index]
       if (!(card instanceof HTMLElement) || !card.dataset.listKey) continue
       // The existing image-ready reveal retains ownership of undecoded previews.
       if (card.hasAttribute('data-reveal') && !card.hasAttribute('data-revealed')) continue
@@ -65,9 +69,12 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
     })
   }
 
-  watch(ids, (next, previous) => {
+  watch(keys, (next, previous) => {
     snapshot = null
-    if (next.length === previous.length && next.every((id, index) => id === previous[index])) return
+    // Loading another page leaves the existing records in place. New cards use
+    // their normal image/reveal lifecycle as the reader reaches them.
+    if (previous.length > 0 && next.length >= previous.length && previous.every((id, index) => next[index] === id)) return
+    if (!previous.length && !next.length) return
     const element = root.value
     if (!element || !canAnimate()) { cancelAnimations(); return }
     const positions = new Map<string, Position>()
@@ -80,7 +87,7 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
     snapshot = { root: element, ids: new Set(previous), positions }
   }, { flush: 'pre' })
 
-  watch(ids, () => {
+  watch(keys, () => {
     const before = snapshot; snapshot = null
     if (!before || before.root !== root.value || !canAnimate()) return
     let entering = 0

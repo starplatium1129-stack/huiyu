@@ -14,7 +14,7 @@
     <TabsContent v-for="tab in tabs" :key="tab.id" :value="tab.id" force-mount as-child>
       <section v-show="active === tab.id" v-content-motion:up="active === tab.id" :id="`inspector-${tab.id}`" :data-panel="tab.id"
         class="inspector-scroll inspector-section" :aria-labelledby="`inspector-tab-${tab.id}`" tabindex="0">
-        <DeferredPanel :active="active === tab.id"><slot :name="tab.id" /></DeferredPanel>
+        <DeferredPanel :active="visible && active === tab.id"><slot :name="tab.id" /></DeferredPanel>
       </section>
     </TabsContent>
     <slot name="actions" />
@@ -30,7 +30,7 @@ import ArchiveIcon from '../visual/ArchiveIcon.vue'
 import '@/assets/css/director/expert-workspace.css'
 import '@/assets/css/director/components/DirectorInspector.css'
 
-defineProps<{ queueCount: number; busy: boolean }>()
+defineProps<{ queueCount: number; busy: boolean; visible: boolean }>()
 const tabs = [
   { id: 'render', label: '绘制' }, { id: 'image', label: '图像' },
   { id: 'prompt', label: '提示词' }, { id: 'delivery', label: '任务' },

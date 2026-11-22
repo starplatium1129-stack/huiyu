@@ -1,5 +1,5 @@
 <template>
-  <section class="studio-panel studio-keyframes" aria-labelledby="studio-keyframe-title">
+  <section v-if="visited" v-show="active" class="studio-panel studio-keyframes" aria-labelledby="studio-keyframe-title">
     <header class="studio-heading">
       <h2 id="studio-keyframe-title">关键帧工坊</h2>
       <span class="studio-caption" role="status">{{ saving ? '正在保存' : '' }}</span>
@@ -237,7 +237,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -249,11 +249,12 @@ import type {
   StudioAssetVersion,
   StudioAssetKind,
 } from '@/storage/studioProjectRepository'
-import { assetLabels, frameDragType, imageAccept, versionLabel } from './projectAssets'
+import { assetLabels, frameDragType, imageAccept, projectAssetIndex, versionLabel } from './projectAssets'
 import { candidateKinds, canvasSupported, canvases, variationLines, type GuideMode } from './keyframeDraft'
 import { useGuidedKeyframes } from './useGuidedKeyframes'
 import { useKeyframeWorkbench } from './useKeyframeWorkbench'
 const props = defineProps<{
+  active: boolean
   data: StudioProjectSnapshot
   repo: ReturnType<typeof captureStudioProjectRepository>
   targetTitle: string
@@ -284,7 +285,16 @@ const {
   run,
   cancelBatch,
 } = useKeyframeWorkbench(props)
-const guideTools = useGuidedKeyframes(() => props.data, draft, preferredModel, locked)
+// A video deep link still owns its restored batch and references. Load the
+// editable keyframe controls and model catalogue on their first visit.
+const visited = ref(false)
+watch(() => props.active, active => {
+  if (active && !visited.value) {
+    visited.value = true
+    void loadModels()
+  }
+}, { immediate: true })
+const guideTools = useGuidedKeyframes(() => props.data, draft, preferredModel, locked, visited)
 const { guide, plan, issue: guideIssue, character, garmentOptions, faceOptions } = guideTools
 const guideView = ref<InstanceType<typeof KeyframeGuide>>()
 const advanced = ref<HTMLDetailsElement>()
@@ -294,7 +304,7 @@ const guideAction = computed(() => ({
   scene: '生成 4 张场景套图',
   neutral: '整理为干净立绘',
 })[guide.value.mode])
-const byId = (id: string) => props.data.versions.find((v) => v.id === id)
+const byId = (id: string) => projectAssetIndex(props.data).versions.get(id)
 const completed = computed(() =>
   (draft.value.batch?.jobs || [])
     .filter((j) => j.state === 'done')

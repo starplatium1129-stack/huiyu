@@ -141,7 +141,8 @@ impl RenderContext {
                     present_mode: wgpu::PresentMode::AutoVsync,
                     alpha_mode: self.surface_alpha_mode,
                     view_formats: vec![],
-                    desired_maximum_frame_latency: 2,
+                    // DXGI's frame-latency waitable object admits one present at a time.
+                    desired_maximum_frame_latency: 1,
                 },
             );
         }

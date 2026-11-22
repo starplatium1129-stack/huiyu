@@ -195,7 +195,7 @@ Dark uses warm ink for gallery pages and a neutral mat for creation tools. Light
 
 - **Scale & containers:** `4/8/12/16/24/32/48/64px` spacing; `1200px` max width for standard pages; full viewport width (min `16px` outer gutter) for dense creative workspaces. Use `40px` standard / `32px` compact controls (`--control-height` / `--control-height-sm`) and `44×44 CSS px` minimum targets on coarse pointers.
 - **Breakpoints:** Shared chrome uses `1000 / 768 / 480px`. Local content-driven thresholds: director uses `1440 / 1024 / 900px`; character directory uses `900 / 540px`. Verify both sides of every threshold in both themes.
-- **Desktop navigation** combines the window controls and primary navigation in one persistent row. Its height is 52px, 58px at 2200 CSS px, and 68px at 3000 CSS px. Empty space acts as a drag region. The pixel theme retains its own sidebar.
+- **Desktop navigation** sits below a separate 38px window title bar (44px on touch). The title bar holds the window controls and a draggable area. The navigation follows the page’s scrolling behavior. The pixel theme keeps its sidebar below the title bar.
 - **Director hierarchy & workspace surfaces:**
   1. Canvas/result stage is largest and remains visible pre/post generation (`--bg-surface` empty canvas, `--bg-base` working/result, `--art-stage`/`--on-art-*` strictly for image mats/overlays). Display SFW art in full original proportion.
   2. Story/scene rail starts; director parameters sit secondary with progressive disclosure; prompt internals/diagnostics remain utilities.

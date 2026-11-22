@@ -2,11 +2,10 @@
  * 有界的 window 滚动锚点。
  *
  * 布局突变（返回缓存页面、筛选把列表抽短）会让文档变矮，浏览器随即把滚动位置
- * 钳掉；等内容长回来时用户已经不在原来的位置了。这里把"记位置 + 下一帧重试恢复"
+ * 钳掉；等内容长回来时用户已经不在原来的位置了。这里把记录和恢复滚动位置的操作
  * 抽成一套原语，路由返回（F2.3）与场景库筛选（F3.2）共用，避免并存两份实现。
  *
- * 恢复用 requestAnimationFrame 重试而不是定时器：内容何时变高由渲染决定，
- * 定时器只能靠猜。超时后放弃并把实际落点回报给调用方，不把用户永久锁在某个位置。
+ * 文档高度变化时才重新判断能否到达锚点，超时后回报实际落点。
  */
 
 export interface ScrollAnchor {
@@ -17,7 +16,7 @@ export interface ScrollAnchor {
 export interface RestoreAnchorOptions {
   /** 调用方已完成 DOM 更新时可在绘制前恢复；默认下一帧，保留筛选前捕获的旧布局。 */
   immediate?: boolean
-  /** 每帧重试前询问；返回 false 立即停止（路由已离开、组件已卸载、锚点已被取代） */
+  /** 尝试恢复前询问，返回 false 时停止。 */
   shouldContinue?: () => boolean
   /** 等待文档长到能容纳锚点的上限 */
   timeoutMs?: number
@@ -39,7 +38,7 @@ export function captureScrollAnchor(): ScrollAnchor | null {
 }
 
 /**
- * 内容异步增高后回到锚点；文档还不够高就下一帧再试，直到超时或调用方取消。
+ * 内容异步增高后回到锚点；文档还不够高就等待下一次尺寸变更。
  *
  * 每次调用返回自己的取消句柄 —— 待恢复的帧不能是全局单槽：路由切换与场景库筛选
  * 会同时存在待恢复锚点，共享一个槽会让一方的取消清掉另一方（实测：筛选时写 URL
@@ -48,30 +47,41 @@ export function captureScrollAnchor(): ScrollAnchor | null {
 export function restoreScrollAnchor(anchor: ScrollAnchor, options: RestoreAnchorOptions = {}): () => void {
   if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') return () => undefined
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS
-  const started = performance.now()
   let frame = 0
+  let resize: ResizeObserver | undefined
+  let timer: number | undefined
+  let finished = false
   function cancel() {
-    if (!frame) return
+    finished = true
+    resize?.disconnect()
+    window.clearTimeout(timer)
     window.cancelAnimationFrame(frame)
     frame = 0
   }
-  function retry() {
+  function restore(expired: boolean) {
     frame = 0
-    if (options.shouldContinue && !options.shouldContinue()) return
+    if (finished) return
+    if (options.shouldContinue && !options.shouldContinue()) { cancel(); return }
     const maxTop = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
     const reachable = maxTop + HEIGHT_TOLERANCE_PX >= anchor.top
-    if (!reachable && performance.now() - started < timeoutMs) {
-      frame = window.requestAnimationFrame(retry)
+    if (!reachable && !expired) {
+      if (!resize) {
+        resize = new ResizeObserver(() => restore(false))
+        resize.observe(document.documentElement)
+        resize.observe(document.body)
+        timer = window.setTimeout(() => restore(true), timeoutMs)
+      }
       return
     }
+    cancel()
     // Restoring context must not inherit html's smooth scrolling: that turns a
     // return into a visible trip from the new page's top to the old position.
     window.scrollTo({ left: anchor.left, top: Math.min(anchor.top, maxTop), behavior: 'instant' })
     if (reachable) options.onRestored?.()
     else options.onAbandoned?.(window.scrollY)
   }
-  if (options.immediate) retry()
-  else frame = window.requestAnimationFrame(retry)
+  if (options.immediate) restore(false)
+  else frame = window.requestAnimationFrame(() => restore(false))
   return cancel
 }
 

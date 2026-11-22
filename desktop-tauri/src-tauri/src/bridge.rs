@@ -66,8 +66,10 @@ pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
         let presentation = state.companion_presentation.lock().unwrap();
         (presentation.preparing(), presentation.startup_failed)
     };
+    let always_on_top = state.preferences.lock().unwrap().always_on_top;
+    let live2d_enabled = *state.live2d_enabled.lock().unwrap();
     DesktopState {
-        always_on_top: state.preferences.lock().unwrap().always_on_top,
+        always_on_top,
         ignore_mouse_events: state.ignore_mouse_events.load(Ordering::Relaxed),
         visible: companion(&app)
             .map(|w| w.is_visible().unwrap_or(false))
@@ -77,7 +79,7 @@ pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
         chat_visible: app.get_webview_window("companion-chat")
             .is_some_and(|w| w.is_visible().unwrap_or(false)),
         on_battery_power: crate::watchers::on_battery_power(),
-        live2d_enabled: *state.live2d_enabled.lock().unwrap(),
+        live2d_enabled,
         bounds: crate::main_shared::companion_window_bounds(&app),
     }
 }
@@ -128,14 +130,12 @@ pub fn set_ignore_mouse_events_cmd(app: AppHandle, ignore: bool) {
 
 #[tauri::command]
 pub fn toggle_always_on_top(app: AppHandle, state: State<AppState>) -> bool {
-    let mut preferences = state.preferences.lock().unwrap();
-    let next = !preferences.always_on_top;
+    let next = !state.preferences.lock().unwrap().always_on_top;
     if let Some(w) = companion(&app) {
-        if w.set_always_on_top(next).is_err() { return preferences.always_on_top; }
+        if w.set_always_on_top(next).is_err() { return !next; }
         let _ = w.emit("aics:companion-pin", next);
     }
-    preferences.always_on_top = next;
-    drop(preferences);
+    state.preferences.lock().unwrap().always_on_top = next;
     state.save_preferences();
     crate::chat_dock::follow(&app);
     crate::tray::refresh_tray_menu(&app);

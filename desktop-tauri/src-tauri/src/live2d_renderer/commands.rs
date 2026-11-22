@@ -9,7 +9,7 @@ pub(super) fn handle_command(
 ) {
     match cmd {
         OverlayCommand::Shutdown => state.shutdown.store(true, Ordering::SeqCst),
-        OverlayCommand::SetMaxFps(fps) => state.target_fps.store(fps.clamp(1, 1000), Ordering::SeqCst),
+        OverlayCommand::SetMaxFps(fps) => state.fps_limit.store(fps.min(1000), Ordering::Relaxed),
         OverlayCommand::Destroy { reply } => {
             clear_model_state(state);
             state.visible.store(false, Ordering::SeqCst);
@@ -161,8 +161,7 @@ fn handle_model_command(
             ctx.gaze = (x.clamp(-1.0, 1.0), y.clamp(-1.0, 1.0));
         }
         OverlayCommand::HitTest { x, y, reply } => {
-            let rect = *state.rect.lock().unwrap();
-            let areas = ctx.hit_test(rect, *state.framing.lock().unwrap(), x, y);
+            let areas = ctx.hit_test(state, x, y);
             let _ = reply.send(Ok(areas));
         }
         OverlayCommand::Snapshot { path, reply } => {

@@ -4,7 +4,7 @@
     <button class="viewer-nav viewer-prev" data-fluid-glass type="button" aria-label="上一幅" :disabled="index <= 0" @click="emit('select', index - 1)"><ArchiveIcon name="chevron-down" /></button>
     <slot name="image">
       <GalleryOrbitStage v-if="!original && items[index]" :total="total" :items="items" :index="index" :active="active"
-        :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :load-failed="loadFailed" :reload="reload"
+        :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :thumbnail-for="thumbnailFor" :load-failed="loadFailed" :reload="reload"
         :title="title" @select="emit('select', $event)" @load="emit('load')" @error="emit('error')" />
       <ZoomableImageViewer v-else-if="src || currentPreview || loadFailed" :src="src || currentPreview" :preview-src="currentPreview" :image-key="items[index]?.id" :load-failed="loadFailed" :reload="reload"
         :alt="items[index] ? title(items[index]) : ''" @load="emit('load', $event)" @error="emit('error')">
@@ -31,12 +31,13 @@ import '@/assets/css/gallery-viewer.css'
 const props = withDefaults(defineProps<{
   total?: number; items: T[]; index: number; active: boolean; original: boolean; src: string; previewSrc?: string;
   cardUrls?: Record<string, string>; thumbUrls?: Record<string, string>; neighborUrls?: Record<string, string>;
+  thumbnailFor?: (item: T) => string;
   title: (item: T) => string;
   loadFailed?: boolean; reload?: () => Promise<void>;
 }>(), { previewSrc: '', cardUrls: () => Object.create(null), thumbUrls: () => Object.create(null), neighborUrls: () => Object.create(null) })
 const currentPreview = computed(() => {
-  const id = props.items[props.index]?.id
-  return props.previewSrc || (id === undefined ? '' : props.cardUrls[id] || props.neighborUrls[id] || props.thumbUrls[id] || '')
+  const item = props.items[props.index]
+  return props.previewSrc || (item ? props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || props.thumbnailFor?.(item) || '' : '')
 })
 const emit = defineEmits<{
   close: []; select: [index: number]; 'toggle-original': []; 'dismiss-info': [];
