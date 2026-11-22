@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3123,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "muelsyse_arknights_lingerie_whisper",
     "characterId": "muelsyse_arknights",
@@ -14,7 +14,7 @@
     "location": "莱茵生命生态水培园区，温润的浅水池中漂浮着发光的转基因睡莲",
     "timeOfDay": "生态园闭园后的温存时光",
     "lighting": "水池底部的青碧色防水射灯向上投射，在少女肌肤与周围水生植物上泛起粼粼水纹",
-    "camera": "low angle, medium shot, 低机位中景，水池台阶与踢起的水花同框",
+    "camera": "low angle, medium shot",
     "mood": "水灵剔透、狡黠俏皮的精灵魅力，充满湿润清新的浪漫感",
     "adult": true,
     "sampleRating": "R15",
@@ -42,21 +42,32 @@
     ],
     "promptTokens": [
       "sitting",
-      "white marble stairs",
+      "marble stairs",
       "feet in water",
-      "shallow pool",
       "splashing",
-      "water droplets",
+      "water drop",
+      "looking back",
+      "wink",
+      "playful",
       "water lilies",
-      "botanical greenhouse",
+      "greenhouse",
       "glowing water",
+      "turquoise light",
       "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Muelsyse sits on white marble steps dipping her bare legs into a shallow hydroponic pool, kicking up crystal water droplets with a playful wink. Glowing water lilies drift across the pool surface, casting emerald and turquoise caustics through the tranquil botanical greenhouse.",
-    "animaCaption": "Dipping her legs in the glowing hydroponic pool, she kicks up crystal water droplets with a playful wink.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Muelsyse sits on the white marble steps of Rhine Lab's quiet hydroponic greenhouse after hours, wearing a translucent aqua-gradient sheer chiffon halter slip dress that clings damply along her back. Dipping her bare feet into the shallow pool to kick up crystal droplets, she glances back with a teasing wink as glowing lilies and turquoise underwater lamps ripple across her skin.",
+    "animaCaption": "Seated on white marble steps dipping her bare feet into a shallow greenhouse pool, she kicks up bright droplets and winks over her shoulder in a clinging aqua sheer halter slip. Underwater turquoise lights cast luminous ripples across the lilies and wet chiffon.",
+    "nsfwTokens": [
+      "sheer nightgown",
+      "aqua slip dress",
+      "halterneck",
+      "see-through",
+      "wet clothes",
+      "bare back",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a translucent aqua-gradient sheer chiffon halter slip dress with an open back whose damp ruffled hem clings lightly and floats along the water."
   }
 }

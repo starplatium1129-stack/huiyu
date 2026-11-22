@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3352,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "tachibana_mikari_lingerie_whisper",
     "characterId": "tachibana_mikari",
@@ -14,7 +14,7 @@
     "location": "东京漫展附近商务酒店客房，行李箱敞开在一旁露出各色cos道具",
     "timeOfDay": "漫展狂欢落幕后的深夜",
     "lighting": "客房床头壁灯投下暖白色的聚光，勾勒出娇小紧致的身材轮廓与金发的亮泽",
-    "camera": "close-up, high angle, front view, 正面微俯视特写，咬唇欲泣却又强装倔强的动人神态极具感染力",
+    "camera": "from above, front view, close-up",
     "mood": "默默守护十年的青梅竹马的心痛与执着，从容少女私下彻底袒露的脆弱真情",
     "adult": true,
     "sampleRating": "R15",
@@ -38,23 +38,33 @@
       "front_view"
     ],
     "promptTokens": [
-      "close-up",
-      "high angle",
-      "front view",
-      "indoors",
-      "bedroom",
-      "bed",
-      "night",
-      "warm lighting",
       "sitting",
-      "teacup",
-      "layered flutter ruffles",
-      "sweet pastel aesthetic"
+      "on bed",
+      "biting lip",
+      "teary eyes",
+      "heavy blush",
+      "looking up",
+      "hotel room",
+      "open suitcase",
+      "bedside lamp",
+      "warm lighting",
+      "night",
+      "from above",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Mikari Tachibana sits in center of hotel bed pulling down nightgown hemline, wearing a cherry blossom pink sheer lace bralette set. Biting lower lip with glistening teary eyes, blonde twin tails draped over shoulders, emotional desperate gaze amidst hotel room with open suitcase and cosplay props in corner.",
-    "animaCaption": "Mikari Tachibana sits in center of hotel bed pulling down nightgown hemline, wearing a cherry blossom pink sheer lace bralette set.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed slightly from above in a warm hotel bedroom after a convention with an open suitcase of props nearby, Mikari sits with legs tucked beneath her, biting her lip and looking up with hurt, earnest longing.",
+    "animaCaption": "Sitting at the center of the hotel bed beside her open cosplay suitcase, she tugs nervously at the ruffled hem of her cherry-blossom pink sheer lace bralette and tap shorts, biting her lower lip with tear-bright eyes and stubborn blush.",
+    "nsfwTokens": [
+      "pink lingerie",
+      "lace bra",
+      "ruffles",
+      "see-through",
+      "pink shorts",
+      "bare shoulders",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears a cherry-blossom pink sheer double-lace bralette set trimmed with layered flutter ruffles and matching low-rise ruffled tap shorts.",
+    "compositionIntent": "single"
   }
 }

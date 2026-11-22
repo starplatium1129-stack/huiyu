@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
     "title": "大凤 · 诊疗台护士服半解跨坐主动骑乘",
@@ -19,7 +19,7 @@
     "action": "独自跨坐诊疗软凳，一手抓凳沿、一手腿间自抚",
     "timeOfDay": "黄昏",
     "lighting": "拉帘缝隙投射下的暖橙色斜阳打在起伏的雪肤与黑长双马尾上",
-    "camera": "cowboy shot, low angle, examination stool visible",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -30,22 +30,19 @@
       "twintails",
       "heavy_blush"
     ],
-    "promptProse": "Taihou grips the examination stool and fingers herself beneath her raised nurse dress, its bodice at her waist in warm orange sunlight through the curtain gap.",
+    "promptProse": "Seen from a low angle inside a quiet clinic lit by warm orange sunlight slanting past the curtain gap, Taihou sits astride the padded examination stool gripping its rim with flushed cheeks and breathless focus.",
     "promptTokens": [
-      "Taihou",
-      "pink nurse dress",
-      "white thighhighs",
       "straddling",
       "stool",
-      "clinic",
-      "dress lift",
-      "open clothes",
       "hand on stool",
-      "fingering",
-      "heavy blush",
+      "infirmary",
+      "curtains",
       "sunlight",
-      "cowboy shot",
-      "from below"
+      "warm lighting",
+      "heavy blush",
+      "parted lips",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,11 +51,18 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
+      "nurse",
+      "pink dress",
+      "nurse cap",
+      "dress lift",
+      "open clothes",
       "topless",
-      "masturbation",
-      "hand under clothes"
+      "white thighhighs",
+      "garter straps",
+      "masturbation"
     ],
-    "nsfwProse": "",
-    "animaCaption": "One hand grips the stool edge while the raised dress gathers at her waist beneath the curtain-gap sunlight."
+    "nsfwProse": "Her pink nurse dress is unbuttoned and lifted around her waist to bare her chest above white thigh-high stockings and garter straps, her free hand slipping beneath the gathered hem.",
+    "animaCaption": "Straddling the clinic examination stool in warm sunlight through parted curtains, she grips the stool edge with one hand while fingering herself between her white-stockinged thighs as her pink nurse dress hangs opened and gathered at her waist.",
+    "compositionIntent": "single"
   }
 }

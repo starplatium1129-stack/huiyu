@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_shrine_altar_doggystyle_thrust",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1152,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "倚在神乐案旁，白衣敞开，一手抚胸，另一手探入撩起的红袴下摆，含泪望向前方",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, three-quarter view",
+    "camera": "three quarter view, cowboy shot",
     "category": "深层欢愉",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,25 +22,32 @@
     "location": "神社内殿神案前软榻红垫上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "shrine_maiden",
-    "promptProse": "Yoshino rests against the ceremonial altar, one hand at her chest and the other beneath her raised hakama. Her white robe lies open in the candlelight.",
-    "promptTokens": [
-      "adult",
+    "nsfwProse": "Her white wide-sleeved miko kimono hangs open off her bare breasts and her crimson pleated hakama is hiked up over her thighs as one hand cups her chest and the other slips underneath.",
+    "nsfwTokens": [
       "miko",
-      "open robe",
+      "white kimono",
+      "open kimono",
       "topless",
       "red hakama",
       "skirt lift",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "shrine_maiden",
+    "promptProse": "Inside the dim inner shrine hall lit by flickering altar candles, Yoshino leans back against the kagura stand with flushed cheeks and misty tears as she bites her lower lip.",
+    "promptTokens": [
       "reclining",
-      "masturbation",
-      "altar",
-      "shrine",
-      "candlelight",
-      "cowboy shot",
+      "hand on chest",
+      "biting lip",
+      "teary eyes",
       "heavy blush",
-      "teary eyes"
+      "shrine",
+      "altar",
+      "candlelight",
+      "warm lighting",
+      "night",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -60,6 +67,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "朝武芳乃 · 内殿神乐案前巫女白衣半解露香肩酥胸与红袴自抚",
-    "animaCaption": "One hand rests at her chest above the raised hakama beside the ceremonial altar."
+    "animaCaption": "Reclining beside the candlelit inner-shrine kagura altar with her white miko top unfastened to bare her chest and her scarlet hakama gathered up, she presses one hand over her breast while sliding the other beneath the lifted skirt with tearful, flushed longing.",
+    "compositionIntent": "single"
   }
 }

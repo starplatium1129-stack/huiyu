@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_supermarket",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 417,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "makima_supermarket",
     "title": "玛奇玛 · 超市采购",
@@ -15,7 +15,7 @@
     "action": "推着购物车挑选商品",
     "timeOfDay": "傍晚",
     "lighting": "明亮超市灯光",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "从容日常",
     "sceneTags": [
       "supermarket",
@@ -24,14 +24,22 @@
       "day",
       "indoor"
     ],
-    "promptProse": "She rests one hand on the cart handle and examines a tray of meat with the other beneath the supermarket lights.",
+    "promptProse": "Pausing in the brightly lit fresh-produce and meat aisle of an evening supermarket, Makima wears her ivory silk drape blouse, cropped open jacket, and charcoal pencil skirt with effortless calm. Resting one hand lightly on the metal push-bar of her shopping cart, she tilts a packaged tray of sliced pork toward the light with her other hand while glancing calmly toward the viewer with a quiet, domestic smile. Crisp overhead store lights gleam along the refrigerated cases and tidy shelves.",
     "promptTokens": [
+      "standing",
       "shopping cart",
-      "meat aisle",
+      "holding tray",
+      "meat",
+      "looking at viewer",
+      "gentle smile",
       "supermarket",
-      "hand on cart",
-      "holding meat tray",
-      "shop lighting"
+      "grocery store",
+      "shelf",
+      "fluorescent light",
+      "indoors",
+      "evening",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [
       "readable labels"
@@ -41,6 +49,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand rests on the cart as the other examines the meat tray."
+    "animaCaption": "Pausing beside the refrigerated supermarket aisle with one hand on her shopping cart, Makima inspects a tray of fresh meat with the other and turns toward the viewer with a calm smile. Bright overhead grocery lights reflect along the chilled display cases.",
+    "compositionIntent": "single"
   }
 }

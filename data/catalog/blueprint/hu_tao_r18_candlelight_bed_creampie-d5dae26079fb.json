@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_candlelight_bed_creampie",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "hu_tao_r18_candlelight_bed_creampie",
     "title": "胡桃 · 暖烛房中的幽蝶清梦",
@@ -15,7 +15,7 @@
     "action": "侧蜷在暖烛床榻间，黑衬衣与红底裤，手中轻捧幽灵木雕，梅花瞳孔柔情注视观众",
     "timeOfDay": "深夜",
     "lighting": "暖红烛光与床头纸灯笼的朦胧微光",
-    "camera": "from front, facing viewer, intimate medium shot, eye level",
+    "camera": "front view, eye level, medium shot",
     "mood": "古灵精怪少女难得的静谧与心动",
     "sceneTags": [
       "bedroom",
@@ -26,30 +26,22 @@
       "red_shorts",
       "facing_viewer"
     ],
-    "promptProse": "Hu Tao sits on the bed facing the viewer, an oversized black silk shirt unbuttoned and slipping off her shoulders to reveal her red lace lingerie, collarbone, cleavage, and slender bare legs; warm flickering candlelight reflects playfully in her plum-blossom pupils.",
+    "promptProse": "Hu Tao reclines on a wide traditional bed bathed in crimson candlelight, wearing an unbuttoned black shirt slipped off her shoulders to expose a red lace bra, red string panties, and bare thighs. Cradling a small carved wooden ghost figurine as she meets the viewer's gaze with a warm, teasing smirk, she glows beside a glowing paper lantern.",
     "promptTokens": [
-      "from front",
-      "facing viewer",
-      "looking at viewer",
-      "eye contact",
-      "Hu Tao",
-      "brown twintails",
-      "unbuttoned black shirt",
-      "off-shoulder",
-      "bare shoulder",
-      "delicate collarbone",
-      "cleavage",
-      "red lace bra",
-      "red lace underwear",
-      "bare thighs",
-      "bare legs",
-      "sitting on bed",
-      "leaning back",
-      "plum blossom pupils",
+      "reclining",
+      "on bed",
+      "holding wooden ghost",
       "playful smirk",
-      "candle light",
-      "warm bedroom lighting",
-      "cowboy shot"
+      "blush",
+      "looking at viewer",
+      "chinese bedroom",
+      "paper lantern",
+      "red candles",
+      "warm candlelight",
+      "night",
+      "front view",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [
       "from behind",
@@ -61,13 +53,22 @@
     "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "unbuttoned black shirt",
+      "off shoulder",
+      "red lace bra",
+      "red string panties",
+      "cleavage",
+      "bare shoulders",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears an unbuttoned oversized black shirt slipped off one shoulder to reveal a red lace bra, matching red string panties, and bare thighs.",
     "adultArtistHint": null,
     "outfitId": "black_shirt_red_underwear",
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "Facing the viewer on the candlelight bed, her unbuttoned black shirt reveals her red lace bra, collarbone, and bare legs."
+    "animaCaption": "Curled sideways on the candlelit bed facing the viewer in an unbuttoned black shirt slipping off her shoulder over red lace lingerie, she cradles a small wooden ghost figurine with a soft playful smirk. Warm crimson candlelight and a bedside paper lantern tint the sheets.",
+    "compositionIntent": "single"
   }
 }

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_rhodes_tea_salon_conversation",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 685,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "端坐在复古木椅前，优雅执白瓷茶壶为对面斟茶，眉眼含笑温和",
-    "camera": "medium shot, eye level",
+    "camera": "three quarter view, medium shot",
     "category": "基地日常",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -15,20 +15,27 @@
     ],
     "description": "罗德岛阳光温和的欧式贵宾茶室内，白瓷茶具散发着大吉岭红茶的清香。薇薇安娜端坐在古典木椅前，双手稳稳提起精致的瓷质茶壶，将金红色的红茶注入眼前的茶杯中，金鹿巨角在室内绿植掩映下显得格外温柔——「博士，请用茶。在忙碌的事务之余，偶尔也让身心沉浸在茶香与宁静中吧。」",
     "id": "viviana_rhodes_tea_salon_conversation",
-    "lighting": "柔和窗光与室内暖白壁灯漫射",
+    "lighting": "午后侧窗透光照在壶嘴、茶流与蓝丝绒上，远处有一盏暖壁灯",
     "location": "罗德岛欧式贵宾会客茶室",
     "mood": "端庄温婉",
     "negativeTokens": [],
-    "outfitId": "autumn_stroll_casual",
-    "promptProse": "With one hand on the teapot handle and the other supporting its body, she pours Darjeeling into the cup across the table, soft window light crossing the saucer.",
+    "outfitId": "sfw_salon_velvet",
+    "promptProse": "Viviana sits at the near end of the Rhodes Island guest salon in a fitted peacock-blue velvet jacket over an ivory blouse. The camera looks across a round table draped in linen. She tips a white porcelain teapot, steadying its lid with her free fingers as an unbroken thread of amber tea falls into the cup on its saucer. Fir-green fern leaves frame the far wall and a small wall lamp lights a panel of dark wood. Afternoon light filtered through the side window catches the gold piping on her cuff and the porcelain rim, with her face, hands and the stream of tea all visible.",
     "promptTokens": [
+      "sitting",
+      "pouring",
       "teapot",
-      "cup",
-      "tea room",
-      "medium shot",
-      "pouring tea",
-      "both hands",
-      "window light"
+      "teacup",
+      "table",
+      "tablecloth",
+      "chair",
+      "looking down",
+      "gentle smile",
+      "potted plant",
+      "wall lamp",
+      "window light",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +51,7 @@
     ],
     "timeOfDay": "下午",
     "title": "薇薇安娜 · 罗德岛茶室的温茶叙话",
-    "animaCaption": "One hand holds the teapot handle while the other supports its body."
+    "animaCaption": "Seated at the linen-draped salon table, she steadies the white porcelain teapot with both hands and pours a slender amber stream of tea into the cup. Afternoon window light catches the gold piping on her peacock-blue velvet cuff while a fern and warm wall lamp recede behind her.",
+    "compositionIntent": "single"
   }
 }

@@ -21,7 +21,7 @@
       <div v-if="!portraitLoaded && !portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-loading" role="status">
         <ArchiveIcon name="image" /><div><strong>{{ character.name }}</strong><span>{{ portraitImage.src ? '正在加载立绘…' : '暂无静态立绘，可加载动态立绘' }}</span></div>
       </div>
-      <div v-if="portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-missing" role="status">
+      <div v-if="portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-missing" data-companion-interactive role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
         <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
@@ -35,6 +35,7 @@
         <button
           class="avatar-status"
           type="button"
+          data-companion-interactive
           :data-state="avatarState"
           :disabled="!avatarActionable"
           @click="handleAvatarAction"
@@ -160,6 +161,8 @@ import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import neneWallpaper from '@/assets/illustrations/nene-webchat-wallpaper.webp'
 import natsumeWallpaper from '@/assets/illustrations/natsume-webchat-wallpaper.webp'
+import neneCutout from '@/assets/illustrations/nene-companion-512.webp'
+import natsumeCutout from '@/assets/illustrations/natsume-companion-512.webp'
 import type { CharacterStageProps } from '../types/characterStage'
 import { useAnime25DStage } from '@/composables/useAnime25DStage'
 import Anime25DSettings from '@/components/Anime25DSettings.vue'
@@ -186,6 +189,8 @@ import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'
 import type { Live2DBackendKind } from '@/live2d/types'
+import type { CompanionReadyKind } from '@/types/desktop'
+import { useCompanionInput } from '@/composables/chat/useCompanionInput'
 import Live2DCapabilityReport from './Live2DCapabilityReport.vue'
 
 const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
@@ -203,10 +208,18 @@ const emit = defineEmits<{
 
 const stageRef = ref<HTMLElement>()
 const animeHostRef = ref<HTMLElement>()
-const anime = useAnime25DStage(() => props.activeId, animeHostRef)
+const anime = useAnime25DStage(() => props.activeId, animeHostRef, useCompanionInput()?.captureCanvas)
 watch(() => props.presence, value => anime.setPresence(value || 'available'), { immediate: true })
-const staticPortraitSource = computed(() => props.surface === 'companion' ? props.character.image
-  : props.activeId === 'nene' ? neneWallpaper : props.activeId === 'natsume' ? natsumeWallpaper : props.character.image)
+const staticPortraitSource = computed(() => {
+  if (props.surface === 'companion') {
+    if (props.backend === 'native') {
+      if (props.activeId === 'nene') return neneCutout
+      if (props.activeId === 'natsume') return natsumeCutout
+    }
+    return props.character.image
+  }
+  return props.activeId === 'nene' ? neneWallpaper : props.activeId === 'natsume' ? natsumeWallpaper : props.character.image
+})
 const { image: portraitImage, loaded: portraitLoaded, failed: portraitFailed, retry: reloadPortrait } = useRuntimeImage(staticPortraitSource)
 function retryPortrait() { stageRef.value?.focus({ preventScroll: true }); reloadPortrait() }
 const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
@@ -262,6 +275,13 @@ const live2d = useLive2D((status) => {
   avatarRetryable.value = status.retryable
 })
 const live2dReady = computed(() => live2d.ready.value && live2d.loadedCharacter.value === props.activeId)
+const presentationReady = computed<CompanionReadyKind | undefined>(() => {
+  if (!live2dInitialized.value || anime.restoring.value) return
+  const canRenderNative = live2dReady.value || !['fallback', 'degraded'].includes(avatarState.value)
+  if (props.autoLoad && !props.suspended && !anime.selected.value && canRenderNative) return 'native'
+  if (anime.active.value || portraitLoaded.value) return 'static'
+  if (portraitFailed.value) return 'failed'
+})
 watch(anime.selected, value => { if (value) { enableRequest++; live2d.disable(true) } else if (!anime.restoring.value && live2dInitialized.value && props.autoLoad) void enableCharacter(true) }, { flush: 'sync' })
 watch(framing, () => live2d.layout(), { deep: true, flush: 'post' })
 let desktopVisible = true
@@ -477,6 +497,7 @@ onUnmounted(() => { live2d.attachEmotionRuntime(null); live2d.destroy() })
 const pet = useCharacterPetControls(() => props.activeId, live2d)
 defineExpose({
   ...pet,
+  presentationReady,
   petControls: computed(() => anime.active.value ? { ready: true, motions: anime.motions, expressions: anime.expressions, hint: '试试表情和互动动作；移动鼠标，角色会先看向你，再轻轻转头。' } : pet.petControls.value),
   playPetMotion: (id: string) => anime.active.value ? anime.playMotion(id) : pet.playPetMotion(id),
   setPetExpression: (id: string) => anime.active.value ? anime.setExpression(id) : pet.setPetExpression(id),

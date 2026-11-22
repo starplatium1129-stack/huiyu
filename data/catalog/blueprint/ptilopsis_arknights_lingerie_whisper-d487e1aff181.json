@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3156,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "ptilopsis_arknights_lingerie_whisper",
     "characterId": "ptilopsis_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛中央主机机房辅室，幽蓝色的机柜呼吸灯有节奏地明灭",
     "timeOfDay": "凌晨服务器例行重构时刻",
     "lighting": "机房矩阵蓝绿呼吸灯在少女纯白衣裙与淡色发丝上投下科技感强烈的交替光晕",
-    "camera": "medium shot, eye level, 平视中景，服务器机柜与端坐姿态同框",
+    "camera": "eye level, medium shot",
     "mood": "三无机械心智与真挚情感之间的萌系反差，精密而动人",
     "adult": true,
     "sampleRating": "R15",
@@ -41,21 +41,32 @@
     ],
     "promptTokens": [
       "sitting",
+      "hands on lap",
+      "prim posture",
+      "faint blush",
+      "neutral expression",
+      "looking at viewer",
       "server room",
       "computer terminal",
       "server racks",
-      "pulsing blue led lights",
-      "electronic equipment",
-      "soft smile",
-      "faint blush",
+      "blue led lights",
       "dim lighting",
-      "medium shot",
-      "eye level"
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ptilopsis sits primly beside a central mainframe terminal in the quiet server auxiliary room, hands neatly placed on her lap. Rhythmic blue LED server lights pulse in the dim room, casting a cool technological glow as a faint blush warms her calm mechanical demeanor.",
-    "animaCaption": "Sitting beside glowing server racks in the mainframe room, she looks forward with a quiet, subtle blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ptilopsis sits with crisp posture beside a central server terminal late at night, hands folded neatly on her lap in an ice-grey sheer honeycomb-mesh teddy bodysuit with clean streamline piping. Beneath the steady pulse of blue-green server rack LEDs, her calm orange eyes meet the viewer as an uncharacteristic faint blush tints her cheeks.",
+    "animaCaption": "Seated neatly beside a mainframe terminal with both hands folded on her lap in an ice-grey sheer honeycomb-mesh teddy bodysuit, she meets the viewer's gaze calmly while a faint blush warms her cheeks and ears. Rhythmic blue and cyan server lights glow through the dim auxiliary room.",
+    "nsfwTokens": [
+      "grey bodysuit",
+      "sheer mesh lingerie",
+      "honeycomb mesh",
+      "cutout teddy",
+      "spaghetti straps",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a sleek ice-grey sheer honeycomb-mesh teddy bodysuit with minimalist streamline piping and wireless contour seams."
   }
 }

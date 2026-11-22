@@ -18,7 +18,7 @@ struct Http {
 }
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     let mut router = Router::new();
-    for family in ["anima", "creative", "qwen", "moss", "manga"] {
+    for family in ["anima", "creative", "qwen", "keyframe", "moss", "manga"] {
         router = router
             .route(&format!("/api/{family}/status"), get(status))
             .route(
@@ -52,6 +52,8 @@ pub(super) fn family(uri: &axum::http::Uri) -> &'static str {
         "anima"
     } else if uri.path().starts_with("/api/qwen/") {
         "qwen-image"
+    } else if uri.path().starts_with("/api/keyframe/") {
+        "keyframe"
     } else if uri.path().starts_with("/api/moss/") {
         "moss-image"
     } else if uri.path().starts_with("/api/manga/") {
@@ -151,6 +153,7 @@ async fn status(
 async fn upload_raw(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
+    OriginalUri(uri): OriginalUri,
     reuse: Option<Extension<Arc<remote::UploadIndex>>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
@@ -158,6 +161,9 @@ async fn upload_raw(
     RawUploadBody(bytes, admission): RawUploadBody,
 ) -> Response {
     if let Err(error) = state.host.check_running() {
+        return error.into_response();
+    }
+    if let Err(error) = http.service.check_keyframe_engine(family(&uri)) {
         return error.into_response();
     }
     let owner = generation::request_owner(&headers, peer, &query);

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "iino_miko_lingerie_whisper",
     "characterId": "iino_miko",
@@ -14,7 +14,7 @@
     "location": "秀知院伊井野公寓卧室单人床角落床单上",
     "timeOfDay": "睡前",
     "lighting": "床头小夜灯泛着极微弱的暖橙光芒，在规整纯白的双层棉布保守长睡衣上晕开安谧的光影",
-    "camera": "充满怜爱与保护欲的微俯近景，突显严苛外表下纤弱无助的小动物属性",
+    "camera": "from above, medium close-up",
     "mood": "脆弱纤柔、神经紧绷后的舒缓、让人想要呵护的小动物感",
     "adult": true,
     "sampleRating": "R15",
@@ -37,21 +37,32 @@
       "vulnerable_innocence"
     ],
     "promptTokens": [
-      "white buttoned nightdress",
-      "big headphones",
+      "curled up",
+      "on bed",
+      "headphones",
+      "holding stuffed toy",
       "teddy bear",
-      "curled on bed",
-      "short pigtails",
-      "vulnerable gaze",
-      "warm nightlight",
-      "night light",
-      "dim lighting",
-      "warm lighting"
+      "shy",
+      "looking at viewer",
+      "bedroom",
+      "pillows",
+      "nightlight",
+      "warm lighting",
+      "from above",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. Squeezing a cherished teddy bear against her chest, her soft eyes peek out with endearing, unguarded vulnerability. A faint amber night light on the bedside table casts minimal comforting illumination across the cozy bedroom corner, gently tracing her tucked-in silhouette.",
-    "animaCaption": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. A faint amber night light on the bedside table casts minimal comforting illumination across the cozy bedroom corner, gently tracing her tucked-in silhouette.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from slightly above in the quiet corner of her darkened bedroom, Miko tucks herself among soft pillows with oversized headphones over her ears and a cherished teddy bear hugged close. A soft amber bedside nightlight gently traces her guarded yet trusting gaze.",
+    "animaCaption": "Curled deep among the pillows in the corner of her bed wearing oversized headphones and clutching a worn teddy bear to her chest, she wears a modest buttoned white pintuck cotton nightdress and peeks up shyly in the dim amber nightlight.",
+    "nsfwTokens": [
+      "white nightgown",
+      "long sleeves",
+      "high collar",
+      "buttons",
+      "frills",
+      "pajamas"
+    ],
+    "nsfwProse": "She wears a prim, double-layered white cotton nightdress with delicate chest pintucks, frilled cuffs, and a modest high collar buttoned neatly to her throat.",
+    "compositionIntent": "single"
   }
 }

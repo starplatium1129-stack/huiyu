@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "asuna_r18_suite_bed_mating_press_creampie",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "侧卧天鹅绒大床半裹透光白纱睡袍若隐若现，抱枕蹭脸，单手在纱下深层自抚，金发如瀑铺散娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, from the side",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "ichinose_asuna",
     "coverageTags": [
@@ -22,27 +22,32 @@
     "location": "总统套房海景大床纯白被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "white_silk_robe",
-    "promptProse": "She curls on the oceanview bed, hugging a pillow against her cheek with one arm while the other hand rests beneath the robe hem. Warm bedside light meets faint window light above the dark sea.",
-    "promptTokens": [
-      "bedroom",
-      "sheer white silk robe",
+    "nsfwProse": "Draped only in a translucent white silk-gauze robe with delicate lace trim that leaves her full breasts and nipples visible through the sheer fabric, her free hand reaches beneath the hem between her thighs.",
+    "nsfwTokens": [
+      "white robe",
       "see-through",
-      "halo",
+      "lace trim",
+      "nipples",
+      "bare legs",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "white_silk_robe",
+    "promptProse": "Viewed from the side across a plush velvet hotel bed overlooking the dark sea outside the tall window, Asuna curls against a soft pillow with warm bedside lamplight and cool window reflections illuminating her glowing halo and flushed cheeks.",
+    "promptTokens": [
       "lying",
       "on side",
-      "hugging pillow",
-      "masturbation",
-      "night",
-      "bed",
       "curled up",
-      "white sheets",
+      "hugging pillow",
       "heavy blush",
-      "bedside lamp",
-      "window light",
+      "teary eyes",
+      "bedroom",
+      "white sheets",
+      "window",
       "ocean",
+      "bedside lamp",
+      "night",
+      "from side",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",
@@ -64,6 +69,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "一之濑明日奈 · 总统套房海景大床半透白纱睡袍与金发铺散黏人深抚",
-    "animaCaption": "One arm holds the pillow to her cheek while her other hand rests beneath the robe hem."
+    "animaCaption": "Curled on her side across the oceanview suite bed in a sheer white gossamer silk robe that reveals her breasts underneath, she hugs a pillow to her flushed tearful cheek while her other hand slips beneath the translucent hem.",
+    "compositionIntent": "single"
   }
 }

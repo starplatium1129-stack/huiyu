@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_night_map",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2498,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "rena_liechtenauer_after_night_map",
     "characterId": "rena_liechtenauer",
@@ -16,24 +16,32 @@
     "action": "又在空白处画了一个小圈，问下次能不能一起去那里；这回她特意把路线也记清楚了",
     "timeOfDay": "evening",
     "lighting": "desk lamp",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "期待",
-    "promptProse": "At a home table, Lena circles a destination on a map and looks toward her partner beside the table.",
+    "promptProse": "Seated comfortably at a warm wooden table in the evening in her light blue cardigan and white shirt, Lena leans over a wide unfolded paper map already dotted with small hand-drawn notes. Resting the tip of a wooden pencil beside a freshly circled spot along the margin, she looks up toward the viewer with an eager, expectant smile. A shaded desk lamp casts a cozy golden circle across the folded route lines and her hands.",
     "promptTokens": [
+      "sitting",
       "table",
       "map",
-      "pencil",
+      "holding pencil",
       "writing",
       "looking at viewer",
+      "smile",
       "desk lamp",
+      "warm lighting",
+      "indoors",
+      "evening",
+      "room",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "She marks the next destination on the shared map.",
+    "animaCaption": "Leaning over an unfolded travel map at the wooden table, Lena rests her pencil beside a freshly circled destination and looks up at the viewer with an eager smile. Warm desk lamplight pools over the paper route and her light blue cardigan.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

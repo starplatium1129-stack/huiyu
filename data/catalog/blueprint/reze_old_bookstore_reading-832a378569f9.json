@@ -1,23 +1,23 @@
 {
   "kind": "blueprint",
   "id": "reze_old_bookstore_reading",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 429,
   "createdAt": null,
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "id": "reze_old_bookstore_reading",
     "title": "蕾塞 · 旧书店午后",
     "category": "现代日常",
     "characterId": "reze_chainsaw",
-    "outfitId": "sleeveless_white_shirt",
+    "outfitId": "sfw_bookshop_corduroy",
     "adult": false,
     "description": "弥漫着旧纸墨香的街角二手书店内，蕾塞靠在狭窄的书架旁静静翻看着一本时尚杂志，阳光在她的发梢镀上一层柔金。她合上书页转过身对你轻轻一笑——「即便是在遥远寒冷的北方雪国，人们对温暖与自由的向往，也和此刻站在这里的我们一模一样呢。」",
     "location": "街角旧书店",
     "action": "靠在书架旁翻杂志",
     "timeOfDay": "afternoon",
-    "lighting": "window_light",
-    "camera": "medium shot, leaning against bookstore stack reading magazine",
+    "lighting": "午后街窗侧光照到杂志和半边脸",
+    "camera": "three quarter view, medium shot",
     "mood": "悠闲放松",
     "sceneTags": [
       "bookstore",
@@ -29,15 +29,22 @@
       "casual",
       "dusty_sunbeams"
     ],
-    "promptProse": "Reze leans beside the old shelves and turns through a fashion magazine in the slanting afternoon light.",
+    "promptProse": "Reze rests one shoulder against the end of a narrow shelf in a corner secondhand bookshop. She cradles an open fashion magazine below her chest and curls one thin page from its top corner, watching the illustration underneath. The cuffs of her wine-red jacket frame her hands, and the open white collar leaves her pin choker visible. A low crate of used magazines anchors the near corner. A band of late-afternoon light from the shop window falls across the paper and one side of her face, while staggered shelves recede into the cooler rear aisle. Frame the page turn and the aisle in a three-quarter mid shot.",
     "promptTokens": [
-      "magazine",
-      "reading",
-      "bookstore",
-      "afternoon",
-      "leaning on bookshelf",
+      "standing",
+      "leaning",
+      "open magazine",
+      "holding magazine",
       "turning page",
-      "window light",
+      "reading",
+      "looking down",
+      "bookstore",
+      "bookshelf",
+      "magazine rack",
+      "book stack",
+      "window",
+      "sunbeam",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -47,6 +54,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She turns a page of the fashion magazine while leaning beside the old shelves."
+    "animaCaption": "Her shoulder rests against the end of the shelf as she lifts one page of the open fashion magazine by its corner. Side light from the street window catches her face and fingers, and the shelves recede into shade behind her."
   }
 }

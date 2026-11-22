@@ -81,6 +81,7 @@
             <RouterLink class="btn btn-primary" :to="isPopular
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
               : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />开始绘制</RouterLink>
+            <RouterLink v-if="portraitSources.main && !isPopularPortraitPending(current.id)" class="btn btn-ghost" :to="{ path: '/studio-projects', query: { character: current.id } }"><ArchiveIcon name="folder" />带立绘去创作项目</RouterLink>
             <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">角色房间</RouterLink>
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc047",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
   "data": {
-    "animaCaption": "She draws the curtain as the viewer embraces her from behind, turning toward their shoulder.",
+    "animaCaption": "Nene gathers the edge of one curtain with a lifted hand and turns toward the shoulder of the adult companion behind her. Their sleeves and forearms wrap visibly around her waist. A band of afternoon light reaches the rumpled bed on the other side of the window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "背后拥抱半身剪影",
     "category": "恋爱/After_Story",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, ivory silk nightdress, scalloped neckline, pink ribbon straps, curtain, back hug, looking back, apartment, window, cityscape, afternoon, medium shot, holding curtain, backlighting, arms around waist, sunlight, bright_sunlight, cinematic_lighting, depth_of_field",
+    "prompt": "adult, 1girl, 1boy, ayachi_nene, nightgown, pink ribbons, ivory dress, curtain, back hug, arms around waist, looking back, apartment, bedroom, cityscape, window, afternoon, rim light, three quarter view, silhouette",
     "rating": "All",
     "season": "夏",
     "story": "午后的阳光透过落地窗洒满卧室，成年的宁宁赤足站在窗边，正准备把窗帘拉拢。你从身后靠近时，她红着脸回头，却没有躲开拥抱。光斑落在微乱的床单上——「外面的人看不见吧？那就再抱一会儿……但是要先帮我把窗帘拉好。」",
@@ -48,6 +48,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "She draws the curtain with one hand as the viewer's arms encircle her from behind, turning her face toward their shoulder; afternoon backlight traces her hair and the folds of the curtain."
+    "promptProse": "Afternoon sun stripes the floor of a quiet bedroom as Nene gathers the sheer curtain in one hand. She wears an ivory silk nightgown with small pink ribbon straps and a scalloped neckline. From behind, the companion in a dark everyday shirt folds two arms around her waist, and she turns toward their shoulder with a shy smile. Keep the joined silhouette distinct against the far window and the soft city horizon. A rumpled bed on the shaded side gives the intimate moment a lived-in setting."
   }
 }

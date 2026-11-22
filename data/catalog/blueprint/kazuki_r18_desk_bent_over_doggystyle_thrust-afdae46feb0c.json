@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_desk_bent_over_doggystyle_thrust",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1175,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kazuki_r18_desk_bent_over_doggystyle_thrust",
     "title": "风见一姬 · 讲台边缘白裙肩带滑落与绝对理性崩溃深抚",
@@ -19,7 +19,7 @@
     "action": "坐在讲台边纯白连身裙单肩滑落半露香肩小胸，银白长发垂落，单手探入裙摆深层自抚，红瞳泛泪娇喘",
     "timeOfDay": "黄昏",
     "lighting": "夕阳透过教室玻璃倾泻的浓金逆光与讲台阴影形成的强烈对比",
-    "camera": "cowboy shot, seated podium perspective, focus on blushing face, falling shoulder strap, and crimson eyes",
+    "camera": "three quarter view, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "private_studio",
@@ -36,22 +36,20 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "Kazuki sits on the podium with one leg raised and her white dress slipping from one shoulder. She touches herself beneath the skirt in the sunset light.",
+    "promptProse": "Seated on the wooden edge of an empty studio podium at dusk with one knee drawn up, Kazuki lets one thin strap of her fitted white linen sundress slip down off her bare shoulder. Resting one hand lightly against her forehead in flustered surrender, she slides her other hand deep under the linen skirt hem to touch herself, biting her lower lip with glistening teary eyes. Rich golden sunset rays stream through the classroom windows behind her, rimming her long cascading hair.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "white linen sundress",
-      "thin shoulder straps",
-      "off shoulder",
       "sitting",
       "leg up",
-      "hand under clothes",
-      "masturbation",
-      "podium",
-      "sunset",
+      "hand on forehead",
       "heavy blush",
-      "window light",
+      "teary eyes",
+      "biting lip",
+      "podium",
+      "classroom",
+      "window",
+      "sunset",
       "backlighting",
+      "three quarter view",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -60,8 +58,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "She sits on the podium with one leg raised, her dress slipping from one shoulder."
+    "nsfwTokens": [
+      "white dress",
+      "sundress",
+      "off shoulder",
+      "strap slip",
+      "bare shoulders",
+      "cleavage",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "nsfwProse": "One thin strap of her sleeveless white linen sundress slips off her shoulder to bare her shoulder and upper chest, while her hand reaches deep beneath the raised skirt hem to masturbate.",
+    "animaCaption": "Seated on the wooden podium edge with one knee raised and her white sundress slipping off one bare shoulder, Kazuki presses a hand to her brow while reaching beneath the skirt hem to masturbate. Golden sunset backlighting catches her flushed cheeks and teary eyes.",
+    "compositionIntent": "single"
   }
 }

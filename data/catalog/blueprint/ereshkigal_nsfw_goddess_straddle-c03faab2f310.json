@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_goddess_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "ereshkigal_nsfw_goddess_straddle",
     "title": "埃列什基伽勒 · 女王的主动跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间生涩认真起伏，缎带解半金发垂帘，红瞳盯表情",
     "timeOfDay": "深夜",
     "lighting": "魂火幽光与蕾丝柔光",
-    "camera": "medium shot, first-person view from below",
+    "camera": "from below, pov, medium shot",
     "mood": "生涩认真、女王练习",
     "sceneTags": [
       "nsfw",
@@ -27,20 +27,22 @@
       "glowing",
       "night"
     ],
-    "promptProse": "She straddles the viewer's waist and studies their expression, her hair falling around their faces in the soul glow.",
-    "nsfwProse": "",
+    "promptProse": "On a grand bed inside the underworld sanctuary, Ereshkigal straddles her partner's waist with earnest, blushing focus, her sheer black peignoir and blue lace lingerie opened to bare her breasts above sheer blue thighhighs. Framed from below in first-person view, her long hair drapes forward around them beneath soft ethereal blue soul-light.",
+    "nsfwProse": "Her sheer black peignoir and blue-and-black lace lingerie hang open around her hips, leaving her topless in sheer blue thighhighs as she earnestly rides astride her partner.",
     "promptTokens": [
-      "blue lingerie",
-      "black lace",
-      "open clothes",
-      "topless",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
       "straddling",
-      "blush",
-      "from below",
-      "on lap",
       "looking down",
-      "hair curtain",
-      "blue light",
+      "blush",
+      "hair over shoulder",
+      "bed",
+      "blue glow",
+      "dim light",
+      "from below",
+      "pov",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -55,7 +57,16 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "blue lingerie",
+      "black lace",
+      "open robe",
+      "topless",
+      "nipples",
+      "blue thighhighs",
+      "ribbon",
+      "sex"
+    ],
     "identityProseOverride": "Ereshkigal from Fate/Grand Order, with very long loose blonde hair and red eyes.",
     "identityTokensOverride": [
       "ereshkigal (fate)",
@@ -67,6 +78,7 @@
       "hair_down",
       "red_eyes"
     ],
-    "animaCaption": "She studies the viewer's expression as her hair falls around their faces."
+    "animaCaption": "Straddling the viewer's lap on the underworld bed with her black-lace peignoir and blue lingerie opened to bare her chest, she leans slightly forward so her long hair curtains their faces while earnestly studying their expression. Soft blue soul-flame glow shimmers across her flushed cheeks.",
+    "compositionIntent": "group"
   }
 }

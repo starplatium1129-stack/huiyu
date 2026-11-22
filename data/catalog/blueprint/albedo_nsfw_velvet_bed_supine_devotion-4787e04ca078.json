@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_velvet_bed_supine_devotion",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "albedo_nsfw_velvet_bed_supine_devotion",
     "title": "雅儿贝德 · 天鹅绒大床的深情仰卧",
@@ -15,7 +15,7 @@
     "action": "屈膝靠卧，一手放在胸前，另一手留在腿间。",
     "timeOfDay": "深夜",
     "lighting": "温暖烛台幽光与黑丝绒床单反射的微光",
-    "camera": "cowboy shot, from above, pov",
+    "camera": "from above, cowboy shot",
     "mood": "痴狂献身",
     "sceneTags": [
       "bedroom",
@@ -30,23 +30,21 @@
       "teary_eyes",
       "parted_lips"
     ],
-    "promptProse": "She reclines with her gown lowered and wings along the mattress, one hand at her chest and the other between her legs.",
+    "promptProse": "Viewed from above on a wide black velvet bed, Albedo reclines with bent knees and her dark wings fanned out across the mattress. Warm candlelight flickers along the velvet folds and catches the green gemstone at her waist.",
     "promptTokens": [
       "bedroom",
-      "black velvet bed",
-      "white dress",
-      "open clothes",
-      "topless",
+      "bed",
+      "black sheets",
       "lying",
+      "on back",
       "knees up",
-      "masturbation",
-      "candlelight",
-      "gold necklace",
-      "green gemstone",
-      "lying on back",
       "hand on chest",
-      "hand between legs",
-      "wings"
+      "blush",
+      "parted lips",
+      "candlelight",
+      "night",
+      "from above",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -61,7 +59,17 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
-    "animaCaption": "Her wings rest along the mattress beside her lowered gown."
+    "nsfwProse": "Her white backless gown and gold necklace are pulled down off her torso, leaving her breasts bare as one hand cups her chest and the other lingers between her parted thighs.",
+    "animaCaption": "Reclining on her back across the black velvet bed with knees drawn up and wings spread along the mattress, she wears her white gown lowered to her waist while one hand rests on her bare chest and the other reaches between her thighs.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white dress",
+      "open clothes",
+      "topless",
+      "nipples",
+      "hand between legs",
+      "masturbation",
+      "gold necklace"
+    ]
   }
 }

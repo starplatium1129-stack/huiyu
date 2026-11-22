@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_tatami_ninja_doggystyle_thrust",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1141,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "侧坐缘侧无袖忍者服侧扣解开露大胸，黑色短发与耳侧长发束随风摇曳，单手护胸另一手深层自抚，猫嘴含泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, seated veranda perspective, focus on heaving cleavage, cat-mouth lips, and ninja suit",
+    "camera": "three quarter view, cowboy shot",
     "category": "深层欢愉",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -22,27 +22,32 @@
     "location": "庭院木质回廊缘侧地板边缘",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "ninja_suit",
-    "promptProse": "Mako leans against the veranda pillar with her ninja suit unclasped, one hand at her chest and the other beneath her shorts. Cool moonlight reflected from the garden pond meets the soft lantern light along the wooden corridor.",
-    "promptTokens": [
-      "pleated wrap skirt",
-      "black bike shorts",
-      "black sleeveless ninja top",
+    "nsfwProse": "Her tight sleeveless black ninja top is unclasped at the side to spill out heavy bare cleavage and midriff, while her hand slips inside her black bike shorts beneath the wrap skirt to masturbate.",
+    "nsfwTokens": [
+      "ninja",
       "open clothes",
+      "cleavage",
       "breast slip",
-      "masturbation",
+      "pleated skirt",
+      "bike shorts",
       "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "ninja_suit",
+    "promptProse": "Seated on the wooden veranda edge with her back propped against a timber pillar, Mako has unclasped the side of her tight sleeveless ninja top so her full bare cleavage spills free. Biting her lip with a deep flush, she presses one hand against her heaving chest while slipping her other hand inside the gap of her black bike shorts to masturbate. Silver moonlight shimmering off the garden pond meets warm lantern light along the corridor.",
+    "promptTokens": [
       "sitting",
-      "veranda",
-      "night",
-      "leaning on pillar",
-      "hand on chest",
+      "leaning",
+      "pillar",
+      "hand on own chest",
       "heavy blush",
-      "pond reflection",
+      "biting lip",
+      "veranda",
+      "pond",
       "moonlight",
-      "lantern light",
+      "lantern",
+      "night",
+      "three quarter view",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -63,6 +68,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "常陆茉子 · 缘侧夜风无袖忍者紧身装侧扣解开露饱满酥胸自抚",
-    "animaCaption": "Her back rests against the pillar while one hand stays at her chest and the other beneath her shorts."
+    "animaCaption": "Leaning back against the veranda pillar with her unclasped black ninja top spilling bare cleavage, Mako presses one hand to her chest while slipping the other inside her bike shorts to masturbate. Pond-reflected moonlight and warm lantern glow trace her heavily flushed expression.",
+    "compositionIntent": "single"
   }
 }

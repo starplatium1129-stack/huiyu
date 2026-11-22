@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_lingerie_whisper",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 3326,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "izumi_sagiri_lingerie_whisper",
     "characterId": "izumi_sagiri",
@@ -14,7 +14,7 @@
     "location": "和泉家二楼纱雾紧闭卧室门轴缝隙处",
     "timeOfDay": "午后至深夜",
     "lighting": "二楼阴暗走廊与房间内大开的冷白数位屏强光形成强烈反差，将门缝照得宛如神秘维度",
-    "camera": "充满戏剧反差与死宅幽默的门缝窥视近景，精准还原插画大师纱雾的绝对家里蹲防备心",
+    "camera": "medium close-up, eye level",
     "mood": "死宅自闭、傲娇炸毛、绝对不承认身份的经典名场面",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,31 @@
       "shut_in_artist"
     ],
     "promptTokens": [
-      "pink striped romper",
-      "peeking through door crack",
+      "peeking",
+      "doorway",
+      "door chain",
       "paper mask",
-      "stylus in hand",
-      "silver hair",
-      "shut-in",
-      "funny cute",
-      "monitor glow",
-      "dim lighting",
-      "warm lighting",
-      "high contrast"
+      "holding stylus",
+      "stylus",
+      "hallway",
+      "bedroom",
+      "monitor light",
+      "high contrast",
+      "night",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain. Peeking out behind a comical festival paper mask while clutching her digital art stylus, she stubbornly denies her illustrator identity to her older brother. A stark wedge of brilliant white monitor light from the graphics tablet pierces the dim hallway from the cracked bedroom door, casting sharp dramatic shadows.",
-    "animaCaption": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain. A stark wedge of brilliant white monitor light from the graphics tablet pierces the dim hallway from the cracked bedroom door, casting sharp dramatic shadows.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "At a barely cracked upstairs bedroom door secured by its safety chain, Sagiri leans out wearing a funny festival paper mask with a digital art stylus gripped defensively in hand. A sharp wedge of cool white monitor glow spills from her room into the dim hallway.",
+    "animaCaption": "Opening her chained bedroom door just a narrow crack against the bright tablet glare behind her, she peeks out wearing a comical paper mask and clutching her stylus in a loose pastel-pink and white striped cotton sleep romper.",
+    "nsfwTokens": [
+      "pink romper",
+      "striped clothes",
+      "short sleeves",
+      "buttons",
+      "pajamas",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears a comfy, loose-fitting pastel-pink and white striped jersey cotton sleep romper with short sleeves and a neat front button placket.",
+    "compositionIntent": "single"
   }
 }

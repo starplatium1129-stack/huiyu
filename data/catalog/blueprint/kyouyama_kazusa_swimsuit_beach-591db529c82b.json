@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_beach",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "拿冰淇淋站在海边",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, eye level",
+    "camera": "eye level, medium shot",
     "category": "泳装夏日",
     "characterId": "kyouyama_kazusa",
     "coverageTags": [
@@ -26,16 +26,22 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Kazusa stands by the sea enjoying mint-chocolate ice cream beneath her cat-ear swim hood.",
+    "promptProse": "Standing near the sunlit waterline of a bright summer beach in her black red-ribbon bikini and cat-ear swim hood, Kazusa holds up a double-scoop mint-chocolate ice cream cone in one hand. Glancing toward the viewer with a faint embarrassed blush as warm sea breeze lifts her short hair, she gestures toward a shaded beach umbrella nearby. Sparkling summer sunlight glints across the turquoise ocean waves and pale sand behind her.",
     "promptTokens": [
-      "mint chocolate ice cream",
-      "beach",
-      "summer",
-      "sunlight",
       "standing",
-      "eating ice cream",
-      "sea",
-      "cat-ear hood"
+      "holding food",
+      "ice cream",
+      "ice cream cone",
+      "looking at viewer",
+      "slight blush",
+      "beach",
+      "ocean",
+      "beach umbrella",
+      "blue sky",
+      "sunlight",
+      "summer",
+      "eye level",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -48,6 +54,7 @@
     ],
     "timeOfDay": "白天",
     "title": "杏山和纱 · 夏日海滩·猫耳泳装与冰淇淋",
-    "animaCaption": "She enjoys the mint-chocolate ice cream beside the sea."
+    "animaCaption": "Standing beside the sunlit summer surf in her black bikini and cat-ear swim hood, Kazusa holds a double-scoop mint-chocolate ice cream cone and glances at the viewer with a slight blush. Bright midday sun sparkles over the blue sea and nearby beach umbrella.",
+    "compositionIntent": "single"
   }
 }

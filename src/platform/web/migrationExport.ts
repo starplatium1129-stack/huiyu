@@ -55,6 +55,10 @@ export async function exportMigrationSource(options: {
       }
       cursor = page.nextCursor ?? undefined
     } while (cursor !== undefined)
+    const { visitStudioMigrationRows } = await import('./studioProjectRepository')
+    const studioKeys = { studioProjects: 'huiyu:studio:projects', studioAssets: 'huiyu:studio:assets',
+      studioVersions: 'huiyu:studio:versions', studioShots: 'huiyu:studio:shots' } as const
+    await visitStudioMigrationRows((store,value,index) => append({ source: 'kv',key: studioKeys[store],index,domain: 'studio',value }))
     for (let index = 0; index < localStorage.length; index++) {
       const key = localStorage.key(index)!
       const raw = localStorage.getItem(key)!
@@ -91,7 +95,7 @@ export async function exportMigrationSource(options: {
     }
     cursor = undefined
     do {
-      const page = await imgPage(cursor)
+      const page = await imgPage(cursor,20,true)
       for (const entry of page.entries) {
         options.signal?.throwIfAborted()
         if (!(entry.blob instanceof Blob) || entry.blob.size <= 0) { blockers.push(`media:${entry.id}`); continue }

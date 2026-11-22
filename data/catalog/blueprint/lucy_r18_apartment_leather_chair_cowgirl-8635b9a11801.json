@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_apartment_leather_chair_cowgirl",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot, low angle, three-quarter view, chair back and both hands visible",
+    "camera": "low angle, three quarter view, medium shot",
     "category": "深层欢愉",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [
@@ -22,20 +22,33 @@
     "location": "公寓复古真皮高背扶手单人椅",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Her iridescent silver silk slip dress is gathered high around her waist above sheer black tights pulled aside as she straddles the leather chair and masturbates between her parted thighs.",
+    "nsfwTokens": [
+      "silver dress",
+      "slip dress",
+      "dress lift",
+      "black pantyhose",
+      "torn pantyhose",
+      "cleavage",
+      "spread legs",
+      "masturbation"
+    ],
     "outfitId": "neon_evening_dress",
-    "promptProse": "Lucy straddles the leather chair with her silver dress gathered at her waist, one hand gripping the back and the other touching herself. Red and blue room light crosses the leather chair; disconnected interface cables hang from the wall.",
+    "promptProse": "Straddling a vintage dark leather armchair inside her dim high-rise penthouse, Lucy bunches her liquid-silver silk slip dress up around her waist above her sheer black tights. Gripping the tall chair back tightly with one hand, she slips her other hand between her parted thighs to touch herself, disconnected interface cables hanging idle along the far wall. Magenta and cyan Night City neon through the panoramic window crosses the dark leather and her flushed skin.",
     "promptTokens": [
-      "sitting on lap",
+      "straddling",
       "leather chair",
-      "cyberpunk apartment",
-      "night city neon outside window",
-      "cyan and magenta light",
-      "volumetric lighting",
-      "blush",
-      "intimate glance",
-      "futuristic interior"
+      "cables",
+      "heavy blush",
+      "looking at viewer",
+      "window",
+      "city lights",
+      "neon lights",
+      "magenta light",
+      "blue light",
+      "night",
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -49,6 +62,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "露西 · 公寓皮椅跨坐主动骑乘起伏",
-    "animaCaption": "Vibrant magenta and cyan neon from Night City's mega-towers wash across the darkened penthouse as Lucy leans in close."
+    "animaCaption": "Straddling the dark leather armchair with her silver silk slip dress gathered at her waist, Lucy grips the chair back with one hand while masturbating between her parted thighs with the other. Cyan and magenta neon from the penthouse window washes across her flushed glance and the loose wall cables.",
+    "compositionIntent": "single"
   }
 }

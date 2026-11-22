@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_bedside_candle_whisper",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3108,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "platinum_bedside_candle_whisper",
     "characterId": "platinum_arknights",
@@ -16,7 +16,7 @@
     "action": "侧卧倚枕伸手轻勾衣襟低语",
     "timeOfDay": "夜深人静",
     "lighting": "床头琥珀色香薰烛光跳动弱光",
-    "camera": "斜俯卧姿近景，目光与呼吸近距离聚焦",
+    "camera": "high angle, medium close-up",
     "mood": "深情依恋",
     "sceneTags": [
       "lying on side",
@@ -27,21 +27,23 @@
       "tender smile",
       "intimate"
     ],
-    "promptProse": "Lying gracefully on side upon a deep velvet bed surrounded by soft candlelight, Platinum rests her cheek upon a silk pillow. Her slender fingers reach out delicately towards the viewer. The warm flickering amber candlelight glints along the curves of her ice-blue slip dress, capturing a quiet, deeply intimate moment of unspoken devotion.",
-    "animaCaption": "",
+    "promptProse": "Lying gracefully on her side across dark velvet bedding in a quiet bedroom at night, Platinum rests her cheek on a pillow and reaches gently toward the viewer with an unguarded smile. Warm flickering candlelight glints over her ice-blue silk slip dress with slender spaghetti straps, scalloped lace trim, and high side slit.",
+    "animaCaption": "Lying on her side on dark bedding in an ice-blue lace-trimmed silk slip dress, she rests her cheek against the pillow and reaches out with a soft, intimate smile. Flickering bedside candlelight traces warm amber highlights along her collarbone and silk folds.",
     "promptTokens": [
-      "solo",
-      "lying on side",
+      "lying",
+      "on side",
       "on bed",
-      "pillows",
-      "candlelight",
-      "dim lighting",
+      "pillow",
       "reaching towards viewer",
       "tender smile",
-      "intimate atmosphere",
-      "romantic",
-      "soft shadows",
-      "glowing skin"
+      "looking at viewer",
+      "bedroom",
+      "dark sheets",
+      "candlelight",
+      "dim lighting",
+      "warm shadows",
+      "high angle",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +53,16 @@
       "nsfw",
       "daily"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "light blue slip dress",
+      "silk nightgown",
+      "spaghetti straps",
+      "lace trim",
+      "backless",
+      "side slit",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears an ice-blue silk slip dress with slender spaghetti straps, scalloped lace neckline trim, an open back, and a high side slit."
   }
 }

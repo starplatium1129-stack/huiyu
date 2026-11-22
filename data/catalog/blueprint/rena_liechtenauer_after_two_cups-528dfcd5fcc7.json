@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_two_cups",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2496,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "rena_liechtenauer_after_two_cups",
     "characterId": "rena_liechtenauer",
@@ -16,24 +16,32 @@
     "action": "把第二只茶杯推到你面前，说今天学到一个新词，非要等你喝口茶再猜是什么意思",
     "timeOfDay": "evening",
     "lighting": "warm lamplight",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "放松",
-    "promptProse": "On the inn veranda, Lena offers a cup of tea across a low table, with another cup beside her.",
+    "promptProse": "After the evening rush at the traditional inn winds down, Lena sits along the polished wooden veranda in her pink kimono and dark work apron behind a low table. She slides a second steaming ceramic teacup gently forward across the wood toward the viewer, her own cup resting nearby as she smiles warmly in playful anticipation. Soft amber lantern light glows along the sliding wooden doors and dark garden eaves behind her.",
     "promptTokens": [
+      "sitting",
       "veranda",
       "low table",
-      "two teacups",
-      "offering cup",
+      "teacup",
+      "tea",
+      "steam",
       "looking at viewer",
-      "lamplight",
+      "smile",
+      "japanese architecture",
+      "paper lantern",
+      "warm lighting",
+      "evening",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "She offers the cup to her partner across the table.",
+    "animaCaption": "Seated on the wooden inn veranda in her pink kimono and dark apron, Lena slides a steaming ceramic teacup across the low table toward the viewer with a bright, relaxed smile. Warm lantern light illuminates the two cups and the traditional eaves behind her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

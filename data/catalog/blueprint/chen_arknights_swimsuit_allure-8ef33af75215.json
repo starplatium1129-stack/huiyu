@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3227,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "id": "chen_arknights_swimsuit_allure",
     "characterId": "chen_arknights",
@@ -18,46 +18,66 @@
     "coverageTags": [
       "daily"
     ],
-    "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwTokens": [
+      "one-piece swimsuit",
+      "high collar",
+      "front zipper",
+      "black trim",
+      "tassel"
+    ],
+    "nsfwProse": "She wears a dark-cyan high-collar one-piece swimsuit with black seams, a front zipper and a small red tassel at the hip.",
     "title": "陈 · 观海栈桥上的休假警戒巡视",
     "action": "背手立于悬崖观海栈桥尽头，海风猛烈吹拂深蓝高马尾，单手下意识按在腰间常挂配剑的位置",
     "location": "海滨悬崖木质步道观景台尽头",
     "timeOfDay": "傍晚",
-    "lighting": "雄浑壮阔的深紫与金橙色晚霞横贯天际，强逆光在挺拔身姿与龙角上切出凌厉金边",
-    "camera": "cowboy shot, low angle, majestic and composed composition, strong silhouette",
+    "lighting": "落日橙边扫亮栏杆和龙角，蓝紫海面与深青泳装分出两层",
+    "camera": "three quarter view, from below, cowboy shot",
     "mood": "英姿飒爽、习惯性警觉与放下重担后的坦然舒缓",
     "description": "天际的晚霞如同一幅烧透的锦缎。陈督察站在栈桥的最前哨，深蓝色的高马尾在暴烈海风中肆意狂舞，高领泳衣勾勒出长年严苛操练所铸造的紧致线条。察觉到熟悉的脚步声，她紧绷的肩线终于放松了半分，侧过脸无奈地轻笑了一声——「别总无声无息地走在别人背后。……这里的视野确实很好，没有公文，没有呼叫器。既然你特意跟上来了，就陪我站到天黑吧。」",
     "sceneTags": [
-      "observation_deck",
-      "cliff_walkway",
-      "dramatic_sunset",
-      "windblown_ponytail",
-      "dragon_horns",
-      "dragon_tail",
-      "standing_guard",
-      "ocean_vista"
+      "pier",
+      "railing",
+      "cliff",
+      "ocean",
+      "sunset",
+      "high ponytail",
+      "one-piece swimsuit",
+      "wind"
     ],
     "promptTokens": [
+      "standing",
+      "looking back",
+      "hand on own hip",
+      "pier",
+      "railing",
+      "cliff",
+      "ocean",
+      "waves",
+      "sunset",
+      "backlighting",
+      "wind",
+      "from below",
+      "three quarter view",
+      "cowboy shot"
+    ],
+    "promptProse": "A low view runs along the weathered clifftop boardwalk toward Ch’en at the final railing. She faces the open sea and turns her eyes over her shoulder, her right palm staying at the hip where she usually carries her sword. The wind lifts her high blue ponytail and flutters the small red cord at the seam of her dark-cyan swimwear. Beyond the rail, stepped cliffs fall away to violet water edged with white breakers. One band of late sun runs along the top rail and catches the curve of her horns.",
+    "animaCaption": "At the far end of the boardwalk she looks back over her shoulder, one hand resting at her hip and her high ponytail blowing out over the railing. The rail leads the eye toward the cliff and the surf breaking far below.",
+    "identityTokensOverride": [
+      "ch'en (arknights)",
       "1girl",
       "solo",
-      "chen (arknights)",
       "blue hair",
-      "long ponytail",
+      "high ponytail",
+      "red hair ribbon",
+      "amber eyes",
       "dragon horns",
       "dragon tail",
-      "dark cyan monokini",
-      "front zipper",
-      "windy cliff overlook",
-      "dramatic evening sky",
-      "sunset backlight",
-      "strong posture",
-      "slight smile",
-      "depth of field",
-      "cinematic lighting"
+      "arknights"
     ],
-    "promptProse": "Ch'en stands resolutely at the tip of a clifftop boardwalk against a blazing sunset in her dark-cyan zip-front monokini, her high ponytail whipping in the sea gale as she looks back with a composed smile.",
-    "animaCaption": "A sweeping crimson dusk silhouettes her proud dragon horns and resolute posture as the ocean wind roars below."
+    "identityProseOverride": "Ch'en from Arknights, with blue hair tied into a high ponytail with a red ribbon, amber eyes, dragon horns and a dragon tail."
   }
 }

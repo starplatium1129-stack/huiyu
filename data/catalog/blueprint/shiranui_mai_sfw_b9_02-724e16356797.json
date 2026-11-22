@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1738,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_02",
     "title": "不知火舞 · 灶前的大和抚子",
@@ -16,7 +16,7 @@
     "action": "她系着围裙在灶前做杂煮与便当，动作娴熟温柔",
     "timeOfDay": "日间",
     "lighting": "warm_light",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "kitchen",
@@ -31,16 +31,22 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Mai adds the last vegetables to a lunch box beside the steaming soup pot in warm kitchen light.",
+    "promptProse": "Standing at the warm sunlit kitchen counter in her rolled-sleeve cream cotton shirt and scarlet embroidered apron, Mai carefully arranges crisp simmered vegetables into a wooden bento box using slender cooking chopsticks. Beside her elbow, a simmering clay pot of ozoni soup sends fragrant white steam curling upward into the quiet home kitchen. Soft warm light highlights her tender, domestic smile and the neatly packed lunch.",
     "promptTokens": [
+      "standing",
+      "cooking",
+      "holding chopsticks",
       "bento",
-      "soup",
-      "kitchen",
-      "medium shot",
-      "arranging food",
-      "chopsticks",
+      "pot",
       "steam",
-      "warm lighting"
+      "gentle smile",
+      "looking down",
+      "kitchen",
+      "counter",
+      "warm lighting",
+      "indoors",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +57,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She places the last vegetables into the lunch box beside the steaming soup pot."
+    "animaCaption": "Standing at the kitchen counter in her scarlet apron and rolled-sleeve shirt, Mai uses chopsticks to place fresh vegetables neatly into a bento box beside a steaming soup pot. Warm indoor light illuminates her gentle, focused smile.",
+    "compositionIntent": "single"
   }
 }

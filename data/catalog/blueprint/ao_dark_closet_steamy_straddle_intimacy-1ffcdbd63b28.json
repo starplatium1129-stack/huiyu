@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_dark_closet_steamy_straddle_intimacy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2345,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "ao_dark_closet_steamy_straddle_intimacy",
     "characterId": "sorakado_ao",
@@ -17,28 +17,41 @@
     "action": "苍跨坐在膝头，衬衫完全湿透紧贴着饱满的胸脯，在近在咫尺的耳畔吐出温热的气息",
     "timeOfDay": "afternoon",
     "lighting": "dim amber light slicing through closet door slats illuminating glistening sweat droplets",
-    "camera": "close-up",
+    "camera": "close-up, eye level",
     "mood": "柔媚与水光",
-    "promptProse": "Straddling closely inside a cramped dark closet, Ao pants with a flushed face and parted lips, her sheer damp shirt sticking to her chest.",
+    "promptProse": "Crowded inside a narrow wooden closet to hide in the dim light, Ao sits astride her partner's lap with her face inches from his ear. Thin slats of light cross their faces as heat builds in the enclosed space.",
     "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
       "straddling",
-      "sitting_on_lap",
-      "wet_shirt",
+      "sitting on lap",
       "closet",
-      "dark_room",
+      "dark room",
+      "cramped",
       "sweat",
-      "heavy_breathing",
-      "parted_lips",
-      "close-up",
-      "sunlight",
-      "warm_lighting"
+      "heavy blush",
+      "parted lips",
+      "dim lighting",
+      "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ao straddling her partner in the cramped dark closet, breathless with heat.",
+    "animaCaption": "Huddled inside the cramped dark closet, she straddles her partner's lap in a sweat-dampened pale blue shirt clinging sheerly to her chest, leaning close to his ear with flushed cheeks and parted lips.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "oversized shirt",
+      "blue shirt",
+      "wet clothes",
+      "see-through",
+      "open shirt",
+      "cleavage",
+      "bare thighs"
+    ],
+    "nsfwProse": "Her oversized pale-blue sleep shirt is damp with perspiration and unbuttoned down the front, clinging transparently to her curves while its hem rides up over her bare thighs."
   }
 }

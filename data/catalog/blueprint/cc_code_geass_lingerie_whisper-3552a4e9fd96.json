@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_code_geass_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3303,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "cc_code_geass_lingerie_whisper",
     "characterId": "cc_code_geass",
@@ -14,7 +14,7 @@
     "location": "阿什弗德学园俱乐部起居室厚地毯上",
     "timeOfDay": "深夜",
     "lighting": "电视机暖光与单盏地灯的温馨黄光，在纯白拘束服风睡袍与碧绿长发上洒下柔光",
-    "camera": "生活化微俯角，将不老不死魔女的超脱与贪吃懒散的反差刻画得惟妙惟肖",
+    "camera": "high angle, medium shot",
     "mood": "慵懒超脱、神秘戏谑、充满烟火气的生活质感",
     "adult": true,
     "sampleRating": "R15",
@@ -37,21 +37,34 @@
       "lazy_witch"
     ],
     "promptTokens": [
-      "white wrap nightdress",
-      "cheese-kun plushie",
+      "lying",
+      "on stomach",
+      "shag rug",
       "eating pizza",
-      "lying on carpet",
-      "green hair",
-      "amber eyes",
-      "lazy",
+      "holding plush",
+      "yellow plushie",
+      "lazy smile",
+      "looking at viewer",
+      "living room",
       "floor lamp",
       "warm lighting",
-      "dim lighting"
+      "night",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Her magnificent lime-green tresses frame an ageless, wryly affectionate golden gaze. Gentle amber illumination from a corner floor lamp blends with the low glow of the television, draping soft warmth over her ivory gown and flowing green hair.",
-    "animaCaption": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Gentle amber illumination from a corner floor lamp blends with the low glow of the television, draping soft warmth over her ivory gown and flowing green hair.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sprawled across a plush cream rug in a dim club lounge late at night, C.C. wears a relaxed pure-white cotton wrap nightgown accented with long draping restraint ribbons and loose sleeves. Tucking a Cheese-kun plushie under one arm while eating a slice of melted pizza, she casts a wry, knowing glance beneath warm floor-lamp glow.",
+    "animaCaption": "Sprawled lazily across a thick cream rug in a pure white ribbon-tied wrap nightgown, she hugs a yellow Cheese-kun plushie under one arm while lifting a cheesy slice of pizza with a wry golden glance. Soft floor-lamp warmth and dim screen light wash across the quiet lounge.",
+    "nsfwTokens": [
+      "white wrap nightgown",
+      "restraint ribbons",
+      "loose sleeves",
+      "cotton nightdress",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a pure white relaxed cotton wrap nightgown styled with long trailing restraint ribbons and wide loose sleeves.",
+    "compositionIntent": "single"
   }
 }

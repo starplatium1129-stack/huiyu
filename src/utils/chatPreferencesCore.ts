@@ -8,7 +8,7 @@ const flags = ['apiConfiguredByUser', 'webSearchEnabled', 'live2dEnabled', 'auto
 export function parseChatPreferences(input: unknown): ChatPreferences {
   const value = input as ChatPreferences
   if (!value || value.version !== 1 || texts.some(key => typeof value[key] !== 'string' || value[key]!.length > 2000)
-    || flags.some(key => typeof value[key] !== 'boolean') || !['local', 'api', 'muse'].includes(value.provider)
+    || flags.some(key => typeof value[key] !== 'boolean') || !['local', 'api', 'chatgpt', 'muse'].includes(value.provider)
     || !value.live2dOutfits || typeof value.live2dOutfits !== 'object' || Array.isArray(value.live2dOutfits)
     || Object.values(value.live2dOutfits).some(value => typeof value !== 'string' || value.length > 80))
     throw new Error('聊天偏好版本不兼容或内容损坏，原记录已保留')

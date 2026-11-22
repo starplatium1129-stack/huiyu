@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3144,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "hoshiguma_arknights_lingerie_whisper",
     "characterId": "hoshiguma_arknights",
@@ -14,7 +14,7 @@
     "location": "龙门近卫局特别督察官私人宿所低矮木几旁",
     "timeOfDay": "深夜",
     "lighting": "室内酒肆风味浓郁的红灯笼暖黄光晕，在墨黑真丝麻织大睡袍与高大健硕的体魄上投下豪迈阴影",
-    "camera": "充满豪迈江湖义气的侧景微仰视，展现鬼族女督察官超凡脱俗的高大健朗与豪情万丈",
+    "camera": "low angle, three quarter view, cowboy shot",
     "mood": "豪迈不羁、肝胆相照、千杯不醉的江湖大姐头",
     "adult": true,
     "sampleRating": "R15",
@@ -37,21 +37,34 @@
       "hearty_laugh"
     ],
     "promptTokens": [
-      "oni horn",
-      "tall muscular",
-      "black linen robe",
+      "standing",
       "foot on stool",
-      "drinking sake bowl",
+      "holding sake bowl",
+      "drinking",
       "laughing",
-      "hannya shield",
-      "lantern",
-      "shadow",
-      "glow"
+      "open mouth",
+      "shield in background",
+      "wooden room",
+      "low table",
+      "red lantern",
+      "warm lighting",
+      "night",
+      "low angle",
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Hoshiguma unwinding with exuberant camaraderie late at night inside her personal quarters. Draped in a breezy, open-front black silk-linen lounging robe that shows off her statuesque, powerful build, she props one foot up on a stool while draining a wide ceramic bowl of sake. Her oni horn catches the crimson lantern glow as she laughs with infectious, big-hearted vigor.",
-    "animaCaption": "Hoshiguma unwinding with exuberant camaraderie late at night inside her personal quarters. Draped in a breezy, open-front black silk-linen lounging robe that shows off her statuesque, powerful build, she props one foot up on a stool while draining a wide ceramic bowl of sake.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Hoshiguma unwinds late at night inside her Lungmen quarters, wearing an open-front ink-black silk-linen lounging robe with wide sleeves and a thick rope tie over her tall, athletic frame. With one bare foot propped on a low wooden stool and her Hannya shield resting against the wall, she raises a wide ceramic sake bowl in a hearty laugh under warm red lantern light.",
+    "animaCaption": "Planting one bare foot on a low wooden stool in a loose open-front black silk-linen robe, she raises a wide ceramic bowl of sake with a booming, open-hearted laugh as her Hannya shield rests in the corner. Warm red lantern light highlights her tall, athletic frame.",
+    "nsfwTokens": [
+      "black robe",
+      "open robe",
+      "wide sleeves",
+      "rope belt",
+      "silk linen",
+      "toned abs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a loose open-collar ink-black silk-linen lounging robe with wide raglan sleeves and a thick rope tie, parted casually at the front over her toned waist."
   }
 }

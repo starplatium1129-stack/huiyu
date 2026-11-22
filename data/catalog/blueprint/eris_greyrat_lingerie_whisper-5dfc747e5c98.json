@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3272,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "eris_greyrat_lingerie_whisper",
     "characterId": "eris_greyrat",
@@ -14,7 +14,7 @@
     "location": "阿斯拉剑术道场后院木地板上",
     "timeOfDay": "深夜",
     "lighting": "庭院穿透月光与室内单柄火把的烈光，照亮汗津津的结实腹部与绯红棉质运动短背心",
-    "camera": "wide shot, high angle, 充满原始生命力的大广角微俯，将狂犬少女不拘小节的野性与纯情展现无遗",
+    "camera": "high angle, wide shot",
     "mood": "野性不羁、筋疲力尽、不服输的傲娇与依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,34 @@
       "high_angle"
     ],
     "promptTokens": [
-      "wide shot",
+      "sitting",
+      "indian style",
+      "crossed arms",
+      "blush",
+      "pout",
+      "looking away",
+      "sword",
+      "tent interior",
+      "wooden floor",
+      "campfire glow",
+      "warm firelight",
+      "night",
       "high angle",
-      "sitting cross-legged on wooden floor",
-      "massive broadsword resting against cot",
-      "expedition tent interior",
-      "glowing campfire outside flap",
-      "toned fierce posture",
-      "flustered wild blush",
-      "warm firelight glow"
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Eris sits cross-legged beside her heavy broadsword inside the camping tent, arms crossed defiantly over her chest with a fiery, flustered blush that betrays her fierce pride.",
-    "animaCaption": "Sitting cross-legged inside a travel tent beside her heavy sword, pouting with fiery, wild embarrassment.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated cross-legged on the wooden floorboards inside an expedition tent beside her heavy broadsword, Eris Greyrat wears a crimson ribbed cotton crop tank and loose heather-grey boxing sleep shorts. Folding her arms across her chest with a fiery, embarrassed blush, she glows in warm campfire light filtering through the tent opening.",
+    "animaCaption": "Seated cross-legged beside her heavy broadsword inside the camp tent in a crimson ribbed crop tank and loose grey boxing shorts, she folds her arms with a fierce, flustered blush and glances away. Warm campfire light spills through the tent flap across her toned shoulders.",
+    "nsfwTokens": [
+      "red crop top",
+      "ribbed tank top",
+      "grey shorts",
+      "boxing shorts",
+      "bare midriff",
+      "toned abs",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a sweat-wicking crimson ribbed cotton crop tank revealing her toned midriff paired with loose heather-grey boxing sleep shorts.",
+    "compositionIntent": "single"
   }
 }

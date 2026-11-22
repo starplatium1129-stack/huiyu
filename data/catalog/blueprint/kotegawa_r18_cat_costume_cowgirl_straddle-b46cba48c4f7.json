@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "跪坐软垫猫娘皮革连体服抹胸拉链半崩溢乳，双手戴猫爪护胸，猫尾扫过腿间自抚娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot, slightly low angle looking up at flushed mature face, cat ears, and bursting cleavage",
+    "camera": "from below, medium shot",
     "category": "深层欢愉",
     "characterId": "kotegawa_yui",
     "coverageTags": [
@@ -22,26 +22,32 @@
     "location": "更衣室地毯厚体操软垫上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "cat_costume",
-    "promptProse": "Yui kneels on the mat with the leotard zipper strained open, pressing her paw mittens to her chest while the tail brushes between her thighs. Warm overhead light catches the black leather against the soft mat.",
-    "promptTokens": [
+    "nsfwProse": "Her tight strapless black leather cat leotard strains open at the front zipper to frame bursting cleavage, paired with a black cat-ear headband, plush paw mittens pressed to her chest, black thigh-high stockings, and a costume tail sweeping between her thighs.",
+    "nsfwTokens": [
       "cat costume",
       "cat ear headband",
-      "fake cat tail",
       "paw gloves",
-      "black leather strapless leotard",
+      "black leotard",
+      "leather",
+      "unzipped",
       "cleavage",
+      "fake tail",
+      "black thighhighs"
+    ],
+    "outfitId": "cat_costume",
+    "promptProse": "Seen from a slightly low angle on a cushioned gym mat inside a private dressing room, Yui kneels with parted knees, biting her lip with teary, mortified flush under warm overhead lighting.",
+    "promptTokens": [
       "kneeling",
       "spread legs",
-      "dressing room",
-      "mat",
-      "open zipper",
+      "hands on chest",
+      "biting lip",
+      "teary eyes",
       "heavy blush",
+      "dressing room",
+      "gym mat",
       "warm lighting",
-      "medium shot",
-      "low angle"
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -62,6 +68,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "古手川唯 · 更衣室软垫猫娘紧身抹胸拉链半崩与猫尾抚弄破防",
-    "animaCaption": "Her paw mittens press to her chest as the tail brushes between her thighs."
+    "animaCaption": "Kneeling on the thick dressing-room gym mat in a strapless black leather cat leotard with its front zipper strained open over overflowing cleavage, she presses her plush paw mittens against her chest with tearful blush as the costume cat tail brushes between her parted thighs.",
+    "compositionIntent": "single"
   }
 }

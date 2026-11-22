@@ -381,7 +381,6 @@ pub(super) async fn run(
         groups: group_sender,
         muse: muse_sender.clone(),
     };
-    let mut poll_server = None;
     if settings.private_muse || settings.group_muse {
         let _lock = app.channels.write.lock().await;
         if read::<Settings>(&settings_path(&app, &storage, &principal))
@@ -396,9 +395,7 @@ pub(super) async fn run(
         }
         let mailbox =
             muse::Mailbox::open(&app, &storage, &principal, &settings, api.clone(), &cancel).await;
-        let mailbox = Arc::new(mailbox);
-        *app.channels.muse_qq.lock().unwrap() = Some(mailbox.clone());
-        poll_server = mailbox.start_listener(&app);
+        *app.channels.muse_qq.lock().unwrap() = Some(Arc::new(mailbox));
     }
     let worker_cancel = cancel.clone();
     let worker_app = app.clone();
@@ -468,9 +465,6 @@ pub(super) async fn run(
     cancel.cancel();
     let _ = worker.await;
     app.channels.close_muse_qq();
-    if let Some(server) = poll_server {
-        let _ = server.await;
-    }
 }
 
 async fn process(

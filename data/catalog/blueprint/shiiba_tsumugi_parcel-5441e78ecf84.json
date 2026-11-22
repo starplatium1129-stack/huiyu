@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_parcel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2419,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "shiiba_tsumugi_parcel",
     "characterId": "shiiba_tsumugi",
@@ -16,23 +16,31 @@
     "action": "紬将它从纸盒中取出，转到光线下看清边缘的纹路",
     "timeOfDay": "afternoon",
     "lighting": "window light",
-    "camera": "close up",
+    "camera": "three quarter view, close-up",
     "mood": "好奇",
-    "promptProse": "At a table, Tsumugi holds a small star ornament over an open parcel and turns it toward the window light.",
+    "promptProse": "At a sunlit wooden table beside a freshly opened small cardboard parcel lined with crumpled packing paper, Tsumugi wears her red plaid shirt over a cream top. Lifting a tiny metallic star-shaped ornament between her thumb and forefinger, she tilts it gently toward the afternoon window light to examine the fine engraved pattern along its rim with quiet curiosity. Soft daylight catches the shiny edges of the charm and the open flaps of the box.",
     "promptTokens": [
+      "sitting",
       "table",
+      "cardboard box",
       "open box",
       "holding ornament",
-      "star ornament",
+      "star",
+      "looking at object",
+      "slight smile",
       "window light",
-      "close up"
+      "afternoon",
+      "indoors",
+      "three quarter view",
+      "close-up"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated at the table above an opened cardboard parcel, Tsumugi lifts a small star ornament between her fingers and angles it into the afternoon window light with a curious smile. Soft daylight glints off the charm's etched edge and the open box flaps.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

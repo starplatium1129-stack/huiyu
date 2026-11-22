@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3288,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-22T02:12:34.754508900+00:00",
   "data": {
     "id": "texas_arknights_swimsuit_allure",
     "characterId": "texas_arknights",
@@ -13,8 +13,8 @@
     "action": "踩在巨大的混凝土消波块上，迎着凛冽海风站立，一手插在低腰短裤腰带边缘，咬断嘴里的巧克力棒，狼耳微贴迎风，灰黑眸子里没有任何多余波澜",
     "location": "废弃集装箱码头尽头的风浪防浪石堆",
     "timeOfDay": "傍晚",
-    "lighting": "暮色沉沉的冷色调地平线，逆光勾勒修长轮廓",
-    "camera": "电影感侧视广角，人物在几何消波块与晚霞间显出利落身姿",
+    "lighting": "冷蓝海风和深灰混凝土占大面，末一截晚霞勾亮狼耳和海沫",
+    "camera": "from side, three quarter view, full body",
     "mood": "冷峻帅气、内敛可靠、沉默温情",
     "adult": true,
     "sampleRating": "R15",
@@ -28,29 +28,41 @@
     ],
     "sceneTags": [
       "tetrapod",
-      "shipping_docks",
-      "cool_bikini",
-      "leather_straps",
-      "pocky_stick",
-      "wolf_ears",
-      "sunset_silhouette",
-      "calm_loyalty"
+      "harbor",
+      "ocean",
+      "waves",
+      "sunset",
+      "black bikini",
+      "pocky in mouth"
     ],
     "promptTokens": [
-      "wolf ears",
-      "wolf tail",
-      "tactical black bikini",
       "standing",
       "tetrapod",
-      "biting pocky",
-      "industrial dock",
+      "concrete",
+      "harbor",
+      "crane (machine)",
+      "shipping container",
+      "waves",
+      "sea foam",
+      "ocean",
+      "pocky in mouth",
+      "hand in pocket",
       "sunset",
-      "stoic"
+      "wind",
+      "from side",
+      "full body"
     ],
-    "negativeTokens": [],
-    "promptProse": "Texas standing poised on a massive concrete tetrapod wave breaker at the edge of an industrial harbor as sunset paints the horizon in steel grey and deep amber. She wears a sleek tactical matte-black bikini anchored with leather utility straps and low-slung board shorts. Biting a chocolate snack stick calmly while her wolf ears tilt against the coastal gale, she observes the ocean in cool, unwavering silence.",
-    "animaCaption": "Texas stands on a concrete wave breaker, biting a snack stick while the sun sets over the harbor.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "From the side of the old cargo harbor, Texas stands on the broad sloping arm of a concrete tetrapod, with its other arms interlocked into the breakwater below. She hooks one hand into the edge of her low swim shorts and bites a thin chocolate stick. The wind pushes her black hair and tail toward the docks. Pale foam runs through the angles between the concrete arms. Farther back, rusted cranes and empty containers stand in steel-blue silhouettes below a last strip of amber at the horizon.",
+    "animaCaption": "She stands sideways on the broad branch of a four-armed concrete tetrapod, one hand hooked at her waistband and a thin chocolate stick between her teeth. White water threads through the gaps in the staggered breakwater below.",
+    "nsfwTokens": [
+      "black bikini",
+      "black shorts",
+      "belt buckle"
+    ],
+    "nsfwProse": "She wears a matte black two-piece with understated leather buckles and low-waisted utility swim shorts."
   }
 }

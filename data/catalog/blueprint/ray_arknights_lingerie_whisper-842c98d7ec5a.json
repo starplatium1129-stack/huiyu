@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3128,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "ray_arknights_lingerie_whisper",
     "characterId": "ray_arknights",
@@ -14,7 +14,7 @@
     "location": "雷姆必拓改装野营房车后舱，圆形舷窗外是荒野落日染红的漫天风沙",
     "timeOfDay": "荒原露营的日落时刻",
     "lighting": "房车舷窗射入的浓郁橙黄夕照，将粗布床单与少女肌肤染上一层焦糖色光晕",
-    "camera": "medium shot, eye level, 平视中景，房车大床与舷窗落日风沙同框",
+    "camera": "eye level, medium shot",
     "mood": "荒野猎人的机敏野趣与房车温软被窝里的亲昵调侃",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,33 @@
       "eye_level"
     ],
     "promptTokens": [
-      "lying on stomach",
+      "lying",
+      "on stomach",
       "on bed",
-      "camper van interior",
-      "round porthole window",
-      "sunset horizon",
-      "desert sandstorm",
       "chin on hands",
-      "playful wink",
-      "warm sunset light",
-      "medium shot",
-      "eye level"
+      "wink",
+      "playful smile",
+      "looking at viewer",
+      "camper van",
+      "porthole window",
+      "desert",
+      "sunset",
+      "orange light",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ray lies on her stomach upon the wide camper van bed, resting her chin in both hands with a mischievous wink. Through the circular porthole window, the setting desert sun paints the swirling Rim Billiton sandstorm in vivid shades of amber and rose.",
-    "animaCaption": "Lying on the camper bed with chin in hands, she winks playfully against the sunset sandstorm outside.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ray lies on her stomach across the wide bed inside a modified Rim Billiton camper van at dusk, wearing an apricot-peach crinkled linen open-back camisole with white pom-pom ties and flutter-hem sleep shorts. Propping her chin in both hands with a sly wink, she glows in rich amber desert sunset pouring through the circular porthole.",
+    "animaCaption": "Lying on her stomach across the camper bed with her chin cupped in both hands in a peach open-back ruffled linen camisole and shorts, she shoots a playful wink at the viewer. Warm desert sunset light pours through the round porthole over the rough-woven blankets.",
+    "nsfwTokens": [
+      "peach camisole",
+      "linen sleepwear",
+      "open back",
+      "ruffled shorts",
+      "pom-pom ties",
+      "bare back",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears an apricot-peach crinkled linen open-back ruffled camisole tied with tiny white pom-pom cords and matching flutter-hem sleep shorts."
   }
 }

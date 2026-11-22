@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_volcano_lab",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 546,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "俯身记录实验数据",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉日常",
     "characterId": "eyjafjalla_arknights",
     "coverageTags": [
@@ -18,19 +18,27 @@
     "lighting": "cool lab light with warm sample glow",
     "location": "罗德岛实验室",
     "mood": "专注热忱",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "viewfinder",
+      "timestamp"
+    ],
     "outfitId": "standard",
-    "promptProse": "She writes the volcanic sample's readings beside the spectrometer; the sample's warm glow pools across her gloved hand and notes in the cool laboratory light.",
+    "promptProse": "Eyjafjalla leans over the steel bench in the Rhodes Island geology lab, in the fur-trimmed hooded parka she wears in the field. Her left black glove pins a page to the bench while her other hand writes a reading in the open log. Beside her wrist sits a walnut-sized fragment of porous black basalt in a shallow glass dish. The desk light makes the basalt's rough edge and the pen tip clear. A slim monitor and glass sample racks sit further back under the cool lights of the lab. Frame the bench and her face together from the near corner.",
     "promptTokens": [
-      "gloves",
-      "spectrometer",
-      "rock sample",
-      "laboratory",
-      "medium shot",
+      "leaning forward",
       "writing",
-      "notes",
-      "cool lighting",
-      "warm glow"
+      "holding pen",
+      "black gloves",
+      "notebook",
+      "petri dish",
+      "rock",
+      "desk",
+      "monitor",
+      "test tube",
+      "laboratory",
+      "desk lamp",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +50,7 @@
     ],
     "timeOfDay": "白天",
     "title": "艾雅法拉 · 火山实验室",
-    "animaCaption": "The sample's warm glow falls across her gloved hand and recorded readings."
+    "animaCaption": "Leaning over the steel lab bench in dark insulated gloves, she holds the page steady with her left hand while recording readings in the open log. A dark volcanic rock sample rests in a shallow glass dish beside her wrist under the desk lamp.",
+    "compositionIntent": "single"
   }
 }

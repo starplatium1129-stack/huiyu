@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_feline_straddle_cowgirl",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1331,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，俯身贴颈轻磨犬齿，眼眸赤红泛着痴情",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, first-person view from below",
+    "camera": "from below, pov, cowboy shot",
     "category": "主控骑乘",
     "characterId": "arcueid_brunestud",
     "coverageTags": [
@@ -25,19 +25,21 @@
     "mood": "痴情狂热",
     "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "She straddles the viewer's waist on rumpled bedding with both hands braced on the viewer's chest, leaning toward the viewer's neck. Warm candlelight flickers across the bedding.",
+    "promptProse": "Viewed from below on the rumpled bedroom sheets, Arcueid sits astride her partner's hips with both hands planted on his chest and leans down close to his neck. Warm candlelight flickers across the bedding and highlights her flushed cheeks.",
     "promptTokens": [
-      "bedroom",
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "sweat",
-      "fang",
-      "blush",
-      "from below",
-      "cowgirl position",
-      "hands on viewer chest",
+      "hands on chest",
       "leaning forward",
-      "candlelight"
+      "fang",
+      "bedroom",
+      "messy bed",
+      "candlelight",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -56,10 +58,17 @@
     ],
     "timeOfDay": "深夜",
     "title": "爱尔奎特 · 白猫真祖的痴情跨坐骑乘",
-    "animaCaption": "Her hands brace on the viewer's chest as she leans toward their neck.",
+    "animaCaption": "Nude and glistening with sweat, she straddles her partner's waist with both hands braced against his chest, leaning close toward his neck with parted lips and a glimpse of her fang in the candlelight.",
     "nsfwTokens": [
+      "nude",
+      "sex",
+      "cowgirl position",
       "nipples",
-      "pussy"
-    ]
+      "sweat",
+      "heavy blush",
+      "parted lips"
+    ],
+    "compositionIntent": "group",
+    "nsfwProse": "Completely unclothed in a cowgirl position, she moves her hips with bare breasts swaying above her partner, her skin dewy with sweat and her fang catching the dim glow."
   }
 }

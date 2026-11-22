@@ -325,6 +325,8 @@
       "push": "镜头缓慢推进，保持主体居中且运动连续。",
       "pull": "镜头缓慢拉远，逐步显露环境关系。",
       "pan": "镜头平稳横移，速度均匀，不要突然变焦。",
+      "pan-tripod": "机位固定，镜头围绕垂直轴缓缓摇向一侧，视线连续扫过画面。",
+      "track-lateral": "摄影机保持朝向，沿轨道横向平移，让前景与远景产生自然视差。",
       "orbit": "镜头轻微环绕主体，运动克制并保持身份稳定。"
     },
     "MOTION": {
@@ -337,6 +339,8 @@
       "push": "The camera pushes in at a slow, steady pace.",
       "pull": "The camera pulls out at a slow, steady pace.",
       "pan": "The camera pans steadily to the side, without abrupt zooms.",
+      "pan-tripod": "The tripod stays fixed while the camera pans slowly to one side.",
+      "track-lateral": "The camera tracks sideways with a fixed heading and natural parallax.",
       "orbit": "The camera arcs around the subject with restrained motion, keeping the composition stable."
     },
     "H3_MOTION": {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_intimate_morning_sunlight",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2093,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "ushio_noa_intimate_morning_sunlight",
     "characterId": "ushio_noa",
@@ -17,21 +17,31 @@
     "action": "她半眯着清透的紫眸，嘴角噙着一抹安心至极的清纯微笑，静静凝望着身侧刚刚苏醒的老师",
     "timeOfDay": "morning",
     "lighting": "bright ethereal morning sunshine diffusing through white sheer curtains",
-    "camera": "medium_shot",
+    "camera": "eye level, medium shot",
     "mood": "宁静与神圣",
-    "promptProse": "Awakening in a bright sunlit bed with rumpled white sheets, Ushio Noa props herself up on one elbow in her silk nightgown, her silver locks pooling on pillows as she smiles tenderly.",
+    "promptProse": "Awakening in a bright, tranquil bedroom draped with sheer white curtains, Noa props herself gently on one elbow atop the rumpled white sheets in her translucent pleated chiffon slip dress. Her long silver-white hair pools softly across the pillows as she looks toward the viewer with drowsy, half-lidded eyes and a serene, trusting morning smile. Pure morning sunlight filters through the white curtains, casting a soft luminous glow over the bedding and her delicate pleated neckline.",
     "promptTokens": [
-      "on_bed",
-      "lying_on_bed",
+      "lying",
+      "on bed",
+      "propped up on elbow",
       "pillow",
-      "morning_sunlight",
-      "smile",
-      "medium_shot"
+      "bedsheet",
+      "sheer curtains",
+      "window",
+      "gentle smile",
+      "half-closed eyes",
+      "looking at viewer",
+      "bedroom",
+      "morning",
+      "sunlight",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Noa waking up gently in the bright morning sunlight.",
+    "animaCaption": "Propped up on one elbow amid rumpled white sheets in her white chiffon slip dress, Noa looks toward the viewer with drowsy eyes and a gentle morning smile as her hair spreads over the pillow. Bright morning sunlight diffuses softly through the sheer curtains.",
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

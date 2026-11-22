@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_wasteland_road",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 647,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "action": "背负双剑，逆风独行",
     "adult": false,
-    "camera": "cowboy shot, walking forward with twin swords",
+    "camera": "three quarter view, cowboy shot",
     "category": "泰拉旅路",
     "characterId": "chen_arknights",
     "coverageTags": [
@@ -16,38 +16,45 @@
     ],
     "description": "辞去警服后的泰拉荒原，残阳如血。身着行者风衣的陈背负双剑孑然独行，风沙掠过墨绿色双马尾与龙尾，身影在古道尽头挺拔如松——「龙门的陈警司已经留在昨天了。前路还长，走吧。」",
     "id": "chen_arknights_wasteland_road",
-    "lighting": "blood-red sunset over the wasteland",
+    "lighting": "落日红光照亮夹克迎风的一侧，远崖沉在冷影里",
     "location": "泰拉荒原古道",
     "mood": "苍凉坚毅",
     "negativeTokens": [
       "city buildings"
     ],
     "outfitId": "wayfarer_wanderer",
-    "promptProse": "She walks into the wind with the swords across her back. Red sunset outlines the coat above drifting road dust.",
+    "promptProse": "Ch’en walks into the wind toward a broken sandstone arch on an ancient road through the Terran badlands. She glances back over one shoulder, leaving both sword handles visible above her dusty sage-green hooded jacket. The black scabbard crosses the shorter red one between her shoulders. Wind tugs at her ribbons, and the rust-red sunset picks out the grit at the edge of the rutted track. The path curls through the arch and toward blue-shadowed cliffs.",
     "promptTokens": [
-      "wasteland",
-      "ancient road",
-      "twin swords",
+      "looking back",
+      "over shoulder",
       "sword on back",
+      "multiple swords",
+      "scabbard",
+      "sheathed",
+      "wasteland",
+      "dirt road",
+      "ruins",
+      "arch",
+      "cliff",
+      "rock",
       "walking",
       "wind",
-      "sunset",
-      "cowboy shot",
       "dust",
-      "backlighting"
+      "sunset",
+      "red sky",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "wasteland",
-      "wilderness",
-      "dirt_road",
-      "outdoors",
-      "sunset",
+      "dirt road",
+      "ruins",
+      "walking",
+      "sword on back",
       "wind",
-      "dust"
+      "sunset"
     ],
     "timeOfDay": "黄昏",
     "title": "陈 · 荒野古道独行",
-    "animaCaption": "The swords stay across her back as she walks into the wind."
+    "animaCaption": "As she heads toward the sandstone arch, Ch'en glances back over her shoulder. A black scabbard and a red scabbard cross high on her jacket, their two hilts visible above her shoulders."
   }
 }

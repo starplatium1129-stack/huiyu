@@ -29,13 +29,28 @@ pub struct CompanionPreferences {
     pub live2d_enabled: Option<bool>,
     #[serde(default = "default_chat_docked")]
     pub chat_docked: bool,
-}
-fn default_chat_docked() -> bool { true }
-impl Default for CompanionPreferences {
-    fn default() -> Self { Self { always_on_top: false, ignore_mouse_events: false, live2d_enabled: None, chat_docked: true } }
+    #[serde(default)]
+    pub startup_mode: StartupMode,
 }
 
-const DEFAULT_BOUNDS: WindowBounds = WindowBounds { x: 24, y: 80, width: 540, height: 760 };
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum StartupMode {
+    #[default]
+    Companion,
+    Atelier,
+    Both,
+    Tray,
+}
+
+fn default_chat_docked() -> bool { true }
+impl Default for CompanionPreferences {
+    fn default() -> Self {
+        Self { always_on_top: false, ignore_mouse_events: false, live2d_enabled: None, chat_docked: true, startup_mode: StartupMode::Companion }
+    }
+}
+
+const DEFAULT_BOUNDS: WindowBounds = WindowBounds { x: 24, y: 80, width: 480, height: 680 };
 
 // Geometry and zoom can be saved from different IPC/window callbacks. Serialize
 // read-modify-write so neither callback discards the other's JSON fields.
@@ -167,11 +182,11 @@ pub fn load_companion_preferences(file_path: &Path) -> CompanionPreferences {
     serde_json::from_str(&raw).unwrap_or_default()
 }
 
-pub fn save_companion_preferences(file_path: &Path, preferences: &CompanionPreferences) {
-    save_json_atomic(
+pub fn save_companion_preferences(file_path: &Path, preferences: &CompanionPreferences) -> bool {
+    try_save_json_atomic(
         file_path,
         &serde_json::to_value(preferences).expect("companion preferences must serialize"),
-    );
+    )
 }
 
 pub fn load_desktop_gateway_port(file_path: &Path, fallback: u16) -> u16 {

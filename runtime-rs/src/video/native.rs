@@ -62,6 +62,9 @@ pub(super) fn video_model(id: &str) -> Result<&'static Value> {
 }
 fn supported(input: &Value, spec: &Value) -> Result<()> {
     validation::validate_frames(input, spec)?;
+    if spec["runner"] == "wan-a14b-sd" && !validation::present(&input["image"]) {
+        return Err(error(400, "MODEL_INPUT_MODE", "Wan A14B 图生视频需要首帧。"));
+    }
     for (key, kind, mime, label) in [
         ("drivingVideo", "video", "video/mp4", "动作视频"),
         ("drivingAudio", "audio", "audio/wav", "配音 WAV"),
@@ -170,7 +173,8 @@ pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Val
         .is_some_and(|n| (spec["minSteps"].as_u64().unwrap_or(1)..=100).contains(&n))
         || input["fps"] != spec["fps"]
         || input["cfg"] != spec["cfg"]
-        || (spec["distilled"] == true && input["steps"] != spec["steps"])
+        || (spec["distilled"] == true && !spec["stepOptions"].as_array()
+            .map_or(input["steps"] == spec["steps"], |options| options.contains(&input["steps"])))
         || !input["frames"].as_u64().is_some_and(|n| {
             (spec["minFrames"].as_u64().unwrap()..=spec["maxFrames"].as_u64().unwrap()).contains(&n)
                 && (n - spec["frameOffset"].as_u64().unwrap())
@@ -179,7 +183,12 @@ pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Val
         })
         || input["duration"]
             .as_u64()
-            .is_none_or(|n| spec["durationFrames"][n.to_string()] != input["frames"])
+            .and_then(|n| spec["durationFrames"][n.to_string()].as_u64())
+            .is_none_or(|capacity| match input.get("audioFrames") {
+                Some(frames) => spec["runner"] != "musetalk-native" || frames != &input["frames"]
+                    || frames.as_u64().is_none_or(|n| n > capacity),
+                None => input["frames"] != capacity,
+            })
     {
         return Err(error(
             400,
@@ -227,10 +236,13 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
             let Some(spec) = specs.get(id).filter(|s| s["media"] == "video") else { continue };
             let mut status = runtime.model(id);
             status["executable"] = json!(true);
-            status["durations"] = json!([3, 5, 10, 15].into_iter().filter(|s| spec["durationFrames"].get(s.to_string()).is_some()).collect::<Vec<_>>());
+            status["durations"] = json!([2, 3, 5, 10, 15].into_iter().filter(|s| spec["durationFrames"].get(s.to_string()).is_some()).collect::<Vec<_>>());
             status["qualities"] = if spec["canvases"].is_object() { json!(["standard"]) } else { json!(["fast", "standard", "fine"]) };
             status["supportsNegative"] = spec["negative"].clone();
             status["supportsGeneratedAudio"] = json!(prompt_compiler::supports_audio(spec));
+            if spec["runner"] == "musetalk-native" {
+                status["supportsGeneratedAudio"] = json!(false);
+            }
             for key in ["drivingInput", "attentionModes"] {
                 if let Some(value) = spec.get(key) {
                     status[key] = value.clone();
@@ -260,7 +272,16 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
                 status["summary"] = json!(if steps.contains(&8) { "原生音视频，可选 4 步或 8 步" } else { "原生音视频，4 步生成" });
                 status["turboSteps"] = json!(steps);
             }
-            let environment = if spec["runner"] == "longcat-avatar" { "LongCat-Avatar 独立环境与官方源码" } else { "独立 adapters Python 环境" };
+            if spec["runner"] == "wan-a14b-sd" {
+                status["summary"] = json!("单张首帧或首尾帧，双专家 LightX2V，分块视频解码");
+                status["turboSteps"] = spec["stepOptions"].clone();
+                status["resolutions"] = json!([480,720]);
+            }
+            let environment = match spec["runner"].as_str() {
+                Some("longcat-avatar") => "LongCat-Avatar 独立环境与官方源码",
+                Some("wan-a14b-sd") => "sd.cpp CUDA 原生视频执行器",
+                _ => "独立 adapters Python 环境",
+            };
             status["requirements"] = json!([environment, format!("{id}/ 完整模型目录"), "本机 ffmpeg"]);
             status["missing"] = if status["available"] == true { json!([]) } else { json!([reason]) };
             models.push(status);
@@ -295,7 +316,7 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
       .ok_or_else(|| error(503, "NATIVE_STATUS_UNAVAILABLE", "缺少原生视频模型清单"))?;
     Ok(
         json!({"engine":"native","provider":"native","readiness":"files-only","validation":"待主力机验证",
-        "online":models.iter().any(|m| m["available"]==true),"models":models,"pending":backend.pending(),"maxPending":4,
+        "online":models.iter().any(|m| m["available"]==true),"models":models,"pending":backend.pending(),"maxPending":generation::native::MAX_PENDING,
         "defaults":{"modelId":default["id"],"aspectRatio":"landscape","duration":default["durations"][0],"camera":"still","motion":"subtle","quality":"standard","steps":default["defaults"]["steps"]},
         "qualities":qualities,"t8":{"available":false,"reason":"原生适配未接入 H3 T8"}}),
     )

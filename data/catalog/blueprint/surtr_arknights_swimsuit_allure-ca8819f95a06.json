@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3245,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "id": "surtr_arknights_swimsuit_allure",
     "characterId": "surtr_arknights",
@@ -13,8 +13,8 @@
     "action": "单脚踩在岩石上，一手拿冰淇淋甜筒轻尝，另一手叉腰侧视",
     "location": "烈日灼晒的红色岩礁浅水湾",
     "timeOfDay": "正午",
-    "lighting": "强烈明朗的日光与赤色岩石投下的硬朗阴影",
-    "camera": "cowboy shot, low angle, 礁石七分身低角度仰视，烈日下吃冰淇淋神态清晰",
+    "lighting": "正午直射光照亮发梢和树莓冰球，赤岩台阶投下硬边阴影",
+    "camera": "from below, three quarter view, full body",
     "mood": "孤傲火辣",
     "adult": true,
     "sampleRating": "R15",
@@ -28,33 +28,44 @@
     ],
     "sceneTags": [
       "standing",
-      "holding_ice_cream",
-      "eating_ice_cream",
-      "ice_cream_cone",
+      "leg up",
+      "holding ice cream",
+      "ice cream cone",
+      "beach",
       "rock",
-      "sunlight",
-      "shadow",
-      "water",
-      "cowboy_shot",
-      "low_angle"
+      "shallow water",
+      "sunlight"
     ],
     "promptTokens": [
       "standing",
+      "leg up",
+      "hand on own hip",
       "holding ice cream",
-      "eating ice cream",
       "ice cream cone",
+      "looking to the side",
       "rock",
+      "cliff",
+      "beach",
+      "shallow water",
       "sunlight",
       "shadow",
-      "water",
-      "looking at viewer",
-      "cowboy shot",
-      "low angle"
+      "from below",
+      "three quarter view",
+      "full body"
     ],
-    "negativeTokens": [],
-    "promptProse": "Standing upon sun-warmed red sea rocks at a coastal cove under brilliant midday sun, Surtr holds a double-scoop raspberry ice cream cone, looking sideways with cool pride. Clear direct sunlight reflects off the shallow blue water and casts sharp shadows against the rocky shore.",
-    "animaCaption": "Holding an ice cream cone on the coastal sunlit rocks, she glances sideways with cool confidence under the bright midday sky.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seen from below across the cove, Surtr puts one foot on a low ledge of red sandstone, her free hand planted on her hip. She brings a double scoop of raspberry ice cream to her lips and glances sideways as the breeze catches the end of her red hair. The ledge casts a clean shadow over the tidal shelf in front. Behind her, warm red rock shelves descend into clear blue shallows, with a stripe of bright foam at the mouth of the bay. The sharp midday light picks out the bright piping on her athletic swimwear.",
+    "animaCaption": "She plants one foot on a step of red rock and lifts a raspberry double-scoop cone to her lips, with her free hand on her hip. The rock shelves step down behind her to clear blue water in the cove.",
+    "nsfwTokens": [
+      "black bikini",
+      "halterneck",
+      "criss-cross straps",
+      "orange trim",
+      "belt buckle"
+    ],
+    "nsfwProse": "Surtr wears her carbon-black athletic halter bikini, with crossed straps, bright magma-orange piping and small metal buckles."
   }
 }

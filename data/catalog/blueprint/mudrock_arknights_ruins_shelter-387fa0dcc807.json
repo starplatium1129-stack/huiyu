@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_ruins_shelter",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "坐在断墙上，头盔搁在膝边",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉自然",
     "characterId": "mudrock_arknights",
     "description": "被夕阳染红的残破石堡废墟顶端，脱下厚重全覆式头盔的泥岩将头盔搁在膝边，一头如瀑布般的银白色长发在晚风中散落开来。她碧蓝色的眼眸中满是宁静——「战场上的废墟虽然荒凉……但只要头顶还有天空，泥土里就依然会蕴藏着新生的希望。」",
@@ -17,14 +17,22 @@
     "mood": "疲倦而平静",
     "negativeTokens": [],
     "outfitId": "cozy_winter_knit_coat",
-    "promptProse": "Mudrock rests on the broken fortress wall with her helmet beside one knee, evening wind moving her hair.",
+    "promptProse": "Resting atop a weathered stone wall amid the quiet ruins of a Terra battlefield at dusk, Mudrock wears her camel wool overcoat over an ivory cable-knit turtleneck with her heavy full-face helmet set down beside her knee. Evening breeze lifts strands of her long silver hair across her shoulder as she gazes serenely out across the quiet horizon. Warm amber sunset light washes the broken stonework and softens the edges of her coat.",
     "promptTokens": [
-      "helmet",
       "sitting",
-      "ruined wall",
-      "dusk",
-      "sunlight",
-      "warm_lighting"
+      "helmet",
+      "looking away",
+      "serene",
+      "wind",
+      "ruins",
+      "stone wall",
+      "rubble",
+      "sunset",
+      "orange sky",
+      "warm lighting",
+      "outdoors",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +46,8 @@
     "timeOfDay": "黄昏",
     "title": "泥岩 · 废墟小憩",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "compositionIntent": "single",
+    "animaCaption": "Seated atop a broken fortress wall in her camel coat and ivory turtleneck with her heavy helmet resting beside her knee, Mudrock gazes peacefully toward the horizon as evening wind stirs her hair. Warm amber dusk light glows across the quiet ruins."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_ruins_rune_decoding",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2818,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "eta_shadow_ruins_rune_decoding",
     "characterId": "eta_shadow",
@@ -17,22 +17,31 @@
     "action": "举着拓印纸贴在石壁上，打着哈欠轻松解译出古代遗迹密纹",
     "timeOfDay": "day",
     "lighting": "遗迹裂缝漏下的光柱与尘埃",
-    "camera": "full_shot",
+    "camera": "three quarter view, full body",
     "mood": "神秘幽邃",
-    "promptProse": "Before a wall of ancient runes, Eta yawns — then reads them like a shopping list. Three months of work, done before lunch.",
+    "promptProse": "Deep inside a shadowed ancient stone chamber strewn with toppled pillars, Eta stands in her dusty explorer shorts, sturdy boots, and field backpack holding a sheet of charcoal rubbing paper flat against a rune-carved wall. Suppressing a lazy yawn with droopy eyes, she deciphers months of forgotten script at a single glance. Slanted shafts of daylight pierce cracks in the ruined ceiling, lighting drifting dust motes across the weathered carvings.",
     "promptTokens": [
-      "ruins",
-      "runes",
+      "standing",
+      "yawning",
+      "sleepy",
+      "holding paper",
       "stone wall",
-      "rubbing",
-      "light shaft",
-      "dust"
+      "runes",
+      "ruins",
+      "pillar",
+      "rubble",
+      "light rays",
+      "dust",
+      "day",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ancient scripts fear Eta. She fears only early mornings.",
+    "animaCaption": "Holding a rubbing sheet flat against a rune-carved stone wall inside the ancient ruins, Eta stifles a sleepy yawn while effortlessly reading the script. Shafts of daylight stream through cracked masonry, catching drifting dust motes around her explorer gear.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "single"
   }
 }

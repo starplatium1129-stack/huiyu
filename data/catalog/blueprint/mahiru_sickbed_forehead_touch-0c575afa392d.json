@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sickbed_forehead_touch",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1474,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "mahiru_sickbed_forehead_touch",
     "title": "椎名真昼 · 床头换好的温热毛巾",
@@ -16,7 +16,7 @@
     "action": "坐在床边，用指背轻贴托盘上的温热毛巾，向画外的人轻轻点头",
     "timeOfDay": "evening",
     "lighting": "soft bedside lighting",
-    "camera": "medium shot, environmental portrait",
+    "camera": "three quarter view, medium shot",
     "mood": "深切关爱、心跳零距离",
     "sceneTags": [
       "sitting_beside_bed",
@@ -28,13 +28,21 @@
       "soft_bedside_light",
       "medium_shot"
     ],
-    "promptProse": "Seated on the bed edge with her hair tied behind her shoulder, Mahiru checks the towel with the backs of her fingers on the bedside tray, nodding to the off-frame person in soft light.",
+    "promptProse": "Seated gently at the edge of the bedroom bed in the evening wearing her soft sage-mint cashmere cardigan over wide grey lounge trousers, Mahiru keeps her long flaxen hair gathered neatly behind her shoulder. Resting a freshly folded warm towel onto the small tray beside the bed, she tests its warmth lightly with the backs of her fingers before nodding softly toward the off-frame viewer with quiet, reassuring care. Dim warm bedside lamplight softens the bedroom linens and her tender gaze.",
     "promptTokens": [
-      "warm towel on bedside tray",
-      "bedside",
       "sitting",
+      "on bed",
+      "towel",
+      "tray",
+      "looking at viewer",
       "concerned",
-      "soft lighting",
+      "gentle smile",
+      "bedroom",
+      "nightstand",
+      "lamp",
+      "warm lighting",
+      "evening",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -46,6 +54,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She checks the towel with the backs of her fingers and nods toward the off-frame person."
+    "animaCaption": "Seated at the bed edge in her soft mint cashmere cardigan, Mahiru tests the warmth of a folded towel on the bedside tray with the backs of her fingers and nods gently toward the viewer. Warm evening lamplight illuminates her quiet, caring expression.",
+    "compositionIntent": "single"
   }
 }

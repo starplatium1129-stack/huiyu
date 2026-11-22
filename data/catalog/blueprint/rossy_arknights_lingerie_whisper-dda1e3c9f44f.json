@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3368,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "rossy_arknights_lingerie_whisper",
     "characterId": "rossy_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地技术探索部前哨站，观测窗口外是塔卫二苍凉的荧光矿脉",
     "timeOfDay": "深夜雷达休眠周期",
     "lighting": "仪表盘泛出的淡琥珀暖光与窗外矿脉的幽蓝冷光交相辉映",
-    "camera": "medium shot, eye level, 平视中景，高脚仪器箱与塔卫二苍凉矿脉同框",
+    "camera": "eye level, medium shot",
     "mood": "科技前哨站的硬朗冰冷与研究员少女的知性温存碰撞",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,36 @@
       "eye_level"
     ],
     "promptTokens": [
-      "sitting on crate",
-      "equipment container",
-      "outpost observation post",
-      "panoramic reinforced window",
-      "alien planetary horizon",
-      "glowing crystal veins",
-      "adjusting scanner antenna",
-      "medium shot",
-      "eye level"
+      "sitting",
+      "crate",
+      "holding device",
+      "antenna",
+      "looking at viewer",
+      "calm",
+      "observation room",
+      "window",
+      "sci-fi",
+      "glowing",
+      "night",
+      "warm lighting",
+      "blue lighting",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rossy sits poised on an equipment container before a panoramic reinforced observation window in the Endfield frontier post, adjusting the antenna of a portable scanner. Outside, luminescent mineral veins cast alien violet and cyan glows across Talos-II.",
-    "animaCaption": "Sitting on an equipment container before the frontier window, she adjusts her scanner antenna.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Perched calmly atop a tall equipment crate inside an Endfield frontier observation outpost at night, Rossi wears a bronze-gold silk strappy bralette trimmed with sheer black mesh panels, miniature buckles, and low-rise boyleg briefs. Adjusting the antenna of a handheld scanner with one hand while resting the other at her thigh, she meets the viewer's gaze with composed curiosity. Warm amber console light inside the cabin blends with cold luminescent cyan mineral veins glowing beyond the reinforced panoramic window.",
+    "animaCaption": "Seated atop an outpost equipment crate in her bronze-gold silk strappy bralette and sheer black mesh boyleg briefs, Rossi adjusts a portable scanner antenna and looks steadily toward the viewer. Warm console glow meets alien cyan light from the mineral veins outside the window.",
+    "nsfwTokens": [
+      "lingerie",
+      "bralette",
+      "gold lingerie",
+      "black mesh",
+      "straps",
+      "low-rise shorts",
+      "midriff",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a bronze-gold silk strappy bralette with sheer black mesh side panels, miniature tactical buckles, and matching low-rise boyleg briefs.",
+    "compositionIntent": "single"
   }
 }

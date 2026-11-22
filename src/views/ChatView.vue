@@ -34,7 +34,7 @@
             </button>
             <AsyncPanel :loader="loadChatModelControls" label="聊天模型设置" v-slot="{ component }"><component :is="component" :chat-provider="chatProvider" :busy="busy"
               :is-local-host="isLocalHost" :muse-status="museStatus" :muse-status-text="museStatusText"
-              :checking-muse="checkingMuse" @refresh-muse="refreshMuseStatus"
+              :checking-muse="checkingMuse" @refresh-muse="refreshMuseStatus" :chat-gpt="chatGpt"
               :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
               :models="models" :current-model="currentModel" :reasoning="reasoning" :companion-tools="companionTools" :web-search-enabled="webSearchEnabled"
               :api-settings-open="apiSettingsOpen" :use-host-config="useHostConfig" :host-api-model="hostApiModel" :host-api-base-url="hostApiBaseUrl"
@@ -48,11 +48,11 @@
               @update:vendor="apiVendor = $event" @update:base-url="apiBaseUrl = $event" @update:model="apiModel = $event" @update:api-key="apiKey = $event"
               @save="saveApiSettings" @clear-key="clearApiCredential" @save-host="saveToHost" @clear-host="clearHostConfigAndRefresh" /></AsyncPanel>
             <div class="room-settings-options">
-              <ToggleSwitch v-if="chatProvider === 'api' && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
+              <ToggleSwitch v-if="(chatProvider === 'api' || chatProvider === 'chatgpt') && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
               <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
               <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
             </div>
-            <p v-if="chatProvider === 'api' && isLocalHost">联网检索由 RustXNG 提供，搜索词会发送给第三方搜索源。<a href="https://github.com/starplatium1129-stack/huiyu" target="_blank" rel="noopener noreferrer" aria-label="查看绘遇源码与许可，在新窗口打开">源码与许可</a></p>
+            <p v-if="(chatProvider === 'api' || chatProvider === 'chatgpt') && isLocalHost">联网检索由 RustXNG 提供，搜索词会发送给第三方搜索源。<a href="https://github.com/starplatium1129-stack/huiyu" target="_blank" rel="noopener noreferrer" aria-label="查看绘遇源码与许可，在新窗口打开">源码与许可</a></p>
             <div class="room-settings-voice">
               <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control?section=control-voice" @click="closeRoomPanel">语音配置<ArchiveIcon name="chevron-down" /></RouterLink>
               <AsyncPanel class="room-speech-popover-loader" :loader="loadSpeechPopover" label="语音输入设置" v-slot="{ component: popoverComponent }">
@@ -111,9 +111,10 @@
         </details>
         <ChatStoryPicker v-if="storyBranches.length > 1" :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
           @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
-        <div v-if="!chatReady || preparingRoom" class="room-setup">
-          <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ setupTitle }}</strong>
+        <div v-if="(!chatReady && !chatGptUsagePaused) || preparingRoom" class="room-setup">
+          <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ chatProvider === 'chatgpt' && !preparingRoom ? chatGpt.statusText.value : setupTitle }}</strong>
           <button v-if="chatProvider === 'local'" class="btn btn-primary btn-sm" type="button" :disabled="preparingRoom" @click="prepareRoom">{{ preparingRoom ? '准备中…' : '连接模型' }}</button>
+          <button v-else-if="chatProvider === 'chatgpt'" class="btn btn-primary btn-sm" type="button" @click="openRoomPanel('settings')">ChatGPT 设置</button>
           <button v-else-if="chatProvider === 'muse'" class="btn btn-primary btn-sm" type="button" @click="openRoomPanel('settings')">查看 Muse 连接</button>
           <button v-else class="btn btn-primary btn-sm" type="button" @click="apiSettingsOpen = true; openRoomPanel('settings')">选择模型</button>
         </div>
@@ -158,13 +159,24 @@
             <label class="sr-only" for="room-chat-input">聊天输入</label>
             <textarea id="room-chat-input" ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" :placeholder="`对${currentCharacter.name}说…`"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"></textarea>
-            <template #commit><StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'">
+            <template #commit><StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : chatGptUsagePaused ? '请查看 ChatGPT 用量' : '请先连接聊天模型'">
               <StudioSendButton id="room-chat-submit" :busy="busy || voiceActive" :disabled="chatMutationBusy || storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
                 :turn-id="lastUserMessage?.mid || ''" :completed="Boolean(replyAnnouncement) && !chatError && !lastAssistantMessage?.stopped"
                 :context="activeChar" :message-host="chatListRef" @send="handleSend" @stop="stopEverything" />
             </StudioTooltip></template>
           </ConversationComposer>
-          <div v-if="storage.writeBlocked.value || chatError" class="chat-error" role="status" aria-live="polite" :data-kind="storage.writeBlocked.value ? 'warning' : chatErrorKind">{{ storage.writeBlocked.value ? '聊天数据暂时不可写入，请升级或恢复兼容数据。' : chatError }}</div>
+          <div v-if="chatProvider === 'chatgpt' && chatGpt.ready.value" class="room-chatgpt-plan-bar">
+            <span class="room-chatgpt-plan-label">使用 ChatGPT 订阅额度 · {{ chatGpt.selectedModelName.value }}</span>
+            <a class="room-chatgpt-usage-link" :href="CHATGPT_USAGE_SETTINGS_URL" target="_blank" rel="noopener noreferrer" aria-label="前往 ChatGPT 用量设置管理额度，在新窗口打开">管理用量</a>
+          </div>
+          <div v-if="storage.writeBlocked.value || chatError || chatGptUsagePaused" class="chat-error" :data-kind="storage.writeBlocked.value || chatGptUsagePaused ? 'warning' : chatErrorKind">
+            <span role="status">{{ storage.writeBlocked.value ? '聊天数据暂时不可写入，请升级或恢复兼容数据。' : chatError || chatGpt.statusText.value }}</span>
+            <div v-if="showChatGptUsageActions" class="chat-error-actions">
+              <a class="btn btn-primary btn-sm" :href="CHATGPT_USAGE_SETTINGS_URL" target="_blank" rel="noopener noreferrer">管理用量</a>
+              <button v-if="chatGptUsagePaused" class="btn btn-ghost btn-sm" type="button" :disabled="chatGpt.acting.value" @click="resumeChatGptUsage">恢复发送</button>
+            </div>
+            <button v-else-if="!storage.writeBlocked.value && chatProvider === 'chatgpt' && ['CHATGPT_REAUTH_REQUIRED', 'CHATGPT_PLAN_NOT_ENABLED', 'CHATGPT_SCOPE_DENIED'].includes(chatErrorCode)" class="btn btn-primary btn-sm" type="button" @click="openRoomPanel('settings')">前往 ChatGPT 设置</button>
+          </div>
           <p class="sr-only" role="status" aria-live="polite">{{ !busy ? replyAnnouncement : '' }}</p>
         </div>
       </section>
@@ -188,6 +200,7 @@ import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { useResizeObserver, useTextareaAutosize } from '@vueuse/core'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
+import { CHATGPT_USAGE_SETTINGS_URL } from '@/composables/chat/useChatGptAuth'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import { companionChatAvatars } from '@/config/companionChatAvatars'
 import { characterArtEntry } from '@/platform/characterArtState'
@@ -228,6 +241,7 @@ const {
   voiceStatusText,
   chatError,
   chatErrorKind,
+  chatErrorCode,
   voiceCapabilityText,
   showVoiceRecovery,
   playingMid,
@@ -239,6 +253,7 @@ const {
   branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
   ollamaOnline, localStatusText, checkingChatStatus, refreshChatStatus,
   museStatus, museStatusText, checkingMuse, refreshMuseStatus,
+  chatGpt,
   models,
   currentModel,
   chatProvider,
@@ -293,6 +308,15 @@ const {
   clearAllMemory,
   onAutoVoiceChange,
 } = useCharacterRoomSession({ latest: () => { void latest() }, nearBottom: () => !showLatest.value })
+
+const chatGptUsagePaused = computed(() => chatProvider.value === 'chatgpt' && chatGpt.usagePaused.value)
+const showChatGptUsageActions = computed(() => !storage.writeBlocked.value && chatProvider.value === 'chatgpt'
+  && (chatGptUsagePaused.value || chatErrorCode.value === 'CHATGPT_USAGE_LIMIT'))
+
+async function resumeChatGptUsage() {
+  if (await chatGpt.resumeUsage()) setError('')
+  else if (chatGpt.errorText.value) setError(chatGpt.errorText.value)
+}
 const cardFile = ref<HTMLInputElement>()
 const allowCardImport = () => isLocalHost.value && !busy.value && !storyBusy.value && !chatMutationBusy.value && !storage.writeBlocked.value
 const cardImport = useChatCardImport(allowCardImport, () => activeChar.value, switchCharacter, setError)

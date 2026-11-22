@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saint_cecilia_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3266,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "saint_cecilia_lingerie_whisper",
     "characterId": "saint_cecilia",
@@ -14,7 +14,7 @@
     "location": "教堂后方简朴明亮的圣女起居室，窗台上的白色百合花随晨风摇曳",
     "timeOfDay": "礼拜日初曦晨光普照",
     "lighting": "金灿灿的初升晨光从高耸拱窗穿透而入，给纯白被褥镀上一层温暖的天使金晕",
-    "camera": "close-up, high angle, 俯拍被窝特写，乱蓬蓬的灿烂金发与白羽绒被形成极度治愈的柔软画面",
+    "camera": "high angle, medium close-up",
     "mood": "备受宠溺的呆萌圣女日常，圣洁与无防备的娇憨完美融合",
     "adult": true,
     "sampleRating": "R15",
@@ -39,25 +39,34 @@
       "high_angle"
     ],
     "promptTokens": [
-      "close-up",
-      "high angle",
-      "indoors",
-      "bedroom",
+      "lying",
+      "on bed",
+      "under covers",
+      "rubbing eyes",
+      "yawning",
+      "sleepy",
+      "soft smile",
+      "pillow",
+      "lily",
       "window",
+      "bedroom",
       "morning",
       "sunlight",
-      "warm lighting",
-      "hugging pillow",
-      "smile",
-      "sleepy",
-      "delicate pearlescent buttons",
-      "scalloped collar",
-      "relaxed oversized fit"
+      "high angle",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress. Cecilia pastor lawrence, buried in fluffy white duvet showing sleepy face, messy golden blonde hair splayed on pillows amidst rubbing eyes with tiny yawn, white lily on sunlit windowsill, ethereal warm church morning light.",
-    "animaCaption": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Half-buried beneath a plush white duvet in her simple church quarters at sunrise, Cecilia wears a loose ivory cotton ruffled nightdress with small pearlescent buttons and a scalloped collar. Rubbing her sleepy eyes through a tiny yawn, she peeks up from the pillows with a drowsy, affectionate smile while white lilies sway on the sunlit windowsill beside her bed. Warm golden morning light pours through the arched window and halos the soft bedding.",
+    "animaCaption": "Half-tucked beneath a fluffy white duvet in her ivory cotton ruffled nightdress, Cecilia rubs her sleepy eyes with a tiny yawn and drowsy smile. Golden morning sunlight streams past the white windowsill lilies across her pillows.",
+    "nsfwTokens": [
+      "white nightgown",
+      "cotton nightdress",
+      "frills",
+      "buttons",
+      "loose clothes",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a soft ivory-white pure cotton ruffled nightdress with tiny pearlescent front buttons and a scalloped collar, half-tucked beneath a fluffy white duvet.",
+    "compositionIntent": "single"
   }
 }

@@ -1,7 +1,15 @@
 <template>
-  <div class="control-page">
-    <RouteAtmosphere />
+  <div class="control-page" :data-desktop="desktop || undefined">
     <a class="skip-link" href="#control-main" @click.prevent="focusMain">跳到主要内容</a>
+    <header class="control-window-bar" :data-tauri-drag-region="desktop ? 'deep' : undefined">
+      <div class="control-compact-nav" data-tauri-drag-region="false">
+        <RouterLink to="/" aria-label="返回绘遇"><BrandLogo class="nav-logo" /></RouterLink>
+        <StudioSelect :model-value="activeSection" label="控制面板分区" :groups="compactOptions" @update:model-value="selectSection" @trigger-hidden="focusNavigation" />
+        <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
+      </div>
+      <span class="control-window-label">控制面板</span>
+      <DesktopWindowControls v-if="desktop" />
+    </header>
     <div class="control-layout">
       <aside class="control-rail" aria-label="控制面板导航">
         <RouterLink to="/" class="control-rail-brand"><BrandLogo class="nav-logo" /><span>控制面板</span></RouterLink>
@@ -20,11 +28,6 @@
         </div>
       </aside>
       <div class="control-content">
-        <header class="control-compact-nav">
-          <RouterLink to="/" aria-label="返回绘遇"><BrandLogo class="nav-logo" /></RouterLink>
-          <div class="control-utility-row"><TaskCenterButton /><AppThemeToggle /><AppSoundToggle /></div>
-          <StudioSelect :model-value="activeSection" label="控制面板分区" :groups="compactOptions" @update:model-value="selectSection" @trigger-hidden="focusNavigation" />
-        </header>
         <main id="control-main" class="control-shell" tabindex="-1">
           <ControlIntro :title="currentSection.label" :description="currentSection.description" :group="currentSection.group">
             <template #actions><RouterLink class="btn btn-ghost btn-sm" to="/guide"><ArchiveIcon name="book" />使用指南</RouterLink></template>
@@ -58,6 +61,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import '@/assets/css/fluid-workspaces.css'
 import { onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
@@ -68,7 +72,8 @@ import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
+import DesktopWindowControls from '@/components/DesktopWindowControls.vue'
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import ControlWelcome from '@/components/control/ControlWelcome.vue'
@@ -77,6 +82,7 @@ import { controlSections, useControlNavigation } from '@/composables/useControlN
 import { provideControlContext } from '@/composables/useControlContext'
 import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
 const router = useRouter()
+const desktop = Boolean(getDesktopCapabilities())
 const { status } = provideControlContext()
 const { statusError, serviceChecking, opBusy, pollStatus } = status
 const { activeSection, currentSection, groups, visited, focusNavigation, panelReady } = useControlNavigation(status.imageProvider)

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sunaookami_shiroko_lingerie_whisper",
     "characterId": "sunaookami_shiroko",
@@ -14,7 +14,7 @@
     "location": "阿拜多斯对策委员会活动室，靠墙停放着保养得一尘不染的公路自行车",
     "timeOfDay": "清晨五点沙漠晨风初起",
     "lighting": "阿拜多斯初升的沙漠晨曦穿透玻璃，将纯白银发与白皙肌肤照耀得如同初雪发亮",
-    "camera": "wide shot, full body, 全景横幅，公路自行车与大漠破晓微风勾勒出元气与野性",
+    "camera": "three quarter view, full body",
     "mood": "冷酷干练中带着极度直球的依恋，晨曦中健美无暇的少女身姿",
     "adult": true,
     "sampleRating": "R15",
@@ -41,21 +41,36 @@
       "full_body"
     ],
     "promptTokens": [
-      "wide shot",
-      "full body",
-      "sitting on table edge",
-      "pristine road bicycle leaning nearby",
-      "Abydos committee room",
-      "wide window",
-      "desert horizon",
-      "dawn glow",
-      "cool morning breeze",
-      "calm stoic smile"
+      "sitting",
+      "bending forward",
+      "adjusting strap",
+      "looking back",
+      "calm",
+      "bicycle",
+      "clubroom",
+      "window",
+      "desert",
+      "indoors",
+      "dawn",
+      "sunrise",
+      "morning light",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Shiroko rests on the table edge in the Abydos clubroom at 5 AM beside her tuned road bicycle, watching the desert horizon glow with the first amber rays of dawn.",
-    "animaCaption": "Perched calmly in the clubroom beside her road bicycle as dawn light sweeps across the desert horizon outside.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside the Abydos Countermeasures Committee room at 5 AM with her spotless road bicycle leaning against the wall, Shiroko sits on the bench edge in her snug grey-and-cyan stretch athletic racerback camisole and boyleg workout shorts. Leaning slightly forward while adjusting a shoulder strap before her morning ride, she looks back toward the viewer with calm, focused eyes. Clear amber dawn light pours through the wide windows from the waking desert horizon.",
+    "animaCaption": "Seated inside the Abydos clubroom beside her road bicycle in a grey-and-cyan athletic racerback camisole and boyleg shorts, Shiroko tugs lightly at one strap and looks back calmly toward the viewer. Crisp golden dawn light floods in from the desert horizon.",
+    "nsfwTokens": [
+      "athletic camisole",
+      "grey tank top",
+      "blue trim",
+      "racerback",
+      "boyleg shorts",
+      "midriff",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a form-fitting light-grey and cyan-blue stretch athletic racerback camisole paired with snug boyleg workout shorts.",
+    "compositionIntent": "single"
   }
 }

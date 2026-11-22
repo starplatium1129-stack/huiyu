@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 978,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "action": "跨坐腰间红白偶像服半褪露双峰，贝雷帽斜戴，红瞳带泪娇蛮起伏",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, pov, medium shot",
     "category": "主控骑乘",
     "characterId": "arima_kana",
     "coverageTags": [
@@ -24,26 +24,35 @@
     "location": "偶像巡演休息室·散场后",
     "mood": "主动亲密与失神",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "sfw_stage",
-    "promptProse": "After the concert, she straddles the viewer's lap with her costume gathered up, gripping the viewer's collar in the backstage room.",
-    "promptTokens": [
-      "dressing room",
+    "nsfwProse": "Her scarlet B-Komachi idol dress and white cropped bolero are pushed open with her front-tie bra undone over her bare breasts and her ruffled skirt gathered high above her black thighhighs as she rides astride her partner's lap.",
+    "nsfwTokens": [
       "idol clothes",
-      "red layered dress",
-      "beret",
+      "red dress",
+      "white jacket",
       "open bra",
       "topless",
+      "bare breasts",
+      "skirt lift",
+      "black thighhighs",
+      "cowgirl position",
+      "sex"
+    ],
+    "outfitId": "sfw_stage",
+    "promptProse": "Behind the locked door of the backstage tour dressing room after the show, Kana sits astride her partner's lap with her beret tilted on her head, her scarlet idol skirt bunched high around her waist above her black thighhighs, and her red-and-white bra untied over her bare breasts. Clutching his shirt collar tightly with glistening teary eyes and a proud, vulnerable blush, she moves earnestly in cowgirl position under warm vanity bulbs.",
+    "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "blush",
-      "tears",
-      "from below",
-      "white cropped jacket",
-      "red trim",
-      "on lap",
-      "holding collar",
+      "grabbing collar",
+      "beret",
+      "teary eyes",
+      "heavy blush",
+      "dressing room",
       "warm lighting",
+      "night",
+      "from below",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -63,6 +72,7 @@
     ],
     "timeOfDay": "night",
     "title": "有马加奈 · 演出现场休息室的主控跨坐",
-    "animaCaption": "She grips the viewer's collar while seated across their lap."
+    "animaCaption": "Riding astride her partner's lap in the backstage dressing room with her scarlet idol skirt bunched up and her untied bra exposing her bare breasts, Kana grips his collar with glistening teary eyes and a proud blush. Warm vanity light traces her beret and black thighhighs.",
+    "compositionIntent": "group"
   }
 }

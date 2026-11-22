@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_nude_antlers_mating_press",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 690,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "侧卧软榻身穿半透香槟金丝睡裙若隐若现，金色卷发散落枕席，单手托胸另一手深层自抚娇喘",
     "adult": true,
     "adultArtistHint": "@mizuryu kei",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, three-quarter view",
+    "camera": "three quarter view, wide shot",
     "category": "深层欢愉",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -23,24 +23,35 @@
     "location": "莱塔尼亚书斋软榻纯白丝绸被褥上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "candle_silk_slip",
-    "promptProse": "Viviana cups one breast and touches herself beneath the sheer slip on a blue velvet chaise, candles lighting her antlers.",
-    "promptTokens": [
-      "champagne slip",
-      "on side",
-      "chaise longue",
-      "library",
-      "candles",
-      "masturbation",
+    "nsfwProse": "She wears a gossamer sheer champagne-gold silk slip trimmed with ivory lace that clings transparently over her full breasts and curves as she cups her chest and masturbates beneath the hem.",
+    "nsfwTokens": [
+      "gold dress",
+      "slip dress",
+      "nightgown",
+      "lace trim",
       "see-through",
+      "cleavage",
+      "bare shoulders",
       "hand under clothes",
-      "wide shot",
-      "hand on chest",
-      "hand under slip",
-      "blue velvet chaise",
-      "candlelight"
+      "masturbation"
+    ],
+    "outfitId": "candle_silk_slip",
+    "promptProse": "Reclining on her side across a plush blue velvet chaise deep within a candlelit Leithanien study, Viviana wears a gossamer semi-transparent champagne-gold silk slip dress edged with delicate ivory lace. With her wavy hair and golden antlers resting against the silk pillows, she gently cups one breast through the sheer fabric while slipping her other hand beneath the slip hem to touch herself slowly, soft tears of longing brightening her eyes. Bronze candelabras cast warm poetic candlelight across the shelves and shimmering silk.",
+    "promptTokens": [
+      "lying",
+      "on side",
+      "hand on own breast",
+      "teary eyes",
+      "heavy blush",
+      "couch",
+      "velvet",
+      "library",
+      "bookshelf",
+      "candelabra",
+      "candlelight",
+      "night",
+      "three quarter view",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -61,6 +72,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "薇薇安娜 · 诗意书斋天鹅绒软榻半透香槟金丝裙与金鹿角依恋自抚",
-    "animaCaption": "Candlelight reaches her antlers above the blue velvet chaise."
+    "animaCaption": "Reclining on her side across the velvet study chaise in a sheer champagne-gold lace slip, Viviana cups her chest with one hand and masturbates beneath the translucent hem with the other. Warm bronze candlelight glows across her golden antlers, tearful gaze, and silk pillows.",
+    "compositionIntent": "single"
   }
 }

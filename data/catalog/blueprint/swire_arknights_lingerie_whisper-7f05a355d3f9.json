@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3168,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "swire_arknights_lingerie_whisper",
     "characterId": "swire_arknights",
@@ -14,7 +14,7 @@
     "location": "龙门中心区顶层私人豪华顶楼平层，全景落地窗外是纸醉金迷的龙门繁华夜景",
     "timeOfDay": "午夜私家水疗放松时刻",
     "lighting": "泳池底部的蔚蓝射灯与窗外璀璨的都市金光交相辉映，映照出珠光宝气的温润质感",
-    "camera": "medium shot, eye level, 平视中景，丝绒躺椅与龙门繁华夜景同框",
+    "camera": "eye level, medium shot",
     "mood": "龙门女首富千金的绝对奢靡与霸气，傲娇千金的顶级贵气与挑逗",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,31 @@
     "promptTokens": [
       "reclining",
       "chaise lounge",
-      "penthouse lounge",
+      "holding wine glass",
+      "red drink",
+      "smirk",
+      "raised eyebrow",
+      "looking at viewer",
+      "penthouse",
       "floor-to-ceiling window",
-      "dazzling city skyline",
-      "night sky",
-      "holding glass",
-      "pomegranate juice",
-      "confident smirk",
-      "medium shot",
-      "eye level"
+      "city lights",
+      "night",
+      "blue pool glow",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Swire reclines comfortably upon a velvet chaise lounge beside the panoramic penthouse window, holding a crystal glass of freshly squeezed pomegranate juice. The dazzling neon skyline of downtown Lungmen glitters outside, reflecting in her confident, haughty gaze.",
-    "animaCaption": "Reclining on a penthouse velvet lounge holding a crystal glass, she raises an eyebrow against the glittering Lungmen skyline.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Swire reclines lavishly on a velvet chaise lounge beside a panoramic penthouse window overlooking Lungmen at night, wearing an ink-black heavy silk slip gown with delicate gold chain straps, metallic gold tiger embroidery, and a thigh-high slit. Holding a crystal glass of pomegranate juice with a raised brow and confident smirk, she basks in city gold and cool blue spa reflections.",
+    "animaCaption": "Lounging on a velvet chaise beside the panoramic penthouse window in an ink-black gold-embroidered silk slip gown with a thigh-high slit, she raises a stemmed glass of pomegranate juice with a haughty smirk. Glittering Lungmen city lights and cool pool glow shimmer across the silk.",
+    "nsfwTokens": [
+      "black slip dress",
+      "silk nightgown",
+      "gold embroidery",
+      "chain straps",
+      "high-slit dress",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears an ink-black heavy silk slip gown with delicate gold chain straps, metallic gold tiger embroidery, and a thigh-high slit."
   }
 }

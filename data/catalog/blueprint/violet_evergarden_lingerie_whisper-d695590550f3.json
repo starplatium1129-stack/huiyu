@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3525,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "violet_evergarden_lingerie_whisper",
     "characterId": "violet_evergarden",
@@ -14,7 +14,7 @@
     "location": "C.H邮政公司阁楼寝室，桌上摆着翡翠胸针与一束盛开的紫罗兰",
     "timeOfDay": "深夜替人代写情书告罄后",
     "lighting": "桌面黄铜绿罩台灯在羊皮纸与金发上投下典雅温润的暖光，义肢金属关节反射出冷银光辉",
-    "camera": "medium shot, front view, 正面中景，阁楼木桌打字机与盛开紫罗兰，人偶少女渐懂人心的温存",
+    "camera": "front view, medium shot",
     "mood": "从战场杀戮兵器蜕变为懂得爱为何物的人偶，凄美、圣洁而纯粹至极",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,33 @@
       "front_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "wooden desk",
+      "typewriter",
+      "letter",
+      "emerald brooch",
+      "violets",
+      "flower vase",
+      "gentle smile",
+      "looking at viewer",
+      "attic",
+      "desk lamp",
+      "warm lighting",
       "front view",
-      "sitting at wooden writing desk",
-      "mechanical typewriter",
-      "half-written letter",
-      "glowing emerald brooch on blotter",
-      "fresh bouquet of violets",
-      "CH Postal attic bedroom",
-      "gentle soft smile",
-      "golden lamp light"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Violet sits quietly at her wooden typewriter desk in the postal attic, touching the emerald brooch resting beside a vase of fresh violets with a tender, hard-won smile.",
-    "animaCaption": "Sitting before an antique typewriter at a wooden desk adorned with fresh violets and an emerald brooch, smiling softly.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In her warm lamp-lit C.H. Postal attic room beside fresh violets and her cherished emerald brooch, Violet rests her articulated silver fingers lightly beside a half-written letter in the typewriter and offers a quiet, hard-won smile.",
+    "animaCaption": "Seated at her wooden attic desk before an antique typewriter, half-typed parchment letter, emerald brooch, and bouquet of fresh violets, she turns with a serene heartfelt smile wearing a Victorian ivory lace-trimmed slip nightgown accented with a forest-green velvet bust bow.",
+    "nsfwTokens": [
+      "white nightgown",
+      "ivory dress",
+      "lace trim",
+      "green ribbon",
+      "spaghetti straps",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a floor-length Victorian ivory slip gown edged with delicate lace and a small forest-green velvet ribbon bow at the bust.",
+    "compositionIntent": "single"
   }
 }

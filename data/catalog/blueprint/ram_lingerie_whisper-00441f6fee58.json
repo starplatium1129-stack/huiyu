@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3202,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "ram_lingerie_whisper",
     "characterId": "ram",
@@ -14,7 +14,7 @@
     "location": "罗兹瓦尔宅邸女仆休息室，古典木衣柜前挂着换下的黑白女仆围裙",
     "timeOfDay": "夜间女仆勤务交接完毕后",
     "lighting": "墙面黄铜烛台摇曳的温热烛光，将少女单薄玲珑的身影投射在雕花木衣柜上",
-    "camera": "low angle, 低角度仰拍，展现双手抱胸的傲然气势与露出的纤细腰肢",
+    "camera": "low angle, medium shot",
     "mood": "外冷内热的毒舌姐姐反差，严厉训诫中的一丝娇嗔",
     "adult": true,
     "sampleRating": "R15",
@@ -36,23 +36,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "low angle",
-      "indoors",
-      "bedroom",
-      "night",
-      "candlelight",
-      "dim lighting",
-      "reclining",
       "standing",
+      "leaning against wardrobe",
+      "crossed arms",
+      "proud glare",
       "blush",
-      "black underbust lace-up cords",
-      "scalloped hemline",
-      "warm lighting"
+      "looking down",
+      "open wardrobe",
+      "hanging maid uniform",
+      "bedroom",
+      "wall candlestick",
+      "warm candlelight",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ram stands with arms crossed leaning against open wardrobe door, wearing a crimson berry square-neck sheer corset nightdress. Ram rezero, sharp short pink hair covering one eye, scornful proud glare with slight blush amidst maid uniform hanging on door, warm vintage candle illumination.",
-    "animaCaption": "Ram stands with arms crossed leaning against open wardrobe door, wearing a crimson berry square-neck sheer corset nightdress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing with arms crossed against an open wooden wardrobe door inside Roswaal's mansion at night, Ram wears a crimson-berry square-neck sheer corset nightdress laced beneath the bust with black cords. With her black-and-white maid apron hanging behind her and a sharp yet faintly blushing glare on her face, she is lit by flickering brass wall candlelight.",
+    "animaCaption": "Leaning haughtily against an open wooden wardrobe door where her maid uniform hangs, she folds her arms in a crimson square-neck sheer corset nightdress with black underbust lacing and shoots down a proud, faintly blushing glare. Flickering brass wall candlelight warms the quiet maid quarters.",
+    "nsfwTokens": [
+      "crimson corset nightdress",
+      "sheer nightgown",
+      "square neckline",
+      "black lace-up ties",
+      "scalloped hem",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a deep crimson-berry square-neck sheer corset nightdress cinching her waist with black underbust lace-up cords and a scalloped hem.",
+    "compositionIntent": "single"
   }
 }

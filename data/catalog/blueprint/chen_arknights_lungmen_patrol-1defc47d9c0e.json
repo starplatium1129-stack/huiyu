@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_lungmen_patrol",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 536,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:12:34.754508900+00:00",
   "data": {
     "action": "单手按剑，缓步而行",
-    "camera": "medium tracking shot",
+    "camera": "three quarter view, cowboy shot",
     "category": "泰拉都市",
     "characterId": "chen_arknights",
     "coverageTags": [
@@ -15,34 +15,44 @@
     ],
     "description": "霓虹闪烁的龙门近卫局管辖街区内，身着干练近卫局高级督察制服的陈单手按在腰间的赤霄佩剑上，步伐沉稳而警惕。她目光如炬地扫视着繁华街巷——「龙门的秩序由近卫局来捍卫。博士，跟紧我的步伐，今晚这片街区的巡逻可容不得半点差池。」",
     "id": "chen_arknights_lungmen_patrol",
-    "lighting": "霓虹闪烁的夜色街区",
+    "lighting": "摊位红灯和蓝色街灯在湿路面上分成冷暖两道，制服金徽吃到红灯余光",
     "location": "龙门街道",
     "mood": "利落威严",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "unsheathed",
+      "multiple swords"
+    ],
     "outfitId": "standard",
-    "promptProse": "She patrols the wet street with one hand resting on Chi Xiao's hilt at her waist, scanning the lane ahead. Red neon reflects along the sword fittings and pavement.",
+    "promptProse": "On a busy Lungmen street after rain, Ch’en passes the last open market stall in her navy-and-black LGD jacket with its gold badge and sharp pleated skirt. One hand rests across the wrapped hilt of Chi Xiao, which sits fully inside the scabbard at her hip. She looks past the stalls as she walks, her free arm loose at her side. A red awning and the puddle beneath it frame the foreground. Across the street, the cool light of a distant traffic signal separates the shopfronts from a lane receding behind her.",
     "promptTokens": [
-      "Lungmen",
-      "twin swords",
       "walking",
-      "neon",
+      "hand on hilt",
+      "scabbard",
+      "sheathed",
+      "looking to the side",
+      "street",
+      "neon lights",
+      "market stall",
+      "awning",
+      "traffic light",
+      "wet floor",
+      "puddle",
       "night",
-      "medium shot",
-      "hand on sword hilt",
-      "wet pavement",
-      "red neon"
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "lungmen",
       "street",
-      "patrol",
-      "neon",
-      "uniform",
+      "neon lights",
+      "market stall",
+      "scabbard",
+      "sheathed",
+      "walking",
       "night"
     ],
     "timeOfDay": "夜晚",
     "title": "陈 · 龙门巡街",
-    "animaCaption": "Her hand rests on Chi Xiao as she scans the lane ahead."
+    "animaCaption": "She walks past the red awning with her palm resting on the hilt of a single sheathed sword. Her free arm hangs at her side as she checks the storefronts ahead."
   }
 }

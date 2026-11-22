@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_biker_leather_solo_fingering",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "amane_r18_biker_leather_solo_fingering",
     "title": "周防天音 · 车库独处机车旁私密自抚情愫",
@@ -30,20 +30,18 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Amane leans against the parked motorcycle, one boot on a service stand and one hand on the handlebar, the other beneath her loosened suit; a work lamp reflects on chrome.",
+    "promptProse": "Inside a quiet private garage at night, Amane leans beside her parked motorcycle with one knee-high boot planted on a metal service stand and one hand steadying the handlebar. Overhead work light glints off chrome parts and her flushed skin.",
     "promptTokens": [
-      "adult",
       "garage",
       "motorcycle",
-      "leather bodysuit",
-      "unzipped",
-      "topless",
-      "raised leg",
-      "masturbation",
       "leaning",
+      "leg up",
       "holding handlebar",
       "heavy blush",
       "teary eyes",
+      "parted lips",
+      "sweat",
+      "night",
       "work light",
       "full body"
     ],
@@ -53,8 +51,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One boot rests on the service stand beside the parked motorcycle."
+    "nsfwTokens": [
+      "leather bodysuit",
+      "unzipped",
+      "topless",
+      "nipples",
+      "boots",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her front-zip black leather riding bodysuit is unzipped wide to bare her breasts and waist, while her free hand slips down past the loosened leather between her thighs.",
+    "animaCaption": "Leaning against her parked motorcycle in the night garage with one booted foot propped on the service stand, she grips the handlebar with one hand while her other slips inside her unzipped black leather riding suit as her bare chest heaves.",
+    "compositionIntent": "single"
   }
 }

@@ -132,9 +132,6 @@ html.companion-desktop .companion-page .portrait-main {
 html.companion-desktop .companion-page .live2d-interaction-hint {
   @apply tw:bottom-[120px];
 }
-html.companion-desktop.companion-ui-hidden .companion-page .live2d-interaction-hint {
-  @apply tw:hidden;
-}
 
 
 /* ============================================================
@@ -157,12 +154,6 @@ html.companion-desktop .companion-page .companion-stage {
   transform: translateX(-50%);
   @apply tw:flex tw:flex-col tw:items-center tw:gap-[8px] tw:pointer-events-none;
   transition: opacity var(--motion-route) var(--ease-out), transform var(--motion-route) var(--ease-out);
-}
-html.companion-desktop.companion-ui-hidden .companion-desktop-float,
-html.companion-desktop.companion-immersive .companion-desktop-float {
-  opacity: 0;
-  transform: translateX(-50%) translateY(8px);
-  @apply tw:pointer-events-none;
 }
 
 .companion-chat-chip {
@@ -195,46 +186,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   }
 }
 
-.companion-live-dot {
-  @apply tw:pointer-events-auto tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[24px];
-  padding: 3px 12px;
-  border: 1px solid var(--companion-edge);
-  @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--art-scrim) 88%, transparent);
-  color: var(--companion-ink);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
-  backdrop-filter: blur(12px) saturate(1.2);
-  @apply tw:text-label-xs;
-  text-shadow: var(--companion-text-shadow);
-}
-.companion-live-dot i {
-  @apply tw:w-[6px] tw:h-[6px];
-  border-radius: 50%;
-  background: var(--text-muted);
-}
-.companion-live-dot[data-state="idle"] i { background: var(--success); box-shadow: 0 0 8px color-mix(in srgb, var(--success) 60%, transparent); }
-.companion-live-dot[data-state="busy"] i { background: var(--warning); box-shadow: 0 0 8px color-mix(in srgb, var(--warning) 60%, transparent); }
-.companion-live-dot[data-state="speaking"] i {
-  background: var(--character-accent);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
-  animation: companionLivePulse 1s ease-in-out infinite;
-}
-@keyframes companionLivePulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .4; }
-}
-html.companion-desktop.companion-ui-hidden .companion-live-dot {
-  @apply tw:hidden;
-}
-
-/* 瞬态问候气泡：贴角色窗底部，自动随徽章区排列（事件类仍走原生 notify） */
-.companion-float-reminders {
-  @apply tw:flex tw:flex-col tw:gap-[6px] tw:items-center tw:pointer-events-auto;
-}
-
-/*   ============================================================
-   浮层提醒：提醒气泡 / 剪贴卡（列表容器走 TransitionGroup）
-  ============================================================ */
+/* 聊天回复的短暂预览 */
 .companion-float-reminder {
   @apply tw:relative;
   width: fit-content;
@@ -258,23 +210,3 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
   color: var(--companion-ink);
   @apply tw:m-0 tw:text-body-sm tw:leading-body tw:whitespace-pre-wrap;
 }
-.companion-float-reminder > .companion-reminder-dismiss {
-  @apply tw:absolute tw:top-[4px] tw:right-[4px] tw:w-[32px] tw:h-[32px] tw:grid tw:place-items-center;
-  border: 0;
-  @apply tw:rounded-sm;
-  background: transparent;
-  color: var(--companion-ink-soft);
-  @apply tw:cursor-pointer tw:text-body tw:leading-flush;
-}
-
-.companion-float-reminder .companion-reminder-actions {
-  @apply tw:pr-[20px];
-}
-
-.companion-float-reminder > .companion-reminder-dismiss:hover,
-.companion-float-reminder > .companion-reminder-dismiss:focus-visible {
-  color: var(--companion-ink);
-  background: var(--companion-wash);
-}
-.companion-float-reminder[data-kind="event"] { border-style: dashed; @apply tw:cursor-default; }
-.companion-float-reminder.companion-reminder-link { @apply tw:cursor-default; }

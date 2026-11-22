@@ -18,11 +18,12 @@ static LIBRARY: LazyLock<Value> = LazyLock::new(|| {
 static CAMERA: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?ix)
         (?:固定|锁定)(?:机位|镜头)|稳机位|镜头不动|
-        (?:镜头|机位)[^。！？；，,]{0,10}?(?:推进|推近|拉近|拉远|横移|平移|环绕|摇摄|摇移|跟拍|跟随|变焦|静止|固定|后退|保持稳定)|
-        (?:缓慢|小幅|平稳)(?:推进|推近|拉远|横移|平移|环绕|变焦)|
-        \b(?:locked[- ]off|(?:static|fixed)\s+(?:shot|camera)|tracking\s+shot|camera\s+orbit)\b|
-        \b(?:camera|shot)\s+(?:(?:slowly|steadily|gently|gradually|slightly|then)\s+)*(?:holds|stays|remains\s+(?:still|steady|fixed)|pushes|pulls|dollies|tracks|pans|arcs|orbits|tilts|zooms|follows|moves)\b|
-        \b(?:dolly|zoom|pan|tilt|truck|push|pull)\s+(?:in|out|back|left|right|up|down)\b
+        (?:镜头|机位)[^。！？；，,]{0,10}?(?:推进|推近|拉近|拉远|横移|平移|环绕|摇摄|摇移|跟拍|跟随|变焦|静止|固定|后退|保持稳定|仰起|俯落|缓摇)|
+        (?:缓慢|极缓|小幅|平稳)(?:推进|推近|拉远|横移|平移|环绕|变焦|仰起|俯落|跟拍)|缓推|缓移|缓摇|仰拍|手持|
+        \b(?:locked[- ]off|(?:static|fixed)\s+(?:shot|camera)|tracking\s+shot|camera\s+orbit|handheld)\b|
+        \b(?:camera|shot)\s+(?:(?:slowly|steadily|gently|gradually|slightly|then)\s+)*(?:holds|stays|remains\s+(?:still|steady|fixed)|pushes|pulls|dollies|tracks|pans|arcs|orbits|tilts|zooms|follows|moves|glides)\b|
+        \b(?:dolly|zoom|pan|tilt|truck|push|pull)\s+(?:in|out|back|left|right|up|down)\b|
+        \btilt(?:s|ed|ing)?\s+(?:up(?:ward)?|down(?:ward)?)\b
     ").unwrap()
 });
 static QUIET_MOTION: LazyLock<Regex> = LazyLock::new(|| {
@@ -33,7 +34,7 @@ static QUOTED_TEXT: LazyLock<Regex> =
 static AUDIO_CLAUSE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?ix)[，,]\s*(?:
         (?:可以|还能|可|能)?听(?:见|到|得见)|
-        (?:伴随着?|伴有)[^。！？.!?，,]*?(?:声响|声音|雨声|风声|脚步声|音乐|配乐|音效)|
+        (?:伴随着?|伴有)[^。！？.!?，,]*?(?:声响|声音|雨声|风声|水声|蝉鸣|风铃声|脚步声|音乐|配乐|音效)|
         (?:you|we)\s+(?:can\s+)?hear\b|
         (?:with|accompanied\s+by)\s+(?:the\s+)?(?:sound|music|background\s+music|ambient\s+sound|footsteps|(?:soft\s+)?piano)\b
     )[^。！？.!?，,]*").unwrap()
@@ -252,23 +253,36 @@ fn negative_prompt(model: &Value, requested: &str, quiet: bool, text: bool) -> O
 }
 
 // Kandinsky's short shots use a sentence for the opening, one for the motion
-// and one for the landing. Join the authored clauses within each beat.
+// and one for the landing. Join paired single-clause fragments smoothly.
 fn kandinsky_sentence(parts: &[&str]) -> String {
-    let mut clauses = parts.iter().filter(|part| !part.is_empty()).copied();
-    let Some(first) = clauses.next() else {
-        return String::new();
-    };
-    let mut prose = first.trim_end_matches('.').to_owned();
-    for part in clauses {
-        let part = part.trim_end_matches('.');
-        let mut chars = part.chars();
-        if let Some(first) = chars.next() {
+    let items: Vec<&str> = parts
+        .iter()
+        .map(|part| part.trim())
+        .filter(|part| !part.is_empty())
+        .collect();
+    match items.as_slice() {
+        [] => String::new(),
+        [only] => sentence(only, true),
+        [first, second] if !first.contains(". ") && !second.contains(". ") => {
+            let head = first.trim_end_matches('.');
+            let tail = second.trim_end_matches('.');
+            let mut chars = tail.chars();
+            let Some(initial) = chars.next() else {
+                return sentence(head, true);
+            };
+            let mut prose = String::with_capacity(head.len() + tail.len() + 7);
+            prose.push_str(head);
             prose.push_str(", and ");
-            prose.extend(first.to_lowercase());
+            prose.extend(initial.to_lowercase());
             prose.push_str(chars.as_str());
+            sentence(&prose, true)
         }
+        _ => items
+            .into_iter()
+            .map(|part| sentence(part, true))
+            .collect::<Vec<_>>()
+            .join(" "),
     }
-    sentence(&prose, true)
 }
 
 pub(super) fn compile(
@@ -367,10 +381,11 @@ pub(super) fn compile(
             || QUIET_MOTION.is_match(&subject_direction));
     let action = if user_motion { "" } else { action };
     let camera = if driven {
-        if mode == "voice-driver" {
-            "镜头保持稳定，口型跟随所给配音。"
-        } else {
-            "镜头保持稳定，动作跟随参考视频。"
+        match (mode == "voice-driver", english) {
+            (true, true) => "The camera stays steady while lip-sync follows the supplied audio.",
+            (true, false) => "镜头保持稳定，口型跟随所给配音。",
+            (false, true) => "The camera stays steady while body motion follows the driving video.",
+            (false, false) => "镜头保持稳定，动作跟随参考视频。",
         }
     } else if user_camera {
         ""
@@ -410,7 +425,10 @@ pub(super) fn compile(
         }
         ("image", false, false, true) => "The shot continues from the opening frame.",
         ("image", false, false, false) => "从首帧的姿态和构图开始，保留主体与场景的空间关系。",
-        ("first-last-frame", false, false, _) => "从首帧的姿态和构图开始连续过渡。",
+        ("first-last-frame", false, false, true) => {
+            "The shot transitions continuously from the opening frame's pose and composition."
+        }
+        ("first-last-frame", false, false, false) => "从首帧的姿态和构图开始连续过渡。",
         _ => "",
     };
     let ending = if input_mode == "first-last-frame" && ending.is_empty() {
@@ -490,10 +508,14 @@ pub(super) fn compile(
             ],
             " ",
         )
-    } else {
+    } else if english {
         join(&visual, " ")
+    } else {
+        join_zh(&visual)
     };
-    let quiet = body["motion"] == "subtle" && action.is_empty() && !user_motion
+    let subtle_slot = !action.is_empty() && slots[2].is_some_and(|option| option["motion"] == "subtle");
+    let quiet = (body["motion"] == "subtle" && action.is_empty() && !user_motion)
+        || subtle_slot
         || (!user_camera && recipe.get("camera").and_then(Value::as_str) == Some("still"))
         || [subject_direction.as_ref(), action, ending]
             .iter()
@@ -523,4 +545,19 @@ fn join(parts: &[&str], separator: &str) -> String {
         .copied()
         .collect::<Vec<_>>()
         .join(separator)
+}
+
+fn join_zh(parts: &[&str]) -> String {
+    let mut out = String::new();
+    for part in parts
+        .iter()
+        .map(|part| part.trim())
+        .filter(|part| !part.is_empty())
+    {
+        if !out.is_empty() && !out.ends_with(['。', '！', '？', '…']) {
+            out.push(' ');
+        }
+        out.push_str(part);
+    }
+    out
 }

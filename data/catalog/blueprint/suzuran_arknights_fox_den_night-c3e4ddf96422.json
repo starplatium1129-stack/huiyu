@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_den_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 641,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "蜷成一团，尾巴盖在身上",
-    "camera": "medium shot, curled tails and face visible",
+    "camera": "eye level, medium shot",
     "category": "泰拉日常",
     "characterId": "suzuran_arknights",
     "coverageTags": [
@@ -22,14 +22,22 @@
       "daylight"
     ],
     "outfitId": "cozy_fluffy_pajamas",
-    "promptProse": "Suzuran peeks from nine tails curled around her on the bed, awaiting the next line of a bedtime story; the bedside lamp warms the nearest fur against the dark room.",
+    "promptProse": "Curled into a snug nest on her dormitory bed at night in her cream fleece hoodie and yellow-trimmed shorts, Suzuran wraps her nine fluffy tails thickly around herself like a warm quilt. Only her head and bright eyes peek above the ring of golden fur as she blinks eagerly toward the viewer while waiting for the next line of a bedtime story. Soft amber glow from the bedside lamp warms the nearest curves of her tails and the rumpled blanket against the quiet dark room.",
     "promptTokens": [
       "curled up",
-      "bed",
-      "lamplight",
-      "medium shot",
-      "multiple tails",
-      "warm lighting"
+      "on bed",
+      "looking at viewer",
+      "gentle smile",
+      "pillow",
+      "blanket",
+      "nightstand",
+      "lamp",
+      "bedroom",
+      "indoors",
+      "night",
+      "warm lighting",
+      "eye level",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +49,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "铃兰 · 窝里夜话",
-    "animaCaption": "She peeks from nine curled tails while awaiting the next line of the bedtime story."
+    "animaCaption": "Curled into a cozy nest on her dormitory bed, Suzuran peeks above her nine wrapped tails and looks toward the viewer with a gentle, expectant smile. Warm light from the bedside lamp glows over the nearest fur and pillow against the dim bedroom.",
+    "compositionIntent": "single"
   }
 }

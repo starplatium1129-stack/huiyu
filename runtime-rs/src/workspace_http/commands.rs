@@ -165,6 +165,13 @@ pub(super) fn command(
     };
     let result = match (verb, p) {
         ("GET", ["status"]) => json!({"kind": "status"}),
+        ("GET", ["studio","projects"]) => json!({"kind":"studio.list"}),
+        ("GET", ["studio","projects",id]) => json!({"kind":"studio.get","id":route_op(id)?}),
+        ("POST", ["studio","changes"]) => {
+            let id = operation()?.to_owned();
+            record(&input["change"])?;
+            json!({"kind":"studio.write","operationId":id,"change":input["change"].take()})
+        }
         ("GET", ["media", "count"]) => json!({"kind": "countMedia"}),
         ("GET", ["media", alias, "thumbnail"]) => {
             let mut command = json!({"kind": "readThumbnail", "alias": route_op(alias)?});

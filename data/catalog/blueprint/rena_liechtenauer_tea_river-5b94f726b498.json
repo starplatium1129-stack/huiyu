@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_tea_river",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2429,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "rena_liechtenauer_tea_river",
     "characterId": "rena_liechtenauer",
@@ -16,24 +16,32 @@
     "action": "在河边长椅上坐下，把买来的热茶捧在手里，抬眼望向对岸，等茶稍微凉一些",
     "timeOfDay": "late afternoon",
     "lighting": "late afternoon light",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "放松",
-    "promptProse": "On a riverside bench, Lena holds a cup of hot tea and looks across the water in the late afternoon.",
+    "promptProse": "Taking an unhurried break on a weathered wooden riverside bench in late afternoon, Lena sits in her light blue cardigan and brown long skirt cradling a warm cup of hot tea between both palms. A faint wisp of steam curls past her chin as she gazes peacefully across the gleaming river toward the wooded far bank while waiting for her drink to cool. Low golden sunlight catches the water ripples and softens her relaxed smile.",
     "promptTokens": [
-      "riverside",
-      "bench",
       "sitting",
+      "bench",
       "holding cup",
-      "looking across water",
-      "late afternoon light",
+      "steam",
+      "looking away",
+      "gentle smile",
+      "river",
+      "water",
+      "trees",
+      "outdoors",
+      "sunset",
+      "golden hour",
+      "three quarter view",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated on the wooden riverside bench in her light blue cardigan, Lena cradles a steaming cup of hot tea in both hands and gazes calmly across the water. Warm late-afternoon sunlight glints across the river ripples and leafy far bank.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

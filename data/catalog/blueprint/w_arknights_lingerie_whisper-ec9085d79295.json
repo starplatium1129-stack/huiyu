@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3134,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "w_arknights_lingerie_whisper",
     "characterId": "w_arknights",
@@ -14,7 +14,7 @@
     "location": "卡兹戴尔荒原废墟掩体，周围整齐堆放着印有骷髅标志的黄色炸药箱",
     "timeOfDay": "爆破任务前夕的疯狂休整时刻",
     "lighting": "掩体裂口照进来的惨白月光，配合引信指示灯闪烁的猩红微光，形成惊险的光影氛围",
-    "camera": "low angle, medium shot, 低机位中景，弹药箱与手中把玩的引信雷管同框",
+    "camera": "low angle, medium shot",
     "mood": "狂人雇佣兵的无序疯狂与让人心惊肉跳的危险挑逗，极具反叛攻击性",
     "adult": true,
     "sampleRating": "R15",
@@ -42,21 +42,32 @@
     ],
     "promptTokens": [
       "sitting",
+      "sitting backwards",
       "ammo box",
-      "crate",
+      "holding detonator",
+      "dynamite",
+      "wide-eyed",
+      "crazed grin",
+      "looking at viewer",
       "military bunker",
       "ruins",
-      "dynamite",
-      "holding detonator",
-      "crazed grin",
+      "moonlight",
+      "red light",
       "low angle",
-      "medium shot",
-      "red lighting"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Sitting backwards on an olive ammunition crate within a derelict Kazdel bunker, W twirls a dynamite detonator pin between her fingers with a crazed, teasing grin. Pale moonlight through bunker fissures and blinking red detonator LEDs illuminate the hazard barrels around her.",
-    "animaCaption": "Sitting backwards on an ammunition crate in a ruined bunker, she twirls a detonator with a wild grin.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "W sits backwards astride an olive ammunition crate inside a ruined Kazdel bunker, wearing a crimson-and-black industrial cutout bralette accented with yellow hazard stripes and metallic rivets paired with black boyleg briefs. Dangling a red-and-white detonator between her fingers with a crazed, teasing grin, she glows under pale moonlight and blinking crimson indicator light.",
+    "animaCaption": "Sitting backwards astride a military ammo crate in a red-and-black studded cutout bralette with hazard stripes and black boyshorts, she dangles a wired detonator over her knee with a sharp, gleeful grin. Pale moonlight from bunker cracks clashes with the blinking red fuse glow.",
+    "nsfwTokens": [
+      "red and black lingerie",
+      "cutout bralette",
+      "hazard stripes",
+      "metal studs",
+      "black boyshorts",
+      "bare midriff",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a crimson-and-black industrial cutout bralette detailed with yellow hazard stripes and metal rivets paired with black boyleg briefs."
   }
 }

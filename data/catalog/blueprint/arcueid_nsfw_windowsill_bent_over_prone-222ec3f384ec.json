@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_windowsill_bent_over_prone",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1330,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "action": "一手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, dutch angle",
+    "camera": "dutch angle, cowboy shot",
     "category": "私密承载",
     "characterId": "arcueid_brunestud",
     "coverageTags": [
@@ -25,19 +25,21 @@
     "mood": "狂乱自抚、唯美心动",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "With her sweater raised and skirt gathered at her waist, she braces one hand against the window while the other reaches beneath her skirt. Her breath clouds the glass above the moonlit city.",
+    "promptProse": "Before a panoramic high-rise window overlooking the night city, Arcueid leans over the cold marble sill with one hand braced on the glass, her breath misting the pane. Bright moonlight streams across her arched back and flushed profile.",
     "promptTokens": [
-      "leaning over windowsill",
-      "white sweater pulled up",
-      "bare back",
-      "blush",
-      "panties",
+      "window",
       "marble sill",
-      "bright full moon",
-      "streaming moonlight",
-      "night city below",
-      "soft rim light",
-      "sensual vulnerability"
+      "bent over",
+      "hand on glass",
+      "looking back",
+      "heavy blush",
+      "teary eyes",
+      "night",
+      "full moon",
+      "moonlight",
+      "city lights",
+      "dutch angle",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -58,6 +60,18 @@
     ],
     "timeOfDay": "深夜月色",
     "title": "爱尔奎特 · 落地月光窗前的毛衣半褪自抚",
-    "animaCaption": "A flood of cool silver moonlight spills through the panoramic window, caressing Arcueid's arched back on the marble sill."
+    "animaCaption": "Bending forward over the marble windowsill with one palm pressed against the fogged glass, she has her white sweater pushed up above her chest and purple skirt gathered at her waist while her free hand slips under her panties as she glances back tearfully.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white sweater",
+      "clothes lift",
+      "purple skirt",
+      "skirt lift",
+      "panties aside",
+      "topless",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her white wool turtleneck is bunched high above her bare breasts and her long purple skirt is lifted to her waist, revealing her panties pulled aside as her free hand touches herself."
   }
 }

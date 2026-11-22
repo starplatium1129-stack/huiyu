@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3343,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "medea_caster_lingerie_whisper",
     "characterId": "medea_caster",
@@ -14,7 +14,7 @@
     "location": "柳洞寺后山秘密魔术工坊，一侧案台上整齐摆放着未拼装的城堡手办",
     "timeOfDay": "午夜魔术研习之时",
     "lighting": "指尖魔力蝴蝶散发神秘幽紫冷光，工坊四角的古铜烛台提供跳跃的暖橙底光",
-    "camera": "medium shot, side view, 侧身中景，工坊烛火映照下的城堡手办与魔女罕见的温顺依恋",
+    "camera": "from side, medium shot",
     "mood": "神代魔女的成熟高雅、深邃知性与私下对待爱侣的无尽柔情",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,38 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
-      "sitting beside crafting workbench",
-      "half-built model castle kit",
-      "flickering candles",
-      "magic scrolls",
-      "secret cavern workshop",
-      "warm amber flame glow",
-      "affectionate gentle gaze"
+      "sitting",
+      "couch",
+      "butterfly",
+      "magic",
+      "glowing",
+      "gentle smile",
+      "looking at viewer",
+      "workbench",
+      "scroll",
+      "candelabra",
+      "candlelight",
+      "night",
+      "from side",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Medea sits contentedly at her workshop table in Ryuudou temple, tenderly assembling a plastic model castle under flickering candlelight away from the prying eyes of the world.",
-    "animaCaption": "Sitting beside a half-built model castle in her candlelit workshop, gazing with tender, domestic affection.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Reclining gracefully on a low divan inside her candlelit secret workshop behind Ryuudou Temple at midnight, Medea wears a deep royal-purple velvet slip dress with a sheer black spiderweb chest panel and gold runic trim. Conjuring a glowing violet magical butterfly above her upturned fingertips beside a workbench holding scrolls and a half-assembled model castle, she gazes affectionately toward her partner in warm bronze candlelight.",
+    "animaCaption": "Seated gracefully in her candlelit temple workshop wearing a deep-purple velvet and sheer black lace slip dress, Medea balances a glowing violet magical butterfly over her fingertips with an affectionate smile. Bronze candelabras illuminate scrolls and her model workbench behind her.",
+    "nsfwTokens": [
+      "purple dress",
+      "velvet",
+      "slip dress",
+      "black lace",
+      "see-through",
+      "gold trim",
+      "bare shoulders",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a deep royal-purple velvet sweetheart slip dress paneled with sheer black spiderweb lace across the chest and edged in gold runic embroidery, baring her shoulders and cleavage.",
+    "compositionIntent": "single"
   }
 }

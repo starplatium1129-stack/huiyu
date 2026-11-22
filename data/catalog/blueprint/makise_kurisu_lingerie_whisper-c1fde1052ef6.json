@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makise_kurisu_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3479,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "makise_kurisu_lingerie_whisper",
     "characterId": "makise_kurisu",
@@ -14,7 +14,7 @@
     "location": "秋叶原未来道具研究所里间，古旧显像管显示器泛着温暖琥珀色幽光",
     "timeOfDay": "深夜实验告一段落时",
     "lighting": "显像管显示器的绿色文字与单侧工作台灯在昏暗房间里勾勒出暖黄与微绿光影",
-    "camera": "medium shot, eye level, 侧坐平视中景，古旧CRT显像管琥珀幽光与傲娇脸红",
+    "camera": "eye level, medium shot",
     "mood": "经典傲娇天才少女的防线崩溃，极度羞涩可爱",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,38 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting in swivel chair",
-      "CRT computer monitor glowing",
-      "oscilloscope wires on workbench",
-      "can of Dr Pepper",
-      "Future Gadget Lab inner room",
-      "amber screen light",
-      "indignant tsundere blush",
-      "crossing arms"
+      "sitting",
+      "couch",
+      "holding blanket",
+      "blanket",
+      "looking away",
+      "heavy blush",
+      "computer",
+      "monitor",
+      "oscilloscope",
+      "soda can",
+      "desk lamp",
+      "night",
+      "eye level",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Kurisu swivels her desk chair inside the cluttered Future Gadget Lab, crossing her arms in blushing tsundere protest under the warm amber glow of retro CRT monitors.",
-    "animaCaption": "Sitting in a lab desk chair beside a glowing CRT monitor and a can of soda, blushing with tsundere indignation.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Curled self-consciously on the worn backroom sofa of the Future Gadget Lab late at night, Kurisu wears a crimson satin and black eyelash-lace camisole set while tugging a thin blanket defensively up toward her chest. Averting her gaze with reddened ears and a flustered pout beside a glowing amber CRT monitor, tangled oscilloscope leads, and a soda can, she sits lit by a warm desk lamp in the shadowy lab.",
+    "animaCaption": "Curled on the lab backroom sofa in her crimson satin and black lace camisole set while tugging a thin blanket up toward her chest, Kurisu looks away with deeply flushed ears and a flustered pout. A glowing retro CRT monitor and warm desk lamp light the cluttered room.",
+    "nsfwTokens": [
+      "red lingerie",
+      "satin",
+      "black lace",
+      "camisole",
+      "bra",
+      "ribbon",
+      "bare shoulders",
+      "collarbone"
+    ],
+    "nsfwProse": "She wears a deep crimson satin camisole and bralette trimmed with black eyelash lace and tiny black bows, clutching a thin throw blanket partway across her chest over bare shoulders.",
+    "compositionIntent": "single"
   }
 }

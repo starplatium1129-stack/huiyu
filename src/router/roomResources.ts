@@ -1,4 +1,6 @@
 import type { Component } from 'vue'
+import { whenStartupProfileReady } from '@/platform/startupProfile'
+import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
 export type RoomPage = 'chat' | 'companion' | 'companion-chat'
 const flights = new Map<RoomPage, Promise<{ default: Component }>>()
@@ -15,9 +17,18 @@ export function loadRoom(page: RoomPage): Promise<{ default: Component }> {
   if (pending) return pending
   const current = Promise.all([
     loadRoomComponent(page),
-    import('@/utils/localCompanions').then(module => module.loadLocalCompanions()),
-    import('@/utils/chatCards').then(module => module.loadChatCards()),
-    import('@/platform/web/profileStorage').then(module => module.ensureProfileChatHistory()),
+    whenStartupProfileReady().then(async () => {
+      if (page === 'companion' && getDesktopWindowRole() === 'companion') {
+        const { loadActiveCompanion } = await import('./companionResources')
+        await loadActiveCompanion()
+        return
+      }
+      await Promise.all([
+        import('@/utils/localCompanions').then(module => module.loadLocalCompanions()),
+        import('@/utils/chatCards').then(module => module.loadChatCards()),
+        import('@/platform/web/profileStorage').then(module => module.ensureProfileChatHistory()),
+      ])
+    }),
   ]).then(([component]) => component).finally(() => {
     if (flights.get(page) === current) flights.delete(page)
   })

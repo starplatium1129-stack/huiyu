@@ -33,7 +33,17 @@ pub(super) fn accept(
         // A cancellation recorded before acceptance settles this request
         // without using the provider. Unrelated running work cannot block it.
         if cancellation.is_none() {
-            let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
+            // Only the local native worker has a shared execution slot across all media families.
+            // A previous process with an unresolved submission or any other provider still owns its guard.
+            let queued = incoming.provider == "native"
+                && incoming.metadata.get("nativeGpuQueueEpoch").and_then(Value::as_str) == Some(c.epoch.as_str());
+            let blocked: Option<String> = c.db.query_row(
+                "SELECT task_id FROM tasks WHERE upstream_settled=0 AND (?1=0 OR provider!='native'
+                 OR json_extract(record_json,'$.metadata.nativeGpuQueueEpoch') IS NULL
+                 OR (json_extract(record_json,'$.submissionIntentAt') IS NOT NULL
+                     AND (json_extract(record_json,'$.metadata.nativeGpuQueueEpoch')!=?2
+                          OR json_extract(record_json,'$.recoveryState') IN ('unknown','reconciling'))))
+                 LIMIT 1", params![queued,c.epoch], |r| r.get(0)).optional()?;
             if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting").not_accepted()); }
         }
         let mut task = incoming;

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/sfw_navy_pool_team_swimsuit",
+  "revision": 1,
+  "sortOrder": 3916,
+  "createdAt": "2026-11-22T01:48:55.068887900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "sfw_navy_pool_team_swimsuit",
+      "characterId": "reze_chainsaw",
+      "name": "藏青运动连体泳衣与水蓝侧线",
+      "tokens": [
+        "one-piece swimsuit",
+        "blue one-piece swimsuit",
+        "racerback"
+      ],
+      "prose": "A closed-front navy athletic one-piece swimsuit with broad racerback straps and narrow pale-blue side seams.",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

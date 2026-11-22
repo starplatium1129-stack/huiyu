@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_window_catnap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2814,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "zeta_shadow_window_catnap",
     "characterId": "zeta_shadow",
@@ -17,21 +17,31 @@
     "action": "抱着靠垫蜷成一团睡着了，耳朵偶尔轻轻抖一下——就算睡着，金豹的警觉也没有完全放下",
     "timeOfDay": "afternoon",
     "lighting": "窗边午后的金色阳光",
-    "camera": "medium_shot",
+    "camera": "from side, medium shot",
     "mood": "静谧温存",
-    "promptProse": "Curled on the window seat with a cushion, Zeta sleeps — ears still twitching at every third sound.",
+    "promptProse": "Curled loosely along a cushioned wooden window seat inside a quiet afternoon hideout, Zeta naps in her oversized grey cat-ear hoodie and shorts with her arms wrapped lightly around a soft throw pillow. Her eyes stay peacefully closed, yet her posture retains a subtle feline poise above the distant tiled rooftops visible through the tall casement glass. Warm golden afternoon sunlight slants across the sheer curtains, cushions, and her resting form.",
     "promptTokens": [
-      "window seat",
+      "sleeping",
+      "curled up",
+      "eyes closed",
+      "hugging pillow",
       "cushion",
-      "nap",
+      "window seat",
+      "window",
+      "rooftop",
+      "curtains",
       "sunlight",
-      "cat ears"
+      "afternoon",
+      "indoors",
+      "from side",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Even asleep, a Shadow Garden cat sleeps with one ear open.",
+    "animaCaption": "Curled on the cushioned window seat in her oversized grey hoodie, Zeta sleeps with her eyes closed and arms wrapped loosely around a soft pillow. Warm afternoon sunlight pours across the sill and sheer curtains above the distant town rooftops.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "single"
   }
 }

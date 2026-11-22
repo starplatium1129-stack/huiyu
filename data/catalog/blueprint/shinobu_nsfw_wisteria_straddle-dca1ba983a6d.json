@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_wisteria_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1460,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "action": "跨坐腰间主动起伏研磨，缎带散开散发垂落，紫瞳湿润含笑",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowgirl straddle POV, vertical framing, candle-lit intimacy",
+    "camera": "from below, pov, cowboy shot",
     "category": "主控骑乘",
     "characterId": "kochou_shinobu",
     "coverageTags": [
@@ -24,20 +24,24 @@
     "location": "蝶屋敷寝室大床",
     "mood": "小恶魔医嘱、毒与甜",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "The ribbons of her black-and-violet lace lingerie set with its butterfly charm are untied and pushed aside to bare her breasts above sheer purple thigh-high stockings and garter straps in a cowgirl position.",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Shinobu rides astride her companion in the Butterfly Mansion, loosened violet lingerie and black-purple hair lit by candles.",
+    "promptProse": "Seen from a low first-person perspective in a candlelit traditional room at night, Shinobu sits astride her partner with her unbound wavy hair spilling past her shoulders. Warm candlelight catches the mischievous glint in her wet eyes as she holds his gaze.",
     "promptTokens": [
-      "butterfly charm",
-      "kochou_shinobu",
-      "black and violet lace lingerie",
-      "loose hair",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "eye contact",
+      "hair down",
+      "looking down",
+      "teasing smile",
+      "heavy blush",
+      "japanese room",
       "candlelight",
-      "low angle",
-      "on lap",
-      "night"
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -54,9 +58,16 @@
     "timeOfDay": "深夜",
     "title": "蝴蝶忍 · 紫藤夜色的小恶魔骑乘",
     "nsfwTokens": [
-      "cowgirl position",
-      "topless"
+      "purple lingerie",
+      "black lace",
+      "garter straps",
+      "purple thighhighs",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position"
     ],
-    "animaCaption": "She sits across her companion's lap, her loose hair falling into the candlelight."
+    "animaCaption": "Straddling her partner's lap in the candlelit Butterfly Mansion bedroom with her hair let loose down her shoulders, she wears her black-and-violet butterfly lace lingerie undone to bare her breasts while locking eyes with a flushed teasing smile.",
+    "compositionIntent": "group"
   }
 }

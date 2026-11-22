@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3180,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kitagawa_marin_lingerie_whisper",
     "characterId": "kitagawa_marin",
@@ -14,7 +14,7 @@
     "location": "堆满cosplay布料与彩妆盘的卧室梳妆台前，环形补光灯散发柔光",
     "timeOfDay": "深夜试装时刻",
     "lighting": "环形柔光灯提供明亮清透的主光源，背景点缀暖黄小串灯营造温馨卧室感",
-    "camera": "medium close-up, 中近景特写，由上而下聚焦于椅背上搭着的手臂与俏皮狡黠的眨眼神态",
+    "camera": "medium close-up, eye level",
     "mood": "热烈火辣，充满辣妹风情的自信与心动互动",
     "adult": true,
     "sampleRating": "R15",
@@ -36,24 +36,33 @@
       "medium_close_up"
     ],
     "promptTokens": [
-      "medium close-up",
+      "sitting",
+      "chair",
+      "chin on hands",
+      "winking",
+      "smirk",
+      "looking at viewer",
       "vanity",
       "mirror",
-      "night",
-      "warm lighting",
-      "sitting",
-      "smile",
+      "cosmetics",
       "ring light",
-      "bed",
-      "strappy underwire crop bustier",
-      "black ribbon choker",
-      "cheeky low-rise briefs",
-      "indoors"
+      "bedroom",
+      "night",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set. Chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends amidst red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression.",
-    "animaCaption": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "At her cluttered bedroom vanity lit by a soft circular ring light at night, Marin turns backwards on the chair with her chin propped over the backrest and gives a bold, teasing wink.",
+    "animaCaption": "Sitting backwards astride her bedroom vanity chair beneath a glowing ring light surrounded by makeup palettes and cosplay fabrics, she rests her chin on her folded arms over the chair back and winks playfully in a leopard-print sheer black lace bralette, black ribbon choker, and low-rise briefs.",
+    "nsfwTokens": [
+      "leopard print",
+      "black lace",
+      "bralette",
+      "black choker",
+      "panties",
+      "see-through",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a trendy leopard-print and sheer black lace underwire crop bustier with criss-cross straps, a narrow black ribbon choker, and matching cheeky low-rise briefs.",
+    "compositionIntent": "single"
   }
 }

@@ -40,9 +40,15 @@ impl Output {
 pub trait ExecutionHooks: Send + Sync {
     /// Hint only: authoritative observation, not this notification, settles the ledger.
     fn observation_changed(&self) {}
+    fn ready_to_queue(&self) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async { Ok(()) })
+    }
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>>;
     fn submitting(&self, provider: String) -> BoxFuture<'_, Result<()>>;
     fn observed(&self, id: String, metadata: Value) -> BoxFuture<'_, Result<()>>;
+    fn execution_metadata(&self, _metadata: Value) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async { Ok(()) })
+    }
     fn collect(&self, outputs: Vec<Output>) -> BoxFuture<'_, Result<()>>;
     fn collect_indexed(&self, outputs: Vec<(usize, Output)>) -> BoxFuture<'_, Result<()>> {
         let _ = outputs;

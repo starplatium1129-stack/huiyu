@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiromi_iori_lingerie_whisper",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 3287,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiromi_iori_lingerie_whisper",
     "characterId": "shiromi_iori",
@@ -14,7 +14,7 @@
     "location": "格黑娜风纪委员会值班休息室，脱下的黑色战术长靴整齐立在墙角",
     "timeOfDay": "深夜校园巡逻归来的私密处分",
     "lighting": "值班室清冷的日光灯管从头顶投下，将银色发丝与小麦色肌肤的光泽表现得淋漓尽致",
-    "camera": "close-up, low angle, 低机位仰视特写，黑色战术长靴与被撞破后的羞怒神态张力十足",
+    "camera": "low angle, close-up",
     "mood": "严格风纪委员长被撞见私服的极致羞耻与反差萌，傲娇到极点的诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,36 @@
       "low_angle"
     ],
     "promptTokens": [
-      "close-up",
+      "sitting",
+      "folding chair",
+      "grabbing own clothes",
+      "boots removed",
+      "glare",
+      "angry",
+      "heavy blush",
+      "looking down",
+      "office",
+      "tile floor",
+      "fluorescent light",
+      "indoors",
+      "night",
       "low angle",
-      "sitting on duty room bench",
-      "unlaced black combat boots on floor",
-      "tactical gear nearby",
-      "bright red blush",
-      "furious embarrassed glare",
-      "clenching fists",
-      "dim office lighting"
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Caught unawares in the Gehenna Prefect Team duty room with her heavy tactical boots off, Iori glares up with a crimson, mortified pout, trembling in indignant fury.",
-    "animaCaption": "Sitting on a duty bench with combat boots set aside, glaring up with an intensely flustered, angry blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Caught off-duty in the Gehenna Prefect Team break room late at night with her heavy black tactical boots set neatly by the wall, Iori sits upright on a metal folding chair in her black ribbed three-snap bralette and snug boyleg shorts. Clutching defensively at her neckline with bare feet pressed against the cool tile floor, she glares down with a furious, mortified blush and watery eyes. Crisp overhead fluorescent light gleams over her taut dark skin and silver hair.",
+    "animaCaption": "Seated barefoot on a duty-room folding chair with her combat boots set aside, Iori wears a black ribbed three-snap bralette and boyleg shorts while glaring down with a furious crimson blush. Cool overhead office light illuminates her taut stance.",
+    "nsfwTokens": [
+      "lingerie",
+      "black bralette",
+      "front buttons",
+      "black boyshorts",
+      "midriff",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a fitted matte-black ribbed tactical bralette with three silver front snaps and snug black boyleg shorts, her tall combat boots removed and set aside.",
+    "compositionIntent": "single"
   }
 }

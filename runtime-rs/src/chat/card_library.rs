@@ -5,7 +5,7 @@ use crate::{
 };
 use axum::{
     Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, Multipart, Path, State},
+    extract::{ConnectInfo, DefaultBodyLimit, Multipart, Path, Query, State},
     http::HeaderMap,
     response::{IntoResponse, Response},
     routing::get,
@@ -269,13 +269,18 @@ async fn import(
     Ok(Json(json!({"card":card})))
 }
 
+#[derive(Deserialize)]
+struct CardFilter { id: Option<String> }
+
 async fn list(
     State(app): State<AppState>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: HeaderMap,
+    Query(filter): Query<CardFilter>,
 ) -> Result<Response> {
     local(&headers, peer)?;
     running(&app)?;
+    if filter.id.as_deref().is_some_and(|id| !is_id(id)) { return Err(not_found()); }
     let root = app.config.runtime_root.clone();
     let catalog = Options::from_config(&app.config);
     let cards = tokio::task::spawn_blocking(move || -> Result<Vec<Value>> {
@@ -283,6 +288,7 @@ async fn list(
             Some(catalog) => catalog.chat_cards().map_err(storage_error)?,
             None => Vec::new(),
         };
+        if let Some(id) = &filter.id { cards.retain(|card| card["id"].as_str() == Some(id)); }
         let project_indices: HashMap<String, usize> = cards
             .iter()
             .enumerate()
@@ -290,10 +296,10 @@ async fn list(
             .collect();
         let db = database(&root)?;
         let mut query = db
-            .prepare("SELECT id, summary, avatar IS NOT NULL FROM cards ORDER BY rowid")
+            .prepare("SELECT id, summary, avatar IS NOT NULL FROM cards WHERE (?1 IS NULL OR id = ?1) ORDER BY rowid")
             .map_err(storage_error)?;
         let rows = query
-            .query_map([], |r| {
+            .query_map(params![filter.id], |r| {
                 Ok((
                     r.get::<_, String>(0)?,
                     r.get::<_, String>(1)?,

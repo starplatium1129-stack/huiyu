@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3382,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yamada_ryo_lingerie_whisper",
     "characterId": "yamada_ryo",
@@ -14,7 +14,7 @@
     "location": "下北泽Livehouse后台乐器存放间，四周靠放着音箱、效果器与纠缠的音频线",
     "timeOfDay": "深夜贝斯独奏练习结束后",
     "lighting": "排练室昏暗的黄光与效果器面板上闪烁的红绿指示灯交相辉映，氛围慵懒深邃",
-    "camera": "medium shot, eye level, 侧坐平视中景，聚焦贝斯琴弦与毫无防备的散漫吃相",
+    "camera": "medium shot, eye level",
     "mood": "古怪怪人贝斯手的独特三无帅气，随性不羁又带着令人捉摸不透的奇妙魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,31 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting on amplifier",
-      "holding bass guitar",
-      "audio cables on floor",
-      "eating snack",
-      "backstage dressing room",
+      "sitting",
+      "amplifier",
+      "bass guitar",
+      "audio cables",
+      "eating",
+      "expressionless",
+      "looking at viewer",
+      "backstage",
       "livehouse",
-      "deadpan expression",
-      "stage lighting bleed",
-      "dim lighting"
+      "dim lighting",
+      "stage lights",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ryo perches nonchalantly atop a bass amplifier in the dimly lit Livehouse equipment room, nibbling a snack with an unfazed deadpan expression beside coiled audio cables.",
-    "animaCaption": "Sitting atop an amplifier in the livehouse backstage room, resting a bass guitar beside her with a cool deadpan gaze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside the dimly lit backstage instrument room of a Shimokitazawa livehouse cluttered with amps, effects pedals, and coiled audio cables, Ryo perches lazily with a bass beside her, munching a snack with an unfazed deadpan gaze.",
+    "animaCaption": "Perched casually atop a backstage livehouse amplifier beside her bass guitar and tangled audio cables, she nibbles a green snack with a cool deadpan sideways glance wearing a minimalist dark-teal athletic tank bralette and relaxed boy-shorts.",
+    "nsfwTokens": [
+      "dark green tank top",
+      "bralette",
+      "boy shorts",
+      "midriff",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears an androgynous minimalist dark indigo-teal athletic tank bralette with raw hem accents and matching relaxed boy-shorts baring her shoulders, midriff, and legs.",
+    "compositionIntent": "single"
   }
 }

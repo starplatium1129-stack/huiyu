@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3131,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "pozyomka_arknights_swimsuit_allure",
     "characterId": "pozyomka_arknights",
@@ -14,7 +14,7 @@
     "location": "热带绝壁之上的私人露天白色穹顶观景凉亭",
     "timeOfDay": "午后微风",
     "lighting": "穿透白色纱幔的柔美漫射光线，海平面的微光给粉色长发与华丽披风染上一层珍珠般的温润光泽",
-    "camera": "cowboy shot, slightly high angle, painterly literary atmosphere, romantic soft tones",
+    "camera": "high angle, cowboy shot",
     "mood": "文雅高贵、慵懒惬意与沉浸在诗意中的温存",
     "adult": true,
     "sampleRating": "R15",
@@ -40,28 +40,33 @@
       "romantic"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "pozyomka (arknights)",
-      "pink hair",
-      "wolf ears",
-      "wolf tail",
-      "blue eyes",
-      "dusty rose bikini",
-      "sheer wrap skirt",
-      "reclining on luxurious white cabana couch",
-      "holding quill pen over journal",
-      "gentle loving smile",
-      "flowing white curtains",
-      "ocean horizon view",
-      "warm afternoon breeze",
-      "depth of field",
-      "cinematic lighting"
+      "reclining",
+      "rattan daybed",
+      "holding quill",
+      "open notebook",
+      "gentle smile",
+      "looking at viewer",
+      "white gazebo",
+      "white curtains",
+      "ocean view",
+      "afternoon",
+      "soft sunlight",
+      "breeze",
+      "high angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Pozyomka from Arknights reclines languidly on a shaded white daybed overlooking the tranquil sea in her dusty-rose embroidered bikini, resting her quill on an open journal with an affectionate, aristocratic smile.",
-    "animaCaption": "Billowing sheer drapes frame the sapphire sea as she pauses her poetic script to welcome you into her haven.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Pozyomka reclines gracefully on a pillowed white rattan daybed beneath a cliffside coastal pavilion, wearing a dusty-rose and champagne-gold embroidered bikini with sheer chiffon sleeves and a gold-trimmed wrap skirt. Resting a feather quill on her open hardcover notebook as sea breezes lift the sheer white drapes, she offers a serene, affectionate smile.",
+    "animaCaption": "Reclining languidly on a cushioned white rattan daybed in her dusty-rose gold-embroidered bikini, sheer chiffon sleeves, and wrap skirt, she pauses with a feather quill poised over her open notebook and smiles warmly toward the viewer. Sheer white cabana drapes billow softly against the afternoon sea horizon.",
+    "nsfwTokens": [
+      "pink bikini",
+      "gold embroidery",
+      "sheer sleeves",
+      "chiffon sleeves",
+      "wrap skirt",
+      "pareo",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a dusty-rose and champagne-gold embroidered resort bikini paired with flowing sheer chiffon sleeves and a gold-trimmed wrap skirt."
   }
 }

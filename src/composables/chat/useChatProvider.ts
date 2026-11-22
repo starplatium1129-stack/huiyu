@@ -10,6 +10,7 @@ import type { ChatProvider } from './chatStorageTypes'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ApiClientError } from '../../api/client.ts'
 import { rememberSavedChatApiDraft } from '../../utils/chatApiDrafts.ts'
+import { useChatGptAuth } from './useChatGptAuth.ts'
 
 
 type ChatStorage = ReturnType<typeof useChatStorage>
@@ -151,8 +152,14 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const useHostConfig = computed(() =>
     chatProvider.value === 'api' && !apiConfiguredByUser.value && hostApiConfigured.value,
   )
+  const chatGpt = useChatGptAuth(() => {
+    if (!disposed && !isBusy.value && chatProvider.value === 'chatgpt') {
+      setChatStatus(chatGpt.statusText.value, chatGpt.ready.value ? 'online' : '')
+    }
+  })
   const chatReady = computed(() => {
     if (chatProvider.value === 'muse') return isLocalStudioHost() && museStatus.value?.available === true
+    if (chatProvider.value === 'chatgpt') return chatGpt.ready.value
     if (chatProvider.value === 'api') return apiConfigured.value || useHostConfig.value
     return ollamaOnline.value
   })
@@ -182,11 +189,15 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     if (provider === 'muse') {
       if (!isBusy.value) setChatStatus(museStatusText.value)
       void refreshMuseStatus()
+    } else if (provider === 'chatgpt') {
+      if (!isBusy.value) setChatStatus(chatGpt.statusText.value, chatGpt.ready.value ? 'online' : '')
+      void chatGpt.refreshStatus(true)
     }
   }, { immediate: true })
 
   async function refreshChatStatus() {
     if (chatProvider.value === 'muse') return refreshMuseStatus()
+    if (chatProvider.value === 'chatgpt') return chatGpt.refreshStatus(true)
     if (disposed || checkingChatStatus.value) return
     checkingChatStatus.value = true
     try {
@@ -227,13 +238,17 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   function setChatProvider(provider: ChatProvider) {
     if (isBusy.value || chatProvider.value === provider) return
-    if (provider === 'muse' && !isLocalStudioHost()) return
+    if ((provider === 'muse' || provider === 'chatgpt') && !isLocalStudioHost()) return
     chatProvider.value = provider
     storage.setProvider(provider)
     apiConfigHint.value = ''
     if (provider === 'api') {
       apiSettingsOpen.value = !apiConfigured.value && !useHostConfig.value
       setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
+    } else if (provider === 'chatgpt') {
+      apiSettingsOpen.value = false
+      setChatStatus(chatGpt.statusText.value, chatGpt.ready.value ? 'online' : '')
+      void chatGpt.refreshStatus(true)
     } else if (provider === 'local') {
       setChatStatus(localStatusText.value, ollamaOnline.value ? 'online' : '')
       void refreshChatStatus()
@@ -289,6 +304,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     isBusy.value = value
     if (value) setChatStatus(chatProvider.value === 'muse' ? '正在等 Muse 回复…' : '正在生成回复…', 'busy')
     else if (chatProvider.value === 'muse') setChatStatus(museStatusText.value, museStatus.value?.receiving ? 'online' : '')
+    else if (chatProvider.value === 'chatgpt') setChatStatus(chatGpt.statusText.value, chatGpt.ready.value ? 'online' : '')
     else if (chatProvider.value === 'api') {
       setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
     } else {
@@ -307,6 +323,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
       if (!isBusy.value) setBusyStatus(false)
       if (!getDesktopCapabilities() && !apiKey.value && cleanConnection()) apiConfigHint.value = '配置已同步；密钥不跨网页共享，请在本页重新提供。'
       void refreshHostConfig()
+      if (chatProvider.value === 'chatgpt') void chatGpt.refreshStatus(true)
     } catch { if (!disposed && cleanConnection()) apiConfigHint.value = '另一窗口的配置尚未同步，请稍后重试。' }
   }
   window.addEventListener('storage', syncApiSettingsFromStorage)
@@ -316,6 +333,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   return {
     museStatus, museStatusText, checkingMuse, refreshMuseStatus,
+    chatGpt,
     ollamaOnline, localStatusText, checkingChatStatus, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
     hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,

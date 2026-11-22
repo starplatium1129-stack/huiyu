@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_hotel_suit",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 565,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "action": "坐在落地窗前的轮椅上侧身回眸，夜色与微光交织",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "成人",
     "characterId": "lemuen_arknights",
     "description": "五星级酒店落地窗前俯瞰着城市璀璨夜色，蕾缪安穿着松开的西装与长裤坐在轮椅上侧身回眸，夜色与头顶光环交织成梦幻的光晕。她轻咬朱唇低语——「今夜的巡逻与职责已经全部结束了……抱我到床上去吧，我的指挥官。」",
@@ -19,23 +19,35 @@
     "lighting": "city lights through the window",
     "location": "拉特兰旅店",
     "mood": "都市夜色",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwProse": "Her tailored hotel trouser suit jacket hangs open with her shirt unbuttoned at the collar, revealing her bare collarbone and soft cleavage above matching loose trousers.",
+    "nsfwTokens": [
+      "suit",
+      "open jacket",
+      "unbuttoned shirt",
+      "open collar",
+      "collarbone",
+      "cleavage",
+      "pants"
+    ],
     "outfitId": "hotel_trouser_suit",
-    "promptProse": "Lemuen turns toward her off-frame companion from the wheelchair by the hotel window, her trouser suit loosened. City lights and her halo outline the chair and her profile.",
+    "promptProse": "Beside the panoramic window of a darkened luxury hotel suite overlooking glittering night city lights, Lemuen sits in her wheelchair wearing her tailored trouser suit with the jacket open and blouse unbuttoned over her collarbone. Turning back over her shoulder with a soft blush and lightly bitten lip, she meets the viewer's gaze as distant skyline lights and her warm halo rim her profile in the quiet dark room.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "open suit",
-      "loose trousers",
-      "wheelchair",
       "sitting",
+      "wheelchair",
       "looking back",
-      "hotel window",
+      "biting lip",
+      "blush",
+      "window",
       "city lights",
-      "halo",
+      "night",
+      "hotel room",
       "rim light",
+      "dim lighting",
+      "three quarter view",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -49,6 +61,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "蕾缪安 · 旅店夜装",
-    "animaCaption": "She turns from the wheelchair by the window toward her offscreen companion, city lights outlining her profile."
+    "animaCaption": "Seated in her wheelchair by the panoramic hotel window with her tailored suit jacket open and collar unbuttoned, Lemuen looks back over her shoulder with a soft blush and parted lips. Distant night city lights and her glowing halo outline her profile.",
+    "compositionIntent": "single"
   }
 }

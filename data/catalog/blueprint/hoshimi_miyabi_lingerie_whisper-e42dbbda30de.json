@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshimi_miyabi_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3194,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "hoshimi_miyabi_lingerie_whisper",
     "characterId": "hoshimi_miyabi",
@@ -14,7 +14,7 @@
     "location": "新艾利都第六课道场实木地板榻榻米前",
     "timeOfDay": "深夜",
     "lighting": "道场外新艾利都空洞结界折射出的淡紫荧光与室内极简和风地灯交融，冷艳出尘",
-    "camera": "庄严神圣的正面中轴构图，捕捉虚狩神女在绝对静止中蕴含的惊天剑气与冷艳美感",
+    "camera": "front view, medium shot",
     "mood": "空灵孤绝、剑心入定、超脱凡尘的清冷神性",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,32 @@
       "void_hunter"
     ],
     "promptTokens": [
-      "fox ears",
-      "black one-shoulder wrap",
-      "sitting cross-legged",
-      "katana on lap",
+      "sitting",
+      "cross-legged",
       "meditating",
-      "silver hair",
       "closed eyes",
-      "zen dojo",
+      "katana",
+      "sword on lap",
+      "dojo",
+      "tatami",
       "floor lamp",
-      "purple glow",
-      "dim lighting"
+      "purple lighting",
+      "night",
+      "front view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Miyabi Hoshimi deep in midnight sword meditation upon the polished cedar floorboards of Section 6's training hall. She wears a striking jet-black asymmetrical one-shoulder wrap chemise echoing traditional shinto garments. With her legendary katana resting horizontally across her crossed legs and fox ears perked in tranquil focus, she radiates untouchable, ethereal swordmaster grace. Pale violet luminescence from the distant New Eridu hollow boundary filters into the dojo, merging with warm wooden floor lanterns into an ethereal glow.",
-    "animaCaption": "Miyabi sits cross-legged in the quiet dojo, meditating with her katana resting across her lap. Pale violet luminescence from the distant New Eridu hollow boundary filters into the dojo, merging with warm wooden floor lanterns into an ethereal glow.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Centered symmetrically on the polished tatami of the quiet midnight dojo, Miyabi meditates cross-legged with her sheathed katana resting cleanly across her lap. Warm floor lanterns mingle with a distant pale violet sheen filtering through the hall.",
+    "animaCaption": "Sitting cross-legged at the center of the shadowed dojo with her eyes closed in tranquil sword meditation and her katana laid across her thighs, she wears a severe matte-black one-shoulder bamboo-silk wrap tied with Shinto cords under soft lantern and faint violet glow.",
+    "nsfwTokens": [
+      "black dress",
+      "one-shoulder",
+      "asymmetrical clothes",
+      "bare shoulder",
+      "bare legs",
+      "cord"
+    ],
+    "nsfwProse": "She wears a minimalist matte-black bamboo-silk asymmetrical one-shoulder boudoir wrap secured with traditional cords, leaving one shoulder and her long legs cleanly bare.",
+    "compositionIntent": "single"
   }
 }

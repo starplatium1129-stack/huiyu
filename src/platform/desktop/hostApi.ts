@@ -4,7 +4,7 @@ interface DesktopHostApi {
     listen<T>(name: string, listener: (event: { payload: T }) => void): Promise<() => void>
     emit<T>(name: string, payload: T): Promise<void>
   }
-  window: { getCurrentWindow(): { startDragging(): Promise<void> } }
+  window: { getCurrentWindow(): { label: string; startDragging(): Promise<void> } }
 }
 export function hostApi(): DesktopHostApi | undefined {
   if (typeof window === 'undefined') return undefined

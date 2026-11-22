@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3336,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "zero_two_lingerie_whisper",
     "characterId": "zero_two",
@@ -14,7 +14,7 @@
     "location": "第13都市种植园宿舍单间，墙壁上绘满了色彩斑斓的绘本涂鸦",
     "timeOfDay": "战后夜晚的私密游玩时刻",
     "lighting": "房间内柔和的未来派暖光从脚底向上漫射，照亮暗红小角与粉色长发的通透质感",
-    "camera": "medium shot, low angle, 种植园宿舍微仰中景，满墙绘本涂鸦与绯红小角下的蜜糖依恋",
+    "camera": "from below, medium shot",
     "mood": "叫龙公主的野性不羁与对Darling至死不渝的炽烈占有欲，火辣、狂放而充满野性魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -41,19 +41,32 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "sitting cross-legged on cot",
-      "walls covered in colorful picture book doodles",
-      "holding cherry lollipop",
-      "small crimson horns",
-      "mischievous darling smirk",
-      "warm dorm lighting"
+      "sitting",
+      "cross-legged",
+      "on bed",
+      "holding lollipop",
+      "lollipop",
+      "smirk",
+      "looking down",
+      "doodles on wall",
+      "dorm room",
+      "warm lighting",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Zero Two sits cross-legged on her bed inside the colorful, doodle-covered dormitory, holding a sweet lollipop with a daring, affectionate smirk meant only for her Darling.",
-    "animaCaption": "Sitting cross-legged in a doodle-covered dorm room holding a lollipop, smirking with affectionate mischief.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a slightly low angle inside her colorful dormitory room covered in hand-drawn storybook doodles, Zero Two sits comfortably on the bed twirling a sweet lollipop and looking down with bold, teasing affection.",
+    "animaCaption": "Sitting cross-legged on her dorm cot surrounded by colorful wall picture-book doodles, she holds a half-eaten lollipop and gazes down with a wild playful smirk wearing a crimson-and-black patent-leather strappy bralette set with white piping and high-cut hip harness cords.",
+    "nsfwTokens": [
+      "red lingerie",
+      "black leather",
+      "bralette",
+      "harness",
+      "criss-cross straps",
+      "panties",
+      "midriff"
+    ],
+    "nsfwProse": "She wears a striking crimson-red and black patent-leather strappy bralette with crisp white piping, paired with matching briefs and high-cut black hip harness cords across her waist and thighs.",
+    "compositionIntent": "single"
   }
 }

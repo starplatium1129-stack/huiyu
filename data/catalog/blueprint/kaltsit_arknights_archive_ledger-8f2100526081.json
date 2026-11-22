@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_archive_ledger",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 531,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "执笔在账册上批注",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉日常",
     "characterId": "kaltsit_arknights",
     "coverageTags": [
@@ -15,23 +15,29 @@
     ],
     "description": "深夜办公室的台灯光晕下，厚重的罗德岛收支账目与干员档案堆叠整齐。凯尔希执笔在纸页上做出严谨的批注，听见你的脚步声头也不抬——「我以为你早该在三个小时前进入深度睡眠。既然来了，就坐下把这份物资调配协议过目一遍。」",
     "id": "kaltsit_arknights_archive_ledger",
-    "lighting": "single desk lamp",
+    "lighting": "绿罩台灯照亮纸页，灯光余晕掠过铜拉手",
     "location": "罗德岛档案室",
     "mood": "专注沉稳",
     "negativeTokens": [
       "readable records"
     ],
     "outfitId": "victorian_traveler_coat",
-    "promptProse": "Kal'tsit annotates the open ledger beneath the archive lamp, pausing with her fountain pen above the page.",
+    "promptProse": "Late at night in the Rhodes Island records room, Kal'tsit sits in her belted Victorian wool coat. A brass clasp catches the light above its double row of buttons. Her left hand pins a supply slip to the open ledger while she writes a correction on the opposite page. Seen from the visitor's end of the desk, two tied dossiers lead toward her wrist and the green-shaded lamp. Beyond the circle of warm light, rows of box files and filing drawers recede along the ship's dark bulkhead. Frame her profile, both hands and the open ledger together.",
     "promptTokens": [
-      "ledger",
-      "pen",
+      "sitting",
       "writing",
-      "archive",
+      "holding pen",
+      "open book",
+      "folder",
+      "papers",
+      "desk",
       "desk lamp",
-      "medium shot",
-      "open ledger",
-      "fountain pen"
+      "bookshelf",
+      "cabinet",
+      "night",
+      "looking down",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +49,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "凯尔希 · 档案核录",
-    "animaCaption": "The pen pauses over the open ledger beneath the archive lamp."
+    "animaCaption": "Holding a loose requisition slip flat against the left page of the open ledger, she enters a concise correction on the right with her fountain pen. The green-shaded desk lamp illuminates the tied dossiers and brass drawer pulls receding along the dark bulkhead.",
+    "compositionIntent": "single"
   }
 }

@@ -8,8 +8,7 @@ use std::{io::Read, path::Path};
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(crate) struct Settings {
     pub engine: String,
-    // Legacy explicit settings shared one engine. New setups keep video on its
-    // existing provider while image generation adopts the independent engine.
+    // Preserve a saved video provider independently from the drawing provider.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub video_engine: Option<String>,
     #[serde(default = "default_acceleration")]
@@ -48,6 +47,9 @@ fn default_adapter_memory_policy() -> String {
     "offload".into()
 }
 impl Settings {
+    pub(crate) fn standalone_python(&self) -> Option<PathBuf> {
+        sd_cpp_python(self)
+    }
     /// Installation receipts are hints only. Discover bounded local resources,
     /// without executing Python or changing a user's selected engine/settings.
     pub(crate) fn discovered(workspace: &Path) -> (Self, Option<PathBuf>) {
@@ -67,7 +69,7 @@ impl Settings {
         let loras_root = native_loras;
         let fallback_python = {
             let legacy = root.join(python_relative());
-            if legacy.is_file() {
+            if usable_python(&legacy) {
                 legacy
             } else {
                 root.join(managed_anima_runtime_id()).join(python_relative())
@@ -82,7 +84,7 @@ impl Settings {
         (
             Self {
                 engine: "native".into(),
-                video_engine: Some("comfy".into()),
+                video_engine: Some("native".into()),
                 acceleration: default_acceleration(),
                 memory_policy: default_memory_policy(),
                 adapter_memory_policy: default_adapter_memory_policy(),
@@ -294,6 +296,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
     let mut overrides = Vec::new();
     for (key, env) in [
         ("engine", "HUIYU_IMAGE_ENGINE"),
+        ("videoEngine", "HUIYU_VIDEO_ENGINE"),
         ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
         ("memoryPolicy", "HUIYU_INFERENCE_MEMORY"),
         ("adapterMemoryPolicy", "HUIYU_NATIVE_ADAPTER_MEMORY"),
@@ -423,6 +426,58 @@ fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
 pub(crate) fn installed_adapter_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
     installed_runtime_for(root, worker, "requirements-adapters.txt")
 }
+
+pub(super) fn usable_python(python: &Path) -> bool {
+    if !python.is_file() {
+        return false;
+    }
+    let Some(bin) = python.parent() else { return false };
+    if !cfg!(windows) || !bin.file_name().is_some_and(|n| n.eq_ignore_ascii_case("Scripts")) {
+        return true;
+    }
+    if bin.parent().is_some_and(|venv| venv.join("pyvenv.cfg").is_file()) {
+        return true;
+    }
+    // Managed Windows packages can contain the embeddable interpreter directly under Scripts.
+    std::fs::read_dir(bin).is_ok_and(|files| files.flatten().any(|entry| {
+        let path = entry.path();
+        path.extension().is_some_and(|ext| ext == "_pth")
+            && path.file_stem().and_then(|stem| stem.to_str()).and_then(|s| s.strip_prefix("python"))
+                .is_some_and(|version| !version.is_empty() && version.bytes().all(|b| b.is_ascii_digit()))
+            && path.is_file() && path.with_extension("dll").is_file() && path.with_extension("zip").is_file()
+    }))
+}
+
+/// The sd.cpp worker only imports Pillow. An existing managed image environment
+/// can service it even when the current Diffusers requirements have changed.
+pub(super) fn sd_cpp_python(settings: &Settings) -> Option<PathBuf> {
+    let root = settings.models_root.parent();
+    let legacy = root.and_then(Path::parent).map(|workspace| workspace.join("ComfyUI"));
+    let standalone = |python: &Path| {
+        usable_python(python)
+            && !legacy.as_ref().is_some_and(|old| within(old, python).is_some())
+            && !python.ancestors().any(|p| p.file_name().is_some_and(|n| n.eq_ignore_ascii_case("ComfyUI")))
+    };
+    if let Some(python) = settings.adapter_python.as_deref().filter(|path| standalone(path)) {
+        return Some(python.to_owned());
+    }
+    static MANAGED: std::sync::LazyLock<Value> = std::sync::LazyLock::new(||
+        serde_json::from_str(include_str!("../../../../tools/inference/managed-adapter-runtime.windows-x64.json"))
+            .expect("bundled native image runtime"));
+    let managed = || {
+        let root = root?;
+        let id = MANAGED["runtimeId"].as_str()?;
+        let folder = within(root, &root.join(id))?;
+        let receipt = read_receipt(&within(&folder, &folder.join("runtime-config.json"))?)?;
+        let python = within(&folder, &folder.join(python_relative()))?;
+        (receipt["schemaVersion"] == 1 && receipt["engine"] == "native" && receipt["managedRuntimeId"] == id
+            && receipt["root"].as_str().is_some_and(|path| path_eq(Path::new(path), &folder))
+            && receipt["python"].as_str().is_some_and(|path| path_eq(Path::new(path), &python))
+            && usable_python(&python)).then_some(python)
+    };
+    managed().or_else(|| standalone(&settings.python).then(|| settings.python.clone()))
+}
+
 pub(crate) fn installed_runtime_for(
     root: &Path,
     worker: &Path,
@@ -469,7 +524,7 @@ pub(crate) fn installed_runtime_for(
             || document["requirementsSha256"] != expected_hash
             || document["environment"]["cudaAvailable"] != true
             || !python.is_absolute()
-            || !python.is_file()
+            || !usable_python(&python)
             || within(&folder, &python).is_none()
             || python.canonicalize().ok() != folder.join(python_relative()).canonicalize().ok()
             || document["root"]

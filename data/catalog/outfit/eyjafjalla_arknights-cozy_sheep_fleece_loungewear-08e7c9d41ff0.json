@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/cozy_sheep_fleece_loungewear",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 312,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "cozy_sheep_fleece_loungewear",
       "name": "奶油羊羔绒落肩连帽睡衣",
-      "prose": "An oversized fluffy cream sherpa fleece hoodie falling over soft lounge shorts.",
+      "prose": "An oversized cream sherpa fleece hoodie with a dropped shoulder, ribbed cuffs and dusty-rose drawstrings, worn over soft lounge shorts with thick rose-colored socks.",
       "tokens": [
-        "fleece_hoodie",
-        "cream_hoodie",
-        "oversized_hoodie",
-        "shorts",
-        "bare_legs",
-        "fluffy_socks"
+        "hoodie",
+        "oversized clothes",
+        "hood down",
+        "drawstring",
+        "short shorts",
+        "pink socks"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

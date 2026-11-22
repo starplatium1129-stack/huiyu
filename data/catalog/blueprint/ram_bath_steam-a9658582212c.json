@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_bath_steam",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2054,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "ram_bath_steam",
     "title": "拉姆 · 浴后的水汽",
@@ -15,23 +15,32 @@
     "action": "系着浴袍整理头发",
     "timeOfDay": "夜晚",
     "lighting": "镜前柔和暖光",
-    "camera": "upper body",
+    "camera": "three quarter view, upper body",
     "mood": "放松",
-    "promptProse": "In a steamy bathroom, Ram smooths the ends of her pink hair beside a fogged mirror.",
+    "promptProse": "Inside a warm mansion bathroom still drifting with pale bath steam, Ram stands before the misted vanity mirror with her ivory bathrobe tied neatly at the waist. Leaning lightly near the ceramic basin, she runs her slender fingers through the damp tips of her hair while studying her hazy reflection with quiet poise. Soft amber sconce light diffuses through the steam across the tiled wall and the folds of her robe.",
     "promptTokens": [
-      "steam",
-      "fogged mirror",
+      "standing",
       "touching hair",
-      "warm light",
+      "looking at mirror",
+      "mirror",
+      "steam",
+      "bathroom",
+      "sink",
+      "tiles",
+      "warm lighting",
+      "night",
+      "indoors",
+      "three quarter view",
       "upper body"
     ],
-    "animaCaption": "She smooths her hair beside the fogged mirror.",
+    "animaCaption": "Standing before the fogged bathroom mirror in her belted ivory bathrobe, Ram smooths the damp ends of her hair with calm focus. Warm sconce light diffuses through lingering bath steam over the ceramic tiles.",
     "characterId": "ram",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

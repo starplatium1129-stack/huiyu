@@ -1,0 +1,17 @@
+[
+  {
+    "id": "wan22-flf", "version": 1, "label": "Wan 2.2 · 首尾帧转场", "mode": "first-last",
+    "modelId": "wan2.2-i2v-a14b-gguf", "steps": {"fast": 4, "standard": 4, "quality": 8},
+    "tiledVae": true, "defaultPrompt": "主体从首帧的姿态自然过渡到尾帧，动作逐渐收住。"
+  },
+  {
+    "id": "wan22-i2v", "version": 1, "label": "Wan 2.2 · 单图动态", "mode": "first",
+    "modelId": "wan2.2-i2v-a14b-gguf", "steps": {"fast": 4, "standard": 4, "quality": 8},
+    "tiledVae": true, "defaultPrompt": "主体延续首帧的姿态，完成一个轻微而连贯的动作，再缓缓停住。"
+  },
+  {
+    "id": "dialogue-audio", "version": 1, "label": "角色对白 · 配音驱动", "mode": "dialogue",
+    "modelId": "musetalk-1.5", "steps": {"fast": 1, "standard": 1, "quality": 1},
+    "tiledVae": false, "defaultPrompt": "角色对白"
+  }
+]

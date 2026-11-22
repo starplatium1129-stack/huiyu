@@ -7,6 +7,7 @@ export interface ChatStreamEvent {
   id?: string
   name?: string
   arguments?: string
+  drawing?: Record<string, unknown>
   /** Opaque Gemini tool signature; only replay within the current tool loop. */
   thoughtSignature?: string
 }
@@ -30,18 +31,29 @@ function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
     id: typeof value.id === 'string' ? value.id : undefined,
     name: typeof value.name === 'string' ? value.name : undefined,
     arguments: typeof value.arguments === 'string' ? value.arguments : undefined,
+    drawing: value.type === 'drawing' && isRecord(value.drawing) && !Array.isArray(value.drawing) ? value.drawing : undefined,
     thoughtSignature: typeof value.thoughtSignature === 'string' && value.thoughtSignature.length <= 65536 ? value.thoughtSignature : undefined,
   }
 }
 
+const EMOTION_NEGATION = '(?:不|没|别|没有|并不|不会|不用|不必|无需|不要|从不|毫不)(?:太|再|那么|这么|有点|有些|觉得|感到|是|算){0,2}'
+const NEGATED_SHY = new RegExp(`${EMOTION_NEGATION}(?:害羞|羞涩|羞怯|羞赧|脸红|红着脸|红了脸|羞红|面红耳赤)`, 'g')
+const NEGATED_HAPPY = new RegExp(`${EMOTION_NEGATION}(?:开心|高兴|快乐|兴奋|雀跃|大笑|笑起来|笑出声|笑我|笑)`, 'g')
+const NEGATED_SAD = new RegExp(`${EMOTION_NEGATION}(?:难过|伤心|寂寞|失落|委屈|哭|对不起|抱歉)`, 'g')
+const NEGATED_SERIOUS = new RegExp(`${EMOTION_NEGATION}(?:认真|严肃|紧张|危险|警惕)`, 'g')
+
 export function inferEmotion(text: string, character = ''): string {
-  // Everyday hesitation or address is not enough to select the shy voice.
-  const shyText = text.replace(/(?:不|没|别|没有|并不|不会|不用|不必|无需|从不|毫不)(?:太|再|那么|这么|有点|有些|觉得|感到|是|算){0,2}(?:害羞|羞涩|羞怯|羞赧|脸红|红着脸|红了脸|羞红|面红耳赤)/g, '')
+  // Strip negated cues and keep single-word triggers conservative so ordinary
+  // clauses do not abruptly switch to an extreme reference clip mid-reply.
+  const shyText = text.replace(NEGATED_SHY, '')
   if (/害羞|羞涩|羞怯|羞赧|脸红|红着脸|红了脸|羞红|面红耳赤/.test(shyText)) return 'shy'
-  if (/开心|高兴|太好了|哈哈|笑|期待|终于|挥手|雀跃/.test(text)) return 'happy'
-  if (/难过|寂寞|想念|对不起|抱歉|失落|叹气/.test(text)) return 'sad'
-  if (/认真|必须|小心|危险|不许|别逞强|注意|皱眉|警惕/.test(text)) return 'serious'
-  if (/温柔|谢谢|陪着|安心|辛苦|休息|没关系|微笑|轻轻|安抚/.test(text)) return 'gentle'
+  const happyText = text.replace(NEGATED_HAPPY, '')
+  if (/开心|高兴|太好了|哈哈|嘻嘻|大笑|笑起来|笑出声|欢呼|挥手|雀跃/.test(happyText)) return 'happy'
+  const sadText = text.replace(NEGATED_SAD, '')
+  if (/难过|伤心|寂寞|失落|委屈|眼泪|哭了|叹气|对不起|很抱歉|真抱歉|实在抱歉/.test(sadText)) return 'sad'
+  const seriousText = text.replace(NEGATED_SERIOUS, '')
+  if (/认真|严肃|必须|危险|别逞强|皱眉|警惕|住手|绝对不行/.test(seriousText)) return 'serious'
+  if (/温柔|谢谢|陪着|安心|辛苦|休息|没关系|微笑|轻轻|安抚|小心点|路上小心|注意身体|放心|抱抱/.test(text)) return 'gentle'
   if (character === 'natsume' && /真是的|算了|我在|放心/.test(text)) return 'gentle'
   return 'neutral'
 }
@@ -126,7 +138,10 @@ async function errorFromResponse(response: Response, fallback: string): Promise<
     const data = isRecord(parsed) ? parsed : {}
     const message = typeof data.error === 'string' && data.error ? data.error : fallback
     const detail = typeof data.detail === 'string' ? data.detail : ''
-    const error = Object.assign(new Error(message), { detail })
+    const code = typeof data.code === 'string' ? data.code : ''
+    const error = Object.assign(new Error(message), { detail, ...(code ? { code } : {}),
+      ...(isRecord(data.upstream) ? { upstream: data.upstream } : {}),
+    })
     return error
   } catch {
     return new Error(text.trim() || fallback)
@@ -148,7 +163,10 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
     let parsed: unknown
     try { parsed = JSON.parse(line) } catch { throw new Error('聊天流返回了无效数据') }
     if (isRecord(parsed) && parsed.type === 'error') {
-      throw new Error(typeof parsed.error === 'string' && parsed.error ? parsed.error : '聊天流中断')
+      const code = typeof parsed.code === 'string' ? parsed.code : ''
+      const message = typeof parsed.error === 'string' && parsed.error ? parsed.error : '聊天流中断'
+      throw Object.assign(new Error(message), code ? { code } : {},
+        isRecord(parsed.upstream) ? { upstream: parsed.upstream } : {})
     }
     const event = parseChatStreamEvent(parsed)
     if (!event) throw new Error('聊天流返回了无效事件')
@@ -178,6 +196,10 @@ export async function parseNdjsonResponse(response: Response, onEvent: (event: C
 
 export function isAbortError(error: unknown): boolean {
   return isRecord(error) && (error.name === 'AbortError' || error.code === 'ABORT_ERR')
+}
+
+export function streamErrorCode(error: unknown): string {
+  return isRecord(error) && typeof error.code === 'string' ? error.code : ''
 }
 
 export function streamErrorMessage(error: unknown, fallback: string): string {

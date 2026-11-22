@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3461,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "izayoi_miku_lingerie_whisper",
     "characterId": "izayoi_miku",
@@ -14,7 +14,7 @@
     "location": "天宫市超豪华独栋别墅顶层私人录音室软榻上",
     "timeOfDay": "深夜",
     "lighting": "混音调音台数千枚LED光柱跳跃出的炫彩流光，与落地窗外暗蓝夜景在深紫真丝长袍上交织出奢华乐章",
-    "camera": "充满星级歌姬奢华质感的微俯全景，表现精灵歌姬集美貌与天籁于一身的绝对自信",
+    "camera": "from above, wide shot",
     "mood": "自恋沉醉、华丽优雅、只有女孩子能靠近的傲然歌姬",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,31 @@
       "diva_starlet"
     ],
     "promptTokens": [
-      "violet damask gown",
-      "high slit",
-      "diamond headphones",
-      "humming on chaise lounge",
-      "purple hair",
+      "reclining",
+      "chaise lounge",
+      "headphones",
+      "closed eyes",
+      "smirk",
       "recording studio",
-      "screen glow",
-      "dim lighting",
-      "city lights"
+      "mixing console",
+      "city lights",
+      "neon lights",
+      "night",
+      "from above",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Humming with blissful self-absorption, her luminous purple eyes flutter open with theatrical diva charm. Dancing LED level-meter lights from the sound mixing console pulse across the darkened penthouse, throwing streaks of neon color over her dark silk robe.",
-    "animaCaption": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Dancing LED level-meter lights from the sound mixing console pulse across the darkened penthouse, throwing streaks of neon color over her dark silk robe.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from a slightly elevated wide angle inside her darkened penthouse recording studio overlooking the night city, Miku stretches across cushioned gold brocade wearing crystal-studded headphones and keeping time in the air. Colored LED meters from the mixing console flicker across her smiling face.",
+    "animaCaption": "Reclining sideways across the gold-brocade chaise lounge in her midnight penthouse studio wearing jeweled monitor headphones, she hums blissfully with a diva smirk as her deep-violet damask silk gown parts high along her bare legs under console LED glow.",
+    "nsfwTokens": [
+      "purple dress",
+      "silk nightgown",
+      "halterneck",
+      "high slit",
+      "bare legs",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a sumptuous deep-violet damask silk lounging gown with an empire halter bustier, amethyst clasps, trailing hem, and a dramatic high side slit exposing her bare legs.",
+    "compositionIntent": "single"
   }
 }

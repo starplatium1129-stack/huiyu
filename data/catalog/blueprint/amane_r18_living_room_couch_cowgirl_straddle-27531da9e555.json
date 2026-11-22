@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_living_room_couch_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "amane_r18_living_room_couch_cowgirl_straddle",
     "title": "周防天音 · 沙发跨坐主动骑乘与豪乳轻摇",
@@ -19,7 +19,7 @@
     "action": "跨坐沙发扶手，一手握靠背，另一手放在腿间。",
     "timeOfDay": "夜间",
     "lighting": "客厅暖黄色落地灯打在泛红雪肌与起伏丰满双峰上的温润反光",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -30,22 +30,21 @@
       "bouncing_breasts",
       "heavy_blush"
     ],
-    "promptProse": "Amane straddles the sofa arm in her loosened apron, gripping the backrest with one hand, the other between her thighs; a warm floor lamp lights the sofa and keys on the table.",
+    "promptProse": "Seen from a slightly low angle in a dim nighttime living room, Amane sits astride the broad sofa armrest gripping the backrest for balance, motorcycle keys resting on the side table nearby. Warm light from the standing floor lamp washes across the couch.",
     "promptTokens": [
-      "adult",
       "living room",
       "sofa",
-      "pink frilled apron",
-      "open clothes",
-      "topless",
       "straddling",
-      "masturbation",
-      "holding backrest",
+      "hand on sofa",
+      "keys",
+      "table",
       "heavy blush",
+      "parted lips",
+      "sweat",
       "floor lamp",
       "warm lighting",
-      "cowboy shot",
-      "from below"
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,8 +52,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "She straddles the sofa arm with one hand gripping the backrest."
+    "nsfwTokens": [
+      "pink apron",
+      "frills",
+      "naked apron",
+      "open clothes",
+      "topless",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her pastel-pink frilled apron hangs loose and open with nothing beneath it, leaving her breasts and hips bare as her free hand works between her thighs.",
+    "animaCaption": "Straddling the living-room sofa arm in only a loosened pastel-pink frilled apron slipped off her chest, she grips the backrest with one hand and slips the other between her thighs under the warm floor lamp.",
+    "compositionIntent": "single"
   }
 }

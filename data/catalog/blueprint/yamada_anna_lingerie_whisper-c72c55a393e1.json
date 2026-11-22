@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_anna_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3320,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yamada_anna_lingerie_whisper",
     "characterId": "yamada_anna",
@@ -14,7 +14,7 @@
     "location": "山田家宽敞整洁的现代卧室，床头柜塞满了各式各样偷偷藏起来的零食包装",
     "timeOfDay": "深夜突击补刀零食的幸福时刻",
     "lighting": "床头暖黄色球形小灯散发柔光，照亮了少女微红的脸颊与乌黑柔顺的长发",
-    "camera": "medium shot, high angle, 卧室零食秘藏处的俯拍中景，长身微蜷与偷吃零食的贪嘴可爱",
+    "camera": "from above, medium shot",
     "mood": "高挑美少女模特私底下的吃货反差萌，又纯又欲的青春心动与依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,34 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "sitting with long legs tucked on bed",
-      "stash of hidden snack bags",
-      "holding chocolate bar",
-      "puffed chipmunk cheeks",
-      "flustered guilty blush",
-      "bedroom lamp light",
-      "midnight snacking"
+      "sitting",
+      "on bed",
+      "hugging snack bag",
+      "eating",
+      "cookie",
+      "puffed cheeks",
+      "blush",
+      "looking up",
+      "snacks",
+      "bedroom",
+      "bedside lamp",
+      "warm lighting",
+      "from above",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Anna curls her long legs onto the bed surrounded by her secret midnight candy hoard, cheeks puffed with chocolate as she freezes like a guilty squirrel.",
-    "animaCaption": "Curled on her bed surrounded by secret snack bags, cheeks stuffed with chocolate as she blushes with guilty sweetness.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from slightly above in her tidy night bedroom lit by a warm bedside lamp, Anna tucks her long legs onto the blanket hugging a family-size snack bag with cheeks stuffed full of cookies and a caught-in-the-act blush.",
+    "animaCaption": "Curled on the edge of her modern bedroom bed surrounded by her hidden midnight snack stash, she hugs a giant bag of bear cookies with puffed cheeks and a guilty rosy blush wearing a relaxed pale-mint pinstriped cotton slip dress.",
+    "nsfwTokens": [
+      "green slip",
+      "striped dress",
+      "oversized clothes",
+      "spaghetti straps",
+      "ruffles",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a breezy oversized pale-mint pinstriped cotton slip dress with thin shoulder straps and a soft ruffled hem over her bare shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

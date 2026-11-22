@@ -13,7 +13,7 @@ static CAPACITY: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore:
 static HASHERS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 static SERIAL: Mutex<()> = Mutex::const_new(());
 static OWNED: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^aics_(?:(?:video_(?:ref|input)|anima_input)_[a-f0-9]+\.(?:png|jpe?g|webp)|video_motion_[a-f0-9]{40}\.mp4|video_audio_[a-f0-9]{40}\.wav)$")
+    Regex::new(r"(?i)^(?:(?:aics_video_(?:ref|input)|aics_anima_input|huiyu_video_frame)_[a-f0-9]+\.(?:png|jpe?g|webp)|aics_video_motion_[a-f0-9]{40}\.mp4|(?:aics|huiyu)_video_audio_[a-f0-9]{40}\.wav)$")
         .unwrap()
 });
 #[derive(Clone, Copy)]
@@ -50,25 +50,29 @@ impl Limits {
 pub(crate) enum Kind {
     Anima,
     VideoInput,
+    StudioVideoInput,
     VideoReference,
     MotionVideo,
     DrivingAudio,
+    StudioAudio,
 }
 impl Kind {
     fn prefix(self) -> &'static str {
         match self {
             Self::Anima => "aics_anima_input",
             Self::VideoInput => "aics_video_input",
+            Self::StudioVideoInput => "huiyu_video_frame",
             Self::VideoReference => "aics_video_ref",
             Self::MotionVideo => "aics_video_motion",
             Self::DrivingAudio => "aics_video_audio",
+            Self::StudioAudio => "huiyu_video_audio",
         }
     }
     pub(crate) fn format(self, bytes: &[u8]) -> Option<(&'static str, &'static str)> {
         match self {
             Self::MotionVideo => (crate::storage::detected_mime(bytes) == Some("video/mp4"))
                 .then_some(("video/mp4", "mp4")),
-            Self::DrivingAudio => crate::voice::is_pcm_wave(bytes).then_some(("audio/wav", "wav")),
+            Self::DrivingAudio | Self::StudioAudio => crate::voice::is_pcm_wave(bytes).then_some(("audio/wav", "wav")),
             _ => decode::sniff(bytes),
         }
     }
@@ -238,7 +242,7 @@ async fn store_source_for(
     let _serial = tokio::select! {guard=SERIAL.lock()=>guard,_=cancel.cancelled()=>return Err(inputs::cancelled())};
     let bytes = match source {
         Source::Raw(bytes) => bytes,
-        Source::Stored(media) => Bytes::from(read_media(media, kind.maximum(), &cancel).await?),
+        Source::Stored(media) => Bytes::from(read_original(media, kind.maximum(), &cancel, kind).await?),
     };
     if bytes.is_empty() || bytes.len() > kind.maximum() {
         return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
@@ -249,7 +253,7 @@ async fn store_source_for(
                 "INVALID_IMAGE_FORMAT",
                 match kind {
                     Kind::MotionVideo => "动作素材需要 MP4 视频",
-                    Kind::DrivingAudio => "配音需要单声道或立体声 PCM WAV 文件",
+                    Kind::DrivingAudio | Kind::StudioAudio => "配音需要单声道或立体声 PCM WAV 文件",
                     _ => "不支持的图片格式（仅限 PNG、JPEG、WebP）",
                 },
             )
@@ -287,7 +291,7 @@ async fn store_source_for(
         if stored_matches(&target, &bytes, &cancel).await? { return Ok(filename); }
         let (used_bytes, files) = usage(root.clone(), cancel.clone()).await?;
         if used_bytes.saturating_add(bytes.len()as u64)>limits.bytes||files+1>limits.files{return Err(ApiError::new(413,"IMAGE_QUOTA",format!("素材额度不足（{files}/{} 文件，{used_bytes}/{} 字节）；请先检查并整理未引用素材。",limits.files,limits.bytes)))}
-        if !matches!(kind, Kind::MotionVideo | Kind::DrivingAudio) {
+        if !matches!(kind, Kind::MotionVideo | Kind::DrivingAudio | Kind::StudioAudio) {
             decode::validate(bytes.clone(), &cancel).await?;
         }
         if cancel.is_cancelled(){return Err(inputs::cancelled())}
@@ -345,6 +349,14 @@ pub(crate) async fn read_media(
     maximum: usize,
     cancel: &CancellationToken,
 ) -> Result<Vec<u8>> {
+    read_original(media, maximum, cancel, Kind::Anima).await
+}
+async fn read_original(
+    media: crate::storage::Media,
+    maximum: usize,
+    cancel: &CancellationToken,
+    kind: Kind,
+) -> Result<Vec<u8>> {
     if cancel.is_cancelled() {
         return Err(inputs::cancelled());
     }
@@ -371,9 +383,9 @@ pub(crate) async fn read_media(
         }
         if bytes.len() as u64 != media.total_bytes
             || hex::encode(hash.finalize()) != media.sha256
-            || decode::sniff(&bytes).map(|(mime, _)| mime) != Some(media.mime.as_str())
+            || kind.format(&bytes).map(|(mime, _)| mime) != Some(media.mime.as_str())
         {
-            return Err(error("MEDIA_INVALID", "任务图片校验失败"));
+            return Err(error("MEDIA_INVALID", "素材原件校验失败"));
         }
         Ok(bytes)
     })

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3513,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "gamma_shadow_lingerie_whisper",
     "characterId": "gamma_shadow",
@@ -14,7 +14,7 @@
     "location": "三越商会顶层总裁办公室红木书桌旁",
     "timeOfDay": "深夜",
     "lighting": "商会顶层水晶吊灯散发出的奢华暖白光束，照亮知性深蓝真丝高开叉睡裙与丰腴优雅身段",
-    "camera": "充满戏剧性与幽默感的全身中景，将顶级商业奇才的知性魅力与肢体不协调的笨拙反差凝结于一瞬",
+    "camera": "eye level, full body",
     "mood": "知性干练、大商贾自信、千钧一发平地摔的反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,34 @@
       "luxurious_study"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "gamma (the eminence in shadow)",
-      "elf ears",
-      "navy silk gown",
-      "glasses",
-      "tripping forward",
+      "tripping",
+      "falling",
       "dropping papers",
-      "blue hair",
+      "flying papers",
       "panicked",
-      "flustered"
+      "flustered",
+      "open mouth",
+      "office",
+      "mahogany desk",
+      "crystal chandelier",
+      "warm lighting",
+      "night",
+      "eye level",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Gamma in the middle of her signature clumsy mishap inside her lavish Mitsugoshi executive office. Clad in a mature navy-blue silk wrap nightgown with an elegant high side slit and scholarly gold-rimmed glasses, she carries revenue ledgers toward Lord Shadow. The split second before she crashes into the rug over her own trailing hem, her brilliant business-queen poise shatters into frantic panic.",
-    "animaCaption": "Gamma in the middle of her signature clumsy mishap inside her lavish Mitsugoshi executive office. Clad in a mature navy-blue silk wrap nightgown with an elegant high side slit and scholarly gold-rimmed glasses, she carries revenue ledgers toward Lord Shadow.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Striding across the rug of her lavish Mitsugoshi executive office late at night in a navy-blue heavyweight silk satin wrap nightgown with an empire sash, sweeping side slit, and gold-rimmed glasses, Gamma steps on her own hem and pitches forward in wide-eyed panic as revenue papers fly everywhere beneath the warm crystal chandelier.",
+    "animaCaption": "Stepping gracefully across her lavish executive office in a high-slit navy silk wrap gown and gold-rimmed glasses, she catches her slipper on the trailing hem and pitches forward in sudden panic as ledger sheets scatter through the air. Bright crystal chandelier light catches the flowing satin.",
+    "nsfwTokens": [
+      "navy silk wrap gown",
+      "satin nightgown",
+      "high-slit dress",
+      "waist sash",
+      "gold-rimmed glasses",
+      "bare legs",
+      "slippers"
+    ],
+    "nsfwProse": "She wears a heavyweight navy-blue silk satin wrap nightgown with an empire waist sash and sweeping high side slit, styled with gold-rimmed glasses and heeled slippers.",
+    "compositionIntent": "single"
   }
 }

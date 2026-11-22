@@ -59,10 +59,13 @@ fn local_status(
                 .any(|model| model["capabilities"]["img2img"] == true);
             let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only",
                 "validation":"待主力机验证","runtimeError":adapters.runtime_error.map(|e| e.code),
-                "models":null,"loras":[],"characters":[],"styleLoras":[],"hires":null,"pending":0,"maxPending":4,
+                "models":null,"loras":[],"characters":[],"styleLoras":[],"hires":null,"pending":0,"maxPending":generation::native::MAX_PENDING,
                 "capabilities":{"txt2img":true,"img2img":edit,"mask":false,"manualMask":false,"automaticMask":false,
                 "experimental":true,"lora":false,"teaCache":false,"rcas":false,"hires":false,"weightSyntax":false}});
             value["models"] = Value::Array(adapter_models);
+            if family == "keyframe" {
+                value["capabilities"]["txt2img"] = json!(false);
+            }
             if family == "krea2" {
                 value["styleLoras"] = json!(native_adapters::styles(runtime));
             }
@@ -134,7 +137,7 @@ fn local_status(
     } else {
         vec![]
     };
-    let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":4});
+    let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":generation::native::MAX_PENDING});
     value["styleLoras"] = json!(styles);
     Ok(value)
 }

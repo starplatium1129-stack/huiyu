@@ -60,6 +60,40 @@ impl Service {
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.backend.bind_control(control);
     }
+    pub(super) fn uses_native_model(&self, id: &Value) -> bool {
+        self.backend.native_enabled() || id == crate::studio_workflows::MODEL || id == crate::studio_workflows::DIALOGUE
+    }
+    fn upload_destination(&self, kind: crate::images::ImageKind) -> (PathBuf, crate::images::ImageKind) {
+        use crate::images::ImageKind;
+        if matches!(kind, ImageKind::StudioAudio) || (self.backend.native_enabled() && matches!(kind, ImageKind::DrivingAudio)) {
+            return (inputs::native_root(&self.config), ImageKind::StudioAudio);
+        }
+        if matches!(kind, ImageKind::StudioVideoInput)
+            || (self.backend.native_enabled() && matches!(kind, ImageKind::VideoInput)) {
+            (inputs::native_root(&self.config), ImageKind::StudioVideoInput)
+        } else {
+            (self.config.ai_workspace_root.join("ComfyUI/input"), kind)
+        }
+    }
+    pub(crate) async fn studio_frame(&self, storage: crate::storage::Storage, principal: &str, frame: &Value) -> Result<String> {
+        let target = crate::images::media_import::Destination {
+            root: inputs::native_root(&self.config),
+            owner: principal.to_owned(),
+            limits: crate::images::Limits::from_environment(),
+            kind: crate::images::ImageKind::StudioVideoInput,
+        };
+        crate::images::media_import::frozen_frame(storage, principal, frame, target, self.shutdown.child_token()).await
+    }
+    pub(crate) async fn studio_audio(&self, storage: crate::storage::Storage, principal: &str, source: &Value) -> Result<(String, u64)> {
+        let target = crate::images::media_import::Destination {
+            root: inputs::native_root(&self.config), owner: principal.into(),
+            limits: crate::images::Limits::from_environment(), kind: crate::images::ImageKind::StudioAudio,
+        };
+        let name = crate::images::media_import::frozen_frame(storage, principal, source, target, self.shutdown.child_token()).await?;
+        let bytes = tokio::fs::read(inputs::path(&self.config, &name)?).await?;
+        let frames = inputs::dialogue_frames(&bytes)?;
+        Ok((name, frames))
+    }
     pub(crate) fn new(
         config: Config,
         transport: LocalUpstream,
@@ -138,12 +172,17 @@ impl Service {
         owner: Option<&str>,
         cancel: CancellationToken,
     ) -> Result<Prepared> {
+        let native_route = self.uses_native_model(&raw["modelId"]);
+        if !native_route && (["image","lastFrame"].iter().any(|key| raw[*key].as_str().is_some_and(|s|s.starts_with("huiyu_video_frame_")))
+            || raw["drivingAudio"].as_str().is_some_and(|s| s.starts_with("huiyu_video_audio_"))) {
+            return Err(error(409,"NATIVE_VIDEO_REQUIRED","请在控制室选择本机原生推理后生成分镜视频"));
+        }
         let size = if raw["aspectRatio"] == "original" {
             Some(inputs::size(&self.config, raw["image"].as_str().unwrap_or("")).await?)
         } else {
             None
         };
-        let input = if self.backend.native_enabled() {
+        let input = if native_route {
             let pack = native::packed_h3(&self.backend.native_settings()?, &raw["modelId"]).await?;
             native::validate(&raw, size, pack.as_ref())?
         } else {
@@ -163,9 +202,10 @@ impl Service {
         if self.shutdown.is_cancelled() {
             return Err(error(503, "SERVICE_CLOSED", "生成服务已关闭"));
         }
-        if self.backend.native_enabled() {
+        if self.uses_native_model(&input["modelId"]) {
             let permit = self.backend.reserve_native(&cancel)?;
-            let settings = self.backend.native_settings()?;
+            let mut settings = self.backend.native_settings()?;
+            settings.engine = "native".into();
             let pack = native::packed_h3(&settings, &input["modelId"]).await?;
             let input = native::normalize(input, pack.as_ref())?;
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
@@ -266,7 +306,7 @@ impl Service {
     ) -> Result<String> {
         let scope = self.shutdown.child_token();
         let _guard = scope.clone().drop_guard();
-        let root = self.config.ai_workspace_root.join("ComfyUI/input");
+        let (root,kind) = self.upload_destination(kind);
         let (reply, result) = tokio::sync::oneshot::channel();
         self.tasks.spawn(async move {
             let _admission = admission;
@@ -293,7 +333,7 @@ impl Service {
     ) -> Result<Value> {
         let scope = self.shutdown.child_token();
         let _guard = scope.clone().drop_guard();
-        let root = self.config.ai_workspace_root.join("ComfyUI/input");
+        let (root,kind) = self.upload_destination(crate::images::ImageKind::VideoInput);
         let (reply, result) = tokio::sync::oneshot::channel();
         self.tasks.spawn(async move {
             let _admission = admission;
@@ -326,7 +366,7 @@ impl Service {
                 root,
                 owner,
                 limits: crate::images::Limits::from_environment(),
-                kind: crate::images::ImageKind::VideoInput,
+                kind,
             };
             let value = crate::images::media_import::finish(
                 storage, principal, lease, reference, target, scope,

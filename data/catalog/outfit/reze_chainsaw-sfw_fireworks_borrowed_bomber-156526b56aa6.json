@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/sfw_fireworks_borrowed_bomber",
+  "revision": 1,
+  "sortOrder": 3918,
+  "createdAt": "2026-11-22T01:48:55.068887900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "sfw_fireworks_borrowed_bomber",
+      "characterId": "reze_chainsaw",
+      "name": "借来的旧橄榄色飞行外套与炭灰直筒裤",
+      "tokens": [
+        "green jacket",
+        "bomber jacket",
+        "oversized jacket",
+        "jacket on shoulders",
+        "white shirt",
+        "t-shirt",
+        "grey pants",
+        "sneakers"
+      ],
+      "prose": "A roomy olive canvas flight jacket with an old white seam repair lies loose across her shoulders, its long sleeves hanging empty along her arms. An oatmeal ribbed tee and straight charcoal trousers are paired with white canvas sneakers.",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

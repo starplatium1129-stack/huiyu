@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-companion-set-interactive-regions"
+description = "Enables the companion_set_interactive_regions command without any pre-configured scope."
+commands.allow = ["companion_set_interactive_regions"]
+
+[[permission]]
+identifier = "deny-companion-set-interactive-regions"
+description = "Denies the companion_set_interactive_regions command without any pre-configured scope."
+commands.deny = ["companion_set_interactive_regions"]

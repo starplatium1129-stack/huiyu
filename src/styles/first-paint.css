@@ -19,13 +19,13 @@
 
 :root {
   /* Match the theme before its full stylesheet arrives, then use its tokens. */
-  --first-paint-background: #151c24;
-  --first-paint-text: #edf3fa;
+  --first-paint-background: #0e1014;
+  --first-paint-text: #f4efe9;
   color-scheme: dark;
 }
 :root[data-theme="light"] {
-  --first-paint-background: #f5efe7;
-  --first-paint-text: #29242a;
+  --first-paint-background: #f6f3ec;
+  --first-paint-text: #1b181a;
   color-scheme: light;
 }
 :root[data-theme-style="terraria"] {

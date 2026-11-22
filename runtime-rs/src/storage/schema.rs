@@ -188,7 +188,7 @@ impl Drop for Owner {
     }
 }
 
-pub(super) const VERSION: i64 = 6;
+pub(super) const VERSION: i64 = 9;
 fn supported(version: i64) -> bool {
     (1..=VERSION).contains(&version)
 }
@@ -426,6 +426,9 @@ fn upgrade(db: &Connection, from: i64, to: i64) -> Result<()> {
             4 => include_str!("archive-schema.sql"),
             5 => include_str!("workflow-schema.sql"),
             6 => include_str!("payload-schema.sql"),
+            7 => include_str!("studio-schema.sql"),
+            8 => include_str!("studio-video-schema.sql"),
+            9 => include_str!("studio-export-schema.sql"),
             _ => unreachable!(),
         })?;
         if version == 6 {

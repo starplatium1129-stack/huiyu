@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3441,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "modernia_lingerie_whisper",
     "characterId": "modernia",
@@ -14,7 +14,7 @@
     "location": "前哨基地指挥官卧室，床头摆放着柔软的泰迪熊与机械积木",
     "timeOfDay": "晨光熹微的初醒时刻",
     "lighting": "透过白纱帘的柔白晨光，将整个被褥烘托得如梦似幻般纯净明朗",
-    "camera": "close-up, eye level, front view, 正面平视特写，镜头对焦于紧紧抱住大衣的纤巧手臂与天真烂漫的笑颜",
+    "camera": "front view, eye level, close-up",
     "mood": "犹如初生幼鸟般的极致依恋与纯洁无垢的爱意",
     "adult": true,
     "sampleRating": "R15",
@@ -40,25 +40,34 @@
       "front_view"
     ],
     "promptTokens": [
-      "close-up",
-      "eye level",
-      "front view",
-      "indoors",
-      "bedroom",
-      "bed",
-      "morning",
-      "sunlight",
-      "dim lighting",
       "kneeling",
-      "smile",
+      "on bed",
+      "hugging coat",
+      "black trenchcoat",
+      "head tilt",
+      "sweet smile",
+      "looking at viewer",
       "teddy bear",
-      "glowing",
-      "soft white satin ribbon wraps"
+      "bedroom",
+      "sheer curtains",
+      "morning sunlight",
+      "front view",
+      "eye level",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress. Marian, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair amidst wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys.",
-    "animaCaption": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Kneeling on the commander's bed at dawn beside a plush teddy bear, Modernia wears a pure white sheer chiffon slip dress laced with soft white satin ribbons. Hugging a dark trenchcoat tightly against her chest with tousled silver hair and a warm, innocent smile, she glows in soft morning curtain light.",
+    "animaCaption": "Kneeling in the center of the bed in a sheer white ribbon-wrapped slip dress, she hugs the commander's oversized black coat tightly to her chest and tilts her head with a bright, innocent smile. Soft morning sunlight filters through white curtains beside her teddy bear.",
+    "nsfwTokens": [
+      "white slip dress",
+      "sheer nightgown",
+      "white satin ribbons",
+      "bandage wrap",
+      "ruffled hem",
+      "see-through",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a pure white sheer chiffon slip dress wrapped with criss-crossing white satin ribbons and a light layered ruffled hem.",
+    "compositionIntent": "single"
   }
 }

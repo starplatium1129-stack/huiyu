@@ -51,7 +51,7 @@ function commitPalette(value: Theme) {
   })
 }
 
-function applyTheme(value: Theme) {
+export function applyTheme(value: Theme) {
   theme.value = requestedTheme = value
   stopReveal()
   commitPalette(value)

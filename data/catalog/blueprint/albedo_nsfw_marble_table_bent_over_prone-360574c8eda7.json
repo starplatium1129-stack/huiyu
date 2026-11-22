@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_marble_table_bent_over_prone",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1308,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "albedo_nsfw_marble_table_bent_over_prone",
     "title": "雅儿贝德 · 大理石案台的白裙更衣自抚",
@@ -15,7 +15,7 @@
     "action": "一手按案几俯身翘臀，白裙半解羽翼微颤，单手探入自抚敏感花瓣，回眸含情喘息",
     "timeOfDay": "深夜月光",
     "lighting": "透过彩色穹顶照在大理石上的幽冷月色",
-    "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+    "camera": "dutch angle, cowboy shot",
     "mood": "狂热自抚、痴缠动情",
     "sceneTags": [
       "office",
@@ -34,21 +34,21 @@
       "looking_back",
       "horizontal_shot"
     ],
-    "promptProse": "She leans across the marble table with her dress gathered up, one hand braced on the stone and the other beneath her skirt. Cool moonlight from the glazed dome falls across the marble surface.",
+    "promptProse": "In the quiet study beneath a glazed dome, Albedo bends over a cold black marble table with one palm flat against the polished stone and her dark wings trembling behind her. Cool moonlight falls across the desk and outlines her figure as she glances back over her shoulder.",
     "promptTokens": [
       "study",
       "marble table",
       "bent over",
-      "white dress",
-      "skirt lift",
-      "panties aside",
-      "masturbation",
-      "looking back",
-      "gold necklace",
-      "green gemstone",
       "hand on table",
+      "looking back",
+      "blush",
+      "biting lip",
+      "spread wings",
+      "glass dome",
       "moonlight",
-      "glass dome"
+      "night",
+      "dutch angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -63,7 +63,18 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
-    "animaCaption": "One hand supports her against the marble; the other stays beneath her skirt."
+    "nsfwProse": "Her white evening gown with its gold web necklace is loosened down to her waist to bare her chest, while the hem is gathered high so her free hand can slide past the edge of her sheer panties to touch herself.",
+    "animaCaption": "Leaning forward over the dark marble table with her white gown lowered past her chest and skirt gathered at her hips, she braces one hand on the stone while her other hand slips beneath her shifted panties as she looks back with a flushed, lip-biting gaze.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white dress",
+      "dress pull",
+      "topless",
+      "skirt lift",
+      "panties aside",
+      "hand between legs",
+      "masturbation",
+      "gold necklace"
+    ]
   }
 }

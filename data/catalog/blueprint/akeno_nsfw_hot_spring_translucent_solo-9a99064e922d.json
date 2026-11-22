@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_hot_spring_translucent_solo",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1299,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "akeno_nsfw_hot_spring_translucent_solo",
     "title": "姬岛朱乃 · 露天温泉的湿身紫纱低语",
@@ -15,7 +15,7 @@
     "action": "斜靠在温泉池壁边，浸水半透明紫纱吸附在娇躯上，单手在水面下自抚，眼神迷离微喘",
     "timeOfDay": "深夜温泉",
     "lighting": "岩石旁竹制油灯与月色交织的光雾",
-    "camera": "cowboy shot, medium angle, intimate hot spring view",
+    "camera": "medium shot, eye level",
     "mood": "唯美水光",
     "sceneTags": [
       "onsen",
@@ -30,24 +30,21 @@
       "hand_between_legs",
       "sensual_solo"
     ],
-    "promptProse": "She reclines against the rocks with one hand beneath the water between her thighs. Moonlight and the bamboo lamps catch the steam around her wet negligee.",
+    "promptProse": "In a secluded open-air stone hot spring ringed by bamboo, Akeno leans back against the smooth rock edge as steam rises through the night air. Cool moonlight and warm bamboo lanterns glint off water droplets trailing down her collarbone.",
     "promptTokens": [
       "hot spring",
       "steam",
       "rock",
       "bamboo",
-      "purple negligee",
-      "black lace trim",
-      "flutter sleeves",
-      "wet clothes",
-      "see-through",
-      "hand between legs",
-      "blush",
-      "cowboy shot",
       "reclining",
+      "wet hair",
+      "wet skin",
+      "blush",
+      "parted lips",
       "moonlight",
-      "bamboo lantern",
-      "wet hair"
+      "lantern",
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +59,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "animaCaption": "She leans against the rocks with one hand submerged between her thighs."
+    "animaCaption": "Reclining against the wet hot-spring rocks in a soaked, translucent purple lace negligee clinging to her chest, she slips one hand beneath the steaming water between her thighs with parted lips.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "purple negligee",
+      "black lace",
+      "wet clothes",
+      "see-through",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her sheer violet silk negligee with black lace trim is soaked through and clings transparently over her chest and waist, while one hand rests submerged between her parted thighs."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3505,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "beta_shadow_lingerie_whisper",
     "characterId": "beta_shadow",
@@ -14,7 +14,7 @@
     "location": "暗影庭园研究室起居套间的豪华卧榻",
     "timeOfDay": "深夜",
     "lighting": "床头欧式古董玻璃罩油灯发出柔和的蜜黄暖光，映照在丰腴傲人的身材与银灰真丝睡衣上",
-    "camera": "medium shot, high angle, 充满趣味与魅力的斜向微俯角，将‘著名小说家夏目’的狂热迷妹反差萌生动刻画",
+    "camera": "high angle, medium shot",
     "mood": "狂热崇拜、花痴心动、丰腴魅惑下的少女情怀",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,33 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "sitting at ornate writing desk",
-      "fountain pen in hand",
-      "secret handwritten manuscript of Shadow-sama",
-      "plush armchair",
+      "sitting",
+      "writing desk",
+      "holding pen",
+      "writing",
+      "open notebook",
+      "blush",
+      "happy smile",
+      "armchair",
       "bookshelves",
-      "ecstatic starry-eyed blush",
-      "warm table lamp"
+      "study",
+      "warm table lamp",
+      "night",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Beta writes furiously in her ornate private study with a gold-nibbed pen, giggling in starry-eyed ecstasy over her secret fanatical chronicles of Lord Shadow.",
-    "animaCaption": "Sitting at an ornate desk writing in a secret manuscript, smiling with an ecstatic, starry-eyed fanatical blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated in a plush armchair at her ornate private desk late at night, Beta wears a silver-grey stretch satin slip chemise with a plunging pleated-ruffle neckline. Scribbling excitedly across her secret manuscript with a gold-nibbed pen and a starry-eyed blush, she glows beneath warm antique table lamplight beside towering bookshelves.",
+    "animaCaption": "Seated at her ornate study desk in a plunging silver-grey ruffled satin slip chemise, she scribbles enthusiastically into a gilt-edged notebook with a starry-eyed blush. Warm honey light from an antique glass table lamp shimmers across the smooth satin.",
+    "nsfwTokens": [
+      "grey satin slip dress",
+      "plunging neckline",
+      "ruffled neckline",
+      "silk nightgown",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a fluid silver-grey stretch satin slip chemise with a deep plunging ruffled neckline and high side gather ties.",
+    "compositionIntent": "single"
   }
 }

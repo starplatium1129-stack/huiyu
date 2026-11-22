@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_riverside_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2063,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "acheron_riverside_rest",
     "title": "黄泉 · 河岸歇脚",
@@ -15,24 +15,33 @@
     "action": "坐着看水流",
     "timeOfDay": "傍晚",
     "lighting": "柔和的傍晚天光",
-    "camera": "medium shot",
+    "camera": "from side, medium shot",
     "mood": "安静",
-    "promptProse": "Acheron sits on a grassy riverbank with her sheathed sword laid beside her, watching water move around the stones.",
+    "promptProse": "Acheron sits unhurriedly on the grassy bank of a quiet river at dusk, her long sheathed blade resting flat in the grass beside her hip. She looks out across the stream as clear water curls around smooth dark stones while an evening breeze lifts the hem of her dark violet coat. Gentle sunset light reflects softly off the ripples and traces her side profile against the quiet shore.",
     "promptTokens": [
-      "sitting on grass",
+      "sitting",
+      "grass",
+      "sheathed",
+      "katana",
+      "river",
       "riverbank",
-      "sheathed sword beside her",
+      "rock",
       "flowing water",
-      "evening light",
+      "wind",
+      "looking away",
+      "outdoors",
+      "sunset",
+      "from side",
       "medium shot"
     ],
-    "animaCaption": "Her sheathed sword rests beside her.",
+    "animaCaption": "Sitting on the grassy riverbank with her sheathed sword laid flat beside her, Acheron watches the current curl around smooth stones. Evening light glints on the flowing water as a gentle breeze stirs her dark coat.",
     "characterId": "acheron",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

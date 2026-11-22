@@ -4,6 +4,8 @@ import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeTaskActiveCount, runtimeTasksEnabled } from '@/stores/runtimeTaskState'
+import { registerTaskActivity } from '@/platform/taskWindowActivity'
+export { approveTaskReload, consumeTaskReloadApproval } from '@/platform/taskWindowActivity'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {
@@ -24,15 +26,10 @@ const opened = ref(false)
 export const runtimeTaskOpenRequest = ref(0)
 const storageError = ref('')
 const actions = shallowReactive(new Map<string, TaskControls>())
-let reloadApproved = false
-const approvedReloadEvents = new WeakSet<Event>()
-export function approveTaskReload() { reloadApproved = true }
-export function consumeTaskReloadApproval(event: Event) {
-  if (approvedReloadEvents.has(event)) return true
-  const approved = reloadApproved; reloadApproved = false
-  if (approved) approvedReloadEvents.add(event)
-  return approved
-}
+const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && !task.backend && actions.has(task.id)).length)
+const activeCount = computed(() => (runtimeTasksEnabled.value || hasRuntimeTasks() ? runtimeTaskActiveCount.value
+  : tasks.value.filter(task => task.status === 'running' && task.backend).length) + pageActiveCount.value)
+registerTaskActivity(() => activeCount.value > 0)
 let loading: Promise<void> | undefined
 let writeTail = Promise.resolve()
 const deletedTasks = new Map<string, number>()
@@ -171,11 +168,8 @@ function findBackendTask(summary: TaskSummary) {
 }
 export function useTaskCenter() {
   // Runtime tasks survive page disposal; image interrogation is still page-owned.
-  const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && !task.backend && actions.has(task.id)).length)
-  return { tasks, opened, storageError, pageActiveCount,
+  return { tasks, opened, storageError, pageActiveCount, activeCount,
     openRuntimeTasks() { runtimeTaskOpenRequest.value++; opened.value = true },
-    activeCount: computed(() => (runtimeTasksEnabled.value || hasRuntimeTasks() ? runtimeTaskActiveCount.value
-      : tasks.value.filter(task => task.status === 'running' && task.backend).length) + pageActiveCount.value),
     controls: (id: string) => actions.get(id),
     clearCompleted() {
       const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted')

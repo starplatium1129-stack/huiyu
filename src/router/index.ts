@@ -73,6 +73,7 @@ const router = createRouter({
         { path: 'qwen-studio', redirect: to => ({ path: '/prompt-builder', query: { ...to.query, ...(to.query.artwork || to.query.job ? { editor: 'qwen' } : { engine: 'qwen' }) }, hash: to.hash }) },
         { path: 'moss-studio', redirect: to => ({ path: '/prompt-builder', query: { ...to.query, engine: 'moss' }, hash: to.hash }) },
         { path: 'video-studio',  name: 'video',         meta: { title: '故事短片' }, component: () => import('@/views/VideoStudioView.vue') },
+        { path: 'studio-projects', name: 'studio-projects', meta: { title: '创作项目' }, component: () => import('@/views/StudioProjectsView.vue') },
         { path: 'chat',           name: 'chat',          meta: { title: '角色房间' }, component: () => import('@/views/RoomRouteView.vue'), props: { page: 'chat', label: '角色房间' } },
         { path: 'showcase',       name: 'showcase',      meta: { title: '参考画册' }, component: () => import('@/views/ShowcaseView.vue') },
         { path: 'gallery',        name: 'gallery',       meta: { title: '我的作品' }, component: () => import('@/views/GalleryView.vue') },

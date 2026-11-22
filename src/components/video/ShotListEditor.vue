@@ -13,7 +13,7 @@
       <button v-if="requestPending" class="btn btn-ghost btn-sm" type="button" :disabled="cancelling || submitting || retrying" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
     </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
-      <p>{{ status?.provider === 'native' ? '可在这里编辑镜头。批量生成时，请在视频引擎设置中选择 ComfyUI。' : '可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。' }}</p>
+      <p>{{ status?.provider === 'native' ? '可以在这里编辑镜头，也可以把草稿转入创作项目，用本机绘图模型制作首尾帧。' : '可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。' }}</p>
     </div>
 
       <ShotStoryboardStrip v-if="shots.length" :shots="shots" @locate="locateShot" />
@@ -141,6 +141,7 @@
         <div class="shot-toolbar-shell">
           <div class="shot-toolbar shot-toolbar-primary tw:p-s-2 tw:rounded-lg" data-fluid-glass>
             <button class="btn btn-primary btn-sm" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="plus" />添加镜头</button>
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="!shots.length || submitting || firstFrameBusy" @click="openProjectImport"><ArchiveIcon name="folder" />转入创作项目</button>
             <StudioTooltip anchor content="写个故事梗概，AI 直接生成完整分镜表（无首帧纯文字 T2VA 也可生成）">
               <button class="btn btn-ghost btn-sm" type="button" :disabled="scriptBusy || batchActive || submitting" @click="scriptOpen = true"><ArchiveIcon name="wand" /> AI 生成脚本</button>
             </StudioTooltip>
@@ -463,7 +464,7 @@ function locateShot(index: number) {
   row?.focus({ preventScroll:true })
 }
 const {
- frameInputs,h3Ready, aspectRatio, quality, linkLastFrame, steps,
+ frameInputs,openProjectImport,h3Ready, aspectRatio, quality, linkLastFrame, steps,
 identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
 popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, blueprintCharacter, blueprintReady, blueprintError, retryBlueprints, sceneBlueprints, addShot,

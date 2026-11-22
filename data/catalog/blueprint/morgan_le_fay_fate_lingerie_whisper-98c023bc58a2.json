@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3276,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "morgan_le_fay_fate_lingerie_whisper",
     "characterId": "morgan_le_fay_fate",
@@ -14,7 +14,7 @@
     "location": "不列颠卡美洛王宫寝殿，高耸哥特花窗外飘散着终年不息的白垩冷雾",
     "timeOfDay": "冬夜寂灭更深时",
     "lighting": "银蓝色的魔法冷光在地面流淌，银烛台跳跃着微弱冷焰，勾勒出如冰霜雕刻的躯体轮廓",
-    "camera": "cowboy shot, low angle, 极具王者威严的低机位中景，哥特王宫花窗与白垩寒雾同框",
+    "camera": "low angle, cowboy shot",
     "mood": "至高女王的绝对支配欲与面对伴侣时的清冷深情",
     "adult": true,
     "sampleRating": "R15",
@@ -40,19 +40,33 @@
       "low_angle"
     ],
     "promptTokens": [
-      "cowboy shot",
+      "sitting",
+      "obsidian throne",
+      "crossed legs",
+      "cold gaze",
+      "looking at viewer",
+      "gothic palace",
+      "stained glass",
+      "winter fog",
+      "silver candlesticks",
+      "icy blue light",
+      "night",
       "low angle",
-      "sitting on dark gothic throne",
-      "monumental cathedral stained glass window",
-      "endless white winter fog outside",
-      "Camelot royal chambers",
-      "imperious sovereign gaze",
-      "icy blue backlight"
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Morgan le Fay sits upright on her obsidian throne inside the high-vaulted Camelot royal quarters, her cool, sovereign gaze holding the viewer motionless amidst drifting winter fog.",
-    "animaCaption": "Seated upon an obsidian throne inside a vaulted winter palace, surveying her domain with cold sovereign grace.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated with icy regal poise upon an obsidian throne inside Camelot's vaulted winter chambers, Morgan le Fay wears a sheer layered ice-blue peignoir with a thigh-high slit over a silver-embroidered black bandeau. Framed against towering stained glass and endless white winter fog, she gleams in silver candlelight and cold blue magic.",
+    "animaCaption": "Seated imperiously upon an obsidian throne in a sheer ice-blue layered peignoir parted high along her legs over a silver-embroidered black bandeau, she fixes the viewer with an icy sovereign stare. Pale winter fog beyond gothic stained glass and cold blue magic light rim her figure.",
+    "nsfwTokens": [
+      "light blue sheer robe",
+      "layered peignoir",
+      "black bandeau",
+      "silver embroidery",
+      "high-slit dress",
+      "see-through",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears an ice-blue sheer layered floor-length peignoir with a thigh-high slit draped over a dark silver-embroidered filigree bandeau.",
+    "compositionIntent": "single"
   }
 }

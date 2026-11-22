@@ -9,7 +9,7 @@
 }
 .popular-scene-library .library-header { align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
 .popular-scene-library .library-heading-copy { min-width:0; }
-.popular-scene-library .library-header .page-title { margin:0; font:600 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
+.popular-scene-library .library-header .page-title { margin:0; font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
 :global(:root[data-theme-style='terraria']) .popular-scene-library .library-header .page-title { font-family:var(--font-display); }
 .popular-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .popular-scene-library .library-detail:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }

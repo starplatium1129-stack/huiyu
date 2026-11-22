@@ -53,6 +53,7 @@ impl TaskRuntime {
                 TaskKind::Anima
                 | TaskKind::Creative
                 | TaskKind::Qwen
+                | TaskKind::Keyframe
                 | TaskKind::Moss
                 | TaskKind::Manga
                 | TaskKind::Lineart => runtime

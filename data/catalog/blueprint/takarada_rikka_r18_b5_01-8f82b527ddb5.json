@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_01",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_01",
     "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间长开衫半敞露肉腿，双臂环颈慵懒起伏，耳钉微闪吐气如兰",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
-    "camera": "cowboy shot, pov",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,23 +29,22 @@
       "thick_thighs",
       "plump_thighs"
     ],
-    "promptProse": "Rikka sits astride the offscreen viewer in the upstairs shop room, wearing only an open long beige knit cardigan, arms around their neck and hair brushing their cheek.",
+    "promptProse": "In the warm upstairs room of the junk shop on a hushed summer afternoon, Rikka wears nothing beneath her unbuttoned oversized beige knit cardigan as she straddles her partner's lap. Looping both arms lazily around his neck while sinking her plush thighs down in cowgirl position, she gazes fondly into his eyes with flushed cheeks and parted lips under slanting afternoon sunlight.",
     "promptTokens": [
-      "adult",
+      "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "open cardigan",
-      "topless",
-      "bottomless",
-      "thick thighs",
-      "cowgirl position",
-      "on lap",
-      "junk shop",
-      "afternoon",
-      "cowboy shot",
       "straddling",
       "arms around neck",
+      "blush",
+      "parted lips",
+      "thick thighs",
+      "indoors",
       "sunlight",
-      "warm_lighting"
+      "afternoon",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,17 +53,24 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
     "nsfwTokens": [
+      "beige cardigan",
+      "open cardigan",
+      "topless",
+      "bottomless",
+      "no panties",
+      "bare breasts",
       "nipples",
-      "pussy"
+      "cowgirl position",
+      "sex"
     ],
-    "nsfwProse": "",
+    "nsfwProse": "She wears only her oversized beige knit cardigan parted open with nothing underneath, completely topless and bottomless as her plush thighs straddle her partner's lap.",
     "outfitId": "beige_cardigan",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "Her hair brushes the off-frame viewer's cheek above their encircled neck."
+    "compositionIntent": "group",
+    "animaCaption": "Straddling her partner's lap upstairs in the sunlit afternoon room wearing only an open beige knit cardigan with nothing underneath, Rikka loops her arms around his neck and sinks down with an affectionate blush. Warm afternoon sunlight lights her bare curves and plush thighs."
   }
 }

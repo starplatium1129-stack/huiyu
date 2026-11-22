@@ -258,7 +258,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         _ => {
             return Err(error(
                 "NATIVE_FEATURE_UNSUPPORTED",
-                "该适配仅 Qwen 支持单张已上传原图的指令编辑",
+                "所选模型不支持这张编辑原图",
             ));
         }
     };
@@ -267,9 +267,14 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         .map(|v| validation::number(v, "seed", 0., 2147483647., true))
         .transpose()?
         .unwrap_or_else(|| json!((uuid::Uuid::new_v4().as_u128() % 2147483647) as u64));
+    let keyframe = spec["family"] == "keyframe";
+    if keyframe && image.is_none() {
+        return Err(error("INVALID_PARAMETER", "关键帧编辑需要至少一张参考图"));
+    }
+    let accepts_references = keyframe || spec["family"] == "qwen-image";
     let references = match raw.get("referenceImages") {
         None => vec![],
-        Some(Value::Array(values)) if spec["family"] == "qwen-image" && values.len() <= 3 => {
+        Some(Value::Array(values)) if accepts_references && values.len() <= 3 => {
             let mut names = Vec::new();
             for value in values {
                 let name = value
@@ -289,7 +294,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         _ => {
             return Err(error(
                 "INVALID_PARAMETER",
-                "Qwen 支持一张原图及最多三张参考图",
+                "此模型的参考图数量或格式不受支持",
             ));
         }
     };
@@ -302,7 +307,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         "mossTextPrecision":if spec["family"] == "moss-image" {Some(moss_text_precision)}else{None},
         "mossCompile":if spec["family"] == "moss-image" {Some(moss_compile)}else{None},
         "mossWeightPrecision":if spec["family"] == "moss-image" {Some(moss_weight_precision)}else{None},
-        "referenceImages":if spec["family"] == "qwen-image" {Some(references)}else{None},
+        "referenceImages":if accepts_references {Some(references)}else{None},
         "profileId":spec["profileId"],"styleLoraId":style,"styleLoraTrigger":style.map(|id| &catalog::styles()[id]["trigger"]),
         "inferenceEngine":"native","nativeAdapterVersion":1,"validation":"待主力机验证",
         "sampler":moss_sampler,"scheduler":if preview {sampling_defaults["scheduler"].as_str().unwrap_or("simple")} else {"model-config"},

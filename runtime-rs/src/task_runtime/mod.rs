@@ -1,4 +1,5 @@
 mod actions;
+mod dependencies;
 mod execution;
 mod fingerprint;
 mod hooks;
@@ -11,6 +12,8 @@ mod recovery;
 mod resume;
 mod retry;
 mod submission;
+mod studio_video;
+mod studio_export;
 use providers::Preparation;
 
 use crate::{
@@ -39,6 +42,8 @@ pub struct TaskRuntime {
     video: Arc<crate::video::VideoService>,
     recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
     image_batches: Mutex<std::collections::HashSet<String>>,
+    studio_workers: Mutex<HashMap<String, Arc<tokio::sync::Notify>>>,
+    exports: studio_export::Exports,
     fingerprint: Fingerprint,
     unbound_epoch: String,
     jobs: Mutex<HashMap<String, JobBinding>>,
@@ -96,6 +101,8 @@ impl TaskRuntime {
             video,
             recoveries: Mutex::new(HashMap::new()),
             image_batches: Mutex::new(std::collections::HashSet::new()),
+            studio_workers: Mutex::new(HashMap::new()),
+            exports: Default::default(),
             fingerprint: Fingerprint::system()?,
             unbound_epoch: uuid::Uuid::new_v4().to_string(),
             jobs: Mutex::new(HashMap::new()),
@@ -160,6 +167,13 @@ impl TaskRuntime {
                     binding.changed.notify_one();
                 }
                 if task.upstream_settled {
+                    if task.status == TaskStatus::Cancelled && task.submission_intent_at.is_none()
+                        && let Some(job) = runtime.job(&storage, &task.task_id).filter(|id| !id.is_empty())
+                    {
+                        // The ledger settles an unsubmitted intent immediately. Remove the
+                        // corresponding gateway reservation even while dispatch is paused.
+                        let _ = runtime.cancel_provider(task.kind, &job, &principal).await;
+                    }
                     return Ok(task.into_value()?);
                 }
                 let id = task.task_id.clone();
@@ -207,6 +221,7 @@ impl TaskRuntime {
         if self.closed.swap(true, Ordering::AcqRel) {
             return;
         }
+        self.exports.close();
         self.provider.close().await;
         self.images.close().await;
         self.video.close().await;

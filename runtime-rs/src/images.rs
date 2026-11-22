@@ -51,6 +51,9 @@ enum PreparedBackend {
     },
 }
 impl Prepared {
+    pub(crate) fn uses_native_queue(&self) -> bool {
+        matches!(&self.backend, PreparedBackend::Local(generation) if generation.provider() == "native")
+    }
     pub(crate) fn input(&self) -> &Value {
         match &self.backend {
             PreparedBackend::Local(value) => &value.input,
@@ -110,6 +113,12 @@ impl Service {
     pub(crate) fn is_local_native(&self) -> bool {
         self.backend.native_enabled()
     }
+    fn check_keyframe_engine(&self, family: &str) -> Result<()> {
+        if family == "keyframe" && !self.is_local_native() {
+            return Err(ApiError::new(409, "NATIVE_ENGINE_REQUIRED", "关键帧工坊使用本机 GPU，请在控制室选择本机原生绘图并重启"));
+        }
+        Ok(())
+    }
     pub fn new(
         config: Config,
         transport: LocalUpstream,
@@ -166,6 +175,7 @@ impl Service {
         if self.shutdown.is_cancelled() {
             return Err(closed());
         }
+        self.check_keyframe_engine(family)?;
         let input = if family == "manga-screen" {
             if !self.native {
                 return Err(ApiError::new(
@@ -285,10 +295,11 @@ impl Service {
         }
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
+        self.check_keyframe_engine(family)?;
         if let Some(remote) = &self.remote {
             return remote.status(family, &self.shutdown).await;
         }
-        if matches!(family, "qwen-image" | "moss-image" | "manga-screen") && !self.native {
+        if matches!(family, "qwen-image" | "keyframe" | "moss-image" | "manga-screen") && !self.native {
             return Err(ApiError::new(
                 409,
                 "NATIVE_ENGINE_REQUIRED",

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_chair_straddle_ecstasy",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "独自跨坐红丝绒扶手椅，机械双手握住两侧扶手，身体向前倾。",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, low angle, chair and both armrests visible",
+    "camera": "low angle, cowboy shot",
     "category": "成人私密",
     "characterId": "violet_evergarden",
     "coverageTags": [
@@ -24,24 +24,22 @@
     "location": "暖炉房中央高背红丝绒复古扶手椅",
     "mood": "人偶初懂情欲后的主动求欢、极乐交融",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Completely nude astride the broad crimson velvet armchair, her bare breasts lift forward and her glistening pussy opens directly toward the low viewpoint as she arches her back.",
     "outfitId": "nsfw_nude",
-    "promptProse": "Violet sits astride the crimson armchair, gripping both curved armrests with her mechanical hands as she leans toward the viewer in the hearth light.",
+    "promptProse": "Completely nude in the hearth-lit parlor at night, Violet sits astride the wide crimson velvet armchair, gripping both curved armrests firmly with her silver mechanical hands as she arches forward. Firelight from the hearth dances over her bare breasts, flushed belly, and exposed pussy while she looks down toward the viewer with parted lips and glazed eyes.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "nude",
-      "mechanical hands",
       "straddling",
       "leaning forward",
       "arched back",
       "looking at viewer",
-      "velvet armchair",
+      "parted lips",
+      "blush",
+      "armchair",
+      "velvet",
       "fireplace",
-      "from below",
-      "hands on armrests",
       "firelight",
+      "night",
+      "from below",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -60,7 +58,10 @@
     "timeOfDay": "深夜",
     "title": "薇尔莉特 · 红丝绒扶手椅上的反客为主主控姿态",
     "nsfwTokens": [
+      "nude",
+      "bare breasts",
       "nipples",
+      "spread legs",
       "pussy"
     ],
     "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
@@ -73,6 +74,7 @@
       "blue eyes",
       "mechanical hands"
     ],
-    "animaCaption": "Both mechanical hands grip the curved armrests as she leans forward from the crimson chair."
+    "animaCaption": "Completely nude astride the crimson velvet armchair, Violet grips both armrests with her mechanical hands and arches forward, exposing her bare breasts and wet pussy toward the low camera. Warm hearth firelight flickers across her flushed skin and parted lips.",
+    "compositionIntent": "single"
   }
 }

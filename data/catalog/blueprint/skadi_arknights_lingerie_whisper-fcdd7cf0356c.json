@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3244,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "id": "skadi_arknights_lingerie_whisper",
     "characterId": "skadi_arknights",
@@ -13,8 +13,8 @@
     "action": "赤足坐于栈桥木桩，重剑插在身侧木板，回眸凝视",
     "location": "伊比利亚废弃灯塔木栈桥",
     "timeOfDay": "狂风呼啸的深渊寒夜",
-    "lighting": "清冷月色与泛白浪花的反光交融",
-    "camera": "medium shot, low angle, 码头木桩中景，重剑与夜海浪花同框",
+    "lighting": "海上冷月勾亮发丝与飞沫，旧灯塔的一格残灯在背后留下微弱暖点",
+    "camera": "three quarter view, cowboy shot",
     "mood": "凄美深沉",
     "adult": true,
     "sampleRating": "R15",
@@ -30,38 +30,42 @@
       "sitting",
       "barefoot",
       "pier",
-      "wood",
-      "ocean",
-      "crashing_waves",
-      "sea_foam",
-      "night_sky",
-      "moonlight",
-      "holding_sword",
-      "sword_in_ground",
       "greatsword",
-      "medium_shot",
-      "low_angle"
+      "lighthouse",
+      "ocean",
+      "waves",
+      "moonlight",
+      "looking back"
     ],
     "promptTokens": [
       "sitting",
       "barefoot",
+      "looking back",
+      "greatsword",
       "pier",
-      "wood",
+      "lighthouse",
       "ocean",
-      "crashing waves",
+      "waves",
       "sea foam",
       "night sky",
       "moonlight",
-      "sword in ground",
-      "greatsword",
-      "looking at viewer",
-      "medium shot",
-      "low angle"
+      "wind",
+      "three quarter view",
+      "cowboy shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Sitting barefoot atop a weathered wooden pylon at an abandoned coastal pier at midnight, Skadi looks back toward the viewer as white surf breaks against the black rocks below. Beside her, her massive greatsword stands planted in the timber planks, cold moonlight illuminating her tranquil expression against the roaring dark ocean.",
-    "animaCaption": "Sitting barefoot on the pier timber beside her planted greatsword, she looks back quietly as cold moonlight catches the breaking ocean spray.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "The pier boards draw the eye from the planted greatsword to Skadi on the broad end of a piling. She turns back over her shoulder with her legs hanging over the sea and her silver hair streaming along the pier. Below the dry deck, white water breaks against a line of dark rocks. Moonlight outlines her hair and picks out the rope wound round the nearest timber. Beyond the spray, the old Iberian lighthouse stands on the headland with a faint amber light leaking through one window.",
+    "animaCaption": "Seated sideways on the wide end of a pier piling, she turns her head toward the viewer as her bare feet hang just above the waves. Her greatsword stands in the planks at her side, framed against the old lighthouse on the bluff.",
+    "nsfwTokens": [
+      "black bra",
+      "black panties",
+      "criss-cross straps",
+      "lace",
+      "clasp"
+    ],
+    "nsfwProse": "She is in her dark navy and black layered strappy lingerie set with a small silver fishbone clasp and narrow cross-back straps."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3147,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "blemishine_arknights_swimsuit_allure",
     "characterId": "blemishine_arknights",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "yellow bikini",
+      "halterneck",
+      "open shirt",
+      "white shirt",
+      "sheer shirt",
+      "hip straps",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a golden-yellow and ivory halter bikini with metallic buckles and hip cords under a sheer unbuttoned buttercup-yellow linen camp shirt.",
     "title": "瑕光 · 椰子树荫下的工匠夏日改件",
     "action": "盘腿坐在厚实的帆布沙滩垫上，手握小扳手认真调试机械动力冲浪板的推进喷口，额间微汗",
     "location": "临海木屋工坊外铺满细沙的椰林前庭",
     "timeOfDay": "盛夏上午",
     "lighting": "透亮的早晨阳光穿过椰林叶隙，在沙滩与金色长发上泼洒出明亮的金色光斑",
-    "camera": "medium full shot, slightly low angle, warm and bright holiday tone",
+    "camera": "low angle, cowboy shot",
     "mood": "专注热忱、充满元气与工匠少女的蓬勃活力",
     "description": "木屋前的椰林里传出螺栓拧动的轻快金属音。玛莉娅盘腿坐在凉席上，金发随手扎了个利落的高马尾，鼻尖上还蹭了点水上发动机的润滑油。她擦了一把额角的薄汗，举起扳手得意地向你展示改装完毕的冲浪板——「博士来得正好！喷射引擎的进气口改小了半圈，推进效率提高了整整两成！走，今天换我带你在浪头上飞一把！」",
     "sceneTags": [
@@ -40,24 +48,22 @@
       "cheerful"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blemishine (arknights)",
-      "blonde hair",
-      "high ponytail",
-      "horse ears",
-      "horse tail",
-      "gold bikini",
-      "unbuttoned shirt",
-      "sitting cross-legged",
-      "holding wrench near surfboard",
-      "bright morning sun",
-      "palm shadows",
+      "sitting",
+      "indian style",
+      "holding wrench",
+      "surfboard",
+      "beach mat",
+      "sweat",
       "confident smile",
-      "depth of field",
-      "cinematic lighting"
+      "high ponytail",
+      "palm tree",
+      "dappled sunlight",
+      "beach",
+      "morning",
+      "low angle",
+      "cowboy shot"
     ],
-    "promptProse": "Blemishine sits cross-legged on a beach workshop mat in her golden halter bikini and open linen shirt, excitedly tuning a high-tech surfboard with a small wrench while smiling up at the viewer.",
-    "animaCaption": "Bright coastal sunshine filters through the palms as the knight-artificer happily tunes up her aquatic gear."
+    "promptProse": "Blemishine sits cross-legged on a canvas mat in the sandy courtyard outside a seaside workshop, her hair tied into a high ponytail and a sheen of sweat on her brow. Dressed in a golden-yellow and ivory halter bikini with double hip cords under a sheer unbuttoned linen shirt, she holds up a wrench beside her tuned motorized surfboard under dappled morning palm shade.",
+    "animaCaption": "Seated cross-legged on a canvas beach mat beside a motorized surfboard, she raises a wrench with a proud, sun-flushed smile in her golden halter bikini and open linen shirt. Morning sunlight filters through palm fronds in bright dappled patches across the sand."
   }
 }

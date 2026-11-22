@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_yukata_untied_cowgirl_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶腿、一手腿间自抚",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "深层欢愉",
     "characterId": "hoshimi_miyabi",
     "coverageTags": [
@@ -22,26 +22,31 @@
     "location": "温泉旅馆榻榻米和室",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Her navy silk yukata patterned with golden spider lilies is untied and gathered below her waist, baring her breasts as her free hand slips between her thighs to pleasure herself.",
+    "nsfwTokens": [
+      "blue yukata",
+      "floral print",
+      "open kimono",
+      "topless",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
     "outfitId": "moonlight_yukata",
-    "promptProse": "Miyabi straddles the tatami cushion with her yukata gathered below her chest, one hand on her thigh while the other fingers herself. A paper lantern casts soft warm yellow light across the scene.",
+    "promptProse": "Viewed from a slightly low angle inside a quiet tatami room lit by a warm paper lantern, Miyabi sits astride a floor cushion with one hand resting on her thigh and a deep flush warming her composed expression.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "open yukata",
-      "bare breasts",
       "straddling",
       "cushion",
-      "fingering",
-      "tatami",
-      "navy blue yukata",
-      "gold spider lily print",
       "hand on thigh",
+      "tatami",
+      "japanese room",
+      "paper lantern",
+      "warm lighting",
       "heavy blush",
-      "lantern light",
-      "cowboy shot",
-      "from below"
+      "parted lips",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -56,6 +61,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "星见雅 · 浴衣半解跨坐骑乘与娇喘起伏",
-    "animaCaption": "One hand rests on her thigh as she sits across the cushion with the yukata gathered below her chest."
+    "animaCaption": "Sitting astride a tatami floor cushion with her midnight-blue spider-lily yukata untied and pushed below her bare chest, she steadies one hand on her thigh while the other fingers herself between her legs under the warm lantern glow.",
+    "compositionIntent": "single"
   }
 }

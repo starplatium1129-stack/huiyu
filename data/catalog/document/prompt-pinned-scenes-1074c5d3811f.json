@@ -1,13 +1,13 @@
 {
   "kind": "document",
   "id": "prompt-pinned-scenes",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:29:14.637185200+00:00",
+  "updatedAt": "2026-11-22T01:53:34.163857200+00:00",
   "data": {
     "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-    "pinnedAt": "2026-11-21T13:14:05",
+    "pinnedAt": "2026-11-22T01:52:29",
     "scenes": {
       "sc264": {
         "prompt": "nene_r18, nene_school_uniform, adult, visual novel event CG, dutch angle, medium close up, 1girl, solo, very_long_hair, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, plaid skirt, pleated skirt, miniskirt, skirt lift, pink panties, bow panties, pantyshot, black thighhighs, zettai ryouiki, narrow aisle, bookshelf, library, golden hour, rim light, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -1116,9 +1116,9 @@
         ]
       },
       "sc019": {
-        "prompt": "safe, 1girl, solo, ayachi_nene, @rella, white hair, ahoge, pink hair ribbons, purple eyes, beige duffle coat, red plaid wool scarf, holding scarf, reaching up with both hands, adjusting scarf on viewer, standing on tiptoe, looking up into viewer eyes, sweet blushing smile, cold mist breath, snowy city sidewalk, snow piled on tree branches, warm bakery storefront with glowing hanging lanterns in background, soft snowflakes falling, morning sunlight streaming down, face illuminated by winter morning sun, soft rim lighting, upper body, eye level, depth of field",
-        "negative": "feet focus, cropped head, missing head, out of frame, deformed hands",
-        "animaCaption": "Rising on tiptoes in the snow-draped morning street, she reaches up with both gloved hands to wrap the red plaid scarf snugly around the viewer, her smiling face bright in the winter sunshine.",
+        "prompt": "safe, 1girl, 1boy, ayachi_nene, beige coat, duffle coat, mittens, holding scarf, plaid scarf, from side, upper body, profile, looking up, blush, breath, snow, street, sidewalk, shop, morning, sunlight",
+        "negative": "feet focus, missing head, deformed hands",
+        "animaCaption": "Seen from the side, she straightens a red plaid scarf tied around the neck of the taller person in the dark wool coat at the right edge. Her own beige coat has a plain buttoned collar and both her mittens are on the red wool.",
         "rating": "All",
         "mature": false,
         "pinSource": [
@@ -1126,7 +1126,8 @@
           "candidate-sha256:5c9ca7aef969ec6037e15941939e6af7084b3f3be0e47c2b73c43a13603c8d9b",
           "candidate-sha256:483d118b5caec78b1fb80573f50269dac5b471754fe111532b4c9b6749637058",
           "candidate-sha256:5a7f2e09996341daae88618d94d9bf7fdf2ee50c60d2989af4ba02acefd34b2d",
-          "candidate-sha256:f7477afceb0d72e194e1d63fc56a0d928571e3c61c5dd7bf7ed2f21f2ad08eb9"
+          "candidate-sha256:f7477afceb0d72e194e1d63fc56a0d928571e3c61c5dd7bf7ed2f21f2ad08eb9",
+          "candidate-sha256:a454728369f0b742f3f753373f1dcc4836bf1e2c7a222942e3a1643e6f80d7e5"
         ]
       },
       "sc072": {

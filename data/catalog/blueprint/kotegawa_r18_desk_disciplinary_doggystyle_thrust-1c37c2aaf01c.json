@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_desk_disciplinary_doggystyle_thrust",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "水手服大敞露淡蓝蕾丝内衣与大胸，红袖标醒目，撩裙露黑丝单手探入自抚含泪破防",
     "adult": true,
@@ -22,27 +22,31 @@
     "location": "黄昏体育器材室内跳箱木椅软垫上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "sainan_uniform",
-    "promptProse": "Yui sits against the vaulting horse with her blouse open and skirt raised, cupping her bra-covered breast while touching herself beneath her panties.",
-    "promptTokens": [
-      "school uniform",
-      "open white sailor blouse",
-      "blue lace bra",
+    "nsfwProse": "Her white short-sleeved sailor blouse hangs completely unbuttoned to reveal a translucent pale-blue lace bra and deep cleavage while her teal pleated skirt is raised to her waist above black thigh-high stockings, one hand on her chest and the other slipping beneath her panties.",
+    "nsfwTokens": [
+      "sailor shirt",
+      "open shirt",
+      "blue bra",
       "red armband",
+      "teal skirt",
       "skirt lift",
-      "masturbation",
+      "black thighhighs",
+      "masturbation"
+    ],
+    "outfitId": "sainan_uniform",
+    "promptProse": "In a quiet gym equipment storeroom bathed in warm golden sunset backlighting, Yui leans against a vaulting horse with her teeth catching her lower lip and embarrassed tears glistening on her crimson cheeks.",
+    "promptTokens": [
+      "sitting",
+      "leaning",
+      "hand on chest",
+      "biting lip",
+      "teary eyes",
+      "heavy blush",
       "vaulting horse",
       "storage room",
       "sunset",
-      "teal sailor collar",
-      "teal pleated skirt",
-      "black thighhighs",
-      "sitting",
-      "leaning",
-      "heavy blush",
       "backlighting",
+      "warm lighting",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -64,6 +68,7 @@
     ],
     "timeOfDay": "日落",
     "title": "古手川唯 · 黄昏器材室水手服大敞露淡蓝蕾丝与红袖标破防自抚",
-    "animaCaption": "She sits against the vaulting horse, one hand supporting her bra-covered chest."
+    "animaCaption": "Sitting against the vaulting horse in the backlit sunset gym storeroom with her red disciplinary armband still neat on her sleeve, she wears her white sailor blouse unbuttoned over a sheer pale-blue lace bra and her teal pleated skirt hiked up, cupping her chest while touching herself beneath her panties.",
+    "compositionIntent": "single"
   }
 }

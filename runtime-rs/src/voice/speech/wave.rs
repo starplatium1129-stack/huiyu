@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 pub(super) fn finish(bytes: &mut [u8]) -> Option<(Range<usize>, bool)> {
-    let (data, pcm) = inspect(bytes, false)?;
+    let (data, pcm, _) = inspect(bytes, false)?;
     let length = bytes.len();
     bytes[4..8].copy_from_slice(&((length - 8) as u32).to_le_bytes());
     // Streaming placeholders use the admitted data range, excluding any trailing
@@ -16,7 +16,13 @@ pub(crate) fn is_pcm_wave(bytes: &[u8]) -> bool {
     inspect(bytes, true).is_some()
 }
 
-fn inspect(bytes: &[u8], require_pcm: bool) -> Option<(Range<usize>, bool)> {
+/// Round up to a whole video frame so the final speech sample is retained.
+pub(crate) fn pcm_video_frames(bytes: &[u8], fps: u64) -> Option<u64> {
+    let (data, _, bytes_per_second) = inspect(bytes, true)?;
+    Some((data.len() as u64).checked_mul(fps)?.div_ceil(bytes_per_second as u64))
+}
+
+fn inspect(bytes: &[u8], require_pcm: bool) -> Option<(Range<usize>, bool, usize)> {
     if bytes.len() < 44 || &bytes[..4] != b"RIFF" || &bytes[8..12] != b"WAVE" {
         return None;
     }
@@ -69,13 +75,14 @@ fn inspect(bytes: &[u8], require_pcm: bool) -> Option<(Range<usize>, bool)> {
             format = Some((
                 align,
                 encoding == 1 && channels == 1 && rate == 48000 && bits == 16,
+                byte_rate,
             ));
         } else if tag == b"data" {
-            let (align, pcm) = format?;
+            let (align, pcm, byte_rate) = format?;
             if size == 0 || size % align != 0 || data.is_some() {
                 return None;
             }
-            data = Some((start..end, pcm));
+            data = Some((start..end, pcm, byte_rate));
         }
         offset = end.checked_add(size % 2)?;
     }

@@ -165,6 +165,7 @@ struct JobState {
     metadata: Arc<Value>,
     upstream_id: String,
     progress: Option<f64>,
+    preview_data_url: Option<String>,
     current_node: Option<String>,
     progress_text: String,
     history_urgent: bool,
@@ -234,7 +235,10 @@ impl Service {
         }
         let inner = Arc::new(Inner {
             control: std::sync::RwLock::new(std::sync::Weak::new()),
-            native: native_engine.unwrap_or_default(),
+            native: match native_engine {
+                Some(engine) => engine,
+                None => native::Engine::open(&config.runtime_root)?,
+            },
             native_images: matches!(scope, Scope::Images | Scope::Video)
                 && native_settings.engine == "native",
             remote_images: (matches!(scope, Scope::Images)

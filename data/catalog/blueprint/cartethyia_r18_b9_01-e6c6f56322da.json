@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_01",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1663,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "cartethyia_r18_b9_01",
     "title": "卡提希娅 · 圣都王座殿白银铠甲主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间铠甲半褪露雪白双峰，金色长发飘拂，冰蓝眼眸深情含羞主动下沉",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
-    "camera": "medium shot, first-person view from below",
+    "camera": "from below, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,19 +30,22 @@
       "silver_armor",
       "open_clothes"
     ],
-    "promptProse": "She straddles the viewer's lap with her cuirass open, her gauntleted hands resting against the viewer's chest beneath stained-glass moonlight. Armor straps remain fastened around her thighs.",
+    "promptProse": "Upon a marble dais inside a silent midnight sanctuary, Cartethyia straddles her partner's lap with her silver plate cuirass unclasped wide to bare her breasts while her armored gauntlets and buckled leather thigh straps remain on. Pressing both gauntleted hands to his chest with a shy, devoted blush, she glows beneath cool silver moonlight from stained glass, seen from below.",
     "promptTokens": [
-      "sanctuary",
-      "marble dais",
-      "silver armor",
-      "open clothes",
-      "topless",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
       "straddling",
-      "gauntlets",
-      "moonlight",
-      "from below",
       "hands on another's chest",
+      "blush",
+      "shy",
+      "marble dais",
+      "cathedral",
       "stained glass",
+      "silver moonlight",
+      "from below",
+      "pov",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -51,8 +54,16 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "silver armor",
+      "open armor",
+      "topless",
+      "nipples",
+      "gauntlets",
+      "leather thigh straps",
+      "sex"
+    ],
+    "nsfwProse": "Her silver plate cuirass is unclasped and opened wide to bare her breasts while her silver gauntlets and buckled leather thigh straps remain fastened as she sinks onto her partner.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
@@ -70,6 +81,7 @@
       "halo"
     ],
     "identityProseOverride": "Cartethyia from Wuthering Waves, with loose long blonde hair, blue eyes, pointed ears and a halo.",
-    "animaCaption": "Her gauntleted hands rest against the viewer's chest; thigh straps remain fastened."
+    "animaCaption": "Straddling the viewer's lap on the marble sanctuary dais with her silver cuirass unfastened to bare her chest, she presses her gauntleted hands against their chest with a tender, shy blush while leather straps remain buckled around her thighs. Silver moonlight streams through tall stained glass.",
+    "compositionIntent": "group"
   }
 }

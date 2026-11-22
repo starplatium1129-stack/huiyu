@@ -4,7 +4,8 @@
       <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
         <div class="hero-copy" data-route-arrive>
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
-          <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
+          <h1 class="hero-title">把喜欢的角色，<span class="hero-title-accent">画进你的故事。</span></h1>
+          <p class="hero-summary">从角色和场景出发，把想象中的一幕画下来。</p>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <StudioActionLink id="continueCta" :to="continueLink.to" class="btn-primary" :icon="continueIconName" :label="continueLink.label" />
             <StudioActionLink to="/prompt-builder" class="btn-ghost" icon="image" label="进入绘制台" />
@@ -14,13 +15,6 @@
             <AnimatedSelection />
             <button type="button" :aria-pressed="homeMuse === 'nene'" @click="selectMuse('nene', $event)"><span class="muse-marker muse-marker-nene" aria-hidden="true"></span> 绫地宁宁</button>
             <button type="button" :aria-pressed="homeMuse === 'natsume'" @click="selectMuse('natsume', $event)"><span class="muse-marker muse-marker-natsume" aria-hidden="true"></span> 四季夏目</button>
-          </div>
-          <div class="hero-links">
-          <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
-            :aria-label="`进入${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的动态立绘`">
-            <ArchiveIcon name="spark" /><span>动态立绘</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
-          </RouterLink>
-          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />参考画册</RouterLink>
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :data-portrait-dir="museDirection" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
@@ -43,21 +37,18 @@
               decoding="sync"
             />
           </Transition>
-          <CornerFrame variant="editorial" />
           <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
             <ArchiveIcon name="image" />
             <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的主视觉暂时无法加载。</p></div>
             <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重新加载</button>
           </div>
           <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在加载{{ heroName }}的主视觉…</p>
-          <div class="orbit-label" aria-live="polite"><span>{{ (displayedMuse || homeMuse) === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ (displayedMuse || homeMuse) === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
-        <span class="hero-jp" aria-hidden="true" lang="ja">ときめきの一瞬を、一枚に。</span>
       </div>
     </section>
 
     <!-- 最近创作 -->
-    <section class="container home-section home-resume" v-if="recentWorks.length">
+    <section class="container home-section home-resume" v-if="recentWorks.length || recentWorksLoading || recentWorksError">
       <div class="home-section-head">
         <h2 data-screentone-furniture>最近创作</h2>
         <RouterLink to="/gallery" class="link">查看全部 →</RouterLink>
@@ -108,8 +99,6 @@
 
     <HomeArtJournal :scenes="featuredScenes" :loading="journalLoading" :error="journalError" :can-refresh="canRefreshJournal" @refresh="refreshJournal" />
 
-    <HomeChibiStrip />
-
     <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
         <ArchiveStatePanel v-if="artworkReady.characters && sceneStore.metaFailedFiles.has('popular-directory.json')" compact kind="error" title="角色目录暂时无法读取">
@@ -128,7 +117,6 @@
               v-for="c in popularCharacters.slice(0, 12)"
               :key="c.id"
               class="pop-card-mini"
-              :style="{ '--pop-char-accent': characterParticleTheme(c.id, c.franchise).accent }"
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
               <RuntimeImage
@@ -164,25 +152,9 @@
           <StudioIllustratedCard to="/lora" title="模型" icon="model" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
           <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
         </div>
-        <div v-if="!recentWorks.length" class="home-first-work">
-          <ArchiveStatePanel
-            v-if="recentWorksLoading || recentWorksError"
-            class="recent-empty-state"
-            compact
-            :kind="recentWorksLoading ? 'loading' : 'error'"
-            :title="recentWorksLoading ? '正在读取最近创作…' : '最近创作暂未读取'"
-            :message="recentWorksError"
-          >
-            <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
-          </ArchiveStatePanel>
-          <div v-else class="recent-empty-state home-start-card">
-            <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-            <div class="home-start-copy"><h3>开启你的第一幅作品</h3><p>选场景、定角色，开始属于你的创作。</p></div>
-            <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" />开始绘制</RouterLink>
-          </div>
-        </div>
       </div>
     </section>
+    <HomeChibiStrip />
   </article>
 </template>
 
@@ -219,13 +191,11 @@ function resumeRecent(item: ArtworkRecord) { void router.push(artworkContinueTar
 onDeactivated(() => { recentPreview.value = null })
 const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'))
 import { franchiseLabel } from '@/utils/franchiseLabel'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
 import HomeChibiStrip from '@/components/home/HomeChibiStrip.vue'
 import StudioActionLink from '@/components/ui/StudioActionLink.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import studioOriginal from '@/assets/illustrations/atelier-studio.webp'
@@ -242,7 +212,6 @@ import characterOriginal from '@/assets/illustrations/atelier-character-spot.web
 import paletteOriginal from '@/assets/illustrations/atelier-palette-spot.webp'
 import modelOriginal from '@/assets/illustrations/atelier-model-spot.webp'
 import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
-import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -286,7 +255,6 @@ const characterSpot = useThemeIllustration(characterOriginal, 'character')
 const paletteSpot = useThemeIllustration(paletteOriginal, 'palette')
 const modelSpot = useThemeIllustration(modelOriginal, 'model')
 const collectionSpot = useThemeIllustration(collectionOriginal, 'collection')
-const createSpot = useThemeIllustration(createOriginal, 'draw')
 
 const DRAFT_KEY = 'aics_pb_last_draft'
 
@@ -323,7 +291,7 @@ function entrySrcset(source: string) {
 const creationEntries = computed(() => [
   { id: 'make', label: '01 / MAKE', title: '开始绘制', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
   { id: 'scene', label: '02 / SCENE', title: '灵感场景', action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
-  { id: 'motion', label: '03 / MOTION', title: '故事短片', action: '开始创作', to: '/video-studio', art: motionArt.value },
+  { id: 'motion', label: '03 / MOTION', title: '故事短片', action: '开始创作', to: '/studio-projects?tool=video', art: motionArt.value },
   { id: 'room', label: '04 / ROOM', title: '角色房间', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
   { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', action: '翻开画册', to: '/showcase', art: archiveArt.value },
 ])

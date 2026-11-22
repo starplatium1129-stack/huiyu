@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_morning_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "跪坐床上略向前倾，散发垂落，神情含羞。",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "主控骑乘",
     "characterId": "shinomiya_kaguya",
     "coverageTags": [
@@ -24,20 +24,22 @@
     "location": "四宫家寝室大床",
     "mood": "傲娇主控、不服输的心动",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Her crimson silk dressing gown slips open off her shoulders and her scalloped red lace bra is pushed beneath her bare breasts above delicate garter straps.",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Adult Kaguya kneels forward on the silk bed with her lace bra below her breasts, holding a deliberate pose in the curtain-filtered morning light.",
+    "promptProse": "Seen from a slightly low angle on a silk-sheeted bed washed in curtain-filtered morning light, Kaguya kneels leaning slightly forward with her unbound hair spilling around her deeply flushed cheeks.",
     "promptTokens": [
-      "red lingerie",
-      "bra down",
       "kneeling",
       "leaning forward",
-      "bed",
-      "morning",
-      "from below",
       "hair down",
-      "blush",
-      "morning light",
+      "looking at viewer",
+      "shy",
+      "heavy blush",
+      "bedroom",
+      "bed",
+      "curtains",
+      "morning",
+      "sunlight",
+      "from below",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -54,7 +56,16 @@
     ],
     "timeOfDay": "假日早晨",
     "title": "四宫辉夜 · 假日晨光的主动诱惑",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "red robe",
+      "open robe",
+      "red lingerie",
+      "lace bra",
+      "bra pull",
+      "topless",
+      "nipples",
+      "garter straps"
+    ],
     "identityTokensOverride": [
       "shinomiya_kaguya",
       "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
@@ -65,6 +76,7 @@
       "red eyes"
     ],
     "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners",
-    "animaCaption": "She kneels forward on the silk bed beneath curtain-filtered morning light."
+    "animaCaption": "Kneeling forward across the sunlit silk bed with her dark hair let loose down her shoulders, she holds a shy, focused gaze while her crimson silk robe falls open and her scalloped red lace bra rests lowered below her bare breasts.",
+    "compositionIntent": "single"
   }
 }

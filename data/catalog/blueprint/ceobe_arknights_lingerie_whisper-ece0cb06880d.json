@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_lingerie_whisper",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 3158,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "ceobe_arknights_lingerie_whisper",
     "characterId": "ceobe_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛生活区大厨房储藏柜阴影下",
     "timeOfDay": "午夜",
     "lighting": "冰箱微启时流淌出的幽冷白光，照亮少女嘴角残留的蜂蜜渣与警惕晃动的大耳朵",
-    "camera": "low angle, 逗趣生动的低角度抓拍，突显小猎犬偷吃被抓包时的憨态可掬",
+    "camera": "low angle, medium shot",
     "mood": "憨萌单纯、活泼贪吃、毫无心机的可爱本能",
     "adult": true,
     "sampleRating": "R15",
@@ -42,22 +42,32 @@
     ],
     "promptTokens": [
       "squatting",
+      "holding pastry",
+      "crumbs",
+      "guilty smile",
+      "looking up",
       "kitchen",
       "pantry",
       "wooden barrel",
-      "eating pastry",
-      "crumbs on face",
-      "guilty smile",
-      "refrigerator",
-      "dim lighting",
-      "light beam",
-      "shadows",
-      "low angle"
+      "open refrigerator",
+      "cold white light",
+      "dark room",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ceobe is caught red-handed during a midnight raid on the Rhodes Island kitchen pantry, squatting behind a flour barrel with cheeks stuffed with sweet honey biscuits. A cool beam of white light spilling from the cracked refrigerator illuminates golden crumbs on her lips as she flashes an innocent, guilty grin.",
-    "animaCaption": "Squatting in the dark kitchen pantry with cheeks stuffed with honey biscuits, looking up with a guilty, adorable smile as refrigerator light spills across the floor.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ceobe is caught red-handed during a midnight raid on the Rhodes Island kitchen pantry, squatting barefoot beside a wooden barrel in a sunny-yellow paw-print cotton tank top and grey drawstring sleep shorts. Caught with honey biscuit crumbs around her mouth, she grins sheepishly into the crisp white light spilling from an open refrigerator door.",
+    "animaCaption": "Squatting barefoot behind a pantry barrel in a yellow paw-print cotton tank top and grey drawstring sleep shorts, she hides a half-eaten honey biscuit behind her back with crumbs on her cheek and a guilty grin. Cold white light from the cracked refrigerator cuts across the dark kitchen floor.",
+    "nsfwTokens": [
+      "yellow tank top",
+      "paw print",
+      "grey shorts",
+      "drawstring shorts",
+      "pajamas",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a sunny-yellow ribbed cotton tank top printed with puppy paw motifs and soft charcoal-grey drawstring athletic sleep shorts."
   }
 }

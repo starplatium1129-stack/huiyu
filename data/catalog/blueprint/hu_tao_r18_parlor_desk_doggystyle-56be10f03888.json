@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_parlor_desk_doggystyle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "hu_tao_r18_parlor_desk_doggystyle",
     "title": "胡桃 · 红木书案的墨香与绯红微醺",
@@ -15,7 +15,7 @@
     "action": "端坐红木书案边，单腿轻踩脚踏，一手撑桌一手持毛笔抵唇，歪头笑睨观众",
     "timeOfDay": "深夜",
     "lighting": "书案红烛暖光与窗外竹影月华",
-    "camera": "from front, facing viewer, seated cowboy shot, eye level",
+    "camera": "front view, eye level, cowboy shot",
     "mood": "少女堂主工作之余的俏皮调侃与亲密",
     "sceneTags": [
       "wangsheng_parlor",
@@ -27,32 +27,21 @@
       "bamboo_shadow",
       "facing_viewer"
     ],
-    "promptProse": "Hu Tao perches on the antique redwood desk facing the viewer in delicate crimson lace lingerie, leaning forward to highlight her bare shoulders, delicate collarbone, cleavage, and bare legs; warm parlor lanterns cast a cozy amber glow over her mischievous smile and plum-blossom eyes.",
+    "promptProse": "Hu Tao perches atop a polished redwood desk inside Wangsheng Funeral Parlor at night, wearing crimson-and-black lace lingerie with a butterfly clasp, garter straps, and black stockings. Bracing one hand on the desk edge while touching a calligraphy brush to her lips with a playful blush, she gazes directly at the viewer in warm red candlelight.",
     "promptTokens": [
-      "from front",
-      "facing viewer",
-      "looking directly at viewer",
-      "eye contact",
-      "Hu Tao",
-      "brown twintails",
-      "plum blossom pupils",
-      "crimson lace lingerie",
-      "thin shoulder straps",
-      "plunging neckline",
-      "cleavage",
-      "bare shoulders",
-      "delicate collarbone",
-      "bare midriff",
-      "navel",
-      "bare legs",
-      "sitting on redwood desk",
+      "sitting",
+      "wooden desk",
       "leaning forward",
-      "hands on desk edge",
+      "holding brush",
       "mischievous smile",
       "blush",
-      "wangsheng parlor",
-      "antique scrolls",
+      "looking at viewer",
+      "parlor",
+      "scrolls",
+      "red candles",
       "warm lantern light",
+      "front view",
+      "eye level",
       "cowboy shot"
     ],
     "negativeTokens": [
@@ -65,13 +54,22 @@
     "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "red bra",
+      "black lace",
+      "red panties",
+      "garter straps",
+      "black stockings",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears crimson-and-black lace lingerie fastened with a butterfly clasp, matching red panties, garter straps, and sheer black stockings.",
     "adultArtistHint": "@cacao:79%",
     "outfitId": "spicy_lingerie",
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "Sitting on the parlor desk facing the viewer, her crimson lace lingerie highlights her collarbone, cleavage, and bare legs in lantern light."
+    "animaCaption": "Seated atop the redwood parlor desk facing the viewer in crimson-and-black lace lingerie and black stockings, she props one foot on the footrest and tilts her head with a teasing brush against her lips. Warm red candlelight glows across the antique scrolls behind her.",
+    "compositionIntent": "single"
   }
 }

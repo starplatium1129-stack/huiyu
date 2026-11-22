@@ -4,9 +4,11 @@ import type { ChatProvider } from './chatStorageTypes'
 
 export interface ChatConnectionOptions {
   storage: Pick<ReturnType<typeof useChatStorage>, 'setApiSettings' | 'setModel'>
-  onError: (message: string, kind?: string, timeout?: number) => void
+  onError: (message: string, kind?: string, timeout?: number, code?: string) => void
   chatProvider: Ref<ChatProvider>
   currentModel: Ref<string>
+  chatgptModel?: Ref<string>
+  chatgptClientId?: Ref<string>
   apiBaseUrl: Ref<string>
   hostApiBaseUrl?: Ref<string>
   apiModel: Ref<string>
@@ -14,15 +16,16 @@ export interface ChatConnectionOptions {
   webSearchEnabled: Ref<boolean>
   /** 使用站主托管配置（访客模式）：前端不带 key，服务端代填 */
   useHostConfig: Ref<boolean>
-  /** 启用桌宠本地工具（companionTools）：仅桌面应用 + API 模式生效 */
+  /** 启用桌宠本地工具（companionTools）：仅桌面应用 + API/ChatGPT 模式生效 */
   companionTools: Ref<boolean>
-  /** 模型推理强度（off/low/medium/high，用户可调；仅 API 模式生效） */
+  /** 模型推理强度（off/low/medium/high，用户可调；API/ChatGPT 模式生效） */
   reasoning: Ref<'off' | 'low' | 'medium' | 'high'>
 }
 
 export function createChatTurnConnection(options: ChatConnectionOptions) {
   function captureConnection() {
     return { provider: options.chatProvider.value, currentModel: options.currentModel.value,
+      chatgptModel: options.chatgptModel?.value || '', chatgptClientId: options.chatgptClientId?.value || '',
       baseUrl: options.apiBaseUrl.value, apiModel: options.apiModel.value, apiKey: options.apiKey.value,
       hostConfig: options.useHostConfig.value, webSearch: options.webSearchEnabled.value,
       tools: options.companionTools.value, reasoning: options.reasoning.value, hostBaseUrl: options.hostApiBaseUrl?.value || '' }
@@ -35,7 +38,7 @@ export function createChatTurnConnection(options: ChatConnectionOptions) {
 
   // A stream may canonicalize its own model, but never a newer connection draft.
   function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean, connection: TurnConnection) {
-    if (connection.provider === 'muse') return
+    if (connection.provider === 'muse' || connection.provider === 'chatgpt') return
     if (connection.provider === 'api' && !hostMode && !useVision && String(rawModel) === connection.apiModel) return
     const ownsDraft = connectionMatches(connection)
     if (connection.provider === 'api' && !hostMode && !useVision) {

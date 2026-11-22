@@ -16,6 +16,7 @@ description: 编写、改写或审查 AI-CG-Studio 视频提示词、场景预�
 ## 权威参考导航
 
 - **完整视频规范与对照范例**：[视频提示词规范](../../../docs/guides/video/video-prompt-standard.md)
+- **创作台积木库与编译器**：[prompt-library.json](../../../runtime-rs/src/video/prompt-library.json) · [prompt_compiler.rs](../../../runtime-rs/src/video/prompt_compiler.rs)
 - **MiniMax H3 详细格式**（三段式、时间戳与 Ref2VA）：本机见 `.agents/skills/h3-prompt-writing/SKILL.md`
 - **全分级与 NSFW 写作边界**：[NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)
 - **原生模型能力清单**：[原生视频适配清单](../../../tools/inference/adapter-models.json)

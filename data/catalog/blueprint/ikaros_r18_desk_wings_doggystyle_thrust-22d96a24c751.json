@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_desk_wings_doggystyle_thrust",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1219,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "坐在榻榻米胸甲解开大露大胸，羽翼泛粉光轻颤共振，单手护胸另一手在裙下自抚娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, seated tatami perspective, focus on blushing dazed face, vibrating pink wings, and heaving chest",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "ikaros",
     "coverageTags": [
@@ -22,24 +22,31 @@
     "location": "榻榻米和室内软垫正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "white_pink_battle_dress",
-    "promptProse": "Ikaros sits on the tatami with her chest armor unlatched, one hand on her chest and the other beneath her skirt as her wings glow faint pink. Soft warm yellow wall light mingles with the pink glow around her.",
-    "promptTokens": [
-      "open dress",
+    "nsfwProse": "The metal front clasp of her white-and-pink combat dress is unfastened and parted wide, exposing her full breasts as one hand cups her chest and the other slips beneath her short skirt.",
+    "nsfwTokens": [
+      "white dress",
+      "pink dress",
+      "open clothes",
       "topless",
-      "collar",
-      "broken chain",
+      "nipples",
+      "breast hold",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "white_pink_battle_dress",
+    "promptProse": "In a dim tatami room at night, Ikaros sits on a floor cushion with a flushed, dazed expression and slightly parted lips as soft pink core glow mingles with warm yellow lamplight across her vibrating feathers.",
+    "promptTokens": [
       "sitting",
-      "female masturbation",
-      "touching own breasts",
-      "wings",
       "tatami",
-      "night",
+      "cushion",
+      "hand on chest",
+      "heavy blush",
+      "teary eyes",
+      "tongue out",
+      "parted lips",
       "pink lighting",
-      "white and pink dress",
       "warm lighting",
+      "night",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -63,6 +70,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "伊卡洛斯 · 动力炉过热战斗裙胸甲半敞与粉色羽翼轻颤共振自抚",
-    "animaCaption": "Her chest armor remains unlatched as faint pink light glows through her wings."
+    "animaCaption": "Seated on a tatami floor cushion with her white-and-pink battle dress chestplate unlatched to bare her breasts, she cups her warm chest with one hand and reaches beneath her skirt with the other as pink heat light glows across her trembling wings.",
+    "compositionIntent": "single"
   }
 }

@@ -25,6 +25,7 @@ export type GlobalSearchResult = {
 const PAGES: SearchItem[] = [
   { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绘遇' },
   { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
+  { id: 'studio-projects', label: '创作项目 · 素材与关键帧', icon: 'folder', path: '/studio-projects', keywords: '资产 素材 角色 差分 首尾帧 分镜 时间线 项目 关键帧' },
   { id: 'video', label: '故事短片', icon: 'play', path: '/video-studio', keywords: 'AI 视频创作 视频工作台 视频 动画 本地模型 wan comfyui' },
   { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
   { id: 'popular-scenes', label: '角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门角色场景 热门 角色 蓝图 雷电将军 芙莉莲' },
@@ -46,7 +47,7 @@ const PAGES: SearchItem[] = [
 
 const ACTIONS: SearchItem[] = [
   { id: 'draw', label: '开始一幅新的绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 开始' },
-  { id: 'video-create', label: '开始一段 AI 视频', icon: 'play', path: '/video-studio', keywords: '视频 动画 开始' },
+  { id: 'video-create', label: '开始一段分镜视频', icon: 'play', path: '/studio-projects?tool=video', keywords: '视频 动画 开始 首尾帧 分镜 Wan' },
   { id: 'browse', label: '逛一逛灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 逛' },
   { id: 'popular', label: '浏览热门角色蓝图', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图' },
   { id: 'works', label: '打开我的作品', icon: 'gallery', path: '/gallery', keywords: '作品' },

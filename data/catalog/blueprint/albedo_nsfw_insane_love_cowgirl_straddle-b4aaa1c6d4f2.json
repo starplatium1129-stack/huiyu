@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_insane_love_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "albedo_nsfw_insane_love_cowgirl_straddle",
     "title": "雅儿贝德 · 狂乱独占的魅魔女皇骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐在视角腰间狂热起伏主导骑乘，双翼展开，双手撑在胸膛，眼神狂乱痴情",
     "timeOfDay": "深夜",
     "lighting": "摇曳的魔导火光照亮汗湿的白皙胴体",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "from below, pov, cowboy shot",
     "mood": "病娇狂热",
     "sceneTags": [
       "bedroom",
@@ -30,19 +30,21 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer's waist on silk bedding, both hands braced on the viewer's chest and wings spread as she leans forward. Flickering magical firelight illuminates them.",
+    "promptProse": "Seen from a low first-person angle on silk bedding, Albedo straddles her partner's lap with both palms pressed to his chest. Her black feathered wings open wide to either side as flickering firelight traces her leaning silhouette and flushed face.",
     "promptTokens": [
-      "bedroom",
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "sweat",
-      "blush",
-      "from below",
-      "cowgirl position",
-      "hands on viewer chest",
       "leaning forward",
+      "hands on chest",
       "spread wings",
-      "firelight"
+      "bedroom",
+      "silk sheets",
+      "firelight",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,11 +59,17 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
+    "nsfwProse": "Completely nude and damp with sweat, she rides in a cowgirl position with her bare chest pressed forward and her lips parted in an intense, possessive gaze.",
     "nsfwTokens": [
+      "nude",
+      "sex",
+      "cowgirl position",
       "nipples",
-      "pussy"
+      "sweat",
+      "heavy blush",
+      "parted lips"
     ],
-    "animaCaption": "Her hands brace against the viewer's chest as she leans forward."
+    "animaCaption": "Nude and glistening with sweat, she straddles her partner's waist with both hands braced against his chest and her dark wings spread wide as she leans down in the flickering firelight.",
+    "compositionIntent": "group"
   }
 }

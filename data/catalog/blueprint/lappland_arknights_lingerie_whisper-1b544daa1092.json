@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3192,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "lappland_arknights_lingerie_whisper",
     "characterId": "lappland_arknights",
@@ -14,7 +14,7 @@
     "location": "叙拉古废弃安全屋屋顶露台，雨后湿漉的地面映出远处街道的昏红灯火",
     "timeOfDay": "阴雨初歇的午夜",
     "lighting": "雨雾弥漫中远方猩红霓虹灯的背光散射，在白发与白皙肌肤上勾勒出冷冽剪影",
-    "camera": "three quarter view, medium shot, 倾斜侧面中景，雨滴从发梢滑落与远方街灯同框",
+    "camera": "three quarter view, medium shot",
     "mood": "危险、野性、不羁却又带着宿命般的致命吸引力",
     "adult": true,
     "sampleRating": "R15",
@@ -40,22 +40,38 @@
       "three_quarter_view"
     ],
     "promptTokens": [
-      "leaning on railing",
-      "rooftop",
-      "puddle",
-      "wet ground",
-      "rain",
-      "night sky",
-      "neon lights",
-      "city lights",
+      "standing",
+      "leaning",
+      "railing",
+      "touching hair",
       "smirk",
-      "medium shot",
-      "three quarter view"
+      "looking at viewer",
+      "rooftop",
+      "rain",
+      "puddle",
+      "red light",
+      "neon lights",
+      "night",
+      "three quarter view",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Lappland leans lazily against a weathered concrete rooftop ledge, rain droplets sliding from disheveled silver hair, a wild teasing smirk upon her pale face. Distant neon streetlights and misty rain reflect across the wet rooftop under the dark Siracusan sky.",
-    "animaCaption": "Leaning against the rooftop ledge in the Siracusan rain, she smirks amidst red neon reflections and wet puddles.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Leaning lazily against the concrete rooftop parapet of an abandoned Siracusan safehouse after midnight rain, Lappland wears a distressed charcoal silk single-strap slip dress cinched with a narrow black leather belt. Running one hand carelessly through her rain-damp silver hair while her wolf tail sways behind her, she turns a wild, mocking smirk toward the viewer as crimson neon city lights shimmer across wet puddles on the rooftop.",
+    "animaCaption": "Leaning against the rain-slicked rooftop railing in her single-strap charcoal silk slip dress and narrow leather belt, Lappland combs damp hair back with a wild, teasing smirk. Misty crimson neon streetlights reflect off puddles across the dark Siracusan terrace.",
+    "nsfwTokens": [
+      "black dress",
+      "slip dress",
+      "silk",
+      "asymmetrical clothes",
+      "bare shoulders",
+      "side slit",
+      "belt",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a charcoal-black asymmetrical single-strap raw-edge silk slip dress cinched with a narrow black leather belt and high sheer side slits over her bare shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

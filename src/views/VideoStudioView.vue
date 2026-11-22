@@ -4,8 +4,15 @@
       <div>
         <div class="page-kicker" data-screentone-furniture>画室 / 影像创作</div>
         <h1 class="page-title">故事短片</h1>
+        <div class="video-project-entry">
+          <RouterLink to="/studio-projects?tool=video" class="btn btn-primary">
+            <ArchiveIcon name="clap" />进入分镜首尾帧
+          </RouterLink>
+          <span>用项目里的角色和场景定好首尾画面，再逐镜生成视频。</span>
+        </div>
       </div>
       <div class="video-header-actions">
+        <RouterLink class="btn btn-ghost btn-sm" to="/studio-projects"><ArchiveIcon name="folder" />关键帧工坊</RouterLink>
         <span class="video-connection" :data-state="archiveState" role="status">{{ archiveStatus }}</span>
         <button
           class="btn btn-ghost btn-sm video-env-trigger"
@@ -65,10 +72,6 @@
             <p v-else-if="activeModel.missing.length" class="video-install-note">
               此模型暂不支持生成，可选择其他模型。
             </p>
-            <div v-if="!nativeVideo && activeModel.id === 'minimax-h3'" class="video-route-note">
-              <strong>推荐用法</strong>
-              <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
-            </div>
           </template>
           <div class="video-env-links">
             <RouterLink v-if="status && !nativeVideo && !status.online" class="btn btn-ghost btn-sm" :to="comfyControlTarget">打开服务与连接</RouterLink>
@@ -247,9 +250,9 @@
                 </span>
               </ToggleSwitch>
               <div v-if="nativeVideo" class="field">
-                <label for="video-attention" class="field-label">{{ activeModel?.turboSteps ? 'H3 生成加速' : '注意力加速' }}</label>
+                <label for="video-attention" class="field-label">{{ activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速' }}</label>
                 <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '社区融合权重内置 Mystic 动作风格，画面和运镜会随之变化。' : videoAttention === 'h3-sla' ? '使用专门训练的四步权重，保留音轨和首尾帧条件。' : 'SageAttention 和 FlashAttention 2 需要兼容的显卡及本地内核。' }}</small>
-                <StudioSelect id="video-attention" v-model="videoAttention" :label="activeModel?.turboSteps ? 'H3 生成加速' : '注意力加速'"
+                <StudioSelect id="video-attention" v-model="videoAttention" :label="activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速'"
                   aria-describedby="video-attention-hint" :options="attentionOptions" />
               </div>
               <ToggleSwitch v-if="nativeVideo && activeModel?.h3LightVae" v-model="h3LightVae" label="轻量视频解码">

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_01",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_01",
     "title": "美杜莎 Rider · 鲜血神殿王座黑色乳胶紧身衣主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐石座乳胶衣深V大开，摘眼罩露魔眼，极长紫发垂落主动起伏",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "cowboy shot, first-person view from the seated companion",
+    "camera": "from below, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,23 +30,23 @@
       "highleg_bodysuit",
       "deep_v"
     ],
-    "promptProse": "From the seated companion's viewpoint, Medusa straddles their lap on the stone throne, bodysuit unzipped and blindfold removed; torchlight catches her mystic eyes. Low flickering candlelight pools warmly on the bedside rug, casting long sensual shadows that trace the curve of her waist and cascading lilac hair.",
+    "promptProse": "From the seated viewer's perspective atop a dark stone throne in the depths of the temple at night, Medusa straddles their lap with her blindfold removed and her high-leg black latex bodysuit unzipped wide to expose her breasts. Flickering wall torches gleam across the taut latex and illuminate the quiet intensity of her unshielded mystic eyes.",
     "promptTokens": [
       "1girl",
-      "black latex bodysuit",
-      "open clothes",
-      "bare breasts",
-      "blindfold removed",
-      "mystic eyes",
-      "straddling",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "throne",
+      "straddling",
+      "no blindfold",
+      "mystic eyes",
+      "stone throne",
+      "temple",
       "torches",
-      "cowboy shot",
+      "warm firelight",
+      "night",
+      "from below",
       "pov",
-      "candlelight",
-      "dim lighting",
-      "warm lighting"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,15 +54,23 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black latex bodysuit",
+      "highleg",
+      "unzipped",
+      "open clothes",
+      "topless",
+      "nipples",
+      "sex"
+    ],
+    "nsfwProse": "Her glossy black high-leg latex bodysuit is unzipped deep down the front to bare her breasts as she rides astride her seated partner with her blindfold removed.",
     "outfitId": "black_latex_bodysuit",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "She straddles her seated companion on the stone throne with her blindfold removed. Low flickering candlelight pools warmly on the bedside rug, casting long sensual shadows that trace the curve of her waist and cascading lilac hair."
+    "compositionIntent": "group",
+    "animaCaption": "Straddling the viewer's lap on the stone throne with her blindfold removed and glossy black latex bodysuit unzipped wide to bare her chest, she lowers herself deliberately while fixing them with glowing mystic eyes. Flickering torchlight casts warm reflections over the dark latex and stone."
   }
 }

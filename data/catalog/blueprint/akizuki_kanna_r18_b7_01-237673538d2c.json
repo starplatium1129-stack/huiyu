@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_01",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1162,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:41:43.225434+00:00",
   "data": {
     "action": "跨坐吧台死神女仆装半敞，黑羽翼微展粉色眼眸傲娇挑逗，小腰主动起伏",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "medium shot, first-person view from below",
+    "camera": "from below, pov, medium shot",
     "category": "主控骑乘",
     "characterId": "akizuki_kanna",
     "coverageTags": [
@@ -24,27 +24,34 @@
     "location": "Cafe Stella吧台·打烊熄灯",
     "mood": "主动亲密与失神",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "black_maid_uniform",
-    "promptProse": "She straddles the viewer on the closed cafe counter, both hands braced against the viewer's chest. The pendant lamps light her opened uniform and the wings spread behind her.",
-    "promptTokens": [
-      "cafe",
-      "counter",
-      "black maid dress",
+    "nsfwProse": "Her black maid dress and white ruffled apron are opened and gathered down at her waist above gartered black thigh-high stockings, baring her breasts as she moves in a cowgirl position.",
+    "nsfwTokens": [
+      "maid",
+      "black dress",
       "white apron",
       "open clothes",
       "topless",
-      "black wings",
-      "large red hair ribbon",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
+    "outfitId": "black_maid_uniform",
+    "promptProse": "Seen from a low first-person angle at the closed cafe counter lit by warm hanging pendant lamps, Kanna sits astride her partner with both palms planted on his chest and her dark wings unfurled behind her, looking down with a teasing, flushed smile.",
+    "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "blush",
-      "night",
-      "from below",
-      "hands on another's chest",
+      "hands on chest",
+      "black wings",
       "spread wings",
+      "looking down",
+      "cafe",
+      "counter",
       "pendant lamp",
-      "warm lighting"
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -62,6 +69,7 @@
     ],
     "timeOfDay": "night",
     "title": "明月栞那 · 咖啡馆打烊吧台的女仆装主控跨坐",
-    "animaCaption": "Both hands brace against the viewer's chest on the closed cafe counter."
+    "animaCaption": "Straddling her partner's waist atop the closed cafe counter with her black shinigami wings spread behind her under warm pendant lamps, she braces both palms on his chest as her black maid dress and ruffled apron hang parted off her bare breasts.",
+    "compositionIntent": "group"
   }
 }

@@ -3,22 +3,22 @@ version: "alpha"
 name: "绘遇 · HUIYU"
 description: "绘遇 HUIYU：温暖、细腻的角色创作与故事画室。让想象成形，让故事相遇。"
 colors:
-  primary: "#F2A8BE"
-  on-primary: "#111923"
+  primary: "#EBA4B8"
+  on-primary: "#1B181A"
   primary-hover: "#FFC4D8"
-  secondary: "#B784F6"
-  neutral: "#151C24"
-  neutral-deep: "#10161D"
-  surface: "#1E2935"
-  surface-elevated: "#25313D"
-  text-primary: "#EDF3FA"
-  text-secondary: "#BDCBD8"
+  secondary: "#C59DF8"
+  neutral: "#0E1014"
+  neutral-deep: "#0A0B0E"
+  surface: "#15181F"
+  surface-elevated: "#1D212B"
+  text-primary: "#F4EFE9"
+  text-secondary: "#B3ADA6"
   success: "#4ADE80"
   warning: "#FBBF24"
   danger: "#F87171"
   info: "#60A5FA"
   # 此元数据表描述画室深色基线；浅色覆盖见 src/assets/css/light-theme.css。
-  # 蓝灰夜幕作为深色结构底色，樱粉与角色专属色承载强调。
+  # 暖墨画廊与中性绘制舞台共用暗底，樱粉与角色专属色承载强调。
   # 应用支持深浅主题；两种主题都需要视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
@@ -26,9 +26,9 @@ colors:
   #   surface-elevated→--bg-elevated, disabled-text→--text-disabled,
   #   nene→--nene-violet, natsume→--natsume-amber。
   # disabled-text 为禁用态专用：不得用 opacity 压字（压后低于 AA 4.5:1）。
-  disabled-text: "#A6B3C0"
-  nene: "#B784F6"
-  natsume: "#FBB040"
+  disabled-text: "#9A948E"
+  nene: "#C59DF8"
+  natsume: "#E8B460"
 typography:
   display:
     fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif"
@@ -68,7 +68,7 @@ spacing:
 rounded:
   # 与 design-system.css --r-* 对齐：紧凑控件与较柔和的面板边界。
   sm: "8px"
-  md: "10px"
+  md: "8px"
   lg: "16px"
   xl: "20px"
   pill: "999px"
@@ -162,17 +162,21 @@ Anime and visual-novel atmosphere frame the tool:
 
 ## Colors
 
-Dark is default (blue-gray night tones); light uses warm paper and readable rose-ink accents. Both preserve identical hierarchy, layout, and character identity.
+Dark uses warm ink for gallery pages and a neutral mat for creation tools. Light uses washi paper and readable rose-ink accents. Both preserve hierarchy and character identity.
 
 | Role / CSS token | Dark | Light |
 | --- | --- | --- |
-| Workspace / `--bg-base` | `#151C24` | `#F5EFE7` |
-| Panel / `--bg-surface` | `#1E2935` | `#FFFCF6` |
-| Raised control / `--bg-elevated` | `#25313D` | `#EEE7E0` |
-| Main text / `--text-primary` | `#EDF3FA` | `#29242A` |
-| Supporting text / `--text-secondary` | `#BDCBD8` | `#585059` |
-| Disabled text / `--text-disabled` | `#A6B3C0` | `#6D6069` |
-| Primary action / `--accent` | `#F2A8BE` | `#9B3E61` |
+| Canvas / `--bg-deep` | `#0A0B0E` | `#EAE4DA` |
+| Workspace / `--bg-base` | `#0E1014` | `#F6F3EC` |
+| Panel / `--bg-surface` | `#15181F` | `#FDFBF7` |
+| Raised control / `--bg-elevated` | `#1D212B` | `#F0EBE2` |
+| Main text / `--text-primary` | `#F4EFE9` | `#1B181A` |
+| Supporting text / `--text-secondary` | `#B3ADA6` | `#5F585B` |
+| Muted text / `--text-muted` | `#948E88` | `#6A6266` |
+| Disabled text / `--text-disabled` | `#9A948E` | `#6A6266` |
+| Primary action / `--accent` | `#EBA4B8` | `#9E3D5E` |
+| Nene / `--nene-violet` | `#C59DF8` | `#6E439C` |
+| Natsume / `--natsume-amber` | `#E8B460` | `#8D5818` |
 
 - **Theme style (`data-theme-style`):** Independent of dark/light mode. Default is 「绘遇画室」; 「泰拉瑞亚」 uses pixel woodgrain, paper panels, forest scenery, and an `8.5rem` (`136px`) wood sidebar at `>= 1440 CSS px` (supporting Up/Down keys, collapsing `< 1000px`). Pixel mode uses opaque surfaces; theme illustrations switch via `useThemeIllustration` without altering artwork or ratings. Standalone companion remains transparent; system forced-colors take priority.
 - **Accent & contrast rules:**
@@ -191,6 +195,7 @@ Dark is default (blue-gray night tones); light uses warm paper and readable rose
 
 - **Scale & containers:** `4/8/12/16/24/32/48/64px` spacing; `1200px` max width for standard pages; full viewport width (min `16px` outer gutter) for dense creative workspaces. Use `40px` standard / `32px` compact controls (`--control-height` / `--control-height-sm`) and `44×44 CSS px` minimum targets on coarse pointers.
 - **Breakpoints:** Shared chrome uses `1000 / 768 / 480px`. Local content-driven thresholds: director uses `1440 / 1024 / 900px`; character directory uses `900 / 540px`. Verify both sides of every threshold in both themes.
+- **Desktop navigation** combines the window controls and primary navigation in one persistent row. Its height is 52px, 58px at 2200 CSS px, and 68px at 3000 CSS px. Empty space acts as a drag region. The pixel theme retains its own sidebar.
 - **Director hierarchy & workspace surfaces:**
   1. Canvas/result stage is largest and remains visible pre/post generation (`--bg-surface` empty canvas, `--bg-base` working/result, `--art-stage`/`--on-art-*` strictly for image mats/overlays). Display SFW art in full original proportion.
   2. Story/scene rail starts; director parameters sit secondary with progressive disclosure; prompt internals/diagnostics remain utilities.
@@ -223,7 +228,7 @@ Keep simulated DPR/viewport layout checks separate from real hardware sharpness 
 
 ## Shapes
 
-- **Radii & concentricity:** `8–10px` (`--r-md`) for inputs/compact buttons, `14–20px` (`--r-xl`) for panels and browse toolbars (`fluid-workspaces.css`), up to `32px` optical radius for main viewer stages, and `pill` strictly for filters, small badges, and segments. Keep concentric inner radii `~ max(0, outer - inset)`.
+- **Radii & concentricity** use 8px for controls, 14–16px for gallery cards, and 22px for the main stage. Use pill geometry for filters, small badges, and segments. Keep inner radii concentric with the outer edge.
 - **Cursors & scrollbars:** Use system cursors (`native-controls.css` adds smooth SVG `zoom-in`/`grab`/`grabbing` with forced-colors fallbacks). `studio-scrollbars.css` defines themed rounded scrollbars (`12px` drag target on Chromium/WebView2).
 
 ## Component and dependency policy

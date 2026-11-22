@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_two_tone",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "镜头前比偶像手势",
-    "camera": "medium shot",
+    "camera": "front view, medium shot",
     "category": "舞台演出",
     "characterId": "hoshino_ai",
     "coverageTags": [],
@@ -18,16 +18,21 @@
     "mood": "元气满格",
     "negativeTokens": [],
     "outfitId": "stage_two_tone",
-    "promptProse": "Ai faces the music-program camera with a wink and peace sign, framed by the studio's scenic panels.",
+    "promptProse": "On the brightly lit set of a daytime television music show, Hoshino Ai strikes a lively idol pose in her white-and-pink two-tone stage dress and brown belt facing the broadcast lens directly. Flashing an exuberant wink and raising a crisp peace sign near her cheek, she radiates effortless star energy in front of colorful geometric studio backdrops. Even, crisp broadcast studio lights sparkle across her smile and glossy hair ornament.",
     "promptTokens": [
-      "wink",
+      "standing",
       "v",
+      "wink",
+      "open mouth",
+      "smile",
       "looking at viewer",
-      "television studio",
-      "medium shot",
-      "studio panels",
-      "sunlight",
-      "soft_lighting"
+      "studio",
+      "stage",
+      "stage lights",
+      "bright lighting",
+      "indoors",
+      "front view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +48,7 @@
     "title": "星野爱 · 电视录制",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She faces the music-program camera with the peace sign raised."
+    "animaCaption": "Facing the music-show camera directly in her white-and-pink two-tone stage dress, Ai flashes an energetic wink and raises a crisp peace sign beside her cheek. Bright studio lights and colorful scenic panels frame her lively idol pose.",
+    "compositionIntent": "single"
   }
 }

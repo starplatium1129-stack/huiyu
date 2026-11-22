@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazami_kazuki_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3297,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kazami_kazuki_lingerie_whisper",
     "characterId": "kazami_kazuki",
@@ -14,7 +14,7 @@
     "location": "私人书斋躺椅畔，百叶窗透入冷色月光与黑白棋盘相伴",
     "timeOfDay": "深宵静谧时刻",
     "lighting": "银白冷月穿过百叶窗格投下黑白相间的条纹光影，轮廓光勾勒修长身段",
-    "camera": "medium shot, high angle, 中景斜俯拍，聚焦下颌优美线条与指间黑曜石棋子",
+    "camera": "from above, medium shot",
     "mood": "清冷知性，沉着神秘而充满支配感",
     "adult": true,
     "sampleRating": "R15",
@@ -40,22 +40,33 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
       "reclining",
       "chaise lounge",
       "holding chess piece",
       "chessboard",
-      "study room",
+      "looking at viewer",
+      "calm",
+      "study",
       "window blinds",
       "moonlight",
-      "shadow play",
-      "dim lighting"
+      "shadow",
+      "night",
+      "from above",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kazami Kazuki reclines on a dark velvet chaise lounge in her private study, holding an obsidian chess piece between slender fingers. Cold moonlight filters through venetian blinds, casting sharp grid shadows across the chessboard beside her.",
-    "animaCaption": "Reclining on a velvet chaise lounge in a moonlit study, holding a chess piece with a calm, intellectual gaze beside the board.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from a high oblique angle inside a quiet private study, Kazuki lounges across a dark velvet chaise holding an obsidian chess piece as cold moonlight through venetian blinds casts crisp striped shadows over the chessboard.",
+    "animaCaption": "Reclining on a dark velvet chaise lounge beside a moonlit chessboard barred with venetian-blind shadows, she balances an obsidian chess piece between slender fingers wearing a minimalist charcoal-grey silk camisole slip with a sheer mesh chest panel.",
+    "nsfwTokens": [
+      "grey camisole",
+      "silk slip",
+      "sheer mesh",
+      "see-through",
+      "spaghetti straps",
+      "bare shoulders",
+      "collarbone"
+    ],
+    "nsfwProse": "She wears an understated charcoal-grey silk slip nightdress with ultra-thin spaghetti straps, a silver clasp, and geometric sheer-mesh chest cutouts over her bare collarbones.",
+    "compositionIntent": "single"
   }
 }

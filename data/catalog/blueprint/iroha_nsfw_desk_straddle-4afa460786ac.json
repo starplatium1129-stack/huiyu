@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_desk_straddle",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 365,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "iroha_nsfw_desk_straddle",
     "title": "一色彩羽 · 成年同事会室桌上的小恶魔诱惑",
@@ -15,7 +15,7 @@
     "action": "跨坐在画外同行者腿上，靠近会议桌边缘，一根手指轻抵对方唇边，露出小恶魔般的浅笑。",
     "timeOfDay": "黄昏入夜",
     "lighting": "窗边最后的琥珀色暮光，桌下与办公室深处渐暗",
-    "camera": "cowboy shot, from below",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "indoors",
@@ -27,30 +27,23 @@
       "smile",
       "cowboy_shot"
     ],
-    "promptProse": "Adult Iroha straddles the offscreen viewer's lap at the conference-table edge and touches one finger to their lips, smiling as the last amber light fades across the dark office.",
-    "nsfwProse": "",
+    "promptProse": "Behind the locked door of the council office at dusk, Iroha perches at the edge of the conference table and straddles her partner's lap with her navy blazer opened over her bare breasts and her pleated skirt hiked high above her black thighhighs. Leaning down with a mischievous, flushed smirk, she presses one slender index finger lightly against his lips as dying amber sunset light fades across the dark office.",
+    "nsfwProse": "Her navy blazer hangs open over her bare breasts while her pleated school skirt is hiked up to her hips above sheer black thighhighs as she straddles her partner's lap beside the conference table.",
     "promptTokens": [
-      "cowboy shot",
-      "indoors",
-      "dusk",
-      "sunset",
-      "dim lighting",
-      "sitting",
-      "smile",
-      "adult",
-      "office",
-      "conference table",
-      "navy blazer",
-      "open clothes",
-      "topless",
-      "pleated plaid skirt",
-      "skirt lift",
-      "black pantyhose",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
       "leaning forward",
+      "finger to another's lips",
       "smirk",
+      "blush",
+      "conference table",
+      "office",
+      "sunset",
       "from below",
-      "finger to another's lips"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -63,7 +56,18 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
-    "animaCaption": "She straddles the offscreen viewer's lap, one finger touching their lips by the table edge."
+    "nsfwTokens": [
+      "navy blazer",
+      "open jacket",
+      "topless",
+      "bare breasts",
+      "pleated skirt",
+      "skirt lift",
+      "black thighhighs",
+      "cowgirl position",
+      "sex"
+    ],
+    "animaCaption": "Straddling her partner's lap by the locked office conference table with her navy blazer open over her bare breasts and pleated skirt lifted above black thighhighs, Iroha leans close and presses one finger to his lips with a teasing smirk. Fading amber dusk light edges the quiet room.",
+    "compositionIntent": "group"
   }
 }

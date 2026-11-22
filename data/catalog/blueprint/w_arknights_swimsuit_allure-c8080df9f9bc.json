@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3133,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "w_arknights_swimsuit_allure",
     "characterId": "w_arknights",
@@ -14,7 +14,7 @@
     "location": "散落着生锈水雷外壳与废弃浮标的荒凉浅滩",
     "timeOfDay": "正午",
     "lighting": "刺目正午强光，高对比度色彩与金属锈迹质感",
-    "camera": "充满冲击力的极低广角仰视，水花四溅，人物极具狂气",
+    "camera": "low angle, cowboy shot",
     "mood": "狂气疯批、恶作剧坏笑、佣兵式肆意妄为",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,33 @@
       "chaotic_mercenary"
     ],
     "promptTokens": [
-      "sarkaz horns",
-      "graffiti rashguard",
-      "water cannon",
-      "sitting on rusty buoy",
+      "sitting",
+      "rusty buoy",
+      "holding water gun",
+      "over shoulder",
       "crazy smile",
-      "red eyes",
-      "splash",
-      "soft lighting"
+      "open mouth",
+      "looking at viewer",
+      "water splash",
+      "shallow water",
+      "ocean",
+      "noon",
+      "harsh sunlight",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "W perched boldly atop a massive, rusted naval sea buoy in shallow sun-drenched waters. She rocks a rebellious cropped red-and-black zip-up rashguard covered in anarchic street tags, partially unzipped over micro string bottoms. Hefting an oversized pressurized water bazooka over one shoulder, she bares a wicked, razor-sharp mercenary grin while her demonic horns gleam in the blazing sun.",
-    "animaCaption": "W perched boldly atop a massive, rusted naval sea buoy in shallow sun-drenched waters. She rocks a rebellious cropped red-and-black zip-up rashguard covered in anarchic street tags, partially unzipped over micro string bottoms.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "W perches recklessly atop a massive rusted sea buoy in sun-drenched shallows, wearing a carbon-black cropped zip-up rashguard splashed with crimson graffiti and worn partially unzipped over red tie-side micro bikini bottoms. Shouldering an oversized pressurized water cannon with a wicked, razor-sharp grin, she leans toward the camera amid blazing midday sun and flying water spray.",
+    "animaCaption": "Perched astride a rusted naval buoy in shallow surf in a partly unzipped black-and-crimson graffiti cropped rashguard and red micro bikini bottoms, she hoists a bulky water cannon onto one shoulder and flashes a reckless grin. Blazing midday sunlight explodes across flying sea spray.",
+    "nsfwTokens": [
+      "cropped rashguard",
+      "black and red jacket",
+      "unzipped",
+      "red bikini bottom",
+      "side-tie bikini bottom",
+      "bare midriff",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a carbon-black cropped zip-up rashguard sprayed with crimson graffiti, worn partly unzipped over red tie-side micro bikini bottoms."
   }
 }

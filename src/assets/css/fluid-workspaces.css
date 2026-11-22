@@ -8,28 +8,31 @@
   --workspace-lift: var(--workspace-inset), 0 10px 28px -10px color-mix(in srgb, var(--ink-base) 28%, transparent);
 }
 
-/* Browse: shared rounded surfaces; page styles own layout, not the material. */
-html .gallery-page .gallery-toolbar,
-html .browse-toolbar {
+/* Browse controls share a reading surface across the galleries. */
+html:not([data-theme-style='terraria']) :is(.gallery-page .gallery-toolbar,.browse-toolbar) {
   min-width: 0;
-  gap: var(--s-3) var(--s-4);
-  @apply tw:p-s-3;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-xl;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  gap:var(--s-2) var(--s-3);
+  padding:var(--s-2) 0;
+  border:0;
+  border-bottom:1px solid var(--border-soft);
+  border-radius:0;
+  background:var(--bg-base);
+  box-shadow:none;
+}
+@media (min-width:1001px) and (min-height:38rem) {
+  html:not([data-theme-style='terraria']) :is(.gallery-page .gallery-toolbar,.browse-toolbar) {
+    position:sticky;
+    top:var(--app-navigation-visible-height,0px);
+    z-index:var(--z-sticky);
+  }
 }
 /* Fields and segments own their painted surfaces in their shared components. */
 html .scene-discovery .scene-toolbar::before { @apply tw:hidden; }
 /* 2026-09-22 去原生化：作品集/样张类型筛选已换成 StudioSelect，
    原生的下拉外观（内边距、appearance、双线性渐变伪箭头）整块删除；
    边框、底色与悬停强调色由组件触发器统一提供。 */
-html .gallery-page .gallery-filter,
-html .showcase-page .filter-pill,
-html .scene-discovery .scene-cat {
-  min-height: var(--control-height);
+html:not([data-theme-style='terraria']) :is(.gallery-page .gallery-filter,.showcase-page .filter-pill,.scene-discovery .scene-cat) {
+  min-height:var(--control-height-sm);
 }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */
 /* Artwork card components own their lift, selection and reduced-motion states. */
@@ -60,7 +63,7 @@ html .chat-page .conversation-head { background: var(--bg-surface); }
 html .chat-page .chat-composer {
   border-top-color: var(--workspace-edge);
   background: var(--bg-surface);
-  box-shadow: inset 0 1px var(--glass-highlight);
+  box-shadow:none;
 }
 html .chat-page .chat-input {
   @apply tw:rounded-lg;

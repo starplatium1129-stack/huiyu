@@ -9,6 +9,9 @@ pub struct AppState {
     pub gateway_url: Mutex<String>,
     pub ignore_mouse_events: AtomicBool,
     pub quitting: AtomicBool,
+    pub startup_dispatched: AtomicBool,
+    pub companion_presentation: Mutex<crate::companion_window::Presentation>,
+    pub companion_input: Mutex<crate::companion_window::InputRegions>,
     pub live2d_enabled: Mutex<Option<bool>>,
     pub preferences: Mutex<CompanionPreferences>,
     pub workspace_root: Mutex<String>,
@@ -25,6 +28,9 @@ impl AppState {
             gateway_url: Mutex::new(String::new()),
             ignore_mouse_events: AtomicBool::new(preferences.ignore_mouse_events),
             quitting: AtomicBool::new(false),
+            startup_dispatched: AtomicBool::new(false),
+            companion_presentation: Mutex::default(),
+            companion_input: Mutex::default(),
             live2d_enabled: Mutex::new(preferences.live2d_enabled),
             preferences: Mutex::new(preferences),
             workspace_root: Mutex::new(workspace_root),
@@ -33,8 +39,10 @@ impl AppState {
     }
 
     pub fn save_preferences(&self) {
-        let prefs = self.preferences.lock().unwrap().clone();
-        crate::window_state::save_companion_preferences(&self.paths.preferences_file, &prefs);
+        let prefs = self.preferences.lock().unwrap();
+        if !crate::window_state::save_companion_preferences(&self.paths.preferences_file, &prefs) {
+            self.warn("could not save companion preferences");
+        }
     }
 
     pub fn log(&self, level: &str, message: &str) {

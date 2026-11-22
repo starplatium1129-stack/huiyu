@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
     "title": "蕾塞 · 深夜学校泳池·月下水波与轻盈出水",
     "description": "夏夜万籁俱寂的学校露天泳池里，清澈的池水在月色下荡漾着粼粼波光。身穿深蓝连体死库水的蕾塞宛如美人鱼般破水而出，抹开脸上的水珠在月下仰起笑靥——「游泳一点都不难对吧？电次君，如果明天我们一起逃走……去一个没有人认识我们的地方生活，好不好？」",
-    "outfitId": "summer_swimsuit_night",
+    "outfitId": "sfw_navy_pool_team_swimsuit",
     "sceneTags": [
       "school_pool",
       "night",
@@ -20,27 +20,32 @@
       "wet_hair",
       "holding_hand"
     ],
-    "promptProse": "Reze wipes her face while stepping out of the moonlit pool, laughing toward the viewer; moonlight catches droplets in her hair.",
+    "promptProse": "Reze is midway up the steel ladder of the outdoor school pool, with one hand wrapped around its rail and one foot still on the last submerged rung. With the other hand she brushes water from her brow and laughs toward her companion. Broken moonlight flickers across the wet pool tiles and a line of glassy ripples trails back into the lane. Beyond the chain-link fence stand the dark windows of the classroom block. The three-quarter view faces her from the side of the steps so the entry rail, her hands and the waterline all fit.",
     "promptTokens": [
       "wet hair",
+      "pool",
+      "pool ladder",
       "poolside",
+      "wiping face",
       "laughing",
+      "water drop",
+      "ripples",
+      "chain-link fence",
+      "school",
       "night",
       "moonlight",
-      "stepping out of pool",
-      "wiping face",
-      "water droplets",
-      "cowboy shot"
+      "three quarter view",
+      "wide shot"
     ],
     "negativeTokens": [],
     "adult": false,
     "recommendedEngine": "anima-miaomiao-v1.2",
     "category": "日常羁绊",
     "location": "深夜学校泳池",
-    "action": "月下从水面轻盈出水",
+    "action": "扶住泳池扶梯迈出水面，一手抹去眉上的水珠，朝同行的人轻笑",
     "timeOfDay": "night",
-    "lighting": "moonlight",
-    "camera": "cowboy shot, stepping out of the moonlit school pool",
+    "lighting": "月光从泳池斜上方落下，水面反光轻轻照亮扶梯和瓷砖",
+    "camera": "three quarter view, wide shot",
     "mood": "宁静祥和",
     "recommendedSize": "1152x1536",
     "coverageTags": [
@@ -48,6 +53,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She wipes her face while stepping out of the pool and laughing toward the viewer."
+    "animaCaption": "One hand grips the steel pool ladder and her lower foot is still on a submerged rung. With her free hand she wipes droplets off her brow and laughs toward the side of the pool."
   }
 }

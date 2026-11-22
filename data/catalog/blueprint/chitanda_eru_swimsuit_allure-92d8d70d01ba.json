@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_eru_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3315,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "chitanda_eru_swimsuit_allure",
     "characterId": "chitanda_eru",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "white swimdress",
+      "purple trim",
+      "eyelet lace",
+      "pleated skirt",
+      "straw hat",
+      "lavender ribbon",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a modest white and wisteria-purple eyelet-lace pleated swimdress topped with a wide-brim straw hat tied in lavender ribbon.",
     "title": "千反田爱瑠 · 潮池深处的好奇心大发现",
     "action": "双手提着半湿的白色遮阳裙摆蹲在天然潮水池旁，圆睁双眸紧贴水面，眼眸里闪烁着无尽星光",
     "location": "退潮后露出的大片平整青苔潮石与透亮浅水坑",
     "timeOfDay": "盛夏上午",
     "lighting": "明净透亮的盛夏海天阳光照进潮水池底，细致照亮斑斓小虾与透明海葵的细微触须",
-    "camera": "close-up portrait from slightly high angle, macro depth of field, wide sparkling purple eyes",
+    "camera": "high angle, medium close-up",
     "mood": "纯真无邪、求知欲爆棚与令人无法拒绝的专注",
     "description": "退潮后的礁石滩像一个巨大的天然水族箱。爱丽丝提着裙角蹲在石坑边，乌黑长发顺着肩膀垂落，差点浸到水面。她完全忘了炎热，紫宝石般的眼眸睁得大大的，瞳孔里映着水底摇曳的彩色海葵。她猛地转过头，双手合十紧盯向你——「折木同学，请看这里！这只透明的小螃蟹到底是怎么在退潮前把贝壳背在身上的？我……我很好奇！」",
     "sceneTags": [
@@ -41,23 +49,22 @@
       "sunny_day"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "chitanda eru",
-      "long black hair",
-      "purple eyes",
-      "white swimdress",
-      "purple trim",
-      "straw hat",
-      "crouching near tide pool",
-      "wide sparkling eyes",
-      "curious expression",
-      "crystal shallow water",
-      "morning sunshine",
-      "depth of field",
-      "cinematic lighting"
+      "crouching",
+      "holding skirt",
+      "curious",
+      "sparkling eyes",
+      "looking up",
+      "tide pool",
+      "mossy rocks",
+      "clear water",
+      "beach",
+      "morning sunlight",
+      "summer",
+      "high angle",
+      "medium close-up"
     ],
-    "promptProse": "Chitanda Eru crouches with wide, sparkling purple eyes beside a crystal tide pool in her modest white eyelet swimdress and straw hat, looking up with irresistible curiosity.",
-    "animaCaption": "Bright morning sunshine refracts into dazzling rainbow rings in the pool as her boundless curiosity takes over."
+    "promptProse": "Crouching low beside a crystal-clear coastal tide pool at low tide, Eru Chitanda wears a modest white and wisteria-purple eyelet-lace pleated swimdress and a wide-brim straw hat with lavender ribbon. Gathering her damp hem lightly above the mossy stones, she looks up with huge, sparkling eyes brimming with summer morning curiosity.",
+    "animaCaption": "Crouching beside a clear mossy tide pool in her white-and-lavender eyelet pleated swimdress and ribboned straw hat, she lifts her damp skirt hem and looks up with wide, sparkling curiosity. Crisp summer morning sunlight glints across the shallow water and rocks.",
+    "compositionIntent": "single"
   }
 }

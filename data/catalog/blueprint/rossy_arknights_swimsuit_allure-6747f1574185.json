@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3367,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T02:45:20.845249800+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "rossy_arknights_swimsuit_allure",
     "characterId": "rossy_arknights",
@@ -14,7 +14,7 @@
     "location": "塔卫二外海巨浪冲刷的黑色页岩冲浪海岸",
     "timeOfDay": "阳光明媚的正午",
     "lighting": "强烈的双日高空日光直射在泛着水光的冲浪板与防晒泳衣上，高对比度明艳夏日运动感",
-    "camera": "full shot, low angle, wide lens, thrilling extreme sports composition, dynamic sunny vibe",
+    "camera": "low angle, wide shot",
     "mood": "充满干劲、朝气蓬勃与无所畏惧的拓荒者豪情",
     "adult": true,
     "sampleRating": "R15",
@@ -39,28 +39,36 @@
       "high_energy"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "rossy \\(arknights: endfield\\)",
-      "short brown hair",
-      "brown eyes",
-      "goggles on forehead",
-      "lemon yellow and black sporty wetsuit",
-      "foot on surfboard in sand",
-      "raising victory hand sign",
-      "boisterous energetic smile",
-      "crashing surf waves",
-      "bright midday sun",
-      "dynamic athletic pose",
-      "depth of field",
+      "standing",
+      "surfboard",
+      "v",
+      "goggles on head",
+      "grin",
+      "looking at viewer",
+      "beach",
+      "black sand",
+      "ocean",
+      "waves",
+      "water droplets",
+      "outdoors",
       "sunlight",
-      "direct sunlight",
-      "water reflection"
+      "low angle",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rossy from Arknights: Endfield rests her foot boldly against a colorful surfboard on black sands in her yellow-and-black zip wetsuit, throwing a triumphant peace sign with an infectious, sun-drenched grin. Brilliant Mediterranean midday sunlight bounces off the azure water surface, casting bright dancing caustic ripples across her athletic swimwear.",
-    "animaCaption": "Pounding alien surf rumbles behind her as the spirited Endfield scout celebrates riding the wildest breakers. Brilliant Mediterranean midday sunlight bounces off the azure water surface, casting bright dancing caustic ripples across her athletic swimwear.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Fresh from riding towering breakers onto a dark shale beach, Rossi stands barefoot on the black sand in her wet lemon-yellow and carbon-black front-zip wetsuit monokini with goggles pushed up onto her forehead. Bracing one foot boldly on her yellow-and-black surfboard planted in the sand, she flashes a high-energy peace sign and wide sun-drenched grin toward the viewer. Harsh midday sun glints brightly off crashing turquoise waves and droplets beading across her neoprene swimwear.",
+    "animaCaption": "Standing on the black sand beach with one foot propped on her surfboard in a wet yellow-and-black front-zip wetsuit monokini, Rossi flashes a triumphant peace sign and bright grin with goggles pushed up on her head. Midday sunlight gleams over crashing surf behind her.",
+    "nsfwTokens": [
+      "one-piece swimsuit",
+      "yellow swimsuit",
+      "black trim",
+      "front zipper",
+      "unzipped",
+      "wetsuit",
+      "wet clothes",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a wet lemon-yellow and carbon-black ergonomic wetsuit monokini with its front zipper pulled partly open over her athletic figure.",
+    "compositionIntent": "single"
   }
 }

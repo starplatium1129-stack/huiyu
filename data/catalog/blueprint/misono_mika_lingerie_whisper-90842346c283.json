@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3185,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "misono_mika_lingerie_whisper",
     "characterId": "misono_mika",
@@ -14,7 +14,7 @@
     "location": "圣三一学园大教堂顶层私密露台，汉白玉回廊外是夜空流星划过的星海",
     "timeOfDay": "繁星密布的静夜",
     "lighting": "冷白星光倾泻在金粉长发与羽翼上，露台立柱悬挂的水晶提灯散发粉晶色暖光",
-    "camera": "wide shot, full body, 仰视全景横幅，白垩汉白玉回廊与无垠银河流星同框，神圣唯美",
+    "camera": "low angle, full body",
     "mood": "童话公主般的璀璨浪漫与内心救赎渴望，甜美而极度深情",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,34 @@
       "full_body"
     ],
     "promptTokens": [
-      "wide shot",
-      "full body",
-      "sitting on marble balustrade",
-      "grand cathedral terrace",
-      "classical marble pillars",
-      "starry night sky",
-      "shooting star streak",
-      "galaxy glow",
+      "sitting",
+      "marble balustrade",
+      "chin on hand",
+      "gentle smile",
+      "looking at viewer",
+      "cathedral terrace",
+      "marble pillars",
+      "crystal lantern",
+      "starry sky",
+      "shooting star",
       "moonlight",
-      "gentle longing smile",
-      "fairytale aesthetic"
+      "night",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Mika sits gracefully upon the white marble railing of Trinity Cathedral's highest balcony, looking toward shooting stars streaking across a deep midnight sky with a wistful, tender smile.",
-    "animaCaption": "Perched on a grand white marble terrace railing under a starry sky streaked with shooting stars, smiling gently.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated on the white marble balustrade of Trinity Cathedral's highest terrace beneath a starry night sky, Mika wears a pearly pink-and-lilac star-dusted sheer chiffon babydoll with feather-trimmed straps. Propping her chin on one hand with folded wings and a tender, longing smile, she glows between cool starlight and a pink crystal lantern.",
+    "animaCaption": "Seated along the white marble terrace balustrade with her wings tucked behind her in a star-dusted pink-and-lilac sheer chiffon babydoll, she props her chin in one hand and gazes at the viewer with a fond, wistful smile. Shooting stars and pink crystal lantern light glow over the cathedral colonnade.",
+    "nsfwTokens": [
+      "pink babydoll",
+      "lilac sheer dress",
+      "star print",
+      "feather straps",
+      "see-through",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a pearly pink-and-lilac double-layered sheer chiffon babydoll dusted with tiny silver stars and trimmed with white feathers along the straps.",
+    "compositionIntent": "single"
   }
 }

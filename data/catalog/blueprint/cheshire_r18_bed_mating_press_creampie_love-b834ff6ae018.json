@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_bed_mating_press_creampie_love",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1098,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "cheshire_r18_bed_mating_press_creampie_love",
     "title": "柴郡 · 指挥官寝室大床半裹半透真丝粉纱睡裙与猫咪撒娇深抚",
@@ -19,7 +19,7 @@
     "action": "侧卧大床半裹半透粉纱睡裙若隐若现，猫耳轻耷，双手托胸与下身深层自抚，含泪撒娇娇喘",
     "timeOfDay": "深夜",
     "lighting": "床头暖橙壁灯洒在纯白丝绸与半透明粉纱轻裹雪肌上的温馨浪漫光芒",
-    "camera": "wide shot, side view across soft white blankets",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "bedroom",
@@ -36,22 +36,21 @@
       "teary_eyes",
       "heavy_blush"
     ],
-    "promptProse": "She curls on the white bed with one hand at her chest and the other beneath the negligee hem, her face turned into the pillow. The warm orange bedside wall lamp lights her hair and the sheets.",
+    "promptProse": "Viewed from the side across a soft white bed lit by a warm orange bedside lamp, Cheshire curls affectionately into the pillows with glistening tears and rosy cheeks.",
     "promptTokens": [
-      "bedroom",
-      "pink and ivory silk negligee",
-      "thin straps",
-      "see-through",
       "lying",
       "on side",
-      "masturbation",
-      "night",
       "curled up",
-      "hand on chest",
-      "heavy blush",
-      "tears",
       "pillow",
+      "hand on chest",
+      "teary eyes",
+      "heavy blush",
+      "bedroom",
+      "white sheets",
       "bedside lamp",
+      "warm lighting",
+      "night",
+      "from side",
       "wide shot"
     ],
     "negativeTokens": [],
@@ -60,8 +59,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her face turns into the pillow, one hand at her chest and the other beneath the negligee hem."
+    "nsfwTokens": [
+      "pink negligee",
+      "silk",
+      "spaghetti straps",
+      "see-through",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Wearing only a gossamer pink-and-ivory silk negligee with thin shoulder straps that leaves her breasts and nipples faintly visible through the fabric, she cups her chest with one hand while touching herself beneath the hem with the other.",
+    "animaCaption": "Curled on her side on the white bedroom sheets with her flushed face buried against the pillow, she cups her chest through a sheer pale-pink silk negligee while sliding her other hand beneath its translucent hem in the warm bedside lamplight.",
+    "compositionIntent": "single"
   }
 }

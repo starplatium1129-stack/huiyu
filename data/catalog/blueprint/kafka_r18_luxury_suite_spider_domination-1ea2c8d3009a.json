@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_luxury_suite_spider_domination",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kafka_r18_luxury_suite_spider_domination",
     "title": "卡芙卡 · 奢华套房的蛛网支配",
@@ -15,7 +15,7 @@
     "action": "独自跨坐绒榻，一手抓靠背、一手指交自抚",
     "timeOfDay": "深夜",
     "lighting": "匹诺康尼奢华套房暗金壁灯与晶莹酒杯反光",
-    "camera": "cowboy shot, low angle, vertical framing",
+    "camera": "low angle, cowboy shot",
     "mood": "女王支配",
     "sceneTags": [
       "luxury_suite",
@@ -25,19 +25,22 @@
       "straddling",
       "solo"
     ],
-    "promptProse": "Adult Kafka straddles the velvet chaise, gripping its backrest with one hand and touching herself with the other. Spectral threads curve around her hips. Dim purple room light mixes with the faint bedside candlelight.",
+    "promptProse": "Completely nude in a dim luxury penthouse suite at night, Kafka straddles a deep purple velvet chaise with glowing violet spectral threads looping loosely around her waist and hips. She grips the velvet backrest firmly with one hand while slipping the fingers of her other hand between her parted thighs to masturbate, watching the viewer with a commanding, breathless smile. Faint bedside candlelight and purple ambient suite light trace her curves against the distant city skyline.",
     "promptTokens": [
-      "leather armchair",
-      "holding wine glass",
-      "sensual dominance",
-      "silk blouse",
-      "unbuttoned",
-      "luxury hotel suite",
-      "warm ambient light",
-      "chandelier glow",
-      "spider web shadows",
-      "city skyline outside window",
-      "bokeh"
+      "straddling",
+      "couch",
+      "velvet",
+      "glowing threads",
+      "seductive smile",
+      "blush",
+      "looking at viewer",
+      "luxury room",
+      "window",
+      "city lights",
+      "candlelight",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,13 +48,22 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "nude",
+      "bare breasts",
+      "nipples",
+      "spread legs",
+      "pussy",
+      "masturbation",
+      "fingering"
+    ],
+    "nsfwProse": "Completely nude astride the purple velvet chaise with glowing violet threads coiled loosely around her waist and hips, she spreads her thighs and fingers herself between her legs.",
     "adultArtistHint": "@mizuryu kei",
     "outfitId": "nsfw_nude",
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Rich golden ambient light from crystal chandeliers glints off her wine glass as Kafka reclines in utter command."
+    "animaCaption": "Completely nude astride the purple velvet chaise with glowing violet threads looping around her hips, Kafka grips the backrest with one hand and fingers herself between her legs with the other. Dim purple suite light and warm candlelight catch her commanding, flushed smile.",
+    "compositionIntent": "single"
   }
 }

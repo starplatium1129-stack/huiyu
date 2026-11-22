@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorakado_ao_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3483,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sorakado_ao_lingerie_whisper",
     "characterId": "sorakado_ao",
@@ -14,7 +14,7 @@
     "location": "鸟白岛古老神社后山藏书阁，木质地板上整齐叠放着岛民历史卷宗与狐狸面具",
     "timeOfDay": "夏日午夜读灵异故事的贪睡时刻",
     "lighting": "透过纸拉门的皎洁银月光直直照在地板上，与旧油灯的暖微红光形成梦幻映照",
-    "camera": "medium shot, high angle, 侧俯角抓拍，将藏书阁席地而坐与抱膝瞌睡的天然慵懒刻画入微",
+    "camera": "high angle, medium shot",
     "mood": "随性慵懒的岛屿少女日常，带着灵异传说的神秘与邻家女孩的亲昵",
     "adult": true,
     "sampleRating": "R15",
@@ -42,23 +42,36 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "sitting on wooden floor",
+      "sitting",
       "hugging knees",
-      "drowsy",
-      "sleepy eyes",
-      "ancient scrolls",
+      "wooden floor",
+      "sleepy",
+      "yawning",
       "books",
-      "wooden archive",
-      "fox mask on wall",
+      "scroll",
+      "fox mask",
+      "shrine",
       "paper lantern",
-      "warm lighting"
+      "indoors",
+      "moonlight",
+      "night",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Curled on the polished wooden floor of the mountain shrine archive, Ao hugs her knees sleepily among stacks of island records and ghost stories under the warm glow of a paper lantern.",
-    "animaCaption": "Hugging her knees drowsily on the wooden floor of an old shrine library, surrounded by scrolls and lantern light.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Curled atop a folded blanket on the polished wooden floor of Torishirojima's hillside shrine archive at midnight, Ao wears a breathable pale-lavender polka-dot cotton camisole and soft gathered tap shorts. Hugging her knees beside stacked island folklore scrolls and a hanging fox mask, she blinks drowsily through a sleepy yawn toward the viewer. Silvery moonlight through the sliding paper doors blends with the warm red-amber flicker of an old oil lantern.",
+    "animaCaption": "Curled barefoot on the wooden shrine archive floor in her lavender polka-dot cotton camisole and tap shorts, Ao hugs her knees beside stacked folklore scrolls and yawns sleepily. Silver moonlight and warm lantern glow meet across the quiet room.",
+    "nsfwTokens": [
+      "lavender camisole",
+      "polka dot",
+      "cotton",
+      "tap shorts",
+      "pajamas",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a pale lavender white-polka-dot cotton camisole paired with soft gathered bubble tap shorts, barefoot on the wooden floor.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3135,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "rosa_arknights_swimsuit_allure",
     "characterId": "rosa_arknights",
@@ -14,7 +14,7 @@
     "location": "临海欧式庄园私家庭院白石露台",
     "timeOfDay": "午后阳光",
     "lighting": "遮阳伞透落斑驳细腻的花影，背景蔚蓝的大海波光粼粼，为贵族少女高挑白皙的身姿勾勒出清贵的光晕",
-    "camera": "medium full shot, eye level, poised aristocratic portraiture, graceful summer stillness",
+    "camera": "eye level, cowboy shot",
     "mood": "高贵端庄、历经风霜后的从容从容与深层信任",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,32 @@
       "regal"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "rosa (arknights)",
-      "long white hair",
-      "bear ears",
-      "amber eyes",
-      "imperial navy and white bikini",
+      "sitting",
+      "crossed legs",
+      "patio chair",
       "lace parasol",
-      "sitting on ornate white patio chair",
-      "holding porcelain teacup",
-      "gentle noble smile",
-      "sparkling sea backdrop",
-      "dappled garden sunlight",
-      "graceful posture",
-      "depth of field"
+      "teacup",
+      "gentle smile",
+      "looking at viewer",
+      "white terrace",
+      "ocean view",
+      "dappled sunlight",
+      "afternoon",
+      "eye level",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rosa from Arknights sits gracefully on an ornate terrace chair in her imperial-navy and ermine-trimmed bikini, twirling a delicate lace parasol with an elegant porcelain smile beside the glistening sea.",
-    "animaCaption": "Delicate lace parasol shadows frame her aristocratic tranquility as the noble countess savors a warm, peaceful tea.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Rosa sits with aristocratic poise on a white wrought-iron chair upon a seaside manor terrace, wearing an imperial-navy and ivory bandeau bikini accented with gold braid, white trim, and pearl strands. Resting one hand on the wooden handle of a lace parasol while holding her porcelain teacup, she smiles calmly under dappled afternoon sunlight overlooking the sparkling sea.",
+    "animaCaption": "Seated with ankles neatly angled on a white wrought-iron terrace chair in her imperial-navy and ivory bandeau bikini, she rests one hand on a lace parasol handle beside her teacup and smiles warmly. Dappled afternoon shade falls over the bright stone terrace above the sparkling sea.",
+    "nsfwTokens": [
+      "blue bikini",
+      "bandeau bikini",
+      "white fur trim",
+      "gold braid",
+      "pearl jewelry",
+      "bare shoulders",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears an imperial-navy and ivory bandeau bikini accented with gold frogging braids, soft white trim, and delicate pearl strands."
   }
 }

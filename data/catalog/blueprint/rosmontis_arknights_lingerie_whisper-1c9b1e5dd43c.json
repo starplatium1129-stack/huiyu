@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3138,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "rosmontis_arknights_lingerie_whisper",
     "characterId": "rosmontis_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛个人寝室，几块沉重的歼灭战术构件在空气中平静悬浮，散发温和防卫光圈",
     "timeOfDay": "深夜就寝读日记时分",
     "lighting": "床头小蘑菇夜灯散发的温润浅粉暖光，柔化了悬浮金属战术构件的冰冷感",
-    "camera": "medium shot, eye level, 平视中景，毛绒大靠枕堆与怀抱记事本同框",
+    "camera": "eye level, medium shot",
     "mood": "纯洁无垢的幼小依恋，被残酷实验伤害后在避风港中找到的极致安宁",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,33 @@
       "eye_level"
     ],
     "promptTokens": [
-      "sitting on floor",
-      "hugging notebook to chest",
-      "plush cushions",
-      "personal dormitory",
-      "floating tactical apparatus",
-      "soft protective aura",
-      "gentle shy smile",
-      "medium shot",
-      "eye level"
+      "sitting",
+      "on floor",
+      "cushions",
+      "hugging notebook",
+      "shy",
+      "looking up",
+      "floating weapons",
+      "glowing aura",
+      "bedroom",
+      "night light",
+      "warm pink light",
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rosmontis curls comfortably amidst a pile of plush cushions on her dormitory floor, hugging a treasured notebook tightly to her chest. Heavy tactical apparatuses hover serenely in the air above, emitting soft protective halos in the quiet bedroom.",
-    "animaCaption": "Curling amidst plush cushions hugging a notebook, she looks up with shy, trusting eyes.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Rosmontis curls barefoot amidst a pile of plush cushions on her quiet dormitory floor at night, wearing a soft pale mint-green cotton babydoll slip dress with white scalloped trim. Hugging her treasured notebook tightly to her chest as she looks up with trusting green eyes, she rests beneath gently hovering tactical shields bathed in warm bedside night-lamp glow.",
+    "animaCaption": "Tucked barefoot inside a nest of plush floor cushions in a pale mint-green cotton babydoll nightdress, she hugs her notebook tightly to her chest and gazes up with quiet trust. Soft pink glow from a bedside mushroom lamp warms the room beneath her serenely hovering tactical plates.",
+    "nsfwTokens": [
+      "light green babydoll",
+      "mint cotton nightgown",
+      "spaghetti straps",
+      "scalloped trim",
+      "pajamas",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a soft cloud-like pale mint-green cotton babydoll slip dress with white scalloped trim and tiny embroidered paw details."
   }
 }

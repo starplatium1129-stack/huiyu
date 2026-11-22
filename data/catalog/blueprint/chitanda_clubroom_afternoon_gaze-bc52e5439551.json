@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_clubroom_afternoon_gaze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1481,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "chitanda_clubroom_afternoon_gaze",
     "title": "千反田爱瑠 · 文集装订的最后一道线",
@@ -16,7 +16,7 @@
     "action": "一手压书脊，一手拉直装订线，认真检查错位针脚。",
     "timeOfDay": "afternoon",
     "lighting": "soft window light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "three quarter view, medium shot",
     "mood": "名门千金的宁静相伴",
     "sceneTags": [
       "sitting_at_table",
@@ -31,16 +31,23 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Seated at the activity-room table, she holds the anthology spine flat with one hand and straightens a loose binding thread with the other. Her eyes widen at the uneven stitch caught in soft window light.",
+    "promptProse": "At the old Classical Literature Club worktable, Chitanda sits on a wooden chair and presses the anthology flat beside its stitched spine. Her other hand pinches the short end of the binding thread close to one empty hole. Her violet eyes widen as she notices the uneven stitch. A spool, a spare needle and a ruler lie on the near edge among squared paper offcuts. Afternoon window light falls across the book and the pinched fold of her rolled lilac cuff. The club's glass-front cabinet and the remaining anthologies sit deeper in the room.",
     "promptTokens": [
-      "clubroom",
-      "bookbinding",
-      "thread",
+      "sitting",
+      "chair",
+      "wooden table",
       "book",
-      "medium shot",
-      "sitting at table",
-      "wide eyes",
-      "window light"
+      "thread",
+      "needle",
+      "paper stack",
+      "ruler",
+      "looking down",
+      "wide-eyed",
+      "window",
+      "sunbeam",
+      "school",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +58,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand holds the spine flat while the other straightens the loose binding thread."
+    "animaCaption": "The open anthology lies flat on the table under her left palm. Her other hand draws one short length of thread just above the binding hole, and her gaze follows the stitches."
   }
 }

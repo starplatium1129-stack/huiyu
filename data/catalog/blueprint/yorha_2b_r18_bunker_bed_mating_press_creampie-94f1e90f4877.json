@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
     "title": "2B · 水没都市清泉浅滩半透湿白衬衫与解下眼罩波光深抚",
@@ -19,7 +19,7 @@
     "action": "斜靠水边石阶湿白衬衫紧贴露大胸，解下眼罩蓝眸如钻，单手在水下深层自抚，泉水涟漪娇喘",
     "timeOfDay": "深夜",
     "lighting": "水没都市清泉浅滩月色波光粼粼与废墟幽蓝苔藓微光",
-    "camera": "intimate wide shot, reclining side perspective across shallow crystal water",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "ruins",
@@ -36,18 +36,21 @@
       "masturbation",
       "water_droplets"
     ],
-    "promptProse": "2B reclines on the mossy stone with one hand beneath the water between her thighs, tears on her face. Moonlight reaches the shallow water through the ruined buildings and reflects across her wet shirt.",
+    "promptProse": "Viewed from the side across a moonlit shallow pool framed by moss-grown ruins and glowing pale flowers, 2B leans back against wet stone without her blindfold, water beads clinging to her face and tear-bright eyes.",
     "promptTokens": [
-      "wet clothes",
-      "shallow water pool",
-      "ruins overgrown with moss",
-      "bright moonlight on water",
+      "reclining",
+      "shallow water",
       "water ripples",
-      "translucent wet shirt",
-      "blindfold removed",
-      "blue glowing flowers",
-      "soft rim light",
-      "volumetric lighting"
+      "no blindfold",
+      "teary eyes",
+      "heavy blush",
+      "moss",
+      "ruins",
+      "glowing flowers",
+      "moonlight",
+      "night",
+      "from side",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,8 +58,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "oversized shirt",
+      "white shirt",
+      "wet clothes",
+      "see-through",
+      "nipples",
+      "bare legs",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her oversized white cotton shirt is completely soaked and transparent against her bare breasts and nipples, its hem floating in the clear water as her hand works between her parted thighs.",
     "identityTokensOverride": [
       "2b (nier:automata)",
       "1girl",
@@ -68,6 +80,7 @@
       "nier:automata"
     ],
     "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
-    "animaCaption": "Silver moonlight ripples across the flooded shallow springs as 2B rests amidst glowing lunar tears and ancient ruins."
+    "animaCaption": "Reclining unblindfolded along a mossy stone step in the moonlit flooded ruins, she wears only a soaked white shirt clinging transparently over her chest while one hand slips beneath the rippling shallow water between her thighs with misty, flushed emotion.",
+    "compositionIntent": "single"
   }
 }

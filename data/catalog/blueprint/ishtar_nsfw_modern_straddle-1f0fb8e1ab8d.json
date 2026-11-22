@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_modern_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 261,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "ishtar_nsfw_modern_straddle",
     "title": "伊什塔尔 · 现代房间的女神骑乘",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间金链轻响，王冠搁床头，红瞳恍惚温柔",
     "timeOfDay": "深夜",
     "lighting": "都市夜灯透过窗帘的暖光",
-    "camera": "cowboy shot, first-person view, low angle",
+    "camera": "from below, pov, cowboy shot",
     "mood": "女神宠爱、终于温柔",
     "sceneTags": [
       "nsfw",
@@ -27,21 +27,24 @@
       "night",
       "romance"
     ],
-    "promptProse": "Adult Ishtar straddles the viewer's waist, her tiara resting on the nightstand. City light catches the fine chains at her hips.",
-    "nsfwProse": "",
+    "promptProse": "In a modern apartment bedroom at night, Ishtar straddles her partner's waist with her tiara left on the nightstand, her black-and-gold lace lingerie opened to bare her breasts while a jeweled waist chain and garter straps glint above black thighhighs. Warm city night light slips through the curtains across her flushed face, seen from below in first-person view.",
+    "nsfwProse": "Her black-and-gold lace lingerie is unfastened to bare her chest while a jeweled gold waist chain, garter straps, and black thighhighs glint softly as she rides astride her partner.",
     "promptTokens": [
-      "adult",
-      "bedroom",
-      "gold lace",
-      "black lingerie",
-      "topless",
-      "waist chain",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
       "straddling",
       "blush",
+      "looking down",
+      "tiara on nightstand",
+      "bed",
+      "bedroom",
+      "city lights",
       "night",
       "from below",
-      "city light",
-      "tiara on nightstand"
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,8 +58,17 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "nsfwTokens": [],
-    "compositionIntent": "single",
-    "animaCaption": "Her tiara rests on the nightstand beside the viewer."
+    "nsfwTokens": [
+      "black lingerie",
+      "gold lace",
+      "topless",
+      "nipples",
+      "waist chain",
+      "black thighhighs",
+      "garter straps",
+      "sex"
+    ],
+    "compositionIntent": "group",
+    "animaCaption": "With her tiara set on the nightstand beside the bed, she straddles the viewer's lap topless in gold-trimmed black lace lingerie, jeweled waist chain, and black thighhighs, gazing down with a dazed tender flush. Warm city light through the curtains catches the fine chains at her hips."
   }
 }

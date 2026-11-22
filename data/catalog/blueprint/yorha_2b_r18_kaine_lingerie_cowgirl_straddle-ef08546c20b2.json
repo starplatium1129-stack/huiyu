@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yorha_2b_r18_kaine_lingerie_cowgirl_straddle",
     "title": "2B · 凯妮蕾丝战装跨坐骑乘与上下轻摇",
@@ -19,7 +19,7 @@
     "action": "独自跨坐软垫，一手撑床、一手腿间自抚",
     "timeOfDay": "夜间",
     "lighting": "营火透过帐篷帆布透射的暖橙光晕照亮玉体",
-    "camera": "cowboy shot, low angle, folded futon visible",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -30,22 +30,20 @@
       "mole_under_mouth",
       "heavy_blush"
     ],
-    "promptProse": "2B straddles the folded futon, bracing with one hand while the other slips beneath the loosened lingerie; her sword and powered-down Pod rest behind her. Warm orange campfire light filters through the tent canvas.",
+    "promptProse": "Viewed from a low angle inside a quiet canvas tent lit by warm orange campfire glow, 2B sits astride a folded futon with one hand steadying herself on the cloth while her sword and powered-down Pod rest out of reach behind her.",
     "promptTokens": [
-      "pale blue lace bodysuit",
-      "white lace",
-      "open bodysuit",
-      "black thighhighs",
       "straddling",
       "futon",
-      "female masturbation",
-      "sword",
-      "android",
+      "hand on futon",
+      "katana",
       "tent",
-      "straddling futon",
-      "supporting hand",
-      "powered-down Pod",
-      "firelight"
+      "firelight",
+      "warm lighting",
+      "heavy blush",
+      "parted lips",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,8 +51,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her sword and powered-down Pod rest behind the folded futon."
+    "nsfwTokens": [
+      "blue leotard",
+      "white lace",
+      "leotard aside",
+      "topless",
+      "nipples",
+      "black thighhighs",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her ice-blue floral lace combat leotard is pulled open off her bare chest and shifted aside at the crotch above sheer black thigh-high stockings as her free hand touches herself.",
+    "animaCaption": "Straddling a folded futon inside the firelit camp tent with her sword and powered-down Pod resting behind her, she braces one hand on the bedding while sliding the other past her loosened ice-blue lace leotard between her stockinged thighs.",
+    "compositionIntent": "single"
   }
 }

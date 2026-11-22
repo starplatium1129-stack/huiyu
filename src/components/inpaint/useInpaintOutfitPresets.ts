@@ -11,7 +11,7 @@ export interface OutfitPreset {
   negativeAdd?: string
 }
 
-const OUTFIT_PRESETS: OutfitPreset[] = [
+export const OUTFIT_PRESETS: OutfitPreset[] = [
   {
     id: 'bikini_white',
     label: '夏日比基尼',

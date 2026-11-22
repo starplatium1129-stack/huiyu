@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3184,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "lemuen_arknights_lingerie_whisper",
     "characterId": "lemuen_arknights",
@@ -14,7 +14,7 @@
     "location": "拉特兰大教堂后侧的玻璃温室，盛开的白百合与悬挂藤萝环绕",
     "timeOfDay": "明媚阳光穿透温室的午后",
     "lighting": "阳光穿透彩色花格温室穹顶，在纯白衣裙与娇美脸容上洒落斑斓的光斑",
-    "camera": "medium shot, eye level, 平视中景，垂挂藤蔓前景虚化与轮椅优雅坐姿同框",
+    "camera": "eye level, medium shot",
     "mood": "圣洁宁静中透着成熟大姐姐的温柔戏谑",
     "adult": true,
     "sampleRating": "R15",
@@ -42,19 +42,36 @@
     "promptTokens": [
       "sitting",
       "wheelchair",
+      "propping chin",
+      "gentle smile",
+      "looking at viewer",
+      "blanket",
       "greenhouse",
-      "white lilies",
-      "hanging vines",
+      "white lily",
+      "vines",
       "sunlight",
       "dappled sunlight",
-      "gentle smile",
-      "medium shot",
-      "eye level"
+      "afternoon",
+      "eye level",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Lemuen relaxes gracefully in a white wicker wheelchair inside the sunlit cathedral greenhouse, chin resting lightly on one hand. Golden afternoon sunlight filters through stained glass and hanging ivy, casting soft dappled light across white lilies and her serene smile.",
-    "animaCaption": "Resting in a wicker wheelchair inside the cathedral greenhouse, she smiles gently amidst blooming lilies and warm sunlight.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Relaxing inside the sunlit glass conservatory behind Laterano Cathedral surrounded by blooming white lilies and hanging ivy, Lemuen leans comfortably in her white wicker wheelchair wearing a sheer white silver-embroidered chiffon slip dress with a thin blanket across her knees. Propping her chin gracefully on one hand, she offers a serene, teasing smile while stained-glass afternoon sunlight scatters warm dappled patches across her glowing halo and delicate sheer fabric.",
+    "animaCaption": "Seated in her white wicker wheelchair inside the sunlit cathedral greenhouse wearing a sheer white silver-embroidered chiffon slip with a light blanket across her lap, Lemuen props her chin on one hand with a warm, teasing smile. Dappled afternoon light filters through hanging vines and blooming white lilies.",
+    "nsfwTokens": [
+      "white nightgown",
+      "chiffon",
+      "see-through",
+      "spaghetti straps",
+      "embroidery",
+      "bare shoulders",
+      "collarbone",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a gossamer pure-white sheer chiffon double-strap slip dress embroidered with silver wing motifs over her bare shoulders, with a light blanket draped loosely over her lap.",
+    "compositionIntent": "single"
   }
 }

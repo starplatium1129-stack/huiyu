@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-get-startup-mode"
+description = "Enables the get_startup_mode command without any pre-configured scope."
+commands.allow = ["get_startup_mode"]
+
+[[permission]]
+identifier = "deny-get-startup-mode"
+description = "Denies the get_startup_mode command without any pre-configured scope."
+commands.deny = ["get_startup_mode"]

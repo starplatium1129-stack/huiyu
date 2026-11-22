@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3507,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "delta_shadow_lingerie_whisper",
     "characterId": "delta_shadow",
@@ -14,7 +14,7 @@
     "location": "暗影庭园总部训练场旁软垫兽穴卧室",
     "timeOfDay": "睡前",
     "lighting": "地热壁炉明艳粗犷的红黄炭火，照亮健美矫健的兽耳少女与野性豹纹短抹胸",
-    "camera": "close-up, low angle, 充满冲击力的低角度动感抓拍，捕捉大狗勾般充满活力的扑倒瞬间与纯粹兽性依恋",
+    "camera": "low angle, close-up",
     "mood": "野性爆棚、直率忠诚、狂暴战士与撒娇大狗的反差",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,33 @@
       "low_angle"
     ],
     "promptTokens": [
-      "close-up",
+      "on all fours",
+      "pouncing",
+      "reaching towards viewer",
+      "wide smile",
+      "blush",
+      "looking at viewer",
+      "on bed",
+      "rumpled sheets",
+      "fireplace",
+      "warm firelight",
+      "night",
       "low angle",
-      "playfully pouncing forward onto bed",
-      "hands reaching toward viewer",
-      "canine enthusiasm",
-      "bounding energy",
-      "wide happy grin",
-      "blushing cheeks",
-      "rumpled bed sheets",
-      "warm room light"
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Delta bounds directly toward the viewer on the bed with unstoppable wolfish enthusiasm, grinning from ear to ear with pure, uninhibited affection.",
-    "animaCaption": "Playfully pouncing forward onto the bed with boundless energy, grinning with pure, open-hearted affection.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Bounding eagerly across rumpled sheets on her bed at night, Delta wears a fitted cheetah-print stretch bandeau crop top and black faux-fur trimmed sleep shorts. Reaching straight toward the viewer with unstoppable canine enthusiasm and a wide, joyful grin, she glows in rich orange hearth firelight.",
+    "animaCaption": "Bounding eagerly forward across rumpled bedsheets in a cheetah-print stretch bandeau and black fur-trimmed sleep shorts, she reaches toward the viewer with a huge, open-hearted grin and wagging energy. Warm hearth firelight highlights her flushed cheeks and athletic build.",
+    "nsfwTokens": [
+      "leopard print bandeau",
+      "strapless crop top",
+      "black shorts",
+      "fur-trimmed shorts",
+      "bare midriff",
+      "bare shoulders",
+      "toned"
+    ],
+    "nsfwProse": "She wears a fitted cheetah-print stretch bandeau crop top and black faux-fur trimmed sleep shorts cut for her athletic figure.",
+    "compositionIntent": "single"
   }
 }

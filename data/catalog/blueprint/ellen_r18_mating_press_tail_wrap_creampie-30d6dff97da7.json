@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_mating_press_tail_wrap_creampie",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1065,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "侧卧大床半透黑吊带若隐若现，鲨鱼尾安稳贴在身侧，抱枕蹭脸单手在被底深层自抚娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, from the side",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -22,28 +22,32 @@
     "location": "主卧双人床洁白被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "black_silk_camisole",
-    "promptProse": "She nuzzles a pillow and touches herself beneath the sheets, her shark tail curved alongside her body on the bedding, separate from her legs. A warm orange bedside nightlight falls across the white quilt.",
-    "promptTokens": [
-      "adult",
-      "black silk camisole",
+    "nsfwProse": "She wears only a sheer black silk camisole edged in crimson lace that shows her chest and nipples faintly beneath the fabric, her free hand working slowly between her thighs under the sheets.",
+    "nsfwTokens": [
+      "black camisole",
       "see-through",
+      "red trim",
+      "nipples",
+      "bare legs",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "black_silk_camisole",
+    "promptProse": "Viewed from the side across a wide white bed at night, Ellen curls under the soft bedding hugging a plush pillow against her face while her shark tail curves smoothly along the mattress beside her legs. A warm bedside nightlight glows softly across the quilt.",
+    "promptTokens": [
+      "lying",
       "on side",
       "curled up",
-      "bed",
-      "pillow",
-      "masturbation",
-      "blush",
-      "night",
-      "red trim",
-      "white sheets",
       "hugging pillow",
+      "heavy blush",
       "teary eyes",
+      "bedroom",
+      "bed",
+      "white sheets",
+      "night",
       "warm lighting",
-      "wide shot",
-      "side view"
+      "from side",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -63,6 +67,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "艾莲·乔 · 温暖被窝半透黑真丝吊带与巨大鲨尾缠身安心深抚",
-    "animaCaption": "Her tail curves alongside her body on the bedding, separate from her legs."
+    "animaCaption": "Curled on her side across the white bedsheets in a sheer black silk camisole with red lace trim, she hugs a soft pillow to her flushed tearful cheek while slipping her other hand beneath the bedding as her shark tail rests calmly beside her.",
+    "compositionIntent": "single"
   }
 }

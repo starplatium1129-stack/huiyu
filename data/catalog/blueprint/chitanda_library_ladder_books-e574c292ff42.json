@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "chitanda_library_ladder_books",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1483,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "id": "chitanda_library_ladder_books",
     "title": "千反田爱瑠 · 书架上层的意外发现",
     "category": "校园日常",
     "characterId": "chitanda_eru",
     "outfitId": "sfw_library_cardigan",
-    "description": "周末图书馆里，爱瑠穿浅绿开衫和深灰长裙，站在低矮稳固的梯凳上抽出一本旧书。她用另一只手扶住书架，发现书页间露出一片干叶，紫眼立刻认真睁大，长黑发顺着肩背落下。",
+    "description": "周末的图书馆里，爱瑠踩上木梯的第一级，翻开刚抽出的旧书。一片干叶从书页间滑下来，她赶紧用指尖接住，紫眼一下睁大了。",
     "location": "图书馆高书架",
-    "action": "扶稳书架抽出旧书，惊喜地发现夹在书页间的干叶。",
+    "action": "踩着木梯第一级，从旧书页间接住滑出的干叶",
     "timeOfDay": "afternoon",
     "lighting": "soft library aisle light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "three quarter view, full body",
     "mood": "探求真相、灵动明媚",
     "sceneTags": [
       "library",
@@ -30,19 +30,22 @@
       "aisle_lighting",
       "medium_shot"
     ],
-    "promptProse": "Standing on the low step stool, she steadies herself with one hand on the shelf and draws an old book free with the other. Her eyes brighten at the dried leaf protruding between its pages under the soft aisle light.",
+    "promptProse": "At the end of a quiet library aisle, Chitanda rests one foot on the first step of a low wooden ladder and keeps the other planted on the boards. She cradles the old clothbound book she has just opened and catches the dried leaf slipping between its pages, holding it by the stem. She studies its faded ochre veins with wide violet eyes. A high window throws soft afternoon light along the cable stitches in her moss-green cardigan and the brass label holders on the shelves. A full-length angle shows the open book, her hand with the leaf and her footing.",
     "promptTokens": [
       "library",
-      "step stool",
-      "reaching",
-      "old book",
-      "leaf",
-      "medium shot",
-      "standing",
       "bookshelf",
+      "stepladder",
+      "standing",
       "holding book",
-      "wide eyes",
-      "soft lighting"
+      "open book",
+      "leaf",
+      "looking down",
+      "wide-eyed",
+      "window",
+      "window light",
+      "wooden floor",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +56,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand steadies her on the shelf as the other draws out the leaf-marked book."
+    "animaCaption": "One loafer rests on the first rung of the low wooden library ladder while the other stays on the floor. Holding the old book open in her left hand, she catches the dry leaf by its stem with her right."
   }
 }

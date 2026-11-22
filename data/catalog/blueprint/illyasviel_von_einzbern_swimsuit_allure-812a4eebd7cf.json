@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3224,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_swimsuit_allure",
     "characterId": "illyasviel_von_einzbern",
@@ -14,7 +14,7 @@
     "location": "细腻如雪的白色珊瑚沙滩与平静无波的内湾浅水边",
     "timeOfDay": "下午三点",
     "lighting": "纯净明亮的热带下午光线，照透雪白长发与白沙城堡，红宝石双眸折射出剔透的光彩",
-    "camera": "medium shot, low angle looking up from sand level, fairytale summer wonder",
+    "camera": "from below, medium shot",
     "mood": "纯真天真、欢快雀跃与城堡千金的骄傲满足",
     "adult": true,
     "sampleRating": "R15",
@@ -37,25 +37,33 @@
       "sparkling_smile"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "illyasviel von einzbern",
-      "long silver hair",
-      "red eyes",
-      "white swimdress",
-      "violet trim",
-      "kneeling on sand beside large sandcastle",
+      "kneeling",
+      "sandcastle",
+      "seashell",
+      "starfish",
       "sandy hands",
-      "proud joyful smile",
-      "white coral beach",
-      "warm afternoon sun",
-      "depth of field",
-      "cinematic lighting"
+      "happy",
+      "smile",
+      "looking up",
+      "beach",
+      "white sand",
+      "afternoon",
+      "sunlight",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Illyasviel von Einzbern kneels proudly beside an ornate fairy-tale sandcastle on a pristine white beach in her violet-trimmed swimdress, smiling up with sandy hands and jewel-like crimson eyes.",
-    "animaCaption": "Glistening white coral sand shapes into a miniature fortress as the silver-haired princess gleefully claims her coastal kingdom.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from sand level on a sunlit white coral beach, Illya kneels beside a detailed miniature sandcastle decorated with shells and starfish, resting her sandy hands beside its gate and smiling up in bright summer pride.",
+    "animaCaption": "Kneeling proudly on the bright white coral beach beside an ornate seashell-decorated sandcastle with sand dusting her hands and nose, she wears a white-and-violet ruffled swimdress with a sheer lilac chiffon capelet and beams up happily in the afternoon sun.",
+    "nsfwTokens": [
+      "white swimsuit",
+      "swimdress",
+      "purple trim",
+      "ruffles",
+      "pleated skirt",
+      "sheer capelet"
+    ],
+    "nsfwProse": "She wears a snow-white and royal-violet ruffled swimdress accented with snowflake embroidery, ribbon bows, and a breezy sheer lilac chiffon beach capelet.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3240,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "perlica_arknights_lingerie_whisper",
     "characterId": "perlica_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地技术探索指挥舱，淡蓝色的行星地貌全息云在空气中缓缓旋转",
     "timeOfDay": "深空跳跃静默期",
     "lighting": "全息星图散发幽蓝冷光，勾勒出修长的肩颈与后背弧度，地面泛着金属光泽",
-    "camera": "medium shot, eye level, 平视中景，全息星图与指挥舱回眸同框",
+    "camera": "eye level, medium shot",
     "mood": "铁血总监私下独处时的知性反差，克制与心绪波动的微妙平衡",
     "adult": true,
     "sampleRating": "R15",
@@ -40,19 +40,32 @@
     ],
     "promptTokens": [
       "standing",
-      "control bridge",
-      "celestial star chart",
-      "rotating blue planetary hologram",
-      "tactical headset around neck",
-      "looking back over shoulder",
-      "ambient blue light",
-      "medium shot",
-      "eye level"
+      "looking back",
+      "looking over shoulder",
+      "holding headset",
+      "slight blush",
+      "composed expression",
+      "command bridge",
+      "hologram",
+      "star chart",
+      "blue light",
+      "dark room",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Perlica stands before an expansive planetary star chart in the Endfield command bridge, holding a tactical headset lowered to her collar. A revolving blue planetary holographic cloud casts serene reflections across her composed, focused silhouette.",
-    "animaCaption": "Looking back from the planetary star chart on the command bridge, she pauses with composed focus.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing before a glowing planetary star chart on the darkened Endfield command bridge during a quiet jump cycle, Perlica wears a minimalist slate-blue nano-mesh deep-V crop bustier with carbon-fiber straps and boyshorts. Slipping her tactical headset off with one hand as she glances back over her shoulder with restrained shyness, she is outlined in cool holographic blue light.",
+    "animaCaption": "Standing before a rotating blue planetary hologram on the dim command bridge in a slate-blue nano-mesh crop bustier and boyshorts, she lowers her headset with one hand and looks back over her bare shoulder with composed, faint shyness. Cool holographic blue light traces the curve of her back.",
+    "nsfwTokens": [
+      "blue mesh bustier",
+      "crop top",
+      "deep v-neck",
+      "black straps",
+      "blue boyshorts",
+      "bare back",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a sleek slate-blue nano-mesh deep-V crop bustier trimmed with black carbon-fiber straps and matching fitted boyleg shorts.",
+    "compositionIntent": "single"
   }
 }

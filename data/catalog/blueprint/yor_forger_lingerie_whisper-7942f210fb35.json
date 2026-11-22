@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_lingerie_whisper",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 3259,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yor_forger_lingerie_whisper",
     "characterId": "yor_forger",
@@ -14,7 +14,7 @@
     "location": "福杰家主卧双人床畔，梳妆台上放着针线盒与切好的苹果盘",
     "timeOfDay": "深夜暗杀任务执行完毕、卸妆沐浴之后",
     "lighting": "梳妆台暖黄镜前灯将深红衣物与雪白肌肤烘托得极为柔和，褪去了所有暗杀的血腥",
-    "camera": "medium shot, eye level, 主卧梳妆台平视中景，针线盒与苹果盘映衬卸下杀戮后的贤淑温存",
+    "camera": "medium shot, eye level",
     "mood": "致命杀手荆棘公主与温柔人妻母亲的绝妙反差，既危险妖娆又纯洁害羞",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,33 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting at wooden vanity stool",
-      "plate of freshly sliced apples",
-      "sewing needle and thread kit",
-      "mirror reflection",
-      "master bedroom",
-      "gentle domestic smile",
-      "soft blushing cheeks",
-      "warm lamp glow"
+      "sitting",
+      "vanity",
+      "mirror",
+      "hair down",
+      "sliced apples",
+      "sewing kit",
+      "gentle smile",
+      "blush",
+      "looking back",
+      "bedroom",
+      "warm lighting",
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Yor sits softly by her bedroom vanity after a late-night mission, setting aside her sewing kit and sliced apples with a serene, devoted housewife's warmth.",
-    "animaCaption": "Sitting at a bedroom vanity beside freshly sliced apples and a sewing kit, offering a serene, blushing smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In the warm lamp-lit master bedroom beside her vanity mirror, a neat sewing kit, and a plate of freshly cut apples, Yor turns from the stool with her thorn headband set aside and offers a flustered, tender housewife's smile.",
+    "animaCaption": "Seated on the wooden vanity stool beside a sewing kit and a plate of freshly sliced apples with her unbound hair draped behind her shoulders, she turns with a shy domestic blush smoothing the neckline of her scarlet ribbed-knit backless halter slip gown.",
+    "nsfwTokens": [
+      "red nightgown",
+      "knit dress",
+      "halterneck",
+      "backless",
+      "black lace",
+      "bare back",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a body-skimming scarlet soft-knit halter slip gown trimmed with subtle black floral lace and criss-cross open-back straps across her bare shoulders and back.",
+    "compositionIntent": "single"
   }
 }

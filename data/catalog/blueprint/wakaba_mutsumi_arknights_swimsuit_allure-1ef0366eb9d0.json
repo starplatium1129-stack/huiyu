@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3139,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T09:42:05.564102+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_swimsuit_allure",
     "characterId": "wakaba_mutsumi_arknights",
@@ -14,7 +14,7 @@
     "location": "海岸防风松林边缘的木质长椅",
     "timeOfDay": "傍晚",
     "lighting": "阴天傍晚清淡柔和的冷光，无多余阴影",
-    "camera": "极简留白侧景平视，松树枝丫、长椅与安静少女构成孤独而平和的画面",
+    "camera": "side view, eye level, medium shot",
     "mood": "沉默孤僻、寡言淡然、内向笨拙的真诚",
     "adult": true,
     "sampleRating": "R15",
@@ -37,27 +37,33 @@
       "introverted"
     ],
     "promptTokens": [
-      "sage green tankini",
-      "high neck",
-      "layered top",
-      "grey accents",
-      "boyshorts",
       "sitting",
       "wooden bench",
+      "legs together",
       "holding container",
-      "cucumber slices",
       "eating cucumber",
+      "quiet expression",
+      "wind",
       "pine forest",
-      "sea",
+      "ocean",
       "overcast",
       "twilight",
-      "wind",
-      "quiet expression"
+      "soft cool light",
+      "side view",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mutsumi Wakaba sitting quietly upon a weathered wooden bench situated between the sheltering shade of seaside pine trees and a calm, overcast ocean. She wears a restrained, high-neck double-layered tankini in earthy sage green and slate grey. Nibbling thoughtfully on a chilled cucumber slice from a small container, her stoic amber eyes meet the breeze with gentle, unspoken quietude.",
-    "animaCaption": "She sits quietly on a wooden bench at the edge of a coastal pine forest, holding a container of chilled cucumber slices. A light sea breeze stirs her long hair as she nibbles one.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Wakaba Mutsumi sits quietly with her legs neatly together on a weathered wooden bench bordering seaside pine woods at overcast dusk, wearing a restrained sage-green and slate-grey high-neck layered crop-top tankini and boy-cut swim shorts. Holding a small container of chilled cucumber slices in both hands as sea wind stirs her long green hair, she looks out calmly toward the grey-blue sea.",
+    "animaCaption": "Seated neatly with knees together on a weathered wooden bench by the coastal pines in a sage-green high-neck layered tankini and grey boyshorts, she nibbles a chilled cucumber slice from a plastic box in her hands. Soft overcast dusk light and a gentle sea breeze drift across the quiet shore.",
+    "nsfwTokens": [
+      "sage green tankini",
+      "high-neck crop top",
+      "layered swimsuit",
+      "grey swim shorts",
+      "boyshorts",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears an understated sage-green and slate-grey high-neck layered crop-top tankini paired with matching boy-cut swim shorts."
   }
 }

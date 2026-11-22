@@ -14,7 +14,7 @@
 | **PixAI 图片反推** | PixAI v1.0 权重 + Python/Torch CUDA 环境 + timm | `/api/interrogate/status` 确认就绪，对图片执行反推 |
 | **Anima 绘图** | 独立运行库（原生）或 ComfyUI + MiaoMiao 1.6 / Base v1.0 + 编码器与 VAE | 控制室确认状态，`/api/anima/status`，成功生成一张样张 |
 | **Krea 2 绘图** | Krea 2 Turbo + Qwen3-VL 4B 编码器 + VAE | `/api/creative/status`，成功生成一张样张 |
-| **本地视频** | ComfyUI + Wan 2.2 (5B) 或 MiniMax H3 权重与节点 | `/api/video/status`，生成并播放测试短片 |
+| **故事短片** | 原生运行环境、Wan 2.2 A14B 首尾帧模型或 MuseTalk 1.5 对白模型，以及导出用的 FFmpeg 和 ffprobe | 在「分镜视频」生成镜头并播放，桌面工作区可导出 MP4 |
 | **本地对话** | llama.cpp 受管环境 + GGUF 权重（或连接已有 Ollama） | 角色房间发送消息并正常收到流式回复 |
 | **中日翻译与配音** | M2M100 翻译模型 + GPT-SoVITS 或 VoxCPM2 环境与角色权重 | `/api/tts-status`，测试翻译与角色语音播放 |
 
@@ -126,6 +126,64 @@ npm run wf -- models:prepare-pixai --target-dir 'D:\HuiyuAI\PixAI'
 
 ---
 
+### 原生关键帧工坊
+
+从「更多 → 创作工具 → 创作项目」进入。在控制室选择本机原生绘图，在已有推理 Python 环境中准备好 Pillow。工坊默认选用 FLUX.1 Kontext dev Q4_K_M，也可选择 MiniMax H3-Image Q4_K_M。
+
+在 Windows 源码目录运行下面的命令，将示例路径替换为控制室显示的模型目录。已安装的桌面版可在资源目录 `gateway` 下使用同一相对路径。
+
+```powershell
+python -I -B tools/inference/prepare_keyframes.py --models-root "D:\HuiyuAI\inference\models"
+```
+
+默认准备两种模型，共约 39.6 GiB 权重，另含 CUDA 执行器。只准备 Kontext 时追加 `--model flux-kontext-dev`，只准备 H3-Image 时追加 `--model minimax-h3-image-q4`。下载中断后可重跑同一命令。编码器与 VAE 位于 `_shared`，执行器位于 `_runners/sd-cpp`。准备完成后点击工坊的「重新检测」。
+
+导入角色、场景原图并依次点击「用作参考」。填写共同的编辑指令，可在变化栏按行追加不同的表情或镜头描述。选择目标镜头后点击候选下的「用作首帧」或「用作尾帧」。镜头绑定的是选中素材的具体版本，追加新版后可单独替换其中一帧。
+
+### 用分镜生成原生 Wan 视频
+
+在首页「故事短片」下点击「开始创作」，或在「创作项目」打开「分镜视频」。默认模板使用首尾两张图，也可以只用首帧。选好镜头、运镜、动态幅度、分辨率和时长即可提交。锁定种子会将该数值和本次使用的素材版本一起保存。旧版工作区也会将这个模板直接送入原生推理。
+
+要准备 Wan 2.2 A14B 的两个 LightX2V 蒸馏专家（Q4_K_M）、UMT5 和 VAE，在源码或桌面资源的 `gateway` 目录运行下面的命令。高噪、低噪专家都已包含对应的蒸馏权重。
+
+```powershell
+python -I -B tools/inference/prepare_keyframes.py --models-root "D:\HuiyuAI\inference\models" --model wan2.2-i2v-a14b-gguf
+```
+
+16 GB 显卡可先选 480p、2 秒和快速档。两个专家合计采样 4 步，画质档用 8 步。每段视频都分块解码。两个尺寸档按画幅输出，横屏 16:9 的 480p 为 832×480。分镜首尾帧会按视频画幅居中裁切。
+
+在桌面工作区选中多个镜头后，可以为缺帧指定同一组角色、场景参考图和各帧指令。整批先补齐缺帧，再切换到 Wan。暂停队列会让当前镜头跑完，取消会中止指定镜头。可离开项目页面，完成的片段会写回镜头历史和素材库。遇到内存不足，队列会保留种子、时长和采样步数，缩小解码分块，自动重试一次。720p 会降到短边 480 像素，镜头记录显示实际尺寸。
+
+自定义模板使用本地运行目录 `workflows/studio-video/*.json`，每个文件放一个模板。下例保留首尾帧，新任务选「标准」时使用 8 步。每次提交保存模板版本、摘要、种子和输入版本。
+
+```json
+{
+  "id": "dialogue-cutaway",
+  "version": 1,
+  "label": "静候反应镜头",
+  "mode": "first-last",
+  "modelId": "wan2.2-i2v-a14b-gguf",
+  "steps": { "fast": 4, "standard": 8, "quality": 8 },
+  "tiledVae": true,
+  "defaultPrompt": "人物停顿片刻，视线缓缓转向画外。"
+}
+```
+
+### 角色对白与整片导出
+
+在「创作项目」导入角色图和 PCM WAV，在分镜中绑定首帧和配音，选择「角色对白」。一个镜头使用一段最长 15 秒的配音。MuseTalk 按语音生成嘴型和口周小动作，输出为 25 帧/秒。对于唇线与口腔颜色清楚的插画，绘遇会使用原画的线条颜色绘制嘴型。正面、单人且嘴部清晰的参考图更容易定位人脸。角色走动、转身或需要运镜的镜头可以继续选 Wan。
+
+在源码或桌面资源的 `gateway` 目录按需准备模型。把路径换成控制室显示的原生模型目录。
+
+```powershell
+python -I -B tools/inference/prepare_keyframes.py --models-root "D:\HuiyuAI\inference\models" --model musetalk-1.5
+python -I -B tools/inference/studio_export_assets.py --models-root "D:\HuiyuAI\inference\models"
+```
+
+第一条准备对白模型及共用的 Whisper 和 VAE，第二条准备 Real-ESRGAN AnimeVideo 和 RIFE 增强组件。普通拼接需要在桌面进程的环境中可以找到 `ffmpeg` 和 `ffprobe`。两项增强都在 CPU 上运行。超分将宽高各放大两倍，插帧将帧率加倍，按镜头分别处理以保留切镜点。缺少 RIFE 时，插帧采用 FFmpeg 的运动补偿。
+
+修改某个镜头的首帧、配音或设置后，可以只返工这一镜。新片生成成功且镜头仍是提交时的版本时自动替换。历史里仍可选用旧片段。桌面导出会锁定所选各镜头的当前片段、顺序和配音版本，导出期间可继续编辑。视频参数相同且关闭增强时直接复制视频流，参数混合时按首镜的画幅和帧率对齐，保留原比例。选用分镜配音时会补齐静音或裁到镜头末尾。没有另配语音的镜头保留片内原声。
+
 ### 翻译与角色语音
 
 - **M2M100 418M 翻译模型**：CPU 推理，约 1.94 GB。放置于 `Voice/models/translation/m2m100_418m`。
@@ -165,6 +223,7 @@ npm run wf -- models:check --json --verify-hashes
 使用 OpenAI 的房间工具或联网检索时，选表中的 `gpt-6-luna` 预设。绘遇房间目前通过 Chat Completions 发送请求，而 GPT‑6.2 Astra 的工具调用需要 Responses API。手动填写 `gpt-6.2-astra` 时，请关闭「房间工具」和「联网检索」。[OpenAI 官方接入说明](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra#migration-quickstart)
 
 ### 本机连接选项
+- **ChatGPT 订阅额度（Sign in with ChatGPT）**：在角色房间的聊天设置中选择「ChatGPT」，点击 **Continue with ChatGPT**，在系统浏览器完成授权。绘遇会列出该账号可用的模型，使用订阅额度处理聊天，并支持切换账号、房间工具与联网检索。额度到顶时会暂停发送，可打开「管理用量」，确认后点「恢复发送」。凭据由本机网关保存，Windows 上使用 DPAPI 加密。使用条款和预览限制见 [OpenAI 接入说明](https://developers.openai.com/siwc/token-sharing-open-source)。
 - **绘遇受管 llama.cpp**：在控制室直接一键准备，免手动配置端口或密钥。
 - **已有 Ollama**：服务默认运行在 `http://127.0.0.1:11434/v1`，无需填 Key。
 - **已有 LM Studio**：在 Developer 页面启动服务，默认 `http://127.0.0.1:1234/v1`。

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3122,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "muelsyse_arknights_swimsuit_allure",
     "characterId": "muelsyse_arknights",
@@ -14,7 +14,7 @@
     "location": "生态温室穹顶下的热带水生植物花园无边泳池",
     "timeOfDay": "上午艳阳",
     "lighting": "透过温室玻璃穹顶的明澈阳光在清澈泳池中打出无数道跳跃的波光光网，水珠在空气中如钻石般耀眼",
-    "camera": "cowboy shot, eye level, dynamic water splash capture, joyful playful perspective",
+    "camera": "eye level, cowboy shot",
     "mood": "灵动俏皮、水波烂漫与不羁的亲近依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -39,27 +39,33 @@
       "greenhouse"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "muelsyse (arknights)",
-      "blonde hair",
-      "pointed ears",
-      "green eyes",
-      "water blue bikini",
-      "half submerged in pool",
-      "splashing water with hands",
-      "floating water drops",
-      "bright green eyes",
-      "mischievous wink",
-      "tropical pool",
+      "wading",
+      "in water",
+      "splashing",
+      "water orb",
+      "water drop",
+      "wink",
+      "playful",
+      "wet hair",
+      "swimming pool",
+      "greenhouse",
       "sunbeams",
-      "depth of field",
-      "cinematic lighting"
+      "morning",
+      "eye level",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Muelsyse from Arknights wades through a tropical pool in her shimmering water-blue bikini, playfully splashing crystal water toward the viewer with floating water orbs hovering around her fingertips.",
-    "animaCaption": "Crystal ripples and dancing water droplets sparkle brilliantly around the elven researcher in her sunlit haven.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Muelsyse wades waist-deep through a tropical greenhouse infinity pool in her gradient cyan halter bikini trimmed with glass beads and a translucent pareo. Flicking both hands across the water to spin clear orbs and spray droplets toward the viewer, she tilts her head with a teasing wink beneath bright morning sunbeams.",
+    "animaCaption": "Waist-deep in the sunlit greenhouse pool in her shimmering cyan halter bikini, she flicks clear water orbs into the air and splashes toward the camera with a mischievous wink. Morning beams through the glass dome sparkle across every floating droplet.",
+    "nsfwTokens": [
+      "cyan bikini",
+      "halterneck",
+      "sheer fabric",
+      "beads",
+      "translucent pareo",
+      "wet skin",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a shimmering gradient cyan sheer-layered halter bikini trimmed with dewdrop glass beads and a translucent floating pareo."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3517,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "tokisaki_kurumi_lingerie_whisper",
     "characterId": "tokisaki_kurumi",
@@ -14,7 +14,7 @@
     "location": "刻刻帝时之结界内，无数巨大悬空的古老座钟与飞舞的赤黑羽毛",
     "timeOfDay": "时间的夹缝维度",
     "lighting": "血月般猩红的背景光芒与金色时计光纹交织，在哥特蕾丝裙上投下瑰丽阴影",
-    "camera": "dutch angle, wide shot, 倾斜电影感构图，巨大悬空座钟与赤黑羽毛强化戏剧张力",
+    "camera": "dutch angle, wide shot",
     "mood": "梦魇精灵的致命魅惑与危险魔性，华丽哥特式的狂乱浪漫",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,32 @@
       "wide_shot"
     ],
     "promptTokens": [
-      "wide shot",
+      "reclining",
+      "chaise lounge",
+      "covering own eye",
+      "seductive smile",
+      "smirk",
+      "giant clock",
+      "gears",
+      "feathers",
+      "red velvet",
+      "dark background",
+      "red lighting",
       "dutch angle",
-      "perched atop giant suspended Roman numeral clock face",
-      "swirling dark crimson feathers",
-      "floating golden gears",
-      "Zafkiel time barrier",
-      "gothic dimension",
-      "seductive predatory smirk",
-      "dramatic shadow"
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kurumi lounges atop the rim of a gigantic suspended clock face inside the Zafkiel dimension, surrounded by floating golden gears and falling black feathers as she casts a lethal, seductive glance.",
-    "animaCaption": "Perched atop a massive floating clock face amid dark swirling feathers, offering a deadly, seductive smirk.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen in a tilted wide angle inside the shadowy Zafkiel clock dimension filled with colossal Roman-numeral faces, floating gears, and falling crimson feathers, Kurumi lounges on a gothic velvet chaise with one hand near her eye and a lethal, teasing smirk.",
+    "animaCaption": "Reclining languidly across a crimson velvet gothic chaise amid giant suspended clocks, golden gears, and swirling red-black feathers, she shields one eye with a predatory smirk wearing a crimson-and-black rose-lace corseted babydoll slip.",
+    "nsfwTokens": [
+      "red babydoll",
+      "black corset",
+      "black lace",
+      "see-through",
+      "cleavage",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears an opulent crimson-and-black gothic corseted babydoll slip layered with black rose lace over a boned waist cincher and a sheer trailing chiffon hem.",
+    "compositionIntent": "single"
   }
 }

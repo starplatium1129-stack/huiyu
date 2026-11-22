@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "frieren/sfw_archive_travel_robe",
+  "revision": 1,
+  "sortOrder": 3912,
+  "createdAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "sfw_archive_travel_robe",
+      "characterId": "frieren",
+      "name": "象牙白金边法袍与墨绿短披肩",
+      "prose": "An ivory wool robe closes at the throat with narrow antique-gold braid at the cuffs. A deep green capelet is pinned with a flat brass leaf brooch, with brown leather boots beneath the robe.",
+      "tokens": [
+        "white robe",
+        "high collar",
+        "long sleeves",
+        "gold trim",
+        "capelet",
+        "green cape",
+        "brooch",
+        "boots",
+        "brown footwear"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

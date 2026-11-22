@@ -37,7 +37,7 @@
   /* 2026-08-28 审计修复：生成中舞台不再被 step-4 隐藏——结果态的隐藏由组件
      v-show="!displayResultUrl" 承担；生成期间 is-generating 态（魔法阵 + 进度环）
      是全引擎唯一进度源，Anima 场景模式不再黑盒等待。 */
-  body:has(.pb.focus-mode) .nav,
+  :root:not(.aics-desktop-shell) body:has(.pb.focus-mode) .nav,
   body:has(.pb.focus-mode) .site-footer,
   .pb.focus-mode .pb-header,
   .pb.focus-mode .col-left, .pb.focus-mode .history-wrap,

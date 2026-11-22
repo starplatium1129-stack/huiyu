@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3143,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "hoshiguma_arknights_swimsuit_allure",
     "characterId": "hoshiguma_arknights",
@@ -14,7 +14,7 @@
     "location": "惊涛骇浪卷起数米高巨浪的极限冲浪海滩",
     "timeOfDay": "上午盛夏",
     "lighting": "强劲透亮的高明度盛夏阳光照耀着飞溅的碎浪，在古铜微汗的结实腹肌与结实肩背上勾出饱满高光",
-    "camera": "full shot, low angle tracking shot, overwhelmingly powerful and joyous atmosphere",
+    "camera": "low angle, full body",
     "mood": "豪迈不羁、可靠至极与如山岳般让人安心的巨大包容感",
     "adult": true,
     "sampleRating": "R15",
@@ -37,25 +37,33 @@
       "boisterous_laugh"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "hoshiguma (arknights)",
-      "long green hair",
-      "single oni horn",
-      "forest green athletic bikini",
-      "carrying large surfboard on shoulder",
-      "wading into huge ocean breakers",
-      "tall muscular frame",
-      "chiseled abs",
-      "boisterous open laugh",
-      "blazing summer sun",
-      "depth of field",
-      "cinematic lighting"
+      "wading",
+      "carrying surfboard",
+      "surfboard on shoulder",
+      "looking back",
+      "laughing",
+      "open mouth",
+      "giant waves",
+      "splashing",
+      "beach",
+      "ocean",
+      "wind",
+      "bright sunlight",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Hoshiguma wades fearlessly into massive crashing breakers in her athletic forest-green bikini, effortlessly balancing a heavy surfboard on her muscular shoulder with an infectious, booming laugh.",
-    "animaCaption": "Towering green breakers shatter into glittering sea spray as the mighty Oni strides joyfully into the surf.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Hoshiguma strides fearlessly into rolling white ocean breakers in a forest-green and charcoal athletic bikini with reinforced straps, effortlessly balancing a heavy surfboard across one broad shoulder. Turning back with a roaring, cheerful laugh as sea wind whips her long green hair, she shines under intense summer sunlight and exploding surf.",
+    "animaCaption": "Striding barefoot into knee-deep crashing breakers in a forest-green athletic bikini, she balances a heavy carbon-fiber surfboard effortlessly on one shoulder and turns back with a booming laugh. Bright summer sun catches droplets along her tall, toned shoulders and towering waves.",
+    "nsfwTokens": [
+      "green bikini",
+      "sports bikini",
+      "charcoal trim",
+      "athletic straps",
+      "toned abs",
+      "muscular female",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a forest-green and charcoal athletic two-piece bikini with reinforced elastic straps designed for heavy surf."
   }
 }

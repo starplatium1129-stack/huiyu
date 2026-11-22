@@ -7,7 +7,6 @@ use super::{
 };
 use futures_util::{StreamExt, stream as futures_stream};
 use serde::Deserialize;
-use sha2::{Digest, Sha256};
 use std::{
     collections::VecDeque,
     sync::{Mutex, Weak},
@@ -16,6 +15,8 @@ use std::{
 use tokio::sync::{Semaphore, oneshot, watch};
 use tokio_util::sync::{CancellationToken, DropGuard};
 use uuid::Uuid;
+
+pub(crate) mod tailnet;
 
 const REPLY_WINDOW: Duration = Duration::from_secs(300);
 const REPLY_KEEP_ALIVE: Duration = Duration::from_secs(60);
@@ -75,7 +76,10 @@ impl Transport {
 }
 
 #[derive(Default)]
-pub(super) struct Connections(Mutex<Vec<Weak<Inbox>>>);
+pub(super) struct Connections {
+    inboxes: Mutex<Vec<Weak<Inbox>>>,
+    tailnet: Mutex<Option<tailnet::Peer>>,
+}
 
 struct Inbox {
     transport: Transport,
@@ -97,12 +101,18 @@ struct Pending {
     deadline: Instant,
     listed_at: Option<Instant>,
     question: Value,
-    answer: oneshot::Sender<String>,
+    drawing_allowed: bool,
+    answer: oneshot::Sender<Answer>,
+}
+
+struct Answer {
+    text: String,
+    drawing: Option<serde_json::Map<String, Value>>,
 }
 
 struct Receipt {
     key: Uuid,
-    digest: [u8; 32],
+    digest: String,
     deadline: Instant,
 }
 
@@ -159,7 +169,7 @@ impl Inbox {
 
 impl Connections {
     fn active(&self) -> Option<Arc<Inbox>> {
-        self.0
+        self.inboxes
             .lock()
             .unwrap()
             .iter()
@@ -173,7 +183,9 @@ impl Connections {
             })
     }
 
-    pub(super) fn submit(&self, character: String, input: Input) -> Result<Response> {
+    pub(super) fn submit(
+        &self, character: String, input: Input, drawing_allowed: bool,
+    ) -> Result<Response> {
         let inbox = self
             .active()
             .ok_or_else(|| Error::new(503, "MUSE_OFFLINE", "请先开启绘遇的 Muse 连接"))?;
@@ -200,6 +212,7 @@ impl Connections {
         let question = json!({
             "requestKey":key.to_string(), "conversationId":format!("desktop/{character}/{}", input.session_id),
             "character":character, "text":text, "messages":input.messages,
+            "drawingAllowed":drawing_allowed,
             "timestamp":timestamp, "expiresAt":timestamp + REPLY_WINDOW.as_millis() as u64
         });
         if question.to_string().len() > 128 * 1024 {
@@ -220,6 +233,7 @@ impl Connections {
                 deadline,
                 listed_at: None,
                 question,
+                drawing_allowed,
                 answer,
             });
         }
@@ -234,23 +248,29 @@ impl Connections {
         );
         let tokens = futures_stream::unfold(Some((turn, reply, heartbeat)), |state| async move {
             let (turn, mut reply, mut heartbeat) = state?;
-            let event = tokio::select! {
+            let events = tokio::select! {
                 biased;
                 result = &mut reply => match result {
-                    Ok(Ok(content)) => Ok(Event::Token { content }),
-                    Ok(Err(_)) => Err(Error::stream("MUSE_OFFLINE", "Muse 连接已关闭")),
-                    Err(_) => Err(Error::stream(
+                    Ok(Ok(Answer { text, drawing })) => {
+                        let mut events = vec![Ok(Event::Token { content: text })];
+                        if let Some(drawing) = drawing {
+                            events.push(Ok(Event::Drawing { drawing }));
+                        }
+                        events
+                    }
+                    Ok(Err(_)) => vec![Err(Error::stream("MUSE_OFFLINE", "Muse 连接已关闭"))],
+                    Err(_) => vec![Err(Error::stream(
                         "MUSE_TIMEOUT",
                         "等待 Muse 超时，请确认 Muse 正在轮询桌面收件箱",
-                    )),
+                    ))],
                 },
                 _ = heartbeat.tick() => {
-                    return Some((Ok(Event::KeepAlive), Some((turn, reply, heartbeat))));
+                    return Some((vec![Ok(Event::KeepAlive)], Some((turn, reply, heartbeat))));
                 }
             };
             drop(turn);
-            Some((event, None))
-        });
+            Some((events, None))
+        }).flat_map(futures_stream::iter);
         let events = futures_stream::iter([Ok(Event::Meta {
             model: "Muse".into(),
             queue_wait_ms: 0,
@@ -292,7 +312,7 @@ pub(crate) fn routes(
         poll_slots: Semaphore::new(4),
     });
     if let Some(chat) = &app.chat {
-        let mut connections = chat.muse.0.lock().unwrap();
+        let mut connections = chat.muse.inboxes.lock().unwrap();
         connections.retain(|entry| entry.upgrade().is_some_and(|i| !i.cancel.is_cancelled()));
         connections.push(Arc::downgrade(&inbox));
     }
@@ -336,8 +356,9 @@ async fn pending(
     Ok(Json(
         json!({"ok":true, "items":items, "serverNow":crate::host::now_ms(), "operations":{
             "reply":format!("POST {reply}"), "replyBody":{"requestKey":"来信编号","text":"角色回复"},
+            "drawing":"来信 drawingAllowed 为 true 且用户要出图时，可随回复提交 drawing（与出图批次相同的 ids 或 items 参数，省略 requestKey）。绘遇在原对话中提交并展示这批图。",
             "inboxWaitSeconds":if slot.is_some() {wait.as_secs()} else {0},
-            "usage":"桌面与 QQ 独立 GET ?wait=25，空列表立即续接；按 conversationId 和 messages 回答并尽快 POST（同 requestKey 仅生成一次，重试沿用原文）。"
+            "usage":"GET ?wait=25，空列表立即续接；按 conversationId 和 messages 回答并尽快 POST。重试沿用同一个 requestKey 和完整回复内容。"
         }}),
     ))
 }
@@ -347,6 +368,7 @@ async fn pending(
 struct Reply {
     request_key: String,
     text: String,
+    drawing: Option<serde_json::Map<String, Value>>,
 }
 
 async fn accept(
@@ -355,14 +377,25 @@ async fn accept(
     Json(reply): Json<Reply>,
 ) -> Result<Json<Value>> {
     running(&app)?;
+    if inbox.cancel.is_cancelled() {
+        return Err(Error::new(503, "MUSE_OFFLINE", "Muse 连接已关闭"));
+    }
     let key = Uuid::parse_str(&reply.request_key).map_err(|_| Error::invalid("来信编号无效"))?;
     let text = reply.text.trim();
     if text.is_empty() || text.chars().count() > 12000 {
         return Err(Error::invalid("Muse 文字回复须为 1 至 12000 字"));
     }
+    if reply.drawing.as_ref().is_some_and(|drawing| {
+        drawing.is_empty()
+            || ["requestKey", "action", "preview"]
+                .iter()
+                .any(|key| drawing.contains_key(*key))
+    }) {
+        return Err(Error::invalid("Muse 绘图请提交批次参数，省略 requestKey、action 和 preview"));
+    }
     let expired = || Error::new(410, "MUSE_TURN_EXPIRED", "这条桌面提问已停止或到期");
     let now = Instant::now();
-    let digest: [u8; 32] = Sha256::digest(text.as_bytes()).into();
+    let digest = crate::storage::json_fingerprint(&json!([text, &reply.drawing]));
     let mut state = inbox.state.lock().unwrap();
     state.receipts.retain(|r| r.deadline > now);
     if let Some(receipt) = state.receipts.iter().find(|r| r.key == key) {
@@ -379,10 +412,15 @@ async fn accept(
             .iter()
             .position(|p| p.key == key && p.deadline > now)
             .ok_or_else(expired)?;
+        if reply.drawing.is_some() && !state.pending[index].drawing_allowed {
+            return Err(Error::new(
+                403, "MUSE_DRAWING_DISABLED", "这条桌面提问尚未启用出图，请只回复文字",
+            ));
+        }
         let pending = state.pending.remove(index);
         pending
             .answer
-            .send(text.to_owned())
+            .send(Answer { text: text.to_owned(), drawing: reply.drawing })
             .map_err(|_| expired())?;
         if let Some(listed) = pending.listed_at {
             eprintln!(

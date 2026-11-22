@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_sewing_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2417,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "shiiba_tsumugi_sewing_box",
     "characterId": "shiiba_tsumugi",
@@ -16,23 +16,31 @@
     "action": "颜色已经选好了，只差把它整理平整",
     "timeOfDay": "morning",
     "lighting": "soft daylight",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "耐心",
-    "promptProse": "At a low table in the living room, Tsumugi carefully untangles a ribbon taken from a small sewing box.",
+    "promptProse": "Sitting comfortably beside a low wooden table in the bright morning living room in her red plaid casual shirt, Tsumugi has an open wooden sewing box resting nearby with spools of thread and small scissors neatly arranged inside. She holds a selected length of smooth ribbon between both hands, patiently working a stubborn knot loose with careful fingertips. Soft morning daylight from the side window illuminates the draped fabric and her calm concentration.",
     "promptTokens": [
-      "living room",
+      "sitting",
       "low table",
-      "sewing box",
+      "box",
+      "ribbon",
       "holding ribbon",
-      "daylight",
+      "looking down",
+      "focused",
+      "living room",
+      "window light",
+      "morning",
+      "indoors",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated at the low living-room table beside an open sewing box, Tsumugi gently works a knot out of a smooth ribbon between both hands. Soft morning window light warms her red plaid shirt and the neatly arranged spools beside her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1737,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_01",
     "title": "桃乐丝 · 方舟地表废墟天使羽翼主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间粉白礼服大开露双峰，白羽翼微展，紫眸含泪狂气绝望主动沉腰",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,21 +30,21 @@
       "angel_wings",
       "open_clothes"
     ],
-    "promptProse": "She straddles the viewer's lap among the broken pillars, cupping their face with both hands, her opened gown and wings lit through the ruined cathedral roof.",
+    "promptProse": "Among the shattered marble pillars of a ruined surface cathedral at night, Dorothy straddles her partner's lap with her white-and-pink pearl-trimmed corset gown unlaced wide across her bare breasts and her white wings partially spread. Cupping his face in both hands as tear-bright eyes fix on him in feverish longing, she is illuminated by cool silver moonlight from above.",
     "promptTokens": [
-      "ruins",
-      "marble pillars",
-      "white and pink gown",
-      "open clothes",
-      "topless",
-      "white wings",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
       "straddling",
-      "tears",
-      "moonlight",
-      "velvet waist panel",
-      "pearl buttons",
-      "on lap",
       "hands on another's face",
+      "white wings",
+      "tears",
+      "marble pillars",
+      "cathedral ruins",
+      "moonlight",
+      "night",
+      "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -53,14 +53,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "white corset dress",
+      "pink trim",
+      "pearls",
+      "open clothes",
+      "topless",
+      "nipples",
+      "high-slit dress",
+      "sex"
+    ],
+    "nsfwProse": "Her strapless white-and-pink pearl-trimmed corset gown is unlaced and opened wide to bare her breasts as her white wings spread slightly and she rides astride her partner.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "Both hands cup the viewer's face while her opened gown and wings catch the moonlight."
+    "animaCaption": "Straddling her partner's lap among broken marble pillars with her pearl-trimmed white-and-pink corset gown opened wide to bare her chest, she cups their face in both hands with tear-streaked intensity as her white wings half-open behind her. Silver moonlight spills through the ruined roof.",
+    "compositionIntent": "group"
   }
 }

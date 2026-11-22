@@ -4,7 +4,7 @@ import { useMotionPreference } from './useMotionPreference'
 
 const TOP_REVEAL_MARGIN = 12
 
-export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => string, expanded: () => boolean) {
+export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => string, expanded: () => boolean, desktop: boolean) {
   const hidden = ref(false), scrolled = ref(false), progress = ref<HTMLElement | null>(null)
   const reduced = useMotionPreference()
   let frame = 0, attached = false
@@ -22,7 +22,7 @@ export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => strin
     scrolled.value = !pinned && y > 20
     // Reveal throughout the opening range, including a restored near-top
     // position; do not strand a previously hidden header a few pixels from zero.
-    if (pinned || expanded() || keyboardFocus || pointerHeld || y <= 20) hidden.value = false
+    if (desktop || pinned || expanded() || keyboardFocus || pointerHeld || y <= 20) hidden.value = false
     else if (y > 60) hidden.value = true
     if (progress.value) progress.value.style.transform = `scaleX(${pinned ? 0 : Math.min(1, y / Math.max(1, scrollRange))})`
   }
@@ -58,7 +58,7 @@ export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => strin
     attached = true
     window.addEventListener('scroll', scroll, { passive: true })
     window.addEventListener('resize', resize)
-    window.addEventListener('pointermove', onPointerMove, { capture: true, passive: true })
+    if (!desktop) window.addEventListener('pointermove', onPointerMove, { capture: true, passive: true })
     document.documentElement.addEventListener('pointerleave', releasePointer)
     window.addEventListener('blur', releasePointer)
     document.addEventListener('keydown', onKey, true)

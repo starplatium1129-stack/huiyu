@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_sofa_armrest_bent_over_prone",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1319,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "action": "双膝跪在沙发上俯身贴扶手，拘束服解带单手探入自抚花瓣，回头咬唇娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+    "camera": "dutch angle, cowboy shot",
     "category": "私密承载",
     "characterId": "cc_code_geass",
     "coverageTags": [
@@ -25,22 +25,23 @@
     "location": "昏暗客厅真皮长沙发扶手旁",
     "mood": "受力沉沦、唯美自抚",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Her buckled white straitjacket is unfastened and parted while her white leggings are pulled down to bare her hips as she kneels over the sofa armrest touching herself.",
     "outfitId": "official_straitjacket",
-    "promptProse": "Kneeling on both knees on the sofa, she leans over its armrest with her jacket open, one hand gripping the leather while the other rests between her thighs. A single warm floor lamp lights her back.",
+    "promptProse": "Kneeling on both knees atop a dark leather sofa in a shadowed living room at night, C.C. bends forward over the armrest with her white straitjacket straps unbuckled and white leggings pulled down. Gripping the armrest with one hand while masturbating between her thighs with the other, she glances back over her shoulder biting her lip under a single warm floor lamp.",
     "promptTokens": [
-      "living room",
-      "leather sofa",
-      "white straitjacket",
-      "unbuckled straps",
-      "bent over",
-      "masturbation",
-      "looking back",
       "kneeling",
-      "hand on sofa",
-      "hand between legs",
+      "bent over",
+      "leather sofa",
+      "hand on armrest",
+      "looking back",
+      "biting lip",
+      "heavy blush",
+      "living room",
       "floor lamp",
-      "warm light"
+      "warm lighting",
+      "night",
+      "dutch angle",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -61,6 +62,17 @@
     ],
     "timeOfDay": "深夜",
     "title": "C.C. · 沙发扶手前的拘束服解带自抚",
-    "animaCaption": "One hand grips the armrest; the other stays between her thighs."
+    "animaCaption": "Kneeling on the leather sofa bent forward over its armrest with her white straitjacket unbuckled and white leggings tugged down, she grips the leather with one hand while slipping the other between her thighs and looking back with bitten lip. A single warm floor lamp illuminates the curve of her back.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white straitjacket",
+      "unbuckled straps",
+      "open jacket",
+      "leggings pull",
+      "bare ass",
+      "pussy",
+      "masturbation",
+      "hand between legs"
+    ]
   }
 }

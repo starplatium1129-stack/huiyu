@@ -209,8 +209,6 @@
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
             <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : currentSceneTitle || '画布' }}</strong><span v-if="currentSceneTitle && !displayResultUrl">场景参考 · 非本次生成</span></div><button v-if="currentSceneTitle || displayResultUrl" class="btn btn-quiet btn-sm" type="button" disabled><ArchiveIcon name="scene" />更换场景</button></div>
             <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt :character="activeCharacterId" /><p role="status">正在准备画布…</p></div>
-            <DirectorResultTools placeholder class="director-canvas-loading-actions" :has-result="Boolean(displayResultUrl)" :generation-busy="generationBusy" :has-prev-result="!!prevResult"
-              :result-archived="resultArchived" :saving-result="savingResult" :result-temporary="resultTemporary" :capturing-scene="capturingScene" aria-hidden="true" inert />
           </section>
         </template></Suspense>
 
@@ -322,7 +320,6 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import '@/assets/css/director/components/DirectorStagePanel.css'
-import DirectorResultTools from '@/components/director/DirectorResultTools.vue'
 import { computed, defineAsyncComponent, nextTick, ref, shallowRef, type Component } from 'vue'
 import { DropdownMenuItem } from 'reka-ui'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'

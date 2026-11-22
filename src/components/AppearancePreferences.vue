@@ -112,8 +112,7 @@ function onClosed() {
 function backdropClose(event: MouseEvent) {
   if (isBackdropClick(event, dialog.value)) close()
 }
-function keyboardHelp() { void open('keyboard') }
-function appearanceOpen(event: Event) { void open((event as CustomEvent).detail?.section === 'keyboard' ? 'keyboard' : 'appearance') }
+defineExpose({ open })
 function keyboard(event: KeyboardEvent) {
   const current = dialog.value
   if (current?.open) {
@@ -128,8 +127,6 @@ function keyboard(event: KeyboardEvent) {
 watch(() => route.fullPath, () => { if (request.value) close(false) }, { flush: 'sync' })
 onMounted(() => {
   if (props.launcherOnly) return
-  window.addEventListener('atelier:keyboard-help', keyboardHelp)
-  window.addEventListener('atelier:appearance-open', appearanceOpen)
   window.addEventListener('keydown', keyboard, true)
 })
 onUnmounted(() => {
@@ -137,8 +134,6 @@ onUnmounted(() => {
   focusReturn = null
   opening++
   if (props.launcherOnly) return
-  window.removeEventListener('atelier:keyboard-help', keyboardHelp)
-  window.removeEventListener('atelier:appearance-open', appearanceOpen)
   window.removeEventListener('keydown', keyboard, true)
 })
 </script>

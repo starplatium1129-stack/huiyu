@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_bedroom_bed_mating_press_creampie",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1198,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "sachi_r18_bedroom_bed_mating_press_creampie",
     "title": "小岭幸 · 纯白床榻半透白丝绸吊带与纯真顺从深层自抚",
@@ -19,7 +19,7 @@
     "action": "侧卧大床半透白真丝吊带若隐若现，双手托胸与探入下身深层自抚，双眸含泪顺从微笑娇喘",
     "timeOfDay": "深夜",
     "lighting": "床头柔和暖白壁灯洒在纯白床单与半透明白纱轻裹雪肌上的纯洁浪漫光晕",
-    "camera": "intimate wide shot, reclining side perspective, looking across silk blankets",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "bedroom",
@@ -36,24 +36,22 @@
       "teary_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Sachi reclines on her side, cupping one breast while her other hand moves beneath the sheer camisole hem. Her legs curl together on the white sheets.",
+    "promptProse": "Curled gently on her side across the soft white sheets of her dorm bed at night, Sachi wears only a sheer white lace-frilled silk camisole that clings delicately over her bare breasts and slender figure. With her bare legs tucked close together and her cheek pressed to the pillow, she cups her chest with one hand while sliding her other hand beneath the translucent hem to touch herself, smiling through happy, devoted tears. Warm bedside wall lamplight bathes the white bedding in a tender glow.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "white camisole",
-      "see-through",
+      "lying",
       "on side",
       "curled up",
-      "masturbation",
-      "tears",
+      "hand on own breast",
+      "teary eyes",
+      "heavy blush",
+      "gentle smile",
+      "bed",
       "white sheets",
+      "pillow",
       "bedroom",
-      "lamplight",
-      "fine frills",
-      "lying on side",
-      "hand on breast",
-      "curled legs"
+      "warm lighting",
+      "from side",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -61,8 +59,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her legs curl together beneath the sheer camisole hem."
+    "nsfwTokens": [
+      "white camisole",
+      "frills",
+      "lace trim",
+      "see-through",
+      "bare shoulders",
+      "bare legs",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "nsfwProse": "She wears a gossamer sheer white frilled silk camisole clinging transparently over her breasts and nipples as she curls her bare legs and masturbates beneath the hem.",
+    "animaCaption": "Curled on her side across the white dorm bed in a sheer white frilled camisole, Sachi cups her breast with one hand and masturbates beneath the translucent hem with the other. Warm bedside lamplight illuminates her tearful, devoted smile and bare curled legs.",
+    "compositionIntent": "single"
   }
 }

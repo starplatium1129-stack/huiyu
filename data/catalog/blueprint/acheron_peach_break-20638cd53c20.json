@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_peach_break",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2059,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "acheron_peach_break",
     "title": "黄泉 · 旅途中的桃子",
@@ -15,24 +15,32 @@
     "action": "坐着观察手里的桃子",
     "timeOfDay": "上午",
     "lighting": "小店檐下柔和日光",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "平静",
-    "promptProse": "On a bench outside a small shop, Acheron studies a peach in her palm, beads of water catching the soft morning light.",
+    "promptProse": "Seated quietly on a weathered wooden bench outside a small roadside shop that has just opened for the morning, Acheron cradles a fresh peach in her open palm in her long dark violet coat. She bows her head slightly to watch clear water droplets gleaming across the fruit's skin beneath the shaded shop awning. Soft morning sunlight spills along the quiet street behind her, edging her sleeves and the wooden storefront frame.",
     "promptTokens": [
-      "sitting on bench",
-      "holding peach",
+      "sitting",
+      "bench",
+      "holding fruit",
+      "peach",
       "water droplets",
-      "shopfront",
-      "morning light",
+      "looking down",
+      "storefront",
+      "awning",
+      "street",
+      "outdoors",
+      "morning",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "She studies the peach resting in her palm.",
+    "animaCaption": "Seated on the wooden bench beneath the shop awning, Acheron holds a dewy peach in her open palm and gazes quietly down at the droplets on its skin. Soft morning daylight warms the quiet storefront and edges her dark coat.",
     "characterId": "acheron",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

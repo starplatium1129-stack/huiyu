@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_bedroom_soles_foreshortening",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "action": "半坐床头用俄语低语，指尖绕着银色发梢",
     "adult": true,
     "adultArtistHint": "@rella",
     "animaStyleHint": "",
-    "camera": "medium shot, eye level",
+    "camera": "eye level, medium shot",
     "category": "成人",
     "characterId": "alisa_mikhailovna_kujou",
     "coverageTags": [
@@ -23,25 +23,33 @@
     "location": "艾莉的北欧风卧室床铺",
     "mood": "傲娇私密",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "She is nude beneath a crisp white bedsheet drawn loosely around her torso, leaving her bare shoulders, collarbone, and feet uncovered.",
+    "nsfwTokens": [
+      "nude",
+      "sheet grab",
+      "covered by sheet",
+      "bare shoulders",
+      "collarbone",
+      "bare back",
+      "barefoot"
+    ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Propped against the headboard with a sheet around her, she winds a lock of hair around one finger and blushes toward the viewer. Moonlight through the blinds stripes the white bedding beside the warm bedside lamp.",
+    "promptProse": "Propped upright against her bedroom headboard at night, Alya sits nude beneath a white bedsheet drawn loosely around her torso, winding a lock of silver hair around one finger with a quiet blush. Cool moonlight striped through the window blinds blends with a warm bedside lamp across the pale bedding.",
     "promptTokens": [
-      "bedroom",
-      "bed sheet",
       "sitting",
-      "holding hair",
+      "on bed",
+      "leaning on headboard",
+      "twirling hair",
       "blush",
-      "moonlight",
-      "night",
-      "medium shot",
-      "headboard",
-      "hair twirling",
       "looking at viewer",
+      "bedroom",
+      "white sheets",
       "window blinds",
-      "striped light",
-      "bedside lamp"
+      "moonlight",
+      "bedside lamp",
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -68,6 +76,7 @@
       "hair_down"
     ],
     "identityProseOverride": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with loose long silver hair, blue eyes and no hair ribbons.",
-    "animaCaption": "Propped against the headboard, she winds a lock of hair around one finger."
+    "animaCaption": "Propped against the headboard with a white sheet gathered loosely over her nude body, she winds a lock of hair around one fingertip and glances toward the viewer with a soft blush. Striped moonlight through the blinds meets the warm bedside lamp across the sheets.",
+    "compositionIntent": "single"
   }
 }

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_hotpot_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 539,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:12:34.754508900+00:00",
   "data": {
     "action": "举筷捞起热汤里的菜",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉日常",
     "characterId": "chen_arknights",
     "coverageTags": [
@@ -15,33 +15,39 @@
     ],
     "description": "热气腾腾的九宫格牛油火锅桌前，陈熟练地用筷子捞起烫得刚刚好的脆毛肚放进你的香油碟里。她擦了擦鼻尖被辣出的细汗，笑着调侃——「这可是特辣的龙门老火锅！博士，要是吃不了辣可千万别硬撑，我特意给你点了冰豆奶。」",
     "id": "chen_arknights_hotpot_night",
-    "lighting": "warm restaurant glow",
+    "lighting": "桌灯把铜锅和深青花衫照暖，蒸汽在后排木隔扇前透亮",
     "location": "龙门街边小馆",
     "mood": "难得的放松",
     "negativeTokens": [],
     "outfitId": "street_gourmet_casual",
-    "promptProse": "She lifts tripe from the broth with her chopsticks and lowers it toward the viewer's dipping dish across the table. Warm restaurant light shines through the steam as she smiles.",
+    "promptProse": "Across the table in a narrow Lungmen hotpot shop, Ch’en lowers a curled piece of honeycomb tripe toward the guest's shallow oil dish with a single pair of dark chopsticks. Her other hand holds a cold glass of soy milk, with droplets beading beneath her fingers. The open teal camp shirt has small red leaf motifs and a soft white ribbed layer beneath. A divided copper pot fills the near corner of the table. Warm light catches the steam, and the wooden dividers and other empty tables run into the far side of the restaurant.",
     "promptTokens": [
-      "restaurant",
+      "sitting",
       "hotpot",
-      "chopsticks",
-      "tripe",
-      "smile",
-      "medium shot",
-      "offering food",
+      "holding chopsticks",
+      "bowl",
+      "drinking glass",
+      "condensation",
+      "restaurant",
+      "table",
+      "lantern",
       "steam",
-      "warm lighting"
+      "smile",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "restaurant",
       "hotpot",
+      "holding chopsticks",
       "steam",
-      "night",
-      "chopsticks"
+      "bowl",
+      "drinking glass",
+      "smile"
     ],
     "timeOfDay": "夜晚",
     "title": "陈 · 火锅小聚",
-    "animaCaption": "She lowers the chopsticks toward the viewer's dipping dish across the table."
+    "animaCaption": "Her right hand holds a single pair of chopsticks with a curled piece of tripe just above the viewer's dipping dish. Her left hand stays wrapped around a cold glass as steam rises from the divided pot."
   }
 }

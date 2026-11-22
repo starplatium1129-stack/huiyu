@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_candlelight_shadow_moth_arts",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 682,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "优雅侧身摆出古典细剑击剑架势，身后巨大影蛾金翼展开，剑尖凝聚星烛",
-    "camera": "full body, three-quarter view",
+    "camera": "three quarter view, full body",
     "category": "战场决胜",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -15,21 +15,27 @@
     ],
     "description": "昏暗沉寂的战场中央，薇薇安娜摆出高雅古典的击剑架势。金色细剑的尖端凝聚起一团璀璨如星辰的烛光，巨大的影蛾光翼在她身后展开，将周围的阴影与黑暗尽数驱散——「即使微光渺小……我也绝不会背弃我的誓言。」",
     "id": "viviana_candlelight_shadow_moth_arts",
-    "lighting": "细剑尖端凝聚的耀眼星烛金光与身后影蛾光芒",
+    "lighting": "细剑尖端的一点暖金火星照亮前手与剑格，远处巨大蛾影勾亮断石",
     "location": "泰拉暗夜荒原战场",
     "mood": "决然高洁",
     "negativeTokens": [],
     "outfitId": "candle_knight_armor",
-    "promptProse": "Viviana holds her fencing stance as candlelight gathers at the rapier tip and luminous moth wings open behind her.",
+    "promptProse": "On a ruined field at night, Viviana turns sideways into a fencer's stance and levels her slender rapier, right arm extended and back foot planted among scattered stones. A concentrated golden flame glints at the tip and reflects back along the guard and the engraved trim of her breastplate. Farther back, a giant moth made of light opens its wings above the ruined field. Keep a gap between the moth and her shoulders and leave space in front of the rapier tip so the two sources of light can be read independently.",
     "promptTokens": [
+      "fencing",
+      "fighting stance",
+      "holding sword",
       "rapier",
-      "fencing stance",
-      "candle flame",
-      "moth wings",
+      "glowing sword",
+      "moth",
+      "light particles",
+      "battlefield",
+      "ruins",
+      "rubble",
       "night",
-      "full body",
-      "candlelight",
-      "glowing moth wings"
+      "wind",
+      "three quarter view",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +52,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "薇薇安娜 · 微光照彻长夜的剑芒",
-    "animaCaption": "Candlelight gathers at the rapier tip before her luminous moth wings."
+    "animaCaption": "Turning into a poised fencing stance among the ruined stones, Viviana levels her slender rapier as a concentrated golden flame gathers at its tip. Behind her in the dark sky, a giant luminous moth spreads golden wings of light above the battlefield.",
+    "compositionIntent": "single"
   }
 }

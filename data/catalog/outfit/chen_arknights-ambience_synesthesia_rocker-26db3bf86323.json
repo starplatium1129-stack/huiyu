@@ -1,17 +1,19 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/ambience_synesthesia_rocker",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 307,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "id": "ambience_synesthesia_rocker",
       "name": "音律联觉赤黑机车皮衣与渔网长袜",
-      "prose": "An asymmetric red-and-black biker jacket over a mesh crop top and laced leather shorts, paired with fishnet thigh-highs and a single decorative leather thigh band.",
+      "prose": "An asymmetric black biker jacket with a lacquer-red sleeve panel and red topstitching over a mesh top and laced leather shorts, paired with fishnet thigh-highs and a single decorative leather thigh band.",
       "tokens": [
+        "two-tone jacket",
+        "red trim",
         "cropped_jacket",
         "leather_jacket",
         "biker_jacket",

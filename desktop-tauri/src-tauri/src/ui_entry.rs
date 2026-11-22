@@ -18,6 +18,11 @@ pub fn bundled(app: &AppHandle) -> bool {
 }
 
 pub fn source(app: &AppHandle, gateway: &str, pathname: &str) -> Result<WebviewUrl, String> {
+    if pathname == "/companion" {
+        if bundled(app) { return Ok(WebviewUrl::App("companion.html".into())); }
+        return format!("{}/companion.html", gateway.trim_end_matches('/')).parse::<tauri::Url>()
+            .map(WebviewUrl::External).map_err(|_| "Invalid gateway URL".into());
+    }
     if bundled(app) { return Ok(WebviewUrl::App(format!("index.html#{pathname}").into())); }
     format!("{}{pathname}", gateway.trim_end_matches('/')).parse::<tauri::Url>()
         .map(WebviewUrl::External).map_err(|_| "Invalid gateway URL".into())

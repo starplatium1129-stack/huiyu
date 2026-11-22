@@ -211,6 +211,7 @@ pub(super) fn publish(
         c.check_cancel()?;
         insert_artwork(c, artwork, None, revision)?;
     }
+    studio::restore_records(c, records)?;
     let mut project_positions = HashMap::new();
     for project in &projects {
         body(project)?;

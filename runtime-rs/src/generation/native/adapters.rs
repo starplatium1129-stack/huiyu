@@ -59,6 +59,10 @@ pub(crate) fn model(id: &str) -> Option<&'static Value> {
     MANIFEST["models"].get(id)
 }
 
+fn sd_cpp(model: &Value) -> bool {
+    matches!(model["runner"].as_str(), Some("sd-cpp" | "wan-a14b-sd"))
+}
+
 pub(crate) fn h3_packed_steps(root: &Path) -> Option<Vec<u64>> {
     let spec = model("minimax-h3")?;
     let pack = &spec["localPack"];
@@ -119,6 +123,12 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
     model(id)
         .ok_or_else(|| "该模型尚无原生适配".to_owned())
         .and_then(|model| {
+            if sd_cpp(model) {
+                return sd_cpp_files(root, model);
+            }
+            if model["runner"] == "musetalk-native" {
+                return pinned_files(root.parent().ok_or("缺少原生模型根目录")?, model);
+            }
             if model["runner"] == "longcat-avatar" {
                 return super::model_layout::inspect_managed_bundle(root, id);
             }
@@ -144,6 +154,40 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
             Ok(())
         })
         .err()
+}
+
+fn sd_cpp_files(root: &Path, model: &Value) -> std::result::Result<(), String> {
+    let base = root.parent().ok_or("缺少原生模型根目录")?;
+    let runtime = &manifest()["keyframeRuntime"];
+    let runner = format!(
+        "{}/{}",
+        runtime["directory"].as_str().unwrap(),
+        model["executable"].as_str().unwrap_or_else(|| runtime["executable"].as_str().unwrap()),
+    );
+    if resources::file(base, &runner, true).is_none() {
+        return Err(format!("缺少原生 CUDA 执行器 {runner}"));
+    }
+    for name in runtime["serverFiles"].as_object().unwrap().keys() {
+        let relative = format!("{}/{}", runtime["directory"].as_str().unwrap(), name);
+        if resources::file(base, &relative, true).is_none() {
+            return Err(format!("缺少原生 CUDA 执行器组件 {name}"));
+        }
+    }
+    pinned_files(base, model)
+}
+
+fn pinned_files(base: &Path, model: &Value) -> std::result::Result<(), String> {
+    for id in model["components"].as_object().unwrap().values() {
+        let asset = &manifest()["keyframeAssets"][id.as_str().unwrap()];
+        let path = asset["path"].as_str().unwrap();
+        let size = resources::file(base, path, true)
+            .and_then(|file| file.metadata().ok())
+            .map(|metadata| metadata.len());
+        if size != asset["bytes"].as_u64() {
+            return Err(format!("原生权重缺失或长度不符，请准备 {path}"));
+        }
+    }
+    Ok(())
 }
 
 fn moss_int8_ready(root: &Path, spec: &Value, marker: &str) -> bool {
@@ -205,6 +249,22 @@ pub(crate) fn longcat_environment(python: &Path) -> Result<()> {
 }
 
 fn model_settings(settings: &Settings, id: &str) -> Result<Settings> {
+    if model(id).is_some_and(|spec| sd_cpp(spec) || spec["runner"] == "musetalk-native") {
+        let mut local = settings.clone();
+        local.adapter_python = super::config::sd_cpp_python(settings);
+        let adapter = self::settings(&local)?;
+        let required: &[&str] = if model(id).is_some_and(|spec| spec["runner"] == "musetalk-native") {
+            &["musetalk_native.py", "musetalk_ink.py"]
+        } else if model(id).is_some_and(|spec| spec["runner"] == "wan-a14b-sd") {
+            &["keyframe_sd.py", "wan_a14b_sd.py"]
+        } else {
+            &["keyframe_sd.py", "keyframe_server.py", "wan_a14b_sd.py"]
+        };
+        if let Some(issue) = resources::worker_bundle_issue(&adapter.worker, required) {
+            return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING", issue));
+        }
+        return Ok(adapter);
+    }
     if !dedicated_runtime(id) { return self::settings(settings); }
     let python = longcat_python(&settings.models_root);
     longcat_environment(&python)?;
@@ -241,7 +301,7 @@ impl<'a> Status<'a> {
     }
 
     fn issue(&self, id: &str, path: &Path) -> Option<String> {
-        if dedicated_runtime(id) {
+        if dedicated_runtime(id) || model(id).is_some_and(|spec| sd_cpp(spec) || spec["runner"] == "musetalk-native") {
             if let Err(error) = model_settings(self.settings, id).and_then(|adapter| validate_runtime(&adapter)) {
                 return Some(error.message);
             }
@@ -249,16 +309,13 @@ impl<'a> Status<'a> {
             return Some(error.message.clone());
         }
         if within(&self.settings.models_root, path).is_none() {
-            Some("模型根目录内缺少完整 Diffusers 目录".to_owned())
+            Some(format!("模型根目录内缺少 {id} 的模型文件夹"))
         } else {
             model_issue(path, id)
         }
     }
 
     pub(crate) fn image_count(&self) -> usize {
-        if self.runtime_error.is_some() {
-            return 0;
-        }
         manifest()["models"]
             .as_object()
             .unwrap()
@@ -280,9 +337,27 @@ impl<'a> Status<'a> {
         };
         let path = settings.models_root.join(id);
         let issue = self.issue(id, &path);
-        let capabilities = json!({"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
+        let keyframe = model["runner"] == "sd-cpp";
+        let mut capabilities = json!({"txt2img":model["media"]=="image" && !keyframe,"img2img":model["edit"],"negative":model["negative"],
         "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,
-        "maxReferenceImages":if model["family"]=="qwen-image"{4}else{0}});
+        "maxReferenceImages":model["maxReferenceImages"].as_u64().unwrap_or(if model["family"]=="qwen-image"{4}else{0})});
+        if keyframe {
+            for field in ["minSize", "maxSize", "alignment"] {
+                capabilities[field] = model[field].clone();
+            }
+        }
+        if model["runner"] == "wan-a14b-sd" {
+            capabilities["firstLastFrame"] = json!(true);
+            capabilities["tiledVae"] = json!(true);
+            capabilities["resolutions"] = json!([480, 720]);
+            capabilities["stepOptions"] = model["stepOptions"].clone();
+            capabilities["graphBudgetGiB"] = model["graphBudgetGiB"].clone();
+        }
+        if model["runner"] == "musetalk-native" {
+            capabilities["audioDriven"] = json!(true);
+            capabilities["maxAudioFrames"] = model["maxFrames"].clone();
+            capabilities["fps"] = model["fps"].clone();
+        }
         json!({"id":id,"label":model["label"],"family":model["family"],"available":issue.is_none(),
         "profileId":model["profileId"],"sizes":model["sizes"],
         "readiness":if issue.is_none(){"files-ready"}else{"unavailable"},"unavailableReason":issue,
@@ -302,7 +377,7 @@ impl<'a> Status<'a> {
         "mossTextInt8Ready":moss_int8_ready(&path, &model["mossTextInt8"], "huiyu-moss-text-int8.json"),
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":capabilities,
-        "modes":if model["media"]=="video" {model["modes"].clone()}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
+        "modes":if model["media"]=="video" || keyframe {model["modes"].clone()}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
     }
 }
 pub(crate) async fn plan(
@@ -335,7 +410,7 @@ pub(crate) async fn plan(
             ApiError::new(
                 503,
                 "NATIVE_MODEL_UNAVAILABLE",
-                "需要模型根目录内完整 Diffusers 目录；不会下载或回退 ComfyUI",
+                format!("模型根目录内缺少 {model_id} 的模型文件夹"),
             )
         })?;
         if let Some(issue) = model_issue(&path, &model_id) {

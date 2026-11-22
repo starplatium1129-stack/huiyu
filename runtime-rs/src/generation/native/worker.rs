@@ -5,16 +5,20 @@ use tokio::task::JoinHandle;
 
 pub(super) struct Worker {
     pub process: OwnedProcess,
+    #[cfg(windows)]
+    tree: crate::processes::windows_tree::WorkerTree,
     pub input: ChildStdin,
     pub output: BufReader<ChildStdout>,
     pub(super) current_temp: Arc<std::sync::Mutex<Option<Arc<RunFiles>>>>,
     event_line: Vec<u8>,
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,
+    model: String,
+    pub model_loaded: bool,
     settings: Settings,
 }
 impl Worker {
-    fn spawn(engine: &Engine, settings: &Settings) -> Result<Self> {
+    fn spawn(engine: &Engine, settings: &Settings, model: &str) -> Result<Self> {
         let mut command = settings.worker_command();
         command
             .arg("--serve")
@@ -27,6 +31,8 @@ impl Worker {
         let process = engine
             .processes
             .spawn_with_keep_alive(&mut command, current_temp.clone())?;
+        #[cfg(windows)]
+        let tree = process.own_worker_tree()?;
         let input = process.take_input().ok_or_else(protocol_error)?;
         let (stdout, stderr) = process.take_output();
         let output = BufReader::new(stdout.ok_or_else(protocol_error)?);
@@ -36,24 +42,41 @@ impl Worker {
         });
         Ok(Self {
             process,
+            #[cfg(windows)]
+            tree,
             input,
             output,
             current_temp,
             event_line: Vec::new(),
             stderr,
             idle: CancellationToken::new(),
+            model: model.into(),
+            model_loaded: false,
             settings: settings.clone(),
         })
     }
     pub async fn event(&mut self, id: &str) -> Result<Value> {
         // read_until is cancellation-safe only while its destination survives.
         // Keep a partial JSONL event when cancellation takes over the read loop.
-        let remaining = 65537 - self.event_line.len();
+        const MAX_EVENT_BYTES: usize = 144 * 1024;
+        let remaining = MAX_EVENT_BYTES + 1 - self.event_line.len();
         let count = (&mut self.output)
             .take(remaining as u64)
             .read_until(b'\n', &mut self.event_line)
             .await?;
-        if count == 0 || self.event_line.len() > 65536 || self.event_line.last() != Some(&b'\n') {
+        if count == 0 {
+            #[cfg(windows)]
+            if !super::config::usable_python(&self.settings.python) {
+                return Err(ApiError::new(
+                    503, "NATIVE_PYTHON_INCOMPLETE",
+                    "所选原生 Python 环境文件不齐，请在控制室选择已安装的推理环境",
+                ));
+            }
+            let status = self.process.exit_status()?.and_then(|s| s.code());
+            let detail = status.map(|n| format!("（退出码 {n}）")).unwrap_or_default();
+            return Err(ApiError::new(502, "NATIVE_WORKER_EXITED", format!("原生推理进程提前关闭了输出{detail}")));
+        }
+        if self.event_line.len() > MAX_EVENT_BYTES || self.event_line.last() != Some(&b'\n') {
             return Err(protocol_error());
         }
         let event: Value =
@@ -105,6 +128,8 @@ impl Worker {
     }
     pub async fn stop(&mut self) -> Result<()> {
         self.idle.cancel();
+        #[cfg(windows)]
+        self.tree.retire().await?;
         let result = self.process.stop().await.map_err(|error| {
             ApiError::new(
                 503,
@@ -143,7 +168,7 @@ impl Engine {
             let admission = engine
                 .admission
                 .clone()
-                .try_acquire_many_owned(4)
+                .try_acquire_many_owned(MAX_PENDING as u32)
                 .map_err(|_| {
                     if engine.admission.is_closed() {
                         release_error()
@@ -168,12 +193,12 @@ impl Engine {
             })?;
             if let Some(mut worker) = engine.worker.lock().await.take() {
                 if let Err(error) = worker.stop().await {
-                    engine.slot.close();
-                    engine.admission.close();
+                    engine.block_on_unconfirmed_release();
                     slot.forget();
                     return Err(error);
                 }
             }
+            engine.queue.resident(None);
             engine.gpu_owned.store(false, Ordering::SeqCst);
             engine.comfy_leased.store(true, Ordering::SeqCst);
             Ok(ComfyLease {
@@ -185,26 +210,29 @@ impl Engine {
         .await
         .map_err(|_| release_error())?
     }
-    pub(super) async fn take_worker(&self, settings: &Settings) -> Result<Worker> {
+    pub(super) async fn take_worker(&self, settings: &Settings, model: &str) -> Result<Worker> {
         if let Some(mut worker) = self.worker.lock().await.take() {
             worker.idle.cancel();
             let exited = match worker.process.exited() {
                 Ok(exited) => exited,
                 Err(error) => {
                     worker.stop().await?;
+                    self.queue.resident(None);
                     return Err(error);
                 }
             };
-            if exited.is_none() && worker.settings == *settings {
+            if exited.is_none() && worker.settings == *settings && worker.model == model {
                 return Ok(worker);
             }
             worker.stop().await?;
+            self.queue.resident(None);
         }
-        Worker::spawn(self, settings)
+        Worker::spawn(self, settings, model)
     }
     pub(super) async fn retain_worker(inner: Arc<Inner>, mut worker: Worker, timeout: Duration) {
         worker.idle = CancellationToken::new();
         let idle = worker.idle.clone();
+        inner.native.queue.resident(worker.model_loaded.then(|| worker.model.clone()));
         *inner.native.worker.lock().await = Some(worker);
         let owner = inner.clone();
         inner.tasks.spawn(async move {
@@ -233,11 +261,11 @@ impl Engine {
                 && let Err(error) = worker.stop().await
             {
                 slot.forget();
-                owner.native.slot.close();
-                owner.native.admission.close();
+                owner.native.block_on_unconfirmed_release();
                 owner.admission.close();
                 eprintln!("native idle release: {}", error.code);
             } else {
+                owner.native.queue.resident(None);
                 owner.native.gpu_owned.store(false, Ordering::SeqCst);
             }
         });
@@ -264,7 +292,7 @@ impl Service {
                     .native
                     .admission
                     .clone()
-                    .try_acquire_many_owned(4)
+                    .try_acquire_many_owned(MAX_PENDING as u32)
                     .map_err(|_| {
                         if owner.native.admission.is_closed() {
                             release_error()
@@ -293,13 +321,13 @@ impl Service {
                     if let Err(error) = worker.stop().await {
                         // Do not admit another model if process exit is unconfirmed.
                         slot.forget();
-                        owner.native.slot.close();
-                        owner.native.admission.close();
+                        owner.native.block_on_unconfirmed_release();
                         owner.admission.close();
                         return Err(error);
                     }
                 }
                 owner.native.gpu_owned.store(false, Ordering::SeqCst);
+                owner.native.queue.resident(None);
                 Ok(Some(admission))
             })
             .await

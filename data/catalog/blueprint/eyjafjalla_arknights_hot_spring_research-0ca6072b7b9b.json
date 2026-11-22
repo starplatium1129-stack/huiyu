@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_hot_spring_research",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 550,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "蹲在温泉岸边，将温度计探入泉水测量水温",
-    "camera": "medium shot",
+    "camera": "from side, medium shot",
     "category": "泰拉自然",
     "characterId": "eyjafjalla_arknights",
     "description": "群山环抱的地热温泉岸边，艾雅法拉穿着防水探险服，将精密温度计探入升腾着白色水汽的泉水中。她甩了甩被打湿的袖口开心地向你挥手——「前辈快来看！这里的温泉富含对神经舒缓极其有益的矿物质，考察结束后我们一起泡温泉吧！」",
@@ -17,19 +17,22 @@
     "mood": "清新好奇",
     "negativeTokens": [],
     "outfitId": "waterproof_explorer",
-    "promptProse": "She lowers the thermometer by its cord with one hand and shakes water from the other sleeve; her notebook lies open on a dry rock amid the morning steam.",
+    "promptProse": "At a geothermal spring in the mountains of Terra, Eyjafjalla squats on a flat ledge in her moss-green expedition shell, one boot braced against the pale mineral crust at the edge. She steadies the meter in one hand and dips its wired steel probe into the water with the other. Her field notebook lies open on dry rock behind her. Steam curls off the pool in the cool air, and the first light catches the ridges across the water. A view from the side shows her hand, the probe and the fine ripples at its tip against the mountains.",
     "promptTokens": [
-      "crouching",
-      "thermometer",
-      "notebook",
-      "hot spring",
-      "steam",
-      "dawn",
-      "medium shot",
+      "squatting",
+      "looking down",
       "holding thermometer",
-      "sleeve shake",
-      "morning light",
-      "rock"
+      "water",
+      "ripples",
+      "steam",
+      "onsen",
+      "rock",
+      "open book",
+      "mountain",
+      "outdoors",
+      "morning",
+      "from side",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +44,7 @@
     ],
     "timeOfDay": "清晨",
     "title": "艾雅法拉 · 温泉考察",
-    "animaCaption": "One hand lowers the thermometer by its cord; her notebook stays on a dry rock."
+    "animaCaption": "Squatting on a flat ledge beside the steaming geothermal spring, she lowers a wired thermometer probe straight into the water while fine ripples spread from its tip. Her field notebook lies open on dry rock behind her under soft morning mountain light.",
+    "compositionIntent": "single"
   }
 }

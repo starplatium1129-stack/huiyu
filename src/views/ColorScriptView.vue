@@ -13,7 +13,7 @@
         :aria-pressed="selected?.id === m.id"
         @click="chooseMood(m.id)"
       >
-        <div class="mood-strip" :style="{ '--palette-wash': m.palette[1] }"><MoodPaletteFan :colors="m.palette" /></div>
+        <div class="mood-strip"><MoodPaletteFan :colors="m.palette" /></div>
         <div class="mood-body">
           <div class="mood-name"><ArchiveIcon :name="m.iconName" /> {{ m.name }}</div>
           <div class="mood-en">{{ m.en }}</div>
@@ -224,7 +224,7 @@ function exportTxt() {
 .color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
 .color-mood-grid .mood-card { position:relative; isolation:isolate; border-radius:var(--r-lg); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .color-mood-grid .mood-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
-.color-mood-grid .mood-strip { height:clamp(100px,9vw,134px); padding:var(--s-2); overflow:hidden; background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--palette-wash) 13%,transparent),transparent 75%),var(--bg-base); }
+.color-mood-grid .mood-strip { height:clamp(100px,9vw,134px); padding:var(--s-2); overflow:hidden; background:var(--art-mat); }
 .color-mood-grid .mood-card.active { --fan-spread:15px; --fan-angle:15deg; }
 .color-mood-grid .mood-body { position:relative; padding:var(--s-4); padding-right:40px; transform:none; transition:none; }
 .color-mood-grid .mood-card.active .mood-body { background:var(--bg-elevated); box-shadow:none; }

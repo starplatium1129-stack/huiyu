@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_tail_lift_doggystyle_thrust",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1064,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "女仆裙解开露黑蕾丝内衣与酥胸，鲨鱼尾轻摆，嘴叼棒棒糖单手在短裙深处自抚娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, seated bench perspective, focus on flushed face, red eyes, and twitching shark tail",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -22,30 +22,31 @@
     "location": "维多利亚家政更衣室皮质长椅上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "maid_uniform",
-    "promptProse": "She lounges against the bench with one leg raised, her white apron lowered to her waist and a lollipop between her lips. One hand rests at her chest and the other beneath her skirt as her tail drapes over the edge. Warm-white locker-room lamps reflect from the metal cupboards behind her.",
-    "promptTokens": [
-      "adult",
+    "nsfwProse": "Her black maid dress is unbuttoned down the bodice with her white apron lowered to her waist, revealing a sheer black lace bra above gartered black thigh-high stockings as one hand rests at her chest and the other touches herself beneath her raised skirt.",
+    "nsfwTokens": [
       "maid",
-      "black maid dress",
-      "white apron",
+      "black dress",
       "open clothes",
-      "black lace bra",
-      "black thighhighs",
+      "white apron",
+      "black bra",
       "garter straps",
-      "lollipop",
+      "black thighhighs",
+      "masturbation"
+    ],
+    "outfitId": "maid_uniform",
+    "promptProse": "In a quiet locker room lined with metal cupboards, Ellen reclines against a leather bench with one leg propped up and a lollipop resting between her parted lips. Warm overhead light reflects across the lockers and her deeply flushed cheeks as her shark tail sways beside the bench.",
+    "promptTokens": [
       "sitting",
-      "raised leg",
-      "bench",
-      "masturbation",
-      "locker room",
-      "blush",
       "leaning back",
+      "leg up",
+      "bench",
+      "lollipop",
+      "hand on chest",
       "heavy blush",
+      "teary eyes",
+      "locker room",
+      "lockers",
       "warm lighting",
-      "metal lockers",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -67,6 +68,7 @@
     ],
     "timeOfDay": "下午",
     "title": "艾莲·乔 · 更衣室长凳女仆裙纽扣解开露黑白内衣与鲨尾轻摆自抚",
-    "animaCaption": "Her apron rests at her waist and her tail drapes over the bench edge."
+    "animaCaption": "Lounging back on the locker-room bench with one leg raised and a lollipop between her lips, she wears her black maid dress unbuttoned over a black lace bra with the white apron slipped to her waist, one hand on her chest and the other slipping beneath her skirt while her shark tail drapes over the bench edge.",
+    "compositionIntent": "single"
   }
 }

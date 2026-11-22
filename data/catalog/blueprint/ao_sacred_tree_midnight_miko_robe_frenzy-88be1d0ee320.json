@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_sacred_tree_midnight_miko_robe_frenzy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2344,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "ao_sacred_tree_midnight_miko_robe_frenzy",
     "characterId": "sorakado_ao",
@@ -17,27 +17,42 @@
     "action": "巫女服的白色襦袢散乱开来，苍双手攀着粗壮的树干，绯袴被完全褪至膝头",
     "timeOfDay": "night",
     "lighting": "luminous full moon casting dramatic silver beams and deep forest shadows",
-    "camera": "medium_shot",
+    "camera": "from behind, medium shot",
     "mood": "柔媚与神圣",
-    "promptProse": "Clinging to the ancient sacred tree at midnight, miko Ao pants with open mouth as silver moonlight illuminates her exposed hips and disheveled robes.",
+    "promptProse": "Beneath the massive sacred tree behind the mountain shrine at midnight, Ao presses both palms into the furrowed bark while looking back over her shoulder. Cool silver moonlight filters through the canopy onto her flushed cheek.",
     "promptTokens": [
       "shrine",
-      "sacred_tree",
+      "tree",
+      "forest",
+      "standing",
+      "hands on tree",
+      "looking back",
+      "heavy blush",
+      "open mouth",
+      "sweat",
       "night",
       "moonlight",
-      "disheveled_clothes",
-      "lifted_skirt",
-      "bare_hips",
-      "heavy_blush",
-      "open_mouth",
-      "medium_shot"
+      "from behind",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ao pressed against the sacred tree in disheveled miko robes under the silver moon.",
+    "animaCaption": "Bracing both hands against the rough trunk of the sacred tree at midnight, she wears her white miko top splayed loose and scarlet hakama pulled down to her knees, baring her hips as she glances back breathless in the moonlight.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "miko",
+      "white kimono",
+      "open kimono",
+      "red hakama",
+      "hakama pull",
+      "bare hips",
+      "bare ass",
+      "disheveled clothes"
+    ],
+    "nsfwProse": "Her white wide-sleeved miko kosode hangs disheveled off her shoulders and her scarlet hakama is pulled down around her knees, leaving her hips and rear bare to the night air."
   }
 }

@@ -1,4 +1,4 @@
-export type MigrationDomain = 'artwork' | 'settings' | 'chat' | 'draft' | 'history' | 'quarantine' | 'transient' | 'credential' | 'unknown'
+export type MigrationDomain = 'artwork' | 'studio' | 'settings' | 'chat' | 'draft' | 'history' | 'quarantine' | 'transient' | 'credential' | 'unknown'
 export type MigrationSource = 'kv' | 'local' | 'session'
 export interface MigrationIdentity { sourceProfileId: string; origin: string; windowIds: string[] }
 export interface MigrationRecord {

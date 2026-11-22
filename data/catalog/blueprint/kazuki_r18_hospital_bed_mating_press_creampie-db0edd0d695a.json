@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_hospital_bed_mating_press_creampie",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1176,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kazuki_r18_hospital_bed_mating_press_creampie",
     "title": "风见一姬 · 纯白床榻半透真丝睡裙侧卧与弱点失神真情释放",
@@ -19,7 +19,7 @@
     "action": "侧卧大床半透真丝睡裙若隐若现，银发如瀑铺散，单手护胸另一手在裙下深层自抚，红瞳流泪娇喘",
     "timeOfDay": "深夜",
     "lighting": "窗外清冷月华洒在纯白丝绸被褥与半透轻纱薄裹雪肌上的圣洁浪漫光晕",
-    "camera": "intimate wide shot, reclining side perspective, looking across pristine white bedding",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "bedroom",
@@ -38,21 +38,21 @@
       "teary_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Kazuki curls on her side in the sheer white camisole nightdress, cupping her chest with one hand and touching herself beneath the hem with the other.",
+    "promptProse": "Curled softly on her side across the pristine white sheets of a private sanatorium bed at night, Kazuki wears only a sheer white silk camisole nightdress whose thin fabric clings softly to her slender curves. With her knees bent and her long hair spilling over the pillows, she cups her chest with one hand while sliding the other beneath the sheer hem to touch herself, tears of tender release brimming in her eyes. Cool moonlight from the window washes the white bedding in quiet silver glow.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "sheer white silk camisole nightdress",
-      "see-through",
+      "lying",
       "on side",
       "curled up",
       "hand on own breast",
-      "masturbation",
-      "bed",
-      "moonlight",
       "teary eyes",
       "heavy blush",
+      "parted lips",
+      "bed",
       "white sheets",
+      "pillow",
+      "moonlight",
+      "night",
+      "from side",
       "wide shot"
     ],
     "negativeTokens": [],
@@ -61,8 +61,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Curled on her side, she keeps one hand at her chest and the other beneath the camisole hem."
+    "nsfwTokens": [
+      "white camisole",
+      "nightgown",
+      "see-through",
+      "spaghetti straps",
+      "bare legs",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "nsfwProse": "She wears a gossamer semi-transparent white silk camisole nightdress clinging faintly over her slender breasts and bare legs as she cups her chest and masturbates beneath the hem.",
+    "animaCaption": "Curled on her side across the white bed in a sheer white silk camisole, Kazuki cups her chest with one hand and slips the other beneath the translucent hem to masturbate. Cool window moonlight illuminates her tear-filled eyes, heavy blush, and sprawling hair.",
+    "compositionIntent": "single"
   }
 }

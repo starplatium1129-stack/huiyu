@@ -74,11 +74,15 @@ fn response(result: Result<Value>, status: StatusCode) -> Response {
         .insert("cache-control", "no-store".parse().unwrap());
     response
 }
-async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Http>>) -> Response {
+async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Http>>, Query(query): Query<HashMap<String,String>>) -> Response {
     response(
         async {
             state.host.check_running()?;
-            http.service.get_status().await
+            if query.get("modelId").is_some_and(|id| matches!(id.as_str(), crate::studio_workflows::MODEL | crate::studio_workflows::DIALOGUE)) {
+                native::status(&http.service.backend).await
+            } else {
+                http.service.get_status().await
+            }
         }
         .await,
         StatusCode::OK,
@@ -92,7 +96,7 @@ async fn preview_prompt(
     let result = (|| {
         state.host.check_running()?;
         let id = body["modelId"].as_str().unwrap_or("");
-        let native = http.service.backend.native_enabled();
+        let native = http.service.uses_native_model(&body["modelId"]);
         let model = if native {
             native::video_model(id)?
         } else {
@@ -122,10 +126,10 @@ async fn upload_raw(
         return e.into_response();
     }
     let owner = generation::request_owner(&headers, peer, &query);
-    let kind = if query.get("kind").is_some_and(|kind| kind == "reference") {
-        crate::images::ImageKind::VideoReference
-    } else {
-        crate::images::ImageKind::VideoInput
+    let kind = match query.get("kind").map(String::as_str) {
+        Some("studio-frame") => crate::images::ImageKind::StudioVideoInput,
+        Some("reference") => crate::images::ImageKind::VideoReference,
+        _ => crate::images::ImageKind::VideoInput,
     };
     response(
         store_input(&http, data, owner, kind, admission).await,
@@ -147,6 +151,7 @@ async fn upload_driver(
     let kind = match kind.as_str() {
         "video" => crate::images::ImageKind::MotionVideo,
         "audio" => crate::images::ImageKind::DrivingAudio,
+        "studio-audio" => crate::images::ImageKind::StudioAudio,
         _ => return ApiError::invalid("未知驱动素材类型").into_response(),
     };
     let owner = generation::request_owner(&headers, peer, &query);
@@ -159,6 +164,11 @@ async fn store_input(
     kind: crate::images::ImageKind,
     admission: tokio::sync::OwnedSemaphorePermit,
 ) -> Result<Value> {
+    let audio_frames = if matches!(kind, crate::images::ImageKind::StudioAudio) {
+        Some(inputs::dialogue_frames(&data)?)
+    } else {
+        None
+    };
     let name = http
         .service
         .upload(
@@ -172,7 +182,11 @@ async fn store_input(
     let bytes = tokio::fs::metadata(inputs::path(&http.service.config, &name)?)
         .await?
         .len();
-    Ok(json!({"name":name,"bytes":bytes}))
+    let mut receipt = json!({"name":name,"bytes":bytes});
+    if let Some(frames) = audio_frames {
+        receipt["audioFrames"] = frames.into();
+    }
+    Ok(receipt)
 }
 async fn create(
     State(state): State<AppState>,

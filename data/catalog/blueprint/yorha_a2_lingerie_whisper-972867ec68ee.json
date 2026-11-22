@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3427,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yorha_a2_lingerie_whisper",
     "characterId": "yorha_a2",
@@ -14,7 +14,7 @@
     "location": "寄叶部队叛逃后的荒废都市工厂高层，锈蚀钢架外是漫天废墟与落日尘埃",
     "timeOfDay": "末日黄昏苍凉时分",
     "lighting": "末日落日的血红余晖照亮废墟工厂，在破损的人工皮肤与金属接缝处拉出长长的冷影",
-    "camera": "wide shot, low angle, 废墟高层苍凉全景，锈蚀钢架与落日尘埃勾勒末日独行流亡",
+    "camera": "from below, wide shot",
     "mood": "孤独叛逆人造人的苍凉与野性，饱经背叛与杀戮后的冰冷孤傲与内在脆弱",
     "adult": true,
     "sampleRating": "R15",
@@ -41,19 +41,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "wide shot",
-      "low angle",
-      "sitting perched on rusted steel girders",
-      "collapsed factory ruins",
-      "overgrown wasteland below",
-      "hazy apocalyptic sunset",
-      "dust motes in warm amber light",
-      "weary hardened stoicism"
+      "sitting",
+      "steel beam",
+      "hand on sword",
+      "greatsword",
+      "wind",
+      "floating hair",
+      "expressionless",
+      "factory ruins",
+      "wasteland",
+      "dust motes",
+      "sunset",
+      "amber light",
+      "from below",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "A2 sits alone upon a rusted steel girder high inside the overgrown factory ruins, watching dust motes drift through the dying orange glow of a desolate wasteland sunset.",
-    "animaCaption": "Perched upon rusted steel beams amid crumbling post-apocalyptic ruins as sunset washes the wasteland in amber.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a low wide angle high inside the overgrown factory ruins as hazy amber sunset drifts through dust motes, A2 sits alone on a rusted I-beam resting her palm on her weathered greatsword with weary, guarded aloofness.",
+    "animaCaption": "Perched high atop a rusted steel girder inside a collapsed factory overlooking the amber sunset wasteland, she rests one hand on her battered greatsword hilt with windblown hair and cool stoicism wearing a distressed charcoal faux-leather tube top and utility boy-shorts.",
+    "nsfwTokens": [
+      "black tube top",
+      "leather",
+      "strapless",
+      "black shorts",
+      "boy shorts",
+      "midriff",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a battle-worn charcoal faux-leather tube top and matching utility boy-shorts fitted with small metal ring clips, exposing her toned midriff, bare shoulders, and weathered android skin.",
+    "compositionIntent": "single"
   }
 }

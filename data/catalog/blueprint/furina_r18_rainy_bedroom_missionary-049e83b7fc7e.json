@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_rainy_bedroom_missionary",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "furina_r18_rainy_bedroom_missionary",
     "title": "芙宁娜 · 暴雨夜的水律私语",
@@ -15,7 +15,7 @@
     "action": "斜倚床头软枕，蓝白雪纺睡裙轻盈，一手轻牵观众衣袖，异色水滴瞳深情凝望",
     "timeOfDay": "深夜",
     "lighting": "室内暖光与窗外雨夜蓝调冷光的交织",
-    "camera": "from front, facing viewer, eye level medium shot",
+    "camera": "front view, eye level, medium shot",
     "mood": "雨夜独处时的温暖与心灵依偎",
     "sceneTags": [
       "rainy_night",
@@ -26,47 +26,51 @@
       "facing_viewer",
       "eye_contact"
     ],
-    "promptProse": "Furina reclines on the bed pillows facing the viewer in a sheer blue and white chiffon dress with thin straps, showcasing her delicate collarbone, bare shoulders, and soft cleavage; her heterochromatic eyes gaze tenderly while rain streams down the windowpane under warm lamplight.",
+    "promptProse": "Reclining against piled pillows on her bed while a midnight downpour lashes the Fontaine apartment window, Furina wears a sheer blue-and-white chiffon nightdress with slender straps over her bare shoulders and delicate collarbone. She hooks her fingers lightly into the sleeve of her partner sitting beside the bed, looking straight into his eyes with softly flushed cheeks and sincere tenderness. Warm amber bedside lamplight contrasts with cool blue rain streaming down the dark windowpane.",
     "promptTokens": [
-      "from front",
-      "facing viewer",
+      "1girl",
+      "1boy",
+      "pov",
+      "reclining",
+      "on bed",
+      "grabbing sleeve",
       "looking at viewer",
-      "eye contact",
-      "blue and white chiffon dress",
-      "thin shoulder straps",
-      "plunging neckline",
-      "cleavage",
-      "bare shoulders",
-      "delicate collarbone",
-      "bare arms",
-      "bare legs",
-      "reclining on bed",
-      "leaning on pillows",
-      "holding viewer sleeve",
-      "heterochromia",
-      "flushed cheeks",
-      "rainy night",
-      "rain on window",
-      "warm bedside lamp",
+      "blush",
+      "pillow",
+      "rain",
+      "window",
+      "lamp",
+      "front view",
       "medium shot"
     ],
     "negativeTokens": [
       "from behind",
       "looking away",
-      "female masturbation"
+      "nude",
+      "topless"
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "blue dress",
+      "chiffon",
+      "see-through",
+      "spaghetti straps",
+      "bare shoulders",
+      "collarbone",
+      "cleavage",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a sheer blue-and-white chiffon stage nightdress with thin shoulder straps and a low neckline revealing her bare shoulders, delicate collarbone, and soft cleavage.",
     "adultArtistHint": "@rella",
     "outfitId": "blue_white_chiffon_gown",
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "Reclining on the rainy bedroom pillows facing the viewer, her chiffon dress highlights her delicate collarbone, bare shoulders, and cleavage."
+    "animaCaption": "Reclining against the bedroom pillows in her sheer blue-and-white chiffon nightdress, Furina hooks her fingers gently into her partner's sleeve and gazes straight forward with flushed cheeks. Warm bedside lamplight softens her bare shoulders and cleavage against the rain-streaked night window.",
+    "compositionIntent": "group"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -16,19 +16,25 @@
     "mood": "轻快认真",
     "description": "周末的街角书店门外，优香穿着米色风衣、奶油色高领毛衣和藏青格裙，肩上挎着小黑包。她一手抱住刚买的两本书，另一手看着收据核对金额，确认无误后露出轻松的笑容——「书买到了，预算也正好。接下来可以慢慢逛回去。」",
     "action": "站在书店门外，一手抱住两本书，另一手查看收据",
-    "promptProse": "Yuuka holds two new books against one arm and checks their receipt, smiling when the total matches.",
+    "promptProse": "Standing just outside a corner neighborhood bookstore on a weekend afternoon in her cropped camel jacket, cream turtleneck, and tartan pleated skirt, Yuuka tucks two newly purchased books securely against one arm with a small black bag slung at her shoulder. With her free hand, she holds up the printed paper receipt to verify the total, relaxing into a satisfied, pleased smile once every yen balances with her budget. Gentle afternoon daylight reflects off the bookstore display window and warms the quiet streetfront.",
     "promptTokens": [
-      "books",
-      "receipt",
-      "bookstore",
-      "afternoon",
       "standing",
-      "holding books",
-      "smile",
+      "holding book",
+      "book",
+      "paper",
+      "shoulder bag",
+      "gentle smile",
+      "bookstore",
+      "storefront",
+      "shop window",
+      "street",
+      "outdoors",
+      "afternoon",
       "daylight",
+      "three quarter view",
       "medium shot"
     ],
-    "camera": "medium shot at the bookstore entrance, books and receipt visible",
+    "camera": "three quarter view, medium shot",
     "lighting": "书店橱窗前温和的午后日光",
     "recommendedSize": "1152x1536",
     "adult": false,
@@ -54,6 +60,6 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One arm holds two new books while her free hand checks their matching receipt total."
+    "animaCaption": "Outside the corner bookstore in her camel jacket and tartan skirt, Yuuka hugs two new books against one arm while checking the paper receipt in her other hand with a satisfied smile. Soft afternoon daylight glows across the bookshop display window."
   }
 }

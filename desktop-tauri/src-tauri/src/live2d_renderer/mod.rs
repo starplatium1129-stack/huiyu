@@ -8,17 +8,18 @@ pub(crate) mod live2d_adapter;
 #[path = "../live2d_assets.rs"]
 pub(crate) mod live2d_assets;
 use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, OverlaySettler};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
 use std::time::{Duration, Instant};
 
-use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, RECT, WPARAM};
+use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, POINT, WPARAM};
+use windows_sys::Win32::Graphics::Gdi::ClientToScreen;
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows_sys::Win32::UI::WindowsAndMessaging::{
-    CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, GetWindowRect, PeekMessageW,
+    CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, PeekMessageW,
     PostQuitMessage, RegisterClassExW, SetWindowLongPtrW, SetWindowPos, ShowWindow, TranslateMessage,
-    CS_HREDRAW, CS_VREDRAW, CW_USEDEFAULT, GWLP_USERDATA, MSG, PM_REMOVE, SWP_NOACTIVATE,
-    SWP_NOSIZE, SW_HIDE, SW_SHOWNA, WINDOW_EX_STYLE, WINDOW_STYLE, WM_DESTROY,
+    CS_HREDRAW, CS_VREDRAW, GWLP_USERDATA, MSG, PM_REMOVE, SWP_NOACTIVATE,
+    SWP_NOSIZE, SWP_SHOWWINDOW, SW_HIDE, SW_SHOWNA, WINDOW_EX_STYLE, WINDOW_STYLE, WM_DESTROY,
     WNDCLASSEXW, WS_EX_NOACTIVATE,
     WS_EX_NOREDIRECTIONBITMAP, WS_EX_TOOLWINDOW, WS_EX_TRANSPARENT, WS_POPUP,
 };
@@ -35,9 +36,12 @@ mod motion;
 mod window;
 mod commands;
 mod frame;
+mod alpha_mask;
+pub(crate) mod texture_cache;
 
 pub(crate) use window::overlay_window_thread;
-pub(crate) use frame::{apply_frame, state_snapshot, send_command};
+pub(crate) use frame::{apply_frame, set_revealed, state_snapshot, send_command};
+pub(crate) use alpha_mask::AlphaMaskSnapshot;
 use blink::BlinkState;
 
 use commands::handle_command;
@@ -49,6 +53,18 @@ pub struct OverlayRect {
     pub y: i32,
     pub width: u32,
     pub height: u32,
+}
+
+impl OverlayRect {
+    pub fn contains(self, x: i32, y: i32) -> bool {
+        x >= self.x && y >= self.y && x.abs_diff(self.x) < self.width && y.abs_diff(self.y) < self.height
+    }
+
+    pub fn valid_local(self) -> bool {
+        self.x >= 0 && self.y >= 0 && self.width > 0 && self.height > 0
+            && self.x as u32 + self.width.min(16385) <= 16384
+            && self.y as u32 + self.height.min(16385) <= 16384
+    }
 }
 
 /// 连续拿不到可绘制 surface 的帧数上限（165fps 下约 0.2 秒）。
@@ -79,6 +95,9 @@ pub struct Live2DOverlayState {
     pub rect: Mutex<OverlayRect>,
     pub framing: Mutex<crate::live2d_framing::StageFraming>,
     pub visible: AtomicBool,
+    pub revealed: AtomicBool,
+    pub first_frame_ready: AtomicBool,
+    pub alpha_mask: RwLock<Option<AlphaMaskSnapshot>>,
     pub opacity: AtomicU32,
     /// HWND 以 isize 存储（HWND = *mut c_void 非 Send）。
     pub hwnd: Mutex<Option<isize>>,
@@ -119,6 +138,9 @@ impl Default for Live2DOverlayState {
             rect: Mutex::new(OverlayRect::default()),
             framing: Mutex::new(crate::live2d_framing::StageFraming::default()),
             visible: AtomicBool::new(false),
+            revealed: AtomicBool::new(true),
+            first_frame_ready: AtomicBool::new(false),
+            alpha_mask: RwLock::default(),
             opacity: AtomicU32::new(255),
             hwnd: Mutex::new(None),
             companion_hwnd: Mutex::new(None),
@@ -140,6 +162,18 @@ impl Default for Live2DOverlayState {
     }
 }
 
+impl Live2DOverlayState {
+    pub fn hit_opaque_pixel(&self, screen_x: i32, screen_y: i32) -> bool {
+        if !self.visible.load(Ordering::Acquire) || !self.revealed.load(Ordering::Acquire) { return false; }
+        let rect = *self.rect.lock().unwrap();
+        if !rect.contains(screen_x, screen_y) { return false; }
+        self.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| {
+            mask.rect.width == rect.width && mask.rect.height == rect.height
+                && mask.hit(screen_x - rect.x, screen_y - rect.y)
+        })
+    }
+}
+
 fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
     state
         .last_mouth_level
@@ -155,6 +189,8 @@ fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
 /// 复用，GPU 上下文随 destroy 释放，后续 setCharacter 按需重新建立。
 fn clear_model_state(state: &Live2DOverlayState) {
     state.model_ready.store(false, Ordering::SeqCst);
+    state.first_frame_ready.store(false, Ordering::Release);
+    *state.alpha_mask.write().unwrap() = None;
     *state.character.lock().unwrap() = None;
     *state.model_bounds.lock().unwrap() = None;
     reset_mouth_diagnostics(state);
@@ -181,10 +217,7 @@ fn reset_runtime_state(state: &Live2DOverlayState) {
     state.renderer_attached.store(false, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
     state.visible.store(false, Ordering::SeqCst);
-    state.model_ready.store(false, Ordering::SeqCst);
-    *state.character.lock().unwrap() = None;
-    *state.model_bounds.lock().unwrap() = None;
-    reset_mouth_diagnostics(state);
+    clear_model_state(state);
     // 渲染线程退出即丢弃 RenderContext，计数随之重建；镜像值同步清零，
     // 否则新线程起来后 state 里还留着上一代的故障计数，误导诊断。
     state.surface_failures.store(0, Ordering::Relaxed);
@@ -193,6 +226,11 @@ fn reset_runtime_state(state: &Live2DOverlayState) {
     if let Ok(mut slot) = DEVICE_LOST_DETAIL.lock() {
         *slot = None;
     }
+}
+
+fn companion_origin(hwnd: HWND) -> Option<POINT> {
+    let mut point = POINT { x: 0, y: 0 };
+    (unsafe { ClientToScreen(hwnd, &mut point) } != 0).then_some(point)
 }
 
 fn followed_overlay_rect(
@@ -293,6 +331,7 @@ struct RenderContext {
     motion_last_indices: HashMap<String, usize>,
     motion_seed: u64,
     active_motion: Option<ActiveMotion>,
+    alpha_readback: Option<alpha_mask::MaskReadback>,
     last_rect: OverlayRect,
     /// 连续拿不到可绘制 surface 的帧数，见 SURFACE_FAILURE_LIMIT。
     surface_failures: u32,
@@ -306,6 +345,8 @@ struct RenderContext {
 pub(crate) struct RendererEnvironment {
     pub assets_root: std::path::PathBuf,
     pub local_root: Option<std::path::PathBuf>,
+    pub cache_root: Option<std::path::PathBuf>,
+    pub prewarm: bool,
     pub events: Option<RendererEvents>,
 }
 

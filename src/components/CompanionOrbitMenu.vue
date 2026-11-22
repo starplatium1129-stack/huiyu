@@ -5,9 +5,9 @@
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
           :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action, $event)">
-          <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" /></svg>
+          <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index, actions.length)" /></svg>
           <button type="button" class="orbit-action" :class="{ 'orbit-settings-trigger': action.id === 'settings' }"
-            :style="{ '--orbit-x': position(orbitAngle(index), 127).left, '--orbit-y': position(orbitAngle(index), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
+            :style="{ '--orbit-x': position(orbitAngle(index, actions.length), 127).left, '--orbit-y': position(orbitAngle(index, actions.length), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
             :aria-haspopup="action.id === 'characters' ? 'dialog' : undefined"
             :aria-expanded="action.id === 'characters' ? !!characterOpener : action.category ? category === action.category : undefined" :data-category-button="action.category || undefined">
             <ArchiveIcon :name="action.icon" /><span>{{ action.short }}</span>
@@ -47,31 +47,42 @@
       <p v-if="feedback || category === 'motions' && controls?.hint" class="orbit-feedback" role="status">{{ feedback || controls?.hint }}</p>
     </section>
   </FluidTransition>
-  <CompanionCharacterDialog v-if="characterOpener" :opener="characterOpener" :selected-id="characterId"
-    @dismiss="characterOpener = null" @select="emit('character', $event)">
-    <template #actions="{ close }">
-      <button type="button" class="btn btn-ghost btn-sm" @click="close(() => emit('appearance'))"><ArchiveIcon name="model" />角色外观</button>
+  <AsyncPanel v-if="characterOpener" class="orbit-picker-loader" :loader="loadCharacterDialog" label="角色列表">
+    <template #default="{ component }">
+      <component :is="component" :opener="characterOpener" :selected-id="characterId"
+        @dismiss="characterOpener = null" @select="emit('character', $event)">
+        <template #actions="{ close }">
+          <button type="button" class="btn btn-ghost btn-sm" @click="close(() => emit('appearance'))"><ArchiveIcon name="model" />角色外观</button>
+        </template>
+      </component>
     </template>
-  </CompanionCharacterDialog>
+    <template #feedback="{ failed, retry }">
+      <div class="orbit-picker-feedback" data-companion-interactive>
+        <button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重读角色列表</button>
+        <span v-else role="status">正在读取角色…</span>
+      </div>
+    </template>
+  </AsyncPanel>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, shallowRef, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import FluidTransition from './visual/FluidTransition.vue'
-import CompanionCharacterDialog from './CompanionCharacterDialog.vue'
+import AsyncPanel from './ui/AsyncPanel.vue'
 import StudioTooltip from './ui/StudioTooltip.vue'
 import type { ArchiveIconName } from './visual/icons/types'
 import { orbitAngle, orbitPoint, orbitSector, useCompanionOrbit } from '@/composables/chat/useCompanionOrbit'
 import '@/assets/css/companion-orbit.css'
+import { loadCompanionDirectory } from '@/router/companionResources'
 
 const props = defineProps<{
-  open: boolean; characterId: string; pinned: boolean; passThrough: boolean
+  open: boolean; characterId: string; pinned: boolean
   controls?: { ready: boolean; motions: { id: string; label: string }[]; expressions: { id: string; label: string }[]; hint: string }
   setExpression?: (id: string) => Promise<boolean>
 }>()
 const emit = defineEmits<{
-  close: []; settings: []; chat: []; pin: []; pass: []; hide: []; appearance: []
+  close: []; settings: []; chat: []; atelier: []; watch: []; pin: []; hide: []; appearance: []
   character: [id: string]; motion: [id: string]
 }>()
 type Category = 'motions' | 'expressions'
@@ -87,11 +98,12 @@ watch([() => props.characterId, () => props.open, category], () => { feedback.va
 const actions: Action[] = [
   { id: 'settings', short: '设置', label: '设置', icon: 'gear' },
   { id: 'chat', short: '聊天', label: '打开聊天', icon: 'chat' },
+  { id: 'atelier', short: '画室', label: '打开绘图画室', icon: 'palette' },
   { id: 'characters', short: '角色', label: '切换陪伴角色', icon: 'character' },
   { id: 'expressions', short: '表情', label: '角色表情', icon: 'happy', category: 'expressions' },
   { id: 'motions', short: '动作', label: '互动动作', icon: 'spark', category: 'motions' },
   { id: 'pin', short: '置顶', label: '置顶窗口', icon: 'pin', toggle: true },
-  { id: 'pass', short: '穿透', label: '鼠标穿透', icon: 'eye', toggle: true },
+  { id: 'watch', short: '看屏', label: '打开陪看设置', icon: 'eye' },
   { id: 'hide', short: '隐藏', label: '隐藏桌宠', icon: 'moon' },
 ]
 const options = computed<Option[]>(() => category.value === 'motions' ? props.controls?.motions || []
@@ -104,7 +116,7 @@ function position(angle: number, radius: number) {
   const point = orbitPoint(angle, radius)
   return { left: `${point.x / 4.4}%`, top: `${point.y / 4.4}%` }
 }
-function active(action: Action) { return action.category ? category.value === action.category : action.id === 'pin' ? props.pinned : action.id === 'pass' ? props.passThrough : false }
+function active(action: Action) { return action.category ? category.value === action.category : action.id === 'pin' && props.pinned }
 // The icon and painted sector share one click owner: a press/release crossing
 // their boundary targets this ancestor. Child handlers would silently lose it.
 function activate(action: Action, event: MouseEvent) {
@@ -114,9 +126,14 @@ function activate(action: Action, event: MouseEvent) {
   if (action.category) { category.value = category.value === action.category ? null : action.category; return }
   if (action.id === 'settings') emit('settings')
   else if (action.id === 'chat') emit('chat')
+  else if (action.id === 'atelier') emit('atelier')
+  else if (action.id === 'watch') emit('watch')
   else if (action.id === 'pin') emit('pin')
-  else if (action.id === 'pass') { emit('pass'); emit('close') }
   else if (action.id === 'hide') { emit('hide'); emit('close') }
+}
+const loadCharacterDialog = async () => {
+  const [dialog] = await Promise.all([import('./CompanionCharacterDialog.vue'), loadCompanionDirectory()])
+  return dialog
 }
 async function choose(option: Option) {
   if (!props.controls?.ready) return
@@ -136,4 +153,6 @@ async function choose(option: Option) {
 .orbit-options-surface { position:absolute; inset:0; pointer-events:none; }
 .orbit-option-tooltip { position:absolute; left:var(--orbit-x); top:var(--orbit-y); transform:translate(-50%, -50%); pointer-events:auto; }
 .orbit-option-tooltip :deep(.orbit-option) { position:relative; left:auto; top:auto; transform:none; }
+.orbit-picker-loader { position:absolute; inset:auto 0 var(--s-3); z-index:var(--z-overlay); display:grid; justify-items:center; pointer-events:none; }
+.orbit-picker-feedback { padding:var(--s-2) var(--s-3); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); pointer-events:auto; }
 </style>

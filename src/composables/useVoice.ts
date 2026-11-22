@@ -19,12 +19,15 @@ interface VoiceTurn {
   character: string
   session: number
   referenceEmotion: string
+  /** Explicit mood from [mood=...] protocol tag or companion performance cue. */
+  explicitEmotion: string
 }
 
 interface PreparedSentence {
   text: string
   language: 'ja' | 'zh'
   emotion: string
+  referenceEmotion: string
   consistency: 'locked' | 'adaptive'
 }
 
@@ -81,11 +84,10 @@ export function useVoice(options: {
   // GPT-SoVITS is much more stable with a little sentence context. Holding a
   // short interjection for the following sentence avoids clipped, repeated
   // "诶…那个…" style fragments.
-  // 单句上限收紧到 44 字：更长文本 cut5 内部分多段，GPT-SoVITS 更容易
-  // 复读/结巴，且单句 GPU 时间随长度线性增长，是长语句等待和"反复说
-  // 一个词"的主要来源之一。首句在句末累计 8 字即可放行：开场白通常短，
-  // 等满 12 字才合成会让第一句语音明显滞后。
-  const sentenceBuffer = new SentenceBuffer({ minimumLength: 12, maximumLength: 44, firstThreshold: 8 })
+  // 后端已改用 cut2（整句直推不按日语顿号切碎）；单句上限设为 56 字，既避免普通
+  // 长句在逗号处被硬切两半导致前后语气割裂，也防止超长段拖慢 GPU 或复读。
+  // 首句在句末累计 8 字即可放行，减少开场白首句等待延迟。
+  const sentenceBuffer = new SentenceBuffer({ minimumLength: 12, maximumLength: 56, firstThreshold: 8 })
   let session = 0, controller: AbortController | null = null
   let translateChain: Promise<PreparedSentence | null> = Promise.resolve(null)
   let synthChain: Promise<void> = Promise.resolve()
@@ -132,20 +134,39 @@ export function useVoice(options: {
   function ownsTurn(mid: string) { return turn?.mid === mid }
   function notifyActivity() { onActivity(isActive()) }
 
-  function startTurn(meta: { mid: string; voice: string; character: string }) {
+  function startTurn(meta: { mid: string; voice: string; character: string; emotion?: string }) {
     if (destroyed) return
     stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && preparation.matches(meta.voice, true) })
     if (!meta.voice) return
     if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
-    pending = 0; turn = { ...meta, session, referenceEmotion: '' }
-    _lastEmotion = 'neutral'; _neutralStreak = 0
+    const initialEmotion = meta.emotion?.trim().toLowerCase() || ''
+    pending = 0
+    turn = {
+      mid: meta.mid,
+      voice: meta.voice,
+      character: meta.character,
+      session,
+      referenceEmotion: initialEmotion,
+      explicitEmotion: initialEmotion,
+    }
+    _lastEmotion = initialEmotion || 'neutral'; _neutralStreak = 0
     prepare(meta.voice, availability.value.needsTranslation !== false)
     if (enabled() && !readyFor(meta.voice)) {
       if (availability.value.engineId === 'off') onStatus('语音朗读已关闭')
       else onStatus(availability.value.online || availability.value.available ? '当前角色声线未配置' : '语音服务未启动')
     }
+  }
+
+  function setTurnEmotion(emotion: string, explicit = false) {
+    if (!turn || !explicit) return
+    const next = emotion.trim().toLowerCase()
+    if (!next) return
+    turn.explicitEmotion = next
+    turn.referenceEmotion = next
+    _lastEmotion = next
+    _neutralStreak = 0
   }
 
   function append(text: string) {
@@ -196,17 +217,37 @@ export function useVoice(options: {
     const cleaned = dialogue.text.replace(/[「」『』"""']/g, '').trim()
     if (!cleaned) return null
     const directionText = dialogue.directions.join(' ')
-    const rawEmotion = inferEmotion(directionText ? `${directionText} ${cleaned}` : cleaned, meta.character)
+    const directionEmotion = directionText ? inferEmotion(directionText, meta.character) : 'neutral'
+    const hasExplicitDirection = directionEmotion !== 'neutral'
     let emotion: string
-    if (rawEmotion === 'neutral') { _neutralStreak++; emotion = _lastEmotion === 'shy' || _neutralStreak >= 3 ? 'neutral' : _lastEmotion }
-    else { _neutralStreak = 0; emotion = rawEmotion }
+    if (hasExplicitDirection) {
+      emotion = directionEmotion
+      _neutralStreak = 0
+    } else if (meta.explicitEmotion) {
+      emotion = meta.explicitEmotion
+      _neutralStreak = 0
+    } else {
+      const rawEmotion = inferEmotion(cleaned, meta.character)
+      if (rawEmotion === 'neutral') {
+        _neutralStreak++
+        emotion = _neutralStreak >= 3 ? 'neutral' : _lastEmotion
+      } else {
+        _neutralStreak = 0
+        emotion = rawEmotion
+      }
+    }
     _lastEmotion = emotion
-    const firstReference = meta.referenceEmotion
-    // Keep the neutral turn on the character's main reference clip.  The
-    // backend falls back to profile.refAudioPath when `referenceEmotion` is
-    // neutral; mapping it to gentle here would make ordinary chat inherit a
-    // different timbre and make the UI's emotion label misleading.
-    if (!meta.referenceEmotion) meta.referenceEmotion = rawEmotion
+    // Lock the acoustic reference WAV for the whole turn so GPT-SoVITS does not
+    // abruptly jump voice/timbre mid-reply on stray keywords. Only an explicit
+    // [mood=...] tag or an explicit stage direction updates the turn reference.
+    if (hasExplicitDirection) {
+      meta.referenceEmotion = directionEmotion
+    } else if (meta.explicitEmotion) {
+      meta.referenceEmotion = meta.explicitEmotion
+    } else if (!meta.referenceEmotion) {
+      meta.referenceEmotion = emotion
+    }
+    const lockedReference = meta.referenceEmotion || emotion
     const needsTranslate = availability.value.needsTranslation !== false
     let translated = '', translationFailed = false
     if (needsTranslate) {
@@ -220,16 +261,12 @@ export function useVoice(options: {
       if (signal.aborted || meta.session !== session) return null
       if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     }
-    const emotionChanged = Boolean(firstReference && emotion !== firstReference)
     return {
       text: translated || cleaned,
       language: translated ? 'ja' : 'zh',
       emotion,
-      // Keep a stable reference while a reply stays in one mood.  When the
-      // classifier detects a real change (or an explicit stage direction),
-      // switch to the current emotion reference so the spoken audio does not
-      // remain gentle/neutral while the UI expression has already changed.
-      consistency: (directionText && rawEmotion !== 'neutral') || emotionChanged ? 'adaptive' : 'locked',
+      referenceEmotion: lockedReference,
+      consistency: 'locked',
     }
   }
 
@@ -241,7 +278,7 @@ export function useVoice(options: {
       text: request.text,
       language: request.language,
       emotion: request.emotion,
-      referenceEmotion: meta.referenceEmotion,
+      referenceEmotion: request.referenceEmotion,
       consistency: request.consistency,
       speed: '1',
     })
@@ -517,5 +554,5 @@ export function useVoice(options: {
     releaseAudioContext()
   }
 
-  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, startTurn, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
+  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, startTurn, setTurnEmotion, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
 }

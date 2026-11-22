@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3121,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.862Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "ines_arknights_lingerie_whisper",
     "characterId": "ines_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛情报收集处隔音暗室单人皮扶手椅上",
     "timeOfDay": "深夜",
     "lighting": "窗外微弱月光与桌上单支暗红防风烛光，在哑光黑皮纹弹性背心上切割出冷冽肃杀的硬朗光影",
-    "camera": "充满黑色电影风格的侧影特写，在阴影与刀刃的寒芒中体现致命佣兵的神秘与警觉",
+    "camera": "side view, medium close-up",
     "mood": "冷酷敏锐、深藏不露、致命信使的刀尖温柔",
     "adult": true,
     "sampleRating": "R15",
@@ -37,18 +37,32 @@
       "shadow_courier"
     ],
     "promptTokens": [
-      "horns",
-      "black faux-leather tank",
-      "peeling apple with dagger",
+      "sitting",
+      "leather armchair",
+      "leg over armrest",
+      "holding knife",
+      "dagger",
+      "apple",
+      "sideways glance",
+      "smirk",
       "dark room",
-      "single candle",
-      "violet eyes",
-      "film noir"
+      "candlelight",
+      "chiaroscuro",
+      "night",
+      "side view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Ines observing from the darkest recesses of a dimly lit intelligence safehouse at midnight. Clothed in a form-fitting matte-black faux-leather stretch tank and low-rise sleep shorts, she lounges in an armchair with one leg slung over the side. Skillfully spiraling the peel from a red apple using her combat dagger, her sharp violet gaze slices through the shadows with lethal, magnetic calm.",
-    "animaCaption": "Ines observing from the darkest recesses of a dimly lit intelligence safehouse at midnight. Clothed in a form-fitting matte-black faux-leather stretch tank and low-rise sleep shorts, she lounges in an armchair with one leg slung over the side.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ines sits deep in a shadowed leather armchair inside a quiet safehouse at midnight, one bare leg slung over the armrest in a fitted matte-black faux-leather stretch tank and black micro sleep shorts. Steadily spiraling the skin off a red apple with her combat dagger, she cuts a keen, calculating glance through the dim candlelight and cool moonlight.",
+    "animaCaption": "Lounging deep in a shadowed leather armchair with one leg hooked over the armrest, she spirals a red apple peel off her dagger while casting a sharp sideways glance. A single candle flame glints across her matte-black leather tank and micro shorts in the dark room.",
+    "nsfwTokens": [
+      "black tank top",
+      "leather top",
+      "strappy top",
+      "black micro shorts",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a form-fitting matte-black faux-leather stretch tank top with reinforced straps and low-rise black micro sleep shorts."
   }
 }

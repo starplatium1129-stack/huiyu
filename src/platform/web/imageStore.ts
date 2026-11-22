@@ -1,8 +1,9 @@
 /** AICGImageStore 的 TypeScript 替代：IndexedDB 图片 Blob 存储 */
 import { withMigrationWrite, assertWebArtworkWritable } from './migrationBarrier.ts'
+import { createStudioStores, studioMediaEnd, studioMediaPrefix } from './studioStores.ts'
 
 const DB_NAME = 'aics_image_store'
-const DB_VERSION = 1
+const DB_VERSION = 2
 const STORE_NAME = 'images'
 
 let dbPromise: Promise<IDBDatabase> | null = null
@@ -34,9 +35,10 @@ function openDb(): Promise<IDBDatabase> {
     const idb = globalThis.indexedDB
     if (!idb) { reject(new Error('当前浏览器不支持 IndexedDB')); return }
     const req = idb.open(DB_NAME, DB_VERSION)
-    req.onupgradeneeded = () => {
+    req.onupgradeneeded = event => {
       if (!req.result.objectStoreNames.contains(STORE_NAME))
         req.result.createObjectStore(STORE_NAME, { keyPath: 'id' })
+      if (event.oldVersion < 2) createStudioStores(req.result)
     }
     req.onsuccess = () => {
       const db = req.result
@@ -50,6 +52,7 @@ function openDb(): Promise<IDBDatabase> {
   })
   return dbPromise
 }
+export { openDb as openImageDatabase }
 
 function createId(): string {
   if (globalThis.crypto?.randomUUID) return 'img_' + globalThis.crypto.randomUUID()
@@ -90,6 +93,7 @@ export async function imgPut(file: Blob): Promise<string> {
 
 export async function imgPutRecord(record: ImageRecordInput, check?: () => void): Promise<string> {
   if (!record?.id?.trim()) throw new Error('图片记录缺少 ID')
+  if (record.id.trim().startsWith(studioMediaPrefix)) throw new Error('创作资产原件由版本库保存')
   if (!(record.blob instanceof Blob) || !record.blob.size) throw new Error('图片记录为空')
   const n = { id: record.id.trim(), blob: record.blob, name: record.name ?? '', type: record.type ?? record.blob.type, size: record.blob.size, created_at: record.created_at ?? Date.now() }
   // A source-bound import may invalidate while the database/lock is opening.
@@ -114,7 +118,7 @@ export async function imgGet(id: string): Promise<Blob | null> {
 }
 
 export async function imgDeleteMany(ids: string[], check?: () => void): Promise<void> {
-  const unique = [...new Set(ids.filter(id => typeof id === 'string' && id.trim()).map(id => id.trim()))]
+  const unique = [...new Set(ids.filter(id => typeof id === 'string' && id.trim()).map(id => id.trim()).filter(id => !id.startsWith(studioMediaPrefix)))]
   if (!unique.length) return
   await tx('readwrite', store => { check?.(); unique.forEach(id => store.delete(id)) })
 }
@@ -124,14 +128,18 @@ export async function imgList(): Promise<StoredImageRecord[]> {
   return new Promise((resolve, reject) => {
     let transaction: IDBTransaction
     try { transaction = db.transaction(STORE_NAME, 'readonly') } catch (e) { reject(e); return }
-    const req = transaction.objectStore(STORE_NAME).getAll()
-    req.onsuccess = () => resolve(Array.isArray(req.result) ? req.result : [])
-    req.onerror   = () => reject(req.error ?? new Error('图片列表读取失败'))
+    // Portable Web artwork exports predate creative projects. Keep large video/audio assets
+    // out of those image-only flows. Workspace migration below explicitly includes every alias.
+    const store = transaction.objectStore(STORE_NAME)
+    const before = store.getAll(IDBKeyRange.upperBound(studioMediaPrefix,true))
+    const after = store.getAll(IDBKeyRange.lowerBound(studioMediaEnd))
+    transaction.oncomplete = () => resolve([...before.result,...after.result])
+    transaction.onabort = () => reject(transaction.error ?? new Error('图片列表读取失败'))
   })
 }
 
 /** Includes temporary and trash media; migration must never infer the set from history. */
-export async function imgPage(after?: string, limit = 20): Promise<{ entries: StoredImageRecord[]; nextCursor: string | null }> {
+export async function imgPage(after?: string, limit = 20, includeStudio = false): Promise<{ entries: StoredImageRecord[]; nextCursor: string | null }> {
   if (!Number.isInteger(limit) || limit < 1 || limit > 100) throw new Error('无效的图片迁移分页大小')
   const db = await openDb()
   return new Promise((resolve, reject) => {
@@ -141,6 +149,7 @@ export async function imgPage(after?: string, limit = 20): Promise<{ entries: St
     request.onsuccess = () => {
       const cursor = request.result
       if (!cursor) { resolve({ entries, nextCursor: null }); return }
+      if (!includeStudio && String(cursor.key).startsWith(studioMediaPrefix)) { cursor.continue(studioMediaEnd); return }
       if (entries.length === limit) { resolve({ entries, nextCursor: entries.at(-1)!.id }); return }
       entries.push(cursor.value as StoredImageRecord); cursor.continue()
     }
@@ -153,8 +162,9 @@ export async function imgCount(): Promise<number> {
   return new Promise((resolve, reject) => {
     let transaction: IDBTransaction
     try { transaction = db.transaction(STORE_NAME, 'readonly') } catch (e) { reject(e); return }
-    const req = transaction.objectStore(STORE_NAME).count()
-    req.onsuccess = () => resolve(req.result)
-    req.onerror   = () => reject(req.error ?? new Error('图片计数失败'))
+    const store = transaction.objectStore(STORE_NAME)
+    const total = store.count(), studio = store.count(IDBKeyRange.bound(studioMediaPrefix,studioMediaEnd,false,true))
+    transaction.oncomplete = () => resolve(total.result - studio.result)
+    transaction.onabort = () => reject(transaction.error ?? new Error('图片计数失败'))
   })
 }

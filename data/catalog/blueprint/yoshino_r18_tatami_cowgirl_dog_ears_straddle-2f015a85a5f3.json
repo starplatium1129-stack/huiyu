@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_tatami_cowgirl_dog_ears_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1154,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "跨坐在近处同伴身上，双手按在对方胸前借力，犬耳轻颤",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, eye level",
+    "camera": "from below, pov, cowboy shot",
     "category": "深层欢愉",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,25 +22,35 @@
     "location": "内寝榻榻米坐席中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "ceremonial_dance",
-    "promptProse": "Yoshino sits astride her companion, both hands on their chest; loosened ceremonial sleeves fall at her elbows, white dog ears catching paper-lantern light.",
-    "promptTokens": [
-      "adult",
-      "dog ears",
+    "nsfwProse": "Her gold-trimmed white kagura kimono and pink brocade haori are unfastened and slipped past her elbows to expose her bare breasts as she moves smoothly in a cowgirl position.",
+    "nsfwTokens": [
       "white kimono",
       "pink haori",
-      "open robe",
+      "open kimono",
+      "off shoulder",
       "topless",
-      "straddling",
-      "futon",
-      "paper lantern",
-      "cowboy shot",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
+    "outfitId": "ceremonial_dance",
+    "promptProse": "Seen from a low first-person perspective on a quiet tatami bedroom futon lit by a warm paper lantern, Yoshino sits astride her partner with both hands steadied on his chest and white dog ears trembling above her deeply flushed face.",
+    "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "on lap",
-      "hands on another's chest",
-      "warm lighting"
+      "straddling",
+      "hands on chest",
+      "dog ears",
+      "looking down",
+      "heavy blush",
+      "futon",
+      "tatami",
+      "paper lantern",
+      "warm lighting",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -55,6 +65,7 @@
     ],
     "timeOfDay": "夜间",
     "title": "朝武芳乃 · 犬耳轻颤跨坐骑乘与娇喘起伏",
-    "animaCaption": "Both hands rest on her companion's chest with the loosened sleeves falling at her elbows."
+    "animaCaption": "Straddling her partner's lap on the lantern-lit tatami futon with snowy dog ears twitching nervously atop her head, she braces both palms against his chest while her ceremonial white kimono and pink haori slip down to her elbows, baring her flushed breasts.",
+    "compositionIntent": "group"
   }
 }

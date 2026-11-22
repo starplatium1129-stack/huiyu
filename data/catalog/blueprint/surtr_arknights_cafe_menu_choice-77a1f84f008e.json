@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_cafe_menu_choice",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfitId": "ice_cream_cafe_casual",
@@ -16,20 +16,23 @@
     "mood": "认真挑选",
     "description": "街角甜品店里，史尔特尔站在玻璃展示柜前逐一审视冰淇淋口味牌。她一手轻轻扶住包带，另一手确信地点向香草口味，神情专注而认真——「就这个。别把旁边的坚果混进去，我要先尝原来的味道。」",
     "action": "站在冷藏柜前，单手扶包带，另一手指向香草冰淇淋口味牌",
-    "promptProse": "Inside a bright corner dessert parlor, Surtr stands in side profile at the chilled glass display case. One hand steadies her shoulder strap while the other points definitively at the vanilla gelato tub, her focused crimson gaze showing clear intent under soft afternoon window light.",
+    "promptProse": "In profile at a low glass freezer counter, Surtr points through the sloping pane at a shallow metal tub of pale vanilla gelato, her finger stopping just above the glass. Her other hand steadies the strap of her shoulder bag where it crosses a soft grey knit sweater. The pale vanilla sits between a green pistachio tub and a dark chocolate tub, each with a small card clipped to its edge. At the far end of the counter, a register and wall menu anchor the space. Afternoon light from the side window warms the wool and the wood base of the counter, while the cooler freezer light stays on the metal trays.",
     "promptTokens": [
       "standing",
-      "side view",
       "pointing",
-      "holding strap",
+      "shoulder bag",
       "display case",
-      "ice cream",
+      "ice cream tub",
+      "menu board",
       "cafe",
+      "counter",
+      "cash register",
       "window light",
+      "from side",
       "medium shot"
     ],
-    "camera": "medium shot, side view, 侧身中景，展示柜、指引手势与侧脸同框",
-    "lighting": "甜品店明亮玻璃窗透入的午后自然光与展示柜冷白灯",
+    "camera": "from side, medium shot",
+    "lighting": "侧窗暖光擦过毛衣，展示柜冷白灯照出一排金属冰柜盒",
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "All",
@@ -38,17 +41,15 @@
     ],
     "compositionIntent": "single",
     "sceneTags": [
-      "standing",
-      "side_view",
-      "pointing",
-      "holding_strap",
-      "display_case",
-      "ice_cream",
       "cafe",
-      "window_light",
-      "medium_shot"
+      "display case",
+      "menu board",
+      "ice cream",
+      "pointing",
+      "shoulder bag",
+      "from side"
     ],
     "negativeTokens": [],
-    "animaCaption": "Standing in side profile at the glass display case, she points toward the vanilla ice cream under the bright cafe light."
+    "animaCaption": "In profile, she points down with her fingertip above the glass toward a pale vanilla tub in the row of recessed metal trays. The other hand steadies her shoulder bag strap."
   }
 }

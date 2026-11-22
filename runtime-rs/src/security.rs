@@ -139,7 +139,7 @@ pub async fn guard(
     );
     headers.insert("referrer-policy", HeaderValue::from_static("no-referrer"));
     headers.insert("x-frame-options", HeaderValue::from_static("DENY"));
-    let voice = matches!(path.as_str(), "/chat" | "/companion" | "/companion-chat");
+    let voice = matches!(path.as_str(), "/chat" | "/companion" | "/companion-chat" | "/companion.html");
     headers.insert(
         "permissions-policy",
         HeaderValue::from_static(if voice {

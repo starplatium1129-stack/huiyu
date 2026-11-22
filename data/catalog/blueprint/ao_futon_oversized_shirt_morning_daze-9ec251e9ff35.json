@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_futon_oversized_shirt_morning_daze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2343,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "ao_futon_oversized_shirt_morning_daze",
     "characterId": "sorakado_ao",
@@ -17,27 +17,40 @@
     "action": "苍趴在被褥上揉着睡眼惺忪的双眼，衬衫下摆堆积在大腿根部，半梦半醒间嘟囔着蹭了过来",
     "timeOfDay": "morning",
     "lighting": "bright cheerful morning sunshine pouring across tatami illuminating porcelain bare skin",
-    "camera": "cowboy_shot",
+    "camera": "cowboy shot, eye level",
     "mood": "温存与柔媚",
-    "promptProse": "Waking up lazily on the morning futon, Ao rubs her sleepy eyes in a loose open blue shirt with bare thighs exposed in warm sunlight.",
+    "promptProse": "In a quiet tatami guest room washed in morning sunlight, Ao lies across the tousled futon rubbing her half-open eyes with a drowsy expression. Soft beams from the sliding window warm the bedding and wooden floor.",
     "promptTokens": [
       "futon",
       "tatami",
-      "oversized_shirt",
-      "open_shirt",
-      "bare_legs",
-      "bare_thighs",
-      "rubbing_eyes",
-      "sleepy_eyes",
-      "cowboy_shot",
-      "morning_sunlight"
+      "lying",
+      "on stomach",
+      "rubbing eyes",
+      "sleepy",
+      "looking at viewer",
+      "morning",
+      "window",
+      "sunlight",
+      "warm lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ao sprawling sleepily on the morning futon in a loose unbuttoned shirt.",
+    "animaCaption": "Sprawled on her stomach across the morning futon, she rubs one sleepy eye as her oversized pale-blue shirt hangs unbuttoned off her shoulder and bunches high around her bare thighs in the sunlight.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "oversized shirt",
+      "blue shirt",
+      "open shirt",
+      "bare shoulders",
+      "cleavage",
+      "bare thighs",
+      "bare legs"
+    ],
+    "nsfwProse": "Several buttons of her oversized pale-blue men's shirt have come undone, exposing her bare shoulders, collarbones, and upper thighs with no bottoms visible beneath the rumpled hem."
   }
 }

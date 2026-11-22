@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
     "title": "2B · 废墟微光·晨曦断壁与过膝高跟长靴",
@@ -21,7 +21,7 @@
     "action": "赤裸端坐断壁边缘，过膝高跟皮靴踩在碎石，手扶长剑回眸，晨光勾勒纯白身姿与标志性眼罩",
     "timeOfDay": "清晨",
     "lighting": "early morning volumetric sunlight, golden god rays filtering through concrete ruins, soft rim light",
-    "camera": "full body, low angle, side profile, focus on long legs and thigh-high boots",
+    "camera": "from side, from below, full body",
     "mood": "神圣肃穆、孤独空灵、末日诗意与致命肉感",
     "recommendedSize": "1152x1536",
     "adult": true,
@@ -46,28 +46,34 @@
       "detailed_background",
       "intimate"
     ],
-    "promptProse": "2B sits on the crumbled ledge with one knee bent and one hand resting on the grounded katana as dawn reaches the Lunar Tears among the ruins.",
+    "promptProse": "Seen in low side profile atop a shattered concrete parapet overlooking a ruined city at dawn, 2B perches with one knee drawn up and one palm resting on the hilt of her planted katana. Golden sunbeams cut through dust motes onto white Lunar Tears blooming in the moss.",
     "promptTokens": [
-      "nude",
-      "black blindfold",
-      "black thighhigh heel boots",
+      "sitting",
       "bent knee",
+      "hand on katana",
       "katana",
+      "looking back",
+      "ruins",
       "concrete ledge",
       "white flowers",
-      "ruined city",
       "dawn",
-      "sitting",
-      "hand on katana",
-      "dawn light",
-      "flowers"
+      "sunbeams",
+      "from side",
+      "from below",
+      "full body"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
+      "nude",
+      "thigh boots",
+      "black boots",
+      "high heels",
       "nipples",
-      "pussy"
+      "pussy",
+      "bare thighs"
     ],
-    "nsfwProse": "",
-    "animaCaption": "The katana stays grounded beneath her resting hand on the crumbled ledge."
+    "nsfwProse": "Completely unclothed apart from her black blindfold and polished black over-knee high-heeled leather boots, her smooth porcelain figure catches the warm morning light.",
+    "animaCaption": "Sitting completely nude save for her black combat blindfold and over-knee high-heeled leather boots atop a crumbled concrete ledge among white flowers, she rests one hand on her grounded katana and turns her head in golden dawn light.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiiba_tsumugi_lingerie_whisper",
     "characterId": "shiiba_tsumugi",
@@ -14,7 +14,7 @@
     "location": "温馨的小阁楼卧室，角落挂着平时穿的英俊男装制服，窗外星光闪烁",
     "timeOfDay": "卸下伪装的深夜更衣时刻",
     "lighting": "床头暖色小台灯在金茶色短发上投下温暖的金芒，室内光线柔和而私密",
-    "camera": "medium close-up, high angle, 微俯平视中近景，聚焦揪着衣摆的泛白指节与含羞抬眸的动人瞬间",
+    "camera": "high angle, medium close-up",
     "mood": "假小子脱去伪装后的惊人纯美与极致害羞，令人无比心动",
     "adult": true,
     "sampleRating": "R15",
@@ -38,27 +38,35 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium close-up",
-      "high angle",
-      "apartment",
-      "bedroom",
-      "window",
-      "bed",
-      "night",
-      "warm lighting",
       "sitting",
-      "water",
-      "delicate puff sleeves",
-      "tiny gathered neckline",
-      "soft pastel tone",
-      "indoors",
-      "starlight",
-      "desk lamp"
+      "on bed",
+      "grabbing own clothes",
+      "looking up",
+      "shy",
+      "blush",
+      "watery eyes",
+      "bedroom",
+      "attic",
+      "window",
+      "starry sky",
+      "desk lamp",
+      "night",
+      "high angle",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",
-    "animaCaption": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated shyly on the edge of the bed in a cozy attic bedroom with a tailored boy's uniform hanging neatly in the corner, Tsumugi wears a pale-apricot double-gauze babydoll nightgown with delicate puff sleeves. Gripping the sheer hem tightly with both hands, she lifts watery, bashful eyes toward the viewer with bright pink ears. Warm amber light from a small bedside lamp softens the intimate room beneath a starry attic window.",
+    "animaCaption": "Seated at the attic bed edge in her sheer pale-apricot puff-sleeve babydoll nightgown, Tsumugi clutches the hem tightly and looks up with watery, shy eyes and flushed ears. Warm bedside lamplight glows softly beneath the starry window.",
+    "nsfwTokens": [
+      "babydoll",
+      "apricot nightgown",
+      "sheer",
+      "puff sleeves",
+      "gathered neckline",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a sheer pale-apricot double-gauze babydoll nightgown with delicate puff sleeves and a softly gathered pastel neckline.",
+    "compositionIntent": "single"
   }
 }

@@ -97,6 +97,7 @@ impl Context {
                 | "profile.saveDraft"
                 | "profile.resetChat"
                 | "appendArtwork"
+                | "studio.write"
                 | "saveProject"
                 | "deleteSmartAlbum"
                 | "patchArtwork"

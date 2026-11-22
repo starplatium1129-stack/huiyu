@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3392,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "nakano_itsuki_lingerie_whisper",
     "characterId": "nakano_itsuki",
@@ -14,7 +14,7 @@
     "location": "中野家宽敞明亮的现代开放式厨房，蒸锅上方正冒着最后一缕香甜水汽",
     "timeOfDay": "凌晨一点的秘密能量补充时刻",
     "lighting": "突兀按开的厨房顶灯白光，照亮了餐桌上的蒸笼与少女通红的双颊",
-    "camera": "close-up, eye level, front view, 正面特写平视，捕捉鼓鼓的腮帮子与星星发卡下瞪圆的蓝眼睛",
+    "camera": "front view, eye level, close-up",
     "mood": "五妹特有的贪吃反差萌与认真被撞破时的极致羞涩",
     "adult": true,
     "sampleRating": "R15",
@@ -38,27 +38,33 @@
       "front_view"
     ],
     "promptTokens": [
-      "close-up",
-      "eye level",
-      "front view",
-      "kitchen",
-      "counter",
-      "morning",
-      "sunlight",
-      "dim lighting",
       "sitting",
-      "blush",
-      "tiny golden star embroidery",
-      "comfortable relaxed fit",
-      "mother-of-pearl buttons",
-      "wholesome cozy loungewear",
-      "desk lamp",
-      "warm lighting"
+      "dining chair",
+      "eating",
+      "holding meat bun",
+      "puffed cheeks",
+      "surprised",
+      "heavy blush",
+      "modern kitchen",
+      "steamer pot",
+      "overhead white light",
+      "night",
+      "front view",
+      "eye level",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Nakano Itsuki relaxes in caught at kitchen dining table at midnight, wearing a scarlet red cotton button-front camisole slip. Caught at kitchen dining table at midnight, cheeks stuffed with meat bun like hamster, blushing violently amidst starry hairclips in reddish hair, modern white kitchen background, hilarious cute guilty expression. Focused amber desk lamp light illuminates open study workbooks and confectionery wrappers, casting cozy warm highlights across her studious expression.",
-    "animaCaption": "Nakano Itsuki relaxes in caught at kitchen dining table at midnight, wearing a scarlet red cotton button-front camisole slip.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Caught red-handed at the dining table of a bright modern kitchen at one in the morning, Itsuki Nakano sits in a scarlet-red cotton button-front camisole nightdress with tiny gold star embroidery. Holding half a warm meat bun with puffed cheeks and wide, violently blushing eyes, she freezes beneath the sudden overhead white kitchen lamp.",
+    "animaCaption": "Caught at the midnight kitchen table in a scarlet star-embroidered cotton button-front camisole slip, she freezes mid-bite with a steamed meat bun in hand, cheeks stuffed and blushing crimson. Sudden bright overhead kitchen light exposes the steaming pot behind her.",
+    "nsfwTokens": [
+      "red cotton camisole",
+      "buttoned nightgown",
+      "star embroidery",
+      "spaghetti straps",
+      "pajamas",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a cozy scarlet-red cotton button-front camisole nightdress embroidered with tiny golden stars along the neckline and fastened with pearl buttons.",
+    "compositionIntent": "single"
   }
 }

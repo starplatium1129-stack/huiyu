@@ -17,6 +17,8 @@
     "allow-desktop-workspace-activate",
     "allow-desktop-workspace-enable-bundled",
     "allow-get-state",
+    "allow-get-startup-mode",
+    "allow-set-startup-mode",
     "allow-hide",
     "allow-set-ignore-mouse-events-cmd",
     "allow-toggle-always-on-top",

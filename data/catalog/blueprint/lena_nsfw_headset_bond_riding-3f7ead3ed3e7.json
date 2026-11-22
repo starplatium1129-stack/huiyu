@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_headset_bond_riding",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "独自跨坐床褥，身体前倾，双手撑在自己的膝头",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "主控骑乘",
     "characterId": "vladilena_milize",
     "coverageTags": [
@@ -24,22 +24,22 @@
     "location": "军官寝室床上",
     "mood": "深情主控、痴缠沉溺",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Completely unclothed apart from white thigh-high stockings fastened to delicate garter straps, her bare breasts and hips are softly outlined in the cool blue light.",
     "outfitId": "white_stockings_headset",
-    "promptProse": "Adult Lena holds a solitary straddling pose on the sheets, leaning forward with her hands on her knees and rolling her hips under the blue Para-RAID glow and faint starlight from the window.",
+    "promptProse": "Seen from a low angle in a quiet officer's bedroom before dawn, Lena leans forward astride the rumpled bedsheets with both hands steadying on her knees as faint starlight meets the pale blue glow at her collar.",
     "promptTokens": [
-      "topless",
-      "bottomless",
-      "white thighhighs",
-      "garter straps",
       "straddling",
       "hands on knees",
-      "communication device",
-      "bed",
-      "from below",
       "leaning forward",
+      "headset",
       "blue light",
+      "heavy blush",
+      "parted lips",
+      "bedroom",
+      "bed",
       "starlight",
+      "night",
+      "from below",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -59,9 +59,14 @@
     "timeOfDay": "黎明前",
     "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘",
     "nsfwTokens": [
+      "nude",
+      "white thighhighs",
+      "garter straps",
       "nipples",
-      "pussy"
+      "pussy",
+      "bare thighs"
     ],
-    "animaCaption": "She holds a solitary straddling pose with both hands on her own knees."
+    "animaCaption": "Holding a solitary straddling pose atop her predawn quarters bed with both palms braced on her knees, she wears only white thigh-high stockings, garter straps, and her neck-worn Para-RAID glowing soft blue against the window starlight.",
+    "compositionIntent": "single"
   }
 }

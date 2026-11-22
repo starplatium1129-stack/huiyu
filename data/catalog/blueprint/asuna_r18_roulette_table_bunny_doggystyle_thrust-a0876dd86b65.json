@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "asuna_r18_roulette_table_bunny_doggystyle_thrust",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 945,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "单腿踩木凳兔女郎连体衣侧拉链卡死勒肉溢乳，反手拉扯无果单手探入黑丝自抚，金发披散娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "ichinose_asuna",
     "coverageTags": [
@@ -22,23 +22,31 @@
     "location": "游轮 VIP 更衣室内反光红木衣柜前木凳旁",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "bunny_suit",
-    "promptProse": "She props one leg on the bench with her bunny suit zipper caught, reaching beneath the hip seam. Warm chandelier light fills the room.",
-    "promptTokens": [
-      "dressing room",
-      "glossy black bunny suit",
-      "fake rabbit ears",
-      "stuck zipper",
+    "nsfwProse": "Her glossy black bunny leotard has its side zipper caught halfway, squeezing deep cleavage over the plunging bodice while one hand slips past the high-cut hip edge beneath her sheer black pantyhose.",
+    "nsfwTokens": [
+      "playboy bunny",
+      "black leotard",
+      "unzipped",
       "cleavage",
       "black pantyhose",
-      "halo",
-      "masturbation",
-      "raised leg",
-      "leg on bench",
+      "leotard aside",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "bunny_suit",
+    "promptProse": "Inside a mahogany-paneled VIP dressing room lit by a warm chandelier, Asuna raises one leg onto a wooden bench with flushed cheeks and tear-bright eyes, her bunny ears tilting slightly as she breathes hard.",
+    "promptTokens": [
+      "standing",
+      "leg up",
+      "bench",
+      "bunny ears",
       "heavy blush",
-      "chandelier lighting",
+      "teary eyes",
+      "parted lips",
+      "dressing room",
+      "wardrobe",
+      "chandelier",
+      "warm lighting",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -58,6 +66,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "一之濑明日奈 · 更衣柜前高叉兔女郎侧拉链卡死溢乳与犬系娇憨自抚",
-    "animaCaption": "One leg rests on the bench as her hand reaches beneath the suit's hip seam."
+    "animaCaption": "Standing in the VIP dressing room with one foot propped on a wooden bench, she wears a glossy black high-leg bunny corset with its side zipper stuck open and overflowing cleavage while slipping one hand past the hip seam beneath her sheer black tights.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_01",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1715,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "maomao_r18_b9_01",
     "title": "猫猫 · 翡翠宫后宫药室长桌汉服主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐药桌汉服襦裙大开露小乳，雀斑脸颊染春药红晕，死鱼眼含春主动起伏",
     "timeOfDay": "night",
     "lighting": "warm pharmacy lamp light across the desk and medicine jars",
-    "camera": "cowboy shot, first-person view, low angle",
+    "camera": "from below, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,22 +30,23 @@
       "open_clothes",
       "freckles"
     ],
-    "promptProse": "Maomao sits astride her off-frame companion on the medicine desk, her hanfu open. The pharmacy lamp lights her hands and the jars.",
+    "promptProse": "Atop a wooden pharmacy table crowded with ceramic medicine jars in the Jade Pavilion at night, Maomao rides astride her partner in cowgirl position with her green hanfu jacket parted wide to bare her small breasts and her cream skirt bunched at her hips. Warm oil lamplight catches the heavy flush across her freckled cheeks and languid half-lidded gaze, seen from below in first-person view.",
     "promptTokens": [
-      "green hanfu",
-      "open clothes",
-      "topless",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "aphrodisiac",
+      "straddling",
+      "freckles",
+      "heavy blush",
+      "half-closed eyes",
+      "wooden desk",
       "medicine jars",
-      "desk",
+      "apothecary",
+      "warm oil lamp",
       "from below",
-      "cream long skirt",
-      "sleeve ties",
-      "sitting astride",
-      "open hanfu",
-      "pharmacy lamp",
-      "jars"
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,15 +54,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "green hanfu",
+      "open clothes",
+      "topless",
+      "small breasts",
+      "nipples",
+      "cream skirt",
+      "skirt lift",
+      "sex"
+    ],
+    "nsfwProse": "Her green-and-cream apothecary hanfu jacket is parted wide open to bare her small breasts while her cream long skirt is bunched up around her waist as she rides astride her partner.",
     "outfitId": "sfw_pharmacy",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "Her companion remains outside the frame beside the medicine desk."
+    "compositionIntent": "group",
+    "animaCaption": "Sitting astride the viewer atop the cluttered pharmacy desk with her green hanfu jacket pulled wide open and cream skirt lifted, she rocks slowly with heavy rosy flush spreading across her freckled cheeks and half-lidded eyes. A warm oil lamp illuminates glass medicine jars beside her."
   }
 }

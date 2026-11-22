@@ -14,6 +14,7 @@ impl From<TaskKind> for ProviderRoute {
             TaskKind::Anima => Self::Image("anima"),
             TaskKind::Creative => Self::Image("krea2"),
             TaskKind::Qwen => Self::Image("qwen-image"),
+            TaskKind::Keyframe => Self::Image("keyframe"),
             TaskKind::Moss => Self::Image("moss-image"),
             TaskKind::Manga | TaskKind::Lineart => Self::Image("manga-screen"),
             TaskKind::Video => Self::Video,
@@ -29,6 +30,13 @@ pub(super) enum Preparation {
     Batch(crate::video::BatchPrepared),
 }
 impl Preparation {
+    pub(super) fn uses_native_queue(&self) -> bool {
+        match self {
+            Self::Image(image) => image.uses_native_queue(),
+            Self::Video(video) => video.provider() == "native",
+            _ => false,
+        }
+    }
     pub(super) fn input(&self) -> &Value {
         match self {
             Self::Generation(p) => &p.input,
@@ -65,9 +73,9 @@ impl TaskRuntime {
         Some(id)
     }
 
-    /// Read the bound image job only. Step updates never write task revisions or
+    /// Read the bound image or video job. Step updates never write task revisions or
     /// change acceptance, recovery, cancellation or result collection state.
-    pub async fn image_progress(
+    pub async fn live_progress(
         &self,
         storage: &Storage,
         principal: &str,
@@ -80,21 +88,15 @@ impl TaskRuntime {
         {
             return None;
         }
-        let kind = match task["kind"].as_str()? {
-            "anima" => TaskKind::Anima,
-            "creative" => TaskKind::Creative,
-            _ => return None,
-        };
-        let ProviderRoute::Image(family) = ProviderRoute::from(kind) else {
-            return None;
-        };
         let id = task["taskId"].as_str()?;
         let binding = self.job(storage, id).filter(|job| !job.is_empty())?;
-        let snapshot = self
-            .images
-            .get_job(&binding, principal, family)
-            .await
-            .ok()?;
+        let snapshot = match task["kind"].as_str()? {
+            "video" => self.video.get_job(&binding, principal).await.ok()?,
+            "keyframe" => self.images.get_job(&binding, principal, "keyframe").await.ok()?,
+            "anima" => self.images.get_job(&binding, principal, "anima").await.ok()?,
+            "creative" => self.images.get_job(&binding, principal, "krea2").await.ok()?,
+            _ => return None,
+        };
         if snapshot["status"] != "running" || snapshot["unknown"] == true {
             return None;
         }
@@ -102,6 +104,7 @@ impl TaskRuntime {
             "value":snapshot["progress"].as_f64().filter(|value| value.is_finite()).map(|value| value.clamp(0.,1.)),
             "message":snapshot["progressText"].as_str().unwrap_or(""),
             "currentNode":snapshot["currentNode"].as_str(),
+            "previewDataUrl":snapshot["previewDataUrl"].as_str(),
             "elapsedSeconds":snapshot["elapsedSeconds"].as_u64().unwrap_or(0),
         }))
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_night_magic",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 381,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "elaina_night_magic",
     "title": "伊雷娜 · 夜间魔法星夜",
@@ -14,8 +14,8 @@
     "location": "营地附近的星空草丘",
     "action": "在夜间草丘挥动魔杖，施展汇聚星光的魔法",
     "timeOfDay": "夜晚",
-    "lighting": "篝火与星光",
-    "camera": "medium shot",
+    "lighting": "山坡上淡金魔法星点照亮手和脸，坡下帐篷外的篝火是远处小暖光",
+    "camera": "wide shot, three quarter view",
     "mood": "静谧灵异",
     "sceneTags": [
       "night",
@@ -27,23 +27,28 @@
       "fantasy",
       "outdoors"
     ],
-    "promptProse": "She gathers small constellation orbs beside her raised wand and watches them with a pleased smile. Campfire light warms the grassy hill below the blue starry sky.",
+    "promptProse": "On a grassy hill above camp, Elaina holds her wand just higher than shoulder level. A few pale-gold points of light hang directly above its tip, linked by fine lines like a small constellation. She watches the shape with a satisfied smile, her smoke-purple capelet stirred by the breeze. At the bottom of the slope a canvas tent sits beside one small amber campfire. A lone meteor streak crosses the clear blue sky over the dark outline of the far hills. The wide framing keeps the near blades of grass, the caster and the low camp in distinct planes.",
     "promptTokens": [
+      "standing",
       "holding wand",
+      "looking at object",
+      "smile",
       "magic",
-      "stars",
+      "glowing",
+      "light particles",
       "hill",
+      "meadow",
+      "tent",
       "campfire",
       "night",
-      "medium shot",
-      "raised wand",
-      "glowing orbs",
-      "smile",
-      "firelight"
+      "starry sky",
+      "shooting star",
+      "wide shot",
+      "three quarter view"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536",
-    "outfitId": "sfw_travel_witch_cape",
-    "animaCaption": "Small constellation orbs gather beside her raised wand."
+    "recommendedSize": "1536x1024",
+    "outfitId": "sfw_stargazing_wool_cape",
+    "animaCaption": "A handful of pale gold points linked by fine lines hangs just above her raised wand. The small campfire stays downhill beside the tent under a single meteor streak."
   }
 }

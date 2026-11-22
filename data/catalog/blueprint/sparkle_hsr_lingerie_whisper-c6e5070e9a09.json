@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3524,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sparkle_hsr_lingerie_whisper",
     "characterId": "sparkle_hsr",
@@ -14,7 +14,7 @@
     "location": "匹诺康尼黄金时刻的梦境戏院包厢露台，天空落着永恒的金色礼花与香槟喷泉",
     "timeOfDay": "无尽梦境狂欢的最高潮",
     "lighting": "露台外梦境世界的金粉霓虹与全息烟火投下炫目的流光溢彩，光怪陆离",
-    "camera": "medium shot, low angle, 梦境剧院包厢仰角，金色礼花与香槟喷泉衬托欢愉假面捉弄",
+    "camera": "low angle, medium shot",
     "mood": "捉摸不透的欢愉假面愚者，荒诞、迷乱、狂气与极度性感的舞台魔术",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,37 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "railing",
+      "holding mask",
+      "fox mask",
+      "smug",
+      "grin",
+      "looking at viewer",
+      "balcony",
+      "theater",
+      "confetti",
+      "champagne",
+      "neon lights",
+      "night",
       "low angle",
-      "sitting on velvet theatre box balcony",
-      "golden falling confetti",
-      "flowing champagne fountain",
-      "traditional kitsune mask resting beside",
-      "Penacony dreamscape theatre",
-      "neon carnival lighting",
-      "mischievous impish grin"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Sparkle dangles her feet from the gilded balcony of Penacony's grand dream theatre, golden confetti showering around her as she flashes an unpredictable, delightful grin.",
-    "animaCaption": "Perched on a velvet theatre box balcony amidst golden confetti showers, smiling with mischievous theatrical delight.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Perched backward atop the carved red balcony rail of a grand Penacony dream-theater box while golden confetti drifts around a bubbling champagne fountain, Sparkle wears a scarlet-red and lacquer-gold cutout tube dress with gold-laced sides and an asymmetrical sheer hem. Spinning her kitsune mask deftly on one finger while dangling her bare feet above the drop, she flashes a wicked, playful grin toward the viewer. Dazzling neon carnival lights and holographic fireworks wash the theater balcony in shifting color.",
+    "animaCaption": "Perched barefoot on the red theater box railing in a gold-laced scarlet cutout tube dress, Sparkle spins a fox mask on her finger with a mischievous grin amidst falling golden confetti. Dazzling neon dreamscape lights illuminate the festive balcony.",
+    "nsfwTokens": [
+      "red dress",
+      "tube dress",
+      "cutout",
+      "high slit",
+      "gold lace-up",
+      "sheer",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a scarlet-red and lacquer-gold geometric cutout tube sleep dress laced at the sides with gold cords and falling into an asymmetrical sheer high-slit hem.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3270,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "tsukatsuki_rio_lingerie_whisper",
     "characterId": "tsukatsuki_rio",
@@ -14,7 +14,7 @@
     "location": "千禧年未公开深层地下中枢指挥室，数百面全息监视荧幕环绕四周",
     "timeOfDay": "深夜全城防卫监控演算间歇",
     "lighting": "荧幕矩阵散发的幽蓝与品红冷光勾勒出修长身形，操作台指示灯在镜片上泛起微光",
-    "camera": "medium shot, low angle, 低机位全景，数百面全息监控荧幕环绕下理性崩塌的脆弱瞬间",
+    "camera": "from below, medium shot",
     "mood": "绝对理性的大小姐会长被情感攻破防线，知性、严谨与致命诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,33 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "sitting on command chair",
-      "circular holographic surveillance monitors",
-      "underground central hub",
-      "data streams",
-      "cool blue glow",
-      "exhausted posture",
-      "cold calculated solitude"
+      "sitting",
+      "command chair",
+      "chin on hands",
+      "glasses",
+      "blush",
+      "looking at viewer",
+      "holographic screens",
+      "monitors",
+      "command room",
+      "blue lighting",
+      "night",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rio sits alone in the deep Millennium underground bunker, encircled by hundreds of glowing holographic security screens casting cool azure luminescence across her stoic, fatigued expression.",
-    "animaCaption": "Seated alone in a subterranean command hub encircled by floating holographic screens in cold blue glow.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a low angle inside the deep Millennium underground command hub surrounded by hundreds of floating blue holographic screens, Rio rests her chin on her folded fingers and meets the viewer's gaze behind slim glasses with composed yet faintly flustered honesty.",
+    "animaCaption": "Seated in her subterranean command chair encircled by glowing blue holographic surveillance monitors, she props her chin over interlaced hands behind thin-rimmed glasses with a faint flush in a sleek matte-black faux-leather and sheer tech-mesh bustier with matching boy-shorts.",
+    "nsfwTokens": [
+      "black lingerie",
+      "leather bustier",
+      "sheer mesh",
+      "high collar",
+      "black shorts",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a structured matte-black faux-leather and translucent geometric tech-mesh underwire bustier set with a sleek collar strap and matching low-rise boy-shorts.",
+    "compositionIntent": "single"
   }
 }

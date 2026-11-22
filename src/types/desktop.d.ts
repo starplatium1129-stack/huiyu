@@ -5,6 +5,11 @@ interface DesktopAiWorkspace {
   restartRequired: boolean
 }
 
+export type DesktopStartupMode = 'companion' | 'atelier' | 'both' | 'tray'
+export type CompanionReadyKind = 'native' | 'static' | 'failed'
+export interface CompanionRect { x: number; y: number; width: number; height: number }
+export interface CompanionAlphaMask { rect: CompanionRect; maskWidth: number; maskHeight: number; data: number[] }
+
 export interface CompanionDesktopBridge {
   readChatCredential?(endpoint: string): Promise<string | null>
   writeChatCredential?(endpoint: string, secret: string): Promise<void>
@@ -24,11 +29,15 @@ export interface CompanionDesktopBridge {
     alwaysOnTop: boolean
     ignoreMouseEvents: boolean
     visible: boolean
+    preparing: boolean
+    startupFailed: boolean
     chatVisible: boolean
     onBatteryPower: boolean
     live2dEnabled: boolean | null
     bounds?: { x: number; y: number; width: number; height: number }
   }>
+  getStartupMode(): Promise<DesktopStartupMode>
+  setStartupMode(mode: DesktopStartupMode): Promise<void>
   toggleAlwaysOnTop(): Promise<boolean>
   isPackaged(): Promise<boolean>
   saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string; error?: string }>

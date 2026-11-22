@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1599,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_01",
     "title": "战栗的龙卷 · 英雄协会高层公寓念动力浮空主控跨坐",
@@ -15,7 +15,7 @@
     "action": "念动力浮空跨坐黑开衩裙掀起，双臂抱胸翠绿卷发飘扬，傲娇怒视主动重压",
     "timeOfDay": "night",
     "lighting": "绿色念动力照亮近处轮廓，窗外暴雨夜的冷光透入房间",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,19 +30,22 @@
       "green_aura",
       "black_dress"
     ],
-    "promptProse": "Tatsumaki rides astride her companion using telekinesis, arms folded at her chest, her dress lifted beneath green psychic light and the cold storm light entering from outside.",
+    "promptProse": "Inside a high-rise A-City penthouse on a stormy night, Tatsumaki uses her green telekinetic aura to ride astride her partner with her high-slit black dress lifted and parted across her chest. Folding her arms across her ribs while glaring down with a flushed, defiant pout, she glows in emerald psychic light against cold rain-streaked window reflections.",
     "promptTokens": [
-      "Tatsumaki",
-      "black long dress",
-      "high side slits",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
+      "straddling",
+      "crossed arms",
       "floating",
       "green aura",
-      "straddling",
+      "glare",
+      "blush",
       "penthouse",
-      "storm",
+      "rainy window",
+      "cold storm light",
       "low angle",
-      "crossed arms",
-      "cold lighting",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -52,16 +55,23 @@
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
     "nsfwTokens": [
-      "cowgirl position",
-      "topless"
+      "black dress",
+      "high-slit dress",
+      "dress lift",
+      "open clothes",
+      "topless",
+      "small breasts",
+      "nipples",
+      "sex"
     ],
-    "nsfwProse": "",
+    "nsfwProse": "Her high-slit black dress is lifted high around her thighs and parted across her chest as she hovers slightly in telekinetic cowgirl rhythm with her arms folded.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "She rides astride her companion with folded arms under green psychic light and the storm window."
+    "animaCaption": "Using green telekinetic aura to ride astride her partner with her high-slit black dress lifted and opened across her chest, she folds her arms haughtily and shoots down a flushed, tsundere glare. Cold storm light from the penthouse window clashes with her luminous green psychic glow.",
+    "compositionIntent": "group"
   }
 }

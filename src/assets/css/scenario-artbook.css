@@ -27,8 +27,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-3) var(--s-4);
-  margin: 0 0 var(--s-4);
+  gap: var(--s-2) var(--s-4);
+  margin: 0 0 var(--s-3);
 }
 
 .scenario-library-title-group {

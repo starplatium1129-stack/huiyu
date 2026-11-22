@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_r18_b8_01",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 800,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "action": "跨坐在画面外同伴腰间，身体微前倾，双手捧住自己的脸颊，带着坏笑看向对方。",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "cowboy shot, low angle",
+    "camera": "low angle, pov, cowboy shot",
     "category": "主控骑乘",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -24,30 +24,36 @@
     "location": "成年同事会器材备品室·锁门后",
     "mood": "主动亲密与失神",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "council_blazer_skirt",
-    "promptProse": "Yuki sits astride her off-frame companion on cushions in the locked council storeroom, leaning forward with both hands cupping her cheeks. Her blazer is open, skirt lifted over black tights, gaze toward them with a teasing smile.",
-    "promptTokens": [
-      "adult",
-      "open blazer",
+    "nsfwProse": "Her silver-piped navy blazer hangs open over her bare breasts while her pleated miniskirt is lifted high to her waist above torn sheer black pantyhose as she rides astride her partner's lap.",
+    "nsfwTokens": [
+      "navy blazer",
+      "open jacket",
       "topless",
+      "bare breasts",
+      "pleated skirt",
       "skirt lift",
       "black pantyhose",
+      "torn pantyhose",
+      "cowgirl position",
+      "sex"
+    ],
+    "outfitId": "council_blazer_skirt",
+    "promptProse": "Inside the locked council storeroom on stacked floor cushions at night, Yuki lets her tailored navy blazer hang open over her bare breasts and lifts her pleated miniskirt high above her torn sheer black pantyhose. Straddling her partner's lap in cowgirl position, she leans forward with both hands playfully cupping her own cheeks and gives him a wicked, flushed smirk in dim warm room light.",
+    "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "on lap",
       "leaning forward",
-      "cushion",
+      "hands on own cheeks",
       "smirk",
+      "blush",
       "storage room",
-      "cowboy shot",
+      "cushion",
+      "warm lighting",
       "from below",
-      "navy blazer",
-      "navy pleated skirt",
-      "cushions",
-      "chin in hands",
-      "teasing smile",
-      "warm_lighting"
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -65,6 +71,7 @@
     ],
     "timeOfDay": "night",
     "title": "周防有希 · 成年同事会备用品室暗处的制服主控诱惑",
-    "animaCaption": "Both hands cup her cheeks above the off-frame companion."
+    "animaCaption": "Riding astride her partner's lap on the locked storeroom cushions with her navy blazer open over her bare breasts and pleated skirt lifted above black pantyhose, Yuki leans forward cupping her cheeks with a wicked, flushed smirk. Dim warm light fills the quiet room.",
+    "compositionIntent": "group"
   }
 }

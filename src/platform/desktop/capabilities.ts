@@ -1,4 +1,4 @@
-import type { CompanionDesktopBridge } from '../../types/desktop.d.ts'
+import type { CompanionAlphaMask, CompanionDesktopBridge, CompanionReadyKind, CompanionRect } from '../../types/desktop.d.ts'
 import { hostApi, invokeHost as invoke, onHostEvent as on, offHostEvent as off } from './hostApi.ts'
 import { getDesktopWindowRole } from './runtime.ts'
 
@@ -16,6 +16,8 @@ const capabilities: CompanionDesktopBridge = {
   setIgnoreMouseEvents: ignore => { void invoke('set_ignore_mouse_events_cmd', { ignore }) },
   setLive2dEnabled: enabled => { void invoke('set_live2d_enabled', { enabled }) },
   getState: () => invoke('get_state'), toggleAlwaysOnTop: () => invoke('toggle_always_on_top'),
+  getStartupMode: () => invoke('get_startup_mode'),
+  setStartupMode: mode => invoke('set_startup_mode', { mode }),
   isPackaged: () => invoke('is_packaged'),
   saveImage: payload => {
     const host = hostApi()
@@ -48,6 +50,29 @@ const capabilities: CompanionDesktopBridge = {
 }
 export function getDesktopCapabilities(): CompanionDesktopBridge | undefined {
   return hostApi() ? capabilities : undefined
+}
+
+type CompanionSignals = {
+  prepare: void
+  'startup-timeout': void
+  'startup-recovered': void
+  dismiss: void
+  menu: void
+  pin: boolean
+}
+
+export const companionWindow = {
+  markReady: (ready: CompanionReadyKind) => invoke<void>('companion_mark_ready', { ready }),
+  setInteractiveRegions: (regions: CompanionRect[], lock: boolean) => invoke<void>('companion_set_interactive_regions', { regions, lock }),
+  setStaticMask: (mask: CompanionAlphaMask | null) => invoke<void>('companion_set_static_mask', { mask }),
+  on<K extends keyof CompanionSignals>(signal: K, listener: (payload: CompanionSignals[K]) => void) {
+    const subscription = on<CompanionSignals[K]>(`aics:companion-${signal}`, listener)
+    return () => off(subscription)
+  },
+  onChatVisibility(listener: (visible: boolean) => void) {
+    const subscription = on<boolean>('aics:chat-visibility', listener)
+    return () => off(subscription)
+  },
 }
 export function onDesktopNavigate(listener: (path: string) => void): () => void {
   const id = on<string>('aics:navigate', path => { if (getDesktopWindowRole() === 'atelier' && /^\/(?:[a-zA-Z0-9-]+(?:\?[a-zA-Z0-9_.%=&+~-]{1,4096})?)?$/.test(path)) listener(path) })

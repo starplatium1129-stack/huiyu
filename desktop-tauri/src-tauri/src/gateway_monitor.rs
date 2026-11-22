@@ -42,11 +42,7 @@ pub(crate) fn start(app: AppHandle) {
                     state.info(&format!("gateway restarted at {url}"));
                     // Existing documents reconnect through the typed transport;
                     // navigation here would discard unsaved drafts and task views.
-                    if app.get_webview_window("companion").is_none() && !std::env::args().any(|arg| arg == "--hidden") {
-                        if let Err(error) = main_shared::create_companion_window(&app, &url, true) {
-                            state.error(&format!("companion recovery failed: {error}"));
-                        }
-                    }
+                    main_shared::dispatch_startup(&app, &url);
                 }
                 Err(e) => state.error(&format!("gateway restart failed: {e}")),
             }

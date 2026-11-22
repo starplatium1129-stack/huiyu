@@ -1,4 +1,9 @@
-use super::{Duration, Error, Result, compatible::Decoder, ollama::Permit};
+use super::{
+    Duration, Error, Result,
+    compatible::Decoder,
+    ollama::Permit,
+    responses::{self, Decoder as ResponsesDecoder, Session as ResponsesSession},
+};
 use axum::{
     body::{Body, Bytes},
     response::{IntoResponse, Response},
@@ -26,6 +31,9 @@ pub(super) enum Event {
     Token {
         content: String,
     },
+    Drawing {
+        drawing: serde_json::Map<String, Value>,
+    },
     ToolCall(Box<ToolCall>),
     KeepAlive,
     Done,
@@ -41,10 +49,10 @@ pub(super) struct ToolCall {
     pub(super) thought_signature: Option<String>,
 }
 
-#[derive(Clone, Copy)]
 pub(super) enum Protocol {
     Ollama,
     Sse,
+    ResponsesSse(Box<ResponsesSession>),
     Json,
 }
 pub(super) struct Prepared {
@@ -58,6 +66,7 @@ struct Events {
     lines: Lines,
     protocol: Protocol,
     decoder: Decoder,
+    responses: ResponsesDecoder,
     sse: sse::Frames,
     pending: VecDeque<Event>,
     json: String,
@@ -74,8 +83,18 @@ impl Events {
             if self.finished {
                 return Ok(None);
             }
-            let line = tokio::select! {line=self.lines.next()=>line?,_=self.shutdown.cancelled()=>return Err(Error::stream("ABORTED", "聊天已停止"))};
-            match self.protocol {
+            let session_cancel = async {
+                match &self.protocol {
+                    Protocol::ResponsesSse(session) => session.cancel.cancelled().await,
+                    _ => std::future::pending().await,
+                }
+            };
+            let line = tokio::select! {
+                _ = self.shutdown.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
+                _ = session_cancel => return Err(responses::session_ended()),
+                line = self.lines.next() => line?,
+            };
+            match &self.protocol {
                 Protocol::Ollama => match line {
                     Some(line) if line.trim().is_empty() => {}
                     Some(line) => {
@@ -131,6 +150,44 @@ impl Events {
                         self.finish()?;
                     }
                 }
+                Protocol::ResponsesSse(session) => {
+                    if let Some(line) = line {
+                        match self.sse.push(&line)? {
+                            Some(sse::Frame::Event(event)) => {
+                                let decoded = match self.responses.decode(event, session.request_id.as_deref()) {
+                                    Ok(events) => events,
+                                    Err(error) => {
+                                        session.recover(&error).await?;
+                                        return Err(error);
+                                    }
+                                };
+                                if self.responses.completed {
+                                    self.finished = true;
+                                }
+                                self.pending.extend(decoded);
+                            }
+                            Some(sse::Frame::Done) => {
+                                if !self.responses.completed {
+                                    return Err(Error::stream(
+                                        "INCOMPLETE_STREAM",
+                                        "ChatGPT 响应未收到完成事件即结束",
+                                    ));
+                                }
+                                self.finished = true;
+                            }
+                            None => {}
+                        }
+                    } else {
+                        self.sse.end(self.responses.completed)?;
+                        if !self.responses.completed {
+                            return Err(Error::stream(
+                                "INCOMPLETE_STREAM",
+                                "ChatGPT 响应未收到完成事件即结束",
+                            ));
+                        }
+                        self.finished = true;
+                    }
+                }
                 Protocol::Json => {
                     if let Some(line) = line {
                         self.json.push_str(&line);
@@ -177,10 +234,11 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
             } else {
                 120
             }),
-            matches!(prepared.protocol, Protocol::Sse),
+            matches!(prepared.protocol, Protocol::Sse | Protocol::ResponsesSse(_)),
         ),
         protocol: prepared.protocol,
         decoder: Decoder::new(vendor),
+        responses: ResponsesDecoder::default(),
         sse: sse::Frames::default(),
         pending: VecDeque::from([Event::Meta {
             model: prepared.model,
@@ -265,20 +323,20 @@ pub(super) fn from_events(
         let relay = async move {
             futures_util::pin_mut!(events);
             while let Some(event) = events.next().await {
-                let value = event.map_err(|error| error.message)?;
+                let value = event.map_err(|error| (error.message, Some(error.code), error.upstream))?;
                 let mut bytes = serde_json::to_vec(&value).unwrap();
                 bytes.push(b'\n');
                 drop(value);
                 send.send(Bytes::from(bytes))
                     .await
-                    .map_err(|_| "聊天连接已关闭".to_owned())?;
+                    .map_err(|_| ("聊天连接已关闭".to_owned(), None, None))?;
             }
             Ok(())
         };
         let result = tokio::select! {
             biased;
-            _ = cancel.cancelled() => Err("聊天已停止".to_owned()),
-            _ = tokio::time::sleep_until(deadline) => Err("聊天流超时".to_owned()),
+            _ = cancel.cancelled() => Err(("聊天已停止".to_owned(), Some("ABORTED".to_owned()), None)),
+            _ = tokio::time::sleep_until(deadline) => Err(("聊天流超时".to_owned(), Some("UPSTREAM_TIMEOUT".to_owned()), None)),
             result = relay => result,
         };
         let _ = finished.send(result);
@@ -294,12 +352,18 @@ pub(super) fn from_events(
                 match terminal.take()?.await {
                     Ok(Ok(())) => return None,
                     result => {
-                        let message = match result {
-                            Ok(Err(message)) => message,
-                            _ => "聊天流中断".to_owned(),
+                        let (message, code, upstream) = match result {
+                            Ok(Err(error)) => error,
+                            _ => ("聊天流中断".to_owned(), None, None),
                         };
-                        let mut bytes =
-                            serde_json::to_vec(&json!({"type":"error","error":message})).unwrap();
+                        let mut payload = json!({"type":"error","error":message});
+                        if let Some(code) = code {
+                            payload["code"] = Value::String(code);
+                        }
+                        if let Some(upstream) = upstream {
+                            payload["upstream"] = json!(upstream);
+                        }
+                        let mut bytes = serde_json::to_vec(&payload).unwrap();
                         bytes.push(b'\n');
                         Bytes::from(bytes)
                     }

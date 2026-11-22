@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useId, watch } from 'vue'
+import { computed, onMounted, ref, useId, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import StudioPopover from './ui/StudioPopover.vue'
@@ -43,6 +43,7 @@ const tabs = [
   { value: 'more', label: '更多', icon: 'gear' },
 ] as const
 const pane = ref<(typeof tabs)[number]['value']>('character')
+onMounted(() => { if (props.desktop && props.open) fluid.open() })
 watch(() => props.open, value => {
   if (!props.desktop) return
   if (value) { revealed.value = true; pane.value = 'character'; fluid.open() }

@@ -33,7 +33,8 @@ export async function acknowledgeCompanionBatch(id: string) {
   await clearRequestDraft(slot, draft)
 }
 
-export async function generateCompanionDrawingBatch(args: Record<string, unknown>, context: CompanionToolContext): Promise<CompanionToolResult> {
+export async function generateCompanionDrawingBatch(args: Record<string, unknown>, context: CompanionToolContext,
+  { background = false } = {}): Promise<CompanionToolResult> {
   if (!hasRuntimeTasks()) throw new Error('请在桌面客户端启用私人任务工作区后使用批量绘图')
   if (busy) throw new Error('正在处理上一批对话绘图')
   const { action = 'generate', ...input } = args
@@ -92,6 +93,11 @@ export async function generateCompanionDrawingBatch(args: Record<string, unknown
       }
     }
     if (batch) await context.onDrawingBatch?.(id)
+    if (background && batch) {
+      // onDrawingBatch 持久化原对话之后才释放冻结的提交记录。
+      await acknowledgeCompanionBatch(id)
+      return { ok: true, drawingBatchId: id, output: recovering ? '已取回上次出图，本次新要求尚未提交。' : '' }
+    }
     while (batch?.state === 'running' || batch?.state === 'cancelling') {
       const done = batch.jobs.filter(job => ['succeeded', 'failed', 'cancelled'].includes(job.status)).length
       context.report(batch.state === 'cancelling' ? '正在停止这批图片…' : `本机绘图已处理 ${done}/${batch.jobs.length} 张…`)

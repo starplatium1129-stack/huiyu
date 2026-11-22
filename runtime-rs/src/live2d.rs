@@ -16,7 +16,7 @@ use crate::{
 use axum::{
     Extension, Json, Router,
     body::Body,
-    extract::{ConnectInfo, DefaultBodyLimit, Multipart, Path, Request},
+    extract::{ConnectInfo, DefaultBodyLimit, Multipart, Path, Query, Request},
     http::{HeaderValue, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
@@ -200,10 +200,14 @@ async fn status(
     };
     Ok(Json(&snapshot.status).into_response())
 }
+#[derive(serde::Deserialize)]
+struct CompanionFilter { id: Option<String> }
+
 async fn companions(
     Extension(service): Extension<Arc<Live2dService>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: axum::http::HeaderMap,
+    Query(filter): Query<CompanionFilter>,
 ) -> Result<Response> {
     #[derive(serde::Serialize)]
     struct Companion<'a> {
@@ -218,6 +222,7 @@ async fn companions(
     let companions = snapshot
         .models
         .iter()
+        .filter(|model| filter.id.as_deref().is_none_or(|id| model.id == id))
         .filter_map(|model| model.receipt.as_ref())
         .map(|receipt| Companion {
             character: &receipt["character"],

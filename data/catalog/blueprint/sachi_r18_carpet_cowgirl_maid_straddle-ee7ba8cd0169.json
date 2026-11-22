@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_carpet_cowgirl_maid_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1199,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "sachi_r18_carpet_cowgirl_maid_straddle",
     "title": "小岭幸 · 地毯跨坐女仆装主动轻柔起伏",
@@ -19,7 +19,7 @@
     "action": "独自跨坐长靠垫，戴手套的手撑膝，另一手留在身前。",
     "timeOfDay": "深夜",
     "lighting": "室内暗调落地灯照亮起伏的雪肤与黑色女仆裙",
-    "camera": "medium shot, low angle, carpet bolster visible",
+    "camera": "low angle, medium shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -29,23 +29,21 @@
       "large_breasts",
       "heavy_blush"
     ],
-    "promptProse": "Sachi sits astride the carpet bolster with her maid dress gathered below her chest, one gloved hand on her knee and her bare hand between her legs. Cleaning tools stand neatly behind her.",
+    "promptProse": "Sitting astride a long cushion bolster on the bedroom carpet late at night, Sachi keeps her lace maid headdress and garter-held white thighhighs on while her black maid bodice is opened down below her bare breasts. She braces one gloved hand firmly on her knee while her bare other hand reaches between her parted legs to touch herself, neatly stacked cleaning tools standing quietly behind her. A dim floor lamp casts warm low light across the white apron edge and her flushed skin.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "maid",
-      "open dress",
-      "topless",
-      "white stockings",
       "straddling",
       "bolster",
-      "masturbation",
+      "hand on own knee",
+      "heavy blush",
+      "parted lips",
       "carpet",
-      "lamplight",
-      "straddling bolster",
-      "hand on knee",
-      "cleaning tools"
+      "broom",
+      "bucket",
+      "floor lamp",
+      "warm lighting",
+      "indoors",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,8 +51,19 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One gloved hand rests on her knee while her bare hand stays between her legs."
+    "nsfwTokens": [
+      "maid",
+      "maid headdress",
+      "open dress",
+      "topless",
+      "bare breasts",
+      "white apron",
+      "white thighhighs",
+      "garter straps",
+      "masturbation"
+    ],
+    "nsfwProse": "Her black maid bodice is pulled open below her bare breasts while her white frilled apron, headdress, white thighhighs, and garter straps remain in place as she masturbates astride the bolster.",
+    "animaCaption": "Straddling the carpet bolster with her maid bodice pulled down below her bare breasts and her white thighhighs still fastened, Sachi braces one gloved hand on her knee while masturbating with her bare hand. Warm floor-lamp light catches her frilled apron and tidy cleaning tools behind her.",
+    "compositionIntent": "single"
   }
 }

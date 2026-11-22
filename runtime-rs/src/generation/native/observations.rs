@@ -183,6 +183,75 @@ pub(super) fn capture(value: &Value) -> Value {
         {
             let mut result = json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
                 "weightReuse":value["weightReuse"],"validation":"待主力机验证","performanceVerified":false});
+            if id == "musetalk-1.5" && value["modelReused"] == value["weightReuse"]
+                && value["contextId"].as_str().is_some_and(|s| s.len() == 32 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+                && matches!(value["portraitDetector"].as_str(), Some("anime" | "frontal"))
+            {
+                for key in ["modelReused", "contextId", "portraitDetector"] { result[key] = value[key].clone(); }
+                for key in ["workerPid", "loadCount", "contextJobs", "speechSampleRate", "speechSamples",
+                            "speechFrames", "outputFrames", "cudaPeakAllocatedBytes"] {
+                    if let Some(n) = value[key].as_u64().filter(|n| *n <= 1_u64 << 40) {
+                        result[key] = json!(n);
+                    }
+                }
+                if let Some(rect) = value["faceBox"].as_array().filter(|rect| rect.len() == 4 &&
+                    rect.iter().all(|n| n.as_u64().is_some_and(|n| n <= 4096))) {
+                    result["faceBox"] = json!(rect);
+                }
+            }
+            if matches!(id, "flux-kontext-dev" | "minimax-h3-image-q4")
+                && value["contextId"].as_str().is_some_and(|s| s.len() == 32 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+                && value["modelReused"] == value["weightReuse"]
+            {
+                result["contextId"] = value["contextId"].clone();
+                result["modelReused"] = value["modelReused"].clone();
+                for key in ["workerPid", "loadCount", "contextJobs", "referenceCount"] {
+                    if let Some(count) = value[key].as_u64().filter(|n| *n > 0 && *n <= u32::MAX as u64) {
+                        result[key] = json!(count);
+                    }
+                }
+            }
+            if id == "wan2.2-i2v-a14b-gguf" && value["tiledVae"] == true
+                && value["contextId"].as_str().is_some_and(|s| s.len() == 32 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+                && value["modelReused"] == value["weightReuse"]
+                && matches!(value["wanMemoryTier"].as_str(), Some("balanced" | "conservative"))
+            {
+                for key in ["contextId","modelReused","wanMemoryTier","tiledVae"] {
+                    result[key] = value[key].clone();
+                }
+                for key in ["workerPid","loadCount","contextJobs","vaeTilePixels","highNoiseSteps","lowNoiseSteps","vramBudgetGiB"] {
+                    if value[key].as_u64().is_some_and(|n| n > 0 && n <= u32::MAX as u64) { result[key] = value[key].clone(); }
+                }
+                if value["firstLastFrame"].is_boolean() { result["firstLastFrame"] = value["firstLastFrame"].clone(); }
+                if value["attentionPolicy"] == "cuda-flash-requested" && value["parameterBackend"] == "disk-mmap" {
+                    result["attentionPolicy"] = value["attentionPolicy"].clone();
+                    result["parameterBackend"] = value["parameterBackend"].clone();
+                }
+                if let Some(n) = value["tensorLoadEvents"].as_u64().filter(|n| *n <= 1_000_000) {
+                    result["tensorLoadEvents"] = json!(n);
+                }
+                if let Some(n) = value["minCommitBytes"].as_u64().filter(|n| *n <= 1_u64 << 40) {
+                    result["minCommitBytes"] = json!(n);
+                }
+                let times = &value["expertPassSeconds"];
+                if ["high", "low"].iter().all(|key| times[*key].as_f64().is_some_and(|s| (0.0..=7200.0).contains(&s))) {
+                    result["expertPassSeconds"] = json!({"high": times["high"], "low": times["low"]});
+                }
+                if let Some(assets) = super::adapters::model(id).and_then(|m| m["components"].as_object()) {
+                    let hashes = &value["componentSha256"];
+                    if hashes.as_object().is_some_and(|obj| obj.len() == assets.len())
+                        && assets.iter().all(|(name, asset)| asset.as_str().is_some_and(|key|
+                        hashes[name] == super::adapters::manifest()["keyframeAssets"][key]["sha256"])) {
+                        result["componentSha256"] = hashes.clone();
+                        if value["distillation"] == "lightx2v-260412-dual-checkpoint" {
+                            result["distillation"] = value["distillation"].clone();
+                        }
+                    }
+                }
+                if value["nativeRelease"] == super::adapters::manifest()["keyframeRuntime"]["release"] {
+                    result["nativeRelease"] = value["nativeRelease"].clone();
+                }
+            }
             if matches!(
                 value["modelIdentityScope"].as_str(),
                 Some("prepared-download-record" | "prepared-local-weights" | "full-byte-chunk-sha256")

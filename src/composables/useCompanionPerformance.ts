@@ -58,7 +58,7 @@ export function useCompanionPerformance(deps: PerformanceDeps) {
       owner = { id, character: deps.activeChar.value, audio }
       try {
         if (audio) {
-          deps.voice.startTurn({ mid: id, character: deps.activeChar.value, voice: deps.voiceId() })
+          deps.voice.startTurn({ mid: id, character: deps.activeChar.value, voice: deps.voiceId(), emotion: cue.emotion })
           deps.voice.append(reminder.line)
           deps.voice.finishTurn()
         }

@@ -18,7 +18,10 @@ export function desktopRuntimeIdentity(bootstrap = state.bootstrap): string {
   return JSON.stringify([bootstrap?.sourceProfileId, runtime?.origin, runtime?.runtimeEpoch,
     workspace?.workspaceId, workspace?.principalId, workspace?.runtimeEpoch, workspace?.generation])
 }
-export function getDesktopWindowRole() { return state.bootstrap?.windowRole }
+export function getDesktopWindowRole() {
+  const label = state.bootstrap?.windowRole ?? hostApi()?.window.getCurrentWindow().label
+  if (label === 'atelier' || label === 'companion' || label === 'companion-chat') return label
+}
 export function onDesktopRuntime(listener: (value: DesktopConnectionState) => void): () => void {
   listeners.add(listener); listener(state)
   return () => listeners.delete(listener)
@@ -80,15 +83,14 @@ export function refreshDesktopRuntime(force = false): Promise<void> {
   return refreshPending
 }
 
-/** Mount callers can await this bounded first handshake; failure preserves the UI. */
-export async function initializeDesktopRuntime(): Promise<() => void> {
+/** Establish the fail-closed transport before the first request can start. */
+export function initializeDesktopRuntime(): () => void {
   if (started) return stop
   started = true
   epochController = new AbortController()
   setRuntimeFetch(desktopRuntimeFetch)
   setRuntimeOrigin(null, true)
   configureApiTransport(desktopRuntimeFetch)
-  await refreshDesktopRuntime()
   let disposed = false
   const timer = setInterval(() => {
     if (disposed) return

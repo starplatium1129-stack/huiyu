@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_veranda_bent_over_prone",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "akeno_nsfw_veranda_bent_over_prone",
     "title": "姬岛朱乃 · 神社缘侧的罗裳半褪自抚",
@@ -15,7 +15,7 @@
     "action": "一手扶木质走廊栏杆俯身翘臀，绯袴半解单手探入自抚花瓣，回头含羞潮红喘息",
     "timeOfDay": "深夜月明",
     "lighting": "庭院月光与廊下微弱纸灯笼光晕",
-    "camera": "cowboy shot, dutch angle, pov",
+    "camera": "dutch angle, cowboy shot",
     "mood": "禁忌自抚、唯美心动",
     "sceneTags": [
       "shrine_veranda",
@@ -32,26 +32,20 @@
       "looking_back",
       "horizontal_shot"
     ],
-    "promptProse": "With her white kimono open and red hakama loosened, she bends over the wooden railing, gripping it with one hand while the other reaches beneath the raised fabric. Cool moonlight meets faint paper-lantern light along the veranda.",
+    "promptProse": "Along the wooden veranda outside the shrine hall at night, Akeno leans over the railing with one hand steadying herself against the timber. Cool silver moonlight blends with warm paper-lantern glow as she looks back over her shoulder.",
     "promptTokens": [
       "shrine",
       "veranda",
       "railing",
-      "miko",
-      "open white kimono",
-      "red hakama",
       "bent over",
-      "skirt lift",
-      "panties aside",
-      "masturbation",
-      "looking back",
-      "moonlight",
       "hand on railing",
+      "looking back",
       "heavy blush",
-      "blushing ears",
+      "biting lip",
+      "moonlight",
       "paper lantern",
-      "cowboy shot",
-      "dutch angle"
+      "dutch angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -66,7 +60,18 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
-    "animaCaption": "One hand grips the railing while the other reaches beneath the loosened fabric."
+    "nsfwProse": "Her white miko robe falls open across her bare chest and her loosened scarlet hakama is gathered at her waist, allowing her free hand to reach underneath and shift her panties aside.",
+    "animaCaption": "Bending forward with one hand gripping the wooden shrine veranda railing, she wears her white miko top open and scarlet hakama hiked up while her other hand slips past her shifted panties as she glances back with a flushed, lip-biting expression.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "miko",
+      "open kimono",
+      "white kimono",
+      "red hakama",
+      "skirt lift",
+      "panties aside",
+      "topless",
+      "masturbation"
+    ]
   }
 }

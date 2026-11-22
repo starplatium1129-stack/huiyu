@@ -32,8 +32,8 @@ fn create_overlay_window() -> Option<HWND> {
             class_name.as_ptr(),
             window_title.as_ptr(),
             WS_POPUP as WINDOW_STYLE,
-            CW_USEDEFAULT,
-            CW_USEDEFAULT,
+            -32_000,
+            -32_000,
             1,
             1,
             std::ptr::null_mut(),
@@ -44,8 +44,7 @@ fn create_overlay_window() -> Option<HWND> {
         if hwnd.is_null() {
             return None;
         }
-        // 必须让窗口进入"已显示"状态，DXGI 才能枚举 surface 格式；
-        // 后续由 SetFrame 用 SetWindowPos 定位 + SW_SHOWNA 真正显示。
+        // Keep the DirectComposition target offscreen until its first present.
         ShowWindow(hwnd, SW_SHOWNA);
         Some(hwnd)
     }
@@ -59,6 +58,9 @@ extern "system" fn overlay_wnd_proc(
 ) -> LRESULT {
     unsafe {
         match msg {
+            windows_sys::Win32::UI::WindowsAndMessaging::WM_NCHITTEST => {
+                return windows_sys::Win32::UI::WindowsAndMessaging::HTTRANSPARENT as LRESULT;
+            }
             WM_DESTROY => {
                 PostQuitMessage(0);
                 return 0;
@@ -85,7 +87,6 @@ pub(crate) fn overlay_window_thread(
     state: Arc<Live2DOverlayState>,
     environment: RendererEnvironment,
 ) {
-    let assets_root = &environment.assets_root;
     let app = environment.events.as_ref();
     // DPI 感知：进程级 per-monitor v2。前端 live2dOverlayLayout 已把 overlay
     // 矩形换算成屏幕物理像素，若进程非 DPI aware，Win32 会按系统 DPI 缩放
@@ -121,7 +122,6 @@ pub(crate) fn overlay_window_thread(
 
     // Merely attaching the overlay must not allocate a GPU device. Destroy returns
     // to this state while leaving the lightweight window/command loop reusable.
-    let mut ctx: Option<RenderContext> = None;
     state.renderer_attached.store(true, Ordering::SeqCst);
     state.window_ready.store(true, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
@@ -130,6 +130,12 @@ pub(crate) fn overlay_window_thread(
     // 可用 L2D_TARGET_FPS 覆盖；前端也可通过 setMaxFps 动态调整。
     state.target_fps.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::SeqCst);
 
+    let mut ctx = if environment.prewarm {
+        RenderContext::new().and_then(|mut ctx| {
+            ctx.ensure_surface(hwnd)?;
+            Ok(ctx)
+        }).map_err(|error| eprintln!("[live2d] prewarm: {error}")).ok()
+    } else { None };
     let mut last_frame = Instant::now();
     let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
     let mut running = true;
@@ -151,7 +157,7 @@ pub(crate) fn overlay_window_thread(
         }
         loop {
             match rx.try_recv() {
-                Ok(cmd) => handle_command(&state, &mut ctx, assets_root, environment.local_root.as_deref(), app, hwnd, cmd),
+                Ok(cmd) => handle_command(&state, &mut ctx, &environment, hwnd, cmd),
                 Err(TryRecvError::Empty) => break,
                 Err(TryRecvError::Disconnected) => {
                     stopped_reason = Some("renderer command channel disconnected".into());
@@ -191,17 +197,16 @@ pub(crate) fn overlay_window_thread(
                 *state.companion_offset.lock().unwrap(),
             ) {
                 let companion = companion as HWND;
-                let mut companion_rect = unsafe { std::mem::zeroed::<RECT>() };
-                if unsafe { GetWindowRect(companion, &mut companion_rect) } != 0 {
+                if let Some(point) = companion_origin(companion) {
                     let followed = followed_overlay_rect(
                         rect,
-                        companion_rect.left,
-                        companion_rect.top,
+                        point.x,
+                        point.y,
                         offset,
                     );
                     let moved = followed.x != rect.x || followed.y != rect.y;
                     let sync_z_order = last_z_order_sync.elapsed() >= Duration::from_millis(250);
-                    if moved || sync_z_order {
+                    if (moved || sync_z_order) && state.revealed.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
                         unsafe {
                             SetWindowPos(
                                 hwnd,
@@ -213,11 +218,11 @@ pub(crate) fn overlay_window_thread(
                                 SWP_NOACTIVATE | SWP_NOSIZE,
                             );
                         }
-                        if moved {
-                            *state.rect.lock().unwrap() = followed;
-                            rect = followed;
-                        }
                         last_z_order_sync = Instant::now();
+                    }
+                    if moved {
+                        *state.rect.lock().unwrap() = followed;
+                        rect = followed;
                     }
                 }
             }
@@ -229,6 +234,13 @@ pub(crate) fn overlay_window_thread(
             match ctx.render_frame(&state, hwnd, rect) {
                 Ok(true) => {
                     state.frame_count.fetch_add(1, Ordering::Relaxed);
+                    if state.visible.load(Ordering::Acquire) && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
+                        if state.revealed.load(Ordering::Acquire) {
+                            let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
+                            frame::place_overlay(&state, hwnd, companion, rect);
+                        }
+                        if let Some(events) = app { let _ = events.emit("aics:live2d:first-frame", ()); }
+                    }
                 }
                 Ok(false) => {}
                 Err(e) => {
@@ -239,7 +251,7 @@ pub(crate) fn overlay_window_thread(
             }
         }
         if let Some(cmd) = if running { frame_pacing::wait(&rx, ctx.is_some() && state.visible.load(Ordering::SeqCst), state.target_fps.load(Ordering::Relaxed), iteration_started.elapsed()) } else { None } {
-            handle_command(&state, &mut ctx, assets_root, environment.local_root.as_deref(), app, hwnd, cmd);
+            handle_command(&state, &mut ctx, &environment, hwnd, cmd);
         }
     }
 

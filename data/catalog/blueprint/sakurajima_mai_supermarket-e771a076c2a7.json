@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_supermarket",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "sakurajima_mai_supermarket",
     "title": "樱岛麻衣 · 超市采购",
@@ -15,7 +15,7 @@
     "action": "将购物车停在生鲜柜旁，双手各持一盒食材认真比较",
     "timeOfDay": "傍晚",
     "lighting": "明亮超市灯光",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "从容日常",
     "sceneTags": [
       "supermarket",
@@ -29,14 +29,21 @@
       "supermarket_light",
       "medium_shot"
     ],
-    "promptProse": "Mai compares a sealed ingredient tray in each hand beside her parked cart under the grocery lights.",
+    "promptProse": "Standing beside her parked shopping cart in a bright evening grocery aisle, Mai wears her disguised charcoal mohair cardigan, beret, and plain glasses while holding a sealed dinner ingredient tray in each hand. Comparing the two packages side by side with a calm, amused half-smile, she tilts slightly toward the viewer as though weighing tonight's menu. Even fluorescent store lighting gleams across the refrigerated produce shelves and clean aisle floor.",
     "promptTokens": [
+      "standing",
+      "holding food",
       "shopping cart",
+      "looking down",
+      "slight smile",
       "supermarket",
-      "medium shot",
-      "holding package",
-      "both hands",
-      "store lighting"
+      "grocery store",
+      "shelf",
+      "fluorescent light",
+      "evening",
+      "indoors",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [
       "handheld basket",
@@ -49,6 +56,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She compares one sealed ingredient tray in each hand beside her parked cart."
+    "animaCaption": "Standing beside her parked shopping cart in her charcoal cardigan, beret, and glasses, Mai holds a sealed ingredient tray in each hand to compare dinner options with a slight smile. Bright evening supermarket lights illuminate the stocked shelves behind her.",
+    "compositionIntent": "single"
   }
 }

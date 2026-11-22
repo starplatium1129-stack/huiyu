@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_01",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_01",
     "title": "久远寺有珠 · 维多利亚洋馆安乐椅的主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐安乐椅黑裙半褪露雪肌，黑短发垂落，黑眸冰冷化水主动起伏",
     "timeOfDay": "night",
     "lighting": "洋馆主卧欧式壁炉暖红炭火与蕾丝帷幔幽香",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,19 +30,23 @@
       "victorian_clothes",
       "bare_breasts"
     ],
-    "promptProse": "Adult Alice sits astride her off-frame companion in the velvet armchair, her dress open to the waist and her hands resting on their shoulders in the dying firelight.",
+    "promptProse": "Inside the candlelit study of the Kuonji mansion at midnight, Alice Kuonji straddles her partner in a deep velvet armchair with her sheer front-buttoned black dress undone to her waist above black thighhighs. Resting both hands on his shoulders as her usually icy gaze softens with flushed devotion, she glows in warm dying fireplace embers.",
     "promptTokens": [
-      "on bed",
-      "black nightgown",
-      "pale skin",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
+      "straddling",
+      "hands on another's shoulders",
       "blush",
+      "velvet armchair",
+      "mansion study",
       "fireplace",
-      "warm hearth glow",
-      "vintage mansion bedroom",
-      "antique mirror",
-      "soft lighting",
-      "curtains",
-      "bokeh"
+      "warm firelight",
+      "lace curtains",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,14 +54,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black dress",
+      "sheer dress",
+      "unbuttoned dress",
+      "clothes down",
+      "topless",
+      "nipples",
+      "black thighhighs",
+      "sex"
+    ],
+    "nsfwProse": "Her front-buttoned sheer black dress is undone and slipped down to her waist, baring her pale chest above black thighhighs as she rides astride her partner in the armchair.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "Warm embers from the stone fireplace flicker softly against Alice's porcelain skin in the quiet mansion bed."
+    "animaCaption": "Straddling her partner in a velvet armchair inside the mansion study with her sheer buttoned black dress lowered to her waist over black thighhighs, she rests both hands on their shoulders as her cool gaze melts with flushed warmth. Dying hearth firelight flickers softly across the lace curtains.",
+    "compositionIntent": "group"
   }
 }

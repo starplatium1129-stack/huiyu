@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_autumn_golden_forest_promenade",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 684,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "漫步在枫林落叶小径上，单手伸手接住飘落的红枫，回眸温柔微笑",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "category": "漫步日常",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -20,14 +20,23 @@
     "mood": "温婉恬静",
     "negativeTokens": [],
     "outfitId": "autumn_stroll_casual",
-    "promptProse": "Viviana catches a red leaf on her palm while walking the sun-dappled maple path.",
+    "promptProse": "Strolling along a stone woodland path carpeted with crimson and amber leaves in her cropped camel wool coat, cream turtleneck, and houndstooth skirt, Viviana extends one open hand to catch a drifting red maple leaf. She pauses mid-step beneath the golden autumn canopy and turns partway toward the viewer with a poised, poetic smile. Warm dappled afternoon sunlight filters through the maple boughs, gilding the falling leaves and the soft wool of her coat.",
     "promptTokens": [
-      "maple leaf",
-      "autumn",
-      "cowboy shot",
       "walking",
-      "leaf on palm",
-      "dappled light"
+      "outstretched arm",
+      "autumn leaves",
+      "maple leaf",
+      "falling leaves",
+      "looking back",
+      "gentle smile",
+      "forest",
+      "path",
+      "trees",
+      "outdoors",
+      "afternoon",
+      "dappled sunlight",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +54,7 @@
     ],
     "timeOfDay": "午后暖阳",
     "title": "薇薇安娜 · 金秋枫林中的漫步沉思",
-    "animaCaption": "The red leaf rests on her palm above the maple path."
+    "animaCaption": "Walking down the leaf-strewn maple forest path in her camel wool coat, Viviana extends one hand to catch a falling red leaf and turns back with a gentle smile. Warm dappled afternoon sunlight filters through the golden canopy across her shoulders.",
+    "compositionIntent": "single"
   }
 }

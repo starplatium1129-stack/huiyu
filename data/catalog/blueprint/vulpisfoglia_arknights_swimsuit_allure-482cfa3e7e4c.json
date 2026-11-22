@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3118,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T06:36:43.004228700+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_swimsuit_allure",
     "characterId": "vulpisfoglia_arknights",
@@ -14,7 +14,7 @@
     "location": "悬崖边生长着孤傲黑松的意式海石观景台",
     "timeOfDay": "午后",
     "lighting": "地中海式的强烈侧光，在深橄榄绿布料上勾勒出质感",
-    "camera": "意式黑帮电影质感中景，石灰岩、黑松与海面构图厚重",
+    "camera": "three quarter view, medium shot",
     "mood": "沉稳干练、家族领袖风范、冷峻中蕴含柔情",
     "adult": true,
     "sampleRating": "R15",
@@ -39,21 +39,30 @@
     "promptTokens": [
       "standing",
       "leaning on wall",
-      "fox ears",
-      "fox tail",
-      "olive green monokini",
-      "holding cup",
+      "holding glass",
       "iced coffee",
+      "hand on hip",
+      "composed expression",
+      "looking at viewer",
       "limestone wall",
       "pine tree",
-      "mediterranean",
-      "sunlight",
+      "coastal cliff",
+      "ocean",
+      "afternoon sidelight",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vulpisfoglia leans commanding yet relaxed against a sun-warmed limestone parapet beneath coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong. Sipping a glass of iced espresso with golden fox ears perked, her sharp amber eyes appraise the viewer with cool authority.",
-    "animaCaption": "Vulpisfoglia leans against a sun-warmed limestone parapet beneath coastal pine branches, holding a glass of iced espresso with her golden fox ears perked.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Vulpisfoglia leans with poised authority against a sun-warmed limestone wall beneath coastal black pines overlooking the sea, wearing a sharply tailored deep olive-green high-cut monokini with brass ring buckles and a sheer charcoal-grey linen sarong. Holding a glass of iced espresso while resting her other hand at her knotted waist, she regards the viewer under crisp afternoon sidelight.",
+    "animaCaption": "Leaning against a rough limestone cliff parapet beneath coastal black pines in a tailored olive-green high-cut monokini and sheer charcoal sarong, she lifts a glass of iced espresso with calm authority. Crisp Mediterranean afternoon sidelight traces the fabric seams against the blue sea.",
+    "nsfwTokens": [
+      "olive green monokini",
+      "one-piece swimsuit",
+      "highleg",
+      "brass buckles",
+      "sheer grey sarong",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a sharply tailored deep olive-green high-cut monokini with brushed brass ring buckles and a sheer charcoal-grey linen sarong knotted at her hip."
   }
 }

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_quarters_flame",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "action": "只穿轻薄抹胸坐在床沿，指尖跃动微弱熔岩火光，脸颊泛红，恶魔长尾轻卷足踝，眼神迷离娇羞",
     "adult": true,
     "adultArtistHint": "@anmi",
-    "animaStyleHint": "sitting_on_bed, barefoot, 5_toes, detailed_toes, demon_horns, demon_tail, off_shoulder, soft lighting",
-    "camera": "medium shot, low angle, seated figure and flame-bearing hand visible",
+    "animaStyleHint": "r18_sensual_cg",
+    "camera": "low angle, pov, medium shot",
     "category": "成人",
     "characterId": "laevatain_arknights",
     "coverageTags": [
@@ -22,25 +22,37 @@
     "lighting": "舱内柔和淡蓝环境光与床头暖灯，白嫩肌肤泛着微热红晕",
     "location": "塔罗斯研究舰单人休息舱",
     "mood": "私密温存与异种性感",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwProse": "She wears only a minimal lightweight bandeau wrap across her chest and matching briefs, leaving her heated shoulders, midriff, and bare legs exposed on the bed edge.",
+    "nsfwTokens": [
+      "bandeau",
+      "bare shoulders",
+      "collarbone",
+      "midriff",
+      "cleavage",
+      "bare legs",
+      "panties"
+    ],
     "outfitId": "light_bandeau",
-    "promptProse": "Laevatain sits on the bed edge in a bandeau, holding a flame above one hand and catching her off-frame companion's collar with the other. Her tail curls around an ankle; flame and bedside lamp add warm highlights against the cabin's blue ambient light.",
+    "promptProse": "Seated barefoot on the edge of her private research-ship bunk late at night wearing only a minimal lightweight bandeau, Laevatain curls her long demon tail loosely around one ankle. While a tiny dancing orange ember hovers above her open fingertips, her other hand tugs firmly on her partner's collar with heavily flushed cheeks and breathless heat as warm flame and bedside lamplight contrast with the cabin's cool blue ambient glow.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "bandeau",
+      "1boy",
+      "pov",
       "sitting",
-      "bed edge",
-      "flame in hand",
-      "tail around ankle",
-      "cabin",
-      "holding collar",
+      "on bed",
+      "grabbing collar",
+      "flame",
       "blush",
+      "barefoot",
+      "cabin",
       "blue light",
-      "lamplight",
-      "from below"
+      "lamp",
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -57,6 +69,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "莱瓦汀 · 舱室余烬·温热龙尾与床榻足尖",
-    "animaCaption": "One hand holds the flame while the other catches her offscreen companion's collar above her curled tail."
+    "animaCaption": "Seated barefoot on the cabin bed edge in only a lightweight bandeau with her tail coiled near her ankle, Laevatain balances a tiny ember over one palm while tugging her partner's collar with the other. Warm flame light highlights her flushed skin against cool blue cabin light.",
+    "compositionIntent": "group"
   }
 }

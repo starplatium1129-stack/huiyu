@@ -7,7 +7,22 @@
   --workspace-gutter: clamp(16px, 2.25vw, 40px);
   --workspace-pad-top: var(--s-5); --workspace-panel-gap: var(--s-5);
 }
+html.aics-desktop-shell {
+  --desktop-chrome-height: 0px;
+  --app-navigation-height: 52px;
+}
+html.aics-desktop-shell [data-tauri-drag-region="deep"] { -webkit-app-region: drag; user-select: none; }
+html.aics-desktop-shell [data-tauri-drag-region="false"] { -webkit-app-region: no-drag; }
+html.aics-desktop-shell .page-root > .nav .nav-inner { min-height: calc(var(--app-navigation-height) - 1px); }
+html.aics-desktop-shell .skip-link {
+  position: fixed;
+  top: calc(var(--app-navigation-visible-height, 0px) + var(--s-3));
+  clip-path: inset(0 0 100% 0);
+  transform: none;
+}
+html.aics-desktop-shell .skip-link:focus { clip-path: none; }
 @media (min-width: 2200px) {
+  html.aics-desktop-shell { --app-navigation-height: 58px; }
   html { font-size: 106.25%; }
   :root {
     --desktop-layout-scale: 1.2;
@@ -17,6 +32,7 @@
   }
 }
 @media (min-width: 3000px) {
+  html.aics-desktop-shell { --app-navigation-height: 68px; }
   html { font-size: 125%; }
   :root {
     --desktop-layout-scale: 1.6;

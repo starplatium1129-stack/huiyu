@@ -22,6 +22,7 @@ const PAGES: &[&str] = &[
     "/qwen-studio",
     "/moss-studio",
     "/video-studio",
+    "/studio-projects",
     "/chat",
     "/showcase",
     "/gallery",
@@ -120,7 +121,9 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     if let Some(response) = extra::redirect(&state, &path, request.uri().query()).await {
         return response;
     }
-    let (base, relative, immutable) = if page_path(&path) {
+    let (base, relative, immutable) = if path == "/companion.html" {
+        (root.join("dist"), "companion.html".to_owned(), false)
+    } else if page_path(&path) {
         (root.join("dist"), "index.html".to_owned(), false)
     } else if let Some(name) = path.strip_prefix("/data/") {
         if !PUBLIC_DATA_FILES.contains(&name) {

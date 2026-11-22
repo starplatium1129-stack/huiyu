@@ -154,21 +154,6 @@ html.companion-desktop .companion-conversation {
   transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s;
 }
 
-/* 2026-08-22 动效审计 #15：原 display:none 短路了上面的 .45s 淡出过渡（从未生效过）；
-   改 visibility 延迟翻转——淡出完成后才真正隐藏，恢复浮现即渐显。 */
-html.companion-desktop.companion-ui-hidden .companion-toolbar,
-html.companion-desktop.companion-ui-hidden .companion-conversation {
-  opacity: 0;
-  visibility: hidden;
-  @apply tw:pointer-events-none;
-  transition: opacity var(--motion-route-cut) var(--ease-out), transform var(--motion-route-cut) var(--ease-out), visibility 0s linear var(--motion-route-cut);
-}
-
-html.companion-desktop.companion-ui-hidden .companion-presence-cue {
-  opacity: .32;
-  transform: translateX(-50%) translateY(-3px) scale(.96);
-}
-
 html.companion-desktop .companion-toolbar,
 html.companion-desktop .companion-conversation,
 html.companion-desktop .companion-clipboard-card,
@@ -197,56 +182,8 @@ html.companion-desktop .companion-stage::after {
   @apply tw:pointer-events-none;
 }
 
-html.companion-desktop.companion-ui-hidden .companion-stage::after {
-  opacity: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html:not([data-motion='full']).companion-desktop .companion-toolbar, html:not([data-motion='full']).companion-desktop .companion-conversation {
     transition: none;
   }
-}
-
-/* Immersive mode: only the character and the dialog remain */
-
-.companion-page .companion-exit-immersive {
-  @apply tw:fixed tw:top-[10px] tw:right-[10px];
-  z-index: calc(var(--z-overlay) + 1);
-  @apply tw:min-h-[28px];
-  padding: 4px 12px;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
-  @apply tw:rounded-md;
-  background: var(--bg-surface);
-  @apply tw:text-primary tw:cursor-pointer tw:text-label-xs;
-}
-
-/* Immersive mode hides everything except the character and the dialog */
-html.companion-immersive .companion-toolbar,
-html.companion-immersive .companion-workspace-settings,
-html.companion-immersive .companion-clipboard-card,
-html.companion-immersive .companion-reminders,
-html.companion-immersive .companion-setup-inline,
-html.companion-immersive .companion-tool-indicator,
-html.companion-immersive .companion-errors {
-  @apply tw:hidden;
-}
-
-html.companion-immersive .companion-conversation {
-  background: transparent;
-  border-color: transparent;
-  @apply tw:pb-s-2;
-}
-
-/* Immersive mode: fully transparent background (desktop window is transparent) */
-html.companion-immersive body {
-  background: transparent;
-}
-
-html.companion-immersive .companion-page::before,
-html.companion-immersive .companion-page::after {
-  @apply tw:hidden;
-}
-
-html.companion-immersive .companion-page {
-  background: transparent;
 }

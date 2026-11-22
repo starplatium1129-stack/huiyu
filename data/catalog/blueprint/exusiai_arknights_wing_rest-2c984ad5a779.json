@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_wing_rest",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 630,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "仰靠在长椅上享受午后阳光，嘴角带着惬意微笑",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉都市",
     "characterId": "exusiai_arknights",
     "coverageTags": [
@@ -20,18 +20,21 @@
     "mood": "悠闲惬意",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She relaxes on the sun-warmed wooden bench with both arms behind her head and a smile.",
+    "promptProse": "Sprawled comfortably across a sun-warmed wooden bench in a quiet Lungmen park on a bright afternoon, Exusiai leans back in her hooded Penguin Logistics jacket with both hands clasped behind her head. Closing her eyes with a carefree, beaming grin, she soaks up the warm breeze beneath swaying park foliage. Dappled afternoon sunlight filters through the leafy canopy across her red tie, jacket sleeves, and the slatted bench.",
     "promptTokens": [
-      "1girl",
-      "solo",
+      "sitting",
       "reclining",
       "hands behind head",
+      "smile",
+      "eyes closed",
       "bench",
       "park",
+      "trees",
+      "dappled sunlight",
       "afternoon",
-      "medium shot",
-      "smile",
-      "sunlight"
+      "outdoors",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +47,7 @@
     ],
     "timeOfDay": "午后",
     "title": "能天使 · 长椅小憩",
-    "animaCaption": "She rests both arms behind her head on the sun-warmed bench."
+    "animaCaption": "Leaning back across the sun-warmed wooden park bench with both hands clasped behind her head, Exusiai smiles carefree into the afternoon breeze. Dappled sunlight through the overhead trees warms her Penguin Logistics jacket and face.",
+    "compositionIntent": "single"
   }
 }

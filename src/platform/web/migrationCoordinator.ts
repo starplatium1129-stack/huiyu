@@ -115,6 +115,8 @@ export async function migrateProfileToCandidate(options: {
   if (options.resume) return resumeProfileMigration(options)
   options.signal?.throwIfAborted()
   assertMigrationArtworkSourcesReady()
+  const { prepareLegacyStudioMigration } = await import('./legacyStudioClips')
+  await prepareLegacyStudioMigration(options.sourceProfileId, options.expectedOrigin, options.signal)
   // A candidate already changes the host descriptor. Check every source window
   // under the existing freeze before that change, not only during later export.
   const candidate = await freezeMigrationSource(async () => {

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_royal_academy_library",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 465,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "身着笔挺的贵族学者礼服与深色墨镜，白短发清爽利落，手捧古籍在巨大书架回廊间静默回眸",
     "adult": false,
-    "camera": "full body",
+    "camera": "three quarter view, full body",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -21,14 +21,23 @@
     "mood": "知性神秘",
     "negativeTokens": [],
     "outfitId": "silent_fitz_uniform",
-    "promptProse": "Sylphiette carries magic books through the tall library gallery and looks back beneath colored beams through the dome's stained glass.",
+    "promptProse": "Pausing along the towering wooden gallery of the Ranoa Magic University library in her crisp white gentleman's vest suit and dark sunglasses, Sylphiette cradles a stack of leather-bound magic tomes against her chest. She stops mid-stride between soaring bookshelves and glances back over her shoulder with a calm, reassuring half-smile. Colored beams of afternoon light pour down from the stained-glass dome overhead, illuminating drifting gold motes across the stone aisle.",
     "promptTokens": [
-      "books",
-      "library",
-      "full body",
-      "carrying books",
+      "standing",
+      "holding book",
+      "book",
+      "sunglasses",
       "looking back",
-      "colored light"
+      "gentle smile",
+      "library",
+      "bookshelf",
+      "stained glass",
+      "sunbeam",
+      "light particles",
+      "indoors",
+      "afternoon",
+      "three quarter view",
+      "full body"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -44,6 +53,7 @@
     ],
     "timeOfDay": "午后",
     "title": "希露菲叶特 · 魔法大学·沉默的菲兹学长",
-    "animaCaption": "She looks back through the library gallery beneath the stained-glass dome."
+    "animaCaption": "Standing between towering library bookshelves in her white suit and dark sunglasses, Sylphiette cradles antique magic tomes against her chest and looks back with a composed smile. Colored shafts of afternoon light stream from the stained-glass dome through drifting dust motes.",
+    "compositionIntent": "single"
   }
 }

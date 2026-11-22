@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "elaina/sfw_stargazing_wool_cape",
+  "revision": 1,
+  "sortOrder": 3915,
+  "createdAt": "2026-11-22T01:48:55.068887900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "sfw_stargazing_wool_cape",
+      "characterId": "elaina",
+      "name": "烟紫羊毛短披肩与靛蓝围巾",
+      "tokens": [
+        "witch hat",
+        "capelet",
+        "purple cape",
+        "purple scarf",
+        "black dress",
+        "long sleeves",
+        "black pantyhose",
+        "leather boots"
+      ],
+      "prose": "A smoke-purple wool capelet with a scalloped lilac edge is clasped over a long-sleeved black dress. An indigo scarf wraps close to her neck, with dark tights and brown leather ankle boots. A brass buckle finishes her pointed witch hat.",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

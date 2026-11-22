@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3124,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "nymph_arknights_swimsuit_allure",
     "characterId": "nymph_arknights",
@@ -14,7 +14,7 @@
     "location": "波浪涌动的人工造浪海滨泳池深水区",
     "timeOfDay": "盛夏正午",
     "lighting": "顶空炽烈骄阳洒在翻腾的白色浪花上，荧光色浮圈与棒冰在强光下格外鲜亮夺目",
-    "camera": "medium shot, slightly high angle, dynamic tilted composition, vibrant pop art summer tone",
+    "camera": "high angle, dutch angle, medium shot",
     "mood": "古怪俏皮、恶作剧般的兴奋与令人心跳加速的活力",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,33 @@
       "summer_noon"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "nymph (arknights)",
-      "black hair",
-      "pink eyes",
-      "sarkaz horns",
-      "pointed ears",
-      "neon pink and black bikini",
-      "lying on donut pool float",
-      "holding melting pink popsicle",
-      "playful smirk",
-      "artificial waves",
-      "bright noon sunshine",
-      "pop colors",
-      "depth of field"
+      "lying",
+      "on stomach",
+      "donut pool float",
+      "holding popsicle",
+      "smug smile",
+      "looking up",
+      "wave pool",
+      "splashing",
+      "waves",
+      "bright sunlight",
+      "noon",
+      "high angle",
+      "dutch angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Nymph from Arknights lounges playfully across a neon-pink donut pool float in her edgy asymmetrical bikini, holding a melting fruit popsicle with a mischievous smirk amid rolling water waves.",
-    "animaCaption": "Vibrant tropical wave ripples splash around her donut float as she teases with unmistakable Sarkaz impishness.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Nymph sprawls across a pink-and-black donut float in a sunlit wave pool at noon, wearing a neon berry-pink and black asymmetrical strappy bikini with heartbeat graphics and detached sheer fingerless sun sleeves. Propping her chin on one hand while waving a dripping pink popsicle with the other, she grins up at the viewer amid bright splashing waves.",
+    "animaCaption": "Sprawled on her stomach across a pink-and-black donut float in her asymmetrical neon-pink bikini and detached sheer sun sleeves, she dangles a melting fruit popsicle and shoots a smug look upward. Bright midday sun sparkles over rolling wave-pool ripples.",
+    "nsfwTokens": [
+      "pink and black bikini",
+      "asymmetrical bikini",
+      "detached sleeves",
+      "sheer fingerless sleeves",
+      "strappy bikini",
+      "bare shoulders",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a neon berry-pink and black asymmetrical strappy bikini printed with heartbeat pulse lines and paired with detached sheer fingerless sun sleeves."
   }
 }

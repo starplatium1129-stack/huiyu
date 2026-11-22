@@ -1,5 +1,7 @@
 use crate::error::{ApiError, Result};
 #[cfg(windows)]
+pub(crate) mod windows_tree;
+#[cfg(windows)]
 use std::process::Stdio;
 use std::{
     collections::HashMap,

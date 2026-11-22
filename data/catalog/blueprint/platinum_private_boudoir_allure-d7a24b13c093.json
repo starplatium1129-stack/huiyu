@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_private_boudoir_allure",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3109,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "platinum_private_boudoir_allure",
     "characterId": "platinum_arknights",
@@ -16,7 +16,7 @@
     "action": "半倚软枕微启双唇近身倾诉",
     "timeOfDay": "子夜时分",
     "lighting": "清冷窗月与床畔温润壁灯冷暖交融",
-    "camera": "第一人称极近距离面庞与双眸特写",
+    "camera": "pov, close-up",
     "mood": "情动动人",
     "sceneTags": [
       "reclining",
@@ -29,22 +29,23 @@
       "parted lips",
       "intimate"
     ],
-    "promptProse": "In an intimate softly-lit bedroom late at night, Platinum leans back against plush pillows with moonlight streaming through half-drawn curtains. Pure white floral lace and flowing silver hair cascade over luxurious sheets. Her gaze is captivated and tender, cheeks glowing with soft blush as she leans forward with gentle parted lips.",
-    "animaCaption": "",
+    "promptProse": "In a quiet midnight bedroom, Platinum reclines against soft pillows and leans forward toward the viewer with a gentle blush and parted lips. Dressed in a pure white floral lace lingerie set with delicate ribbon bows and sheer lace thigh-high stockings, she glows where silver window moonlight meets the warm bedside wall lamp.",
+    "animaCaption": "Reclining against plush pillows in white floral lace lingerie and sheer thigh-high stockings, she leans close toward the viewer with flushed cheeks and softly parted lips. Cool window moonlight blends with warm bedside lamplight across the sheets.",
     "promptTokens": [
-      "solo",
       "reclining",
+      "leaning forward",
       "on bed",
+      "pillows",
       "sheets",
-      "bedroom",
-      "moonlight",
-      "dim warm lighting",
-      "blushing",
+      "blush",
       "parted lips",
       "looking at viewer",
-      "romantic",
-      "intimate gaze",
-      "alluring"
+      "bedroom",
+      "window",
+      "moonlight",
+      "warm wall lamp",
+      "pov",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +55,16 @@
       "nsfw",
       "daily"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white lingerie",
+      "white lace bra",
+      "white panties",
+      "see-through",
+      "ribbon bow",
+      "white thighhighs",
+      "lace trim"
+    ],
+    "nsfwProse": "She wears a pure white floral lace lingerie set with a sheer mesh bralette, delicate ribbon bows, and matching white lace thigh-high stockings."
   }
 }

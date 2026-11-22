@@ -126,14 +126,17 @@
       <div v-if="!generationBusy && !waitingForResult && !inpaintCompareActive && failedResultUrl !== displayResultUrl" class="result-reading-feedback" role="status"><ArchiveIcon name="image" /><span>正在读取成片…</span></div>
       <div v-if="focusBurstActive" class="fx-focus-lines is-bursting" aria-hidden="true" @animationend="clearFocusBurst" />
     </div>
-    </div>
     <DirectorResultTools
+      v-if="displayResultUrl"
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
-      :has-result="Boolean(displayResultUrl)"
       :can-save-scene="canSaveScene"
+      :size="resultSize"
+      :tilt-enabled="tiltEnabled"
+      :tilt-available="canAnimate && !!loadedResultUrl && !inpaintCompareActive"
       @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
-      @clearResult="$emit('clearResult')"
+      @clearResult="$emit('clearResult')" @toggle-tilt="toggleTilt"
     />
+    </div>
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef" hidden type="file" accept="image/*" @change="onInterrogateFile" />
   </div>
@@ -236,6 +239,8 @@ const { active: textureMotionActive, reveal: revealTextureResult, stop: stopText
 const { playClear: dissolveResult, coveringResult } = useCanvasClearMotion(canvasViewport, texturesEnabled, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 const resultAspect = ref(1)
+const decodedSize = ref('')
+const resultSize = computed(() => decodedSize.value || props.canvasSize?.replace(/[x×]/, ' × ') || '')
 const loadedResultUrl = ref('')
 const failedResultUrl = ref('')
 const imageRetry = ref(0), retryingResult = ref(false)
@@ -243,12 +248,14 @@ const artPlane = ref<HTMLElement | null>(null), forming = ref(false)
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
+  decodedSize.value = ''
   loadedResultUrl.value = ''
   failedResultUrl.value = ''
   imageRetry.value = 0; retryingResult.value = false; forming.value = false
 }, { immediate: true })
 function fitResult(image: HTMLImageElement) {
   resultAspect.value = image.naturalWidth / image.naturalHeight
+  decodedSize.value = `${image.naturalWidth} × ${image.naturalHeight}`
   resultPalette.value = sampleGenerationPalette(image)
   loadedResultUrl.value = props.displayResultUrl
   retryingResult.value = false
@@ -260,9 +267,14 @@ const waitingForResult = computed(() => retryingResult.value || Boolean(props.di
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
 const stageProgress = computed(() => waitingForResult.value ? null : props.generation.progress)
 const stageStatus = computed(() => retryingResult.value ? '正在重新读取成片…' : waitingForResult.value ? '正在读取成片…' : props.generation.message)
-const restingResult = computed(() => canAnimate.value && !!loadedResultUrl.value && !props.generationBusy && !waitingForResult.value && !forming.value
+const tiltEnabled = ref(true)
+const restingResult = computed(() => tiltEnabled.value && canAnimate.value && !!loadedResultUrl.value && !props.generationBusy && !waitingForResult.value && !forming.value
   && !coveringResult.value && !props.inpaintCompareActive && !failedResultUrl.value)
 const tilt = useArtworkTilt(artPlane, () => restingResult.value)
+function toggleTilt() {
+  tiltEnabled.value = !tiltEnabled.value
+  if (!tiltEnabled.value) tilt.flatten()
+}
 function playClear() { tilt.flatten(); dissolveResult() }
 watch(() => props.generationBusy, busy => { if (busy) tilt.flatten() }, { flush: 'sync' })
 function onResultImageError() { failedResultUrl.value = props.displayResultUrl; retryingResult.value = false; forming.value = false; stopTextureMotion() }

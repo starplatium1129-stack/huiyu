@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_futon_mating_press_creampie",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1142,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "纯裸侧卧纯白棉被中大胸起伏，双手托胸与下身指尖深层律动，猫嘴咬唇含泪娇喘依恋",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "intimate wide shot, reclining side perspective across soft white bedding",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -22,26 +22,31 @@
     "location": "和室寝殿纯白棉被正中",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Completely nude on the white futon save for a narrow black ribbon around her neck, she kneads her bare breast with one hand and masturbates between her curled thighs with the other.",
     "nsfwTokens": [
+      "nude",
+      "black ribbon",
+      "bare breasts",
       "nipples",
-      "pussy"
+      "pussy",
+      "masturbation"
     ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Mako curls on the white futon and cups her breast while touching herself beneath the blankets in warm bedside-lantern light.",
+    "promptProse": "Curled on her side across the soft white futon in a quiet tatami bedroom at night, Mako lies completely nude with only a slim black ribbon left around her neck. With her legs gently drawn up, she cups and kneads her full bare breast with one hand while slowly touching herself between her thighs with the other, tears of deep affection glistening at her eyes. Warm amber light from a bedside floor lantern bathes the white sheets and her flushed skin.",
     "promptTokens": [
-      "nude",
-      "black neck ribbon",
+      "lying",
       "on side",
       "curled up",
-      "masturbation",
-      "hand on breast",
-      "futon",
-      "lantern",
+      "hand on own breast",
       "teary eyes",
       "heavy blush",
+      "parted lips",
+      "futon",
       "white sheets",
+      "japanese room",
+      "lantern",
       "warm lighting",
+      "from side",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",
@@ -63,6 +68,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "常陆茉子 · 和室纯白棉被半解黑色系带与蜷缩侧卧深层真情自抚",
-    "animaCaption": "She curls on the white futon with one hand at her chest and the other beneath the blanket."
+    "animaCaption": "Lying completely nude on the white futon save for a black neck ribbon, Mako cups her bare breast with one hand and masturbates between her curled thighs with the other. Warm bedside lantern light glows across her tear-filled eyes and flushed skin.",
+    "compositionIntent": "single"
   }
 }

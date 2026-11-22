@@ -77,6 +77,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   const setupTitle = computed(() => {
     if (preparingRoom.value) return '正在准备角色房间'
     if (chatProvider.value === 'muse' && !options.chatReady.value) return '等待连接 Muse 收件箱'
+    if (chatProvider.value === 'chatgpt' && !options.chatReady.value) return '先连接 ChatGPT 订阅'
     if (chatProvider.value === 'api' && !apiConfigured.value) return '先选一个聊天模型'
     if (chatProvider.value === 'local' && !ollamaOnline.value) return '本地聊天模型还没有就绪'
     return '角色语音还没有就绪'
@@ -85,6 +86,9 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   const setupDescription = computed(() => {
     if (preparingRoom.value) return roomSetupText.value
     if (chatProvider.value === 'muse') return '在聊天设置中查看 Muse 的收信状态。'
+    if (chatProvider.value === 'chatgpt') return options.chatReady.value
+      ? 'ChatGPT 订阅对话已经可用；准备本地语音后可以继续使用逐句配音。'
+      : '在聊天设置中登录 ChatGPT 并选择可用模型。'
     if (chatProvider.value === 'api' && !apiConfigured.value) {
       return '选择服务商和模型，按需填写密钥。'
     }
@@ -107,6 +111,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
 
   function readinessMessage() {
     if (chatProvider.value === 'muse' && !options.chatReady.value) return '请在聊天设置中重新检测 Muse 收件箱。'
+    if (chatProvider.value === 'chatgpt' && !options.chatReady.value) return '请在聊天设置中登录 ChatGPT 订阅并选择可用模型。'
     if (chatProvider.value === 'local' && !ollamaOnline.value) return '聊天优先切换已完成；本地聊天模型仍未就绪，请在控制面板检查 Ollama 和模型。'
     if (chatProvider.value === 'api' && !apiConfigured.value) return '聊天优先切换已完成；请确认 API 配置和聊天连接。'
     if (!voice.readyFor(currentCharacter.value.voice)) return '聊天服务已连接；角色语音仍未就绪，请检查语音服务与声线配置。'

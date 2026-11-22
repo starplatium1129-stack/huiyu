@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_poolside_cowgirl_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "独自跨坐池阶，一手撑地、一手腿间自抚",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot, low angle",
+    "camera": "from below, medium shot",
     "category": "深层欢愉",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -22,28 +22,31 @@
     "location": "夜间室内温水泳池水边台阶",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "shark_swimsuit",
-    "promptProse": "She sits astride a broad pool step, bracing one hand on the stone while touching herself; her tail rests in the water behind her. Blue underwater lights cast moving caustics and soft shadows across the wet stone.",
-    "promptTokens": [
-      "adult",
-      "black and red bikini",
-      "open clothes",
+    "nsfwProse": "Her black-and-red bikini top is lowered beneath her bare breasts and the bottom is pulled aside, leaving her free hand slipping between her wet thighs.",
+    "nsfwTokens": [
+      "black bikini",
+      "red bikini",
+      "bikini aside",
       "topless",
-      "swimsuit aside",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "shark_swimsuit",
+    "promptProse": "Seen from a low angle at the quiet poolside at night, Ellen sits astride a wide submerged stone step with one palm planted on the wet edge and her shark tail trailing cleanly into the water behind her. Underwater blue lamps cast shifting caustics across her flushed skin.",
+    "promptTokens": [
       "straddling",
-      "masturbation",
-      "poolside",
-      "wet",
-      "blush",
-      "shark teeth print",
       "hand on ground",
+      "poolside",
       "water",
-      "blue lighting",
+      "wet skin",
+      "heavy blush",
+      "parted lips",
       "caustics",
-      "medium shot",
-      "low angle"
+      "blue lighting",
+      "night",
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -57,6 +60,7 @@
     ],
     "timeOfDay": "夜间",
     "title": "艾莲·乔 · 泳池台阶的湿身独处",
-    "animaCaption": "She straddles a broad pool step with her tail resting in the water behind her."
+    "animaCaption": "Straddling the broad wet stone pool step with her dark crimson-and-black bikini pushed below her bare chest and aside at the hip, she braces one hand on the stone while touching herself between her thighs as her shark tail rests in the blue-lit water behind her.",
+    "compositionIntent": "single"
   }
 }

@@ -40,6 +40,7 @@ mod static_files;
 mod storage;
 mod task_contract;
 mod task_runtime;
+mod studio_workflows;
 mod tasks_http;
 mod upstream;
 mod video;

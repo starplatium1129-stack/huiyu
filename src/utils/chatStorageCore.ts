@@ -150,7 +150,7 @@ export function normalizeChatStorage(
       conversations: normalizeChatConversations(raw.conversations, normalizedHistories, ids, options.createMessageId),
       settings: {
         model: text(settings.model, 200) || text(raw.model, 200) || text(legacyModel, 200),
-        provider: providerCandidate === 'local' || providerCandidate === 'muse' ? providerCandidate : 'api',
+        provider: providerCandidate === 'local' || providerCandidate === 'chatgpt' || providerCandidate === 'muse' ? providerCandidate : 'api',
         apiBaseUrl: finalApiBaseUrl,
         apiModel: finalApiModel,
         apiKey: finalApiKey,

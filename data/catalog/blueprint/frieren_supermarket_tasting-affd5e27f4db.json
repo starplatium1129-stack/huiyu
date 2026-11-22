@@ -1,21 +1,21 @@
 {
   "kind": "blueprint",
   "id": "frieren_supermarket_tasting",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T01:54:11.719582700+00:00",
   "data": {
     "id": "frieren_supermarket_tasting",
     "title": "芙莉莲 · 超市试吃",
     "category": "现代日常",
     "characterId": "frieren",
     "description": "大型超市热闹的熟食试吃区前，芙莉莲神情极其严肃地用牙签扎起一小块煎香肠放入口中，细细咀嚼后认真地点了点头——「味道很浓郁。听说只要假装挑选商品就能免费一直吃……这种被称作‘试吃’的习俗，简直比寻找魔法书还要美妙。」",
-    "location": "超市零食区",
-    "action": "认真品尝试吃品",
+    "location": "超市熟食试吃台",
+    "action": "用一根牙签送一小块煎香肠到嘴边，另一只手扶着购物篮",
     "timeOfDay": "白天",
-    "lighting": "明亮灯光",
-    "camera": "medium shot",
+    "lighting": "超市顶灯下的柔白光，试吃台上方的暖灯照亮瓷盘",
+    "camera": "three quarter view, medium shot",
     "mood": "悠闲好奇",
     "sceneTags": [
       "supermarket",
@@ -30,25 +30,27 @@
       "indoor_light",
       "medium_shot"
     ],
-    "promptProse": "She considers the sausage sample with solemn approval, holding its toothpick above the tasting counter. Bright shop light falls across the sample tray and her small nod.",
+    "promptProse": "At the supermarket tasting counter, Frieren holds a short wooden pick with one cube of browned sausage no larger than a fingertip. She brings it close enough to smell it while holding a green basket at her hip. The cuffs of her blue canvas jacket are folded back. A shallow tray of separate sample pieces stands at the corner of the counter, and the bright grocery aisle recedes behind her.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "sausage",
-      "toothpick",
-      "food sample",
       "supermarket",
-      "medium shot",
-      "holding toothpick",
-      "nodding",
-      "shop lighting"
+      "food stand",
+      "counter",
+      "plate",
+      "tray",
+      "toothpick",
+      "holding food",
+      "shopping basket",
+      "standing",
+      "looking down",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "casual",
+    "outfitId": "sfw_market_canvas_jacket",
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She holds the sausage sample above the tasting counter with a small nod."
+    "animaCaption": "Between her thumb and forefinger is a short toothpick with a single small browned cube at its tip. She raises that bite toward her lips, the shopping basket still in her other hand."
   }
 }

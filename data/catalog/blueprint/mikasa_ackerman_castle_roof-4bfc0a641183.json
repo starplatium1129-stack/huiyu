@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_castle_roof",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 983,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "action": "屋顶上望向远方",
-    "camera": "cowboy shot, standing on the royal capital castle roof and looking toward the horizon",
+    "camera": "three quarter view, cowboy shot",
     "category": "战斗前线",
     "characterId": "mikasa_ackerman",
     "coverageTags": [],
@@ -18,14 +18,22 @@
     "mood": "怀念而坚定",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa watches beyond the walls from the castle roof, wind lifting her cape and red scarf; low sunlight rims her profile.",
+    "promptProse": "High atop the steeply pitched slate roof of a royal capital castle at dusk, Mikasa stands steady in her Survey Corps uniform, green cloak, and ODM harness. Turning her face slightly upward toward the horizon beyond the distant walls, she lets the brisk evening wind billow her cape and lift the trailing ends of her red scarf. Low golden sunset light rims her profile and straps against drifting amber clouds.",
     "promptTokens": [
-      "castle roof",
-      "sunset",
+      "standing",
+      "rooftop",
+      "castle",
+      "roof tiles",
       "looking away",
       "wind",
-      "red scarf",
-      "backlighting"
+      "clouds",
+      "sunset",
+      "orange sky",
+      "backlighting",
+      "rim light",
+      "outdoors",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +47,7 @@
     ],
     "timeOfDay": "黄昏",
     "title": "三笠 · 自由之翼下",
-    "animaCaption": "Wind lifts her cape and scarf above the castle roof."
+    "animaCaption": "Standing atop the steep castle roof tiles in her Survey Corps uniform and green cloak, Mikasa gazes toward the distant horizon as evening wind lifts her cape and red scarf. Low golden sunset light rims her profile against the amber sky.",
+    "compositionIntent": "single"
   }
 }

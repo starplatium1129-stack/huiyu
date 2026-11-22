@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_command_sandtable",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2796,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "gamma_shadow_command_sandtable",
     "characterId": "gamma_shadow",
@@ -17,22 +17,31 @@
     "action": "站在巨大沙盘前从容调动棋子，目光严谨沉着，掌控全局",
     "timeOfDay": "night",
     "lighting": "沙盘上方魔石吊灯的冷白光与地图墙的微光",
-    "camera": "cowboy_shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "宁静与端庄",
-    "promptProse": "At the sand table of the underground headquarters, Gamma moves the pieces with cool precision, holding the Garden's reins alone tonight.",
+    "promptProse": "Inside Shadow Garden's stone underground command chamber at night, Gamma stands poised over a vast strategic sand table in her gold-accented black slime suit and high-collared jacket. Reaching gracefully across the relief terrain to slide a carved marker piece into position, she surveys the wall maps behind her with composed, exacting precision. Cool white light from an overhead magic-stone chandelier sharpens the edges of the terrain and glints along the golden trim of her cuffs.",
     "promptTokens": [
-      "sand table",
-      "strategy map",
+      "standing",
+      "leaning forward",
+      "reaching",
+      "serious",
+      "map",
+      "table",
+      "chess piece",
       "command room",
-      "underground",
-      "marker pieces",
-      "lamplight"
+      "chandelier",
+      "indoors",
+      "night",
+      "cool lighting",
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "With Shadow and Alpha away, Gamma's hand over the sand table is the steadiest in the Garden.",
+    "animaCaption": "Standing beside the vast strategic sand table in the underground command chamber, Gamma reaches calmly forward to reposition a marker piece with poised precision. Cool white light from the overhead stone chandelier illuminates the terrain and wall maps behind her.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "single"
   }
 }

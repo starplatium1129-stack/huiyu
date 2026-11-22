@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3159,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "mon3tr_arknights_swimsuit_allure",
     "characterId": "mon3tr_arknights",
@@ -14,7 +14,7 @@
     "location": "人迹罕至的深海潮汐溶洞与荧光藻暗礁",
     "timeOfDay": "月蚀深夜",
     "lighting": "幽暗洞窟内，水底发光藻类与泳装脊线散发出幽绿磷光，微弱月光从洞顶天窗垂直洒下冷冽白柱",
-    "camera": "cowboy shot, low angle, dark sci-fi aquatic atmosphere, dramatic rim lighting",
+    "camera": "low angle, cowboy shot",
     "mood": "冷酷警觉、非人异质美与绝对的忠诚守护",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,32 @@
       "sci_fi"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "mon3tr (arknights)",
-      "short white hair",
-      "green eyes",
-      "black crystalline swimsuit",
-      "glowing green lines",
-      "highleg",
-      "crouching on sea rock inside tidal cave",
-      "dark night",
-      "bioluminescent water",
-      "cool moonlight from ceiling",
+      "crouching",
+      "one knee",
+      "hand on rock",
       "sharp gaze",
-      "depth of field",
-      "cinematic lighting"
+      "looking at viewer",
+      "sea cave",
+      "basalt rocks",
+      "tide pool",
+      "bioluminescent water",
+      "green glow",
+      "moonlight",
+      "night",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mon3tr from Arknights crouches alertly upon a dark basalt crag inside a sea cavern in a textured black aquatic suit with glowing emerald conduits, illuminated by eerie bioluminescent ripples.",
-    "animaCaption": "Crystalline luminescent veins pulse in the shadowy sea cave as she holds silent, impenetrable guard.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Mon3tr crouches on one knee atop a slick basalt ledge inside a dark coastal cavern at night, wearing a textured black high-leg aquatic one-piece swimsuit traced with glowing emerald conduits and geometric cutouts. With one hand braced on the wet stone and sharp green eyes scanning the dark tide, she is lit by bioluminescent ripples and a narrow shaft of moonlight.",
+    "animaCaption": "Crouching on one knee with a palm pressed to wet black basalt inside a tidal cavern, she watches alertly in a black high-leg swimsuit traced with glowing emerald lines. Bioluminescent green water ripples below while pale moonlight drops through a ceiling fissure.",
+    "nsfwTokens": [
+      "black one-piece swimsuit",
+      "highleg",
+      "cutout swimsuit",
+      "glowing green lines",
+      "tight swimsuit",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a form-fitting black textured high-leg aquatic one-piece suit traced with luminescent emerald seams and geometric cutouts."
   }
 }

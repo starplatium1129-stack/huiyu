@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3166,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "virtuosa_arknights_lingerie_whisper",
     "characterId": "virtuosa_arknights",
@@ -14,7 +14,7 @@
     "location": "莱塔尼亚古堡回音大厅，月光透过玫瑰花窗洒在冰冷的大理石地面上",
     "timeOfDay": "深夜无人的乐音鸣响之刻",
     "lighting": "冷白月光经由哥特花窗滤成幽紫与暗红光柱，将少女白皙的身躯与黑色大提琴融为一体",
-    "camera": "low angle, medium shot, 仰视中景，大理石回音大厅与大提琴同框",
+    "camera": "low angle, medium shot",
     "mood": "引导人们直面内心深层欲望与本能的魔性演奏家，优雅、深邃而极度蛊惑",
     "adult": true,
     "sampleRating": "R15",
@@ -42,20 +42,32 @@
     "promptTokens": [
       "sitting",
       "playing cello",
-      "cello",
-      "musical instrument",
-      "bow",
+      "black cello",
+      "cello bow",
+      "closed eyes",
+      "head tilt",
+      "enigmatic smile",
       "gothic hall",
       "stained glass",
       "marble floor",
       "moonlight",
+      "purple light",
+      "night",
       "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Virtuosa sits in a gothic castle echo hall, holding a polished black cello between her knees with bow poised gracefully across strings. Purple and crimson beams of moonlight stream through tall stained-glass windows, reflecting along the cold marble floor as she listens with a hypnotic smile.",
-    "animaCaption": "Holding her black cello in the gothic cathedral hall, she listens to string resonance with a hypnotic smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Virtuosa sits in an echoing gothic castle hall at midnight, wearing a deep midnight-purple watered-silk slip gown trimmed with black lace whose thigh-high slit parts cleanly around a lacquered black cello held between her knees. With her bow poised over the strings and eyes gently closed in a hypnotic smile, she rests within purple and crimson shafts of stained-glass moonlight.",
+    "animaCaption": "Seated sideways with a polished black cello cradled between her knees through the thigh-high slit of her midnight-purple silk slip gown, she pauses with bow poised above the strings and eyes closed in a serene, entrancing smile. Colored moonlight from tall stained glass washes over the marble hall.",
+    "nsfwTokens": [
+      "dark purple slip dress",
+      "silk nightgown",
+      "black lace trim",
+      "high-slit dress",
+      "open back",
+      "bare legs",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a deep midnight-purple watered-silk slip gown trimmed with black lace, featuring an open back and a thigh-high side slit parting around her knees."
   }
 }

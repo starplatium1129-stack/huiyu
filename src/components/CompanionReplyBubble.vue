@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible && text && !dialogueVisible" class="companion-float-reminder companion-reply-preview" @pointerenter="hold" @pointerleave="release" @focusin="hold" @focusout="release">
+  <div v-if="visible && text && !dialogueVisible" class="companion-float-reminder companion-reply-preview" data-companion-interactive @pointerenter="hold" @pointerleave="release" @focusin="hold" @focusout="release">
     <span>{{ name }}</span><p>{{ text }}</p>
     <div class="reply-actions">
       <button type="button" aria-label="展开完整回复" @click="$emit('open')"><ArchiveIcon name="chat" /><span>展开</span></button>

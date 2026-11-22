@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3402,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "amiya_lingerie_whisper",
     "characterId": "amiya",
@@ -14,7 +14,7 @@
     "location": "罗德岛陆行舰舰长生活区阿米娅的私人休息室",
     "timeOfDay": "深夜",
     "lighting": "休息室内柔和的顶棚暖白漫射光，映照着木质琴盒与棉麻睡衣的质朴纹理",
-    "camera": "温馨治愈的中景平视，突出少女领袖卸下战袍后的恬静与天真",
+    "camera": "eye level, medium shot",
     "mood": "治愈纯净、温婉舒缓、如同家人般的安心感",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,31 @@
       "healing_peace"
     ],
     "promptTokens": [
-      "bunny ears",
-      "pastel blue nightdress",
+      "standing",
+      "clasped hands",
+      "gentle smile",
+      "looking at viewer",
       "violin case",
-      "warm smile",
-      "brown hair",
-      "cozy cabin",
-      "tender",
-      "warm lighting",
-      "soft lighting",
+      "wooden desk",
+      "dorm room",
+      "indoors",
+      "night",
       "ceiling light",
-      "dim lighting"
+      "warm lighting",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Latching her dark violin case shut on the wooden desk, she turns with her rabbit ears gently resting, offering the Doctor an unreserved smile overflowing with warmth and familial trust. Soft warm ceiling lighting fills the quiet quarters with a gentle diffuse glow, casting subtle amber highlights across her violin case and pastel nightdress.",
-    "animaCaption": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Soft warm ceiling lighting fills the quiet quarters with a gentle diffuse glow, casting subtle amber highlights across her violin case and pastel nightdress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Amiya winds down after late violin practice in her private cabin aboard Rhodes Island. Having latched her dark violin case shut on the wooden desk, she turns toward the viewer with clasped hands and a gentle, unguarded smile. Soft warm ceiling light fills the quiet room and catches the woven texture of her pastel sky-blue cotton-linen nightdress and the polished wood of the case.",
+    "animaCaption": "Having latched her violin case on the desk behind her, she turns in her pastel blue cotton nightdress with hands clasped at her chest and a calm smile. Warm overhead cabin lighting softens the quiet quarters around her.",
+    "nsfwTokens": [
+      "nightgown",
+      "light blue dress",
+      "lace collar",
+      "short sleeves",
+      "drawstring",
+      "cotton"
+    ],
+    "nsfwProse": "She wears a modest pastel sky-blue cotton-linen nightdress with a rounded lace collar, elbow-length sleeves, and soft waist drawstrings."
   }
 }

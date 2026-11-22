@@ -1,26 +1,26 @@
 @reference "./tailwind.css";
 /* Day atelier: paper surfaces and ink accents; artwork colors stay independent. */
 :root[data-theme="light"] {
-  --ink-base: #111a23;
-  --bg-deep: #eee7df;
-  --bg-base: #f5efe7;
-  --bg-surface: #fffcf6;
-  --bg-elevated: #eee7e0;
+  --ink-base: #1b181a;
+  --bg-deep: #eae4da;
+  --bg-base: #f6f3ec;
+  --bg-surface: #fdfbf7;
+  --bg-elevated: #f0ebe2;
   --bg-hover: #e8dfd7;
-  --border-soft: rgba(79, 59, 65, .18);
-  --border-strong: rgba(79, 59, 65, .32);
-  --text-primary: #29242a;
-  --text-secondary: #585059;
-  --text-muted: #6d6069;
-  --text-disabled: #6d6069;
+  --border-soft: rgba(34, 28, 30, .09);
+  --border-strong: rgba(34, 28, 30, .19);
+  --text-primary: #1b181a;
+  --text-secondary: #5f585b;
+  --text-muted: #6a6266;
+  --text-disabled: #6a6266;
   --text-inverse: #fffafd;
-  --accent: #9b3e61;
+  --accent: #9e3d5e;
   --accent-hover: #7e2c4c;
-  --accent-soft: rgba(155, 62, 97, .08);
-  --accent-glow: rgba(155, 62, 97, .12);
+  --accent-soft: rgba(158, 61, 94, .08);
+  --accent-glow: rgba(158, 61, 94, .12);
   --accent-violet: #6d3bb4;
-  --nene-violet: #71409d;
-  --natsume-amber: #855014;
+  --nene-violet: #6e439c;
+  --natsume-amber: #8d5818;
   --editorial-gold: #825314;
   --editorial-gold-soft: rgba(130, 83, 20, .08);
   --archive-blue: #006b66;
@@ -35,17 +35,18 @@
   --shadow-sm: 0 1px 3px rgba(79, 59, 65, .07), 0 3px 10px rgba(79, 59, 65, .05);
   --shadow-md: 0 2px 6px rgba(79, 59, 65, .06), 0 10px 24px -2px rgba(79, 59, 65, .09);
   --shadow-lg: 0 4px 10px rgba(79, 59, 65, .06), 0 18px 44px -4px rgba(79, 59, 65, .13);
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, .90), 0 6px 20px -10px rgba(42, 32, 26, .09);
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
   --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
   --stage-violet: linear-gradient(145deg, #ebe0f4, #faf6fd);
   --stage-amber: linear-gradient(145deg, #f4e7d1, #fffaf1);
   --success: #126239;
-  --warning: #865400;
+  --warning: #805000;
   --danger: #b12d49;
   --info: #245d9b;
   --success-text: #126239;
-  --warning-text: #865400;
+  --warning-text: #805000;
   --danger-text: #b12d49;
   --info-text: #245d9b;
   --mood-joy-text: #805009;
@@ -60,7 +61,7 @@
 }
 /* Every registered character keeps its hue. Bright source accents become readable ink. */
 :root[data-theme="light"] .pb {
-  --accent: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base));
+  --accent: color-mix(in srgb, var(--character-accent) 38%, var(--ink-base));
   --accent-hover: color-mix(in srgb, var(--character-accent) 34%, var(--ink-base));
   --character-ink: var(--accent);
 }
@@ -86,19 +87,10 @@
 :root[data-theme="light"] .control-page .status-tile { opacity: 1; }
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 
-:root[data-theme="light"] .desktop-titlebar {
-  --desktop-titlebar-text: var(--text-secondary);
-  --desktop-titlebar-name: var(--text-primary);
-  --desktop-titlebar-page: var(--text-muted);
-  --desktop-titlebar-hover: var(--text-primary);
-  --desktop-titlebar-hover-bg: var(--bg-elevated);
-  --desktop-titlebar-press-bg: var(--bg-hover);
-}
-
 /* Elevated surfaces on light theme: crisp 1px borders and warm paper shadow tiers */
 :root[data-theme="light"] :is(.card, .card-create, .card-info, .card-direct, .panel, .result-frame, .history-panel, .local-status-panel, .recent-card, .pop-card-mini) {
   border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-glass-sm);
+  box-shadow: var(--shadow-card);
 }
 
 :root[data-theme="light"] :is(.studio-popover, .studio-select-content, .chat-more-menu, .modal-card, .confirm-panel, .task-center, .appearance-dialog, [data-elevation='2'], .card-level-2) {

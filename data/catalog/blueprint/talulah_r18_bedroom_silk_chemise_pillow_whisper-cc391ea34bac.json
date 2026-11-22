@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "talulah_r18_bedroom_silk_chemise_pillow_whisper",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1935,
   "createdAt": "2026-10-25T03:46:32.566833200+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "talulah_r18_bedroom_silk_chemise_pillow_whisper",
     "characterId": "talulah_arknights",
@@ -16,7 +16,7 @@
     "mood": "极致温存",
     "lighting": "床头暖色小台灯泛出的朦胧昏黄柔光",
     "timeOfDay": "深夜",
-    "camera": "cowboy shot, high angle",
+    "camera": "high angle, cowboy shot",
     "outfitId": "private_silk_chemise",
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -32,33 +32,43 @@
       "blush"
     ],
     "promptTokens": [
-      "cozy bedroom",
-      "wooden bed",
-      "white fluffy pillows",
-      "private silk chemise",
-      "deep red silk nightgown",
-      "spaghetti strap slipped down arm",
-      "bare collarbone",
-      "cleavage",
-      "lying on side",
-      "fingers gripping bedsheet",
-      "dragon horns",
-      "dragon tail resting on mattress",
-      "flushed cheeks",
+      "lying",
+      "on side",
+      "grabbing bedsheet",
+      "blush",
       "parted lips",
-      "golden eyes misty",
-      "cowboy shot",
-      "soft bedside lamp light"
+      "looking at viewer",
+      "bed",
+      "pillow",
+      "white sheets",
+      "lamp",
+      "warm lighting",
+      "bedroom",
+      "high angle",
+      "cowboy shot"
     ],
-    "promptProse": "Reclining along the tumbled linen pillows in her crimson silk chemise, the delicate strap slips down over her slender arm. The warm bedside lamp bathes her trembling collarbone in gold as she whispers into the stillness, her amber gaze glistening with affection.",
-    "animaCaption": "She lies on the bed pillows with her silk chemise slipping off her arm, gazing softly with misty golden eyes.",
-    "negativeTokens": [],
+    "promptProse": "Lying on her side amid soft white pillows on a wide wooden bed late at night, Talulah wears a thin deep-crimson silk chemise trimmed with black lace whose slender strap has slipped partway down her arm. Her fingers curl gently into the rumpled bedsheet as her tail rests across the mattress and she looks up toward the viewer with parted lips and a warm, vulnerable blush. Soft amber bedside lamplight warms her bare collarbone and the sheen of crimson silk.",
+    "animaCaption": "Lying on her side amid white pillows in a black-lace-trimmed crimson silk chemise with one strap slipped off her arm, Talulah grips the sheet edge and gazes up with parted lips and flushed cheeks. Soft bedside lamplight warms her bare collarbone and silk folds.",
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
     "coverageTags": [],
     "adult": true,
     "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwTokens": [
+      "red nightgown",
+      "silk",
+      "black lace",
+      "spaghetti straps",
+      "strap slip",
+      "bare shoulders",
+      "collarbone",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a minimal deep-crimson silk chemise trimmed with black lace along the sweetheart neckline, one spaghetti strap slipped down her arm to bare her shoulder, collarbone, and cleavage.",
+    "compositionIntent": "single"
   }
 }

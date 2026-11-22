@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matsushima_michiru_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3530,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "matsushima_michiru_lingerie_whisper",
     "characterId": "matsushima_michiru",
@@ -14,7 +14,7 @@
     "location": "美滨学园女生宿舍，桌上摆着柠檬汽水拉环罐与彩色维生素软糖",
     "timeOfDay": "午夜突击查房时刻",
     "lighting": "天花板吸顶灯的纯白荧光与书桌台灯形成明亮清爽的现代卧室采光",
-    "camera": "medium shot, eye level, 侧平视中景，展现俏皮任性与手忙脚乱的可爱姿态",
+    "camera": "eye level, medium shot",
     "mood": "笨拙金发傲娇的滑稽与纯情，元气搞怪又极度惹人喜爱",
     "adult": true,
     "sampleRating": "R15",
@@ -39,21 +39,37 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting backwards on chair",
-      "study desk",
-      "lemon soda can",
-      "candy bag",
-      "dorm room",
-      "tsundere pout",
-      "blush",
+      "sitting",
+      "chair",
+      "pout",
+      "heavy blush",
+      "looking at viewer",
+      "desk",
+      "soda can",
+      "candy",
+      "bedroom",
       "desk lamp",
-      "night"
+      "night",
+      "indoors",
+      "eye level",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Michiru sits backwards on her desk chair in her Mihama dorm room, cheeks puffed out in an exaggerated tsundere pout beside an open can of lemon soda and colorful vitamin gummies.",
-    "animaCaption": "Sitting backwards on a desk chair with a flustered tsundere pout, an open can of lemon soda resting on the desk.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Sitting backwards straddling her study chair in her bright Mihama Academy dorm room at night, Michiru wears a cheerful lemon-yellow polka-dot ruffled camisole and matching puff bloomer shorts. Puffing her cheeks out in a flustered, deeply blushing tsundere pout beside an open lemon soda can and colorful gummy packets on the desk, she glares sideways in bashful embarrassment under crisp bedroom lights.",
+    "animaCaption": "Sitting backwards on her dorm desk chair in her lemon-yellow polka-dot ruffled camisole and bloomer shorts, Michiru puffs her cheeks in a blushing tsundere pout. An open lemon soda can and candy packets sit beside the bright desk lamp.",
+    "nsfwTokens": [
+      "yellow camisole",
+      "polka dot",
+      "frills",
+      "bloomers",
+      "yellow shorts",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a bright lemon-yellow white-polka-dot ruffled camisole paired with high-waisted ruffled bloomer shorts, showing her bare shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

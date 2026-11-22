@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3167,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.191Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "swire_arknights_swimsuit_allure",
     "characterId": "swire_arknights",
@@ -14,7 +14,7 @@
     "location": "泊在珊瑚海上的顶级私人豪华游艇前甲板",
     "timeOfDay": "傍晚",
     "lighting": "夕阳落日熔金的金色反光照亮发丝与香槟气泡",
-    "camera": "仰角奢华透视，游艇柚木甲板与远方蔚蓝海面交织",
+    "camera": "low angle, cowboy shot",
     "mood": "骄傲自信、贵气洒脱、元气大小姐",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,33 @@
       "confident"
     ],
     "promptTokens": [
-      "tiger ears",
-      "tiger tail",
-      "emerald bikini",
-      "gold trim",
-      "sunglasses",
-      "luxury yacht",
-      "champagne",
+      "reclining",
+      "crossed legs",
+      "lounge chair",
+      "holding champagne glass",
+      "sunglasses on head",
+      "proud smile",
+      "looking at viewer",
+      "yacht",
+      "teak deck",
+      "ocean",
       "sunset",
-      "proud smile"
+      "golden hour",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Swire lounging flamboyantly on a cream-leather daybed across the teak foredeck of her private yacht anchored in turquoise waters. She rocks a glamorous deep emerald-green bikini with metallic gold embroidery and high-waisted briefs. Pushing designer cat-eye sunglasses onto her head, her striped feline tail wags cheerfully as she toasts with a glass of vintage champagne at golden sunset.",
-    "animaCaption": "Swire lounging flamboyantly on a cream-leather daybed across the teak foredeck of her private yacht anchored in turquoise waters. She rocks a glamorous deep emerald-green bikini with metallic gold embroidery and high-waisted briefs.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Swire reclines cross-legged on a cream leather daybed across the teak foredeck of her private yacht at sunset, wearing a jewel emerald velvet high-waisted bikini with spun-gold trim, gold chain clasps, and a sheer silk sarong. With designer sunglasses pushed onto her head and a sparkling champagne glass raised, she flashes a proud, radiant grin into the golden-hour glow.",
+    "animaCaption": "Lounging cross-legged on a cream leather daybed aboard her teak yacht deck in an emerald-and-gold high-waisted bikini, she pushes sunglasses up onto her head and lifts a sparkling champagne flute with a proud grin. Molten sunset light rims her hair and the open sea behind her.",
+    "nsfwTokens": [
+      "green bikini",
+      "high-waist bikini",
+      "gold trim",
+      "gold chain",
+      "sheer sarong",
+      "bare midriff",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a rich emerald-green velvet high-waisted bikini trimmed with metallic gold embroidery, gold chain clasps, and a sheer silk sarong."
   }
 }

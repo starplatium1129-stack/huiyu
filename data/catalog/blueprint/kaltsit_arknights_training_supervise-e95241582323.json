@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "双臂环抱立于场边",
-    "camera": "medium shot, slight low angle",
+    "camera": "from side, medium shot",
     "category": "泰拉日常",
     "characterId": "kaltsit_arknights",
     "coverageTags": [
@@ -15,22 +15,25 @@
     ],
     "description": "战术模拟室坚硬的防爆玻璃前，凯尔希双臂环抱于胸前，目光冷静犀利地审视着场内干员的协同作战数据。她微微颔首——「干员们的战术配合有所提升。但在战场上，任何一丝侥幸心理都会导致无可挽回的伤亡，继续保持最高标准的警惕。」",
     "id": "kaltsit_arknights_training_supervise",
-    "lighting": "bright training hall light",
+    "lighting": "观察台侧灯擦过近处白大衣，玻璃另一侧由偏冷的顶灯照亮",
     "location": "罗德岛演武场",
     "mood": "肃然专业",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She stands with folded arms in the foreground, watching the operators practice beyond the training room's reinforced glass.",
+    "promptProse": "Kal'tsit stands at the Rhodes Island observation rail, her arms folded in the pale green-trimmed white coat, looking through the reinforced glass into the practice bay. Frame her in profile on the near side, close enough for the warm task light to catch the seam of her cuff. Beyond the glass, two helmeted operators in dark training gear move around a padded target with their backs to the window. Cooler ceiling lights and a strip of yellow tape trace the length of the floor behind them.",
     "promptTokens": [
-      "trainees",
-      "crossed arms",
-      "training ground",
-      "from below",
-      "medium shot",
+      "1girl",
+      "2boys",
       "standing",
-      "reinforced glass",
-      "sunlight",
-      "overcast"
+      "crossed arms",
+      "glass wall",
+      "helmet",
+      "training dummy",
+      "silhouette",
+      "indoors",
+      "from side",
+      "medium shot",
+      "depth of field"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,6 @@
     "timeOfDay": "白天",
     "title": "凯尔希 · 训练督导",
     "compositionIntent": "group",
-    "animaCaption": "The operators practice beyond the reinforced glass behind her."
+    "animaCaption": "Kal'tsit stands in profile with her arms folded beside the observation glass rail as warm task light catches her white coat sleeve. Beyond the reinforced pane, two distant helmeted trainees drill around a padded dummy under cooler hall lights."
   }
 }

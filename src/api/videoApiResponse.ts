@@ -35,9 +35,10 @@ export function isVideoCamera(value: unknown): value is VideoDefaults['camera'] 
 export function isVideoMotion(value: unknown): value is VideoDefaults['motion'] {
   return value === 'subtle' || value === 'natural' || value === 'expressive'
 }
-export function isVideoDuration(value: unknown): value is VideoDefaults['duration'] {
+export function isVideoDuration(value: unknown): value is Exclude<VideoDefaults['duration'], 2> {
   return value === 3 || value === 5 || value === 10 || value === 15
 }
+const isModelDuration = (value: unknown) => value === 2 || isVideoDuration(value)
 
 function isVideoJob(value: unknown): value is VideoJob & { metadata?: unknown } {
   if (!isRecord(value)) return false
@@ -70,11 +71,11 @@ function isVideoModelStatus(value: unknown): value is VideoModelStatus {
     && isText(value.summary) && typeof value.executable === 'boolean' && typeof value.available === 'boolean'
     && isText(value.reason) && Array.isArray(value.modes)
     && value.modes.every((mode: unknown) => ['text', 'image', 'first-last-frame'].includes(String(mode)))
-    && (value.durations === undefined || Array.isArray(value.durations) && value.durations.length > 0 && value.durations.every(isVideoDuration))
+    && (value.durations === undefined || Array.isArray(value.durations) && value.durations.length > 0 && value.durations.every(isModelDuration))
     && (value.qualities === undefined || Array.isArray(value.qualities) && value.qualities.length > 0 && value.qualities.every(id => ['fast', 'standard', 'fine'].includes(id)))
     && (value.supportsNegative === undefined || typeof value.supportsNegative === 'boolean')
     && (value.supportsGeneratedAudio === undefined || typeof value.supportsGeneratedAudio === 'boolean')
-    && (value.turboSteps === undefined || value.id === 'minimax-h3' && Array.isArray(value.turboSteps)
+    && (value.turboSteps === undefined || ['minimax-h3', 'wan2.2-i2v-a14b-gguf'].includes(String(value.id)) && Array.isArray(value.turboSteps)
       && value.turboSteps[0] === 4 && (value.turboSteps.length === 1 || value.turboSteps.length === 2 && value.turboSteps[1] === 8))
     && (value.drivingInput === undefined || value.drivingInput === 'audio' || value.drivingInput === 'video')
     && (value.attentionModes === undefined || Array.isArray(value.attentionModes) && value.attentionModes.length > 0
@@ -96,7 +97,7 @@ function isVideoDefaults(value: unknown): value is VideoDefaults {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.modelId)
     && ['landscape', 'portrait', 'square', 'original'].includes(String(value.aspectRatio))
-    && isVideoDuration(value.duration)
+    && isModelDuration(value.duration)
     && isVideoCamera(value.camera)
     && isVideoMotion(value.motion)
     && ['fast', 'standard', 'fine'].includes(String(value.quality))

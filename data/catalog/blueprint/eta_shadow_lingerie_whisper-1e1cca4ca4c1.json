@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3516,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.574Z",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "eta_shadow_lingerie_whisper",
     "characterId": "eta_shadow",
@@ -14,7 +14,7 @@
     "location": "暗影庭园第六研究所主实验台旁的懒人沙发上",
     "timeOfDay": "午夜",
     "lighting": "荧光显微镜与多排培养皿发出的冷翠绿微光，与实验台暖白工作灯将沉睡的少女笼罩",
-    "camera": "生动风趣的平视特写，捕捉天才科学家随时随地秒睡的标志性生活习性",
+    "camera": "eye level, close-up",
     "mood": "深度嗜睡、天然呆萌、无防备的科研天才日常",
     "adult": true,
     "sampleRating": "R15",
@@ -37,18 +37,32 @@
       "heavy_sleeper"
     ],
     "promptTokens": [
-      "elf ears",
-      "oversized purple fleece onesie",
-      "cat hood",
-      "fast asleep on beanbag",
+      "sleeping",
+      "closed eyes",
+      "drooling",
+      "beanbag chair",
+      "hugging papers",
       "blueprints",
-      "lab glow",
-      "cute drool"
+      "laboratory",
+      "microscope",
+      "green lab glow",
+      "desk lamp",
+      "night",
+      "eye level",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Eta succumbing instantly to profound exhaustion inside her subterranean research lab. Swallowed entirely by a baggy lavender fleece cat-eared onesie, she sleeps soundly slumped into an oversized beanbag chair. Still clutching a bundle of glowing magical schematics against her chest while breathing soft snores, her pointed elf ears twitch peacefully beneath the computer glow.",
-    "animaCaption": "Eta succumbing instantly to profound exhaustion inside her subterranean research lab. Swallowed entirely by a baggy lavender fleece cat-eared onesie, she sleeps soundly slumped into an oversized beanbag chair.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Slumped deep into an oversized beanbag chair inside her subterranean laboratory at midnight, Eta sleeps soundly swallowed inside a baggy lavender polar-fleece cat-ear onesie with extra-long sleeves. Still clutching glowing magical schematics to her chest as she breathes softly, she is bathed in cool emerald lab light and a warm desk lamp.",
+    "animaCaption": "Slumped fast asleep in a soft beanbag chair swallowed by her baggy lavender fleece cat-ear onesie, she clutches crumpled magical blueprints against her chest with a tiny sleepy drool. Cool emerald laboratory glow mixes with a warm work lamp over the desk.",
+    "nsfwTokens": [
+      "lavender onesie",
+      "fleece kigurumi",
+      "cat ear hood",
+      "oversized sleeves",
+      "baggy pajamas",
+      "hood up"
+    ],
+    "nsfwProse": "She wears an ultra-oversized slouchy lavender fleece kigurumi onesie with a cat-ear hood pulled loosely over her head and extra-long drooping sleeves.",
+    "compositionIntent": "single"
   }
 }

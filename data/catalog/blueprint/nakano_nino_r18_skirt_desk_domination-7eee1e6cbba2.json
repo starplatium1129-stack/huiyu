@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_skirt_desk_domination",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1861,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "nakano_nino_r18_skirt_desk_domination",
     "characterId": "nakano_nino",
@@ -21,24 +21,21 @@
     "timeOfDay": "黄昏",
     "mood": "霸道索求",
     "lighting": "窗帘缝隙透入的金红夕阳浓烈斜照",
-    "camera": "cowboy shot, eye level, intimate framing",
+    "camera": "cowboy shot, eye level",
     "promptTokens": [
-      "adult",
-      "school uniform",
-      "skirt lift",
+      "1girl",
+      "1boy",
+      "hetero",
       "straddling",
       "sitting on lap",
-      "panties aside",
-      "exposed pussy",
       "hand on chest",
-      "thighhighs",
-      "black thighhighs",
-      "blush",
-      "tears",
-      "sunset light",
-      "cowboy shot",
+      "teary eyes",
+      "heavy blush",
       "classroom",
-      "chair"
+      "chair",
+      "sunset",
+      "warm lighting",
+      "cowboy shot"
     ],
     "sceneTags": [
       "classroom",
@@ -52,12 +49,24 @@
       "dominant",
       "sunset"
     ],
-    "promptProse": "Straddling the viewer's lap atop the classroom chair, her pleated skirt pushed up and panties moved aside over black thigh-high socks, pressing a hand to his chest with fierce tearful passion.",
+    "promptProse": "In an empty classroom washed in deep amber sunset light, Nino sits astride her partner on a wooden chair with one hand planted boldly against his chest and tear-rimmed eyes fixed intently on his face.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "She straddles the viewer's lap on the classroom chair, one hand on his chest."
+    "animaCaption": "Straddling her partner's lap atop a chair in the locked sunset-lit classroom, she wears her cream uniform sweater above her lifted black pleated skirt and shifted white lace panties, pressing one palm firmly on his chest with fierce tearful blush.",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "white sweater",
+      "black skirt",
+      "skirt lift",
+      "panties aside",
+      "black thighhighs",
+      "pussy",
+      "sex",
+      "cowgirl position"
+    ],
+    "nsfwProse": "Her oversized cream sweater rests over her hiked-up black pleated skirt and black thigh-high stockings, with her white lace panties pulled aside to expose her pussy as she lowers herself onto his lap."
   }
 }

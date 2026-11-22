@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "belfast_evening_deck",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2073,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "belfast_evening_deck",
     "title": "贝尔法斯特 · 甲板上的灯",
@@ -15,25 +15,33 @@
     "action": "扶栏查看港灯",
     "timeOfDay": "夜晚",
     "lighting": "远处港灯映在水面",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "沉静",
-    "promptProse": "Belfast rests a hand on the deck railing and watches the harbor lights reflected on the dark water.",
+    "promptProse": "Before her night watch begins aboard the moored naval vessel, Belfast stands along the outer steel deck in her crisp royal maid uniform with one hand resting lightly on the cold railing. She looks calmly across the dark harbor toward the distant navigation beacons while the evening sea breeze lifts the ends of her hair and apron ribbons. Shimmering ribbons of warm harbor light stretch across the dark water behind her.",
     "promptTokens": [
-      "ship deck",
+      "standing",
       "hand on railing",
-      "harbor lights",
+      "looking away",
+      "wind",
+      "ship",
+      "deck",
+      "railing",
+      "harbor",
+      "city lights",
       "water reflections",
-      "sea breeze",
+      "ocean",
       "night",
+      "three quarter view",
       "cowboy shot"
     ],
-    "animaCaption": "Harbor lights reflect on the dark water.",
+    "animaCaption": "Standing along the moored ship deck with one hand resting on the railing, Belfast looks calmly out toward the distant harbor lights. Evening sea breeze stirs her hair as warm beacon lights shimmer across the dark water.",
     "characterId": "belfast_azur",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lala_r18_sofa_cowgirl_tail_wrap_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "action": "跨坐沙发靠垫，一手握尾巴，另一手留在身下",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "深层欢愉",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [
@@ -22,29 +22,31 @@
     "location": "客厅真皮沙发中央骑乘姿态",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Her white laboratory coat with yellow fasteners hangs completely open with nothing underneath, baring her breasts and hips as her free hand touches herself.",
+    "nsfwTokens": [
+      "lab coat",
+      "white coat",
+      "open coat",
+      "topless",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
     "outfitId": "white_science_coat",
-    "promptProse": "Lala straddles a sofa cushion with her science coat open, holding her heart-tipped tail in one hand while fingering herself with the other. A dim floor lamp lights the sofa fabric and her tail.",
+    "promptProse": "Viewed from a slightly low angle in a quiet nighttime living room, Lala sits astride a plush sofa cushion gripping her slender tail in one hand with flushed cheeks and parted lips. Soft amber light from the floor lamp warms the couch fabric.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "adult",
-      "open lab coat",
-      "bare breasts",
       "straddling",
       "cushion",
-      "tail holding",
-      "fingering",
       "sofa",
-      "white coat",
-      "yellow fasteners",
+      "living room",
+      "holding own tail",
       "heavy blush",
-      "dim lighting",
-      "cowboy shot",
+      "parted lips",
+      "floor lamp",
+      "warm lighting",
+      "night",
       "from below",
-      "floor_lamp",
-      "warm_lighting"
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -59,6 +61,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "菈菈 · 尾巴缠腰跨坐主动起伏与天真爱意",
-    "animaCaption": "She straddles the sofa cushion while holding the heart-tipped tail in one hand."
+    "animaCaption": "Straddling a sofa cushion in the dim living room wearing only her unbuttoned white lab coat slipped off her bare chest, she curls one hand around her heart-tipped tail while the other reaches between her thighs under the warm floor lamp.",
+    "compositionIntent": "single"
   }
 }

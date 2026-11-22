@@ -1,12 +1,11 @@
 <!-- Lucian UX/UI Prompt #212 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#212 -->
 <template>
-  <nav ref="navEl" class="nav u212" aria-label="主导航" :data-scroll-hidden="headerHidden" :data-scrolled="headerScrolled" :data-reduced-motion="headerReduced" @focusin="revealHeader">
+  <nav ref="navEl" class="nav u212" aria-label="主导航" :data-tauri-drag-region="desktop ? 'deep' : undefined" :data-scroll-hidden="headerHidden" :data-scrolled="headerScrolled" :data-reduced-motion="headerReduced" @focusin="revealHeader">
     <div class="nav-inner">
       <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
            中键新标签页,而 Space 激活链接也不是标准行为 -->
-      <RouterLink to="/" class="nav-brand">
+      <RouterLink to="/" class="nav-brand" data-tauri-drag-region="false">
         <BrandLogo class="nav-logo" />
-        <span class="nav-brand-note" aria-hidden="true">创作工作室</span>
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen, 'show-secondary': menuOpen && moreOpen && moreLoaded }" @keydown="onNavigationKey">
@@ -16,7 +15,7 @@
           v-for="item in primaryNav"
           :key="item.id"
           :to="item.to"
-          :aria-label="item.id === 'chat' ? '房间 · 角色聊天' : undefined"
+          data-tauri-drag-region="false"
           :target="openBesideTask(item.to) ? '_blank' : undefined"
           :rel="openBesideTask(item.to) ? 'noopener' : undefined"
           :class="{ active: activeId === item.id }"
@@ -30,7 +29,7 @@
         </RouterLink>
 
         <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
-        <div ref="moreEl" class="nav-more" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined" @pointerenter="prepareMore" @focusin="prepareMore"
+        <div ref="moreEl" class="nav-more" data-tauri-drag-region="false" :data-open="moreOpen || undefined" :data-active="secondaryActive || undefined" @pointerenter="prepareMore" @focusin="prepareMore"
           :data-pending="secondaryNav.some(item => item.to === pendingPath) || undefined"
           :data-intent="secondaryNav.some(item => item.to === intentRoutePath) || undefined">
           <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
@@ -46,7 +45,7 @@
       </div>
 
       <!-- 高频工具在紧凑窗口中也保持可达。 -->
-      <div class="nav-utilities" role="group" aria-label="工作台工具">
+      <div class="nav-utilities" role="group" aria-label="工作台工具" data-tauri-drag-region="false">
         <button
           type="button"
           class="nav-search tw:cursor-pointer" data-spring-button
@@ -55,7 +54,6 @@
           @click="openSearch"
         ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>
         <TaskCenterButton />
-        <span class="nav-utility-divider" aria-hidden="true"></span>
         <AppThemeToggle />
         <AppSoundToggle />
       </div>
@@ -64,11 +62,13 @@
         ref="menuToggleEl"
         type="button"
         class="nav-menu-toggle"
+        data-tauri-drag-region="false"
         aria-controls="primary-navigation"
         :aria-expanded="menuOpen ? 'true' : 'false'"
         :aria-label="menuOpen ? '关闭导航菜单' : '打开导航菜单'"
         @click="toggleMenu"
       ><ArchiveIcon :name="menuOpen ? 'close' : 'menu'" /></button>
+      <DesktopWindowControls v-if="desktop" class="nav-window-controls" />
     </div>
     <span ref="readingProgress" class="u212-progress" aria-hidden="true" />
   </nav>
@@ -91,8 +91,11 @@ import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import { useScrollHeader } from '@/composables/useScrollHeader'
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+import DesktopWindowControls from './DesktopWindowControls.vue'
 
 const route = useRoute()
+const desktop = Boolean(getDesktopCapabilities())
 const searchShortcut = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K'
 const { show: showToast } = useToast()
 const AppMoreMenu = shallowRef<Component | null>(null)
@@ -105,7 +108,7 @@ const moreEl = ref<HTMLDivElement | null>(null)
 const moreOpen = ref(false)
 const navEl = ref<HTMLElement | null>(null)
 const menuToggleEl = ref<HTMLButtonElement | null>(null)
-const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value)
+const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value, desktop)
 const moreReady = ref(false)
 const moreLoaded = ref(false)
 const moreError = ref(false)
@@ -152,14 +155,13 @@ const primaryNav: NavItem[] = [
   { id: 'director', label: '绘制', to: '/prompt-builder', icon: 'spark' },
   { id: 'character', label: '角色', to: '/character', icon: 'character' },
   { id: 'scene',    label: '灵感',   to: '/scene-explorer', icon: 'scene' },
-  { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
-  { id: 'gallery', label: '我的作品', to: '/gallery', icon: 'gallery' },
-  { id: 'chat',     label: '房间',   to: '/chat',           icon: 'chat' },
+  { id: 'gallery', label: '作品', to: '/gallery', icon: 'gallery' },
 ]
 const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
     heading: '创作工具',
     items: [
+      { id: 'studio-projects', label: '创作项目', to: '/studio-projects', icon: 'folder' },
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
       { id: 'scenario', label: '剧本模式', to: '/scenario', icon: 'clap' },
       { id: 'color-script', label: '色彩情绪', to: '/color-script', icon: 'palette' },
@@ -168,6 +170,8 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
     heading: '素材资料',
     items: [
+      { id: 'chat', label: '角色房间', to: '/chat', icon: 'chat' },
+      { id: 'showcase', label: '参考画册', to: '/showcase', icon: 'image' },
       { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
       { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
       { id: 'lora', label: '模型资料', to: '/lora', icon: 'model' },
@@ -321,8 +325,8 @@ onUnmounted(deactivateNavigation)
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.u212 { top:var(--desktop-chrome-height,0px); transition:transform var(--motion-surface) var(--ease-out); }
-.u212[data-scroll-hidden='true'] { transform:translateY(calc(-100% - var(--desktop-chrome-height,0px))); pointer-events:none; }
+.u212 { top:0; transition:transform var(--motion-surface) var(--ease-out); }
+.u212[data-scroll-hidden='true'] { transform:translateY(-100%); pointer-events:none; }
 .u212-progress { position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; opacity:0; pointer-events:none; transition:opacity .3s; }
 .u212[data-scrolled='true'] .u212-progress { opacity:1; }
 .u212[data-reduced-motion='true'], .u212[data-reduced-motion='true'] .u212-progress { transition:none; }
@@ -345,7 +349,6 @@ onUnmounted(deactivateNavigation)
   @apply tw:block tw:w-auto; height: 2.2rem; max-width: 12.7rem;
 }
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
-.nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; --selection-ink: var(--accent); border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background:none; border-color:transparent; }
 .nav-links :deep(.animated-selection--underline::after) { inset:auto 18% 3px; background: var(--selection-ink, var(--accent)); }
@@ -364,7 +367,6 @@ onUnmounted(deactivateNavigation)
 .u212[data-reduced-motion='true'] :is(.nav-logo,.nav-item-label),.u212[data-reduced-motion='true'] .nav-links > a > .archive-icon,.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-label),.u212[data-reduced-motion='true'] .nav-utilities :deep(button > :is(.archive-icon,span)),.u212[data-reduced-motion='true'] .nav-menu-toggle > .archive-icon { transform:none; transition:none; }
 .u212[data-reduced-motion='true'] .nav-links > a::before,.u212[data-reduced-motion='true'] .nav-links > a::after { transform:none; transition:none; }
 @media (forced-colors:active) { .nav-links > a::before { display:none; } .nav-links > a:hover { outline:1px solid Highlight; outline-offset:-1px; } }
-@media (min-width:1600px) { .nav-brand-note { display: block; } }
 @media (min-width:1001px) and (max-width:1200px) {
   .nav-inner { gap:var(--s-2); }
   .nav-links { gap: 0; }
@@ -389,11 +391,10 @@ onUnmounted(deactivateNavigation)
   transition: transform var(--motion-press) var(--ease-out);
 }
 .nav-utilities :deep(.sound-toggle) { width: 40px; @apply tw:p-0; }
-.nav-utilities .nav-search { padding:0 var(--s-3); border-color:var(--border-soft); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
+.nav-utilities .nav-search { padding:0 var(--s-3); border-radius:var(--r-pill); border-color:var(--border-soft); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
 .nav-search-content { display:inline-flex; align-items:center; gap:var(--s-2); min-width:0; }
 .nav-search kbd { display:none; padding:2px var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-xs); background:var(--bg-elevated); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.2 var(--font-mono); white-space:nowrap; }
-/* Share the wide-header threshold with the brand note; compact headers keep the search label. */
-@media (min-width:1600px) { .nav-search kbd { display:inline-block; } }
+@media (min-width:1201px) { .nav-search kbd { display:inline-block; } }
 .nav-utilities :deep(.app-theme-toggle) { width: var(--control-height); padding: 0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
@@ -409,7 +410,16 @@ onUnmounted(deactivateNavigation)
   @apply tw:text-primary;
 }
 .nav-utilities :deep(button:focus-visible) { outline: none; box-shadow: var(--focus-shadow); transition: none; }
-.nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
+.nav-window-controls { padding-inline-start:var(--s-2); border-inline-start:1px solid var(--border-soft); }
+:global(html.aics-desktop-shell) .nav-inner { gap:var(--s-2); }
+:global(html.aics-desktop-shell) .nav-utilities { border:0; padding:0; }
+:global(html.aics-desktop-shell) .nav-utilities :deep(button) { height:var(--control-height-sm); min-height:var(--control-height-sm); }
+:global(html.aics-desktop-shell) .nav-utilities :deep(.sound-toggle), :global(html.aics-desktop-shell) .nav-utilities :deep(.app-theme-toggle) { width:var(--control-height-sm); }
+:global(html.aics-desktop-shell) .nav-links > a { padding-block:var(--s-2); }
+:global(html.aics-desktop-shell) .nav-more :deep(.nav-more-trigger) { min-height:var(--control-height-sm); }
+@media (min-width:1440px) {
+  :global(html[data-theme-style="terraria"]) .nav-window-controls { border:0; padding:0; justify-content:center; }
+}
 
 @media (max-width: 1000px) {
   .u212 { container:app-navigation / inline-size; }

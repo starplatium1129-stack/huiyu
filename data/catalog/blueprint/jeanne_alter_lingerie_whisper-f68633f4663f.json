@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_alter_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3255,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "jeanne_alter_lingerie_whisper",
     "characterId": "jeanne_alter",
@@ -14,7 +14,7 @@
     "location": "迦勒底黑贞私人房间双人床深处被窝里",
     "timeOfDay": "深夜",
     "lighting": "黑贞掌心因羞怒下意识燃起的暗黑狱火红光，将焦黑暗红紧身吊带与通红的面容映照得如同魔王降世",
-    "camera": "medium close-up, front view, 半身正面张力特写，复仇魔女被戳破少女心时的恼羞成怒展现到极致",
+    "camera": "front view, medium close-up",
     "mood": "恼羞成怒、极度傲娇、嘴硬到底的少女心反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -43,22 +43,30 @@
     "promptTokens": [
       "sitting",
       "on bed",
-      "bed sheet",
       "holding book",
       "manga",
-      "black flames in hand",
-      "blush",
-      "furious",
+      "dark fire",
+      "magic",
+      "heavy blush",
+      "angry",
       "embarrassed",
-      "pout",
+      "bedroom",
       "dim lighting",
-      "medium close-up",
-      "front view"
+      "front view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Caught completely off guard in her personal Chaldea bedroom, Jeanne d'Arc (Alter) sits in bed hugging a volume of sweet shojo manga tightly against her chest. Her face flushes bright crimson with tsundere fury as crackling dark flames erupt from her fist.",
-    "animaCaption": "Caught in bed reading a sweet shojo manga, clutching the book with an embarrassed tsundere blush as dark flames flicker from her hand.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In her dimly lit personal Chaldea bedroom, Jeanne Alter sits upright among rumpled blankets clutching a romance manga tightly to her chest while angry dark-red flames crackle around her fist and her face burns crimson.",
+    "animaCaption": "Caught cross-legged in bed clutching a romance manga to her chest in a fitted black dragon-crest camisole and low-rise sleep shorts, she flares with scarlet embarrassment as black-crimson flames erupt from her clenched fist.",
+    "nsfwTokens": [
+      "black camisole",
+      "black shorts",
+      "bare shoulders",
+      "cleavage",
+      "bare thighs",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears a matte-black flame-resistant compression camisole accented with subtle crimson dragon-crest details and low-rise black athletic sleep shorts showing her bare shoulders and thighs.",
+    "compositionIntent": "single"
   }
 }

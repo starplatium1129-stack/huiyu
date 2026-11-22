@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3450,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "viper_nikke_lingerie_whisper",
     "characterId": "viper_nikke",
@@ -14,7 +14,7 @@
     "location": "方舟外围地下奢华情人套房，到处是粉红霓虹与香槟心形抱枕",
     "timeOfDay": "午夜诱捕行动进行时",
     "lighting": "床头粉红霓虹灯与冷白化妆镜补光灯交织，将肌肤渲染上浓烈的蜜桃粉与晶莹高光",
-    "camera": "close-up, low angle, 俯拍微仰特写，自拍视角的倾斜镜头极具现代网红诱惑力与压倒性视觉冲击",
+    "camera": "from below, close-up",
     "mood": "致命毒蛇的甜美陷阱，极致火辣、危险心机与无可抗拒的肉体狂欢",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "close-up",
-      "low angle",
-      "ancient ruins",
-      "stone wall",
-      "bed",
-      "night",
-      "neon lights",
-      "cool lighting",
       "reclining",
-      "hugging pillow",
-      "teddy bear",
-      "extreme plunge underwire cups",
-      "cheeky thong briefs",
-      "dangerous siren boudoir",
-      "indoors"
+      "round bed",
+      "heart pillow",
+      "pink pillows",
+      "holding phone",
+      "selfie",
+      "winking",
+      "seductive smile",
+      "hotel room",
+      "neon lights",
+      "pink lighting",
+      "night",
+      "from below",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Viper lounges on circular bed surrounded by pink plush pillows, wearing a hot pink and sheer black lace strappy lingerie set. Holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair amidst dazzling ruby eyes with seductive wink, pink neon lighting.",
-    "animaCaption": "Viper lounges on circular bed surrounded by pink plush pillows, wearing a hot pink and sheer black lace strappy lingerie set.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In a plush neon-lit luxury suite scattered with champagne and pink heart pillows, Viper lounges across the circular bed snapping a playful selfie with one hand while flashing a mischievous, siren-like wink.",
+    "animaCaption": "Reclining sideways across a circular suite bed piled with pink plush heart pillows under pink neon glow, she snaps a selfie with one hand while tugging a thin strap off her shoulder with a teasing wink in a hot-pink and sheer black lace strappy lingerie set.",
+    "nsfwTokens": [
+      "pink lingerie",
+      "black lace",
+      "strap pull",
+      "criss-cross straps",
+      "thong",
+      "see-through",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a hot-pink and sheer black lace plunge underwire bralette with criss-cross waist harness straps and cheeky thong briefs, tugging one narrow strap playfully down her shoulder.",
+    "compositionIntent": "single"
   }
 }

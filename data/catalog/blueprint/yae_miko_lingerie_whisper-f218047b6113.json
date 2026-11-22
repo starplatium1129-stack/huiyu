@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3347,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yae_miko_lingerie_whisper",
     "characterId": "yae_miko",
@@ -14,7 +14,7 @@
     "location": "影向山鸣神大社最高殿宇回廊，古老神樱树在夜空中散落万千发光花瓣",
     "timeOfDay": "月上中天微风拂樱之刻",
     "lighting": "神樱树散发的荧光粉紫微光与满月清霜交融，在朱红回廊与白皙如雪的胴体上流淌",
-    "camera": "wide shot, full body, 神社最高回廊横幅全景，发光神樱花瓣在夜风中轻拂醉卧狐仙",
+    "camera": "wide shot, full body",
     "mood": "千年狐妖的极度从容与玩世不恭，兼具神圣威仪与惊心动魄的肉食系诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,34 @@
       "full_body"
     ],
     "promptTokens": [
+      "reclining",
+      "chin on hand",
+      "touching earring",
+      "smirk",
+      "seductive smile",
+      "shrine",
+      "veranda",
+      "sakura tree",
+      "cherry blossoms",
+      "sake cup",
+      "full moon",
+      "night",
       "wide shot",
-      "full body",
-      "reclining gracefully on wooden shrine engawa",
-      "glowing Sacred Sakura tree",
-      "swirling pink sakura petals",
-      "lacquer sake cup nearby",
-      "Grand Narukami Shrine veranda",
-      "full moon sky",
-      "sly teasing smile"
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Yae Miko reclines across the lacquered veranda of the Grand Narukami Shrine beneath the midnight full moon, sipping sake as glowing cherry petals swirl around her languid form.",
-    "animaCaption": "Reclining gracefully on a moonlit shrine veranda as glowing cherry blossom petals swirl in the night breeze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In a full-body wide view along the vermilion wooden veranda of the mountaintop shrine beneath the glowing Sacred Sakura and full moon, Yae Miko lounges beside a lacquer sake cup playing with her pendant earring and watching the visitor with amused, teasing poise.",
+    "animaCaption": "Reclining languidly across the lacquered Grand Narukami Shrine veranda beneath swirling glowing sakura petals and a bright full moon, she props her chin in one hand and toys with her tassel earring with a sly teasing smirk in a scarlet-and-white kimono-cut silk slip robe parted high along her bare legs.",
+    "nsfwTokens": [
+      "red robe",
+      "white kimono",
+      "silk slip",
+      "high slit",
+      "see-through",
+      "bare legs",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a scarlet-and-white silk kimono-cut slip robe with sheer flowing peignoir sleeves, a red sacred cord knotted across her cleavage, and a waist-high open slit baring her legs.",
+    "compositionIntent": "single"
   }
 }

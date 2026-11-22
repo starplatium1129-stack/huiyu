@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3493,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yarai_miu_lingerie_whisper",
     "characterId": "yarai_miu",
@@ -14,7 +14,7 @@
     "location": "海上特区现代化公寓卧室，落地窗外是满月照耀下翻滚着银浪的浩瀚大海",
     "timeOfDay": "午夜吸血饥渴期发作之时",
     "lighting": "满月无暇的银白冷光如巨幅幕布洒满全身，在银红双色发丝与雪白锁骨上形成冰冷反光",
-    "camera": "medium shot, low angle, 现代化海景卧室微低机位，银浪海潮与吸血冲动前的娇喘隐忍",
+    "camera": "from below, medium shot",
     "mood": "真祖吸血鬼少女的隐秘饥渴与反差娇羞，危险致命中透着极致的纯情依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "kneeling on sleek bed",
+      "sitting",
+      "on bed",
+      "clutching sheets",
+      "biting lip",
+      "fangs",
+      "heavy blush",
+      "looking at viewer",
       "panoramic window",
-      "full moon reflecting across dark crashing ocean waves",
-      "tiny vampire fangs",
-      "flushed panting cheeks",
-      "holding chest",
-      "cool silver moonlight"
+      "ocean",
+      "full moon",
+      "moonlight",
+      "night",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Miu kneels on the bed before the moonlit ocean view, clutching her chest as a full moon stirs her vampiric thirst with a breathless, flushed gaze.",
-    "animaCaption": "Kneeling on a bed before a moonlit ocean window, panting with flushed cheeks as tiny vampire fangs glint in the moonlight.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from a low angle inside a modern seaside apartment bedroom where a bright full moon illuminates the dark ocean outside the tall glass, Miu clutches the bedsheet with rapid breaths and intense, restrained longing.",
+    "animaCaption": "Sitting tense at the edge of her sleek oceanview bed before moonlit rolling waves, she grips the bedsheets tightly and bites her lip with tiny glinting fangs and heavy blush in an inky-black underwire corset bralette accented with crimson rose lace and strappy hip harness cords.",
+    "nsfwTokens": [
+      "black lingerie",
+      "corset bra",
+      "red lace",
+      "criss-cross straps",
+      "see-through",
+      "cleavage",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears an inky-black silk underwire corset bralette embroidered with crimson rose lace, sheer side panels, and sleek strappy harness cords framing her waist and hips.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_morning_sunlight_stretch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3106,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "platinum_morning_sunlight_stretch",
     "characterId": "platinum_arknights",
@@ -16,7 +16,7 @@
     "action": "高举双臂舒展懒腰轻微回眸",
     "timeOfDay": "清晨日出",
     "lighting": "逆光白纱透射的柔金晨雾光晕",
-    "camera": "中景立姿，勾勒修长身姿与透光发丝",
+    "camera": "eye level, medium shot",
     "mood": "慵懒亲昵",
     "sceneTags": [
       "stretching",
@@ -27,23 +27,24 @@
       "off shoulder",
       "intimate"
     ],
-    "promptProse": "In a tranquil sunlit master bedroom at dawn, Platinum stretches her slender arms upward against sheer white fluttering curtains. The oversized white shirt slips casually over one shoulder, revealing delicate collarbones and smooth porcelain skin bathed in soft golden morning haze. Her drowsy blue eyes look warmly toward the viewer with sleepy affection.",
-    "animaCaption": "",
+    "promptProse": "Standing beside floor-to-ceiling sheer curtains in a tranquil sunlit bedroom at dawn, Platinum raises both arms in a languid stretch and looks back with drowsy affection and a soft blush. Her oversized unbuttoned white shirt slips off one shoulder over her bare legs as golden morning sunbeams rim her white hair.",
+    "animaCaption": "Standing before fluttering white sheer curtains with both arms raised in a sleepy morning stretch, she glances back with a faint blush as her oversized white shirt slips off one shoulder. Golden sunrise backlighting outlines her hair and sheer silhouettes through the fabric.",
     "promptTokens": [
-      "solo",
-      "stretching",
       "standing",
+      "stretching",
+      "arms up",
+      "looking back",
+      "sleepy",
+      "blush",
+      "messy hair",
       "bedroom",
       "sheer curtains",
-      "morning sunlight",
+      "window",
+      "morning",
+      "backlighting",
       "sunbeams",
-      "messy hair",
-      "off shoulder",
-      "collarbone",
-      "sleepy",
-      "soft blush",
-      "intimate",
-      "upper body"
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +54,16 @@
       "nsfw",
       "daily"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "oversized white shirt",
+      "unbuttoned shirt",
+      "off shoulder",
+      "no pants",
+      "bare shoulders",
+      "collarbone",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears only an oversized unbuttoned crisp white dress shirt slipping off one shoulder to reveal her collarbone and bare legs."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_velvet_bed_sensual_creampie",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1044,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kafka_r18_velvet_bed_sensual_creampie",
     "title": "卡芙卡 · 丝绒床榻上的紫晶私语",
@@ -15,7 +15,7 @@
     "action": "侧倚于黑色丝绒大床，黑丝长腿交叠，一手支颐，另一手轻伸邀约，紫晶眸深情凝望观众",
     "timeOfDay": "深夜",
     "lighting": "床头复古烛台暖光与深紫环境色",
-    "camera": "from front, facing viewer, looking directly at viewer, eye contact, cowboy shot, eye level",
+    "camera": "front view, eye level, cowboy shot",
     "mood": "深沉浪漫的丝绒夜色与无法拒绝的诱惑",
     "sceneTags": [
       "bedroom",
@@ -26,50 +26,52 @@
       "facing_viewer",
       "eye_contact"
     ],
-    "promptProse": "Kafka lounges across the plush velvet bed facing the viewer in a sleek black silk nightgown with thin straps, her delicate collarbone, deep cleavage, and sheer stocking-clad thighs illuminated by amber suite lamps as she twirls a strand of magenta hair with an enigmatic, sensual smile.",
+    "promptProse": "Lounging sideways across a plush dark velvet bed beneath draped curtains, Kafka wears a plunging black silk nightgown and sheer black stockings over her crossed long legs. Propping her chin lightly on one hand, she extends her other hand softly toward the viewer with a teasing, alluring smile, a violin case resting beside the headboard. Warm amber candlelight from the bedside table glows along the silk sheen and her sheer stockings.",
     "promptTokens": [
-      "from front",
-      "facing viewer",
-      "looking directly at viewer",
-      "eye contact",
-      "Kafka",
-      "magenta hair",
-      "purple eyes",
-      "black silk nightgown",
-      "silk sheen",
-      "thin shoulder straps",
-      "plunging neckline",
-      "cleavage",
-      "bare shoulders",
-      "delicate collarbone",
-      "sheer black stockings",
-      "bare thighs",
-      "absolute territory",
-      "reclining on dark velvet bed",
-      "propped on elbow",
-      "twirling hair strand",
-      "teasing seductive smile",
-      "luxury hotel suite",
-      "warm chandelier bokeh",
+      "lying",
+      "on side",
+      "crossed legs",
+      "reaching towards viewer",
+      "looking at viewer",
+      "seductive smile",
+      "bed",
+      "velvet",
+      "violin case",
+      "candlelight",
+      "bedroom",
+      "night",
+      "front view",
       "cowboy shot"
     ],
     "negativeTokens": [
       "from behind",
       "looking away",
-      "female masturbation"
+      "nude",
+      "topless"
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black nightgown",
+      "silk",
+      "spaghetti straps",
+      "cleavage",
+      "bare shoulders",
+      "collarbone",
+      "black stockings",
+      "sheer legwear",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears a plunging black silk nightgown with thin shoulder straps over sheer black stockings clinging to her crossed thighs, baring her shoulders, collarbone, and deep cleavage.",
     "adultArtistHint": "@rella",
     "outfitId": "black_sheer_stockings",
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "Lounging on the velvet bed facing the viewer, her black silk nightgown reveals her collarbone, cleavage, and sheer stockings in chandelier bokeh."
+    "animaCaption": "Lounging sideways on the dark velvet bed facing the viewer in a plunging black silk nightgown and sheer black stockings, Kafka props her chin on one hand and reaches invitingly forward with the other. Warm candlelight glints along her collarbone, cleavage, and crossed stockinged legs.",
+    "compositionIntent": "single"
   }
 }

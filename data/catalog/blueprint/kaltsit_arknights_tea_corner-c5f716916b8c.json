@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_tea_corner",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 529,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "端起茶杯，眉眼微垂",
-    "camera": "close-up",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉日常",
     "characterId": "kaltsit_arknights",
     "coverageTags": [
@@ -15,20 +15,27 @@
     ],
     "description": "办公室内弥漫着略带苦涩的红茶香气，凯尔希端起精致的白瓷茶杯轻抿一口，眉眼在热茶升腾的薄雾中微垂——「无糖的浓红茶有助于维持高强度的神经运转。如果你习惯了加奶加糖……旁边有阿米娅为你准备的方糖盒。」",
     "id": "kaltsit_arknights_tea_corner",
-    "lighting": "soft window light",
+    "lighting": "午后斜光透过百叶窗，照亮杯沿蒸汽与袖口绞花",
     "location": "罗德岛办公室",
     "mood": "难得松弛",
     "negativeTokens": [],
     "outfitId": "rhodes_island_lounge_knit",
-    "promptProse": "Kal'tsit raises her cup of black tea in the quiet office corner, her gaze lowered in the window light.",
+    "promptProse": "In the Rhodes Island office tea corner, Kal'tsit lifts a white porcelain cup just clear of its saucer and looks into the dark tea. The oatmeal cashmere of her high-necked sweater has raised cables at the cuffs, above the deep green folds of her trousers. A small lidded sugar bowl and a squat teapot share the lacquered tray in the near corner of the frame. Soft afternoon light through the slatted window catches the steam and leaves the far cabinets and the plant on the sill readable. The view from the corner of the tea table includes her face and the hand holding the cup.",
     "promptTokens": [
+      "sitting",
+      "holding cup",
       "teacup",
+      "saucer",
+      "steam",
+      "teapot",
+      "tray",
+      "table",
       "looking down",
       "office",
+      "window blinds",
       "window light",
-      "close-up",
-      "holding teacup",
-      "raising cup"
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +47,7 @@
     ],
     "timeOfDay": "午后",
     "title": "凯尔希 · 茶叙",
-    "animaCaption": "She raises the black tea in the quiet office corner."
+    "animaCaption": "Seated in the quiet office tea corner, she lifts a white porcelain teacup just clear of its saucer and looks calmly down into the dark tea. Slatted afternoon light through the window blinds catches the rising steam and the teapot on the lacquered tray beside her.",
+    "compositionIntent": "single"
   }
 }

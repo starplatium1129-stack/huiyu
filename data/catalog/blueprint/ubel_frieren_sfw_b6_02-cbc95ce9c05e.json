@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_02",
     "title": "尤贝尔 · 黑暗料理的现场",
@@ -16,7 +16,7 @@
     "action": "借住处的厨房，她哼着歌往锅里投入颜色可疑的食材，锅里冒出不该出现的颜色的蒸汽",
     "timeOfDay": "日间",
     "lighting": "warm_light",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "kitchen",
@@ -31,15 +31,22 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Ubel drops an unusual vegetable into the stew as green steam rises beneath the warm kitchen lights.",
+    "promptProse": "Standing beside the rustic stove of a borrowed kitchen in her forest-green shirt and plain linen apron, Ubel leans cheerfully over a simmering iron pot of dubious stew. She drops a suspiciously colored vegetable into the broth with casual amusement as thick, eerie green steam curls upward, shooting the viewer a sly, expectant grin. Warm overhead kitchen light fills the wooden counter, spice jars, and the rising green vapor around her hand.",
     "promptTokens": [
-      "stew",
-      "kitchen",
-      "medium shot",
+      "standing",
       "cooking",
-      "vegetable",
-      "green steam",
-      "kitchen light"
+      "pot",
+      "stew",
+      "holding vegetable",
+      "steam",
+      "smug",
+      "looking at viewer",
+      "kitchen",
+      "stove",
+      "indoors",
+      "warm lighting",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +57,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She drops the unusual vegetable into the steaming stew."
+    "animaCaption": "Standing at the kitchen stove in her linen apron, Ubel drops a strange vegetable into the simmering pot as eerie green steam curls upward and gives the viewer an expectant grin. Warm kitchen lighting highlights the counter and rising vapor.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_cyberpunk_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3196,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "lucy_cyberpunk_lingerie_whisper",
     "characterId": "lucy_cyberpunk",
@@ -14,7 +14,7 @@
     "location": "夜之城摩天豪宅高层飘窗，脚下是无边无际的赛博霓虹灯海与悬浮穿梭机",
     "timeOfDay": "凌晨四点的电子霓虹深处",
     "lighting": "窗外品红与青蓝色的巨幅全息霓虹广告，将冰冷反光切进室内黑暗中",
-    "camera": "medium shot, low angle, 极富赛博科幻感的高层飘窗视角，夜城霓虹天际线与冷艳月色",
+    "camera": "low angle, medium shot",
     "mood": "赛博朋克的末世孤寂与属于两人的纯净浪漫",
     "adult": true,
     "sampleRating": "R15",
@@ -40,19 +40,38 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "hugging own legs",
+      "holding cigarette",
+      "cigarette",
+      "looking away",
+      "window",
+      "city lights",
+      "neon lights",
+      "full moon",
+      "blue light",
+      "magenta light",
+      "night",
       "low angle",
-      "sitting on deep window sill",
-      "panoramic bay window",
-      "sprawling Night City neon skyline below",
-      "hovering AV transit",
-      "cool holographic blue and magenta lighting",
-      "wistful distant gaze"
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Lucy gazes out from the high-rise penthouse ledge over the endless neon ocean of Night City at 4 AM, the cold blue glow of holo-ads reflecting in her quiet, longing eyes.",
-    "animaCaption": "Perched on a high-rise window sill overlooking the sprawling neon lights of Night City, lost in quiet contemplation.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Perched atop the deep panoramic window sill of a dark Night City penthouse before dawn, Lucy wears a shimmering holographic sheer cutout monokini bodysuit catching cyan and violet reflections. Drawing her bare knees close to her chest with a slender cigarette between her fingers, she gazes wistfully toward the luminous moon hanging above endless neon towers and distant hovering traffic.",
+    "animaCaption": "Perched on the high-rise penthouse sill in her iridescent sheer cutout monokini bodysuit, Lucy hugs her bare knees with a cigarette between her fingers and gazes wistfully toward the moon. Cyan and magenta Night City neon reflects across her pale skin and the dark glass.",
+    "nsfwTokens": [
+      "bodysuit",
+      "iridescent",
+      "see-through",
+      "cutout",
+      "highleg",
+      "bare back",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a holographic iridescent sheer monokini bodysuit with bold geometric waist and back cutouts and a high-cut leg line shimmering under the neon skyline.",
+    "compositionIntent": "single"
   }
 }

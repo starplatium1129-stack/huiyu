@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lala_r18_bed_mating_press_creampie_alien",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1242,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "侧卧大床身穿半透粉纱睡裙若隐若现，尾巴缠腿，双手托胸与探入裙摆自抚，含泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, side view, looking across silk blankets",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [
@@ -22,23 +22,31 @@
     "location": "主卧双人床纯白被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "pajamas_negligee",
-    "promptProse": "Lala cups her breast through the negligee and touches herself beneath its hem, her tail curled around her thighs. Pink bedside lamplight falls across the white sheets and fine silk.",
-    "promptTokens": [
-      "pink silk lace negligee",
+    "nsfwProse": "Draped only in a translucent pale-pink silk negligee trimmed with white lace at the sweetheart neckline, her breasts and nipples show through the sheer fabric as she cups her chest and touches herself beneath the hem.",
+    "nsfwTokens": [
+      "pink negligee",
+      "white lace",
       "see-through",
-      "demon tail",
-      "on side",
-      "masturbation",
+      "nipples",
       "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "pajamas_negligee",
+    "promptProse": "Viewed from the side across a plush white bedroom mattress glowing under a warm pink bedside lamp, Lala lies curled with her long hair fanning across the sheets and her heart-tipped tail coiled affectionately around her inner thigh.",
+    "promptTokens": [
+      "lying",
+      "on side",
+      "curled up",
+      "hand on chest",
+      "teary eyes",
+      "heavy blush",
+      "bedroom",
       "bed",
       "white sheets",
-      "teary eyes",
+      "bedside lamp",
       "pink lighting",
-      "wide shot",
-      "side view"
+      "from side",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -58,6 +66,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "菈菈 · 纯白大床薄透粉纱睡裙若隐若现与尾巴缠腿失神深抚",
-    "animaCaption": "Her tail curls around her thighs beneath the fine silk hem."
+    "animaCaption": "Lying on her side across the white bedsheets in soft pink lamplight, she wears a gossamer pale-pink silk negligee showing her breasts beneath, cupping her chest with one hand while slipping the other under the sheer hem as her demon tail winds around her thigh.",
+    "compositionIntent": "single"
   }
 }

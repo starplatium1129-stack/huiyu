@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc029",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
-    "animaCaption": "Her free hand rests over her heart beside the monitor's rising waveform.",
+    "animaCaption": "Her wrist with the sensor band rests on the open notebook on the bench. She presses her other palm to her chest while the last bright peak climbs on the monitor.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "监测屏旁半身中景",
     "category": "Active_Sync_Scenes",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white fitted lab coat, pink A-line dress, peter pan collar, small bow at waist, heart rate sensor, monitor, notebook, laboratory, medium shot, holding notebook, open book, hand on own chest, smile, blush, cool lighting, soft_lighting, cinematic_lighting, depth_of_field",
+    "prompt": "1girl, ayachi_nene, lab coat, white coat, pink dress, peter pan collar, wristband, monitor, cardiogram, laboratory, desk, notebook, paper, hand on table, hand on own chest, smile, blush, three quarter view, medium shot",
     "rating": "All",
     "season": "不限",
     "story": "明亮实验室里，成年的宁宁戴着轻量心率感应器，呆毛随着屏幕上的情绪曲线轻轻晃动。你的快乐被设备放大后，她也忍不住跟着笑起来，却认真记录每一次波峰。发现同步率持续上升，她红着脸按住胸口——「原来安心也会有这么清楚的形状……这组数据，不可以交给别人看。」",
@@ -47,6 +47,6 @@
       "实验CG"
     ],
     "weather": "晴",
-    "promptProse": "Beside the monitor's rising waveform, she holds her open notebook in one hand and presses the other over her heart; the blue-white laboratory light leaves her delighted blush visible."
+    "promptProse": "Nene stands between a workbench and a single upright monitor in her fitted white lab coat and rose-pink dress. An open ruled notebook sits flat on the bench under the wrist that carries the little sensor band. She laughs at the high peak on the screen and lays her free palm against her chest. Blue light crosses the metal edge of the bench and the collar of her dress. Keep her face, the sensor and the sharp rising portion of the trace visible."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_magic_note",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2415,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "shiiba_tsumugi_magic_note",
     "characterId": "shiiba_tsumugi",
@@ -16,22 +16,31 @@
     "action": "墨迹还没干，她小心地捏着纸页一角",
     "timeOfDay": "evening",
     "lighting": "desk lamp",
-    "camera": "close up",
+    "camera": "three quarter view, close-up",
     "mood": "专注",
-    "promptProse": "At a wooden desk, Tsumugi writes in a small notebook and holds the corner of the page away from the wet ink.",
+    "promptProse": "Seated at her wooden desk in the evening wearing her white witch hat and cape, Tsumugi leans softly over a small open notebook after finishing the day's entry with a tiny hand-drawn star. Holding her pen paused in one hand, she delicately pinches the bottom corner of the page with her other fingertips to keep her sleeve away from the glistening fresh ink. Warm desk lamplight glows across the paper grain, ink bottle, and her focused expression.",
     "promptTokens": [
+      "sitting",
       "desk",
       "notebook",
+      "open book",
       "writing",
+      "holding pen",
+      "looking down",
+      "focused",
       "desk lamp",
-      "close up"
+      "warm lighting",
+      "evening",
+      "three quarter view",
+      "close-up"
     ],
-    "animaCaption": "",
+    "animaCaption": "Leaning over her wooden desk in her white witch cape, Tsumugi pauses with pen in hand and carefully pinches the page corner clear of the fresh ink in her small notebook. Warm desk lamplight illuminates her focused gaze and the handwritten star.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

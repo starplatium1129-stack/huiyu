@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3335,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kanroji_mitsuri_lingerie_whisper",
     "characterId": "kanroji_mitsuri",
@@ -14,7 +14,7 @@
     "location": "恋之宅邸榻榻米居室心形毛绒坐垫上",
     "timeOfDay": "睡前",
     "lighting": "和风暖纸灯笼投射下如同春日暖樱般的粉白柔光，映照在蜜桃粉纯棉超弹睡衣与丰腴健美的身段上",
-    "camera": "充满甜美心动感与饱满食欲的中景特写，将恋柱毫无防备的贪吃可爱与丰腴魅力展现无遗",
+    "camera": "medium shot, eye level",
     "mood": "元气甜美、幸福心动、吃饱喝足后的纯真脸红",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,31 @@
       "love_hashira"
     ],
     "promptTokens": [
-      "peach pink lounge set",
-      "sitting cross-legged",
-      "heart cushion",
-      "eating giant sakura mochi",
-      "holding mochi leaf",
+      "sitting",
+      "cross-legged",
+      "cushion",
+      "eating",
+      "mochi",
       "puffed cheeks",
-      "pink green braids",
-      "voluptuous",
+      "happy",
       "heavy blush",
-      "lantern",
-      "warm lighting"
+      "tatami",
+      "paper lantern",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mitsuri Kanroji indulging in her absolute favorite late-night feast inside her blossom-filled estate. Wearing a remarkably soft peach-pink cotton lounge set with a forgiving sweetheart neckline, she sits cross-legged on a heart cushion. Cheeks blissfully stuffed with giant sakura mochi as her pink-and-lime braids bounce, she blushes with radiant, overflowing romantic joy.",
-    "animaCaption": "Mitsuri sits cross-legged on a heart-shaped cushion, holding a mochi leaf as she enjoys a large sakura mochi.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside her fragrant estate room at night lit by warm paper lanterns, Mitsuri sits cross-legged on a plush heart cushion happily munching a giant sakura mochi wrapped in a cherry leaf, cheeks puffed and glowing with joyful embarrassment.",
+    "animaCaption": "Sitting cross-legged on a heart-shaped tatami cushion in her peach-pink cherry-blossom cotton lounge set, she holds an oversized sakura mochi in both hands with puffed cheeks and a delighted crimson blush under warm lantern glow.",
+    "nsfwTokens": [
+      "pink loungewear",
+      "pink camisole",
+      "sweetheart neckline",
+      "cleavage",
+      "pink shorts",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears a soft pastel peach-pink combed-cotton lounge set with delicate cherry-blossom embroidery along its generous sweetheart neckline and comfortable sleep shorts.",
+    "compositionIntent": "single"
   }
 }

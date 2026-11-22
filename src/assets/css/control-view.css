@@ -1,7 +1,8 @@
 /* Control room: one reading surface, retained task panels and progressive setup. */
-.control-page { min-height:100dvh; background:var(--bg-base); color:var(--text-primary); }
-.control-page .control-layout { display:grid; grid-template-columns:248px minmax(0,1fr); min-height:100dvh; max-width:calc(1800px * var(--desktop-layout-scale,1)); margin-inline:auto; }
-.control-page .control-rail { position:sticky; top:0; height:100dvh; box-sizing:border-box; display:flex; flex-direction:column; gap:var(--s-5); padding:var(--s-6) var(--s-4) var(--s-4); border-right:1px solid var(--border-soft); background:var(--bg-deep); overflow-y:auto; scrollbar-width:thin; }
+.control-page { --app-navigation-visible-height:0px; min-height:100dvh; background:var(--bg-base); color:var(--text-primary); }
+.control-page[data-desktop] { --app-navigation-visible-height:var(--app-navigation-height); }
+.control-page .control-layout { display:grid; grid-template-columns:248px minmax(0,1fr); min-height:calc(100dvh - var(--app-navigation-visible-height)); max-width:calc(1800px * var(--desktop-layout-scale,1)); margin-inline:auto; }
+.control-page .control-rail { position:sticky; top:var(--app-navigation-visible-height); height:calc(100dvh - var(--app-navigation-visible-height)); box-sizing:border-box; display:flex; flex-direction:column; gap:var(--s-5); padding:var(--s-6) var(--s-4) var(--s-4); border-right:1px solid var(--border-soft); background:var(--bg-deep); overflow-y:auto; scrollbar-width:thin; }
 .control-page .control-rail-brand { display:grid; gap:var(--s-3); padding-inline:var(--s-3); color:var(--text-secondary); text-decoration:none; font-size:var(--fs-label); }
 .control-page .nav-logo { display:block; width:132px; height:auto; }
 .control-page .control-rail-nav { display:grid; gap:var(--s-5); }
@@ -17,11 +18,20 @@
 .control-page .control-back-icon { transform:rotate(90deg); }
 .control-page .control-forward-icon { transform:rotate(-90deg); width:16px; height:16px; }
 .control-page .control-content { min-width:0; }
-.control-page .control-compact-nav { display:none; }
+.control-page :is(.control-window-bar,.control-compact-nav) { display:none; }
+.control-page[data-desktop] .control-window-bar {
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s-2);
+  height:var(--app-navigation-visible-height); padding-inline:var(--s-4);
+  position:sticky; top:0; z-index:var(--z-nav); background:var(--nav-bg); border-bottom:1px solid var(--border-soft);
+}
+.control-page .control-window-label { color:var(--text-secondary); font-size:var(--fs-label); }
+.control-page :is(#control-main,#control-section-intro,#control-section-heading,.control-section [id]) {
+  scroll-margin-top:calc(var(--app-navigation-visible-height) + var(--s-4));
+}
 .control-page .control-shell { max-width:1200px; margin-inline:auto; padding:var(--s-6) var(--s-7) var(--s-8); }
 .control-page .control-intro { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-4); margin-bottom:var(--s-6); scroll-margin-top:var(--s-6); }
 .control-page .control-eyebrow { display:flex; align-items:center; gap:var(--s-2); margin:0 0 var(--s-3); color:var(--text-muted); font-size:var(--fs-label-xs); }
-.control-page .control-intro h1 { margin:0; font:600 var(--fs-title)/var(--lh-tight) var(--font-serif); scroll-margin-top:var(--s-6); }
+.control-page .control-intro h1 { margin:0; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); scroll-margin-top:var(--s-6); }
 .control-page .control-description { margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .control-page .control-intro-actions { flex-shrink:0; }
 .control-page .control-section { min-width:0; }
@@ -164,12 +174,19 @@
   .control-page .service-row-actions { justify-content:flex-end; }
 }
 @media (max-width:1000px) {
+  .control-page { --app-navigation-visible-height:56px; }
   .control-page .control-layout { display:block; }
   .control-page .control-rail { display:none; }
-  .control-page .control-compact-nav { position:sticky; top:0; z-index:var(--z-sticky); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-3); padding:var(--s-4) var(--s-5); border-bottom:1px solid var(--border-soft); background:var(--bg-surface); }
-  .control-page .control-compact-nav > .studio-select-wrapper { min-width:200px; width:280px; max-width:100%; }
-  .control-page :is(#control-section-intro, #control-section-heading, .control-section [id]) { scroll-margin-top:calc(var(--desktop-chrome-height,0px) + 100px); }
+  .control-page .control-window-bar { display:flex; align-items:center; height:var(--app-navigation-visible-height); position:sticky; top:0; z-index:var(--z-nav); padding-inline:var(--s-3); background:var(--nav-bg); border-bottom:1px solid var(--border-soft); }
+  .control-page .control-window-label { display:none; }
+  .control-page .control-compact-nav { display:flex; flex:1; min-width:0; align-items:center; gap:var(--s-2); }
+  .control-page .control-compact-nav .nav-logo { width:clamp(56px,12vw,100px); }
+  .control-page .control-compact-nav > .studio-select-wrapper { flex:0 1 220px; min-width:0; }
+  .control-page .control-compact-nav .control-utility-row { flex-wrap:nowrap; margin-inline-start:auto; gap:var(--s-1); }
   .control-page .control-shell { padding-top:var(--s-5); }
+}
+@media (max-width:640px) {
+  .control-page[data-desktop] .control-compact-nav .control-utility-row { display:none; }
 }
 @media (max-width:768px) {
   .control-page .service-rows { grid-template-columns:minmax(0,1fr) max-content; }
@@ -186,11 +203,9 @@
   .control-page .control-shell { padding-inline:var(--s-4); }
   .control-page .control-start { grid-template-columns:1fr; }
   .control-page .control-start-art { display:none; }
-  .control-page .control-compact-nav > .studio-select-wrapper { width:100%; }
 }
 @media (max-width:1000px) and (max-height:32rem) {
-  .control-page .control-compact-nav { position:static; }
-  .control-page :is(#control-section-intro, #control-section-heading, .control-section [id]) { scroll-margin-top:var(--s-4); }
+  .control-page:not([data-desktop]) .control-window-bar { position:static; }
 }
 @media (forced-colors:active) {
   .control-page .control-rail-link[aria-current] { border-color:Highlight; }

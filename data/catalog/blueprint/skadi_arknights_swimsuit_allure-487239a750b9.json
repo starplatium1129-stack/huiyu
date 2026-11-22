@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3243,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "skadi_arknights_swimsuit_allure",
     "characterId": "skadi_arknights",
@@ -14,7 +14,7 @@
     "location": "深海悬崖天然凹湾沙砾滩",
     "timeOfDay": "黄昏",
     "lighting": "暮色天际清冷的灰紫晚霞与潮水微光",
-    "camera": "low angle, wide shot, 壮阔低机位仰视，冲浪板立于潮涌与海崖",
+    "camera": "low angle, wide shot",
     "mood": "孤寂深邃",
     "adult": true,
     "sampleRating": "R15",
@@ -40,22 +40,36 @@
       "wide_shot"
     ],
     "promptTokens": [
-      "standing in water",
-      "holding surfboard",
+      "standing",
+      "in water",
+      "holding",
       "surfboard",
-      "crashing waves",
+      "looking away",
+      "calm",
+      "waves",
       "sea foam",
       "cliff",
       "wet sand",
+      "outdoors",
       "dusk",
       "sunset",
       "low angle",
       "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Standing knee-deep within heavy coastal surf beneath towering dark sea cliffs, Skadi rests one hand atop a heavy surfboard planted in the wet shore. Cool dusk twilight casts purple and grey hues across the churning sea while she gazes calmly out across the waves.",
-    "animaCaption": "Standing knee-deep in the breaking coastal surf with her surfboard planted beside her, she watches the twilight tide under the sea cliffs.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing barefoot knee-deep in surging twilight surf beneath dark coastal cliffs, Skadi wears a matte-black tactical monokini with asymmetric side cutouts and gunmetal alloy rings. Planting one hand steadily atop a heavy surfboard driven upright into the wet black gravel sand, she gazes silently across the foaming tide as sea spray dampens her hair. Cool grey-violet dusk light settles across the rolling waves and towering cliff face.",
+    "animaCaption": "Standing knee-deep in foaming surf beneath dark sea cliffs in her matte-black side-cutout monokini, Skadi rests one hand on a heavy surfboard planted in the wet sand and gazes quietly across the tide. Cool violet-grey twilight washes over the waves.",
+    "nsfwTokens": [
+      "black swimsuit",
+      "one-piece swimsuit",
+      "cutout",
+      "highleg",
+      "straps",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a matte-black tactical cutout monokini swimsuit accented with asymmetric side openings, gunmetal alloy rings, and a shark-tooth cord.",
+    "compositionIntent": "single"
   }
 }

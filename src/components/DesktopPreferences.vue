@@ -1,14 +1,22 @@
 <template>
   <section v-if="isDesktop" ref="preferences" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
-    <div>
-      <span class="desktop-preferences-kicker">桌面偏好</span>
-      <h2 id="desktop-preferences-title">启动与工作区</h2>
-    </div>
-    <label for="desktop-start-page">默认启动页</label>
+    <h2 id="desktop-preferences-title">桌面偏好</h2>
+    <label for="desktop-start-mode">启动方式</label>
+    <StudioSelect
+      id="desktop-start-mode"
+      :model-value="startupMode"
+      label="启动方式"
+      :options="startupModes"
+      :disabled="startupBusy || startupMode === undefined"
+      @update:model-value="saveStartupMode"
+    />
+    <p role="status">{{ startupFeedback }}</p>
+    <button v-if="startupReadFailed" class="btn btn-ghost btn-sm" type="button" @click="readStartupMode">重读启动方式</button>
+    <label for="desktop-start-page">画室默认启动页</label>
     <StudioSelect
       id="desktop-start-page"
       :model-value="startPage"
-      label="默认启动页"
+      label="画室默认启动页"
       :options="[...desktopPages, { value: 'last', label: '回到上次工作页' }]"
       @update:model-value="saveStartPageValue"
     />
@@ -20,12 +28,45 @@
 <script setup lang="ts">
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
-const isDesktop = Boolean(getDesktopCapabilities())
+import type { DesktopStartupMode } from '@/types/desktop'
+const bridge = getDesktopCapabilities()
+const isDesktop = Boolean(bridge)
+const startupModes: { value: DesktopStartupMode; label: string }[] = [
+  { value: 'companion', label: '仅桌宠' },
+  { value: 'atelier', label: '仅主画室' },
+  { value: 'both', label: '桌宠和画室同时启动' },
+  { value: 'tray', label: '仅托盘静默启动' },
+]
+const startupMode = ref<DesktopStartupMode>()
+const startupBusy = ref(false)
+const startupReadFailed = ref(false)
+const startupFeedback = ref('正在读取启动方式…')
+async function readStartupMode() {
+  if (!bridge || startupBusy.value) return
+  startupBusy.value = true
+  startupReadFailed.value = false
+  try { startupMode.value = await bridge.getStartupMode(); startupFeedback.value = '下次启动生效' }
+  catch { startupReadFailed.value = true; startupFeedback.value = '启动方式暂时无法读取。' }
+  finally { startupBusy.value = false }
+}
+async function saveStartupMode(value: string | number) {
+  const option = startupModes.find(mode => mode.value === value)
+  if (!bridge || !option || startupBusy.value || startupMode.value === option.value) return
+  startupBusy.value = true
+  startupFeedback.value = '正在保存…'
+  try {
+    await bridge.setStartupMode(option.value)
+    startupMode.value = option.value
+    startupFeedback.value = '已保存，下次启动生效'
+  } catch { startupFeedback.value = '保存失败，请重新选择。' }
+  finally { startupBusy.value = false }
+}
+onMounted(readStartupMode)
 const preferences = ref<HTMLElement | null>(null)
 const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
 const feedback = ref('')
@@ -65,8 +106,7 @@ async function saveStartPageValue(value: string | number) {
 <style scoped>
 @reference "../assets/css/tailwind.css";
 .desktop-preferences { min-width:0; border: 1px solid var(--border-soft); background: var(--bg-surface); }
-.desktop-preferences-kicker { color:var(--text-muted); font-size:var(--fs-label-xs); }
-.desktop-preferences h2 { margin:var(--s-2) 0 0; @apply tw:text-primary tw:text-title-sm; }
+.desktop-preferences h2 { margin:0; @apply tw:text-primary tw:text-title-sm; }
 .desktop-preferences p { @apply tw:m-0 tw:text-secondary tw:text-label tw:leading-body; }
 .desktop-preferences label { @apply tw:text-primary tw:text-label; }
 .desktop-preferences .studio-select-wrapper { width:100%; min-width:0; }

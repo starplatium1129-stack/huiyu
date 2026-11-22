@@ -486,7 +486,7 @@ pub(super) fn build(
 }
 
 fn tool_guidance(lines: &mut Vec<Cow<'_, str>>, character: &str, body: &Value) {
-    if body["provider"] != "api" {
+    if !matches!(body["provider"].as_str(), Some("api" | "chatgpt")) {
         return;
     }
     if body["companionTools"] == true || body["webSearch"] == true {

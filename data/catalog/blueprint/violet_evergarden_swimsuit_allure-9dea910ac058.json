@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3309,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "violet_evergarden_swimsuit_allure",
     "characterId": "violet_evergarden",
@@ -14,7 +14,7 @@
     "location": "莱丁港俯瞰碧蓝海平面的白石悬崖花阶",
     "timeOfDay": "上午",
     "lighting": "清晨澄澈无暇的日光穿透白伞薄纱，海面闪烁着蓝宝石般的波光",
-    "camera": "经典油画感全景构图，花阶、白伞、碧海与少女构成绝美画面",
+    "camera": "wide shot, eye level",
     "mood": "典雅纯净、庄重深情、如画般唯美",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,33 @@
       "oil_painting_aesthetic"
     ],
     "promptTokens": [
-      "prussian blue swimdress",
+      "standing",
+      "holding parasol",
+      "white parasol",
       "lace parasol",
-      "emerald brooch",
-      "blonde braided hair",
-      "cliff flowers",
-      "ocean morning",
+      "looking afar",
+      "cliff",
+      "stone stairs",
+      "flowers",
+      "ocean",
+      "wind",
+      "morning",
       "sunlight",
-      "soft lighting"
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Violet Evergarden standing regally atop a blooming stone cliffside staircase overlooking a sparkling sapphire sea. She wears an exquisite classical Prussian-blue corset swimdress trimmed with pleated ivory lace and accented by her signature emerald brooch. Holding a delicate white lace parasol against the pristine morning sunlight, her cornflower-blue eyes reflect the infinite ocean horizon with transcendent purity.",
-    "animaCaption": "Violet Evergarden standing regally atop a blooming stone cliffside staircase overlooking a sparkling sapphire sea. She wears an exquisite classical Prussian-blue corset swimdress trimmed with pleated ivory lace and accented by her signature emerald brooch.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Framed on a flower-lined seaside cliff staircase overlooking the sunlit morning ocean, Violet holds a delicate white lace sun parasol with upright grace as coastal breezes lift her hair and ribbons.",
+    "animaCaption": "Standing poised along the blooming stone cliff stairs above a sunlit sapphire sea holding an ornate white lace parasol, she gazes calmly over the horizon in a classical Prussian-blue lace corset swimdress pinned with her emerald brooch.",
+    "nsfwTokens": [
+      "blue swimsuit",
+      "swimdress",
+      "corset",
+      "white lace",
+      "pleated skirt",
+      "emerald brooch",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a regal Prussian-blue Victorian corset swimdress finished with pleated alabaster lace hems and an ornamental emerald brooch at the sweetheart neckline.",
+    "compositionIntent": "single"
   }
 }

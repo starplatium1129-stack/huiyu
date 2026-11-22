@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_rainy_hotel_window_doggystyle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1043,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kafka_r18_rainy_hotel_window_doggystyle",
     "title": "卡芙卡 · 雨夜车厢·倾盆暴雨车窗与微透紫色蛛丝吊带",
@@ -15,7 +15,7 @@
     "action": "身穿深紫蛛网蕾丝吊带侧倚车厢皮座，肩带滑落单肩，一只穿细高跟的脚搭在椅沿，手持红酒杯，从容看向同行者。",
     "timeOfDay": "深夜",
     "lighting": "cinematic neon reflections through pouring rain, moody amber interior cabin sconce, soft volumetric mist, sharp rim light",
-    "camera": "full body, low angle, side profile, vertical framing, focus on long legs and slipped strap",
+    "camera": "from side, low angle, full body",
     "mood": "优雅支配、慵懒危险、宿命感性张力",
     "recommendedSize": "1152x1536",
     "adult": true,
@@ -45,29 +45,36 @@
       "detailed_background",
       "intimate"
     ],
-    "promptProse": "Adult Kafka reclines in the train booth with one heeled foot on the seat edge, holding her wine glass. Her purple spiderweb camisole slips from one shoulder as an amber cabin sconce warms her face against blue and red neon reflected through the rainy window.",
+    "promptProse": "Reclining languidly along a dark leather booth inside a speeding night train cabin, Kafka props one black stiletto heel onto the seat edge while swirling a glass of red wine. One thin strap of her sheer deep-purple spiderweb-lace camisole slips down her bare shoulder, leaving her cleavage and nipples faintly visible beneath the translucent lace. Warm amber sconce light meets cool blue and crimson neon streaking across the rain-drenched panoramic window.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "purple lingerie",
-      "see-through",
-      "strap slip",
-      "bare breasts",
-      "high heels",
-      "wine glass",
       "reclining",
+      "leg up",
+      "holding wine glass",
+      "wine glass",
+      "looking at viewer",
+      "slight smile",
       "train interior",
-      "rainy window",
+      "leather couch",
+      "rain",
+      "window",
       "neon lights",
-      "foot on seat",
-      "holding glass",
-      "amber light",
-      "full body",
-      "from side"
+      "warm lighting",
+      "from side",
+      "full body"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One heeled foot rests on the seat edge as she holds her wine beside the rainy cabin window."
+    "nsfwTokens": [
+      "purple camisole",
+      "lace",
+      "see-through",
+      "strap slip",
+      "bare shoulders",
+      "cleavage",
+      "nipples",
+      "black high heels"
+    ],
+    "nsfwProse": "She wears only a sheer deep-purple spiderweb-lace camisole with one strap slipped off her shoulder so her bare breasts and nipples show through the translucent lace, paired with black stiletto heels.",
+    "animaCaption": "Reclining along the leather train booth with one black stiletto heel propped on the seat edge, Kafka swirls her wine glass while her sheer purple lace camisole slips off one shoulder to reveal her breasts through the fabric. Amber cabin light mingles with neon rain streaks across the window.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_04",
     "title": "双叶理央 · 深夜卧室休息",
@@ -15,7 +15,7 @@
     "action": "仰卧休息，床单盖住身体，眼镜放在枕旁",
     "timeOfDay": "night",
     "lighting": "warm desk lamp",
-    "camera": "intimate vertical medium shot",
+    "camera": "high angle, medium shot",
     "mood": "独处与安静休息",
     "sceneTags": [
       "adult",
@@ -27,22 +27,22 @@
       "night",
       "lamplight"
     ],
-    "promptProse": "She rests under a sheet on the rumpled bed, her loosened ponytail spread over the pillow and her glasses set aside. A desk lamp softly lights the quiet room.",
+    "promptProse": "Lying quietly on her back across her rumpled bed at night with her glasses resting beside the pillow, Rio Futaba stays unclothed beneath a pure white linen sheet draped loosely below her bare shoulders and collarbone. Her loosened hair spreads across the pillow in the gentle glow of a warm bedside desk lamp.",
     "promptTokens": [
-      "adult",
-      "bedroom",
-      "bed sheets",
       "lying",
       "on back",
-      "glasses removed",
-      "loose ponytail",
-      "tears",
-      "night",
-      "lamplight",
-      "lying on back",
+      "on bed",
       "pillow",
-      "sheet cover",
-      "desk lamp"
+      "no glasses",
+      "glasses on bed",
+      "loose hair",
+      "teary eyes",
+      "bedroom",
+      "desk lamp",
+      "warm lighting",
+      "night",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,14 +50,23 @@
     "kreaStyleHint": "",
     "animaStyleHint": "",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "nude",
+      "covered by sheet",
+      "white bedsheet",
+      "bare shoulders",
+      "collarbone",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She rests unclothed beneath a pure white linen bedsheet draped loosely across her torso, slipping low to reveal bare shoulders, collarbone, and bare feet.",
     "outfitId": "no_visible_apparel",
     "coverageTags": [
       "nsfw",
       "self_control",
       "special_nsfw"
     ],
-    "animaCaption": "Her glasses stay set aside while she rests beneath the sheet."
+    "animaCaption": "Lying on her back across rumpled bedding with her glasses set beside the pillow and her hair fanned loose, she rests nude beneath a white linen sheet slipping across her bare collarbone with glistening eyes. A quiet warm desk lamp softens the dark bedroom.",
+    "compositionIntent": "single"
   }
 }

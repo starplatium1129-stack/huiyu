@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matou_sakura_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3257,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "matou_sakura_lingerie_whisper",
     "characterId": "matou_sakura",
@@ -14,7 +14,7 @@
     "location": "卫宫邸传统和室，月光透过日式障子木格窗在草席上投下清晰方格影",
     "timeOfDay": "深宵万籁俱寂时",
     "lighting": "皎洁月光穿透障子纸形成大面积柔白漫射，与走廊投进的微弱暖光形成静谧对比",
-    "camera": "medium shot, eye level, 侧平视中景，严整端正的正坐姿态与微侧垂首形成婉约的日本画风韵",
+    "camera": "three quarter view, medium shot",
     "mood": "传统大和抚子的极致顺从与深藏于心底的炽烈执念",
     "adult": true,
     "sampleRating": "R15",
@@ -38,22 +38,38 @@
       "eye_level"
     ],
     "promptTokens": [
-      "medium shot",
-      "eye level",
+      "sitting",
+      "seiza",
+      "looking down",
+      "blush",
+      "gentle smile",
       "tatami",
       "japanese room",
+      "shoji",
       "window",
-      "night",
       "moonlight",
+      "night",
       "warm lighting",
-      "sitting",
-      "cross-over front bodice",
-      "indoors"
+      "three quarter view",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Matou Sakura sits in traditional seiza on tatami mat, wearing a cherry blossom pink sheer silk yukata-inspired camisole. Fingers twisting sash ribbon shyly, long purple hair in side braid draped over chest, gentle melancholic violet eyes amidst moonlight through shoji screen sliding doors, serene Japanese interior.",
-    "animaCaption": "Matou Sakura sits in traditional seiza on tatami mat, wearing a cherry blossom pink sheer silk yukata-inspired camisole.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seated neatly in formal seiza atop the woven tatami mats of a quiet traditional Japanese room at midnight, Sakura wears a cherry-blossom pink sheer silk cross-over camisole with translucent wide sleeves parted gently at the collar. Twisting the silken side-tie ribbon shyly between her slender fingers as her long braid drapes over her shoulder, she glances up quietly as crisp silver moonlight casts shoji lattice shadows across the room.",
+    "animaCaption": "Seated neatly in seiza on the tatami mat in her cherry-blossom pink sheer silk cross-over camisole, Sakura twists the side ribbon shyly between her fingers with a tender blush. Silver moonlight filters through the shoji paper screen in clean lattice shadows.",
+    "nsfwTokens": [
+      "pink nightgown",
+      "silk",
+      "see-through",
+      "wide sleeves",
+      "open collar",
+      "ribbon",
+      "collarbone",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a cherry-blossom pink double-layered sheer silk yukata-style camisole with a parted cross-over neckline, translucent wide sleeves, and a delicate side-tie ribbon.",
+    "compositionIntent": "single"
   }
 }

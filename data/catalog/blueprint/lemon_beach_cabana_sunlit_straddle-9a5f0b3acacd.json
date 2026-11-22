@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_beach_cabana_sunlit_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2278,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "lemon_beach_cabana_sunlit_straddle",
     "characterId": "yakishio_lemon",
@@ -17,28 +17,43 @@
     "action": "浑身泛着晶莹海水的健康身躯紧密相贴，短发微湿，柠檬在急促的娇喘与浪潮声中紧抓你的双肩",
     "timeOfDay": "afternoon",
     "lighting": "dappled sea sunlight filtering through wooden slats onto glistening skin",
-    "camera": "cowboy_shot",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "温存与柔媚",
-    "promptProse": "In a beach cabana with an untied yellow bikini, tanned Lemon Yakishio straddles partner with wet glistening skin and heavy breathless blushes.",
+    "promptProse": "Inside a secluded timber beach cabana overlooking the sunlit afternoon surf, Lemon's bright yellow string bikini hangs untied as she straddles her partner's lap with glistening seawater still beading on her toned skin. Clinging tightly to his shoulders with damp short hair and breathless, heavy blushes, she moves earnestly in cowgirl position while dappled sunlight streams through the wooden roof slats.",
     "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
+      "straddling",
+      "grabbing shoulders",
+      "wet hair",
+      "heavy blush",
+      "panting",
       "cabana",
       "beach",
       "ocean",
-      "straddling",
-      "wet_skin",
-      "untied_bikini",
-      "tanned_skin",
-      "blushing_heavily",
-      "panting",
-      "cowboy_shot",
-      "dappled_sunlight"
+      "dappled sunlight",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Lemon Yakishio with untied bikini embracing passionately in beach cabana.",
+    "animaCaption": "Straddling her partner's lap inside the secluded beach cabana with her bright yellow string bikini untied over her wet bare breasts, Lemon grips his shoulders tightly with breathless, heavy blushes. Dappled afternoon sunlight filters through the wooden slats onto her glistening skin.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "yellow bikini",
+      "untied bikini",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "wet skin",
+      "cowgirl position",
+      "sex"
+    ],
+    "nsfwProse": "Her sporty citrus-yellow string bikini ties are undone so her damp bare breasts and glistening tanned curves press flush against her partner as she rides astride his lap."
   }
 }

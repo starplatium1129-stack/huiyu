@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3176,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "makima_lingerie_whisper",
     "characterId": "makima",
@@ -14,7 +14,7 @@
     "location": "极简现代顶层公寓，巨大的玻璃幕墙外暴雨倾盆撞击玻璃",
     "timeOfDay": "暴雨倾城之夜",
     "lighting": "阴郁的冷灰雨天漫射光，唯有头顶暗藏的暖白筒灯柔和打在发丝与双肩上",
-    "camera": "low angle, cowboy shot, 极富压迫感的微仰中景，暴雨倾盆的玻璃幕墙与居高临下的掌控感",
+    "camera": "low angle, cowboy shot",
     "mood": "压倒性的掌控欲与令人窒息的知性魅力，冷静而致命",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,38 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "cowboy shot",
+      "sitting",
+      "crossed legs",
+      "hands clasped",
+      "leather couch",
+      "looking at viewer",
+      "slight smile",
+      "window",
+      "rain",
+      "city lights",
+      "penthouse",
+      "dim lighting",
+      "night",
       "low angle",
-      "standing near floor-to-ceiling glass wall",
-      "heavy rain hitting glass",
-      "droplets streaming down window",
-      "stormy city skyline bokeh",
-      "minimalist dark penthouse",
-      "composed commanding smile",
-      "chilling calm"
+      "cowboy shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Makima stands composed before a massive glass curtain wall as torrential rain lashes against the high-rise penthouse, regarding the viewer with cold, hypnotic command.",
-    "animaCaption": "Standing composed before rain-streaked glass in a dark penthouse as storm clouds and city lights loom below.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seated with unhurried command in the center of a dark grey leather sofa inside a minimalist high-rise penthouse during a torrential night storm, Makima wears a sheer black floral lace corset babydoll and thin velvet choker. Crossing her bare legs neatly with her fingers interlaced across her knee, she fixes the viewer with a serene, hypnotic smile as rain lashes the floor-to-ceiling glass wall behind her under soft overhead recessed light.",
+    "animaCaption": "Seated on the dark leather penthouse sofa with crossed bare legs and clasped hands in her sheer black floral lace corset babydoll and velvet choker, Makima watches the viewer with a calm, hypnotic smile. Heavy rain streams down the towering glass wall behind her.",
+    "nsfwTokens": [
+      "black lingerie",
+      "black lace",
+      "corset",
+      "babydoll",
+      "see-through",
+      "choker",
+      "cleavage",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a razor-tailored pure-black sheer floral lace corset babydoll with contoured underwire cups and a slender black velvet choker, revealing her pale shoulders and crossed bare legs.",
+    "compositionIntent": "single"
   }
 }

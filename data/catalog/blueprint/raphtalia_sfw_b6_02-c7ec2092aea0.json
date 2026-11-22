@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1564,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_02",
     "title": "拉芙塔莉雅 · 市集里的围巾试色",
@@ -16,7 +16,7 @@
     "action": "把围巾比在肩上，摸摸织边是否柔软。",
     "timeOfDay": "afternoon",
     "lighting": "diffuse awning daylight",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "market_stall",
@@ -29,13 +29,21 @@
       "awning",
       "medium_shot"
     ],
-    "promptProse": "She holds the ochre scarf against her shoulder, rubbing its edge beside her ear with her free hand under the stall awning.",
+    "promptProse": "Standing before an open-air fabric stall in a bustling afternoon market wearing her teal tunic and cream laced waistcoat, Raphtalia drapes a woven ochre scarf carefully across one shoulder. Looking down at the cloth with a thoughtful gentle smile, she rubs the hem lightly between her fingers near her ear to test how soft the weave feels. Diffuse daylight beneath the canvas stall awning brightens the bolts of colored textiles behind her.",
     "promptTokens": [
+      "standing",
       "holding scarf",
+      "scarf",
       "fabric",
-      "market stall",
-      "thoughtful smile",
+      "looking down",
+      "slight smile",
+      "market",
+      "stall",
+      "awning",
+      "outdoors",
+      "afternoon",
       "daylight",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -49,6 +57,7 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She holds the scarf at her shoulder and rubs its edge beside her ear with her free hand."
+    "animaCaption": "Standing before the sunlit market fabric stall in her teal tunic and cream waistcoat, Raphtalia holds an ochre scarf against her shoulder and tests the softness of its woven edge with her free hand. Diffuse daylight under the canvas awning lights the surrounding bolts of cloth.",
+    "compositionIntent": "single"
   }
 }

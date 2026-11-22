@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_r18_b5_01",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "action": "在酒店床上跨坐视角腿间侧马尾轻晃，挑起下巴坏笑，开衫大敞饱满双峰主动下压",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "medium shot, low angle",
+    "camera": "low angle, pov, medium shot",
     "category": "主控骑乘",
     "characterId": "hayasaka_ai",
     "coverageTags": [
@@ -24,29 +24,35 @@
     "location": "涉谷高层情侣酒店·夜",
     "mood": "主动亲密与失神",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "beige_cardigan_blue_lace",
-    "promptProse": "She sits astride the viewer's lap on the hotel bed and lifts their chin with her fingertips, her cardigan open and bralette lowered beneath her chest.",
-    "promptTokens": [
-      "adult",
-      "hotel room",
-      "bed",
+    "nsfwProse": "Her chunky beige knit cardigan hangs wide open and her azure lace bustier is pushed down beneath her bare breasts and nipples as she rides astride her partner's lap.",
+    "nsfwTokens": [
       "beige cardigan",
-      "open clothes",
-      "blue lace bra",
+      "open cardigan",
+      "blue bra",
       "bra pull",
       "topless",
+      "bare breasts",
+      "nipples",
+      "cowgirl position",
+      "sex"
+    ],
+    "outfitId": "beige_cardigan_blue_lace",
+    "promptProse": "Astride her partner's lap across a plush Shibuya hotel bed at night, Hayasaka lets her slouchy oatmeal knit cardigan hang open and pushes her azure lace bustier down below her bare breasts. Leaning forward confidently in cowgirl position, she hooks a playful fingertip beneath his chin with a teasing, flushed smirk while her side ponytail swings forward under warm hotel lamplight.",
+    "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
       "leaning forward",
+      "hand on another's chin",
       "smirk",
-      "night",
+      "blush",
+      "hotel room",
+      "bed",
+      "warm lighting",
       "from below",
-      "side ponytail",
-      "lifting viewer chin",
-      "moonlight",
-      "soft_lighting",
-      "warm_lighting"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -63,6 +69,7 @@
     ],
     "timeOfDay": "night",
     "title": "早坂爱 · 涩谷辣妹形态的酒店大床魅惑",
-    "animaCaption": "Her fingertips lift the viewer's chin as she leans forward."
+    "animaCaption": "Riding astride her partner's lap on the hotel bed with her beige cardigan wide open and azure lace bra pushed beneath her bare breasts, Hayasaka leans down to lift his chin with a teasing smirk. Warm amber hotel lighting glows across her flushed cheeks and swaying ponytail.",
+    "compositionIntent": "group"
   }
 }

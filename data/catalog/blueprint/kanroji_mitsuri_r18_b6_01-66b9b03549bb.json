@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_r18_b6_01",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1468,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "action": "跨坐腰间开胸队服大敞露巨乳，粉绿麻花辫摇晃，双颊红霞眼含春水主动颠簸",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate vertical medium shot",
+    "camera": "from below, pov, medium shot",
     "category": "主控骑乘",
     "characterId": "kanroji_mitsuri",
     "coverageTags": [
@@ -24,27 +24,33 @@
     "location": "刀匠村私人露天温泉·夜",
     "mood": "主动亲密与失神",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Her open-front black uniform jacket and white collar are parted wide to either side, leaving her full breasts completely exposed as she moves in a cowgirl position.",
+    "nsfwTokens": [
+      "black jacket",
+      "open jacket",
+      "white collar",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
     "outfitId": "demon_slayer_uniform",
-    "promptProse": "Mitsuri straddles the viewer's lap at the private hot spring with her uniform open beneath her arms. Her pink-and-green braids move as she smiles through tears in the reflected water light.",
+    "promptProse": "Seen from a low first-person angle at the private outdoor hot spring, Mitsuri rides astride her partner's lap beneath shifting reflections of water and rising steam. Her face glows with an affectionate, tearful smile as her heavy braids brush forward.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "open black uniform",
-      "bare breasts",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "cowgirl position",
-      "braids",
-      "blush",
-      "hot spring",
-      "from below",
-      "white collar",
-      "tears",
+      "looking down",
       "smile",
+      "teary eyes",
+      "heavy blush",
+      "hot spring",
       "water reflection",
-      "medium shot",
-      "soft_lighting"
+      "steam",
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -63,6 +69,7 @@
     ],
     "timeOfDay": "night",
     "title": "甘露寺蜜璃 · 刀匠村露天温泉大号开胸队服主控跨坐",
-    "animaCaption": "She straddles the viewer's lap at the private spring beneath moving water reflections."
+    "animaCaption": "Straddling her partner's lap beside the steaming outdoor hot spring, she has her black Demon Slayer jacket pushed wide open off her bare breasts and smiles down through happy tears as water reflections dance across her flushed skin.",
+    "compositionIntent": "group"
   }
 }

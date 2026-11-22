@@ -437,8 +437,15 @@ export function useShotWorkspace(props: {
                 URL.revokeObjectURL(shot.imageUrl);
         });
     });
+    async function openProjectImport() {
+        try {
+            if (!persistShotsDraft()) throw new Error('请先保存当前分镜草稿');
+            await confirmProfileKeys([VIDEO_SHOTS_DRAFT_KEY], true);
+            await router.push({ path: '/studio-projects', query: { import: 'storyboard' } });
+        } catch (error) { batchError.value = error instanceof Error ? error.message : '分镜草稿交接失败'; }
+    }
     return {
-frameInputs,
+frameInputs, openProjectImport,
         h3Ready, aspectRatio, quality, linkLastFrame, steps,
         identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
         popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,

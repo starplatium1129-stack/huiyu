@@ -7,7 +7,7 @@ export interface TaskLiveProgress {
 }
 export interface TaskRecord {
   taskId: string; workspaceId: string; principalId: string; requestKey: string; requestFingerprint: string;
-  kind: 'generation' | 'anima' | 'creative' | 'qwen' | 'moss' | 'manga' | 'lineart' | 'video' | 'batch';
+  kind: 'generation' | 'anima' | 'creative' | 'qwen' | 'keyframe' | 'moss' | 'manga' | 'lineart' | 'video' | 'batch';
   provider: string; providerFingerprint: string; upstreamId: string | null;
   status: TaskStatus; recoveryState: TaskRecovery; revision: number; runtimeEpoch: string;
   createdAt: number; updatedAt: number; submissionIntentAt: number | null;

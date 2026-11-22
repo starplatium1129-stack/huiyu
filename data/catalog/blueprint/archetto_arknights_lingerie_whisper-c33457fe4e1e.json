@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3130,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.221Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "archetto_arknights_lingerie_whisper",
     "characterId": "archetto_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛宗教区兼兰赛尔办事处静室",
     "timeOfDay": "睡前",
     "lighting": "两支粗黄铜烛台点燃的明暖烛光，照亮圣洁蓝白睡袍与修道院木雕十字架",
-    "camera": "庄严圣洁中微带诙谐生活感的侧半身像，羽毛与烛火构成古典写实油画质感",
+    "camera": "side view, medium shot",
     "mood": "虔诚神圣与精明修道院商业头脑的奇妙反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,33 @@
       "charming_purity"
     ],
     "promptTokens": [
-      "bird ears",
-      "azure linen robe",
-      "praying hands",
-      "candle light",
-      "holy",
-      "side glance",
+      "kneeling",
+      "praying",
+      "clasped hands",
+      "sideways glance",
       "blush",
-      "serene"
+      "prayer bench",
+      "wooden desk",
+      "parchment",
+      "brass candlesticks",
+      "candlelight",
+      "quiet room",
+      "night",
+      "side view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Archetto finishing her evening devotions in a serene monastery-style chamber aboard Rhodes Island. She is draped in a sky-azure and pristine white linen wrap robe accented with a golden cross. Kneeling beside a wooden prayer bench with feathered ears glowing under candlelight, her pious prayer posture is betrayed by a cheeky sideways glance at commercial brewery recipes on her desk.",
-    "animaCaption": "Archetto finishing her evening devotions in a serene monastery-style chamber aboard Rhodes Island. She is draped in a sky-azure and pristine white linen wrap robe accented with a golden cross.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Archetto finishes evening devotions inside a serene monastery-style chamber aboard Rhodes Island, wearing a sky-blue and bleached-white organic linen night robe with wide sleeves and a gold-stitched rope belt. Kneeling at a wooden prayer bench with clasped hands, she betrays her pious posture with a faint blush and a cheeky sideways glance toward brewing parchments lit by two brass candlesticks.",
+    "animaCaption": "Kneeling beside a wooden prayer bench in her sky-blue and white linen monastic night robe, she keeps her hands clasped while sneaking a sheepish blush and sideways glance toward brewery parchments on the desk. Two brass candlesticks bathe the quiet chamber in warm flickering light.",
+    "nsfwTokens": [
+      "light blue robe",
+      "white linen robe",
+      "wide sleeves",
+      "hood",
+      "rope belt",
+      "gold cross",
+      "nightgown"
+    ],
+    "nsfwProse": "She wears a sky-blue and bleached-white monastic linen night robe with wide flowing sleeves, a loose hood, and a gold-stitched rope belt with a small cross clasp."
   }
 }

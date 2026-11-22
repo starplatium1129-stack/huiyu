@@ -4,27 +4,25 @@
     class="companion-page companion-redesign"
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
-    :data-ui-hidden="uiHidden || undefined"
     :data-presence="presence.kind"
-    :data-controls-open="petGestures.controlsOpen.value || undefined"
     @contextmenu="petGestures.contextMenu"
     @pointerdown.capture="petGestures.beginDrag"
     @click.capture="petGestures.click"
     @dblclick="petGestures.doubleClick"
   >
-    <button v-if="desktopBridge && !immersive" type="button" class="skip-link" :aria-expanded="petGestures.controlsOpen.value"
+    <button v-if="desktopBridge" type="button" class="skip-link" :aria-expanded="petGestures.controlsOpen.value"
       @click="petGestures.controlsOpen.value = !petGestures.controlsOpen.value">桌宠菜单</button>
-    <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }" :data-hidden="immersive ? 'true' : undefined">
+    <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }">
       <div class="companion-identity" aria-live="polite">
         <span>陪伴模式</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
       </div>
-      <AsyncPanel class="companion-picker-host" :loader="loadCharacterPicker" label="角色选择">
+      <AsyncPanel v-if="!desktopBridge" class="companion-picker-host" :loader="loadCharacterPicker" label="角色选择">
         <template #default="{ component }"><component :is="component" :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" /></template>
         <template #feedback="{ failed, retry }"><button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重新加载</button><span v-else role="status">正在加载角色列表…</span></template>
       </AsyncPanel>
       <div class="companion-toolbar-actions">
-        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
+        <CompanionPreferences v-if="!desktopBridge || settingsVisited" v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
         <template #trigger><button
           type="button"
           class="companion-settings-btn"
@@ -35,6 +33,10 @@
           <div class="companion-pop-group" data-preference-pane="character">
             <strong>角色外观</strong>
             <button type="button" class="companion-pop-item" @click="openAppearance"><ArchiveIcon name="wardrobe" /><span>角色取景与外观</span><ArchiveIcon class="preference-chevron" name="chevron-down" /></button>
+            <ToggleSwitch v-if="desktopBridge && !activeChar.startsWith('card-')" class="companion-pop-item companion-pop-switch"
+              :model-value="companionAutoLoad" label="Live2D 动态立绘" @update:model-value="handleLive2dPreference">
+              <span>Live2D 动态立绘</span>
+            </ToggleSwitch>
             <Live2DQualityControl />
           </div>
           <div class="companion-pop-group" data-preference-pane="companion">
@@ -65,9 +67,6 @@
           <div class="companion-pop-group" data-preference-pane="more">
             <strong>界面偏好</strong>
             <AppearancePreferences launcher-only @open="settingsOpen = false" />
-            <StudioTooltip content="沉浸模式：只保留角色与对话（Esc 退出）">
-              <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="settingsOpen = false; petGestures.controlsOpen.value = false; enterImmersive()"><ArchiveIcon name="moon" /><span>沉浸模式</span></button>
-            </StudioTooltip>
           </div>
           <div class="companion-pop-group" data-preference-pane="more">
             <strong>工作台</strong>
@@ -78,6 +77,7 @@
             <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier('/control#control-companion-channels')"><ArchiveIcon name="chat" /><span>手机聊天连接</span></button>
             <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">进入角色房间</RouterLink>
             <button type="button" class="companion-pop-item" @click="openImportPicker"><ArchiveIcon name="image" /><span>导入图片到作品册</span></button>
+            <CompanionImportRecoveryDialog v-if="desktopBridge" :recovery="importRecovery" :character-id="activeChar" compact />
           </div>
           <div v-if="desktopBridge" class="companion-pop-group" data-preference-pane="more">
             <strong>本机资源</strong>
@@ -101,15 +101,9 @@
       </div>
     </header>
 
-    <main class="companion-stage" aria-label="桌面陪伴模式" :data-immersive="immersive ? 'true' : undefined">
-      <StudioTooltip v-if="desktopBridge && immersive" content="退出沉浸模式（Esc）">
-        <button
-          class="companion-exit-immersive"
-          type="button"
-          @click="exitImmersive"
-        >退出沉浸</button>
-      </StudioTooltip>
-      <ChatCardPortrait v-if="activeChar.startsWith('card-')" :character="currentCharacter" />
+    <main class="companion-stage" aria-label="桌面陪伴模式">
+      <ChatCardPortrait v-if="activeChar.startsWith('card-')" :character="currentCharacter"
+        @load="cardReady = 'static'" @error="cardReady = 'failed'" />
       <ChatCharacterStage v-else
         ref="characterStageRef"
         surface="companion"
@@ -139,7 +133,7 @@
         <span>{{ presence.label }}</span>
       </div>
 
-      <section v-content-motion:fade="activeChar" class="companion-conversation" aria-label="简洁对话">
+      <section v-if="!desktopBridge" v-content-motion:fade="activeChar" class="companion-conversation" aria-label="简洁对话">
         <TransitionGroup
           v-if="behaviorEnabled && pendingReminders.length"
           name="reminder-pop"
@@ -174,7 +168,7 @@
           </div>
           <template v-else>
             <div
-              v-for="msg in immersiveMessages"
+              v-for="msg in recentMessages"
               :key="msg.mid"
               class="companion-bubble"
               :class="msg.role"
@@ -282,43 +276,34 @@
         @update:model-value="workspaceInput = $event"
       />
 
-      <CompanionOrbitMenu v-if="desktopBridge" :open="petGestures.controlsOpen.value" :character-id="activeChar"
-        :pinned="alwaysOnTop" :pass-through="ignoreMouseEvents"
+      <CompanionOrbitMenu v-if="desktopBridge && petGestures.controlsOpen.value" :open="petGestures.controlsOpen.value" :character-id="activeChar"
+        :pinned="alwaysOnTop"
         :controls="characterStageRef?.petControls" :set-expression="characterStageRef?.setPetExpression"
         @close="petGestures.controlsOpen.value = false" @settings="settingsOpen = true" @appearance="openAppearance"
-        @chat="openChatWindow" @pin="togglePin" @pass="toggleMouseEvents" @hide="desktopBridge.hide"
+        @chat="petGestures.controlsOpen.value = false; openChatWindow()"
+        @atelier="petGestures.controlsOpen.value = false; desktopBridge.openAtelier()"
+        @watch="petGestures.controlsOpen.value = false; screenWatchOpen = true"
+        @pin="togglePin" @hide="desktopBridge.hide"
         @character="switchPetCharacter" @motion="characterStageRef?.playPetMotion?.($event)" />
       <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
       <CompanionDesktopFloat
-        v-if="desktopBridge"
-        :inert="immersive || undefined"
+        v-if="desktopBridge && (replyAnnouncement || chatError || speechState === 'capturing')"
         :reply-announcement="replyAnnouncement"
         :character-name="currentCharacter.name"
         :chat-error="chatError"
-        :reminders="pendingReminders"
-        :live-dot-state="liveDotState"
-        :live-dot-text="liveDotText"
         :speech-capturing="speechState === 'capturing'"
-        :speech-auto-listening="speechAutoListening"
-        :show-watch="!immersive && (petGestures.controlsOpen.value || screenWatch.state.value !== 'idle' || Boolean(screenWatch.notice.value))"
-        :show-chat="!petGestures.controlsOpen.value"
         @open-chat="openChatWindow"
-        @open-atelier="desktopBridge.openAtelier()"
-        @open-reminder="openReminderRoute"
-        @dismiss-reminder="dismissReminder"
-      >
-        <template #watch><CompanionScreenWatch :controller="screenWatch" show-entry docked /></template>
-        <template #import-recovery><CompanionImportRecoveryDialog :recovery="importRecovery" :character-id="activeChar" compact /></template>
-      </CompanionDesktopFloat>
-      <CompanionScreenWatch v-if="!desktopBridge || immersive" :controller="screenWatch" show-entry />
+      />
+      <CompanionScreenWatch v-if="!desktopBridge || screenWatchOpen" :controller="screenWatch" show-entry
+        :open-initially="Boolean(desktopBridge)" @dismiss="screenWatchOpen = false" />
     </main>
   </article>
 </template>
 
 <script setup lang="ts">
 
-import CompanionPreferences from '@/components/CompanionPreferences.vue'
-import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+const CompanionPreferences = defineAsyncComponent(() => import('@/components/CompanionPreferences.vue'))
 const VoiceGlow = defineAsyncComponent(() => import('@/components/visual/VoiceGlow.vue'))
 const CompanionScreenWatch = defineAsyncComponent(() => import('@/components/CompanionScreenWatch.vue'))
 const ConversationComposer = defineAsyncComponent(() => import('@/components/ConversationComposer.vue'))
@@ -337,6 +322,9 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
+import { useCompanionInput } from '@/composables/chat/useCompanionInput'
+import { companionWindow } from '@/platform/desktop/capabilities'
+import type { CompanionReadyKind } from '@/types/desktop'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
@@ -352,9 +340,7 @@ chatListRef,characterStageRef,activeChar,
 desktopBridge,
 presentationSuspended,
 onBatteryPower,
-uiHidden,
 presence,
-immersive,
 currentCharacter,
 affectionScore,
 affectionInfo,
@@ -369,16 +355,12 @@ importInputRef, importRecovery, openImportPicker,
 onImportInputChange,
 alwaysOnTop,
 togglePin,
-ignoreMouseEvents,
-toggleMouseEvents,
-enterImmersive,
 workspaceExists,
 workspaceRestartRequired,
 workspaceTooltip,
 workspaceOpen,
 volume,
 onVolumeChange,
-exitImmersive,
 isSpeaking,
 chatStatusText,
 statusKind,
@@ -394,7 +376,7 @@ inspectClipboardImage,
 acceptClipboardCard,
 dismissClipboardCard,
 companionMessages,
-immersiveMessages,
+recentMessages,
 hasNewMessages,
 latestMessages,
 toolActivity,
@@ -438,11 +420,11 @@ saveWorkspace,
 workspaceSaving,
 workspaceError,
 openChatWindow,
-liveDotState,
-liveDotText,
+desktopStageActive,
+desktopInitialized,
 screenWatch
 } = useCompanionWorkspace()
-const glowActive = computed(() => !presentationSuspended.value && !uiHidden.value && (composerFocused.value
+const glowActive = computed(() => !presentationSuspended.value && (composerFocused.value
   || speechState.value === 'capturing' || speechState.value === 'recognizing' || speechAutoListening.value || voiceActive.value || busy.value))
 const glowMounted = ref(false)
 watch(glowActive, active => { if (active) glowMounted.value = true }, { immediate: true })
@@ -458,7 +440,28 @@ function closeWorkspace() {
 }
 
 const petGestures = usePetGestures(desktopBridge, openChatWindow)
+const input = useCompanionInput()
+const screenWatchOpen = ref(false)
+let stopDismiss: (() => void) | undefined
+onMounted(() => { if (desktopBridge) stopDismiss = companionWindow.on('dismiss', () => { screenWatchOpen.value = false }) })
+onUnmounted(() => stopDismiss?.())
+const settingsVisited = ref(false)
+watch(settingsOpen, open => { if (open) settingsVisited.value = true }, { flush: 'sync' })
 watch(petGestures.controlsOpen, open => { if (!open) settingsOpen.value = false })
+watch(desktopStageActive, active => {
+  if (desktopBridge && !active) {
+    petGestures.controlsOpen.value = false
+    screenWatchOpen.value = false
+  }
+})
+const cardReady = ref<CompanionReadyKind>()
+watch(activeChar, () => { cardReady.value = undefined }, { flush: 'sync' })
+watch([
+  () => activeChar.value.startsWith('card-') ? cardReady.value : characterStageRef.value?.presentationReady,
+  desktopInitialized, desktopStageActive,
+], ([ready, initialized, active]) => {
+  if (ready && initialized && active) input?.markReady(ready)
+}, { flush: 'post' })
 
 function openAppearance() {
   settingsOpen.value = false

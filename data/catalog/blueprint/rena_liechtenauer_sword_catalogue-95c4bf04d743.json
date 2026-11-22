@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_sword_catalogue",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2422,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "rena_liechtenauer_sword_catalogue",
     "characterId": "rena_liechtenauer",
@@ -16,23 +16,32 @@
     "action": "在书店翻阅刀剑图录，指尖停在刀镡插图旁，侧头向身边人兴奋讲解",
     "timeOfDay": "afternoon",
     "lighting": "window light",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "兴奋",
-    "promptProse": "In a bookshop, Lena holds open an illustrated sword catalogue and points to a drawing of a sword guard.",
+    "promptProse": "Inside a quiet wood-shelved bookshop on a bright afternoon, Lena stands in her white kimono top and red pleated hakama-style skirt holding open a thick illustrated sword catalogue. With one fingertip resting excitedly beside a detailed drawing of a carved sword guard, she turns her head eagerly to share the discovery with her companion. Warm afternoon window light falls across the open pages, stacked paperbacks, and her braided low ponytail.",
     "promptTokens": [
-      "bookstore",
+      "standing",
       "holding book",
       "open book",
       "pointing",
+      "excited",
+      "smile",
+      "looking aside",
+      "bookstore",
+      "bookshelf",
       "window light",
+      "afternoon",
+      "indoors",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing among the wooden bookshop shelves in her white kimono and red pleated skirt, Lena holds open an illustrated sword catalogue and points eagerly to a sword-guard diagram as she turns to speak. Afternoon window light brightens the open pages and nearby shelves.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

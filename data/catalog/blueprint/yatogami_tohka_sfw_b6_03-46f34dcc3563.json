@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_03",
     "title": "夜刀神十香 · 雨后水洼的小跳跃",
@@ -16,7 +16,7 @@
     "action": "跳过水洼稳稳落地，回头开心看着涟漪。",
     "timeOfDay": "afternoon",
     "lighting": "soft after-rain daylight",
-    "camera": "full body, eye level",
+    "camera": "eye level, full body",
     "mood": "自然日常",
     "sceneTags": [
       "puddle",
@@ -30,15 +30,23 @@
       "dynamic_pose",
       "full_body"
     ],
-    "promptProse": "Tohka lands beyond the puddle with both boots grounded and turns to admire the spreading ripples.",
+    "promptProse": "On a glistening residential lane just after a passing shower, Tohka wears her bright orange raincoat, navy overalls, and yellow rubber boots as she lands lightly on both feet just past a rainwater puddle. Raising one arm joyfully for balance, she twists back over her shoulder with a wide, beaming smile to watch the circular ripples spreading across the clear water. Soft post-rain afternoon daylight reflects off the wet asphalt and the bright yellow toes of her boots.",
     "promptTokens": [
-      "puddle",
-      "full body",
-      "landing",
+      "standing",
+      "raised arm",
       "looking back",
       "happy",
+      "open mouth",
+      "puddle",
       "ripples",
-      "daylight"
+      "wet",
+      "residential",
+      "road",
+      "outdoors",
+      "afternoon",
+      "daylight",
+      "eye level",
+      "full body"
     ],
     "negativeTokens": [
       "duplicated figure"
@@ -51,6 +59,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "Both boots land beyond the puddle as she turns to admire its spreading ripples."
+    "animaCaption": "Landing with both yellow boots just beyond a rain puddle in her orange raincoat and navy overalls, Tohka lifts one arm joyfully and turns back to watch the spreading ripples. Clear after-rain afternoon daylight gleams across the wet residential lane.",
+    "compositionIntent": "single"
   }
 }

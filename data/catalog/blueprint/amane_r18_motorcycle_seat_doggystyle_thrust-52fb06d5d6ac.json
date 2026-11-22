@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "amane_r18_motorcycle_seat_doggystyle_thrust",
     "title": "周防天音 · 海滨公路机车皮夹克拉链大敞露深邃巨乳与鞍座自抚",
@@ -19,7 +19,7 @@
     "action": "跨坐机车鞍座皮夹克拉链大开露大胸，牛仔短裤解开，单手扶车把另一手深层自抚娇喘",
     "timeOfDay": "深夜",
     "lighting": "海滨公路水银路灯与月光交织在红色机车烤漆与丰腴雪肌上的火辣反差光晕",
-    "camera": "medium shot, straddling motorcycle perspective, focus on heaving cleavage, flushed mature face, and biker boots",
+    "camera": "medium shot, eye level",
     "mood": "极乐沉沦",
     "sceneTags": [
       "motorcycle",
@@ -36,20 +36,17 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "She sits astride the parked red motorcycle in her open cropped leather jacket, one hand on the handlebar and the other beneath her unbuttoned shorts. Mercury-vapor road lamps and moonlight reflect on the red paint and chrome.",
+    "promptProse": "Parked in a quiet turnout along a moonlit coastal highway, Amane sits astride her red heavy motorcycle with one hand braced on the chrome handlebar. Roadlamps and silver moonlight reflect across the glossy red paint and her flushed face.",
     "promptTokens": [
       "coastal road",
       "red motorcycle",
-      "open cropped black leather jacket",
-      "red tank top",
-      "denim shorts",
       "straddling",
-      "masturbation",
-      "night",
-      "knee-high leather boots",
       "holding handlebar",
-      "open shorts",
       "heavy blush",
+      "teary eyes",
+      "parted lips",
+      "sweat",
+      "night",
       "streetlight",
       "moonlight",
       "medium shot"
@@ -60,8 +57,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "The motorcycle remains parked as one hand holds its handlebar."
+    "nsfwTokens": [
+      "black leather jacket",
+      "open jacket",
+      "red tank top",
+      "cleavage",
+      "denim shorts",
+      "unbuttoned shorts",
+      "knee-high boots",
+      "masturbation"
+    ],
+    "nsfwProse": "Her cropped black leather biker jacket hangs unzipped over a low-cut crimson tank top straining with deep cleavage, while her denim shorts are unbuttoned at the hips above knee-high leather boots as her free hand slips between her thighs.",
+    "animaCaption": "Astride the leather seat of her parked red motorcycle on the moonlit coastal road, she holds the handlebar with one hand and reaches past her unbuttoned denim shorts with the other as her unzipped leather jacket falls open over her crimson tank top.",
+    "compositionIntent": "single"
   }
 }

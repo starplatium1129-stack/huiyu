@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_06",
     "title": "夜刀神十香 · 樱花树下的命名纪念",
@@ -16,7 +16,7 @@
     "action": "盛开的樱花树下，她仰头看着花瓣飘落，轻声念着自己的名字",
     "timeOfDay": "日间",
     "lighting": "afternoon_light",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "cherry_blossoms",
@@ -29,13 +29,22 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Tohka looks up at the falling cherry petals and quietly mouths her name.",
+    "promptProse": "Standing beneath a wide canopy of full-bloom sakura boughs on a clear spring afternoon, Tohka wears her crisp navy-jacket school uniform with ribbon tie and pleated skirt. She tilts her face gently upward with softly parted lips and a tender, wondering expression, quietly mouthing her own name as pale pink cherry petals drift past her shoulders. Warm afternoon sunlight filters through the blossoms against the blue sky.",
     "promptTokens": [
-      "cherry blossoms",
-      "medium shot",
+      "standing",
       "looking up",
-      "petals",
-      "afternoon light"
+      "parted lips",
+      "gentle smile",
+      "cherry blossoms",
+      "falling petals",
+      "sakura",
+      "tree",
+      "blue sky",
+      "sunlight",
+      "afternoon",
+      "outdoors",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [
       "extra people",
@@ -49,6 +58,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She quietly mouths her name while watching cherry petals fall."
+    "animaCaption": "Standing beneath full-bloom cherry boughs in her navy school uniform, Tohka tilts her face upward with parted lips and a gentle smile as pink sakura petals drift around her. Warm afternoon sunlight filters through the flowering branches against the spring sky.",
+    "compositionIntent": "single"
   }
 }

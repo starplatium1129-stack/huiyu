@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_marble_bath_candle_creampie",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 691,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "斜靠大理石池边白衬衫湿透贴肉大胸毕露，单腿浮水，单手在水下深层自抚，金鹿角滴水娇喘",
     "adult": true,
     "adultArtistHint": "@reDrop",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, side view",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -23,25 +23,34 @@
     "location": "大理石温泉浴池内散落玫瑰花瓣的温水中",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "white_bath_shirt",
-    "promptProse": "Viviana touches herself beneath the water from the submerged steps, one leg raised beneath her translucent wet shirt.",
-    "promptTokens": [
+    "nsfwProse": "Soaking in the rose-strewn bath wearing only a completely soaked see-through white silk shirt with no bra beneath, her bare breasts and pink nipples show vividly through the clinging wet fabric as she masturbates underwater.",
+    "nsfwTokens": [
       "white shirt",
-      "wet clothes",
-      "rose petals",
-      "marble bath",
-      "steam",
-      "candlelight",
-      "masturbation",
-      "see-through",
-      "hand between legs",
-      "wide shot",
-      "submerged steps",
-      "raised leg",
       "wet shirt",
-      "hand underwater"
+      "wet clothes",
+      "see-through",
+      "no bra",
+      "bare breasts",
+      "nipples",
+      "masturbation"
+    ],
+    "outfitId": "white_bath_shirt",
+    "promptProse": "Reclining sideways against the submerged marble steps of a steamy bath scattered with crimson rose petals, Viviana wears only a pearl-buttoned white silk shirt soaked transparent against her full breasts and nipples. Lifting one slender bare leg slightly above the warm water, she reaches beneath the rippling surface with one hand to touch herself slowly, glistening water droplets clinging to her golden antlers as tearful breaths escape her lips. Rows of carved poolside candelabras cast warm shimmering gold through the rising steam.",
+    "promptTokens": [
+      "reclining",
+      "leg up",
+      "bath",
+      "partially submerged",
+      "rose petals",
+      "water",
+      "ripples",
+      "steam",
+      "marble",
+      "candlelight",
+      "teary eyes",
+      "heavy blush",
+      "from side",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -62,6 +71,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "薇薇安娜 · 大理石玫瑰温汤白衬衫湿透贴肉与水下波光私密探索",
-    "animaCaption": "One leg rises above the submerged steps beneath her wet shirt."
+    "animaCaption": "Reclining along the submerged marble bath steps scattered with rose petals in a clinging see-through wet white shirt, Viviana raises one leg and reaches underwater to masturbate. Flickering poolside candlelight warms the steam, her wet antlers, and her tearful blush.",
+    "compositionIntent": "single"
   }
 }

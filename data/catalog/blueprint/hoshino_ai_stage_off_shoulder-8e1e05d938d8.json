@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_off_shoulder",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 950,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "追光下抛飞吻",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "category": "舞台演出",
     "characterId": "hoshino_ai",
     "coverageTags": [],
@@ -18,14 +18,22 @@
     "mood": "灵动撩人",
     "negativeTokens": [],
     "outfitId": "stage_off_shoulder",
-    "promptProse": "She touches one hand to her lips to send a kiss toward the viewer, keeping the microphone in her other hand beneath the follow spot.",
+    "promptProse": "Center stage during a dazzling theater performance at night, Hoshino Ai shines in her off-shoulder pink idol dress, blue necktie, and white thigh-highs beneath a brilliant follow spotlight. Holding her handheld microphone down at one side, she touches her free fingertips playfully to her lips and winks toward the audience to send a sparkling blown kiss. Vibrant stage beams and glowing backlights halo her silhouette across the darkened concert hall.",
     "promptTokens": [
-      "microphone",
+      "standing",
       "blowing kiss",
+      "hand to mouth",
+      "holding microphone",
+      "microphone",
+      "wink",
+      "smile",
+      "looking at viewer",
       "stage",
+      "stage lights",
       "spotlight",
-      "cowboy shot",
-      "hand at lips"
+      "night",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -41,6 +49,7 @@
     "title": "星野爱 · 剧场公演",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One hand sends the kiss while the other keeps hold of the microphone."
+    "animaCaption": "Standing center stage beneath a dazzling follow spotlight in her off-shoulder pink idol costume, Ai holds her microphone in one hand and touches her lips to blow a winking kiss toward the audience. Bright concert beams flare behind her across the theater.",
+    "compositionIntent": "single"
   }
 }

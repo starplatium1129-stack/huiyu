@@ -17,6 +17,8 @@ const KEYS: &[&str] = &[
     "shotSize",
     "steps",
     "videoAttention",
+    "wanResolution",
+    "audioFrames",
     "h3Decoder",
     "drivingAudio",
     "drivingVideo",
@@ -120,7 +122,9 @@ pub(super) fn validate_for(
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
     for key in object.keys() {
-        if !KEYS.contains(&key.as_str()) || (native.is_none() && matches!(key.as_str(), "videoAttention" | "h3Decoder" | "drivingVideo" | "drivingAudio")) {
+        if !KEYS.contains(&key.as_str()) || (native.is_none() && matches!(key.as_str(), "videoAttention" | "h3Decoder" | "drivingVideo" | "drivingAudio"))
+            || (key == "wanResolution" && !native.is_some_and(|spec| spec["runner"] == "wan-a14b-sd"))
+            || (key == "audioFrames" && !native.is_some_and(|spec| spec["runner"] == "musetalk-native")) {
             return Err(error(
                 400,
                 "UNKNOWN_PARAMETER",
@@ -210,7 +214,8 @@ pub(super) fn validate_for(
         None
     };
     let steps = if let Some(spec) = native {
-        integer(body.get("steps").unwrap_or(&spec["steps"]))
+        let default_steps = if spec["runner"] == "wan-a14b-sd" && quality == "fine" { json!(8) } else { spec["steps"].clone() };
+        integer(body.get("steps").unwrap_or(&default_steps))
             .filter(|n| (spec["minSteps"].as_u64().unwrap_or(1)..=100).contains(n))
             .ok_or_else(|| invalid("原生模型步数超出支持范围"))?
     } else if present(&body["steps"]) {
@@ -225,11 +230,49 @@ pub(super) fn validate_for(
         return Err(error(400, "MODEL_INPUT_MODE", "极速步数仅支持 MiniMax H3"));
     }
     let aspect = body["aspectRatio"].as_str().unwrap_or("");
-    let (width, height) = if let Some(canvases) = native.and_then(|m| m.get("canvases")) {
+    let wan_resolution = if native.is_some_and(|spec| spec["runner"] == "wan-a14b-sd") {
+        if !present(&body["image"]) {
+            return Err(error(400, "MODEL_INPUT_MODE", "Wan A14B 图生视频需要首帧。"));
+        }
+        Some(match body.get("wanResolution") {
+            None => 480,
+            Some(n) if n.as_u64() == Some(480) => 480,
+            Some(n) if n.as_u64() == Some(720) => 720,
+            _ => return Err(invalid("Wan 分辨率支持 480p 或 720p。")),
+        })
+    } else { None };
+    let (width, height) = if let Some(resolution) = wan_resolution {
+        let orientation = match aspect {
+            "original" => {
+                let (w, h) = original_size.filter(|(w, h)| *w > 0 && *h > 0)
+                    .ok_or_else(|| invalid("无法解析 Wan 首帧尺寸。"))?;
+                w.cmp(&h)
+            }
+            "landscape" => std::cmp::Ordering::Greater,
+            "portrait" => std::cmp::Ordering::Less,
+            "square" => std::cmp::Ordering::Equal,
+            _ => return Err(invalid("不支持的 Wan 画面比例。")),
+        };
+        let long = if resolution == 720 { 1280 } else { 832 };
+        let square = if resolution == 720 { 960 } else { 624 };
+        match orientation {
+            std::cmp::Ordering::Greater => (long, resolution),
+            std::cmp::Ordering::Less => (resolution, long),
+            std::cmp::Ordering::Equal => (square, square),
+        }
+    } else if let Some(canvases) = native.and_then(|m| m.get("canvases")) {
         if quality != "standard" {
             return Err(invalid("该原生版本仅支持 standard 画质画布"));
         }
-        let canvas = canvases[aspect]
+        let canvas_name = if aspect == "original" && native.is_some_and(|m| m["runner"] == "musetalk-native") {
+            let (w,h) = original_size.filter(|(w,h)| *w > 0 && *h > 0).ok_or_else(|| invalid("无法读取角色图尺寸"))?;
+            match w.cmp(&h) {
+                std::cmp::Ordering::Greater => "landscape",
+                std::cmp::Ordering::Less => "portrait",
+                std::cmp::Ordering::Equal => "square",
+            }
+        } else { aspect };
+        let canvas = canvases[canvas_name]
             .as_array()
             .ok_or_else(|| invalid("不支持的原生画面比例"))?;
         (
@@ -272,7 +315,7 @@ pub(super) fn validate_for(
     } else {
         let user = prompt_text(body, false)?;
         let extra = negative_text(body)?;
-        let negative = if native.is_some_and(|m| m["family"] != "wan2.2") {
+        let negative = if native.is_some_and(|m| m["family"] != "wan2.2" || m["negative"] == false) {
             extra.to_owned()
         } else if h3 {
             String::new()
@@ -285,6 +328,9 @@ pub(super) fn validate_for(
     let mut input = json!({"prompt":prompt,"originalPrompt":original,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5});
     if let Some(negative) = negative {
         input["negative"] = json!(negative);
+    }
+    if let Some(resolution) = wan_resolution {
+        input["wanResolution"] = json!(resolution);
     }
     if let Some(spec) = native {
         for key in ["drivingVideo", "drivingAudio"] {
@@ -300,6 +346,12 @@ pub(super) fn validate_for(
         }
         input["steps"] = json!(steps);
         input["frames"] = spec["durationFrames"][duration.to_string()].clone();
+        if let Some(value) = body.get("audioFrames") {
+            let frames = value.as_u64().filter(|n| (1..=input["frames"].as_u64().unwrap_or(0)).contains(n))
+                .ok_or_else(|| invalid("配音实际帧数必须在所选时长内"))?;
+            input["frames"] = json!(frames);
+            input["audioFrames"] = json!(frames);
+        }
         input["fps"] = spec["fps"].clone();
         input["cfg"] = spec["cfg"].clone();
     }

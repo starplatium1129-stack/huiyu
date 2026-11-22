@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3470,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "nymph_lingerie_whisper",
     "characterId": "nymph",
@@ -14,7 +14,7 @@
     "location": "小镇最高处生锈水塔圆顶，晚霞如火烧云般铺满整片地平线",
     "timeOfDay": "落日余晖落尽时",
     "lighting": "浓烈的夕阳橙紫反光照亮电子翅膀，在半透明翅膜上折射出虹彩数码光效",
-    "camera": "low angle, 大广角仰拍，夕阳壮烈的天际线映衬水塔边缘单薄的少女身影与透明羽翼",
+    "camera": "low angle, wide shot",
     "mood": "傲娇电子天使的纯情与执拗，暮色下让人怦然心动的脆弱",
     "adult": true,
     "sampleRating": "R15",
@@ -35,22 +35,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "low angle",
-      "indoors",
-      "bedroom",
-      "night",
-      "warm lighting",
       "sitting",
-      "water",
-      "glowing",
-      "teacup",
+      "water tower",
+      "holding snack bag",
+      "looking away",
+      "pout",
+      "teary eyes",
+      "wind",
+      "outdoors",
       "sunset",
-      "golden bell choker collar"
+      "orange and purple sky",
+      "iridescent glow",
+      "low angle",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit. Nymph sora no otoshimono, holding snack bag, long twin tails fluttering in evening wind amidst iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama.",
-    "animaCaption": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated along the rusted dome of the town's highest water tower at sunset, Nymph wears a sky-blue translucent chiffon frilled playsuit with an open back and golden bell choker. Clutching a bag of potato chips while turning away with a teary pout, she glows against fiery orange-and-purple dusk clouds shimmering across her translucent wings.",
+    "animaCaption": "Seated atop the curved dome of a rusted water tower clutching a snack bag in her translucent sky-blue chiffon frilled playsuit and gold bell choker, she turns away with a teary, pouting blush as evening wind lifts her hair. Fiery sunset light turns her electronic wings iridescent.",
+    "nsfwTokens": [
+      "light blue playsuit",
+      "sheer chiffon",
+      "see-through",
+      "frilled shorts",
+      "open back",
+      "gold bell choker",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a sky-blue translucent chiffon frilled playsuit with an open back for her wings, ruffled boyleg shorts, and a golden bell choker.",
+    "compositionIntent": "single"
   }
 }

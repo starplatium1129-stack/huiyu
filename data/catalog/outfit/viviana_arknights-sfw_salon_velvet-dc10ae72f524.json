@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/sfw_salon_velvet",
+  "revision": 1,
+  "sortOrder": 3914,
+  "createdAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "sfw_salon_velvet",
+      "characterId": "viviana_arknights",
+      "name": "孔雀蓝丝绒短外套与象牙高领衫",
+      "isDefault": false,
+      "default": false,
+      "tokens": [
+        "blue jacket",
+        "gold trim",
+        "high collar",
+        "white shirt",
+        "brooch",
+        "long skirt"
+      ],
+      "prose": "A fitted peacock-blue velvet jacket with narrow gold piping at the cuffs is worn over an ivory high-necked silk blouse. A flat brass leaf brooch and a dark ankle-length skirt complete the outfit."
+    }
+  }
+}

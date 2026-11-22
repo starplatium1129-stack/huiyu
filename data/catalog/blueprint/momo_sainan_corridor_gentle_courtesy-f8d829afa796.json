@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_sainan_corridor_gentle_courtesy",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1244,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "action": "双手交叠腹前优雅漫步颔首行礼，制服与百褶裙端庄得体，笑容温婉无瑕",
-    "camera": "medium shot, eye level",
+    "camera": "eye level, medium shot",
     "category": "校园优雅",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -20,12 +20,21 @@
     "mood": "温婉大方",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "She pauses with hands folded at her waist and inclines her head toward the teacher and classmates approaching along the sunlit corridor.",
+    "promptProse": "In the center of Sainan High School's sunlit wooden corridor, Momo pauses gracefully in her neatly arranged sailor uniform with both hands folded softly before her waist. She inclines her head with an immaculate, warm smile toward a teacher and uniformed classmates approaching farther down the bright hallway. Natural morning sunlight pours through the tall row of classroom windows lined with green trees outside, glinting across the polished floorboards.",
     "promptTokens": [
+      "1girl",
+      "multiple others",
+      "standing",
       "hands together",
-      "school hallway",
       "polite smile",
+      "head tilt",
+      "school hallway",
+      "wooden floor",
+      "window",
       "sunlight",
+      "trees",
+      "indoors",
+      "eye level",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -41,6 +50,6 @@
     "timeOfDay": "上午",
     "title": "梦梦 · 学园走廊的优雅淑女步",
     "compositionIntent": "group",
-    "animaCaption": "She inclines her head toward the teacher and classmates approaching along the corridor."
+    "animaCaption": "Pausing in the sunlit wooden school hallway with both hands neatly folded before her waist, Momo inclines her head with a gentle smile toward the teacher and classmates approaching down the corridor. Bright morning light through the tall windows reflects across the floorboards."
   }
 }

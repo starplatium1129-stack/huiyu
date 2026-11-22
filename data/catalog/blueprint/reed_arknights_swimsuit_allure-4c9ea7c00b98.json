@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3163,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "reed_arknights_swimsuit_allure",
     "characterId": "reed_arknights",
@@ -14,7 +14,7 @@
     "location": "直面浩瀚大洋的苍茫红岩悬崖绝壁与夕照海岸",
     "timeOfDay": "黄昏暮色",
     "lighting": "海天尽头被落日烧成一片深红与金紫交织的晚霞，掌心跳跃的赤金生命火焰照亮温润清丽的面庞",
-    "camera": "medium full shot, side angle, dramatic sunset horizon background, poetic emotional depth",
+    "camera": "side view, cowboy shot",
     "mood": "慈悲温婉、生命重生的希望与永不熄灭的深情守候",
     "adult": true,
     "sampleRating": "R15",
@@ -40,28 +40,33 @@
       "warm_glow"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "reed the flame shadow (arknights)",
-      "long red hair",
-      "orange eyes",
-      "dragon horns",
-      "dragon tail",
-      "gold tail rings",
-      "crimson gradient monokini",
-      "standing on sea cliff",
-      "cupping gentle golden flame in hands",
-      "gorgeous ocean sunset",
-      "purple and orange sky",
-      "loving serene smile",
-      "windblown hair",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "cupping hands",
+      "small golden flame",
+      "looking back",
+      "gentle smile",
+      "wind",
+      "hair blowing",
+      "sea cliff",
+      "ocean",
+      "sunset",
+      "orange sky",
+      "warm glow",
+      "side view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Reed the Flame Shadow from Arknights stands at a windy cliff's edge at sunset in her smoldering crimson monokini, gently cradling a warm golden flame in her hands with an adoring, tender gaze.",
-    "animaCaption": "Crimson sunset horizons blend with her gentle inner spark as she promises peaceful warmth upon the wind.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Reed stands near the edge of a red-rock coastal cliff at dusk in a smoldering crimson-and-gold high-neck cutout monokini with ornate gold rings along her tail. Cupping a gentle golden flame between both palms as sea wind lifts her blonde hair, she turns toward the viewer with a serene, tender smile against the burning sunset sky.",
+    "animaCaption": "Standing near the windswept sea cliff edge in a crimson-and-gold cutout monokini, she cups a gentle golden flame between her palms and turns back toward the viewer with a serene smile. Deep sunset light over the ocean blends with the warm spark in her hands.",
+    "nsfwTokens": [
+      "red monokini",
+      "one-piece swimsuit",
+      "high neck",
+      "cutout swimsuit",
+      "gold trim",
+      "tail ornament",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a crimson-and-gold gradient high-neck monokini with flame-shaped waist cutouts and ornate gold rings clasping her dragon tail."
   }
 }

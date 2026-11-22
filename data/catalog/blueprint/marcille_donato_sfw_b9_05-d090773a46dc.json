@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1720,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_05",
     "title": "玛露希尔 · 海湾野餐的安全料理",
@@ -16,7 +16,7 @@
     "action": "海湾岩石旁用小魔法加热料理，挑掉可疑食材后把安全成品递向镜头",
     "timeOfDay": "日间",
     "lighting": "warm afternoon sun over sea and picnic cloth",
-    "camera": "medium shot, horizontal framing",
+    "camera": "three quarter view, medium shot",
     "mood": "把冒险料理变成安心海滨午餐",
     "sceneTags": [
       "swimsuit",
@@ -30,13 +30,21 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Marcille offers the finished mushroom dish toward the viewer while a small warming spell glows beneath the plate. Afternoon sun lights the picnic cloth and the rocks beside the bay.",
+    "promptProse": "Seated beside smooth coastal rocks on a checkered picnic cloth overlooking a sunlit bay, Marcille wears her lake-blue one-piece swimsuit beneath her cream linen travel robe and wide sunhat. Casting a tiny glowing warming spell beneath a wooden plate of freshly cooked mushrooms, she lifts the safe, steaming dish eagerly toward the viewer with bright, triumphant pride. Warm afternoon sunlight glints over the turquoise cove and scattered camp utensils.",
     "promptTokens": [
-      "mushroom dish",
+      "sitting",
+      "holding plate",
+      "food",
+      "mushroom",
       "magic",
-      "seaside picnic",
-      "offering food",
-      "afternoon light",
+      "glowing",
+      "smile",
+      "looking at viewer",
+      "picnic",
+      "rock",
+      "ocean",
+      "sunlight",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -50,6 +58,7 @@
       "summer",
       "beach"
     ],
-    "animaCaption": "A small warming spell glows beneath the finished dish she offers toward the viewer."
+    "animaCaption": "Seated by the sunlit coastal rocks on a picnic cloth, Marcille extends a steaming plate of cooked mushrooms toward the viewer as a small warming spell glows beneath the dish. Bright afternoon sun shines across her cream robe and the calm bay behind her.",
+    "compositionIntent": "single"
   }
 }

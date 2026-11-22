@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_calm_witch_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "全裸正面跨坐缓慢起伏骑乘，双手按在膝头，俯身凝视低语，眼神充满深邃爱意",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "from below, pov, cowboy shot",
     "category": "主控骑乘",
     "characterId": "cc_code_geass",
     "coverageTags": [
@@ -25,22 +25,24 @@
     "location": "柔软厚垫床榻中央",
     "mood": "从容魅惑",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Completely unclothed in a slow cowgirl position, her bare chest leans forward over her partner as her hips move in deliberate, unhurried rhythm.",
     "outfitId": "nsfw_nude",
-    "promptProse": "She leans forward while straddling the viewer on silk bedding, her hands resting on her knees and green hair pooling over the sheets. The faint red Geass mark glows at her forehead in the fireplace's dim red ember light.",
+    "promptProse": "Seen from a low first-person angle on silk bedding beside a smoldering hearth, C.C. sits astride her partner's lap with both hands braced composedly on her knees and leans down toward him. The dim red fireplace light catches her calm, intimate gaze and the faint glowing mark on her forehead.",
     "promptTokens": [
-      "bedroom",
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
       "hands on knees",
-      "looking at viewer",
-      "blush",
-      "from below",
-      "cowgirl position",
-      "forehead mark",
       "leaning forward",
+      "forehead mark",
+      "looking down",
+      "bedroom",
       "fireplace",
-      "red glow"
+      "red lighting",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -58,10 +60,16 @@
     ],
     "timeOfDay": "深夜",
     "title": "C.C. · 不老魔女的从容低语骑乘",
-    "animaCaption": "Her hands rest on her knees as she leans toward the viewer.",
+    "animaCaption": "Completely nude on the silk-sheeted bedroom bed in the dim crimson ember glow of the fireplace, she straddles her partner's waist with both hands resting calmly on her knees and leans close to whisper as the faint red Geass sigil shines on her forehead.",
     "nsfwTokens": [
+      "nude",
+      "sex",
+      "cowgirl position",
       "nipples",
-      "pussy"
-    ]
+      "pussy",
+      "blush",
+      "parted lips"
+    ],
+    "compositionIntent": "group"
   }
 }

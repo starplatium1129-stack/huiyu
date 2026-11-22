@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_kaoruko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3322,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "waguri_kaoruko_lingerie_whisper",
     "characterId": "waguri_kaoruko",
@@ -14,7 +14,7 @@
     "location": "千鸟高校附近自家蛋糕店后厨，空气中弥漫着香草精与温热奶油的甜香",
     "timeOfDay": "傍晚打烊后的二人甜点试吃",
     "lighting": "烘焙烤箱内散发的橙金暖光与后厨柔和的白日光灯交融，室内满溢着蜜意与香气",
-    "camera": "medium shot, eye level, 蛋糕店后厨平视中景，烘焙甜香与傍晚夕阳下的甜美告白",
+    "camera": "medium shot, eye level",
     "mood": "甜到心坎里的高中初恋时光，如刚出炉的草莓甜点般温暖治愈、纯白美好",
     "adult": true,
     "sampleRating": "R15",
@@ -40,19 +40,32 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting on tall kitchen stool",
-      "family bakery counter",
-      "freshly baked tarts and pastries",
-      "mixing bowl with vanilla cream",
-      "dusk sunlight through kitchen window",
-      "warm golden glow",
-      "sweet affectionate blush"
+      "sitting",
+      "stool",
+      "holding food",
+      "macaron",
+      "pastry",
+      "happy",
+      "smile",
+      "blush",
+      "bakery",
+      "kitchen",
+      "sunset",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kaoruko perches on a counter stool in her family cake shop's warm kitchen after hours, sweet vanilla scent in the air as she offers a pastry with a glowing, tender blush.",
-    "animaCaption": "Perched on a stool in a warm bakery kitchen beside fresh pastries, blushing sweetly in the sunset glow.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In the warm dusk light of her family cake shop kitchen filled with mixing bowls and freshly baked tarts, Kaoruko sits on a tall wooden stool offering a strawberry macaron forward with a beaming, affectionate blush.",
+    "animaCaption": "Perched on a wooden stool in her warm family bakery kitchen beside freshly baked pastries in golden sunset light, she holds out a fresh strawberry macaron with both hands and a radiant blush wearing a cream-white cotton slip dress printed with tiny strawberries and eyelet lace.",
+    "nsfwTokens": [
+      "white slip",
+      "cotton dress",
+      "strawberry print",
+      "white lace",
+      "spaghetti straps",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a soft cream-white double-cotton slip nightdress patterned with tiny strawberry prints and trimmed in dainty cotton eyelet lace.",
+    "compositionIntent": "single"
   }
 }

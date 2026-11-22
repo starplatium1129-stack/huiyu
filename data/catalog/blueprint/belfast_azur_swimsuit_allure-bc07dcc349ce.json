@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "belfast_azur_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3205,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "belfast_azur_swimsuit_allure",
     "characterId": "belfast_azur",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "navy blue swimdress",
+      "white lace trim",
+      "corset swimsuit",
+      "peplum skirt",
+      "detached lace cuffs",
+      "silver bell choker",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a Victorian navy-blue and white lace-corseted swimdress with a scalloped peplum hem, detached white lace wrist cuffs, and a silver bell choker.",
     "title": "贝尔法斯特 · 私人游艇露台上的海景红茶奉纳",
     "action": "手托精美银质托盘，优雅微倾身躯递上盛有冰柠檬红茶的骨瓷茶杯，另一手轻按被风吹拂的裙摆",
     "location": "停泊在静谧蔚蓝海湾中央的豪华游艇飞桥露台",
     "timeOfDay": "午后",
     "lighting": "纯净明亮的热带海光经过遮阳白帆软化，勾勒出优雅起伏的柔和轮廓与银发反光",
-    "camera": "medium shot, eye level, impeccable aristocratic composition, tender gaze",
+    "camera": "eye level, medium shot",
     "mood": "优雅从容、无可挑剔的侍奉与专属主人的温柔宠溺",
     "description": "游艇在微波荡漾的海湾里静静泊着，帆布遮阳顶下飘着大吉岭红茶的清香。贝尔法斯特端着银盘款款走来，白蓝相间的连体泳裙将曼妙曲线收束得极致端庄。她微倾下身，递上凝着微凉水汽的骨瓷茶杯，唇边带着专属的从容笑意——「贵安，主人。在这难得的避暑时光里，女仆长自然也要随时相伴左右。请用茶，今天的防晒与行程，贝尔法斯特都已为您妥善安排。」",
     "sceneTags": [
@@ -40,23 +48,23 @@
       "ocean_backdrop"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "belfast (azur lane)",
-      "short silver hair",
-      "blue eyes",
-      "silver bell choker",
-      "navy swimdress",
-      "white lace cuffs",
-      "holding silver tray with tea",
+      "standing",
+      "leaning forward",
+      "holding tray",
+      "silver tray",
+      "teacup",
+      "gentle smile",
+      "looking at viewer",
       "yacht deck",
-      "ocean background",
-      "graceful smile",
-      "afternoon sun",
-      "depth of field",
-      "cinematic lighting"
+      "white awning",
+      "ocean",
+      "afternoon",
+      "soft sunlight",
+      "eye level",
+      "medium shot"
     ],
-    "promptProse": "Belfast gracefully presents an iced porcelain teacup on a polished silver tray on a luxury yacht deck, dressed in her corseted navy-and-white maid swimdress with flawless poise.",
-    "animaCaption": "The pristine sea horizon gleams behind her as the head maid serves afternoon tea with effortless, devoted grace."
+    "promptProse": "Standing on the sunlit flybridge of a luxury yacht anchored in a calm blue bay, Belfast wears a lavish navy-blue and snow-white corseted lace swimdress with a ruffled peplum hem, detached lace wrist cuffs, and a silver bell choker. Offering a porcelain teacup of iced lemon tea on a silver tray with flawless poise, she smiles warmly under shaded afternoon sea light.",
+    "animaCaption": "Leaning forward gracefully on the shaded yacht flybridge in a navy-and-white lace-corseted maid swimdress and detached lace cuffs, she presents an iced teacup on a silver tray while steadying her wind-lifted hem. Soft afternoon sunlight gleams off the calm blue bay behind her.",
+    "compositionIntent": "single"
   }
 }

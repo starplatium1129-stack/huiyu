@@ -14,11 +14,10 @@ fn hidden_drawables_for(character: &str) -> Vec<i32> {
 impl RenderContext {
     pub(super) fn load_model(
         &mut self,
-        assets_root: &std::path::Path,
+        environment: &RendererEnvironment,
         character: &str,
         texture_scale: u32,
         profile: Live2DAdapterConfig,
-        local_root: Option<&std::path::Path>,
     ) -> Result<(), String> {
         if let Some(renderer) = self.renderer.as_mut() {
             renderer.release_model_resources();
@@ -34,7 +33,7 @@ impl RenderContext {
         self.motion_durations.clear();
         self.motion_last_indices.clear();
         self.active_motion = None;
-        let files = live2d_assets::resolve_model(assets_root, local_root, character, &profile.profile_id)?;
+        let files = live2d_assets::resolve_model(&environment.assets_root, environment.local_root.as_deref(), character, &profile.profile_id)?;
         let dir = files.directory;
         let moc_path = files.moc;
         let model3_path = files.manifest;
@@ -86,25 +85,12 @@ impl RenderContext {
                 }
             }
             let renderer = self.renderer.as_mut().ok_or("renderer not created")?;
-            for (ti, tex) in refs.textures.iter().enumerate() {
-                let path = dir.join(tex);
-                let t0 = Instant::now();
-                let img = image::open(&path)
-                    .map_err(|e| format!("open texture {}: {e}", path.display()))?
-                    .to_rgba8();
-                let (w, h) = img.dimensions();
-                let (w, h) = frame_pacing::texture_dimensions(w, h, texture_scale);
-                let img = if texture_scale > 1 {
-                    image::imageops::resize(&img, w, h, image::imageops::FilterType::Lanczos3)
-                } else { img };
-                textures.push(renderer.load_texture(&img.into_raw(), w, h));
-                eprintln!(
-                    "[live2d] texture {}/{} {w}x{h} {:.2}s",
-                    ti + 1,
-                    refs.textures.len(),
-                    t0.elapsed().as_secs_f32()
-                );
-            }
+            let started = Instant::now();
+            texture_cache::load(&dir, &refs.textures, texture_scale, environment.cache_root.as_deref(), |image| {
+                let (width, height) = image.dimensions();
+                textures.push(renderer.load_texture(image.as_raw(), width, height));
+            })?;
+            eprintln!("[live2d] {} textures loaded in {:.2}s", textures.len(), started.elapsed().as_secs_f32());
             if textures.is_empty() {
                 return Err("no textures".to_string());
             }

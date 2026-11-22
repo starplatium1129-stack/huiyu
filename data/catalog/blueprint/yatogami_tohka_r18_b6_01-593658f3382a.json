@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_01",
     "title": "夜刀神十香 · 神威灵装紫水晶座主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间灵装半褪露巨乳，紫黑长发如瀑飘扬，紫眸纯洁狂热主动下沉",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,23 +29,22 @@
       "armor",
       "open_clothes"
     ],
-    "promptProse": "Tohka moves astride the viewer's lap on the violet crystal throne, her armor lowered to her hips and long hair floating around them.",
+    "promptProse": "Astride her partner's lap atop a luminous amethyst crystal throne inside the Spirit realm at night, Tohka lets her purple astral armor and white spirit dress slip down around her hips. Pressing her bare breasts close as she sinks earnestly onto him in cowgirl position, she gazes down with parted lips, heavy blush, and pure ardent devotion while her long hair floats through faint violet magic light.",
     "promptTokens": [
-      "adult",
+      "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "purple armor",
-      "white astral dress",
-      "open armor",
-      "topless",
-      "cowgirl position",
-      "on lap",
-      "floating hair",
-      "crystal throne",
-      "magic",
-      "cowboy shot",
-      "from below",
       "straddling",
-      "warm lighting"
+      "floating hair",
+      "heavy blush",
+      "parted lips",
+      "crystal",
+      "throne",
+      "magic",
+      "warm lighting",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,15 +52,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "purple armor",
+      "white dress",
+      "open clothes",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "cowgirl position",
+      "sex"
+    ],
+    "nsfwProse": "Her violet astral armor and white layered spirit dress are lowered to her hips, leaving her full breasts bare as she rides earnestly astride her partner's lap in cowgirl position.",
     "outfitId": "astral_armor_dress",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "Her armor rests at her hips as long hair floats around the viewer's lap and crystal throne."
+    "compositionIntent": "group",
+    "animaCaption": "Riding astride her partner's lap on the violet crystal throne with her astral armor lowered to her hips, Tohka presses her bare breasts forward with a flushed, devoted gaze. Long floating hair and warm ambient light frame them amid faint purple magical glow."
   }
 }

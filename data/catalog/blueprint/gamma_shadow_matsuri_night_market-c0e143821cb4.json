@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_matsuri_night_market",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2798,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "gamma_shadow_matsuri_night_market",
     "characterId": "gamma_shadow",
@@ -17,22 +17,31 @@
     "action": "穿着牡丹浴衣慢慢巡视四越商会的连排摊位，灯笼的光映在她脸上",
     "timeOfDay": "night",
     "lighting": "夜市灯笼的暖橙光与远处烟火的闪光",
-    "camera": "full_shot",
+    "camera": "three quarter view, full body",
     "mood": "宁静与端庄",
-    "promptProse": "In a peony yukata, Gamma strolls the festival night market, checking each Mitsugoshi stall with a smile and a ledger.",
+    "promptProse": "Strolling unhurriedly down a lively summer festival street lined with Mitsugoshi trading stalls, Gamma wears her deep indigo peony yukata and gold obi with serene aristocratic grace. Holding a slim ledger lightly in one hand, she inspects each bustling booth with a warm yet discerning smile while distant fireworks blossom across the night sky. Rows of glowing orange paper lanterns bathe her composed face and the colorful wooden stalls in rich festival light.",
     "promptTokens": [
-      "night market",
-      "lanterns",
+      "walking",
+      "holding book",
+      "gentle smile",
       "festival",
-      "yukata",
-      "stalls",
-      "fireworks"
+      "night market",
+      "stall",
+      "paper lantern",
+      "fireworks",
+      "crowd",
+      "warm lighting",
+      "night",
+      "outdoors",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
-    "animaCaption": "Even at a festival, Gamma counts the takings — but tonight, she lets herself enjoy the lanterns a little.",
+    "animaCaption": "Strolling along the lantern-lit summer festival street in her indigo peony yukata, Gamma holds a slim ledger and inspects the busy Mitsugoshi stalls with a composed smile. Warm orange lanterns and distant night fireworks glow across the lively market.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "single"
   }
 }

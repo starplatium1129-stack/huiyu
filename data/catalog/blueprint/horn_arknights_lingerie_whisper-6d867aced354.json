@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3146,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "horn_arknights_lingerie_whisper",
     "characterId": "horn_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛风暴突击队简易训练营房水槽旁",
     "timeOfDay": "清晨",
     "lighting": "清晨破晓时凛冽清爽的白光穿透高窗，在军用白棉工字背心与迷彩短裤上切割出硬朗有力的线条",
-    "camera": "英武帅气的低仰角全身像，展现维多利亚正规军中队长的铁血身姿与天然的领袖魅力",
+    "camera": "low angle, full body",
     "mood": "军人风骨、刚毅沉着、毫不做作的帅气与绝对信任",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,31 @@
       "resolute_soldier"
     ],
     "promptTokens": [
-      "wolf ears",
-      "white tank top",
-      "camo shorts",
-      "drying blonde hair with towel",
-      "tall posture",
-      "amber eyes",
+      "standing",
+      "drying hair",
+      "towel",
+      "wet hair",
+      "determined",
+      "looking at viewer",
       "barracks",
-      "soft lighting"
+      "sink",
+      "high window",
+      "morning",
+      "white light",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Horn (Rita Skamandros) completing her dawn hygiene regimen inside an austere field barracks. Sporting a regulation white ribbed cotton tank top and desert camouflage lounge shorts that highlight her commanding military physique, she stands with rod-straight posture. Towel-drying her golden curls as her lupo ears perk, her proud amber eyes shine with unwavering resolve.",
-    "animaCaption": "Horn (Rita Skamandros) completing her dawn hygiene regimen inside an austere field barracks. Sporting a regulation white ribbed cotton tank top and desert camouflage lounge shorts that highlight her commanding military physique, she stands with rod-straight posture.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Horn stands upright beside a bare washbasin inside a field barracks at dawn, wearing a regulation white ribbed cotton tank top and desert camouflage sleep shorts. Drying her damp blonde hair with a coarse military towel, she meets the viewer with clear, resolute eyes as crisp morning light cuts down from a high window.",
+    "animaCaption": "Standing straight beside the barracks washbasin in a ribbed white cotton tank top and camouflage sleep shorts, she lowers a coarse towel from her damp blonde hair to meet the viewer's gaze with soldierly composure. Crisp dawn light streams through the high window.",
+    "nsfwTokens": [
+      "white tank top",
+      "ribbed tank top",
+      "camouflage shorts",
+      "bare shoulders",
+      "bare legs",
+      "athletic wear"
+    ],
+    "nsfwProse": "She wears a regulation ribbed white cotton tank top and desert camouflage stretch sleep shorts."
   }
 }

@@ -5,15 +5,19 @@
       <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
       <span>{{ savingResult ? '入册中…' : resultArchived ? '已入册' : resultTemporary ? '已暂存' : '未入册' }}</span>
     </span>
-    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品</span></span></RouterLink>
-    <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '入册中…' : '存入作品' }}</span></span></button>
+    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" aria-label="查看作品" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品</span></span></RouterLink>
+    <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" :aria-label="savingResult ? '入册中…' : '存入作品'" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '入册中…' : '存入作品' }}</span></span></button>
     <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: canSaveScene === false ? '当前引擎暂不支持存为场景' : '保存为场景' }">
       <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '保存中…' : '存为场景'" :disabled="!hasResult || generationBusy || capturingScene || canSaveScene === false" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '保存中…' : '存为场景' }}</span></button>
     </component>
     <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: hasPrevResult ? '对比上一张' : '无历史成片' }">
       <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="对比上张" :disabled="!hasResult || !hasPrevResult" @click="$emit('openCompare')"><ArchiveIcon name="compare" /><span>对比上张</span></button>
     </component>
-    <button class="btn btn-quiet canvas-clear-action" type="button" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" />清除</button>
+    <StudioTooltip v-if="tiltAvailable" content="立体观画">
+      <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="立体观画" :aria-pressed="tiltEnabled" @click="$emit('toggleTilt')"><ArchiveIcon name="eye" /><span>立体观画</span></button>
+    </StudioTooltip>
+    <button class="btn btn-quiet canvas-clear-action" type="button" aria-label="清除成片" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" /><span>清除</span></button>
+    <span v-if="size" class="canvas-size">{{ size }}</span>
   </div>
 </template>
 
@@ -35,6 +39,9 @@ const props = withDefaults(defineProps<{
   savingResult?: boolean
   resultTemporary?: boolean
   hasResult?: boolean
+  size?: string
+  tiltEnabled?: boolean
+  tiltAvailable?: boolean
 }>(), { hasResult: true })
 const actions = ref<HTMLElement | null>(null)
 let saveHadFocus = false
@@ -58,6 +65,7 @@ const emit = defineEmits<{
   saveResult: []
   openCompare: []
   clearResult: []
+  toggleTilt: []
 }>()
 </script>
 

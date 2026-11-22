@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_town_map",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2420,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "rena_liechtenauer_town_map",
     "characterId": "rena_liechtenauer",
@@ -16,23 +16,32 @@
     "action": "把地图摊开用指尖沿着路线折回，重新确认神社方向",
     "timeOfDay": "morning",
     "lighting": "morning sunlight",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "好奇",
-    "promptProse": "At a corner of an old town street, Lena traces a route on an unfolded map while finding the way to the shrine.",
+    "promptProse": "Pausing at a sunlit junction of a traditional wooden old-town street in the morning, Lena holds an unfolded paper town map open in front of her in her white kimono and red pleated skirt. She bends her head thoughtfully to trace a branching lane backward with her fingertip, checking which turn leads up toward the local shrine. Crisp morning sunlight brightens the timber storefronts, tiled eaves, and the creased paper in her hands.",
     "promptTokens": [
+      "standing",
+      "holding paper",
+      "map",
+      "looking down",
+      "curious",
       "old town",
+      "japanese architecture",
       "street",
-      "holding map",
-      "looking at map",
+      "wooden building",
+      "morning",
       "sunlight",
+      "outdoors",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing at a sunlit corner of the traditional wooden old-town street in her white-and-red kimono, Lena holds an unfolded paper map open and traces a backtracked street with her fingertip. Crisp morning light falls across the paper folds and timber eaves behind her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

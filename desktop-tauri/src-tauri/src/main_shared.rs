@@ -91,51 +91,67 @@ pub fn position_window_client_area(window: &tauri::WebviewWindow, target: tauri:
 }
 
 pub fn show_companion(app: &AppHandle, focus: bool) {
-    if crate::maintenance::active(app) { return; }
-    let Some(w) = app.get_webview_window("companion") else {
-        let gateway = app.state::<AppState>().gateway_url.lock().unwrap().clone();
-        if gateway.is_empty() && !crate::ui_entry::bundled(app) { return; }
-        let app = app.clone();
-        tauri::async_runtime::spawn_blocking(move || {
-            if let Err(error) = create_companion_window(&app, &gateway, true) {
-                app.state::<AppState>().error(&format!("open companion: {error}"));
-            }
-        });
-        return;
-    };
-    let was_visible = w.is_visible().unwrap_or(false);
-    // 最小化状态下 show() 不解除最小化（2026-08-15 实机：窗口被最小化后
-    // 托盘"显示 Companion"无效，窗口留在屏幕外）。先 unminimize 再 show。
-    let _ = w.unminimize();
-    if focus {
-        let _ = w.show();
-        let _ = w.set_focus();
-    } else {
-        let _ = w.show();
-    }
-    if !was_visible {
-        let _ = w.emit("aics:shown", ());
-        let _ = w.emit("aics:visibility", true);
-    }
+    crate::companion_window::show(app, focus, false);
 }
 
 pub fn hide_companion(app: &AppHandle) {
-    let Some(w) = app.get_webview_window("companion") else { return };
-    let was_visible = w.is_visible().unwrap_or(false);
-    if was_visible { crate::window_persistence::closing(app, "companion"); }
-    let _ = w.hide();
-    let chat_docked = app.state::<AppState>().preferences.lock().unwrap().chat_docked;
-    if chat_docked { hide_companion_chat(app); }
-    if was_visible {
-        let _ = w.emit("aics:visibility", false);
-    }
+    crate::companion_window::hide(app);
 }
 
 pub fn toggle_companion_visibility(app: &AppHandle) {
-    if app.get_webview_window("companion").is_some_and(|window| window.is_visible().unwrap_or(false)) {
+    let preparing = app.state::<AppState>().companion_presentation.lock().unwrap().preparing();
+    if preparing || app.get_webview_window("companion").is_some_and(|window| window.is_visible().unwrap_or(false)) {
         hide_companion(app);
     } else {
         show_companion(app, true);
+    }
+}
+
+pub fn normal_startup_mode(app: &AppHandle) -> Option<crate::window_state::StartupMode> {
+    let state = app.state::<AppState>();
+    let config = &state.paths.config_root;
+    if crate::maintenance::active(app) || crate::resource_assistant::recovery_pending(app)
+        || std::env::args().any(|arg| matches!(arg.as_str(), "--hidden" | "--resource-assistant"))
+        || ["resource-restart.json", "setup-restart.json"].iter()
+            .any(|file| std::fs::read(config.join(file)).ok().as_deref() == Some(b"true"))
+    {
+        return None;
+    }
+    let mode = state.preferences.lock().unwrap().startup_mode;
+    Some(mode)
+}
+
+pub fn dispatch_startup(app: &AppHandle, gateway_url: &str) {
+    use crate::window_state::StartupMode;
+
+    if crate::maintenance::active(app) || crate::resource_assistant::recovery_pending(app) { return; }
+    if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
+    let state = app.state::<AppState>();
+    if state.startup_dispatched.swap(true, Ordering::SeqCst) { return; }
+    let resources = state.paths.config_root.join("resource-restart.json");
+    let setup = state.paths.config_root.join("setup-restart.json");
+    if std::fs::read(&setup).ok().as_deref() == Some(b"true") {
+        open_atelier(app, gateway_url, Some("/control?section=control-setup"));
+        return;
+    }
+    if std::fs::read(&resources).ok().as_deref() == Some(b"true") {
+        open_atelier(app, gateway_url, Some("/control?section=control-library"));
+        let _ = std::fs::remove_file(resources);
+        return;
+    }
+
+    let Some(mode) = normal_startup_mode(app) else { return; };
+    if !state.paths.first_run_file.exists() {
+        let _ = crate::maintenance_protocol::write_json(&state.paths.first_run_file, &true);
+        if mode == StartupMode::Companion && !state.paths.ai_workspace_file.exists() && !state.paths.atelier_window_file.exists() {
+            open_atelier(app, gateway_url, Some("/control?section=control-overview"));
+        }
+    }
+    if matches!(mode, StartupMode::Atelier | StartupMode::Both) {
+        open_atelier(app, gateway_url, None);
+    }
+    if matches!(mode, StartupMode::Companion | StartupMode::Both) {
+        show_companion(app, false);
     }
 }
 
@@ -209,7 +225,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     });
 }
 
-pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start: bool) -> tauri::Result<()> {
+pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Result<()> {
     static OPEN: std::sync::Mutex<()> = std::sync::Mutex::new(());
     let _open = OPEN.lock().unwrap_or_else(|error| error.into_inner());
     if crate::maintenance::active(app) { return Ok(()); }
@@ -224,26 +240,22 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start
         .position(bounds.x as f64, bounds.y as f64)
         .min_inner_size(360.0_f64.min(bounds.width as f64), 480.0_f64.min(bounds.height as f64))
         .transparent(true)
+        .background_color(tauri::window::Color(0, 0, 0, 0))
+        .focused(false)
         .always_on_top(state.preferences.lock().unwrap().always_on_top)
         .skip_taskbar(true)
         .shadow(false)
         .build()?;
-    apply_window_placement(&win, &placement)?;
+    if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion bounds failed: {error}")); }
     #[cfg(windows)]
     if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion icons failed: {error}")); }
-    let ignore_mouse_events = state.ignore_mouse_events.load(Ordering::Relaxed);
-    if let Err(error) = win.set_ignore_cursor_events(ignore_mouse_events) {
-        state.ignore_mouse_events.store(false, Ordering::Relaxed);
-        state.warn(&format!("restore mouse passthrough failed: {error}"));
-    }
-    if show_on_start {
-        let _ = win.show();
-        let _ = win.emit("aics:shown", ());
-        let _ = win.emit("aics:visibility", true);
+    if let Err(error) = win.set_ignore_cursor_events(true) {
+        state.warn(&format!("initialize mouse passthrough failed: {error}"));
     }
     if let Some(bounds) = webview_bounds(&win) {
         let _ = win.emit("aics:window-bounds", bounds);
     }
+    crate::companion_window::configured(app);
     Ok(())
 }
 
@@ -265,8 +277,13 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let source = match crate::ui_entry::source(app, gateway_url, "/companion-chat") { Ok(source) => source, Err(_) => return };
     let app = app.clone();
+    let gateway_url = gateway_url.to_owned();
     tauri::async_runtime::spawn_blocking(move || {
         let state = app.state::<AppState>();
+        if let Err(error) = create_companion_window(&app, &gateway_url) {
+            state.error(&format!("open companion-chat: start hidden companion failed: {error}"));
+            return;
+        }
         let bounds = &placement.logical;
         let always_on_top = state.preferences.lock().unwrap().always_on_top;
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));

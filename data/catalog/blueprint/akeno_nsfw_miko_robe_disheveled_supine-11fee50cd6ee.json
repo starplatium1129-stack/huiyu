@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_miko_robe_disheveled_supine",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "akeno_nsfw_miko_robe_disheveled_supine",
     "title": "姬岛朱乃 · 巫女罗裳半褪的仰卧心意",
@@ -15,7 +15,7 @@
     "action": "侧卧在铺开红毡的和室榻榻米上，纯白巫女衣襟散敞，黑发马尾如墨铺散，单手轻抚微烫脸颊，紫眸流转着微醺般的情动笑意",
     "timeOfDay": "深夜",
     "lighting": "神前长明灯的柔和微光照耀肌肤",
-    "camera": "cowboy shot, lying on side on tatami, warm lantern glow",
+    "camera": "cowboy shot, eye level",
     "mood": "深情交付",
     "sceneTags": [
       "shrine",
@@ -26,24 +26,14 @@
       "red_cloth",
       "paper_lantern"
     ],
-    "promptProse": "Akeno Himejima lying on her side on tatami with a red felt blanket, loose white miko robe slipping off shoulders, bare shoulders, collarbone, long black ponytail spread across the floor, violet eyes, mole under eye, seductive gentle smile, blush, one hand resting on cheek, traditional shrine room, warm paper lantern glow.",
+    "promptProse": "Inside the quiet shrine inner room, Akeno reclines on her side along a crimson felt cloth laid across the tatami. Warm paper-lantern light softens the woven mats as she props her cheek on one hand and meets the viewer's gaze.",
     "promptTokens": [
-      "himejima akeno",
-      "black hair",
-      "very long ponytail",
-      "violet eyes",
-      "mole under eye",
-      "miko robe",
-      "white kimono",
-      "off-shoulder",
-      "collarbone",
-      "bare shoulders",
-      "lying on side",
-      "resting head on arm",
+      "lying",
+      "on side",
       "hand on cheek",
-      "blush",
-      "seductive smile",
       "looking at viewer",
+      "seductive smile",
+      "blush",
       "red cloth",
       "tatami",
       "shrine",
@@ -61,13 +51,17 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
+    "nsfwProse": "Her ceremonial white miko kimono hangs unfastened and off her shoulders above the scarlet hakama, exposing her collarbones, bare shoulders, and deep cleavage.",
     "nsfwTokens": [
-      "cleavage",
+      "miko",
+      "white kimono",
+      "red hakama",
+      "off shoulder",
+      "open clothes",
       "bare shoulders",
-      "bare legs"
+      "cleavage"
     ],
-    "animaCaption": "She rests on her side on tatami with a red cloth, a gentle smile on her face.",
+    "animaCaption": "Lying on her side atop the crimson felt blanket on the shrine tatami, she rests one cheek in her hand with a warm flushed smile as her white miko robe slips loose off her shoulders.",
     "compositionIntent": "single"
   }
 }

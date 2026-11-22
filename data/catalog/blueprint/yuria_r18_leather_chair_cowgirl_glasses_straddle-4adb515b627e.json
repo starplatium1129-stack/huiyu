@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
     "title": "春寺由梨亚 · 办公转椅西装半褪与摘镜单人深层自抚",
@@ -19,7 +19,7 @@
     "action": "摘掉眼镜斜坐在真皮转椅上，西装短裙推至腰间，单腿跨在扶手上手指自抚，双乳摇曳嬌喘",
     "timeOfDay": "深夜",
     "lighting": "办公桌台灯柔和金光照耀在起伏的雪肤与高背真皮转椅上的流光",
-    "camera": "cowboy shot, slightly low angle",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "office",
@@ -34,22 +34,20 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "She rests one leg across the chair armrest, one hand at her breast and the other beneath her lifted skirt, her folded red glasses beside her in the desk lamp's warm light.",
+    "promptProse": "Seen from a slightly low angle in the empty night office lit by a warm desk lamp, Yuria leans back in her leather swivel chair with one leg slung boldly over the armrest and her red glasses set aside, biting her lip with flushed, misty eyes.",
     "promptTokens": [
-      "open blouse",
-      "lifted black suit skirt",
-      "garter straps",
-      "black stockings",
-      "leg up",
-      "hand on own breast",
-      "female masturbation",
-      "leather chair",
-      "office",
       "sitting",
-      "folded glasses",
+      "office chair",
+      "leg up",
+      "hand on chest",
+      "glasses on table",
+      "biting lip",
+      "heavy blush",
+      "office",
       "desk lamp",
-      "cowboy shot",
-      "from below"
+      "warm lighting",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [
       "glasses worn"
@@ -59,8 +57,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One leg rests across the armrest while her folded red glasses lie beside the chair."
+    "nsfwTokens": [
+      "open shirt",
+      "pencil skirt",
+      "skirt lift",
+      "garter straps",
+      "black thighhighs",
+      "cleavage",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her white blouse hangs open at the chest and her charcoal suit skirt is pushed high around her waist to expose garter straps and black thigh-high stockings as one hand cups her breast and the other works inside her panties.",
+    "animaCaption": "Slouched in her high-backed leather office chair with one stockinged leg propped across the armrest and her folded glasses resting nearby, she gathers her dark pencil skirt to her waist and cups her chest while her other hand slips between her thighs.",
+    "compositionIntent": "single"
   }
 }

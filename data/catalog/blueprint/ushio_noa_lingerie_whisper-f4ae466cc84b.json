@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "ushio_noa_lingerie_whisper",
     "characterId": "ushio_noa",
@@ -14,7 +14,7 @@
     "location": "千禧年研讨会私密休息室，柔和的落地窗外是学园都市平静的夜景",
     "timeOfDay": "午夜记录归档后的特别时光",
     "lighting": "平板电脑荧幕散发的温白光与室内暖调筒灯交融，为银白长发镀上一层纯净银晕",
-    "camera": "close-up, eye level, 平视近景特写，落地窗外万家灯火与书记官神秘狡黠的微笑交融",
+    "camera": "close-up, eye level",
     "mood": "拥有绝对记忆能力的完美书记官，如蜜般甘甜的耳语与无法抗拒的温柔掌控",
     "adult": true,
     "sampleRating": "R15",
@@ -39,19 +39,33 @@
       "close_up"
     ],
     "promptTokens": [
-      "close-up",
-      "sitting comfortably on modern sofa",
-      "panoramic night window",
-      "peaceful city skyline bokeh",
-      "closed leather notebook nearby",
-      "playful mysterious smile",
-      "whispering pose",
-      "soft ambient light"
+      "sitting",
+      "sofa",
+      "leaning forward",
+      "holding tablet",
+      "notebook",
+      "smirk",
+      "gentle smile",
+      "looking at viewer",
+      "panoramic window",
+      "city lights",
+      "bokeh",
+      "night",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Noa leans back on the comfortable sofa in the Seminar private lounge after late-night record archiving, offering a teasing, secretive whisper beneath the city's twinkling panorama.",
-    "animaCaption": "Leaning back on a modern sofa before a panoramic night cityscape, sharing a playful, knowing whisper.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside the hushed Seminar private lounge overlooking a sea of glowing city lights, Noa sits perched on the modern sofa arm with her digital notepad and leans close with a soft, secretive smile.",
+    "animaCaption": "Seated along the Seminar lounge sofa arm before a panoramic window sparkling with night city bokeh, she leans gently forward with a tablet in hand and a playful knowing smile wearing a translucent micro-pleated pure white double-chiffon slip dress.",
+    "nsfwTokens": [
+      "white dress",
+      "chiffon slip",
+      "pleated",
+      "see-through",
+      "spaghetti straps",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a pure white translucent double-layer pleated chiffon slip dress with ultra-thin spaghetti straps and a delicate micro-pleated bodice over bare shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

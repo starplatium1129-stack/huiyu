@@ -1,9 +1,10 @@
 mod config;
+pub(crate) mod muse;
 mod native;
 mod payload;
 mod queue;
 mod speech;
-pub(crate) use speech::is_pcm_wave;
+pub(crate) use speech::{is_pcm_wave, pcm_video_frames};
 mod translation;
 
 use crate::{

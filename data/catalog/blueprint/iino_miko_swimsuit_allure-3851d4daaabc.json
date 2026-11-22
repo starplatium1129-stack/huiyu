@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3424,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "iino_miko_swimsuit_allure",
     "characterId": "iino_miko",
@@ -14,7 +14,7 @@
     "location": "热闹沙滩与木质防风长廊的交界入口处",
     "timeOfDay": "上午十点半",
     "lighting": "穿透防风木廊格栅的明朗条纹光栅，照亮她白皙娇小的脸庞与快要滴出血来的粉红耳廓",
-    "camera": "medium close-up, eye level, humorous and endearing tsundere perspective",
+    "camera": "medium close-up, eye level",
     "mood": "一本正经、害羞到极点却硬撑规矩的可爱反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -37,27 +37,32 @@
       "petite"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "iino miko",
-      "brown hair",
-      "low pigtails",
-      "orange ribbons",
-      "brown eyes",
-      "white ruffled tankini",
-      "holding waterproof clipboard to chest",
-      "intense cute blush",
-      "glaring strictly",
-      "wooden boardwalk fence",
-      "morning sun",
-      "petite adorable silhouette",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "holding clipboard",
+      "clipboard",
+      "heavy blush",
+      "glaring",
+      "embarrassed",
+      "beach",
+      "wooden fence",
+      "boardwalk",
+      "morning",
+      "sunlight",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Iino Miko holds a waterproof clipboard defensively against her chest in her modest white ruffled tankini, blushing furiously while attempting to deliver a stern disciplinary warning.",
-    "animaCaption": "Bright morning boardwalk light illuminates her scarlet blush as the earnest committee member tries to enforce seaside morals.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Beside the weathered wooden fence along the sunny morning beach boardwalk, Miko holds a waterproof clipboard defensively across her chest and lifts her chin in a stern yet fiercely blushing disciplinary lecture.",
+    "animaCaption": "Standing beside the sunlit wooden beach boardwalk fence in a modest white ruffled tankini and loose pastel-peach cardigan, she clutches a waterproof clipboard tight against her chest and glares in scarlet embarrassment.",
+    "nsfwTokens": [
+      "white swimsuit",
+      "tankini",
+      "ruffles",
+      "boy shorts",
+      "peach cardigan",
+      "open cardigan",
+      "orange ribbon"
+    ],
+    "nsfwProse": "She wears a modest white double-ruffled tankini with high-waisted boy-short bottoms under an open pastel-peach sun cardigan, her low pigtails tied with orange ribbons.",
+    "compositionIntent": "single"
   }
 }

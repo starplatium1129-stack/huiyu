@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "asuna_r18_schale_sofa_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "独自跨坐沙发扶手，一手抓靠背、一手腿间自抚",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, low angle",
+    "camera": "from below, cowboy shot",
     "category": "深层欢愉",
     "characterId": "ichinose_asuna",
     "coverageTags": [
@@ -22,27 +22,31 @@
     "location": "夏莱办公室真皮长沙发",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "cleaning_maid",
-    "promptProse": "Adult Asuna straddles the sofa arm, gripping a back cushion with one hand while the other rests between her thighs beneath the gathered dress.",
-    "promptTokens": [
-      "adult",
-      "office",
-      "sofa",
-      "black maid dress",
+    "nsfwProse": "Her black maid dress is opened and bunched at her waist, baring her full breasts above sheer black thigh-high stockings while her free hand works between her thighs.",
+    "nsfwTokens": [
+      "maid",
+      "black dress",
       "open clothes",
       "topless",
+      "nipples",
       "black thighhighs",
-      "halo",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "cleaning_maid",
+    "promptProse": "Seen from a low angle in the quiet sunset-lit office, Asuna sits astride the leather sofa armrest gripping a cushion for balance as amber window light washes across her flushed face and faint glowing halo.",
+    "promptTokens": [
       "straddling",
-      "masturbation",
-      "sofa arm",
+      "sofa",
       "holding cushion",
+      "office",
+      "window",
       "sunset",
-      "window light",
-      "cowboy shot",
-      "from below"
+      "warm lighting",
+      "heavy blush",
+      "parted lips",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -58,6 +62,7 @@
     ],
     "timeOfDay": "傍晚",
     "title": "一之濑明日奈 · 夏莱沙发跨坐骑乘与欢悦起伏",
-    "animaCaption": "She straddles the sofa arm, gripping a cushion with one hand while the other rests between her thighs."
+    "animaCaption": "Straddling the leather office sofa arm with her combat maid dress unfastened and gathered at her waist to bare her chest, she grips a back cushion with one hand while sliding the other between her stockinged thighs in the warm sunset glow.",
+    "compositionIntent": "single"
   }
 }

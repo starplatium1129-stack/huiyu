@@ -1,4 +1,4 @@
-import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { loadAnimeRenderer, parseAnimePsd } from '@/anime25d/loader'
 import { readAnimeCalibration, readAnimeModel, writeAnimeModel, type AnimeModel } from '@/anime25d/modelStore'
 import { useAnimeCalibration } from './useAnimeCalibration'
@@ -7,7 +7,7 @@ import type { AnimePerformance } from '@/anime25d/performance'
 import { ANIME_EXPRESSIONS, ANIME_MOTIONS } from '@/anime25d/capabilities'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
-export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElement | undefined>) {
+export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElement | undefined>, captureFrame?: (canvas: HTMLCanvasElement) => void) {
   const selected = ref(false), ready = ref(false), busy = ref(false), restoring = ref(false)
   const modelName = ref(''), status = ref(''), error = ref('')
   const warnings = ref<string[]>([])
@@ -78,6 +78,7 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
         const pose = performance.sample({ time: elapsed, dt, mouth: previewMouth, gazeX, gazeY, reduced, presence,
           attention: clamp((6 - (elapsed - gazeChangedAt)) / 2) })
         renderer.render({ time: elapsed, pose, reduced })
+        if (rendererCanvas) captureFrame?.(rendererCanvas)
         if (rendererCanvas && faceBounds) calibration.drawPreview(rendererCanvas, faceBounds, elapsed)
       }
       catch (reason) { fail(reason); return }
@@ -111,7 +112,8 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
       const nextPerformance = performanceModule.createAnimePerformance(model.name)
       nextPerformance.setEmotion(emotion); nextPerformance.setSpeaking(speaking)
       // Draw before accepting the import, so unsupported GPU/masks keep the old model.
-      next.render({ time: 0, pose: nextPerformance.sample({ time: 0, dt: 0, mouth: 0, gazeX: 0, gazeY: 0, attention: 0, reduced: true, presence }), reduced: true })
+      const firstPose = nextPerformance.sample({ time: 0, dt: 0, mouth: 0, gazeX: 0, gazeY: 0, attention: 0, reduced: true, presence })
+      next.render({ time: 0, pose: firstPose, reduced: true })
       if (persist) await writeAnimeModel(id, model)
       if (!current()) { next.destroy(); next = undefined; return }
       dispose(); renderer = next; next = undefined; elapsed = 0
@@ -125,6 +127,12 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
       saved = model; selected.value = true; ready.value = true
       modelName.value = model.name; warnings.value = [...parsed.warnings]
       status.value = `${parsed.layers.length} 个图层 · 2.5D 已加载`
+      if (captureFrame) {
+        await nextTick()
+        if (rendererCanvas !== nextCanvas || !renderer) return
+        renderer.render({ time: 0, pose: firstPose, reduced: true })
+        captureFrame(nextCanvas)
+      }
       resume()
     } catch (reason) {
       next?.destroy()

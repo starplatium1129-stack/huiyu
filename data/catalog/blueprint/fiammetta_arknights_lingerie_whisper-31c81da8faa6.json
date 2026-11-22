@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3142,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "fiammetta_arknights_lingerie_whisper",
     "characterId": "fiammetta_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛后勤甲板通风走廊金属阳台外",
     "timeOfDay": "晚间",
     "lighting": "甲板夜航警示灯的冷白灯晕与手中苦味酒气泡反射，在烈焰绯红吊带上勾勒出利落的轮廓",
-    "camera": "充满飒爽英姿与火辣性格的中仰角，捕捉不死鸟火爆脾气下的真实坦率",
+    "camera": "low angle, medium shot",
     "mood": "暴躁直爽、心口不一、英姿勃发中的卸下防备",
     "adult": true,
     "sampleRating": "R15",
@@ -37,22 +37,31 @@
       "fiery_phoenix"
     ],
     "promptTokens": [
-      "bird feathers",
-      "crimson camisole",
-      "boy shorts",
-      "holding drink can",
-      "balcony railing",
-      "wind blown white hair",
-      "fiery gaze",
-      "red lighting",
-      "dim lighting",
+      "standing",
+      "leaning on railing",
+      "holding can",
+      "glare",
+      "frown",
+      "wind",
+      "hair blowing",
+      "metal railing",
+      "ship deck",
       "night",
-      "cool lighting"
+      "cool lighting",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Chugging a bitter chilled beverage while glaring with fiery tsundere exasperation, she tosses a drink can toward the viewer. Cool white illumination from deck navigation lights and the amber fizz of bitter tonic in her glass cast sharp, determined highlights along her crimson camisole.",
-    "animaCaption": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Cool white illumination from deck navigation lights and the amber fizz of bitter tonic in her glass cast sharp, determined highlights along her crimson camisole.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Fiammetta leans against the iron railing of Rhodes Island's exterior catwalk in the brisk night wind, cooling off in a crimson athletic strappy camisole with D-ring clasps and fitted black boyshorts. Holding a cold canned drink with one hand while her short crimson hair whips in the breeze, she shoots an exasperated sideways glare under crisp white deck navigation lights.",
+    "animaCaption": "Braced against the iron deck railing in a crimson tactical camisole and black boyshorts, she grips a chilled drink can while glaring sideways through wind-whipped hair. Cold white deck lamps cut sharp highlights along her shoulders against the dark night air.",
+    "nsfwTokens": [
+      "red camisole",
+      "strappy top",
+      "black boyshorts",
+      "athletic wear",
+      "bare shoulders",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a fiery crimson athletic camisole with metal D-ring strap hardware paired with fitted black compression sleep shorts."
   }
 }

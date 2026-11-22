@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hashima_izumi_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3476,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "hashima_izumi_lingerie_whisper",
     "characterId": "hashima_izumi",
@@ -14,7 +14,7 @@
     "location": "波岛家出海房间画桌前与散落的同人本原稿堆中",
     "timeOfDay": "深夜",
     "lighting": "巨大液晶数位屏散发的高色准白光，将房间照得通明，桌上散落着喝空的能量饮料罐",
-    "camera": "极具生活实感的中近景俯视，捕捉同人画师截稿日燃尽一切的修罗场疯狂",
+    "camera": "from above, medium close-up",
     "mood": "截稿狂化、热血执着、同人女战士的燃烧之夜",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,31 @@
       "doujin_artist"
     ],
     "promptTokens": [
-      "oversized graphic tshirt off shoulder",
-      "drawing on tablet",
-      "energy drinks",
-      "messy twintails",
-      "deadline panic",
-      "late night",
-      "monitor glow",
-      "bright lighting",
-      "warm lighting"
+      "leaning forward",
+      "drawing",
+      "stylus",
+      "graphics tablet",
+      "messy hair",
+      "desk",
+      "energy drink",
+      "papers",
+      "monitor light",
+      "night",
+      "from above",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Her twintails fly wild as empty energy drink cans litter the desk, her eyes blazing with pure doujin creator fervor beneath the glare of her tablet. Bright cool-white light radiating from the large graphic tablet screen illuminates the cluttered studio desk, casting sharp highlights across scattered doujinshi manuscripts.",
-    "animaCaption": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Bright cool-white light radiating from the large graphic tablet screen illuminates the cluttered studio desk, casting sharp highlights across scattered doujinshi manuscripts.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from slightly above in her chaotic late-night bedroom studio, Izumi leans across her desk gripping her digital stylus with wild disheveled hair and manic deadline focus. Cool white glow from the large pen display lights the scattered doujinshi pages and energy drink cans.",
+    "animaCaption": "Leaning furiously over her cluttered bedroom desk in a slouchy cobalt-blue graphic t-shirt dress slipped off one bare shoulder, she grips her stylus against the glowing tablet surrounded by scattered manuscripts and empty energy drink cans.",
+    "nsfwTokens": [
+      "oversized shirt",
+      "blue t-shirt",
+      "off shoulder",
+      "bare shoulder",
+      "collarbone",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears an oversized boyfriend-fit cobalt-blue graphic jersey t-shirt dress whose wide boatneck slips loosely off one bare shoulder and collarbone.",
+    "compositionIntent": "single"
   }
 }

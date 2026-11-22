@@ -3,9 +3,7 @@ use super::*;
 pub(super) fn handle_command(
     state: &Arc<Live2DOverlayState>,
     context: &mut Option<RenderContext>,
-    assets_root: &std::path::Path,
-    local_root: Option<&std::path::Path>,
-    app: Option<&RendererEvents>,
+    environment: &RendererEnvironment,
     hwnd: HWND,
     cmd: OverlayCommand,
 ) {
@@ -31,7 +29,7 @@ pub(super) fn handle_command(
                 }
             }
             if let Some(ctx) = context.as_mut() {
-                if !handle_model_command(state, ctx, assets_root, local_root, app, hwnd, cmd) {
+                if !handle_model_command(state, ctx, environment, hwnd, cmd) {
                     release_context(context);
                 }
             } else {
@@ -68,15 +66,14 @@ fn reply_without_model(cmd: OverlayCommand, error: String) {
 fn handle_model_command(
     state: &Arc<Live2DOverlayState>,
     ctx: &mut RenderContext,
-    assets_root: &std::path::Path,
-    local_root: Option<&std::path::Path>,
-    app: Option<&RendererEvents>,
+    environment: &RendererEnvironment,
     hwnd: HWND,
     cmd: OverlayCommand,
 ) -> bool {
     match cmd {
         OverlayCommand::SetCharacter { character, texture_scale, adapter, reply } => {
             clear_model_state(state);
+            ctx.alpha_readback = None;
             ctx.mouth_level = 0.0;
             state.visible.store(false, Ordering::SeqCst);
             unsafe {
@@ -84,7 +81,7 @@ fn handle_model_command(
             }
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
-                ctx.load_model(assets_root, &character, texture_scale, adapter, local_root)?;
+                ctx.load_model(environment, &character, texture_scale, adapter)?;
                 ctx.start_initial_motion()
             })();
             // Also release staging after a partially failed load.
@@ -125,7 +122,7 @@ fn handle_model_command(
                 ctx.start_motion(&group, index, priority, MotionPhase::Interaction)
             })();
             if let Err(reason) = &result {
-                if let Some(app) = app {
+                if let Some(app) = environment.events.as_ref() {
                     let _ = app.emit(
                         "aics:live2d:motion-failed",
                         serde_json::json!({ "group": group, "index": index, "reason": reason }),

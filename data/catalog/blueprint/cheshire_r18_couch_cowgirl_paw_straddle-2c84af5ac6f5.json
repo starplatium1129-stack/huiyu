@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_couch_cowgirl_paw_straddle",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:59.363Z",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "cheshire_r18_couch_cowgirl_paw_straddle",
     "title": "柴郡 · 沙发戴爪跨坐骑乘与娇憨起伏",
@@ -19,7 +19,7 @@
     "action": "猫娘爪套扶着皮沙发靠背，毛茸茸猫尾摇晃，跨坐在扶手上娇喘低吟",
     "timeOfDay": "黄昏",
     "lighting": "遮光窗帘缝隙透入的一抹浓金落日余晖映照在雪肤与猫耳上",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -33,24 +33,19 @@
       "smile",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the sofa arm with one gloved hand on the backrest and the other between her thighs. A strip of sunset through the curtains falls across the velvet.",
+    "promptProse": "Seen from a low angle inside a quiet velvet-furnished lounge, Cheshire sits astride the broad sofa arm with one gloved hand gripping the backrest for balance. A warm ribbon of late sunset falls across the plush cushions and her flushed expression.",
     "promptTokens": [
-      "lounge",
-      "velvet sofa",
-      "white bikini",
-      "lace trim",
-      "topless",
-      "bikini aside",
-      "white gloves",
       "straddling",
-      "masturbation",
-      "sofa arm",
-      "hand on backrest",
-      "heavy blush",
+      "sofa",
+      "hand on sofa",
+      "lounge",
+      "curtains",
       "sunset",
       "window light",
-      "cowboy shot",
-      "from below"
+      "heavy blush",
+      "parted lips",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,8 +53,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One gloved hand grips the backrest while the other rests between her thighs above the sofa arm."
+    "nsfwTokens": [
+      "white bikini",
+      "lace trim",
+      "bikini aside",
+      "topless",
+      "nipples",
+      "white gloves",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Her white lace-trimmed maid bikini is loosened off her bare breasts and pulled aside at the hip, while her other white-gloved hand works between her parted thighs.",
+    "animaCaption": "Straddling the velvet lounge sofa armrest in sunset light through parted curtains, she grips the backrest with one white-gloved hand while slipping the other past her shifted white lace bikini between her thighs, her chest bare and cheeks deeply flushed.",
+    "compositionIntent": "single"
   }
 }

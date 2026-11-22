@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_r18_apartment",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 509,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "kisara_r18_apartment",
     "title": "木更 · 契约者的深夜",
@@ -15,7 +15,7 @@
     "action": "白衬衫半褪坐在床边",
     "timeOfDay": "深夜",
     "lighting": "faint city neon through the window, a subdued glow from the contract mark",
-    "camera": "medium shot, front view",
+    "camera": "front view, medium shot",
     "mood": "恶魔契约与炽热独占欲",
     "sceneTags": [
       "apartment_bedroom",
@@ -27,32 +27,41 @@
       "neon_light",
       "night"
     ],
-    "promptProse": "Adult Kisara sits at the bed edge in her open white shirt, leaning toward the offscreen viewer for a kiss. The faint contract mark on her chest glows against the last neon light entering the room.",
+    "promptProse": "Inside a dim apartment bedroom lit by streaks of colored city neon through the window, Kisara leans closely from the edge of the bed to kiss her partner. The luminous demonic contract mark glimmers softly against her skin in the dark.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "open oversized white shirt",
-      "bare breasts",
+      "1boy",
+      "hetero",
       "sitting",
       "leaning forward",
       "kissing",
       "bed",
+      "bedroom",
       "glowing mark",
       "neon lights",
       "night",
-      "medium shot",
-      "front view"
+      "front view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "oversized shirt",
+      "white shirt",
+      "open shirt",
+      "topless",
+      "nipples",
+      "bare thighs",
+      "heavy blush"
+    ],
+    "nsfwProse": "Her oversized white dress shirt hangs completely unbuttoned off her shoulders with no underwear beneath, leaving her bare breasts and upper thighs uncovered as she presses close.",
     "adultArtistHint": "@tsunako",
     "outfitId": "oversized_white_shirt",
     "sampleRating": "R15",
-    "animaCaption": "She leans from the bed edge toward the offscreen viewer for a kiss."
+    "animaCaption": "Perched on the edge of the apartment bed in an unbuttoned oversized white shirt that bares her breasts and the faintly glowing contract mark on her chest, she leans in to press a deep kiss onto her partner's lips in the neon night glow.",
+    "compositionIntent": "group"
   }
 }

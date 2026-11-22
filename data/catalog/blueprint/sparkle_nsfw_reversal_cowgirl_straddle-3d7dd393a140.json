@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_reversal_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1053,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "sparkle_nsfw_reversal_cowgirl_straddle",
     "title": "花火 · 反被客为主的小恶魔失控骑乘",
@@ -15,7 +15,7 @@
     "action": "双手被按在胸前跨坐腰间骑乘，娇小雪乳剧烈晃动，眼角含泪咬唇失神娇喘",
     "timeOfDay": "深夜",
     "lighting": "床头暧昧的粉紫调氛围壁灯与汗水光泽",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "from below, pov, cowboy shot",
     "mood": "反被攻陷",
     "sceneTags": [
       "bedroom",
@@ -29,14 +29,21 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Sparkle rides astride her companion on silk sheets, her wrists held lightly against their chest beneath dim pink-purple wall-lamp light.",
+    "promptProse": "On silk sheets inside a luxury Penacony suite, a completely nude Sparkle rides her partner in cowgirl position with her wrists held pinned against his chest, tables turned on her teasing. Biting her lip with flushed cheeks and physiological tears in her eyes, she glows beneath dim pink-and-purple bedside wall lighting in first-person view from below.",
     "promptTokens": [
-      "Sparkle",
-      "straddling",
-      "bed",
-      "purple light",
-      "low angle",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
+      "straddling",
+      "wrists held",
+      "biting lip",
+      "teary eyes",
+      "blush",
+      "silk sheets",
+      "bed",
+      "pink and purple light",
+      "from below",
       "pov",
       "cowboy shot"
     ],
@@ -53,13 +60,18 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
+    "nsfwProse": "She is completely nude astride her partner with both slender wrists pinned gently against his chest as she bites her lip and trembles with flushed tears.",
     "nsfwTokens": [
       "nude",
-      "cowgirl position",
+      "completely nude",
+      "small breasts",
       "nipples",
-      "pussy"
+      "pussy",
+      "sex",
+      "vaginal",
+      "sweat"
     ],
-    "animaCaption": "Her companion lightly holds her wrists against their chest above the silk sheets."
+    "animaCaption": "Completely nude atop silk sheets, she rides astride the viewer while her wrists are held pinned against their chest, biting her lip through flushed tears and defiant breaths. Dim pink-and-purple wall lamplight shimmers across her sweat-glossy skin.",
+    "compositionIntent": "group"
   }
 }

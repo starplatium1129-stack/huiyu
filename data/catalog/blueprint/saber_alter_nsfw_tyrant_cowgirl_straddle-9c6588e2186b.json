@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 229,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "saber_alter_nsfw_tyrant_cowgirl_straddle",
     "title": "黑呆 · 暴君骑士王的狂热主控骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐腰间疯狂起伏主导骑乘，双手按住肩膀，俯身咬吻，眼神炽热霸道",
     "timeOfDay": "深夜",
     "lighting": "昏暗壁灯映照出汗湿滑腻的雪白身躯",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "from below, pov, cowboy shot",
     "mood": "狂野占有",
     "sceneTags": [
       "bedroom",
@@ -30,21 +30,23 @@
       "dominant",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the offscreen viewer on the silk bed, her hands on their shoulders as she leans down to kiss them. A dim wall lamp lights the bed.",
+    "promptProse": "On a dark silk bed inside a private chamber, a completely nude and sweat-slicked Saber Alter rides her partner in a dominant cowgirl position, both hands pinning his shoulders. Bending down to kiss him fiercely with possessive golden eyes, she is illuminated from below by a dim warm wall lamp in first-person view.",
     "promptTokens": [
-      "nude",
-      "hair down",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "kissing",
-      "bed",
-      "silk sheets",
-      "from below",
       "straddling",
       "hands on another's shoulders",
       "leaning forward",
-      "warm lighting",
-      "cowboy shot",
-      "pov"
+      "kissing",
+      "bed",
+      "silk sheets",
+      "dim wall lamp",
+      "warm light",
+      "from below",
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,11 +61,17 @@
       "cowgirl"
     ],
     "nsfwTokens": [
+      "nude",
+      "completely nude",
       "nipples",
-      "pussy"
+      "pussy",
+      "sex",
+      "vaginal",
+      "sweat",
+      "heavy breathing"
     ],
-    "nsfwProse": "",
-    "compositionIntent": "single",
-    "animaCaption": "Both hands rest on the offscreen viewer's shoulders as she leans down to kiss them."
+    "nsfwProse": "She is completely nude and slick with sweat, riding her partner hard with both hands pinning his shoulders as she bends down to claim his lips.",
+    "compositionIntent": "group",
+    "animaCaption": "Nude and sweat-slicked on dark silk sheets, she rides astride the viewer with both hands pinning their shoulders and leans down into a fierce possessive kiss. Dim warm wall lamplight traces the sheen along her pale skin."
   }
 }

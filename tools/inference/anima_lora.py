@@ -55,8 +55,15 @@ def _targets(pipeline):
     return result
 
 
-def load_kohya(file, pipeline):
-    """Read one already-open CPU safetensors file into checked native A/B weights."""
+def _all_finite(tensor):
+    if tensor.numel() == 0:
+        return True
+    minimum, maximum = tensor.aminmax()
+    return math.isfinite(minimum.item()) and math.isfinite(maximum.item())
+
+
+def load_kohya(file, pipeline, *, expected_shapes=None):
+    """Read checked CPU A/B weights, or return None if swap shapes differ."""
     import torch
     if "lora_adapter_metadata" in (file.metadata() or {}):
         raise ValueError("Kohya alpha triples cannot also override PEFT adapter metadata")
@@ -69,15 +76,29 @@ def load_kohya(file, pipeline):
         groups.setdefault(match[1], set()).add(match[2])
     if not groups:
         raise ValueError("Anima Kohya LoRA contains no linear adapters")
-    converted = {}
     for alias, parts in groups.items():
         if parts != {"alpha", "lora_down.weight", "lora_up.weight"}:
             raise ValueError(f"Incomplete Anima Kohya LoRA triple: {alias}")
+
+    if expected_shapes is not None:
+        # A differently ranked adapter needs a fresh load. Check the header
+        # before reading and scaling weights that the fresh load would reread.
+        if len(expected_shapes) != 2 * len(groups):
+            return None
+        for alias in groups:
+            target = targets[alias][0]
+            for side, part in (("A", "lora_down.weight"), ("B", "lora_up.weight")):
+                shape = tuple(file.get_slice(f"{alias}.{part}").get_shape())
+                if shape != expected_shapes.get(f"{target}.lora_{side}.weight"):
+                    return None
+
+    converted = {}
+    for alias in groups:
         target, inputs, outputs = targets[alias]
         down, up, alpha = [file.get_tensor(f"{alias}.{part}")
                            for part in ("lora_down.weight", "lora_up.weight", "alpha")]
         if any(value.dtype not in (torch.float16, torch.bfloat16, torch.float32)
-               or value.device.type != "cpu" or not bool(torch.isfinite(value).all()) for value in (down, up, alpha)):
+               or value.device.type != "cpu" for value in (down, up, alpha)) or not _all_finite(down):
             raise ValueError(f"Anima Kohya LoRA requires finite CPU floating weights: {alias}")
         if (down.ndim != 2 or up.ndim != 2 or down.shape[0] <= 0 or
                 tuple(down.shape) != (up.shape[1], inputs) or tuple(up.shape) != (outputs, down.shape[0]) or
@@ -88,9 +109,10 @@ def load_kohya(file, pipeline):
             raise ValueError(f"Anima Kohya LoRA alpha/rank must be finite and nonnegative: {alias}")
         # PEFT defaults alpha to rank for native A/B dictionaries. Fold the
         # original multiplier into B in float32; do not mutate or round the file.
-        scaled = up.float() * scale
-        if not bool(torch.isfinite(scaled).all()):
-            raise ValueError(f"Anima Kohya LoRA alpha scaling overflowed: {alias}")
+        scaled = up.to(dtype=torch.float32, copy=True).mul_(scale)
+        # A nonfinite source B also produces a nonfinite scaled B, even at zero scale.
+        if not _all_finite(scaled):
+            raise ValueError(f"Anima Kohya LoRA B weights are nonfinite after scaling: {alias}")
         for side, value in (("A", down), ("B", scaled)):
             key = f"{target}.lora_{side}.weight"
             if key in converted:
@@ -103,7 +125,7 @@ class UnsupportedLora(ValueError):
     pass
 
 
-def _inspect(pipeline, path, *, tensors=False):
+def _inspect(pipeline, path, *, tensors=False, expected_shapes=None):
     from safetensors import safe_open
     from peft import LoraConfig
     from dataclasses import fields
@@ -115,9 +137,11 @@ def _inspect(pipeline, path, *, tensors=False):
         converted_weights = None
         if any(key.startswith("lora_unet_") for key in keys):
             try:
-                converted_weights = load_kohya(file, pipeline)
+                converted_weights = load_kohya(file, pipeline, expected_shapes=expected_shapes)
             except ValueError as exc:
                 raise UnsupportedLora(str(exc)) from exc
+            if converted_weights is None:
+                return None
             keys = set(converted_weights)
         elif tensors:
             converted_weights = {key: file.get_tensor(key) for key in sorted(keys)}
@@ -249,45 +273,54 @@ def try_hotswap(pipeline, adapters, *, upload):
 
     prepared = []
     for index, adapter in enumerate(adapters):
-        state, targets, metadata_override = _inspect(pipeline, Path(adapter["path"]), tensors=True)
-        prepared.append((f"huiyu_{index}", state, targets, metadata_override, {}))
+        name = f"huiyu_{index}"
+        shapes = {
+            f"{component}.{key}": tuple(weight.shape)
+            for component, model in components.items()
+            if name in getattr(model, "peft_config", {})
+            for key, weight in get_peft_model_state_dict(
+                model, adapter_name=name, save_embedding_layers=False).items()
+        }
+        inspected = _inspect(pipeline, Path(adapter["path"]), tensors=True, expected_shapes=shapes)
+        if inspected is None:
+            return False
+        state, targets, metadata_override = inspected
+        if metadata_override or state.keys() != shapes.keys():
+            return False
+        prepared.append((name, state, targets, shapes, {}))
     for component, model in components.items():
         expected_names = {name for name, _, targets, _, _ in prepared if component in targets}
         if set(getattr(model, "peft_config", {})) != expected_names:
             return False
     # Do not supply path-based loaders after this point: the prepared tensors
     # are precisely the bytes inspected below, not another read of a changed file.
-    for name, state, targets, metadata_override, destinations in prepared:
-        if metadata_override:
-            return False
+    for name, state, targets, shapes, destinations in prepared:
         for component, expected in targets.items():
             model = components[component]
-            current = get_peft_model_state_dict(model, adapter_name=name, save_embedding_layers=False)
-            if set(current) != expected:
-                return False
             ranks = {}
             # Read from the owning state so replaced FP32 tensors can retire
             # individually, without a second dictionary retaining the group.
             for key in sorted(expected):
-                tensor = state[f"{component}.{key}"]
+                full_key = f"{component}.{key}"
+                tensor = state[full_key]
                 if (tensor.dtype not in (torch.float16, torch.bfloat16, torch.float32)
-                        or tensor.device.type != "cpu" or not bool(torch.isfinite(tensor).all())):
+                        or tensor.device.type != "cpu" or not _all_finite(tensor)):
                     raise UnsupportedLora(f"Hotswap requires finite CPU floating LoRA weights: {component}.{key}")
-                if tensor.ndim != 2 or tensor.shape != current[key].shape:
+                if tensor.ndim != 2 or tuple(tensor.shape) != shapes[full_key]:
                     return False
                 target, side = key.rsplit(".lora_", 1)
                 layer = model.get_submodule(target)
                 if type(layer) is not Linear or layer.merged:
                     return False
                 parameter = getattr(layer, "lora_" + side[0])[name].weight
-                destinations[f"{component}.{key}"] = parameter.device
+                destinations[full_key] = parameter.device
                 # PEFT swaps tensor storage without retaining the destination
                 # dtype. In particular Kohya's alpha-folded FP32 B must not
                 # turn an existing BF16 adapter into a mixed-dtype projection.
                 normalized = tensor.to(dtype=parameter.dtype)
-                if normalized is not tensor and not bool(torch.isfinite(normalized).all()):
+                if normalized is not tensor and not _all_finite(normalized):
                     raise UnsupportedLora(f"Hotswap dtype conversion overflowed: {component}.{key}")
-                state[f"{component}.{key}"] = normalized
+                state[full_key] = normalized
                 if side == "B.weight":
                     ranks[f"^{key}"] = tensor.shape[1]
             candidate = _create_lora_config(
@@ -299,8 +332,8 @@ def try_hotswap(pipeline, adapters, *, upload):
             # injection (tuners_utils.py:837-862). Compare the actual loaded
             # target paths already checked above, not those two spellings.
             # No runtime rank/alpha/variant or source metadata is ignored.
-            current_options["target_modules"] = {key.rsplit(".lora_", 1)[0] for key in current}
-            candidate_options["target_modules"] = {key.rsplit(".lora_", 1)[0] for key in expected}
+            target_modules = {key.rsplit(".lora_", 1)[0] for key in expected}
+            current_options["target_modules"] = candidate_options["target_modules"] = target_modules
             # Only the same ordinary default configuration can reach mutation.
             # PiSSA/OLoRA/DoRA, different alpha/rank patterns, dropout, and other
             # PEFT behavior changes remain on the checked unload/load path.
@@ -309,7 +342,7 @@ def try_hotswap(pipeline, adapters, *, upload):
             check_hotswap_configs_compatible(current_config, candidate)
     # Drop preflight tensor aliases before PEFT swaps old storage back into the
     # incoming tensors. Retire each consumed dictionary before staging the next.
-    del current, tensor, normalized, parameter
+    del tensor, normalized, parameter
     uploads = []
     for index, (name, state, targets, _, destinations) in enumerate(prepared):
         for observation in _upload_adapter(state, destinations, upload):

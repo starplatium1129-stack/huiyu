@@ -24,8 +24,10 @@ import { useChatConversationClear } from '@/composables/chat/useChatConversation
 import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 import { screenWatchConnection } from '@/api/companionScreenWatchApi'
+import { readChatPreferences } from '@/storage/chatPreferences'
 
 interface CharacterStageHandle {
+  presentationReady?: import('@/types/desktop').CompanionReadyKind
   petControls?: CharacterPetControls
   playPetMotion?: (id: string) => void
   setPetExpression?: (id: string) => Promise<boolean>
@@ -42,7 +44,10 @@ interface CharacterStageHandle {
   releasePointerFocus?: () => void
 }
 
-export function useCharacterRoomSession(reading?: { latest: () => void; nearBottom: () => boolean }) {
+export function useCharacterRoomSession(
+  reading?: { latest: () => void; nearBottom: () => boolean },
+  presentation?: { character: string; startConversation: Promise<void> },
+) {
   const route = useRoute()
   const router = useRouter()
   const chatListRef = ref<HTMLElement>()
@@ -54,6 +59,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   const voiceActive = ref(false)
   const chatError = ref('')
   const chatErrorKind = ref('')
+  const chatErrorCode = ref('')
   const voiceStatusText = ref('')
   const playingMid = ref('')
   const isSpeaking = ref(false)
@@ -65,22 +71,39 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   let disposed = false
   const confirmationController = new AbortController()
 
-  function setError(message: string, kind = 'error', timeout = 7000) {
+  function setError(message: string, kind = 'error', timeout = 7000, code = '') {
     clearTimeout(errorTimer)
     chatError.value = message || ''
     chatErrorKind.value = message ? kind : ''
+    chatErrorCode.value = message ? code : ''
     if (message && timeout) {
       errorTimer = window.setTimeout(() => setError(''), timeout) as unknown as number
     }
   }
 
   const storage = useChatStorage((message) => setError(message, 'warning', 9000))
-  const initialStorage = storage.load()
+  if (presentation) {
+    try {
+      const preferences = readChatPreferences()
+      if (preferences) Object.assign(storage.state.settings, {
+        autoVoice: preferences.autoVoice,
+        live2dOutfits: { ...storage.state.settings.live2dOutfits, ...preferences.live2dOutfits },
+      })
+    } catch { /* The regular chat admission reports corrupted preferences. */ }
+    if (getCompanionCharacterConfig(presentation.character)) storage.state.active = presentation.character
+  }
+  const conversationStarted = ref(!presentation)
+  const initialStorage = presentation ? presentation.startConversation.then(async () => {
+    if (disposed) return
+    await storage.load()
+    if (!disposed) conversationStarted.value = true
+  }) : storage.load()
   let selectionChanged = false
 
   const {
     ollamaOnline, localStatusText, checkingChatStatus,
     museStatus, museStatusText, checkingMuse, refreshMuseStatus,
+    chatGpt,
     models,
     currentModel,
     chatProvider,
@@ -97,7 +120,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     hostApiBaseUrl,
     useHostConfig,
     apiConfigured,
-    chatReady,
+    chatReady: providerReady,
     refreshChatStatus,
     refreshHostConfig,
     saveHostConfig,
@@ -108,7 +131,13 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     setChatStatus,
     setBusy,
   } = useChatProvider({ storage, isBusy: busy })
-  void refreshHostConfig()
+  const chatReady = computed(() => conversationStarted.value && providerReady.value)
+  watch([chatProvider, chatGpt.activeClientId, chatGpt.usagePaused], ([provider, clientId, paused], [, previousClientId, wasPaused]) => {
+    if (chatErrorCode.value === 'CHATGPT_USAGE_LIMIT'
+      && (provider !== 'chatgpt' || clientId !== previousClientId || (wasPaused && !paused))) setError('')
+  })
+  if (presentation) void initialStorage.then(() => { if (!disposed) return refreshHostConfig() })
+  else void refreshHostConfig()
 
   const isLocalHost = computed(() => isLocalStudioHost())
   const screenWatchTarget = computed(() => isLocalHost.value && chatProvider.value === 'api' && apiConfigured.value && !useHostConfig.value
@@ -259,6 +288,8 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     chatReady,
     chatProvider,
     currentModel,
+    chatgptModel: chatGpt.selectedModel,
+    chatgptClientId: chatGpt.activeClientId,
     apiBaseUrl,
     apiModel,
     apiKey,
@@ -271,6 +302,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     recallMemories,
     setBusy,
     onError: setError,
+    onChatGptStatusChanged: chatGpt.refreshAfterRequest,
     onStreamEmotion: (emotion) => {
       if (autoVoice.value) return
       characterStageRef.value?.setEmotion(emotion)
@@ -311,7 +343,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
       if (disposed || chatMutationBusy.value || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
       if (chatProvider.value === 'muse' && (imageUrl || sendOptions.image) && sendOptions.action !== 'generate-from-image') {
         acknowledge(false)
-        setError('Muse 角色聊天目前支持文字，请用文字描述图片。', 'info')
+        setError('Muse 目前只接收文字，请用文字描述图片。', 'info')
         return
       }
       if (acknowledge(true) === false) { setError('未能接收，请检查连接。'); return }
@@ -443,6 +475,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     screenWatchTarget,
     chatError,
     chatErrorKind,
+    chatErrorCode,
     toolActivity,
     thinkingActivity,
     reasoning,
@@ -467,6 +500,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
     ollamaOnline, localStatusText, checkingChatStatus,
     museStatus, museStatusText, checkingMuse, refreshMuseStatus,
+    chatGpt,
     models,
     currentModel,
     chatProvider,

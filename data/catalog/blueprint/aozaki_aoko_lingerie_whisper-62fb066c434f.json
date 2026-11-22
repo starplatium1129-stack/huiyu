@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3411,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "aozaki_aoko_lingerie_whisper",
     "characterId": "aozaki_aoko",
@@ -14,7 +14,7 @@
     "location": "久远寺邸阁楼青子的简朴房间",
     "timeOfDay": "清晨",
     "lighting": "晨初清冽的朝霞斜穿过百叶窗，在地板上切出一道道金橙色的条纹光斑",
-    "camera": "medium shot, low angle, 充满生命力与张力的中低视角，捕捉健美紧致的体魄与帅气不羁的姿态",
+    "camera": "low angle, medium shot",
     "mood": "爽朗果决、英气勃发与充满活力的夏晨",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,34 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "sitting on edge of bed",
-      "leaning back on palms",
-      "athletic toned figure",
+      "sitting",
+      "on bed",
+      "leaning back",
+      "arms behind back",
+      "smirk",
+      "confident",
+      "looking at viewer",
+      "bedroom",
       "wide window",
-      "distant city lights",
-      "breezy night",
-      "confident dashing smirk",
-      "warm room lamp"
+      "city lights",
+      "warm lamp",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Aoko leans back casually on her hands upon the bed in her spacious dorm, radiating raw magic energy and bold, unpretentious charm with a rakish grin.",
-    "animaCaption": "Leaning back comfortably on the bed with an athletic, confident posture and a dashing, carefree grin.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Perched on the edge of her bed inside a spacious attic room at night, Aoko Aozaki leans back effortlessly on both palms in a deep navy ribbed cotton racerback crop tank and loose heather-grey sleep boxers. Showing her toned midriff and dashing smirk, she is framed against wide breezy windows and warm indoor lamplight.",
+    "animaCaption": "Sitting at the edge of her bed leaning back on both palms in a navy ribbed racerback crop tank and loose grey sleep boxers, she flashes a bold, carefree smirk toward the viewer. Warm room lamplight outlines her athletic figure beside the wide breezy night window.",
+    "nsfwTokens": [
+      "navy tank top",
+      "racerback crop top",
+      "grey shorts",
+      "boxer shorts",
+      "bare midriff",
+      "toned abs",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a deep navy ribbed cotton racerback crop tank revealing her toned midriff paired with loose heather-grey jersey sleep boxers.",
+    "compositionIntent": "single"
   }
 }

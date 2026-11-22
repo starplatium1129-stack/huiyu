@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "komine_sachi_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3298,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "komine_sachi_lingerie_whisper",
     "characterId": "komine_sachi",
@@ -14,7 +14,7 @@
     "location": "主人卧室宽大窗台前，初曦微风吹动轻柔的白色纱帘",
     "timeOfDay": "清晨唤醒时刻",
     "lighting": "白金色晨曦从侧窗漫射而入，轻纱窗帘折射出朦胧纯白漫反射光晕",
-    "camera": "wide shot, low angle, 正面全景微仰拍，呈现严谨端正的坐姿与透光晨风勾勒出的柔美轮廓",
+    "camera": "from below, wide shot",
     "mood": "女仆的极致奉献与克制温存，圣洁中带着微妙的反差诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,33 @@
       "low_angle"
     ],
     "promptTokens": [
-      "wide shot",
-      "low angle",
-      "sitting on window sill",
-      "white curtains",
-      "morning breeze",
-      "sunrise",
-      "sunlight",
-      "window",
-      "maid poise",
+      "sitting",
+      "hands on lap",
+      "head tilt",
       "gentle smile",
-      "bright morning"
+      "looking at viewer",
+      "windowsill",
+      "white curtains",
+      "wind",
+      "bedroom",
+      "morning",
+      "sunlight",
+      "from below",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Sitting primly on the wide windowsill in the master bedroom, Sachi greets the dawn as gentle morning breezes ripple through sheer white curtains, illuminating her devoted, serene posture.",
-    "animaCaption": "Sitting poised on a sunlit windowsill in the early morning, white curtains fluttering gently in the fresh dawn breeze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from a gentle low wide angle beside the tall master bedroom window at dawn, Sachi sits primly with knees together and hands folded in her lap while morning breezes lift the sheer white curtains behind her.",
+    "animaCaption": "Seated neatly with folded hands along the sunlit master bedroom windowsill as sheer white curtains billow in the dawn breeze, she tilts her head with serene devotion wearing a maid-inspired sheer white ruffled lace bralette, frilled choker, and sheer high-cut panties.",
+    "nsfwTokens": [
+      "white lingerie",
+      "lace bra",
+      "ruffles",
+      "see-through",
+      "white choker",
+      "white panties",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears a pure white maid-inspired sheer ruffled lace bralette with delicate apronette trim, a sheer frilled lace choker, and matching sheer high-cut panties.",
+    "compositionIntent": "single"
   }
 }

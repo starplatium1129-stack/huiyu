@@ -124,13 +124,23 @@ def pipeline_dependencies(name, layout):
 
 
 def dependencies(model_id=None):
+    if model_id and contract.model(model_id).get("runner") == "musetalk-native":
+        return sibling("musetalk_native").dependencies()
     if model_id and contract.model(model_id).get("runner") == "longcat-avatar":
         return sibling("longcat_avatar").validate_runtime(contract.model(model_id))
+    if model_id and contract.model(model_id).get("runner") in ("sd-cpp", "wan-a14b-sd"):
+        try:
+            from PIL import __version__ as pillow_version
+        except ImportError as exc:
+            raise Error("DEPENDENCY_MISSING", "关键帧工作进程需要 Pillow 读取参考图。") from exc
+        if contract.model(model_id).get("runner") == "wan-a14b-sd":
+            media.encoder(Error)
+        return {"Pillow": pillow_version, "sd.cppRelease": contract.MANIFEST["keyframeRuntime"]["release"]}
     versions = runtime_dependencies(model_id is not None and contract.model(model_id)["media"] == "video")
     models = contract.MANIFEST["models"].values() if model_id is None else (contract.model(model_id),)
     for model in models:
-        if model.get("runner") == "longcat-avatar":
-            continue  # This runner has its own interpreter.
+        if model.get("runner") in ("longcat-avatar", "sd-cpp", "wan-a14b-sd", "musetalk-native"):
+            continue  # These runners load their own model implementation.
         pipeline_dependencies(model["pipeline"], model.get("layout", model["pipeline"]))
     return versions
 
@@ -341,10 +351,37 @@ def prepare_job(job):
 
 def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None):
     data, spec = prepared if prepared is not None else prepare_job(job)
-    if spec.get("runner") == "longcat-avatar":
+    runner = spec.get("runner")
+    if runner in ("wan-a14b-sd", "musetalk-native") or (runner == "sd-cpp" and resident is not None):
+        owned = resident is None
+        cache = sibling("resident_adapters").PipelineCache() if owned else resident
+        if runner == "musetalk-native":
+            server_type = sibling("musetalk_native").MuseTalk
+        elif runner == "wan-a14b-sd":
+            server_type = sibling("wan_a14b_sd").WanServer
+        else:
+            server_type = sibling("keyframe_server").KeyframeServer
+        if type(cache.sd_server) is not server_type:
+            cache.clear()
+            cache.sd_server = server_type()
+        try:
+            observation = cache.sd_server.generate(job, data, spec, control)
+            control.check()
+            emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
+        except BaseException:
+            cache.clear()
+            raise
+        finally:
+            if owned:
+                cache.clear()
+        return
+    if resident is not None and resident.sd_server is not None:
+        resident.clear()
+    if runner in ("longcat-avatar", "sd-cpp"):
         if resident is not None:
             resident.clear()
-        observation = sibling("longcat_avatar").generate(job, data, spec, control)
+        module = sibling("keyframe_sd" if runner == "sd-cpp" else "longcat_avatar")
+        observation = module.generate(job, data, spec, control)
         control.check()
         emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
         return
@@ -609,6 +646,15 @@ def main():
                 emit(stream, None, "catalog", **contract.MANIFEST)
             elif args.diagnose:
                 versions = dependencies(args.model_id)
+                if args.model_id and contract.model(args.model_id).get("runner") == "musetalk-native":
+                    import torch
+                    emit(stream, None, "diagnostic", valid=True, dependencies=versions, deviceName=torch.cuda.get_device_name(),
+                         scope="imports, CUDA visibility and FFmpeg")
+                    return 0
+                if args.model_id and contract.model(args.model_id).get("runner") in ("sd-cpp", "wan-a14b-sd"):
+                    emit(stream, None, "diagnostic", valid=True, dependencies=versions,
+                         scope="Python image decoding; use --validate for runner and model files")
+                    return 0
                 if args.model_id and contract.model(args.model_id)["media"] == "video":
                     acceleration = sibling("video_acceleration")
                     target, backend = acceleration.device()

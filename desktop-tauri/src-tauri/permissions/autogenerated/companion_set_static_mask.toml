@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-companion-set-static-mask"
+description = "Enables the companion_set_static_mask command without any pre-configured scope."
+commands.allow = ["companion_set_static_mask"]
+
+[[permission]]
+identifier = "deny-companion-set-static-mask"
+description = "Denies the companion_set_static_mask command without any pre-configured scope."
+commands.deny = ["companion_set_static_mask"]

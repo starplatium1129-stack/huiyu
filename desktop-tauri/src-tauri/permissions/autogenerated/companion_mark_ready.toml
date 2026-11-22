@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-companion-mark-ready"
+description = "Enables the companion_mark_ready command without any pre-configured scope."
+commands.allow = ["companion_mark_ready"]
+
+[[permission]]
+identifier = "deny-companion-mark-ready"
+description = "Denies the companion_mark_ready command without any pre-configured scope."
+commands.deny = ["companion_mark_ready"]

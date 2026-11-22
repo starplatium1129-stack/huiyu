@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_morning_tea",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2048,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "ram_morning_tea",
     "title": "拉姆 · 窗边的早茶",
@@ -15,24 +15,33 @@
     "action": "端着茶盘侧目",
     "timeOfDay": "清晨",
     "lighting": "窗外晨光落在茶杯上",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "清醒而从容",
-    "promptProse": "Ram holds a tea tray by the dining-room window, turning one cup handle toward the arriving guest in the morning light.",
+    "promptProse": "Before breakfast beside the tall draped window of the mansion dining room, Ram stands poised in her crisp maid uniform holding a polished silver tea tray bearing a porcelain pot and steaming teacup. She glances calmly to the side as a guest enters, neatly angling the teacup handle toward them before they sit. Crisp morning sunlight streams through the window panes, sparkling along the porcelain rim and her white apron.",
     "promptTokens": [
+      "standing",
       "holding tray",
+      "tray",
       "teacup",
-      "standing by window",
-      "morning light",
-      "looking to the side",
+      "teapot",
+      "looking aside",
+      "dining room",
+      "window",
+      "curtains",
+      "window light",
+      "morning",
+      "indoors",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "She turns a cup handle toward the guest.",
+    "animaCaption": "Standing beside the sunlit dining-room window in her maid dress, Ram balances a silver tea tray with a steaming cup and turns her composed gaze toward the arriving guest. Clear morning window light glints across the porcelain and curtains.",
     "characterId": "ram",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

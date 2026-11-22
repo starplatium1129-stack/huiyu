@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "chitanda_shrine_new_year_kimono",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "chitanda_shrine_new_year_kimono",
     "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸",
     "category": "传统和风",
     "characterId": "chitanda_eru",
-    "outfitId": "festive_shrine_kimono",
+    "outfitId": "sfw_new_year_crane_furisode",
     "description": "新年参拜的清晨。爱瑠身穿淡紫色印花高档振袖和服，宽大的织锦腰带勾勒出端庄身段，黑发挽成典雅发髻并插着精致花簪。在朱红鸟居与白雪之间，她双手交叠于腹前微微回眸，尽显豪农名门千金的贵气与娇羞。",
     "location": "古神社红鸟居与雪景石阶前",
     "action": "身着振袖和服双手叠腹回眸微躬，花簪微晃，紫眸含笑祝福",
     "timeOfDay": "冬日清晨",
     "lighting": "初雪石阶反光与神社晨曦相映",
-    "camera": "full-body shot",
+    "camera": "three quarter view, full body",
     "mood": "端庄典雅、豪农千金",
     "sceneTags": [
       "shrine",
@@ -31,17 +31,23 @@
       "dignified",
       "elegant"
     ],
-    "promptProse": "She turns back with a shy smile beneath the torii, both hands folded before her kimono. Morning snowlight reaches the patterned sleeves.",
+    "promptProse": "Under the vermilion torii of the shrine, Chitanda stands with both hands overlapping just below her obi and turns her face toward the viewer for a small, deferential New Year greeting. Her silk furisode is wrapped closed and its long sleeves hang in one clean line, with gold cranes woven near the edges. An early shaft of daylight catches the gold obi and her plum-blossom hairpin. Snow caps the old stone lanterns beside the steps, and the shrine path recedes beneath a thick straw rope.",
     "promptTokens": [
       "shrine",
       "torii",
-      "folded hands",
+      "shimenawa",
+      "stone lantern",
       "snow",
       "morning",
-      "full body",
-      "looking back",
-      "shy smile",
-      "daylight"
+      "standing",
+      "own hands together",
+      "looking at viewer",
+      "shy",
+      "smile",
+      "hair bun",
+      "kanzashi",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -65,6 +71,6 @@
       "hair_bun"
     ],
     "identityProseOverride": "Eru Chitanda from Hyouka, with black hair pinned in a bun, bangs and large purple eyes.",
-    "animaCaption": "Both hands remain folded before her kimono beneath the torii."
+    "animaCaption": "Both hands overlap low in front of her closed kimono below the broad obi. She turns her face back beneath the red torii, with snow on the stone lanterns beyond the gate."
   }
 }

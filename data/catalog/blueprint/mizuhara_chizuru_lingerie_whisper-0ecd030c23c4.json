@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mizuhara_chizuru_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3389,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "mizuhara_chizuru_lingerie_whisper",
     "characterId": "mizuhara_chizuru",
@@ -14,7 +14,7 @@
     "location": "公寓相连的晾衣阳台，夕阳将晾晒的白衬衫染上橙金暖晕",
     "timeOfDay": "黄昏收衣服的私密时刻",
     "lighting": "东京黄昏壮丽的夕阳残照，在发丝与微透真丝边缘镀上一圈金红色轮廓光",
-    "camera": "medium close-up, 侧逆光中近景，捕捉撩起长发露出的修长白皙后颈与红透的耳垂",
+    "camera": "three quarter view, medium close-up",
     "mood": "卸下完美女友面具后的真实羞涩，日常邻家感与心动交织",
     "adult": true,
     "sampleRating": "R15",
@@ -36,23 +36,34 @@
       "medium_close_up"
     ],
     "promptTokens": [
-      "medium close-up",
+      "standing",
+      "gathering hair",
+      "holding hairclip",
+      "looking back",
+      "blush",
+      "gentle smile",
       "balcony",
       "railing",
-      "dusk",
+      "hanging laundry",
       "sunset",
-      "dim lighting",
-      "smile",
-      "standing",
-      "hair clip",
-      "blush",
-      "fine pleats at bust",
-      "delicate beige lace trim"
+      "backlighting",
+      "golden hour",
+      "three quarter view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress. Ichinose chizuru, gathering long wet black hair with hair clip, blushing deeply amidst natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline.",
-    "animaCaption": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing on her apartment balcony at dusk beside fluttering laundry on the line, Chizuru Mizuhara lifts her damp brown hair with a hairclip in a terracotta-orange silk slip dress with fine bust pleats and beige lace trim. Turning toward the neighboring balcony with an authentic, deeply blushing smile, she is rimmed in golden Tokyo sunset light.",
+    "animaCaption": "Standing on her apartment laundry balcony gathering damp hair with a clip in a pleated terracotta silk slip dress, she turns toward the neighboring rail with an unguarded blush and flushed ear. Golden sunset backlighting rims her nape and the hanging white shirts.",
+    "nsfwTokens": [
+      "orange silk slip dress",
+      "terracotta nightgown",
+      "pleated bust",
+      "beige lace trim",
+      "spaghetti straps",
+      "bare shoulders",
+      "nape"
+    ],
+    "nsfwProse": "She wears an understated terracotta-orange silk slip dress with fine accordion pleats across the bust, beige lace trim, and delicate spaghetti straps.",
+    "compositionIntent": "single"
   }
 }

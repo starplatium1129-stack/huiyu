@@ -416,7 +416,7 @@ impl Service {
             .filter(|store| store.owner == owner)
             .ok_or_else(unavailable)?;
         let timings = store.timings().await?;
-        let order = self.inner.native.queue.lock().unwrap().clone();
+        let order = self.inner.native.queue_order();
         let queued_jobs: Vec<_> = {
             let state = self.inner.state.lock().await;
             order.iter().map(|id| state.jobs.get(id).cloned()).collect()

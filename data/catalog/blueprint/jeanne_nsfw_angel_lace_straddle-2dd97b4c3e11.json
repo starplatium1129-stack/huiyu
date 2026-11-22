@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_angel_lace_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 240,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "jeanne_nsfw_angel_lace_straddle",
     "title": "圣女贞德 · 白蕾丝的反客为主主控骑乘",
@@ -15,7 +15,7 @@
     "action": "正面主控骑乘机位，白蕾丝半褪露双乳，双手撑膝主动律动，修长双腿吊袜带紧绷",
     "timeOfDay": "深夜",
     "lighting": "烛光暖焰摇曳，蕾丝与肌肤泛着柔和高光",
-    "camera": "cowboy shot, first-person view, low angle",
+    "camera": "from below, pov, cowboy shot",
     "mood": "温柔主控、圣女反差",
     "sceneTags": [
       "nsfw",
@@ -28,25 +28,22 @@
       "exposed_pussy",
       "white_thighhighs"
     ],
-    "promptProse": "Jeanne straddles the offscreen viewer on the candlelit bed with both hands resting on her own knees, the white lace slipped from one shoulder; she smiles down through happy tears.",
-    "nsfwProse": "",
+    "promptProse": "Viewed from a low first-person angle on a candlelit bed, Jeanne sits astride her partner's waist with both hands resting firmly on her knees and her long hair cascading forward. Warm candlelight softens her affectionate downward smile and glistening happy tears.",
+    "nsfwProse": "Her white lace corset and sheer silk robe are pulled open and down from her chest to bare her breasts, while white garter straps fasten tightly to her white thigh-high stockings in a cowgirl position.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "white lace lingerie",
-      "garter straps",
-      "white thighhighs",
-      "bare breasts",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "cowgirl position",
-      "blush",
-      "bed",
-      "candlelight",
-      "from below",
       "hands on knees",
       "looking down",
       "smile",
-      "happy tears"
+      "happy tears",
+      "bed",
+      "candlelight",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -60,7 +57,18 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "The viewer remains outside the frame beneath her lowered gaze."
+    "compositionIntent": "group",
+    "animaCaption": "Straddling her partner on the candlelit bed with both hands braced on her own knees, she smiles gently down through happy tears while her white lace corset slips off her bare breasts above taut garter straps and white thigh-high stockings.",
+    "nsfwTokens": [
+      "white lingerie",
+      "lace corset",
+      "garter straps",
+      "white thighhighs",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position",
+      "blush"
+    ]
   }
 }

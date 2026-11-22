@@ -3,13 +3,18 @@ use regex::Regex;
 use std::{io::Read, sync::LazyLock};
 const MAX_BYTES: u64 = 20 * 1024 * 1024;
 static INPUT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^aics_video_input_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
+    Regex::new(
+        r"(?i)^(?:aics_video_input|huiyu_video_frame)_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$",
+    )
+    .unwrap()
 });
 static REFERENCE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_video_ref_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
-static MOTION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^aics_video_motion_[a-f0-9]{40}\.mp4$").unwrap());
-static AUDIO: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^aics_video_audio_[a-f0-9]{40}\.wav$").unwrap());
+static MOTION: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^aics_video_motion_[a-f0-9]{40}\.mp4$").unwrap());
+static AUDIO: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(?:aics|huiyu)_video_audio_[a-f0-9]{40}\.wav$").unwrap());
 
 pub(crate) fn driver_mime(name: &str) -> Option<&'static str> {
     if MOTION.is_match(name) {
@@ -19,6 +24,11 @@ pub(crate) fn driver_mime(name: &str) -> Option<&'static str> {
     } else {
         None
     }
+}
+pub(super) fn dialogue_frames(wav: &[u8]) -> Result<u64> {
+    crate::voice::pcm_video_frames(wav, 25)
+        .filter(|n| (1..=375).contains(n))
+        .ok_or_else(|| ApiError::invalid("单个对白镜头支持最长 15 秒的 PCM WAV 配音"))
 }
 static HASHERS: LazyLock<Arc<tokio::sync::Semaphore>> =
     LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(2)));
@@ -78,15 +88,25 @@ pub(super) fn names(input: &Value) -> Vec<&str> {
     names.dedup();
     names
 }
+pub(super) fn native_root(config: &Config) -> PathBuf {
+    config.runtime_root.join("inputs/studio-video")
+}
+fn input_root(config: &Config, name: &str) -> PathBuf {
+    if name.starts_with("huiyu_video_frame_") || name.starts_with("huiyu_video_audio_") {
+        native_root(config)
+    } else {
+        config.ai_workspace_root.join("ComfyUI/input")
+    }
+}
 pub(super) fn path(config: &Config, name: &str) -> Result<PathBuf> {
     if !valid_name(name, false) && !valid_name(name, true) && driver_mime(name).is_none() {
         return Err(error(400, "INVALID_PARAMETER", "图片引用格式不受支持"));
     }
-    Ok(config.ai_workspace_root.join("ComfyUI/input").join(name))
+    Ok(input_root(config, name).join(name))
 }
 async fn safe(config: &Config, name: &str) -> Result<PathBuf> {
     let path = path(config, name)?;
-    let root = tokio::fs::canonicalize(config.ai_workspace_root.join("ComfyUI/input")).await?;
+    let root = tokio::fs::canonicalize(input_root(config, name)).await?;
     let target = tokio::fs::canonicalize(&path).await?;
     if target == root || !target.starts_with(root) {
         return Err(error(403, "TASK_INPUT_FORBIDDEN", "输入图像超出授权目录"));
@@ -225,18 +245,21 @@ pub(super) async fn capture(
         }
         use crate::images::ImageKind;
         let kind = match driver_mime(name) {
+            Some("audio/wav") if name.starts_with("huiyu_video_audio_") => ImageKind::StudioAudio,
             Some("audio/wav") => ImageKind::DrivingAudio,
             Some("video/mp4") => ImageKind::MotionVideo,
+            _ if name.starts_with("huiyu_video_frame_") => ImageKind::StudioVideoInput,
             _ if valid_name(name, true) => ImageKind::VideoReference,
             _ => ImageKind::VideoInput,
         };
-        let (mime, _) = kind.format(&bytes)
+        let (mime, _) = kind
+            .format(&bytes)
             .ok_or_else(|| error(400, "TASK_INPUT_INVALID", "输入素材格式无效"))?;
         if !local {
             let owner = owner
                 .ok_or_else(|| error(403, "TASK_INPUT_FORBIDDEN", "视频素材需要所有者授权"))?;
             if !crate::images::owner_matches_for(
-                &config.ai_workspace_root.join("ComfyUI/input"),
+                &input_root(config, name),
                 name,
                 bytes.clone(),
                 owner,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3522,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "gotoh_hitori_lingerie_whisper",
     "characterId": "gotoh_hitori",
@@ -14,7 +14,7 @@
     "location": "后藤家二楼壁橱深处改装的“波奇秘密基地”",
     "timeOfDay": "深夜",
     "lighting": "壁橱拉门缝隙漏进的一线微弱房间吸顶灯光，与手机屏幕的荧光将纸箱照得宛如地下掩体",
-    "camera": "close-up, high angle, 充满标志性自闭幽默的狭窄逼仄构图，完美还原‘波奇酱’的社恐崩溃现场",
+    "camera": "high angle, close-up",
     "mood": "社交恐惧、极度自闭、阴暗爬行但又可爱到极致的喜剧反差",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,33 @@
       "high_angle"
     ],
     "promptTokens": [
-      "close-up",
-      "high angle",
-      "curled up in closet corner",
-      "wrapped in blanket",
-      "guitar case nearby",
+      "hugging own legs",
+      "curled up",
       "cardboard box",
-      "panicked blush",
-      "flustered",
+      "closet",
+      "blanket",
+      "guitar case",
       "trembling",
+      "panicked",
+      "blush",
+      "phone glow",
       "dim room",
-      "soft lamp"
+      "night",
+      "high angle",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Curled defensively inside her cozy closet corner wrapped in a blanket, Bocchi clutches her guitar case in comic social panic, trembling with a flustered blush as the door cracks open.",
-    "animaCaption": "Curled inside a closet corner wrapped in a blanket, looking up with a trembling, comedic social panic blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Curled tightly inside a cardboard box tucked in the back corner of her closet at night, Hitori Gotoh wears her faded baggy rose-pink tracksuit zipped up to her chin with slouchy sleeves and a blanket wrapped around her shoulders. Hugging her knees beside her guitar case in comedic social panic, she trembles under faint doorway light and smartphone glow.",
+    "animaCaption": "Huddled inside a cardboard box deep in her closet zipped up to the chin in her faded baggy pink tracksuit and wrapped in a blanket, she hugs her knees beside her guitar case with a trembling, panicked blush. A thin crack of ceiling light and phone glow illuminate her hideout.",
+    "nsfwTokens": [
+      "pink tracksuit",
+      "baggy jersey",
+      "zip-up jacket",
+      "high collar",
+      "oversized sleeves",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears her heavily washed, baggy rose-pink zip-up tracksuit with slouchy sleeves and its high collar zipped all the way up to her chin.",
+    "compositionIntent": "single"
   }
 }

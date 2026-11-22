@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_biker_leather_creampie",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 680,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "跨坐机车鞍座皮衣大敞露酥胸与渔网袜，狼尾摇摆，单手握车把另一手在鞍座深抚娇喘",
     "adult": true,
     "adultArtistHint": "@urakata",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "深层欢愉",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -23,27 +23,34 @@
     "location": "午夜荒原公路边重型机车发烫鞍座上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "casual_leather",
-    "promptProse": "Lappland grips the handlebar while touching herself astride the parked motorcycle, her jacket open above unbuttoned shorts and fishnets. One boot rests on the foot peg; white street light meets the instrument panel's red glow on the leather and chrome.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "open black studded jacket",
+    "nsfwProse": "Her studded black biker jacket hangs wide open with her camisole lowered to bare her breasts, while her unbuttoned denim shorts and torn fishnet thighhighs expose her thighs as she masturbates on the saddle.",
+    "nsfwTokens": [
+      "black jacket",
+      "leather jacket",
+      "open jacket",
+      "topless",
       "bare breasts",
-      "distressed denim shorts",
-      "fishnet stockings",
+      "denim shorts",
+      "unbuttoned",
+      "fishnet thighhighs",
+      "masturbation"
+    ],
+    "outfitId": "casual_leather",
+    "promptProse": "Astride the warm leather saddle of a parked heavy motorcycle along a deserted midnight highway, Lappland wears her studded black leather jacket unzipped wide and her camisole pushed down to expose her bare breasts above unbuttoned denim shorts and fishnet thighhighs. Planting one booted foot on the peg and gripping the chrome handlebar with one hand, she reaches into her open shorts with the other to masturbate, biting her lip with a wild, flushed gaze as night wind whips her hair and tail. Cold mercury streetlamps clash with the red glow of the instrument cluster across leather and skin.",
+    "promptTokens": [
       "straddling",
       "motorcycle",
-      "masturbation",
-      "night",
-      "gray camisole lowered to waist",
       "hand on handlebar",
-      "unbuttoned shorts",
-      "boot on foot peg",
-      "street light",
-      "instrument glow"
+      "biting lip",
+      "heavy blush",
+      "looking at viewer",
+      "road",
+      "streetlight",
+      "red light",
+      "wind",
+      "night",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -64,6 +71,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "拉普兰德 · 机车鞍座皮革短夹克拉链大开露渔网袜与鞍座深抚",
-    "animaCaption": "One hand grips the handlebar above the parked motorcycle's red instrument glow."
+    "animaCaption": "Straddling the parked motorcycle saddle with her studded biker jacket open over her bare breasts and denim shorts unbuttoned over fishnet thighhighs, Lappland grips the handlebar while masturbating with her other hand. Streetlamp glow and red instrument lights trace her flushed, biting-lip tease.",
+    "compositionIntent": "single"
   }
 }

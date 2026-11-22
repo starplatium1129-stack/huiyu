@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3252,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "sylphiette_lingerie_whisper",
     "characterId": "sylphiette",
@@ -14,7 +14,7 @@
     "location": "夏隆王国阿斯拉风格新婚洋房卧室，木质窗外是葱茏林木与清澈溪流",
     "timeOfDay": "微风轻拂的静谧午后",
     "lighting": "透过树影斑驳的下午阳光在木质地板与少女白皙颈项上洒下跳动的碎金光点",
-    "camera": "medium shot, front view, 正面中景，林间洋房午后暖阳与新婚的温柔纯情",
+    "camera": "front view, medium shot",
     "mood": "新婚初期的甜蜜娇羞，青梅竹马终成眷属的极致幸福与温顺依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -41,19 +41,33 @@
       "front_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "on bed",
+      "hands on chest",
+      "gentle smile",
+      "blush",
+      "looking at viewer",
+      "wooden window",
+      "curtains",
+      "forest",
+      "afternoon",
+      "sunlight",
       "front view",
-      "sitting cross-legged on bed",
-      "wooden window frame",
-      "green forest and sparkling stream outside",
-      "peaceful afternoon sunlight",
-      "gentle loving blush",
-      "soft warm atmosphere"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Sylphiette sits happily on the bed of their new cottage home, warm afternoon sun filtering through leafy forest branches outside as she welcomes the viewer home with a radiant, blushing smile.",
-    "animaCaption": "Sitting comfortably on a bed in a sunlit forest cottage, smiling warmly with a gentle, loving blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In the peaceful timber bedroom of a forest cottage bathed in warm afternoon sunlight, Sylphiette sits on the bed beside pale-green curtains and turns toward the viewer with affectionate, blushing warmth.",
+    "animaCaption": "Seated on the sunlit bed beside the open wooden window overlooking green forest trees, she folds her hands gently to her chest with a warm newlywed blush in a sheer pale-mint chiffon camisole slip edged with white clover lace.",
+    "nsfwTokens": [
+      "green camisole",
+      "chiffon dress",
+      "see-through",
+      "white lace",
+      "spaghetti straps",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a delicate pale-mint sheer double-chiffon camisole slip with thin double straps, white clover lace applique at the bust, and a scalloped short hem.",
+    "compositionIntent": "single"
   }
 }

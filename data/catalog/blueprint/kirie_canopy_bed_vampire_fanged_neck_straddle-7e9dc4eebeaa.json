@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2367,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
     "characterId": "kagari_no_kirie",
@@ -17,29 +17,42 @@
     "action": "雾枝骑坐在对方腰间，獠牙刺入颈项吸吮血液的同时，下身紧紧贴合在一起，发出既痛苦又沉沦的喘息",
     "timeOfDay": "night",
     "lighting": "flickering candelabra light reflecting off single droplet of blood on pale throat",
-    "camera": "close-up",
+    "camera": "close-up, eye level",
     "mood": "柔媚与坚毅",
-    "promptProse": "Straddling in black velvet lingerie on a canopy bed, vampire Kirie bites partner neck with sharp fangs amidst breathless erotic ecstasy.",
+    "promptProse": "Beneath the dark drapes of an antique four-poster bed, Kirie sits astride her partner's lap and bends down to bite his neck with sharp vampire fangs. Soft dim light catches a slender crimson trickle on his skin and her flushed, entranced expression.",
     "promptTokens": [
-      "canopy_bed",
+      "1girl",
+      "1boy",
+      "hetero",
       "straddling",
-      "sitting_on_lap",
+      "neck bite",
       "fangs",
-      "biting_neck",
-      "blood_trickle",
-      "black_corset",
-      "garter_straps",
-      "heavy_blush",
-      "close-up",
-      "soft_lighting"
+      "blood",
+      "canopy bed",
+      "curtains",
+      "heavy blush",
+      "parted lips",
+      "dim lighting",
+      "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Kirie biting her partner neck in black lingerie upon the four-poster bed.",
+    "animaCaption": "Straddling her partner's waist on the curtained four-poster bed in a midnight-black velvet corset, lace bra, and gartered sheer stockings, she leans into his throat to sink her fangs with a faint trickle of blood as their hips press tightly together.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
     "sampleRating": "R15",
-    "sceneTags": []
+    "sceneTags": [],
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "black corset",
+      "lace bra",
+      "garter straps",
+      "black thighhighs",
+      "cleavage",
+      "bare thighs",
+      "sex"
+    ],
+    "nsfwProse": "Dressed in a black velvet corset with eyelash-lace cups, attached satin garter straps, and sheer black thigh-high stockings, she grinds her hips closely against her partner."
   }
 }

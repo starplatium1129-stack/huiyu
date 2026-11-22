@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1685,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_01",
     "title": "橘美花莉 · 漫展后酒店更衣室Cos服主控跨坐",
@@ -15,7 +15,7 @@
     "action": "佩戴紫粉双色双马尾假发与白色小角，跨坐腰间恶魔皮甲半褪溢乳，饰翼微颤主动起伏",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -36,24 +36,21 @@
       "demon_horns",
       "leather_outfit"
     ],
-    "promptProse": "Mikari moves astride the viewer's lap after the convention, half out of her Miriella costume. Her purple-and-pink wig, white decorative horns and shoulder wings remain in place.",
+    "promptProse": "In the quiet hotel suite after the convention wraps up, Mikari remains in her purple-and-pink Miriella cosplay wig, white costume horns, white shoulder wings, and black thighhighs while peeling her tight leather bodice down below her full bare breasts. Sitting astride her partner's thighs in cowgirl position, she leans forward with possessive intensity and flushed cheeks under warm hotel lamplight.",
     "promptTokens": [
-      "adult",
       "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "miriella_(2.5_jigen_no_ririsa)",
-      "miriella_(2.5_jigen_no_ririsa)_(cosplay)",
-      "two-tone hair",
-      "twintails",
-      "white horns",
-      "white wings",
-      "open corset",
-      "topless",
-      "cowgirl position",
-      "on lap",
-      "hotel room",
       "straddling",
+      "heavy blush",
+      "intense gaze",
+      "parted lips",
+      "hotel room",
+      "bed",
       "warm lighting",
+      "night",
+      "from below",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -62,8 +59,19 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "cosplay",
+      "wig",
+      "white horns",
+      "white wings",
+      "corset",
+      "open clothes",
+      "topless",
+      "bare breasts",
+      "black thighhighs",
+      "cowgirl position"
+    ],
+    "nsfwProse": "Still wearing her purple-and-pink Miriella cosplay wig, small white costume horns, angular white shoulder wings, and black thighhighs, her tight black corset is peeled down below her bare breasts as she rides astride her partner's lap.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
@@ -84,6 +92,7 @@
       "long hair"
     ],
     "identityProseOverride": "Mikari Tachibana from 2.5 Dimensional Seduction, with pink eyes and a purple-and-pink long twintail wig for her Miriella cosplay.",
-    "animaCaption": "The purple-pink wig, decorative white horns and shoulder wings remain after the convention."
+    "animaCaption": "Riding astride her partner's lap in the hotel suite with her Miriella cosplay wig, white costume horns, and shoulder wings still in place, Mikari lowers her tight black corset to bare her breasts. Warm hotel lighting glows across her possessive, deeply flushed gaze.",
+    "compositionIntent": "group"
   }
 }

@@ -1,6 +1,6 @@
 import type { CompanionChatImage, CompanionDrawingDraft } from '@/types/companionDrawing'
 
-export type ChatProvider = 'local' | 'api' | 'muse'
+export type ChatProvider = 'local' | 'api' | 'chatgpt' | 'muse'
 
 export interface ChatReplyVariant {
   content: string

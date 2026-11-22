@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_bridal_bed_mating_press_creampie",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1087,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "taihou_r18_bridal_bed_mating_press_creampie",
     "title": "大凤 · 织金红缎大床半裹半透黑蕾丝睡袍与狂热深层真情自抚",
@@ -19,7 +19,7 @@
     "action": "侧卧大红缎被半裹透光黑蕾丝睡袍若隐若现，双手托胸与下身深层自抚，流泪满足深情娇喘",
     "timeOfDay": "深夜",
     "lighting": "寝殿大红帷幔透入的深红烛台柔光洒在织金红缎与半透黑纱轻裹雪肌上的极度香艳光芒",
-    "camera": "intimate wide shot, reclining side perspective across crimson golden silk blankets",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "bedroom",
@@ -37,20 +37,20 @@
       "teary_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Taihou cups her breast and touches herself beneath the sheer negligee while curled on the crimson bridal bed. Deep-red candlelight filters through red-and-gold bed curtains onto the crimson satin sheets.",
+    "promptProse": "Viewed from the side across a grand crimson bridal bed framed by red-and-gold silk curtains, Taihou curls on her side with her cheek pressed toward the pillow. Deep amber candlelight warms the satin folds and catches her tearful, devoted expression.",
     "promptTokens": [
-      "Taihou",
-      "black negligee",
+      "lying",
       "on side",
       "curled up",
-      "red sheets",
-      "candlelight",
-      "see through",
-      "hand on breast",
-      "masturbation",
+      "hand on chest",
       "teary eyes",
       "heavy blush",
+      "bed",
+      "red sheets",
       "bed curtains",
+      "candlelight",
+      "night",
+      "from side",
       "wide shot"
     ],
     "negativeTokens": [],
@@ -60,11 +60,16 @@
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
+      "black negligee",
+      "black lace",
       "see-through",
-      "masturbation",
-      "hand between legs"
+      "nipples",
+      "breast hold",
+      "hand between legs",
+      "masturbation"
     ],
-    "nsfwProse": "",
-    "animaCaption": "One hand cups her chest while the other remains beneath the negligee hem above the crimson sheets."
+    "nsfwProse": "Draped only in a gossamer black lace negligee that reveals her full breasts and nipples transparently beneath, she kneads her chest with one hand while her other hand works beneath the sheer hem between her thighs.",
+    "animaCaption": "Curled on her side across crimson-and-gold satin bridal sheets behind heavy bed curtains, she presses one hand over her breast through a sheer black lace negligee while sliding the other beneath its hem, tears gleaming on her flushed face in the candlelight.",
+    "compositionIntent": "single"
   }
 }

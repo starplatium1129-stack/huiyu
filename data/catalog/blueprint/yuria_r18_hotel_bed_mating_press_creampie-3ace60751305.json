@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_hotel_bed_mating_press_creampie",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1209,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yuria_r18_hotel_bed_mating_press_creampie",
     "title": "春寺由梨亚 · 豪华套房半透真丝薄纱睡袍与卸下心防的深层自抚",
@@ -19,7 +19,7 @@
     "action": "摘掉眼镜侧卧在大床上，半透明真丝睡袍若隐若现，指尖探入薄纱深处自我抚慰，咬唇含泪娇喘",
     "timeOfDay": "深夜",
     "lighting": "床头暖橙壁灯洒在纯白丝绸与半透黑纱轻裹雪肌上的温馨浪漫光芒",
-    "camera": "wide shot, side view",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "hotel_suite",
@@ -34,19 +34,21 @@
       "glasses_removed",
       "teary_eyes"
     ],
-    "promptProse": "Yuria reclines on the white silk sheets, one hand against her breast through the sheer negligee and the other beneath its hem. Warm orange bedside wall lamps light the sheets and black fabric.",
+    "promptProse": "Viewed from the side across a wide hotel bed bathed in warm orange wall-lamp glow, Yuria lies curled on white silk sheets with her glasses removed and tearful relief warming her flushed cheeks.",
     "promptTokens": [
-      "black silk negligee",
-      "lace trim",
-      "see-through clothes",
-      "lying on side",
-      "hand on own breast",
-      "female masturbation",
-      "bed",
-      "hotel room",
-      "lamplight",
+      "lying",
+      "on side",
+      "curled up",
+      "hand on chest",
       "teary eyes",
+      "heavy blush",
+      "hotel room",
+      "bed",
       "white sheets",
+      "wall lamp",
+      "warm lighting",
+      "night",
+      "from side",
       "wide shot"
     ],
     "negativeTokens": [
@@ -57,8 +59,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One hand rests against her chest through the negligee while the other stays beneath its hem above the white sheets."
+    "nsfwTokens": [
+      "black negligee",
+      "lace trim",
+      "see-through",
+      "nipples",
+      "breast hold",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "Wearing only a whisper-thin sheer black silk negligee trimmed in fine lace that reveals her breasts and curves underneath, she rests one hand against her chest and touches herself beneath the hem with the other.",
+    "animaCaption": "Curled on her side across white silk hotel sheets without her glasses, she cups one breast through a sheer black lace negligee while slipping her other hand beneath the translucent hem, her tearful face pressed into the pillow under warm lamplight.",
+    "compositionIntent": "single"
   }
 }

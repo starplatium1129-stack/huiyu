@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_tea_change",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 898,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "action": "礼裙肩带松开，双手伸向背后卡住的拉链，回头向画面外同伴求助。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, eye level",
+    "camera": "eye level, medium shot",
     "category": "成人私密",
     "characterId": "misono_mika",
     "coverageTags": [
@@ -23,22 +23,32 @@
     "location": "崔尼蒂茶话会更衣室",
     "mood": "优雅诱惑",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "tea_party_dress",
-    "promptProse": "Mika reaches both hands toward her white gown's stuck back zipper, straps off her shoulders, looking back to the off-frame viewer for help in warm light.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "white gown",
+    "nsfwProse": "Her sleeveless gold-embroidered white tea-party ballgown has both straps slipped off her shoulders and its back zipper caught halfway down her bare back.",
+    "nsfwTokens": [
+      "white ballgown",
       "gold embroidery",
       "off shoulder",
-      "stuck zipper",
+      "strap slip",
+      "open zipper",
+      "bare back",
+      "bare shoulders",
+      "white gloves"
+    ],
+    "outfitId": "tea_party_dress",
+    "promptProse": "Inside Trinity's quiet dressing room at night, Mika reaches both gloved hands behind her back to tug at the caught zipper of her gold-embroidered white ballgown, its straps slipped off her bare shoulders. Looking back over her shoulder with a flustered blush to ask for help, she stands bathed in warm vanity lighting.",
+    "promptTokens": [
+      "standing",
       "hands behind back",
       "looking back",
-      "changing room",
-      "slipped straps",
-      "warm light"
+      "blush",
+      "flustered",
+      "dressing room",
+      "mirror",
+      "curtain",
+      "warm light",
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -51,6 +61,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "圣园未花 · 更衣室里的心跳瞬间",
-    "animaCaption": "Both hands reach for the caught zipper as she looks toward the off-frame viewer."
+    "animaCaption": "Standing in the warmly lit changing room with both gloved hands reaching behind her back toward a stuck zipper, she glances back over her shoulder with a flustered blush as her white ballgown straps slip off her shoulders. Soft dressing lamps warm her bare back.",
+    "compositionIntent": "single"
   }
 }

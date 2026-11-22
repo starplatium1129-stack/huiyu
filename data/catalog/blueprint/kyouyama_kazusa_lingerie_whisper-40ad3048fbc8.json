@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3268,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "kyouyama_kazusa_lingerie_whisper",
     "characterId": "kyouyama_kazusa",
@@ -14,7 +14,7 @@
     "location": "点缀着小彩灯的温馨单间，矮几上放着吃了一半的马卡龙盒与红茶杯",
     "timeOfDay": "深夜放学后的秘密私语",
     "lighting": "暖粉色与琥珀色的小彩灯提供主环境光，柔化了少女傲娇的神态轮廓",
-    "camera": "medium shot, side view, 侧面特写中景，对焦于泛红的耳垂与微翘的猫耳，虚化背景闪烁的小彩灯",
+    "camera": "from side, medium shot",
     "mood": "傲娇猫系少女的心动防御瓦解，既酷又甜的依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -40,23 +40,38 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
-      "sitting cross-legged on rug",
+      "sitting",
+      "cross-legged",
+      "rug",
       "low table",
-      "open macaron box",
-      "half-eaten sweet",
+      "macaron",
       "teacup",
-      "twinkling fairy lights",
-      "cozy apartment",
-      "flustered blush",
-      "turning away shyly",
-      "warm dim lighting"
+      "looking away",
+      "blush",
+      "fairy lights",
+      "bedroom",
+      "warm lighting",
+      "night",
+      "from side",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Kazusa sits on a fluffy rug beside a low wooden table dotted with half-eaten macarons and tea, turning her head aside with a flustered blush beneath twinkling fairy lights.",
-    "animaCaption": "Sitting cross-legged beside a box of macarons with a flustered sideways glance, soft fairy lights glowing behind.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seated cross-legged on a fluffy bedroom rug beside a low wooden table holding an open box of macarons and a teacup, Kazusa wears her smoky mauve-and-grey lace camisole and ruffled lounge shorts. Toying with a ribbon from the pastry box while glancing away with a flustered crimson blush, she keeps one shy sidelong eye on the viewer beneath twinkling amber and rose fairy lights.",
+    "animaCaption": "Seated cross-legged on the rug beside half-eaten macarons and tea in her smoky mauve-and-grey lace camisole and ruffled shorts, Kazusa turns away with a flustered blush and shy sidelong glance. Warm twinkling fairy lights glow softly behind her.",
+    "nsfwTokens": [
+      "purple camisole",
+      "grey camisole",
+      "lace trim",
+      "ribbon",
+      "shorts",
+      "frills",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a smoky mauve-and-grey lace-trimmed camisole with a subtle cat-ear notched neckline and satin ribbon bows paired with ruffled tap-pant shorts, baring her shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

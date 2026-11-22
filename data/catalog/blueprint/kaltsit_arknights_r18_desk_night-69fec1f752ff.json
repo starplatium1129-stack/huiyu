@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 13,
+  "revision": 15,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "cowboy shot, low angle",
+    "camera": "from side, cowboy shot",
     "category": "成人",
     "characterId": "kaltsit_arknights",
     "coverageTags": [
@@ -19,25 +19,40 @@
     "description": "深夜书房昏黄的台灯旁，衣衫半解的凯尔希坐在红木办公桌边缘，修长纤细的黑丝美腿在视线下交叠。她用指尖轻轻挑起你的下颌，目光意味深长——「博士，你现在的心率和瞳孔扩张程度，已经远远超出了安全阈值……不打算做点什么来平复心率吗？」",
     "id": "kaltsit_arknights_r18_desk_night",
     "kreaStyleHint": "",
-    "lighting": "医疗部门办公室暖黄工作台灯与分析仪器全息微光",
+    "lighting": "桌内侧暖光擦过手指与黑丝绒裙，远处平屏的绿色波形弱弱地亮在案上",
     "location": "罗德岛办公室",
     "mood": "理智掌控",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwProse": "She wears a loosened black velvet evening gown with a plunging open back and high hip slit, paired with sheer black thighhighs over her crossed legs.",
+    "nsfwTokens": [
+      "black dress",
+      "evening gown",
+      "open back",
+      "high slit",
+      "cleavage",
+      "black thighhighs",
+      "sheer legwear"
+    ],
     "outfitId": "evening_gown",
-    "promptProse": "Kal'tsit sits on the mahogany desk edge with crossed legs, lifting the offscreen viewer's chin with one hand. The lamp lights her near cheek against the dark office.",
+    "promptProse": "At the edge of the mahogany desk, Kal'tsit sits with her black-stockinged legs crossed and the low back of her velvet evening gown catching the light. The Doctor sits lower in a dark work coat at the near corner of the desk, their hands resting on their knees. View them from the side, with only the Doctor's lower profile and coat collar at the left edge. Kal'tsit raises the Doctor's chin with her bare right index finger, following the movement with her eyes as the lamp lights the contact. Behind them, a compact monitor tilted down toward the files carries a small green pulse trace. Its reflected glow just reaches the paper on the desk.",
     "promptTokens": [
-      "sitting on office desk",
-      "unbuttoned coat",
-      "lingerie",
-      "medical office",
-      "desk lamp glow",
-      "holographic display",
-      "warm ambient light",
+      "1girl",
+      "1boy",
+      "sitting on table",
+      "crossed legs",
+      "hand on another's chin",
+      "looking at another",
+      "desk",
+      "desk lamp",
+      "paper",
+      "monitor",
       "bookshelf",
-      "serious yet flushed expression",
-      "volumetric lighting"
+      "night",
+      "from side",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -50,6 +65,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "凯尔希 · 灯下案前",
-    "animaCaption": "A single focused desk lamp casts warm amber tones across Dr. Kal'tsit as she sits poised atop her paperwork."
+    "animaCaption": "Seated on the mahogany desk edge with her black-stockinged legs crossed and her black velvet evening gown loosened across her back, Kal'tsit reaches left to lift the seated Doctor's chin with one bare fingertip. Warm desk lamplight catches their close gaze while a faint green pulse waveform glows on the monitor behind them.",
+    "compositionIntent": "group"
   }
 }

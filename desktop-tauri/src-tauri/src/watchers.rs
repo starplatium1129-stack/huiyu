@@ -1,70 +1,90 @@
+use std::sync::{atomic::Ordering, Arc};
 use std::thread;
 use std::time::{Duration, Instant};
 
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager};
-use windows_sys::Win32::Foundation::POINT;
+use windows_sys::Win32::Foundation::{POINT, RECT};
+use windows_sys::Win32::Graphics::Gdi::ClientToScreen;
 use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, GetClipboardSequenceNumber, OpenClipboard};
 use windows_sys::Win32::System::Memory::{GlobalLock, GlobalSize, GlobalUnlock};
 use windows_sys::Win32::System::Power::GetSystemPowerStatus;
-use windows_sys::Win32::UI::WindowsAndMessaging::GetCursorPos;
+use windows_sys::Win32::UI::Input::KeyboardAndMouse::{GetAsyncKeyState, VK_LBUTTON, VK_RBUTTON};
+use windows_sys::Win32::UI::WindowsAndMessaging::{GetClientRect, GetCursorPos, IsWindowVisible};
+use crate::{live2d_renderer::{Live2DOverlayState, OverlayRect}, state::AppState};
 
 /// 全局鼠标轮询：约 30fps，坐标变化 >=2px 才发；仅可见桌宠需要凝视事件。
 /// 事件名 aics:global-mouse，payload 与 Electron 版 desktop:global-mouse 同构。
 pub fn start_global_mouse_watch(app: AppHandle) {
     thread::spawn(move || {
-        let mut last_x = i32::MAX;
-        let mut last_y = i32::MAX;
+        let state = app.state::<AppState>();
+        let mut last_mouse: Option<GlobalMouse> = None;
+        let mut last_passthrough = None;
+        let mut last_buttons = (false, false);
+        let mut last_generation = 0;
         loop {
-            let Some(window) = app.get_webview_window("companion").filter(|window| window.is_visible().unwrap_or(false)) else {
-                thread::sleep(Duration::from_millis(500));
-                continue;
-            };
             thread::sleep(Duration::from_millis(33));
+            if state.quitting.load(Ordering::Relaxed) { break; }
+            let Some(window) = app.get_webview_window("companion") else { continue; };
+            let Ok(hwnd) = window.hwnd() else { continue; };
+            if unsafe { IsWindowVisible(hwnd.0) } == 0 {
+                last_mouse = None;
+                last_passthrough = None;
+                last_buttons = (false, false);
+                continue;
+            }
+            let generation = state.companion_presentation.lock().unwrap().generation();
+            if generation != last_generation {
+                last_generation = generation;
+                last_passthrough = None;
+            }
+
             let mut pt = POINT { x: 0, y: 0 };
+            let mut origin = POINT { x: 0, y: 0 };
+            let mut client = RECT { left: 0, top: 0, right: 0, bottom: 0 };
             unsafe {
-                if GetCursorPos(&mut pt) == 0 {
+                if GetCursorPos(&mut pt) == 0 || ClientToScreen(hwnd.0, &mut origin) == 0 || GetClientRect(hwnd.0, &mut client) == 0 {
                     continue;
                 }
             }
-            if pt.x.abs_diff(last_x) < 2 && pt.y.abs_diff(last_y) < 2 {
-                continue;
+            let bounds = OverlayRect {
+                x: origin.x, y: origin.y,
+                width: (client.right - client.left).max(0) as u32,
+                height: (client.bottom - client.top).max(0) as u32,
+            };
+            let inside = bounds.contains(pt.x, pt.y);
+            let local = (pt.x - origin.x, pt.y - origin.y);
+            let buttons = unsafe { (GetAsyncKeyState(VK_LBUTTON as i32) < 0, GetAsyncKeyState(VK_RBUTTON as i32) < 0) };
+            let (locked, in_panel, in_portrait, has_panels) = {
+                let mut input = state.companion_input.lock().unwrap();
+                if !buttons.0 { input.locked = false; }
+                let in_panel = inside && input.panels.iter().any(|rect| rect.contains(local.0, local.1));
+                let in_portrait = inside && (input.static_mask.as_ref().is_some_and(|mask| mask.hit(local.0, local.1))
+                    || input.process_frame.is_some_and(|rect| rect.contains(local.0, local.1)) && crate::live2d_process::current().is_some());
+                (input.locked, in_panel, in_portrait, !input.panels.is_empty())
+            };
+            let pressed = buttons.0 && !last_buttons.0 || buttons.1 && !last_buttons.1;
+            last_buttons = buttons;
+            let in_model = inside && app.try_state::<Arc<Live2DOverlayState>>()
+                .is_some_and(|overlay| overlay.hit_opaque_pixel(pt.x, pt.y));
+            let ignore = state.ignore_mouse_events.load(Ordering::Relaxed);
+            let passthrough = ignore || !(locked || in_panel || in_portrait || in_model);
+            if last_passthrough != Some(passthrough) && window.set_ignore_cursor_events(passthrough).is_ok() {
+                last_passthrough = Some(passthrough);
             }
-            last_x = pt.x;
-            last_y = pt.y;
-            let state = Some(window).and_then(|w| {
-                match (w.outer_position().ok(), w.outer_size().ok()) {
-                    (Some(p), Some(s)) => Some(GlobalMouse {
-                        x: pt.x,
-                        y: pt.y,
-                        in_window: pt.x >= p.x
-                            && pt.x <= p.x + s.width as i32
-                            && pt.y >= p.y
-                            && pt.y <= p.y + s.height as i32,
-                        bounds: Bounds {
-                            x: p.x,
-                            y: p.y,
-                            width: s.width,
-                            height: s.height,
-                        },
-                    }),
-                    _ => None,
-                }
+            if pressed && has_panels && passthrough { let _ = window.emit("aics:companion-dismiss", ()); }
+            let mouse = GlobalMouse {
+                x: pt.x, y: pt.y, in_window: !passthrough && inside, bounds,
+            };
+            let moved = last_mouse.as_ref().is_none_or(|last| {
+                pt.x.abs_diff(last.x) >= 2 || pt.y.abs_diff(last.y) >= 2 || mouse.bounds != last.bounds || mouse.in_window != last.in_window
             });
-            if let Some(state) = state {
-                let _ = app.emit("aics:global-mouse", state);
+            if moved {
+                let _ = window.emit("aics:global-mouse", &mouse);
+                last_mouse = Some(mouse);
             }
         }
     });
-}
-
-#[derive(Serialize, Clone)]
-#[serde(rename_all = "camelCase")]
-struct Bounds {
-    x: i32,
-    y: i32,
-    width: u32,
-    height: u32,
 }
 
 #[derive(Serialize, Clone)]
@@ -73,7 +93,7 @@ struct GlobalMouse {
     x: i32,
     y: i32,
     in_window: bool,
-    bounds: Bounds,
+    bounds: OverlayRect,
 }
 
 /// 剪贴板轮询：图片（CF_DIB→PNG）或文本（4-400 字）变化时通知 Companion。

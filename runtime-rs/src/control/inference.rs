@@ -51,13 +51,16 @@ impl ControlService {
     pub(crate) async fn ensure_native_drawing(
         &self,
         cancel: &tokio_util::sync::CancellationToken,
+        native_only: bool,
     ) -> Result<()> {
         if cancel.is_cancelled() || self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
         }
         self.voice.retire_native().await?;
         self.stop_llama().await?;
-        self.stop_comfy_for_native().await?;
+        if !native_only || self.comfy_owned().await {
+            self.stop_comfy_for_native().await?;
+        }
         if cancel.is_cancelled() || self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
         }

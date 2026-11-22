@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3129,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "archetto_arknights_swimsuit_allure",
     "characterId": "archetto_arknights",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "white bikini",
+      "halterneck",
+      "navy blue trim",
+      "high-waist bikini",
+      "sheer blue shirt",
+      "open shirt",
+      "gold cross"
+    ],
+    "nsfwProse": "She wears a church-white and ultramarine halter bikini accented with small gold cross charms and high-waisted cutout bottoms under an open sheer navy chiffon shirt.",
     "title": "空弦 · 海崖石阶上的午后麦酒海风",
     "action": "坐在背靠海崖的旧石阶上，双手握着木质马克杯小口品尝冰镇麦汁，羽耳随着清脆海浪声轻微颤动",
     "location": "临海修道院山崖下的古老石阶与海鸥岩",
     "timeOfDay": "午后",
     "lighting": "温暖的斜射午后阳光从悬崖一侧穿透云层，给古旧石壁与白蓝泳装镀上一层柔和油画感暖调",
-    "camera": "medium shot, three-quarter view, gentle natural light, scenic sea cliff",
+    "camera": "three quarter view, medium shot",
     "mood": "宁谧恬淡、虔诚自然与充满生活情趣的休憩",
     "description": "海崖边长满石蚕花的老石阶上，海风送来微咸的浪沫与麦芽的醇香。席德佳将双腿自然垂在阶边，双手捧着自酿的冰镇修道院麦汁抿了一小口，惬意地眯起双眸。听到走近的脚步声，她微笑着拍了拍身旁的空位——「兰登修道院秘方的夏日冷麦饮，加了一点海盐柠檬，口感格外清爽。走累了吧？坐下一起歇歇脚，听听远处的潮声。」",
     "sceneTags": [
@@ -40,23 +48,21 @@
       "relaxed"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "archetto (arknights)",
-      "blonde hair",
-      "feather ears",
-      "white bikini",
-      "navy trim",
+      "sitting",
+      "stone stairs",
       "holding wooden mug",
-      "sitting on stone steps",
-      "sea cliff background",
-      "afternoon sunlight",
-      "soft smile",
-      "gentle gaze",
-      "depth of field",
-      "cinematic lighting"
+      "gentle smile",
+      "looking at viewer",
+      "sea cliff",
+      "wildflowers",
+      "ocean",
+      "breeze",
+      "afternoon",
+      "warm sunlight",
+      "three quarter view",
+      "medium shot"
     ],
-    "promptProse": "Archetto sits gracefully on seaside stone stairs holding a rustic wooden cup in her navy-and-white church-inspired bikini, enjoying the peaceful afternoon coastal breeze with a gentle smile.",
-    "animaCaption": "Warm afternoon light grazes the ancient stone stairway as she savors a quiet cold brew overlooking the sea."
+    "promptProse": "Archetto sits on weathered coastal stone steps beneath an old cliffside monastery, wearing a white and ultramarine halter bikini with gold cross charms and an open sheer navy chiffon cover-up shirt. Holding a rustic wooden mug of chilled malt brew in both hands, she smiles softly toward the viewer in slanting warm afternoon sunlight.",
+    "animaCaption": "Seated on weathered stone steps beside the sea cliff in a white-and-navy halter bikini and open sheer navy cover-up, she cradles a wooden mug of chilled malt brew with a gentle, inviting smile. Slanting afternoon sunlight warms the coastal rocks and sparkling ocean behind her."
   }
 }

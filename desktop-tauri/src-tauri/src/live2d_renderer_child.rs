@@ -75,7 +75,8 @@ impl ChildRuntime {
         self.worker = Some(thread::spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 overlay_window_thread(state, RendererEnvironment {
-                    assets_root, local_root, events: Some(events.clone()),
+                    cache_root: local_root.as_ref().and_then(|path| path.parent()).map(|path| path.join("live2d-cache")),
+                    assets_root, local_root, prewarm: false, events: Some(events.clone()),
                 });
             }));
             if result.is_err() {

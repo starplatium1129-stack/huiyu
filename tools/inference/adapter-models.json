@@ -1,6 +1,128 @@
 {
   "schemaVersion": 1,
   "validation": "待主力机验证",
+  "keyframeRuntime": {
+    "repository": "leejet/stable-diffusion.cpp",
+    "release": "master-1088-32d516c",
+    "directory": "_runners/sd-cpp",
+    "executable": "sd-cli.exe",
+    "serverFiles": {
+      "sd-server.exe": "5d8d1a1ac9f757276ff750474fa323efee872238cb7461e65db6b393e2b1615e",
+      "stable-diffusion.dll": "be55585bd78157a6d3fc9818c969aff93058dedddb73d7badadade6e786e5ca4",
+      "ggml.dll": "6151a2db67aa384db06193eb986f36928b295e699b312c6390dfb833830b5c3b",
+      "ggml-base.dll": "6b056767c90a5ceb375286889eba6dce579e2f055418f090fd41c92969125168",
+      "ggml-cuda.dll": "26254d282942dc0c59546a6a083db430405a8b2ca8b9905624333df8eb2de843"
+    },
+    "archives": [
+      {
+        "url": "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-1088-32d516c/sd-master-32d516c-bin-win-cuda12-x64.zip",
+        "bytes": 367188642,
+        "sha256": "e76d90e0ad0aedb3bcd9e24e7ecb20e7c3e0be9700a7e9e94fbd26226e67f597"
+      },
+      {
+        "url": "https://github.com/leejet/stable-diffusion.cpp/releases/download/master-1088-32d516c/cudart-sd-bin-win-cu12-x64.zip",
+        "bytes": 563452046,
+        "sha256": "fe20366827d357c00797eebb58244dddab7fd9a348d70090c3871004c320f38d"
+      }
+    ]
+  },
+  "keyframeAssets": {
+    "muse-unet": {
+      "path": "musetalk-1.5/unet.pth", "bytes": 3400074924,
+      "sha256": "7ebf6c98c181e20838e4c0054e96e944ac60d5d692cc01db42839fe11b787007",
+      "url": "https://huggingface.co/TMElyralab/MuseTalk/resolve/c9ac4cdcedcae22c186fbbf67261961e246c4760/musetalkV15/unet.pth"
+    },
+    "muse-config": {
+      "path": "musetalk-1.5/musetalk.json", "bytes": 748,
+      "sha256": "5b6923aee04d71692e0e9846c471e0a4ea07a4f686d39545e472bd4ba17e1b47",
+      "url": "https://huggingface.co/TMElyralab/MuseTalk/resolve/c9ac4cdcedcae22c186fbbf67261961e246c4760/musetalkV15/musetalk.json"
+    },
+    "muse-vae": {
+      "path": "_shared/sd-vae-ft-mse/diffusion_pytorch_model.safetensors", "bytes": 334643276,
+      "sha256": "a1d993488569e928462932c8c38a0760b874d166399b14414135bd9c42df5815",
+      "url": "https://huggingface.co/stabilityai/sd-vae-ft-mse/resolve/31f26fdeee1355a5c34592e401dd41e45d25a493/diffusion_pytorch_model.safetensors"
+    },
+    "muse-vae-config": {
+      "path": "_shared/sd-vae-ft-mse/config.json", "bytes": 547,
+      "sha256": "92d3dfb746fca211a2c9e019e285f8597412211728dce3c5bcf4eda0f2d62e7e",
+      "url": "https://huggingface.co/stabilityai/sd-vae-ft-mse/resolve/31f26fdeee1355a5c34592e401dd41e45d25a493/config.json"
+    },
+    "muse-whisper": {
+      "path": "_shared/whisper-tiny/model.safetensors", "bytes": 151061672,
+      "sha256": "7ebd0e69e78190ffe1438491fa05cc1f5c1aa3a4c4db3bc1723adbb551ea2395",
+      "url": "https://huggingface.co/openai/whisper-tiny/resolve/169d4a4341b33bc18d8881c4b69c2e104e1cc0af/model.safetensors"
+    },
+    "muse-whisper-config": {
+      "path": "_shared/whisper-tiny/config.json", "bytes": 1983,
+      "sha256": "ffdccec4f3211f4c63310f2b7098f309fe70f3952cedc5e4d11e43f5b2379b98",
+      "url": "https://huggingface.co/openai/whisper-tiny/resolve/169d4a4341b33bc18d8881c4b69c2e104e1cc0af/config.json"
+    },
+    "muse-whisper-features": {
+      "path": "_shared/whisper-tiny/preprocessor_config.json", "bytes": 184990,
+      "sha256": "9b5cd03a36fbb8a627c64d98a5b5b126ead95a77720723944487311f0110b666",
+      "url": "https://huggingface.co/openai/whisper-tiny/resolve/169d4a4341b33bc18d8881c4b69c2e104e1cc0af/preprocessor_config.json"
+    },
+    "muse-anime-face": {
+      "path": "musetalk-1.5/lbpcascade_animeface.xml", "bytes": 246945,
+      "sha256": "9376d30ac38db6bda2a68b88b3b76bbd7e6aa33af47f7f5c76bc88ca75f1ce30",
+      "url": "https://raw.githubusercontent.com/nagadomi/lbpcascade_animeface/4433ab1ae1166ea75acfe99eb0f18709dac329a0/lbpcascade_animeface.xml"
+    },
+    "wan-distilled-high": {
+      "path": "wan2.2-i2v-a14b-gguf/wan2.2_i2v_A14b_high_noise_lightx2v_4step_720p_260412-Q4_K_M.gguf", "bytes": 9661569664,
+      "sha256": "18fe5780b0eb4ecb7ee88194ce10d78c375295eabadc110f9fd2961f7914cb14",
+      "url": "https://huggingface.co/jayn7/WAN2.2-I2V_A14B-DISTILL-LIGHTX2V-4STEP-GGUF/resolve/338fb8eedd8f485c9188cf1b1de541721fc81d66/high_noise_260412/wan2.2_i2v_A14b_high_noise_lightx2v_4step_720p_260412-Q4_K_M.gguf"
+    },
+    "wan-distilled-low": {
+      "path": "wan2.2-i2v-a14b-gguf/wan2.2_i2v_A14b_low_noise_lightx2v_4step_720p_260412-Q4_K_M.gguf", "bytes": 9661569664,
+      "sha256": "583d458354129099d5d49e524a857b272007a0cb0ef12dc731f84968521be845",
+      "url": "https://huggingface.co/jayn7/WAN2.2-I2V_A14B-DISTILL-LIGHTX2V-4STEP-GGUF/resolve/338fb8eedd8f485c9188cf1b1de541721fc81d66/low_noise_260412/wan2.2_i2v_A14b_low_noise_lightx2v_4step_720p_260412-Q4_K_M.gguf"
+    },
+    "wan-a14b-umt5": {
+      "path": "_shared/umt5-xxl-encoder-Q4_K_M.gguf", "bytes": 3655145312,
+      "sha256": "17cf97a5bbbc60a646d6105b832b6f657ce904a8a1ad970e4b59df0c67584a40",
+      "url": "https://huggingface.co/city96/umt5-xxl-encoder-gguf/resolve/b535255bee98c2b0a59ea7c0ae2dcd0c6657b3b7/umt5-xxl-encoder-Q4_K_M.gguf"
+    },
+    "wan-a14b-vae": {
+      "path": "_shared/Wan2.1_VAE.safetensors", "bytes": 253815318,
+      "sha256": "2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b",
+      "url": "https://huggingface.co/QuantStack/Wan2.2-I2V-A14B-GGUF/resolve/6c6717459277b9cd1f72579d78a0fd62a79e57dc/VAE/Wan2.1_VAE.safetensors"
+    },
+    "kontext-q4": {
+      "path": "flux-kontext-dev/flux1-kontext-dev-Q4_K_M.gguf", "bytes": 6931817760,
+      "sha256": "ebd4e92c44c47f104ad64e4353692f37addf06eb99420c9b459334d871c8b750",
+      "url": "https://huggingface.co/QuantStack/FLUX.1-Kontext-dev-GGUF/resolve/2d083027732f81e5548620b57ac47da22d30aa5a/flux1-kontext-dev-Q4_K_M.gguf"
+    },
+    "kontext-clip": {
+      "path": "_shared/clip_l.safetensors", "bytes": 246144152,
+      "sha256": "660c6f5b1abae9dc498ac2d21e1347d2abdb0cf6c0c0c8576cd796491d9a6cdd",
+      "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/6af2a98e3f615bdfa612fbd85da93d1ed5f69ef5/clip_l.safetensors"
+    },
+    "kontext-t5": {
+      "path": "_shared/t5-v1_1-xxl-encoder-Q4_K_M.gguf", "bytes": 2896123072,
+      "sha256": "6be2b0b7e2de7cf2919340c88cb802a103a997ce46c53131cec91958c1db1af4",
+      "url": "https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/005a6ea51a7d0b84d677b3e633bb52a8c85a83d9/t5-v1_1-xxl-encoder-Q4_K_M.gguf"
+    },
+    "kontext-vae": {
+      "path": "_shared/ae.safetensors", "bytes": 335304388,
+      "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+      "url": "https://huggingface.co/second-state/FLUX.1-schnell-GGUF/resolve/8c45a2ba25e2d02bd34230989fb54983f39e44ec/ae.safetensors"
+    },
+    "h3-image-q4": {
+      "path": "minimax-h3-image-q4/minimax_h3_image_pruned-Q4_K_M.gguf", "bytes": 12721119968,
+      "sha256": "ef784687ff25a974191d00f941388060ef971286fbd2e98b2769fa78c8d599a8",
+      "url": "https://huggingface.co/unsloth/MiniMax-H3-Image-GGUF/resolve/0d25c7349e007529691bbc0f4426b579fce7de01/minimax_h3_image_pruned-Q4_K_M.gguf"
+    },
+    "h3-image-qwen": {
+      "path": "_shared/qwen3vl_32b_minimax_h3-Q4_K_M.gguf", "bytes": 18218065024,
+      "sha256": "11e6efe70a57ce7f4838c47bdbd1a1c4b8ce10e2b7747f1b065990b70f4b05fc",
+      "url": "https://huggingface.co/unsloth/MiniMax-H3-GGUF/resolve/babc040eff0084465460ead58fdb8ec44296f8dd/qwen3vl_32b_minimax_h3-Q4_K_M.gguf"
+    },
+    "h3-image-vae": {
+      "path": "_shared/minimax_h3_image_vae_fp16.safetensors", "bytes": 1168505312,
+      "sha256": "d80e9c2e5cfc9844869961ff5a58c9a9e52182df6bfb30b26018dd7f348721af",
+      "url": "https://huggingface.co/Comfy-Org/MiniMax-H3-Image/resolve/89c635085f539d03ad35485ed542c5a286e3c6d6/vae/minimax_h3_image_vae_fp16.safetensors"
+    }
+  },
   "implementation": {
     "repository": "https://github.com/huggingface/diffusers",
     "revision": "b800f828f3951c4d206e154411bcbfa693cd322e",
@@ -110,6 +232,28 @@
     }
   },
   "models": {
+    "flux-kontext-dev": {
+      "label": "FLUX.1 Kontext dev · Q4_K_M",
+      "family": "keyframe", "media": "image", "runner": "sd-cpp", "pipeline": "flux-kontext",
+      "repository": "QuantStack/FLUX.1-Kontext-dev-GGUF", "revision": "2d083027732f81e5548620b57ac47da22d30aa5a",
+      "source": "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev",
+      "license": "FLUX.1 [dev] Non-Commercial License", "licenseUrl": "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/blob/main/LICENSE.md",
+      "components": {"diffusion-model": "kontext-q4", "clip_l": "kontext-clip", "t5xxl": "kontext-t5", "vae": "kontext-vae"},
+      "modes": ["image"], "maxReferenceImages": 4,
+      "steps": 20, "cfg": 1, "distilledGuidance": 2.5, "minSize": 512, "maxSize": 1024, "alignment": 32,
+      "edit": true, "negative": false, "distilled": false
+    },
+    "minimax-h3-image-q4": {
+      "label": "MiniMax H3-Image · Q4_K_M",
+      "family": "keyframe", "media": "image", "runner": "sd-cpp", "pipeline": "minimax-h3-image",
+      "repository": "unsloth/MiniMax-H3-Image-GGUF", "revision": "0d25c7349e007529691bbc0f4426b579fce7de01",
+      "source": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image",
+      "license": "MiniMax H3-Image Community License", "licenseUrl": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image/blob/main/LICENSE",
+      "components": {"diffusion-model": "h3-image-q4", "llm": "h3-image-qwen", "vae": "h3-image-vae"},
+      "modes": ["image"], "maxReferenceImages": 4,
+      "steps": 6, "cfg": 1, "sigmas": "minimax-h3-image", "minSize": 512, "maxSize": 1024, "alignment": 32,
+      "edit": true, "negative": false, "distilled": true
+    },
     "wan-animate-2": {
       "label": "Wan-Animate-2 · 14B 蒸馏动作驱动",
       "family": "wan-animate-2", "media": "video", "pipeline": "WanAnimate2DistilledModularPipeline",
@@ -293,6 +437,19 @@
       "fps": 24, "minFrames": 5, "maxFrames": 121, "frameMultiple": 4, "frameOffset": 1,
       "durationFrames": {"3": 73, "5": 121}, "sampler": "unipc", "audio": false
     },
+    "musetalk-1.5": {
+      "label": "MuseTalk 1.5 · 配音对口型", "family": "musetalk", "media": "video",
+      "pipeline": "MuseTalkNative", "runner": "musetalk-native", "drivingInput": "audio", "modes": ["image"],
+      "components": {"unet":"muse-unet","unet-config":"muse-config","vae":"muse-vae","vae-config":"muse-vae-config",
+                     "whisper":"muse-whisper","whisper-config":"muse-whisper-config","features":"muse-whisper-features","anime-face":"muse-anime-face"},
+      "repository": "TMElyralab/MuseTalk", "revision": "c9ac4cdcedcae22c186fbbf67261961e246c4760",
+      "source": "https://github.com/TMElyralab/MuseTalk/tree/2536eaf06b85f775d8e04b7fd81bf6699155a58d",
+      "license": "MIT", "licenseUrl": "https://github.com/TMElyralab/MuseTalk/blob/2536eaf06b85f775d8e04b7fd81bf6699155a58d/LICENSE",
+      "attentionModes": ["auto"], "steps": 1, "minSteps": 1, "cfg": 1, "distilled": true, "edit": false, "negative": false,
+      "canvases": {"landscape":[832,480],"portrait":[480,832],"square":[608,608]}, "minSize": 480, "maxSize": 832, "alignment": 32,
+      "fps": 25, "minFrames": 1, "maxFrames": 375, "frameMultiple": 1, "frameOffset": 0, "audio": true, "sampleRate": 48000,
+      "durationFrames": {"2":50,"3":75,"5":125,"10":250,"15":375}, "sampler": "musetalk"
+    },
     "longcat-avatar-1.6": {
       "label": "LongCat-Video-Avatar 1.6 · 配音驱动",
       "family": "longcat-avatar", "media": "video", "pipeline": "LongCatVideoAvatarPipeline",
@@ -308,6 +465,21 @@
       "edit": false, "negative": false, "distilled": true, "fps": 25,
       "minFrames": 75, "maxFrames": 125, "frameMultiple": 1, "frameOffset": 0,
       "durationFrames": {"3": 75, "5": 125}, "sampler": "dmd-opsd", "audio": true, "sampleRate": 48000
+    },
+    "wan2.2-i2v-a14b-gguf": {
+      "label": "Wan 2.2 首尾帧 A14B · GGUF Q4 + LightX2V", "family": "wan2.2", "media": "video",
+      "pipeline": "WanA14BNative", "runner": "wan-a14b-sd", "modes": ["image", "first-last-frame"],
+      "components": {"high-noise-diffusion-model": "wan-distilled-high", "diffusion-model": "wan-distilled-low", "t5xxl": "wan-a14b-umt5", "vae": "wan-a14b-vae"},
+      "repository": "jayn7/WAN2.2-I2V_A14B-DISTILL-LIGHTX2V-4STEP-GGUF", "revision": "338fb8eedd8f485c9188cf1b1de541721fc81d66",
+      "distilledSource": "https://huggingface.co/lightx2v/Wan2.2-Distill-Models",
+      "source": "https://github.com/Wan-Video/Wan2.2", "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/Wan-AI/Wan2.2-I2V-A14B/blob/main/LICENSE.txt",
+      "steps": 4, "minSteps": 4, "stepOptions": [4, 8], "cfg": 1, "boundaryRatio": 0.9, "distilled": true,
+      "graphBudgetGiB": {"balanced480": 5, "conservative480": 4, "highTokenCount": 7},
+      "attentionModes": ["auto"], "executable": "sd-server.exe",
+      "minSize": 480, "maxSize": 1280, "alignment": 16, "edit": false, "negative": false,
+      "fps": 16, "minFrames": 5, "maxFrames": 81, "frameMultiple": 4, "frameOffset": 1,
+      "durationFrames": {"2": 33, "3": 49, "5": 81}, "sampler": "euler", "audio": false
     },
     "wan2.2-14b": {
       "label": "Wan 2.2 T2V A14B · 原生 BF16",

@@ -225,6 +225,7 @@
           <button class="btn btn-ghost" type="button" :disabled="downloading" :aria-busy="downloading" @click="downloadCurrent"><ArchiveIcon name="download" />{{ downloading ? '正在准备下载…' : '下载原图' }}</button>
           <RouterLink v-if="displayedCurrent.engine !== 'manga-screen' && displayedCurrent.engine !== 'qwen-image'" class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
           <RouterLink v-if="displayedCurrent.image_id" class="btn btn-ghost" :to="{ path: '/prompt-builder', query: { editor: 'qwen', artwork: displayedCurrent.id } }"><ArchiveIcon name="image" />用 Qwen 编辑</RouterLink>
+          <RouterLink class="btn btn-ghost" :to="{ path: '/studio-projects', query: { artwork: String(displayedCurrent.id), idType: typeof displayedCurrent.id } }"><ArchiveIcon name="folder" />带原图去创作项目</RouterLink>
           <MangaScreenLauncher :source-url="viewerUrl" :artwork="displayedCurrent" :disabled="!viewerUrl || viewerLoadFailed" @saved="loadGalleryStorage" />
         </div>
         <section class="viewer-section" aria-label="作品信息">

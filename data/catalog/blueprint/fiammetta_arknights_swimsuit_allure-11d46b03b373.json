@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3141,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "fiammetta_arknights_swimsuit_allure",
     "characterId": "fiammetta_arknights",
@@ -14,7 +14,7 @@
     "location": "临海货运码头大型铁锈集装箱之间的狭长阴凉过道",
     "timeOfDay": "正午烈日",
     "lighting": "工业集装箱投射下的如刀锋般硬朗的深黑阴影，与外界刺眼暴烈的苍白强光形成极具张力的几何切割",
-    "camera": "cowboy shot, low angle, intense hard-boiled action styling, high dynamic contrast",
+    "camera": "low angle, cowboy shot",
     "mood": "暴烈急躁、威风凛凛与绝不服输的极度要强",
     "adult": true,
     "sampleRating": "R15",
@@ -37,26 +37,32 @@
       "explosive_temper"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "fiammetta (arknights)",
-      "short hair",
-      "amber eyes",
-      "red wings",
-      "black athletic bikini",
-      "crimson straps",
-      "holding crushed soda can",
-      "shipping container shade",
-      "fierce angry expression",
-      "sharp harsh sunlight",
-      "toned athletic body",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "foot up",
+      "holding can",
+      "crushed can",
+      "angry",
+      "glare",
+      "shipping container",
+      "dock",
+      "harbor",
+      "harsh sunlight",
+      "hard shadows",
+      "noon",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Fiammetta leans in the hard shadow of a rusted cargo container in her fierce black-and-crimson athletic bikini, crushing a soda can in her fist with fiery, irritable intensity.",
-    "animaCaption": "Searing noon heat waves shimmer beyond the steel shipping containers as her red wings rustle with fiery irritation.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Fiammetta stands in the razor-sharp shadow between rusted shipping containers at a coastal freight dock, wearing a black and flame-red cross-strap athletic bikini with alloy clasps. Planting one foot on a container rail, she crushes an empty soda can in her fist and glares into the scorching midday glare.",
+    "animaCaption": "Planting one boot-free foot on a cargo container base in the narrow alley shade, she crushes an empty soda can in one fist and glares out toward the glare in her black-and-crimson athletic bikini. Hard noon sunlight slices diagonally across the rusted steel corridor.",
+    "nsfwTokens": [
+      "black bikini",
+      "criss-cross straps",
+      "red trim",
+      "sports bikini",
+      "toned",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a black and crimson cross-strap athletic bikini with reinforced military webbing and matte alloy clasps."
   }
 }

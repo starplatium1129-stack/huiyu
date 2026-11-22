@@ -118,7 +118,7 @@ export interface VideoAiScriptShot {
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
   dialogue: string
-  duration: VideoDefaults['duration']
+  duration: Exclude<VideoDefaults['duration'], 2>
 }
 
 export interface VideoAiScriptResponse {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_05",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1752,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_05",
     "title": "丰川祥子 · 海边闭园后的蓝色灯串",
@@ -16,7 +16,7 @@
     "action": "闭园舞台边重新点亮最后一串灯饰，海风吹起发带并轻松抬头",
     "timeOfDay": "日间",
     "lighting": "blue dusk with warm bulbs and ocean haze",
-    "camera": "medium shot, horizontal framing",
+    "camera": "three quarter view, medium shot",
     "mood": "演出结束后才属于自己的假日",
     "sceneTags": [
       "swimsuit",
@@ -29,14 +29,22 @@
       "ocean",
       "dusk"
     ],
-    "promptProse": "Sakiko untangles the final light on the empty stage, its warm bulb illuminating her hands against blue dusk.",
+    "promptProse": "Sitting on the wooden edge of an empty seaside concert stage after closing hours in her indigo one-piece swimsuit and black sheer overshirt, Sakiko carefully untangles a strand of hanging fairy lights across her lap. As she twists the final warm bulb back to life in her fingers, she lifts her gaze toward the viewer with a rare, unburdened smile while the sea breeze lifts her ribbons. Deep blue coastal dusk settles over the hazy ocean behind the stage while the glowing bulbs cast warm gold across her hands.",
     "promptTokens": [
-      "Sakiko Togawa",
+      "sitting",
+      "stage",
       "string lights",
-      "seaside stage",
+      "glowing",
+      "holding",
+      "looking at viewer",
+      "gentle smile",
+      "wind",
+      "ocean",
+      "outdoors",
       "dusk",
-      "medium shot",
-      "warm lighting"
+      "warm lighting",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +57,7 @@
       "summer",
       "beach"
     ],
-    "animaCaption": "Her hands untangle the final string-light bulb on the empty seaside stage."
+    "animaCaption": "Seated at the edge of the closed seaside stage in her black sheer overshirt over her indigo swimsuit, Sakiko lights the last bulb along a strand of string lights and looks up with an easy smile. Warm bulb glow illuminates her fingers against the cool blue ocean dusk.",
+    "compositionIntent": "single"
   }
 }

@@ -1,6 +1,6 @@
 use tauri::menu::{CheckMenuItem, Menu, MenuBuilder, MenuItem, PredefinedMenuItem};
 use tauri::tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent};
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{AppHandle, Manager};
 use tauri_plugin_autostart::ManagerExt;
 use tauri_plugin_opener::OpenerExt;
 
@@ -9,6 +9,7 @@ use crate::state::AppState;
 const MENU_SHOW_COMPANION: &str = "show_companion";
 const MENU_OPEN_CHAT: &str = "open_chat";
 const MENU_OPEN_ATELIER: &str = "open_atelier";
+const MENU_COMPANION_SETTINGS: &str = "companion_settings";
 const MENU_TOGGLE_ALWAYS_ON_TOP: &str = "toggle_always_on_top";
 const MENU_TOGGLE_PASSTHROUGH: &str = "toggle_passthrough";
 const MENU_TOGGLE_AUTOSTART: &str = "toggle_autostart";
@@ -26,9 +27,10 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
     let tray = TrayIconBuilder::with_id("main")
         .icon(icon)
         .tooltip("绘遇 · 桌面陪伴")
+        .show_menu_on_left_click(false)
         .on_tray_icon_event(|tray, event| {
-            if let TrayIconEvent::Click { button: MouseButton::Left, .. } = event {
-                let _ = tray.app_handle().emit("aics:tray-left-click", ());
+            if let TrayIconEvent::Click { button: MouseButton::Left, button_state: tauri::tray::MouseButtonState::Up, .. } = event {
+                crate::main_shared::show_companion(tray.app_handle(), true);
             }
         })
         .menu(&build_menu(app)?)
@@ -38,13 +40,18 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
             let state = app.state::<AppState>();
             match event.id().as_ref() {
                 MENU_SHOW_COMPANION => {
-                    let _ = app.emit("aics:show-companion", ());
+                    crate::main_shared::toggle_companion_visibility(app);
                 }
                 MENU_OPEN_CHAT => {
-                    let _ = app.emit("aics:open-chat", ());
+                    let url = state.gateway_url.lock().unwrap().clone();
+                    crate::main_shared::open_companion_chat(app, &url);
                 }
                 MENU_OPEN_ATELIER => {
-                    let _ = app.emit("aics:open-atelier", ());
+                    let url = state.gateway_url.lock().unwrap().clone();
+                    crate::main_shared::open_atelier(app, &url, None);
+                }
+                MENU_COMPANION_SETTINGS => {
+                    crate::companion_window::show(app, true, true);
                 }
                 MENU_TOGGLE_ALWAYS_ON_TOP => {
                     crate::bridge::toggle_always_on_top(app.clone(), state);
@@ -99,17 +106,17 @@ pub fn refresh_tray_menu(app: &AppHandle) {
 }
 
 fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
-    let always_on_top = app
-        .get_webview_window("companion")
-        .map(|w| w.is_always_on_top().unwrap_or(false))
-        .unwrap_or(false);
     let state = app.state::<AppState>();
+    let always_on_top = state.preferences.lock().unwrap().always_on_top;
+    let companion_open = state.companion_presentation.lock().unwrap().preparing()
+        || app.get_webview_window("companion").is_some_and(|w| w.is_visible().unwrap_or(false));
     let passthrough = state.ignore_mouse_events.load(std::sync::atomic::Ordering::Relaxed);
     let autostart = app.autolaunch().is_enabled().unwrap_or(false);
 
-    let show_companion = MenuItem::with_id(app, MENU_SHOW_COMPANION, "显示桌面角色", true, None::<&str>)?;
+    let show_companion = MenuItem::with_id(app, MENU_SHOW_COMPANION, if companion_open { "隐藏桌面角色" } else { "显示桌面角色" }, true, None::<&str>)?;
     let open_chat = MenuItem::with_id(app, MENU_OPEN_CHAT, "打开聊天", true, None::<&str>)?;
     let open_atelier = MenuItem::with_id(app, MENU_OPEN_ATELIER, "打开绘图画室", true, None::<&str>)?;
+    let companion_settings = MenuItem::with_id(app, MENU_COMPANION_SETTINGS, "切换桌面角色与设置", true, None::<&str>)?;
     let separator = PredefinedMenuItem::separator(app)?;
     let toggle_top = MenuItem::with_id(
         app,
@@ -118,11 +125,12 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         true,
         None::<&str>,
     )?;
-    let toggle_passthrough = MenuItem::with_id(
+    let toggle_passthrough = CheckMenuItem::with_id(
         app,
         MENU_TOGGLE_PASSTHROUGH,
-        if passthrough { "关闭鼠标穿透" } else { "开启鼠标穿透" },
+        "锁定整身鼠标穿透（空白自动穿透）",
         true,
+        passthrough,
         None::<&str>,
     )?;
     let toggle_autostart = CheckMenuItem::with_id(app, MENU_TOGGLE_AUTOSTART, "开机启动", true, autostart, None::<&str>)?;
@@ -135,6 +143,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         .item(&show_companion)
         .item(&open_chat)
         .item(&open_atelier)
+        .item(&companion_settings)
         .item(&separator)
         .item(&toggle_top)
         .item(&toggle_passthrough)

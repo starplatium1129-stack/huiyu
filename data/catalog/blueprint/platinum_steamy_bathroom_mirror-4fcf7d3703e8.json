@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_steamy_bathroom_mirror",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3107,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "platinum_steamy_bathroom_mirror",
     "characterId": "platinum_arknights",
@@ -16,7 +16,7 @@
     "action": "手执毛巾擦拭湿发抚弄耳际",
     "timeOfDay": "深夜沐浴后",
     "lighting": "雾气漫射的乳白顶灯与镜前柔光",
-    "camera": "镜面虚实双重构图半身景深",
+    "camera": "three quarter view, medium shot",
     "mood": "微醺羞涩",
     "sceneTags": [
       "bathroom",
@@ -27,22 +27,22 @@
       "blush",
       "mirror reflection"
     ],
-    "promptProse": "Inside a luxurious marble bathroom filled with rising warm steam and condensation on mirrors, Platinum stands wrapping a white towel around her chest. She delicately dries her damp silver hair with a hand towel, water droplets tracing down her bare slender shoulders. Her cheeks flush with post-bath warmth, casting a coy glance at the open doorway.",
-    "animaCaption": "",
+    "promptProse": "Inside a warm marble bathroom misted with post-bath steam and beaded condensation on the vanity mirror, Platinum braces one hand on the counter while patting her damp white hair with a hand towel. Wrapped snugly in a fluffy white bath towel with water droplets glistening along her bare shoulders, she glances shyly toward the viewer with heat-flushed cheeks.",
+    "animaCaption": "Standing before the fogged marble vanity mirror with one hand braced on the counter, she dabs her damp hair with a small towel and casts a shy flushed glance toward the viewer. Warm steam softens the overhead light on her wet shoulders above the wrapped white bath towel.",
     "promptTokens": [
-      "solo",
-      "bathroom",
-      "steam",
-      "condensation",
-      "damp hair",
+      "standing",
+      "drying hair",
+      "hand on counter",
       "wet hair",
       "blush",
-      "flushed skin",
-      "holding towel",
-      "water drops",
-      "mirror reflection",
-      "soft lighting",
-      "alluring gaze",
+      "glancing sideways",
+      "bathroom",
+      "mirror",
+      "reflection",
+      "steam",
+      "marble",
+      "soft overhead light",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -53,6 +53,15 @@
       "nsfw",
       "daily"
     ],
-    "compositionIntent": "single"
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white bath towel",
+      "towel around body",
+      "bare shoulders",
+      "wet skin",
+      "water drop",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears only a fluffy white bath towel tucked snugly above her bust, her bare shoulders and collarbone glistening with warm droplets."
   }
 }

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_tatami_cowgirl_wings_flutter",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1221,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶翼根，另一手留在腿间。",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "深层欢愉",
     "characterId": "ikaros",
     "coverageTags": [
@@ -22,28 +22,31 @@
     "location": "和室榻榻米坐席中央骑乘姿态",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "angeloid_dress",
-    "promptProse": "Adult Ikaros sits astride a tatami cushion, steadying a wing root with one hand and touching herself with the other as blue light pulses at her chest; warm paper-lantern light falls across her white feathers and the mat.",
-    "promptTokens": [
-      "adult",
-      "dress down",
-      "topless",
-      "straddling",
-      "cushion",
-      "female masturbation",
-      "wings",
-      "blush",
-      "shoji",
+    "nsfwProse": "Her sleeveless white ruffled dress with its small red ribbon is slipped down around her waist, leaving her breasts bare while her free hand touches herself between her thighs.",
+    "nsfwTokens": [
       "white dress",
       "red ribbon",
+      "dress down",
+      "topless",
+      "nipples",
+      "hand between legs",
+      "masturbation"
+    ],
+    "outfitId": "angeloid_dress",
+    "promptProse": "Seen from a low angle in a quiet tatami room bordered by shoji screens, Ikaros sits astride a floor cushion steadying her wing root with one hand. Warm paper-lantern glow mingles with a soft blue pulse from her chest across her flushed face and white feathers.",
+    "promptTokens": [
+      "straddling",
+      "cushion",
       "tatami",
-      "paper lantern",
+      "shoji",
       "blue light",
+      "paper lantern",
       "warm lighting",
-      "cowboy shot",
-      "from below"
+      "heavy blush",
+      "parted lips",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -57,6 +60,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "伊卡洛斯 · 白翼轻颤跨坐骑乘与主动摇曳",
-    "animaCaption": "One hand steadies the wing root above the tatami cushion."
+    "animaCaption": "Sitting astride a tatami floor cushion with her white angeloid dress lowered off her bare chest, she steadies the base of one white wing with one hand and slips the other between her thighs where soft blue core light meets the warm paper lantern.",
+    "compositionIntent": "single"
   }
 }

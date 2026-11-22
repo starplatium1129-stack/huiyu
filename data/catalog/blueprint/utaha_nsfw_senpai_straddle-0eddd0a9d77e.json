@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_senpai_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "utaha_nsfw_senpai_straddle",
     "title": "霞之丘诗羽 · 深夜书房·半解黑蕾丝与踩椅褪袜",
@@ -15,7 +15,7 @@
     "action": "斜倚真皮转椅，单腿屈膝踩在椅沿，大腿受力微陷，修长指尖将透肉黑丝缓缓褪至脚踝，红瞳微醺戏谑回眸",
     "timeOfDay": "深夜",
     "lighting": "warm amber brass desk lamp, soft atmospheric shadow, golden skin highlights",
-    "camera": "full body, low angle, vertical framing, focus on legs and adjusting stockings",
+    "camera": "from below, full body",
     "mood": "知性微醺、毒舌慵懒、压倒性进攻与从容挑逗",
     "recommendedSize": "1152x1536",
     "adult": true,
@@ -43,27 +43,36 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Reclining in the leather chair, Utaha props one foot on the chair edge and rolls the pantyhose toward that ankle; her other foot half-slips from its pointed heel. Her camisole remains slipped below her breasts in the brass desk lamp's amber light, beside scattered manuscripts and a half-filled wine glass.",
+    "promptProse": "Viewed from a low vertical angle in a hushed late-night study bathed in amber light from a brass desk lamp, Utaha leans back in her leather swivel chair beside stacked manuscripts and red wine, eyeing the viewer with a tipsy, teasing smile.",
     "promptTokens": [
-      "black lace camisole",
-      "black pantyhose",
-      "black high heels",
-      "chair",
-      "study",
-      "night",
       "reclining",
-      "breast slip",
+      "office chair",
+      "leg up",
+      "smirk",
+      "blush",
+      "looking at viewer",
+      "study",
       "manuscripts",
       "wine glass",
+      "desk lamp",
       "warm lighting",
-      "full body",
-      "low angle"
+      "night",
+      "from below",
+      "full body"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
-      "topless"
+      "black camisole",
+      "lace trim",
+      "topless",
+      "nipples",
+      "black pantyhose",
+      "pantyhose pull",
+      "black high heels",
+      "dangling shoe"
     ],
-    "nsfwProse": "",
-    "animaCaption": "Both hands roll the pantyhose toward one raised ankle; the other foot half-slips from its heel."
+    "nsfwProse": "Her black eyelash-lace camisole has slipped below her bare breasts while both hands slowly peel sheer black pantyhose down her raised leg and her other foot dangles a pointed black stiletto heel.",
+    "animaCaption": "Reclining lazily in a dark leather study chair beside scattered manuscripts and a half-finished glass of red wine, she props one foot on the seat edge to roll her sheer black pantyhose toward her ankle while her black lace camisole rests slipped below her bare breasts.",
+    "compositionIntent": "single"
   }
 }

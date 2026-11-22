@@ -21,6 +21,13 @@ function cameraAxis(token: string): CameraAxis | undefined {
 // Replace photographic phrases only, never turn actions such as "looking back" into camera directions.
 const cameraPhrase = /\b(?:(?:extreme|medium)[ _-]close[ _-]up|close[ _-]up|(?:medium|cowboy|wide|long|establishing)[ _-]shot|(?:wide[ _-])?full[ _-]body(?:[ _-](?:view|shot))?|waist[ _-]up(?:[ _-]view)?|(?:low|high|dutch)[ _-]angle|overhead[ _-]shot|bird's[ _-]eye[ _-]view|(?:(?:front|rear|back|side)[ _-])?three[ _-]quarter[ _-]view|(?:side|front|back)[ _-]view|eye[ _-]level)\b/gi
 const multipleFrames = /\b(?:triptych|diptych|(?:two|three|multiple)[ _-](?:horizontal[ _-])?panels)\b/i
+// Spatial direction words (侧后方/后侧方/后方/侧方) only act as camera angles when not locating
+// background props (e.g. "显出毯缘和侧后方床头灯", "与后方潮沟同框", "床头灯在侧后方").
+// Framing and elevation terms are converted to space-padded English before these run, so trailing
+// whitespace or punctuation still matches genuine camera cues such as "侧后方半身中景" and "主观后侧方特写".
+const zhRearThreeQuarter = /(?:侧后|后侧)(?:景(?!物|色|观|象|点|致)|拍|身(?!后|影|旁|边|侧)|视角?)|(?<![与和及在]|位于|处在|处于|显出|露出|带出|背景|前景|人物|画面|身后|背后)(?:侧后|后侧)方?(?=$|[\s,，、。；;：:（）()\-—/]|(?:的)?(?:视角|角度|机位|镜头|构图|取景|切入|越过|主观|第一人称|拍(?=$|[\s,，、。；;：:（）()\-—/]|摄|下|出|到|捉)))/g
+const zhBackView = /后视(?!镜)|(?<![侧与和及在]|位于|处在|处于|显出|露出|带出|背景|前景|人物|画面|身后|背后)后方(?=$|[\s,，、。；;：:（）()\-—/]|(?:的)?(?:视角|角度|机位|镜头|构图|取景|切入|越过|主观|第一人称|拍(?=$|[\s,，、。；;：:（）()\-—/]|摄|下|出|到|捉)))/g
+const zhSideView = /(?<!肩)侧面(?!部)|侧向|(?<!后)侧景(?!物|色|观|象|点|致)|(?<!后)侧拍|(?<![后与和及在]|位于|处在|处于|显出|露出|带出|背景|前景|人物|画面|身后|背后)侧方(?=$|[\s,，、。；;：:（）()\-—/]|(?:的)?(?:视角|角度|机位|镜头|构图|取景|切入|越过|主观|第一人称|拍(?=$|[\s,，、。；;：:（）()\-—/]|摄|下|出|到|捉)))/g
 
 export function hasCameraPhrase(prose: string): boolean { return new RegExp(cameraPhrase).test(prose) }
 
@@ -59,9 +66,9 @@ export function cameraTokensFromText(text = ''): string[] {
     .replace(/仰视|仰拍|仰看|仰角|微仰(?:角)?/g, ' low angle ')
     .replace(/低视角|低角度|低机位/g, ' low angle ')
     .replace(/高视角|高角度|高机位/g, ' high angle ')
-    .replace(/侧后(?:方|景|拍)?|后侧(?:方|景|拍)?/g, ' rear three quarter view ')
-    .replace(/侧面|侧方|侧向|侧景|侧拍/g, ' side view ')
-    .replace(/后视|后方/g, ' back view ')
+    .replace(zhRearThreeQuarter, ' rear three quarter view ')
+    .replace(zhBackView, ' back view ')
+    .replace(zhSideView, ' side view ')
     .replace(/正面/g, ' front view ')
     .replace(/倾斜(?:电影感)?构图|荷兰角/g, ' dutch angle ')
     .replace(/镜面反射(?:构图)?/g, ' medium shot ')

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mayuri_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3480,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.054Z",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiina_mayuri_swimsuit_allure",
     "characterId": "shiina_mayuri",
@@ -14,7 +14,7 @@
     "location": "避暑小岛的浅滩遮阳伞边",
     "timeOfDay": "上午",
     "lighting": "明媚晴空侧逆光，沙滩金白反射与草帽下透射的柔光",
-    "camera": "柔和中景平视，微带仰角捕捉草帽边沿与阳光透过的金芒",
+    "camera": "eye level, medium shot",
     "mood": "治愈纯真、温馨恬淡",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,36 @@
       "gentle_smile"
     ],
     "promptTokens": [
-      "retro swimdress",
-      "daisy print",
-      "straw hat",
+      "standing",
+      "holding food",
       "popsicle",
+      "eating",
+      "straw hat",
+      "head tilt",
+      "happy smile",
+      "looking at viewer",
       "beach",
+      "beach umbrella",
       "ocean",
-      "smile",
-      "morning light"
+      "outdoors",
+      "morning",
+      "sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mayuri Shiina standing barefoot on a sunny white-sand beach under a colorful umbrella. She wears a charming retro pastel blue one-piece swimdress with delicate frilled edges and daisy motifs, along with a wide-brim straw hat. She is happily nibbling on a soda popsicle and offering the other half to the viewer, smiling warmly with innocent blue eyes in the radiant morning sunlight.",
-    "animaCaption": "Mayuri Shiina standing barefoot on a sunny white-sand beach under a colorful umbrella. She wears a charming retro pastel blue one-piece swimdress with delicate frilled edges and daisy motifs, along with a wide-brim straw hat.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing barefoot in warm white sand beside a bright beach umbrella on a sunny resort island morning, Mayuri wears a retro pastel sky-blue swimdress sprinkled with tiny white daisies and topped with a ribboned wide-brim straw sunhat. Nibbling happily on one half of a melting soda popsicle, she tilts her head playfully while extending the other half toward the viewer with a beaming smile. Crisp morning sunlight glints across the clear shallows and filters softly through her hat brim.",
+    "animaCaption": "Standing barefoot on white beach sand in her daisy-print sky-blue swimdress and wide-brim straw hat, Mayuri nibbles a soda popsicle while offering the other half toward the viewer with a cheerful smile. Bright morning sunlight shines across the clear sea.",
+    "nsfwTokens": [
+      "blue swimsuit",
+      "swimdress",
+      "daisy print",
+      "frills",
+      "sweetheart neckline",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a vintage pastel sky-blue one-piece swimdress patterned with tiny white daisies, layered ruffled hems, and a sweetheart neckline.",
+    "compositionIntent": "single"
   }
 }

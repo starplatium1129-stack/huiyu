@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc019",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-22T01:53:35.010858100+00:00",
   "data": {
-    "animaCaption": "Rising on tiptoes in the snow-draped morning street, she reaches up with both gloved hands to wrap the red plaid scarf snugly around the viewer, her smiling face bright in the winter sunshine.",
+    "animaCaption": "Seen from the side, she straightens a red plaid scarf tied around the neck of the taller person in the dark wool coat at the right edge. Her own beige coat has a plain buttoned collar and both her mittens are on the red wool.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "近景特写",
+    "camera": "从两人侧面取中近景，观者肩领在前景，宁宁正在理顺观者颈侧垂下的围巾",
     "category": "日常",
     "char": "nene",
     "character": [
@@ -20,8 +20,8 @@
     "location": "雪中街道",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "feet focus, cropped head, missing head, out of frame, deformed hands",
-    "prompt": "safe, 1girl, solo, ayachi_nene, @rella, white hair, ahoge, pink hair ribbons, purple eyes, beige duffle coat, red plaid wool scarf, holding scarf, reaching up with both hands, adjusting scarf on viewer, standing on tiptoe, looking up into viewer eyes, sweet blushing smile, cold mist breath, snowy city sidewalk, snow piled on tree branches, warm bakery storefront with glowing hanging lanterns in background, soft snowflakes falling, morning sunlight streaming down, face illuminated by winter morning sun, soft rim lighting, upper body, eye level, depth of field",
+    "negative": "feet focus, missing head, deformed hands",
+    "prompt": "safe, 1girl, 1boy, ayachi_nene, beige coat, duffle coat, mittens, holding scarf, plaid scarf, from side, upper body, profile, looking up, blush, breath, snow, street, sidewalk, shop, morning, sunlight",
     "rating": "All",
     "season": "冬",
     "story": "雪后清晨的街道格外安静，宁宁发现你的围巾松开，便踮脚替你重新绕好。距离忽然拉近，她冻红的耳尖也变得更红，却仍认真把最后一角压平。退开前，她把自己的手也藏进围巾边缘暖了一下——「这样就不会漏风了。我的手很冷？那……借我握一会儿就好。」",
@@ -58,6 +58,6 @@
       "头像"
     ],
     "weather": "雪",
-    "promptProse": "Rising on tiptoes in the snow-draped morning street, she reaches up with both gloved hands to wrap the red plaid scarf snugly around the viewer, her smiling face bright in the winter sunshine."
+    "promptProse": "At the edge of the snow-draped street, Nene straightens the end of a red plaid scarf already looped around the taller viewer's neck. Only the viewer's shoulder and the dark lapel under the scarf enter at the right of the side view. Her own beige coat closes with dark toggles, its plain collar clear of the scarf. Light through the bakery window catches her mittens and the small puff of her breath. Warm reflections lie on the snow below the row of storefronts."
   }
 }

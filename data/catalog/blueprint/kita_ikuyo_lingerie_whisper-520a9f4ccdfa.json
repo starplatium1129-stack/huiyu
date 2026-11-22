@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3380,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kita_ikuyo_lingerie_whisper",
     "characterId": "kita_ikuyo",
@@ -14,7 +14,7 @@
     "location": "温馨明亮的少女卧室，木吉他斜倚在墙角，米白羊毛地毯上散落着乐谱",
     "timeOfDay": "清晨旭日初升",
     "lighting": "金灿灿的初升朝阳洒满房间，透光窗帘滤出温暖柔和的金色尘晕",
-    "camera": "close-up, eye level, 平视微俯拍特写，捕捉抱枕上探出的小半张羞红脸庞与明澈双眸",
+    "camera": "close-up, eye level",
     "mood": "元气少女的羞涩清晨，明亮治愈且甜美可人",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,33 @@
       "close_up"
     ],
     "promptTokens": [
-      "close-up",
-      "lying on stomach",
-      "on bed",
+      "sitting",
+      "cross-legged",
       "hugging pillow",
-      "guitar leaning on wall",
-      "sheet music on carpet",
-      "bright morning",
-      "sunrise",
-      "sunbeam",
+      "bear pillow",
+      "shy",
       "blush",
-      "shy smile"
+      "looking at viewer",
+      "guitar",
+      "sheet music",
+      "carpet",
+      "bedroom",
+      "morning",
+      "sunbeam",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Kita peeks bashfully from behind a soft pillow in her sunny bedroom, morning sunbeams illuminating her guitar case and scattered sheet music on the carpet.",
-    "animaCaption": "Peeking shyly from behind a fluffy bed pillow in the bright morning sunlight, a guitar leaning against the wall.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "In a bright morning bedroom where warm sunbeams fall across scattered sheet music and an acoustic guitar propped against the wall, Kita sits on the cream carpet peeking bashfully over a plush bear pillow with a happy blush.",
+    "animaCaption": "Sitting cross-legged on her sunlit wool bedroom carpet beside scattered sheet music and a wall-leaning acoustic guitar, she hugs a soft bear pillow shyly to her chest with rosy cheeks in her peach-pink ruffled knit camisole and scalloped boy-shorts.",
+    "nsfwTokens": [
+      "pink camisole",
+      "knit top",
+      "ruffles",
+      "pink shorts",
+      "bare shoulders",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears a sweet peach-pink ribbed knit camisole trimmed with dainty scalloped ruffles along the neckline and hem, paired with matching ruffled sleep boy-shorts.",
+    "compositionIntent": "single"
   }
 }

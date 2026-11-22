@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_hortensia_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3277,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "caren_hortensia_lingerie_whisper",
     "characterId": "caren_hortensia",
@@ -14,7 +14,7 @@
     "location": "冬木市教会偏堂洗礼池石阶",
     "timeOfDay": "黎明破晓",
     "lighting": "破晓玫瑰紫的微弱天光穿透高处彩色玻璃花窗，在修道袍与石阶上投下斑驳神圣又妖异的冷光",
-    "camera": "low angle, cowboy shot, 充满戏剧张力的仰角构图，将神圣修女的空灵与毒舌小恶魔的嘲弄完美结合",
+    "camera": "low angle, cowboy shot",
     "mood": "神圣冷冽、毒舌微讽、洞悉人性罪恶的奇妙快感",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,33 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "cowboy shot",
+      "standing",
+      "crossed arms",
+      "head tilt",
+      "smirk",
+      "looking at viewer",
+      "cathedral nave",
+      "stone pillars",
+      "wooden crucifix",
+      "stained glass",
+      "silver moonlight",
+      "dawn",
       "low angle",
-      "standing in stone cathedral nave",
-      "carved wooden crucifix",
-      "moonlight through high clerestory",
-      "marble pillars",
-      "mocking saintly smile",
-      "angelic poison tease",
-      "silver moonlight"
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Caren stands beneath the stone arches of the deserted church, bathed in pure silver moonlight as she tilts her head with a deliciously cruel, mock-innocent smirk.",
-    "animaCaption": "Standing beneath church stone arches in cold silver moonlight, offering a delightfully wicked, mock-saintly smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing barefoot beneath the stone arches of an empty church nave at break of dawn, Caren Hortensia folds her arms in a severe sleeveless black-and-white linen sleep robe cinched by a white rope belt with hip-high side slits. Tilting her head with an aloof, teasing smirk beneath cold silver moonlight and stained glass, she commands the quiet aisle.",
+    "animaCaption": "Standing barefoot between tall cathedral stone arches with arms folded in a sleeveless black-and-white high-slit monastic sleep robe, she tilts her head with a cool, mock-saintly smirk. Cold silver moonlight through high clerestory glass traces sharp edges along her robe.",
+    "nsfwTokens": [
+      "black and white robe",
+      "sleeveless robe",
+      "cowl neck",
+      "high-slit dress",
+      "white rope belt",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a severe obsidian-and-white sleeveless monastic linen sleep robe cinched with a white rope belt and split with daring hip-high side slits.",
+    "compositionIntent": "single"
   }
 }

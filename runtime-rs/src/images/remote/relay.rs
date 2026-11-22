@@ -1,4 +1,4 @@
-//! Outbound-only Muse connector. The relay can invoke drawing and QQ operations on the
+//! Outbound-only Muse connector. The relay can invoke drawing, chat and voice operations on the
 //! dedicated loopback listener. The connector supplies its local credentials only there.
 use futures_util::StreamExt;
 use reqwest::{Client, Method, RequestBuilder, Response, Url};
@@ -60,6 +60,9 @@ impl Command {
 
 const MAX_REPLY: usize = 2 * 1024 * 1024;
 const MAX_COMMAND: usize = 384 * 1024;
+const VOICE_SLOTS: usize = 2;
+// Matches the Worker's total RPC limit. Even a stalled receipt upload stays bounded.
+const MAX_BUSY_RECEIPTS: usize = 32;
 // The message can contain 3 MiB as base64 plus 64 KiB of JSON. The ticket,
 // method and fixed QQ path are added by the relay after it checks that limit.
 const MAX_QQ_COMMAND: usize = 4 * 1024 * 1024 + 64 * 1024 + 1024;
@@ -88,12 +91,17 @@ pub(super) fn desktop_chat_route(method: &Method, path: &str) -> bool {
         || (*method == Method::POST && path == "/api/muse/desktop/reply")
 }
 
+pub(super) fn voice_route(method: &Method, path: &str) -> bool {
+    (*method == Method::GET && path == "/api/muse/voice/status")
+        || (*method == Method::POST && path == "/api/muse/voice/synthesize")
+}
+
 fn allowed(method: &Method, path: &str) -> bool {
     if path.len() > 4096 || path.contains(['#', '\\']) || path.bytes().any(|b| b.is_ascii_control())
     {
         return false;
     }
-    if qq_route(method, path) || desktop_chat_route(method, path) {
+    if qq_route(method, path) || desktop_chat_route(method, path) || voice_route(method, path) {
         return true;
     }
     let route = path.split('?').next().unwrap_or("");
@@ -212,6 +220,14 @@ async fn send_receipt(request: RequestBuilder) -> Result<(), String> {
 }
 
 impl Bridge {
+    fn receipt(&self, ticket: uuid::Uuid) -> Result<RequestBuilder, String> {
+        let endpoint = self
+            .base
+            .join(&format!("_agent/reply/{ticket}"))
+            .map_err(|_| "中转回执地址无效")?;
+        Ok(self.cloud.post(endpoint).bearer_auth(&self.agent_token))
+    }
+
     async fn upload_window(
         &self,
         path: &str,
@@ -266,12 +282,19 @@ impl Bridge {
         self: &Arc<Self>,
         chat_tasks: &mut JoinSet<()>,
         inbox_tasks: &mut JoinSet<()>,
+        voice_tasks: &mut JoinSet<()>,
+        busy_receipts: &mut JoinSet<()>,
     ) -> Result<(), String> {
+        while busy_receipts.try_join_next().is_some() {}
+        if busy_receipts.len() >= MAX_BUSY_RECEIPTS {
+            let _ = busy_receipts.join_next().await;
+        }
         let request = self
             .cloud
             .post(self.base.join("_agent/next").map_err(|_| "取信地址无效")?)
             .header("X-Muse-Part-Count", "16")
             .header("X-Muse-Parallel", "1")
+            .header("X-Muse-Voice", "1")
             .bearer_auth(&self.agent_token)
             .send();
         // The relay holds an idle command poll for at most 15 seconds. Bound the
@@ -307,17 +330,34 @@ impl Bridge {
                 .body
                 .as_ref()
                 .and_then(|body| body["requestKey"].as_str())
-                .is_some_and(|key| {
-                    !key.is_empty()
-                        && key.len() <= 160
-                        && key
-                            .bytes()
-                            .all(|c| c.is_ascii_alphanumeric() || b"_-".contains(&c))
-                })
+                .is_some_and(crate::generation::receipts::valid_request_key)
         {
             return Err("中转操作缺少有效的请求编号".into());
         }
         let inbox = cmd.inbox();
+        if voice_route(&method, &cmd.path) {
+            while voice_tasks.try_join_next().is_some() {}
+            if voice_tasks.len() < VOICE_SLOTS {
+                let bridge = self.clone();
+                voice_tasks.spawn(async move {
+                    if let Err(reason) = bridge.forward(cmd, ticket, method).await {
+                        eprintln!("Muse 中转语音转发失败：{reason}");
+                    }
+                });
+            } else {
+                let reply = self.receipt(ticket)?
+                    .timeout(Duration::from_secs(3))
+                    .header("X-Upstream-Status", 429)
+                    .header("Retry-After", "3")
+                    .json(&serde_json::json!({"ok": false, "code": "MUSE_VOICE_BUSY", "message": "主力机语音繁忙，请稍后重试"}));
+                busy_receipts.spawn(async move {
+                    if let Err(reason) = send_receipt(reply).await {
+                        eprintln!("Muse 中转语音限流回执失败：{reason}");
+                    }
+                });
+            }
+            return Ok(());
+        }
         while inbox_tasks.try_join_next().is_some() {}
         while chat_tasks.try_join_next().is_some() {}
         if inbox && inbox_tasks.len() >= 4 {
@@ -365,8 +405,8 @@ impl Bridge {
                 .header("Prefer", format!("wait={wait}"))
                 .timeout(Duration::from_secs(u64::from(wait) + 10));
         }
-        if message {
-            // A picture needs separate QQ upload and delivery receipts.
+        if message || cmd.path == "/api/muse/voice/synthesize" {
+            // Allow for QQ uploads or a cold voice model.
             upstream = upstream.timeout(Duration::from_secs(85));
         } else if search {
             upstream = upstream.timeout(Duration::from_secs(35));
@@ -374,14 +414,7 @@ impl Bridge {
         if let Some(body) = cmd.body {
             upstream = upstream.json(&body);
         }
-        let mut reply = self
-            .cloud
-            .post(
-                self.base
-                    .join(&format!("_agent/reply/{ticket}"))
-                    .map_err(|_| "中转回执地址无效")?,
-            )
-            .bearer_auth(&self.agent_token);
+        let mut reply = self.receipt(ticket)?;
         let payload = match upstream.send().await {
             Ok(response) => {
                 let status = response.status();
@@ -481,10 +514,12 @@ pub(super) async fn run(
         let mut failed_since: Option<tokio::time::Instant> = None;
         let mut chat_tasks = JoinSet::new();
         let mut inbox_tasks = JoinSet::new();
+        let mut voice_tasks = JoinSet::new();
+        let mut busy_receipts = JoinSet::new();
         loop {
             let result = tokio::select! { biased;
                 _ = shutdown.cancelled() => break,
-                result = bridge.once(&mut chat_tasks, &mut inbox_tasks) => result,
+                result = bridge.once(&mut chat_tasks, &mut inbox_tasks, &mut voice_tasks, &mut busy_receipts) => result,
             };
             match result {
                 Ok(()) => {

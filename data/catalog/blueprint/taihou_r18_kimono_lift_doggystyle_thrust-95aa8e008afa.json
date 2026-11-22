@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_kimono_lift_doggystyle_thrust",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "taihou_r18_kimono_lift_doggystyle_thrust",
     "title": "大凤 · 重樱寝殿金鱼和服半解露宏伟雪乳与病娇依恋自抚",
@@ -19,7 +19,7 @@
     "action": "金鱼和服腰带解开衣襟大敞露出宏伟巨乳，黑双马尾狂乱铺散，双手掐胸与下身自抚狂热娇喘",
     "timeOfDay": "深夜",
     "lighting": "寝殿红灯笼与雕花烛台照耀在深红织锦金鱼和服与雪白肉感巨乳上的火辣深邃光晕",
-    "camera": "cowboy shot, seated tatami perspective, focus on overflowing colossal cleavage, red loving eyes, and flushed face",
+    "camera": "cowboy shot, eye level",
     "mood": "极乐沉沦",
     "sceneTags": [
       "japanese_room",
@@ -35,20 +35,18 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "Taihou cups one breast and touches herself beneath her parted goldfish kimono, black twintails pooling on the lantern-lit tatami.",
+    "promptProse": "Inside an opulent dark-wood Sakura chamber lit by a warm paper lantern, Taihou sits on the tatami with her long hair spilling across the woven mat. Her flushed face glistens with emotional tears as her lips part in breathless longing.",
     "promptTokens": [
-      "goldfish print",
-      "gold trim",
-      "Taihou",
-      "red and black kimono",
-      "tatami",
       "sitting",
-      "lantern",
-      "open clothes",
-      "hand on breast",
-      "masturbation",
+      "tatami",
+      "japanese room",
+      "hand on chest",
+      "teary eyes",
       "heavy blush",
-      "loose hair",
+      "parted lips",
+      "paper lantern",
+      "warm lighting",
+      "night",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -58,11 +56,18 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
+      "red kimono",
+      "black kimono",
+      "gold trim",
+      "open kimono",
       "topless",
-      "masturbation",
-      "hand between legs"
+      "nipples",
+      "breast hold",
+      "hand between legs",
+      "masturbation"
     ],
-    "nsfwProse": "",
-    "animaCaption": "One hand stays at her chest while the other remains beneath the parted kimono above the tatami."
+    "nsfwProse": "Her vermilion-and-black kimono with gold brocade trim has its obi completely undone and lapels pulled wide, exposing her heavy breasts as one hand grips her chest and the other slips beneath the raised hem.",
+    "animaCaption": "Seated on the lantern-lit tatami with her red-and-black gold-trimmed kimono untied and thrown wide open off her full breasts, she squeezes one breast firmly with one hand while reaching beneath the parted kimono hem with the other, tears shining in her flushed gaze.",
+    "compositionIntent": "single"
   }
 }

@@ -1,5 +1,8 @@
 import type { VideoDefaults } from '@/api/videoApi'
-import { videoPromptBlockText, videoPromptPresets as library, type VideoPromptPreset } from './videoPromptPresets'
+import {
+  videoActionMotion, videoPromptBlockText, videoPromptPresets as library,
+  type VideoPromptPreset,
+} from './videoPromptPresets'
 
 export { videoPromptGuidance } from './videoPromptPresets'
 export type ShotPromptMode = 'text' | 'image'
@@ -17,19 +20,29 @@ export interface VideoPromptEdit {
   motion: VideoDefaults['motion']
 }
 
-const smallActions = new Set(['swaying-lantern', 'blink', 'breeze', 'forehead-touch', 'robe-edge', 'profile-light'])
+const SHOT_CAMERAS = new Set<VideoDefaults['camera']>(['still', 'push', 'pull', 'pan', 'orbit'])
 
-function sceneStarter({ recipe, id, title, icon, rating }: VideoPromptPreset) {
+export function toShotCamera(camera?: string): VideoDefaults['camera'] {
+  if (camera && SHOT_CAMERAS.has(camera as VideoDefaults['camera'])) return camera as VideoDefaults['camera']
+  if (camera === 'follow') return 'pan'
+  return 'still'
+}
+
+function sceneStarter({ recipe, id, title, category, icon, rating }: VideoPromptPreset) {
+  const extraCamera = recipe.camera && !SHOT_CAMERAS.has(recipe.camera as VideoDefaults['camera']) && recipe.camera !== 'follow'
+    ? videoPromptBlockText(recipe, 'camera')
+    : ''
+  const action = [videoPromptBlockText(recipe, 'action'), extraCamera].filter(Boolean).join('')
   return {
-    id, title, icon, rating,
+    id, title, category, icon, rating,
     fields: {
       setup: videoPromptBlockText(recipe, 'subject'),
-      action: videoPromptBlockText(recipe, 'action'),
+      action,
       atmosphere: videoPromptBlockText(recipe, 'atmosphere'),
       ending: videoPromptBlockText(recipe, 'ending'),
     },
-    camera: (recipe.camera || 'still') as VideoDefaults['camera'],
-    motion: smallActions.has(recipe.action ?? '') ? 'subtle' as const : 'natural' as const,
+    camera: toShotCamera(recipe.camera),
+    motion: videoActionMotion(recipe.action),
   }
 }
 

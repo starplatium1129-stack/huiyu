@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_r18_mist_form_aftereffect",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2834,
   "createdAt": "2026-10-31T04:39:58.773044+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "eta_shadow_r18_mist_form_aftereffect",
     "characterId": "eta_shadow",
@@ -17,7 +17,7 @@
     "action": "低头检查错位的半透明史莱姆衣，手持记录板，表情平淡",
     "timeOfDay": "深夜",
     "lighting": "purple glow of the mist formation circle",
-    "camera": "cowboy shot, eye level",
+    "camera": "eye level, cowboy shot",
     "mood": "平淡荒诞",
     "sceneTags": [
       "laboratory",
@@ -26,18 +26,21 @@
       "formation_circle",
       "experiment"
     ],
-    "promptProse": "After the atomization trial, adult Eta calmly inspects her misaligned, half-translucent slime clothes, clipboard in hand, noting the side effect in a flat, sleepy tone. A faint violet glow pulses from the runic magic circle on the laboratory floor, casting ethereal purple luminescence through her semi-translucent mist attire.",
+    "promptProse": "Following a midnight atomization experiment inside her underground laboratory, Eta stands inside a pulsing purple magic circle holding a clipboard and calmly examining her misaligned, semi-translucent black slime bodysuit, pleated skirt, and gartered black thighhighs. Violet luminescence from the runic floor cuts through the clinging mist around her unbothered expression.",
     "promptTokens": [
-      "laboratory",
+      "standing",
+      "holding clipboard",
+      "looking down",
+      "expressionless",
+      "magic circle",
       "mist",
-      "slime suit",
-      "translucent fabric",
-      "formation circle",
-      "clipboard",
-      "deadpan",
-      "glow",
-      "purple lighting",
-      "dim lighting"
+      "underground lab",
+      "laboratory",
+      "purple glow",
+      "dim lighting",
+      "night",
+      "eye level",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "coverageTags": [],
@@ -47,11 +50,16 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "see_through",
-      "slime_clothes",
-      "wardrobe_malfunction"
+      "black slime bodysuit",
+      "see-through",
+      "wardrobe malfunction",
+      "misaligned clothes",
+      "pleated skirt",
+      "garter straps",
+      "black thighhighs"
     ],
-    "nsfwProse": "",
-    "animaCaption": "'Side effect: embarrassment. Recommendation: ignore.' Eta writes it down and reaches for her coffee. A faint violet glow pulses from the runic magic circle on the laboratory floor, casting ethereal purple luminescence through her semi-translucent mist attire."
+    "nsfwProse": "Her black slime bodysuit and pleated skirt have reformed half-translucent and misaligned over her torso, paired with slim garter straps and black thighhighs.",
+    "animaCaption": "Standing calmly within a glowing purple runic mist circle holding her research clipboard, she looks down with a flat, sleepy deadpan to inspect her misaligned, half-translucent black slime bodysuit and gartered thighhighs. Faint violet radiance shines right through the misted fabric.",
+    "compositionIntent": "single"
   }
 }

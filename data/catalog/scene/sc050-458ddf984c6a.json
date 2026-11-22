@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc050",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
   "data": {
-    "animaCaption": "Her fingers interlace with the viewer's on the shared armrest while the bright cinema screen and warm wall lights illuminate her blushing profile.",
+    "animaCaption": "Natsume's near hand interlaces with the viewer's on the plain armrest between the red seats. Her face remains turned toward the unseen screen. Cool screen spill crosses her profile and the warm wall sconces recede along the aisle.",
     "auditRevision": "skill-refine-sc050-2026-09-05",
     "camera": "影院座椅侧身七分身平视",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "daylight, direct sunlight, empty room, pitch black, darkness",
-    "prompt": "1girl, solo, shiki_natsume, @rella, mole_under_eye, navy double breasted blazer, gold buttons, charcoal pleated midi skirt, burgundy blouse, sitting, holding hands, interlocked fingers, shared armrest, profile, movie theater interior, glowing movie screen in front, projector light beam illuminating dust, warm wall sconces, illuminated aisle stairs, face illuminated by bright screen glow, soft rim lighting, flustered blush, cowboy shot, depth of field",
+    "prompt": "1girl, shiki_natsume, navy blazer, gold buttons, red shirt, dark pleated skirt, cinema, theater seats, armrest, sitting, holding hands, interlocked fingers, pov hands, profile, wall lamp, blue light, dim lighting",
     "rating": "All",
     "season": "冬",
     "story": "黑暗影院里，夏目在惊吓镜头出现时轻轻碰到你的手，犹豫片刻后干脆把手指扣紧。你回握，她虽然身体一僵，却没有再抽开。银幕的微光照出她装作专注的侧脸——「只是这里太暗，免得拿错饮料。电影结束前都别说话……也不准提前松手。」",
@@ -55,6 +55,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "Her fingers interlace with the viewer's on their shared armrest while the bright cinema screen and warm wall lights illuminate her blushing profile."
+    "promptProse": "Two adjacent red cinema seats are seen in profile. Natsume looks forward as if still absorbed in the film, in a burgundy blouse under a navy double-breasted blazer with small gold buttons. At the shared armrest her fingers close around the companion's, with one folded ticket resting lower on her knee. Show blue light from the screen on her cheek, a warmer strip from the wall sconces on the handrail steps and the rows of empty seats behind."
   }
 }

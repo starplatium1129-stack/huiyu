@@ -10,7 +10,9 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
             || plan.input["rewrite"].is_object()
             || plan.input["autoLines"] == true
     }) {
-        control.ensure_native_drawing(token).await?;
+        let native_only = plan.input["family"] == "keyframe" || plan.input["modelId"] == crate::studio_workflows::MODEL
+            || plan.input["modelId"] == crate::studio_workflows::DIALOGUE;
+        control.ensure_native_drawing(token, native_only).await?;
     }
     if let Some(hooks) = &job.hooks {
         tokio::select! { biased; _=token.cancelled()=>return Err(closed()), result=hooks.submitting("native".into())=>result? }
@@ -79,11 +81,52 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
         let key = if plan.input["drivingAudio"].is_string() { "drivingAudioPath" } else { "drivingVideoPath" };
         request[key] = json!(path);
     }
-    let mut worker = inner.native.take_worker(&plan.settings).await?;
-    *worker.current_temp.lock().unwrap() = Some(Arc::new(RunFiles {
+    let files = Arc::new(RunFiles {
         _output: temp.clone(),
         _inputs: inputs,
-    }));
+    });
+    let failure = match attempt(inner, job, token, &request, &files, &output, true).await {
+        Err(error) if !token.is_cancelled() && error.code == "OUT_OF_MEMORY"
+            && wan_attempt::conservative(&mut request["input"]).is_some() => error,
+        result => return result,
+    };
+    let cause: String = failure.message.chars().filter(|c| !c.is_control()).take(1200).collect();
+    let retry = json!({"attempt":2,"reason":"oom","cause":cause,"width":request["input"]["width"],
+        "height":request["input"]["height"],"memoryTier":"conservative"});
+    let next = temp.path().join("result-retry.mp4");
+    request["outputPath"] = json!(next);
+    {
+        let mut state = job.state.lock().await;
+        if state.status == "cancelling" {
+            return Err(closed());
+        }
+        state.progress = None;
+        state.preview_data_url = None;
+        state.progress_text = "上一轮内存不足，正以节省显存的设置重试".into();
+        Arc::make_mut(&mut state.metadata)["gpuRetry"] = retry.clone();
+    }
+    if let Some(hooks) = &job.hooks {
+        hooks.execution_metadata(json!({"gpuRetry":retry})).await?;
+    }
+    attempt(inner, job, token, &request, &files, &next, false).await
+}
+
+async fn attempt(
+    inner: &Arc<Inner>,
+    job: &Arc<Job>,
+    token: &CancellationToken,
+    request: &Value,
+    files: &Arc<RunFiles>,
+    output: &std::path::Path,
+    first_attempt: bool,
+) -> Result<Output> {
+    let Execution::Native(plan) = &job.execution else { unreachable!() };
+    if token.is_cancelled() {
+        return Err(closed());
+    }
+    let video = plan.input["mediaKind"] == "video";
+    let mut worker = inner.native.take_worker(&plan.settings, queue::model(&plan.input)).await?;
+    *worker.current_temp.lock().unwrap() = Some(files.clone());
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.
     let sent = tokio::time::timeout(Duration::from_secs(10), async {
@@ -119,7 +162,7 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
                 state.upstream_id = job.id.clone();
                 state.progress_text = "独立推理准备生成".into();
             }
-            if let Some(hooks) = &job.hooks {
+            if first_attempt && let Some(hooks) = &job.hooks {
                 hooks
                     .observed(
                         job.id.clone(),
@@ -133,6 +176,7 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
                     Some("stage") if !produced => {
                         let text = stage_text(&event)?;
                         let mut state = job.state.lock().await;
+                        state.current_node = event["stage"].as_str().map(str::to_owned);
                         state.progress_text = text;
                         if plan.input["family"] == "manga-screen" {
                             state.progress = None;
@@ -140,7 +184,11 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
                     }
                     Some("progress") if !produced => {
                         let (step, total, sampling) = output::progress(&event)?;
+                        let preview = wan_attempt::preview(&event);
                         let mut state = job.state.lock().await;
+                        if preview.is_some() {
+                            state.preview_data_url = preview;
+                        }
                         state.progress = Some(step as f64 / total as f64);
                         state.progress_text = if let Some(sampling) = sampling {
                             sampling
@@ -155,6 +203,11 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
                             return Err(protocol_error());
                         }
                         runtime_observation = observations::capture(&event["nativeRuntime"]);
+                        // Single-shot CLI adapters report no resident context. Accept an
+                        // affirmative runtime observation before advertising retained weights.
+                        worker.model_loaded = event["modelReused"].is_boolean()
+                            || event["nativeRuntime"]["contextId"].is_string()
+                            || event["nativeRuntime"]["weightReuse"] == true;
                         produced = true;
                     }
                     Some("ready") if produced => {
@@ -206,6 +259,10 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
             if state.status == "running" {
                 let metadata = Arc::make_mut(&mut state.metadata);
                 metadata["nativeRuntime"] = runtime_observation;
+                if !first_attempt {
+                    metadata["width"] = request["input"]["width"].clone();
+                    metadata["height"] = request["input"]["height"].clone();
+                }
                 if let Some(dimensions) = dimensions {
                     let device = metadata["nativeRuntime"]["device"].clone();
                     if matches!(device.as_str(), Some("cpu" | "cuda+cpu")) {
@@ -217,7 +274,15 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
                 }
             }
         }
-        let publication = results::publish(inner, job, &output, length, token).await;
+        // Save effective output dimensions and verified worker observations before
+        // the result collector settles the desktop task. The original input stays frozen.
+        if (plan.input["modelId"] == crate::studio_workflows::MODEL || plan.input["modelId"] == crate::studio_workflows::DIALOGUE || plan.input["family"] == "keyframe")
+            && let Some(hooks) = &job.hooks {
+            let snapshot = job.state.lock().await.metadata.clone();
+            hooks.execution_metadata(json!({"nativeRuntime":snapshot["nativeRuntime"],
+                "width":request["input"]["width"],"height":request["input"]["height"]})).await?;
+        }
+        let publication = results::publish(inner, job, output, length, token).await;
         // Only classify storage failures after the worker's PNG fully decoded.
         host_failure = publication
             .as_ref()
@@ -225,8 +290,9 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
             .is_some_and(|error| error.code == "STORAGE_UNAVAILABLE");
         publication
     };
-    // MOSS's default 50 steps plus cold loading exceed ten minutes with disk offload.
-    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(if video || plan.input["family"] == "moss-image" {1800} else {600}),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
+    let cold_load = matches!(plan.input["family"].as_str(), Some("moss-image" | "keyframe"));
+    let timeout = Duration::from_secs(if video || cold_load { 1800 } else { 600 });
+    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(timeout,result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
     let cancelling = value.as_ref().err().is_some_and(|error| {
         token.is_cancelled() && matches!(error.code.as_str(), "ABORT_ERR" | "CANCELLED")
     });
@@ -244,6 +310,11 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
         false
     };
     if retain {
+        if cancelling {
+            // Cooperative cleanup can evict the adapter context while keeping
+            // its Python process alive. Only a new result can confirm residency.
+            worker.model_loaded = false;
+        }
         // Ready confirms worker-side cleanup; the request keeps its directory Arc.
         worker.current_temp.lock().unwrap().take();
         // Give a successful MOSS drawing session time for a prompt edit. A
@@ -259,5 +330,6 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
     // Unacknowledged cancellation, faults and timeouts still retire the process
     // while its process entry retains the temporary inputs through reap.
     worker.stop().await?;
+    inner.native.queue.resident(None);
     value
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3523,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "id": "texas_arknights_lingerie_whisper",
     "characterId": "texas_arknights",
@@ -13,8 +13,8 @@
     "action": "坐在皮箱上，嘴里咬着半根细长巧克力棒，狼耳微动，单手插在睡袍口袋里，黑发垂肩，琥珀色眼眸带着叙拉古旧日风尘的沉静与对你的无声依赖。",
     "location": "叙拉古郊外安全屋汽车旅馆，推拉窗外是荒芜公路与远山连绵的夜色",
     "timeOfDay": "长途押运中途的子夜短歇",
-    "lighting": "床头昏黄的老式壁灯投下暖橙色光晕，将少女深邃冷静的面庞刻画得深情而温柔",
-    "camera": "medium close-up, eye level, 平视中近景，嘴叼巧克力棒与坐于皮箱的沉静姿态",
+    "lighting": "车旅店壁灯把旧地图和炭灰真丝染暖，午夜蓝光从推拉窗落在皮箱边缘",
+    "camera": "three quarter view, medium shot",
     "mood": "冷酷干练的信使私下流露的松弛与默契，烟火气与杀手气质的奇妙融合",
     "adult": true,
     "sampleRating": "R15",
@@ -28,33 +28,43 @@
     ],
     "sceneTags": [
       "sitting",
-      "on_suitcase",
       "suitcase",
-      "pocky",
-      "pocky_in_mouth",
+      "pocky in mouth",
+      "hotel room",
       "window",
-      "night_sky",
-      "motel",
-      "dim_lighting",
-      "medium_close_up",
-      "eye_level"
+      "wall lamp",
+      "night"
     ],
     "promptTokens": [
       "sitting",
-      "on suitcase",
       "suitcase",
       "pocky in mouth",
+      "hand in pocket",
+      "hotel room",
       "window",
+      "curtains",
+      "wall lamp",
+      "map",
+      "key",
+      "highway",
+      "mountain",
       "night",
-      "motel room",
-      "dim lighting",
-      "medium close-up",
-      "eye level"
+      "three quarter view",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Sitting calmly upon a leather courier case in a quiet roadside motel room, Texas bites on a slender chocolate pocky stick. A dim wall lamp casts a warm amber glow over her relaxed profile, while the dark wilderness highway stretches outside the sliding window.",
-    "animaCaption": "Sitting on a courier case biting a chocolate pocky stick, she gazes calmly beside the quiet motel window.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless",
+      "cityscape"
+    ],
+    "promptProse": "Texas sits on the scuffed leather courier case at the foot of a low bed in a Siracusan roadside motel. One hand stays in her robe pocket, and a thin chocolate biscuit stick angles from her lips as her dark wolf tail settles beside the latch. An old wall lamp casts amber light over the matte charcoal silk, a brass room key and a folded road map on the nightstand. Cold blue light slips between the plain curtains. Through the low sliding window, a pale highway winds past dry hills under the midnight sky.",
+    "animaCaption": "With one hand in her robe pocket, she sits on the closed leather courier case with a slim biscuit stick at the corner of her mouth. Beyond the low motel window, a lonely highway bends beneath the dark hills.",
+    "nsfwTokens": [
+      "black camisole",
+      "black shorts",
+      "silk",
+      "robe"
+    ],
+    "nsfwProse": "She wears charcoal silk sleepwear with a narrow-strapped camisole, straight-cut tap shorts and a soft robe with pockets."
   }
 }

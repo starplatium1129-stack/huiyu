@@ -1,45 +1,51 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rain_station",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 541,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
-    "action": "撑伞立于站台边缘",
-    "camera": "medium shot",
+    "action": "站在湿滑站台上，将透明雨伞向刚下车的人侧倾",
+    "camera": "three quarter view, cowboy shot",
     "category": "泰拉都市",
     "characterId": "chen_arknights",
     "description": "暴雨倾盆的龙门城际列车站台边缘，陈撑着一把透明雨伞静静等候在雨幕之中，雨滴在伞面上敲击出密集的鼓点。看到列车舱门打开走出的你，她快步上前将伞倾斜过去——「路上辛苦了。车已经备好，我们直接回近卫局。」",
     "id": "chen_arknights_rain_station",
-    "lighting": "wet reflections and dim platform lights",
+    "lighting": "车门内的暖光落在湿地，站台冷光打亮伞上的雨珠",
     "location": "龙门车站",
     "mood": "清冷坚毅",
     "negativeTokens": [],
     "outfitId": "lgd_detective_undercover",
-    "promptProse": "She steps toward the opening train doors and tilts her clear umbrella over the arriving viewer outside the frame. Dim platform light catches rain on the canopy and reflects across the wet paving.",
+    "promptProse": "At Lungmen station, Ch’en stands a step back from the yellow strip beside the rails, one hand in her charcoal trench coat pocket. She tilts a single clear umbrella toward the arriving passenger beside the camera. The train runs away behind her, its amber-lit windows reflected under the canopy columns and along the wet platform. Cool rain outlines the umbrella rim while warm carriage light reaches the pleats of her coat. The three-quarter view includes her face, the umbrella and the far end of the platform.",
     "promptTokens": [
       "train station",
+      "railroad tracks",
+      "train",
+      "platform",
+      "standing",
       "transparent umbrella",
       "rain",
       "night",
-      "medium shot",
-      "walking",
-      "train doors",
-      "tilting umbrella",
-      "platform light",
-      "wet pavement"
+      "puddle",
+      "reflection",
+      "bench",
+      "train interior",
+      "looking at viewer",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "train_station",
+      "train station",
+      "holding umbrella",
+      "transparent umbrella",
       "rain",
-      "umbrella",
-      "night",
-      "platform"
+      "train",
+      "night"
     ],
     "timeOfDay": "雨夜",
     "title": "陈 · 雨夜车站",
-    "animaCaption": "She tilts the umbrella toward the arriving viewer outside the frame."
+    "animaCaption": "There is a single open umbrella. She tips its clear canopy toward the viewer with the hand on its shaft, her other hand tucked into her coat pocket. Amber carriage windows recede down the wet platform."
   }
 }

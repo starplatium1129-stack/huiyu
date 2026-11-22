@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_01",
     "title": "尤贝尔 · 露营篝火旁黑色大开衩裙主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间深V黑袍大开露半乳，绿色马尾轻扬，紫眸微眯狂气微笑主动沉腰",
     "timeOfDay": "night",
     "lighting": "warm_firelight",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "from below, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,19 +30,23 @@
       "cleavage",
       "open_clothes"
     ],
-    "promptProse": "Ubel straddles her offscreen companion beside the campfire, her dress open and both hands resting on their chest as she gives a crooked smile.",
+    "promptProse": "Beside a crackling campfire in a midnight forest clearing, Ubel rides astride her partner in cowgirl position with her deep-V black dress pulled open to bare her breasts. Pressing both hands onto his chest and leaning slightly forward with a crooked, sly grin through narrowed eyes, she glows in flickering warm firelight from below in first-person view.",
     "promptTokens": [
-      "black dress",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
+      "straddling",
+      "hands on another's chest",
+      "crooked smile",
+      "narrowed eyes",
       "campfire",
       "forest",
-      "cowgirl position",
-      "topless",
-      "cowboy shot",
-      "low angle",
+      "warm firelight",
+      "night",
+      "from below",
       "pov",
-      "straddling",
-      "hands on chest",
-      "crooked smile"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,15 +54,23 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black dress",
+      "open clothes",
+      "topless",
+      "nipples",
+      "bare shoulders",
+      "sex",
+      "vaginal"
+    ],
+    "nsfwProse": "Her deep-V black dress is pulled wide open across her chest as she sinks onto her partner beside the campfire with a crooked, dangerous grin.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "Both hands rest on the off-frame companion's chest beside the fire."
+    "compositionIntent": "group",
+    "animaCaption": "Riding astride the viewer beside a crackling forest campfire with her deep-V black dress pulled open to bare her chest, she props both palms on their chest and grins down through narrowed eyes. Warm orange firelight flickers across her flushed skin in the dark woods."
   }
 }

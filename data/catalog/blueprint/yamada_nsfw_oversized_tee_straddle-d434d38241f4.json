@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_oversized_tee_straddle",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "yamada_nsfw_oversized_tee_straddle",
     "title": "山田杏奈 · 模特大身段的大号T恤跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间长腿包裹，大号T恤颠簸溢出雪乳，脸颊泛红动情低头吻",
     "timeOfDay": "afternoon",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "cowboy shot, pov",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "indoors",
@@ -25,24 +25,23 @@
       "cowboy_shot",
       "afternoon"
     ],
-    "promptProse": "Adult Yamada moves astride the viewer's lap in their oversized black graphic T-shirt, her legs wrapped around their hips as afternoon light filters through the blinds.",
-    "nsfwProse": "",
+    "promptProse": "In the quiet bedroom on a warm after-school afternoon, Anna wears only a borrowed oversized black graphic T-shirt with nothing beneath, its hem barely brushing her upper thighs as she straddles her partner's lap. Wrapping her long slender legs around his hips and leaning close with shy, heavily flushed affection, she moves earnestly in cowgirl position while striped afternoon sunlight filters through the window blinds.",
+    "nsfwProse": "Wearing only an oversized black graphic T-shirt with no bra and completely bottomless underneath, her long bare legs wrap around her partner's hips as she rides astride his lap.",
     "promptTokens": [
-      "cowboy shot",
-      "indoors",
-      "bedroom",
-      "warm lighting",
-      "sitting",
-      "adult",
+      "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "oversized black t-shirt",
-      "bottomless",
-      "cowgirl position",
-      "on lap",
+      "straddling",
+      "leaning forward",
+      "heavy blush",
+      "parted lips",
+      "bedroom",
+      "window blinds",
       "afternoon",
-      "straddling lap",
-      "legs around hips",
-      "blinds light"
+      "warm lighting",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,8 +54,18 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
-    "compositionIntent": "single",
-    "animaCaption": "Her legs wrap around the viewer's hips beneath the oversized shirt."
+    "nsfwTokens": [
+      "black shirt",
+      "oversized shirt",
+      "graphic t-shirt",
+      "no bra",
+      "bottomless",
+      "no panties",
+      "bare legs",
+      "cowgirl position",
+      "sex"
+    ],
+    "compositionIntent": "group",
+    "animaCaption": "Riding astride her partner's lap in the sunlit afternoon bedroom wearing only an oversized black graphic T-shirt with nothing underneath, Anna wraps her long bare legs around his hips and leans down with a shy, heavy blush. Striped afternoon light filters across them through the blinds."
   }
 }

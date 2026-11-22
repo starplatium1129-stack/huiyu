@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3120,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "ines_arknights_swimsuit_allure",
     "characterId": "ines_arknights",
@@ -14,7 +14,7 @@
     "location": "外海暗流涌动的高耸黑色海蚀礁石群",
     "timeOfDay": "傍晚日落",
     "lighting": "残阳沉没前的最后一道冷紫与深金晚霞，把尖锐礁石与高挑身形拉成长长的锋利阴影",
-    "camera": "cowboy shot, dramatic low angle looking up, tense cinematic mercenary mood",
+    "camera": "low angle, cowboy shot",
     "mood": "冷峻警觉、锋芒内敛中透着对同伴无可奈何的默契守护",
     "adult": true,
     "sampleRating": "R15",
@@ -37,26 +37,33 @@
       "mercenary_allure"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "ines (arknights)",
-      "black hair",
-      "goat horns",
-      "magenta eyes",
-      "black strappy bikini",
-      "flowing sheer black robe",
-      "perched on coastal black rocks",
-      "dusk sunset sky",
-      "windblown dark robe",
-      "cool perceptive smirk",
-      "tall toned body",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "foot on rock",
+      "holding clothes",
+      "smirk",
+      "looking down",
+      "wind",
+      "black rocks",
+      "reef",
+      "crashing waves",
+      "sunset",
+      "dusk",
+      "purple sky",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ines stands atop a wave-lashed jagged black reef at dusk in her sleek black strappy bikini and billowing sheer duster, watching the tides with sharp, calculating magenta eyes.",
-    "animaCaption": "Fierce ocean winds whip her dark robes as dusk falls upon the black coastal crags, her sentinel gaze missing nothing.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ines stands atop a wave-lashed black coastal reef at dusk, wearing an obsidian-black high-leg bikini with dark violet trim and crossing underbust cords beneath an open sheer black beach robe. Holding one fluttering edge of the robe against the gale, she looks down with a guarded smirk as sunset lavender and gold cut sharp shadows across the rocks.",
+    "animaCaption": "Braced on a jagged black reef rock in a strappy black high-leg bikini with one hand pinning down her wind-whipped sheer robe, she looks down toward the viewer with a cool smirk. Fading purple-and-gold dusk light edges the foaming tide below.",
+    "nsfwTokens": [
+      "black bikini",
+      "highleg bikini",
+      "strappy bikini",
+      "underbust straps",
+      "sheer black robe",
+      "open robe",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears an obsidian-black and dark-violet high-leg strappy bikini with crossing underbust cords beneath an open, billowing sheer black beach robe."
   }
 }

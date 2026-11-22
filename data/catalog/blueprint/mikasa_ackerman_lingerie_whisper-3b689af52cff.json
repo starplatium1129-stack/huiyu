@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3189,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "mikasa_ackerman_lingerie_whisper",
     "characterId": "mikasa_ackerman",
@@ -14,7 +14,7 @@
     "location": "兵团旧石砌营房宿舍，粗糙的木床与壁炉中渐渐微弱的红炭火光",
     "timeOfDay": "战役前夕的沉寂夜晚",
     "lighting": "壁炉残火映出深红暖光，在充满健康肌肉线条的腹部与锁骨处投下立体阴影",
-    "camera": "medium shot, side view, 侧视中景，聚焦修剪利落的黑发侧影与整理红色围巾时的轻柔动作",
+    "camera": "from side, medium shot",
     "mood": "硬朗战士外壳下最纯粹无私的深情，坚毅、静默而不可撼动",
     "adult": true,
     "sampleRating": "R15",
@@ -40,25 +40,38 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
+      "sitting",
+      "on bed",
+      "red scarf",
+      "holding scarf",
+      "looking at viewer",
+      "serene",
+      "pillow",
       "fireplace",
       "firelight",
-      "bed",
-      "dusk",
-      "sunset",
-      "candlelight",
-      "warm lighting",
-      "sitting",
-      "hugging pillow",
-      "glowing",
-      "understated sensual knitwear",
-      "indoors"
+      "stone wall",
+      "night",
+      "indoors",
+      "from side",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole. Gently folding iconic red scarf on pillow, toned athletic abs, short black hair amidst intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters.",
-    "animaCaption": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seated quietly on the edge of a rustic wooden bunk inside a stone Survey Corps barracks room on the eve of a campaign, Mikasa wears a fitted charcoal-grey ribbed knit crop camisole and matching shorts highlighting her toned midriff. Smoothing her treasured red scarf neatly beside the pillow with one hand, she turns a steady, fiercely devoted gaze toward the viewer as dying embers from the stone fireplace cast deep amber shadows.",
+    "animaCaption": "Seated on the wooden barracks bed edge in her charcoal ribbed crop camisole and athletic shorts, Mikasa smooths her red scarf beside the pillow and holds a steady, devoted gaze. Warm embers from the stone fireplace trace her toned midriff and bare shoulders.",
+    "nsfwTokens": [
+      "grey camisole",
+      "crop top",
+      "ribbed",
+      "grey shorts",
+      "midriff",
+      "toned",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a minimalist charcoal-grey ribbed knit crop camisole and matching fitted athletic shorts that accentuate her toned athletic midriff, bare shoulders, and slender legs.",
+    "compositionIntent": "single"
   }
 }

@@ -25,32 +25,36 @@ enum Mode {
 pub(super) struct Endpoint {
     client: Client,
     base: String,
-    pub(super) callback: Arc<poll::Endpoint>,
+    pub(super) callback: PeerConfig,
     callback_url: String,
     requests: Semaphore,
     unavailable: AtomicBool,
 }
 
+pub(super) struct PeerConfig {
+    pub(super) peer: tailnet::Peer,
+    pub(super) names: Nicknames,
+}
+
+impl Config {
+    fn peer(&self) -> Result<tailnet::Peer> {
+        tailnet::Peer::new(self.local_ip, self.vm_ip, self.port)
+    }
+}
+
+async fn config(root: &Path) -> Result<Option<Config>> {
+    read(&root.join("muse-qq-vm.json")).await
+}
+
+pub(super) async fn configured_peer(root: &Path) -> Result<Option<tailnet::Peer>> {
+    config(root).await?.map(|config| config.peer()).transpose()
+}
+
 pub(super) async fn load(root: &Path) -> Result<Route> {
-    let Some(config) = read::<Config>(&root.join("muse-qq-vm.json")).await? else {
+    let Some(config) = config(root).await? else {
         return Ok(Route::Pull);
     };
-    let tailnet = |ip: Ipv4Addr| matches!(ip.octets(), [100, 64..=127, _, _]);
-    if !tailnet(config.local_ip)
-        || !tailnet(config.vm_ip)
-        || config.local_ip == config.vm_ip
-        || config.port == 0
-    {
-        return Err(ApiError::invalid(
-            "localIp 和 vmIp 需要两个不同的 Tailscale IPv4 地址，port 需要有效的 TCP 端口",
-        ));
-    }
-    let callback = Arc::new(poll::Endpoint::new(
-        config.local_ip,
-        config.vm_ip,
-        config.port,
-        config.nicknames,
-    ));
+    let callback = PeerConfig { peer: config.peer()?, names: config.nicknames };
     if let Mode::Poll = config.mode {
         return Ok(Route::VmPoll(callback));
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3126,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "id": "hoolheyak_arknights_swimsuit_allure",
     "characterId": "hoolheyak_arknights",
@@ -14,7 +14,7 @@
     "location": "临海半淹没的史前神庙白石祭坛与清澈海潮交汇处",
     "timeOfDay": "午后",
     "lighting": "热带炽阳斜穿古老神庙残缺的石拱，在翡翠般透亮的海水底投射出蛇鳞般的跃动波光",
-    "camera": "medium shot, slightly high angle, mythological allure and dangerous seduction",
+    "camera": "high angle, medium shot",
     "mood": "神秘莫测、玩味戏弄与充满致命诱惑的知性掌控欲",
     "adult": true,
     "sampleRating": "R15",
@@ -37,27 +37,38 @@
       "playful_smirk"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "hoolheyak (arknights)",
-      "green hair",
-      "amber eyes",
-      "feathered wings",
-      "snake tail",
-      "peacock blue monokini",
-      "gold snake trim",
-      "reclining on sunken marble stairs",
-      "crystal shallow water",
-      "ancient ruins",
-      "seductive playful smirk",
-      "afternoon sunlight",
-      "depth of field",
-      "cinematic lighting"
+      "lying",
+      "on side",
+      "finger to mouth",
+      "smirk",
+      "looking at viewer",
+      "marble",
+      "stairs",
+      "ruins",
+      "shallow water",
+      "ripples",
+      "water reflections",
+      "sunlight",
+      "high angle",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Ho'olheyak reclines along ancient submerged temple stairs in her shimmering peacock-blue and gold monokini, trailing her long serpent tail through the clear water with an alluring, knowing smirk.",
-    "animaCaption": "Sunlight refracts like golden scales through the submerged marble ruins as the feathered serpent whispers from the tide.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Ho'olheyak reclines sideways on partially submerged white marble steps of an ancient coastal temple, resting one elbow on the damp stone while brushing a fingertip lightly against her lips. Her fitted peacock-blue and gold cutout monokini gleams in the afternoon sun as her long snake tail trails beneath the clear turquoise shallows, sending ripples across the stone. Bright sunlight slants through broken temple arches overhead, casting shimmering caustic patterns across the water and her grey hair.",
+    "animaCaption": "Reclining sideways on the half-submerged white marble temple steps in her peacock-blue cutout monokini and sheer turquoise shawl, Ho'olheyak touches a fingertip to her lips with a teasing smirk. Her snake tail trails beneath the clear shallow tide as afternoon sunlight casts shimmering ripples across the ancient stone.",
+    "nsfwTokens": [
+      "blue swimsuit",
+      "one-piece swimsuit",
+      "cutout",
+      "highleg",
+      "cleavage",
+      "bare shoulders",
+      "gold trim",
+      "shawl"
+    ],
+    "nsfwProse": "She wears a fitted metallic peacock-blue cutout highleg monokini clasped with slender gold snake ornaments, draped with a translucent turquoise silk shawl across her bare arms.",
+    "compositionIntent": "single"
   }
 }

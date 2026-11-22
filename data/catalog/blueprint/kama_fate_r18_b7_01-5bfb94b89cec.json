@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_01",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 313,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "kama_fate_r18_b7_01",
     "title": "迦摩 · 宇宙爱欲神殿金莲花座主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐莲花座黑纱金饰半解，红眸妖异狂喜主动起伏",
     "timeOfDay": "night",
     "lighting": "celestial_rim_light",
-    "camera": "intimate vertical medium shot",
+    "camera": "from below, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,21 +30,20 @@
       "floating_hair",
       "white_hair"
     ],
-    "promptProse": "Seated astride the offscreen viewer on the golden lotus, she rests both hands on their chest, her black veil lowered from her shoulders; celestial rim light outlines her floating white hair.",
+    "promptProse": "Seen from a low first-person angle on a radiant golden lotus floating in a dark starfield, Kama sits astride her partner with her long hair drifting weightlessly around her. Celestial rim light traces her hands resting on his chest and her intoxicating downward gaze.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "black sheer veil",
-      "bare breasts",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "cowgirl position",
-      "lotus",
-      "floating hair",
-      "space",
-      "from below",
-      "gold waist chain",
       "hands on chest",
+      "looking down",
+      "floating hair",
+      "lotus",
+      "starry sky",
       "rim light",
+      "from below",
       "medium shot"
     ],
     "negativeTokens": [
@@ -55,14 +54,25 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black dress",
+      "see-through",
+      "gold chain",
+      "waist chain",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position",
+      "heavy blush"
+    ],
+    "nsfwProse": "Her sheer black dress and translucent veil fall away from her shoulders to expose her bare breasts, accented by layered gold waist and thigh chains as she moves in a cowgirl position.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "Both hands rest on the offscreen viewer's chest as her white hair floats around the golden lotus."
+    "animaCaption": "Straddling her partner atop a golden lotus throne beneath a starry cosmic sky, she presses both hands to his chest as her sheer black veil slips from her bare breasts and gold waist chains gleam against her flushed skin.",
+    "compositionIntent": "group"
   }
 }

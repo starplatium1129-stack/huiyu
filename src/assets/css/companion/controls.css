@@ -178,6 +178,3 @@
 .companion-page .companion-presence-cue {
   @apply tw:top-[70px];
 }
-html.companion-immersive .companion-presence-cue {
-  @apply tw:top-[12px];
-}

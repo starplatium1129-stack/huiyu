@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_buena_village_tree",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "双手捧着晶莹水球，绿发在阳光与微风中扬起",
     "adult": false,
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -22,14 +22,23 @@
     "mood": "温柔细腻",
     "negativeTokens": [],
     "outfitId": "default_mage_robe",
-    "promptProse": "Adult Sylphiette cups a floating water sphere beneath the village oak, dappled light passing through it onto her hands.",
+    "promptProse": "Standing beneath the wide leafy branches of the ancient oak tree on the grassy hillside outside Buena Village, Sylphiette wears her hooded sage-green capelet over her ivory shirt and pleated skirt. She cups both hands gently together to hold a clear, shimmering sphere of conjured water floating just above her palms, smiling brightly toward the viewer to share her silent-casting progress. Filtered daylight breaks through the swaying foliage above, refracting cleanly through the floating water orb onto her fingers.",
     "promptTokens": [
-      "water magic",
-      "oak tree",
-      "medium shot",
-      "adult",
-      "holding water sphere",
-      "dappled light"
+      "standing",
+      "cupped hands",
+      "water",
+      "magic",
+      "orb",
+      "happy smile",
+      "looking at viewer",
+      "tree",
+      "grass",
+      "hill",
+      "outdoors",
+      "day",
+      "dappled sunlight",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",
@@ -55,6 +64,7 @@
       "mushoku tensei"
     ],
     "identityProseOverride": "Adult Sylphiette from Mushoku Tensei, with short green hair, red eyes and pointed elf ears.",
-    "animaCaption": "The floating water sphere casts filtered light onto her cupped hands."
+    "animaCaption": "Beneath the ancient village oak tree in her sage-green capelet, Sylphiette cups a glowing conjured water sphere between her palms and smiles happily toward the viewer. Dappled daylight filters through the leaves and refracts brightly across her hands.",
+    "compositionIntent": "single"
   }
 }

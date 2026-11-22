@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3187,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "ling_arknights_lingerie_whisper",
     "characterId": "ling_arknights",
@@ -14,7 +14,7 @@
     "location": "江南水乡湖心古亭，池中荷叶微卷，月光倒映在荡漾水面上",
     "timeOfDay": "中秋月圆子夜",
     "lighting": "清冷皎洁的浩大满月洒下万顷银霜，与亭角一盏昏红风灯形成诗意映衬",
-    "camera": "wide shot, low angle, 湖心亭水榭远景微仰，月下荷塘与酒盏同框",
+    "camera": "low angle, wide shot",
     "mood": "豪迈豁达、飘逸如仙的国风醉意与旷达浪漫",
     "adult": true,
     "sampleRating": "R15",
@@ -42,23 +42,38 @@
       "low_angle"
     ],
     "promptTokens": [
-      "leaning on railing",
+      "standing",
+      "leaning",
+      "railing",
+      "holding cup",
+      "sake cup",
+      "smile",
       "chinese pavilion",
       "lake",
-      "lotus pond",
-      "water ripples",
+      "lotus",
       "full moon",
       "moonlight",
-      "porcelain wine cup",
-      "holding cup",
-      "drunken smile",
-      "wide shot",
-      "low angle"
+      "paper lantern",
+      "low angle",
+      "wide shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Ling leans casually against the carved wooden railing of an ancient lake pavilion, holding a white porcelain cup with a carefree, poetic smile. The brilliant autumn full moon casts shimmering silver across the lotus pond and rippling lake waters around her.",
-    "animaCaption": "Tilting a porcelain wine cup at the lake pavilion railing under the full moon, she smiles with carefree poetry.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Leaning effortlessly against the carved timber railing of a lakeside pavilion on a full-moon night, Ling wears a billowing celadon-green silk open robe draped over an embroidered jade-teal bandeau. Lifting a delicate white porcelain wine cup in one hand as night breeze tosses her long hair, she smiles with poetic, slightly tipsy ease while silver moonlight floods the lotus pond beside the pavilion's warm red lantern.",
+    "animaCaption": "Leaning against the carved pavilion railing in her open celadon silk robe and jade embroidered bandeau, Ling raises a white porcelain wine cup with a poetic, tipsy smile. Bright full moonlight silvers the lotus pond beside a warm red pavilion lantern.",
+    "nsfwTokens": [
+      "green robe",
+      "silk robe",
+      "open robe",
+      "wide sleeves",
+      "bandeau",
+      "bare shoulders",
+      "collarbone",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a flowing celadon-green wide-sleeved silk robe parted open in front over a jade-teal embroidered bandeau bra, exposing her pale collarbone and graceful curves.",
+    "compositionIntent": "single"
   }
 }

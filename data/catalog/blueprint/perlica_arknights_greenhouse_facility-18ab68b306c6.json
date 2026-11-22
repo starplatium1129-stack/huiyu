@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_greenhouse_facility",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 717,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "蹲在苗圃边查看新芽",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "塔罗斯科幻",
     "characterId": "perlica_arknights",
     "description": "在异星模拟生态种植舱的恒温苗圃旁，佩丽卡蹲下身子，极其专注地观察着第一株破土而出的绿色嫩芽。她转过脸向你露出极其罕见的温柔浅笑——「看，管理员。即便是在这片严酷的荒原上，只要给予足够的耐心与养分，生命也依然能够倔强地生根发芽。」",
@@ -17,14 +17,21 @@
     "mood": "温柔耐心",
     "negativeTokens": [],
     "outfitId": "greenhouse_facility_uniform",
-    "promptProse": "Crouched beside the growing bed, she turns from the first green sprout to share a small smile with the offscreen Administrator in the warm grow-light.",
+    "promptProse": "Squatting beside a climate-controlled raised planter inside an Endfield botanical greenhouse, Perlica wears her cyan-piped white cropped work jacket and charcoal utility trousers. Reaching gently near a tiny green sprout pushing cleanly out of dark soil, she turns back over her shoulder to share a rare, quiet smile with the viewer. Warm overhead grow-lights bathe the glass canopy, metal beds, and tender green leaves.",
     "promptTokens": [
-      "crouching",
+      "squatting",
+      "looking back",
+      "gentle smile",
+      "plant",
       "sprout",
+      "soil",
       "greenhouse",
-      "smile",
-      "grow light",
-      "looking back"
+      "planter",
+      "glass",
+      "warm lighting",
+      "indoors",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -38,6 +45,7 @@
     "title": "佩丽卡 · 生态舱",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She turns from the first sprout toward the off-frame Administrator."
+    "animaCaption": "Squatting beside the greenhouse planter bed in her cyan-piped white work jacket, Perlica turns from a tiny green sprout to offer the viewer a gentle, rare smile. Warm overhead grow-lights illuminate the glass module and fresh soil around her.",
+    "compositionIntent": "single"
   }
 }

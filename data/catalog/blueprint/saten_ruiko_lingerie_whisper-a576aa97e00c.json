@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "saten_ruiko_lingerie_whisper",
     "characterId": "saten_ruiko",
@@ -14,7 +14,7 @@
     "location": "学园都市学生宿舍屋顶平台，栏杆外是远近交错的巨大风力发电风车与璀璨灯火",
     "timeOfDay": "夏日微风习习的凉夜",
     "lighting": "城市天际线的蓝白霓虹与楼顶暖黄防空灯相映，风车阴影随夜风缓缓掠过",
-    "camera": "medium shot, side view, 侧身迎风中景，夏夜微风吹拂发梢与天台夜景的元气浪漫",
+    "camera": "side view, medium shot",
     "mood": "元气无能力者少女的爽朗治愈，随性、健康而充满青春悸动",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,35 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "standing",
+      "holding skirt",
+      "looking back",
+      "laughing",
+      "open mouth",
+      "wind",
+      "floating hair",
+      "rooftop",
+      "railing",
+      "wind turbine",
+      "city lights",
+      "outdoors",
+      "night",
       "side view",
-      "leaning over rooftop fence",
-      "summer night wind blowing hair",
-      "white flower in hair",
-      "Academy City skyline bokeh",
-      "spinning wind turbine towers",
-      "bright cheerful laugh",
-      "warm city glow"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ruiko laughs with breezy summer energy on the dorm roof, the night wind fluttering through her hair and skirt against the glittering backdrop of wind turbines and city lights.",
-    "animaCaption": "Leaning on a rooftop fence with wind tossing her hair, laughing cheerfully against the glittering city lights.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Out on the open dormitory rooftop terrace on a breezy summer night, Ruiko wears a lightweight pure white cotton spaghetti-strap slip dress with tiny plum-blossom embroidery along its ruffled hem. Pressing both hands down to keep the billowing fabric from lifting in the warm gusts, she turns back toward the viewer with a bright, carefree laugh. Neon Academy City lights and towering spinning wind turbines glitter across the dark skyline behind the rooftop railing.",
+    "animaCaption": "Standing by the breezy dormitory rooftop railing in her white ruffled cotton slip dress, Ruiko holds down the wind-lifted hem with both hands and laughs brightly back toward the viewer. Neon city lights and distant wind turbines glow across the summer night sky.",
+    "nsfwTokens": [
+      "white nightgown",
+      "cotton slip dress",
+      "spaghetti straps",
+      "frills",
+      "floral embroidery",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a breezy pure white cotton spaghetti-strap slip dress embroidered with tiny plum blossoms and finished with a light ruffled hem.",
+    "compositionIntent": "single"
   }
 }

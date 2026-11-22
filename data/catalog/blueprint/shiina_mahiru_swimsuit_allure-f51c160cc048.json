@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mahiru_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3314,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiina_mahiru_swimsuit_allure",
     "characterId": "shiina_mahiru",
@@ -14,7 +14,7 @@
     "location": "私人度假海滩遮阳躺椅与清澈浅湾旁",
     "timeOfDay": "初夏正午",
     "lighting": "明丽温润的正午阳光给亚麻色的长发镀上一层梦幻般的光晕，清澈的大海在身后展现出渐变翡翠色",
-    "camera": "medium full shot, eye level, bright and pristine romantic anime aesthetic, deeply heartwarming",
+    "camera": "eye level, cowboy shot",
     "mood": "极致温婉、全心照料与毫无保留的依赖与深情",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,36 @@
       "romantic_domestic"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shiina mahiru",
-      "long flaxen hair",
-      "amber eyes",
-      "white and apricot floral swimdress",
-      "sheer white sun sleeves",
-      "carrying tray with lemonade glasses",
-      "stepping onto sunlit sand",
-      "breathtaking gentle angelic smile",
+      "walking",
+      "holding tray",
+      "lemonade",
+      "glass",
+      "gentle smile",
       "soft blush",
-      "turquoise tropical sea",
-      "bright midday sunshine",
-      "depth of field",
-      "cinematic lighting"
+      "looking at viewer",
+      "beach",
+      "sand",
+      "beach umbrella",
+      "ocean",
+      "outdoors",
+      "sunlight",
+      "eye level",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Shiina Mahiru steps gracefully from sunshade into golden beach sands in her angelic white-and-apricot swimdress, carrying a tray of iced lemonade with a radiant, deeply loving smile.",
-    "animaCaption": "Bright coastal sunshine illuminates her angelic flaxen hair as she tends to you with boundless sweet devotion.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Stepping gracefully out from beneath a shaded beach umbrella onto the warm golden sand, Mahiru wears a modest milky-white swimdress patterned with faint apricot blossoms, layered flutter ruffles, and sheer white sun sleeves. Carrying a serving tray holding two chilled glasses of honey lemonade with steady care, she tilts her head slightly and offers a radiant, devoted smile with a soft blush. Clear midday sunshine sparkles across the turquoise bay behind her.",
+    "animaCaption": "Stepping barefoot onto sunlit beach sand in her white-and-apricot floral swimdress and sheer sun sleeves, Mahiru carries a tray with two glasses of iced lemonade and smiles tenderly toward the viewer. Bright midday sun shines over the turquoise water behind her.",
+    "nsfwTokens": [
+      "white swimsuit",
+      "swimdress",
+      "floral print",
+      "frills",
+      "sheer sleeves",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a milky-white and soft apricot floral ruffled swimdress paired with sheer elbow-length white sun sleeves, walking barefoot over the sand.",
+    "compositionIntent": "single"
   }
 }

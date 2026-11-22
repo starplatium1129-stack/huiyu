@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_forest_magic_practice",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "双手合拢凝聚柔和的治愈水流，晨光穿过树梢",
     "adult": false,
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "category": "奇幻",
     "characterId": "sylphiette",
     "description": "阳光穿透树冠洒在清幽的森林空地上，希露菲神情专注地合拢双手，无需咏唱便在指尖汇聚出一道柔和治愈的纯净水流。她转过身开心地向你展示——「看！无咏唱的治愈魔术我也越来越熟练了！以后只要有我在，就绝对不会让你受到任何伤害。」",
@@ -18,16 +18,23 @@
     "mood": "专注坚毅",
     "negativeTokens": [],
     "outfitId": "default_mage_robe",
-    "promptProse": "Sylphiette gathers healing water between her palms beside the misty brook in filtered morning sun.",
+    "promptProse": "In a quiet woodland clearing beside a shallow forest brook shrouded in dawn mist, Sylphiette stands in her hooded sage-green capelet and white boots, bringing both hands together in steady concentration. A luminous ribbon of pure healing water coils smoothly between her palms without an incantation as she turns partway toward the viewer with quiet pride and warmth. Slanted beams of morning sunlight pierce the tall canopy and illuminate the rising stream mist around her shoulders.",
     "promptTokens": [
-      "cupped hands",
-      "water magic",
-      "forest",
-      "brook",
-      "cowboy shot",
+      "standing",
       "hands together",
+      "water",
+      "magic",
+      "glowing",
+      "focused",
+      "gentle smile",
+      "forest",
+      "stream",
       "mist",
-      "morning light"
+      "outdoors",
+      "morning",
+      "sunbeam",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +49,7 @@
     ],
     "timeOfDay": "morning",
     "title": "希露菲叶特 · 森林魔法练习",
-    "animaCaption": "Healing water gathers between her palms beside the brook."
+    "animaCaption": "Standing beside a misty forest brook in her sage-green capelet, Sylphiette brings her hands together to weave a soft glowing ribbon of healing water between her palms. Slanted morning sunbeams pierce the trees and catch the fine mist around her.",
+    "compositionIntent": "single"
   }
 }

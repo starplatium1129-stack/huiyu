@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3127,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T09:51:25.170456500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "ray_arknights_swimsuit_allure",
     "characterId": "ray_arknights",
@@ -14,7 +14,7 @@
     "location": "人迹罕至的亚热带红树林潮汐浅滩沼泽区",
     "timeOfDay": "清晨薄雾",
     "lighting": "晨曦穿透红树林湿润浓雾，一道道笔直的丁达尔光柱直插浅水，泥沼与树根在逆光中呈现深沉剪影",
-    "camera": "medium full shot, low angle, atmospheric wilderness field composition, dynamic hunter focus",
+    "camera": "low angle, cowboy shot",
     "mood": "沉稳机警、荒野猎人的敏锐与毫无杂念的专注",
     "adult": true,
     "sampleRating": "R15",
@@ -40,27 +40,33 @@
       "sunbeams"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "ray (arknights)",
-      "rabbit ears",
-      "cautus ears",
-      "khaki tactical bikini",
       "crouching",
+      "hand on root",
+      "shading eyes",
+      "serious",
+      "looking ahead",
       "mangrove roots",
       "shallow water",
-      "hand shading eyes",
-      "scanning distance",
-      "early morning mist",
-      "dramatic sunbeams",
-      "wild coastal wetland",
-      "serious hunter gaze",
-      "depth of field"
+      "wetland",
+      "morning mist",
+      "sunbeams",
+      "backlighting",
+      "dawn",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ray from Arknights crouches alertly among tangled mangrove roots in her desert-khaki tactical swimsuit, shading her eyes as morning sunbeams pierce through misty coastal wetlands.",
-    "animaCaption": "Piercing golden rays slice through mangrove fog as the lone marksman guards the wild coastline.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ray crouches barefoot among gnarled mangrove roots rising from a shallow coastal wetland at dawn, wearing a desert-khaki and muted brush-camo neoprene sports bikini with reinforced straps and a wrist rangefinder. Bracing one hand on a damp root while shielding her eyes to scan the horizon, she stands out against golden morning sunbeams piercing the mist.",
+    "animaCaption": "Crouching barefoot atop tangled wet mangrove roots in a khaki brush-camo tactical sports bikini, she braces one hand on the wood and shades her eyes to scan the misty cove. Crisp morning sunbeams slice diagonally through coastal fog across the shallow tide.",
+    "nsfwTokens": [
+      "khaki bikini",
+      "camouflage swimwear",
+      "sports bikini",
+      "tactical straps",
+      "wristband",
+      "bare midriff",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a desert-khaki and muted brush-camo neoprene sports bikini with reinforced tactical straps and a wrist rangefinder strap."
   }
 }

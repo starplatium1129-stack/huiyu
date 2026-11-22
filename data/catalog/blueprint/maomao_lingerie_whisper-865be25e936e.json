@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3357,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "maomao_lingerie_whisper",
     "characterId": "maomao",
@@ -14,7 +14,7 @@
     "location": "后宫偏僻的私密草药房，干燥草药束倒悬在房梁下，黄铜小药碾摆在桌头",
     "timeOfDay": "深夜熬药时刻",
     "lighting": "油灯微弱而温暖的红黄火光，在木质墙壁与散发微光的药草间摇曳晃动",
-    "camera": "medium shot, high angle, back view, 侧俯角度中景，桌面摆满的药碾、研钵与少女单薄的肚兜背影相映成趣",
+    "camera": "high angle, three quarter view, medium shot",
     "mood": "东方宫廷的神秘药香，清冷理智却又带着猫一般的俏皮野趣",
     "adult": true,
     "sampleRating": "R15",
@@ -38,25 +38,37 @@
       "back_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "back view",
-      "indoors",
-      "bedroom",
-      "night",
-      "candlelight",
-      "warm lighting",
       "sitting",
-      "desk lamp",
-      "jade green silk dudou bodice",
-      "traditional oriental innerwear",
-      "floral jacquard weave",
-      "herbal apothecary loungewear"
+      "cross-legged",
+      "cushion",
+      "low table",
+      "holding plant",
+      "herbs",
+      "mortar",
+      "looking back",
+      "slight smile",
+      "oil lamp",
+      "warm lighting",
+      "night",
+      "high angle",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice. Smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes amidst hanging herbs from ceiling, warm flickering oil lamp lighting.",
-    "animaCaption": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Seated cross-legged on a flat floor cushion before a low wooden apothecary desk strewn with a brass mortar and dried herbs late at night, Maomao wears a jade-green silk jacquard dudou under a gossamer sheer pale-yellow open robe. Lifting a sprig of dried herbs near her nose as bundles of medicinal plants hang from the rafters above, she glances back with sharp, catlike curiosity in the warm flickering glow of a tabletop oil lamp.",
+    "animaCaption": "Seated cross-legged at the low apothecary table in her jade-green silk dudou and sheer pale-yellow open robe, Maomao sniffs a sprig of dried herbs while glancing back with sharp curiosity. Warm oil-lamp light flickers across the brass mortar and hanging herb bundles.",
+    "nsfwTokens": [
+      "green dudou",
+      "silk",
+      "yellow robe",
+      "open robe",
+      "see-through",
+      "bare shoulders",
+      "bare back"
+    ],
+    "nsfwProse": "She wears a jade-green floral jacquard silk dudou bodice beneath an open gossamer pale-yellow sheer silk robe, showing her slender shoulders and narrow waist.",
+    "compositionIntent": "single"
   }
 }

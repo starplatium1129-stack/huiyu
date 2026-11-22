@@ -75,10 +75,16 @@ impl TaskRuntime {
         }
         // No acceptance command has been transferred yet. Validation and model
         // preparation failures are definite rejections, never a lost receipt.
+        let has_dependencies = dependencies::validate(&storage, &principal, &frozen["context"])
+            .await
+            .map_err(ApiError::not_accepted)?;
         let prepared = self
             .prepare(kind, frozen["input"].take())
             .await
             .map_err(ApiError::not_accepted)?;
+        if has_dependencies && !prepared.uses_native_queue() {
+            return Err(ApiError::invalid("前置任务仅适用于本机原生图片和视频生成").not_accepted());
+        }
         self.accept_prepared(
             storage,
             principal,
@@ -152,6 +158,9 @@ impl TaskRuntime {
             parent_batch_id: None,
             step_index: None,
         };
+        if prepared.uses_native_queue() {
+            record.metadata.insert("nativeGpuQueueEpoch".into(), json!(storage.runtime_epoch()));
+        }
         if let Some(source) = &retry_of {
             record
                 .metadata

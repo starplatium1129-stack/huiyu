@@ -23,6 +23,33 @@ pub(crate) struct Destination {
 }
 
 impl Service {
+    pub(crate) async fn studio_reference(
+        &self,
+        storage: Storage,
+        principal: &str,
+        frame: &Value,
+    ) -> Result<String> {
+        if !self.native || self.is_remote() {
+            return Err(ApiError::new(
+                409,
+                "NATIVE_VIDEO_REQUIRED",
+                "项目补帧需要本机原生绘图",
+            ));
+        }
+        frozen_frame(
+            storage,
+            principal,
+            frame,
+            Destination {
+                root: inputs::root(&self.config, true),
+                owner: principal.into(),
+                limits: self.limits,
+                kind: ImageKind::Anima,
+            },
+            self.shutdown.child_token(),
+        )
+        .await
+    }
     pub(crate) async fn import_workspace(
         &self,
         storage: Storage,
@@ -76,6 +103,32 @@ impl Service {
     }
 }
 
+pub(crate) async fn frozen_frame(
+    storage: Storage,
+    principal: &str,
+    frame: &Value,
+    target: Destination,
+    scope: CancellationToken,
+) -> Result<String> {
+    let alias = frame["mediaAlias"]
+        .as_str()
+        .ok_or_else(|| ApiError::invalid("帧图缺少工作区别名"))?;
+    let hash = frame["sha256"]
+        .as_str()
+        .ok_or_else(|| ApiError::invalid("帧图缺少摘要"))?;
+    let bytes = frame["bytes"]
+        .as_u64()
+        .ok_or_else(|| ApiError::invalid("帧图缺少长度"))?;
+    let lease = uuid::Uuid::new_v4().to_string();
+    let reference = storage
+        .begin_workspace_media_import(alias, &lease, principal, Some((hash, bytes)))
+        .await;
+    let result = finish(storage, principal.into(), lease, reference, target, scope).await?;
+    result["name"]
+        .as_str()
+        .map(str::to_owned)
+        .ok_or_else(|| ApiError::invalid("帧图导入未返回编号"))
+}
 pub(crate) async fn finish(
     storage: Storage,
     principal: String,
@@ -89,13 +142,15 @@ pub(crate) async fn finish(
         if scope.is_cancelled() {
             return Err(inputs::cancelled());
         }
-        if !matches!(
-            reference.mime.as_str(),
-            "image/png" | "image/jpeg" | "image/webp"
-        ) || reference.bytes == 0
+        let accepted = if matches!(target.kind, ImageKind::StudioAudio) {
+            reference.mime == "audio/wav"
+        } else {
+            matches!(reference.mime.as_str(), "image/png" | "image/jpeg" | "image/webp")
+        };
+        if !accepted || reference.bytes == 0
             || reference.bytes > target.kind.maximum() as u64
         {
-            return Err(error("INVALID_IMAGE", "来源不是支持的图片"));
+            return Err(error("INVALID_MEDIA", "素材格式或大小与所选槽位不符"));
         }
         let media = storage.media(&reference.alias).await?;
         if reference.sha256 != media.sha256

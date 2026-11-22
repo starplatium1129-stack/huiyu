@@ -1,7 +1,8 @@
 import { startArtworkSession, stopArtworkSession } from './storage/artworkSession'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { initializePlatform } from './platform/initializePlatform'
+import { initializePlatform, isDesktopHost } from './platform/initializePlatform'
+import { setStartupProfile } from './platform/startupProfile'
 import { installRouteRecovery } from './composables/useRouteRecovery'
 import { installNavigationFeedback } from './composables/useNavigationFeedback'
 import { initializeTheme } from './composables/useTheme'
@@ -17,7 +18,6 @@ import './assets/css/design-system.css'
 import './assets/css/tailwind.css'
 import './assets/css/light-theme.css'
 import './assets/css/fluid-surfaces.css'
-import './assets/css/fluid-workspaces.css'
 import './assets/css/fluid-glass.css'
 import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
@@ -26,8 +26,6 @@ import './utils/scrollbarVisibility'
 import './assets/css/studio-fields.css'
 import './assets/css/desktop-layout.css'
 import './assets/css/interaction-motion.css'
-// Keep saved pixel-theme colors in the loading frame; its surfaces load on demand.
-import './assets/css/terraria-theme.css'
 
 // Join before mounting: a new document must not start writing while another
 // document holds exclusive cleanup access. Browsing still works without locks;
@@ -40,14 +38,16 @@ let stopFontLoad = () => {}
 void (async () => {
   const appPromise = import('./App.vue')
   const routerPromise = import('./router')
-  const taskCenterPromise = import('./composables/useTaskCenter')
-  const { useTaskCenter } = await taskCenterPromise
-  const center = useTaskCenter()
-  const platform = await initializePlatform(() => center.activeCount.value > 0)
-  stopPlatform = platform.stop
+  const platformReady = initializePlatform().then(platform => {
+    if (disposed) platform.stop()
+    else stopPlatform = platform.stop
+    return platform
+  })
+  if (isDesktopHost()) setStartupProfile(platformReady)
+  else void platformReady.catch(error => console.warn('资料初始化暂不可用', error))
   initializeTheme()
-  // The platform authority is ready. Theme CSS, UI modules and the artwork
-  // lease can now prepare together; all three still finish before mounting.
+  // Shell mounts once the document lease and first theme are ready. Route
+  // content waits for the appropriate storage authority, which connects in parallel.
   const [[{ default: App }, { default: router }]] = await Promise.all([
     Promise.all([appPromise, routerPromise]),
     initializeDesktopPreferences(),
@@ -64,7 +64,7 @@ void (async () => {
   app.mount('#app')
   let fontFrame = requestAnimationFrame(() => {
     fontFrame = requestAnimationFrame(() => {
-      if (!disposed) void platform.afterMount().catch(error => console.warn('桌面辅助功能暂未就绪', error))
+      void platformReady.then(platform => { if (!disposed) return platform.afterMount() }).catch(error => console.warn('桌面辅助功能暂未就绪', error))
       const load = () => { if (!disposed) void import('./assets/fonts').catch(error => console.warn('本地字体暂未加载', error)) }
       if ('requestIdleCallback' in window) {
         const idle = window.requestIdleCallback(load, { timeout: 1000 })

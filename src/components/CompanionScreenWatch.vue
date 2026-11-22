@@ -1,7 +1,7 @@
 <template>
   <section v-if="showEntry || state !== 'idle' || notice || open" class="companion-watch"
     :data-dock="docked || undefined" aria-label="陪看">
-    <div class="companion-watch-controls">
+    <div class="companion-watch-controls" data-companion-interactive>
       <StudioPopover v-model:open="open" label="陪看设置" :side="docked ? 'top' : 'bottom'" :align="docked ? 'start' : 'end'" content-class="companion-watch-popover">
         <template #trigger>
           <button class="btn btn-quiet btn-sm companion-watch-trigger" type="button">
@@ -47,11 +47,13 @@ import StudioPopover from '@/components/ui/StudioPopover.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import type { useCompanionScreenWatch } from '@/composables/chat/useCompanionScreenWatch'
 
-const props = defineProps<{ controller: ReturnType<typeof useCompanionScreenWatch>; showEntry: boolean; docked?: boolean }>()
+const props = defineProps<{ controller: ReturnType<typeof useCompanionScreenWatch>; showEntry: boolean; docked?: boolean; openInitially?: boolean }>()
+const emit = defineEmits<{ dismiss: [] }>()
 const StudioSelect = defineAsyncComponent(() => import('@/components/ui/StudioSelect.vue'))
 const { state, pace, listenForGaps, audioAvailable, comment, notice, supported, origin, canInspect, status,
   start, pause, resume, inspectNow, stop } = props.controller
-const open = ref(false)
+const open = ref(Boolean(props.openInitially))
+watch(open, value => { if (!value) emit('dismiss') })
 const active = computed(() => state.value === 'watching' || state.value === 'paused')
 const paceOptions = [{ value: 'quiet', label: '少说一点' }, { value: 'balanced', label: '适中' }]
 function setPace(value: unknown) { if (value === 'quiet' || value === 'balanced') pace.value = value }

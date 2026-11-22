@@ -67,6 +67,7 @@ pub(super) fn create(
             metadata: metadata.into(),
             upstream_id: String::new(),
             progress: None,
+            preview_data_url: None,
             current_node: None,
             progress_text: if provider == "native" {
                 "等待独立推理"
@@ -179,6 +180,9 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         );
         public["currentNode"] = json!(state.current_node);
         public["progressText"] = json!(state.progress_text);
+        if state.status == "running" && let Some(preview) = &state.preview_data_url {
+            public["previewDataUrl"] = json!(preview);
+        }
     }
     drop(state);
     public["metadata"] = Arc::unwrap_or_clone(metadata);
@@ -205,6 +209,9 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     }
     let state = job.state.lock().await;
     let snapshot = state.metadata.clone();
+    let native_error = if state.code.is_some() && matches!(&job.execution, Execution::Native(_)) {
+        state.error.as_deref().map(|message| message.chars().filter(|c| !c.is_control()).take(1200).collect::<String>())
+    } else { None };
     let manga = (job.input["family"] == "manga-screen")
         .then(|| (state.progress, state.progress_text.clone()));
     let finished = state.finished;
@@ -226,6 +233,9 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     };
     drop(state);
     let mut metadata = Arc::unwrap_or_clone(snapshot);
+    if let Some(message) = native_error {
+        metadata["errorMessage"] = json!(message);
+    }
     metadata["gatewayJobId"] = json!(job.id);
     if let Some((progress, text)) = manga {
         metadata["progress"] = json!(progress);

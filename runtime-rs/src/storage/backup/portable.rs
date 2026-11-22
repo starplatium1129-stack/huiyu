@@ -1,4 +1,5 @@
 use super::*;
+use crate::storage::records::json_column;
 use sha2::{Digest, Sha256};
 use std::io::{Read, Write};
 const MAGIC: &[u8] = b"HUIYU-BACKUP-1\n";
@@ -178,6 +179,13 @@ pub(in crate::storage) fn import(
         if manifest["schemaVersion"].as_u64().unwrap() >= 5 {
             rebind_batches(&db, &id, &principal)?;
         }
+        if manifest["schemaVersion"].as_u64().unwrap() >= 8 {
+            rebind_studio_videos(&db, &principal)?;
+        }
+        if manifest["schemaVersion"].as_u64().unwrap() >= 9 {
+            db.execute("UPDATE studio_exports SET principal=?", [&principal])?;
+            db.execute("UPDATE studio_exports SET done=1,body=json_set(body,'$.status','interrupted','$.message','备份时成片尚未导出，可重新导出。','$.error','备份时成片尚未导出，可重新导出。') WHERE done=0", [])?;
+        }
         db.execute_batch("DELETE FROM leases; DELETE FROM operations; COMMIT;")?;
     }
     let identity = json!({"workspaceId":id,"databaseKind":"huiyu-workspace","schemaVersion":manifest["schemaVersion"]});
@@ -192,6 +200,39 @@ pub(in crate::storage) fn import(
     fs::rename(&root, &destination)?;
     schema::sync_dir(parent)?;
     Ok(result)
+}
+
+fn rebind_studio_videos(db: &Connection, principal: &str) -> Result<()> {
+    db.execute("UPDATE studio_video_batches SET principal=?", [principal])?;
+    db.execute("UPDATE studio_video_runs SET principal=?", [principal])?;
+    let pending = db
+        .prepare("SELECT id,body FROM studio_video_runs WHERE done=0")?
+        .query_map([], |row| {
+            Ok((row.get::<_, String>(0)?, json_column(row, 1)?))
+        })?
+        .collect::<rusqlite::Result<Vec<_>>>()?;
+    for (id, mut run) in pending {
+        let message = "这次生成在导出备份时尚未完成。可在当前工作区重新提交这个镜头。";
+        run["error"] = json!(message);
+        run["status"] = json!("interrupted");
+        if let Some(children) = run
+            .get_mut("preparation")
+            .and_then(|plan| plan.get_mut("tasks"))
+            .and_then(Value::as_array_mut)
+        {
+            for child in children {
+                if matches!(child["status"].as_str(), Some("queued" | "running")) {
+                    child["status"] = json!("interrupted");
+                    child["error"] = json!(message);
+                }
+            }
+        }
+        db.execute(
+            "UPDATE studio_video_runs SET done=1,body=? WHERE id=?",
+            params![stringify(&run), id],
+        )?;
+    }
+    Ok(())
 }
 
 fn rebind_batches(db: &Connection, workspace: &str, principal: &str) -> Result<()> {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_itsuka_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3467,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kotori_itsuka_lingerie_whisper",
     "characterId": "kotori_itsuka",
@@ -14,7 +14,7 @@
     "location": "温馨客厅的长绒贵妃沙发上，散落着草莓靠垫与卡通毯子",
     "timeOfDay": "午后惬意阳光斜照",
     "lighting": "暖金色的斜阳斜斜切入客厅，在地板上拉长柔和的树影与光斑",
-    "camera": "medium shot, side view, 侧景横幅中景，展现伸展的优美曲线与悬空轻点脚尖的灵动动态",
+    "camera": "from side, medium shot",
     "mood": "妹妹模式的娇憨可爱与任性依赖，午后甜美慵懒",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,32 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
-      "reclining across plush living room sofa",
-      "clutching strawberry cushion",
-      "holding chupa chups lollipop",
-      "afternoon sunlight through window",
-      "white hair ribbons",
-      "spoiled playful pout",
-      "cozy home warmth"
+      "reclining",
+      "sofa",
+      "lollipop",
+      "hugging pillow",
+      "white hair ribbon",
+      "pout",
+      "smirk",
+      "looking at viewer",
+      "living room",
+      "afternoon",
+      "window light",
+      "from side",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kotori stretches out across the soft living room sofa in her playful white-ribbon sister mode, kicking her bare feet while demanding sweet treats with a spoiled, adorable grin.",
-    "animaCaption": "Reclining lazily across the living room sofa with a strawberry cushion, smiling with spoiled afternoon sweetness.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from the side across a sunlit living-room sofa strewn with cushions and cozy throws, Kotori lounges lazily with a lollipop between her lips and her white hair ribbons splayed out, looking over with a spoiled, affectionate pout.",
+    "animaCaption": "Stretched sideways across the plush living-room chaise sofa hugging a strawberry cushion with a lollipop tucked in her mouth, she kicks her bare feet playfully and gives a spoiled glance in her crimson strawberry-print linen babydoll with white satin ribbons.",
+    "nsfwTokens": [
+      "red babydoll",
+      "strawberry print",
+      "white ribbon",
+      "ruffles",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a short crimson strawberry-print linen babydoll nightdress laced with criss-cross white satin ribbons at the bust and a ruffled hem revealing her bare legs and bare feet.",
+    "compositionIntent": "single"
   }
 }

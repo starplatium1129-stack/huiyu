@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3334,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "ubel_frieren_lingerie_whisper",
     "characterId": "ubel_frieren",
@@ -14,7 +14,7 @@
     "location": "帝国废弃古代魔法遗迹石桥，断桥下深渊升腾着夜雾与点点荧光菌丛",
     "timeOfDay": "一等魔法使考试过后的午夜",
     "lighting": "遗迹废墟升起的冷蓝荧光与深绿魔法微光在白皙锁骨与纤细手臂间勾勒出危险轮廓",
-    "camera": "medium shot, side view, 侧身回眸中景，残破古桥上的冰冷魔导利刃与危险诱惑",
+    "camera": "from side, medium shot",
     "mood": "极度危险的同理心杀手，疯狂、随性而又不可思议地亲昵动人",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,34 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
-      "sitting perched on crumbling stone bridge",
-      "holding heavy cleaver blade",
-      "ancient overgrown ruins",
-      "drifting night mist",
-      "bioluminescent fungi in chasm",
-      "teasing predatory smirk",
-      "moonlight"
+      "sitting",
+      "dangling legs",
+      "holding weapon",
+      "polearm",
+      "smirk",
+      "looking back",
+      "stone bridge",
+      "ruins",
+      "mist",
+      "glowing mushrooms",
+      "moonlight",
+      "night",
+      "from side",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ubel perches precariously on the broken ledge of an ancient ruin bridge at midnight, resting her cleaver across her knees while casting a dangerously playful over-the-shoulder smirk.",
-    "animaCaption": "Perched on an ancient ruined stone bridge with her cleaver in hand, casting a dangerously playful sideways smirk.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from the side on a crumbling ruined stone bridge veiled in night mist above bioluminescent chasm fungi, Ubel rests her sharp spear blade across her thighs and casts a teasing, predatory glance back under the moonlight.",
+    "animaCaption": "Perched sideways on the broken parapet of a ruined ancient stone bridge above misty glowing chasm fungi with her bare legs dangling, she fingers the edge of her staff blade with a dangerous smirk in a sheer black plunging halter mini slip with asymmetrical waist cutouts.",
+    "nsfwTokens": [
+      "black dress",
+      "halterneck",
+      "plunging neckline",
+      "cutout",
+      "see-through",
+      "bare legs",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a body-hugging sheer inky-black halter mini slip with a deep plunging neckline, jagged raw hemline, and daring asymmetrical side cutouts.",
+    "compositionIntent": "single"
   }
 }

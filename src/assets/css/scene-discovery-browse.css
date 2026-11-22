@@ -7,7 +7,7 @@
 .scene-atlas[data-companion='nene'] { --companion-accent:var(--nene-violet); }
 .scene-atlas[data-companion='natsume'] { --companion-accent:var(--natsume-amber); }
 .scene-atlas-copy { grid-area:copy; min-width:0; }
-.scene-atlas .title { margin:0; color:var(--text-primary); font:600 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
+.scene-atlas .title { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
 :global(:root[data-theme-style='terraria']) .scene-atlas .title { font-family:var(--font-display); }
 .scene-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .curation-intro { grid-area:choices; display:flex; align-items:center; gap:var(--s-4); min-width:0; }
@@ -86,7 +86,7 @@
 .scene-grid::after { content:''; flex:1000000 1 0; }
 .scene-grid :deep(.sc) { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(240px,100%); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:none; }
 .scene-grid :deep(.sc-band) { aspect-ratio:var(--scene-preview-ratio,3/4); min-height:0; padding:0; background:var(--art-stage); }
-.scene-grid :deep(.sc-thumb) { position:absolute; inset:0; height:100%; border:0; border-radius:0; box-shadow:none; }
+.scene-grid :deep(.sc-thumb) { position:absolute; inset:0; height:100%; border:0; border-radius:0; box-shadow:inset 0 0 0 1px var(--border-soft); }
 .scene-grid :deep(.sc-band::after) { display:none; }
 .scene-grid :deep(.sc-cat) { display:none; }
 .scene-grid :deep(.sc-body) { flex:1; gap:var(--s-2); padding:var(--s-3); }

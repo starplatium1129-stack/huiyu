@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3199,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kama_fate_lingerie_whisper",
     "characterId": "kama_fate",
@@ -14,7 +14,7 @@
     "location": "大奥深层虚无宇宙中漂浮的暗红莲花宝座上",
     "timeOfDay": "午夜",
     "lighting": "背后虚空暗黑魔力光环散发的幽紫与暗红光斑，将薄纱下的曼妙身姿照得亦正亦邪、摄人心魄",
-    "camera": "充满压迫感与神明堕落感的下沉微仰视，展现爱之神将凡人玩弄于股掌的魅惑狂气",
+    "camera": "from below, medium shot",
     "mood": "神明堕落、嘲讽挑逗、游走于毁灭与溺爱边缘的诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -37,21 +37,33 @@
       "corrupted_love_god"
     ],
     "promptTokens": [
-      "violet gossamer veils",
-      "floating above lotus",
-      "golden arrow",
+      "floating",
+      "lotus",
       "chin on hand",
-      "ruby eyes",
-      "seductive smirk",
-      "abyss",
-      "glow",
-      "darkness",
-      "purple lighting"
+      "holding arrow",
+      "golden arrow",
+      "seductive smile",
+      "smirk",
+      "looking down",
+      "dark background",
+      "purple lighting",
+      "glowing",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Twirling a golden arrow between her fingers with a cynical, intoxicating smirk, she beckons the Master into sweet, ruinous damnation. Pulsing dark-violet and crimson magic auras radiating from the abyssal void behind her lotus seat illuminate her sheer gossamer fabrics with ominous allure.",
-    "animaCaption": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Pulsing dark-violet and crimson magic auras radiating from the abyssal void behind her lotus seat illuminate her sheer gossamer fabrics with ominous allure.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a low upward angle in the endless shadowy expanse of the Ooku, Kama floats effortlessly above a glowing dark-red lotus resting her chin on one palm while spinning a golden arrow between her fingers with a teasing smirk.",
+    "animaCaption": "Hovering weightlessly above an abyssal crimson lotus throne with her chin propped in one hand and a golden arrow balanced in the other, she smiles down mockingly wrapped in floating dark-violet gossamer veils and an open-waist gold-clasped harness.",
+    "nsfwTokens": [
+      "purple veil",
+      "see-through",
+      "sheer bodysuit",
+      "harness",
+      "gold trim",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "Weightless translucent dark-violet gossamer chiffon veils drift around her bare shoulders and legs over a sheer open-waist harness fastened with intricate gold lotus clasps.",
+    "compositionIntent": "single"
   }
 }

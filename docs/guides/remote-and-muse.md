@@ -72,7 +72,8 @@
 | Tailscale 虚拟机专用端口 | `GET /desktop/pending?wait=25` | `POST /desktop/replies` |
 
 - **长轮询**：`wait` 上限 30 秒（或使用请求头 `Prefer: wait=20`），HTTP 超时设为 ≥ 40 秒；空队列返回即续接（旧网关无 `inboxWaitSeconds` 时等 2 秒）。
-- **回复规则**：按 `conversationId` 区分上下文，在 `expiresAt` 前提交 `{"requestKey":"来信编号","text":"角色回答"}`；重试沿用原编号和原文。
+- **回复规则**：按 `conversationId` 区分上下文，在 `expiresAt` 前提交 `{"requestKey":"来信编号","text":"角色回答"}`。重试沿用原编号和完整回复。
+- **角色回图**：在聊天设置的「更多选项」开启「房间工具」，并启用本机原生绘图。用户提出出图需求且来信的 `drawingAllowed` 为 `true` 时，Muse 可随同文字附上 `drawing`。例如 `{"requestKey":"来信编号","text":"好呀，等我拍一张。","drawing":{"ids":["目录场景 ID"]}}`。也可使用远程批次支持的 `items`。绘遇提交这批图，进度和成图都会显示在原对话的出图卡里。
 
 ---
 
@@ -106,7 +107,9 @@
 
 ## 4. Tailscale 虚拟机专用模式
 
-在绘遇电脑配置 `%APPDATA%\com.aics.studio\gateway\muse-qq-vm.json` 并保存 QQ 连接（或重启绘遇）生效，移走配置恢复中转模式。两端通过 Tailscale IPv4 HTTP 通信，无需 `X-Token`。
+绘遇使用 `%APPDATA%\com.aics.studio\gateway\muse-qq-vm.json` 中的 `localIp`、`vmIp` 和 `port` 提供桌面收信。已有文件可直接沿用，即使关闭 QQ 机器人，Muse 也能用同一地址访问 `/desktop/pending` 和 `/desktop/replies`。两端通过 Tailscale IPv4 HTTP 通信，绘遇只接受配置的 `vmIp`，无需 `X-Token`。
+
+继续使用旧 QQ 机器人时，修改本文件后保存 QQ 连接或重启绘遇，以更新 QQ 转发配置。`mode` 决定旧 QQ 机器人的转发方式。移走文件可恢复中转模式。
 
 ### 模式 A：反向轮询（`mode: "poll"`，推荐仅出站 VM）
 

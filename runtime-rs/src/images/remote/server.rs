@@ -30,12 +30,15 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         .unwrap_or("");
     // This interface is for another runtime, not browser cross-origin requests.
     let path = request.uri().path();
-    let chat = path.starts_with("/api/muse/qq/") || path.starts_with("/api/muse/desktop/");
+    let private = path.starts_with("/api/muse/qq/")
+        || path.starts_with("/api/muse/desktop/")
+        || path.starts_with("/api/muse/voice/");
     let inbox = request.method() == axum::http::Method::GET
         && matches!(path, "/api/muse/desktop/inbox" | "/api/muse/qq/inbox");
     let allowed = ((inbox || request.uri().query().is_none())
         && (super::relay::qq_route(request.method(), path)
-            || super::relay::desktop_chat_route(request.method(), path)))
+            || super::relay::desktop_chat_route(request.method(), path)
+            || super::relay::voice_route(request.method(), path)))
         || ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
             .iter()
             .any(|prefix| path.starts_with(prefix))
@@ -71,7 +74,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         "x-huiyu-image-protocol",
         axum::http::HeaderValue::from_static("1"),
     );
-    if chat {
+    if private {
         response.headers_mut().insert(
             header::CACHE_CONTROL,
             HeaderValue::from_static("private, no-store"),
@@ -158,6 +161,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         .layer(Extension(guide::Guide))
         .merge(super::muse::router(images, state.host.clone()))
         .merge(crate::companion_channels::muse_qq_router())
+        .merge(crate::voice::muse::router())
         .merge(desktop_chat)
         .route(guide::PATH, get(guide::read))
         .merge(

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "momo_r18_sofa_cowgirl_succubus_straddle",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1254,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "跨坐在画面外恋人腰间，睡裙滑在双肘，双手按住对方胸口借力，尾巴在身后轻摆。",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, low angle",
+    "camera": "from below, pov, cowboy shot",
     "category": "深层欢愉",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -22,26 +22,33 @@
     "location": "客厅真皮大沙发中央骑乘姿态",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Her translucent lavender silk negligee with white floral lace hangs slipped off her shoulders around her elbows, exposing her bare breasts as she rides smoothly in a cowgirl position.",
+    "nsfwTokens": [
+      "purple negligee",
+      "off shoulder",
+      "see-through",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
     "outfitId": "harem_negligee",
-    "promptProse": "Momo sits astride her off-frame partner, negligee at her elbows and both hands on their chest. The floor lamp lights her tail and leather sofa arm.",
+    "promptProse": "Seen from a low first-person angle on a leather living-room sofa at night, Momo sits astride her partner with both hands braced against his chest and her slender tail swaying gracefully in the warm floor-lamp glow.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "lavender negligee",
-      "off shoulder",
-      "bare breasts",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "on lap",
-      "sofa",
-      "tail",
-      "hands on another's chest",
+      "hands on chest",
+      "looking down",
       "heavy blush",
+      "parted lips",
+      "living room",
+      "sofa",
       "floor lamp",
-      "cowboy shot",
-      "low angle",
-      "pov"
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -56,7 +63,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "梦梦 · 沙发跨坐主动起伏与娇媚呢喃",
-    "compositionIntent": "single",
-    "animaCaption": "Her negligee rests at her elbows as both hands brace on her off-frame partner's chest."
+    "compositionIntent": "group",
+    "animaCaption": "Straddling her partner's waist on the leather living-room sofa under the warm floor lamp, she braces both palms on his chest as her sheer lavender silk negligee slips down to her elbows, baring her flushed breasts while her demon tail sways behind her."
   }
 }

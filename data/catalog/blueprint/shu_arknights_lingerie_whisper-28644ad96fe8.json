@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3372,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shu_arknights_lingerie_whisper",
     "characterId": "shu_arknights",
@@ -14,7 +14,7 @@
     "location": "大荒城外的水田木栈道，四周是沉甸甸垂头的金黄稻浪，远山泛着炊烟暮霭",
     "timeOfDay": "秋日丰收的黄昏向晚",
     "lighting": "落日熔金的橙黄夕阳铺满天际，将稻田与神性龙角镀上一层丰收的璀璨金晖",
-    "camera": "wide shot, low angle, 水田回廊远景微仰，金黄稻浪与炊烟同框",
+    "camera": "low angle, wide shot",
     "mood": "大地母亲般的无限包容与农家丰收的温暖眷恋，恬淡而治愈",
     "adult": true,
     "sampleRating": "R15",
@@ -41,21 +41,35 @@
     ],
     "promptTokens": [
       "sitting",
-      "leaning on railing",
       "wooden walkway",
-      "paddy field",
-      "golden rice stalks",
-      "rural landscape",
-      "distant mountains",
+      "holding hat",
+      "conical hat",
+      "gentle smile",
+      "looking at viewer",
+      "rice paddy",
+      "rice",
+      "mountains",
+      "outdoors",
       "sunset",
-      "warm dusk light",
-      "wide shot",
-      "low angle"
+      "golden hour",
+      "warm lighting",
+      "low angle",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Shu sits leisurely on the wooden walkway edge above vast golden paddy fields, holding her woven bamboo hat with one hand. Gentle evening breezes rustle the ripening rice stalks beneath distant mountain twilight, while she smiles with warm elder-sisterly affection.",
-    "animaCaption": "Sitting on the wooden walkway overlooking golden paddy fields, she smiles warmly in the sunset breeze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated leisurely along the wooden walkway overlooking sprawling golden rice paddies outside Dahuang at dusk, Shu wears a warm wheat-yellow linen wrap robe with grain embroidery layered loosely over a jade-green tube top. Resting one hand on her woven bamboo hat while dangling her bare feet above the shallow paddy water, she smiles toward the viewer with warm elder-sisterly grace. Molten golden sunset light washes over the swaying rice stalks and distant misty hills.",
+    "animaCaption": "Seated barefoot on the wooden paddy walkway in her open wheat-yellow linen wrap robe over a jade tube top, Shu rests one hand on her bamboo hat and smiles warmly toward the viewer. Golden sunset light stretches across the ripe rice fields and distant mountains.",
+    "nsfwTokens": [
+      "yellow robe",
+      "linen robe",
+      "open robe",
+      "green tube top",
+      "bare shoulders",
+      "collarbone",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a warm wheat-yellow rustic linen wrap robe embroidered with golden grain tassels draped loosely over a jade-green tube top, barefoot above the paddy water.",
+    "compositionIntent": "single"
   }
 }

@@ -1,43 +1,54 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_medical_bath",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "靠在浴池水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "medium shot, side view",
+    "camera": "from side, medium shot",
     "category": "成人",
     "characterId": "kaltsit_arknights",
     "description": "成年凯尔希穿着湿白内衫靠在浴池的水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线；蓝光映着水汽。",
     "id": "kaltsit_arknights_r18_medical_bath",
     "kreaStyleHint": "",
-    "lighting": "blue clinical light diffused through warm bath steam",
+    "lighting": "侧窗冷蓝光穿过水汽，在水下长凳和瓷砖接缝留下折射条纹",
     "location": "罗德岛医疗部浴间",
     "mood": "疲惫而放松",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "white_bath_undershirt",
-    "promptProse": "Adult Kal'tsit reclines on the submerged bath bench in a wet white undershirt, bracing on the tile while tracing a treatment line along her inner thigh.",
-    "promptTokens": [
-      "1girl",
-      "solo",
+    "negativeTokens": [
+      "nude"
+    ],
+    "nsfwProse": "Her damp white cotton undershirt clings semi-transparently to her skin with no bra beneath, falling to mid-thigh above her bare legs in the clear bathwater.",
+    "nsfwTokens": [
+      "white shirt",
       "wet shirt",
+      "wet clothes",
       "see-through",
+      "no bra",
+      "bare legs",
+      "wet skin"
+    ],
+    "outfitId": "white_bath_undershirt",
+    "promptProse": "In the Rhodes Island medical bath, Kal'tsit reclines along the built-in underwater bench in a wet white cotton undershirt. Set the view slightly above the waterline, looking along the bench through the clear water. One palm bears her weight on the broad tiled ledge, and she uses the tips of her other hand to trace the narrow blue treatment strip on the inside of her thigh above the knee. Blue light through frosted glass ripples over the tile joints at the front of the pool. Steam gathers along the farther wall around a metal handrail, with a small patch of warm light above the water.",
+    "promptTokens": [
       "reclining",
       "knee up",
-      "bathtub",
+      "hand on wall",
+      "hand on own thigh",
+      "bath",
+      "partially submerged",
+      "tiles",
+      "water",
+      "ripples",
       "steam",
       "blue light",
-      "adult",
-      "hand on tiles",
-      "hand on thigh",
-      "submerged bench"
+      "night",
+      "from side",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -53,6 +64,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "凯尔希 · 医疗部浴间",
-    "animaCaption": "She braces on the tile beside the submerged bath bench."
+    "animaCaption": "Reclining along the submerged stone bench in her clinging see-through wet white shirt, Kal'tsit braces one palm on the tiled ledge and traces a narrow blue treatment mark along her raised inner thigh. Cool blue light through the steam ripples over the clear water and ceramic tiles.",
+    "compositionIntent": "single"
   }
 }

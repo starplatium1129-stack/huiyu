@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_04",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1729,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_04",
     "title": "玛露希尔 · 古代黑魔法反噬床单上的禁忌崩坏自持",
@@ -15,7 +15,7 @@
     "action": "仰卧符文石床全裸手指插穴自抚，黑魔法微光流转，尖耳颤抖哭泣绝顶",
     "timeOfDay": "night",
     "lighting": "迷宫营地篝火暖橙炭火与深处古代发光苔藓",
-    "camera": "intimate vertical medium shot",
+    "camera": "high angle, medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -30,18 +30,22 @@
       "dark_magic",
       "glowing_runes"
     ],
-    "promptProse": "Marcille fingers herself on the rune-covered stone altar, her back arched under the dark-magic backlash. Purple light from the runes fades into the surrounding shadowed ruins.",
+    "promptProse": "Lying completely nude on her back across a rune-inscribed stone altar deep within the shadowed dungeon ruins at night, Marcille arches her spine in overwhelmed dark-magic backlash. Trembling with flushed skin, tear-bright eyes, and parted lips, she spreads her thighs and fingers herself helplessly while eerie purple glow from the carved runes flickers alongside dim cavern moss.",
     "promptTokens": [
-      "camping in dungeon",
-      "campfire glow",
-      "sleeping bag",
-      "elven ears",
-      "blush",
-      "disheveled blonde hair",
-      "bioluminescent moss on stone walls",
-      "warm firelight",
-      "pot on fire",
-      "cozy cavern"
+      "lying",
+      "on back",
+      "arched back",
+      "tears",
+      "heavy blush",
+      "open mouth",
+      "runes",
+      "stone",
+      "glowing",
+      "purple light",
+      "ruins",
+      "night",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,14 +53,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "nude",
+      "bare breasts",
+      "nipples",
+      "spread legs",
+      "pussy",
+      "masturbation",
+      "female masturbation",
+      "fingering"
+    ],
+    "nsfwProse": "Completely nude on her back across the rune-carved stone slab, her bare breasts heave and her legs part wide as she fingers herself deeply amidst the dark-magic backlash.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "self_control",
       "special_nsfw"
     ],
-    "animaCaption": "The crackling dungeon campfire casts a comforting golden warmth across the rocky hollow as Marcille snuggles into her bedding."
+    "animaCaption": "Lying completely nude on her back across the rune-carved stone slab in dark-magic backlash, Marcille arches her spine and fingers herself between her parted thighs with streaming tears and heavy blushes. Faint purple rune light and dim dungeon shadows surround her.",
+    "compositionIntent": "single"
   }
 }

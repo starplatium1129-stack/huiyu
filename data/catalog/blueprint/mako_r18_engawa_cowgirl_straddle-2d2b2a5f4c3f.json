@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_engawa_cowgirl_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "独自跨坐缘侧坐垫，一手撑木边，另一手留在身下",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "category": "深层欢愉",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -22,28 +22,34 @@
     "location": "庭院木质走廊夜间私密处",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "ninja_suit",
-    "promptProse": "Mako straddles the veranda cushion with her shinobi wrap loosened, gripping the wooden edge while fingering herself. Garden moonlight and warm golden paper-lantern light beneath the eaves fall across her and the wooden veranda.",
-    "promptTokens": [
-      "pleated wrap skirt",
-      "black bike shorts",
-      "1girl",
-      "solo",
-      "adult",
-      "open black sleeveless ninja top",
+    "nsfwProse": "Her black sleeveless ninja top is unfastened to bare her breasts and nipples, while her pleated wrap skirt and black bike shorts are shifted aside as she fingers herself astride the cushion.",
+    "nsfwTokens": [
+      "ninja",
+      "open clothes",
+      "topless",
       "bare breasts",
+      "nipples",
+      "pleated skirt",
+      "bike shorts",
+      "masturbation",
+      "fingering"
+    ],
+    "outfitId": "ninja_suit",
+    "promptProse": "Straddling a flat floor cushion along the quiet wooden garden veranda at night, Mako has unclasped her sleeveless black ninja top to expose her bare breasts while shifting her wrap skirt and bike shorts aside. Bracing one hand firmly on the timber veranda edge, she reaches between her parted legs with her other hand to finger herself, cheeks darkly flushed beneath the eaves. Cool garden moonlight mixes with the warm golden glow of a hanging paper lantern.",
+    "promptTokens": [
       "straddling",
       "cushion",
-      "fingering",
-      "veranda",
-      "lantern",
-      "hand on wooden edge",
       "heavy blush",
+      "parted lips",
+      "veranda",
+      "wooden floor",
+      "paper lantern",
+      "garden",
       "moonlight",
-      "cowboy shot",
-      "from below"
+      "warm lighting",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -58,6 +64,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "常陆茉子 · 缘侧夜风跨坐骑乘与主动轻晃",
-    "animaCaption": "She grips the veranda's wooden edge from the cushion while her other hand remains beneath her clothing."
+    "animaCaption": "Straddling the veranda cushion with her sleeveless ninja top opened over her bare breasts, Mako grips the wooden floor edge with one hand while fingering herself beneath her pulled-aside skirt and bike shorts. Garden moonlight and warm eaves lantern light illuminate her heavy blush.",
+    "compositionIntent": "single"
   }
 }

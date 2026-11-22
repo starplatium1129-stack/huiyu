@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3254,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "yuigahama_yui_lingerie_whisper",
     "characterId": "yuigahama_yui",
@@ -14,7 +14,7 @@
     "location": "由比滨家明亮的粉白少女卧室，床头摆着心形抱枕与爱犬萨布鲁的照片",
     "timeOfDay": "侍奉部活动结束后的黄昏",
     "lighting": "夕阳的蜜糖橙光穿透窗纱，将整个粉色系房间与少女柔润的肌肤烘托得暖意融融",
-    "camera": "medium close-up, front view, 正面微俯特写，刻画抱枕微陷与发间微风的真情流露",
+    "camera": "front view, medium close-up",
     "mood": "元气团子少女卸下社交迎合后的真心决堤，温柔、执着而令人心碎的纯真爱意",
     "adult": true,
     "sampleRating": "R15",
@@ -41,21 +41,33 @@
       "medium_close_up"
     ],
     "promptTokens": [
-      "medium close-up",
-      "sitting on bed",
-      "hugging heart pillow",
-      "framed dog photo on nightstand",
-      "pastel girl bedroom",
-      "sunset",
-      "dusk",
-      "warm golden hour glow",
+      "sitting",
+      "on bed",
+      "hugging pillow",
+      "heart pillow",
+      "biting lip",
+      "teary eyes",
       "blush",
-      "tender smile"
+      "looking at viewer",
+      "framed photo",
+      "bedroom",
+      "sunset",
+      "warm lighting",
+      "front view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Yui clutches a pink heart cushion to her chest in her pastel-hued bedroom, warm twilight glow illuminating her blushing, genuine smile after a long club afternoon.",
-    "animaCaption": "Clutching a heart-shaped pillow on her bed at sunset, blushing warmly with an affectionate, honest smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside her warm pastel bedroom bathed in golden sunset light with a framed photo of her dog on the nightstand, Yui hugs a plush heart cushion close and looks forward with tearful courage and a genuine, flushed expression.",
+    "animaCaption": "Sitting on her pastel-pink bedroom bed clutching a soft heart-shaped pillow in warm twilight glow beside her dog's framed photo, she bites her lip with bright teary eyes and an earnest blush wearing a peach-pink ruffled cotton camisole and sleep shorts.",
+    "nsfwTokens": [
+      "pink camisole",
+      "cotton",
+      "ruffles",
+      "pink shorts",
+      "bare shoulders",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a soft peach-pink double-cotton camisole edged with dainty lettuce-edge ruffles and matching elastic paperbag sleep shorts.",
+    "compositionIntent": "single"
   }
 }

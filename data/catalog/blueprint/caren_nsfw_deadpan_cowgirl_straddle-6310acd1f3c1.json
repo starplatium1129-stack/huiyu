@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_deadpan_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "caren_nsfw_deadpan_cowgirl_straddle",
     "title": "卡莲 · 小恶魔修女的毒舌主控骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，眼神半阖毒舌轻笑，娇躯泛红起伏",
     "timeOfDay": "深夜",
     "lighting": "床头昏黄氛围灯勾勒出白皙娇躯的汗珠光泽",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "from below, pov, cowboy shot",
     "mood": "小恶魔主控",
     "sceneTags": [
       "bedroom",
@@ -30,21 +30,22 @@
       "deadpan",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer's hips on white sheets, both hands on their chest, and looks down with a restrained smirk. A dim bedside lamp lights the sheets.",
+    "promptProse": "On crisp white bedsheets inside a dim private room, a completely nude Caren Hortensia rides her partner in cowgirl position with both palms pressed firmly on his chest. Looking down through half-lidded eyes with a sharp teasing smirk, her flushed skin and stigmata catch the warm amber bedside lamp in first-person view from below.",
     "promptTokens": [
-      "bedroom",
-      "nude",
-      "stigmata",
+      "1girl",
+      "1boy",
+      "hetero",
+      "cowgirl position",
       "straddling",
-      "on lap",
-      "sweat",
-      "blush",
-      "smirk",
-      "from below",
-      "hands on chest",
+      "hands on another's chest",
       "looking down",
+      "smirk",
+      "half-closed eyes",
       "white sheets",
-      "bedside lamp",
+      "bed",
+      "amber lamp",
+      "from below",
+      "pov",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -60,10 +61,18 @@
       "cowgirl"
     ],
     "nsfwTokens": [
+      "nude",
+      "completely nude",
+      "stigmata",
       "nipples",
-      "pussy"
+      "pussy",
+      "sex",
+      "vaginal",
+      "sweat",
+      "blush"
     ],
-    "nsfwProse": "",
-    "animaCaption": "Both hands rest on the viewer's chest as she looks down from their lap."
+    "nsfwProse": "She has shed her vestments completely nude, riding her partner on white sheets with stigmata visible and pressing both hands against his chest with a cool, mocking smirk.",
+    "animaCaption": "Completely nude on white sheets, she rides astride the viewer with both hands pressed on their chest and looks down through half-closed eyes with a barbed little smirk. A dim amber bedside lamp highlights beads of sweat along her flushed skin.",
+    "compositionIntent": "group"
   }
 }

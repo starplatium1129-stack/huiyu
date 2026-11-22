@@ -5,6 +5,7 @@ use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_opener::OpenerExt;
 
 use crate::state::AppState;
+use crate::window_state::StartupMode;
 
 #[tauri::command]
 pub async fn desktop_bootstrap(window: tauri::WebviewWindow) -> Result<crate::bootstrap::DesktopBootstrap, String> {
@@ -34,6 +35,8 @@ pub struct DesktopState {
     pub always_on_top: bool,
     pub ignore_mouse_events: bool,
     pub visible: bool,
+    pub preparing: bool,
+    pub startup_failed: bool,
     pub chat_visible: bool,
     pub on_battery_power: bool,
     pub live2d_enabled: Option<bool>,
@@ -50,7 +53,6 @@ pub fn set_ignore_mouse_events(app: &AppHandle, ignore: bool) {
         .ignore_mouse_events
         .store(ignore, Ordering::Relaxed);
     if let Some(w) = companion(app) {
-        let _ = w.set_ignore_cursor_events(ignore);
         let _ = w.emit("aics:interaction-mode", ignore);
     }
     state.preferences.lock().unwrap().ignore_mouse_events = ignore;
@@ -60,20 +62,57 @@ pub fn set_ignore_mouse_events(app: &AppHandle, ignore: bool) {
 
 #[tauri::command]
 pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
+    let (preparing, startup_failed) = {
+        let presentation = state.companion_presentation.lock().unwrap();
+        (presentation.preparing(), presentation.startup_failed)
+    };
     DesktopState {
-        always_on_top: companion(&app)
-            .map(|w| w.is_always_on_top().unwrap_or(false))
-            .unwrap_or(false),
+        always_on_top: state.preferences.lock().unwrap().always_on_top,
         ignore_mouse_events: state.ignore_mouse_events.load(Ordering::Relaxed),
         visible: companion(&app)
             .map(|w| w.is_visible().unwrap_or(false))
             .unwrap_or(false),
+        preparing,
+        startup_failed,
         chat_visible: app.get_webview_window("companion-chat")
             .is_some_and(|w| w.is_visible().unwrap_or(false)),
         on_battery_power: crate::watchers::on_battery_power(),
         live2d_enabled: *state.live2d_enabled.lock().unwrap(),
         bounds: crate::main_shared::companion_window_bounds(&app),
     }
+}
+
+#[tauri::command]
+pub fn get_startup_mode(state: State<AppState>) -> StartupMode {
+    state.preferences.lock().unwrap().startup_mode
+}
+
+#[tauri::command]
+pub fn set_startup_mode(state: State<AppState>, mode: StartupMode) -> Result<(), String> {
+    let mut preferences = state.preferences.lock().unwrap();
+    if preferences.startup_mode == mode { return Ok(()); }
+    let mut next = preferences.clone();
+    next.startup_mode = mode;
+    if !crate::window_state::save_companion_preferences(&state.paths.preferences_file, &next) {
+        return Err("保存启动方式失败，请重试".into());
+    }
+    *preferences = next;
+    Ok(())
+}
+
+#[tauri::command]
+pub fn companion_mark_ready(window: tauri::WebviewWindow, ready: crate::companion_window::ReadyKind) {
+    if window.label() == "companion" { crate::companion_window::mark_ready(window.app_handle(), ready); }
+}
+
+#[tauri::command]
+pub fn companion_set_interactive_regions(window: tauri::WebviewWindow, regions: Vec<crate::live2d_renderer::OverlayRect>, lock: bool) -> Result<(), String> {
+    crate::companion_window::set_regions(&window, regions, lock)
+}
+
+#[tauri::command]
+pub fn companion_set_static_mask(window: tauri::WebviewWindow, mask: Option<crate::live2d_renderer::AlphaMaskSnapshot>) -> Result<(), String> {
+    crate::companion_window::set_static_mask(&window, mask)
 }
 
 #[tauri::command]
@@ -89,10 +128,14 @@ pub fn set_ignore_mouse_events_cmd(app: AppHandle, ignore: bool) {
 
 #[tauri::command]
 pub fn toggle_always_on_top(app: AppHandle, state: State<AppState>) -> bool {
-    let Some(w) = companion(&app) else { return false };
-    let next = !w.is_always_on_top().unwrap_or(false);
-    let _ = w.set_always_on_top(next);
-    state.preferences.lock().unwrap().always_on_top = next;
+    let mut preferences = state.preferences.lock().unwrap();
+    let next = !preferences.always_on_top;
+    if let Some(w) = companion(&app) {
+        if w.set_always_on_top(next).is_err() { return preferences.always_on_top; }
+        let _ = w.emit("aics:companion-pin", next);
+    }
+    preferences.always_on_top = next;
+    drop(preferences);
     state.save_preferences();
     crate::chat_dock::follow(&app);
     crate::tray::refresh_tray_menu(&app);

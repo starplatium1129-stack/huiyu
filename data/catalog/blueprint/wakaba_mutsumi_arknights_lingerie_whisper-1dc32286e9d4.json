@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3140,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_lingerie_whisper",
     "characterId": "wakaba_mutsumi_arknights",
@@ -14,7 +14,7 @@
     "location": "高级公寓阳台温室角落，花盆里整齐攀爬着绿意葱茏的黄瓜藤架",
     "timeOfDay": "深夜独处无言时分",
     "lighting": "城市远景的冷白高楼光线与阳台暗处形成静止的剪影，绿叶反光透出淡淡生机",
-    "camera": "medium shot, eye level, 平视中景，折叠椅与阳台黄瓜藤架同框",
+    "camera": "eye level, medium shot",
     "mood": "沉默寡言吉他手的内向孤寂与笨拙真挚的心意，带着独特的植物系忧郁",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,32 @@
     ],
     "promptTokens": [
       "sitting",
-      "small folding chair",
-      "apartment balcony",
-      "cucumber vines in planter",
-      "holding fresh cucumber",
-      "night sky",
-      "city building lights",
-      "quiet impassive gaze",
-      "medium shot",
-      "eye level"
+      "folding chair",
+      "knees up",
+      "holding cucumber",
+      "quiet expression",
+      "looking at viewer",
+      "balcony",
+      "potted plants",
+      "trellis vines",
+      "city lights",
+      "night",
+      "cool ambient light",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mutsumi curls quietly on a compact folding chair in a secluded apartment balcony corner, holding a fresh green cucumber in both hands. Neat cucumber vines climb across trellised pots, catching distant cool high-rise city reflections in the night air.",
-    "animaCaption": "Curled in a folding chair holding a fresh cucumber on the balcony, she gazes into the city night.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Wakaba Mutsumi curls quietly barefoot on a compact folding chair in a secluded apartment balcony corner at night, wearing a minimalist sage-green raw linen short slip dress with ultra-thin straps and a square neckline. Holding a fresh green cucumber in both hands beside trellised planter vines, she meets the viewer with a quiet, understated gaze under cool city night light.",
+    "animaCaption": "Curled quietly barefoot on a small folding chair among potted balcony cucumber vines in a plain sage-green raw linen slip dress, she holds a fresh cucumber in both hands and glances silently toward the viewer. Distant cool city lights outline the dark foliage behind her.",
+    "nsfwTokens": [
+      "sage green slip dress",
+      "linen nightgown",
+      "spaghetti straps",
+      "square neckline",
+      "short dress",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a minimalist pale sage-green raw linen short slip dress with ultra-thin straps and a clean square neckline."
   }
 }

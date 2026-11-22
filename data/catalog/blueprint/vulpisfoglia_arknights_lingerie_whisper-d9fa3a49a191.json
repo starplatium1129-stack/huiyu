@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3119,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_lingerie_whisper",
     "characterId": "vulpisfoglia_arknights",
@@ -14,7 +14,7 @@
     "location": "叙拉古老城区阴暗废弃庭院，雨后地砖上映出昏暗的路灯倒影",
     "timeOfDay": "黑帮清洗前夕的雨夜",
     "lighting": "庭院角落昏黄老路灯的孤光，在冰冷刀刃与湿润石板上反射出凛冽的白光",
-    "camera": "low angle, medium shot, 低机位中景，破败砖墙与旋转短刀同框",
+    "camera": "low angle, medium shot",
     "mood": "叙拉古荒野孤狼的冷酷警觉与刀锋般的野性美，危险又令人沉迷",
     "adult": true,
     "sampleRating": "R15",
@@ -43,10 +43,14 @@
     "promptTokens": [
       "standing",
       "leaning against wall",
+      "crossed legs",
       "holding dagger",
-      "tactical dagger",
+      "twirling knife",
+      "serious",
+      "looking at viewer",
+      "brick wall",
       "courtyard",
-      "weathered brick wall",
+      "wet pavement",
       "puddle reflection",
       "street lamp",
       "night",
@@ -54,9 +58,17 @@
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vulpisfoglia leans against a weathered brick wall in an abandoned Siracusan courtyard, twirling a tactical dagger with focused composure. Rain puddles on the dark pavement reflect a lonely amber streetlamp, illuminating her alert expression amidst the rainy night shadows.",
-    "animaCaption": "Leaning against a brick courtyard wall with dagger in hand, she watches alertly beside rain puddles.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Vulpisfoglia leans against a weathered brick wall in a quiet rain-slicked Siracusan courtyard at night, wearing an olive-grey athletic mesh bralette with crossed leather harness straps and sporty boyleg briefs. Crossing her legs while deftly spinning a tactical dagger in one hand, she studies the viewer with cool yellow eyes under a lonely amber streetlamp.",
+    "animaCaption": "Leaning casually against a damp brick courtyard wall with ankles crossed in an olive-grey tactical mesh bralette, leather harness straps, and boyshorts, she spins a short dagger in one hand and watches the viewer with cool alertness. A lone amber streetlamp reflects in dark rain puddles at her feet.",
+    "nsfwTokens": [
+      "olive grey lingerie",
+      "sports bra",
+      "mesh bralette",
+      "leather harness",
+      "boyshorts",
+      "bare midriff",
+      "toned"
+    ],
+    "nsfwProse": "She wears a sleek olive-grey athletic mesh bralette fitted with crossed leather harness straps and matching sporty boyleg briefs."
   }
 }

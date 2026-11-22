@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_home_daily",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 507,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "kisara_home_daily",
     "title": "木更 · 居家日常",
@@ -15,7 +15,7 @@
     "action": "穿着居家白衬衫在沙发上",
     "timeOfDay": "白天",
     "lighting": "明亮室内光",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "傲娇温柔",
     "sceneTags": [
       "apartment",
@@ -25,22 +25,29 @@
       "daily",
       "bright"
     ],
-    "promptProse": "Seated on the apartment sofa, she studies the monthly bills held open in both hands.",
+    "promptProse": "Curled neatly on the cozy sofa of a lived-in bachelor apartment on a bright morning, Kisara wears an oversized white button-up shirt with relaxed sleeves over burgundy lounge shorts. Holding open a stack of monthly household utility bills in both hands, she furrows her brow slightly in earnest focus before noticing the doorway. Clean morning daylight pours across the apartment couch, coffee table, and white cotton folds.",
     "promptTokens": [
-      "bills",
-      "sofa",
-      "apartment",
-      "morning",
-      "medium shot",
       "sitting",
-      "both hands",
-      "bright lighting"
+      "couch",
+      "holding paper",
+      "paper",
+      "looking down",
+      "focused",
+      "living room",
+      "apartment",
+      "table",
+      "window light",
+      "morning",
+      "indoors",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [
       "readable bills"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_home_white_shirt",
-    "animaCaption": "Both hands hold the monthly bills open on the apartment sofa."
+    "animaCaption": "Seated on the apartment sofa in her oversized white shirt and burgundy shorts, Kisara holds open the monthly household bills in both hands with focused care. Bright morning window light fills the tidy living room around her.",
+    "compositionIntent": "single"
   }
 }

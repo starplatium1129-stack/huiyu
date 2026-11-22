@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_mangekyou_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3486,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "renge_mangekyou_swimsuit_allure",
     "characterId": "renge_mangekyou",
@@ -14,7 +14,7 @@
     "location": "连接现世与异界、黄昏永不落幕的神秘古老海滩",
     "timeOfDay": "逢魔时刻",
     "lighting": "天边泛着不可思议的紫粉色落日余晖，海水里倒映着如同万华镜般流转的奇幻几何光斑，清冷神秘",
-    "camera": "medium shot, eye level, hauntingly beautiful visual novel framing, surreal color grading",
+    "camera": "eye level, medium shot",
     "mood": "神秘莫测、宿命纠缠与摄人心魄的幽暗美感",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,33 @@
       "mysterious"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "renge (mangekyou)",
-      "black hair",
-      "hime cut",
-      "red eyes",
-      "black and purple gothic swimdress",
-      "sitting on obsidian rock at tide edge",
-      "finger hovering over glowing water",
-      "twilight dusk sky",
-      "surreal purple clouds",
-      "kaleidoscope water reflections",
-      "pale porcelain skin",
-      "enigmatic faint smile",
-      "depth of field"
+      "sitting",
+      "obsidian rock",
+      "hand over water",
+      "faint smile",
+      "looking at viewer",
+      "tide pool",
+      "kaleidoscope reflections",
+      "beach",
+      "purple twilight",
+      "surreal sky",
+      "dusk",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Renge from Bishoujo Mangekyou perches quietly on an obsidian rock at twilight in her intricate black-and-purple gothic swimdress, her ruby eyes gazing mysteriously as kaleidoscopic patterns ripple in the tide.",
-    "animaCaption": "Purple dusk twilight illuminates surreal, shifting light patterns across the still waters around the enigmatic maiden.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated calmly upon a smooth black obsidian rock at the edge of an otherworldly twilight shore, Renge wears an ornate jet-black and midnight-violet gothic corset swimdress with sheer spiderweb lace ruffles and a velvet choker. Hovering one pale fingertip above shifting kaleidoscopic water reflections, she offers a haunting, faint smile under purple dusk skies.",
+    "animaCaption": "Seated gracefully on a smooth obsidian tide rock in her black-and-violet gothic corset swimdress and velvet choker, she hovers one pale fingertip above kaleidoscopic water ripples with an enigmatic faint smile. Surreal violet-and-rose twilight paints the quiet ancient beach.",
+    "nsfwTokens": [
+      "black and purple swimdress",
+      "gothic swimsuit",
+      "corset lacing",
+      "spiderweb lace",
+      "frilled skirt",
+      "velvet choker",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears an ornate jet-black and midnight-violet gothic corset swimdress with antique spiderweb lace hem ruffles and a velvet spider-lily choker.",
+    "compositionIntent": "single"
   }
 }

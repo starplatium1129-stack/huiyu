@@ -6,6 +6,9 @@
     "companion"
   ],
   "permissions": [
+    "allow-companion-mark-ready",
+    "allow-companion-set-interactive-regions",
+    "allow-companion-set-static-mask",
     "allow-aics-live2d-set-character",
     "allow-aics-live2d-set-frame",
     "allow-aics-live2d-play-motion",

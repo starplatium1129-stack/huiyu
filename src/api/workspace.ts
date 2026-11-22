@@ -19,6 +19,9 @@ function resource(command: Record<string, unknown>): [string, string] {
   const migration = `/migrations/${encode(command.migrationId)}`
   switch (command.kind) {
     case 'status': return ['GET', '/status']
+    case 'studio.list': return ['GET', '/studio/projects']
+    case 'studio.get': return ['GET', '/studio/projects/' + id]
+    case 'studio.write': return ['POST', '/studio/changes']
     case 'listArtworks': return ['GET', '/artworks?' + new URLSearchParams(Object.entries(command).filter(([key, value]) => key !== 'kind' && value !== undefined).map(([key, value]) => [key, String(value)]))]
     case 'searchArtworks': return ['GET', '/artwork-search?' + new URLSearchParams({ terms: JSON.stringify(command.terms), ...(command.cursor === undefined ? {} : { cursor: String(command.cursor) }) })]
     case 'readArtworkRecentIndex': return ['GET', '/artwork-recent-index' + (command.candidateLimit === undefined ? '' : `?candidateLimit=${encode(command.candidateLimit)}`)]

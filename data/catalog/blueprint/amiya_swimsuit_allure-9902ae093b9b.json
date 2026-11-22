@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3401,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "amiya_swimsuit_allure",
     "characterId": "amiya",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "green bikini",
+      "halterneck",
+      "criss-cross halter",
+      "open shirt",
+      "tied shirt",
+      "bare midriff",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a mint-green and terracotta crossover halter bikini with bronze rings under a loose natural-linen shirt tied at the waist.",
     "title": "阿米娅 · 细浪退沙时的海角欢声",
     "action": "两手轻抓系在腰间的亚麻衬衫衣摆，小步踩在退潮的白色浪花里，仰起头笑容澄澈灿烂",
     "location": "平缓辽阔的热带白沙滩与清浅退浪区",
     "timeOfDay": "上午",
     "lighting": "明澈纯净的早晨阳光，将海水照得透亮碧绿，细碎水珠在脚踝边跳跃生辉",
-    "camera": "full shot, low angle, joyful dynamic movement, sunlit horizon",
+    "camera": "low angle, full body",
     "mood": "纯真开朗、如释重负的轻松与对未来的希冀",
     "description": "退潮时的白浪一层层轻拂过脚踝。阿米娅把宽松的亚麻衬衫在腰间松松系了个结，踩着清浅的浪沫小跑了几步，长长的兔耳随跳跃的步伐欢快晃动。她回过头冲你用力挥手，眼眸里映着整片蔚蓝大海的光彩——「博士，你看！海水一点都不冷，浪花里还有小小的透明贝壳！今天的甲板事务全部延后，我们要把这片海滩从头到尾走一遍！」",
     "sceneTags": [
@@ -40,24 +48,22 @@
       "ocean_waves"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "amiya (arknights)",
-      "brown hair",
-      "rabbit ears",
-      "rings",
-      "mint green bikini",
-      "tied linen shirt",
-      "splashing water",
-      "running on shoreline",
-      "white sand beach",
-      "bright morning sunlight",
-      "happy smile",
+      "running",
+      "waving",
+      "looking back",
+      "happy",
       "open mouth",
-      "cinematic lighting",
-      "depth of field"
+      "splashing",
+      "beach",
+      "white sand",
+      "ocean",
+      "waves",
+      "morning",
+      "sunlight",
+      "low angle",
+      "full body"
     ],
-    "promptProse": "Amiya runs cheerfully through the shallow white surf in her mint-green halter bikini and tied beach shirt, smiling radiantly back at the viewer with her rabbit ears catching the warm sea wind.",
-    "animaCaption": "Clear morning waves froth into white lace around her feet as she laughs freely beneath the expansive blue sky."
+    "promptProse": "Amiya runs barefoot through shallow white surf along a broad tropical beach, her mint-green crossover halter bikini and waist-tied linen cover-up catching the sea breeze. Turning back with a bright open smile, she waves toward the viewer as crystal morning sunlight sparkles off the droplets kicking up around her ankles.",
+    "animaCaption": "Splashing barefoot through shallow white surf along the shoreline, she turns back with a bright smile while clutching the tied hem of her linen beach shirt. Clear morning sunlight glints across the turquoise water and wet sand."
   }
 }

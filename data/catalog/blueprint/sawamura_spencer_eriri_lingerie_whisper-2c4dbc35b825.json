@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3409,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_lingerie_whisper",
     "characterId": "sawamura_spencer_eriri",
@@ -14,7 +14,7 @@
     "location": "洋房二楼画室，桌上数位屏还亮着未画完的同人本线稿，散落着彩色马克笔",
     "timeOfDay": "截稿日凌晨三点",
     "lighting": "数位屏散发的高色温白光正面照亮面容，身后暖黄画室落地灯烘托出凌乱温暖的房间",
-    "camera": "close-up, eye level, front view, 正面平视特写，用数位板遮挡胸口的小动作与炸毛虎牙神态极为传神",
+    "camera": "front view, eye level, close-up",
     "mood": "经典傲娇败犬青梅竹马的炸毛与羞窘，生动活泼趣味十足",
     "adult": true,
     "sampleRating": "R15",
@@ -38,27 +38,35 @@
       "front_view"
     ],
     "promptTokens": [
-      "close-up",
-      "eye level",
-      "front view",
-      "indoors",
-      "bedroom",
-      "morning",
-      "sunlight",
-      "warm lighting",
       "sitting",
-      "blush",
-      "forest green silk bralette set",
-      "delicate gold lace trim",
-      "black underwire cups",
-      "tiny velvet ribbon bows",
-      "lamp",
-      "backlighting"
+      "straddling chair",
+      "holding",
+      "drawing tablet",
+      "fang",
+      "angry",
+      "heavy blush",
+      "looking at viewer",
+      "desk",
+      "markers",
+      "studio",
+      "monitor light",
+      "night",
+      "front view",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set. Cute little fang bared in indignation, blushing furiously, blonde twintails flaring up amidst colorful art markers and messy desk in background, bright screen backlight.",
-    "animaCaption": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Caught at 3 AM inside her second-floor studio cluttered with colored markers and unfinished manuscript pages, Eriri sits backward on her swivel chair in a forest-green silk and black lace bralette trimmed in gold. Clutching her pen display tablet defensively across her chest, she flashes an indignant fang and glares furiously at the intruder with ears and cheeks flushed crimson. Cool white monitor glow illuminates her face while a warm standing floor lamp softens the messy studio behind her.",
+    "animaCaption": "Sitting backward on her studio chair at night in a forest-green silk and black lace bralette, Eriri hugs her drawing tablet across her chest and glares indignantly with a tiny fang and bright crimson blush. Cool monitor light meets warm floor lamplight across her cluttered desk.",
+    "nsfwTokens": [
+      "lingerie",
+      "green bra",
+      "black lace",
+      "gold trim",
+      "ribbon",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a forest-green silk and black lace underwire bralette edged with fine gold trim and tiny velvet ribbon bows.",
+    "compositionIntent": "single"
   }
 }

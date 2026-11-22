@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_dominant_tatami_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "akeno_nsfw_dominant_tatami_straddle",
     "title": "姬岛朱乃 · 榻榻米上的雷光恶魔骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐在腰间主导骑乘，双手按住肩膀，长马尾与黑翼在背后晃动，咬唇喘息娇笑",
     "timeOfDay": "深夜",
     "lighting": "烛台摇曳的暖黄光与堕天使羽翼黑影",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "from below, pov, cowboy shot",
     "mood": "恶魔主导",
     "sceneTags": [
       "tatami",
@@ -29,22 +29,21 @@
       "dominant_smile",
       "heavy_blush"
     ],
-    "promptProse": "She straddles the viewer on the tatami with both hands on their shoulders, her ponytail moving and wings spread behind her. Warm candlelight casts the wings' shadows across the mat.",
+    "promptProse": "Seen from a low perspective on a closed tatami room floor, Akeno sits astride her partner with both palms braced on his shoulders. Her black wings unfurl behind her, casting broad shadows across the woven mats in the flickering candlelight.",
     "promptTokens": [
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
+      "hands on shoulders",
       "black wings",
-      "sweat",
-      "blush",
+      "spread wings",
       "looking down",
       "tatami",
       "candlelight",
+      "night",
       "from below",
-      "hands on shoulders",
-      "spread wings",
-      "heavy blush",
-      "dominant smile",
-      "wing shadow",
       "cowboy shot"
     ],
     "negativeTokens": [
@@ -62,11 +61,17 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
+    "nsfwProse": "Unclothed and slick with a light sheen of sweat, she lowers her hips in a dominant cowgirl position, her bare chest swaying above her partner as she smiles down with a flushed expression.",
     "nsfwTokens": [
+      "nude",
+      "sex",
+      "cowgirl position",
       "nipples",
-      "pussy"
+      "sweat",
+      "heavy blush",
+      "smirk"
     ],
-    "animaCaption": "Her hands rest on the viewer's shoulders; her wings cast shadows across the tatami."
+    "animaCaption": "Completely nude with her fallen-angel wings spread behind her, she straddles her partner on the tatami and presses both hands onto his shoulders, looking down with a flushed teasing smile in the candlelight.",
+    "compositionIntent": "group"
   }
 }

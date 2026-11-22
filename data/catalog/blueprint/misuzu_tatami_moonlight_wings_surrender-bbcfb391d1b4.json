@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_tatami_moonlight_wings_surrender",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2356,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "misuzu_tatami_moonlight_wings_surrender",
     "characterId": "kamio_misuzu",
@@ -17,26 +17,42 @@
     "action": "观铃顺从地任由细带睡裙滑落至腰际，纤弱的脊背弓起优雅的弧度",
     "timeOfDay": "night",
     "lighting": "ethereal silver moonlight illuminating pure golden hair and glistening tears of pleasure",
-    "camera": "cowboy_shot",
+    "camera": "high angle, cowboy shot",
     "mood": "温存与神圣",
-    "promptProse": "Illuminated by celestial silver moonlight on the tatami, Misuzu arches her back with fallen nightgown, crying tears of sheer ecstatic love.",
+    "promptProse": "Lying on her back across the tatami floor beside an open screen overlooking the moonlit sea, Misuzu lets her thin-strapped white cotton-gauze nightdress slip down to her waist to bare her chest. Arching her slender back with parted lips and glistening tears, she glows in cool silver moonlight.",
     "promptTokens": [
+      "lying",
+      "on back",
+      "arched back",
+      "heavy blush",
+      "teary eyes",
+      "parted lips",
       "tatami",
-      "moonlight",
-      "lying_on_back",
-      "bare_breasts",
-      "bare_shoulders",
-      "arched_back",
-      "crying_pleasure",
-      "heavy_blush",
-      "cowboy_shot"
+      "open sliding door",
+      "ocean view",
+      "silver moonlight",
+      "night",
+      "high angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Misuzu bathed in silver moonlight on tatami, surrendered to radiant love.",
+    "animaCaption": "Lying back across the quiet tatami floor with her delicate white gauze nightdress slipped down to her waist, she arches her slim back with a heavy blush and glistening tears. Ethereal silver moonlight pours through the open sliding screen from the ocean horizon.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "white gauze nightgown",
+      "clothes down",
+      "strap slip",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "Her thin-strapped double-gauze white cotton nightdress has slipped down to her waist, baring her breasts in the silver moonlight as she arches her back on the tatami."
   }
 }

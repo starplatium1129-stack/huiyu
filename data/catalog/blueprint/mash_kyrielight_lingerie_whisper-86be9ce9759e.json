@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3520,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "mash_kyrielight_lingerie_whisper",
     "characterId": "mash_kyrielight",
@@ -14,7 +14,7 @@
     "location": "迦勒底个人生活间，天花板模拟出绚烂而深邃的星云宇宙投影",
     "timeOfDay": "深夜灵子模拟演练后",
     "lighting": "星云投影散发的深蓝与紫粉色微光流转在床单上，提供如梦似幻的轮廓冷光",
-    "camera": "medium shot, eye level, 平视中景，天花板星云光海投射在少女清澈坚毅的面容上",
+    "camera": "eye level, medium shot",
     "mood": "纯洁忠诚的学妹情怀，科幻孤独中的绝对信任与温情羁绊",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,38 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting on bed",
-      "hugging knees",
-      "cosmic galaxy projection on ceiling",
-      "nebula glow",
-      "Chaldea personal quarters",
-      "modest posture",
-      "gentle dedicated smile",
-      "ambient blue light"
+      "kneeling",
+      "on bed",
+      "hugging pillow",
+      "pillow",
+      "blush",
+      "gentle smile",
+      "looking at viewer",
+      "bedroom",
+      "starry sky",
+      "nebula",
+      "blue light",
+      "night",
+      "eye level",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Mash sits on her bed in her quiet Chaldea quarters, hugging her knees under cosmic starlight simulated on the ceiling with a devoted, warm smile after mission training.",
-    "animaCaption": "Sitting on her bed hugging her knees beneath a ceiling of simulated cosmic starlight, smiling with quiet warmth.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Kneeling quietly at the edge of her bed inside her Chaldea quarters after late-night simulation training, Mash wears a lilac sheer lace teddy bodysuit adorned with a tiny silver star pendant. Hugging a soft white cushion modestly near her chest with a warm, devoted blush, she looks straight toward the viewer beneath the simulated deep-blue and violet cosmic nebula glowing across the ceiling.",
+    "animaCaption": "Kneeling at the edge of her Chaldea bunk in her lilac sheer lace teddy bodysuit with a white cushion hugged gently against her chest, Mash smiles warmly with flushed cheeks. Simulated deep-blue cosmic starlight from the ceiling bathes the quiet room.",
+    "nsfwTokens": [
+      "purple lingerie",
+      "lace",
+      "bodysuit",
+      "see-through",
+      "pendant",
+      "bare shoulders",
+      "cleavage",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a fitted lilac sheer lace teddy bodysuit accented with a small silver star pendant at the chest and criss-cross back straps, baring her shoulders and legs.",
+    "compositionIntent": "single"
   }
 }

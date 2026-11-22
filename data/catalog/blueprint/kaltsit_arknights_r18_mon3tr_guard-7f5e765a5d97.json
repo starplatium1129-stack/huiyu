@@ -1,44 +1,49 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_mon3tr_guard",
-  "revision": 13,
+  "revision": 15,
   "sortOrder": 535,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "侧卧床沿，指尖轻点床单",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "medium shot, from above",
+    "camera": "from above, from side, medium shot",
     "category": "成人",
     "characterId": "kaltsit_arknights",
     "description": "私密卧室宽大的床榻上，赤裸侧卧在床沿的凯尔希指尖轻点着被单，身侧微缩休眠的 Mon3tr 化作温和的荧光护卫在床前。她眼中泛起一丝柔情——「今夜这间屋子被严密隔离，不会有任何公务与警报打扰……把你的全部思绪，都交给我吧。」",
     "id": "kaltsit_arknights_r18_mon3tr_guard",
     "kreaStyleHint": "",
-    "lighting": "moonlight through the window",
+    "lighting": "窗侧月光照亮白床单，床脚护卫的绿色微光反射到地板与木床边",
     "location": "罗德岛·凯尔希办公室休息间",
     "mood": "静谧亲密",
     "negativeTokens": [],
-    "nsfwProse": "",
+    "nsfwProse": "Completely nude on her side at the edge of the bed, her bare breasts, waist, and hip rest against the pale white sheet in cool moonlight.",
     "nsfwTokens": [
+      "nude",
+      "bare breasts",
       "nipples",
       "pussy"
     ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Kal'tsit lies on her side at the bed edge, tapping the sheet with her fingertips. A small dormant Mon3tr rests beside the bed, its dim glow mixing with window moonlight.",
+    "promptProse": "In the private room behind the Rhodes Island office, Kal'tsit lies unclothed on her side at the edge of the bed and taps the pale sheet with her fingertips. Just below the bed frame the miniature Mon3tr sleeps near her hand, curled in on several small hooked limbs under its angular black crystalline shell. Its green light glances off the floor and the lower wood of the bed. Moonlight from the window makes the folds of the sheet and the drawn curtain cool blue. Use a slight downward angle from the side with the mattress edge as a clear divider between Kal'tsit and the little guard on the floor.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "nude",
+      "lying",
       "on side",
       "bed",
-      "Mon3tr",
+      "bed sheet",
+      "hand on bed",
+      "creature",
+      "monster",
+      "glowing",
+      "floor",
+      "window",
       "moonlight",
-      "lying on side",
-      "tapping sheet",
-      "dim glow",
-      "window"
+      "dark room",
+      "from above",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -52,8 +57,9 @@
     "timeOfDay": "深夜",
     "title": "凯尔希 · 守卫身侧",
     "characterTokens": [
-      "Mon3tr"
+      "mon3tr (summon) (arknights)"
     ],
-    "animaCaption": "A small dormant Mon3tr rests beside the bed while she taps the sheet."
+    "animaCaption": "Lying completely nude on her side at the mattress edge, Kal'tsit taps the pale white sheet with her fingertips in cool window moonlight. On the floor just below her hand, the miniature dormant Mon3tr curls its hooked limbs beneath its dark crystalline shell with a faint green glow.",
+    "compositionIntent": "single"
   }
 }

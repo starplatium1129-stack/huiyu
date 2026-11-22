@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_hiratsuka_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shizuka_hiratsuka_lingerie_whisper",
     "characterId": "shizuka_hiratsuka",
@@ -14,7 +14,7 @@
     "location": "单身公寓客厅矮茶几前，茶几上散落着汽车杂志与几份拉面店打卡攻略",
     "timeOfDay": "周五深夜单身教师的微醺时刻",
     "lighting": "电视机屏幕变换的冷蓝反光与客厅落地灯的暖黄光线交融，打在成熟丰满的曲线上",
-    "camera": "medium shot, side view, 侧身微俯中景，啤酒罐与香烟盒点缀成熟女性的疲倦与温存",
+    "camera": "side view, medium shot",
     "mood": "成熟热血女教师私下的寂寞与反差魅力，烟火气十足又极度性感",
     "adult": true,
     "sampleRating": "R15",
@@ -42,21 +42,36 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "side view",
-      "sitting on living room floor",
-      "leaning on low coffee table",
-      "canned beer",
-      "car magazines",
-      "apartment",
-      "unwinding",
+      "sitting",
+      "cross-legged",
+      "holding can",
+      "beer can",
+      "cigarette",
       "wry smile",
-      "dim warm lighting"
+      "looking at viewer",
+      "low table",
+      "magazine",
+      "living room",
+      "floor lamp",
+      "night",
+      "warm lighting",
+      "side view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Shizuka leans against the low coffee table in her quiet apartment on a Friday night, unwinding with a cold canned beer and ramen shop guides after a grueling week of teaching.",
-    "animaCaption": "Unwinding on her apartment living room floor beside a low coffee table with a cold beer and an easy, tired smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sitting cross-legged on her living room rug beside a low coffee table strewn with car magazines and ramen shop guides on a Friday night, Shizuka wears a plunging wine-red silk slip gown layered beneath a sheer matching robe. Holding a half-finished can of lager in one hand and a slim cigarette in the other, she glances sideways toward the viewer with a slightly tipsy, wry smile. Soft blue television flicker blends with the warm amber glow of a floor lamp across the sleek wine silk.",
+    "animaCaption": "Sitting cross-legged by her apartment coffee table in a deep-V wine-red silk slip and open sheer robe, Shizuka holds a canned beer and slim cigarette while glancing sideways with a tipsy, wry smile. Warm floor lamplight mixes with faint blue screen glow.",
+    "nsfwTokens": [
+      "red nightgown",
+      "silk slip dress",
+      "sheer robe",
+      "open robe",
+      "deep v-neck",
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a wine-red heavyweight silk slip gown with a deep plunging V-neckline under a matching sheer belted silk robe hanging loose off her shoulders.",
+    "compositionIntent": "single"
   }
 }

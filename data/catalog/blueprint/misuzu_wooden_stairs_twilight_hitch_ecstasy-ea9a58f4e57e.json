@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_wooden_stairs_twilight_hitch_ecstasy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2357,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "misuzu_wooden_stairs_twilight_hitch_ecstasy",
     "characterId": "kamio_misuzu",
@@ -17,26 +17,41 @@
     "action": "观铃一手扶着木制扶手，另一只手按住自己被吻红的嘴唇",
     "timeOfDay": "sunset",
     "lighting": "intense copper-red sunset beams pouring through tall arched windows",
-    "camera": "medium_shot",
+    "camera": "eye level, medium shot",
     "mood": "柔媚与幽微",
-    "promptProse": "Supported against the wooden staircase banister at sunset, Misuzu pants with hitched skirt as twilight gold bathes her trembling hips.",
+    "promptProse": "On a quiet wooden schoolhouse stair landing flooded with copper-red sunset light, Misuzu steadies herself against the banister with one hand and presses the other to her parted lips. Wearing her ivory sailor blouse and dark tie with her high-waisted orange pleated skirt hitched above her bare thighs, she blushes deeply in the golden dusk.",
     "promptTokens": [
-      "stairs",
-      "railing",
+      "standing",
+      "hand on railing",
+      "hand on mouth",
+      "heavy blush",
+      "parted lips",
+      "wooden stairs",
+      "banister",
+      "arched window",
       "sunset",
-      "golden_hour",
-      "lifted_skirt",
-      "bare_thighs",
-      "heavy_blush",
-      "parted_lips",
-      "medium_shot"
+      "golden hour",
+      "warm orange light",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Misuzu supported on the wooden school staircase at dusk, overwhelmed by pleasure.",
+    "animaCaption": "Steadying herself against the wooden staircase banister with one hand while pressing trembling fingers to her flushed lips, she stands in her ivory sailor blouse with her golden-orange skirt hitched up her bare thighs. Fiery copper sunset beams stream across the empty landing.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "school uniform",
+      "white sailor blouse",
+      "black necktie",
+      "orange skirt",
+      "skirt lift",
+      "bare thighs",
+      "white socks"
+    ],
+    "nsfwProse": "She wears her ivory short-sleeved sailor blouse with dark tie and high-waisted golden-orange pleated skirt hitched high up her bare thighs."
   }
 }

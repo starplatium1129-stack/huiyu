@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3165,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.310Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "virtuosa_arknights_swimsuit_allure",
     "characterId": "virtuosa_arknights",
@@ -14,7 +14,7 @@
     "location": "海浪激荡的黑色玄武岩海蚀洞穴口",
     "timeOfDay": "黄昏",
     "lighting": "阴郁暮色穿过洞口投射下的戏剧化冷光",
-    "camera": "艺术感强对比中景，黑色玄武岩几何柱状节理与海浪构成强烈张力",
+    "camera": "three quarter view, medium shot",
     "mood": "哲学深邃、诱导放纵、高贵不可捉摸",
     "adult": true,
     "sampleRating": "R15",
@@ -37,18 +37,32 @@
       "temptress"
     ],
     "promptTokens": [
-      "halo",
-      "black velvet monokini",
-      "asymmetric sleeve",
-      "basalt sea cave",
+      "standing",
+      "leaning against wall",
+      "hand on rock",
+      "closed eyes",
+      "enigmatic smile",
+      "sea cave",
+      "basalt columns",
+      "wet rocks",
       "crashing waves",
       "twilight",
-      "enigmatic smile"
+      "cool lighting",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Virtuosa poised provocatively against glistening columnar basalt at the threshold of a cavernous sea grotto. She is attired in an avant-garde abyss-black velvet monokini with an asymmetric sheer sleeve and braided gold cords reminiscent of cello strings. Listening rapturously to the booming acoustic resonance of tidal breakers, she smiles with deep philosophical seduction.",
-    "animaCaption": "Virtuosa poised provocatively against glistening columnar basalt at the threshold of a cavernous sea grotto. She is attired in an avant-garde abyss-black velvet monokini with an asymmetric sheer sleeve and braided gold cords reminiscent of cello strings.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Virtuosa leans barefoot against wet geometric basalt columns at the entrance of a dark sea cave at twilight, wearing an obsidian-black velvet monokini with a single sheer mesh sleeve and braided gold waist cords. Resting one palm on the glistening rock with eyes closed in an enigmatic, knowing smile, she listens to crashing waves framed by cold dusk light.",
+    "animaCaption": "Leaning barefoot against wet black basalt columns at the mouth of a sea grotto in an asymmetric black velvet monokini with braided gold waist cords, she trails one hand along the damp stone and smiles with eyes closed to the roar of the surf. Cold twilight from the cave opening carves high-contrast highlights across her figure.",
+    "nsfwTokens": [
+      "black monokini",
+      "one-piece swimsuit",
+      "velvet",
+      "asymmetric sleeves",
+      "sheer sleeve",
+      "gold cords",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears an obsidian-black velvet halter monokini with one asymmetric sheer mesh sleeve and braided golden cords wrapped at the waist."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3360,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiranui_mai_lingerie_whisper",
     "characterId": "shiranui_mai",
@@ -14,7 +14,7 @@
     "location": "不知火流古风和室道场内庭，庭院石灯笼在樱花树下散发暖红火光",
     "timeOfDay": "春夜忍术修习后的月下微凉",
     "lighting": "庭院石灯笼的暖红火苗投射出流动的光影，与银亮月光交织，将肌肤衬得如凝脂般诱人",
-    "camera": "medium shot, low angle, 仰视四分之三角度中景，折扇遮面的古典美与傲人胸线形成绝顶的视觉冲击",
+    "camera": "three quarter view, low angle, medium shot",
     "mood": "格斗女王的极致艳丽与致命诱惑，传统日式忍道美人的热烈狂野",
     "adult": true,
     "sampleRating": "R15",
@@ -38,26 +38,37 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "tatami",
-      "japanese room",
-      "night",
-      "moonlight",
-      "candlelight",
-      "warm lighting",
       "reclining",
       "folding fan",
+      "covered mouth",
+      "seductive smile",
+      "looking at viewer",
+      "japanese room",
+      "tatami",
       "cherry blossoms",
-      "floating",
-      "lantern",
-      "glowing",
-      "high-slit gossamer side panels"
+      "stone lantern",
+      "night",
+      "moonlight",
+      "warm lighting",
+      "three quarter view",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice. Half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes amidst cherry blossoms floating, stone lantern glowing in tranquil garden.",
-    "animaCaption": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Reclining sideways against the carved wooden veranda railing of the Shiranui dojo tatami room at night, Mai wears a scarlet silk halter dudou nightgown laced at the sides with gold cords and sheer high-slit panels. Lifting an open red-and-white folding fan to veil her lips, she gazes down with playful sultry confidence as cherry blossom petals drift through the courtyard air. Warm red glow from a garden stone lantern blends with cool silver moonlight over her curves.",
+    "animaCaption": "Reclining against the tatami veranda railing in her scarlet silk halter dudou nightgown with sheer high-slit panels, Mai partly hides her lips behind a folding fan and gives a sultry gaze. Warm stone lantern glow and moonlight mix among drifting cherry blossoms.",
+    "nsfwTokens": [
+      "red lingerie",
+      "silk",
+      "halterneck",
+      "open back",
+      "high slit",
+      "sheer",
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a scarlet silk open-back halter dudou nightgown tied at the waist with fine gold cords and flowing into sheer high-slit side panels.",
+    "compositionIntent": "single"
   }
 }

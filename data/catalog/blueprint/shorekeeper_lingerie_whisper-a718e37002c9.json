@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3349,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shorekeeper_lingerie_whisper",
     "characterId": "shorekeeper",
@@ -14,7 +14,7 @@
     "location": "黑海岸核心星核水镜大厅，四周垂落着发光的数据水母与无垠的深海星云",
     "timeOfDay": "文明复苏的沉静归宿之刻",
     "lighting": "星核散发纯净透明的青蓝光芒，照亮若隐若现的白皙肌肤与如水波流淌的长发",
-    "camera": "wide shot, low angle, 对称全景仰拍，水镜倒影与无重力飘浮的轻纱构成绝美的科幻神话构图",
+    "camera": "low angle, wide shot",
     "mood": "空灵、神圣、超越凡俗的数据神性与对命定之人的永恒守候",
     "adult": true,
     "sampleRating": "R15",
@@ -36,22 +36,36 @@
       "low_angle"
     ],
     "promptTokens": [
-      "wide shot",
-      "low angle",
-      "vanity",
-      "mirror",
-      "night",
-      "cool lighting",
-      "standing",
       "floating",
-      "water",
+      "holding",
+      "crystal",
       "glowing",
-      "indoors"
+      "serene",
+      "looking at viewer",
+      "water",
+      "reflection",
+      "starry sky",
+      "nebula",
+      "light particles",
+      "night",
+      "blue lighting",
+      "low angle",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "The Shorekeeper relaxes in shorekeeper wuthering waves, wearing a crystalline azure gradient jellyfish gossamer slip gown. Shorekeeper wuthering waves, floating weightlessly over mirror-like dark water pool, holding glowing stellar crystal core in open palms amidst jellyfish-like gossamer sheer gown drifting in air, glowing data particles, cosmic deep blue abyss background.",
-    "animaCaption": "The Shorekeeper relaxes in shorekeeper wuthering waves, wearing a crystalline azure gradient jellyfish gossamer slip gown.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Hovering weightlessly above the dark mirror-like water pool at the heart of the Black Shores sanctuary, the Shorekeeper wears a crystalline azure gradient sheer slip gown whose gossamer tendrils drift effortlessly in the stillness. Cradling a luminous stellar crystal core between her open palms, she looks gently toward the viewer with calm, timeless devotion amidst floating glowing data particles. Pure cyan light radiates from the core and reflects seamlessly across the black water beneath her.",
+    "animaCaption": "Floating barefoot above a mirror-black sanctuary pool in a translucent azure gradient gossamer slip gown, the Shorekeeper cradles a glowing crystal core in both palms with serene devotion. Pure cyan light and floating stardust particles reflect across the still water.",
+    "nsfwTokens": [
+      "blue nightgown",
+      "sheer dress",
+      "gossamer",
+      "flowing fabric",
+      "translucent",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a crystalline azure gradient sheer gossamer slip gown whose translucent tendril hem floats weightlessly around her bare legs.",
+    "compositionIntent": "single"
   }
 }

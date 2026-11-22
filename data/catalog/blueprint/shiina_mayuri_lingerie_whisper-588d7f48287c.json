@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mayuri_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3481,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiina_mayuri_lingerie_whisper",
     "characterId": "shiina_mayuri",
@@ -14,7 +14,7 @@
     "location": "未来道具研究所沙发旁，桌上摆着吃了一半的水多汁炸鸡块与香蕉",
     "timeOfDay": "夏日傍晚蝉鸣渐歇时",
     "lighting": "夕阳的暖橙金光斜斜切过窗台，给少女周身染上一层温馨梦幻的金色余晖",
-    "camera": "medium shot, front view, 正面中景，研究所沙发旁炸鸡块与傍晚微风里的纯真笑容",
+    "camera": "front view, medium shot",
     "mood": "世界线收束中最温柔的锚点，温暖治愈一切阴暗的天然纯善",
     "adult": true,
     "sampleRating": "R15",
@@ -42,20 +42,35 @@
       "front_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "couch",
+      "holding",
+      "pocket watch",
+      "fried chicken",
+      "banana",
+      "happy smile",
+      "looking at viewer",
+      "table",
+      "living room",
+      "indoors",
+      "sunset",
+      "warm lighting",
       "front view",
-      "sitting cross-legged on worn green sofa",
-      "paper carton of juicy fried chicken",
-      "ripe banana on table",
-      "silver pocket watch",
-      "Future Gadget Lab",
-      "summer twilight breeze",
-      "beaming innocent smile"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mayuri sits happily on the green lab sofa at dusk, holding up her beloved pocket watch with a radiant Tutturu smile while offering to share her box of fried chicken.",
-    "animaCaption": "Sitting cheerfully on the lab sofa with a carton of fried chicken, beaming with innocent summer warmth.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated happily on the worn green sofa inside the Future Gadget Lab at summer twilight with a carton of juicy fried chicken and bananas on the low table beside her, Mayuri wears a sky-blue cotton babydoll camisole accented with white daisy appliques and soft ruffles. Cradling her silver pocket watch gently against her chest with both hands, she beams toward the viewer with a bright, carefree smile. Warm orange sunset light slants across the windowsill and fills the cozy lab with evening gold.",
+    "animaCaption": "Seated cheerfully on the worn lab sofa in her sky-blue daisy-trimmed cotton babydoll camisole, Mayuri cradles her silver pocket watch to her chest beside a carton of fried chicken and beams warmly toward the viewer. Warm sunset light slants through the window.",
+    "nsfwTokens": [
+      "babydoll",
+      "blue camisole",
+      "cotton",
+      "frills",
+      "floral applique",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a breezy sky-blue cotton babydoll camisole trimmed with hand-sewn white daisy appliques, a smocked bodice, and a soft flared ruffled hem.",
+    "compositionIntent": "single"
   }
 }

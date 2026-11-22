@@ -1,20 +1,19 @@
 <template>
   <TooltipProvider :delay-duration="400">
-    <DesktopTitleBar />
     <RuntimeConnectionNotice />
     <RouteRecoveryBanner />
     <DesktopUpdateBanner v-if="desktop && !isCompanion" />
     <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
       <RouterView v-slot="{ Component }">
         <Transition appear :css="false" @before-enter="beforeEnterLayout" @enter="enterLayout" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled" @leave-cancelled="layoutMotion.onLeaveCancelled">
-          <KeepAlive include="AppLayout"><component :is="Component" :data-route-path="route.fullPath" /></KeepAlive>
+          <KeepAlive include="AppLayout"><component :is="Component" v-if="!startupProfilePending || route.matched[0]?.path === '/'" :data-route-path="route.fullPath" /></KeepAlive>
         </Transition>
       </RouterView>
     </div>
     <AppInteractionLayer v-if="!isCompanion" />
     <AppToast v-if="!isCompanion" :placement="route.path === '/prompt-builder' ? 'bottom-left' : 'bottom-right'" />
-    <ConfirmDialog />
-    <AppearancePreferences hide-triggers />
+    <ConfirmDialog v-if="confirmation.visible" />
+    <AppearanceHost />
     <TaskCenter v-if="!isCompanion" />
     <GlobalSearch v-if="!isCompanion" />
   </TooltipProvider>
@@ -30,11 +29,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { TooltipProvider } from 'reka-ui'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
 import AppToast from '@/components/AppToast.vue'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
-import AppearancePreferences from '@/components/AppearancePreferences.vue'
+import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
+import { startupProfilePending } from '@/platform/startupProfile'
+import AppearanceHost from '@/components/AppearanceHost.vue'
 import TaskCenter from '@/components/tasks/TaskCenter.vue'
 import GlobalSearch from '@/components/GlobalSearchHost.vue'
-import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RuntimeConnectionNotice from '@/components/RuntimeConnectionNotice.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
@@ -44,6 +43,11 @@ import { routeRecovery } from '@/composables/useRouteRecovery'
 
 const route = useRoute()
 const desktop = Boolean(getDesktopCapabilities())
+const confirmation = useConfirmState()
+const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDialog.vue').catch(error => {
+  resolveConfirm(confirmation.value.requestId, false)
+  throw error
+}))
 const DesktopUpdateBanner = defineAsyncComponent(() => import('@/components/DesktopUpdateBanner.vue'))
 useCharacterArtRefresh()
 const router = useRouter()

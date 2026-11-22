@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 309,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "medea_caster_r18_b7_01",
     "title": "美狄亚 · 柳洞寺魔术工房紫袍主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间紫袍半褪露尖耳，双峰饱满压下，蓝眸深情凝视主动沉腰",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "from below, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,21 +30,21 @@
       "off_shoulder",
       "elf_ears"
     ],
-    "promptProse": "Medea straddles the off-frame viewer's lap at the workshop altar, her purple robe slipped to her elbows and both arms resting around their neck.",
+    "promptProse": "Seen from below beside the stone altar of a secluded temple workshop illuminated by glowing arcane runes, Medea sits astride her partner with her hood removed and both arms looped closely around his neck. Soft warm light reflects across her devoted expression.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "purple robe",
-      "off shoulder",
-      "bare breasts",
-      "pointed ears",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "cowgirl position",
-      "altar",
-      "glowing runes",
-      "silver trim",
       "arms around neck",
+      "looking down",
+      "blush",
+      "altar",
+      "magic circle",
+      "glowing",
       "warm lighting",
+      "from below",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -53,14 +53,23 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "purple robe",
+      "off shoulder",
+      "open robe",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
+    "nsfwProse": "Her deep-purple wide-sleeved robe with fine silver edging hangs open and slipped past her shoulders, baring her full breasts as she lowers her hips in a cowgirl position.",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "Both arms rest around the offscreen viewer's neck as her robe slips to her elbows."
+    "animaCaption": "Straddling her partner's waist inside the rune-lit temple workshop with her silver-trimmed purple witch robe slipped down to her elbows, she wraps both arms around his neck and gazes down at him with devoted flushed eyes.",
+    "compositionIntent": "group"
   }
 }

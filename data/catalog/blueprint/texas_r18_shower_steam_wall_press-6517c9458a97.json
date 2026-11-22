@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_shower_steam_wall_press",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 669,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
   "data": {
     "action": "独自靠住淋浴湿墙，一脚踩低凳，一手撑墙、一手随水流在腿间自抚，湿衬衫敞开",
     "adult": true,
     "adultArtistHint": "@urakata",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "full body, side view, horizontal framing, foot and shower bench visible",
+    "camera": "from side, full body",
     "category": "浴室缠绵",
     "characterId": "texas_arknights",
     "coverageTags": [
@@ -19,10 +19,12 @@
     "description": "成年德克萨斯独自在私人淋浴间靠住湿墙，一脚踩上低凳。湿白色府绸衬衫半透明敞开，她一手撑墙、一手循水流探向腿间，黑色狼尾在身后避开双腿，琥珀眼睛于雾气里保持克制。",
     "id": "texas_r18_shower_steam_wall_press",
     "kreaStyleHint": "",
-    "lighting": "浴室顶灯透过水雾的柔光与水滴反光",
+    "lighting": "顶灯柔光穿过磨砂隔扇和水雾，深色石板与低凳上的水滴反光",
     "location": "现代豪华浴室磨砂玻璃淋浴房",
     "mood": "炽热缠绵",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "kneeling"
+    ],
     "nsfwProse": "",
     "nsfwTokens": [
       "topless",
@@ -30,37 +32,38 @@
       "masturbation"
     ],
     "outfitId": "white_shirt",
-    "promptProse": "Texas braces one hand against the tile and touches herself with the other, one foot on a low shower bench; her tail stays behind her, clear of both legs. Soft overhead light passes through the water mist.",
+    "promptProse": "A side-on view through the open edge of a frosted shower partition keeps the stone floor and the low teak stool in frame. Texas braces one hand against the tile and touches herself with the other, one foot on a low shower bench; her tail stays behind her, clear of both legs. The wet white poplin shirt falls open in heavy folds, its hidden button placket catching the drops under the ceiling light. A dull reflection runs along the dark slate beneath her planted foot. The chrome shower head and the frosted glass give the room a clear edge through the steam.",
     "promptTokens": [
-      "Texas",
-      "white poplin shirt",
-      "wet clothes",
-      "shower",
-      "foot up",
-      "steam",
-      "full body",
-      "concealed placket",
-      "open shirt",
+      "standing",
+      "leg up",
       "hand on wall",
-      "masturbation",
-      "tail behind legs",
-      "overhead lighting"
+      "stool",
+      "open shirt",
+      "white shirt",
+      "wet clothes",
+      "wet hair",
+      "bathroom",
+      "shower head",
+      "tile wall",
+      "frosted glass",
+      "steam",
+      "from side",
+      "full body"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
     "sceneTags": [
-      "shower",
       "bathroom",
-      "glass_wall",
+      "shower head",
+      "frosted glass",
+      "tile wall",
       "steam",
-      "water_drops",
-      "wet_skin",
-      "wet_hair",
-      "standing_sex",
-      "leg_lift"
+      "stool",
+      "standing",
+      "leg up"
     ],
     "timeOfDay": "夜晚",
     "title": "德克萨斯 · 浴室水汽中的炽热贴合",
-    "animaCaption": "One hand braces on the tile while one foot rests on the low bench, her tail clear of both legs."
+    "animaCaption": "Her near foot stays planted on the wet tiles and the other foot rests flat on the low stool. She braces a hand on the shower wall as her black tail hangs behind her in the mist."
   }
 }

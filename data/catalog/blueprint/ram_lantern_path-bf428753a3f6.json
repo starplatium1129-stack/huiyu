@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_lantern_path",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2053,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "ram_lantern_path",
     "title": "拉姆 · 提灯回廊",
@@ -15,24 +15,33 @@
     "action": "举灯查看门牌",
     "timeOfDay": "夜晚",
     "lighting": "手灯照亮门边与侧脸",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "谨慎",
-    "promptProse": "Ram raises a small lantern toward a doorway in the wooden corridor, checking the closed door by its warm light.",
+    "promptProse": "Making her late-night rounds along a quiet wooden corridor of the Roswaal mansion, Ram pauses in her black-and-white maid dress beside the last guest room doorway. She lifts a small brass hand lantern up toward the carved wooden door and nameplate, checking the latch with composed attentiveness. Warm flickering lantern light illuminates her profile, crisp white apron, and the paneled hallway fading into deep night shadow.",
     "promptTokens": [
-      "wooden corridor",
+      "standing",
       "holding lantern",
+      "lantern",
+      "hallway",
+      "wooden floor",
+      "door",
       "doorway",
+      "looking aside",
+      "warm lighting",
+      "shadows",
       "night",
-      "warm lantern light",
+      "indoors",
+      "three quarter view",
       "cowboy shot"
     ],
-    "animaCaption": "The lantern lights the closed doorway.",
+    "animaCaption": "Pausing along the dark timber corridor in her maid uniform, Ram raises a glowing hand lantern toward the closed wooden doorway and nameplate. Warm lantern light picks out her composed profile and the wood paneling against the night shadows.",
     "characterId": "ram",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

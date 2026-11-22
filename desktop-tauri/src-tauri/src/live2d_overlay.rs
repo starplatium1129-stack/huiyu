@@ -15,6 +15,10 @@ use crate::live2d_process_protocol::Command as ProcessCommand;
 
 static OVERLAY_STATE_INIT: OnceLock<Mutex<()>> = OnceLock::new();
 pub fn ensure_overlay(app: &AppHandle, assets_root: std::path::PathBuf) -> Arc<Live2DOverlayState> {
+    start_overlay(app, assets_root, false)
+}
+
+fn start_overlay(app: &AppHandle, assets_root: std::path::PathBuf, prewarm: bool) -> Arc<Live2DOverlayState> {
     let _init_guard = OVERLAY_STATE_INIT
         .get_or_init(|| Mutex::new(()))
         .lock()
@@ -23,17 +27,46 @@ pub fn ensure_overlay(app: &AppHandle, assets_root: std::path::PathBuf) -> Arc<L
         state.inner().clone()
     } else {
         let state = Arc::new(Live2DOverlayState::default());
+        let shown = app.state::<crate::state::AppState>().companion_presentation.lock().unwrap().shown;
+        state.revealed.store(shown, Ordering::Release);
         app.manage(state.clone());
         state
     };
     if try_begin_startup(&state) {
         let handle = state.clone();
         let app2 = app.clone();
-        let local_root = Some(app.state::<crate::state::AppState>().paths.runtime_root.join("live2d-imports"));
-        let events = RendererEvents(Arc::new(move |name, value| { let _ = app2.emit(name, value); }));
-        thread::spawn(move || overlay_window_thread(handle, RendererEnvironment { assets_root, local_root, events: Some(events) }));
+        let runtime_root = app.state::<crate::state::AppState>().paths.runtime_root.clone();
+        let local_root = Some(runtime_root.join("live2d-imports"));
+        let cache_root = Some(runtime_root.join("live2d-cache"));
+        let events = RendererEvents(Arc::new(move |name, value| {
+            if name == "aics:live2d:first-frame" { crate::companion_window::native_frame(&app2); }
+            let _ = app2.emit(name, value);
+        }));
+        thread::spawn(move || overlay_window_thread(handle, RendererEnvironment { assets_root, local_root, cache_root, prewarm, events: Some(events) }));
     }
     state
+}
+
+pub fn prewarm(app: &AppHandle) {
+    if crate::live2d_process::enabled() { return; }
+    let assets_root = overlay_assets_root(app);
+    start_overlay(app, assets_root.clone(), true);
+    let cache = app.state::<crate::state::AppState>().paths.runtime_root.join("live2d-cache");
+    thread::spawn(move || {
+        if let Err(error) = texture_cache::warm_default(&assets_root, &cache) {
+            eprintln!("[live2d] texture warmup: {error}");
+        }
+    });
+}
+
+pub fn first_frame_ready(app: &AppHandle) -> bool {
+    app.try_state::<Arc<Live2DOverlayState>>().is_some_and(|state| state.first_frame_ready.load(Ordering::Acquire))
+}
+
+pub fn set_revealed(app: &AppHandle, visible: bool) {
+    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
+        crate::live2d_renderer::set_revealed(&state, visible);
+    }
 }
 
 fn overlay_assets_root(app: &AppHandle) -> std::path::PathBuf {

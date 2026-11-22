@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_gothic_window_huge_moon_passionate_entwine",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2369,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
   "data": {
     "id": "kirie_gothic_window_huge_moon_passionate_entwine",
     "characterId": "kagari_no_kirie",
@@ -17,27 +17,41 @@
     "action": "真丝睡袍完全敞开滑落在脚踝处，雾枝双手环抱住对方的脖颈，双腿紧紧盘在腰间",
     "timeOfDay": "night",
     "lighting": "magnificent silver full moon backlighting their intertwined silhouette with ethereal silver glow",
-    "camera": "medium_shot",
+    "camera": "medium shot, side view",
     "mood": "温存与神圣",
-    "promptProse": "Embracing before an immense full moon window, naked Kirie wraps her legs around partner in a deep, passionate, moonlit lovers kiss.",
+    "promptProse": "Framed against a vast full moon outside a tall gothic window, Kirie clings to her partner with arms looped around his neck and legs wrapped tightly around his waist as they share a lingering kiss. Cool silver moonlight rims both figures against the dark chamber.",
     "promptTokens": [
-      "gothic_window",
-      "huge_moon",
+      "1girl",
+      "1boy",
+      "hetero",
+      "carrying",
+      "arms around neck",
+      "kissing",
+      "gothic window",
+      "full moon",
       "moonlight",
-      "silhouette",
-      "open_robe",
-      "bare_breasts",
-      "bare_butt",
-      "legs_wrapped_around",
-      "passionate_kiss",
-      "medium_shot"
+      "backlighting",
+      "night",
+      "from side",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Kirie wrapped around her lover before a giant full moon gothic window.",
+    "animaCaption": "Held aloft before the tall gothic arched window under a giant full moon, she wraps her arms around her partner's neck and locks both bare legs around his waist in a deep kiss as her crimson silk peignoir falls open to her ankles.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "red robe",
+      "open robe",
+      "nude",
+      "bare breasts",
+      "bare ass",
+      "legs wrapped around",
+      "heavy blush"
+    ],
+    "nsfwProse": "Her floor-length blood-red silk peignoir with black lace trim hangs completely open and slipped off her shoulders, leaving her breasts, back, and hips bare in the moonlight."
   }
 }

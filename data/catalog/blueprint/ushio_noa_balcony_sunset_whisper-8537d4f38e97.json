@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_balcony_sunset_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2090,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "ushio_noa_balcony_sunset_whisper",
     "characterId": "ushio_noa",
@@ -17,21 +17,31 @@
     "action": "她回首望向老师，落日余晖勾勒出无可挑剔的侧颜轮廓，眼神从容而摄人心魄",
     "timeOfDay": "sunset",
     "lighting": "brilliant golden hour rim light and warm dusk twilight",
-    "camera": "medium_shot",
+    "camera": "three quarter view, medium shot",
     "mood": "诗意宁静",
-    "promptProse": "Standing on a high skyscraper rooftop garden overlooking a vast modern metropolis at sunset, Ushio Noa turns back with wind-swept silver hair, bathed in radiant golden twilight.",
+    "promptProse": "Standing along the glass-and-steel observation railing of a high-rise Millennium rooftop garden in her tailored white trench coat and seminar uniform, Noa rests one gloved hand on the bar as the evening wind sweeps her long silver-white hair across the sky. She turns back smoothly toward the viewer with a composed, captivating smile while the wide metropolis stretches out below in crimson and gold. Brilliant golden-hour backlight rims her coat hem, flowing hair, and profile against the glowing twilight skyline.",
     "promptTokens": [
+      "standing",
+      "looking back",
+      "hand on railing",
       "wind",
+      "floating hair",
+      "serene smile",
       "rooftop",
+      "railing",
       "cityscape",
+      "skyscrapers",
       "sunset",
-      "golden_hour",
-      "medium_shot"
+      "golden hour",
+      "rim light",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Noa looking back with windswept hair on a sunset rooftop.",
+    "animaCaption": "Standing at the high-rise rooftop railing in her white trench coat, Noa turns back with a calm smile as the evening breeze lifts her long hair across the skyline. Radiant golden-hour rim light outlines her profile above the glowing city.",
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

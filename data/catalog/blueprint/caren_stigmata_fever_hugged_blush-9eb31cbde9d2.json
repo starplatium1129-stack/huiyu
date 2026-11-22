@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_stigmata_fever_hugged_blush",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "caren_stigmata_fever_hugged_blush",
     "title": "卡莲 · 圣痕发作的拥抱索温",
@@ -15,7 +15,7 @@
     "action": "蜷缩在怀中双手紧揪对方衣襟索取体温，双颊泛着高烧潮红，眼神水润迷乱",
     "timeOfDay": "深夜",
     "lighting": "忏悔室单盏微弱烛台的暖橙光泽",
-    "camera": "close-up, eye level, face and hands on a clothed supporting shoulder",
+    "camera": "eye level, pov, close-up",
     "mood": "极度依恋",
     "sceneTags": [
       "confession_booth",
@@ -29,23 +29,23 @@
       "teary_eyes",
       "parted_lips"
     ],
-    "promptProse": "She curls on the bench, holding the viewer's coat collar with both hands as a clothed shoulder supports her. Candlelight reaches her face beside the carved partition.",
+    "promptProse": "Curled closely on the narrow wooden bench of a dim midnight confessional, Caren wears her black-and-white gold-embroidered clerical vestments and clutches her partner's coat collar with both hands while leaning against his shoulder for warmth. Fever-flushed and teary-eyed, she glows beneath a single amber candle beside the carved partition.",
     "promptTokens": [
-      "black and white clerical vestments",
-      "white cross collar",
-      "confessional",
-      "fever",
-      "blush",
-      "holding collar",
-      "supporting shoulder",
-      "candlelight",
-      "close-up",
+      "1girl",
+      "1boy",
+      "hetero",
       "curled up",
-      "sitting",
-      "both hands",
+      "hugging",
+      "grabbing collar",
       "heavy blush",
       "teary eyes",
-      "trembling"
+      "fever",
+      "confessional",
+      "wooden partition",
+      "candlelight",
+      "eye level",
+      "pov",
+      "close-up"
     ],
     "negativeTokens": [
       "burning clothing",
@@ -60,6 +60,16 @@
     ],
     "adult": true,
     "sampleRating": "All",
-    "animaCaption": "Both hands clutch the viewer's coat collar while a clothed shoulder supports her on the bench."
+    "animaCaption": "Curled against the viewer inside the dim confessional booth in her black-and-white clerical vestments, she clutches their coat collar tightly with both hands and gazes up with fever-flushed cheeks and glossy teary eyes. A single flickering candle warms the carved wooden lattice.",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "black and white vestments",
+      "gold embroidery",
+      "white cross collar",
+      "detached sleeves",
+      "sweat",
+      "flushed skin"
+    ],
+    "nsfwProse": "She wears her black-and-white gold-embroidered clerical vestments with white cross collar and detached sleeves, trembling with fever as she presses into her partner's shoulder."
   }
 }

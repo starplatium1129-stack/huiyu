@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3238,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "mudrock_arknights_lingerie_whisper",
     "characterId": "mudrock_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛重装干员整备库角落，庞大厚重的全身动力装甲安放在背景阴影中",
     "timeOfDay": "战后卸甲整备的深夜",
     "lighting": "暖橙色地脚工作灯自下而上照射，柔和化解了机械库的冰冷，为白发披上蜜色光芒",
-    "camera": "close-up, low angle, 正面微仰特写，背景重甲战锤剪影与羞涩神情同框",
+    "camera": "low angle, close-up",
     "mood": "惊人反差的极度娇柔，粗粝战具与柔弱美人的强烈对照",
     "adult": true,
     "sampleRating": "R15",
@@ -43,21 +43,32 @@
     "promptTokens": [
       "sitting",
       "on floor",
-      "hugging knees",
+      "hugging own legs",
       "blanket",
-      "workshop",
-      "power armor in background",
-      "war hammer in background",
       "blush",
       "shy",
-      "warm lighting",
-      "close-up",
-      "low angle"
+      "looking up",
+      "workshop",
+      "power armor in background",
+      "war hammer",
+      "amber floor lamp",
+      "night",
+      "low angle",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Mudrock sits on a thick wool blanket hugging her knees in a quiet corner of the maintenance hangar, blushing shyly. Her massive powered armor and heavy war hammer rest inactive in the dark background, while a low amber floor lamp illuminates her delicate, unmasked expression.",
-    "animaCaption": "Hugging her knees on a blanket in the armor workshop, she looks up with a tender, shy blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sitting on a wool blanket inside a quiet corner of Rhodes Island's maintenance bay at night, Mudrock hugs her knees in a basalt-black breathable mesh bralette with side lacing and low-rise boyshorts. With her towering powered armor and war hammer resting silently behind her, she looks up with a shy, unmasked blush under low amber lamp light.",
+    "animaCaption": "Seated on a thick wool blanket hugging her knees in a black mesh strappy bralette and boyshorts, she peeks past her hair with a shy post-battle blush. A low amber floor lamp warms her face against the dark silhouette of her resting armor and hammer.",
+    "nsfwTokens": [
+      "black lingerie",
+      "mesh bralette",
+      "strappy bra",
+      "side ties",
+      "black boyshorts",
+      "bare shoulders",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a fitted basalt-black breathable mesh bralette with industrial side-rib lacing and matching low-rise black boyshorts.",
+    "compositionIntent": "single"
   }
 }

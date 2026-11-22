@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_bed_mating_press_creampie_cherry",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1187,
   "createdAt": null,
-  "updatedAt": "2026-11-02T07:58:28.398258+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "amane_r18_bed_mating_press_creampie_cherry",
     "title": "周防天音 · 纯白大床半透蕾丝薄纱睡袍与摆脱罪恶感灵魂释放",
@@ -19,7 +19,7 @@
     "action": "侧卧大床半透深红蕾丝睡袍若隐若现，双手托胸与下身指尖律动自抚，流泪幸福娇喘",
     "timeOfDay": "深夜",
     "lighting": "床头暖橙壁灯洒在纯白丝绸与深红半透明薄纱轻裹雪肌上的温馨奢华光芒",
-    "camera": "intimate wide shot, reclining side perspective across soft white blankets",
+    "camera": "from side, wide shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "bedroom",
@@ -36,24 +36,22 @@
       "teary_eyes",
       "heavy_blush"
     ],
-    "promptProse": "She lies curled on the white bed, one hand at her chest and the other beneath the negligee hem. A bedside lamp warms the sheets.",
+    "promptProse": "Viewed from the side across a wide white bed at night, Amane lies curled among the soft sheets with her cheek pressed toward the pillow. Warm light from the bedside lamp catches the tear tracks on her flushed cheeks.",
     "promptTokens": [
-      "bedroom",
-      "red negligee",
-      "black lace",
-      "see-through",
       "lying",
       "on side",
       "curled up",
-      "masturbation",
-      "tears",
-      "night",
-      "bed",
-      "white sheets",
+      "hand on chest",
       "teary eyes",
+      "tears",
       "heavy blush",
+      "parted lips",
+      "bedroom",
+      "white sheets",
+      "bedside lamp",
       "warm lighting",
-      "bedside lamp"
+      "from side",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -61,8 +59,17 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_passionate_love",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "One hand rests at her chest, the other beneath the negligee hem."
+    "nsfwTokens": [
+      "red negligee",
+      "black lace",
+      "see-through",
+      "nipples",
+      "bare legs",
+      "hand between legs",
+      "masturbation"
+    ],
+    "nsfwProse": "She wears only a sheer deep-red silk negligee trimmed with black lace that reveals her curves and nipples underneath, one hand resting on her chest while the other reaches beneath the hem between her bent thighs.",
+    "animaCaption": "Curled on her side across the white bedsheets in a sheer crimson lace negligee, she cups one breast while slipping her other hand beneath the translucent hem, her flushed face wet with tears under the warm bedside lamp.",
+    "compositionIntent": "single"
   }
 }

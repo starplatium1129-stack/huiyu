@@ -3,7 +3,7 @@ import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaPublicJob } from '@/types/anima'
 
-export type DirectImageFamily = 'anima' | 'krea2' | 'qwen' | 'moss' | 'manga'
+export type DirectImageFamily = 'anima' | 'krea2' | 'qwen' | 'keyframe' | 'moss' | 'manga'
 export function jobPath(family: DirectImageFamily, id?: string): string {
   const base = `/api/${family === 'krea2' ? 'creative' : family}/jobs`
   return id ? `${base}/${encodeURIComponent(id)}` : base

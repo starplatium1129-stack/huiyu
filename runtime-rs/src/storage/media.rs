@@ -133,7 +133,7 @@ pub(super) fn verify_checked(
     Ok(())
 }
 impl Context {
-    pub(super) fn lookup_media(&mut self, alias: &str) -> Result<Media> {
+    pub(super) fn lookup_media(&self, alias: &str) -> Result<Media> {
         self.check_cancel()?;
         let (hash,bytes,mime)=self.db.prepare_cached("SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?")?.query_row([alias],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Media does not exist"))?;
         let bytes = u64::try_from(bytes)

@@ -50,7 +50,7 @@ export interface VideoDefaults {
   modelId: string
   aspectRatio: 'landscape' | 'portrait' | 'square' | 'original'
   /** H3 额外支持 10s/15s 长镜（训练区间 124–362 帧，16GB 真机已验证）。 */
-  duration: 3 | 5 | 10 | 15
+  duration: 2 | 3 | 5 | 10 | 15
   camera: 'still' | 'push' | 'pull' | 'pan' | 'orbit'
   motion: 'subtle' | 'natural' | 'expressive'
   quality: VideoQuality
@@ -112,8 +112,9 @@ export interface VideoImageUploadResponse {
 }
 
 
-export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusResponse> {
-  return apiClient.request<VideoStatusResponse>('/api/video/status', {
+export function fetchVideoStatus(signal?: AbortSignal, modelId?: string): Promise<VideoStatusResponse> {
+  const query = modelId ? '?' + new URLSearchParams({ modelId }).toString() : ''
+  return apiClient.request<VideoStatusResponse>('/api/video/status' + query, {
     cache: 'no-store',
     signal,
     timeoutMs: 8_000,
@@ -131,8 +132,8 @@ export function previewVideoPrompt(body: VideoPromptPreviewRequest, signal: Abor
 
 /** 首帧/尾帧/参考图经 runtime 校验写入受控输入目录；kind:'reference' 使用独立前缀。
  * 同一 owner 的相同内容可复用受控名。草稿恢复依据耐久原图，而非此上传回执。 */
-export function uploadVideoImage(data: Blob, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
-  return apiClient.request<VideoImageUploadResponse>(`/api/video/images/raw${kind ? '?kind=reference' : ''}`, {
+export function uploadVideoImage(data: Blob, kind?: 'reference' | 'studio-frame', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
+  return apiClient.request<VideoImageUploadResponse>(`/api/video/images/raw${kind ? '?kind=' + kind : ''}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/octet-stream' },
     body: data,
@@ -148,6 +149,14 @@ export function uploadVideoDriver(file: File, kind: DrivingInput, signal: AbortS
     method: 'POST', body: file, headers: { 'Content-Type': 'application/octet-stream' }, signal, timeoutMs: 60_000,
     validate: value => value.ok === true && typeof value.name === 'string' && validVideoDriverName(kind, value.name)
       && value.bytes === file.size,
+  })
+}
+export function uploadStudioDialogueAudio(blob: Blob, signal: AbortSignal) {
+  return apiClient.request<VideoImageUploadResponse & { audioFrames: number }>('/api/video/drivers/studio-audio', {
+    method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' }, signal, timeoutMs: 60_000,
+    validate: value => value.ok === true && typeof value.name === 'string' && validVideoDriverName('audio', value.name)
+      && value.bytes === blob.size && typeof value.audioFrames === 'number' && Number.isInteger(value.audioFrames)
+      && value.audioFrames >= 1 && value.audioFrames <= 375,
   })
 }
 

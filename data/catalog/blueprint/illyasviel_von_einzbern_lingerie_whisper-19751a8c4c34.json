@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3225,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_lingerie_whisper",
     "characterId": "illyasviel_von_einzbern",
@@ -14,7 +14,7 @@
     "location": "爱因兹贝伦城堡客房超大四柱豪华软榻正中",
     "timeOfDay": "睡前",
     "lighting": "欧式水晶吊灯调暗后的梦幻烛光，将淡紫毛绒边饰棉花糖吊带短裙衬托得如同雪国童话",
-    "camera": "充满童话梦幻与娇憨宠溺感的微俯广角，把小公主被万千宠爱的娇柔任性刻画得如诗如画",
+    "camera": "from above, wide shot",
     "mood": "天真任性、娇憨撒娇、城堡小公主的梦幻依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -37,24 +37,31 @@
       "fairy_tale_bedroom"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "illyasviel von einzbern",
-      "lilac velvet nightdress",
-      "pom pom trim",
-      "giant polar bear plushie",
-      "rolling on bed",
-      "silver hair",
-      "ruby red eyes",
+      "on bed",
+      "hugging stuffed toy",
+      "polar bear plush",
       "pout",
+      "looking at viewer",
+      "canopy bed",
+      "velvet blanket",
+      "bedroom",
       "chandelier",
-      "soft lighting",
-      "warm lighting"
+      "warm lighting",
+      "from above",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size. Her shimmering silver tresses pool over the duvet as her ruby eyes beam with demanding, affectionate princess charm. Soft golden chandelier light cascades across the opulent canopy drapery, bathing her playful antics in royal warmth.",
-    "animaCaption": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seen from slightly above on the vast four-poster bed of the Einzbern castle bedroom, Illya sprawls across velvet bedding with her arms wrapped around an oversized polar bear plushie. Warm golden chandelier light illuminates her playful, expectant smile.",
+    "animaCaption": "Nestled across the opulent castle canopy bed hugging a giant fluffy polar bear plushie, she wears a pastel-lilac crushed-velvet nightdress trimmed with white marshmallow faux fur and pom-poms, looking up with a playful demanding pout beneath the golden chandelier.",
+    "nsfwTokens": [
+      "purple nightgown",
+      "velvet",
+      "fur trim",
+      "pom pom",
+      "ruffles",
+      "pajamas"
+    ],
+    "nsfwProse": "She wears a fairytale pastel-lilac crushed-velvet camisole nightdress bordered with soft white faux-fur trim, satin bows, and fluffy pom-pom accents.",
+    "compositionIntent": "single"
   }
 }

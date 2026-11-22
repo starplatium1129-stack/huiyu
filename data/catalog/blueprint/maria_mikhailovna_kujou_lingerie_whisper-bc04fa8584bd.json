@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3354,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "maria_mikhailovna_kujou_lingerie_whisper",
     "characterId": "maria_mikhailovna_kujou",
@@ -14,7 +14,7 @@
     "location": "欧式典雅卧室，壁炉中木柴哔剥燃烧，双层玻璃窗外雪花纷飞",
     "timeOfDay": "冬夜初雪围炉时",
     "lighting": "壁炉跃动的金红炭火与暖白顶灯交融，室内满溢着驱散严冬的烘暖橙光",
-    "camera": "medium shot, high angle, front view, 正面微俯视中景，聚焦大姐姐宽容接纳的温柔手势与丰盈优美的曲线",
+    "camera": "front view, high angle, medium shot",
     "mood": "极致包容的年上姐姐温暖，安心、绵软而充满深切依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -40,27 +40,38 @@
       "front_view"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "front view",
+      "kneeling",
+      "rug",
+      "gentle smile",
+      "looking at viewer",
       "fireplace",
       "firelight",
       "window",
-      "night",
+      "snowing",
       "candlelight",
+      "bedroom",
       "warm lighting",
-      "kneeling",
-      "smile",
-      "deep v ruffle neckline",
-      "empire waistline",
-      "flowing floor-length hem",
-      "luxurious soft drape",
-      "indoors"
+      "night",
+      "front view",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Masha kneels on fluffy white sheepskin rug, wearing a mist blue double-layered chiffon nightgown. Masha, patting empty space beside her gently, long wavy brunette-blonde hair falling over bust amidst big gentle brown eyes, comforting motherly smile, crackling brick fireplace, falling snow outside window.",
-    "animaCaption": "Masha kneels on fluffy white sheepskin rug, wearing a mist blue double-layered chiffon nightgown.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Kneeling comfortably on a plush white sheepskin rug before a crackling stone fireplace on a snowy winter night, Masha wears a flowing mist-blue double-layered chiffon nightgown with a deep ruffled V-neckline. Gently patting the soft rug beside her with an affectionate, warmly welcoming smile, she gazes up toward the viewer as golden firelight fills the cozy bedroom against snowflakes drifting past the dark window.",
+    "animaCaption": "Kneeling on the white sheepskin rug before the crackling fireplace in her mist-blue ruffled chiffon nightgown, Masha gently pats the space beside her with a warm, inviting smile. Golden firelight glows across the room while snow drifts outside the dark window.",
+    "nsfwTokens": [
+      "blue nightgown",
+      "chiffon",
+      "deep v",
+      "frills",
+      "cleavage",
+      "bare shoulders",
+      "spaghetti straps",
+      "long dress"
+    ],
+    "nsfwProse": "She wears a soft mist-blue double-layered chiffon nightgown with a deep-V ruffled neckline, empire waist, and flowing floor-length hem showing her bare shoulders and cleavage.",
+    "compositionIntent": "single"
   }
 }

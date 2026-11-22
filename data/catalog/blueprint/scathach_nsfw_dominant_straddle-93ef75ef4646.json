@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_dominant_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "scathach_nsfw_dominant_straddle",
     "title": "斯卡哈 · 师匠的主控反客为主骑乘特训",
@@ -15,7 +15,7 @@
     "action": "独自跨坐狭长训练软垫，黑蕾丝半褪、吊袜带绷腿，双手撑膝以腰部动作自我磨蹭并俯视镜头",
     "timeOfDay": "深夜",
     "lighting": "床头幽暗暖光与蕾丝黑红的诱惑光泽",
-    "camera": "medium shot, low angle, training cushion visible",
+    "camera": "low angle, medium shot",
     "mood": "女王主控、好胜撩拨",
     "sceneTags": [
       "nsfw",
@@ -28,23 +28,22 @@
       "exposed_pussy",
       "dominant"
     ],
-    "promptProse": "Scathach straddles the training cushion with both hands resting on her knees, her lace top lowered as she looks toward the low viewpoint in the dim warm bedside light.",
-    "nsfwProse": "",
+    "promptProse": "Alone in her castle bedroom at night, Scathach kneels astride a long training cushion on the bed with both hands braced on her knees. Her black lace bra is pulled down beneath her bare breasts, garter straps pull tight over black thighhighs, and her panties are shifted aside as she presses against the cushion and glares down at the low camera in dim warm bedside light.",
+    "nsfwProse": "Her black lace bra is tugged down beneath her bare breasts, taut garter straps hold black thighhighs along her thighs, and her strappy panties are shifted aside as she presses against the cushion.",
     "promptTokens": [
-      "Scathach",
-      "black lingerie",
-      "black thighhighs",
       "straddling",
       "cushion",
-      "bedroom",
-      "bedside light",
-      "low angle",
-      "crimson lace",
-      "garter belt",
-      "straddling cushion",
       "hands on knees",
       "looking down",
-      "dim light"
+      "sweat",
+      "intense gaze",
+      "bedroom",
+      "large bed",
+      "bedside lamp",
+      "dim warm light",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,8 +58,17 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "topless"
+      "black lace bra",
+      "bra pull",
+      "breasts out",
+      "nipples",
+      "garter belt",
+      "garter straps",
+      "black thighhighs",
+      "panties aside",
+      "pussy"
     ],
-    "animaCaption": "Both hands rest on her knees above the training cushion."
+    "animaCaption": "Alone on the big bed, she kneels astride a long training cushion with both hands braced on her knees, black lace bra pulled below her breasts and garters taut, staring down with a fierce challenging gaze. Dim bedside lamplight warms her flushed skin.",
+    "compositionIntent": "single"
   }
 }

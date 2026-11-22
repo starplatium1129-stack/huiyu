@@ -84,7 +84,8 @@ impl RenderContext {
         } else {
             (rect.width as f32, rect.height as f32)
         };
-        let transform = state.framing.lock().unwrap().transform(bounds, rw, rh);
+        let framing = *state.framing.lock().unwrap();
+        let transform = framing.transform(bounds, rw, rh);
         let (min_x, min_y) = transform.canvas_to_screen(bounds.0[0], bounds.0[1], rw, rh);
         let (max_x, max_y) = transform.canvas_to_screen(bounds.1[0], bounds.1[1], rw, rh);
         // 诊断边界换算回显示空间（超采样渲染是 rw/rh 上的坐标）。
@@ -107,18 +108,35 @@ impl RenderContext {
         });
         let model = self.model.as_ref().ok_or("no model")?;
         let renderer = self.renderer.as_mut().ok_or("no renderer")?;
-        let encoder = renderer.draw_frame(
+        let capture = self.alpha_readback.get_or_insert_with(|| alpha_mask::MaskReadback::new(&self.device));
+        if let Some(mask) = capture.collect(rect, framing) {
+            *state.alpha_mask.write().unwrap() = Some(mask);
+        }
+        let interval = if self.active_motion.as_ref().is_some_and(|motion| motion.phase != MotionPhase::Idle) {
+            Duration::from_millis(100)
+        } else {
+            Duration::from_millis(250)
+        };
+        let needs_mask = state.alpha_mask.read().unwrap().is_none();
+        let captured = capture.capture_target(&self.device, rect, self.surface_format, framing, interval, needs_mask);
+        let mut encoder = renderer.draw_frame(
             model,
             &transform,
             &self.textures,
-            &view,
+            captured.unwrap_or(&view),
             rect.width,
             rect.height,
             false,
             None,
             supersample,
         );
+        let sampling = captured.is_some();
+        if let Some(source) = captured {
+            renderer.blit_frame(&mut encoder, source, &view);
+            capture.encode(&mut encoder);
+        }
         let _ = self.queue.submit(std::iter::once(encoder.finish()));
+        if sampling { capture.map(); }
         frame.present();
         Ok(true)
     }

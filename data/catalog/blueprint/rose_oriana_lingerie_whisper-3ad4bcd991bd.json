@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3509,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "rose_oriana_lingerie_whisper",
     "characterId": "rose_oriana",
@@ -14,7 +14,7 @@
     "location": "暗影庭园古代遗迹神殿露台，月光如银河倒泻在清澈的水池中，长剑立于一侧",
     "timeOfDay": "午夜神圣受洗后",
     "lighting": "满月无暇的银白冷光如聚光灯般笼罩全身，在白金长发与透光衣裙上形成圣洁光晕",
-    "camera": "medium shot, side view, 侧身平视中景，遗迹神殿清池与长剑相伴，剑姬的坚毅与圣洁",
+    "camera": "side view, medium shot",
     "mood": "高洁剑姬褪去王冠后的纯粹忠诚与圣洁献身精神",
     "adult": true,
     "sampleRating": "R15",
@@ -39,19 +39,35 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "kneeling",
+      "hand on chest",
+      "sword",
+      "rapier",
+      "ruins",
+      "pillar",
+      "pool",
+      "water",
+      "reflection",
+      "serious",
+      "looking away",
+      "moonlight",
+      "night",
       "side view",
-      "kneeling beside clear ancient pool",
-      "rapier sword planted in stone",
-      "overgrown ruin pillars",
-      "cascading silver moonlight",
-      "calm ripple reflections",
-      "resolute noble devotion"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rose kneels on the stone edge of a moonlit ruin pool in the Shadow Garden sanctuary, one hand steadying her planted blade as she vows eternal loyalty to her savior.",
-    "animaCaption": "Kneeling beside a moonlit stone pool in ancient ruins with her sword planted, her gaze filled with solemn devotion.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Kneeling beside a mirror-calm pool on the stone terrace of an ancient Shadow Garden sanctuary ruin with her rapier planted nearby, Rose wears a semi-sheer white one-shoulder chiffon slip fastened by a gold wing clasp. Pressing one hand over her heart in solemn devotion, she gazes steadily into the shadows with unwavering resolve. Pure silver moonlight pours across the weathered stone columns, shimmering water ripples, and the draped sheer folds of her gown.",
+    "animaCaption": "Kneeling beside the moonlit ruin pool with her rapier planted in the stone, Rose wears a sheer white one-shoulder chiffon slip and presses one hand to her chest in solemn devotion. Bright silver moonlight illuminates the ancient pillars and water ripples.",
+    "nsfwTokens": [
+      "white nightgown",
+      "slip dress",
+      "one-shoulder",
+      "sheer",
+      "gold trim",
+      "bare shoulder",
+      "collarbone"
+    ],
+    "nsfwProse": "She wears a semi-sheer pure white Grecian one-shoulder chiffon slip nightgown fastened at the right shoulder with an antique gold wing clasp.",
+    "compositionIntent": "single"
   }
 }

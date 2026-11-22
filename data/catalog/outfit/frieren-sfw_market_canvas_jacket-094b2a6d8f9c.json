@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "frieren/sfw_market_canvas_jacket",
+  "revision": 1,
+  "sortOrder": 3919,
+  "createdAt": "2026-11-22T01:54:11.719582700+00:00",
+  "updatedAt": "2026-11-22T01:54:11.719582700+00:00",
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "sfw_market_canvas_jacket",
+      "characterId": "frieren",
+      "name": "墨蓝帆布工装短夹克与细格直筒裤",
+      "tokens": [
+        "blue jacket",
+        "sleeves rolled up",
+        "buttons",
+        "white sweater",
+        "plaid pants",
+        "loafers"
+      ],
+      "prose": "A petrol-blue canvas jacket with rolled cuffs and square patch pockets is worn over an ivory knit top. A pair of gray checked straight-leg trousers and brown loafers finish the outfit.",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_futon_cowgirl_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "kazuki_r18_futon_cowgirl_straddle",
     "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
@@ -19,7 +19,7 @@
     "action": "独自跨坐长枕，一手放腿上，另一手留在衣料下。",
     "timeOfDay": "深夜",
     "lighting": "床头暖橙地灯照耀在起伏的雪肤与银白发丝上的温润反光",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",
@@ -30,25 +30,21 @@
       "red_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Adult Kazuki straddles the futon bolster with her blouse open and skirt gathered at her waist, resting one hand on her thigh while touching herself with the other. A warm orange bedside floor lamp lights her loose silver hair.",
+    "promptProse": "Astride a long futon bolster in a dimly lit bedroom at night, Kazuki parts her unbuttoned blouse wide over her bare breasts and gathers her pleated skirt up around her waist above her black stockings. Bracing one hand against her thigh, she slips her other hand beneath the bunched skirt hem to touch herself, her cheeks deeply flushed as her floor-length hair spills around her shoulders. Warm orange glow from the bedside floor lamp bathes her pale skin and trembling breath.",
     "promptTokens": [
-      "pleated skirt",
-      "1girl",
-      "solo",
-      "open blouse",
-      "bare breasts",
-      "skirt lift",
-      "black stockings",
       "straddling",
       "bolster",
-      "masturbation",
-      "futon",
-      "lamplight",
-      "hand on thigh",
+      "hand on own thigh",
       "heavy blush",
+      "parted lips",
+      "futon",
+      "bed",
       "floor lamp",
-      "cowboy shot",
-      "from below"
+      "warm lighting",
+      "bedroom",
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,8 +52,19 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "She straddles the bolster with one hand resting on her thigh and the other beneath the gathered skirt."
+    "nsfwTokens": [
+      "white blouse",
+      "open shirt",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "pleated skirt",
+      "skirt lift",
+      "black stockings",
+      "masturbation"
+    ],
+    "nsfwProse": "Her unbuttoned white blouse parts wide to expose her bare breasts and nipples, while her pleated skirt is gathered high around her waist above her black stockings as she masturbates astride the bolster.",
+    "animaCaption": "Straddling the futon bolster with her blouse parted over her bare breasts and her pleated skirt gathered above her black stockings, Kazuki braces one hand on her thigh while masturbating beneath the skirt hem. Warm orange floor-lamp light glows across her flushed cheeks and loose hair.",
+    "compositionIntent": "single"
   }
 }

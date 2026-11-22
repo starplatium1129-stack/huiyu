@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3242,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "quillpen_arknights_lingerie_whisper",
     "characterId": "quillpen_arknights",
@@ -14,7 +14,7 @@
     "location": "深夜打烊后的小酒馆后室，暖色调木桌上散落着几个空酒杯与一盘小坚果",
     "timeOfDay": "凌晨两点酒保打烊之后",
     "lighting": "吧台顶上一盏孤零零的暖橙色小射灯，将昏暗的小酒馆烘托得如归宿般温暖",
-    "camera": "medium shot, eye level, 平视中景，酒馆软皮沙发与抱枕微寐姿态同框",
+    "camera": "eye level, medium shot",
     "mood": "天然呆少女的极度困倦与信赖，安心、静谧而充满软糯感",
     "adult": true,
     "sampleRating": "R15",
@@ -40,22 +40,34 @@
       "eye_level"
     ],
     "promptTokens": [
-      "sitting in leather sofa",
-      "hugging throw pillow",
+      "sitting",
+      "leather booth",
+      "hugging pillow",
+      "rubbing eyes",
+      "sleepy",
+      "half-closed eyes",
       "tavern back room",
       "wooden table",
       "empty glasses",
-      "soft amber lamplight",
-      "sleepy eyes",
-      "half-closed eyes",
+      "warm spotlight",
       "dim lighting",
-      "medium shot",
-      "eye level"
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Quillpen curls sleepily into a deep leather booth in the back room of the closed tavern, hugging a soft throw pillow to her chest. Empty glasses and warm wooden tables rest quietly under dim amber lanterns as she rubs her eyes with gentle drowsiness.",
-    "animaCaption": "Curled in the tavern sofa hugging a pillow, she blinks sleepily in the warm amber lantern light.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Curled drowsily inside a deep leather booth in the back room of a closed tavern after hours, La Pluma wears a dusty-lilac crinkled chiffon strapless tube slip dress edged with feathery white lace trim. Hugging a soft pillow while rubbing one sleepy eye beside empty glasses on the wooden table, she rests in a single warm amber spotlight.",
+    "animaCaption": "Curled sleepily into the corner of a dark leather tavern booth in a dusty-lilac lace-trimmed strapless chiffon slip, she hugs a throw pillow and rubs one drowsy eye beside empty bar glasses. A lone warm overhead amber spotlight softens the closed barroom.",
+    "nsfwTokens": [
+      "lilac slip dress",
+      "strapless nightgown",
+      "chiffon dress",
+      "white lace trim",
+      "shirred bodice",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a dusty-lilac crinkled chiffon strapless tube slip dress topped with feathery white lace ruffles along its shirred bodice.",
+    "compositionIntent": "single"
   }
 }

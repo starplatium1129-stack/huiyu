@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "belfast_evening_ribbon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2075,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:58:20.655668500+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "belfast_evening_ribbon",
     "title": "贝尔法斯特 · 解下发带",
@@ -15,23 +15,32 @@
     "action": "对镜解开发带",
     "timeOfDay": "夜晚",
     "lighting": "梳妆台灯光",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "松弛",
-    "promptProse": "Belfast sits at the dressing table and loosens a hair ribbon, catching her hair as it falls.",
+    "promptProse": "After finishing her evening duties, Belfast sits at her wooden bedroom dressing table in her belted pale silver-blue satin robe. Facing the framed vanity mirror, she slips a ribbon loose with one hand while catching the falling ends of her hair gracefully with the other. Warm bedside lamplight glows across the polished tabletop, silver brush, and her relaxed reflection.",
     "promptTokens": [
-      "sitting at dressing table",
-      "removing hair ornament",
-      "long hair",
-      "warm lamp",
+      "sitting",
+      "mirror",
+      "reflection",
+      "vanity",
+      "adjusting hair",
+      "hair ribbon",
+      "holding hair",
+      "lamp",
+      "warm lighting",
+      "bedroom",
+      "night",
+      "three quarter view",
       "medium shot"
     ],
-    "animaCaption": "She catches her hair as the ribbon comes loose.",
+    "animaCaption": "Seated before her bedroom vanity mirror in her satin robe, Belfast slips her hair ribbon free with one hand and catches the loose ends with the other. Warm vanity lamplight softens the dark room and illuminates her calm reflection.",
     "characterId": "belfast_azur",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

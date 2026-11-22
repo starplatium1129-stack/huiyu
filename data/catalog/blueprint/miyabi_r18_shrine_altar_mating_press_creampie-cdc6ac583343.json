@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_shrine_altar_mating_press_creampie",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "侧卧红缎垫半裹半透朱红薄纱若隐若现，双手托胸与深层自抚，红眸流泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, side view, reclining figure across crimson silk mats",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "hoshimi_miyabi",
     "coverageTags": [
@@ -22,24 +22,33 @@
     "location": "深山古社内殿朱红锦缎软垫正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "vermilion_silk_robe",
-    "promptProse": "Miyabi reclines on the crimson shrine cushions in sheer vermilion silk, cupping one breast while touching herself beneath the hem. Golden candlelight and the sacred tree's faint phosphorescence mingle across the red brocade.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "sheer red robe",
+    "nsfwProse": "Half-wrapped in a gossamer see-through vermilion silk robe parted over her bare legs, her full breasts and nipples show through the sheer fabric as she cups her chest and masturbates beneath the hem.",
+    "nsfwTokens": [
+      "red robe",
+      "silk robe",
       "see-through",
-      "reclining",
+      "open robe",
+      "bare breasts",
+      "bare legs",
+      "barefoot",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "vermilion_silk_robe",
+    "promptProse": "Reclining barefoot on thick vermilion brocade cushions inside a secluded mountain shrine sanctuary at night, Miyabi wears only a gossamer see-through vermilion silk robe draped loosely over her curves. Cupping one full breast through the translucent red silk with one hand, she slips her other hand beneath the parted hem to masturbate slowly, biting her lip as tender tears gather in her eyes. Flickering golden altar candlelight blends with faint pale luminescence from the sacred tree.",
+    "promptTokens": [
+      "lying",
+      "on side",
       "hand on own breast",
-      "masturbation",
-      "shrine",
-      "candlelight",
       "teary eyes",
       "heavy blush",
-      "red cushions",
-      "phosphorescence",
+      "biting lip",
+      "cushion",
+      "shrine",
+      "candlelight",
+      "glowing",
+      "night",
+      "from side",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",
@@ -60,6 +69,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "星见雅 · 神社红缎与朱红薄纱",
-    "animaCaption": "She reclines on the crimson cushions with one hand at her chest and the other beneath the robe hem."
+    "animaCaption": "Reclining on the crimson shrine cushions in a sheer vermilion silk robe revealing her curves, Miyabi cups her breast with one hand and slips the other beneath the parted hem to masturbate. Golden altar candlelight and faint sacred glow catch her tearful, heavily flushed face.",
+    "compositionIntent": "single"
   }
 }

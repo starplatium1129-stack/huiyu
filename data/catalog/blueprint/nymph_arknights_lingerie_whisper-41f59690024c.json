@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3125,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "nymph_arknights_lingerie_whisper",
     "characterId": "nymph_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛深层心理观测室，单向玻璃反射出幽暗暖黄的台灯光泽",
     "timeOfDay": "深夜心智复盘时分",
     "lighting": "桌底向上投射的单点暖黄光源，在萨卡兹小角与下颌间形成深邃的戏剧性阴影",
-    "camera": "medium close-up, eye level, 平视中近景，倒坐转椅与下巴抵椅背姿态同框",
+    "camera": "eye level, medium close-up",
     "mood": "小恶魔般的戏谑探究，掌控心理防线的危险刺激感",
     "adult": true,
     "sampleRating": "R15",
@@ -41,18 +41,30 @@
     "promptTokens": [
       "sitting backwards",
       "swivel chair",
-      "chin resting on chair back",
-      "psychology observation room",
-      "warm desk lamp",
-      "shadowy room",
+      "chin on hands",
+      "leaning on chair back",
       "mischievous smirk",
-      "medium close-up",
-      "eye level"
+      "looking at viewer",
+      "observation room",
+      "one-way mirror",
+      "desk lamp",
+      "warm uplighting",
+      "dark room",
+      "night",
+      "eye level",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Nymph sits backwards in a leather swivel chair in the Rhodes Island counseling observation office, resting her chin on the chair back with a perceptive smirk. A single warm desk lamp casts playful highlights across her features in the dim, private room.",
-    "animaCaption": "Resting her chin on the back of a swivel chair, she flashes a perceptive, playful smirk.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Nymph sits backwards on a swivel chair inside a dimly lit counseling observation room at night, resting her chin atop her fingers along the chair back with a teasing, perceptive smirk. Wearing a deep wine-red velvet strappy bralette with miniature rose-gold buckles and black fishnet panels, she is dramatically lit from below by a single warm desk lamp.",
+    "animaCaption": "Sitting backwards in a swivel chair with her chin propped over the chair back in a wine-red velvet and black fishnet strappy bralette, she watches the viewer with a sharp, impish smirk. Warm uplighting from a low desk lamp glints off the dark observation mirror behind her.",
+    "nsfwTokens": [
+      "wine red lingerie",
+      "velvet bra",
+      "strappy bra",
+      "black fishnet",
+      "rose gold buckles",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a deep wine-red velvet strappy bralette set accented with tiny rose-gold buckles and black fishnet insets."
   }
 }

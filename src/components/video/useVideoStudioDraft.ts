@@ -153,7 +153,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       deps.videoAttention.value = draft.videoAttention ?? 'auto'
       deps.h3LightVae.value = draft.h3LightVae !== false
       deps.driver.value = draft.driver ?? null
-      if ([3, 5, 10, 15].includes(draft.duration)) {
+      if ([2, 3, 5, 10, 15].includes(draft.duration)) {
         deps.duration.value = draft.duration as VideoDefaults['duration']
       }
       if (['still', 'push', 'pull', 'pan', 'orbit'].includes(draft.camera)) {

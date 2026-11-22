@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3117,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "pramanix_arknights_lingerie_whisper",
     "characterId": "pramanix_arknights",
@@ -14,7 +14,7 @@
     "location": "谢拉格圣殿最高神龛后侧的隐秘暖阁，银质香炉升起细细雪莲熏香",
     "timeOfDay": "风雪封山之夜",
     "lighting": "神龛长明酥油灯散发温暖柔和的金红火光，与窗外肆虐的风雪蓝夜形成鲜明温差",
-    "camera": "medium shot, eye level, 平视中景，白熊皮地毯与雪山神龛暖阁同框",
+    "camera": "eye level, medium shot",
     "mood": "褪去神圣外壳后回归少女本真的依赖与温存，毛茸茸的极度治愈",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,33 @@
     ],
     "promptTokens": [
       "kneeling",
-      "white fur rug",
+      "hugging own tail",
+      "blush",
+      "gentle smile",
+      "looking at viewer",
+      "fur rug",
       "mountain shrine",
       "wooden altar",
-      "silver incense burner",
-      "scented smoke",
-      "hugging tail",
-      "blush",
+      "incense burner",
+      "incense smoke",
       "warm lamp",
-      "medium shot",
-      "eye level"
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Pramanix kneels on a white fur rug in the hidden inner sanctuary of the Kjerag summit shrine, cradling her fluffy snow leopard tail in her arms with a sweet blush. Delicate scented smoke rises from a silver censer, filling the warm chamber away from her heavy holy duties.",
-    "animaCaption": "Kneeling on a fur rug in the mountain sanctuary cradling her tail, she smiles with sweet relief.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Pramanix kneels barefoot on a thick white fur rug inside the warm inner sanctuary behind the Kjerag summit altar, wearing a translucent silver-white silk slip dress trimmed with soft white fur and a tiny silver bell anklet. Cradling her plush snow leopard tail against her chest, she looks toward the viewer with an unguarded blush as warm oil-lamp light glows against the snowy night outside.",
+    "animaCaption": "Kneeling barefoot on a white fur rug in a sheer fur-trimmed white silk slip dress, she hugs her fluffy tail to her chest and looks up with a soft, relieved blush. Butter-lamp glow warms the quiet mountain shrine as thin incense smoke drifts from a silver censer.",
+    "nsfwTokens": [
+      "white slip dress",
+      "sheer nightgown",
+      "silk",
+      "fur trim",
+      "anklet",
+      "bell",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a translucent silver-white silk slip dress edged with soft white fur trim along the neckline and hem, plus a small silver bell ribbon tied at her ankle."
   }
 }

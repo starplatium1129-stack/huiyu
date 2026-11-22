@@ -125,7 +125,8 @@ const steps = [
 .guide-page { --page-max:860px; --guide-duration:var(--motion-route); --guide-lift:-4px; --guide-tilt:-8deg; }
 .guide-topbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-2); }
 .guide-brand-logo { display:block; width:108px; height:auto; }
-.guide-page .page-kicker { display:inline-flex; align-items:center; padding:2px var(--s-2); border-radius:var(--r-pill); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); letter-spacing:0.06em; }
+.guide-page .page-kicker { font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); letter-spacing:.12em; }
+.guide-page .page-title { font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); }
 .guide-page .page-header { display:grid; grid-template-columns:minmax(0,1fr) 144px; align-items:center; gap:var(--s-5); padding:var(--s-5) 0; margin-bottom:var(--s-5); text-align:left; }
 .guide-page .page-title { margin:var(--s-2) 0 0; font:600 clamp(26px,2.6vw,36px)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
 .guide-cover-art { display:block; width:144px; height:144px; object-fit:contain; pointer-events:none; }

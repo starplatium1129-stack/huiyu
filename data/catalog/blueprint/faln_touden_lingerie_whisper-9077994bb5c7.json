@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3419,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "faln_touden_lingerie_whisper",
     "characterId": "faln_touden",
@@ -14,7 +14,7 @@
     "location": "迷宫深处安全营地石洞篝火旁铺设的睡袋上",
     "timeOfDay": "睡前",
     "lighting": "迷宫营地篝火跳跃的橙红火光与魔力防卫结界透出的淡金微芒交相辉映",
-    "camera": "充满人间烟火气与治愈感染力的中景平视，展现大胃王魔法使纯真朴实的幸福",
+    "camera": "eye level, medium shot",
     "mood": "质朴温馨、心满意足、吃饱喝足后的幸福微醺",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,33 @@
       "wholesome_feast"
     ],
     "promptTokens": [
-      "yellow cotton nightdress",
-      "sitting cross-legged",
-      "holding soup bowl",
+      "sitting",
+      "indian style",
       "sleeping bag",
-      "rosy cheeks",
-      "closed eyes smile",
+      "holding bowl",
+      "soup",
+      "closed eyes",
+      "happy smile",
+      "blush",
+      "dungeon camp",
+      "stone cave",
       "campfire",
-      "cozy"
+      "warm firelight",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Falin Touden basking in pure contentment after a hearty meal in a safe dungeon camp. Dressed in a cozy wheat-yellow cotton nightdress with ruffled gathers, she sits nestled inside her fleece sleeping bag. Holding a warm earthenware bowl with both hands, her plump cheeks glow with culinary satisfaction as her eyes crinkle in pure, blissed-out delight.",
-    "animaCaption": "Falin sits cross-legged in her sleeping bag at a dungeon camp, holding a warm bowl of soup beside the fire.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Nestled cross-legged inside her sleeping bag beside a safe dungeon campfire, Falin Touden wears a roomy unbleached wheat-yellow cotton nightdress with a scalloped lace collar and gathered sleeves. Holding a thick earthenware bowl in both hands with rosy cheeks and a contented closed-eye smile, she basks in warm flickering firelight.",
+    "animaCaption": "Seated cross-legged inside her cozy sleeping bag in a roomy wheat-yellow scalloped-lace cotton nightdress, she cradles a warm earthenware soup bowl in both hands with rosy cheeks and a blissed-out closed-eye smile. Crackling orange campfire light warms the quiet stone cave.",
+    "nsfwTokens": [
+      "yellow nightgown",
+      "cotton nightdress",
+      "lace collar",
+      "loose sleeves",
+      "gathered cuffs",
+      "pajamas"
+    ],
+    "nsfwProse": "She wears a roomy unbleached wheat-yellow cotton campfire nightdress with a scalloped lace collar and soft gathered elastic cuffs.",
+    "compositionIntent": "single"
   }
 }

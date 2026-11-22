@@ -65,9 +65,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-avatar img { display:block; width:100%; height:100%; object-fit:cover; }
 .companion-dialogue-avatar[data-chibi='true']:has(img) { border:0; border-radius:0; background:transparent; }
 .companion-dialogue-avatar[data-chibi='true'] img { object-fit:contain; }
-.companion-dialogue-bubble { position:relative; box-sizing:border-box; min-width:0; max-width:calc(100% - 40px); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--dialogue-surface); }
+.companion-dialogue-bubble { position:relative; box-sizing:border-box; min-width:0; max-width:calc(100% - 40px); padding:var(--s-2) var(--s-3); border:1px solid transparent; border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--dialogue-surface); }
 .companion-dialogue-bubble:has(.chat-drawing-batch,.companion-chat-images) { flex:1; }
-.companion-dialogue-message[data-role='user'] .companion-dialogue-bubble { max-width:100%; border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:color-mix(in srgb,var(--character-accent) 9%,var(--dialogue-control-surface)); }
+.companion-dialogue-message[data-role='user'] .companion-dialogue-bubble { max-width:100%; border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:var(--dialogue-control-surface); }
 .companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:var(--fs-label-xs); font-weight:600; }
 .companion-dialogue-speaker button { transition:opacity var(--motion-hover); }
 @media (hover:hover) and (pointer:fine) {

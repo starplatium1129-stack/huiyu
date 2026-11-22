@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_wildflower_field",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 639,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "蹲在铃兰花丛中轻嗅",
-    "camera": "wide shot, crouching figure and flower valley visible",
+    "camera": "three quarter view, wide shot",
     "category": "泰拉自然",
     "characterId": "suzuran_arknights",
     "coverageTags": [
@@ -22,13 +22,22 @@
       "indoor room"
     ],
     "outfitId": "wasteland_bloom",
-    "promptProse": "Suzuran crouches among lily-of-the-valley flowers, holding one stem toward the viewer; nine tails spread over sunlit grass behind her, clear of the blossoms.",
+    "promptProse": "Crouched down in a sunlit mountain valley carpeted with white lily-of-the-valley blossoms, Suzuran wears her moss-green field coat, bucket hat, and canvas backpack as her nine fluffy tails fan out across the bright green grass behind her. She cups a freshly picked white flower stem carefully in both hands and lifts it toward the viewer with a beaming, pure smile. Clear afternoon sunlight bathes the wide flower meadow and casts bright highlights across the delicate bell-shaped petals.",
     "promptTokens": [
-      "lily of the valley",
       "crouching",
-      "wide shot",
       "holding flower",
-      "sunlight"
+      "lily of the valley",
+      "flower field",
+      "grass",
+      "valley",
+      "hill",
+      "gentle smile",
+      "looking at viewer",
+      "outdoors",
+      "afternoon",
+      "sunlight",
+      "three quarter view",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +49,7 @@
     ],
     "timeOfDay": "午后",
     "title": "铃兰 · 花田铃兰",
-    "animaCaption": "She holds one stem toward the viewer, tails spreading clear of the blossoms behind her."
+    "animaCaption": "Crouching amid a valley of white lily-of-the-valley blooms in her moss-green field coat, Suzuran holds a picked blossom stem out toward the viewer as her tails spread across the sunlit grass behind her. Bright afternoon daylight fills the open hillside meadow.",
+    "compositionIntent": "single"
   }
 }

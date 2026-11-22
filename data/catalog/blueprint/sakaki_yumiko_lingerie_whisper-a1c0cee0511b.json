@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakaki_yumiko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3374,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sakaki_yumiko_lingerie_whisper",
     "characterId": "sakaki_yumiko",
@@ -14,7 +14,7 @@
     "location": "美滨学园豪华宿舍套房，红木书架与昂贵地毯，角落堆放着精装箱套小说",
     "timeOfDay": "午夜深更的对峙时刻",
     "lighting": "窗外冰冷月光与书桌台灯的暖黄色调切出强烈的冷暖反差，轮廓分明",
-    "camera": "medium shot, eye level, 侧身平视中景，聚焦修长红木书架与冷傲神态",
+    "camera": "eye level, medium shot",
     "mood": "带刺黑玫瑰的严苛防线，千金大小姐的高傲与极度缺乏安全感的内心",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,36 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting in armchair",
-      "mahogany bookshelf",
+      "sitting",
+      "armchair",
+      "holding",
+      "box cutter",
+      "glare",
+      "blush",
+      "looking at viewer",
+      "bookshelf",
       "books",
-      "box cutter on table",
-      "sharp glare",
-      "tsundere",
-      "dim lighting",
-      "warm lamp"
+      "bedroom",
+      "lamp",
+      "moonlight",
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Yumiko sits back in a high-backed armchair inside her luxurious Mihama suite, surrounded by tall mahogany bookshelves and boxed novels, regarding the viewer with cold, defensive wariness.",
-    "animaCaption": "Sitting in a stately armchair beside mahogany bookshelves, watching the viewer with sharp, guarded composure.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Leaning back in a high-backed leather armchair inside her mahogany-lined Mihama dormitory suite late at night, Yumiko wears a deep royal-purple velvet camisole slip with a sheer black lace chest panel. Casually turning a folded utility knife between her fingers, she fixes the viewer with a sharp defensive glare that cannot quite hide the faint blush tinting her ears. Cool window moonlight contrasts cleanly with the warm desk lamp glow beside her tall bookshelves.",
+    "animaCaption": "Reclining in a high-backed leather armchair in her purple velvet and sheer black lace camisole slip, Yumiko twirls a utility knife while shooting a sharp defensive glare with faintly flushed ears. Warm lamplight and cool moonlight meet across her mahogany bookshelves.",
+    "nsfwTokens": [
+      "lingerie",
+      "purple camisole",
+      "velvet",
+      "black lace",
+      "sheer",
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a deep royal-purple velvet camisole slip inset with a sheer black spiderweb lace chest panel and delicate gold clasps.",
+    "compositionIntent": "single"
   }
 }

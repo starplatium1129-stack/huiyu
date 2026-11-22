@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "momo_r18_desk_tail_doggystyle_thrust",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1252,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "action": "身穿透视紫纱蕾丝睡裙斜坐软榻，尾巴抚腿，单手揉胸另一手在薄纱下自抚，小恶魔娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -22,21 +22,30 @@
     "location": "深夜落地窗前天鹅绒软榻上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "harem_negligee",
-    "promptProse": "Momo reclines on the velvet daybed with one leg tucked beneath her, touching her chest and beneath her negligee as her tail brushes her inner thigh. Cool window moonlight meets dim violet candlelight across the velvet cushions.",
-    "promptTokens": [
-      "lavender negligee",
+    "nsfwProse": "Her whisper-thin sheer lavender silk negligee with deep floral-lace trim reveals her full cleavage and faint briefs underneath while one hand kneads her breast and the other slips under the hem.",
+    "nsfwTokens": [
+      "purple negligee",
+      "white lace",
       "see-through",
-      "masturbation",
+      "cleavage",
+      "panties",
       "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "harem_negligee",
+    "promptProse": "On a velvet daybed beside a moonlit floor-to-ceiling window glowing with soft violet candlelight, Momo leans back with one leg tucked beneath her and a shy, teasing flush across her cheeks as her demon tail strokes along her inner thigh.",
+    "promptTokens": [
       "reclining",
-      "daybed",
-      "moonlight",
       "bent leg",
+      "hand on chest",
       "heavy blush",
-      "violet candlelight",
+      "smirk",
+      "parted lips",
+      "daybed",
+      "window",
+      "moonlight",
+      "candlelight",
+      "night",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -57,6 +66,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "梦梦 · 窗边软榻紫色薄纱蕾丝睡裙若隐若现与小恶魔独处挑弄",
-    "animaCaption": "One leg tucks beneath her on the daybed as her tail brushes her inner thigh."
+    "animaCaption": "Reclining sideways on the velvet window daybed with one leg tucked beneath her, she wears a sheer lavender silk negligee with white floral lace while her tail brushes her inner thigh, one hand cupping her chest and the other slipping beneath the sheer hem.",
+    "compositionIntent": "single"
   }
 }

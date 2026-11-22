@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_sofa_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1480,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "mahiru_nsfw_sofa_straddle",
     "title": "椎名真昼 · 邻家客厅沙发的大号针织衫跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间针织衫半褪露肩，金发垂落胸口起伏，琥珀瞳娇羞微嗔",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "cowboy shot, from below",
+    "camera": "from below, pov, cowboy shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "apartment",
@@ -26,26 +26,24 @@
       "blush",
       "cowboy_shot"
     ],
-    "promptProse": "Adult Mahiru rides astride her companion on the sofa, both palms on their chest, her oversized chunky-knit sweater slipping from one shoulder as she leans toward them.",
-    "nsfwProse": "",
+    "promptProse": "Viewed from a low first-person perspective on a cozy apartment sofa bathed in warm night lamplight, Mahiru sits astride her partner with both palms pressed onto his chest and looks down with flushed ears and gentle embarrassment.",
+    "nsfwProse": "Her oversized oatmeal cable-knit sweater hangs loosely off her shoulder with one breast slipping bare as she moves gently in a cowgirl position.",
     "promptTokens": [
-      "cowboy shot",
-      "apartment",
-      "bedroom",
-      "night",
-      "warm lighting",
-      "sitting",
-      "blush",
-      "cream sweater",
-      "off shoulder",
-      "breast slip",
-      "cowgirl position",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
+      "straddling",
+      "hands on chest",
+      "leaning forward",
+      "looking down",
+      "heavy blush",
+      "living room",
       "sofa",
       "lamplight",
+      "warm lighting",
       "from below",
-      "straddling",
-      "leaning forward",
-      "hands on another's chest"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -58,7 +56,16 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
-    "animaCaption": "Both palms rest on her companion's chest as her sweater slips from one shoulder."
+    "nsfwTokens": [
+      "cream sweater",
+      "oversized sweater",
+      "off shoulder",
+      "breast slip",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
+    "animaCaption": "Straddling her partner's lap on the warm lamp-lit apartment sofa with both palms braced against his chest, she leans down with crimson-flushed ears and shy embarrassment as her chunky cream knit sweater slips off one shoulder to bare her chest.",
+    "compositionIntent": "group"
   }
 }

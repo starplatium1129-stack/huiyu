@@ -13,13 +13,12 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
     let (rect, companion_offset) = if companion_hwnd.is_null() {
         (local_rect, None)
     } else {
-        let mut companion_rect = unsafe { std::mem::zeroed::<RECT>() };
-        if unsafe { GetWindowRect(companion_hwnd, &mut companion_rect) } != 0 {
+        if let Some(point) = companion_origin(companion_hwnd) {
             (
                 followed_overlay_rect(
                     local_rect,
-                    companion_rect.left,
-                    companion_rect.top,
+                    point.x,
+                    point.y,
                     (local_rect.x, local_rect.y),
                 ),
                 Some((local_rect.x, local_rect.y)),
@@ -29,10 +28,18 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
         }
     };
     *state.companion_offset.lock().unwrap() = companion_offset;
-    *state.rect.lock().unwrap() = rect;
+    {
+        let mut previous = state.rect.lock().unwrap();
+        if (previous.width, previous.height) != (rect.width, rect.height) {
+            *state.alpha_mask.write().unwrap() = None;
+        }
+        *previous = rect;
+    }
     state.visible.store(visible, Ordering::SeqCst);
     if !visible {
         *state.model_bounds.lock().unwrap() = None;
+        *state.alpha_mask.write().unwrap() = None;
+        state.first_frame_ready.store(false, Ordering::Release);
     }
     let alpha = opacity.unwrap_or(255).min(255);
     state.opacity.store(alpha, Ordering::SeqCst);
@@ -40,25 +47,35 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
     // frame alpha would require multiplying every renderer output, which is
     // outside the allowed overlay files; retain the value for API/state
     // compatibility but intentionally do not apply it with layered-window APIs.
-    unsafe {
-        if visible {
-            // 首次 ShowWindow 会改变 top-level z-order；必须先显示，再把 overlay
-            // 放到 Companion 之后，否则透明模型窗口仍会吞掉 WebView 点击。
-            ShowWindow(hwnd, SW_SHOWNA);
-            SetWindowPos(
-                hwnd,
-                companion_hwnd,
-                rect.x,
-                rect.y,
-                rect.width as i32,
-                rect.height as i32,
-                SWP_NOACTIVATE,
-            );
-        } else {
-            ShowWindow(hwnd, SW_HIDE);
-        }
+    if visible {
+        place_overlay(state, hwnd, companion_hwnd, rect);
+    } else {
+        unsafe { ShowWindow(hwnd, SW_HIDE); }
     }
     Ok(())
+}
+
+pub(super) fn place_overlay(state: &Live2DOverlayState, hwnd: HWND, companion: HWND, rect: OverlayRect) {
+    let on_desktop = state.revealed.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire);
+    // DirectComposition can present while the window is parked outside the
+    // virtual desktop. Move it to the pet's client area only with a real frame.
+    let (x, y) = if on_desktop { (rect.x, rect.y) } else { (-32_000, -32_000) };
+    unsafe {
+        SetWindowPos(hwnd, companion, x, y, rect.width as i32, rect.height as i32, SWP_NOACTIVATE | SWP_SHOWWINDOW);
+    }
+}
+
+pub(crate) fn set_revealed(state: &Live2DOverlayState, revealed: bool) {
+    state.revealed.store(revealed, Ordering::Release);
+    let hwnd = *state.hwnd.lock().unwrap();
+    let Some(hwnd) = hwnd.map(|value| value as HWND) else { return; };
+    if revealed && state.visible.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
+        let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
+        let rect = *state.rect.lock().unwrap();
+        place_overlay(state, hwnd, companion, rect);
+    } else if !revealed {
+        unsafe { ShowWindow(hwnd, SW_HIDE); }
+    }
 }
 
 /// 发送意图命令并等待渲染线程接收（IPC 同步命令的通道建立）。

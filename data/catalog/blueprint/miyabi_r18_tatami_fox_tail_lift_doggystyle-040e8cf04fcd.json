@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_tatami_fox_tail_lift_doggystyle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "站在木凳旁，一腿踏凳，一手扶松开的衣襟，另一手留在袴内",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "full body, standing three-quarter view",
+    "camera": "three quarter view, full body",
     "category": "深层欢愉",
     "characterId": "hoshimi_miyabi",
     "coverageTags": [
@@ -22,26 +22,32 @@
     "location": "深夜道场更衣室内实木长凳上",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "dojo_training",
-    "promptProse": "Miyabi holds her loosened training robe with one hand while touching herself beneath the hakama, one leg raised on the dojo bench. Cool moonlight through the paper windows meets warm yellow changing-room wall lights along the fabric at her side.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "open white keikogi",
-      "indigo hakama",
+    "nsfwProse": "Her white dojo keikogi is untied and parted to reveal deep cleavage while her bare foot steps onto the bench and one hand reaches inside her indigo hakama shorts to masturbate.",
+    "nsfwTokens": [
+      "keikogi",
+      "open clothes",
       "cleavage",
-      "leg up",
-      "holding lapel",
-      "masturbation",
-      "bench",
-      "dojo",
+      "hakama",
+      "handwraps",
+      "barefoot",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "dojo_training",
+    "promptProse": "Standing barefoot inside the hushed dojo changing room late at night, Miyabi plants one bare foot up onto the solid wooden bench with the ties of her white keikogi loosened. Holding the parted collar open over her flushed cleavage with one wrapped hand, she slips her other hand inside her indigo split hakama to touch herself in breathless quiet. Cool moonlight filtering through the shoji paper screen meets warm yellow wall lamplight across the fabric.",
+    "promptTokens": [
       "standing",
-      "foot on bench",
+      "leg up",
+      "bench",
       "heavy blush",
+      "parted lips",
+      "dojo",
+      "shoji",
       "moonlight",
       "wall lamp",
+      "warm lighting",
+      "night",
+      "three quarter view",
       "full body"
     ],
     "recommendedSize": "1152x1536",
@@ -60,6 +66,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "星见雅 · 道场更衣长凳练功服系带松开",
-    "animaCaption": "One foot rests on the bench while one hand holds her loosened lapel and the other remains beneath the hakama."
+    "animaCaption": "Standing barefoot by the wooden dojo bench with one foot raised, Miyabi holds her loosened white keikogi open across her cleavage while sliding her other hand inside her indigo hakama to masturbate. Cool shoji moonlight and warm wall lamplight trace her flushed cheeks.",
+    "compositionIntent": "single"
   }
 }

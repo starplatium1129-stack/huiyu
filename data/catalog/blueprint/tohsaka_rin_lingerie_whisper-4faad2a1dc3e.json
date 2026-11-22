@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3178,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "tohsaka_rin_lingerie_whisper",
     "characterId": "tohsaka_rin",
@@ -14,7 +14,7 @@
     "location": "远坂邸古典魔术起居室，壁炉火光照亮了书桌上的各色未切割宝石",
     "timeOfDay": "午夜魔力修习告一段落",
     "lighting": "壁炉炭火跳跃的暖红光泽正面映照，将绯红色的真丝睡衣与瓷白肌肤镀上诱人红润",
-    "camera": "low angle, medium shot, 低角度平视中景，聚焦修长交叠的双腿与过膝黑丝绝对领域，张力拉满",
+    "camera": "from below, medium shot",
     "mood": "经典傲娇大小姐的绝对主场，元气、自信、高傲中满溢着少女羞涩",
     "adult": true,
     "sampleRating": "R15",
@@ -46,26 +46,33 @@
     ],
     "promptTokens": [
       "sitting",
-      "in armchair",
+      "armchair",
       "crossed legs",
-      "pulling thighhighs",
-      "black thighhighs",
-      "zettai ryouiki",
       "blush",
-      "tsundere",
       "pout",
+      "looking at viewer",
       "parlor",
       "fireplace",
       "firelight",
-      "uncut gems on desk",
+      "gemstones",
+      "desk",
       "warm lighting",
-      "low angle",
+      "from below",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "In the antique Tohsaka parlor warmed by a crackling stone fireplace, Rin sits in a mahogany armchair with legs crossed, tugging bashfully at the top band of her black over-knee stockings. Her cheeks flush with indignant tsundere defiance as uncut gemstones glint softly on the study desk beside her.",
-    "animaCaption": "Sitting in an antique armchair by the fireplace with legs crossed, adjusting her black thighhighs with a flustered tsundere pout.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a slightly low angle inside the firelit Victorian parlor beside a study desk strewn with uncut gemstones, Rin sits with legs crossed and glares over with a blushing, defiant pout as she adjusts her stocking.",
+    "animaCaption": "Seated in an antique mahogany armchair beside the crackling Tohsaka parlor fireplace with uncut gems glinting on the desk, she crosses her legs and tugs the lace top of her black thigh-highs with a flustered tsundere pout wearing a deep crimson silk and black lace bralette set.",
+    "nsfwTokens": [
+      "red lingerie",
+      "red bra",
+      "black lace",
+      "red panties",
+      "black thighhighs",
+      "thighhighs pull",
+      "zettai ryouiki"
+    ],
+    "nsfwProse": "She wears a heavy crimson silk bralette trimmed in black eyelash lace, matching low-rise briefs, and lace-topped black over-knee thigh-high stockings.",
+    "compositionIntent": "single"
   }
 }

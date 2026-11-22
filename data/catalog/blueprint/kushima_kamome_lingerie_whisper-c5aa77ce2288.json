@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kushima_kamome_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3484,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "kushima_kamome_lingerie_whisper",
     "characterId": "kushima_kamome",
@@ -14,7 +14,7 @@
     "location": "老旧灯塔顶层守塔人卧室，圆拱木窗外是碧海蓝天与掠过海面的海鸥",
     "timeOfDay": "夏日清晨海风拂面",
     "lighting": "金白色的清晨海面反光跃进室内，在天花板与木墙上泛起流动的水波光纹",
-    "camera": "wide shot, full body, 全身横幅构图，将坐在巨大皮箱上的娇小少女与窗外辽阔碧海融为一体",
+    "camera": "three quarter view, full body",
     "mood": "海岛假日的浪漫与冒险气息，清凉通透充满活力",
     "adult": true,
     "sampleRating": "R15",
@@ -41,22 +41,37 @@
       "full_body"
     ],
     "promptTokens": [
-      "wide shot",
-      "full body",
-      "sitting on vintage suitcase",
-      "wooden arched window",
-      "lighthouse interior",
-      "ocean view",
+      "sitting",
+      "suitcase",
+      "barefoot",
+      "looking up",
+      "smile",
+      "arched window",
+      "lighthouse",
+      "ocean",
+      "seagull",
       "blue sky",
-      "flying seagulls",
-      "summer morning",
-      "sea breeze",
-      "natural sunlight"
+      "morning",
+      "sunlight",
+      "three quarter view",
+      "full body"
     ],
-    "negativeTokens": [],
-    "promptProse": "Kamome perches happily atop her massive leather travel trunk inside the sun-drenched lighthouse tower, gazing out the arched wooden window toward soaring seagulls and azure ocean waves.",
-    "animaCaption": "Sitting atop an oversized vintage suitcase inside a lighthouse room, looking out over sparkling summer waves and blue skies.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Perched barefoot atop her oversized vintage leather suitcase inside the top room of a sunlit coastal lighthouse, Kamome wears a breezy navy-and-white striped nautical bralette and matching cotton briefs. Tugging lightly at one shoulder strap as she tilts her head up with a bright adventurous smile, she is framed against the tall arched wooden window overlooking sparkling blue waves and soaring seagulls in clear morning sea light.",
+    "animaCaption": "Perched barefoot atop her large vintage suitcase inside the lighthouse room in her navy-and-white striped cotton bralette and briefs, Kamome tugs one strap lightly with a bright smile. Morning sea light streams through the arched wooden window overlooking blue waves and seagulls.",
+    "nsfwTokens": [
+      "striped bra",
+      "blue and white",
+      "bralette",
+      "striped panties",
+      "bare shoulders",
+      "midriff",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a breezy navy-and-white pinstriped cotton bralette with tiny rope-knot ties and brass anchor charm paired with matching striped cotton briefs, baring her midriff and slender legs.",
+    "compositionIntent": "single"
   }
 }

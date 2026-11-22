@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3290,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "viviana_arknights_lingerie_whisper",
     "characterId": "viviana_arknights",
@@ -14,7 +14,7 @@
     "location": "大骑士领高雅私人沙龙，壁炉与数支高脚金烛台静静燃烧，窗外是骑士之城的霓虹",
     "timeOfDay": "深夜独处读诗时刻",
     "lighting": "壁炉金红炭火与高脚白烛的纯正暖光，在金黄发丝与白皙肌肤上泛起如蜂蜜般的柔光",
-    "camera": "medium shot, eye level, 平视中景，壁炉高脚烛台与羊皮诗卷同框",
+    "camera": "medium shot, eye level",
     "mood": "高洁烛骑士的诗意风华与柔情似水，明亮温暖中带着骑士的浪漫信仰",
     "adult": true,
     "sampleRating": "R15",
@@ -46,20 +46,29 @@
       "on floor",
       "barefoot",
       "white fur rug",
-      "roaring fireplace",
-      "golden candlesticks",
-      "burning candles",
-      "reading poetry book",
-      "city skyline outside window",
+      "holding book",
+      "reading",
+      "gentle smile",
+      "fireplace",
+      "candlesticks",
+      "candlelight",
+      "city lights",
       "night",
-      "warm candlelight",
-      "medium shot",
-      "eye level"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Viviana sits barefoot upon a soft sheepskin rug before a classic fireplace in a high Kazimierz private salon, holding open a volume of lyrical poetry. Tall golden candlesticks flicker with warm flame, casting honeyed light upon her book and gentle knightly expression.",
-    "animaCaption": "Sitting by the fireplace holding a poetry volume, warm candlelight illuminates her gentle expression.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside an elegant Kazimierz private salon warmed by a crackling hearth and tall brass candlesticks against the distant city lights, Viviana sits barefoot on a soft white fur rug holding open a poetry book with serene, warm grace.",
+    "animaCaption": "Sitting barefoot on a white sheepskin rug before a warm salon fireplace and tall golden candlesticks overlooking the night city, she holds an open volume of Kazimierz poetry with a serene smile wearing a pale golden double-layer chiffon slip gown.",
+    "nsfwTokens": [
+      "gold dress",
+      "yellow nightgown",
+      "chiffon slip",
+      "see-through",
+      "spaghetti straps",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a floor-length pale-golden double-layer chiffon slip gown embroidered with a delicate fleur-de-lis crest and suspended by slender gold cord straps.",
+    "compositionIntent": "single"
   }
 }

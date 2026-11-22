@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3496,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiiba_tsumugi_swimsuit_allure",
     "characterId": "shiiba_tsumugi",
@@ -14,7 +14,7 @@
     "location": "公众海滨浴场边缘较为安静的木质遮阳休憩长廊",
     "timeOfDay": "午后阳光",
     "lighting": "木质遮阳顶棚投射出条条分明的光影，金色的海滩强光在墨绿背心边缘打出柔和的反光",
-    "camera": "medium shot, eye level, grounded and endearing slice-of-life framing, sweet bashful undertone",
+    "camera": "eye level, medium shot",
     "mood": "假小子内心的娇羞、猝不及防的心动与可爱的局促",
     "adult": true,
     "sampleRating": "R15",
@@ -39,25 +39,36 @@
       "modest"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shiiba tsumugi",
-      "short black hair",
-      "blue eyes",
-      "olive green sporty tankini",
-      "sitting on wooden bench",
-      "hugging blue swim kickboard to chest",
-      "flustered bashful blush",
-      "looking away shyly",
-      "shaded beach pavilion",
-      "summer afternoon light",
-      "tomboy cuteness",
-      "depth of field"
+      "sitting",
+      "wooden bench",
+      "hugging",
+      "kickboard",
+      "blush",
+      "embarrassed",
+      "looking away",
+      "beach",
+      "pavilion",
+      "shade",
+      "outdoors",
+      "afternoon",
+      "sunlight",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Shiiba Tsumugi hugs a swim kickboard shyly to her chest on a wooden beach bench in her olive sporty tankini, blushing furiously while looking aside with endearing tomboy reluctance.",
-    "animaCaption": "Striped afternoon shelter shadows conceal her glowing blush as your genuine praise disarms her defenses.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sitting on a shaded wooden bench beneath a quiet beachfront rest pavilion in the warm afternoon, Tsumugi wears a sporty olive-green cropped tankini top with black trim and dark board shorts. Hugging a dark blue foam swim kickboard tightly against her chest like a shield, she glances bashfully to the side with bright red ears and an embarrassed blush. Slanted slats of afternoon sunlight stripe the wooden pavilion and catch the edges of her shoulders.",
+    "animaCaption": "Sitting on a shaded wooden beach pavilion bench in her olive-green sporty tankini and board shorts, Tsumugi hugs a blue kickboard tightly to her chest and looks away with a vivid bashful blush. Striped afternoon sunlight falls across the wooden shelter.",
+    "nsfwTokens": [
+      "swimsuit",
+      "green tankini",
+      "crop top",
+      "board shorts",
+      "black trim",
+      "bare shoulders",
+      "midriff",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a sporty olive-green and charcoal two-piece tankini with a cropped racerback top, black trim, and low-rise board shorts.",
+    "compositionIntent": "single"
   }
 }

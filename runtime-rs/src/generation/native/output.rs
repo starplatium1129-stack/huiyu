@@ -170,6 +170,9 @@ pub(super) fn adapter_request(
             }
         }
         input["frames"] = plan.input["frames"].clone();
+        if let Some(frames) = plan.input.get("audioFrames") {
+            input["audioFrames"] = frames.clone();
+        }
         input["fps"] = plan.input["fps"].clone();
         input["videoAttention"] = json!(plan.input["videoAttention"].as_str().unwrap_or("auto"));
     }
@@ -212,7 +215,7 @@ pub(super) async fn validate(path: &Path, video: bool, cancel: &CancellationToke
 pub(super) fn stage_text(event: &Value) -> Result<String> {
     let label = match event["stage"].as_str() {
         Some("dependencies") => "准备推理环境",
-        Some("fingerprint") => "确认模型与 LoRA",
+        Some("fingerprint") => "核验模型文件",
         Some("preparing_image") => "处理输入图像",
         Some("loading") => "加载模型",
         Some("compiling") => "编译 MOSS 推理内核（首次较慢）",

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/sfw_bookshop_corduroy",
+  "revision": 1,
+  "sortOrder": 3913,
+  "createdAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "sfw_bookshop_corduroy",
+      "characterId": "reze_chainsaw",
+      "name": "酒红灯芯绒短夹克与炭黑直筒裤",
+      "prose": "A short wine-red corduroy jacket with dark buttons and square patch pockets sits over a white cotton shirt with an open collar. High-waisted charcoal straight-leg trousers and dark loafers complete the outfit.",
+      "tokens": [
+        "red jacket",
+        "long sleeves",
+        "buttons",
+        "white shirt",
+        "open collar",
+        "black pants",
+        "loafers"
+      ],
+      "isDefault": false,
+      "default": false
+    }
+  }
+}

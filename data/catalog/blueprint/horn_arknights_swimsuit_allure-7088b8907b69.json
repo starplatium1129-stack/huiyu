@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3145,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "horn_arknights_swimsuit_allure",
     "characterId": "horn_arknights",
@@ -14,7 +14,7 @@
     "location": "直插深海的高耸岩石海岬与旧时代岸防工事遗迹",
     "timeOfDay": "清晨",
     "lighting": "冷峻壮阔的晨曦穿透厚重铅云，如利剑般在汹涌海面切割出道道金色光束，在英武身姿上雕刻出凛冽高光",
-    "camera": "cowboy shot, low angle, heroic and majestic composition, epic military grandeur",
+    "camera": "low angle, cowboy shot",
     "mood": "坚不可摧、恪尽职守与如白狼般骄傲昂然的皇家军魂",
     "adult": true,
     "sampleRating": "R15",
@@ -37,27 +37,34 @@
       "morning_clouds"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "horn (arknights)",
-      "blonde hair",
-      "blue eyes",
-      "wolf ears",
-      "wolf tail",
-      "white competition swimsuit",
-      "gold zipper",
-      "standing on coastal artillery ruins",
-      "roaring sea winds",
-      "dramatic morning rays",
-      "heroic resolute posture",
-      "toned muscular build",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "hand on hip",
+      "looking ahead",
+      "serious",
+      "wind",
+      "hair blowing",
+      "coastal ruins",
+      "cliff",
+      "ocean",
+      "waves",
+      "cloudy sky",
+      "dawn",
+      "sunbeams",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Horn stands like a vigilant sentinel upon the ruins of a coastal artillery battery at dawn in her platinum-and-gold zip-front racing suit, wolf ears twitching in the gale with unbroken military pride.",
-    "animaCaption": "Piercing dawn rays shatter through rolling sea clouds as the White Wolf commander surveys the wild Atlantic breakers.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Horn stands sentinel atop weathered stone artillery ruins overlooking a turbulent sea cliff at dawn, wearing a platinum-white and royal-gold high-collar competition swimsuit with a front zipper and white capelet. With one hand planted on her hip and sea wind whipping her blonde hair, she surveys the crashing breakers beneath shafts of morning sunlight piercing heavy clouds.",
+    "animaCaption": "Standing with one hand on her hip atop weathered coastal artillery ruins in her white-and-gold zip-front racing swimsuit, she watches the stormy surf as sea wind whips her hair. Piercing dawn sunbeams break through leaden clouds over the cliff.",
+    "nsfwTokens": [
+      "white one-piece swimsuit",
+      "competition swimsuit",
+      "high collar",
+      "front zipper",
+      "gold trim",
+      "white capelet",
+      "toned"
+    ],
+    "nsfwProse": "She wears a platinum-white and gold high-collar racing swimsuit with a front gold zipper and a crisp white capelet."
   }
 }

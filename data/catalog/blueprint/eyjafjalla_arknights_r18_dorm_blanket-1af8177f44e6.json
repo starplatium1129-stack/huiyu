@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_dorm_blanket",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 553,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "裹着薄毯蜷在床角",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "medium shot",
+    "camera": "eye level, medium shot",
     "category": "成人",
     "characterId": "eyjafjalla_arknights",
     "coverageTags": [
@@ -19,27 +19,38 @@
     "description": "私密宿舍温暖的大床上，艾雅法拉裹着薄薄的羊毛毯蜷缩在床角，单薄的睡裙滑落露出圆润可爱的香肩与雪白小腿。她怯生生地掀开毛毯的一角——「前辈……屋子里有点冷呢。可以钻进毛毯里抱紧小羊吗？我想和前辈贴在一起。」",
     "id": "eyjafjalla_arknights_r18_dorm_blanket",
     "kreaStyleHint": "",
-    "lighting": "warm bedside lamp",
+    "lighting": "床头小灯的暖光擦亮毯子流苏，窗后留暗蓝夜色",
     "location": "罗德岛·艾雅法拉宿舍",
     "mood": "柔软困倦",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "soft_nightdress",
-    "promptProse": "She curls at the bed corner, lifting one edge of the wool blanket toward the viewer. The warm bedside lamp lights her shy expression, exposed shoulder and the blanket fringe.",
-    "promptTokens": [
-      "adult",
-      "cream nightgown",
-      "thin straps",
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwProse": "Her oversized pale-pink knit cardigan has slipped off one shoulder over her thin white cotton nightgown, baring her rounded shoulder, collarbone, and pale legs above soft white socks.",
+    "nsfwTokens": [
+      "white nightgown",
+      "pink cardigan",
       "off shoulder",
-      "blanket",
-      "socks",
+      "bare shoulders",
+      "collarbone",
+      "bare legs",
+      "white socks"
+    ],
+    "outfitId": "soft_nightdress",
+    "promptProse": "Eyjafjalla curls up against the pillow at the back corner of her Rhodes Island dorm bed. Her pale pink cardigan has slipped from one shoulder over the white cotton nightdress. She pinches a loose corner of a thin wool blanket and lifts it toward the person beside the bed, its short fringe hanging from her fingertips. A small bedside lamp lights her hand and the crease where the blanket leaves the rumpled white sheet. A muted blue window behind the headboard suggests the cold evening outside. Frame the near mattress edge, the lifted blanket and her shy glance at the same height.",
+    "promptTokens": [
       "curled up",
-      "bed",
+      "on bed",
       "holding blanket",
+      "blanket",
+      "pillow",
+      "looking at viewer",
       "blush",
-      "shy expression",
-      "warm lighting",
+      "bedroom",
+      "lamp",
+      "nightstand",
+      "night",
+      "eye level",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -53,6 +64,7 @@
     ],
     "timeOfDay": "夜晚",
     "title": "艾雅法拉 · 宿舍薄毯",
-    "animaCaption": "She lifts one edge of the blanket toward the viewer from the bed corner."
+    "animaCaption": "Curled up against the pillows at the corner of her dorm bed, she pinches a corner of the fringed wool blanket and lifts it shyly toward the viewer with a soft blush. Warm bedside lamplight traces the pale pink cardigan slipping from her bare shoulder over her white nightgown.",
+    "compositionIntent": "single"
   }
 }

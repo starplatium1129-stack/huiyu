@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_kaori_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kanzaki_kaori_lingerie_whisper",
     "characterId": "kanzaki_kaori",
@@ -14,7 +14,7 @@
     "location": "英国清教天草式支部静修室榻榻米前",
     "timeOfDay": "深夜",
     "lighting": "障子门外伦敦冷冽夜雨的清冷天光，与静室内单支粗白蜡烛的火苗在单肩和风背心上形成明暗反差",
-    "camera": "威严庄重而兼具女性神圣感的低位平视，展现圣人武者深沉的自省与纯洁无瑕的灵魂",
+    "camera": "from below, medium shot",
     "mood": "庄重虔诚、圣人自律、外表冷艳内心自责的反差",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,32 @@
       "saint_reflection"
     ],
     "promptTokens": [
-      "white one-shoulder tank",
-      "nodachi sword on lap",
-      "sitting seiza",
-      "long ponytail",
+      "sitting",
+      "seiza",
+      "closed eyes",
+      "nodachi",
+      "sword on lap",
+      "hands on scabbard",
+      "serene",
+      "tatami",
       "rainy window",
-      "noble gaze",
       "candlelight",
-      "dim lighting"
+      "night",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Kaori Kanzaki engaged in solemn post-combat reflection inside a quiet London dormitory while rain pounds the glass. She wears a minimalist pure white modal one-shoulder tank top and asymmetrical lounge pants echoing her iconic combat silhouette. Sitting in flawless seiza with her two-meter nodachi resting across her knees, her noble features radiate saintly, self-sacrificing dedication.",
-    "animaCaption": "Kaori Kanzaki engaged in solemn post-combat reflection inside a quiet London dormitory while rain pounds the glass. She wears a minimalist pure white modal one-shoulder tank top and asymmetrical lounge pants echoing her iconic combat silhouette.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a low eye-level angle inside a quiet London dormitory while night rain patters against the glass, Kaori sits in crisp seiza with eyes closed in calm reflection and her two-meter nodachi laid squarely across her knees.",
+    "animaCaption": "Sitting upright in disciplined seiza on the candlelit dormitory tatami beside a rain-streaked window, she rests both hands solemnly on the scabbard of her long nodachi wearing a seamless white one-shoulder modal tank and asymmetrical lounge pants.",
+    "nsfwTokens": [
+      "white tank top",
+      "one-shoulder",
+      "asymmetrical pants",
+      "bare shoulder",
+      "barefoot",
+      "loungewear"
+    ],
+    "nsfwProse": "She wears a minimalist martial loungewear set of a seamless pure-white modal one-shoulder tank top paired with asymmetrical single-legged stretch lounge pants.",
+    "compositionIntent": "single"
   }
 }

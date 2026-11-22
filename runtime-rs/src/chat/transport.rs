@@ -8,6 +8,7 @@ use std::{
 };
 use url::Url;
 
+#[derive(Clone)]
 pub(super) struct Transport {
     trusted: reqwest::Client,
 }
@@ -81,6 +82,34 @@ impl Transport {
             request
                 .header("accept", options.accept)
                 .timeout(options.total)
+                .send(),
+        )
+        .await
+        .map_err(|_| timeout())?
+        .map_err(network_error)
+    }
+
+    pub async fn send_form(
+        &self,
+        target: Url,
+        form: &[(&str, &str)],
+        idle: Duration,
+    ) -> Result<reqwest::Response> {
+        if target.scheme() != "https" || !target.username().is_empty() || target.password().is_some()
+        {
+            return Err(Error::invalid("Invalid OAuth URL"));
+        }
+        let body: String = url::form_urlencoded::Serializer::new(String::new())
+            .extend_pairs(form.iter().copied())
+            .finish();
+        tokio::time::timeout(
+            idle,
+            self.trusted
+                .post(target)
+                .header("accept", "application/json")
+                .header("content-type", "application/x-www-form-urlencoded")
+                .body(body)
+                .timeout(idle)
                 .send(),
         )
         .await

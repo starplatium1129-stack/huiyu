@@ -19,7 +19,7 @@ export function useCompanionOrbit(open: () => boolean, root: Ref<HTMLElement | n
       if (returnFocus?.isConnected && !root.value.contains(returnFocus)) returnFocus.focus({ preventScroll: true })
       else document.querySelector<HTMLElement>('.companion-page')?.focus({ preventScroll: true })
     }
-  }, { flush: 'sync' })
+  }, { flush: 'sync', immediate: true })
   watch(category, async (value, previous) => {
     page.value = 0
     await nextTick()
@@ -30,8 +30,7 @@ export function useCompanionOrbit(open: () => boolean, root: Ref<HTMLElement | n
   function key(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       event.preventDefault(); event.stopPropagation()
-      if (category.value) category.value = null
-      else close()
+      close()
       return
     }
     if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
@@ -52,11 +51,12 @@ export function orbitPoint(angle: number, radius: number) {
 }
 
 /** A 60° opening above the character keeps tall models' faces clear. */
-export function orbitAngle(index: number) { return -41.25 + index * 37.5 }
+export function orbitAngle(index: number, count: number) { return -60 + (index + .5) * 300 / count }
 
 /** Rounded annular sectors; a fixed viewBox makes all eight targets scale together. */
-export function orbitSector(index: number) {
-  const angle = orbitAngle(index), start = angle - 16.5, end = angle + 16.5
+export function orbitSector(index: number, count: number) {
+  const angle = orbitAngle(index, count), half = 150 / count - 2.25
+  const start = angle - half, end = angle + half
   const outerStart = orbitPoint(start + 2, 162), outerEnd = orbitPoint(end - 2, 162)
   const cornerA = orbitPoint(end, 162), edgeA = orbitPoint(end, 155)
   const edgeB = orbitPoint(end, 99), cornerB = orbitPoint(end, 92), innerEnd = orbitPoint(end - 4, 92)

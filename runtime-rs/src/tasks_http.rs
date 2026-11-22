@@ -1,5 +1,6 @@
 mod qwen_inputs;
 mod results;
+mod studio_video;
 
 use crate::{
     AppState,
@@ -152,6 +153,9 @@ async fn perform(
             "TASK_BODY_TOO_LARGE",
             "Task request is too large",
         ));
+    }
+    if path.first().is_some_and(|part| part == "studio-video") {
+        return studio_video::route(state,&storage,&session,method,&path,body).await;
     }
     if path.first().is_some_and(|part| part == "companion-draw") {
         if !crate::security::is_direct_local(headers, peer.ip()) {
@@ -410,7 +414,7 @@ async fn perform(
         project_task(&mut result, &session, state, &storage)?;
         if let Some(runtime) = &state.tasks {
             result["liveProgress"] = runtime
-                .image_progress(&storage, &session.principal_id, &result)
+                .live_progress(&storage, &session.principal_id, &result)
                 .await
                 .unwrap_or(Value::Null);
         }

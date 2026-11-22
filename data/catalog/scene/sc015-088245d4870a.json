@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc015",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
-    "animaCaption": "She slides the exam sheet toward the viewer, pointing to one problem.",
+    "animaCaption": "The exam sheet lies flat on the desk in front of the viewer. Nene touches one triangle in the margin with an index finger while her other hand holds the pages still.",
     "camera": "半身中景",
     "category": "校园",
     "char": "nene",
@@ -20,7 +20,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, paper, desk, classroom, window light, medium shot, exam paper, worried, blush, school_desk, soft_lighting, cinematic_lighting, depth_of_field",
+    "prompt": "1girl, ayachi_nene, nene_school_uniform, sitting, pointing, hand on table, paper, notebook, pen, eraser, school desk, classroom, school chair, chalkboard, clock, window light, worried, blush, three quarter view, medium shot",
     "rating": "All",
     "season": "秋",
     "story": "期中考试前的教室里，宁宁对着同一道题看了很久，草稿纸上已经画满凌乱的推导。见你经过，她先把卷子压住，几秒后又认命地推到你面前，呆毛也跟着垂下——「我知道平时应该早点复习……所以别说教了。教会这一题的话，放学后我请你喝东西。」",
@@ -52,6 +52,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "She slides the exam sheet toward the viewer and points to one problem with a worried expression."
+    "promptProse": "Nene leans over a school desk with the exam sheet flat between her and the viewer. She points to one small triangle on the paper as if asking how to get the next line. Her other hand pins the rough work in place. A pencil and the worn edge of an eraser rest at the near corner. Late light reaches her navy blazer cuff and the stack of scratch paper, while a darker chalkboard and a clock mark the far end of the empty classroom."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_maid_table_cat_doggystyle_thrust",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1097,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "cheshire_r18_maid_table_cat_doggystyle_thrust",
     "title": "柴郡 · 皇家茶室女仆装领口拉开露白嫩巨乳与猫耳轻颤自抚",
@@ -19,7 +19,7 @@
     "action": "坐在茶桌边女仆装领口大开露巨乳与蕾丝抹胸，猫耳轻颤，单手托胸另一手深层自抚娇喘",
     "timeOfDay": "下午",
     "lighting": "皇家茶室落地玻璃窗透入的金色午后日光与红木家具温润反光的明亮私密光影",
-    "camera": "cowboy shot, seated table perspective, focus on cat-ear headband, overflowing cleavage, and blushing smile",
+    "camera": "cowboy shot, eye level",
     "mood": "极乐沉沦",
     "sceneTags": [
       "tea_room",
@@ -36,21 +36,19 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "She sits on the tea table with her apron lowered to her waist, one hand at her chest and the other beneath the raised skirt. Golden afternoon light from the tall windows meets the softer reflections from the redwood furniture.",
+    "promptProse": "Inside a sunlit private redwood tearoom overlooking the garden, Cheshire sits along the table edge with legs dangling slightly and flushed, tear-bright eyes under golden afternoon rays.",
     "promptTokens": [
-      "tearoom",
-      "table",
-      "navy maid dress",
-      "white apron",
-      "open clothes",
-      "topless",
-      "white thighhighs",
       "sitting",
-      "masturbation",
+      "table",
       "hand on chest",
       "heavy blush",
-      "window light",
+      "teary eyes",
+      "parted lips",
+      "tearoom",
+      "window",
       "afternoon",
+      "sunlight",
+      "warm lighting",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -59,8 +57,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her apron gathers at her waist, one hand at her chest and the other beneath the skirt."
+    "nsfwTokens": [
+      "maid",
+      "navy dress",
+      "white apron",
+      "open clothes",
+      "topless",
+      "white thighhighs",
+      "garter straps",
+      "masturbation"
+    ],
+    "nsfwProse": "Her navy ruffled maid bodice is pulled wide open to expose her bare breasts and her white lace apron rests gathered at her waist above gartered white thigh-high stockings, one hand on her chest and the other beneath her raised skirt.",
+    "animaCaption": "Perched on the redwood tea table in golden afternoon window light, she wears her navy maid dress opened past her bare chest with her white lace apron bunched at her waist, cupping one breast while slipping her other hand beneath the lifted skirt.",
+    "compositionIntent": "single"
   }
 }

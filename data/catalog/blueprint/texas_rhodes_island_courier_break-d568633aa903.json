@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "texas_rhodes_island_courier_break",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 662,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "action": "斜倚在舒适布艺沙发上，单手递出一根巧克力棒，神情慵懒温柔",
-    "camera": "medium shot, eye level",
+    "camera": "three quarter view, medium shot",
     "category": "基地日常",
     "characterId": "texas_arknights",
     "coverageTags": [
@@ -15,39 +15,44 @@
     ],
     "description": "罗德岛阳光明媚的舰内休闲室内，绿植盆栽郁郁葱葱。德克萨斯倚靠在柔软的深灰沙发上，放松地蜷起一条修长的腿。她从红色纸盒里抽出一根巧克力棒递向坐在对面的博士，眼神平静而温和——「给。吃点甜的，能清醒一些。今天还有两份加急运单需要你签字。」",
     "id": "texas_rhodes_island_courier_break",
-    "lighting": "大型舷窗洒入的明媚柔和自然光与绿植阴影",
+    "lighting": "舷窗侧光斜过纸张，沙发扶手留有盆栽叶影",
     "location": "罗德岛舰船休闲休息室",
     "mood": "温馨放松",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "pocky in mouth",
+      "food in mouth"
+    ],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas rests on the sofa with one knee raised, offering a chocolate stick toward the viewer; its red box lies beside her as porthole light casts plant shadows on the sofa.",
+    "promptProse": "In the Rhodes Island crew lounge, Texas settles into the corner of a charcoal canvas couch in her black-and-white courier jacket with yellow piping and fingerless gloves. One hand rests on her knee. She offers a single thin chocolate-coated biscuit stick to the person opposite, pinching the very end between thumb and forefinger. The red carton sits on the low table by a clipboard with two unsigned delivery slips and a sealed parcel. Afternoon light from the round riveted porthole grazes the paper and casts leaf shadows over the armrest.",
     "promptTokens": [
-      "sofa",
-      "chocolate stick",
-      "houseplant",
-      "lounge",
-      "medium shot",
-      "reclining",
-      "knee up",
-      "offering food",
-      "chocolate box",
+      "couch",
+      "sitting",
+      "holding pocky",
+      "holding snack",
+      "outstretched arm",
+      "closed mouth",
+      "box",
+      "coffee table",
+      "clipboard",
+      "package",
+      "porthole",
+      "potted plant",
       "window light",
-      "plant shadow"
+      "looking at viewer",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "lounge",
       "couch",
-      "houseplants",
-      "window",
-      "pocky",
-      "holding_pocky",
-      "relaxed",
-      "gentle_expression",
-      "wolf_ears"
+      "holding pocky",
+      "outstretched arm",
+      "porthole",
+      "potted plant",
+      "indoors"
     ],
     "timeOfDay": "午后",
     "title": "德克萨斯 · 罗德岛休息室的巧克力棒",
-    "animaCaption": "She offers a chocolate stick toward the viewer with its red box resting beside her on the sofa."
+    "animaCaption": "Texas pinches one chocolate-coated biscuit stick between thumb and forefinger, holding it out toward the viewer. Her other hand rests on her knee, and the biscuit carton lies beside the unsigned delivery slips on the low table."
   }
 }

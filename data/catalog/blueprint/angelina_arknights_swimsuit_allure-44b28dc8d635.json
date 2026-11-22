@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3161,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "angelina_arknights_swimsuit_allure",
     "characterId": "angelina_arknights",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "orange bikini",
+      "side-tie bikini bottom",
+      "waist straps",
+      "detached sleeves",
+      "sheer sleeves",
+      "bare shoulders",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a vibrant coral-orange and apricot bikini with criss-cross waist ties and detached semi-sheer chiffon sun sleeves.",
     "title": "安洁莉娜 · 浮空戏水圈上的盛夏平衡术",
     "action": "整个人趴在明黄色的充气泳圈上，双足在清澈水面上轻轻扑腾，手掌微抬操控微弱反重力让水珠悬浮起舞",
     "location": "度假酒店露天水上乐园与棕榈环绕的浅水泳池",
     "timeOfDay": "盛夏正午",
     "lighting": "热烈强烈的盛夏正午日光，水下泛起晃动的焦散亮纹，半空悬浮水珠折射出七彩虹光",
-    "camera": "medium shot, high angle looking down, vibrant high-key summer color",
+    "camera": "high angle, medium shot",
     "mood": "活泼灵动、青春俏皮与神奇微光",
     "description": "午后阳光把泳池水烤得温热，棕榈树影在水面上晃晃悠悠。安洁莉娜整个人趴在充气泳圈上，蓬松的狐尾在身后翘起，指尖轻点水面，几颗水珠在反重力微光中悬浮成了晶莹的小串珠。她冲你狡黠地眨眨眼——「博士快看！只要稍微控制一下浮力，水珠就能变成项链哦！要不要试着接住它？接空了可要被泼一身水啦！」",
     "sceneTags": [
@@ -41,23 +49,21 @@
       "bright_summer"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "angelina (arknights)",
-      "coral bikini",
-      "detached sleeves",
-      "fox ears",
-      "fox tail",
-      "lying on pool float",
-      "floating water droplets",
-      "magic particles",
-      "winking",
-      "bright noon sun",
-      "turquoise pool",
-      "depth of field",
-      "cinematic lighting"
+      "lying",
+      "on stomach",
+      "pool float",
+      "swimming pool",
+      "floating water",
+      "water drop",
+      "wink",
+      "playful",
+      "palm tree",
+      "sunlight",
+      "water caustics",
+      "high angle",
+      "medium shot"
     ],
-    "promptProse": "Angelina lies playfully on an inflatable pool float in her coral-orange strappy bikini, using subtle anti-gravity arts to float glistening water droplets in the air while winking at the viewer.",
-    "animaCaption": "Bright midday sunshine sparkles through suspension-held water droplets as she enjoys a carefree swim."
+    "promptProse": "Angelina lies playfully on her stomach across a yellow inflatable float in a palm-ringed resort pool, wearing her coral-orange strappy bikini and sheer detached chiffon sleeves. Lifting one hand over the water, she levitates a bead-like string of clear droplets with anti-gravity Arts and winks upward as bright noon sun ripples across the turquoise surface.",
+    "animaCaption": "Stretched on her stomach across a bright yellow pool float in a coral bikini and sheer detached sleeves, she lifts one hand to levitate glistening water droplets while winking up at the camera. Harsh midday sunlight paints bright caustics across the turquoise pool."
   }
 }

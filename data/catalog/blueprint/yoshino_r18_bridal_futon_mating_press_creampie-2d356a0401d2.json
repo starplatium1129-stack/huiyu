@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_bridal_futon_mating_press_creampie",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1153,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "action": "侧卧大红织金锦被半裹半透绯红薄纱若隐若现，银白发铺散，双手托胸与下身自抚，含泪深情誓约",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "wide shot, side view",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,21 +22,33 @@
     "location": "朝武寝殿和室大红锦缎被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwProse": "Draped loosely in a sheer crimson silk-gauze robe that reveals her breasts and nipples transparently beneath, one hand cups her chest while the other touches herself beneath the parted fabric.",
+    "nsfwTokens": [
+      "red robe",
+      "see-through",
+      "open robe",
+      "nipples",
+      "breast hold",
+      "hand between legs",
+      "masturbation"
+    ],
     "outfitId": "crimson_sheer_robe",
-    "promptProse": "Yoshino cups her chest while touching herself beneath the sheer robe, reclining on red-and-gold bridal bedding with silver twintails across the pillows.",
+    "promptProse": "Viewed from the side across a traditional Japanese bedroom bathed in amber andon-lantern light, Yoshino lies curled on red-and-gold bridal bedding with her cheek nestled into the pillow and happy tears glistening on her flushed face.",
     "promptTokens": [
-      "on futon",
-      "bridal red kimono parted",
-      "white silver hair spread",
-      "traditional andon lamp",
-      "warm golden light",
-      "japanese bedroom",
-      "tatami",
+      "lying",
+      "on side",
+      "curled up",
+      "hand on chest",
+      "teary eyes",
       "heavy blush",
-      "tears of joy",
-      "soft shadows"
+      "futon",
+      "red sheets",
+      "tatami",
+      "paper lantern",
+      "warm lighting",
+      "night",
+      "from side",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R15",
@@ -57,6 +69,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "朝武芳乃 · 锦缎红被半裹朱红薄纱与银白长发铺散真情誓约深抚",
-    "animaCaption": "Flickering paper andon lanterns cast loving, warm amber warmth across the bridal futon as Yoshino's silver hair fans out."
+    "animaCaption": "Curled on her side across the gold-brocade crimson bridal futon in warm paper-lantern glow, she wears only a translucent crimson silk robe half-draped over her body, cupping one breast while her other hand slips beneath the sheer fabric with tearful devotion.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_chainsaw_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3260,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "reze_chainsaw_lingerie_whisper",
     "characterId": "reze_chainsaw",
@@ -14,7 +14,7 @@
     "location": "老旧公寓高层露台窗台，远处夜空中依稀绽放着夏日祭典的绚烂花火",
     "timeOfDay": "夏夜花火大会的终章",
     "lighting": "远方夜空中夏日烟花爆发出的红绿紫三色绚烂光华，将窗台边缘照耀得梦幻迷离",
-    "camera": "medium shot, side view, 侧身平视中景，微风拂动发丝，夜空中绽放的花火光华如梦似幻",
+    "camera": "side view, medium shot",
     "mood": "致命特工的危险罗曼史，甜美诱人与随时引爆的狂乱交织",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,34 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "windowsill",
+      "touching choker",
+      "biting lip",
+      "playful smile",
+      "looking at viewer",
+      "wind",
+      "apartment window",
+      "fireworks",
+      "colorful night sky",
+      "city rooftops",
+      "night",
       "side view",
-      "sitting on apartment window sill",
-      "summer festival fireworks exploding in sky",
-      "colorful bursts of light",
-      "city rooftop bokeh",
-      "summer night breeze",
-      "soft wistful smile",
-      "mysterious warmth"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Reze perches on the open window sill of a run-down apartment as vibrant summer festival fireworks light up the night sky behind her, wearing a soft, bittersweet smile.",
-    "animaCaption": "Perched on a window sill as festival fireworks burst across the night sky, sharing a tender, bittersweet smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Perched sideways on the open windowsill of an old high-rise apartment as summer festival fireworks bloom overhead, Reze wears a smoky-violet sheer floral-lace cropped bralette, cheeky briefs, and her signature black velvet choker. Tugging lightly at the collar while biting her lip in a teasing, wistful smile, she catches colorful bursts of firework light.",
+    "animaCaption": "Perched sideways on an open apartment windowsill in a smoky-violet sheer floral-lace bralette and briefs, she tugs lightly at her black velvet pin choker while biting her lower lip with a playful, bittersweet smile. Bursting summer festival fireworks wash colorful light across the night sky.",
+    "nsfwTokens": [
+      "purple lace bra",
+      "sheer bralette",
+      "purple panties",
+      "see-through",
+      "black velvet choker",
+      "bare midriff",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a smoky-violet sheer floral-lace cropped bralette and low-rise cheeky briefs paired with her black velvet pin-ring choker.",
+    "compositionIntent": "single"
   }
 }

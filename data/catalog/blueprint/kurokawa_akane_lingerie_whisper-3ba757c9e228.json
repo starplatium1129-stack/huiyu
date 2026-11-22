@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3275,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "kurokawa_akane_lingerie_whisper",
     "characterId": "kurokawa_akane",
@@ -14,7 +14,7 @@
     "location": "整洁温馨的现代公寓卧室，床头散落着彩色荧光标记的厚厚剧本",
     "timeOfDay": "夜深研读台词时分",
     "lighting": "床头台灯投射出暖橙色漫射光，在发丝与丝绸睡裙上滑过温润的光泽",
-    "camera": "close-up, low angle, 低机位俯视特写，镜头贴近床面，捕捉趴伏时舒展的双肩与凝视的双眸",
+    "camera": "low angle, close-up",
     "mood": "全神贯注的演员魅力与私下纯粹依恋的融合，深情而动人",
     "adult": true,
     "sampleRating": "R15",
@@ -39,27 +39,38 @@
       "low_angle"
     ],
     "promptTokens": [
-      "close-up",
-      "low angle",
-      "apartment",
-      "bedroom",
+      "lying",
+      "on stomach",
+      "legs up",
+      "chin on pillow",
+      "open book",
+      "paper",
+      "looking at viewer",
+      "gentle smile",
       "bed",
-      "night",
+      "pillow",
+      "lamp",
       "warm lighting",
-      "lying on stomach",
-      "hugging pillow",
-      "smile",
-      "teddy bear",
-      "reclining",
-      "desk lamp",
-      "open back deep v cut",
-      "pearlized sheen texture",
-      "indoors"
+      "low angle",
+      "close-up"
     ],
-    "negativeTokens": [],
-    "promptProse": "Kurokawa Akane lies prone on plush mattress, wearing a lavender purple watered-silk camisole slip. Chin resting on pillow, legs kicked up behind playfully, flipping acting script with highlighter marks amidst deep blue-purple hair, intense captivating eyes, warm bedside lamp glow, tender devoted smile.",
-    "animaCaption": "Kurokawa Akane lies prone on plush mattress, wearing a lavender purple watered-silk camisole slip.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Lying on her stomach across her soft apartment bed late at night with highlighted acting scripts spread near the pillows, Akane wears a shimmering lavender silk camisole slip with a deep open back. Resting her chin on a pillow with her bare legs playfully crossed up behind her, she pauses with her fingertips on a script page and gazes straight ahead with a tender, captivating smile under warm bedside lamplight.",
+    "animaCaption": "Lying on her stomach on the bed in a pearlescent lavender silk slip with her bare legs crossed playfully behind her, Akane rests her chin on a pillow beside highlighted scripts and smiles warmly at the viewer. Amber bedside lamplight glides across the open back of her silk slip.",
+    "nsfwTokens": [
+      "purple nightgown",
+      "silk",
+      "slip dress",
+      "spaghetti straps",
+      "open back",
+      "bare shoulders",
+      "bare back",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a pearlescent lavender watered-silk camisole slip with delicate double straps and a deep-V open back over her bare shoulders and bare legs.",
+    "compositionIntent": "single"
   }
 }

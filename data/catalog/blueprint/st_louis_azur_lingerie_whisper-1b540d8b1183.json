@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3448,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "st_louis_azur_lingerie_whisper",
     "characterId": "st_louis_azur",
@@ -14,7 +14,7 @@
     "location": "海滨沿海公路观景停车点，远处是繁星点点的港区夜景与平静浪潮",
     "timeOfDay": "午夜兜风后的私密停车时光",
     "lighting": "车内氛围灯的淡紫冷光与远方港湾灯火在车窗镀膜上反射出朦胧的流光溢彩",
-    "camera": "medium close-up, eye level, 平视特写中近景，真皮座椅的奢华质感衬托出惊人完美的丰满身姿与撩人神态",
+    "camera": "eye level, medium close-up",
     "mood": "绝对成熟诱人的都市佳人魅力，温柔从容又极具侵略性的成人罗曼史",
     "adult": true,
     "sampleRating": "R15",
@@ -36,23 +36,34 @@
       "eye_level"
     ],
     "promptTokens": [
-      "medium close-up",
-      "eye level",
+      "sitting",
+      "car interior",
+      "leather seat",
+      "hand in hair",
+      "seductive smile",
+      "looking at viewer",
+      "car window",
       "ocean",
-      "seashore",
+      "city lights",
       "night",
-      "candlelight",
+      "purple lighting",
       "cool lighting",
-      "ultra-deep v neckline",
-      "sheer gossamer side panels",
-      "liquid drape silk",
-      "indoors",
-      "soft lighting"
+      "eye level",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",
-    "animaCaption": "St.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Parked at a quiet coastal overlook overlooking the glittering port lights at midnight, St. Louis turns sideways against the plush leather seat of a sports car in an ice-blue watered-silk slip gown with a plunging V-neckline and sheer side panels. Resting one arm along the car door frame while brushing her fingers lightly through her hair, she meets the viewer's eyes with a languid, inviting smile. Soft violet cabin ambient light blends with distant harbor reflections across the dark car window.",
+    "animaCaption": "Turned sideways on the sports car's leather seat in a plunging ice-blue watered-silk slip gown, St. Louis rests one arm on the door and brushes her hair with an inviting smile. Soft violet cabin light mixes with distant harbor lights outside the window.",
+    "nsfwTokens": [
+      "blue nightgown",
+      "silk slip dress",
+      "deep v-neck",
+      "sheer panels",
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears an ice-blue watered-silk slip gown with a deep plunging V-neckline and sheer gossamer side panels clinging smoothly to her curves.",
+    "compositionIntent": "single"
   }
 }

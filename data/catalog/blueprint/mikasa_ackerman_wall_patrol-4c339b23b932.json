@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_wall_patrol",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 978,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "action": "垛口边俯瞰巡逻",
-    "camera": "cowboy shot, standing atop a stone Wall rampart with wind in scarf",
+    "camera": "three quarter view, cowboy shot",
     "category": "战斗前线",
     "characterId": "mikasa_ackerman",
     "coverageTags": [
@@ -20,12 +20,22 @@
     "mood": "沉静坚定",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa looks over the walled town from the battlement, daylight catching her windblown cape and red scarf.",
+    "promptProse": "On daytime patrol atop the towering Paradis Wall, Mikasa stands beside the weathered stone battlement parapet in her brown Survey Corps jacket, green cloak, and ODM gear. Looking calmly down across the cluster of distant red-roofed houses inside the walls, she braces against the high-altitude wind snapping her cloak and red scarf behind her shoulders. Crisp midday sunlight illuminates the rough limestone blocks and sweeping clouds overhead.",
     "promptTokens": [
-      "battlement",
-      "looking at town",
+      "standing",
+      "stone wall",
+      "railing",
+      "looking down",
+      "serious",
+      "town",
       "wind",
-      "daylight"
+      "blue sky",
+      "clouds",
+      "sunlight",
+      "day",
+      "outdoors",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +49,7 @@
     ],
     "timeOfDay": "白天",
     "title": "三笠 · 城墙巡逻",
-    "animaCaption": "She watches the walled town from the battlement."
+    "animaCaption": "Standing beside the weathered stone battlement atop the high Wall in her Survey Corps uniform and cloak, Mikasa surveys the walled town far below. Crisp midday sun and steady high wind catch her fluttering cape and red scarf.",
+    "compositionIntent": "single"
   }
 }

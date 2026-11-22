@@ -19,6 +19,12 @@ pub(crate) struct Intent {
     owner: String,
     family: String,
 }
+pub(crate) fn valid_request_key(key: &str) -> bool {
+    (1..=160).contains(&key.len())
+        && key
+            .bytes()
+            .all(|c| c.is_ascii_alphanumeric() || b"_-".contains(&c))
+}
 pub(crate) enum Acceptance<'a> {
     Existing(Receipt),
     New(PendingAcceptance<'a>),
@@ -86,12 +92,7 @@ impl Requests {
         let _active = self.active.lock().await;
     }
     fn token(&self, owner: &str, family: &str, key: &str) -> Result<String> {
-        if key.is_empty()
-            || key.len() > 160
-            || !key
-                .bytes()
-                .all(|c| c.is_ascii_alphanumeric() || b"_-".contains(&c))
-        {
+        if !valid_request_key(key) {
             return Err(ApiError::invalid(format!("{}请求编号无效", self.subject)));
         }
         Ok(crate::storage::json_fingerprint(&json!([

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_rainy_phone_booth_glance",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "reze_rainy_phone_booth_glance",
     "characterId": "reze_chainsaw",
@@ -20,16 +20,21 @@
       "close_quarters",
       "intense_gaze"
     ],
-    "promptProse": "Reze turns to the viewer inside the cramped booth, wet bangs at her cheeks and receiver hanging beside her; rainy streetlight softens her glass reflection.",
+    "promptProse": "From inside a narrow red-painted metal phone booth, Reze turns her face back over her shoulder to meet the viewer's eyes. One wet lock lies against her cheek above the pin choker and white collar. The black telephone handset hangs on its curled cord just below her shoulder beside the payphone. A red vertical frame borders the close view, and the street lamps outside dissolve into amber reflections through the rain on the glass. A small cool booth lamp lights one edge of her fringe.",
     "promptTokens": [
       "wet hair",
       "looking back",
-      "telephone booth",
+      "looking at viewer",
+      "phone booth",
+      "payphone",
       "rain",
+      "water drop",
+      "window",
+      "glass",
+      "reflection",
+      "night",
       "close-up",
-      "hanging telephone receiver",
-      "streetlight",
-      "glass reflection"
+      "three quarter view"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -39,7 +44,7 @@
     "action": "湿发回眸，雨幕模糊街景",
     "timeOfDay": "night",
     "lighting": "soft streetlamp glow through rain-streaked booth glass at night",
-    "camera": "close_up",
+    "camera": "close-up, three quarter view",
     "mood": "紧绷肃杀",
     "recommendedSize": "1152x1536",
     "coverageTags": [
@@ -47,6 +52,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She turns toward the viewer with the receiver hanging beside her inside the cramped booth."
+    "animaCaption": "Inside the narrow red-painted booth she turns just her head toward the viewer, with wet bangs against her cheek. The black handset hangs by its cord next to her shoulder and rain beads on the glass."
   }
 }

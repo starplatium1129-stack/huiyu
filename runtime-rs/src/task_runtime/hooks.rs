@@ -10,6 +10,21 @@ pub(super) struct Hooks {
     pub id: String,
 }
 impl ExecutionHooks for Hooks {
+    fn ready_to_queue(&self) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
+            let runtime = self.runtime.upgrade().ok_or_else(|| {
+                ApiError::new(503, "TASK_RUNTIME_CLOSED", "任务调度已停止")
+            })?;
+            let task = TaskRuntime::get(&self.storage, &self.principal, &self.id).await?;
+            if task.cancel_requested_at.is_some()
+                || task.upstream_settled
+                || !dependencies::wait(&runtime, &self.storage, &self.principal, &task).await?
+            {
+                return Err(ApiError::new(499, "CANCELLED", "排队任务已取消"));
+            }
+            Ok(())
+        })
+    }
     fn observation_changed(&self) {
         if let Some(runtime) = self.runtime.upgrade() {
             runtime.monitor_changed(
@@ -30,6 +45,9 @@ impl ExecutionHooks for Hooks {
                 ..Default::default()
             };
             let task = patch_at(&self.storage, &self.principal, &self.id, revision, change).await?;
+            if task.cancel_requested_at.is_some() && task.submission_intent_at.is_none() {
+                return Err(ApiError::new(499, "CANCELLED", "排队任务已取消"));
+            }
             if let Some(runtime) = self.runtime.upgrade() {
                 if let Some(job) = job {
                     runtime.register_job(&self.storage, &self.id, job);
@@ -69,6 +87,8 @@ impl ExecutionHooks for Hooks {
                     submission_intent_at: Some(Some(now())),
                     provider: Some(provider),
                     provider_fingerprint: Some(runtime.binding_for(current.kind)),
+                    metadata: current.metadata.contains_key("nativeGpuQueueEpoch").then(||
+                        serde_json::Map::from_iter([("nativeGpuQueueEpoch".into(), json!(self.storage.runtime_epoch()))])),
                     ..Default::default()
                 },
             )
@@ -103,6 +123,14 @@ impl ExecutionHooks for Hooks {
                     self.id.clone(),
                 );
             }
+            Ok(())
+        })
+    }
+    fn execution_metadata(&self, value: Value) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
+            patch(&self.storage, &self.principal, &self.id, TaskPatch {
+                metadata: Some(serde_json::from_value(value)?), ..Default::default()
+            }).await?;
             Ok(())
         })
     }

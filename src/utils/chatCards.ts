@@ -47,12 +47,12 @@ function catalogProfiles() {
   return profiles = current
 }
 
-async function registerCard(card: ChatCard, owner: string) {
+async function registerCard(card: ChatCard, owner: string, enrich = true) {
   if (!card || !/^card-[a-f0-9]{64}$/.test(card.id) || typeof card.name !== 'string' || !card.name.trim()
     || typeof card.greeting !== 'string' || typeof card.description !== 'string'
     || (card.avatarUrl !== '' && card.avatarUrl !== `/api/chat/cards/${card.id}/avatar`)) throw new Error('角色卡目录格式错误')
   const catalogId = typeof card.catalogId === 'string' && /^[a-z0-9_-]{1,80}$/.test(card.catalogId) ? card.catalogId : undefined
-  const profile = catalogId ? (await catalogProfiles()).get(catalogId) : undefined
+  const profile = catalogId && (enrich || !card.avatarUrl) ? (await catalogProfiles()).get(catalogId) : undefined
   const image = card.avatarUrl || (catalogId && characterArtEntry(catalogId)?.portraitUrl) || profile?.image || '/assets/logo.svg'
   if (owner !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新打开角色卡')
   registerCompanionCharacter({
@@ -71,6 +71,15 @@ let pending: Promise<void> | undefined
 let directoryOwner = ''
 let listening = false
 const changeKey = 'huiyu_chat_card_import'
+export async function loadChatCard(id: string): Promise<void> {
+  if (!isLocalStudioHost() || !/^card-[a-f0-9]{64}$/.test(id)) return
+  const owner = runtimeResourceIdentity()
+  const response = await runtimeFetch(`/api/chat/cards?id=${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(5000) })
+  if (!response.ok) throw new Error('未能读取当前角色卡')
+  const { cards } = await response.json()
+  const card = Array.isArray(cards) && cards.find(card => card?.id === id)
+  if (card) await registerCard(card, owner, false)
+}
 export function loadChatCards(): Promise<void> {
   const owner = runtimeResourceIdentity()
   if (directoryOwner !== owner) {

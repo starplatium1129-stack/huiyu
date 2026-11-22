@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3234,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "id": "eyjafjalla_arknights_swimsuit_allure",
     "characterId": "eyjafjalla_arknights",
@@ -13,8 +13,8 @@
     "action": "小心翼翼地捧着盛满彩色小贝壳与光滑海玻璃的编织小篮子，微侧过头贴近聆听海浪的大声呢喃",
     "location": "阳光温热平缓的火山砂细软浅海沙滩",
     "timeOfDay": "午后四点",
-    "lighting": "柔和温暖的斜照金阳洒在细软沙滩上，光线漫射进编织斗篷，勾勒出轻软的羊绒质感与甜美红晕",
-    "camera": "medium close-up, eye level, warm and gentle portrait, soft focus background",
+    "lighting": "日光由水面反射到篮沿和珊瑚粉荷叶边，潮沟与黑砂保留柔和明暗",
+    "camera": "from side, medium shot",
     "mood": "温柔纤弱、纯真依赖与心满意足的宁静幸福",
     "adult": true,
     "sampleRating": "R15",
@@ -38,25 +38,36 @@
       "golden_light"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "eyjafjalla (arknights)",
-      "short brown hair",
-      "sheep horns",
-      "coral peach bikini",
-      "crochet capelet",
-      "holding small basket of seashells",
-      "soft blush",
-      "tender affectionate smile",
-      "warm afternoon beach",
-      "golden sunlight",
-      "depth of field",
-      "cinematic lighting"
+      "standing",
+      "holding basket",
+      "basket",
+      "seashell",
+      "head tilt",
+      "smile",
+      "blush",
+      "beach",
+      "black sand",
+      "shallow water",
+      "ripples",
+      "sunlight",
+      "from side",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Eyjafjalla holds a small woven basket filled with colorful seashells on a sun-warmed beach, wearing her coral-peach ruffled bikini and crochet capelet with a tender, adoring smile.",
-    "animaCaption": "Warm late-afternoon sunshine caresses her soft knit shawl as she happily treasures gifts gathered from the sand.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Eyjafjalla pauses where the shallow tide has drawn thin channels in the dark volcanic sand. Her coral-peach swimsuit has cream ruffles beneath a loosely crocheted capelet. She cradles a small wicker basket with both hands, tilting her head toward the breaking waves. Sunlight catches the ridges of pale scallop shells and a few smooth pieces of sea glass in the basket. From the side, follow the diagonal of the beach behind her through the shallow channels to a strip of bright water.",
+    "animaCaption": "Pausing along the dark volcanic sand in her coral-pink ruffled bikini and loose cream crochet capelet, she cradles a wicker basket of seashells and sea glass and tilts her head toward the gentle waves with a warm smile.",
+    "nsfwTokens": [
+      "pink bikini",
+      "frilled bikini",
+      "side-tie bikini bottom",
+      "bare shoulders",
+      "midriff",
+      "shawl"
+    ],
+    "nsfwProse": "She wears a coral-pink two-piece ruffled bikini with side-tie strings, baring her shoulders and midriff under a loose cream crochet beach capelet.",
+    "compositionIntent": "single"
   }
 }

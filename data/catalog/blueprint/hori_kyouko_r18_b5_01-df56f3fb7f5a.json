@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1563,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_01",
     "title": "堀京子 · 弟妹入睡后客厅的主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间居家T恤高推露胸，抓领带自缚手腕，咬唇渴求粗暴对待",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,21 +30,21 @@
       "bare_breasts",
       "bouncing_breasts"
     ],
-    "promptProse": "Adult Hori straddles the viewer's lap with her shirt raised, wrapping the viewer's necktie around her own wrists as she leans toward their neck.",
+    "promptProse": "On the quiet living-room rug late at night, Hori shoves her oversized cream T-shirt up above her bare breasts and settles astride her partner's lap in cowgirl position. Winding his dark necktie tightly around her own raised wrists, she leans forward biting her lip with an ardent, deeply flushed plea under the dim warm living-room lamp.",
     "promptTokens": [
-      "adult",
-      "living room",
-      "rug",
-      "cream oversized t-shirt",
-      "shirt lift",
-      "topless",
-      "necktie",
-      "bound wrists",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "from below",
-      "blue pocket",
+      "bound wrists",
+      "necktie",
       "leaning forward",
+      "biting lip",
+      "heavy blush",
+      "living room",
       "warm lighting",
+      "from below",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -53,14 +53,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "t-shirt",
+      "shirt lift",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "bottomless",
+      "cowgirl position",
+      "sex"
+    ],
+    "nsfwProse": "Her oversized cream cotton T-shirt is shoved high above her bare breasts and nipples with her lower body bare as she rides astride her partner's lap with his necktie looped around her wrists.",
     "outfitId": "cream_home_tshirt",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "She wraps the viewer's necktie around her own wrists while leaning toward their neck."
+    "animaCaption": "Riding astride her partner's lap on the living-room rug with her cream T-shirt bunched above her bare breasts, Hori winds his necktie around her own wrists and leans forward biting her lip in a heavy blush. Dim warm lamplight frames her urgent expression.",
+    "compositionIntent": "group"
   }
 }

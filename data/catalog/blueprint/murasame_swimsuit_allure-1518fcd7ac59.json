@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3293,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "murasame_swimsuit_allure",
     "characterId": "murasame",
@@ -14,7 +14,7 @@
     "location": "千恋神社后山清凉透彻的林间高山溪流",
     "timeOfDay": "盛夏初晨",
     "lighting": "清晨山岚初散，金色朝阳穿透苍老杉树林，在朱红小桥与潺潺溪流上洒下斑驳暖光",
-    "camera": "medium full shot, low angle looking up from stream bed, vibrant summer nature, charming cute angle",
+    "camera": "low angle, cowboy shot",
     "mood": "天真烂漫、古灵精怪与神明少女的夏日欢歌",
     "adult": true,
     "sampleRating": "R15",
@@ -40,28 +40,33 @@
       "forest"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "murasame (senren banka)",
-      "blonde hair",
-      "twin buns",
-      "amber eyes",
-      "white and red swimdress",
-      "sitting on red wooden bridge",
-      "splashing feet in mountain stream",
-      "water droplets",
-      "sunny forest morning",
-      "joyful excited expression",
-      "shrine woods",
-      "depth of field",
-      "sunlight",
+      "sitting",
+      "red wooden bridge",
+      "feet in water",
+      "splashing",
+      "water drop",
+      "happy smile",
+      "looking at viewer",
+      "mountain stream",
+      "cedar forest",
+      "morning",
       "dappled sunlight",
-      "water reflection"
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Murasame kicks her feet excitedly in a cold mountain stream while perched on a red wooden bridge in her shrine-maiden swimdress, laughing happily under the morning forest canopy. Morning mountain sunlight filters through the forest canopy in shimmering dappled patterns, casting playful sparkling reflections off the rushing river rapids.",
-    "animaCaption": "Morning mountain mist parts over the babbling brook as the spirit blade maiden revels in icy cold waters. Morning mountain sunlight filters through the forest canopy in shimmering dappled patterns, casting playful sparkling reflections off the rushing river rapids.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sitting along the edge of a vermilion wooden bridge spanning a clear mountain creek, Murasame wears a crisp white-and-crimson shrine-maiden swimdress with sheer shoulder frills and miniature rope waist cords. Splashing her bare feet happily through the sparkling stream, she grins cheerfully beneath dappled morning sunlight filtering through tall cedars.",
+    "animaCaption": "Perched on the edge of a vermilion wooden bridge in her white-and-crimson shrine-maiden swimdress, she kicks her bare feet enthusiastically through the cold forest stream and laughs brightly toward the camera. Dappled morning sunlight sparkles across the rushing water.",
+    "nsfwTokens": [
+      "white and red swimdress",
+      "one-piece swimsuit",
+      "shrine maiden swimsuit",
+      "rope waist tie",
+      "frilled shoulders",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a crisp snow-white and crimson shrine-maiden swimdress detailed with sheer shoulder frills, miniature rope waist cords, and tiny white paper tassels.",
+    "compositionIntent": "single"
   }
 }

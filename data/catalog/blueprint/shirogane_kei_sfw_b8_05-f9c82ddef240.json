@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, horizontal framing",
+    "camera": "three quarter view, medium shot",
     "category": "海滨度假",
     "characterId": "shirogane_kei",
     "coverageTags": [
@@ -25,15 +25,22 @@
     "mood": "把节俭过成小小胜利",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Kei sits on the seawall and presses her chosen cold drink to her cheek in warm afternoon sun.",
+    "promptProse": "Seated along the sunlit concrete seawall beside a coastal street vending machine on a warm afternoon, Kei wears her slate-blue one-piece swimsuit under a lightweight pale-grey zip windbreaker. Pressing a freshly chilled beverage can gratefully against her cheek to cool off, she looks sideways toward the viewer with a small, satisfied smirk over snagging the best bargain. Bright afternoon sun glints off the cool aluminum can and the sparkling blue ocean behind her.",
     "promptTokens": [
-      "Kei Shirogane",
-      "drink can",
-      "seawall",
-      "medium shot",
       "sitting",
+      "holding can",
+      "can",
       "drink against cheek",
-      "afternoon light"
+      "smug",
+      "slight smile",
+      "looking at viewer",
+      "seawall",
+      "ocean",
+      "vending machine",
+      "sunlight",
+      "afternoon",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",
@@ -50,6 +57,7 @@
     ],
     "timeOfDay": "日间",
     "title": "白银圭 · 海边自动贩卖机的冷饮选择",
-    "animaCaption": "She holds the cold drink against her cheek on the seawall."
+    "animaCaption": "Seated along the sunlit concrete seawall in her slate-blue swimsuit and light grey windbreaker, Kei presses a chilled drink can against her cheek with a small, satisfied smile. Warm afternoon sun glints off the can and the sparkling sea behind her.",
+    "compositionIntent": "single"
   }
 }

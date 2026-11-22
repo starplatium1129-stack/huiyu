@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_01",
     "title": "不知火舞 · 不知火道场红白高叉忍服主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间红白忍服大敞巨乳全弹，折扇轻摇，棕马尾甩动豪爽主动颠簸",
     "timeOfDay": "night",
     "lighting": "warm amber light across the dojo tatami",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "from below, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,21 +29,23 @@
       "red_outfit",
       "open_clothes"
     ],
-    "promptProse": "Mai straddles the offscreen viewer on the dojo tatami, her red tunic untied as she holds a fan beside their head in amber light.",
+    "promptProse": "On the tatami floor of the Shiranui dojo at night, Mai Shiranui rides astride her partner in cowgirl position with her sleeveless red-and-white ninja tunic and thick white rope sash untied wide to bare her breasts. Fanning the air beside his head with a bold, flushed smile, she is bathed in warm amber dojo light from below in first-person view.",
     "promptTokens": [
-      "red ninja outfit",
-      "fan",
-      "dojo",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "topless",
-      "cowboy shot",
-      "low angle",
-      "pov",
-      "sleeveless",
-      "white trim",
-      "thick white rope fastening",
       "straddling",
-      "warm lighting"
+      "holding fan",
+      "folding fan",
+      "confident smile",
+      "blush",
+      "dojo",
+      "tatami",
+      "warm amber light",
+      "from below",
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,15 +53,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "red ninja outfit",
+      "white trim",
+      "white rope",
+      "open clothes",
+      "topless",
+      "large breasts",
+      "nipples",
+      "sex"
+    ],
+    "nsfwProse": "Her sleeveless red-and-white ninja tunic and thick white obi rope are untied wide at the front, leaving her large breasts bare as she rides boldly atop her partner.",
     "outfitId": "red_ninja_costume",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "She holds the fan beside the offscreen viewer's head on the dojo tatami."
+    "compositionIntent": "group",
+    "animaCaption": "Straddling the viewer on the dojo tatami with her red-and-white ninja outfit untied wide to bare her chest, she waves an open folding fan near their cheek while riding with flushed, playful energy. Warm amber dojo light glows across the woven mats and white sash."
   }
 }

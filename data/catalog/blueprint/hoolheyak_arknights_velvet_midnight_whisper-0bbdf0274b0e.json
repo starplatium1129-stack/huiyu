@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_velvet_midnight_whisper",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3087,
   "createdAt": "2026-11-04T15:22:22.723187200+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "id": "hoolheyak_arknights_velvet_midnight_whisper",
     "characterId": "hoolheyak_arknights",
@@ -14,7 +14,7 @@
     "location": "暮色高空奢华套房",
     "timeOfDay": "暮夜",
     "lighting": "落地窗外繁华都市夜景光斑与室内琥珀色暖光交织的轮廓光",
-    "camera": "cowboy shot, side view, 侧身半身，红丝绒贵妃榻与落地窗夜景同框",
+    "camera": "from side, cowboy shot",
     "mood": "极致慵懒魅惑",
     "adult": true,
     "sampleRating": "R15",
@@ -35,28 +35,39 @@
       "side_view"
     ],
     "promptTokens": [
-      "cowboy shot",
-      "side view",
-      "reclining",
-      "lying on side",
-      "velvet chaise lounge",
-      "leaning on one elbow",
+      "lying",
+      "on side",
+      "couch",
+      "propping chin",
+      "looking at viewer",
       "seductive smile",
-      "bedroom eyes",
       "blush",
-      "luxury penthouse",
-      "panoramic window",
-      "evening city skyline bokeh",
-      "twilight",
-      "dim warm amber lighting",
+      "wine glass",
+      "window",
+      "city lights",
+      "bokeh",
+      "night",
       "rim light",
-      "crystal wine glass",
-      "sheer curtains"
+      "from side",
+      "cowboy shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Ho'olheyak reclines languidly on an emerald and crimson velvet chaise in a high-rise penthouse at dusk, casting a sultry, captivating glance with a knowing smile toward the panoramic city skyline.",
-    "animaCaption": "Reclining gracefully on a velvet chaise lounge in a penthouse suite, she smiles knowingly with city lights shimmering through the window.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "In a dimly lit high-rise suite at twilight, Ho'olheyak reclines on her side along a crimson velvet chaise lounge, propping her chin on one hand while her snake tail coils lazily around her stockinged legs. Through the tall panoramic window behind her, bokeh of evening city lights shimmers beside sheer drapes and a crystal wine glass on the side table. Warm amber room light rims her grey hair, feathered head wings, and sheer black lace as she meets the viewer's gaze with a knowing smile.",
+    "animaCaption": "Reclining on her side along the crimson velvet chaise in her sheer black lace babydoll and garter-held thighhighs, Ho'olheyak props her chin on one hand as her snake tail coils around her legs. Warm interior light and sparkling city bokeh beyond the tall window catch her playful, knowing smile.",
+    "nsfwTokens": [
+      "black lingerie",
+      "babydoll",
+      "see-through",
+      "black lace",
+      "cleavage",
+      "bare shoulders",
+      "garter straps",
+      "black thighhighs"
+    ],
+    "nsfwProse": "She wears a sheer black lace babydoll negligee with a plunging neckline revealing deep cleavage and bare shoulders, paired with garter straps and sheer black thighhighs.",
+    "compositionIntent": "single"
   }
 }

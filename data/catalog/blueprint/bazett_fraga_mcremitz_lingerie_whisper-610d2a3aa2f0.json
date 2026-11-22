@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3495,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_lingerie_whisper",
     "characterId": "bazett_fraga_mcremitz",
@@ -14,7 +14,7 @@
     "location": "卫宫邸偏房客房木地板",
     "timeOfDay": "清晨",
     "lighting": "和式庭院晨光从纸拉门穿透而入，打在汗水微光的古铜白皙皮肤上，线条充满张力与力量感",
-    "camera": "medium shot, side view, 充满力量美感的低角度侧视，突显魔术协会执行官强健修长而兼具女性魅力的体魄",
+    "camera": "side view, medium shot",
     "mood": "干练利落、严于律己、武者英武下的天然迟钝",
     "adult": true,
     "sampleRating": "R15",
@@ -40,21 +40,33 @@
       "side_view"
     ],
     "promptTokens": [
-      "medium shot",
+      "sitting",
+      "training mat",
+      "unwrapping bandages",
+      "hand wraps",
+      "sweat",
+      "focused gaze",
+      "punching bag",
+      "runes on wall",
+      "wooden floor",
+      "gym",
+      "overhead lamp",
       "side view",
-      "sitting on floor training mat",
-      "unwrapping hand bandages",
-      "hanging punching bag nearby",
-      "runic sigils on wall",
-      "toned athletic physique",
-      "glistening sweat",
-      "focused intense eyes",
-      "overhead gym lamp"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Bazett sits catching her breath on a training mat inside her reinforced workshop, slowly unspooling boxing wraps from bruised knuckles with powerful, athletic grace.",
-    "animaCaption": "Resting on a training mat after a heavy workout, unspooling hand wraps with powerful athletic composure.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Catching her breath on a floor training mat inside a rune-inscribed workshop, Bazett wears a ribbed charcoal-grey athletic camisole and black drawstring boxing sleep shorts. Slowly unspooling hand wraps from her knuckles beside a hanging punching bag, she displays cool martial composure under crisp overhead lamp light.",
+    "animaCaption": "Resting on a floor training mat beside a hanging punching bag in a ribbed charcoal athletic camisole and black boxing shorts, she unspools sweat-dampened wraps from her knuckles with steady focus. Cool overhead lamp light catches the sheen of sweat along her toned shoulders.",
+    "nsfwTokens": [
+      "dark grey tank top",
+      "ribbed athletic camisole",
+      "black boxing shorts",
+      "drawstring shorts",
+      "toned muscle",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a ribbed charcoal-grey tactical athletic camisole and black drawstring boxing sleep shorts fitted cleanly over her toned martial frame.",
+    "compositionIntent": "single"
   }
 }

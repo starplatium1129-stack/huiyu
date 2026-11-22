@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3150,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "entelechia_arknights_lingerie_whisper",
     "characterId": "entelechia_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛私人典藏音乐室红木矮几旁",
     "timeOfDay": "深夜",
     "lighting": "黄铜留声机大喇叭反射出的暗金色暖光，与阴郁深海色调在黑色真丝衬裙上交织",
-    "camera": "极富艺术情调的复古中景，突显大提琴家的高雅品味与深海血脉的幽玄",
+    "camera": "three quarter view, medium shot",
     "mood": "典雅深邃、艺术沉醉、独属于午夜的静止旋律",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,33 @@
       "melodic_elegance"
     ],
     "promptTokens": [
-      "charcoal silk chemise",
+      "standing",
+      "leaning on table",
+      "holding vinyl record",
       "gramophone",
-      "vinyl record",
-      "wavy dark hair",
-      "antique brass",
-      "deep purple eyes",
-      "melodic",
-      "dim lighting",
-      "warm lighting"
+      "brass horn",
+      "persian rug",
+      "head tilt",
+      "calm gaze",
+      "looking at viewer",
+      "music room",
+      "dim warm light",
+      "night",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Leaning beside a vintage brass-horned phonograph while gently handling a vinyl disc, her dark wavy curls and deep amethyst gaze evoke the sublime mysteries of the oceanic deep. Muted golden lamplight catches the polished flare of a vintage brass gramophone, casting subdued amber reflections across the dark silk of her slip.",
-    "animaCaption": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Muted golden lamplight catches the polished flare of a vintage brass gramophone, casting subdued amber reflections across the dark silk of her slip.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Entelechia lingers beside a vintage brass-horned gramophone inside a quiet midnight music room, barefoot on a woven rug in an asymmetric charcoal-and-black silk jacquard chemise with brass ring clasps. Holding the edge of a freshly stopped vinyl record as her calm red eyes meet the viewer, she catches muted golden highlights across the dark silk.",
+    "animaCaption": "Standing barefoot on a patterned rug beside a brass-horned gramophone in an asymmetric charcoal-black silk chemise, she cradles a stopped vinyl record by its edge and tilts her head calmly toward the viewer. Muted golden reflections from the antique horn warm the dark silk folds.",
+    "nsfwTokens": [
+      "black slip dress",
+      "charcoal silk chemise",
+      "asymmetric strap",
+      "handkerchief hem",
+      "silk nightgown",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears an asymmetric charcoal-grey and black silk jacquard chemise with brass ring clasps and a flowing handkerchief hem."
   }
 }

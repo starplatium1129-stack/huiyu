@@ -22,7 +22,7 @@
   .companion-dialogue-controls button,.companion-dialogue-speaker button,.companion-dialogue-presence > button,.companion-dialogue-connection button,
   .companion-dialogue-attachment button,.companion-dialogue-latest,.companion-dialogue-preference-actions > button,.companion-dialogue-send,.companion-dialogue-microphone,
   :is(button,a).companion-pop-item,.companion-settings-btn,.companion-setup-action,.companion-vision-btn,.companion-stop,.companion-send,
-  .companion-reminder-action,.companion-reminder-dismiss,.companion-exit-immersive,.companion-chat-chip,
+  .companion-reminder-action,.companion-reminder-dismiss,.companion-chat-chip,
   .preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
   .companion-picker-trigger,.orbit-option,.orbit-option-list button,.orbit-selection > header button
 ) {

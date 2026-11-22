@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3132,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "pozyomka_arknights_lingerie_whisper",
     "characterId": "pozyomka_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛私人书房，古旧皮面精装书堆叠至屋顶，打字机上夹着未写完的诗篇",
     "timeOfDay": "深秋落叶雨夜",
     "lighting": "复古黄铜绿罩台灯在厚重羊皮纸与丝绒裙上洒下浓郁温润的金绿暖调",
-    "camera": "medium shot, eye level, 平视中景，打字机书桌与深情目光同框",
+    "camera": "eye level, medium shot",
     "mood": "贵族文豪的忧郁浪漫与只对一人倾注的至深眷恋",
     "adult": true,
     "sampleRating": "R15",
@@ -42,20 +42,32 @@
     "promptTokens": [
       "sitting",
       "wooden desk",
-      "vintage typewriter",
-      "manuscript papers",
-      "leather-bound books",
-      "bookshelf",
       "holding fountain pen",
-      "warm desk lamp",
-      "loving gaze",
-      "medium shot",
-      "eye level"
+      "pen to lips",
+      "gentle smile",
+      "looking at viewer",
+      "typewriter",
+      "manuscript",
+      "bookshelf",
+      "books",
+      "green banker lamp",
+      "warm lighting",
+      "night",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Pozyomka sits sideways at a polished mahogany desk in her private book-lined study, gently touching a fountain pen to her lips beside an unfinished manuscript on her typewriter. Towering bookshelves and warm lamplight frame her tender, poetic gaze.",
-    "animaCaption": "Resting a pen at her lips beside the typewriter in her book-filled study, she looks up with poetic tenderness.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Pozyomka sits sideways at a mahogany desk inside her private book-lined study on an autumn night, wearing a deep raspberry-burgundy velvet corseted slip dress edged with vintage cream lace and a high side slit. Touching a fountain pen softly to her lips beside a vintage typewriter and manuscript pages, she looks toward the viewer under warm brass lamplight.",
+    "animaCaption": "Seated sideways at a mahogany study desk in a burgundy velvet corseted slip dress with cream lace trim and a high slit, she touches a fountain pen to her lips beside an open typewriter manuscript and gazes tenderly toward the viewer. A green-shaded brass banker lamp bathes the book-lined room in rich golden warmth.",
+    "nsfwTokens": [
+      "burgundy slip dress",
+      "velvet nightgown",
+      "corset dress",
+      "white lace trim",
+      "high-slit dress",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a deep raspberry-burgundy velvet corseted slip dress trimmed with vintage cream lace and a high side slit showing her bare legs."
   }
 }

@@ -4,6 +4,7 @@ mod qq;
 mod secret;
 pub(crate) mod wechat;
 pub(crate) use qq::muse::router as muse_qq_router;
+pub(crate) use qq::muse::{configured_peer as muse_vm_peer, tailnet_router as muse_qq_tailnet_router};
 
 use crate::{
     AppState,
@@ -292,7 +293,7 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
                     .lock()
                     .unwrap()
                     .as_ref()
-                    .map_or("waiting", |m| m.status(storage)),
+                    .map_or("waiting", |m| m.status(app, storage)),
             )
         };
     json!({"ok":true,"configured":settings.is_some(),"enabled":enabled,

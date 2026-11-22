@@ -1,5 +1,6 @@
 mod compatible;
 mod card_library;
+mod chatgpt;
 pub(crate) use card_library::validate_catalog_card;
 mod completion;
 mod channel_turn;
@@ -9,6 +10,7 @@ pub(crate) mod muse;
 mod ollama;
 mod persona;
 mod request_body;
+mod responses;
 mod search;
 mod settings;
 mod stream;
@@ -25,6 +27,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::{get, post},
 };
+use serde::Serialize;
 use serde_json::{Value, json};
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tokio::sync::OnceCell;
@@ -35,13 +38,25 @@ struct Error {
     status: StatusCode,
     code: String,
     message: String,
+    upstream: Option<Box<UpstreamFailure>>,
 }
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct UpstreamFailure {
+    status: u16,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    request_id: Option<String>,
+    body: Value,
+}
+
 impl Error {
     fn new(status: u16, code: &str, message: impl Into<String>) -> Self {
         Self {
             status: StatusCode::from_u16(status).unwrap_or(StatusCode::SERVICE_UNAVAILABLE),
             code: code.into(),
             message: message.into(),
+            upstream: None,
         }
     }
     fn invalid(message: impl Into<String>) -> Self {
@@ -57,12 +72,21 @@ impl IntoResponse for Error {
         value["error"] = self.message.clone().into();
         value["msg"] = self.message.into();
         value["code"] = self.code.into();
-        (self.status, Json(value)).into_response()
+        if let Some(upstream) = self.upstream {
+            value["upstream"] = json!(upstream);
+        }
+        (
+            self.status,
+            [("cache-control", "no-store")],
+            Json(value),
+        )
+            .into_response()
     }
 }
 
 pub struct ChatService {
     muse: muse::Connections,
+    chatgpt: chatgpt::ChatGptService,
     transport: transport::Transport,
     ollama: ollama::Ollama,
     settings: OnceCell<settings::Settings>,
@@ -77,6 +101,7 @@ impl ChatService {
     pub fn new() -> Self {
         Self {
             muse: muse::Connections::default(),
+            chatgpt: chatgpt::ChatGptService::default(),
             transport: transport::Transport::new(),
             ollama: ollama::Ollama::new(),
             settings: OnceCell::new(),
@@ -96,6 +121,7 @@ impl ChatService {
 pub fn router(service: Arc<ChatService>) -> Router<AppState> {
     Router::new()
         .merge(card_library::router())
+        .merge(chatgpt::router())
         .route("/api/chat-status", get(status))
         .route("/api/chat/muse/status", get(muse::status))
         .route(
@@ -163,6 +189,19 @@ async fn chat(
         } else {
             None
         };
+        let chatgpt_provider = body["provider"] == "chatgpt";
+        let chatgpt_client_id = if chatgpt_provider {
+            local(&headers, peer)?;
+            body.get("chatgptClientId")
+                .map(|value| {
+                    value.as_str().filter(|id| !id.is_empty()).map(str::to_owned)
+                        .ok_or_else(|| Error::invalid("ChatGPT 账号标识无效"))
+                })
+                .transpose()?
+        } else {
+            None
+        };
+        let muse_drawing = body["museDrawing"] == true && app.tasks.is_some();
         let settings = chat.settings(&app).await;
         let imported = if card_library::is_id(character) {
             local(&headers, peer)?;
@@ -182,10 +221,20 @@ async fn chat(
         };
         let input = request_body::validate(body, persona, imported, direct, &admission, &scope).await?;
         if let Some(character) = muse_character {
-            return chat.muse.submit(character, input);
+            return chat.muse.submit(character, input, muse_drawing);
         }
         let managed_auth = app.control.as_ref().map(|control| control.llama_auth());
-        let prepared = if input.api.is_some() {
+        let prepared = if chatgpt_provider {
+            responses::prepare(
+                &chat,
+                settings,
+                input,
+                chatgpt_client_id.as_deref(),
+                Some(&admission),
+                &scope,
+            )
+            .await?
+        } else if input.api.is_some() {
             compatible::prepare(
                 &chat.transport,
                 settings,

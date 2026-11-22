@@ -2,13 +2,11 @@ import { computed, ref, watch, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
-import { OUTFIT_BUNDLES, studioOutfitBundle } from '@/composables/scene/useDirectorCatalog'
+import { OUTFIT_BUNDLES } from '@/composables/scene/useDirectorCatalog'
 import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
-import { isStableIdentityToken } from '@/utils/interrogateReference'
-import { isGarmentToken } from '@/utils/popularIdentity'
-import { normalizeKey } from '@/utils/promptPolicy'
 import { suppressedOutfitTags } from '@/utils/outfitReplacement'
-import { wardrobeProse, wardrobeTokens } from '@/utils/wardrobeContent'
+import { wardrobeTokens } from '@/utils/wardrobeContent'
+import { catalogWardrobe, prepareCatalogWardrobe, type CatalogWardrobeRecipe } from '@/utils/catalogWardrobe'
 import type { PromptTagSource } from '@/utils/promptTagDictionary'
 
 const OUTFIT_TYPES = [
@@ -48,12 +46,8 @@ interface ItemBase {
   search: string
   types: string[]
 }
-interface CatalogOutfit extends ItemBase {
+interface CatalogOutfit extends ItemBase, CatalogWardrobeRecipe {
   kind: 'catalog'
-  sourceId: string
-  tokens: string[]
-  prose: string
-  identity: string[]
 }
 interface BundleOutfit extends ItemBase {
   kind: 'bundle' | 'universal'
@@ -96,7 +90,6 @@ function groupOutfits(items: OutfitItem[], recipeKey: (item: CatalogOutfit | Bun
   return result
 }
 
-const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
 const searchText = (value: string) => value.toLowerCase().replace(/[_-]+/g, ' ')
 const outfitTypes = (value: string) => {
   const matches = OUTFIT_TYPES.filter(type => type.match.test(value)).map(type => type.value as string)
@@ -133,31 +126,12 @@ export function useOutfitPresetLibrary(
         search: searchText([tag.en, meaning, tag.cn || '', ...(tag.aliases || []), tag.desc || ''].join(' ')),
         types: outfitTypes([tag.en, meaning, tag.cn || '', ...(tag.aliases || [])].join(' ')) }
     })
-    const studio: CatalogOutfit[] = []
-    for (const profile of scenes.characters) {
-      const id = typeof profile.id === 'string' ? profile.id : ''
-      if (id !== 'nene' && id !== 'natsume') continue
-      const wardrobe = record(profile.lora) && record(profile.lora.special_outfits) ? profile.lora.special_outfits : {}
-      const sourceName = typeof profile.name === 'string' ? profile.name : id
-      for (const [outfitId, value] of Object.entries(wardrobe)) {
-        const tokens = Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && !!tag.trim()) : []
-        if (!tokens.length) continue
-        const bundle = studioOutfitBundle(id, outfitId)
-        const name = bundle?.label.split(' · ').slice(1).join(' · ') || outfitId.replace(/_/g, ' ')
-        studio.push({ id: `studio/${id}/${outfitId}`, kind: 'catalog', name, sourceId: id, sourceName, tokens, prose: '', identity: [],
-          search: searchText([sourceName, id, outfitId, name, ...tokens].join(' ')),
-          types: outfitTypes([outfitId, name, ...tokens].join(' ')) })
-      }
-    }
-    const popular: CatalogOutfit[] = pb.popularCharacters.flatMap(character => character.outfits.map(outfit => ({
-      id: `catalog/${character.id}/${outfit.id}`, kind: 'catalog' as const, name: outfit.name,
-      sourceId: character.id, sourceName: character.displayName, tokens: outfit.tokens, prose: outfit.prose,
-      identity: [...character.identityTokens, ...character.exactTokens, ...(character.characterTokens || []), ...(character.copyrightTokens || [])],
-      search: searchText([character.displayName, character.originalName, character.id, ...character.aliases, outfit.name, outfit.id, outfit.prose, ...outfit.tokens].join(' ')),
-      types: outfitTypes([outfit.name, outfit.id, ...outfit.tokens].join(' ')),
-    })))
+    const catalog: CatalogOutfit[] = catalogWardrobe(scenes.characters, pb.popularCharacters).map(recipe => ({
+      ...recipe, kind: 'catalog', search: searchText(recipe.searchWords.join(' ')),
+      types: outfitTypes([recipe.outfitId, recipe.name, ...recipe.tokens].join(' ')),
+    }))
     // Show each source on the first page, even when the character catalog is large.
-    const groups: OutfitItem[][] = [universal, [...studio, ...popular], bundles, clothingTags]
+    const groups: OutfitItem[][] = [universal, catalog, bundles, clothingTags]
     const combined: OutfitItem[] = [], longest = Math.max(...groups.map(group => group.length))
     for (let index = 0; index < longest; index++) {
       for (const group of groups) {
@@ -229,20 +203,7 @@ export function useOutfitPresetLibrary(
     }
   }
   function prepareCatalogOutfit(item: CatalogOutfit) {
-    const identity = new Set(item.identity.map(normalizeKey))
-    const bunnyCostume = item.tokens.some(token => /bunny[_ -]suit/i.test(token))
-    const removed: string[] = []
-    const tokens = wardrobeTokens(item.tokens).filter(token => {
-      const key = normalizeKey(token)
-      const studioControl = /^(?:nene|natsume)_/.test(key) && (pb.isPopular || pb.char !== item.sourceId)
-      const identityToken = (isStableIdentityToken(token) && !(key === 'bunny_ears' && bunnyCostume))
-        || (identity.has(key) && !isGarmentToken(token) && !/(?:ribbon|bow|clip|ornament|flower|earring)$/.test(key))
-      if (studioControl || identityToken) { removed.push(token); return false }
-      return true
-    })
-    const proseKey = normalizeKey(item.prose)
-    const prose = removed.some(token => proseKey.includes(normalizeKey(token))) ? '' : wardrobeProse(item.prose)
-    return { tokens, prose }
+    return prepareCatalogWardrobe(item, !pb.isPopular && pb.char === item.sourceId)
   }
   function select(item: OutfitItem) {
     if (item.kind === 'tag') { pb.toggleManualTag(item.tag.en); return }

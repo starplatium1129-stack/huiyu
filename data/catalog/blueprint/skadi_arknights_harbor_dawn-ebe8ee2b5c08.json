@@ -1,50 +1,51 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_harbor_dawn",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 606,
   "createdAt": null,
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "action": "单手轻扶生锈集装箱边缘，伫立于晨雾中远眺海面",
-    "camera": "medium shot, side view, 侧身中景，生锈集装箱与清冷港口雾气",
+    "camera": "three quarter view, cowboy shot",
     "category": "泰拉都市",
     "characterId": "skadi_arknights",
     "description": "伊比利亚冷雾弥漫的破旧港口旁，斯卡蒂单手扶着生锈的集装箱边缘，独自远眺翻滚的深海。海风吹拂着她如雪的长发，绯红双眸沉静而警惕。",
     "id": "skadi_arknights_harbor_dawn",
-    "lighting": "穿透海港浓雾的清冷拂晓微光",
+    "lighting": "冷蓝海雾盖住远处吊机，第一缕暖光贴着锈蚀货柜棱边和风衣红衬掠过",
     "location": "伊比利亚沿海旧港货场",
     "mood": "沉静警惕",
     "negativeTokens": [],
     "outfitId": "deep_sea_hunter_trench_coat",
-    "promptProse": "Amidst cold morning mist shrouding a weathered Iberian port, Skadi stands resting one hand against a rusted shipping container, gazing out across the tumultuous dark sea. Gentle dawn light filters through the sea fog, illuminating her calm profile.",
+    "promptProse": "At the end of the Iberian freight quay, Skadi pauses beside a rusted container door, her fingertips resting on a corrugated ridge. The wind parts her black trench coat to show a line of wine-red lining as she studies the harbor in profile. The glazed concrete runs from the container latch in the foreground to a black mooring bollard and the low workboat beyond. Low dawn light catches the bolt heads and the loose ends of her white hair. Banks of blue fog separate the moored boat from the distant freight cranes.",
     "promptTokens": [
       "standing",
-      "side view",
       "shipping container",
       "harbor",
       "pier",
+      "ship",
+      "crane (machine)",
+      "bollard",
+      "ocean",
       "fog",
-      "mist",
       "dawn",
-      "looking at sea",
-      "medium shot"
+      "wind",
+      "looking to the side",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "standing",
-      "side_view",
-      "shipping_container",
+      "shipping container",
       "harbor",
-      "pier",
+      "ship",
       "fog",
-      "mist",
       "dawn",
-      "looking_at_sea",
-      "medium_shot"
+      "pier"
     ],
     "timeOfDay": "清晨",
     "title": "斯卡蒂 · 港口晨雾的独行侧影",
-    "animaCaption": "Standing with one hand resting against a rusted shipping container, she gazes quietly across the fog-shrouded harbor in the early dawn."
+    "animaCaption": "Her fingertips rest on the corrugated door as she looks across the wet quay. A mooring bollard and a low workboat lead into the harbor fog, where the cranes still show through."
   }
 }

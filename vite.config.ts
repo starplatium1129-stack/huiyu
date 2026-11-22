@@ -225,7 +225,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     }
   },
   // Only application entries participate; runtime/ may contain external research sites.
-  optimizeDeps: { entries: ['index.html'] },
+  optimizeDeps: { entries: ['index.html', 'companion.html'] },
   server: {
     port: 5173,
     watch: {
@@ -270,7 +270,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     // 固定构建目标，别随 Vite 默认值漂移；与 package.json 的 browserslist 对齐
     target: ['chrome111', 'edge111', 'firefox128', 'safari16.4'],
     rolldownOptions: {
-      input: { main: resolve('index.html'), 'resource-assistant': resolve('resource-assistant.html') },
+      input: { main: resolve('index.html'), companion: resolve('companion.html'), 'resource-assistant': resolve('resource-assistant.html') },
       preserveEntrySignatures: false,
       output: {
         strictExecutionOrder: true,
@@ -286,7 +286,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           groups: [
             { name: 'startup', test: /[\\/](?:src[\\/]main\.ts|index\.html)$/,
               priority: 110, includeDependenciesRecursively: false },
-            { name: 'bootstrap', tags: ['$initial'], priority: 100 },
+            { name: 'bootstrap', tags: ['$initial'], priority: 100, entriesAware: true },
             { name: 'ui-base', priority: 95, entriesAware: true,
               test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },
             ...['vendor', 'shared', 'motion', 'prompt', 'live2d'].map((name, index) => ({

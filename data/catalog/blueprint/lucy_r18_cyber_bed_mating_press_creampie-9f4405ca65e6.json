@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_cyber_bed_mating_press_creampie",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "侧卧悬浮大床半裹半透银丝睡袍若隐若现，脊柱接口泛粉光，双手托胸与深层自抚，紫眸流泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "intimate wide shot, reclining side perspective across levitating cyber bed",
+    "camera": "from side, wide shot",
     "category": "深层欢愉",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [
@@ -22,25 +22,33 @@
     "location": "高科技公寓悬浮大床纯白被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "silver_silk_robe",
-    "promptProse": "Lucy curls on the levitating bed in a sheer silver robe, one hand at her breast and the other beneath the hem; her spinal cyberware glows. Cool blue under-bed lighting meets the warm bedside floor lamp along the silver silk and white bedding.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "silver silk robe",
+    "nsfwProse": "Wrapped loosely in a gossamer sheer silver silk robe parting over her bare thighs, her small breasts and pink nipples show faintly through the fabric as she cups her chest and masturbates beneath the hem.",
+    "nsfwTokens": [
+      "silver robe",
+      "silk robe",
       "see-through",
+      "open robe",
+      "bare breasts",
+      "bare legs",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "outfitId": "silver_silk_robe",
+    "promptProse": "Curled softly on her side across the white sheets of a sleek levitating apartment bed at night, Lucy wears only a translucent silver silk robe clinging lightly over her bare skin while her spinal cyberware ports emit a faint pink glow. With her forehead pressed near the pillow and tender tears shining in her eyes, she cups one breast with one hand and slips her other hand under the sheer robe hem to touch herself. Cool blue under-bed illumination blends with warm bedside lamplight across the white bedding.",
+    "promptTokens": [
+      "lying",
       "on side",
-      "hand on own breast",
-      "masturbation",
-      "glowing cyberware",
-      "bed",
       "curled up",
+      "hand on own breast",
+      "glowing",
       "teary eyes",
       "heavy blush",
+      "bed",
+      "white sheets",
       "blue light",
       "floor lamp",
+      "night",
+      "from side",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",
@@ -63,6 +71,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "露西 · 悬浮科技大床半透银丝睡袍与义体微光侧卧真情释放",
-    "animaCaption": "She curls on the levitating bed with one hand at her chest and the other beneath the robe hem."
+    "animaCaption": "Curled on her side across the levitating white bed in a sheer silver silk robe with faintly glowing spinal ports, Lucy cups her breast with one hand and masturbates beneath the hem with the other. Cool blue under-bed light and warm floor lamplight trace her tearful, flushed face.",
+    "compositionIntent": "single"
   }
 }

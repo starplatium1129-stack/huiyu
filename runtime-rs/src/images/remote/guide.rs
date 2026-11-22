@@ -44,7 +44,8 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         "operations": {
             "desktopChat": {
                 "inbox": "GET /api/muse/desktop/inbox", "reply": "POST /api/muse/desktop/reply",
-                "usage": "桌面与 QQ 各保持独立 GET inbox?wait=25（HTTP 超时 ≥40s）；空收件箱立即续接，异常退避。按 conversationId 和 messages 回答，expiresAt 前凭原 requestKey 与 text 回传（一编号仅生成一次）。"
+                "usage": "GET inbox?wait=25（HTTP 超时 ≥40s）；空收件箱立即续接，异常退避。按 conversationId 和 messages 回答，expiresAt 前凭原 requestKey 与 text 回传。重试沿用完整回复。",
+                "drawing": "用户要出图且来信 drawingAllowed=true 时可附 drawing，使用批次的 ids 或 items 参数，省略 requestKey。桌面在原对话显示出图进度和成图。"
             },
             "qqChat": {
                 "inbox": "GET /api/muse/qq/inbox", "reply": "POST /api/muse/qq/reply",

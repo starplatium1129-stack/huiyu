@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "texas_penguin_logistics_lungmen_rooftop",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
   "data": {
     "action": "雨中伫立天台，一手扶刀柄，嘴叼巧克力棒，两柄光剑悬浮身后。",
-    "camera": "wide shot, low angle, cinematic noir",
+    "camera": "wide shot, from below",
     "category": "城市夜巡",
     "characterId": "texas_arknights",
     "coverageTags": [
@@ -15,41 +15,48 @@
     ],
     "description": "暴雨如注的龙门摩天大楼天台上，五彩斑斓的巨型霓虹灯在雨幕中泛起耀眼的晕光。德克萨斯身着企鹅物流风衣，嘴里叼着一根巧克力棒，单手扶在刀柄上迎风伫立，身后的两柄光能剑雨在雨滴击打下发出嗡鸣——「能天使，后方视野确认完毕。目标货车将在三十秒后进入包围圈……准备动手。」",
     "id": "texas_penguin_logistics_lungmen_rooftop",
-    "lighting": "巨型全息霓虹灯倒影与雨水反光、剑雨金色微光",
+    "lighting": "贴近楼顶的品红广告映在积水里，青色楼灯穿过雨幕，两柄剑另有细窄金光",
     "location": "龙门商业区摩天大楼雨夜天台",
     "mood": "冷峻沉着",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "wings"
+    ],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas stands in rooftop rain, one hand on her sword hilt and chocolate stick between her lips; two golden energy blades glow behind her through reflected Lungmen neon.",
+    "promptProse": "From just below the edge of a rain-slick Lungmen roof, Texas stands beside the parapet in her black-and-white Penguin Logistics jacket, yellow piping bright with rain. A thin chocolate biscuit stick sits at the corner of her mouth, and her gloved hand rests on the hilt of the sword still in its scabbard. Behind her, two long golden blades hang point down at different heights with clear space between them. Magenta from a nearby holographic sign runs along the flooded coping, while ranks of teal-lit towers fade into the rain across the street.",
     "promptTokens": [
-      "chocolate stick",
+      "standing",
+      "pocky in mouth",
+      "sword",
+      "scabbard",
+      "sheathed",
+      "floating sword",
+      "multiple swords",
       "energy sword",
       "rooftop",
+      "cityscape",
+      "skyscraper",
+      "night",
       "rain",
-      "neon",
-      "low angle",
+      "neon lights",
+      "hologram",
+      "puddle",
+      "reflection",
       "wide shot",
-      "standing",
-      "hand on hilt",
-      "chocolate in mouth",
-      "golden blades",
-      "neon reflection"
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
       "rooftop",
-      "cyberpunk_city",
+      "cityscape",
+      "night",
       "rain",
-      "neon_lights",
-      "pocky_in_mouth",
-      "energy_sword",
-      "sword_rain",
-      "wolf_ears",
-      "wolf_tail",
-      "wet_clothes"
+      "neon lights",
+      "energy sword",
+      "pocky in mouth",
+      "wide shot"
     ],
     "timeOfDay": "夜晚暴雨",
     "title": "德克萨斯 · 龙门天台雨夜信使",
-    "animaCaption": "One hand rests on the sword hilt as two golden energy blades float behind her in the rain."
+    "animaCaption": "The rain-slick parapet cuts across the foreground. She rests a gloved hand on her sheathed sword as two narrow golden blades hang separately at different heights behind her, against rain-veiled neon signs."
   }
 }

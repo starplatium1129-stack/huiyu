@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3151,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "specter_arknights_swimsuit_allure",
     "characterId": "specter_arknights",
@@ -14,7 +14,7 @@
     "location": "临海旧教堂废墟坍塌入海的白大理石台阶",
     "timeOfDay": "清晨",
     "lighting": "晨雾中穿透的冷冽天光与微弱暖曦",
-    "camera": "戏剧化远景与中景交错，大理石残柱与海水构成古典油画感",
+    "camera": "three quarter view, cowboy shot",
     "mood": "优雅癫狂、哥特神秘、唯美从容",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,31 @@
       "enigmatic"
     ],
     "promptTokens": [
-      "gothic swimdress",
-      "corset",
-      "silver wavy hair",
-      "submerged stairs",
-      "ocean ruins",
-      "mist",
-      "mysterious smile",
-      "warm lighting"
+      "wading",
+      "holding skirt",
+      "touching hair",
+      "enigmatic smile",
+      "looking at viewer",
+      "wet hair",
+      "marble stairs",
+      "submerged ruins",
+      "ocean",
+      "morning mist",
+      "cool daylight",
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Specter descending into the surging tide along the submerged white marble steps of a ruined seaside chapel. She is adorned in an exquisite gothic nun-inspired corset swimdress of contrasting black and alabaster white with delicate lace trims. Holding her damp ruffled skirt hem daintily, she strokes her long wavy silver locks with an enigmatic, rapturous smile as dawn mist envelops the sea.",
-    "animaCaption": "Specter descending into the surging tide along the submerged white marble steps of a ruined seaside chapel. She is adorned in an exquisite gothic nun-inspired corset swimdress of contrasting black and alabaster white with delicate lace trims.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Specter descends the submerged white marble steps of a ruined seaside chapel into the dawn tide, wearing a gothic black-and-white boned corset swimdress with tiered lace ruffles and a cross choker. Lifting one damp edge of her skirt while brushing back her wet white curls, she offers a serene, enigmatic smile through cool morning mist.",
+    "animaCaption": "Stepping down submerged white marble ruins into cool morning surf in a black-and-white gothic corset swimdress, she lifts her damp ruffled hem with one hand while brushing wet curls back with the other. Pale mist drifts around the broken columns in soft dawn light.",
+    "nsfwTokens": [
+      "black and white swimdress",
+      "corset swimsuit",
+      "lace trim",
+      "frilled skirt",
+      "cross choker",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a gothic nun-inspired black-and-white boned corset swimdress with tiered ruffled lace skirts and a cross-motif choker."
   }
 }

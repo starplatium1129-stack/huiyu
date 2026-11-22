@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_magic_library",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "id": "frieren_magic_library",
     "title": "芙莉莲 · 魔法书研究",
@@ -14,8 +14,8 @@
     "location": "魔法图书馆",
     "action": "在古籍与魔法阵光芒中研读",
     "timeOfDay": "白天",
-    "lighting": "暖光与魔法微光",
-    "camera": "medium shot",
+    "lighting": "高窗暖日光，微蓝法阵只照书页",
+    "camera": "three quarter view, medium shot",
     "mood": "静谧求知",
     "sceneTags": [
       "library",
@@ -29,22 +29,30 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "The grimoire rests open as she tucks her hair behind one ear. A small blue magic circle hovers above the book and illuminates its pages against the library's warmer light, her staff set beside the reading place.",
+    "promptProse": "Frieren sits at the near end of a long oak reading table, studying a grimoire laid flat before her. She tucks a loose white strand behind one pointed ear while her other hand keeps the page open. A palm-sized pale blue magic circle floats a finger's width above the paper. The cup of tea at the table's edge and the staff leaning against her chair frame the action. Amber daylight from a high arched window picks out the gray grain of the oak and the edges of the tall shelves behind her. A three-quarter seated view keeps her face, both hands and the open book in the same frame.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "book",
+      "sitting",
+      "chair",
+      "wooden table",
+      "open book",
+      "reading",
+      "tucking hair",
+      "looking down",
       "magic circle",
       "blue light",
+      "staff",
       "library",
-      "medium shot",
-      "open book",
-      "hair tuck",
-      "staff"
+      "bookshelf",
+      "book stack",
+      "arched window",
+      "sunbeam",
+      "teacup",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "wizard_robe",
-    "animaCaption": "The blue magic circle hovers above the grimoire beside her reading place."
+    "outfitId": "sfw_archive_travel_robe",
+    "animaCaption": "She tucks a loose strand behind her ear while her other hand keeps the grimoire flat on the table. A palm-sized blue magic circle hovers just above the page in the warm light from the high window."
   }
 }

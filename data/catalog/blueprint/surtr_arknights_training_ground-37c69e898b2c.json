@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_training_ground",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 520,
   "createdAt": null,
-  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
+  "updatedAt": "2026-11-22T02:12:34.754508900+00:00",
   "data": {
     "action": "单手斜持巨剑垂于焦痕地面，嘴角微扬自信而立",
-    "camera": "cowboy shot, eye level, 七分身牛仔景，焦黑地面、剑身与自信神态清晰",
+    "camera": "three quarter view, full body",
     "category": "泰拉日常",
     "characterId": "surtr_arknights",
     "coverageTags": [
@@ -15,39 +15,39 @@
     ],
     "description": "训练结束后的战术演武场内，地面留着几道炽热灼烧后的焦黑划痕，空气中弥漫着淡淡余烟。史尔特尔单手将莱瓦汀斜垂在身侧，嘴角泛起一抹自信的浅笑，清晨阳光穿透高处的气窗洒在战靴旁。",
     "id": "surtr_arknights_training_ground",
-    "lighting": "高排工业采光窗斜射入室的清晨冷白晨光",
+    "lighting": "高采光窗斜向冷白日光照亮灰地，巨剑尖留一点余红，焦痕边残烟贴地",
     "location": "罗德岛地下战术演武场",
     "mood": "自信傲然",
     "negativeTokens": [],
     "outfitId": "prelude_to_transcendence",
-    "promptProse": "In a spacious industrial training dojo with scorched impact craters on the floor, Surtr holds her massive sword lowered at her side with cool confidence. Fresh pale morning sunlight slants through high industrial windows across the drifting smoke.",
+    "promptProse": "Surtr stands at the end of a black gouge across the concrete training floor, her greatsword angled down beside one boot and its red tip hanging just above the scorched groove. Her hand stays loose on the hilt and a slight smile softens her expression. High industrial windows cast slanting bars of cool morning light across the floor and along the gold embroidery on her velvet vest. The leather skirt and lace sleeves keep their separate textures in the same light. A dented practice target and dark wall panels recede behind her while the last smoke stays low over the groove.",
     "promptTokens": [
       "standing",
       "holding sword",
       "greatsword",
       "smirk",
-      "gym",
-      "smoke",
-      "scorch mark",
+      "training",
+      "floor",
+      "window light",
+      "sunbeam",
       "morning",
-      "cowboy shot",
-      "eye level"
+      "smoke",
+      "embers",
+      "three quarter view",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "standing",
-      "holding_sword",
+      "training",
       "greatsword",
-      "smirk",
-      "gym",
+      "floor",
+      "embers",
       "smoke",
-      "scorch_mark",
-      "morning",
-      "cowboy_shot",
-      "eye_level"
+      "window light",
+      "full body"
     ],
     "timeOfDay": "清晨",
     "title": "史尔特尔 · 演武场焦痕处的歇息",
-    "animaCaption": "Holding her greatsword angled toward the scorched floor with a subtle smirk, she stands amidst lingering smoke in the morning light."
+    "animaCaption": "She stands at the end of a long black slash across the floor, holding her greatsword down beside her with its tip just off the concrete. Thin smoke along the mark catches the light from the high windows."
   }
 }

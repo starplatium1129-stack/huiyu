@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2319,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
   "data": {
     "id": "michiru_bedroom_bed_unbuttoned_shirt_straddle",
     "characterId": "hyoudou_michiru",
@@ -17,29 +17,41 @@
     "action": "美智留帅气而霸道地跨坐在你腰间，修长双腿紧紧钳住，俯下身咬住你的下唇",
     "timeOfDay": "night",
     "lighting": "dim bedside table lamp casting warm sensual shadows on bare curves",
-    "camera": "close-up",
+    "camera": "close-up, eye level",
     "mood": "柔媚诱人",
-    "promptProse": "Straddling partner on bed with open white shirt, short-haired Michiru Hyoudou kisses him deeply with flushed cheeks and breathless passionate moans.",
+    "promptProse": "In a dimly lit shared bedroom, Michiru sits boldly astride her partner's waist on the tangled sheets and leans down to catch his lower lip in an intense kiss. Warm glow from the desk lamp traces her flushed cheeks and bare shoulders.",
     "promptTokens": [
-      "bedroom",
-      "messy_bed",
+      "1girl",
+      "1boy",
+      "hetero",
       "straddling",
-      "open_shirt",
-      "bare_shoulders",
       "kissing",
-      "beauty_mark",
-      "blushing_heavily",
-      "panting",
-      "close-up",
-      "desk_lamp",
-      "warm_lighting"
+      "leaning forward",
+      "bedroom",
+      "messy bed",
+      "heavy blush",
+      "sweat",
+      "desk lamp",
+      "warm lighting",
+      "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Michiru Hyoudou straddling partner passionately in open white shirt on bed.",
+    "animaCaption": "Straddling her partner's waist across the rumpled bed in a wide-open white collared shirt with nothing underneath, she pins his thighs between her legs and leans down to bite and kiss his lower lip under the warm bedside lamp.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "oversized shirt",
+      "white shirt",
+      "open shirt",
+      "bare shoulders",
+      "cleavage",
+      "no bra",
+      "bare thighs"
+    ],
+    "nsfwProse": "Her oversized white boyfriend shirt hangs completely unbuttoned off her shoulders with no bra beneath, exposing her cleavage and bare thighs as she straddles him."
   }
 }

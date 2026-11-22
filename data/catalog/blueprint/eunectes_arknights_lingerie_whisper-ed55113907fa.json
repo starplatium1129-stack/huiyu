@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3231,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "eunectes_arknights_lingerie_whisper",
     "characterId": "eunectes_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛重工业整备间大丑机甲钢铁脚掌旁",
     "timeOfDay": "深夜",
     "lighting": "整备架高悬的工业射灯光芒从机甲钢铁骨架缝隙穿透，在热带蛇纹抹胸与结实腹肌上投下硬朗暗影",
-    "camera": "充满重工业力量感与热带野性魅力的仰角中景，展现少女与巨型机械的浪漫共存",
+    "camera": "low angle, medium shot",
     "mood": "专注执着、热带野性、醉心钢铁巨兽的纯粹少女心",
     "adult": true,
     "sampleRating": "R15",
@@ -37,19 +37,33 @@
       "wild_mechanic"
     ],
     "promptTokens": [
-      "snake tail",
-      "python bandeau top",
       "sitting",
-      "leaning against robot foot",
-      "holding wrench",
-      "grease smudge",
+      "leaning back",
       "giant mech foot",
-      "industrial lighting"
+      "holding wrench",
+      "oil smudge on cheek",
+      "focused gaze",
+      "hangar",
+      "industrial bay",
+      "overhead spotlight",
+      "hard shadows",
+      "night",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Eunectes resting proudly beneath the towering steel foot of her colossal mech 'Big Ugly' in the Rhodes Island industrial bay. She is clothed in a tactical dark green python-textured bandeau top and wrap skirt that showcase her toned tribal physique. Holding a wrench with an oil smudge across her cheek, her vibrant green eyes gleam with pure mechanical adoration as she leans against the warm chassis.",
-    "animaCaption": "Eunectes sits against the steel foot of her giant mech, holding a wrench in the industrial bay.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Leaning back against the colossal steel foot of her mech inside Rhodes Island's midnight maintenance bay, Eunectes wears a deep-green python-scaled stretch bandeau top and side-tie wrap micro skirt. Holding a wrench with a smudge of grease on her cheek, her golden eyes gleam with pure mechanical pride under stark overhead hangar spotlights.",
+    "animaCaption": "Seated against the massive steel tread of her mech in a deep-green python-print stretch bandeau and wrap miniskirt, she rests a heavy wrench across her knee with a faint smudge of grease on her cheek and bright golden focus. High industrial spotlights cast crisp shadows across her toned midriff.",
+    "nsfwTokens": [
+      "green bandeau",
+      "snakeskin print",
+      "strapless top",
+      "wrap miniskirt",
+      "bare midriff",
+      "toned abs",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a supportive deep-green python-scaled stretch bandeau top and a side-tie wrap micro skirt fitted around her toned waist and snake tail.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3289,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "viviana_arknights_swimsuit_allure",
     "characterId": "viviana_arknights",
@@ -14,7 +14,7 @@
     "location": "暮色降临后点起防风蜡烛的私享沙滩餐台旁",
     "timeOfDay": "傍晚",
     "lighting": "玻璃防风灯内的暖黄烛光为主光源，背景是深邃暗蓝夜海",
-    "camera": "柔焦近景半身肖像，烛火光芒在面庞与发丝间晕染出梦幻暖光",
+    "camera": "medium close-up, eye level",
     "mood": "圣洁高雅、温柔诗意、骑士风度",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,32 @@
       "poetic_elegance"
     ],
     "promptTokens": [
-      "deer horns",
-      "deer ears",
-      "white and gold swimdress",
       "sitting",
-      "table",
-      "holding candle lantern",
-      "twilight beach",
+      "beach chair",
+      "white table",
+      "holding lantern",
+      "candle",
       "gentle smile",
-      "poetry"
+      "looking at viewer",
+      "beach",
+      "ocean",
+      "dusk",
+      "twilight",
+      "candlelight",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Viviana sitting gracefully beside a white linen-draped beachside table in the gathering dusk. She is adorned in a regal pearl-white silk swim corset layered with flowing gold-tinted chiffon. Her delicate hands shelter the flickering flame of a hurricane candle lantern, its warm amber glow illuminating her noble deer features and gentle, poetic golden eyes against the tranquil twilight sea.",
-    "animaCaption": "Viviana sits by a white linen-covered table on the beach, holding a candle lantern in the fading light.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "On a quiet twilight shore where dusk blue meets the dark tide, Viviana sits beside a white linen beach table gently shielding a glass candle lantern whose warm amber flame lights her serene, poetic expression.",
+    "animaCaption": "Seated beside a white linen-draped beach table at twilight with both hands sheltering a flickering glass hurricane lantern, she gazes warmly across the amber flame wearing a pearl-white silk swim corset layered with flowing sheer gold chiffon.",
+    "nsfwTokens": [
+      "white swimsuit",
+      "corset",
+      "gold chiffon",
+      "sheer skirt",
+      "bare shoulders",
+      "cleavage"
+    ],
+    "nsfwProse": "She wears a structured pearl-white silk swim corset draped with translucent golden chiffon sashes and a flowing sheer skirt train.",
+    "compositionIntent": "single"
   }
 }

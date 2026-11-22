@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc009",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
-    "animaCaption": "Across the table, she slides the cake toward the center with her free hand.",
+    "animaCaption": "Nene looks up through the coffee steam as her fingertips slide the dessert plate toward the viewer along the table. Her open comic lies off to her left, with the coffee cup between them.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream cable knit sweater, pink ribbon at collar, mauve pleated skirt, white tights, sitting, comic book, coffee cup, cake, table, cafe, window light, medium shot, reading, looking at viewer, light smile, steam, soft_lighting, cinematic_lighting, depth_of_field",
+    "prompt": "1girl, ayachi_nene, white sweater, cable knit, pink ribbon, neck ribbon, purple skirt, pleated skirt, white pantyhose, sitting, cafe, wooden table, open book, coffee, teacup, saucer, steam, strawberry shortcake, plate, hand on table, looking at viewer, light smile, window light, medium shot, depth of field",
     "rating": "All",
     "season": "秋",
     "story": "秋日午后，宁宁坐在靠窗的位置翻一本轻松漫画，咖啡的热气不时遮住她的表情。她早就察觉你在对面看她，却故意多翻了两页才抬眼，呆毛不满地晃了晃。等你移开视线，她又把甜点推到桌子中央——「一直盯着很没礼貌哦。作为赔礼，这块蛋糕要和我一人一半。」",
@@ -46,6 +46,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "Seated across the cafe table from the viewer, she looks up from her open comic and slides the cake toward the center with her free hand; warm window light passes through the coffee steam."
+    "promptProse": "Nene sits by the cafe window in a cream cable-knit sweater with a pink ribbon at the collar, a mauve pleated skirt and white tights. The open comic rests by her left elbow. She glances over the steam from her coffee and uses her free hand to slide a small porcelain plate with a slice of strawberry cake toward the viewer. Afternoon light comes across the wood grain from the side and picks out the edge of the plate and the texture of her sweater. Frame her across the table, with the plate near the center and a row of booths receding behind her."
   }
 }

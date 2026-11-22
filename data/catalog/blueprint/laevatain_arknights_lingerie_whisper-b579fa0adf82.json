@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3182,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "laevatain_arknights_lingerie_whisper",
     "characterId": "laevatain_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地重工业前哨站生活舱，全息投影熔炉数据在暗处闪烁橙光",
     "timeOfDay": "深宵检修间歇",
     "lighting": "控制台全息屏幕散发的荧光橙红暖光，在金属表面与少女锁骨间投下火热高光",
-    "camera": "medium shot, eye level, 平视中景，隔热工作台与全息熔炉光影同框",
+    "camera": "eye level, medium shot",
     "mood": "工业科幻风格的硬朗与内在炽热情感的奇妙融合",
     "adult": true,
     "sampleRating": "R15",
@@ -41,20 +41,37 @@
     ],
     "promptTokens": [
       "sitting",
-      "on metallic workbench",
+      "cross-legged",
       "barefoot",
-      "sci-fi outpost",
-      "holographic furnace telemetry",
-      "glowing orange displays",
-      "warm amber reflections",
-      "intense red gaze",
-      "medium shot",
-      "eye level"
+      "workbench",
+      "hologram",
+      "orange light",
+      "looking at viewer",
+      "confident",
+      "sci-fi",
+      "metal",
+      "dark room",
+      "night",
+      "eye level",
+      "medium shot"
     ],
-    "negativeTokens": [],
-    "promptProse": "Laevatain sits cross-legged along the rim of a thermal insulated workbench in the Endfield heavy industrial outpost, bare feet dangling freely. Blazing orange holographic furnace readouts cast intense fiery highlights across her face and the dark metallic chamber.",
-    "animaCaption": "Sitting on the workbench in the industrial outpost, orange holographic readouts illuminate her warm gaze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "promptProse": "Sitting cross-legged on the edge of an insulated metal workbench inside an Endfield industrial outpost living cabin at night, Laevatain wears a fiery orange-red geometric cutout bralette with sheer dark mesh panels and straps. Bracing one palm on the metal edge with her bare feet dangling loosely, she fixes an intense, confident gaze on the viewer as glowing orange holographic furnace telemetry casts hot highlights across her collarbone and dark metal walls.",
+    "animaCaption": "Seated barefoot on the metal outpost workbench in her fiery orange geometric mesh bralette and straps, Laevatain braces one hand on the edge and holds an intense, teasing gaze. Glowing orange holographic furnace readouts highlight her collarbone against the dark cabin.",
+    "nsfwTokens": [
+      "orange lingerie",
+      "bralette",
+      "black mesh",
+      "see-through",
+      "cutout",
+      "straps",
+      "midriff",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a fiery orange-red geometric cutout bralette paneled with sheer dark mesh and tactical strap accents over matching briefs, baring her toned midriff and bare legs.",
+    "compositionIntent": "single"
   }
 }

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_academy_courtyard_fountain",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "坐在喷泉边沿短暂小憩，墨镜挂在衣领",
     "adult": false,
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -23,14 +23,23 @@
       "sunglasses worn"
     ],
     "outfitId": "silent_fitz_uniform_no_sunglasses",
-    "promptProse": "Sylphiette rests on the fountain rim with her eyes uncovered, sunlight reflected over her sleeve.",
+    "promptProse": "Seated unhurriedly on the carved marble rim of the Ranoa Magic University courtyard fountain in her white academic tailcoat and ruffled blouse, Sylphiette hooks her dark sunglasses onto her open shirt collar so her eyes remain uncovered. Turning toward the viewer with a calm, restorative smile, she rests one hand lightly on the cool stone edge beside blooming courtyard flowerbeds. Warm afternoon sunlight sparkles off the fountain spray and throws bright water reflections across her sleeve.",
     "promptTokens": [
-      "sunglasses at collar",
-      "fountain",
-      "medium shot",
       "sitting",
-      "eyes uncovered",
-      "sunlight reflections"
+      "fountain",
+      "sunglasses",
+      "gentle smile",
+      "looking at viewer",
+      "courtyard",
+      "flowers",
+      "flowerbed",
+      "water",
+      "sparkle",
+      "outdoors",
+      "afternoon",
+      "sunlight",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +53,7 @@
     ],
     "timeOfDay": "afternoon",
     "title": "希露菲叶特 · 学院庭院喷泉",
-    "animaCaption": "Her eyes remain uncovered above the sunlit fountain rim."
+    "animaCaption": "Seated on the marble courtyard fountain rim with her sunglasses hooked at her shirt collar and eyes uncovered, Sylphiette turns toward the viewer with a gentle smile. Afternoon sunlight glints off the fountain water and dapples her white academic coat.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3395,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "togakushi_touko_swimsuit_allure",
     "characterId": "togakushi_touko",
@@ -14,7 +14,7 @@
     "location": "海滨俱乐部遮阳木棚下的观景区",
     "timeOfDay": "上午",
     "lighting": "木棚漏下的规整光影，反衬出少女白皙无瑕的肌肤",
-    "camera": "端正中景平视，典雅的木制构架与远景沙滩形成秩序感",
+    "camera": "medium shot, eye level",
     "mood": "端庄沉稳、温柔可靠、学姐风范",
     "adult": true,
     "sampleRating": "R15",
@@ -37,21 +37,32 @@
       "reliable"
     ],
     "promptTokens": [
-      "navy and white swimdress",
-      "sitting poised",
-      "pergola shade",
-      "black hair",
+      "sitting",
+      "wooden bench",
+      "holding paper",
+      "hand in hair",
       "gentle smile",
-      "beach resort",
-      "morning",
-      "sunlight",
+      "looking at viewer",
+      "pergola",
+      "beach",
       "dappled sunlight",
-      "tree shade"
+      "shade",
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette. Holding a rolled summer itinerary lightly beneath her chin, she offers a reassuring, impeccably polite smile that conveys both authority and tender warmth. Gentle sunlight filtering through coastal pine branches casts soft dappled shadows across the wooden promenade bench and her calm aristocratic gaze.",
-    "animaCaption": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette. Gentle sunlight filtering through coastal pine branches casts soft dappled shadows across the wooden promenade bench and her calm aristocratic gaze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Under the cool timber shade of a resort pavilion overlooking the bright morning beach, Touko sits with poised composure holding a rolled summer itinerary near her chin and smiling warmly as dappled sunlight crosses the bench.",
+    "animaCaption": "Seated gracefully on a wooden bench beneath a shaded seaside pergola overlooking the sunlit beach, she brushes windblown hair back while touching a rolled schedule to her chin with a serene smile in a navy-and-white nautical halterneck swimdress.",
+    "nsfwTokens": [
+      "blue swimsuit",
+      "swimdress",
+      "white trim",
+      "halterneck",
+      "sweetheart neckline",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a refined nautical navy-blue swimdress piped with crisp white trim, a tailored sweetheart halter bodice, and a modest flared skirt over bare legs.",
+    "compositionIntent": "single"
   }
 }

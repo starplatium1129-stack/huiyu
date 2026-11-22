@@ -1,0 +1,45 @@
+.studio-projects :is(.studio-video-form,.studio-video-log,.studio-video-group,.studio-video-selection,.studio-video-runs) {
+  display: grid;
+  gap: var(--s-3);
+  min-inline-size: 0;
+}
+.studio-video-fields,.studio-video-shot-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: var(--s-3);
+}
+.studio-projects .studio-video-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--control-height-sm);
+  cursor: pointer;
+}
+.studio-video-check span { min-inline-size: 0; overflow-wrap: anywhere; }
+.studio-video-check small { display: block; }
+.studio-video-selection,.studio-video-runs > li {
+  padding: var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+}
+.studio-video-selection legend { padding-inline: var(--s-1); }
+.studio-projects .studio-video-seed { inline-size: min(100%, 10rem); }
+.studio-video-queue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  border-block: 1px solid var(--border-soft);
+  padding-block: var(--s-3);
+}
+.studio-video-runs { margin: 0; padding: 0; list-style: none; }
+.studio-video-runs > li,.studio-video-source [data-disclosure-content] { display: grid; gap: var(--s-2); }
+.studio-video-runs > li { min-inline-size: 0; overflow-wrap: anywhere; }
+.studio-video-runs progress { inline-size: 100%; accent-color: var(--accent); }
+.studio-video-preview { max-width: 100%; max-height: 14rem; border-radius: var(--r-sm); object-fit: contain; }
+.studio-video-source,.studio-video-source [data-disclosure-content] { color: var(--text-secondary); font-size: var(--fs-label); }
+.studio-video-cause { white-space: pre-wrap; overflow-wrap: anywhere; }
+.studio-version-media,.studio-export { display: grid; gap: var(--s-2); min-inline-size: 0; }
+.studio-export { border-block-start: 1px solid var(--border-soft); padding-block-start: var(--s-3); }
+.studio-export form > .btn { justify-self: start; }

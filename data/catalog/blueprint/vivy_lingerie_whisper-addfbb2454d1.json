@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3356,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "vivy_lingerie_whisper",
     "characterId": "vivy",
@@ -14,7 +14,7 @@
     "location": "近未来主题公园巨蛋舞台后室，全息音乐波形发生器在空气中泛起涟漪",
     "timeOfDay": "百年巡演终幕后台",
     "lighting": "梳妆台冷白环形灯与全息乐谱的青蓝光芒交相辉映，在冰肌玉骨上勾勒出未来科技质感",
-    "camera": "medium shot, low angle, 近未来后台中景，全息声波谱线与人造歌姬的微弱心跳",
+    "camera": "from below, medium shot",
     "mood": "歌姬AI在漫长岁月里用歌声寻觅“倾注心意”的终极命题，崇高、清冷而深情",
     "adult": true,
     "sampleRating": "R15",
@@ -39,18 +39,32 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "resting on backstage sofa",
-      "floating holographic sound wave graphs",
-      "futuristic concert stadium backstage",
-      "soft blue stage lighting bleed",
-      "contemplative robotic serenity"
+      "sitting",
+      "stool",
+      "hand on chest",
+      "looking at viewer",
+      "hologram",
+      "soundwave",
+      "backstage",
+      "dressing room",
+      "futuristic",
+      "blue lighting",
+      "glowing",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vivy rests backstage in the quiet stadium after her grand centenary concert, watching holographic melody waveforms pulse gently in the blue ambient light.",
-    "animaCaption": "Resting backstage after a grand concert as holographic melody waveforms ripple softly in the blue light.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Viewed from a slightly low angle inside a quiet futuristic concert backstage room filled with floating holographic melody waveforms, Vivy rests one palm over her chest as soft azure stage light illuminates her thoughtful, newly awakened gaze.",
+    "animaCaption": "Seated on a backstage dressing-room stool surrounded by drifting holographic audio waveforms in soft cyan light, she presses one hand gently over her heart with a contemplative gaze wearing a translucent fiber-optic cyan sheer teddy bodysuit traced with luminescent soundwave piping.",
+    "nsfwTokens": [
+      "cyan bodysuit",
+      "sheer bodysuit",
+      "lace",
+      "glowing trim",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a futuristic crystalline-cyan sheer lace and mesh teddy bodysuit traced along the waist with glowing fiber-optic soundwave piping.",
+    "compositionIntent": "single"
   }
 }

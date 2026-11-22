@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_library_study",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 548,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
   "data": {
     "action": "抱着厚书坐在窗边",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "category": "泰拉日常",
     "characterId": "eyjafjalla_arknights",
     "coverageTags": [
@@ -15,23 +15,26 @@
     ],
     "description": "午后安静的图书室角落，身材娇小的艾雅法拉怀抱着一本比自己身躯还厚的古火山学巨著坐在向阳的长桌边。温暖的阳光洒在她浅茶褐色的卷发上，小羊耳随着专注的阅读轻轻抖动——「只要多读一些前人的记录，就能拯救更多可能受到天灾伤害的人呢。」",
     "id": "eyjafjalla_arknights_library_study",
-    "lighting": "soft window light",
+    "lighting": "soft afternoon window light across open pages",
     "location": "罗德岛图书馆",
     "mood": "恬静好学",
     "negativeTokens": [],
     "outfitId": "leithanien_volcanology_lab_coat",
-    "promptProse": "She supports the heavy volcanology volume on her lap with both hands; window light falls across the open pages.",
+    "promptProse": "Eyjafjalla sits beside the long oak reading table in the Rhodes Island library, supporting a heavy open volcanology volume across her lap with both hands. Brass buttons on her white tailored coat pick up the light, and a fold of brown plaid shows beside the book. She bends over an illustration of a volcano cut open to show its layers, with afternoon light falling across the page. The camera looks along the near edge of the table, past a short stack of reference books to the tall rows of shelves behind her.",
     "promptTokens": [
       "sitting",
       "reading",
-      "book",
+      "holding book",
+      "open book",
+      "looking down",
+      "table",
+      "book stack",
+      "bookshelf",
       "library",
       "window",
-      "afternoon",
-      "medium shot",
-      "holding book",
-      "both hands",
-      "window light"
+      "window light",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +46,7 @@
     ],
     "timeOfDay": "午后",
     "title": "艾雅法拉 · 图书馆研读",
-    "animaCaption": "The heavy open volcanology volume rests on her lap."
+    "animaCaption": "Seated beside the oak reading table, she balances a heavy open volcanology book across her lap with both hands and studies its layered diagram. Afternoon sunlight from the tall window falls across the pages and the stacked reference volumes.",
+    "compositionIntent": "single"
   }
 }

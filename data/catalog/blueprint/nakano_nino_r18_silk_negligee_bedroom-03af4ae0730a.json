@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_silk_negligee_bedroom",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1863,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "nakano_nino_r18_silk_negligee_bedroom",
     "characterId": "nakano_nino",
@@ -21,23 +21,21 @@
     "timeOfDay": "深夜",
     "mood": "极度渴求",
     "lighting": "床头欧式台灯流淌的昏黄暖光与窗外夜色",
-    "camera": "cowboy shot, from above, intimate framing",
+    "camera": "from above, cowboy shot",
     "promptTokens": [
-      "adult",
-      "negligee",
-      "strap slip",
-      "bare breasts",
-      "pink nipples",
-      "lying on bed",
+      "lying",
+      "on side",
       "spread legs",
-      "female masturbation",
-      "silk",
-      "blush",
+      "looking at viewer",
+      "heavy blush",
+      "parted lips",
       "bedroom",
-      "cowboy shot",
+      "bed",
+      "white sheets",
       "night",
       "warm lighting",
-      "from above"
+      "from above",
+      "cowboy shot"
     ],
     "sceneTags": [
       "bedroom",
@@ -51,12 +49,24 @@
       "seductive",
       "night"
     ],
-    "promptProse": "Reclining across plush bedroom sheets as the thin shoulder straps of her lilac silk slip tumble down her arms to reveal bared breasts, slipping one hand between parted thighs with an intense sultry blush.",
+    "promptProse": "Viewed from above on a soft goose-down bed in a dimly lit bedroom at night, Nino turns toward the viewer with parted lips and a heated, insistent blush.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "The thin silk straps slip down her arms above the bedroom sheets."
+    "animaCaption": "Lying back across the plush bedroom bed under dim warm lamplight, she lets the thin straps of her lilac silk negligee slip down her arms to bare her breasts while her fingers slide beneath the damp edge of her panties between her parted thighs.",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "purple negligee",
+      "silk",
+      "lace trim",
+      "strap slip",
+      "topless",
+      "nipples",
+      "panties",
+      "masturbation"
+    ],
+    "nsfwProse": "Her lilac silk negligee with eyelash-lace trim has both spaghetti straps slipped down her arms to bare her breasts and pink nipples while her fingers trace beneath her panties between her spread legs."
   }
 }

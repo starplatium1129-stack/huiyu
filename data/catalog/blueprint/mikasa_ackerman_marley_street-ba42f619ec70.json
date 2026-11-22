@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_marley_street",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 982,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "action": "街巷中穿行",
-    "camera": "cowboy shot, walking through a Liberio city street in Marley military uniform",
+    "camera": "three quarter view, cowboy shot",
     "category": "战斗前线",
     "characterId": "mikasa_ackerman",
     "coverageTags": [],
@@ -18,14 +18,21 @@
     "mood": "肃穆警觉",
     "negativeTokens": [],
     "outfitId": "marley_uniform",
-    "promptProse": "Mikasa watches the road as she walks beneath the Liberio eaves, her red scarf bright against gray daylight and stone.",
+    "promptProse": "Walking with quiet resolve down a narrow Liberio cobblestone lane beneath weathered masonry eaves, Mikasa wears her black Marley tactical uniform with fitted chest plate and leather straps. Her gaze stays alert along the road ahead, the deep crimson fold of her red scarf standing out sharply against the muted gray stonework and dark uniform. Flat overcast daylight washes the foreign street behind her without harsh shadows.",
     "promptTokens": [
       "walking",
+      "looking ahead",
+      "serious",
       "street",
+      "cobblestone",
+      "european architecture",
+      "building",
       "overcast",
-      "watching road",
-      "eaves",
-      "overcast light"
+      "cloudy sky",
+      "day",
+      "outdoors",
+      "three quarter view",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +46,7 @@
     ],
     "timeOfDay": "白天",
     "title": "三笠 · 马莱街头",
-    "animaCaption": "She watches the road beneath the Liberio eaves."
+    "animaCaption": "Walking steadily along the quiet Liberio cobblestone street beneath stone eaves in her black tactical uniform, Mikasa scans the road ahead with solemn alertness. Her red scarf forms a vivid accent beneath the cool overcast sky.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_alter_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3521,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "artoria_pendragon_alter_lingerie_whisper",
     "characterId": "artoria_pendragon_alter",
@@ -14,7 +14,7 @@
     "location": "迦勒底私人居室改装的暗黑起居厅",
     "timeOfDay": "深夜",
     "lighting": "电视机屏幕泛出的冷蓝光线与角落暗红霓虹招牌光，交织出哥特街头与暗黑王者的冷冽氛围",
-    "camera": "low angle, medium shot, 霸气微低机位仰视，将暴君的压迫感与吃垃圾食品的反差萌表现得淋漓尽致",
+    "camera": "low angle, medium shot",
     "mood": "冷酷傲慢、暴君威严与毫无道理的吃货反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -42,20 +42,32 @@
     "promptTokens": [
       "sitting",
       "leather sofa",
+      "crossed legs",
       "holding burger",
-      "eating burger",
-      "one leg crossed",
+      "eating",
+      "cold gaze",
+      "looking at viewer",
       "dark room",
-      "neon lights",
-      "blue lighting",
-      "dim lighting",
+      "television glow",
+      "blue light",
+      "red neon",
+      "night",
       "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Late at night in her darkened Chaldea quarters, Artoria Pendragon (Alter) dominates a plush black leather sofa, casually holding a juicy cheeseburger with imperious confidence. Moody blue television glow and a crimson neon sign cast dramatic shadows across the lounge.",
-    "animaCaption": "Dominating a leather sofa late at night while eating a burger, surveying the viewer with icy, imperious confidence beneath dim neon glow.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Late at night inside her darkened lounge, Artoria Pendragon Alter lounges with one leg crossed on a black leather sofa in a gothic boned black satin corset camisole with scalloped lace and micro silk tap shorts. Holding a half-eaten cheeseburger while fixing the viewer with an imperious golden stare, she is lit by cold blue screen glow and crimson neon.",
+    "animaCaption": "Sprawled imperiously with one leg crossed on a dark leather sofa in a gothic black lace corset camisole and silk tap shorts, she holds a half-eaten cheeseburger and fixes the viewer with a cool, commanding stare. Cold blue television light and dim red neon carve moody shadows across the room.",
+    "nsfwTokens": [
+      "black corset camisole",
+      "black lace lingerie",
+      "scalloped lace",
+      "black silk shorts",
+      "tap shorts",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a gothic boned black satin corset camisole trimmed with sheer scalloped lace and metal eyelets, paired with tailored black silk tap shorts.",
+    "compositionIntent": "single"
   }
 }

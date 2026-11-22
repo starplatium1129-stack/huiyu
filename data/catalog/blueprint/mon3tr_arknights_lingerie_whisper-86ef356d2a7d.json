@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3160,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "mon3tr_arknights_lingerie_whisper",
     "characterId": "mon3tr_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛医疗下层隔离观测室，绿光监视器有节奏地闪烁着平稳波形",
     "timeOfDay": "午夜深层休眠周期",
     "lighting": "荧光绿控制台仪表投射出冷冽幽光，在漆黑地面上映出修长的几何投影",
-    "camera": "low angle, medium shot, 低机位中景，观察室控制台与结晶背影同框",
+    "camera": "low angle, medium shot",
     "mood": "非人存在的冰冷孤傲与被驯服边界处的危险吸引力",
     "adult": true,
     "sampleRating": "R15",
@@ -40,20 +40,32 @@
     ],
     "promptTokens": [
       "crouching",
-      "metallic bench",
-      "observation laboratory",
-      "monitoring screens",
-      "glowing crystalline shards",
-      "cool green ambient lighting",
+      "metal bench",
+      "looking back",
+      "sharp gaze",
+      "cold expression",
+      "laboratory",
+      "medical room",
+      "monitors",
+      "waveform display",
+      "green light",
       "dark room",
-      "piercing red eyes",
+      "night",
       "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mon3tr crouches with feline grace upon a sleek metallic observation bench in the sub-level medical isolation chamber. Pulsing green monitor displays cast stark geometric shadows across the floor as deep crystalline facets catch the dim technological light.",
-    "animaCaption": "Crouching upon a metal bench in the dark isolation lab, she fixes an intense, piercing red-eyed gaze.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Mon3tr crouches with predatory stillness atop a stainless metal bench inside a sub-level medical observation room at midnight, wearing a structured obsidian-leather and emerald micro-mesh cutout bralette with an open back and matching briefs. Looking back with cool green eyes, she is rimmed by pulsing green monitor waveforms across the darkened floor.",
+    "animaCaption": "Crouching with feline poise atop a cold metal bench in an open-backed obsidian leather and green mesh cutout lingerie set, she glances back with sharp, aloof eyes. Pulsing green monitor displays cast crisp geometric light across the dark isolation lab.",
+    "nsfwTokens": [
+      "black lingerie",
+      "leather bralette",
+      "green mesh",
+      "cutout lingerie",
+      "open back",
+      "black panties",
+      "bare back"
+    ],
+    "nsfwProse": "She wears a structured obsidian leather-and-emerald micro-mesh cutout bralette with an open back clearing her spine crystals, paired with matching black briefs."
   }
 }

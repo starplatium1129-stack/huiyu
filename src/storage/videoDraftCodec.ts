@@ -132,7 +132,7 @@ export const videoDraftCodec = {
       h3LightVae: v.h3LightVae !== false,
       ...(driver ? { driver } : {}),
       camera: choice(v.camera, cameras, 'still'), motion: choice(v.motion, motions, 'subtle'),
-      duration: choice(v.duration, durations, 5), seedText: text(v.seedText), videoImageId: text(v.videoImageId), lastFrameImageId: text(v.lastFrameImageId),
+      duration: choice(v.duration, [2, ...durations], 5), seedText: text(v.seedText), videoImageId: text(v.videoImageId), lastFrameImageId: text(v.lastFrameImageId),
       ...(v.importSourceImageId === undefined ? {} : { importSourceImageId: identity(v.importSourceImageId) }) }
   },
   shots(value: unknown): ShotsDraftPayload {

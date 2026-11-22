@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aoyama_nanami_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3473,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "aoyama_nanami_lingerie_whisper",
     "characterId": "aoyama_nanami",
@@ -14,7 +14,7 @@
     "location": "樱花庄二楼七海的和室房间",
     "timeOfDay": "深夜",
     "lighting": "矮桌上小台灯聚焦在翻开的剧本上，暖色光圈衬托出少女素颜的清秀白皙",
-    "camera": "规整端正的侧景俯角，体现出勤奋优等生的自律与深夜疲惫中的动人坚持",
+    "camera": "high angle, side view, medium shot",
     "mood": "刻苦坚韧、青涩倔强与让人心疼的努力",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,35 @@
       "hardworking_girl"
     ],
     "promptTokens": [
-      "striped cotton nightdress",
-      "brown hair down",
-      "reading script",
-      "tatami desk",
-      "studying",
-      "gentle blush",
-      "night",
+      "seiza",
+      "hair down",
+      "holding script",
+      "highlighter pen",
+      "blush",
+      "looking up",
+      "low table",
+      "tatami",
+      "japanese room",
       "desk lamp",
-      "warm lighting"
+      "warm lighting",
+      "night",
+      "high angle",
+      "side view",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Nanami Aoyama practicing voice acting scripts late into the night within her cozy tatami room at Sakurasou. Clad in a breathable peach-striped cotton loungedress with her iconic ponytail undone, she sits with disciplined posture at a low wooden table. Highlighting dialogue lines under a focused lamp, she looks up with an earnest, slightly flustered blush as someone enters.",
-    "animaCaption": "Nanami Aoyama practicing voice acting scripts late into the night within her cozy tatami room at Sakurasou. Clad in a breathable peach-striped cotton loungedress with her iconic ponytail undone, she sits with disciplined posture at a low wooden table.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sitting neatly on a tatami cushion at her low wooden desk late at night in Sakurasou, Nanami Aoyama wears a comfortable peach-and-white striped cotton henley nightdress with her hair loose. Holding a script marked with highlighter lines, she looks up with a dedicated, gently flustered blush under the warm pool of her desk lamp.",
+    "animaCaption": "Sitting neatly in seiza on a tatami cushion with her hair let down in a peach-and-white striped cotton nightdress, she holds her marked audition script and looks up with a tired, earnest blush. A small desk lamp pools warm focus across the pages.",
+    "nsfwTokens": [
+      "peach nightgown",
+      "white stripes",
+      "cotton nightdress",
+      "henley collar",
+      "loose dress",
+      "pajamas",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a loose peach-and-white striped cotton dorm nightdress with a modest buttoned henley neckline and side pockets.",
+    "compositionIntent": "single"
   }
 }

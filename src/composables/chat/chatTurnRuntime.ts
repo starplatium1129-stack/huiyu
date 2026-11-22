@@ -5,7 +5,11 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import type { ChatMessage, ChatProvider } from './chatStorageTypes'
 
 /** Protocol mood tags own the whole turn once present; text hints are a fallback. */
-export function createTurnEmotionTracker(characterId: string, append: (text: string) => void, onEmotion?: (emotion: string) => void) {
+export function createTurnEmotionTracker(
+  characterId: string,
+  append: (text: string) => void,
+  onEmotion?: (emotion: string, explicit?: boolean) => void,
+) {
   const emotionState = { value: 'neutral', moodTagged: false }
   let moodStream = createMoodTagStream()
   const hintPriority = ['shy', 'happy', 'sad', 'serious', 'gentle', 'neutral']
@@ -20,7 +24,7 @@ export function createTurnEmotionTracker(characterId: string, append: (text: str
     const emotion = hintRank < hintPriority.length - 1 ? hintPriority[hintRank]! : fallbackEmotion
     if (emotion !== emotionState.value) {
       emotionState.value = emotion
-      onEmotion(emotion)
+      onEmotion(emotion, false)
     }
   }
   return {
@@ -29,16 +33,17 @@ export function createTurnEmotionTracker(characterId: string, append: (text: str
       const extracted = moodStream.push(delta)
       assistant.content = extracted.cleanText
       if (extracted.emotion) {
+        const wasTagged = emotionState.moodTagged
         emotionState.moodTagged = true
-        if (extracted.emotion !== emotionState.value) {
+        if (!wasTagged || extracted.emotion !== emotionState.value) {
           emotionState.value = extracted.emotion
-          onEmotion?.(extracted.emotion)
+          onEmotion?.(extracted.emotion, true)
         }
       } else if (!emotionState.moodTagged) maybeStreamEmotion(assistant.content, committedLength)
       append(extracted.cleanText.slice(prevCleanLen))
     },
     reset() {
-      if (emotionState.value !== 'neutral') onEmotion?.('neutral')
+      if (emotionState.value !== 'neutral') onEmotion?.('neutral', false)
       emotionState.value = 'neutral'
       emotionState.moodTagged = false
       moodStream = createMoodTagStream()
@@ -51,6 +56,8 @@ export function createTurnEmotionTracker(characterId: string, append: (text: str
 interface TurnConnection {
   provider: ChatProvider
   currentModel: string
+  chatgptModel: string
+  chatgptClientId: string
   baseUrl: string
   apiModel: string
   apiKey: string
@@ -66,7 +73,7 @@ function isVisionMessage(message: Record<string, unknown>): boolean {
 
 export function buildChatRequestBody(args: {
   characterId: string; sessionId: string; imageUrls: string[]; hostMode: boolean; useVision: boolean
-  toolsEnabled: boolean; toolResultOrigin?: string; restricted: boolean; roundMessages: Array<Record<string, unknown>>
+  toolsEnabled: boolean; museDrawing: boolean; toolResultOrigin?: string; restricted: boolean; roundMessages: Array<Record<string, unknown>>
   messages: ChatMessage[]; connection: TurnConnection; userProfile: ChatUserProfile; memories: string[]
 }): string {
   const { characterId, sessionId, imageUrls, hostMode, useVision, toolsEnabled, restricted,
@@ -83,12 +90,14 @@ export function buildChatRequestBody(args: {
     })
   return JSON.stringify({
     character: characterId, sessionId, provider: connection.provider,
-    model: connection.provider === 'muse' ? undefined : hostMode ? '' : connection.currentModel,
+    chatgptClientId: connection.provider === 'chatgpt' ? connection.chatgptClientId || undefined : undefined,
+    model: connection.provider === 'muse' ? undefined : connection.provider === 'chatgpt' ? connection.chatgptModel : hostMode ? '' : connection.currentModel,
     api: !hostMode && connection.provider === 'api'
       ? { baseUrl: connection.baseUrl, model: connection.apiModel, apiKey: connection.apiKey } : undefined,
     hostConfig: hostMode || undefined,
-    webSearch: !restricted && connection.provider === 'api' && connection.webSearch && isLocalStudioHost(),
+    webSearch: !restricted && (connection.provider === 'api' || connection.provider === 'chatgpt') && connection.webSearch && isLocalStudioHost(),
     companionTools: toolsEnabled || undefined,
+    museDrawing: args.museDrawing || undefined,
     toolResultOrigin: args.toolResultOrigin,
     reasoning: connection.reasoning,
     userProfile: hasChatUserProfile(userProfile) ? userProfile : undefined,

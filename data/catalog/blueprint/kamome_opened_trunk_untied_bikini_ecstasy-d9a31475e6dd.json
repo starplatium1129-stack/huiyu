@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_opened_trunk_untied_bikini_ecstasy",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2350,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kamome_opened_trunk_untied_bikini_ecstasy",
     "characterId": "kushima_kamome",
@@ -17,28 +17,39 @@
     "action": "比基尼的系带被一根根解开，鸥双手支撑在箱体两角，仰起脖颈在接连不断的亲吻中娇声喘息",
     "timeOfDay": "afternoon",
     "lighting": "warm dust-mote beams streaming through secret knotholes highlighting bare curves",
-    "camera": "cowboy_shot",
+    "camera": "cowboy shot, eye level",
     "mood": "温存与柔媚",
-    "promptProse": "Arching her slender back atop her vintage trunk, Kamome gasps with parted lips as untied bikini strings fall away in golden hideout light.",
+    "promptProse": "Inside her warm sunlit secret hideout laid with thick rugs, Kamome perches on a large antique suitcase supporting herself with both hands on its corners and tilting her head back in breathless, flushed emotion.",
     "promptTokens": [
-      "vintage_trunk",
-      "secret_base",
-      "sitting_on_suitcase",
-      "untied_bikini",
-      "bare_breasts",
-      "arched_back",
-      "parted_lips",
-      "heavy_blush",
-      "cowboy_shot",
+      "sitting",
+      "suitcase",
+      "hands behind back",
+      "arched back",
+      "head back",
+      "heavy blush",
+      "parted lips",
+      "attic",
+      "rug",
       "sunlight",
-      "warm_lighting"
+      "warm lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Kamome surrendering atop her antique trunk, loosened bikini falling away in ecstasy.",
+    "animaCaption": "Seated atop her vintage leather trunk on the plush hideout rug with both hands braced back on the corners, she arches her neck with heavy blush and parted lips as the loose ties of her sky-blue striped halter bikini slip away from her bare chest.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "single",
+    "nsfwTokens": [
+      "striped bikini",
+      "blue bikini",
+      "untied bikini",
+      "topless",
+      "nipples",
+      "barefoot"
+    ],
+    "nsfwProse": "The halter strings of her sky-blue and white striped nautical bikini have been untied, letting the top slip free off her bare breasts while the matching side-tie bottoms rest low on her hips."
   }
 }

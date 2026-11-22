@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_maid_table_doggystyle_thrust",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1197,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "id": "sachi_r18_maid_table_doggystyle_thrust",
     "title": "小岭幸 · 休息室长凳古典女仆围裙系带解开与顺从自抚破防",
@@ -19,7 +19,7 @@
     "action": "坐在休息室长凳上，围裙系带松开，两只手分别放在身前与裙边。",
     "timeOfDay": "下午",
     "lighting": "百叶窗透入的金色夕阳逆光与木质长椅阴影形成的强烈私密主仆氛围",
-    "camera": "cowboy shot, seated bench perspective, focus on frilled maid headdress, heaving cleavage, and obedient tears",
+    "camera": "three quarter view, cowboy shot",
     "mood": "极乐沉沦",
     "sceneTags": [
       "lounge",
@@ -37,23 +37,20 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "On the lounge bench, Sachi cups her chest with one hand and touches herself beneath the lifted maid skirt with the other. Sunset through the blinds stripes her untied white apron and stockings, leaving the space behind the bench legs in shadow.",
+    "promptProse": "Seated on a solid wooden bench inside the quiet afternoon lounge, Sachi wears her maid headdress and white thighhighs with garter straps while her white apron ties hang undone and her black bodice opens across her heaving cleavage. Cupping her chest with one hand, she slips her other hand beneath the lifted hem of her maid skirt to masturbate with obedient, tearful blushes. Golden sunset light slanting through the Venetian blinds stripes her apron, stockings, and the dark floor beneath the bench.",
     "promptTokens": [
-      "adult",
-      "1girl",
-      "solo",
-      "maid",
-      "untied apron",
-      "open bodice",
-      "white thighhighs",
-      "garter straps",
       "sitting",
       "bench",
-      "masturbation",
-      "lounge",
+      "hand on own chest",
+      "teary eyes",
+      "heavy blush",
+      "looking down",
+      "window blinds",
+      "blinds shadows",
       "sunset",
-      "hand on chest",
-      "blinds shadows"
+      "indoors",
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -61,8 +58,19 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Sunset stripes the untied apron above the lounge bench."
+    "nsfwTokens": [
+      "maid",
+      "maid headdress",
+      "white apron",
+      "open clothes",
+      "cleavage",
+      "skirt lift",
+      "white thighhighs",
+      "garter straps",
+      "masturbation"
+    ],
+    "nsfwProse": "Her maid bodice is unfastened over deep cleavage with her white apron ties hanging loose and her black skirt lifted above her garter-held white thighhighs as she touches herself on the bench.",
+    "animaCaption": "Seated on the wooden lounge bench with her maid apron untied and bodice opened over deep cleavage, Sachi cups her chest with one hand while reaching beneath her lifted skirt to masturbate. Golden sunset through the blinds stripes her apron and garter-held white thighhighs.",
+    "compositionIntent": "single"
   }
 }

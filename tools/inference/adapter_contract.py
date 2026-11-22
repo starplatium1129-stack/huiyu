@@ -80,8 +80,14 @@ def config(root, path):
 
 def layout(value, spec):
     if not isinstance(value, str) or not Path(value).is_absolute():
-        raise AdapterError("MODEL_INVALID", "modelDir must be a complete absolute local Diffusers directory")
+        raise AdapterError("MODEL_INVALID", "modelDir must be an absolute local model directory")
     root = Path(value).resolve()
+    if spec.get("runner") == "musetalk-native":
+        load_sibling("musetalk_native").resource_files(root, spec)
+        return root
+    if spec.get("runner") in ("sd-cpp", "wan-a14b-sd"):
+        load_sibling("keyframe_sd").resources(root, spec)
+        return root
     if spec.get("runner") == "longcat-avatar":
         bundle = next(item for item in document(Path(__file__).with_name("managed-adapter-models.json"))["models"]
                       if item["id"] == "longcat-avatar-1.6")
@@ -190,9 +196,14 @@ def validate(job):
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "h3Decoder", "h3VideoShift", "nativeModelFormat", "mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "audioFrames", "videoAttention", "wanMemoryTier", "h3Decoder", "h3VideoShift", "nativeModelFormat", "mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
+    if "audioFrames" in data and (spec.get("runner") != "musetalk-native"
+            or type(data["audioFrames"]) is not int or data["audioFrames"] != data.get("frames")):
+        raise AdapterError("INVALID_PARAMETER", "MuseTalk 精确帧数与请求不一致。")
+    if "wanMemoryTier" in data and (spec.get("runner") != "wan-a14b-sd" or data["wanMemoryTier"] not in ("balanced", "conservative")):
+        raise AdapterError("INVALID_PARAMETER", "未知的 Wan 显存档位。")
     if "nativeModelFormat" in data and (spec.get("localPack") is None
             or data["nativeModelFormat"] not in ("diffusers", spec["localPack"]["format"])):
         raise AdapterError("INVALID_PARAMETER", "Unknown native model format")
@@ -267,7 +278,7 @@ def validate(job):
     result["steps"] = number(data, "steps", sampling_defaults["steps"], spec.get("minSteps", 1), 100, True)
     result["cfg"] = number(data, "cfg", sampling_defaults["cfg"], 0, 20)
     result["seed"] = number(data, "seed", 0, 0, 2147483647, True)
-    if spec["distilled"] and (result["steps"] != spec["steps"] or result["cfg"] != spec["cfg"]):
+    if spec["distilled"] and (result["steps"] not in spec.get("stepOptions", (spec["steps"],)) or result["cfg"] != spec["cfg"]):
         raise AdapterError("INVALID_PARAMETER", "Turbo requires its declared step count and guidance")
     if spec["family"] == "qwen-image" and bool(negative) != (result["cfg"] > 1):
         raise AdapterError("INVALID_PARAMETER", "Qwen negative prompt requires cfg > 1; empty negative requires cfg <= 1")
@@ -284,9 +295,15 @@ def validate(job):
             raise AdapterError("UNSUPPORTED_OPTION", "A last frame requires a supported first/last-frame model and first frame")
         safe_file(Path(last).parent.resolve(), Path(last))
     references = job.get("referenceImagePaths", [])
+    if spec.get("runner") == "wan-a14b-sd" and not job.get("inputImagePath"):
+        raise AdapterError("INVALID_PARAMETER", "Wan A14B 图生视频需要首帧。")
+    if spec.get("runner") == "wan-a14b-sd" and result["width"] * result["height"] > 1280 * 720:
+        raise AdapterError("INVALID_PARAMETER", "Wan A14B 的 16GB 配方最大支持 720p。")
+    if spec.get("runner") == "sd-cpp" and not job.get("inputImagePath"):
+        raise AdapterError("INVALID_PARAMETER", "关键帧编辑需要一张底图。")
     if (not isinstance(references, list) or len(references) > 3
-            or references and (spec["family"] != "qwen-image" or not job.get("inputImagePath"))):
-        raise AdapterError("UNSUPPORTED_OPTION", "Qwen supports one original and at most three reference images")
+            or references and (spec["family"] not in ("qwen-image", "keyframe") or not job.get("inputImagePath"))):
+        raise AdapterError("UNSUPPORTED_OPTION", "此模型无法使用所选参考图。多图编辑支持一张底图和最多三张附图。")
     seen = {job.get("inputImagePath")}
     for path in references:
         if (not isinstance(path, str) or not Path(path).is_absolute() or not Path(path).is_file() or path in seen):
@@ -306,7 +323,7 @@ def validate(job):
         result["frames"] = number(data, "frames", None, spec["minFrames"], spec["maxFrames"], True)
         if (result["frames"] - spec["frameOffset"]) % spec["frameMultiple"] or data.get("fps") != spec["fps"]:
             raise AdapterError("INVALID_PARAMETER", "Video frame count/rate does not match this model")
-        if result["cfg"] != spec["cfg"] or result["frames"] not in spec["durationFrames"].values():
+        if result["cfg"] != spec["cfg"] or ("audioFrames" not in data and result["frames"] not in spec["durationFrames"].values()):
             raise AdapterError("INVALID_PARAMETER", "Unsupported native video guidance/duration recipe")
         if spec.get("canvases") and [result["width"], result["height"]] not in spec["canvases"].values():
             raise AdapterError("INVALID_PARAMETER", "Resolution does not match the selected video variant")

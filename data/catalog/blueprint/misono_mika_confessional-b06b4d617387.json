@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_confessional",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 899,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "action": "跪坐忏悔室木格窗旁，指尖贴着窗扉，含泪向画面外的老师倾诉。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, tight framing",
+    "camera": "three quarter view, medium shot",
     "category": "成人私密",
     "characterId": "misono_mika",
     "coverageTags": [
@@ -22,23 +22,37 @@
     "lighting": "烛火与帘影",
     "location": "崔尼蒂大圣堂忏悔室",
     "mood": "禁忌圣洁",
-    "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "tea_party_dress",
-    "promptProse": "Mika kneels in her white gown, fingers on the confessional lattice, speaking to the off-frame listener. Candlelight catches her tears while curtain shadows cross the wooden lattice.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "white gown",
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "nsfwProse": "She wears her sleeveless gold-embroidered white Tea Party ballgown draped with a soft white silk shawl, white evening gloves, and white tights.",
+    "nsfwTokens": [
+      "white dress",
+      "sleeveless dress",
       "gold embroidery",
+      "white shawl",
+      "white gloves",
+      "bare shoulders",
+      "white tights"
+    ],
+    "outfitId": "tea_party_dress",
+    "promptProse": "Kneeling quietly inside a hushed Trinity Cathedral confessional booth late at night, Mika wears her sleeveless gold-embroidered white Tea Party gown, silk shawl, and long white evening gloves. Pressing her gloved fingertips softly against the carved wooden lattice partition, she whispers earnestly toward the listener beyond the screen as glistening tears shine at her eyes in warm flickering candlelight and deep curtain shadows.",
+    "promptTokens": [
       "kneeling",
-      "hand on partition",
+      "hand on wall",
       "tears",
+      "blush",
+      "looking aside",
+      "lattice",
       "confessional",
+      "church",
+      "curtains",
       "candlelight",
-      "hands on lattice",
-      "curtain shadows"
+      "shadows",
+      "night",
+      "three quarter view",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -52,6 +66,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "圣园未花 · 忏悔室里的真心话",
-    "animaCaption": "She speaks toward the listener outside the frame through the lattice."
+    "animaCaption": "Kneeling inside the dimly lit cathedral confessional booth in her sleeveless gold-embroidered white gown, shawl, and evening gloves, Mika presses her fingertips against the wooden lattice with glistening tears. Warm candlelight and soft curtain shadows cross the partition.",
+    "compositionIntent": "single"
   }
 }

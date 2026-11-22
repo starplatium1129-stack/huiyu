@@ -9,6 +9,8 @@ pub(crate) use input::InputFile;
 use input::RunFiles;
 pub(crate) use model_layout::model_issue;
 mod execution;
+mod queue;
+pub(crate) use queue::MAX_PENDING;
 mod moss;
 mod observations;
 pub(in crate::generation) mod recovery;
@@ -16,6 +18,7 @@ pub(crate) mod resources;
 mod results;
 mod worker;
 mod worker_job;
+mod wan_attempt;
 use super::*;
 pub(crate) use config::{Settings, installed_runtime_for, load, python_relative};
 pub(super) use results::prune;
@@ -42,33 +45,48 @@ pub(crate) struct Plan {
 pub(crate) struct Engine {
     processes: Arc<crate::processes::Processes>,
     tokens: Mutex<HashMap<String, CancellationToken>>,
-    pub(super) queue: std::sync::Mutex<VecDeque<String>>,
+    queue: Arc<queue::Queue>,
     slot: Arc<Semaphore>,
     pub(crate) gpu_owned: AtomicBool,
     comfy_leased: AtomicBool,
     admission: Arc<Semaphore>,
     worker: Mutex<Option<worker::Worker>>,
 }
-impl Default for Engine {
-    fn default() -> Self {
-        Self {
+impl Engine {
+    pub(super) fn open(runtime: &std::path::Path) -> Result<Arc<Self>> {
+        Ok(Arc::new(Self {
             processes: Arc::default(),
             tokens: Mutex::default(),
-            queue: std::sync::Mutex::default(),
+            queue: queue::Queue::open(runtime)?,
             slot: Arc::new(Semaphore::new(1)),
             gpu_owned: AtomicBool::new(false),
             comfy_leased: AtomicBool::new(false),
-            admission: Arc::new(Semaphore::new(4)),
+            admission: Arc::new(Semaphore::new(MAX_PENDING)),
             worker: Mutex::new(None),
-        }
+        }))
     }
 }
 impl Engine {
+    fn block_on_unconfirmed_release(&self) {
+        self.slot.close();
+        self.admission.close();
+        self.queue.wake_waiters();
+    }
+    pub(super) fn queue_order(&self) -> Vec<String> {
+        self.queue.order()
+    }
+    pub(super) fn queue_status(&self) -> Value {
+        self.queue.snapshot(self.slot.is_closed())
+    }
+    pub(super) async fn pause(&self, paused: bool) -> Result<Value> {
+        self.queue.set_paused(paused).await?;
+        Ok(self.queue_status())
+    }
     pub(super) fn pending(&self) -> usize {
         if self.comfy_leased.load(Ordering::SeqCst) {
             0
         } else {
-            4 - self.admission.available_permits()
+            MAX_PENDING - self.admission.available_permits()
         }
     }
     pub async fn close(&self) {
@@ -110,7 +128,7 @@ impl Service {
                 } else {
                     ApiError::new(
                         429,
-                        "ANIMA_QUEUE_FULL",
+                        "NATIVE_QUEUE_FULL",
                         "图像生成队列已满或正在交接显存，请稍后重试",
                     )
                 }
@@ -153,29 +171,9 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         token.cancel();
     }
     let worker = inner.clone();
+    let ticket = inner.native.queue.enqueue(&job.id, &job.input);
     inner.tasks.spawn(async move {
-        let mut registered = false;
-        let acquire = worker.native.slot.acquire();
-        tokio::pin!(acquire);
-        let slot = tokio::select! {
-            biased;
-            _ = token.cancelled() => Err(closed()),
-            slot = std::future::poll_fn(|cx| {
-                use std::future::Future;
-                if !registered {
-                    // Establish order in the same critical section as the first
-                    // fair semaphore poll, including jobs from the video service.
-                    let mut queue = worker.native.queue.lock().unwrap();
-                    queue.push_back(job.id.clone());
-                    registered = true;
-                    acquire.as_mut().poll(cx)
-                } else {
-                    acquire.as_mut().poll(cx)
-                }
-            }) => slot.map_err(|_| {
-                if token.is_cancelled() { closed() } else { worker::release_error() }
-            }),
-        };
+        let slot = ticket.acquire(&worker.native, &token).await;
         match slot {
             Ok(slot) => {
                 job.started_at.store(now(), Ordering::Relaxed);
@@ -184,8 +182,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                 // Hold the GPU slot through the cancellation acknowledgement
                 // and publication. No next job may run before worker cleanup.
                 if settle(&worker, &job, outcome, token.is_cancelled()).await {
-                    worker.native.slot.close();
-                    worker.native.admission.close();
+                    worker.native.block_on_unconfirmed_release();
                     worker.admission.close();
                     slot.forget();
                 } else if worker.native.worker.lock().await.is_none() {
@@ -196,14 +193,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                 settle(&worker, &job, Err(error), token.is_cancelled()).await;
             }
         }
-        if registered {
-            worker
-                .native
-                .queue
-                .lock()
-                .unwrap()
-                .retain(|id| id != &job.id);
-        }
+        drop(ticket);
         worker.native.tokens.lock().await.remove(&job.id);
     });
 }
@@ -213,6 +203,7 @@ async fn settle(
     outcome: Result<Output>,
     token_cancelled: bool,
 ) -> bool {
+    job.state.lock().await.preview_data_url = None;
     // Queued cancellation and early failures never reach the private-file copy.
     // Historical jobs retain recipes/results, not their admitted image buffers.
     if let Execution::Native(plan) = &job.execution {

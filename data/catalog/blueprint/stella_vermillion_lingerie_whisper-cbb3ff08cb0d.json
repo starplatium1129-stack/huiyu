@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_vermillion_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3455,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "stella_vermillion_lingerie_whisper",
     "characterId": "stella_vermillion",
@@ -14,7 +14,7 @@
     "location": "破军学园男女合宿宿舍卧室，桌上放着骑士资格证与火系魔剑剑鞘",
     "timeOfDay": "宿舍同居第一夜的熄灯时刻",
     "lighting": "窗外微弱月光与床头暖橙色小夜灯交织，映照出少女如白玉雕琢般发烫的肌肤",
-    "camera": "close-up, eye level, front view, 正面平视特写，用枕头半遮掩的姿态与红透的双颊、如火的赤瞳形成强烈视觉重心",
+    "camera": "front view, eye level, close-up",
     "mood": "傲娇皇女的绝顶纯情与高贵炽热，极度羞赧却又在心底悄悄期待",
     "adult": true,
     "sampleRating": "R15",
@@ -40,29 +40,35 @@
       "front_view"
     ],
     "promptTokens": [
-      "close-up",
-      "eye level",
-      "front view",
-      "apartment",
-      "bedroom",
-      "bed",
-      "night",
-      "moonlight",
-      "warm lighting",
       "sitting",
+      "on bed",
       "hugging pillow",
-      "blush",
-      "crimson silk bralette set",
-      "fine gold rose embroidery",
-      "indoors",
-      "candlelight",
-      "starlight",
-      "firelight"
+      "pillow",
+      "angry",
+      "heavy blush",
+      "looking at viewer",
+      "bedroom",
+      "dormitory",
+      "night light",
+      "moonlight",
+      "night",
+      "warm lighting",
+      "front view",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight. Warm flickering candlelight from a palace candelabra intermingles with cool starlight, casting vibrant crimson reflections over her ruby hair.",
-    "animaCaption": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated on the edge of the shared dorm bed at lights-out, Stella wears a crimson silk underwire bralette embroidered with gold rose motifs and scalloped lace trim. Pulling a feather pillow hastily against her chest as a barrier, she glares straight ahead with fiery flustered indignation while her cheeks and shoulders flush deep red. Cool window moonlight mingles with the warm orange glow of a bedside nightlamp across the dorm room.",
+    "animaCaption": "Seated at the dorm bed edge in a gold-embroidered crimson silk bralette, Stella hugs a pillow tightly across her chest and glares forward with a vivid flustered blush. Warm bedside nightlamp light blends with cool moonlight in the bedroom.",
+    "nsfwTokens": [
+      "lingerie",
+      "red bra",
+      "silk",
+      "gold embroidery",
+      "lace trim",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a royal crimson silk underwire bralette intricately embroidered with fine gold rose vines and scalloped lace borders.",
+    "compositionIntent": "single"
   }
 }

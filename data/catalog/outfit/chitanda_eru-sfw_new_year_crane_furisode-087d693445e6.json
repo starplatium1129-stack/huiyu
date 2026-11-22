@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/sfw_new_year_crane_furisode",
+  "revision": 1,
+  "sortOrder": 3917,
+  "createdAt": "2026-11-22T01:48:55.068887900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "sfw_new_year_crane_furisode",
+      "characterId": "chitanda_eru",
+      "name": "藤紫织鹤纹长振袖与浅金织锦腰带",
+      "tokens": [
+        "kimono",
+        "purple kimono",
+        "furisode",
+        "wide sleeves",
+        "crane print",
+        "obi",
+        "tabi",
+        "zouri"
+      ],
+      "prose": "A fully wrapped wisteria-purple silk furisode with long hanging sleeves and woven pale-gold cranes at the cuffs and hem. A wide gold-brocade obi, white tabi and dark zori complete the formal outfit.",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

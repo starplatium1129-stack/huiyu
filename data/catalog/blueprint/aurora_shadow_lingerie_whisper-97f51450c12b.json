@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3511,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "aurora_shadow_lingerie_whisper",
     "characterId": "aurora_shadow",
@@ -14,7 +14,7 @@
     "location": "圣域深层古代神殿残迹的紫晶回廊",
     "timeOfDay": "异界暮光",
     "lighting": "悬浮紫晶石散发出的幽秘荧光与异界紫红色黄昏天光交相辉映，充满妖艳与神秘感",
-    "camera": "medium shot, low angle, 极具侵略性的侧视角低机位，突显魔女超脱生死的大胆曲线与捉弄人心的致命魅力",
+    "camera": "low angle, medium shot",
     "mood": "危险魅惑、戏谑挑逗、深藏悲伤的古老魔女",
     "adult": true,
     "sampleRating": "R15",
@@ -39,20 +39,33 @@
       "low_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "low angle",
-      "reclining back on ancient stone throne",
+      "reclining",
+      "stone throne",
+      "violet flames",
+      "floating crystals",
+      "seductive smile",
+      "looking at viewer",
       "ruined sanctuary",
-      "flickering violet soul flames",
-      "crumbled chains on floor",
-      "seductive knowing smile",
-      "alluring tease",
-      "purple ambient glow"
+      "broken chains",
+      "twilight",
+      "purple light",
+      "dim lighting",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Aurora lounges languidly on the cold stone of an ancient sanctuary, violet soul-fire flickering at her fingertips as she offers an irresistible, enigmatic smile from across the centuries.",
-    "animaCaption": "Lounging on an ancient stone throne amidst flickering violet flames, offering an alluring, timeless smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Reclining languidly on an ancient stone throne inside a ruined sanctuary corridor, Aurora wears a plunging deep-purple crushed velvet and sheer mesh bodysuit accented with obsidian clasps and delicate thigh garters. With violet soul flames curling at her fingertips and broken chains scattered across the floor, she offers an enigmatic, seductive smile in glowing twilight.",
+    "animaCaption": "Reclining languidly across a weathered stone throne in a plunging deep-purple velvet and sheer mesh bodysuit with thigh garters, she toys with flickering violet soul flames and smiles knowingly at the viewer. Eerie amethyst twilight and crystal glow frame the ruined sanctuary.",
+    "nsfwTokens": [
+      "purple velvet bodysuit",
+      "plunging neckline",
+      "sheer mesh",
+      "highleg bodysuit",
+      "thigh garters",
+      "cleavage",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a deep-purple crushed velvet and sheer mesh plunge bodysuit fastened with antique obsidian clasps and paired with delicate thigh garters.",
+    "compositionIntent": "single"
   }
 }

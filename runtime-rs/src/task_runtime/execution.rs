@@ -63,7 +63,7 @@ impl TaskRuntime {
             Ok::<bool, ApiError>(true)
         }
         .await;
-        if execution.is_err()
+        if let Err(error) = &execution
             && let Ok(current) = Self::get(&storage, &principal, &id).await
             && !current.upstream_settled
         {
@@ -83,7 +83,11 @@ impl TaskRuntime {
                 TaskPatch {
                     status: Some(TaskStatus::Failed),
                     upstream_settled: Some(true),
-                    error_code: Some(Some("TASK_VALIDATION_FAILED".into())),
+                    error_code: Some(Some(if error.code.starts_with("TASK_DEPENDENCY_") {
+                        error.code.clone()
+                    } else {
+                        "TASK_VALIDATION_FAILED".into()
+                    })),
                     ..Default::default()
                 }
             };

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3221,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "rem_rezero_lingerie_whisper",
     "characterId": "rem_rezero",
@@ -14,7 +14,7 @@
     "location": "罗兹瓦尔宅邸客房床榻，黄铜烛台上的白色蜡烛正静静淌下烛泪",
     "timeOfDay": "深夜万籁俱寂的私密倾诉",
     "lighting": "单支蜡烛的温润暖光投射在水蓝发丝与泪珠上，折射出钻石般的璀璨微光",
-    "camera": "medium shot, eye level, 侧身平视中景，客房烛影摇曳与无怨无悔的倾诉温存",
+    "camera": "side view, eye level, medium shot",
     "mood": "世界级女主角的绝对深情，无保留的献祭般温柔与至高幸福感",
     "adult": true,
     "sampleRating": "R15",
@@ -40,19 +40,34 @@
       "medium_shot"
     ],
     "promptTokens": [
-      "medium shot",
-      "sitting gracefully on edge of guest bed",
-      "brass candlestick on side table",
-      "dripping white wax",
-      "Roswaal mansion guest quarters",
-      "warm dancing candlelight",
-      "tender devoted smile",
-      "gentle longing gaze"
+      "kneeling",
+      "on bed",
+      "clasped hands",
+      "teary eyes",
+      "gentle smile",
+      "looking at viewer",
+      "guest bedroom",
+      "brass candlestick",
+      "dripping candle",
+      "warm candlelight",
+      "night",
+      "side view",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rem sits gently on the edge of the guest bed inside the quiet Roswaal manor, bathed in the amber glow of a single brass candlestick as she listens with pure, devoted warmth.",
-    "animaCaption": "Sitting on the edge of a bed beside a glowing candlestick, smiling with heartfelt, gentle devotion.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Kneeling gracefully on the guest bed inside Roswaal's quiet manor at midnight, Rem wears a sky-blue sheer floral-lace babydoll dress tied with white satin ribbon bows at the bust. Clasping both hands at her chest with tear-bright, purely devoted eyes, she is illuminated by the soft amber glow of a dripping white candle in its brass holder.",
+    "animaCaption": "Kneeling gently on the mansion guest bed with both hands clasped at her chest in a sky-blue sheer floral-lace babydoll tied with white satin bows, she gazes toward the viewer with happy, glistening tears and wholehearted devotion. A single brass candlestick warms the quiet room.",
+    "nsfwTokens": [
+      "light blue babydoll",
+      "sheer floral lace",
+      "see-through",
+      "white ribbon bow",
+      "spaghetti straps",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a sky-blue semi-sheer floral-lace babydoll nightdress tied at the ruffled empire waist with pure white satin ribbon bows.",
+    "compositionIntent": "single"
   }
 }

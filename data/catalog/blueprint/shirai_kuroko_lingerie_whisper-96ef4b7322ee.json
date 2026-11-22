@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shirai_kuroko_lingerie_whisper",
     "characterId": "shirai_kuroko",
@@ -14,7 +14,7 @@
     "location": "常盘台宿舍双人间，床头挂着御坂美琴的海报与呱太抱枕",
     "timeOfDay": "深夜实施“姐姐大人攻略作战”前夕",
     "lighting": "天花板吸顶灯的纯白荧光清晰照亮了手里的可疑喷雾与通红的双颊",
-    "camera": "close-up, eye level, 正面平视近景，被抓包更衣时的慌乱娇羞与对姐姐大人的痴态反差",
+    "camera": "front view, eye level, medium close-up",
     "mood": "搞笑痴女模式瞬间切换成极度羞耻的纯情反差，极具戏剧张力",
     "adult": true,
     "sampleRating": "R15",
@@ -38,19 +38,36 @@
       "medium_close_up"
     ],
     "promptTokens": [
-      "medium close-up",
-      "sitting suddenly on bed edge",
-      "Tokiwadai double room",
-      "Gekota plush pillow on headboard",
-      "Mikoto poster on wall",
-      "bright crimson panic blush",
-      "flustered flailing hands",
-      "dorm lamp light"
+      "sitting",
+      "on bed",
+      "holding",
+      "spray can",
+      "plush toy",
+      "poster",
+      "heavy blush",
+      "panicked",
+      "open mouth",
+      "looking at viewer",
+      "bedroom",
+      "dormitory",
+      "night",
+      "front view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Kuroko is caught mid-teleport in her dorm room, collapsing back onto the mattress in total flustered panic while attempting to hide her beloved Onee-sama photo.",
-    "animaCaption": "Caught mid-action in her dorm room, collapsing back onto the bed with an intensely flustered, comedic blush.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Caught red-handed on the edge of her bed inside her Tokiwadai double dorm room beside a Gekota pillow and a wall poster, Kuroko wears a crimson sheer lace underwire bra set with crisscrossing black garter straps and lace-topped stockings. Gripping a suspicious aerosol spray can in one hand while fussing with a garter clasp with the other, she flushes bright red in comic panic as the door opens. Bright white ceiling dorm lighting leaves nowhere to hide her mortified outburst.",
+    "animaCaption": "Caught on the bed edge in her Tokiwadai dorm wearing crimson sheer lace lingerie and black garter straps, Kuroko clutches a suspicious spray can and turns toward the viewer in bright crimson panic. Crisp overhead dorm lighting illuminates the Gekota pillow behind her.",
+    "nsfwTokens": [
+      "lingerie",
+      "red bra",
+      "sheer lace",
+      "garter belt",
+      "garter straps",
+      "stockings",
+      "cleavage",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a crimson sheer lace underwire bra set paired with intricate black garter belt straps and lace-topped stockings.",
+    "compositionIntent": "single"
   }
 }

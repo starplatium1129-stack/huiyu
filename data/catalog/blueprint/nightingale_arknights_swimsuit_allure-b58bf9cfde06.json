@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3153,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "nightingale_arknights_swimsuit_allure",
     "characterId": "nightingale_arknights",
@@ -14,7 +14,7 @@
     "location": "晨曦笼罩下的广袤无人细沙镜面浅海滩",
     "timeOfDay": "清晨日出",
     "lighting": "初升红日的万道金光穿透晨雾，在广阔平静的海滩水膜上打出长长的金色倒影，如梦似幻",
-    "camera": "full shot, low angle, painterly atmospheric lighting, ethereal sacred aesthetic",
+    "camera": "low angle, full body",
     "mood": "重获自由的圣洁释怀、宁静感动与梦醒般的平静",
     "adult": true,
     "sampleRating": "R15",
@@ -40,27 +40,31 @@
       "early_morning"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "nightingale (arknights)",
-      "silver hair",
-      "long hair",
-      "blue eyes",
-      "pointed ears",
-      "white lace swimdress",
-      "mint green shawl",
-      "wading in mirror-like shallow tide",
-      "holding dress hem",
-      "closed eyes enjoying breeze",
-      "majestic sunrise rays",
-      "golden horizon reflection",
-      "ethereal serene",
-      "depth of field"
+      "wading",
+      "holding skirt",
+      "closed eyes",
+      "serene smile",
+      "wind",
+      "shallow water",
+      "water reflection",
+      "beach",
+      "sunrise",
+      "golden sky",
+      "sunbeams",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [],
-    "promptProse": "Nightingale from Arknights wades peacefully into a golden, mirror-like shallow tide at dawn in her angelic white lace swimdress, eyes closed as she breathes in the fresh ocean wind.",
-    "animaCaption": "Golden dawn rays dissolve all painful memories into the mirror-like morning sea as she embraces quiet liberty.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Nightingale wades barefoot across a mirror-flat shallow tide at sunrise, wearing a pure white embossed floral-lace empire-waist swimdress with a drifting sheer mint-green chiffon shawl. Holding her hem lightly above the ripples with her eyes closed in serene relief, she glows in warm golden sunrise rays reflecting across the tranquil beach.",
+    "animaCaption": "Wading barefoot across mirror-still sunrise shallows in a white floral-lace swimdress and drifting mint-green sheer shawl, she lifts her hem delicately and closes her eyes to the warm sea breeze. Golden dawn light reflects seamlessly across the wet sand around her feet.",
+    "nsfwTokens": [
+      "white swimdress",
+      "floral lace",
+      "one-piece swimsuit",
+      "empire waist",
+      "sheer green shawl",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a pure white embossed floral-lace empire-waist swimdress paired with a floating sheer mint-green chiffon shoulder shawl."
   }
 }

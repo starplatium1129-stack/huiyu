@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3152,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "specter_arknights_lingerie_whisper",
     "characterId": "specter_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛个人艺术雕刻工作室，四处陈列着带有深海触须扭曲风格的大理石雕像",
     "timeOfDay": "午夜灵感爆发后的静谧",
     "lighting": "顶射聚光灯将苍白强光打在雕塑与少女身上，在深色地面投下拉长的戏剧性阴影",
-    "camera": "three quarter view, medium shot, low angle, 仰视四分之三中景，雕像石纹与交叠双腿同框",
+    "camera": "low angle, three quarter view, medium shot",
     "mood": "疯癫与优雅的绝妙平衡，修女回归艺术家的自傲与深不可测的迷人魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -45,20 +45,31 @@
       "sitting",
       "bench",
       "crossed legs",
-      "sculpture",
-      "marble bust",
       "holding chisel",
-      "art studio",
-      "theatrical spotlight",
+      "marble statue",
+      "head tilt",
+      "playful smile",
+      "looking at viewer",
+      "sculpture studio",
       "stained glass",
+      "spotlight",
+      "night",
+      "low angle",
       "three quarter view",
-      "medium shot",
-      "low angle"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Specter sits with crossed legs on a velvet bench in her personal sculpture studio, resting a steel chisel against an unfinished marble bust. A theatrical spotlight and pale stained-glass moonlight accentuate the rough-hewn stone and her enigmatic, playful expression.",
-    "animaCaption": "Resting a chisel against an unfinished marble statue in her studio, she tilts her head with an enigmatic smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Specter sits with her legs elegantly crossed on a wooden bench inside her midnight sculpture studio, wearing a gothic ink-black sheer coral-lace underwire bralette and strappy cutout briefs. Resting a chisel lightly against an unfinished marble bust with dust clinging to a strand of hair, she tilts her head with a lucid, teasing smile beneath a dramatic overhead spotlight.",
+    "animaCaption": "Seated with long legs crossed on a studio bench in gothic black coral-lace lingerie, she rests a steel chisel against an unfinished marble bust and tilts her head with a knowing, playful smile. A pale overhead spotlight carves sharp highlights across her skin and powdered stone.",
+    "nsfwTokens": [
+      "black lingerie",
+      "black lace bra",
+      "black panties",
+      "strappy panties",
+      "sheer mesh",
+      "cutout",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a gothic ink-black sheer coral-lace underwire bralette and strappy hip-cutout briefs trimmed with fine black mesh."
   }
 }

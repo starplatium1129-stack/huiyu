@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 828,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "千反田豪农大小姐藤紫缎面解构马甲裙",
-      "prose": "A wisteria-lavender vest dress over an ivory pintuck blouse, with a slit skirt and sheer smoky stockings.",
+      "name": "淡藤紫细褶衬衫与靛蓝棉布背带长裙",
+      "prose": "A pale wisteria collared blouse with narrow pintucks and rolled cuffs goes under a calf-length indigo cotton pinafore. The apronlike skirt has a rectangular patch pocket, and she wears flat brown loafers.",
       "tokens": [
-        "tailored_vest",
-        "lavender_vest",
-        "ivory_blouse",
-        "pinafore_dress",
-        "high_waist_skirt",
-        "side_slit",
-        "sheer_thighhighs",
-        "leather_heels"
+        "purple shirt",
+        "collared shirt",
+        "long sleeves",
+        "sleeves rolled up",
+        "pinafore dress",
+        "blue dress",
+        "long dress",
+        "loafers"
       ],
       "characterId": "chitanda_eru",
       "default": false,

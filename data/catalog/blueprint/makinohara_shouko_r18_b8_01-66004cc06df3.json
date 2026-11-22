@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_01",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_01",
     "title": "牧之原翔子 · 七里滨海景房白裙海风柔情",
@@ -15,7 +15,7 @@
     "action": "跨坐在画面外同伴腰间，白裙褪至腰际，长发垂落，温柔前倾。",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
-    "camera": "intimate vertical medium shot",
+    "camera": "low angle, pov, medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,21 +29,22 @@
       "bare_shoulders",
       "bare_breasts"
     ],
-    "promptProse": "Shouko sits astride her off-frame companion, her white dress at her waist, leaning toward them with a tearful smile. Sea-window moonlight edges her loose hair.",
+    "promptProse": "Beside the open window of a moonlit seaside room in Enoshima, Shouko slips the delicate straps of her white silk dress down to her waist and sits astride her partner's lap. Leaning tenderly forward over him in cowgirl position with her bare breasts pressed close, she smiles softly through glistening tears as cool silver moonlight from the coastal window rims her cascading hair.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "open white dress",
-      "bare breasts",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
-      "on lap",
       "leaning forward",
-      "coastal window",
+      "teary eyes",
+      "gentle smile",
+      "blush",
+      "window",
+      "ocean",
       "moonlight",
-      "tears",
-      "smile",
-      "medium shot",
-      "pov"
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,14 +52,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "white dress",
+      "slip dress",
+      "dress pull",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "cowgirl position",
+      "sex"
+    ],
+    "nsfwProse": "Her thin-strapped white silk dress is unfastened and gathered around her waist to bare her breasts and nipples as she rides gently astride her partner's lap.",
     "outfitId": "white_strap_dress",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "She leans toward her off-frame companion with her white dress gathered at her waist."
+    "animaCaption": "Riding gently astride her partner's lap by the seaside window with her white silk dress gathered at her waist, Shouko leans forward baring her breasts with a tender, tearful smile. Silver moonlight from the ocean window outlines her falling hair.",
+    "compositionIntent": "group"
   }
 }

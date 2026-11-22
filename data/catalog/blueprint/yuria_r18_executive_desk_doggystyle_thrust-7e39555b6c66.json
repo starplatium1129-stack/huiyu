@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_executive_desk_doggystyle_thrust",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1208,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "yuria_r18_executive_desk_doggystyle_thrust",
     "title": "春寺由梨亚 · 长官桌前西装窄裙拉链卡死与摘镜私密自抚",
@@ -34,21 +34,17 @@
       "glasses_removed",
       "heavy_blush"
     ],
-    "promptProse": "Yuria sits at the desk edge with her skirt zipper caught, one hand slipped beneath the tight fabric; her red glasses lie folded on the desk corner. A green-shaded desk lamp casts warm golden light on her blonde hair.",
+    "promptProse": "In a locked late-night office illuminated by a green-shaded desk lamp, Yuria perches on the wooden desk with her folded red glasses set aside on the corner and bites her lip with flushed cheeks.",
     "promptTokens": [
-      "open black business suit",
-      "open white blouse",
-      "lavender lace lingerie",
-      "black pencil skirt",
-      "black stockings",
-      "sitting on desk",
-      "female masturbation",
-      "office",
-      "lamplight",
-      "caught zipper",
-      "folded glasses",
+      "sitting",
+      "desk",
+      "glasses on table",
+      "biting lip",
       "heavy blush",
+      "office",
       "desk lamp",
+      "warm lighting",
+      "night",
       "cowboy shot"
     ],
     "negativeTokens": [
@@ -59,8 +55,18 @@
     "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [],
-    "nsfwProse": "",
-    "animaCaption": "Her red glasses rest on the desk corner beside her while the skirt zipper remains caught."
+    "nsfwTokens": [
+      "black suit",
+      "open jacket",
+      "open shirt",
+      "purple bra",
+      "pencil skirt",
+      "black pantyhose",
+      "hand under clothes",
+      "masturbation"
+    ],
+    "nsfwProse": "Her tailored dark suit jacket and white blouse hang open to reveal a sheer lavender lace bra and deep cleavage, while her free hand slips into the gap of her tight charcoal pencil skirt above sheer black tights.",
+    "animaCaption": "Sitting along the mahogany office desk edge with her red glasses folded beside her, she wears her dark suit jacket and white blouse opened over a lavender lace bra while slipping one hand beneath her tight pencil skirt whose zipper is caught.",
+    "compositionIntent": "single"
   }
 }

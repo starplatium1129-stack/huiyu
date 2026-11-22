@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1737,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_01",
     "title": "不知火舞 · 道场晨训的扇舞",
@@ -16,7 +16,7 @@
     "action": "清晨道场，不知火舞穿着系好的红色训练上衣与白色长裤，完成一遍受控扇舞后利落合扇",
     "timeOfDay": "清晨",
     "lighting": "morning_light",
-    "camera": "full body",
+    "camera": "three quarter view, full body",
     "mood": "自然日常",
     "sceneTags": [
       "dojo",
@@ -30,13 +30,22 @@
       "morning_light",
       "medium_full_shot"
     ],
-    "promptProse": "Mai closes her fan and settles into a balanced stance after practice in the morning-lit dojo.",
+    "promptProse": "Centered on the polished timber floorboards of the Shiranui-ryu dojo in the crisp morning air, Mai settles cleanly into a balanced martial stance after completing her solo fan kata. Dressed in her securely tied red cotton training top, broad white belt, and loose white trousers, she snaps her paper folding fan shut with poised precision as her ponytail comes to rest. Pale early sunlight slants through the tall shoji screens, throwing clean geometric bands across the quiet training hall.",
     "promptTokens": [
+      "standing",
+      "martial arts",
+      "holding fan",
       "folding fan",
+      "composed",
+      "looking ahead",
       "dojo",
-      "full body",
-      "balanced stance",
-      "morning light"
+      "wooden floor",
+      "shoji",
+      "sunlight",
+      "morning",
+      "indoors",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [
       "opponent",
@@ -51,6 +60,7 @@
       "iconic",
       "daily"
     ],
-    "animaCaption": "She closes her fan and settles into a balanced stance after dojo practice."
+    "animaCaption": "Standing in a poised, balanced stance on the sunlit dojo floor in her red training top and white trousers, Mai snaps her folding fan crisply shut at the close of her morning kata. Early daylight slants through the shoji screens behind her across the empty hall.",
+    "compositionIntent": "single"
   }
 }

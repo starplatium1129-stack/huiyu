@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3148,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "blemishine_arknights_lingerie_whisper",
     "characterId": "blemishine_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛工程部见习干员宿舍工作台旁",
     "timeOfDay": "深夜",
     "lighting": "桌面放大镜环形暖光灯照亮齿轮零件，在少女专注发光的脸庞上投下清晰的轮廓光",
-    "camera": "充满工匠精神与少女甜美感的近景侧面，捕捉年轻骑士不拘小节的可爱专注",
+    "camera": "side view, medium close-up",
     "mood": "工匠专注、元气阳光、毫无距离感的温暖亲近",
     "adult": true,
     "sampleRating": "R15",
@@ -37,20 +37,32 @@
       "enthusiastic_engineer"
     ],
     "promptTokens": [
-      "horse ears",
-      "golden gingham pajamas",
-      "pencil in hair",
-      "tinkering with gears",
-      "crosslegged",
+      "sitting",
+      "indian style",
+      "looking back",
       "bright smile",
+      "hair up",
+      "pencil in hair",
+      "gears",
+      "tweezers",
+      "low table",
+      "carpet",
       "desk lamp",
-      "rim lighting",
-      "warm lighting"
+      "warm lighting",
+      "side view",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. Her equine ears perk up joyfully as she turns around holding tiny clockwork gears, smiling like the brightest morning sun. A ring lamp over the magnifying workbench casts focused amber light on tiny brass gears, tracing a clean rim light along her intent, youthful face.",
-    "animaCaption": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. A ring lamp over the magnifying workbench casts focused amber light on tiny brass gears, tracing a clean rim light along her intent, youthful face.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Blemishine sits cross-legged on her dorm rug beside a low table scattered with tiny clockwork gears, her hair hastily pinned up with a drafting pencil. Wearing a relaxed golden-yellow gingham cotton jumpsuit with rolled cuffs, she looks back with a radiant smile while holding fine tweezers as a warm ring desk lamp illuminates the brass parts and outlines her face.",
+    "animaCaption": "Sitting cross-legged on the rug beside a low table cluttered with brass gears, she turns toward the viewer with tweezers in hand and her hair pinned up with a pencil. A magnifying workbench lamp casts warm rim light across her golden gingham pajamas and bright smile.",
+    "nsfwTokens": [
+      "yellow jumpsuit",
+      "plaid",
+      "buttoned pajamas",
+      "rolled-up sleeves",
+      "pajamas",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a roomy golden-yellow gingham cotton-linen lounge jumpsuit with a buttoned front and rolled cuffs."
   }
 }

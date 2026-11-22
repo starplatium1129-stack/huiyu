@@ -1,4 +1,4 @@
-import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { companionWindow, getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
 import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
@@ -20,19 +20,44 @@ import { scrollBehavior } from '../../utils/motionPreference.ts';
 import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '../../utils/storageKeys.ts';
 import type { CompanionChatLiveState } from '../../utils/companionChatLiveState';
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
+import { loadCompanionDirectory, savedCompanionCharacter } from '@/router/companionResources'
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState, branchId, storyBusy, handleStoryAction, screenWatchTarget } = useCharacterRoomSession();
     const desktopBridge = getDesktopCapabilities();
+    let admitConversation: (() => void) | undefined;
+    let cancelConversationIdle: (() => void) | undefined;
+    const presentation = desktopBridge ? {
+        character: savedCompanionCharacter(),
+        startConversation: new Promise<void>(resolve => { admitConversation = resolve; }),
+    } : undefined;
+    function startConversation() {
+        cancelConversationIdle?.();
+        cancelConversationIdle = undefined;
+        admitConversation?.();
+        admitConversation = undefined;
+    }
+    function warmConversation() {
+        if (!admitConversation || cancelConversationIdle) return;
+        if (typeof requestIdleCallback === 'function') {
+            const work = requestIdleCallback(startConversation, { timeout: 1200 });
+            cancelConversationIdle = () => cancelIdleCallback(work);
+        } else {
+            const work = window.setTimeout(startConversation, 0);
+            cancelConversationIdle = () => clearTimeout(work);
+        }
+    }
+    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState, branchId, storyBusy, handleStoryAction, screenWatchTarget } = useCharacterRoomSession(undefined, presentation);
     const presentationSuspended = useRoomPresentation('companion');
     const { getScore, getLevelInfo } = useCompanionAffection();
     const affectionScore = computed(() => getScore(activeChar.value));
     const affectionInfo = computed(() => getLevelInfo(activeChar.value));
     const composerFocused = ref(false);
     const alwaysOnTop = ref(false);
-    const ignoreMouseEvents = ref(false);
     const onBatteryPower = ref(false);
     const desktopWindowVisible = ref(!desktopBridge);
+    const desktopPreparing = ref(false);
+    const desktopInitialized = ref(false);
+    const desktopStageActive = computed(() => desktopPreparing.value || desktopWindowVisible.value);
     const desktopWindowBounds = ref<{
         x: number;
         y: number;
@@ -41,11 +66,11 @@ export function useCompanionWorkspace() {
     } | null>(null);
     const desktopLive2dOverride = ref(readDesktopLive2dOverride());
     const companionAutoLoad = computed(() => desktopBridge
-        ? desktopWindowVisible.value && desktopLive2dOverride.value !== false
+        ? desktopStageActive.value && desktopLive2dOverride.value !== false
         : storage.state.settings.live2dEnabled);
-    const immersiveMessages = computed(() => companionMessages.value.slice(-2));
+    const recentMessages = computed(() => companionMessages.value.slice(-2));
     const { showLatest: hasNewMessages, latest: latestMessages } = useConversationReading(
-        chatListRef, () => immersiveMessages.value, computed(() => `${activeChar.value}:${branchId.value}`),
+        chatListRef, () => recentMessages.value, computed(() => `${activeChar.value}:${branchId.value}`),
     );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
     // 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
@@ -130,11 +155,6 @@ export function useCompanionWorkspace() {
     const { workspaceOpen, workspaceInput, workspaceExists, workspaceSaving, workspaceError,
         workspaceRestartRequired, workspaceTooltip, saveWorkspace } = useWorkspaceDirectorySettings(
         desktopBridge, (message, kind) => { chatError.value = message; chatErrorKind.value = kind; });
-    let uiIdleTimer = 0;
-    const uiHidden = ref(false);
-    let lastPointerMove = Date.now();
-    let mouseToggleBlockedUntil = 0;
-    const immersive = ref(false);
     const presence = computed(() => resolveCompanionPresence({
         visible: pageVisible.value,
         dnd: dnd.value,
@@ -151,24 +171,6 @@ export function useCompanionWorkspace() {
      * 下行 busy/thinking/speaking/voiceActive/activeChar/chatReady，经
      * bridge.onChatCommand 接收 send/switch/stop 中继。
      * ============================================================ */
-    const liveDotState = computed(() => {
-        if (isSpeaking.value)
-            return 'speaking';
-        if (busy.value || thinkingActivity.value || Boolean(toolActivity.value))
-            return 'busy';
-        return 'idle';
-    });
-    const liveDotText = computed(() => {
-        if (!chatReady.value)
-            return '聊天未就绪';
-        if (isSpeaking.value)
-            return '配音中';
-        if (busy.value)
-            return '回复中';
-        if (thinkingActivity.value || Boolean(toolActivity.value))
-            return '思考中';
-        return '陪伴中';
-    });
     function publishLiveState() {
         if (!desktopBridge)
             return;
@@ -190,6 +192,7 @@ export function useCompanionWorkspace() {
     }
     watch([busy, storyBusy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatProvider, chatError], publishLiveState, { flush: 'sync' });
     function openChatWindow() {
+        startConversation();
         desktopBridge?.openChat?.();
     }
     function onChatCommand(payload: CompanionChatCommand) {
@@ -214,57 +217,31 @@ export function useCompanionWorkspace() {
             handleStoryAction(payload.storyAction, accepted => publishChatReceipt(payload.requestId, accepted), payload.branchId, () => isChatRelayCancelled(payload.requestId));
         }
         else if (payload.command === 'switch-character' && payload.character) {
-            switchCharacter(payload.character);
+            const character = payload.character;
+            startConversation();
+            void loadCompanionDirectory().then(() => { if (viewAlive) switchCharacter(character); }).catch(() => {});
         }
         else if (payload.command === 'stop') {
             stopEverything();
         }
     }
     let chatCommandSubscription: number | undefined;
+    const stopCompanionSignals: (() => void)[] = [];
     let resumeSubscription: number | undefined;
     let shownSubscription: number | undefined;
     let visibilitySubscription: number | undefined;
     let windowBoundsSubscription: number | undefined;
     let powerModeSubscription: number | undefined;
-    let interactionModeSubscription: number | undefined;
     let globalMouseSubscription: number | undefined;
     let viewAlive = true;
     let visibilityRevision = 0;
     let powerRevision = 0;
-    let boundsRevision = 0, pinRevision = 0, interactionRevision = 0;
+    let boundsRevision = 0, pinRevision = 0;
     let pinPending = false;
-    /** 沉浸模式：鼠标在舞台活动时 UI 浮现，静止数秒后自动隐去（桌面窗口）。 */
-    function setUiHidden(hidden: boolean) {
-        if (uiHidden.value === hidden)
-            return;
-        uiHidden.value = hidden;
-        document.documentElement.classList.toggle('companion-ui-hidden', hidden);
-    }
-    function enterImmersive() {
-        if (!desktopBridge)
-            return;
-        immersive.value = true;
-        document.documentElement.classList.add('companion-immersive');
-        // 进入沉浸前取消自动隐现计时，避免冲突
-        clearTimeout(uiIdleTimer);
-        uiHidden.value = false;
-        document.documentElement.classList.remove('companion-ui-hidden');
-    }
-    function exitImmersive() {
-        if (!immersive.value)
-            return;
-        immersive.value = false;
-        document.documentElement.classList.remove('companion-immersive');
-    }
     function onWindowKeydown(event: KeyboardEvent) {
         noteActivity();
-        setUiHidden(false);
         if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || document.querySelector('dialog[open]')) return;
         if (event.key === 'Escape' && speechSettingsOpen.value) { event.preventDefault(); speechSettingsOpen.value = false; return; }
-        if (event.key === 'Escape' && immersive.value) {
-            exitImmersive();
-            return;
-        }
         // 真双窗口：角色窗不再内嵌输入；Space 呼出聊天窗（如已开则落到聊天窗自身处理）
         if (desktopBridge) {
             if (event.key === ' ' && !event.repeat && !isEditableTarget(event.target)) {
@@ -286,46 +263,6 @@ export function useCompanionWorkspace() {
     }
     function onWindowKeyup(event: KeyboardEvent) {
         handleSpaceKeyUp(event);
-    }
-    function onPointerMove(event: PointerEvent) {
-        lastPointerMove = Date.now();
-        if (uiHidden.value)
-            setUiHidden(false);
-        clearTimeout(uiIdleTimer);
-        if (!desktopBridge)
-            return;
-        // 穿透模式只转发 mousemove、不转发 click——鼠标悬停在可交互元素上时
-        // 自动恢复交互，否则"恢复交互"按钮永远点不到（看起来像卡死）。
-        // 排除穿透切换按钮本身：悬停它不应恢复（会刚穿透又立刻恢复）。
-        if (ignoreMouseEvents.value && Date.now() >= mouseToggleBlockedUntil) {
-            const element = document.elementFromPoint(event.clientX, event.clientY);
-            const interactive = element instanceof HTMLElement
-                && Boolean(element.closest('button, a, input, textarea, select, [role="button"], [tabindex]'));
-            // 排除穿透切换按钮本身：悬停它不应恢复（会刚穿透又立刻恢复）
-            const self = element instanceof HTMLElement ? element.closest('button') : null;
-            const onToggleButton = Boolean(self && /穿透|恢复交互/.test(self.textContent || ''));
-            if (interactive && !onToggleButton) {
-                interactionRevision++; ignoreMouseEvents.value = false;
-                desktopBridge.setIgnoreMouseEvents(false);
-            }
-        }
-        scheduleUiHide();
-    }
-    function scheduleUiHide() {
-        clearTimeout(uiIdleTimer);
-        if (!desktopBridge || immersive.value) return;
-        uiIdleTimer = window.setTimeout(() => {
-            if (!viewAlive || !desktopWindowVisible.value)
-                return;
-            // Editing or choosing a character must not be interrupted by idle hiding.
-            if (settingsOpen.value || workspaceOpen.value || document.querySelector('.character-controls[open], .companion-orbit, dialog[open]') || window.getSelection()?.toString()) return;
-            if (document.activeElement instanceof HTMLTextAreaElement
-                || document.activeElement instanceof HTMLInputElement
-                || document.activeElement instanceof HTMLSelectElement)
-                return;
-            if (Date.now() - lastPointerMove > 3000)
-                setUiHidden(true);
-        }, 3200) as unknown as number;
     }
     function readDesktopLive2dOverride(): boolean | null {
         if (!desktopBridge)
@@ -366,28 +303,17 @@ export function useCompanionWorkspace() {
             console.warn('companion pin toggle failed', e);
         } finally { pinPending = false; }
     }
-    function toggleMouseEvents() {
-        if (!desktopBridge)
-            return;
-        // 本地立即翻转（主进程回发 desktop:interaction-mode 作兜底同步），
-        // 避免回发丢失时按钮状态与真实穿透不一致
-        const next = !ignoreMouseEvents.value;
-        interactionRevision++; ignoreMouseEvents.value = next;
-        desktopBridge.setIgnoreMouseEvents(next);
-        // 刚切换穿透的瞬间抑制自动恢复：防止点击"穿透"按钮时
-        // 悬停触发的恢复把状态又翻回去
-        mouseToggleBlockedUntil = Date.now() + 400;
-    }
     function setDesktopVisibility(visible: boolean) {
-        characterStageRef.value?.setDesktopVisible?.(visible);
+        const changed = desktopWindowVisible.value !== visible;
+        desktopWindowVisible.value = visible;
+        desktopPreparing.value = false;
         if (!visible) {
             cancelSpeechActivity();
             characterStageRef.value?.releasePointerFocus?.();
         }
-        if (desktopWindowVisible.value === visible)
-            return;
-        desktopWindowVisible.value = visible;
+        if (!changed) return;
         if (visible) {
+            warmConversation();
             // 重新可见且离开超过提醒阈值：入队一条"回来"问候
             const awayMs = Date.now() - getLastActivityAt();
             const idleMinutes = getIdleMinutes();
@@ -408,22 +334,20 @@ export function useCompanionWorkspace() {
     // replay the latest observed state when the actual renderer attaches.
     watch(characterStageRef, stage => {
         if (!stage || !desktopBridge) return;
-        stage.setDesktopVisible?.(desktopWindowVisible.value);
+        stage.setDesktopVisible?.(desktopStageActive.value);
         stage.setDesktopPerformanceMode?.(onBatteryPower.value);
         if (desktopWindowBounds.value) stage.setDesktopWindowBounds?.(desktopWindowBounds.value);
     }, { flush: 'post' });
+    watch(desktopStageActive, visible => characterStageRef.value?.setDesktopVisible?.(visible), { flush: 'sync' });
     onMounted(async () => {
         document.documentElement.classList.add('companion-mode');
         window.addEventListener('pointerdown', noteActivity, { passive: true });
         window.addEventListener('keydown', onWindowKeydown, { passive: false });
         window.addEventListener('keyup', onWindowKeyup, { passive: false });
         window.addEventListener('wheel', noteActivity, { passive: true });
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
         reconcileAutoListen();
         if (desktopBridge) {
             document.documentElement.classList.add('companion-desktop');
-            lastPointerMove = Date.now();
-            scheduleUiHide();
             // 真双窗口：先下行一次实时状态，聊天窗打开即有正确内容
             publishLiveState();
             chatCommandSubscription = desktopBridge.onChatCommand(onChatCommand);
@@ -437,7 +361,9 @@ export function useCompanionWorkspace() {
                 });
             }
             powerModeSubscription = desktopBridge.onPowerModeChanged(onBattery => { powerRevision++; setDesktopPowerMode(onBattery); });
-            interactionModeSubscription = desktopBridge.onInteractionModeChanged(value => { interactionRevision++; ignoreMouseEvents.value = value; });
+            stopCompanionSignals.push(companionWindow.on('prepare', () => { visibilityRevision++; desktopPreparing.value = true; }));
+            stopCompanionSignals.push(companionWindow.on('pin', value => { pinRevision++; alwaysOnTop.value = value; }));
+            stopCompanionSignals.push(companionWindow.onChatVisibility(visible => { if (visible) startConversation(); }));
             // 全局目光跟随：鼠标在悬浮窗之外时，角色目光仍随屏幕鼠标转动。
             // 窗口内由舞台 DOM 事件驱动（更平滑），这里跳过 inWindow 更新。
             globalMouseSubscription = desktopBridge.onGlobalMouse(state => {
@@ -452,7 +378,7 @@ export function useCompanionWorkspace() {
                 void refreshRoomState();
             });
             let desktopState: Awaited<ReturnType<typeof desktopBridge.getState>> | null = null;
-            const initialRevision = { visibility: visibilityRevision, power: powerRevision, bounds: boundsRevision, pin: pinRevision, interaction: interactionRevision };
+            const initialRevision = { visibility: visibilityRevision, power: powerRevision, bounds: boundsRevision, pin: pinRevision };
             try {
                 desktopState = await desktopBridge.getState();
             }
@@ -463,14 +389,17 @@ export function useCompanionWorkspace() {
                 return;
             if (desktopState) {
                 if (pinRevision === initialRevision.pin) alwaysOnTop.value = desktopState.alwaysOnTop;
-                if (interactionRevision === initialRevision.interaction) ignoreMouseEvents.value = desktopState.ignoreMouseEvents;
                 const legacyLive2dOverride = desktopLive2dOverride.value;
                 desktopLive2dOverride.value = desktopState.live2dEnabled ?? legacyLive2dOverride;
                 if (desktopState.live2dEnabled == null && legacyLive2dOverride != null) {
                     desktopBridge.setLive2dEnabled(legacyLive2dOverride);
                 }
                 // Events received after the snapshot request own the newer state.
-                if (visibilityRevision === initialRevision.visibility) setDesktopVisibility(desktopState.visible);
+                if (visibilityRevision === initialRevision.visibility) {
+                    if (desktopState.preparing) desktopPreparing.value = true;
+                    else setDesktopVisibility(desktopState.visible);
+                }
+                if (desktopState.chatVisible) startConversation();
                 if (powerRevision === initialRevision.power) setDesktopPowerMode(desktopState.onBatteryPower);
                 if (desktopState.bounds && boundsRevision === initialRevision.bounds)
                     desktopWindowBounds.value = desktopState.bounds;
@@ -479,16 +408,17 @@ export function useCompanionWorkspace() {
                 // IPC 失败时按页面可见性兜底，保证可见窗口里的 Live2D 仍能按需加载
                 if (visibilityRevision === initialRevision.visibility) setDesktopVisibility(!document.hidden);
             }
+            desktopInitialized.value = true;
         }
     });
     onUnmounted(() => {
         viewAlive = false;
-        clearTimeout(uiIdleTimer);
+        cancelConversationIdle?.();
+        stopCompanionSignals.forEach(stop => stop());
         window.removeEventListener('pointerdown', noteActivity);
         window.removeEventListener('keydown', onWindowKeydown);
         window.removeEventListener('keyup', onWindowKeyup);
         window.removeEventListener('wheel', noteActivity);
-        window.removeEventListener('pointermove', onPointerMove);
         if (desktopBridge && resumeSubscription != null)
             desktopBridge.offResume(resumeSubscription);
         if (desktopBridge && shownSubscription != null)
@@ -500,33 +430,29 @@ export function useCompanionWorkspace() {
         }
         if (desktopBridge && powerModeSubscription != null)
             desktopBridge.offPowerModeChanged(powerModeSubscription);
-        if (desktopBridge && interactionModeSubscription != null)
-            desktopBridge.offInteractionModeChanged(interactionModeSubscription);
         if (desktopBridge && globalMouseSubscription != null)
             desktopBridge.offGlobalMouse(globalMouseSubscription);
         if (desktopBridge && chatCommandSubscription != null)
             desktopBridge.offChatCommand(chatCommandSubscription);
-        document.documentElement.classList.remove('companion-mode', 'companion-desktop', 'companion-immersive', 'companion-ui-hidden');
-        uiHidden.value = false;
-        immersive.value = false;
+        document.documentElement.classList.remove('companion-mode', 'companion-desktop');
     });
     return {
 chatListRef,
 characterStageRef,
-        activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive, presentationSuspended,
+        activeChar, desktopBridge, onBatteryPower, presence, presentationSuspended,
         currentCharacter, affectionScore, affectionInfo, switchCharacter, settingsOpen,
         autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef, importRecovery, openImportPicker,
-        onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,
-        workspaceExists, workspaceRestartRequired, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,
-        isSpeaking, chatStatusText, statusKind, companionAutoLoad, desktopWindowBounds, storage,
+        onImportInputChange, alwaysOnTop, togglePin,
+        workspaceExists, workspaceRestartRequired, workspaceTooltip, workspaceOpen, volume, onVolumeChange,
+        isSpeaking, chatStatusText, statusKind, companionAutoLoad, desktopWindowBounds, desktopStageActive, desktopInitialized, storage,
         handleLive2dPreference, pendingReminders, openReminderRoute, dismissReminder, clipboardCard, inspectClipboardImage,
-        acceptClipboardCard, dismissClipboardCard, companionMessages, immersiveMessages, hasNewMessages, latestMessages, toolActivity, thinkingActivity,
+        acceptClipboardCard, dismissClipboardCard, companionMessages, recentMessages, hasNewMessages, latestMessages, toolActivity, thinkingActivity,
         chatReady, voiceCapabilityState, preparingRoom, setupTitle, chatProvider, prepareRoom,
         inputText, composerFocused, handleSend, onInputChange, busy, capturingScreen,
         onCaptureAndInspectScreen, voiceActive, stopEverything, speechReady, speechState, speechLevel, speechButtonDisabled,
         speechError, speechHold, speechButtonText,
         speechStateText, speechAutoListening, speechSessionActive, onSpeechSessionEnd, speechSettingsOpen, voiceStatusText,
         inQuietHours, quietHoursText, onSpeechSettingsSaved, chatErrorKind, chatError, replyAnnouncement,
-        workspaceInput, saveWorkspace, workspaceSaving, workspaceError, openChatWindow, liveDotState, liveDotText, screenWatch,
+        workspaceInput, saveWorkspace, workspaceSaving, workspaceError, openChatWindow, screenWatch,
     };
 }

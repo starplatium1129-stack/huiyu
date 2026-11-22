@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1534,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_02",
     "title": "宝多六花 · 电车里的唱片纸袋",
@@ -16,7 +16,7 @@
     "action": "扶正纸袋里滑出的唱片封套，安心靠回座位。",
     "timeOfDay": "afternoon",
     "lighting": "soft passing daylight",
-    "camera": "medium shot",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "train_interior",
@@ -28,14 +28,22 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Rikka catches a slipping record sleeve from the bag on her knees as passing daylight crosses the train window.",
+    "promptProse": "Seated inside a quiet weekend commuter train in her light-wash cropped denim jacket, Rikka balances a brown paper record shop bag upright across her lap. She reaches down quickly with one hand to steady a secondhand vinyl record sleeve sliding out of the top, then settles back against the plush train seat with a relaxed, unguarded smile. Soft bands of passing afternoon daylight sweep across the train window and catch her sleeves and the glossy record jacket.",
     "promptTokens": [
-      "record sleeve",
-      "train",
-      "medium shot",
-      "catching record sleeve",
-      "bag on knees",
-      "window light"
+      "sitting",
+      "train interior",
+      "paper bag",
+      "vinyl",
+      "holding",
+      "looking down",
+      "soft smile",
+      "train window",
+      "hand strap",
+      "indoors",
+      "afternoon",
+      "window light",
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +54,7 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She catches the slipping sleeve above the bag on her knees."
+    "animaCaption": "Seated by the commuter train window in her cropped denim jacket, Rikka catches a slipping vinyl sleeve above the paper bag on her lap with a relaxed, unguarded smile. Passing afternoon light sweeps across the glass and the glossy record edge.",
+    "compositionIntent": "single"
   }
 }

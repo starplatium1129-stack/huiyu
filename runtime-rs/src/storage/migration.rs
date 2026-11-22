@@ -89,6 +89,10 @@ fn validate(envelope: &Value) -> Result<()> {
     for record in records {
         let key = string(record, "key")?;
         let source = string(record, "source")?;
+        let studio_key = matches!(key, "huiyu:studio:projects" | "huiyu:studio:shots" | "huiyu:studio:assets" | "huiyu:studio:versions");
+        if (record["domain"] == "studio") != studio_key || (studio_key && source != "kv") {
+            return Err(format_error("Invalid studio record classification"));
+        }
         if !seen.insert(string(record, "id")?) {
             return Err(format_error("Duplicate migration item identity"));
         }
@@ -276,7 +280,7 @@ fn begin(c: &mut Context, principal: &str, envelope: &Value) -> Result<Value> {
     c.transaction(|c| {
         let previous=c.db.query_row("SELECT fingerprint,principal_id FROM migration_sessions WHERE migration_id=?",[id],|r|Ok((r.get::<_,String>(0)?,r.get::<_,String>(1)?))).optional()?;
         if let Some((fingerprint,owner))=previous {if owner!=principal||json!(fingerprint)!=envelope["fingerprint"] {return Err(conflict("MIGRATION_CONFLICT","Source snapshot changed; create a new migration session"))}return Ok(())}
-        if c.db.prepare("SELECT 1 FROM artworks UNION ALL SELECT 1 FROM projects UNION ALL SELECT 1 FROM migration_sessions LIMIT 1")?.exists([])? {return Err(conflict("MIGRATION_CONFLICT","Import requires an independent empty candidate workspace"))}
+        if c.db.prepare("SELECT 1 FROM artworks UNION ALL SELECT 1 FROM projects UNION ALL SELECT 1 FROM studio_projects UNION ALL SELECT 1 FROM studio_assets UNION ALL SELECT 1 FROM migration_sessions LIMIT 1")?.exists([])? {return Err(conflict("MIGRATION_CONFLICT","Import requires an independent empty candidate workspace"))}
         c.db.execute("INSERT INTO migration_sessions VALUES(?,?,?,?,'importing','[]',0)",params![id,principal,string(envelope,"fingerprint")?,stringify(envelope)])?;
         for media in envelope["media"].as_array().unwrap() {
             let alias=string(media,"alias")?;let hash=string(media,"sha256")?;

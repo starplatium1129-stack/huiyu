@@ -15,9 +15,9 @@ function imageRequest(family: Family, key: string, input: Record<string, unknown
 export function acceptDirectImageRequest(family: Family, input: Record<string, unknown>, key: string, options: DirectRequestOptions) {
   return acceptDirectGenerationRequest(imageRequest(family, key, input), options)
 }
-export async function cancelDirectImageRequest(family: Family, key: string, owner: string, client?: ApiClient) {
+export async function cancelDirectImageRequest(family: Family, key: string, owner: string, client?: ApiClient, signal?: AbortSignal) {
   assertDirectImageRuntime(owner)
-  const result = await cancelDirectGenerationRequest(imageRequest(family, key), { client })
+  const result = await cancelDirectGenerationRequest(imageRequest(family, key), { client, signal })
   assertDirectImageRuntime(owner)
   return result
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3220,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "rem_rezero_swimsuit_allure",
     "characterId": "rem_rezero",
@@ -14,7 +14,7 @@
     "location": "阳光明媚、白浪欢跃的热带度假浅海沙洲",
     "timeOfDay": "盛夏上午",
     "lighting": "十点半明朗通透的夏阳照射在纯净青绿的海水中，水下光网跳跃，飞溅的水花在天光下闪闪发亮",
-    "camera": "medium shot, eye level, energetic and loving interactive perspective, vibrant turquoise ocean",
+    "camera": "eye level, medium shot",
     "mood": "全心倾注的幸福、炽热纯粹的爱慕与无比灿烂的盛夏活力",
     "adult": true,
     "sampleRating": "R15",
@@ -39,28 +39,33 @@
       "loving_gaze"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "rem (re:zero)",
-      "short blue hair",
-      "hair over one eye",
-      "blue eyes",
-      "hair ribbon",
-      "sky blue maid swimdress",
-      "wading in turquoise ocean",
-      "aiming water gun playfully",
-      "water droplets splashing",
-      "bright ecstatic smile",
+      "wading",
+      "in water",
+      "holding water gun",
+      "aiming at viewer",
+      "splashing",
+      "water drop",
+      "bright smile",
       "blush",
-      "tropical summer beach",
-      "sunny morning",
-      "depth of field",
-      "cinematic lighting"
+      "turquoise ocean",
+      "tropical beach",
+      "morning sunlight",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Rem from Re:Zero stands waist-deep in a turquoise ocean in her sweet sky-blue maid swimdress, playfully aiming a water gun toward the viewer with an overwhelmingly radiant, adoring laugh.",
-    "animaCaption": "Glittering turquoise spray splashes around her gentle form as she shares an unclouded moment of pure devotion.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing waist-deep in sparkling turquoise shallows off a sunlit tropical sandbar, Rem wears a sky-blue and pure-white maid-inspired swimdress with ruffled apron trim and her signature ribbon hairpin. Aiming a translucent water gun playfully toward the viewer with an unreserved, beaming smile, she splashes amid bright summer sunlight.",
+    "animaCaption": "Standing waist-deep in sparkling turquoise shallows in her sky-blue ruffled maid swimdress, she aims a clear dolphin water gun playfully toward the viewer with an ecstatic, blushing laugh. Bright morning sunshine glints across flying spray and clear ripples.",
+    "nsfwTokens": [
+      "light blue swimdress",
+      "white ruffled trim",
+      "maid swimsuit",
+      "one-piece swimsuit",
+      "hair ribbon",
+      "bare shoulders",
+      "wet skin"
+    ],
+    "nsfwProse": "She wears a sweet sky-blue and white maid-inspired one-piece swimdress with ruffled apron-style front trim and her pink-and-white hair ribbon.",
+    "compositionIntent": "single"
   }
 }

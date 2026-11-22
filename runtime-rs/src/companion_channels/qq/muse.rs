@@ -5,6 +5,7 @@ mod lookup;
 mod outbox;
 mod poll;
 mod vm;
+use crate::chat::muse::tailnet;
 use axum::{
     Json, Router,
     extract::{DefaultBodyLimit, FromRequestParts, State},
@@ -43,7 +44,7 @@ pub(in crate::companion_channels) struct Mailbox {
 enum Route {
     Pull,
     Vm(vm::Endpoint),
-    VmPoll(Arc<poll::Endpoint>),
+    VmPoll(vm::PeerConfig),
     Invalid,
 }
 
@@ -223,16 +224,12 @@ impl Mailbox {
         }
     }
 
-    pub(super) fn start_listener(
-        self: &Arc<Self>,
-        app: &AppState,
-    ) -> Option<tokio::task::JoinHandle<()>> {
-        let endpoint = match &self.route {
-            Route::VmPoll(endpoint) => endpoint,
-            Route::Vm(endpoint) => &endpoint.callback,
-            _ => return None,
-        };
-        Some(endpoint.start(app.clone(), self.clone()))
+    fn vm_peer(&self) -> Option<tailnet::Peer> {
+        match &self.route {
+            Route::VmPoll(endpoint) => Some(endpoint.peer),
+            Route::Vm(endpoint) => Some(endpoint.callback.peer),
+            _ => None,
+        }
     }
 
     pub(in crate::companion_channels) fn close(&self) {
@@ -240,7 +237,7 @@ impl Mailbox {
         self.entries.lock().unwrap().clear();
     }
 
-    pub(in crate::companion_channels) fn status(&self, storage: &Storage) -> &'static str {
+    pub(in crate::companion_channels) fn status(&self, app: &AppState, storage: &Storage) -> &'static str {
         if self.epoch != storage.runtime_epoch() || self.cancel.is_cancelled() {
             return "waiting";
         }
@@ -248,7 +245,7 @@ impl Mailbox {
             Route::Vm(endpoint) => endpoint.status(),
             Route::Invalid => "vmConfigError",
             Route::Pull if !crate::images::remote::listening() => "remoteDisabled",
-            Route::VmPoll(endpoint) if !endpoint.listening() => "vmUnavailable",
+            Route::VmPoll(endpoint) if !tailnet::listening(app, endpoint.peer) => "vmUnavailable",
             Route::Pull | Route::VmPoll(_)
                 if crate::host::now_ms().saturating_sub(self.last_poll.load(Ordering::Relaxed))
                     < 90_000 =>
@@ -657,6 +654,14 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new().nest("/api/muse/qq", routes("/inbox", "/reply"))
 }
 
+pub(crate) async fn configured_peer(root: &Path) -> Result<Option<tailnet::Peer>> {
+    vm::configured_peer(root).await
+}
+
+pub(crate) fn tailnet_router() -> Router<AppState> {
+    Router::new().nest("/qq", routes("/pending", "/replies").merge(poll::image_route()))
+}
+
 fn routes(inbox_path: &str, reply_path: &str) -> Router<AppState> {
     Router::new()
         .route(reply_path, post(reply))
@@ -671,8 +676,8 @@ fn routes(inbox_path: &str, reply_path: &str) -> Router<AppState> {
         )
 }
 
-// Only the peer-authenticated Tailscale listener installs a mailbox extension.
-// The remote/relay listener has its own X-Token check and must respect the selected route.
+// Only the Tailscale guard installs a verified peer. QQ still requires a
+// live mailbox configured for that exact peer and port.
 struct Channel(Arc<Mailbox>);
 
 impl FromRequestParts<AppState> for Channel {
@@ -680,8 +685,8 @@ impl FromRequestParts<AppState> for Channel {
 
     async fn from_request_parts(parts: &mut Parts, app: &AppState) -> Result<Self> {
         let mailbox = Mailbox::current(app)?;
-        match parts.extensions.get::<Arc<Mailbox>>() {
-            Some(bound) if !Arc::ptr_eq(bound, &mailbox) => return Err(expired()),
+        match parts.extensions.get::<tailnet::Peer>() {
+            Some(peer) if mailbox.vm_peer() != Some(*peer) => return Err(expired()),
             Some(_) => {}
             None => mailbox.require_pull()?,
         }

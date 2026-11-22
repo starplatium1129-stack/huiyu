@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod bridge;
+mod companion_window;
 mod save_image;
 mod portable_backup;
 mod bootstrap;
@@ -33,9 +34,8 @@ mod maintenance_protocol;
 mod resource_assistant;
 
 use std::sync::atomic::Ordering;
-use std::time::{Duration, Instant};
 
-use tauri::{AppHandle, Emitter, Listener, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 
 use crate::state::AppState;
 
@@ -154,6 +154,11 @@ fn main() {
             credentials::chat_credential_read,
             credentials::chat_credential_write,
             bridge::get_state,
+            bridge::get_startup_mode,
+            bridge::set_startup_mode,
+            bridge::companion_mark_ready,
+            bridge::companion_set_interactive_regions,
+            bridge::companion_set_static_mask,
             bridge::hide,
             bridge::set_ignore_mouse_events_cmd,
             bridge::toggle_always_on_top,
@@ -300,6 +305,13 @@ fn main() {
             );
             app.manage(supervisor);
 
+            use window_state::StartupMode;
+            if matches!(main_shared::normal_startup_mode(app.handle()), Some(StartupMode::Companion | StartupMode::Both))
+                && state.preferences.lock().unwrap().live2d_enabled != Some(false)
+            {
+                live2d_overlay::prewarm(app.handle());
+            }
+
             // 网关启动（与窗口并行）
             let handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
@@ -315,28 +327,7 @@ fn main() {
                         window_state::save_desktop_gateway_port(&s.paths.gateway_port_file, supervisor.port());
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
                         let _ = handle.emit("aics:gateway-ready", &url);
-                        let resume = s.paths.config_root.join("setup-restart.json");
-                        let resources = s.paths.config_root.join("resource-restart.json");
-                        let mut opened_atelier = false;
-                        if std::fs::read(&resources).ok().as_deref() == Some(b"true") {
-                            main_shared::open_atelier(&handle, &url, Some("/control?section=control-library"));
-                            let _ = std::fs::remove_file(resources);
-                            opened_atelier = true;
-                        }
-                        if std::fs::read(&resume).ok().as_deref() == Some(b"true") {
-                            main_shared::open_atelier(&handle, &url, Some("/control?section=control-setup"));
-                            opened_atelier = true;
-                        }
-                        if !opened_atelier
-                            && !std::env::args().any(|arg| arg == "--hidden")
-                            && !resource_assistant::recovery_pending(&handle)
-                            && !s.paths.first_run_file.exists()
-                        {
-                            let _ = crate::maintenance_protocol::write_json(&s.paths.first_run_file, &true);
-                            if !s.paths.ai_workspace_file.exists() && !s.paths.atelier_window_file.exists() {
-                                main_shared::open_atelier(&handle, &url, Some("/control?section=control-overview"));
-                            }
-                        }
+                        main_shared::dispatch_startup(&handle, &url);
                     }
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));
@@ -352,62 +343,8 @@ fn main() {
                 }
             });
 
-            let handle = app.handle().clone();
-            let show_on_start = !std::env::args().any(|arg| arg == "--hidden");
-            tauri::async_runtime::spawn(async move {
-                if !show_on_start || resource_assistant::recovery_pending(&handle) { return; }
-                let start = Instant::now();
-                while !ui_entry::bundled(&handle) {
-                    tokio::time::sleep(Duration::from_millis(200)).await;
-                    let ready = !handle.state::<AppState>().gateway_url.lock().unwrap().is_empty();
-                    if ready || start.elapsed() > Duration::from_secs(40) {
-                        break;
-                    }
-                }
-                let url = handle.state::<AppState>().gateway_url.lock().unwrap().clone();
-                if url.is_empty() && !ui_entry::bundled(&handle) {
-                    return;
-                }
-                if let Err(e) = main_shared::create_companion_window(&handle, &url, true) {
-                    eprintln!("companion window: {e}");
-                }
-            });
-
-            // 事件桥：托盘/快捷键 → 命令
-            let handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
-                let h = handle.clone();
-                h.listen("aics:tray-left-click", {
-                    let inner = h.clone();
-                    move |_| main_shared::show_companion(&inner, true)
-                });
-                let h2 = handle.clone();
-                h2.listen("aics:show-companion", {
-                    let inner = h2.clone();
-                    move |_| main_shared::show_companion(&inner, true)
-                });
-                let h3 = handle.clone();
-                h3.listen("aics:open-atelier", {
-                    let inner = h3.clone();
-                    move |_| {
-                        let state = inner.state::<AppState>();
-                        let url = state.gateway_url.lock().unwrap().clone();
-                        main_shared::open_atelier(&inner, &url, None);
-                    }
-                });
-                let h5 = handle.clone();
-                h5.listen("aics:open-chat", {
-                    let inner = h5.clone();
-                    move |_| {
-                        let state = inner.state::<AppState>();
-                        let url = state.gateway_url.lock().unwrap().clone();
-                        main_shared::open_companion_chat(&inner, &url);
-                    }
-                });
-                loop { tokio::time::sleep(Duration::from_secs(3600)).await; }
-            });
-
             let _ = tray::create_tray(app.handle());
+            if ui_entry::bundled(app.handle()) { main_shared::dispatch_startup(app.handle(), ""); }
             if ui_entry::isolated_profile().is_none() { register_shortcuts(app.handle()); }
             let handle = app.handle().clone();
             watchers::start_global_mouse_watch(handle.clone());

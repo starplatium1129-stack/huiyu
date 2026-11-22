@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3154,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "nightingale_arknights_lingerie_whisper",
     "characterId": "nightingale_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛特殊疗养温室病房，悬挂的金丝鸟笼在微风中轻晃",
     "timeOfDay": "破晓露水未晞之时",
     "lighting": "清冷苍白的晨光穿过雾化玻璃，将整个空间浸染在纯净柔和的高调冷白光中",
-    "camera": "medium shot, eye level, 平视中景，温室软垫与悬挂金丝鸟笼同框",
+    "camera": "eye level, medium shot",
     "mood": "脆弱、圣洁而充满深沉怜悯的治愈之美，如水晶般易碎",
     "adult": true,
     "sampleRating": "R15",
@@ -39,19 +39,30 @@
     ],
     "promptTokens": [
       "leaning back",
-      "soft cushions",
-      "ornate golden birdcage",
-      "hanging plants",
-      "convalescent greenhouse",
-      "gentle light",
-      "serene gaze",
-      "medium shot",
-      "eye level"
+      "cushions",
+      "raised hand",
+      "soft smile",
+      "looking at viewer",
+      "golden birdcage",
+      "greenhouse",
+      "white flowers",
+      "frosted glass",
+      "dawn",
+      "pale morning light",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Nightingale rests gently against soft cushions in a peaceful medical convalescence greenhouse, a decorative golden birdcage swaying in the faint breeze. Pale silvery daylight and potted white blossoms surround her calm, ethereal presence.",
-    "animaCaption": "Resting against cushions beside an ornate birdcage in the greenhouse, her emerald eyes gaze softly.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Nightingale reclines softly against pale cushions inside Rhodes Island's convalescent greenhouse at dawn, wearing a gossamer ivory-white double-layer silk robe woven with subtle feather patterns and tied with silver ribbons. Lifting slender fingertips beneath a swaying golden birdcage, she regards the viewer with gentle blue eyes in cool frosted-glass morning light.",
+    "animaCaption": "Resting softly against pale cushions in a gossamer ivory feather-jacquard silk robe, she lifts her fingertips gently beside a swaying golden birdcage and gazes toward the viewer with quiet serenity. Cool misty dawn light filters through the greenhouse glass over white blossoms.",
+    "nsfwTokens": [
+      "white silk robe",
+      "ivory nightgown",
+      "sheer fabric",
+      "silver ribbons",
+      "loose sleeves",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a gossamer ivory-white double-layer silk slip robe woven with subtle feather jacquard and fastened by slender silver ribbons."
   }
 }

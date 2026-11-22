@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3137,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "rosmontis_arknights_swimsuit_allure",
     "characterId": "rosmontis_arknights",
@@ -14,7 +14,7 @@
     "location": "风平浪静、水清沙幼的儿童海滨游乐浅水区",
     "timeOfDay": "初夏上午",
     "lighting": "上午十一点纯澈透亮的阳光打在五彩斑斓的肥皂泡与浅滩水波上，折射出无数七彩光晕与晶莹高光",
-    "camera": "medium close-up, low angle, tender protective perspective, soft dreamy summer atmosphere",
+    "camera": "low angle, medium close-up",
     "mood": "纯真无暇、专注好奇与令人心生怜惜的平静快乐",
     "adult": true,
     "sampleRating": "R15",
@@ -39,26 +39,32 @@
       "sunny_morning"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "rosmontis (arknights)",
-      "short silver hair",
-      "blue eyes",
-      "cat ears",
-      "cat tail",
-      "white pure swimdress",
-      "crouching in clear shallow water",
-      "cupping hands gently to catch colorful soap bubble",
-      "innocent wondering eyes",
-      "rainbow light reflections",
-      "crystal waves",
-      "tender warm morning",
-      "depth of field"
+      "crouching",
+      "cupping hands",
+      "soap bubbles",
+      "curious",
+      "looking at viewer",
+      "shallow water",
+      "clear water",
+      "beach",
+      "iridescent light",
+      "morning",
+      "bright sunlight",
+      "low angle",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Rosmontis from Arknights crouches tenderly in crystal shallow water in her pure white swimdress, carefully cupping her small hands to catch floating soap bubbles with wide, innocent blue eyes.",
-    "animaCaption": "Iridescent soap bubbles drift through the morning salt air as the young feline holds a fragile, beautiful memory.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Rosmontis crouches barefoot in clear, calm shallow sea water on a bright early-summer morning, wearing a snow-white ruffled swimdress piped in baby blue with small silver bell ties and a translucent sun cape. Gently cupping both small hands to cradle a drifting rainbow soap bubble, she looks toward the viewer with wide, clear green eyes.",
+    "animaCaption": "Crouching barefoot in warm ankle-deep shallows in a white baby-blue-trimmed ruffled swimdress and sheer sun cape, she carefully cups both hands beneath a floating iridescent soap bubble and looks over with quiet wonder. Clear late-morning sunlight sparkles across the ripples and rainbow bubble sheen.",
+    "nsfwTokens": [
+      "white swimdress",
+      "light blue trim",
+      "ruffled swimsuit",
+      "sheer cape",
+      "silver bells",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a snow-white cotton-feel ruffled swimdress piped in baby blue with small silver bell ties and a drifting sheer sun cape."
   }
 }

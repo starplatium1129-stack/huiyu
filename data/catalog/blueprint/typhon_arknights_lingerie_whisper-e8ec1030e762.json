@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3370,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "typhon_arknights_lingerie_whisper",
     "characterId": "typhon_arknights",
@@ -14,7 +14,7 @@
     "location": "萨米极北冰原深处的猎人木屋，中央石火塘里跳动着干燥松木的温暖火焰",
     "timeOfDay": "极夜极光降临之时",
     "lighting": "火塘跳跃的金红火舌在原木墙壁与白皙健美的肌肤上泼洒出一层金蜜色的暖辉",
-    "camera": "medium shot, eye level, 平视中景，巨大猎弓与毛皮火塘暖意同框",
+    "camera": "medium shot, eye level",
     "mood": "冰原猎手脱下防寒重袄后的纯净质朴，极北严寒与木屋温存的极致对比",
     "adult": true,
     "sampleRating": "R15",
@@ -44,22 +44,30 @@
     "promptTokens": [
       "sitting",
       "cross-legged",
-      "fur rug",
-      "stone hearth",
-      "fireplace",
-      "firelight",
-      "log cabin",
+      "holding bowl",
       "wooden bowl",
       "drinking",
-      "bow leaning against wall",
+      "steam",
+      "fur rug",
+      "bow",
+      "log cabin",
+      "fireplace",
+      "firelight",
       "warm lighting",
-      "medium shot",
-      "eye level"
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Typhon sits cross-legged on thick reindeer furs inside a rustic Sami log cabin, holding a carved wooden bowl of steaming tea with both hands. Golden firelight from the central stone hearth dances across the log walls, while her massive hunting bow rests quietly in the corner.",
-    "animaCaption": "Sipping warm tea from a wooden bowl beside the stone hearth, she watches with curious ruby eyes.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside a warm wooden hunter's cabin in the frozen Sami north, Typhon sits cross-legged on layered reindeer pelts cradling a carved wooden bowl of hot berry tea. Golden firelight from the stone hearth dances across her curious, welcoming gaze and the large hunting bow resting nearby.",
+    "animaCaption": "Sitting cross-legged on thick reindeer furs beside the crackling stone hearth of her Sami log cabin with her great bow leaning against the wall, she cradles a steaming wooden bowl of berry tea with both hands in a hunter-green linen camisole and tap shorts edged with white faux fur.",
+    "nsfwTokens": [
+      "green camisole",
+      "linen",
+      "white fur trim",
+      "green shorts",
+      "bare shoulders",
+      "bare thighs"
+    ],
+    "nsfwProse": "She wears a rustic hunter-green linen camisole set with criss-cross back cords and matching tap shorts trimmed softly with white faux-fur edging.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3489,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "ogiso_setsuna_lingerie_whisper",
     "characterId": "ogiso_setsuna",
@@ -14,7 +14,7 @@
     "location": "峰城大附属音乐教室角落，钢琴旁整齐叠放着未完成的五线谱",
     "timeOfDay": "冬夜初雪敲窗时",
     "lighting": "窗外白雪反射的清冷微光与室内走廊投进的微暖泛光交织，形成透明冷艳的空气感",
-    "camera": "medium shot, eye level, 侧平视中景，怀中木吉他与低头抚弦的姿态构成静谧如歌的画面",
+    "camera": "side view, eye level, medium shot",
     "mood": "经典白学冬日恋曲的深情与哀愁，纯粹至极的依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -36,25 +36,34 @@
       "eye_level"
     ],
     "promptTokens": [
-      "medium shot",
-      "eye level",
-      "music room",
-      "piano",
-      "night",
-      "warm lighting",
       "sitting",
+      "piano bench",
+      "holding guitar",
       "acoustic guitar",
-      "bench",
-      "soft pom-pom ribbon bow",
-      "delicate ribbed texture",
-      "ankle-length flowing drape",
-      "indoors",
-      "soft lighting"
+      "looking down",
+      "gentle smile",
+      "music room",
+      "grand piano",
+      "sheet music",
+      "snowy window",
+      "cool snow light",
+      "night",
+      "side view",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress. Gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes amidst grand piano in background, snow drifting against tall windows. A soft ceiling lamp wraps the comfortable apartment bedroom in gentle warm tones, casting tender amber highlights across her flowing dark tresses.",
-    "animaCaption": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Seated on a wooden piano bench in a quiet music room on a snowy winter night, Setsuna Ogiso wears a pure snow-white fine-knit ankle-length slip dress accented with a soft pom-pom ribbon bow at the chest. Cradling an acoustic guitar in her lap with tender, wistful eyes as snow drifts past the tall windows, she softly plucks the strings beside stacked sheet music.",
+    "animaCaption": "Seated on the piano bench cradling an acoustic guitar in a snow-white fine-knit slip dress tied with a tiny pom-pom bow, she looks down gently as her fingers rest across the strings. Cool light reflected off falling snow outside blends with faint warm hall glow beside the grand piano.",
+    "nsfwTokens": [
+      "white knit slip dress",
+      "long nightgown",
+      "spaghetti straps",
+      "pom-pom ribbon bow",
+      "ribbed knit",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a pure snow-white fine-knit ankle-length slip dress tied with a soft white pom-pom ribbon bow at the neckline.",
+    "compositionIntent": "single"
   }
 }

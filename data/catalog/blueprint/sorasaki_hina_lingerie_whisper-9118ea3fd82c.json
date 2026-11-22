@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3267,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "sorasaki_hina_lingerie_whisper",
     "characterId": "sorasaki_hina",
@@ -14,7 +14,7 @@
     "location": "格黑娜风纪委员会最高行政办公室，桌面上堆积如山的处分文件被整齐码放",
     "timeOfDay": "凌晨四点全校熄灯时分",
     "lighting": "台灯散发出昏暗柔和的暖黄光芒，将小巧面颊与巨大黑翼的边缘镀上一圈金边",
-    "camera": "medium shot, high angle, 俯角中景，堆积如山的公文与疲惫娇小的身姿形成强烈反差",
+    "camera": "high angle, medium shot",
     "mood": "背负一校安危的幼小统领的极致疲惫，唯独在老师面前展现的柔弱依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -41,21 +41,36 @@
       "high_angle"
     ],
     "promptTokens": [
-      "medium shot",
-      "high angle",
-      "swallowed in executive leather chair",
-      "monumental piles of paperwork",
-      "prefect team head office",
-      "panoramic night window",
+      "sitting",
+      "office chair",
+      "head on hands",
+      "desk",
+      "stack of papers",
+      "tired",
+      "looking up",
+      "office",
+      "window",
       "city lights",
-      "drooping eyes",
-      "exhausted sigh",
-      "desk lamp glow"
+      "desk lamp",
+      "night",
+      "warm lighting",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Hina slumps into her oversized leather executive chair in the dark Prefect Team headquarters at 4 AM, buried beneath towering paper stacks with an exhausted, unguarded sigh.",
-    "animaCaption": "Slumped in a massive executive chair behind towering stacks of documents in the dead of night, looking exhausted and gentle.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Sunk deep inside her oversized leather executive chair behind towering stacks of finished Prefect Team paperwork at 4 AM, Hina wears a deep violet sheer chiffon babydoll slip accented with a tiny black satin bow. Resting her cheek against her folded arms along the desk edge, she lifts tired, trusting eyes toward the viewer with unguarded vulnerability. Dim warm amber desk lamplight edges her soft nightwear against the dark city skyline beyond the office window.",
+    "animaCaption": "Slumped in her oversized executive chair behind towering document stacks in a deep-violet sheer chiffon babydoll slip, Hina rests her cheek on her arms and looks up with exhausted, trusting eyes. Warm desk lamplight glows softly against the dark night window.",
+    "nsfwTokens": [
+      "purple nightgown",
+      "babydoll",
+      "sheer",
+      "chiffon",
+      "black bow",
+      "frills",
+      "open back",
+      "bare shoulders"
+    ],
+    "nsfwProse": "She wears a deep violet sheer double-layer chiffon babydoll slip tailored with an open back for her wings, a tiny black satin chest bow, and a ruffled hem.",
+    "compositionIntent": "single"
   }
 }

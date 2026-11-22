@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, shallowRef, useId } from 'vue'
+import { computed, nextTick, ref, shallowRef, useId, watch } from 'vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSelect, { type StudioSelectOption } from '@/components/ui/StudioSelect.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import { matchesVideoPresetRating, videoPresetRatings } from './videoPromptPresets'
+import {
+  matchesVideoPresetRating, presetCategoriesFor, videoPresetRatings,
+  type VideoPresetCategory,
+} from './videoPromptPresets'
 import {
   assembleVideoPrompt, blankVideoPromptFields, videoPromptGuidance, videoPromptPresets,
   type ShotPromptMode, type VideoPromptEdit, type VideoPromptFields,
 } from './shotPromptComposer'
+
+const PRESET_COLLAPSED_LIMIT = 6
 
 const props = withDefaults(defineProps<VideoPromptEdit & {
   mode: ShotPromptMode
@@ -23,6 +29,8 @@ const disclosure = ref<HTMLDetailsElement | null>(null)
 const primaryAction = ref<HTMLButtonElement | null>(null)
 const revealed = ref(false)
 const rating = ref<string | number>('all')
+const category = ref<'all' | VideoPresetCategory>('all')
+const presetsExpanded = ref(false)
 const fields = ref(blankVideoPromptFields())
 const camera = ref<VideoPromptEdit['camera'] | ''>('')
 const motion = ref<VideoPromptEdit['motion'] | ''>('')
@@ -31,7 +39,16 @@ const lastEdit = shallowRef<{ before: VideoPromptEdit; after: VideoPromptEdit; r
 const keepCurrent = { value: '', label: '沿用当前' }
 const cameraOptions = computed(() => [keepCurrent, ...props.cameraOptions])
 const motionOptions = computed(() => [keepCurrent, ...props.motionOptions])
-const presets = computed(() => videoPromptPresets[props.mode].filter(preset => matchesVideoPresetRating(preset, rating.value)))
+const categories = computed(() => presetCategoriesFor(props.mode, rating.value))
+const ratingPresets = computed(() => videoPromptPresets[props.mode].filter(preset => matchesVideoPresetRating(preset, rating.value)))
+const presets = computed(() => category.value === 'all'
+  ? ratingPresets.value
+  : ratingPresets.value.filter(preset => preset.category === category.value))
+const visiblePresets = computed(() => presetsExpanded.value ? presets.value : presets.value.slice(0, PRESET_COLLAPSED_LIMIT))
+
+watch([() => props.mode, rating, categories], ([, , nextCategories]) => {
+  if (!nextCategories.some(item => item.id === category.value)) category.value = 'all'
+})
 
 type PromptField = { key: keyof VideoPromptFields; label: string; placeholder: string }
 const promptFields = computed<PromptField[]>(() => [
@@ -118,10 +135,21 @@ async function focusPrimaryAction() {
           <legend class="field-label">场景预设</legend>
           <p class="field-hint">{{ videoPromptGuidance[mode] }}</p>
           <StudioSelect v-model="rating" class="workbench-rating" label="预设分级" size="sm" inline :options="videoPresetRatings" :disabled="disabled" />
+          <div v-if="categories.length > 2" class="workbench-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="预设分类">
+            <AnimatedSelection />
+            <button v-for="cat in categories" :key="cat.id" type="button" :aria-pressed="category === cat.id" :disabled="disabled" @click="category = cat.id">
+              {{ cat.label }}
+            </button>
+          </div>
           <div class="workbench-presets">
-            <button v-for="preset in presets" :key="preset.id" class="btn btn-ghost btn-sm" type="button"
+            <button v-for="preset in visiblePresets" :key="preset.id" class="btn btn-ghost btn-sm" type="button"
               :disabled="disabled" @click="loadPreset(preset)">
               <ArchiveIcon :name="preset.icon" />{{ preset.title }}{{ preset.rating && preset.rating !== 'All' ? ' · ' + preset.rating : '' }}
+            </button>
+          </div>
+          <div v-if="presets.length > PRESET_COLLAPSED_LIMIT" class="workbench-preset-more">
+            <button class="btn btn-quiet btn-sm" type="button" :aria-expanded="presetsExpanded" @click="presetsExpanded = !presetsExpanded">
+              {{ presetsExpanded ? '收起部分预设' : `展开全部 ${presets.length} 套预设` }}
             </button>
           </div>
         </fieldset>
@@ -181,6 +209,8 @@ async function focusPrimaryAction() {
 .workbench-group .workbench-parameter-hint { margin-block-start:var(--s-2); }
 .workbench-presets { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5rem),1fr)); gap:var(--s-2); margin-block-start:var(--s-2); }
 .workbench-rating { margin-block-start:var(--s-2); }
+.workbench-categories { flex-wrap:wrap; margin-block-start:var(--s-2); }
+.workbench-preset-more { display:flex; justify-content:flex-start; margin-block-start:var(--s-2); }
 .workbench-presets .btn { justify-content:flex-start; white-space:normal; text-align:start; }
 .workbench-fields, .workbench-parameters { display:grid; gap:var(--s-3); }
 .workbench-parameters { margin-block-start:var(--s-3); }

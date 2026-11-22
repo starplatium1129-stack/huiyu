@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_nikke_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3377,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.136Z",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "alice_nikke_lingerie_whisper",
     "characterId": "alice_nikke",
@@ -14,7 +14,7 @@
     "location": "哨站指挥官宿舍地下的爱丽丝秘密游乐房",
     "timeOfDay": "睡前",
     "lighting": "墙面荧光星星贴纸散发的梦幻微光，与草莓小夜灯的粉暖柔光包围全身",
-    "camera": "可爱平视近景，充满童话甜美感与纯洁无垢的治愈气息",
+    "camera": "eye level, medium close-up",
     "mood": "纯真甜美、童趣梦幻、全身心的依恋与信赖",
     "adult": true,
     "sampleRating": "R15",
@@ -37,18 +37,33 @@
       "childlike_innocence"
     ],
     "promptTokens": [
-      "bunny fleece loungewear",
-      "carrot plushie",
-      "kneeling on rug",
-      "pink hair",
-      "twintails",
+      "kneeling",
+      "pink rug",
+      "hugging plush",
+      "carrot plush",
       "sweet smile",
-      "glowing stars"
+      "looking at viewer",
+      "bedroom",
+      "glowing stars",
+      "night light",
+      "warm pink light",
+      "night",
+      "eye level",
+      "medium close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Alice happily nestled on a soft pastel rug in her secret fairy-tale room before sleep. She wears an ultra-cozy pink-and-white fleece loungewear set featuring an oversized bunny-eared hood. Squeezing an enormous plush carrot in her arms while swaying gently from side to side, her sparkling blue eyes beam with innocent, unreserved joy under the warm glow of a strawberry nightlamp.",
-    "animaCaption": "Alice happily nestled on a soft pastel rug in her secret fairy-tale room before sleep. She wears an ultra-cozy pink-and-white fleece loungewear set featuring an oversized bunny-eared hood.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Alice kneels happily on a soft pink carpet inside her secret playroom before sleep, wearing a pastel-pink and marshmallow-white thermal fleece loungewear set with an oversized bunny-eared hood, pom-pom ties, and soft sleep shorts. Squeezing a giant plush carrot in her arms while smiling warmly toward the viewer, she glows under a strawberry nightlamp and luminous star decals.",
+    "animaCaption": "Kneeling on a soft pink carpet in a pastel bunny-eared fleece hoodie and plush sleep shorts, she hugs a giant carrot plushie and holds her hood edges with a bright, innocent smile. Warm pink strawberry nightlamp light mingles with glowing wall stars.",
+    "nsfwTokens": [
+      "pink hoodie",
+      "bunny ear hood",
+      "fleece loungewear",
+      "pom-pom ties",
+      "pink shorts",
+      "pajamas",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a pastel-pink and marshmallow-white fleece loungewear set with an oversized bunny-eared hood, pom-pom drawstrings, and plush sleep shorts.",
+    "compositionIntent": "single"
   }
 }

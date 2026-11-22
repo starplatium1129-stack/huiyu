@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc020",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
-    "animaCaption": "The viewer's hand enters from below to straighten her collar while she holds the script against her chest.",
+    "animaCaption": "A hand in the foreground holds the red curtain open. Natsume hugs her script and touches the edge of her folded collar before stepping through the stripe of warm stage light.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "手持台本半身中景",
     "category": "校园",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black ribbed turtleneck, brown plaid midi skirt, asymmetrical hem, thin gold belt, holding script, curtain, backstage, medium shot, standing, nervous smile, blush, warm lighting, book hug, stage_curtain, lamp_light, cinematic_lighting, depth_of_field",
+    "prompt": "1girl, shiki_natsume, black sweater, ribbed sweater, turtleneck, brown skirt, plaid skirt, asymmetrical skirt, gold belt, black pantyhose, standing, holding book, backstage, theater, stage curtains, stage lights, wooden floor, pov hands, curtain grab, nervous smile, blush, from side, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
@@ -52,6 +52,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "She holds the script against her chest while the viewer's hand enters from below to straighten her collar; warm backstage light catches her nervous glance toward them."
+    "promptProse": "A band of stage light crosses the cue tape in the shadowed wing of the university festival. A hand beside the camera pulls one heavy red curtain aside. Natsume hugs her stapled rehearsal script with one arm and touches her collar with two fingers, taking a breath before she steps out. A narrow gold belt sits between her black ribbed turtleneck and brown plaid skirt. In side view, she turns back just enough to meet the viewer's eye with a nervous smile."
   }
 }

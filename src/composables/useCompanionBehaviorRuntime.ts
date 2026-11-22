@@ -87,6 +87,11 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     pendingReminders.value = behaviorEnabled.value && !dnd.value && !inQuietHours.value ? behavior.pending().slice() : []
   }
 
+  function showGreeting(reminder: CompanionReminder) {
+    syncReminders()
+    desktopBridge?.notify('绘遇 · 桌面陪伴', reminder.line)
+  }
+
   function noteActivity() {
     behavior.noteActivity()
     lastActivityAt = Date.now()
@@ -106,13 +111,13 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   function noteReturn(pickLine: (offset: number) => string) {
     reminderLineOffset += 1
     const reminder = behavior.noteReturn(pickLine(reminderLineOffset))
-    if (reminder) syncReminders()
+    if (reminder) showGreeting(reminder)
   }
 
   /** 不轮转台词序号的入队（剪贴板固定话术路径）。 */
   function noteReturnPlain(line: string) {
     const reminder = behavior.noteReturn(line)
-    if (reminder) syncReminders()
+    if (reminder) showGreeting(reminder)
   }
 
   function toggleDnd() {
@@ -144,7 +149,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     const greeting = pickEnvironmentGreeting(activeChar.value, new Date(), reminderLineOffset)
     reminderLineOffset += 1
     const reminder = behavior.noteReturn(greeting.line)
-    if (reminder) { greetedSlotKey = key; syncReminders() }
+    if (reminder) { greetedSlotKey = key; showGreeting(reminder) }
   }
 
   function runBehaviorTick() {
@@ -153,7 +158,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     if (reminder) {
       reminderLineOffset += 1
       reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
-      syncReminders()
+      showGreeting(reminder)
     }
     // 跨时间片（午→下午、工作日→周末）时给一条环境问候
     if (alive && desktopWindowVisible()) maybeGreetByTime()

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
   "data": {
     "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
     "title": "卡莲 · 抹大拉圣骸布缠绕与圣痕发热自持",
@@ -15,7 +15,7 @@
     "action": "无裙祭服敞开露胸，圣骸布缠绕紧勒腰臀，单手探入腿心深处自抚，琥珀色眼眸水雾弥漫失神喘息",
     "timeOfDay": "深夜",
     "lighting": "大礼拜堂彩绘花窗清冷月华与圣坛烛火",
-    "camera": "cowboy shot, diagonal intimate perspective, dramatic red ribbon flow",
+    "camera": "low angle, cowboy shot",
     "mood": "圣痕禁断",
     "sceneTags": [
       "church",
@@ -34,21 +34,22 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "She kneels on one knee before the altar with the Shroud around her hips and thighs, holding it taut with one hand while the other reaches between her legs. Cold moonlight from the high stained-glass windows meets the warm altar lamp.",
+    "promptProse": "Kneeling on one knee atop the red carpet before a deserted cathedral altar at midnight, Caren holds the red Shroud of Magdalene pulled taut around her hips and thighs with one hand while touching herself between her legs with the other. Her skirtless black-and-white gold-embroidered vestments hang open across her bare breasts above black thighhighs as cold stained-glass moonlight meets warm altar candles.",
     "promptTokens": [
-      "shroud of magdalene",
+      "kneeling",
+      "one knee",
       "red ribbon",
-      "bound arms",
-      "white veil",
-      "stained glass window",
-      "moonlight",
-      "altar candles",
-      "cathedral",
       "blush",
-      "pleasure",
-      "volumetric lighting",
-      "soft ambient light",
-      "marble pillars"
+      "heavy breathing",
+      "teary eyes",
+      "cathedral",
+      "altar",
+      "red carpet",
+      "stained glass",
+      "altar candles",
+      "moonlight",
+      "low angle",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -64,8 +65,19 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "animaCaption": "Moonlight pouring through towering stained-glass windows mingles with altar candlelight as sacred ribbons bind her trembling form."
+    "nsfwProse": "Her skirtless black-and-white gold-embroidered clerical vestments hang open to bare her breasts above black thighhighs while the red Shroud binds taut across her hips as she touches herself.",
+    "nsfwTokens": [
+      "black and white vestments",
+      "open clothes",
+      "topless",
+      "nipples",
+      "no skirt",
+      "black thighhighs",
+      "bondage ribbon",
+      "masturbation",
+      "pussy"
+    ],
+    "animaCaption": "Kneeling on one knee before the silent cathedral altar with her skirtless clerical vestments parted open to bare her chest and the red Shroud pulled tight across her thighs, she grips the ribbon with one hand while touching herself with breathless, tear-misted eyes. Cold stained-glass moonlight mixes with warm altar candlelight.",
+    "compositionIntent": "single"
   }
 }

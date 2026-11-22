@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3499,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
   "data": {
     "id": "rena_liechtenauer_lingerie_whisper",
     "characterId": "rena_liechtenauer",
@@ -14,7 +14,7 @@
     "location": "反重力鞋合宿宿舍海景木窗前，窗外是泛着碎银月光的黑夜大海",
     "timeOfDay": "深夜FC特训归来",
     "lighting": "窗外皎洁的海上月光照亮金发双马尾，室内暖光从背后勾勒出匀称紧致的运动体态",
-    "camera": "close-up, low angle, 仰视半身特写，月光大海作为宽广背景，凸显少女凌空而坐的洒脱英姿",
+    "camera": "low angle, close-up",
     "mood": "空竞少女的洒脱与野性，海风拂面般的畅快自由与明朗魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -38,24 +38,33 @@
       "low_angle"
     ],
     "promptTokens": [
-      "close-up",
-      "low angle",
-      "ocean",
-      "seashore",
-      "window",
-      "night",
-      "moonlight",
-      "warm lighting",
       "sitting",
-      "smile",
-      "racerback cut",
-      "lightweight airy fabric",
-      "indoors"
+      "windowsill",
+      "hand on window frame",
+      "waving",
+      "bright smile",
+      "looking at viewer",
+      "wind",
+      "ocean",
+      "moonlight",
+      "warm room light",
+      "night",
+      "low angle",
+      "close-up"
     ],
     "negativeTokens": [],
-    "promptProse": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole. Long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin amidst blue eyes sparkling, shimmering ocean under moonlight in background.",
-    "animaCaption": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Perched on the open wooden windowsill of her seaside dormitory at night, Lena Liechtenauer swings her bare legs in a sky-blue breathable sports-mesh racerback camisole and sporty side-striped boyshorts. Holding the window frame as sea breeze lifts her blonde hair and flashing a bright grin with sparkling purple eyes, she is framed by the moonlit sea.",
+    "animaCaption": "Perched on the wooden dormitory windowsill swinging her bare legs in a sky-blue sports-mesh racerback camisole and striped boyshorts, she steadies one hand on the frame and greets the viewer with a breezy, radiant grin. Silver ocean moonlight behind her meets warm indoor lamplight.",
+    "nsfwTokens": [
+      "blue mesh camisole",
+      "racerback tank top",
+      "white trim",
+      "striped boyshorts",
+      "athletic sleepwear",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "nsfwProse": "She wears a sky-blue and white breathable sports-mesh racerback camisole paired with sporty side-striped sleep boyshorts.",
+    "compositionIntent": "single"
   }
 }

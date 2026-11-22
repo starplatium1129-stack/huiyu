@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3155,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "ptilopsis_arknights_swimsuit_allure",
     "characterId": "ptilopsis_arknights",
@@ -14,7 +14,7 @@
     "location": "莱茵生命热带水环境生态模拟实验池畔",
     "timeOfDay": "午后日光",
     "lighting": "顶空规整的天井柔和日光洒在清澈水池中，水面的规则波纹在象牙白泳装上投射出清晰的光学折射网格",
-    "camera": "medium shot, eye level, crisp architectural symmetry, high-tech clinical yet charming aesthetic",
+    "camera": "eye level, medium shot",
     "mood": "机械冷静、一丝不苟与隐藏在程序化语言下的深层关切",
     "adult": true,
     "sampleRating": "R15",
@@ -40,26 +40,33 @@
       "afternoon"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "ptilopsis (arknights)",
-      "short gray hair",
-      "green eyes",
-      "owl ears",
-      "feather hair ornament",
-      "ivory and sage green swimsuit",
-      "sitting on pool step",
-      "holding waterproof tablet",
-      "pushing visor on forehead",
-      "deadpan expression",
-      "crystal clean pool water",
-      "sunlight refraction grid",
-      "depth of field"
+      "sitting",
+      "pool steps",
+      "feet in water",
+      "tablet",
+      "adjusting visor",
+      "expressionless",
+      "looking at viewer",
+      "swimming pool",
+      "clear water",
+      "water caustics",
+      "skylight",
+      "afternoon",
+      "eye level",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Ptilopsis from Arknights sits upright on submerged pool steps in her clean-cut ivory and sage-green swimsuit, adjusting her translucent visor while tapping a waterproof datapad with measured composure.",
-    "animaCaption": "Geometric sunlight refractions dance across the cool steps as the owl analyst delivers her objective summer report.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Ptilopsis sits with measured precision on the shallow marble steps of a Rhine Lab aquatic facility pool, wearing a clean-lined ivory-white and sage-green geometric cutout one-piece swimsuit and a translucent green visor. Resting a waterproof datapad across her knees while lifting her visor slightly, she reports calmly under bright skylight reflections.",
+    "animaCaption": "Seated upright on submerged marble pool steps with a waterproof tablet resting on her lap, she pushes up her translucent green visor with one finger in her ivory-and-sage geometric one-piece swimsuit. Soft skylight sun casts clean optical ripples across the clear water.",
+    "nsfwTokens": [
+      "white one-piece swimsuit",
+      "sage green trim",
+      "cutout swimsuit",
+      "green visor",
+      "transparent visor",
+      "bare shoulders",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears an ivory-white and sage-green ergonomic cutout one-piece swimsuit with crisp seam lines and a translucent green visor pushed onto her brow."
   }
 }

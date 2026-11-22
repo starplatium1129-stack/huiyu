@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_tails_wrap",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 643,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:32:54.035304+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "action": "穿居家服侧卧，九尾围在身侧，脸颊轻靠近处手掌。",
     "adult": false,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "",
-    "camera": "medium shot, eye level",
+    "camera": "eye level, medium shot",
     "category": "日常生活",
     "characterId": "suzuran_arknights",
     "coverageTags": [
@@ -26,13 +26,22 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "cozy_fluffy_pajamas",
-    "promptProse": "Suzuran lies on her side in cream fleece pajamas, nine tails around the bedding, cheek against the visitor’s hand as she listens in moonlight.",
+    "promptProse": "Lying peacefully on her side across the dormitory bed in her closed cream fleece hoodie and matching shorts, Suzuran lets her nine fluffy tails settle in a soft crescent along the rumpled bedding. She nestles her cheek trustingly against a comforting hand reaching in from beside the bed, her eyes resting shut with a serene smile as she listens to a quiet late-night story. Cool silver moonlight streams through the bedroom window, outlining her pillow, fleece collar, and the soft arc of her fur.",
     "promptTokens": [
-      "pajamas",
+      "lying",
       "on side",
-      "bed",
-      "multiple tails",
+      "on bed",
+      "closed eyes",
+      "gentle smile",
+      "hand on cheek",
+      "pillow",
+      "bedsheet",
+      "window",
+      "bedroom",
+      "indoors",
       "moonlight",
+      "night",
+      "eye level",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -45,6 +54,7 @@
     "timeOfDay": "深夜",
     "title": "铃兰 · 九尾陪伴",
     "styleHint": "",
-    "animaCaption": "Her cheek rests against the visitor's hand, cream fleece pajamas closed beneath the surrounding tails."
+    "animaCaption": "Lying on her side on the dormitory bed in her cream fleece sleepwear, Suzuran rests her cheek gently against a hand reaching in beside the pillow while her nine tails curve along the sheets. Quiet moonlight from the window softly illuminates her peaceful expression.",
+    "compositionIntent": "single"
   }
 }

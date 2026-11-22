@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_storage_room_pinned_kiss_intimacy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2325,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
   "data": {
     "id": "kurisu_storage_room_pinned_kiss_intimacy",
     "characterId": "makise_kurisu",
@@ -17,28 +17,41 @@
     "action": "红莉栖被抵在木质货架旁，双手下意识攥紧对方的衣角，半咬着下唇承受着滚烫的吻",
     "timeOfDay": "night",
     "lighting": "dim amber light filtering under door crack illuminating flushed damp skin",
-    "camera": "close-up",
+    "camera": "close-up, eye level",
     "mood": "温存与柔媚",
-    "promptProse": "Pressed against a wooden bookshelf in the dark storage room, flushed Kurisu bites her lip with teary eyes as hands caress her bare trembling shoulder.",
+    "promptProse": "Inside a narrow, dimly lit component storage room lined with wooden shelves, Kurisu is backed close against the shelving gripping her partner's clothes tightly as tears shimmer at the corners of her flushed eyes.",
     "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "pinned against wall",
+      "kissing",
+      "grabbing clothes",
+      "biting lip",
+      "teary eyes",
+      "heavy blush",
+      "storage room",
       "shelf",
-      "storage_room",
-      "pinned_against_wall",
-      "off-shoulder",
-      "bare_shoulders",
-      "heavy_breathing",
-      "flushed_face",
-      "teary_eyes",
-      "close-up",
-      "warm_lighting"
+      "warm lighting",
+      "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Kurisu pinned gently against a backroom shelf, flushed with passionate desire.",
+    "animaCaption": "Pressed back against a wooden storage-room shelf with both hands clutching her partner's shirt hem, she bites her lip through glistening tears during a heated kiss as her white ribbed halter camisole slips slightly off her flushed shoulder.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
     "sampleRating": "R15",
-    "sceneTags": []
+    "sceneTags": [],
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "white camisole",
+      "halterneck",
+      "off shoulder",
+      "bare shoulders",
+      "denim shorts",
+      "cleavage"
+    ],
+    "nsfwProse": "Her minimalist white ribbed halter camisole sits slightly skewed over her bare flushed shoulders and collarbone above frayed high-waisted denim shorts."
   }
 }

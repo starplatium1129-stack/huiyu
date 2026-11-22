@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:26:10.837824800+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_01",
     "title": "鸢一折纸 · AST紧身战甲绝灭天使主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间紧身胶衣全敞露双峰，银短发三无表情，狂热报数据疯狂沉腰",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "low angle, pov, cowboy shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,24 +30,22 @@
       "open_clothes",
       "bare_breasts"
     ],
-    "promptProse": "Origami moves astride the viewer's lap with precise rhythm, her white AST pilot suit unzipped to the hips and her expression composed under the room lights.",
+    "promptProse": "Astride her partner's lap on the bed of her quiet apartment late at night, Origami has pulled the front zipper of her tight white latex AST pilot suit completely open down to her hips. Baring her pale breasts and nipples, she rides intently in cowgirl position while keeping her gaze fixed straight down with a composed, faintly flushed deadpan expression under soft warm bedroom lamplight.",
     "promptTokens": [
-      "adult",
+      "1girl",
+      "1boy",
+      "hetero",
       "pov",
-      "white bodysuit",
-      "unzipped",
-      "topless",
-      "cowgirl position",
-      "on lap",
+      "straddling",
       "expressionless",
+      "looking at viewer",
+      "blush",
       "bed",
-      "cowboy shot",
+      "bedroom",
+      "warm lighting",
+      "night",
       "from below",
-      "latex",
-      "straddling lap",
-      "unzipped pilot suit",
-      "composed expression",
-      "room light"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,15 +53,24 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "white bodysuit",
+      "latex",
+      "unzipped",
+      "topless",
+      "bare breasts",
+      "nipples",
+      "cowgirl position",
+      "sex"
+    ],
+    "nsfwProse": "Her tight white latex AST pilot suit is unzipped down to her hips to expose her bare breasts and nipples as she rides astride her partner's lap with steady precision.",
     "outfitId": "white_pilot_suit",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
     ],
-    "compositionIntent": "single",
+    "compositionIntent": "group",
     "identityTokensOverride": [
       "tobiichi_origami",
       "date_a_live",
@@ -73,6 +80,6 @@
       "hair_ornament"
     ],
     "identityProseOverride": "Origami Tobiichi from Date A Live, with short snow-white hair, pale blue eyes and a hair ornament.",
-    "animaCaption": "The opened suit rests at her hips above the viewer's lap."
+    "animaCaption": "Riding astride her partner's lap on the bedroom bed with her white latex pilot suit unzipped to her hips, Origami keeps a composed, faintly flushed expression as she moves above him. Warm night room light reflects softly across her bare breasts and glossy white suit."
   }
 }

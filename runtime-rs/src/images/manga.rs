@@ -264,6 +264,6 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
         json!({"provider":"native","engine":"native","processor":*MANIFEST,"online":issue.is_none(),
         "available":issue.is_none(),"unavailableReason":issue,"readiness":"files-only",
         "validation":MANIFEST["validation"],"generationVerified":false,"performanceVerified":false,
-        "pending":backend.pending(),"maxPending":4,"defaults":{"operation":"lite"},"capabilities":capabilities}),
+        "pending":backend.pending(),"maxPending":generation::native::MAX_PENDING,"defaults":{"operation":"lite"},"capabilities":capabilities}),
     )
 }

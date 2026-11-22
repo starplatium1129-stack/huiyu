@@ -64,6 +64,10 @@ impl RateLimit {
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     Router::new()
         .route("/api/generation/status", get(status))
+        .route(
+            "/api/generation/gpu-queue",
+            get(gpu_queue).put(set_gpu_queue).layer(axum::extract::DefaultBodyLimit::max(256)),
+        )
         .route("/api/generation/jobs/{id}", get(get_job).delete(cancel))
         .route("/api/generation/jobs/{id}/result", get(result))
         .layer(Extension(Arc::new(Http { service })))
@@ -132,6 +136,38 @@ async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Ht
         Ok(()) => http.service.get_status().await,
         Err(error) => Err(error),
     })
+}
+fn local_queue(state: &AppState, headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
+    state.host.check_running()?;
+    if !security::is_direct_local(headers, peer.ip()) {
+        return Err(ApiError::new(403, "LOCAL_ONLY", "显卡队列由本机工作台管理"));
+    }
+    Ok(())
+}
+async fn gpu_queue(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
+) -> Response {
+    envelope(local_queue(&state, &headers, peer).map(|_| http.service.inner.native.queue_status()))
+}
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct QueueControl {
+    paused: bool,
+}
+async fn set_gpu_queue(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
+    Json(control): Json<QueueControl>,
+) -> Response {
+    envelope(async {
+        local_queue(&state, &headers, peer)?;
+        http.service.inner.native.pause(control.paused).await
+    }.await)
 }
 async fn get_job(
     State(state): State<AppState>,

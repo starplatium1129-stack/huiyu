@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_urban_street_coffee",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2103,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "kakudate_karin_urban_street_coffee",
     "characterId": "kakudate_karin",
@@ -17,21 +17,30 @@
     "action": "她单手握着易拉罐冰咖啡倚靠在行道树旁，远远看到赶来的老师，熔金色的眼眸顿时浮现出安心的笑意",
     "timeOfDay": "day",
     "lighting": "dappled sunlight through tree foliage onto tanned skin",
-    "camera": "cowboy_shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "轻松惬意",
-    "promptProse": "Leaning casually against a sidewalk tree in a cropped sleeveless grey hoodie and denim shorts, Kakudate Karin holds an iced coffee, her golden eyes lighting up warmly.",
+    "promptProse": "Leaning casually with one shoulder against a leafy sidewalk tree at a sunny weekend city corner, Karin wears her relaxed grey sleeveless cropped hoodie and distressed denim shorts. Holding a chilled can of iced coffee lightly in one hand, she brightens into a warm, relieved smile the moment she spots the viewer hurrying toward her. Bright dappled sunlight filters through the green leaves across the sunlit pavement and her dark skin.",
     "promptTokens": [
-      "holding_can",
+      "standing",
+      "leaning",
+      "holding can",
+      "canned coffee",
+      "looking at viewer",
+      "gentle smile",
       "street",
-      "trees",
+      "sidewalk",
+      "tree",
+      "dappled sunlight",
       "day",
-      "cowboy_shot",
-      "dappled_sunlight"
+      "outdoors",
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Karin waiting casually on the street corner in a sleeveless hoodie.",
+    "animaCaption": "Leaning against a tree-lined city corner in her sleeveless cropped grey hoodie and denim shorts, Karin holds a cold can of iced coffee and greets the approaching viewer with a warm smile. Dappled daylight filters through green foliage across the sunny street.",
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_evening_banquet_reception",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2096,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "amau_ako_evening_banquet_reception",
     "characterId": "amau_ako",
@@ -17,20 +17,30 @@
     "action": "她优雅地端着香槟杯侧身回眸，看到携伴而来的老师时，端庄的面具下悄悄泛起了一抹羞涩的红晕",
     "timeOfDay": "night",
     "lighting": "dazzling sparkling chandelier brilliance and warm golden banquet illumination",
-    "camera": "cowboy_shot",
+    "camera": "three quarter view, cowboy shot",
     "mood": "动情与私密",
-    "promptProse": "Inside an opulent grand ballroom under dazzling crystal chandeliers, Amau Ako turns gracefully in a midnight-blue backless evening gown, clutching a champagne flute with a bashful pout.",
+    "promptProse": "Inside a grand academy banquet hall beneath sparkling crystal chandeliers, Amau Ako stands near the draped marble columns in her midnight-blue backless evening gown. Holding a tall flute of pale champagne by the stem, she turns back over her bare shoulder toward the viewer as a faint bashful blush breaks through her formal composure. Warm golden banquet light glints across her silver necklace, the polished floor, and the deep velvet curtains behind her.",
     "promptTokens": [
-      "holding_wine_glass",
+      "standing",
+      "looking back",
+      "holding wine glass",
+      "champagne",
+      "blush",
+      "shy",
       "ballroom",
       "chandelier",
+      "marble floor",
+      "curtains",
+      "warm lighting",
       "night",
-      "cowboy_shot"
+      "three quarter view",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ako looking back in a glamorous backless evening dress.",
+    "animaCaption": "Standing beneath the grand ballroom chandeliers in her midnight-blue backless gown, Ako holds a champagne flute and turns back over her bare shoulder with a bashful blush. Warm golden banquet light catches her silver necklace and the draped hall behind her.",
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

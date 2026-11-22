@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_gothic_bedchamber_domination",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 678,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-22T03:20:28.393381800+00:00",
   "data": {
     "action": "独自跨坐木椅咬住腿带，一手抓椅背、一手腿间自抚，黑蕾丝褪至胸下",
     "adult": true,
     "adultArtistHint": "@asakura shou",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "low angle, cowboy shot, vertical framing",
+    "camera": "low angle, cowboy shot",
     "category": "豪门极乐",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -23,24 +23,34 @@
     "location": "叙拉古古堡卧室内雕花木椅旁，深红床幔在后方",
     "mood": "狂暴支配",
     "negativeTokens": [],
-    "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "black_lace_coat",
-    "promptProse": "Lappland straddles the carved chair with the leather leg strap between her teeth, gripping its back while touching herself with her free hand. Red moonlight edges her hair and tail, with warm candlelight on the chair and the folds of the distant bed curtains.",
-    "promptTokens": [
-      "1girl",
-      "solo",
-      "open black coat",
+    "nsfwProse": "Her ragged black coat and lace bustier are dragged down below her chest to bare her breasts and nipples, while she wears black thighhighs and masturbates astride the carved chair.",
+    "nsfwTokens": [
+      "black coat",
+      "open coat",
+      "lace",
+      "corset",
+      "topless",
       "bare breasts",
+      "nipples",
+      "black thighhighs",
+      "masturbation"
+    ],
+    "outfitId": "black_lace_coat",
+    "promptProse": "Straddling a carved wooden chair inside a gothic castle bedchamber with crimson canopy drapes behind her, Lappland has pushed her distressed black duster and lace bustier down below her bare breasts. Clenching a leather thigh strap between her sharp teeth and gripping the carved chair back with one hand, she reaches between her parted legs with the other to masturbate with feral poise. Red moonlight from the side window edges her wild hair and tail while low candlelight warms the wood and crimson curtains.",
+    "promptTokens": [
       "straddling",
       "chair",
-      "leg strap in mouth",
-      "masturbation",
+      "biting",
+      "leather strap",
+      "heavy blush",
+      "looking at viewer",
+      "canopy bed",
+      "red curtains",
+      "candlelight",
       "red moon",
-      "ragged hem",
-      "black lace top",
-      "hand on chair",
-      "candlelight"
+      "night",
+      "from below",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -59,6 +69,7 @@
     ],
     "timeOfDay": "深夜",
     "title": "拉普兰德 · 恶兆红帐中的反客为主",
-    "animaCaption": "The leg strap stays between her teeth as she grips the chair back."
+    "animaCaption": "Straddling the carved wooden chair with her black coat and lace bustier pulled below her bare breasts, Lappland bites a leather strap between her teeth and grips the chair back while masturbating. Red moonlight rims her wild hair and tail above warm candlelit crimson drapes.",
+    "compositionIntent": "single"
   }
 }

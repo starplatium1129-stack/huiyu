@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_tatami_straddle",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "chitanda_nsfw_tatami_straddle",
     "title": "千反田爱瑠 · 千反田家和室的主控跨坐",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间浴衣半敞双乳全露，黑长直垂落两颊，紫瞳闪耀好奇红晕",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "medium shot, first-person view from below",
+    "camera": "from below, pov, medium shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "tatami",
@@ -26,24 +26,23 @@
       "blush",
       "medium_shot"
     ],
-    "promptProse": "She leans forward while straddling the viewer's hips, her loosened yukata lit by moonlight and warm light beyond the screens.",
-    "nsfwProse": "",
+    "promptProse": "Viewed from a low first-person angle inside a silent traditional Japanese room at night, Eru sits astride her partner's hips and leans forward eagerly, her flushed face lit by silver moonlight and warm glow filtering through the shoji screens.",
+    "nsfwProse": "Her white cotton yukata printed with purple hydrangeas hangs open off both shoulders to bare her breasts completely as she lowers herself in a cowgirl position.",
     "promptTokens": [
-      "medium shot",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
+      "straddling",
+      "leaning forward",
+      "looking down",
+      "heavy blush",
       "tatami",
       "japanese room",
-      "night",
-      "warm lighting",
-      "sitting",
-      "blush",
-      "ivory yukata",
-      "open clothes",
-      "topless",
-      "straddling",
       "moonlight",
+      "warm lighting",
       "from below",
-      "purple hydrangea print",
-      "leaning forward"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,7 +55,16 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
-    "animaCaption": "She leans toward the viewer with her loosened yukata between the two light sources."
+    "nsfwTokens": [
+      "white yukata",
+      "floral print",
+      "open kimono",
+      "topless",
+      "nipples",
+      "sex",
+      "cowgirl position"
+    ],
+    "animaCaption": "Straddling her partner's waist on the quiet tatami floor with her white hydrangea-print yukata loosened past her shoulders to bare her breasts, she leans down with glowing curious eyes and a deep blush between silver moonlight and warm screen light.",
+    "compositionIntent": "group"
   }
 }

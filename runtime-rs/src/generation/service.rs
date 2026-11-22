@@ -12,6 +12,11 @@ pub(super) async fn submit(
     if owner.is_empty() {
         return Err(ApiError::new(401, "UNAUTHORIZED", "生成任务需要有效所有者"));
     }
+    // Image/video services have already protected the admitted originals.
+    // Dependency waits own neither a GPU slot nor a provider submission intent.
+    if prepared.provider() == "native" && let Some(hooks) = &hooks {
+        hooks.ready_to_queue().await?;
+    }
     snapshots::initialize(inner.clone()).await?;
     let job = jobs::create(prepared, owner, hooks);
     inner

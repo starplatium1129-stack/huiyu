@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_bridal_vow_shrine",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1486,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
   "data": {
     "id": "chitanda_bridal_vow_shrine",
     "title": "千反田爱瑠 · 白无垢与庭前落叶",
@@ -16,7 +16,7 @@
     "action": "轻托婚礼衣袖，拾起落在白色衣摆上的小叶子。",
     "timeOfDay": "morning",
     "lighting": "soft courtyard daylight",
-    "camera": "cowboy shot",
+    "camera": "three quarter view, full body",
     "mood": "名门誓言、执子之手",
     "sceneTags": [
       "shrine_veranda",
@@ -28,16 +28,21 @@
       "courtyard_light",
       "medium_shot"
     ],
-    "promptProse": "She gathers her layered sleeve with one hand and picks a fallen leaf from the bridal hem with the other, smiling shyly at the distraction. Courtyard light reveals the white brocade beside the open doorway.",
+    "promptProse": "At the open threshold of the shrine preparation room, Chitanda kneels on the raised wooden veranda in her ivory brocade shiromuku. The closed garment pools in a crescent around her on the wood. She gathers the layered cloth of one sleeve with her left hand while her right thumb and forefinger lift a single red maple leaf from the folds of the train. She smiles at the distraction. Soft autumn light from the courtyard reaches the white crane brocade and the wood grain beside the paper doorway. Frame her hands, her face and the leaf against the white hem in one view.",
     "promptTokens": [
       "shrine",
-      "leaf",
-      "bending down",
+      "veranda",
+      "doorway",
+      "kneeling",
+      "maple leaf",
+      "looking down",
+      "pinching",
+      "shy",
       "smile",
-      "cowboy shot",
-      "sleeve hold",
-      "shy smile",
-      "daylight"
+      "autumn",
+      "sunlight",
+      "three quarter view",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand gathers her sleeve while the other removes the leaf from her bridal hem."
+    "animaCaption": "Kneeling with the closed white wedding kimono pooled around her, she lifts a single maple leaf from the train with her fingertips. Courtyard light picks out the leaf and ivory brocade by the open screen."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
   "data": {
     "id": "suzuran_arknights_lingerie_whisper",
     "characterId": "suzuran_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛医疗部阳光疗养房，窗台上开满了黄色的向日葵与金盏花",
     "timeOfDay": "晨光如蜜的破晓时分",
     "lighting": "温润的晨曦从花窗漫射而入，给金黄的发丝与毛茸茸的尾巴镀上一层柔和的光晕",
-    "camera": "medium shot, eye level, 平视中景，阳光单人沙发与窗台向日葵同框",
+    "camera": "medium shot, eye level",
     "mood": "罗德岛之光的绝对纯洁与治愈，如初雪般无暇的小小天使",
     "adult": true,
     "sampleRating": "R15",
@@ -45,18 +45,28 @@
       "armchair",
       "wool cushion",
       "hugging knees",
-      "blooming sunflowers",
-      "potted flowers",
-      "sunny windowsill",
-      "morning sunlight",
-      "innocent smile",
-      "medium shot",
-      "eye level"
+      "gentle smile",
+      "looking at viewer",
+      "sunflowers",
+      "potted plant",
+      "windowsill",
+      "morning",
+      "sunlight",
+      "warm lighting",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Suzuran sits neatly tucked into a deep armchair layered with soft wool cushions in the sunny convalescent room, hands held gently before her knees. Bright sunflowers bloom on the sunlit windowsill behind her, bathed in pure morning light.",
-    "animaCaption": "Sitting in a cushioned armchair beside sunlit sunflowers, she looks up with an innocent, gentle smile.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Inside the bright convalescent room filled with morning sunlight, Suzuran sits politely in a deep armchair lined with soft wool cushions, hugging her knees beside potted sunflowers and marigolds with a warm, trusting smile.",
+    "animaCaption": "Tucked neatly into a wool-cushioned armchair beside a sunny windowsill lined with blooming sunflowers, she clasps her hands before her knees with her fluffy tails gathered calmly behind her in a pale pastel-yellow double-cotton nightgown edged with white crocheted daisies.",
+    "nsfwTokens": [
+      "yellow nightgown",
+      "cotton dress",
+      "white lace",
+      "floral trim",
+      "ruffles",
+      "pajamas"
+    ],
+    "nsfwProse": "She wears a modest pale-yellow double-layer cotton nightgown trimmed with crocheted white daisies along the neckline and wide ruffled hem, tailored open at the back for her nine tails.",
+    "compositionIntent": "single"
   }
 }

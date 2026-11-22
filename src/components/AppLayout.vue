@@ -3,10 +3,11 @@
     <RouterLink class="skip-link" :to="{ query: currentRoute.query, hash: '#main' }" @click="focusMain">跳到主要内容</RouterLink>
     <AppNav />
     <RouteAtmosphere />
-    <GuestGuide />
+    <GuestGuide v-if="!startupProfilePending" />
     <!-- 必须是真的 <main>：skip-link 指向这里，之前是 div，跳转链接落在一个普通容器上 -->
-    <main id="main" class="page-main tw:relative tw:z-(--z-raised) tw:flex-1 tw:min-w-0 tw:grid" tabindex="-1" :aria-busy="!!pendingPath || undefined">
-      <RouterView v-slot="{ Component, route }">
+    <main id="main" class="page-main tw:relative tw:z-(--z-raised) tw:flex-1 tw:min-w-0 tw:grid" tabindex="-1" :aria-busy="startupProfilePending || !!pendingPath || undefined">
+      <p v-if="startupProfilePending" class="startup-profile-status" role="status">正在连接本机资料…</p>
+      <RouterView v-else v-slot="{ Component, route }">
         <Transition appear :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave" @enter-cancelled="onEnterCancelled" @leave-cancelled="onLeaveCancelled">
           <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放有缩略图的原图，
                仅为返回范围内缺少缩略图的作品保留原图预览。 -->
@@ -46,6 +47,7 @@
 
 <script setup lang="ts">
 import '@/assets/css/workspace-layout.css'
+import '@/assets/css/fluid-workspaces.css'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import AppNav from './AppNav.vue'
@@ -54,6 +56,7 @@ import GuestGuide from './GuestGuide.vue'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+import { startupProfilePending } from '@/platform/startupProfile'
 
 const currentRoute = useRoute()
 const documentationUrl = computed(() => resolveRuntimeUrl('/docs/index.html'))
@@ -69,6 +72,7 @@ const currentYear = new Date().getFullYear()
 @reference "../assets/css/tailwind.css";
 .page-root { --app-navigation-visible-height:var(--app-navigation-height,80px); }
 .page-root:has(> .nav[data-scroll-hidden='true']) { --app-navigation-visible-height:0px; }
+.startup-profile-status { align-self:start; margin:var(--s-6) var(--workspace-gutter); color:var(--text-secondary); }
 .route-view {
   grid-area: 1 / 1;
   /* Anchor depth motion at the page top, not halfway down a long document. */

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_sweets_shop_after_school",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 355,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:45:09.309283800+00:00",
   "data": {
     "id": "yui_sweets_shop_after_school",
     "title": "由比滨结衣 · 放学后的甜品店",
@@ -17,7 +17,7 @@
     "action": "捧着草莓奶油可丽饼品尝，开心地微笑",
     "timeOfDay": "afternoon",
     "lighting": "window_light",
-    "camera": "medium_portrait",
+    "camera": "three quarter view, medium shot",
     "mood": "明媚欢欣",
     "sceneTags": [
       "dessert_shop",
@@ -30,14 +30,22 @@
       "sweets",
       "afternoon"
     ],
-    "promptProse": "Yui takes a happy bite from the strawberry-and-cream crepe at the cafe after school.",
+    "promptProse": "Seated at a cozy shopping-street sweets cafe after school in her Sobu High School blazer and pink cardigan, Yui cradles a freshly folded strawberry-and-whipped-cream crepe in both hands. Taking a delighted bite with softly flushed cheeks, she beams across the wooden table with unmistakable after-school cheer. Warm afternoon sunlight through the cafe window brightens the sliced strawberries, cream swirls, and her lively smile.",
     "promptTokens": [
-      "strawberry crepe",
+      "sitting",
+      "holding food",
+      "crepe",
+      "strawberry",
+      "whipped cream",
       "eating",
-      "cafe",
-      "window light",
-      "holding crepe",
       "happy smile",
+      "blush",
+      "cafe",
+      "table",
+      "indoors",
+      "afternoon",
+      "window light",
+      "three quarter view",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -47,6 +55,7 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She takes a happy bite from the strawberry-and-cream crepe held before her."
+    "animaCaption": "Seated at the wooden cafe table in her school uniform and pink cardigan, Yui holds a strawberry-and-cream crepe with both hands and takes a happy bite with flushed cheeks. Warm afternoon window light brightens her cheerful smile and the dessert.",
+    "compositionIntent": "single"
   }
 }

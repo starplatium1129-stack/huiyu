@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3116,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
   "data": {
     "id": "pramanix_arknights_swimsuit_allure",
     "characterId": "pramanix_arknights",
@@ -14,7 +14,7 @@
     "location": "远离严寒与神圣神殿的南方热带海岛私密白沙浅滩",
     "timeOfDay": "晴朗上午",
     "lighting": "上午纯澈透亮的阳光穿透椰林枝叶，在银白长发与毛茸茸的雪豹长尾上泛起银粉般的晶莹高光",
-    "camera": "medium shot, slightly high angle looking down affectionately, soft and sweet natural lighting",
+    "camera": "high angle, medium shot",
     "mood": "卸下圣女重担的少女天真、纯净羞怯与难得的自由安宁",
     "adult": true,
     "sampleRating": "R15",
@@ -39,27 +39,33 @@
       "tropical_beach"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "pramanix (arknights)",
-      "silver hair",
-      "purple eyes",
-      "snow leopard ears",
-      "massive snow leopard tail",
-      "white and icy cyan swimdress",
-      "sitting on pure white sand",
-      "holding fresh coconut with straw",
-      "tail curled around feet",
-      "shy sweet smile",
+      "sitting",
+      "on sand",
+      "holding coconut",
+      "straw",
+      "curled tail",
+      "shy smile",
       "blush",
-      "sunny tropical coast",
-      "depth of field",
-      "cinematic lighting"
+      "looking up",
+      "white sand",
+      "tropical beach",
+      "palm shadow",
+      "morning sunlight",
+      "high angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Pramanix from Arknights sits gently on powdery white sand in her snow-white and frost-cyan swimdress, her massive fluffy leopard tail curled protectively forward as she offers a fresh coconut drink with a bashful blush.",
-    "animaCaption": "Warm southern tides replace glacial blizzards as the saintess sheds her heavy mantle for gentle summer sun.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Pramanix sits sideways on powdery white sand at a quiet tropical cove, wearing a snow-white and pale cyan swimdress with delicate frostwork lace, soft neckline fur trim, and small silver waist bells. Her plush snow leopard tail curls neatly around her legs as she holds out a fresh coconut with a straw and looks up with a shy, sunlit smile.",
+    "animaCaption": "Seated sideways on clean white sand with her fluffy tail curled protectively around her knees, she offers a chilled green coconut with both hands and looks up with a shy blush in her white-and-cyan swimdress. Clear morning sunlight filters through palm fronds over the quiet cove.",
+    "nsfwTokens": [
+      "white swimdress",
+      "light blue trim",
+      "one-piece swimsuit",
+      "fur trim",
+      "lace trim",
+      "silver bells",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a snow-white and pale icy-cyan swimdress with soft white fur trim along the sweetheart neckline, frost-pattern lace, and tiny silver bells at the waist."
   }
 }

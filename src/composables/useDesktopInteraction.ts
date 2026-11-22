@@ -1,7 +1,7 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { nextTick, readonly, ref, watch } from 'vue'
 import type { Router } from 'vue-router'
-import { useTheme } from './useTheme'
+import { applyTheme, useTheme } from './useTheme'
 import { THEME_SETTING } from '@/storage/settingsRepository'
 
 type ThemeMode = 'system' | 'dark' | 'light'
@@ -24,8 +24,10 @@ function save() {
 function normalizedGlassTint(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 35 }
 
 function loadThemeStyle() {
-  if (themeStyle.value === 'terraria') return import('@/assets/css/terraria-surfaces.css')
-    .catch(error => console.warn('像素主题样式加载失败，可刷新后重试', error))
+  if (themeStyle.value === 'terraria') return Promise.all([
+    import('@/assets/css/terraria-theme.css'),
+    import('@/assets/css/terraria-surfaces.css'),
+  ]).catch(error => console.warn('像素主题样式加载失败，可刷新后重试', error))
 }
 
 export function initializeDesktopPreferences() {
@@ -36,7 +38,7 @@ export function initializeDesktopPreferences() {
   const contrast = matchMedia('(prefers-contrast: more)')
   const transparency = matchMedia('(prefers-reduced-transparency: reduce)')
   const forcedColors = matchMedia('(forced-colors: active)')
-  const { theme, setTheme } = useTheme()
+  const { theme } = useTheme()
   let applyingTheme = false
   let reading = false
   function read() {
@@ -54,8 +56,9 @@ export function initializeDesktopPreferences() {
     finally { reading = false }
   }
   function apply() {
+    const palette = themeMode.value === 'system' ? dark.matches ? 'dark' : 'light' : themeMode.value
     applyingTheme = true
-    setTheme(themeMode.value === 'system' ? dark.matches ? 'dark' : 'light' : themeMode.value)
+    if (theme.value !== palette) applyTheme(palette)
     applyingTheme = false
     const root = document.documentElement
     root.dataset.themeStyle = themeStyle.value
@@ -70,7 +73,8 @@ export function initializeDesktopPreferences() {
     window.dispatchEvent(new Event('atelier:motion-preference'))
     return loadThemeStyle()
   }
-  read(); save(); const appearanceReady = apply()
+  read()
+  const appearanceReady = apply()
   watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Tint previews only change CSS; avoid resaving the theme and notifying every motion consumer per slider step.
   watch(glassTint, value => {
@@ -80,6 +84,7 @@ export function initializeDesktopPreferences() {
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
   window.addEventListener('storage', event => { if (event.key === KEY || event.key === null) { read(); apply() } })
+  window.addEventListener('huiyu:profile-sync-complete', () => { read(); apply() })
   return appearanceReady
 }
 

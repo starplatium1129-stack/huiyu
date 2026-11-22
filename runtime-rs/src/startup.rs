@@ -123,6 +123,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         shutdown.clone(),
     )?);
     let mut state = AppState::new(Arc::new(config), host, shutdown.clone());
+    if let Some(storage)=state.host.storage(){tasks.restore_studio(storage);}
     state.chat = Some(Arc::new(crate::chat::ChatService::new()));
     state.voice = Some(voice.clone());
     state.generation = Some(generation);
@@ -162,6 +163,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         control.restore_guest_share(state.clone());
     }
     let channels = tokio::spawn(crate::companion_channels::run(state.clone()));
+    let muse_tailnet = tokio::spawn(crate::chat::muse::tailnet::run(state.clone()));
     let remote_server = crate::images::remote::start(state.clone()).await;
     println!(
         "{}",
@@ -187,6 +189,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     .await;
     shutdown.cancel();
     let _ = channels.await;
+    let _ = muse_tailnet.await;
     if let Some(mut server) = remote_server {
         if tokio::time::timeout(std::time::Duration::from_secs(5), &mut server)
             .await

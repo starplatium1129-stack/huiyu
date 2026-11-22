@@ -8,7 +8,7 @@ use std::{
 };
 use unicode_normalization::UnicodeNormalization;
 
-const EMOTIONS: &[&str] = &["neutral", "gentle", "happy", "shy", "serious", "sad"];
+pub(super) const EMOTIONS: &[&str] = &["neutral", "gentle", "happy", "shy", "serious", "sad"];
 static JAPANESE_REPLACEMENTS: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"绫地宁宁|綾地寧々|綾地寧寧|四季夏目|四季ナツメ|\.\.\.").unwrap());
 pub(super) struct Validated {
@@ -138,14 +138,31 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
     let speed = input["speed"]
         .as_f64()
         .or_else(|| input["speed"].as_str().and_then(|s| s.parse().ok()));
-    // Installed GPT-SoVITS v2Pro/v2ProPlus rejects ordinary Japanese with cut0;
-    // retain cut5 until an engine upgrade is verified with the same dialogue.
-    let mut payload = json!({"text": null, "text_lang": null, "ref_audio_path": choose(|r| &r.ref_audio_path),
-        "prompt_lang": if prompt_lang.is_empty() { "ja" } else { prompt_lang }, "prompt_text": choose(|r| &r.prompt_text),
-        "text_split_method": "cut5", "batch_size": 1, "split_bucket": false, "speed_factor": numeric(speed, 1.0, 0.75, 1.35, false),
+    // cut5 splits on every Japanese comma (`、`), and GPT-SoVITS's TextPreprocessor
+    // omits `、` from `splits` and appends `。` to every fragment (`、。`), turning a
+    // single sentence into multiple independent T2S calls with 0.3s silences and abrupt
+    // emotion shifts. cut2 keeps each sentence (up to ~50+ chars, merging short tails)
+    // in one continuous pass while still splitting long scripts at sentence boundaries.
+    let mut payload = json!({
+        "text": null,
+        "text_lang": null,
+        "ref_audio_path": choose(|r| &r.ref_audio_path),
+        "prompt_lang": if prompt_lang.is_empty() { "ja" } else { prompt_lang },
+        "prompt_text": choose(|r| &r.prompt_text),
+        "text_split_method": "cut2",
+        "batch_size": 1,
+        "split_bucket": false,
+        "speed_factor": numeric(speed, 1.0, 0.75, 1.35, false),
+        "fragment_interval": 0.18,
         "seed": numeric(profile.seed, 1234.0, 0.0, 2147483647.0, true) as i64,
-        "top_k": numeric(profile.top_k, 15.0, 1.0, 100.0, true) as i64, "top_p": numeric(profile.top_p, 1.0, 0.1, 1.0, false),
-        "temperature": numeric(profile.temperature, 1.0, 0.1, 2.0, false), "parallel_infer": false, "media_type": "wav", "streaming_mode": false});
+        "top_k": numeric(profile.top_k, 8.0, 1.0, 100.0, true) as i64,
+        "top_p": numeric(profile.top_p, 0.8, 0.1, 1.0, false),
+        "temperature": numeric(profile.temperature, 0.7, 0.1, 2.0, false),
+        "repetition_penalty": 1.35,
+        "parallel_infer": false,
+        "media_type": "wav",
+        "streaming_mode": false
+    });
     payload["text"] = text.into();
     payload["text_lang"] = language.into();
     if settings.engine == Engine::VoxCpm2 {
@@ -174,8 +191,18 @@ pub(super) fn normalize(raw: &str, language: &str) -> String {
             while text.ends_with(char::is_whitespace) {
                 text.pop();
             }
-            if !text.ends_with('。') {
-                text.push('。');
+            if !text.is_empty()
+                && !matches!(
+                    text.chars().last(),
+                    Some('。' | '！' | '？' | '!' | '?' | '…')
+                )
+            {
+                while matches!(text.chars().last(), Some('、' | '，' | ',')) {
+                    text.pop();
+                }
+                if !text.is_empty() {
+                    text.push('。');
+                }
             }
             space = true;
         } else if ch == ' ' || ch == '\t' {
@@ -208,6 +235,20 @@ pub(super) fn normalize(raw: &str, language: &str) -> String {
             })
         {
             text = replaced;
+        }
+        if text.contains("、。") {
+            text = text.replace("、。", "。");
+        }
+        if text.contains("，。") {
+            text = text.replace("，。", "。");
+        }
+        if matches!(text.chars().last(), Some('、' | '，' | ',')) {
+            while matches!(text.chars().last(), Some('、' | '，' | ',')) {
+                text.pop();
+            }
+            if !text.is_empty() {
+                text.push('。');
+            }
         }
     }
     text

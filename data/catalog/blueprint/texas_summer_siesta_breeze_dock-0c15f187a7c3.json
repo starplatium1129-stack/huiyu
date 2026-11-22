@@ -1,51 +1,54 @@
 {
   "kind": "blueprint",
   "id": "texas_summer_siesta_breeze_dock",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 664,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
   "data": {
     "action": "坐在木质栈桥边缘双腿悬空，推起墨镜凝望碧蓝大海，微风拂动狼尾",
-    "camera": "full body, seated figure and feet above water visible",
+    "camera": "three quarter view, full body",
     "category": "海滨假日",
     "characterId": "texas_arknights",
     "coverageTags": [
       "daily"
     ],
-    "description": "汐斯塔碧蓝辽阔的海港栈桥边，海鸥在晴空下盘旋。德克萨斯穿着性感的黑色连体泳衣，外面随意披着一件轻薄白衬衫，坐在木质码头边任由双脚悬在水面上。海风拂动着她的长发与蓬松狼尾，她推起脸上的墨镜，惬意地享受着难得的假期——「汐斯塔的海风……确实比龙门和叙拉古要清爽很多。」",
+    "description": "德克萨斯坐在汐斯塔的木栈桥边，赤脚悬在潮水上方。敞开的白麻衫被风掀起了一角，她用指尖推高墨镜，望向防波堤边轻轻摇晃的帆船。",
     "id": "texas_summer_siesta_breeze_dock",
     "lighting": "热带明媚阳光与波光粼粼的湛蓝海面",
     "location": "汐斯塔海滨度假木质栈桥码头",
     "mood": "惬意悠闲",
     "negativeTokens": [],
-    "outfitId": "summer_sunbreeze",
-    "promptProse": "Seated on the dock with feet above the water, Texas pushes up her sunglasses with one hand; harbor wind stirs her loose white shirt and wolf tail in sunlight.",
+    "outfitId": "siesta_dock_linen",
+    "promptProse": "From a three-quarter angle along the pier, Texas sits on the high edge of the weathered planks, both bare feet dangling well clear of the water. The sea breeze tugs at her open white linen shirt and brushes her dark wolf tail across the boards. She lifts one corner of her sunglasses with a fingertip to watch the sailboats. A coil of mooring rope frames the nearest post. White hulls rock under the pale stone breakwater in the distance, and the afternoon sun stipples the turquoise harbor.",
     "promptTokens": [
       "pier",
-      "sea",
-      "full body",
+      "harbor",
+      "ocean",
       "sitting",
-      "feet above water",
-      "sunglasses lift",
+      "barefoot",
+      "sunglasses",
+      "adjusting eyewear",
+      "rope",
+      "sailboat",
+      "seagull",
+      "horizon",
       "wind",
-      "sunlight"
+      "sunlight",
+      "three quarter view",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "beach",
-      "dock",
       "pier",
+      "harbor",
       "ocean",
-      "swimsuit",
-      "black_swimsuit",
-      "open_shirt",
-      "sunglasses",
-      "bare_legs",
-      "wolf_tail"
+      "adjusting eyewear",
+      "sitting",
+      "barefoot"
     ],
     "timeOfDay": "午后",
     "title": "德克萨斯 · 汐斯塔海港的微风小憩",
-    "animaCaption": "She pushes up the sunglasses from the dock edge, both feet suspended above the water."
+    "animaCaption": "She sits on the high edge of the timber pier with a strip of daylight between her bare toes and the water, lifting the corner of her sunglasses as she looks out at the boats. Mooring rope loops around a post at the near corner and the harbor curves away behind her."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_morning_straddle",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-22T03:25:49.757873800+00:00",
   "data": {
     "id": "megumi_nsfw_morning_straddle",
     "title": "加藤惠 · 假日晨光的大号衬衫柔情",
@@ -15,7 +15,7 @@
     "action": "身穿半敞的宽大衬衫跪坐在画外同行者腰间，垂眸前倾，露出羞涩的浅笑。",
     "timeOfDay": "morning",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "cowboy shot, first-person view, low angle",
+    "camera": "from below, pov, cowboy shot",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "indoors",
@@ -28,29 +28,24 @@
       "low_angle",
       "morning"
     ],
-    "promptProse": "Adult Megumi kneels astride the offscreen viewer on the rumpled sheets in an unbuttoned oversized shirt, leaning close with a shy smile in the morning light.",
-    "nsfwProse": "",
+    "promptProse": "Seen from a low first-person angle across rumpled morning bedding washed in warm window sunlight, Megumi sits astride her partner and leans down slightly with a quiet, shy smile and faintly misted eyes.",
+    "nsfwProse": "Her oversized white men's dress shirt is unbuttoned down the front to expose her bare breasts, collarbones, and upper thighs as she straddles him.",
     "promptTokens": [
-      "cowboy shot",
-      "low angle",
-      "indoors",
-      "bedroom",
-      "warm lighting",
-      "kneeling",
-      "blush",
-      "smile",
-      "white shirt",
-      "open shirt",
-      "topless",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
+      "kneeling",
       "leaning forward",
+      "shy",
+      "gentle smile",
+      "blush",
+      "bedroom",
       "bed",
       "morning",
-      "from below",
-      "adult",
-      "kneeling astride",
-      "shy smile",
-      "morning light"
+      "sunlight",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -63,7 +58,16 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
-    "animaCaption": "The viewer stays outside the frame beneath her close-leaning pose."
+    "nsfwTokens": [
+      "oversized shirt",
+      "white shirt",
+      "open shirt",
+      "topless",
+      "nipples",
+      "bare thighs",
+      "cowgirl position"
+    ],
+    "animaCaption": "Kneeling astride her partner's waist on the sunlit morning bedsheets in an unbuttoned oversized white dress shirt falling open off her bare chest, she leans close with a soft shy smile and lightly flushed cheeks.",
+    "compositionIntent": "group"
   }
 }

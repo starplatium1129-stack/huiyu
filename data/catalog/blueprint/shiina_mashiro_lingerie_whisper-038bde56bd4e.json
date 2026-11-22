@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3324,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
   "data": {
     "id": "shiina_mashiro_lingerie_whisper",
     "characterId": "shiina_mashiro",
@@ -14,7 +14,7 @@
     "location": "樱花庄202号画室，满地散落的画布、油画颜料罐与未完成的年轮蛋糕包装",
     "timeOfDay": "初夏破晓六点",
     "lighting": "清晨澄澈高亮度的纯白晨曦洒满画室，在透明的睡衣与白皙肌肤上泛起朦胧圣光",
-    "camera": "wide shot, low angle, front view, 正面全景微仰拍，纯白光线下少女纤细骨感的身躯与画架融为一体",
+    "camera": "front view, low angle, wide shot",
     "mood": "天才艺术家的极致纯粹与毫无生活常识的天然纯美，不食人间烟火",
     "adult": true,
     "sampleRating": "R15",
@@ -38,25 +38,36 @@
       "front_view"
     ],
     "promptTokens": [
-      "wide shot",
-      "low angle",
-      "front view",
+      "standing",
+      "holding paintbrush",
+      "easel",
+      "canvas",
+      "paint",
+      "expressionless",
+      "looking at viewer",
+      "art studio",
+      "messy room",
       "indoors",
-      "bedroom",
       "morning",
       "sunlight",
-      "dim lighting",
-      "standing",
-      "ultra-thin straps",
-      "artistic muse pure loungewear",
-      "glow",
-      "morning light",
-      "soft lighting"
+      "front view",
+      "low angle",
+      "wide shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mashiro Shiina stands bare-footed by tall wooden art easel, wearing a pure white semi-translucent gossamer slip dress. Holding paintbrush in air, long messy golden-white hair falling over translucent nightdress, otherworldly pure red eyes amidst art studio floor covered in oil paintings, bright morning glow.",
-    "animaCaption": "Mashiro Shiina stands bare-footed by tall wooden art easel, wearing a pure white semi-translucent gossamer slip dress.",
-    "nsfwTokens": [],
-    "nsfwProse": ""
+    "promptProse": "Standing completely unguarded and barefoot before a tall wooden easel in her cluttered Sakura Hall art studio at dawn, Mashiro wears a featherweight semi-translucent white chiffon slip dress with fragile thin straps. Holding a paintbrush lightly aloft as though sketching in midair, she gazes down toward the viewer with calm, translucent innocence amidst scattered canvases and oil paint jars. Bright pale morning sunlight floods the room and turns the sheer white fabric softly luminous.",
+    "animaCaption": "Standing barefoot beside her tall wooden easel in a sheer white spaghetti-strap chiffon slip dress, Mashiro holds a paintbrush midair and gazes calmly toward the viewer among scattered studio canvases. Bright dawn sunlight turns the translucent fabric luminous.",
+    "nsfwTokens": [
+      "white nightgown",
+      "slip dress",
+      "see-through",
+      "sheer",
+      "spaghetti straps",
+      "bare shoulders",
+      "bare legs",
+      "barefoot"
+    ],
+    "nsfwProse": "She wears a featherweight pure white semi-translucent double-layer chiffon slip dress with ultra-thin straps, standing barefoot on the studio floor.",
+    "compositionIntent": "single"
   }
 }

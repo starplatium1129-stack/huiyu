@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc014",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:35:33.041852700+00:00",
+  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
   "data": {
-    "animaCaption": "She grips the viewer's forearm as the wave reaches her feet in the shallows.",
+    "animaCaption": "Nene slips back into a thin wave in her light aqua one-piece, with white panels at the sides and a small pink bow at the neckline. One hand closes around a forearm entering from beside the camera. Keep both of her feet and the joined hands in the wider view, with a sloping line of foam and dark rocks beyond the bright shallows.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "浅浪中全身远景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, laughing, splashing, shallow water, beach, full body, holding arm, standing, sunlight, water splashes, sand, ocean_waves, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, pink bow, full body, wide shot, beach, ocean, shallow water, surf, splashing, rocks, reaching towards viewer, pov hands, hand holding, laughing, sunlight, wet hair",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
@@ -53,6 +53,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "A returning wave catches her as she grips the viewer's forearm; her feet remain planted in the shallows. Bright coastal sunlight glints across the splashes."
+    "promptProse": "On the open sandy side of a headland, the last edge of a wave lifts a streak of foam around Nene's ankles. Her light aqua one-piece has bright white side panels and a small pink tie at the neckline. Laughing as she loses her balance, she catches the companion's forearm that reaches in from one edge while her free arm is outstretched over the water. Side light defines her wet hair and the foam against a row of low rocks. Frame the scene wide enough to show her feet on the wet sand and the water breaking around them."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_dorm_bed_tanned_skin_embrace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2277,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
   "data": {
     "id": "lemon_dorm_bed_tanned_skin_embrace",
     "characterId": "yakishio_lemon",
@@ -17,27 +17,44 @@
     "action": "双臂紧紧环抱在你的颈后，满脸通红、气喘吁吁地将额头抵在你的额前，献上纯真而热烈的深吻",
     "timeOfDay": "night",
     "lighting": "dim warm bedside lamp highlighting tanned skin and toned curves",
-    "camera": "close-up",
+    "camera": "eye level, close-up",
     "mood": "温存与柔媚",
-    "promptProse": "Lying on rumpled bed with bare tanned shoulders, Lemon Yakishio embraces partner passionately with flushed cheeks and tender breathless kisses.",
+    "promptProse": "Amid the rumpled sheets of a dimly lit bedroom at night, Lemon loops both bare tanned arms tightly around her partner's neck as her ribbed white cotton tank top rides slightly up over her warm midriff and grey lounge shorts. Pressing her forehead breathlessly against his with deeply flushed cheeks and parted lips, she draws him into an earnest, ardent kiss under the soft golden pool of a bedside lamp.",
     "promptTokens": [
+      "1girl",
+      "1boy",
+      "hetero",
+      "lying",
+      "on bed",
+      "arms around neck",
+      "forehead touch",
+      "heavy blush",
+      "parted lips",
       "bedroom",
-      "messy_bed",
-      "bare_shoulders",
-      "arms_around_neck",
-      "tanned_skin",
-      "blushing_heavily",
-      "panting",
-      "close-up",
-      "bedside_lamp",
-      "warm_lighting"
+      "lamp",
+      "warm lighting",
+      "close-up"
     ],
-    "negativeTokens": [],
-    "animaCaption": "Lemon Yakishio embracing partner passionately in bed with glowing tan.",
+    "negativeTokens": [
+      "nude",
+      "topless"
+    ],
+    "animaCaption": "Wrapping both bare arms tightly around her partner's neck on the rumpled bed with her white cotton tank top riding slightly up, Lemon presses her forehead to his in a flushed, breathless embrace. Warm bedside lamplight glows across her tanned shoulders.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "compositionIntent": "group",
+    "nsfwTokens": [
+      "white tank top",
+      "shirt lift",
+      "bare shoulders",
+      "collarbone",
+      "midriff",
+      "grey shorts",
+      "embrace"
+    ],
+    "nsfwProse": "Her ribbed white cotton tank top is hiked slightly above her warm tanned midriff and grey lounge shorts as she wraps her bare arms tightly around her partner's neck."
   }
 }

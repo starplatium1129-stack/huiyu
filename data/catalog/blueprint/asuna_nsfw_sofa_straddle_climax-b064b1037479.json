@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_sofa_straddle_climax",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1376,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:21:23.951428600+00:00",
   "data": {
     "id": "asuna_nsfw_sofa_straddle_climax",
     "title": "结城明日奈 · 客厅沙发上的反客为主主控骑乘",
@@ -15,7 +15,7 @@
     "action": "反客为主正面主控骑乘机位，双手撑膝主动律动，丰满双乳剧烈摇晃，私密处湿润对准镜头",
     "timeOfDay": "深夜",
     "lighting": "高层落地窗外漫天星光与繁华都市万家灯火的浪漫冷暖交织光",
-    "camera": "medium shot, low angle",
+    "camera": "from below, pov, medium shot",
     "mood": "食髓知味的高潮骑乘、娇妻的极致奉献",
     "sceneTags": [
       "nsfw",
@@ -29,20 +29,23 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "She leans forward while straddling the sofa, both hands resting on her knees. Cool moonlight meets warm city lights through the tall windows.",
-    "nsfwProse": "",
+    "promptProse": "Seen from a low first-person angle on a living-room sofa before tall moonlit windows overlooking the night skyline, Asuna sits astride her partner with both palms braced on her knees and leans forward with glistening sweat and misty eyes.",
+    "nsfwProse": "Unclothed in a dominant cowgirl position, her bare breasts sway forward in the moonlight as she moves over her partner with deeply flushed cheeks and parted lips.",
     "promptTokens": [
-      "living room",
-      "sofa",
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
+      "pov",
       "straddling",
       "hands on knees",
-      "sweat",
-      "blush",
-      "moonlight",
-      "from below",
       "leaning forward",
-      "city lights"
+      "teary eyes",
+      "living room",
+      "sofa",
+      "moonlight",
+      "city lights",
+      "from below",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,9 +60,16 @@
       "cowgirl"
     ],
     "nsfwTokens": [
+      "nude",
+      "sex",
+      "cowgirl position",
       "nipples",
-      "pussy"
+      "pussy",
+      "sweat",
+      "heavy blush",
+      "parted lips"
     ],
-    "animaCaption": "She straddles the sofa with both hands resting on her knees."
+    "animaCaption": "Completely nude atop the living-room sofa in blended silver moonlight and distant city glow, she straddles her partner's waist with both hands pressing on her own thighs and tilts her head slightly back with sweat-sheened skin and tear-bright eyes.",
+    "compositionIntent": "group"
   }
 }

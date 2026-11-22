@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_dominant_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "id": "rias_nsfw_dominant_cowgirl_straddle",
     "title": "莉雅丝 · 反客为主的红发女皇骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐在视角腰间，居高临下主导骑乘，双手按在胸口，长发翻飞胸脯起伏",
     "timeOfDay": "深夜",
     "lighting": "柔和氛围壁灯勾勒身段轮廓",
-    "camera": "cowboy shot, first-person view, low angle",
+    "camera": "from below, pov, cowboy shot",
     "mood": "女王占有",
     "sceneTags": [
       "bedroom",
@@ -29,19 +29,23 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "Adult Rias straddles the offscreen viewer on the silk bed, both palms resting against their chest as she looks down. Soft wall-lamp light outlines her silhouette.",
+    "promptProse": "On dark silk sheets in a richly furnished bedroom, a completely nude Rias Gremory rides her partner in dominant cowgirl position with both palms pressed against his chest. Looking down with poised affection as her long crimson hair sweeps back in motion, she glows beneath soft warm wall lamplight in first-person view from below.",
     "promptTokens": [
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "bed",
-      "silk sheets",
-      "from below",
       "straddling",
       "hands on another's chest",
       "looking down",
-      "warm lighting",
-      "cowboy shot",
-      "pov"
+      "blush",
+      "bed",
+      "dark silk sheets",
+      "warm wall lamp",
+      "night",
+      "from below",
+      "pov",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,12 +60,18 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "",
+    "nsfwProse": "She is completely nude atop her partner, pressing both palms flat on his chest as she rides with commanding rhythm and her long hair sweeps back.",
     "nsfwTokens": [
+      "nude",
+      "completely nude",
+      "large breasts",
       "nipples",
-      "pussy"
+      "pussy",
+      "sex",
+      "vaginal",
+      "sweat"
     ],
-    "compositionIntent": "single",
-    "animaCaption": "Both palms rest on the offscreen viewer's chest above the silk bedding."
+    "compositionIntent": "group",
+    "animaCaption": "Completely nude on dark silk bedding, she rides astride the viewer with both palms braced firmly against their chest and gazes down with a warm, commanding flush. Soft wall lamplight outlines her silhouette and flowing hair."
   }
 }

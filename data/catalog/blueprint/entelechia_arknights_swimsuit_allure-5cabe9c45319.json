@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3149,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
   "data": {
     "id": "entelechia_arknights_swimsuit_allure",
     "characterId": "entelechia_arknights",
@@ -19,14 +19,22 @@
       "daily"
     ],
     "negativeTokens": [],
-    "nsfwTokens": [],
-    "nsfwProse": "",
+    "nsfwTokens": [
+      "black bikini",
+      "cutout bikini",
+      "strappy waist",
+      "gold rings",
+      "sheer black robe",
+      "open kimono",
+      "bare midriff"
+    ],
+    "nsfwProse": "She wears a matte-black cutout bikini accented with burnished gold ring hardware and crossing torso straps beneath an open sheer black linen duster.",
     "title": "隐德来希 · 废弃海岸灯塔阴影下的古卷独酌",
     "action": "倚靠在斑驳的灯塔石砌基座边，单手转动一支盛有冰镇黑加仑酒的高脚杯，眼眸冷冽洞察海潮起伏",
     "location": "狂风呼啸的孤悬海岬废弃石造灯塔基座",
     "timeOfDay": "傍晚",
     "lighting": "日落将残存的灯塔与波涛染上暗红晚霞，冷硬的石壁阴影与暖色夕照交织成深邃的明暗对照",
-    "camera": "medium shot, low angle, architectural framing, mysterious atmospheric tension",
+    "camera": "low angle, medium shot",
     "mood": "深邃理智、神秘莫测与哲思式的居高临下",
     "description": "荒废灯塔的阴影横跨整片礁石滩。隐德来希斜倚在剥落的石墙上，黑色的轻纱长衫在穿堂风中低沉起伏，极简的黑金色镂空泳装勾勒出高挑冷峻的身线。她轻轻晃动杯中的深红浆果酒，银发在暗金夕光下如刀锋般锐利。她没有回头，却准确地叫出了你的代号——「浪潮每一次拍打礁石，都是物质与理念的重塑。坐下吧，不必拘谨，海浪的轰鸣正好可以遮蔽我们关于深海本质的讨论。」",
     "sceneTags": [
@@ -40,22 +48,22 @@
       "aloof"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "entelechia (arknights)",
-      "silver hair",
-      "pointed ears",
-      "black cutout bikini",
-      "black duster coat",
+      "standing",
+      "leaning against wall",
       "holding wine glass",
-      "leaning against stone lighthouse",
-      "sunset glow",
-      "ocean cliff",
-      "philosophical gaze",
-      "depth of field",
-      "cinematic lighting"
+      "dark wine",
+      "aloof gaze",
+      "wind",
+      "stone lighthouse",
+      "coastal ruins",
+      "cliff",
+      "ocean",
+      "sunset",
+      "hard shadows",
+      "low angle",
+      "medium shot"
     ],
-    "promptProse": "Entelechia leans against the weathered stone base of an ocean lighthouse at dusk in her matte-black cutout bikini, holding a glass of dark wine with aloof intellectual composure.",
-    "animaCaption": "Stark coastal shadows carve across the ancient lighthouse stones as she watches the eternal rhythmic tides."
+    "promptProse": "Entelechia leans against the weathered stone base of an abandoned coastal lighthouse at sunset, wearing a matte-black cutout bikini with burnished gold ring clasps and crossing torso straps under an open sheer obsidian linen duster. Swirling a stemmed glass of dark wine with cool, poised composure, she stands framed by crimson dusk light and hard cliff shadows.",
+    "animaCaption": "Leaning against the weathered stone base of a ruined coastal lighthouse in a matte-black gold-ring cutout bikini and billowing sheer black linen duster, she swirls dark berry wine in a stemmed glass with a cool, composed gaze. Deep crimson dusk light carves stark shadows across the cliff wall."
   }
 }

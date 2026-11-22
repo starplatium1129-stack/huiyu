@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_library_bookmark",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2050,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-22T02:47:23.077200300+00:00",
   "data": {
     "id": "ram_library_bookmark",
     "title": "拉姆 · 书页里的书签",
@@ -15,24 +15,32 @@
     "action": "翻书并抬眼回应",
     "timeOfDay": "傍晚",
     "lighting": "书架旁的暖色壁灯",
-    "camera": "upper body",
+    "camera": "three quarter view, upper body",
     "mood": "闲适",
-    "promptProse": "Ram pauses over an open book beside the shelves, one finger holding a bookmark as she looks up toward a voice in the corridor.",
+    "promptProse": "Standing beside the tall leather-lined bookshelves of the mansion in the quiet evening, Ram holds an open volume in one hand with her fingertip resting atop a silk ribbon bookmark. Interrupted by a voice down the corridor, she lifts her eyes calmly from the page without losing her place. A warm brass wall lamp mounted beside the shelves casts soft golden light across the paper edges and her frilled maid headdress.",
     "promptTokens": [
-      "bookshelves",
+      "standing",
+      "holding book",
       "open book",
       "bookmark",
       "looking up",
+      "library",
+      "bookshelf",
       "wall lamp",
+      "warm lighting",
+      "evening",
+      "indoors",
+      "three quarter view",
       "upper body"
     ],
-    "animaCaption": "A finger holds the marked page open.",
+    "animaCaption": "Beside the mansion bookshelves, Ram keeps her fingertip resting on a ribbon bookmark inside an open book as she looks up calmly toward a voice in the corridor. A warm wall sconce lights the open pages and the dark rows of bindings behind her.",
     "characterId": "ram",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "single"
   }
 }

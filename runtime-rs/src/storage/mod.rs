@@ -24,6 +24,7 @@ mod restore;
 mod result_commit;
 mod saves;
 mod schema;
+mod studio;
 mod tasks;
 mod thumbnail;
 mod upload;
@@ -192,6 +193,9 @@ impl Context {
             ));
         }
         let kind = string(command, "kind")?;
+        if kind.starts_with("studio.") {
+            return studio::execute(self, principal, command);
+        }
         if kind.starts_with("imageBatch.") {
             return image_batches::execute(self, principal, command);
         }
@@ -387,6 +391,14 @@ fn is_read(kind: &str) -> bool {
         kind,
         "status"
             | "readArtworkExportPage"
+            | "studio.list"
+            | "studio.get"
+            | "studio.videoList"
+            | "studio.videoPending"
+            | "studio.videoOwners"
+            | "studio.videoRun"
+            | "studio.exportPending"
+            | "studio.exportList"
             | "imageBatch.get"
             | "imageBatch.input"
             | "imageBatch.list"

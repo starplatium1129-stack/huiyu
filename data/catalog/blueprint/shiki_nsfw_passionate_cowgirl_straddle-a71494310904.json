@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_passionate_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-22T03:24:04.535022900+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, low angle, pov",
+    "camera": "from below, pov, cowboy shot",
     "category": "主控骑乘",
     "characterId": "ryougi_shiki",
     "coverageTags": [
@@ -26,20 +26,23 @@
     "mood": "热情相融",
     "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Shiki straddles the offscreen viewer on the bed, both hands resting on their shoulders as she leans forward with flushed cheeks. Dim warm wall-lamp light outlines her back above the white bedcover.",
+    "promptProse": "On a white-sheeted futon deep in a quiet Japanese room, a completely nude and sweat-dewed Ryougi Shiki rides her partner in cowgirl position, both hands gripping his shoulders. Leaning forward with breathless parted lips and tears of affection brimming in her eyes, she is softly lit by a dim warm wall lamp from below in first-person view.",
     "promptTokens": [
-      "bed",
-      "looking at viewer",
-      "blush",
-      "nude",
+      "1girl",
+      "1boy",
+      "hetero",
       "cowgirl position",
-      "cowboy shot",
-      "low angle",
-      "pov",
       "straddling",
       "hands on another's shoulders",
       "leaning forward",
-      "warm lighting"
+      "tears",
+      "blush",
+      "futon",
+      "tatami room",
+      "warm wall lamp",
+      "from below",
+      "pov",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
@@ -57,11 +60,17 @@
     "timeOfDay": "深夜",
     "title": "两仪式 · 卸下防备的深情主动骑乘",
     "nsfwTokens": [
+      "nude",
+      "completely nude",
       "nipples",
-      "pussy"
+      "pussy",
+      "sex",
+      "vaginal",
+      "sweat",
+      "open mouth"
     ],
-    "nsfwProse": "",
-    "compositionIntent": "single",
-    "animaCaption": "Both hands rest on the offscreen viewer's shoulders as she leans forward."
+    "nsfwProse": "She is completely nude and flushed with sweat, riding her partner with both hands gripping his shoulders while leaning forward panting through happy tears.",
+    "compositionIntent": "group",
+    "animaCaption": "Nude and flushed on a white futon, she rides astride the viewer with both hands braced on their shoulders and leans forward panting with tear-bright eyes. Dim warm wall light outlines her slender waist and bare shoulders."
   }
 }

@@ -9,6 +9,7 @@ import { createMessageId, type CharacterConfig } from '../../config/characters.t
 import {
   isAbortError,
   parseNdjsonResponse,
+  streamErrorCode,
   streamErrorMessage,
 } from '../../utils/stream.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
@@ -21,6 +22,7 @@ import { captureCompanionImageSource } from './companionChatImages'
 import { startTurnWatchdog } from './chatTurnWatchdog'
 import { abortableTask } from '@/utils/abortableTask'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
@@ -42,6 +44,7 @@ interface ChatConversationOptions extends ChatConnectionOptions {
   onToolActivity?: (activity: string | null) => void
   /** 思考过程进行中（收到 reasoning 增量）；第一个正文 token 到达时以 null 结束 */
   onThinking?: (thinking: string | null) => void
+  onChatGptStatusChanged?: () => void
   nearBottom: () => boolean
   scrollBottom: () => void
 }
@@ -160,7 +163,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     const user = history[userIndex]
     if (!user) { options.onError('找不到这条回复对应的问题，请重新发送消息。'); return }
     if (options.chatProvider.value === 'muse' && (user.images?.length || /\[图片\]\s*$/.test(user.content))) {
-      options.onError('Muse 角色聊天目前支持文字，请用文字描述图片。', 'info')
+      options.onError('Muse 目前只接收文字，请用文字描述图片。', 'info')
       return
     }
     const regeneration = target.role === 'assistant' ? { replyId: target.replyId || target.mid, previousMid: target.mid } : undefined
@@ -206,14 +209,20 @@ export function useChatConversation(options: ChatConversationOptions) {
       async onDrawingBatch(id) {
         const { retainCompanionImageMessage } = await import('./companionChatTools')
         checkCurrent()
-        turn.assistant.drawingBatchId = id
+        if (connection.provider !== 'muse' || !turn.messages.some(message => message.drawingBatchId === id)) {
+          turn.assistant.drawingBatchId = id
+        }
         await retainCompanionImageMessage(options.storage)
         checkCurrent()
         if (options.nearBottom()) options.scrollBottom()
       },
     }
     let toolOrigin: string | undefined
-    try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
+    if (connection.provider === 'chatgpt') {
+      toolOrigin = toolContext.screenDestination = 'https://api.openai.com'
+    } else {
+      try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
+    }
     const usedTools = new Set<string>()
     const drawingResults = new Map<string, ToolCallResult>()
 
@@ -224,7 +233,10 @@ export function useChatConversation(options: ChatConversationOptions) {
       const { buildChatRequestBody, createTurnEmotionTracker } = await abortableTask(() => import('./chatTurnRuntime'), controller.signal)
       checkCurrent()
       const tracker = createTurnEmotionTracker(turn.characterId, options.voice.append,
-        emotion => { if (canPresent()) options.onStreamEmotion?.(emotion) })
+        (emotion, explicit) => {
+          if (explicit) options.voice.setTurnEmotion(emotion, true)
+          if (canPresent()) options.onStreamEmotion?.(emotion)
+        })
       resetEmotion = tracker.reset
       if (turn.restricted) {
         const { captureRegenerationImages } = await abortableTask(() => import('./chatRegenerationImages'), controller.signal)
@@ -261,8 +273,10 @@ export function useChatConversation(options: ChatConversationOptions) {
           await waitLocalSetupOperation(result,{signal:controller.signal,onMessage:report})
         }
       }
-      const toolsEnabled = !turn.restricted && connection.tools && connection.provider === 'api' && isLocalStudioHost()
-      const searchEnabled = !turn.restricted && connection.webSearch && connection.provider === 'api' && isLocalStudioHost()
+      const toolsEnabled = !turn.restricted && connection.tools && (connection.provider === 'api' || connection.provider === 'chatgpt') && isLocalStudioHost()
+      const searchEnabled = !turn.restricted && connection.webSearch && (connection.provider === 'api' || connection.provider === 'chatgpt') && isLocalStudioHost()
+      const museDrawing = !turn.restricted && connection.provider === 'muse' && connection.tools
+        && isLocalStudioHost() && hasRuntimeTasks()
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
@@ -300,6 +314,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             hostMode,
             useVision,
             toolsEnabled,
+            museDrawing,
             toolResultOrigin: usedTools.size ? toolOrigin : undefined,
             roundMessages,
             messages: turn.messages, connection, restricted: turn.restricted,
@@ -309,6 +324,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         })
 
         const toolCalls: PendingToolCall[] = []
+        let drawing: Record<string, unknown> | undefined
         await parseNdjsonResponse(response, async event => {
           checkCurrent()
           watchdog.touch()
@@ -319,6 +335,10 @@ export function useChatConversation(options: ChatConversationOptions) {
             if (event.id && event.name) {
               toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}'), thoughtSignature: event.thoughtSignature })
             }
+            return
+          }
+          if (event.type === 'drawing' && museDrawing) {
+            drawing = event.drawing
             return
           }
           if (event.type === 'reasoning') {
@@ -332,6 +352,20 @@ export function useChatConversation(options: ChatConversationOptions) {
           if (options.nearBottom()) options.scrollBottom()
         })
 
+        if (drawing) {
+          try {
+            const { generateCompanionDrawingBatch } = await import('./companionDrawingBatch')
+            checkCurrent()
+            if (!connectionMatches(connection) || !options.companionTools.value) throw new Error('房间工具或连接已改变')
+            report('正在提交出图…')
+            const batch = await generateCompanionDrawingBatch({ ...drawing, action: 'generate' }, toolContext, { background: true })
+            checkCurrent()
+            if (batch.output && canPresent()) options.onError(batch.output, 'info')
+          } catch (error) {
+            checkCurrent()
+            if (canPresent()) options.onError(`出图提交未确认：${error instanceof Error ? error.message : '请稍后重试。'}`)
+          }
+        }
         if (!toolCalls.length) break
         if (toolCalls.some(call => call.name === 'search_web' ? !searchEnabled : !toolsEnabled)) throw new Error('请求的工具当前未启用，已停止执行。')
         toolRounds += 1
@@ -421,12 +455,19 @@ export function useChatConversation(options: ChatConversationOptions) {
         }
       } else {
         options.voice.stop({ preserveMessageAudio: true, silent: true })
+        const code = streamErrorCode(error)
+        const sticky = ['CHATGPT_USAGE_LIMIT', 'CHATGPT_REAUTH_REQUIRED', 'CHATGPT_PLAN_NOT_ENABLED', 'CHATGPT_SCOPE_DENIED'].includes(code)
+        if (connection.provider === 'chatgpt' && (sticky || code === 'CHATGPT_SELECTION_CHANGED')) {
+          options.onChatGptStatusChanged?.()
+        }
         if (canPresent()) options.onError(streamErrorMessage(
           error,
-          connection.provider === 'muse' ? 'Muse 暂时无法回复，请在聊天设置中检查收信状态。' : connection.provider === 'api'
-            ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
-            : '聊天暂不可用，请检查 Ollama。',
-        ))
+          connection.provider === 'muse' ? 'Muse 暂时无法回复，请在聊天设置中检查收信状态。'
+            : connection.provider === 'chatgpt' ? 'ChatGPT 订阅对话暂不可用，请检查账号状态与用量限额。'
+              : connection.provider === 'api'
+                ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
+                : '聊天暂不可用，请检查 Ollama。',
+        ), 'error', sticky ? 0 : 7000, code)
       }
     } finally {
       sourceImage?.release()

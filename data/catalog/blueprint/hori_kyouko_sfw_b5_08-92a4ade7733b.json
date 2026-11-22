@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_08",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1557,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-22T03:42:14.601948+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_08",
     "title": "堀京子 · 冬夜被炉里的橘子",
@@ -16,7 +16,7 @@
     "action": "披散头发缩进被炉，悠闲剥开一只橘子。",
     "timeOfDay": "夜晚",
     "lighting": "television_light",
-    "camera": "horizontal medium shot, environmental portrait",
+    "camera": "three quarter view, medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "hori_kyouko",
@@ -36,19 +36,22 @@
       "close_view",
       "horizontal_composition"
     ],
-    "promptProse": "Hori relaxes beneath the kotatsu blanket, peeling a mandarin as the television lights her face.",
+    "promptProse": "Tucked halfway under the thick quilt of the living-room kotatsu on a quiet winter night, Hori wears her chunky oatmeal cable-knit sweater with her chestnut hair falling loose around her shoulders. Leaning comfortably against the low table beside a small dish of winter citrus, she peels a bright mandarin orange with unhurried ease while soft light from an off-frame television flickers gently across her relaxed face and warm living room.",
     "promptTokens": [
+      "sitting",
+      "kotatsu",
       "peeling fruit",
       "orange",
-      "kotatsu",
-      "television light",
-      "medium shot",
-      "hair down",
-      "sitting",
       "plate",
       "relaxed",
+      "slight smile",
+      "living room",
+      "television",
+      "warm lighting",
+      "night",
       "winter",
-      "warm lighting"
+      "three quarter view",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -61,6 +64,7 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She peels the mandarin beneath the kotatsu blanket."
+    "animaCaption": "Tucked warmly under the winter kotatsu blanket in her oatmeal cable-knit sweater, Hori unhurriedly peels a mandarin orange beside a small plate. Soft television light and warm room shadows soften her relaxed evening expression.",
+    "compositionIntent": "single"
   }
 }
