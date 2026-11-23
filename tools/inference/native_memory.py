@@ -16,6 +16,32 @@ def tensor_bytes(module):
     return sum(tensor.numel() * tensor.element_size() for tensor in tensors.values())
 
 
+def keep_token_table_on_cpu(language, *, copy_weight=False):
+    """Read only the rows needed for inference from an immutable BF16 vocabulary."""
+    import torch
+
+    table = language.embed_tokens
+    if (type(table) is not torch.nn.Embedding or table.weight.device.type != "cpu"
+            or table.max_norm is not None or table.weight.dtype != torch.bfloat16):
+        return
+
+    class HostLookup(torch.nn.Module):
+        def __init__(self, embedding):
+            super().__init__()
+            # A plain tensor stays outside placement hooks. Resident Anima can
+            # outlive the source-file lease and needs an independent snapshot.
+            self.weight = embedding.weight.detach()
+            if copy_weight:
+                self.weight = self.weight.clone()
+            self.padding_idx = embedding.padding_idx
+
+        def forward(self, ids):
+            rows = torch.nn.functional.embedding(ids.cpu(), self.weight, self.padding_idx)
+            return rows.to(device=ids.device)
+
+    language.embed_tokens = HostLookup(table)
+
+
 def block_layout(module):
     """Find block lists and the ancestor names accepted by apply_group_offloading."""
     import torch

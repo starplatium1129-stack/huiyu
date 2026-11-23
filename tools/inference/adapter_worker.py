@@ -554,7 +554,9 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                     with windows_weight_reads():
                         template = sibling("moss_adapter").load(root, control, contract, data["modelId"],
                             text_precision=data["mossTextPrecision"], weight_precision=data["mossWeightPrecision"])
-                    if policy == "resident":
+                    if policy == "offload":
+                        sibling("native_memory").keep_token_table_on_cpu(template.text_encoder.language_model)
+                    else:
                         if getattr(template.transformer, "_huiyu_int8_count", 0):
                             sibling("moss_int8").place_resident(template.transformer)
                         else:
@@ -571,7 +573,7 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                         else:
                             template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
                     if spec["family"] == "krea2":
-                        sibling("krea_adapter").configure(template)
+                        sibling("krea_adapter").configure(template, policy)
                     if spec["family"] == "qwen-image":
                         encoder = template.text_encoder
                         encoder.set_attn_implementation("sdpa")
@@ -581,7 +583,7 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                         # Its task-local final-norm hook still selects pre-norm output.
                         encoder.lm_head = torch.nn.Identity()
                         if policy == "offload":
-                            sibling("mapped_residency").bind_qwen_token_table(encoder)
+                            sibling("native_memory").keep_token_table_on_cpu(encoder.model.language_model)
                         def hidden_only(*args, **values):
                             values.update(output_hidden_states=False, use_cache=False)
                             mask = values.get("attention_mask")

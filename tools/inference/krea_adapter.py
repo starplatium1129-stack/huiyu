@@ -209,25 +209,15 @@ class Residency(load_sibling("mapped_residency").Residency):
         return tile
 
 
-def configure(pipeline):
-    import os
-    import torch
+def configure(pipeline, policy):
     # The Krea text encoder reads twelve language-layer taps. It never uses
     # Qwen's vision tower or autoregressively extends a KV cache.
     encoder = pipeline.text_encoder
     encoder.visual = None
     language = encoder.language_model
     language.config.use_cache = False
-    embedding = language.embed_tokens
-    if (os.environ.get("HUIYU_INFERENCE_MEMORY") == "offload" and type(embedding) is torch.nn.Embedding
-            and embedding.weight.device.type == "cpu" and embedding.max_norm is None):
-        # Selecting rows is a byte copy. Leave the immutable vocabulary on
-        # the host and upload only the IDs' rows, including template tokens.
-        class TokenRows(torch.nn.Module):
-            def forward(self, ids):
-                return embedding(ids.cpu()).to(ids.device)
-
-        language.embed_tokens = TokenRows()
+    if policy == "offload":
+        load_sibling("native_memory").keep_token_table_on_cpu(language)
 
 
 def _replace(stack, owner, name, value):
