@@ -174,7 +174,7 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     } else {
         let mut tools = persona::tools(input.tools, input.web_search);
         if input.card_tools {
-            tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_web" | "generate_character_image" | "search_drawing_catalog" | "generate_drawing_batch" | "generate_image_from_reference")));
+            tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_web" | "huiyu_drawing" | "generate_character_image" | "search_drawing_catalog" | "generate_drawing_batch" | "generate_image_from_reference")));
         }
         tools
     };

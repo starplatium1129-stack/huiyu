@@ -85,7 +85,7 @@ export async function executeSerializedCompanionChatTool(call: { name: string; a
 export async function executeCompanionChatTool(name: string, args: Record<string, unknown>, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
   context.signal.throwIfAborted()
   if (context.character.startsWith('card-')) {
-    if (!['search_web', 'search_drawing_catalog', 'generate_drawing_batch', 'generate_character_image', 'generate_image_from_reference'].includes(name)) {
+    if (!['search_web', 'huiyu_drawing', 'search_drawing_catalog', 'generate_drawing_batch', 'generate_character_image', 'generate_image_from_reference'].includes(name)) {
       return { ok: false, output: '该工具不适用于导入的角色卡。' }
     }
     const card = getCompanionCharacter(context.character)
@@ -105,6 +105,11 @@ export async function executeCompanionChatTool(name: string, args: Record<string
     const { searchDrawingCatalog } = await import('@/api/companionDrawingApi')
     const catalog = await searchDrawingCatalog(args, context.signal)
     return { ok: true, output: JSON.stringify(catalog) }
+  }
+  if (name === 'huiyu_drawing') {
+    const { callSharedDrawingTool } = await import('@/api/companionDrawingApi')
+    const receipt = await callSharedDrawingTool(args, context.signal)
+    return { ok: !!receipt && receipt.ok !== false, output: JSON.stringify(receipt) }
   }
   if (name === 'generate_drawing_batch') {
     const key = `${name}:${JSON.stringify(args)}`

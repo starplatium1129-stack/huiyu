@@ -1,5 +1,6 @@
 """Offline, serial JSONL PixAI worker. Rust owns cancellation and process lifetime."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 import contextlib
 import importlib.util
 import json
@@ -37,14 +38,19 @@ def threshold_value(value=0.17):
     return float(value)
 
 
-def verify_model(model_dir, manifest=None):
-    manifest = manifest or json.loads(MANIFEST.read_text(encoding='utf-8'))
-    model_dir = Path(model_dir)
-    # Reuse the shipped full-byte CNG reader, never code from the model directory.
+def load_native_hasher():
+    # Resolve the shipped reader and its standard library imports in isolation.
     spec = importlib.util.spec_from_file_location(
         'huiyu_native_hash', Path(__file__).resolve().parents[1] / 'inference' / 'native_hash.py')
     hasher = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(hasher)
+    return hasher.file_sha256
+
+
+def verify_model(model_dir, manifest=None, *, file_sha256=None):
+    file_sha256 = file_sha256 or load_native_hasher()
+    manifest = manifest or json.loads(MANIFEST.read_text(encoding='utf-8'))
+    model_dir = Path(model_dir)
     for entry in manifest['files']:
         file = model_dir / entry['path']
         try:
@@ -52,7 +58,7 @@ def verify_model(model_dir, manifest=None):
                 raise PixaiError('PIXAI_MODEL_MISSING', f"PixAI 模型文件缺失：{entry['path']}")
             if file.stat().st_size != entry['bytes']:
                 raise PixaiError('PIXAI_MODEL_INTEGRITY', f"PixAI 模型文件体积不匹配：{entry['path']}")
-            digest = hasher.file_sha256(file)
+            digest = file_sha256(file)
             if digest != entry['sha256']:
                 raise PixaiError('PIXAI_MODEL_INTEGRITY', f"PixAI 模型文件校验失败：{entry['path']}")
         except OSError as error:
@@ -138,7 +144,7 @@ class PixaiModel:
         self.processor = None
         self.torch = None
         self.meta = {}
-        manifest = verify_model(model_dir)
+        file_sha256 = load_native_hasher()
         os.environ.update({'HF_HUB_OFFLINE': '1', 'TRANSFORMERS_OFFLINE': '1',
                            'HF_HUB_DISABLE_TELEMETRY': '1', 'HF_HUB_DISABLE_PROGRESS_BARS': '1',
                            'TOKENIZERS_PARALLELISM': 'false', 'PYTHONDONTWRITEBYTECODE': '1'})
@@ -148,11 +154,18 @@ class PixaiModel:
                 sys.path.insert(0, str(Path(location).resolve()))
         try:
             with contextlib.redirect_stdout(sys.stderr):
-                import torch
-                self.torch = torch
-                torch.set_num_threads(2)
-                torch.backends.cuda.matmul.allow_tf32 = False
-                check_cuda(torch)
+                # Installed runtime libraries can start while the full model hash runs.
+                # Only open the model's pipeline and weights after verification succeeds.
+                with ThreadPoolExecutor(max_workers=1) as pool:
+                    verification = pool.submit(verify_model, model_dir, file_sha256=file_sha256)
+                    try:
+                        import torch
+                        self.torch = torch
+                        torch.set_num_threads(2)
+                        torch.backends.cuda.matmul.allow_tf32 = False
+                        check_cuda(torch)
+                    finally:
+                        manifest = verification.result()
                 spec = importlib.util.spec_from_file_location('tagger_pipeline', Path(model_dir) / 'tagger_pipeline.py')
                 official = importlib.util.module_from_spec(spec)
                 sys.modules['tagger_pipeline'] = official

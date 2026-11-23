@@ -1,10 +1,14 @@
 use super::*;
 
+pub(in crate::companion_channels) fn group_conversation_id(account: &str, group: &str) -> String {
+    crate::storage::json_fingerprint(&json!([account, group]))
+}
+
 impl Api {
     pub(super) fn conversation_id(&self, scope: QqScope, id: &str) -> String {
         // Keep existing group conversation IDs across upgrades.
         let identity = match scope {
-            QqScope::Group => json!([self.app_id, id]),
+            QqScope::Group => return group_conversation_id(&self.app_id, id),
             QqScope::Private => json!([self.app_id, "private", id]),
         };
         crate::storage::json_fingerprint(&identity)

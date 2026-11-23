@@ -7,6 +7,7 @@
 ## 任务与协作
 
 - **开工准备**　先明确用户要看到的结果、改动范围和验证方式。授权范围内可逆的实现细节自行决定。遇到需要用户取舍、扩大范围或不可逆的操作时，说明需要决定什么，先完成其余可独立推进的工作。
+- **操作桌面绘图**　智能体共用绘遇的 `cli-anything-huiyu --json` 或 Muse HTTP 接口。按批次编号交接、查进度和排错，入口见[智能体操作说明](tools/cli-anything-huiyu/SKILL.md)。
 - **技能按需加载**：图像提示词读 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)；视频提示词读 [video-prompt-craft](.agents/skills/video-prompt-craft/SKILL.md)；角色/故事文案读 [humanizer-zh](.agents/skills/humanizer-zh/SKILL.md)；UI 与动效读 [DESIGN.md](DESIGN.md) 与 [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)。其余任务不加载无关技能。
 - **Modern Web Guidance**：HTML、CSS 和浏览器端 JavaScript 改动先查阅 [Modern Web Guidance](.agents/skills/modern-web-guidance/SKILL.md)（上游 v1.0.1），按任务搜索并读取对应指南。全局现代化用 `legacy-scan` 定位候选，结合源码复核后再改，按本项目的验证规则交付。
 - **浏览器兼容目标**：Windows 桌面核对实际 WebView2 运行时；共用前端以 [package.json](package.json) 的 browserslist 和 [Vite 构建目标](vite.config.ts) 为准。新 API 若超出支持范围，通过特性检测渐进增强，兼容路径保留相同的核心操作。

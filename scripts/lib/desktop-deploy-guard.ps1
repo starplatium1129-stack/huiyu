@@ -267,6 +267,7 @@ function Assert-DesktopRuntimeMatches {
   $pairs = @(
     @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe'); NsisHost = $true },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'huiyu-runtime.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\huiyu-runtime.exe') },
+    @{ Source = (Resolve-DesktopChildPath $StageGateway 'qq-sdk\node.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\qq-sdk\node.exe') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'installer-resource-cleanup.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\installer-resource-cleanup.exe') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\libvips-42.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\libvips-42.dll') }
   )

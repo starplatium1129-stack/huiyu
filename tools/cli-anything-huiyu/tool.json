@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "huiyu_drawing",
+    "description": "与 Muse、QQ 和桌宠共用一台绘遇出图机。用于跨助手交接绘图、查询队列、任务和报错或归档原图。提交时先用 key 获取编号，在 draw/batch 的 batchKey 中原样使用；重试沿用原编号及参数。把回执中的 batchKey 告诉用户。普通对话内发图或预览仍可用原绘图工具。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "action": { "type": "string", "enum": ["status", "key", "catalog", "detail", "draw", "batch", "queue", "recent", "job", "errors", "cancel", "save"] },
+        "batchKey": { "type": "string", "description": "提交、查单、取消或归档使用的共享编号。errors 可省略编号查看近期失败。" },
+        "item": { "type": "integer", "minimum": 1, "description": "单张取消或归档，序号从 1 开始。" },
+        "params": { "type": "object", "description": "catalog 支持 kind/search/character/page/pageSize；detail 传 kind 和 id；draw 传 id 或 prompt 及绘图参数；batch 传 ids 或 items（可指定 modelId 等）；recent 或无编号 errors 支持 limit/before/since，errors 还可按 agent 筛选。其他操作省略。save 将 PNG 归档到工具运行的电脑。", "additionalProperties": true }
+      },
+      "required": ["action"],
+      "additionalProperties": false
+    }
+  }
+}

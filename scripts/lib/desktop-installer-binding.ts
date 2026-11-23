@@ -122,7 +122,7 @@ function compareInstalledFiles(files: FileIdentity[], installedRoot: string) {
     } catch { return true; }
   }).map(file => file.path);
   const isRuntime = (file: string) => file === 'ai-cg-studio-desktop.exe' || file === 'gateway/huiyu-runtime.exe'
-    || file === 'gateway/installer-resource-cleanup.exe' || file.startsWith('gateway/native/');
+    || file === 'gateway/qq-sdk/node.exe' || file === 'gateway/installer-resource-cleanup.exe' || file.startsWith('gateway/native/');
   const runtimeMismatches = mismatches.filter(isRuntime);
   return {
     fileCount: files.length,

@@ -357,6 +357,7 @@ async fn pending(
         json!({"ok":true, "items":items, "serverNow":crate::host::now_ms(), "operations":{
             "reply":format!("POST {reply}"), "replyBody":{"requestKey":"来信编号","text":"角色回复"},
             "drawing":"来信 drawingAllowed 为 true 且用户要出图时，可随回复提交 drawing（与出图批次相同的 ids 或 items 参数，省略 requestKey）。绘遇在原对话中提交并展示这批图。",
+            "sharedDrawing":"来信 drawingAllowed 为 true 且用户要交接任务或查错时，在已配置的绘图连接使用 cli-anything-huiyu --json invoke，凭共享 batchKey 操作。工具定义见 --json help invoke。",
             "inboxWaitSeconds":if slot.is_some() {wait.as_secs()} else {0},
             "usage":"GET ?wait=25，空列表立即续接；按 conversationId 和 messages 回答并尽快 POST。重试沿用同一个 requestKey 和完整回复内容。"
         }}),

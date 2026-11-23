@@ -1,4 +1,5 @@
 mod client;
+pub(crate) mod agent_cli;
 mod guide;
 pub(crate) mod muse;
 mod relay;

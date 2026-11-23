@@ -27,6 +27,42 @@
 
 ---
 
+## 用命令行操作桌面绘图
+
+桌面包附带 `cli-anything-huiyu`。在运行绘遇的电脑上，打开「控制室 → 原生绘图 → 绘图引擎与远程连接」，选择本机原生引擎，勾选「允许其他绘遇连接本机绘图」，设置连接密钥，保存后按界面提示重启。保持桌面端运行。命令行直接连接本机监听端口。
+
+在控制室复制连接密钥，然后在 PowerShell 中运行以下命令。若使用自定义安装位置，请替换第一行的路径。
+
+```powershell
+$cli = "$env:ProgramFiles\AI-CG-Studio\gateway\tools\cli-anything-huiyu\cli-anything-huiyu.exe"
+$env:HUIYU_CLI_TOKEN = (Get-Clipboard -Raw).Trim()
+& $cli status
+& $cli --json catalog --kind scene --character nene --page-size 5
+```
+
+从结果中选一个场景，把它的完整 ID 传给 `draw --id`。回执里的 `batchKey` 可用于查进度，原图就绪后可直接保存。
+
+```powershell
+$job = & $cli --json draw --id sc093 | ConvertFrom-Json
+& $cli job $job.batchKey
+& $cli save $job.batchKey ".\成图.png"
+```
+
+默认端口为 3211。使用自定义端口时，先把 `$env:HUIYU_CLI_PORT` 设为控制室显示的值。输入 `& $cli --help` 查看命令，或输入 `& $cli` 逐条操作。在源码目录可直接运行 `node tools/cli-anything-huiyu/cli.mjs --help`。助手使用说明在命令入口旁的 `SKILL.md`。[CLI-Anything 项目](https://github.com/HKUDS/CLI-Anything)
+
+### 多个助手共用一台出图机
+
+本机助手可沿用上面的配置。其他机器上的助手可通过已配置的 Tailscale 绘图地址或 Muse HTTPS 中转连接同一台绘遇。运行命令行包的机器需要 Node.js 22.18 或以上，Windows 桌面包已自带运行时。[连接配置与助手说明](../tools/cli-anything-huiyu/SKILL.md)
+
+给不同助手设置各自的 `HUIYU_CLI_AGENT`，例如 `muse` 和 `codex`。Muse 可以先用 `key` 取编号，再用 `draw --key` 提交。将回执的 `batchKey` 交给另一位助手，它就能在自己的进程中查询进度和报错。
+
+```powershell
+& $cli --json errors --agent muse --limit 50
+& $cli --json errors $job.batchKey
+```
+
+第一条查询筛选一页近期记录，可用返回的 `nextBefore` 继续翻页。第二条定位到具体图片，区分模型生成错误与中转交付错误。连接或提交本身失败时，请保留命令标准错误里的 JSON，里面有错误码和重试信息。
+
 ## 好友公网试玩
 
 在桌面端「控制室 → 好友试玩」点击 **开启好友试玩**，连通后复制邀请链接即可供好友写描述、选角色蓝图并使用本机已安装的 MiaoMiao Anima 1.6 出图（期间需保持房主电脑联网且不睡眠；内容改动后重新部署同步即可更新配方）。

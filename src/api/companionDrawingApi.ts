@@ -40,11 +40,11 @@ export interface CompanionBatch {
 }
 
 async function request<T extends object>(path: string, method: string, validate: (value: unknown) => boolean,
-  signal?: AbortSignal, body?: Record<string, unknown>): Promise<T | null> {
+  signal?: AbortSignal, body?: Record<string, unknown>, timeoutMs?: number): Promise<T | null> {
   const epoch = getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch
   if (!epoch) throw new Error('私人工作区尚未连接')
   const reply = await apiClient.request<{ result: T | null; runtimeEpoch: string }>(base + path, {
-    method, signal, body, cachePolicy: 'bypass',
+    method, signal, body, timeoutMs, cachePolicy: 'bypass',
     validate: value => value.ok === true && typeof value.runtimeEpoch === 'string' && validate(value.result),
   })
   if (epoch !== reply.runtimeEpoch || epoch !== getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch) {
@@ -70,6 +70,10 @@ export async function searchDrawingCatalog(args: Record<string, unknown>, signal
 export function companionDrawingBatch(id: string, method: 'GET' | 'POST' | 'DELETE' | 'PATCH', signal?: AbortSignal,
   input?: Record<string, unknown>) {
   return request<CompanionBatch>('/' + encodeURIComponent(id), method, value => value === null || validBatch(value, id), signal, input)
+}
+
+export function callSharedDrawingTool(args: Record<string, unknown>, signal: AbortSignal) {
+  return request<Record<string, unknown>>('/agent', 'POST', object, signal, args, 65_000)
 }
 
 function validBatch(value: unknown, id: string): boolean {

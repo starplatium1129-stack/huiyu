@@ -121,7 +121,7 @@ fn allowed(method: &Method, path: &str) -> bool {
             "api",
             "muse",
             "catalog",
-            "scene" | "blueprint" | "outfit",
+            "character" | "scene" | "blueprint" | "outfit",
             ids @ ..,
         ] => *method == Method::GET && !ids.is_empty() && ids.iter().all(|id| key(id)),
         ["", "api", "muse", "batches", ids @ ..] => {

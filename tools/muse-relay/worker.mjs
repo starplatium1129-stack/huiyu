@@ -39,6 +39,10 @@ const deliveryErrors = { expired: 410, storageFull: 507, integrityError: 502, in
 const publicGuide = {
   name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
   guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', partBytes: PART,
+  agentTools: { cli: 'cli-anything-huiyu --json help', history: 'GET /api/muse/jobs', batch: 'GET /api/muse/batches/{batchKey}',
+    functionCalling: 'cli-anything-huiyu --json help invoke 可读取 huiyu_drawing 函数定义。把参数作为 JSON 写入 --json invoke 的标准输入。',
+    handoff: '共享 batchKey 交接任务；各助手可用 助手名_UUID 作 requestKey。重试沿用原编号和请求体。',
+    errors: '按批次读取 items[].status、code、error、deliveryStatus；历史按 failedCount 或失败状态筛选，nextBefore 传给 before 续页。' },
   desktopChat: {
     inbox: '/api/muse/desktop/inbox', reply: '/api/muse/desktop/reply',
     usage: 'GET inbox?wait=25（HTTP 超时 ≥40s）；空结果立即续接，缺失 inboxWaitSeconds 时等 2s。按 conversationId 与 messages 回答，expiresAt 前凭原 requestKey 与 text 提交，重试沿用完整回复。',
@@ -138,7 +142,7 @@ function control(method, path) {
   if (method === 'POST') return path === '/api/muse/jobs' || path === '/api/muse/batches'
   if (batchRoute.test(path) || directRoute.test(path)) return method === 'GET' || method === 'DELETE'
   return method === 'GET' && (/^\/api\/muse\/(catalog|queue|jobs|guide)$/.test(path)
-    || /^\/api\/muse\/catalog\/(scene|blueprint|outfit)(\/[A-Za-z0-9_-]{1,180})+$/.test(path))
+    || /^\/api\/muse\/catalog\/(character|scene|blueprint|outfit)(\/[A-Za-z0-9_-]{1,180})+$/.test(path))
 }
 
 export class MuseRelay extends DurableObject {

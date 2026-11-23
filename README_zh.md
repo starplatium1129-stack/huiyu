@@ -91,6 +91,8 @@ npm run start:run
 
 角色、服装、场景与蓝图以运行目录的 `content/catalog.sqlite` 为工作权威，`data/catalog/` 为显式导出的项目快照。详情参阅 [STARTUP](STARTUP.md)、[部署指南](docs/desktop-deployment.md)、[工程契约](docs/engineering-contracts.md) 与 [工作流](docs/workflow.md)。
 
+Muse 和本机智能体可以通过同一套绘遇命令搜索素材、提交绘图和保存原图，也可以凭批次编号交接任务、查询报错。[智能体命令行用法](docs/desktop-deployment.md#多个助手共用一台出图机)
+
 ## 项目与许可
 
 绘遇是面向个人创作、偶尔与朋友分享的非商业爱好项目。原创代码采用 [MIT 许可](LICENSE)；Rust 运行时链接了 [RustXNG](https://github.com/sahenjp/RustXNG/tree/08338038491d57adcfa4990ddf3d8925af292f4e)，组合后的运行时适用 [AGPL-3.0-or-later](assets/licenses/rustxng-AGPL-3.0.txt)（发行需附对应源码与 [许可声明](assets/licenses/rustxng-NOTICE.txt)）。模型、角色、Live2D 与图片等第三方资产保留各自原许可，项目与动漫/游戏原作及权利方无隶属关系。

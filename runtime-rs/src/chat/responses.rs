@@ -303,6 +303,7 @@ fn payload(input: Input, model: &str) -> Value {
                     tool["function"]["name"].as_str(),
                     Some(
                         "search_web"
+                            | "huiyu_drawing"
                             | "generate_character_image"
                             | "search_drawing_catalog"
                             | "generate_drawing_batch"

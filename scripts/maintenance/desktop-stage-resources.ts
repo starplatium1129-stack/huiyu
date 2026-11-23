@@ -10,6 +10,7 @@ const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') 
 const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
 import { stageRemoteSceneRecipes } from '../lib/remote-scene-recipe-cache';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
+import buildEnvironment = require('../lib/desktop-build-environment');
 const { includeAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 import safe = require('../lib/delivery-paths');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
@@ -61,6 +62,18 @@ function copyDir(src: string, dest: string, include: (file: string) => boolean =
     else if (entry.isFile()) fs.copyFileSync(from, to);
     else throw Error(`Staging input is not a regular file: ${from}`);
   }
+}
+function stageDesktopCli(root: string, gateway: string) {
+  const source = safe.resolveSafe(root, 'tools/cli-anything-huiyu');
+  const target = path.join(gateway, 'tools/cli-anything-huiyu');
+  fs.mkdirSync(target, { recursive: true });
+  for (const name of ['cli.mjs', 'muse.mjs', 'diagnostics.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
+    fs.copyFileSync(safe.resolveSafe(source, name), path.join(target, name));
+  }
+  execFileSync('rustc', ['--edition=2024', '-C', 'opt-level=s', '-C', 'strip=symbols',
+    safe.resolveSafe(source, 'launcher.rs'), '-o', path.join(target, 'cli-anything-huiyu.exe')],
+    { cwd: root, env: buildEnvironment.desktopBuildEnvironment(root), windowsHide: true, stdio: 'inherit' });
+  fs.rmSync(path.join(target, 'cli-anything-huiyu.pdb'), { force: true });
 }
 function stageQqSdk(root: string, gateway: string) {
   const qq = path.join(gateway, 'qq-sdk');
@@ -140,6 +153,7 @@ async function stageResources(options: StageOptions = {}) {
   try {
     const report = copyRustPayload(root, gateway, buildProfile, runtime);
     stageQqSdk(root, gateway);
+    stageDesktopCli(root, gateway);
     fs.copyFileSync(safe.resolveSafe(root, 'desktop-tauri/src-tauri/installer/generated/HuiyuResourceCleanup.exe'), path.join(gateway, 'installer-resource-cleanup.exe'));
     for (const source of ENTRIES) {
       const from = safe.resolveSafe(root, source);
@@ -176,4 +190,4 @@ async function stageResources(options: StageOptions = {}) {
   } catch (error) { fs.rmSync(temporary, { recursive: true, force: true }); throw error; }
 }
 if (require.main === module) withWorkspaceLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
-export = { includeData, resolveNpmInvocation, stageResources };
+export = { includeData, resolveNpmInvocation, stageDesktopCli, stageResources };

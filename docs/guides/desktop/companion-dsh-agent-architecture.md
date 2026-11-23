@@ -13,6 +13,7 @@
 | `run_command` | `/api/desktop-tools` | 默认关闭；仅 `AICS_DESKTOP_COMMANDS=trusted` 且授权后按当前系统账户执行（非沙箱），撤权见 [STARTUP](../../../STARTUP.md#运行配置与凭据恢复) |
 | `generate_character_image` | `/api/tasks/v1` | 复用当前模型与受控角色 LoRA 绑定提交私人任务，入册并保存持久媒体引用 |
 | `search_drawing_catalog` / `generate_drawing_batch` | `/api/tasks/v1/companion-draw` | 查询目录或沿用 Muse 配方批量出图（每批 ≤ 16 张） |
+| `huiyu_drawing` | 桌面内置 `cli-anything-huiyu` | 项目聊天、桌宠和 QQ 共用绘图任务编号，可交接任务、查队列和报错；需开启本机绘图连接与对应会话的工具权限。[操作示例](../../../tools/cli-anything-huiyu/SKILL.md) |
 | `generate_image_from_reference` | `/api/interrogate/raw` → `/api/tasks/v1` | 本机 PixAI 反推参考图后，按当前角色重新编译出图 |
 
 ---

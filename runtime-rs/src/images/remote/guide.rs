@@ -20,6 +20,14 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         "version": 3,
         "guidePath": PATH,
         "authHeader": "X-Token",
+        "agentTools": {
+            "cli": "cli-anything-huiyu --json help",
+            "functionCalling": "cli-anything-huiyu --json help invoke 返回 huiyu_drawing 的函数定义；将函数参数写入 cli-anything-huiyu --json invoke 的标准输入。",
+            "handoff": "共享 batchKey 交接同一任务。requestKey 可用 助手名_UUID；重试沿用原编号和完整请求体。",
+            "history": "GET /api/muse/jobs",
+            "batch": "GET /api/muse/batches/{batchKey}",
+            "errors": "批次看 items[].status、code、error；经中转还可看 deliveryStatus。历史中 failedCount 大于 0 的批次可按编号查询明细。"
+        },
         "usage": "使用当前地址、X-Token 与以下相对路径；新任务生成新 UUID requestKey，重试沿用原编号与原请求体。",
         "sceneModels": ["anima-miaomiao-v1.6", "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"],
         "quickDraw": {

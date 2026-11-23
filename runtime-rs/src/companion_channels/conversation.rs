@@ -39,6 +39,7 @@ pub(super) struct Conversation {
     session: String,
     record: Record,
     qq: bool,
+    qq_group: Option<String>,
 }
 
 pub(super) struct Context<'a> {
@@ -140,6 +141,7 @@ impl Conversation {
             session,
             record,
             qq,
+            qq_group: (channel == "qq-group").then(|| qq::group_conversation_id(account, peer)),
         })
     }
 

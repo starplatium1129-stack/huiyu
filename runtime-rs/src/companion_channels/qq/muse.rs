@@ -72,6 +72,7 @@ struct Entry {
     question: String,
     recent_messages: Vec<Arc<Value>>,
     images: Vec<Value>,
+    drawing_allowed: bool,
     search: Option<OnceLock<Value>>,
     attach_nene: bool,
     expires_at: u64,
@@ -142,6 +143,16 @@ impl Entry {
         item["conversationId"] = json!(self.conversation_id);
         item["scope"] = json!(scope_name(self.scope));
         item["ambient"] = json!(self.ambient);
+        item["drawingAllowed"] = json!(self.drawing_allowed);
+        if self.drawing_allowed {
+            let group = self.scope == QqScope::Group;
+            let agent = if group { super::group_drawing_agent(&self.conversation_id, &self.sender_openid) } else { "muse".into() };
+            item["sharedDrawing"] = json!({
+                "tool":"huiyu_drawing", "discover":"cli-anything-huiyu --json help invoke",
+                "agent":agent, "scope":if group { Some(agent.as_str()) } else { None },
+                "usage":"在已配置的绘图连接调用 --json invoke。逐次给子进程设置 HUIYU_CLI_AGENT，群内还须把 HUIYU_CLI_SCOPE 设置为 scope。"
+            });
+        }
         item["text"] = json!(self.question);
         item["timestamp"] = json!(self.timestamp);
         item["expiresAt"] = json!(self.expires_at);

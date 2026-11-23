@@ -68,6 +68,8 @@ impl Prepared {
     }
 }
 pub struct Service {
+    // Credentials of this runtime's bound listener (saved settings can change before restart).
+    agent_cli_endpoint: std::sync::OnceLock<(u16, String)>,
     backend: Arc<generation::Service>,
     native: bool,
     remote: Option<remote::Client>,
@@ -144,6 +146,7 @@ impl Service {
             "图片",
         );
         Ok(Self {
+            agent_cli_endpoint: Default::default(),
             backend,
             native,
             remote,

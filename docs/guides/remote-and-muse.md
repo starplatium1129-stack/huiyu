@@ -27,6 +27,8 @@
 
 ### 核心 API 速查
 
+Muse 和其他助手可以使用同一份 `cli-anything-huiyu` 命令行包。HTTPS 中转使用 `HUIYU_CLI_URL` 和 `MUSE_TOKEN`，任务通过 `batchKey` 在助手之间交接。用 `--json errors <batchKey>` 查询生成与交付错误。只支持 HTTP 的助手可直接使用下表的同一套接口。[多助手操作说明](../../tools/cli-anything-huiyu/SKILL.md)
+
 | 用途 | 路径与方法 | 关键参数与说明 |
 | --- | --- | --- |
 | 接口说明与流转 | `GET /` | 返回 `resultFlow`（轮询地址、下载条件、响应类型） |

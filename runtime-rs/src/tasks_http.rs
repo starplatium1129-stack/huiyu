@@ -163,6 +163,15 @@ async fn perform(
         }
         use crate::images::remote::muse::companion;
         let result = match (method.as_str(), path.as_slice()) {
+            ("POST", [_, endpoint]) if endpoint == "agent" => {
+                state.desktop_tools.as_ref().ok_or_else(|| ApiError::new(403, "TOOL_PERMISSION_DENIED", "本机工具未启用"))?
+                    .check_drawing_permission("huiyu_drawing").await?;
+                let input: Value = serde_json::from_slice(body)?;
+                match crate::images::remote::agent_cli::invoke(state, &input, "desktop", false).await {
+                    Ok(receipt) => receipt,
+                    Err(error) => json!({"ok":false,"code":error.code,"message":error.message,"requestKey":input["batchKey"]}),
+                }
+            }
             ("GET", [_, catalog]) if catalog == "catalog" => {
                 companion::catalog(state, uri).await.map_err(ApiError::not_accepted)?
             }

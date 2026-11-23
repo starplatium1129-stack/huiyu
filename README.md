@@ -91,6 +91,8 @@ npm run start:run
 
 The runtime's `content/catalog.sqlite` serves as the working authority for characters, outfits, scenes and blueprints, while `data/catalog/` stores explicitly exported snapshots. See [startup & troubleshooting](STARTUP.md), [desktop deployment](docs/desktop-deployment.md), [engineering contracts](docs/engineering-contracts.md) and [workflow guide](docs/workflow.md).
 
+Muse and local agents can use the same CLI to search the catalog, submit drawings, and save original PNGs. A shared batch key lets another agent pick up a job and inspect generation or delivery errors. [Desktop CLI setup](docs/desktop-deployment.md#多个助手共用一台出图机)
+
 ## Project & Licensing
 
 HUIYU is a personal, non-commercial hobby project occasionally shared with friends. Original HUIYU code remains under the [MIT license](LICENSE). The Rust runtime links [RustXNG](https://github.com/sahenjp/RustXNG/tree/08338038491d57adcfa4990ddf3d8925af292f4e), making the combined runtime subject to [AGPL-3.0-or-later](assets/licenses/rustxng-AGPL-3.0.txt) (releases must provide corresponding source and retain its [notice](assets/licenses/rustxng-NOTICE.txt)). Models, characters, Live2D assets and images retain their respective licenses; this project is not affiliated with any original anime or game rights holders.

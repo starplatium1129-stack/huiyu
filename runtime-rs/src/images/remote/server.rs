@@ -159,7 +159,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
             true,
         )))))
         .layer(Extension(guide::Guide))
-        .merge(super::muse::router(images, state.host.clone()))
+        .merge(super::muse::router(images.clone(), state.host.clone()))
         .merge(crate::companion_channels::muse_qq_router())
         .merge(crate::voice::muse::router())
         .merge(desktop_chat)
@@ -191,6 +191,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         // The base URL advertises only the static guide. The API subtree above
         // keeps the same authentication and owner checks.
         .route("/", get(guide::read));
+    let _ = images.agent_cli_endpoint.set((settings.remote_port, settings.remote_key.clone()));
     LISTENING.store(true, Ordering::Release);
     let listener = listener.tap_io(|stream| {
         if let Err(error) = stream.set_nodelay(true) {

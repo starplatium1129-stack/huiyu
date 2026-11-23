@@ -129,6 +129,20 @@ impl Conversation {
                     });
                 }
                 let result = match tool.name.as_str() {
+                    "huiyu_drawing" => {
+                        let agent = if let Some(group) = &self.qq_group {
+                            let member = ctx.group_member.ok_or_else(|| ApiError::invalid("共享绘图缺少群成员身份"))?;
+                            qq::group_drawing_agent(group, member)
+                        } else if self.qq {
+                            "qq".into()
+                        } else {
+                            "wechat".into()
+                        };
+                        tokio::select! {
+                            _ = ctx.cancel.cancelled() => return Ok(RespondOutcome::Silent),
+                            result = crate::images::remote::agent_cli::invoke(ctx.app, &arguments, &agent, self.qq_group.is_some()) => result,
+                        }
+                    }
                     "generate_drawing_batch" => {
                         match self.plan(ctx, id, received_at, &request, arguments).await {
                             Ok(Some(answer)) => {
@@ -176,6 +190,7 @@ impl Conversation {
                     eprintln!("手机聊天工具 {} 未完成：{}", tool.name, error.code);
                     let message = if error.status.is_client_error()
                         || error.code == "SCENE_RECIPES_UNAVAILABLE"
+                        || tool.name == "huiyu_drawing"
                     {
                         error.message.as_str()
                     } else {

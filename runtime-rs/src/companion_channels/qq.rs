@@ -15,6 +15,7 @@ use super::{
     *,
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
+pub(super) use api::group_conversation_id;
 use events::{event_message_id, muse_sender_id, open_id};
 use futures_util::StreamExt;
 use inbox::process;
@@ -29,6 +30,10 @@ use tokio::time::Instant;
 
 const API: &str = "https://api.bot.qq.com";
 const CONNECTION_ERROR: &str = "QQ 连接中断，正在自动重连";
+
+pub(super) fn group_drawing_agent(conversation: &str, member: &str) -> String {
+    format!("qq-{}", &muse_sender_id(conversation, member)[..24])
+}
 
 struct Api {
     client: Client,

@@ -90,6 +90,10 @@ impl Mailbox {
             question: question.to_owned(),
             recent_messages: Vec::new(),
             images: message.images.clone(),
+            drawing_allowed: !message.ambient && match message.scope {
+                QqScope::Group => settings.group_drawing,
+                QqScope::Private => settings.drawing,
+            },
             search: query.as_ref().map(|_| OnceLock::new()),
             attach_nene: matches!(self.route, Route::VmPoll(_))
                 && attachment::requests_nene_photo(question, &settings.character),
