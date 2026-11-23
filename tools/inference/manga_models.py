@@ -36,7 +36,8 @@ def prepare(data):
         _line_ready = True
 
 
-def rewrite(job, data, rgb, control, read_image, *, resident=None):
+def rewrite(job, data, rgb, control, *, resident=None):
+    import numpy as np
     from PIL import Image
     adapter = sibling("adapter_worker")
     request = dict(data["rewrite"])
@@ -50,29 +51,25 @@ def rewrite(job, data, rgb, control, read_image, *, resident=None):
         if cached is not None:
             control.stage("manga_rewrite")
             return cached
-    output = Path(job["outputPath"]).with_name("manga-rewrite.png")
-    source = output.with_name("manga-rewrite-input.png")
-    if output.exists() or source.exists():
-        raise Error("MANGA_INTERMEDIATE_EXISTS", "任务内重绘临时图已存在，请创建新任务")
     observation = {}
     try:
-        # Pass the same EXIF-corrected, white-composited pixels as the CPU path.
-        with Image.fromarray(rgb) as image:
-            image.save(source, format="PNG")
         control.stage("manga_rewrite")
-        adapter.generate(dict(id=job["id"], op="generate", input=request, modelDir=job["modelDir"],
-                              inputImagePath=str(source), outputPath=str(output)), control, None,
-                         result_callback=observation.update, resident=resident.adapters() if resident is not None else None,
-                         reference_resolution=round((request["width"] * request["height"]) ** 0.5))
+        redraw_job = dict(id=job["id"], op="generate", input=request, modelDir=job["modelDir"],
+                          inputImagePath=job["inputImagePath"], outputPath=job["outputPath"])
+        pixels = adapter.generate(redraw_job, control, None, result_callback=observation.update,
+            resident=resident.adapters() if resident is not None else None, manga_pixels=rgb,
+            reference_resolution=round((request["width"] * request["height"]) ** 0.5))
         control.check()
-        pixels = read_image(output)
+        if pixels.shape[-1] == 4:
+            with Image.fromarray(pixels) as image, Image.new("RGBA", image.size, "white") as background:
+                background.alpha_composite(image)
+                with background.convert("RGB") as flattened:
+                    pixels = np.array(flattened)
         observation["resultReused"] = False
         if resident is not None:
             resident.put(key, pixels, observation)
         return pixels, observation
     finally:
-        output.unlink(missing_ok=True)
-        source.unlink(missing_ok=True)
         # The request shell is retired; the worker owns any reusable weight cache.
         # Return temporary allocator reserves before optional line extraction.
         gc.collect()
@@ -125,8 +122,16 @@ def extract(rgb, weight, control, *, resident=None):
         patch[0, 0, :h, :w] = gray
         device = "cpu"
         if torch.cuda.is_available():
+            required = 256 * 1024**2 + h * w * 2048
             free, _ = torch.cuda.mem_get_info()
-            if free >= 256 * 1024**2 + h * w * 2048:
+            # A completed Qwen rewrite can still own almost all VRAM. Release
+            # only as many offloadable denoiser groups as this line pass needs.
+            weights = resident.weights if resident is not None else None
+            if (free < required and weights is not None
+                    and isinstance(weights.memory, sibling("mapped_residency").Residency)):
+                weights.memory.make_room(required)
+                free, _ = torch.cuda.mem_get_info()
+            if free >= required:
                 device = "cuda:0"
         model.to(device)
         # Cancellation at module boundaries; a long convolution is still covered

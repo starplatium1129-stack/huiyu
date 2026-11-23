@@ -101,7 +101,7 @@ def generate(job, control, _prepared, *, resident=None):
             models.prepare(data)
     if data.get("rewrite"):
         redraw_started = time.perf_counter()
-        rgb, observation["rewrite"] = models.rewrite(job, data, rgb, control, read_image, resident=resident)
+        rgb, observation["rewrite"] = models.rewrite(job, data, rgb, control, resident=resident)
         observation["timings"] = {"rewriteWallSeconds": time.perf_counter() - redraw_started}
     finish_started = time.perf_counter()
     k = rgb.shape[1] / 1024

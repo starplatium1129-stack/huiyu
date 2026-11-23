@@ -16,7 +16,7 @@ def activation_reserve(pixels, image_conditioned):
 
 class Residency(memory.Residency):
     def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels, retain_components=False,
-                 stream_text=False):
+                 stream_text=False, stream_mapped_dit=False):
         self.records, self.entry_hooks, self.active = [], [], None
         self.readers, self.staging, self.staging_views = {}, None, None
         self.copy_events, self.copy_active, self.copy_index = [], [False, False], 0
@@ -24,6 +24,7 @@ class Residency(memory.Residency):
         self.retain_components = retain_components
         self.retention_requested = retain_components
         self.stream_text = stream_text
+        self.stream_mapped_dit = stream_mapped_dit
         self.cast_reserve = 0
         self.block_reserves = {}
         self.decode_reserve = max(1024**3, decode_pixels * 1536)
@@ -121,6 +122,7 @@ class Residency(memory.Residency):
 
     def to_cuda(self, source, retain, *, mapped_pages=False):
         import torch
+        mapped_pages = mapped_pages or (self.stream_mapped_dit and not retain)
         location = getattr(source.untyped_storage(), "_huiyu_file_slice", None)
         size = source.numel() * source.element_size()
         dtype = torch.bfloat16 if source.dtype == torch.float16 else source.dtype

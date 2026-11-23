@@ -422,7 +422,7 @@ def prepare_job(job, *, resident=None, control=None, ready=None):
     return data, spec
 
 
-def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None):
+def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None, manga_pixels=None):
     data, spec = prepared if prepared is not None else prepare_job(job)
     runner = spec.get("runner")
     if runner in ("wan-a14b-sd", "musetalk-native") or (runner == "sd-cpp" and resident is not None):
@@ -561,7 +561,7 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                 if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
                     placement = sibling("mapped_residency").Residency(template.components, policy, memory_pixels,
                         image_conditioned=conditioned, decode_pixels=render_pixels,
-                        retain_components=spec["family"] == "moss-image")
+                        retain_components=spec["family"] == "moss-image", stream_mapped_dit=spec["family"] == "qwen-image")
                 control.check()
                 return template, placement
             except BaseException:
@@ -645,9 +645,16 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                 args["negative_prompt"] = data["negativePrompt"]
             if job.get("inputImagePath"):
                 control.stage("preparing_image")
-                for path in [job["inputImagePath"], *job.get("referenceImagePaths", [])]:
-                    control.check()
-                    images.append(media.input_image(path, Error))
+                if manga_pixels is None:
+                    for path in [job["inputImagePath"], *job.get("referenceImagePaths", [])]:
+                        control.check()
+                        images.append(media.input_image(path, Error))
+                else:
+                    # Manga has already decoded, oriented and white-composited
+                    # its single input. Qwen receives the same opaque RGBA image.
+                    from PIL import Image
+                    with Image.fromarray(manga_pixels) as source:
+                        images.append(source.convert("RGBA"))
                 args["image"] = images
                 if reference_resolution is not None:
                     args["output_resolution"] = reference_resolution
@@ -671,9 +678,15 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
             else:
                 output = pipeline(**args)
         control.stage("saving")
-        media.png(output.images[0], job["outputPath"], data, Error)
+        if manga_pixels is None:
+            media.png(output.images[0], job["outputPath"], data, Error)
+        else:
+            # The nested caller consumes exactly the validated, rounded PNG pixels.
+            redraw = media.pixels(output.images[0], data, (3, 4), Error)
         control.check()
         success = True
+        if manga_pixels is not None:
+            return redraw
     except torch.OutOfMemoryError as exc:
         if spec["family"] == "krea2" or is_video:
             import traceback
@@ -695,10 +708,10 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         cache.finish(success and not owned)
         if success:
             control.check()
-            if result_callback is None:
-                emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
-            else:
+            if result_callback is not None:
                 result_callback(observation)
+            elif manga_pixels is None:
+                emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
 
 
 def main():
