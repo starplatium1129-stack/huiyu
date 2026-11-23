@@ -117,6 +117,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     const canonicalize = tagDictionary.value.canonicalize
     const current = new Set([...manualTags.value].map(normalizeKey))
     referenceInput.value = cloneReferenceInput({
+      ...referenceInput.value,
       tags: referenceInput.value.tags.map(canonicalize).filter(tag => current.has(normalizeKey(tag))),
       characterTokens: referenceInput.value.characterTokens?.map(canonicalize),
       copyrightTokens: referenceInput.value.copyrightTokens?.map(canonicalize),
@@ -337,6 +338,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** A new scene owns its environment; retain tags explicitly adopted or entered by the user. */
   function clearReferenceInput() {
     if (!referenceInput.value) return
+    if (referenceInput.value.captionInEditor && referenceInput.value.caption === visualDescription.value) visualDescription.value = ''
     const owned = new Set(referenceInput.value.tags.map(tagDictionary.value.canonicalize).map(normalizeKey))
     referenceInput.value = null
     manualTags.value = new Set([...manualTags.value].filter(tag => !owned.has(normalizeKey(tag))))

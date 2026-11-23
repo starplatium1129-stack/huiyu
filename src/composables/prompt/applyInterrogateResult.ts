@@ -17,7 +17,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
   const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
   const copyrightTags = strings(payload.copyrightTags)
-  const artistTags = payload.mode === 'tag' ? strings(payload.styleTags).map(animaArtistTag) : []
+  const tagMetadata = payload.mode === 'tag' || usingMoss
+  const artistTags = tagMetadata ? strings(payload.styleTags).map(animaArtistTag) : []
   const { isCensorTag, characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
   if (!current()) return
   if (pb.isUnbound) {
@@ -35,18 +36,21 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const tags = source.filter(tag => !isCensorTag(tag))
     const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
     if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
-    if (payload.mode === 'tag' && rating) tags.unshift(rating === 'general' ? 'safe' : rating)
-    // MOSS accepts authored prose alongside adopted picture tags, including Chinese lettering.
-    const description = usingMoss && pb.visualDescription.trim() ? pb.visualDescription : caption
+    if (tagMetadata && rating && tags.length) tags.unshift(rating === 'general' ? 'safe' : rating)
+    const prior = pb.referenceInput
+    const unchangedCaption = prior?.captionInEditor && pb.visualDescription === prior.caption
+    const handwritten = usingMoss && !unchangedCaption ? pb.visualDescription : ''
     pb.clearScene({ keepStory: true })
     pb.setArtistStyleIds([])
     if (!usingMoss) pb.sdParams.negativeCustom = ''
     pb.manualTags = new Set(tags)
-    pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works })
-    pb.visualDescription = description
+    pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works,
+      caption, captionInEditor: Boolean(caption && !usingMoss) })
+    pb.visualDescription = usingMoss ? handwritten : caption
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
-    pb.flash(`已采用 ${tags.length} 个原图词条，人物、作品、画师与服装已按提示词分段归位${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`)
+    const adopted = [caption && '原图描述', tags.length && `${tags.length} 个原图词条`].filter(Boolean).join('和')
+    pb.flash(`已采用${adopted}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`)
     if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
     return
   }

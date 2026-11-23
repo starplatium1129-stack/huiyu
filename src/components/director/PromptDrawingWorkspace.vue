@@ -191,6 +191,7 @@
           @openCompare="compareOpen = true"
           @restoreStashed="onRestoreStashed"
           :apply-interrogate-result="handleInterrogateResult"
+          :interrogate-mode="interrogateMode"
           @interrogateError="handleInterrogateError"
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
@@ -257,7 +258,7 @@
                 :composition="workspace.compositionBindings"
                 :generation-busy="generationBusy"
                 :interrogate-busy="stagePanel.interrogateBusy"
-                :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
+                :interrogate-mode="interrogateMode"
                 :interrogate-error="stagePanel.interrogateError"
                 :display-result-url="displayResultUrl"
                 :draw-engine="drawEngine"
@@ -449,7 +450,9 @@ const drawingSetupRoute = computed(() => {
     : model || provider === 'native' ? '#control-setup' : '#control-inference'
   return { path: '/control', hash, query: model ? { model } : {} }
 })
+const interrogateMode = computed(() => drawEngine.value === 'krea2' || drawEngine.value === 'moss' && pb.isUnbound ? 'caption' : 'tag')
 const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
+  || drawEngine.value === 'moss' && pb.isUnbound && !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
   || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value || native.usingMossTaskPrompt.value))
 const canFillExample = computed(() => workspace.draftReady.value && engineOnline.value && !generationBusy.value
   && !workspace.preparedModelPending.value && !drawingHasContent.value)

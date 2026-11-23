@@ -7,15 +7,18 @@ import { analyzeParts, checkArtDirection, mergeTokenText, type PromptEngine, typ
 import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { mossArtistTags } from '@/utils/mossPrompt'
+import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 /** The workspace supplies selections; the shared recipe owns native prompt rendering. */
 export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
   const artists = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
+    const caption = target === 'moss' ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription) : ''
     return compilePromptRecipe({
       kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
-      randomSetting: pb.randomVariation?.source === '',
+      randomSetting: !caption && pb.randomVariation?.source === '',
+      backgroundProse: caption,
       manual: [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],

@@ -261,7 +261,8 @@ function draftStrings(value: unknown): string[] {
 function parseReferenceInput(value: unknown): DraftReferenceInput | null {
   if (!draftRecord(value)) return null
   const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
-  return cloneReferenceInput({ tags, characterTokens: draftStrings(value.characterTokens), copyrightTokens: draftStrings(value.copyrightTokens) })
+  return cloneReferenceInput({ tags, caption: draftText(value.caption), captionInEditor: value.captionInEditor === true,
+    characterTokens: draftStrings(value.characterTokens), copyrightTokens: draftStrings(value.copyrightTokens) })
 }
 
 function parseRandomVariation(value: unknown): DraftRandomVariation | null {

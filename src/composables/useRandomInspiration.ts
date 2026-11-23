@@ -9,6 +9,7 @@ import { sceneShot, sceneLighting, sceneComposition, sceneColorMood } from '@/ut
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import type { RandomSceneContext } from '@/utils/randomSceneVariation'
 import { downloadBlob } from '@/utils/downloadBlob'
+import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 /**
  * 随机灵感桥接层（2026-08-29，见 docs/guides/engineering/random-prompt-assembler-design.md）。
@@ -150,9 +151,10 @@ export function useRandomInspiration(mossNegative: () => string | undefined) {
         shot: sceneShot(active), lighting: sceneLighting(active), composition: sceneComposition(active), colorMood: sceneColorMood(active) }
     }
     const referenceTags = mossNegative() !== undefined ? pb.referenceInput?.tags : undefined
+    const caption = mossNegative() !== undefined && pb.isUnbound ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription) : ''
     const shared = { context: randomVariationContext(pb), scene, rich: true, allowClothing, officialOutfits: outfits,
       ...(referenceTags?.length ? { referenceTags: [...referenceTags] } : {}),
-      visualDescription: pb.visualDescription, negative }
+      visualDescription: [pb.visualDescription, caption].filter(Boolean).join('\n'), negative }
     const options: RandomInspirationOptions = identityExclude
       ? {
           ...shared, identityExclude,
@@ -188,7 +190,7 @@ export function useRandomInspiration(mossNegative: () => string | undefined) {
       pb.randomVariation = { ...draw.variation, tags: [...draw.variation.tags], outfit: [...draw.variation.outfit] }
       pb.selections.emotion = [...draw.emotions]
       pb.restoreDirectorState(draw, draw.directorSources)
-      if (!recipe.config.referenceTags?.length) pb.referenceInput = null
+      if (mossNegative() === undefined) pb.referenceInput = null
       pb.manualTags = new Set(draw.manualTags)
       pb.setArtistStyleIds(draw.artistStyleIds)
     } finally {

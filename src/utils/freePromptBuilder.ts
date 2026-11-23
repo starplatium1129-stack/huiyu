@@ -51,7 +51,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
 
   // A profile's quality defaults and a negative prompt do not make an empty draft drawable.
   const artistContent = input.engine === 'krea2' ? input.artistProse?.trim() : artistTags.join(', ').trim()
-  if (!tags.trim() && !description && !artistContent) {
+  if (!tags.trim() && !description && !input.backgroundProse?.trim() && !artistContent) {
     return { plan: createPromptPlan({ freeSubject: true }), prompt: '', negative, adult }
   }
 

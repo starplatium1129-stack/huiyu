@@ -57,9 +57,13 @@ export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null 
     ...(suppressedTags.length ? { suppressedTags } : {}) })
 }
 
-/** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */
+/** Content owned by the active reference picture. User-owned tags are excluded. */
 export interface DraftReferenceInput {
   tags: string[]
+  /** A real picture caption. Derived PixAI tag summaries never enter this layer. */
+  caption?: string
+  /** Earlier engine workflows place the source caption directly in the editable description. */
+  captionInEditor?: boolean
   /** Model categories retained for ordering, including names absent from the local catalogue. */
   characterTokens?: string[]
   copyrightTokens?: string[]
@@ -67,11 +71,17 @@ export interface DraftReferenceInput {
 
 /** Clone the reference layer and retire classification for removed source tags. */
 export function cloneReferenceInput(input: DraftReferenceInput | null | undefined, tags = input?.tags ?? []): DraftReferenceInput | null {
-  if (!input || !tags.length) return null
+  const caption = input?.caption?.trim()
+  if (!input || (!tags.length && !caption)) return null
   const keys = new Set(tags.map(normalizeKey))
   const characterTokens = input.characterTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
   const copyrightTokens = input.copyrightTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
-  return { tags: [...tags], ...(characterTokens.length ? { characterTokens } : {}), ...(copyrightTokens.length ? { copyrightTokens } : {}) }
+  return { tags: [...tags], ...(caption ? { caption, ...(input.captionInEditor ? { captionInEditor: true } : {}) } : {}),
+    ...(characterTokens.length ? { characterTokens } : {}), ...(copyrightTokens.length ? { copyrightTokens } : {}) }
+}
+
+export function supplementalReferenceCaption(input: DraftReferenceInput | null, description: string): string {
+  return input?.caption && !input.captionInEditor && input.caption !== description.trim() ? input.caption : ''
 }
 
 /** Runtime-only scene variation; never writes the source scene/catalog. */

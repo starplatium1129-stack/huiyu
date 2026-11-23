@@ -166,6 +166,7 @@ import type { InterrogateResult } from '@/composables/useInterrogate'
 const props = defineProps<{
   sceneTitle?: string
   applyInterrogateResult: (result: InterrogateResult, current: () => boolean) => Promise<void>
+  interrogateMode: InterrogateResult['mode']
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -317,11 +318,10 @@ const emit = defineEmits<{
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateError, interrogate, cancel } = useInterrogate((result, current) => props.applyInterrogateResult(result, current))
-const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
 // Keep the source identity after success so delayed notices also retire when
 // the current picture changes. File/clipboard requests do not own the canvas.
 let interrogatedResultUrl: string | null = null
-watch(() => props.drawEngine, () => cancel(), { flush: 'sync' })
+watch([() => props.drawEngine, () => props.interrogateMode], cancel, { flush: 'sync' })
 watch(() => props.displayResultUrl, url => { if (interrogatedResultUrl !== null && url !== interrogatedResultUrl) cancel() }, { flush: 'sync' })
 
 function triggerInterrogatePick() {
@@ -370,7 +370,7 @@ async function runInterrogateFile(file: File | (() => Promise<File>)) {
   if (interrogateBusy.value) return
   interrogatedResultUrl = null
   try {
-    await interrogate(file, interrogateMode.value)
+    await interrogate(file, props.interrogateMode)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
@@ -386,7 +386,7 @@ async function interrogateCurrentImage() {
   if (interrogateBusy.value) return
   interrogatedResultUrl = props.displayResultUrl
   try {
-    await interrogate(interrogatedResultUrl, interrogateMode.value)
+    await interrogate(interrogatedResultUrl, props.interrogateMode)
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
