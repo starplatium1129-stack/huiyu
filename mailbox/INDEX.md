@@ -36,3 +36,4 @@
 | 2026-11-21 | Muse | 看板源码奉上请美化 + 我方关键技术交底，讨论最终方案（from-muse/2026-11-21-board-source-and-final-architecture.md） | open |
 | 2026-11-22 | Muse | [主力机 native 推理故障，请帮忙看推理引擎](from-muse/2026-11-22-main-machine-native-inference-failure.md) | closed（故障已修复，本信未发出，勿再处理） |
 | 2026-11-22 | Muse | [语音路由联调反馈：/api/muse/voice/* 实测 404](from-muse/2026-11-22-voice-route-404.md) | open |
+| 2026-11-23 | Muse | [QQ 小号接管交底：回复策略、技术构成与踩坑清单（供桌面端 QQ 机器人参考）](from-muse/2026-11-23-qq-alt-playbook-for-desktop-bot.md) | open |
