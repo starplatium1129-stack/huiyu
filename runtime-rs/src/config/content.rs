@@ -1,4 +1,5 @@
 use crate::error::{ApiError, Result};
+use rayon::prelude::*;
 use std::{fs, path::Path};
 
 /// Publish a complete seed with one directory rename. Existing user content is
@@ -29,7 +30,14 @@ pub(super) fn prepare(app: &Path, root: &Path, packaged: bool) -> Result<()> {
     let staged = parent.join(format!(".content-seed-{}", uuid::Uuid::new_v4()));
     fs::create_dir(&staged)?;
     let result = (|| -> Result<()> {
-        copy_tree(&app.join("data"), &staged.join("data"))?;
+        // Let a few independent file flushes overlap. The local pool joins all
+        // in-flight copies before we can publish or discard this staging tree.
+        let workers = std::thread::available_parallelism().map_or(1, |n| n.get().min(4));
+        let pool = rayon::ThreadPoolBuilder::new()
+            .num_threads(workers)
+            .build()
+            .map_err(std::io::Error::other)?;
+        pool.install(|| copy_tree(&app.join("data"), &staged.join("data")))?;
         if !(staged.join("data/scenes/manifest.json").is_file()
             || staged.join("data/catalog/manifest.json").is_file())
         {
@@ -55,10 +63,10 @@ fn copy_tree(source: &Path, target: &Path) -> Result<()> {
     }
     if metadata.is_dir() {
         fs::create_dir(target)?;
-        for entry in fs::read_dir(source)? {
-            let entry = entry?;
-            copy_tree(&entry.path(), &target.join(entry.file_name()))?;
-        }
+        let entries: Vec<_> = fs::read_dir(source)?.collect::<std::io::Result<_>>()?;
+        entries
+            .into_par_iter()
+            .try_for_each(|entry| copy_tree(&entry.path(), &target.join(entry.file_name())))?;
     } else if metadata.is_file() {
         fs::copy(source, target)?;
         // Bundled files may be marked read-only by the installer.

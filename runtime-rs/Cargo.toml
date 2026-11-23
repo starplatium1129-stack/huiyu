@@ -38,6 +38,7 @@ tokio-tungstenite = { version = "0.29", features = ["rustls-tls-webpki-roots"] }
 webpki-roots = "1"
 unicode-normalization = "0.1"
 regex = "1"
+rayon = "1"
 rustxng = { git = "https://github.com/sahenjp/RustXNG.git", rev = "08338038491d57adcfa4990ddf3d8925af292f4e", default-features = false }
 icu_collator = "2"
 icu_locale = "2"

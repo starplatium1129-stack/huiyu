@@ -1325,6 +1325,7 @@ dependencies = [
  "mime",
  "percent-encoding",
  "png",
+ "rayon",
  "regex",
  "reqwest 0.13.5",
  "rusqlite",
