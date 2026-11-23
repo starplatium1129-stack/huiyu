@@ -30,8 +30,10 @@ def print_screen(cover, pitch):
         for y0 in range(0, h, band_rows):
             y1 = min(h, y0 + band_rows)
             spot = np.float32(0.5) + neg_half_cos_y[y0 * s:y1 * s, None] * cos_x[None, :]
-            hits = (spot < c[y0 * s:y1 * s]).reshape(y1 - y0, s, w, s)
-            out[y0:y1] = hits.sum(axis=(1, 3), dtype=np.uint8) >= 5
+            hits = spot < c[y0 * s:y1 * s]
+            # Exact 3x3 area average of zeros and ones, rounded to uint8:
+            # 0..4 hits become zero and 5..9 become one (no half ties).
+            out[y0:y1] = cv2.resize(hits.view(np.uint8), (w, y1 - y0), interpolation=cv2.INTER_AREA)
     else:
         cos_ax = np.cos(alpha * xs).astype(np.float32)
         sin_ax = np.sin(alpha * xs).astype(np.float32)
@@ -51,14 +53,13 @@ def print_screen(cover, pitch):
                 + sin_ay[ys_slice, None] * sin_bx[None, :]
             )
             spot = np.float32(0.5) - np.float32(0.25) * cos_sum
-            hits = (spot < c[ys_slice]).reshape(y1 - y0, s, w, s)
-            out[y0:y1] = hits.sum(axis=(1, 3), dtype=np.uint8) >= 5
+            hits = spot < c[ys_slice]
+            out[y0:y1] = cv2.resize(hits.view(np.uint8), (w, y1 - y0), interpolation=cv2.INTER_AREA)
     return out
 
 
-def ink_layer(L, k):
+def ink_layer(L, k, solid):
     """Lines and solid blacks as a crisp mask. k is the image scale relative to 1024 px width."""
-    solid = cv2.GaussianBlur(L, (0, 0), 1.5 * k) < 0.22
     Lb = cv2.GaussianBlur(L, (0, 0), 0.7 * k)
     line = (Lb < cv2.blur(Lb, (int(15 * k) | 1,) * 2) - 0.07) & (Lb < 0.65)
     _, lab, st, _ = cv2.connectedComponentsWithStats(line.astype(np.uint8), connectivity=8)
@@ -136,8 +137,10 @@ def finish(img, lines, white, black, light_tone, dark_tone, gradation, pen, pen_
     L = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY).astype(np.float32) / 255
     k = L.shape[1] / 1024
     control.stage("manga_lines")
-    ink = ink_layer(L, k)
-    strokes = ink & ~(cv2.GaussianBlur(L, (0, 0), 1.5 * k) < 0.22)      # lines without the solid masses
+    solid = cv2.GaussianBlur(L, (0, 0), 1.5 * k) < 0.22
+    ink = ink_layer(L, k, solid)
+    strokes = ink & ~solid
+    del solid
     if pen is not None:
         strokes |= pen > pen_threshold
     control.stage("manga_values")

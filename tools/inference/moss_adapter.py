@@ -25,6 +25,10 @@ def load(root, control, contract, model_id, *, text_precision="bf16", weight_pre
     encoder = (text.load_int8(root, control, contract, expected_model=model_id) if text_precision == "int8" else
         Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
             trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval())
+    # Both checkpoint loaders validate the original Qwen model before this.
+    # MOSS passes only token IDs; exclude unused vision weights from resident
+    # uploads and from the mapped offload planner's block and memory budgets.
+    encoder.visual = None
     text.bind_fast_convolution(encoder)
     if text_precision == "fp8":
         from diffusers.hooks import apply_layerwise_casting
@@ -33,7 +37,7 @@ def load(root, control, contract, model_id, *, text_precision="bf16", weight_pre
         # only Linear weights use FP8 storage with BF16 computation. Original
         # checkpoint views remain protected and are never written or exported.
         last = encoder.config.text_config.num_hidden_layers - 1
-        skip = ("embed_tokens", "norm", "visual", "conv1d", "in_proj_a", "in_proj_b",
+        skip = ("embed_tokens", "norm", "conv1d", "in_proj_a", "in_proj_b",
                 rf"language_model\.layers\.{last}(\.|$)")
         for name, layer in encoder.named_modules():
             control.check()

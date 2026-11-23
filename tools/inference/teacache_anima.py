@@ -180,7 +180,9 @@ class TeaCacheController:
                     safe = bool(safe) and math.isfinite(float(timestep_value))
                     change = change if safe and change is not None and math.isfinite(change) else None
                     local_change = local_change if safe and local_change is not None and math.isfinite(local_change) else None
-                    execution.update(proxy=snapshot(proxy) if safe else None, change=change, local_change=local_change)
+                    # norm1 returns newly allocated normalized values; only
+                    # this controller sees this invocation's output.
+                    execution.update(proxy=proxy if safe else None, change=change, local_change=local_change)
                     if not safe or (lane["proxy"] is not None and (change is None or (self.local_guard and local_change is None))):
                         # A zero/overflowed metric forces full computation; only
                         # nonfinite activations invalidate a built-in-cache job.
@@ -211,7 +213,9 @@ class TeaCacheController:
                         self.stats["skippedComputes"] += 1
                         self.stats["skippedBlocks"] += len(blocks)
                     else:
-                        execution["input"] = snapshot(hidden)
+                        # The pinned Cosmos stack uses out-of-place residual
+                        # additions and the control/projection paths are excluded.
+                        execution["input"] = hidden
                         lane.update(accumulated=0.0, local_accumulated=0.0, skips=0)
                         self.stats["fullComputes"] += 1
                 if execution["skip"]:
@@ -233,7 +237,7 @@ class TeaCacheController:
                                     residual_change = relative_l1(residual, lane["residual"])
                                 if residual_change is None:
                                     self.stats["nonfinite"] += 1
-                            lane["residual"] = snapshot(residual)
+                            lane["residual"] = residual
                         else:
                             self.stats["nonfinite"] += 1
                             lane["residual"] = None

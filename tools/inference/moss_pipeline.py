@@ -137,8 +137,8 @@ class _Block(nn.Module):
         self.proj['ffn_down'] = nn.Linear(ffn_dim, dim, bias=False)
 
     def forward(self, x, rope, modulation):
-        shift_a, scale_a, gate_a, shift_f, scale_f, gate_f = modulation.unbind(1)
-        y = self.norm1(x) * (1 + scale_a[:, None]) + shift_a[:, None]
+        shift_a, factor_a, gate_a, shift_f, factor_f, gate_f = modulation
+        y = self.norm1(x) * factor_a + shift_a
         fused = 'qkv' in self.proj
         projection = self.proj['qkv' if fused else 'q']
         dtype = getattr(projection, 'compute_dtype', projection.weight.dtype)
@@ -147,10 +147,10 @@ class _Block(nn.Module):
             self.proj['q'](y), self.proj['k'](y), self.proj['v'](y))
         q = self.q_norm(q.unflatten(-1, (self.heads, -1))).flatten(2)
         k = self.k_norm(k.unflatten(-1, (self.heads, -1))).flatten(2)
-        x = x + self.proj['o'](_attention(q, k, v, rope, self.heads)) * gate_a[:, None]
-        y = self.norm2(x) * (1 + scale_f[:, None]) + shift_f[:, None]
+        x = x + self.proj['o'](_attention(q, k, v, rope, self.heads)) * gate_a
+        y = self.norm2(x) * factor_f + shift_f
         hidden, gate = self.proj['ffn_up_gate'](y.to(dtype)).chunk(2, -1)
-        return x + self.proj['ffn_down'](_situ(hidden, gate)) * gate_f[:, None]
+        return x + self.proj['ffn_down'](_situ(hidden, gate)) * gate_f
 
 
 class _RoPE(nn.Module):
@@ -232,7 +232,10 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
         time = self.time_embedding(embedding.to(self.time_embedding[0].weight.dtype)).float()
         mod = self.shared_block_modulation(time.to(self.shared_block_modulation.weight.dtype)).view(batch, 6, -1)
         head = self.video_head_modulation(time.to(self.video_head_modulation.weight.dtype)).view(batch, 2, -1)
-        return mod, head
+        # Every block and CFG branch at this timestep uses the same factors.
+        # Keep the original dtype and [B, 1, D] broadcasting for each sample.
+        shift_a, scale_a, gate_a, shift_f, scale_f, gate_f = mod.split(1, dim=1)
+        return (shift_a, 1 + scale_a, gate_a, shift_f, 1 + scale_f, gate_f), head
 
     def _context(self, embeds, mask, index, height, width, device, dtype):
         if mask is None:
@@ -280,11 +283,12 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
                 rope, text = (execution.context(context_key, encoder_hidden_states, mask, build_context)
                               if execution is not None else build_context())
                 x = torch.cat((video, text), 1)
+                sample_mod = mod if batch == 1 else tuple(value[index:index + 1] for value in mod)
                 for layer_index, layer in enumerate(self.layers):
                     if execution is not None:
                         execution.control.check()
                     if layer_index not in skip_layers:
-                        x = layer(x, rope, mod[index:index + 1])
+                        x = layer(x, rope, sample_mod)
                 if cache is not None:
                     cache.update(key, x[:, :height * width])
             else:
@@ -293,7 +297,7 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
             x = x * (1 + head[index:index + 1, 1, None]) + head[index:index + 1, 0, None]
             x = self.final_linear_video(x.to(self.final_linear_video.weight.dtype))
             outputs.append(x.transpose(1, 2).reshape(1, -1, height, width))
-        sample = torch.cat(outputs)
+        sample = outputs[0] if len(outputs) == 1 else torch.cat(outputs)
         return Transformer2DModelOutput(sample=sample) if return_dict else (sample,)
 
 

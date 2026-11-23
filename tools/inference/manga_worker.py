@@ -149,12 +149,14 @@ def generate(job, control, _prepared, *, resident=None):
         page = core.finish(rgb, p["screen_lines"], p["white_point"], p["black_point"],
                            p["light_tone"], p["dark_tone"], p["gradation"], pen,
                            p["pen_threshold"], p["white_lines"], control)
-        rgb = np.repeat(page[..., None], 3, axis=2).astype(np.float32)
+        if "panel" not in data:
+            rgb = np.repeat(page[..., None], 3, axis=2).astype(np.float32)
     if "panel" in data:
         control.stage("manga_panel")
         p = data["panel"]
-        threshold = 127.5 if rgb.dtype == np.uint8 else 0.5
-        ink = rgb.mean(-1) < threshold
+        # MangaFinish already returns a binary page (white=True). Cropping
+        # needs only its ink mask, so keep it single-channel until printing.
+        ink = ~page if "finish" in data else rgb.mean(-1) < 127.5
         framed = core.cut_panel(ink, core.FRAMES[p["frame"]], p["crop_x"], p["crop_y"], round(p["border"] * k), round(p["margin"] * k))
         rgb = core.print_look(framed, p["paper"], p["ink"], k) / 255
     control.stage("saving")
