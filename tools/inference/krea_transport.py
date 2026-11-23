@@ -115,7 +115,42 @@ class Transport:
     def __init__(self, entries, file):
         self.entries = entries
         self.file = file
+        self.replaced = []
         self.report = dict(layers=len(entries), uploads=0, packedBytes=0)
+
+    def pack_blocks(self, transformer):
+        """Keep verified denoiser matrices compact between calls; compute in BF16."""
+        import torch
+
+        if getattr(transformer, "peft_config", None):
+            return
+
+        class PackedLinear(torch.nn.Linear):
+            def __init__(self, linear, packed, scale):
+                torch.nn.Module.__init__(self)
+                self.in_features, self.out_features = linear.in_features, linear.out_features
+                self.weight = torch.nn.Parameter(packed, requires_grad=False)
+                self.bias, self.scale = linear.bias, scale
+                self.training = linear.training
+
+            def forward(self, value):
+                # Identical two roundings to upload(): E4M3 to BF16 first,
+                # then multiply by the converter's BF16-rounded scale.
+                weight = self.weight.to(torch.bfloat16).mul_(self.scale)
+                return torch.nn.functional.linear(value, weight, self.bias)
+
+        for block in transformer.transformer_blocks:
+            for name, layer in list(block.named_modules()):
+                if type(layer) is not torch.nn.Linear:
+                    continue
+                row = self.entries.get(layer.weight.data_ptr())
+                if row is None or row[0].shape != layer.weight.shape or not layer.weight.is_contiguous():
+                    continue
+                parent_name, _, attr = name.rpartition(".")
+                parent = block.get_submodule(parent_name)
+                replacement = PackedLinear(layer, row[1], row[2])
+                setattr(parent, attr, replacement)
+                self.replaced.append((parent, attr, layer))
 
     def upload(self, source, raw_upload):
         """Pack only the transfer. The existing nn.Linear always receives its normal BF16 matrix."""
@@ -143,6 +178,9 @@ class Transport:
         return target
 
     def close(self):
+        for parent, name, original in self.replaced:
+            setattr(parent, name, original)
+        self.replaced.clear()
         self.entries.clear()
         self.file.close()
 

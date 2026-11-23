@@ -44,6 +44,11 @@ class Residency(load_sibling("mapped_residency").Residency):
         super().bind(pipeline)
 
     def add(self, name, module):
+        if name == "transformer" and self.transport is not None:
+            # Keep BF16 resident when the full denoiser already fits. Packed
+            # retention pays off when the alternative streams blocks each step.
+            if load_sibling("native_memory").tensor_bytes(module) > self.report["weightBudgetBytes"]:
+                self.transport.pack_blocks(module)
         start = len(self.records)
         super().add(name, module)
         for record in self.records[start:]:
@@ -157,7 +162,13 @@ class Residency(load_sibling("mapped_residency").Residency):
         super().load_record(record)
 
     def to_cuda(self, source, retain):
+        import torch
         if self.transport is not None:
+            if self.transport.replaced and source.dtype == torch.float8_e4m3fn:
+                value = super().to_cuda(source, retain, mapped_pages=True)
+                self.transport.report["uploads"] += 1
+                self.transport.report["packedBytes"] += source.numel()
+                return value
             restored = self.transport.upload(source, self.upload_packed)
             if restored is not None:
                 return restored
@@ -199,11 +210,24 @@ class Residency(load_sibling("mapped_residency").Residency):
 
 
 def configure(pipeline):
+    import os
+    import torch
     # The Krea text encoder reads twelve language-layer taps. It never uses
     # Qwen's vision tower or autoregressively extends a KV cache.
     encoder = pipeline.text_encoder
     encoder.visual = None
-    encoder.language_model.config.use_cache = False
+    language = encoder.language_model
+    language.config.use_cache = False
+    embedding = language.embed_tokens
+    if (os.environ.get("HUIYU_INFERENCE_MEMORY") == "offload" and type(embedding) is torch.nn.Embedding
+            and embedding.weight.device.type == "cpu" and embedding.max_norm is None):
+        # Selecting rows is a byte copy. Leave the immutable vocabulary on
+        # the host and upload only the IDs' rows, including template tokens.
+        class TokenRows(torch.nn.Module):
+            def forward(self, ids):
+                return embedding(ids.cpu()).to(ids.device)
+
+        language.embed_tokens = TokenRows()
 
 
 def _replace(stack, owner, name, value):
@@ -300,9 +324,9 @@ def generate(pipeline, args, control, observation):
     report.update(pipeline._huiyu_krea_conditioning)
     memory = pipeline._huiyu_memory.report
     transport = getattr(pipeline._huiyu_memory, "transport", None)
-    if transport is not None and transport.report["uploads"]:
+    if transport is not None and (transport.replaced or transport.report["uploads"]):
         report.update(weightTransport="fp8-to-bf16", transferredMatrices=transport.report["uploads"],
-                      packedTransferBytes=transport.report["packedBytes"])
+                      packedTransferBytes=transport.report["packedBytes"], packedBlockMatrices=len(transport.replaced))
     for field in ("minimumAvailableCommitBytes", "reclaimedWeightBytes", "lowCommitStreamGroups"):
         if field in memory:
             observation["memoryScheduling"][field] = memory[field]
