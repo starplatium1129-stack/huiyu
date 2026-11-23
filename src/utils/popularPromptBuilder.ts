@@ -351,7 +351,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     : {
         profile,
         identity: compositionTokens(identityTokens, compositionSource).join(', '),
-        characterTokens: [...commonInput.characterTokens!, ...exactIdentity],
+        characterTokens: engine === 'moss' ? commonInput.characterTokens : [...commonInput.characterTokens!, ...exactIdentity],
         controls: compositionTokens(exactControls, compositionSource),
         artists: options.artistTags?.length ? options.artistTags : undefined,
         exactTokens: compositionTokens(preserveTokens, compositionSource),

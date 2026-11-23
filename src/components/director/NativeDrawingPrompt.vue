@@ -65,8 +65,7 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
     <p v-if="drawing.recipe.value.error" role="alert">{{ drawing.recipe.value.error }}</p>
     <p v-else-if="!prompt">选择场景或输入画面描述<span v-if="isMoss">，也可直接编辑布局</span>。</p>
     <template v-else>
-      <p v-if="drawing.usingMossTaskPrompt.value">正在使用原任务提示词</p>
-      <p v-else-if="drawing.mossLayout.value">已应用自定义布局</p>
+      <p v-if="hasOverride">{{ drawing.usingMossTaskPrompt.value ? '正在使用原任务提示词' : '已应用自定义布局' }}。要采用工作台的反推词或随机灵感，请在「编辑布局」中选择「恢复自动提示词」。</p>
       <pre v-if="isLayout" class="native-layout-json" aria-label="发送给 MOSS 的布局">{{ prompt }}</pre>
       <p v-else class="native-prompt-text" aria-label="画面提示词">{{ prompt }}</p>
     </template>

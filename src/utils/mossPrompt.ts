@@ -5,7 +5,9 @@ import { authoredSceneCaption } from './promptCaption.ts'
 import { resolveCameraTags } from './promptCamera.ts'
 import { normalizeKey, tokenize } from './promptPrimitives.ts'
 import { proseToken } from './promptPhraseTables.ts'
-import { orderPromptTags } from './animaPromptOrder.ts'
+import { tagKey } from './animaPromptOrder.ts'
+import { isGarmentToken } from './popularIdentity.ts'
+import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 import {
   compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, mossTextBox, mossTriptychBox,
   type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
@@ -19,7 +21,8 @@ export const MOSS_NEGATIVE = 'extra toes, lowres, (bad), text, error, fewer, ext
 export function mossArtistTags(ids: readonly string[]): string[] {
   return normalizeArtistStyleIds(ids).flatMap(item => {
     const parsed = parseArtistStyleItem(item)
-    return parsed ? [parsed.id] : []
+    if (!parsed) return []
+    return [parsed.id === 'blue_archive_style' ? parsed.id : '@' + parsed.id]
   })
 }
 
@@ -123,7 +126,8 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     let token = value.replace(/<lora:[^>]+>/gi, '').replace(/\\([()])/g, '$1').trim()
     token = token.replace(/^\((.*):\s*-?\d+(?:\.\d+)?\)$/, '$1').trim()
     let key = normalizeKey(token)
-    if (!key || key === 'break') return []
+    if (!key || key === 'break' || /^score_\d+(?:_up)?$/.test(key)) return []
+    if (key === 'safe') { token = 'general'; key = 'general' }
     if (/^(?:nene|natsume)_/.test(key)) {
       const outfit = Object.values(CANONICAL_OUTFITS).find(item => item.tags[0] === key)
       if (outfit) outfits.add(outfit.prose)
@@ -143,10 +147,19 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   const subjectProse = cleanProse(plan?.subjectProse ?? '')
   const appearance = [subjectProse, plan?.outfitProse, ...outfits].filter((value): value is string => !!value)
     .map(cleanProse).filter(Boolean)
-  // Free-subject identities are classification metadata, not tokens to inject.
-  const ordered = plan?.freeSubject && (plan.characterTokens.length || plan.copyrightTokens.length)
-    ? orderPromptTags({ ...plan, quality: MOSS_QUALITY.split(', ') }, tags) : tags
-  const caption = [...new Set([authored, ...appearance, cleanProse(scene), ordered.join(', ')].filter(Boolean))].join('\n')
+  // MOSS tag order places the character, series and artist before ordinary visual tags.
+  // Free subjects only classify names actually adopted from the picture.
+  const names = new Set(plan?.characterTokens.map(tagKey)), works = new Set(plan?.copyrightTokens.map(tagKey))
+  const groups: string[][] = [[], [], [], [], []]
+  for (const token of tags) {
+    const key = tagKey(token)
+    const group = /^(?:general|sensitive|questionable|explicit|nsfw|\d{4})$/.test(key) ? 0
+      : names.has(key) ? 1 : works.has(key) ? 2 : key.startsWith('@') ? 3 : 4
+    groups[group].push(token)
+  }
+  const ordered = groups.flat()
+  const captionWithTags = (facts: string[]) => [...new Set([authored, ...appearance, cleanProse(scene), facts.join(', ')].filter(Boolean))].join('\n')
+  let caption = captionWithTags(ordered)
   if (!caption) return { raw: '', prompt: '', negative: mergeNegative(negative) }
   if (size) {
     const intent = plan?.mossLayout?.compositionIntent || plan?.scene?.compositionIntent
@@ -159,15 +172,26 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
       && people.length <= 1 && !people.some(count => Number(count) > 1)
       && !ordered.some(tag => /^(?:group|multiple girls|multiple boys)$/i.test(tag))
     const mainCharacter = singleSubject && Boolean(subjectProse || people[0] === '1')
+    const authoredSide = singleSubject && intent !== 'triptych' && panels === undefined ? describedScreenSide(authored) : undefined
+    if (authoredSide) caption = captionWithTags(ordered.filter(tag => {
+      const side = compositionPlacement.get(normalizeKey(tag))
+      return !side || side === authoredSide
+    }))
     const placement = singleSubject && intent !== 'triptych' && panels === undefined
-      ? [...(plan?.manual ?? []), ...(plan?.composition ?? []), ...ordered].map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
-        ?? describedScreenSide(authored)
+      ? authoredSide ?? [...(plan?.manual ?? []), ...(plan?.composition ?? []), ...ordered].map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
       : undefined
-    const subjectCaption = [...appearance, authored || cleanProse(scene)].filter(Boolean).join('\n') || caption
+    // A single positioned person can own adopted clothes and poses. Untargeted
+    // facts stay global in group scenes instead of dressing both people alike.
+    const expression = new Set(plan?.emotion.flatMap(tokenize).map(tagKey))
+    const subjectFacts = mainCharacter ? ordered.filter(tag => (!subjectProse && (names.has(tagKey(tag)) || / (?:hair|eyes)$/.test(tag)))
+      || expression.has(tagKey(tag)) || isGarmentToken(normalizeKey(tag)) || mutualGroupWithCategory(tag)?.category === 'pose'
+      || /^(?:holding|carrying|looking|sitting|standing|lying|leaning) |^on (?:bed|desk)$/.test(tag)) : []
+    const subjectAppearance = [...appearance, subjectFacts.join(', ')].filter(Boolean).join('\n')
+    const subjectCaption = mainCharacter ? [subjectAppearance, authored || cleanProse(scene)].filter(Boolean).join('\n') || caption : caption
     const items: MossLayoutItem[] = panels
       ? panels.map((action, index) => ({
           label: mainCharacter ? 'character' : 'object',
-          caption: [action, mainCharacter ? subjectProse : ''].filter(Boolean).join('\n'),
+          caption: [action, mainCharacter ? appearance.join('\n') : ''].filter(Boolean).join('\n'),
           bbox: mossTriptychBox(size, index),
         }))
       : explicitlySplit && panels === undefined

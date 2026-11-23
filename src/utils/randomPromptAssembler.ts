@@ -2,7 +2,7 @@ import { hasVariableCamera } from './randomVariationProse.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
 import { canVarySceneOutfit, sceneAllowsAction, randomSceneLightOptions, randomSceneWardrobe, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation.ts'
 import { cameraTokensFromText } from './promptCamera.ts'
-import { sceneShot } from './sceneInference.ts'
+import { sceneLighting, sceneShot } from './sceneInference.ts'
 import { inferBlueprintLighting } from './blueprintLighting.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
 import type { DirectorControlSources } from '../types/promptDirector.ts'
@@ -34,6 +34,8 @@ import { isWardrobeContextTag, wardrobeTokens } from './wardrobeContent.ts'
 export interface RandomInspirationOptions {
   context?: string
   scene?: RandomSceneContext
+  /** Adopted picture facts remain editable in the draft and reproducible in a saved roll. */
+  referenceTags?: string[]
   /** Explicit caller opt-in: popular wardrobes may vary unless manually selected. */
   allowClothing?: boolean
   rich?: boolean
@@ -167,7 +169,15 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
   const byCat = (cat: string): string[] => [...(catalog.get(cat)?.values() ?? [])]
 
-  const scene = options.scene
+  const reference = options.referenceTags ?? []
+  const referenceShot = sceneShot({ tags: reference })
+  let scene = options.scene
+  if (reference.length) {
+    scene = scene ? { ...scene, fixedTokens: [...(scene.fixedTokens ?? []), ...reference] } : {
+      prompt: reference.join(', '), tags: reference, fixedTokens: reference, prose: '', action: '', time: '',
+      lighting: sceneLighting({ tags: reference }), shot: referenceShot,
+    }
+  }
   const manualTags: string[] = []
   const available = new Set([...catalog.values()].flatMap(category => [...category.keys()]))
   const pick = <T>(values: readonly T[]): T | undefined => draw(values, 1, rng)[0]
@@ -189,9 +199,9 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   const lightIds = authoredLight ? [authoredLight] : scene ? randomSceneLightOptions(scene) : setting ? [setting.lighting]
     : userProse ? [] : ['window', 'golden', 'moon', 'lantern', 'overcast']
   const lighting = pick(lightIds.filter(id => LIGHTING.some(item => item.id === id && allowedChoice(item)))) ?? null
-  const inheritedShot = !!scene && (scene.prompt.includes('\n') || !!scene.otherProse || !!scene.prose && !hasVariableCamera(scene.prose))
+  const inheritedShot = !!scene && (Boolean(referenceShot) || scene.prompt.includes('\n') || !!scene.otherProse || !!scene.prose && !hasVariableCamera(scene.prose))
   const shot = userProse && hasVariableCamera(userProse) ? sceneShot({ tags: cameraTokensFromText(userProse) })
-    : inheritedShot ? scene.shot : pick(ENVIRONMENT_SHOTS.filter(allowedChoice))?.id ?? null
+    : inheritedShot && scene ? referenceShot ?? scene.shot : pick(ENVIRONMENT_SHOTS.filter(allowedChoice))?.id ?? null
   const placement = [scene?.camera, scene?.prose, scene?.otherProse, scene?.prompt, userProse].join(' ').replace(/_/g, ' ')
   const keepComposition = Boolean(scene?.composition || /\b(?:left|right|cent(?:er|re)(?:d)?|symmetr\w*|thirds|panels?|triptych|diptych)\b|居中|分格|三分法/i.test(placement))
   const directorSources: DirectorControlSources = {
@@ -327,14 +337,14 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
       ...(options.scene.prose ? ['原文表情'] : []),
       ...(options.scene.prose && !hasVariableCamera(options.scene.prose) ? ['原文镜头'] : []),
       ...(directorSources.lighting === 'scene' ? ['原文光源'] : []),
-    ] : [],
-    variation: { ...sceneVariationOverlay(scene, outfit, options.tags, !!shot && !inheritedShot, !!composition && !keepComposition), context: options.context ?? '' },
+    ] : reference.length ? ['已采用的参考图词条'] : [],
+    variation: { ...sceneVariationOverlay(options.scene, outfit, options.tags, !!shot && !inheritedShot, !!composition && !keepComposition), context: options.context ?? '' },
     emotions,
     shot,
     lighting,
     composition,
     colorMood,
-    manualTags,
+    manualTags: reference.length ? [...new Set([...reference, ...manualTags])] : manualTags,
     artistStyleIds,
   }
 }

@@ -184,7 +184,7 @@ export function usePromptWorkspace() {
         const [{ applyInterrogateResult }] = await Promise.all([
             import('@/composables/prompt/applyInterrogateResult'), pb.loadPopularCatalog(),
         ]);
-        if (current()) await applyInterrogateResult(pb, result, current);
+        if (current()) await applyInterrogateResult(pb, result, current, route.query.engine === 'moss');
     }
     function handleInterrogateError(message: string) {
         pb.flash('反推失败：' + message);

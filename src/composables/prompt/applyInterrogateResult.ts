@@ -7,7 +7,7 @@ import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils
 import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 
-export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
+export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true, usingMoss = false) {
   if (!current() || !result || typeof result !== 'object') return
   if ((result as { engine?: string }).engine === 'heuristic') {
     pb.flash('反推暂不可用，请稍后重试')
@@ -36,13 +36,14 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
     if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
     if (payload.mode === 'tag' && rating) tags.unshift(rating === 'general' ? 'safe' : rating)
-    // A new source picture owns the whole visual input; retire earlier scene and style choices.
+    // MOSS accepts authored prose alongside adopted picture tags, including Chinese lettering.
+    const description = usingMoss && pb.visualDescription.trim() ? pb.visualDescription : caption
     pb.clearScene({ keepStory: true })
     pb.setArtistStyleIds([])
-    pb.sdParams.negativeCustom = ''
+    if (!usingMoss) pb.sdParams.negativeCustom = ''
     pb.manualTags = new Set(tags)
     pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works })
-    pb.visualDescription = caption
+    pb.visualDescription = description
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
     pb.flash(`已采用 ${tags.length} 个原图词条，人物、作品、画师与服装已按提示词分段归位${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`)

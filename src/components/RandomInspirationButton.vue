@@ -48,10 +48,10 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
 
-const props = defineProps<{ blocked?: boolean }>()
+const props = defineProps<{ blocked?: boolean; mossNegative?: string }>()
 
 const pb = usePromptBuilderStore()
-const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
+const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration(() => props.mossNegative)
 const menuOpen = ref(false)
 const body = ref<HTMLElement | null>(null)
 useResizeObserver(body, () => {

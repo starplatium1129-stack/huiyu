@@ -56,7 +56,8 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
-          <RandomInspirationButton :blocked="generationBusy || !workspace.draftReady.value" />
+          <RandomInspirationButton :moss-negative="drawEngine === 'moss' ? native.session.value?.form.negative ?? '' : undefined"
+            :blocked="generationBusy || !workspace.draftReady.value" />
           <StudioDropdownMenu label="画室辅助工具">
             <template #trigger>
               <button

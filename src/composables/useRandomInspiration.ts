@@ -24,7 +24,7 @@ import { downloadBlob } from '@/utils/downloadBlob'
  * 画师默认不注入（includeArtists 由组件开关控制，默认 false）。
  */
 
-export function useRandomInspiration() {
+export function useRandomInspiration(mossNegative: () => string | undefined) {
   const pb = usePromptBuilderStore()
 
   /** 「随机画师」开关（默认关闭：不加画师 tag，保留角色原生画风）。 */
@@ -33,7 +33,7 @@ export function useRandomInspiration() {
   const lastRecipe = ref<RandomRecipe | null>(null)
   let snapshotRecipe: RandomRecipe | null = null
   let candidateContext = ''
-  const contextKey = () => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId, pb.outfitOverride])
+  const contextKey = () => JSON.stringify([pb.char, pb.sceneId, pb.subject, pb.projectId, pb.outfitOverride, mossNegative() !== undefined])
 
   function clearCandidates() {
     candidates.value = []
@@ -63,7 +63,8 @@ export function useRandomInspiration() {
 
   // Scalar changes must not traverse every catalog to invalidate a preview.
   watch([includeArtists, () => pb.dataReady], clearCandidates, { flush: 'sync' })
-  watch([() => pb.sdParams.negativeCustom, () => pb.visualDescription], clearCandidates, { flush: 'sync' })
+  const activeNegative = () => mossNegative() ?? pb.sdParams.negativeCustom
+  watch([activeNegative, () => pb.visualDescription], clearCandidates, { flush: 'sync' })
   watch([() => pb.tags, () => pb.scenes, () => pb.sceneBlueprints, () => pb.loraMeta, () => pb.popularCharacters], clearCandidates, { deep: true, flush: 'sync' })
 
   watch(contextKey, () => {
@@ -118,7 +119,7 @@ export function useRandomInspiration() {
       return false
     }
     let scene: RandomSceneContext | undefined
-    const negative = [pb.sdParams.negativeCustom || '']
+    const negative = [activeNegative() || '']
     let allowClothing = !pb.outfitOverride
     let outfits = officialOutfitsFor(pb.char)
     if (pb.subject.kind === 'popular') {
@@ -148,7 +149,9 @@ export function useRandomInspiration() {
         otherProse: active.promptProse !== active.animaCaption ? active.promptProse : '', rawLighting: active.lighting, camera: active.camera, weather: active.weather,
         shot: sceneShot(active), lighting: sceneLighting(active), composition: sceneComposition(active), colorMood: sceneColorMood(active) }
     }
+    const referenceTags = mossNegative() !== undefined ? pb.referenceInput?.tags : undefined
     const shared = { context: randomVariationContext(pb), scene, rich: true, allowClothing, officialOutfits: outfits,
+      ...(referenceTags?.length ? { referenceTags: [...referenceTags] } : {}),
       visualDescription: pb.visualDescription, negative }
     const options: RandomInspirationOptions = identityExclude
       ? {
@@ -185,8 +188,7 @@ export function useRandomInspiration() {
       pb.randomVariation = { ...draw.variation, tags: [...draw.variation.tags], outfit: [...draw.variation.outfit] }
       pb.selections.emotion = [...draw.emotions]
       pb.restoreDirectorState(draw, draw.directorSources)
-      // The replacement draw owns these tags, even if a reference used the same values.
-      pb.referenceInput = null
+      if (!recipe.config.referenceTags?.length) pb.referenceInput = null
       pb.manualTags = new Set(draw.manualTags)
       pb.setArtistStyleIds(draw.artistStyleIds)
     } finally {
