@@ -86,6 +86,12 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     }
     const popularEntry = entry.subject === 'popular' || (entry.subject !== 'studio' && entry.noLora && entry.characterId)
     if (popularEntry) {
+      try {
+        if (entry.blueprintId && entry.characterId) await pb.loadPopularCharacter(entry.characterId)
+        else await pb.loadPopularCatalog()
+      }
+      catch { if (isCurrent()) pb.flash('角色资料暂时无法读取，请重试。'); return false }
+      if (!isCurrent()) return false
       const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
       if (!character || !findPopularOutfit(character, entry.outfitId || '')) {
         const note = '原角色或服装已不在当前角色库，配方未载入；当前草稿已保留'

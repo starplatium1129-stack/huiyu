@@ -12,11 +12,12 @@ import { readShowcaseEntries } from './scene/useShowcaseAssets'
 type HomeScene = Scene & { title?: string; mature?: boolean }
 export interface HomeJournalEntry {
   id: string; title: string; story: string; category: string
-  image?: string; rating?: string; mature?: boolean
+  thumb?: string; thumbWidth?: number; thumbHeight?: number; rating?: string; mature?: boolean
   fallbackTo: string; fallbackLabel: string
 }
 interface HomeMetadata { curation: CurationData; index: SceneIndex }
-type HomeSample = Pick<ShowcaseEntry, 'id' | 'title' | 'story' | 'category' | 'rating' | 'char'> & { type: 'scene' | 'popular'; image: string }
+type HomeSample = Pick<ShowcaseEntry, 'id' | 'title' | 'story' | 'category' | 'rating' | 'char' | 'thumbWidth' | 'thumbHeight'>
+  & { type: 'scene' | 'popular'; thumb: string }
 interface HomeCache {
   key: string
   metadata?: HomeMetadata
@@ -89,11 +90,12 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
       const samples = new Map<string, HomeSample>()
       for (const entry of entries) {
         if ((entry.type !== 'scene' && entry.type !== 'popular') || entry.rating === 'R18') continue
-        const image = entry.image || `images/${entry.id}.jpg`
-        if (/^images\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(image))
+        const thumb = entry.thumb || `thumbs/${entry.id}.jpg`
+        if (/^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(thumb))
           samples.set(entry.id, {
             id: entry.id, title: entry.title, story: entry.story, category: entry.category,
-            char: entry.char, type: entry.type, image: `/scene-showcase/${image}`, rating: entry.rating,
+            char: entry.char, type: entry.type, thumb: `/scene-showcase/${thumb}`, rating: entry.rating,
+            thumbWidth: entry.thumbWidth, thumbHeight: entry.thumbHeight,
           })
       }
       if (current()) snapshot.samples = samples
@@ -107,7 +109,8 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
         const source = popular ? sample : records.get(id)!
         const text = (key: 'title' | 'story' | 'category') => typeof source[key] === 'string' ? source[key] : sample?.[key] || ''
         return {
-          id, title: text('title'), story: text('story'), category: text('category'), image: sample?.image,
+          id, title: text('title'), story: text('story'), category: text('category'),
+          thumb: sample?.thumb, thumbWidth: sample?.thumbWidth, thumbHeight: sample?.thumbHeight,
           rating: sample?.rating ?? (typeof source.rating === 'string' ? source.rating : undefined),
           fallbackTo: popular ? '/popular-scenes?character=' + encodeURIComponent(sample.char) : '/scene-explorer?scene=' + encodeURIComponent(id),
           fallbackLabel: popular ? '查看角色场景' : '查看场景设定',

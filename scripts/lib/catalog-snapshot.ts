@@ -47,13 +47,37 @@ function readDirectory(directory: string): RecordRow[] | null {
   }).sort((a: RecordRow, b: RecordRow) => a.sortOrder - b.sortOrder || a.id.localeCompare(b.id));
 }
 function views(records: RecordRow[]) {
-  const documents = Object.fromEntries(records.filter(r => r.kind === 'document').map(r => [r.id, r.data]));
-  const characters = records.filter(r => r.kind === 'character').map(r => r.data);
-  const outfits = records.filter(r => r.kind === 'outfit');
-  const popular = characters.filter(c => c.popular).map(c => ({ ...c.popular, portraitPending: c.profile?.portrait?.image === '../assets/characters/portrait-pending.svg', outfits: outfits.filter(r => r.data.characterId === c.id).map(r => r.data.outfit) }));
-  const scenes = records.filter(r => r.kind === 'scene').map(r => ({ ...r.data, sortOrder: r.sortOrder, createdAt: r.createdAt, updatedAt: r.updatedAt }));
-  const blueprints = records.filter(r => r.kind === 'blueprint').map(r => r.data);
-  return { characters: characters.filter(c => c.profile).map(c => c.profile), popular, scenes, blueprints, documents };
+  const documents: Record<string, RecordRow['data']> = {};
+  const characters: RecordRow['data'][] = [];
+  const outfitsByCharacter = new Map<RecordRow['data'], RecordRow['data'][]>();
+  const scenes: RecordRow['data'][] = [];
+  const blueprints: RecordRow['data'][] = [];
+  for (const record of records) {
+    if (record.kind === 'document') documents[record.id] = record.data;
+    else if (record.kind === 'character') characters.push(record.data);
+    else if (record.kind === 'outfit') {
+      const list = outfitsByCharacter.get(record.data.characterId);
+      if (list) list.push(record.data.outfit);
+      else outfitsByCharacter.set(record.data.characterId, [record.data.outfit]);
+    } else if (record.kind === 'scene') {
+      scenes.push({ ...record.data, sortOrder: record.sortOrder, createdAt: record.createdAt, updatedAt: record.updatedAt });
+    } else if (record.kind === 'blueprint') {
+      blueprints.push(record.data);
+    }
+  }
+  const profiles: RecordRow['data'][] = [];
+  const popular: RecordRow['data'][] = [];
+  for (const c of characters) {
+    if (c.profile) profiles.push(c.profile);
+    if (c.popular) {
+      popular.push({
+        ...c.popular,
+        portraitPending: c.profile?.portrait?.image === '../assets/characters/portrait-pending.svg',
+        outfits: outfitsByCharacter.get(c.id) ?? [],
+      });
+    }
+  }
+  return { characters: profiles, popular, scenes, blueprints, documents };
 }
 function assertLegacyWrite(root: string) {
   if ([path.join(root, 'data/catalog/manifest.json'), path.join(root, 'catalog.identity.json'), path.join(root, 'runtime/content/catalog.identity.json')].some(file => fs.existsSync(file))) throw Error('内容已迁入记录库；请使用场景管理或 content:catalog patch/import，保存后显式 export 项目快照。旧聚合/分片不能回写为主库。');

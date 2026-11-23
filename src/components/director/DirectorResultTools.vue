@@ -1,10 +1,6 @@
 <template>
   <div ref="actions" class="result-image-actions" role="group" aria-label="画布操作">
     <span v-if="hasResult && generationBusy" class="stage-result-status sr-only" role="status">下一张正在显影 · 当前成片保留</span>
-    <span v-if="hasResult && resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
-      <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
-      <span>{{ savingResult ? '入册中…' : resultArchived ? '已入册' : resultTemporary ? '已暂存' : '未入册' }}</span>
-    </span>
     <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" aria-label="查看作品" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品</span></span></RouterLink>
     <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" :aria-label="savingResult ? '入册中…' : '存入作品'" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '入册中…' : '存入作品' }}</span></span></button>
     <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: canSaveScene === false ? '当前引擎暂不支持存为场景' : '保存为场景' }">
@@ -17,7 +13,13 @@
       <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="立体观画" :aria-pressed="tiltEnabled" @click="$emit('toggleTilt')"><ArchiveIcon name="eye" /><span>立体观画</span></button>
     </StudioTooltip>
     <button class="btn btn-quiet canvas-clear-action" type="button" aria-label="清除成片" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" /><span>清除</span></button>
-    <span v-if="size" class="canvas-size">{{ size }}</span>
+    <div v-if="(hasResult && resultArchived !== null) || size" class="result-image-details">
+      <span v-if="hasResult && resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
+        <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
+        <span>{{ savingResult ? '入册中…' : resultArchived ? '已入册' : resultTemporary ? '已暂存' : '未入册' }}</span>
+      </span>
+      <span v-if="size" class="canvas-size">{{ size }}</span>
+    </div>
   </div>
 </template>
 
@@ -71,6 +73,6 @@ const emit = defineEmits<{
 
 <style scoped>
 .result-action-placeholder { display:inline-flex; align-items:center; min-width:0; max-width:100%; }
-.result-archive-action { min-inline-size:calc(5em + var(--s-8) + var(--s-5)); justify-content:center; }
+.result-archive-action { min-inline-size:8em; justify-content:center; }
 .archive-action-content { display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
 </style>

@@ -53,6 +53,8 @@ export interface TtsStatus {
   online: boolean
   available?: boolean
   voices: Record<string, boolean>
+  voiceLabels?: Record<string, string>
+  voiceCatalogMap?: Record<string, string>
   engine?: string
   engineId?: TtsEngine
   needsTranslation?: boolean
@@ -77,6 +79,10 @@ export interface VoiceProfileFileCheck {
 
 export interface VoiceProfileCheck {
   configured: boolean
+  displayName?: string
+  catalogId?: string
+  source?: string
+  emotions?: string[]
   gptWeights: VoiceProfileFileCheck
   sovitsWeights: VoiceProfileFileCheck
   loraWeights: VoiceProfileFileCheck
@@ -90,7 +96,7 @@ export interface VoiceSetupStatus {
   engineId: TtsEngine
   workspacePath: string
   ttsApi: TtsApiPublicConfig
-  profiles: Record<'nene' | 'natsume', VoiceProfileCheck>
+  profiles: Record<string, VoiceProfileCheck>
   checks: {
     gptSovitsDir: boolean
     gptSovitsEnv: boolean
@@ -141,7 +147,10 @@ export interface ControlOperationView {
   workTotal?: number
 }
 
-interface VoiceProfileView {
+export interface VoiceProfileView {
+  displayName?: string
+  catalogId?: string
+  source?: string
   refAudioPath?: string
   promptText?: string
   promptLang?: string
@@ -188,7 +197,7 @@ export interface ControlStatus {
   autoStartVoice?: boolean
   restartRequired?: boolean
   savedConfig?: ControlConfigPayload & { ollamaHost?: string }
-  voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
+  voices: Record<string, VoiceProfileView | undefined>
   scripts: { voiceStart: boolean; voiceStop: boolean; webui: boolean; comfy: boolean }
   /** 前端构建状态：公网分享伺服 dist/，源码过期时 stale=true */
   webBuild?: ControlWebBuildStatus
@@ -238,7 +247,7 @@ export interface ControlConfigPayload {
   ttsHost: string
   ttsEngine?: TtsEngine
   ttsApi?: TtsApiPatch
-  voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
+  voices: Record<string, VoiceProfileView | undefined>
 }
 
 export interface ControlConfigResult {

@@ -4,7 +4,7 @@ export function catalogInvalidation(diffs: CatalogReceipt['diffs']) {
   const metadata = new Set<string>(), shards = new Set<'nene' | 'natsume' | 'shared' | 'core'>(), blueprints = new Set<string>()
   for (const diff of diffs) {
     if (diff.kind === 'character') {
-      metadata.add('characters.json'); metadata.add('character-archive.json'); metadata.add('popular-characters.json'); metadata.add('popular-directory.json')
+      metadata.add('characters.json'); metadata.add('character-archive.json'); metadata.add('character-drawing.json'); metadata.add('popular-characters.json'); metadata.add('popular-directory.json')
     } else if (diff.kind === 'outfit') metadata.add('popular-characters.json')
     else if (diff.kind === 'blueprint') {
       for (const record of [diff.before, diff.after]) {
@@ -12,7 +12,7 @@ export function catalogInvalidation(diffs: CatalogReceipt['diffs']) {
         if (typeof id === 'string') blueprints.add(id)
       }
     } else if (diff.kind === 'scene') {
-      metadata.add('scene-titles.json')
+      metadata.add('scene-titles.json'); metadata.add('scenes.json')
       shards.add('core')
       for (const record of [diff.before, diff.after]) {
         const id = record && !Array.isArray(record.data) ? record.data.char : undefined

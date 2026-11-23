@@ -1,10 +1,10 @@
-import { runtimeFetch } from '../platform/runtimeUrl.ts'
-import { DATA_VERSION } from 'virtual:data-version'
+import { runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
+import { loadChatCharacterProfiles } from './chatCharacterProfiles'
 
 /**
  * 角色设定记忆（2026-08-28 路线图第 6 条 · 最小闭环）。
  *
- * 数据源：data/characters.json 中的既有角色档案
+ * 数据源：网关按聊天字段裁剪的角色档案
  * （bg_story / personality / likes / speech / identity / visual_dna），
  * 零新增数据文件、零编造。热门角色（40+）的 canon/identityProse 在
  * sceneStore.popularCharacters 中，出图侧已消费，此处专注聊天/陪伴注入。
@@ -98,19 +98,22 @@ function parseCharacterSettingCards(value: unknown): CharacterSettingRecord[] {
   return cards
 }
 
-// ── 懒加载（data/characters.json 约几十 KB；DATA_VERSION 防浏览器缓存）─────
 let cardsCache: CharacterSettingRecord[] | null = null
 let cardsPromise: Promise<CharacterSettingRecord[]> | null = null
 let cardsRevision = 0
+let cardsOwner: string | undefined
 
 export async function loadCharacterSettingCards(force = false): Promise<CharacterSettingRecord[]> {
+  const owner = runtimeResourceIdentity()
+  if (cardsOwner !== owner) {
+    cardsOwner = owner
+    cardsCache = cardsPromise = null
+  }
   if (cardsCache && !force) return cardsCache
   if (!cardsPromise || force) {
     const revision = ++cardsRevision
     cardsPromise = (async () => {
-      const response = await runtimeFetch(`/data/characters.json?v=${DATA_VERSION}`, { cache: 'no-store' })
-      if (!response.ok) throw new Error(`characters.json HTTP ${response.status}`)
-      const data = await response.json()
+      const data = await loadChatCharacterProfiles(force)
       const cards = parseCharacterSettingCards(data)
       if (revision === cardsRevision) cardsCache = cards
       return cards
@@ -124,7 +127,7 @@ export async function loadCharacterSettingCards(force = false): Promise<Characte
 
 /** 同步读缓存（聊天组合根预热后每次回合取用，不阻塞请求体组装）。 */
 export function characterSettingCards(): CharacterSettingRecord[] {
-  return cardsCache ?? []
+  return cardsOwner === runtimeResourceIdentity() ? cardsCache ?? [] : []
 }
 
 // ── 检索与注入 ──────────────────────────────────────────────────────────

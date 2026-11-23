@@ -47,7 +47,7 @@ export function usePromptWorkspace() {
     const sd = useLegacySdTasks();
     const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery } = usePromptWorkspaceUi(route);
     const currentCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char);
-    const currentCharacterThemeStyle = useCharacterAtmosphere(() => currentCharacterId.value, () => sceneStore.characters);
+    const currentCharacterThemeStyle = useCharacterAtmosphere(() => currentCharacterId.value, () => sceneStore.drawingProfiles);
 
     // ── UI state ──────────────────────────────────────────────────────────────
     const sdSize = ref('832x1216');
@@ -181,7 +181,9 @@ export function usePromptWorkspace() {
     async function handleInterrogateResult(result: unknown, requestCurrent: () => boolean) {
         const current = () => !restore.isDisposed() && restore.isInterrogateActive() && requestCurrent();
         if (!current()) return;
-        const { applyInterrogateResult } = await import('@/composables/prompt/applyInterrogateResult');
+        const [{ applyInterrogateResult }] = await Promise.all([
+            import('@/composables/prompt/applyInterrogateResult'), pb.loadPopularCatalog(),
+        ]);
         if (current()) await applyInterrogateResult(pb, result, current);
     }
     function handleInterrogateError(message: string) {
@@ -397,6 +399,12 @@ export function usePromptWorkspace() {
         if (animaSession.hasPending.value) { await animaSession.recover(); return; }
         const engine = drawEngine.value
         if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 配方仅供查看；请选择 Anima 或 Krea 2 开始新创作'); return }
+        const subject = pb.subject
+        if (pb.isUnbound) {
+            try { await pb.loadPopularCatalog() }
+            catch { pb.flash('角色词条暂时无法读取，请重试。'); return }
+            if (restore.isDisposed() || !pb.isUnbound || pb.subject !== subject || engine !== drawEngine.value) return
+        }
         const { callGenerateAction } = await import('./promptGenerationActions')
         await callGenerateAction({ pb, applyManagedRoute, livePrompt, generationBusy, generateAnima })
     }

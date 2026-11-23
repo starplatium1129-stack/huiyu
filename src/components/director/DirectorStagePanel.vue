@@ -126,6 +126,7 @@
       <div v-if="!generationBusy && !waitingForResult && !inpaintCompareActive && failedResultUrl !== displayResultUrl" class="result-reading-feedback" role="status"><ArchiveIcon name="image" /><span>正在读取成片…</span></div>
       <div v-if="focusBurstActive" class="fx-focus-lines is-bursting" aria-hidden="true" @animationend="clearFocusBurst" />
     </div>
+    </div>
     <DirectorResultTools
       v-if="displayResultUrl"
       v-bind="{ generationBusy, hasPrevResult, resultArchived, savingResult, resultTemporary, capturingScene }"
@@ -136,7 +137,6 @@
       @saveScene="$emit('saveScene')" @saveResult="$emit('saveResult')" @openCompare="$emit('openCompare')"
       @clearResult="$emit('clearResult')" @toggle-tilt="toggleTilt"
     />
-    </div>
     <!-- 供两态共用的上传入口 -->
     <input ref="interrogateInputRef" hidden type="file" accept="image/*" @change="onInterrogateFile" />
   </div>

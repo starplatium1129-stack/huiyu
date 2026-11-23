@@ -33,14 +33,34 @@
   backdrop-filter:none; box-shadow: var(--shadow-card);
   transition:transform var(--motion-hover) var(--ease-out);
 }
+:where(:root:not([data-theme-style="terraria"])) .card-create::before {
+  content: ""; @apply tw:absolute tw:pointer-events-none;
+  inset: 0 auto auto 12%; @apply tw:w-[48%] tw:h-[1px];
+  background: linear-gradient(90deg, transparent, var(--glass-specular), transparent);
+}
+:where(:root[data-theme="light"]:not([data-theme-style="terraria"])) .card-create::before {
+  background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+}
 .card-create:hover { @apply tw:border-strong; }
 .card-direct {
   @apply tw:relative tw:overflow-hidden;
-  background: var(--bg-surface);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--character-accent, var(--accent)) 7%, transparent), transparent 48%), var(--bg-surface);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-lg tw:p-s-5;
   box-shadow: var(--shadow-card);
   transition: transform var(--motion-hover) var(--ease-out);
+}
+/* 画册精致角标：保留主入口卡片的辨识度与画框感 */
+:where(:root:not([data-theme-style="terraria"])) .card-direct::after {
+  content: "";
+  @apply tw:absolute tw:top-[10px] tw:right-[10px] tw:w-[14px] tw:h-[14px] tw:pointer-events-none;
+  border-top: 1.5px solid color-mix(in srgb, var(--character-accent, var(--accent)) 72%, var(--editorial-gold));
+  border-right: 1.5px solid color-mix(in srgb, var(--character-accent, var(--accent)) 72%, var(--editorial-gold));
+  border-top-right-radius: var(--r-xs);
+  opacity: 0.82;
+}
+@media (forced-colors: active) {
+  .card-create::before, .card-direct::after { display: none; }
 }
 /* Keep the shadow static while the focus edge fades in. */
 .card-create::after, .card-direct::before {

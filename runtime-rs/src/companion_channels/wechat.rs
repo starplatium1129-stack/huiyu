@@ -202,7 +202,15 @@ async fn message(
         storage: &storage,
         principal: &principal,
         character: &settings.character,
+        chat_provider: crate::chat::ChannelProvider::Default,
+        is_owner: true,
+        owner_bond: crate::chat::ChannelOwnerBond::Default,
+        owner_call_name: "",
+        owner_note: "",
         drawing: settings.drawing,
+        voice: false,
+        voice_auto: false,
+        voice_profile: "nene",
         group_member: None,
         cancel: &cancel,
     };
@@ -217,16 +225,17 @@ async fn message(
     };
     let work = async {
         let reply = conversation
-            .receive(
-                &ctx,
-                &input.id,
-                crate::host::now_ms(),
-                if page.is_some() { "/取图" } else { text },
-            )
+            .receive(&ctx, &[super::conversation::Incoming {
+                id: &input.id,
+                received_at: crate::host::now_ms(),
+                text: if page.is_some() { "/取图" } else { text },
+                quoted: None,
+            }])
             .await?;
         let value = match reply {
             None => json!({"text":"","images":[]}),
             Some(Reply::Text(text)) => json!({"text":text,"images":[]}),
+            Some(Reply::Voice { caption, .. }) => json!({"text":caption.unwrap_or_default(),"images":[]}),
             Some(Reply::Results(batch)) => results(&ctx, &batch, page.unwrap_or(1)).await?,
         };
         Ok::<_, ApiError>(value)

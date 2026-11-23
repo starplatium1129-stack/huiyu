@@ -122,8 +122,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       copyrightTokens: referenceInput.value.copyrightTokens?.map(canonicalize),
     })
   }, { deep: true, flush: 'sync' })
-  const characters = computed(() => parsePromptCharacters(sceneStore.characters))
+  const characters = computed(() => parsePromptCharacters(sceneStore.drawingProfiles))
   const popularCharacters = computed(() => sceneStore.popularCharacters)
+  const loadPopularCatalog = sceneStore.loadPopularCharacters
   /** 当前主体对应的画师专属推荐（2026-09-05 从 PromptBuilderView 迁入：纯 store 派生）。 */
   const currentCuratedArtistStyles = computed<string[]>(() => {
     if (isUnbound.value) return []
@@ -153,16 +154,17 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     try {
       // SceneStore deduplicates reads and owns the catalog epoch/cache; other
       // consumers may still need a character after this workspace switches away.
-      await sceneStore.loadBlueprintCharacter(id)
+        await Promise.all([loadPopularCatalog(), sceneStore.loadBlueprintCharacter(id)])
     } catch (error) {
       if (current()) popularBlueprintError.value = error instanceof Error ? error.message : '当前角色场景建议读取失败，请重新读取。'
       throw error
     } finally { if (current()) popularBlueprintLoading.value = false }
   }
-  watch([popularBlueprintCharacter, popularBlueprintReady, () => sceneStore.version], ([id, ready]) => {
+  watch([popularBlueprintCharacter, popularBlueprintReady, () => sceneStore.version, isUnbound], ([id, ready, , unbound]) => {
     popularBlueprintRequest++
     popularBlueprintLoading.value = false; popularBlueprintError.value = ''
     if (id && !ready) void loadPopularCharacter(id).catch(() => {})
+    else if (id || unbound) void loadPopularCatalog().catch(() => {})
     // The default pre-flush waits for invalidate() to clear its old request map.
   }, { immediate: true })
   onScopeDispose(() => { popularBlueprintRequest++ })
@@ -432,7 +434,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, loadPopularCatalog, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -468,6 +470,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
+    loadPopularCatalog,
     popularBlueprintReady, popularBlueprintLoading, popularBlueprintError,
     history, historyLoading, historyError, readHistoryEntry,
     sdModelName, lastSeed, sdParams,

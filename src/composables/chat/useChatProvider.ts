@@ -198,6 +198,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   async function refreshChatStatus() {
     if (chatProvider.value === 'muse') return refreshMuseStatus()
     if (chatProvider.value === 'chatgpt') return chatGpt.refreshStatus(true)
+    if (chatProvider.value === 'api') return
     if (disposed || checkingChatStatus.value) return
     checkingChatStatus.value = true
     try {

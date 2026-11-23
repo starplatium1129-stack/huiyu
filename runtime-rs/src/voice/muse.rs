@@ -149,6 +149,18 @@ fn too_large() -> ApiError {
     ApiError::new(413, "VOICE_AUDIO_TOO_LARGE", "音频超过中转限制，请缩短台词")
 }
 
+pub(super) async fn encode_mp3(bytes: Bytes, mime: &str) -> Result<Bytes> {
+    let (audio, output_mime) = encode(bytes, mime, "mp3").await?;
+    if output_mime != "audio/mpeg" {
+        return Err(ApiError::new(
+            503,
+            "VOICE_FFMPEG_REQUIRED",
+            "本机缺少 ffmpeg，无法将语音转为 QQ 支持的 MP3 格式",
+        ));
+    }
+    Ok(audio)
+}
+
 async fn encode(bytes: Bytes, mime: &str, format: &str) -> Result<(Bytes, &'static str)> {
     let source = match mime {
         "audio/wav" | "audio/x-wav" | "audio/wave" | "audio/vnd.wave" => "wav",

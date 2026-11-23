@@ -1,18 +1,37 @@
 import { apiClient, type ApiResponseObject } from './client'
 
 export type ChannelCharacter = 'nene' | 'natsume'
+export type QqCharacterId = ChannelCharacter | `card-${string}`
 export type ChannelPhase = 'disabled' | 'connecting' | 'online' | 'error'
+export const qqChatProviders = ['default', 'chatgpt', 'chatgpt-private'] as const
+export type QqChatProvider = typeof qqChatProviders[number]
+export const qqOwnerBonds = ['default', 'close', 'intimate'] as const
+export type QqOwnerBond = typeof qqOwnerBonds[number]
+export const qqVoiceModes = ['off', 'on-demand', 'auto'] as const
+export type QqVoiceMode = typeof qqVoiceModes[number]
+export const qqVoiceProfiles = ['auto', 'nene', 'natsume'] as const
+export type QqVoiceProfile = string
 export const qqMuseContextLimits = [6, 16, 32, 64] as const
 
-export interface QqGroup { id: string; label: string }
+export interface QqGroup { id: string; label: string; ownerBound?: boolean }
 
 export interface QqChannelStatus {
+  id: string
+  name: string
   configured: boolean
   enabled: boolean
   appId: string | null
-  character: ChannelCharacter
+  character: QqCharacterId
+  chatProvider?: QqChatProvider
+  ownerBond?: QqOwnerBond
+  ownerCallName?: string
+  ownerNote?: string
+  voiceMode?: QqVoiceMode
+  groupVoice?: boolean
+  voiceProfile?: QqVoiceProfile
   drawing: boolean
   groupDrawing: boolean
+  groupNaturalReplies?: boolean
   groupMuse?: boolean
   privateMuse?: boolean
   groupMuseAll?: boolean
@@ -29,13 +48,27 @@ export interface QqChannelStatus {
   groupPairExpiresAt: number | null
 }
 
+export interface QqBotsResponse {
+  bots: QqChannelStatus[]
+  bot?: QqChannelStatus
+}
+
 export interface QqChannelSettings {
+  name?: string
   appId: string
   secret?: string
-  character: ChannelCharacter
+  character: QqCharacterId
+  chatProvider?: QqChatProvider
+  ownerBond?: QqOwnerBond
+  ownerCallName?: string
+  ownerNote?: string
+  voiceMode?: QqVoiceMode
+  groupVoice?: boolean
+  voiceProfile?: QqVoiceProfile
   enabled: boolean
   drawing: boolean
   groupDrawing: boolean
+  groupNaturalReplies?: boolean
   groupMuse?: boolean
   privateMuse?: boolean
   groupMuseAll?: boolean
@@ -43,29 +76,92 @@ export interface QqChannelSettings {
   museProactive?: boolean
 }
 
-function validate(value: ApiResponseObject): boolean {
+export interface QqChatCardOption {
+  id: `card-${string}`
+  name: string
+  catalogId?: string
+}
+
+export interface QqVoiceServiceStatus {
+  online: boolean
+  available?: boolean
+  engineId: string
+  engine: string
+  clientSide?: boolean
+  voices?: Record<string, boolean>
+  voiceLabels?: Record<string, string>
+  voiceCatalogMap?: Record<string, string>
+}
+
+function isObject(value: unknown): value is ApiResponseObject {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function isQqCharacter(value: unknown): value is QqCharacterId {
+  return value === 'nene' || value === 'natsume'
+    || (typeof value === 'string' && /^card-[a-f0-9]{64}$/.test(value))
+}
+
+function validateBot(value: unknown): boolean {
+  if (!isObject(value)) return false
   return value.ok === true && !('secret' in value) && !('sealedSecret' in value)
+    && typeof value.id === 'string' && value.id.length > 0
+    && typeof value.name === 'string'
     && typeof value.configured === 'boolean' && typeof value.enabled === 'boolean'
     && typeof value.drawing === 'boolean' && typeof value.paired === 'boolean' && typeof value.groupDrawing === 'boolean'
-    && [value.groupMuse, value.privateMuse, value.groupMuseAll, value.museProactive]
+    && [value.groupMuse, value.privateMuse, value.groupMuseAll, value.museProactive, value.groupVoice, value.groupNaturalReplies]
       .every(flag => flag === undefined || typeof flag === 'boolean')
+    && (value.chatProvider === undefined || qqChatProviders.some(provider => provider === value.chatProvider))
+    && (value.ownerBond === undefined || qqOwnerBonds.some(bond => bond === value.ownerBond))
+    && [value.ownerCallName, value.ownerNote].every(item => item === undefined || typeof item === 'string')
+    && (value.voiceMode === undefined || qqVoiceModes.some(mode => mode === value.voiceMode))
+    && (value.voiceProfile === undefined || (typeof value.voiceProfile === 'string' && (value.voiceProfile === 'auto' || /^[a-z0-9][a-z0-9_-]{0,63}$/.test(value.voiceProfile))))
     && (value.museContextLimit === undefined || qqMuseContextLimits.some(limit => limit === value.museContextLimit))
     && (value.groupMuseStatus == null || ['remoteDisabled', 'waiting', 'receiving', 'vmConfigured', 'vmUnavailable', 'vmConfigError'].includes(String(value.groupMuseStatus)))
-    && Array.isArray(value.groups) && value.groups.every(group => group && typeof group.id === 'string' && typeof group.label === 'string')
-    && (value.character === 'nene' || value.character === 'natsume')
+    && Array.isArray(value.groups) && value.groups.every(group => isObject(group)
+      && typeof group.id === 'string' && typeof group.label === 'string'
+      && (group.ownerBound === undefined || typeof group.ownerBound === 'boolean'))
+    && isQqCharacter(value.character)
     && ['disabled', 'connecting', 'online', 'error'].includes(String(value.phase))
     && [value.appId, value.detail, value.pairCode, value.groupPairCode].every(item => item === null || typeof item === 'string')
     && [value.pairExpiresAt, value.groupPairExpiresAt].every(item => item === null || typeof item === 'number' && Number.isFinite(item))
 }
 
-const qqPath = '/api/workspace/companion-channels/qq'
+function validateBots(value: ApiResponseObject): boolean {
+  return value.ok === true
+    && Array.isArray(value.bots) && value.bots.every(validateBot)
+    && (value.bot === undefined || validateBot(value.bot))
+}
+
+function validateCards(value: ApiResponseObject): boolean {
+  return Array.isArray(value.cards)
+    && value.cards.every(card => isObject(card)
+      && typeof card.id === 'string' && /^card-[a-f0-9]{64}$/.test(card.id)
+      && typeof card.name === 'string'
+      && (card.catalogId === undefined || typeof card.catalogId === 'string'))
+}
+
+function validateVoiceStatus(value: ApiResponseObject): boolean {
+  return typeof value.online === 'boolean'
+    && (value.available === undefined || typeof value.available === 'boolean')
+    && typeof value.engineId === 'string'
+    && typeof value.engine === 'string'
+    && (value.clientSide === undefined || typeof value.clientSide === 'boolean')
+    && (value.voices === undefined || isObject(value.voices))
+}
+
+const qqBotsPath = '/api/workspace/companion-channels/qq/bots'
 
 export const companionQqApi = {
-  status: (signal: AbortSignal) => apiClient.request<QqChannelStatus>(qqPath, { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, validate }),
-  save: (body: QqChannelSettings, signal: AbortSignal) => apiClient.request<QqChannelStatus>(qqPath, { method: 'PUT', body, signal, timeoutMs: 8000, validate }),
-  pair: (signal: AbortSignal) => apiClient.request<QqChannelStatus>(`${qqPath}/pair`, { method: 'POST', signal, timeoutMs: 8000, validate }),
-  pairGroup: (label: string, signal: AbortSignal) => apiClient.request<QqChannelStatus>(`${qqPath}/pair-group`, { method: 'POST', body: { label }, signal, timeoutMs: 8000, validate }),
-  removeGroup: (id: string, signal: AbortSignal) => apiClient.request<QqChannelStatus>(`${qqPath}/groups/${encodeURIComponent(id)}`, { method: 'DELETE', signal, timeoutMs: 8000, validate }),
+  list: (signal: AbortSignal) => apiClient.request<QqBotsResponse>(qqBotsPath, { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, validate: validateBots }),
+  create: (body: QqChannelSettings, signal: AbortSignal) => apiClient.request<QqBotsResponse>(qqBotsPath, { method: 'POST', body, signal, timeoutMs: 10_000, validate: validateBots }),
+  update: (botId: string, body: QqChannelSettings, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}`, { method: 'PUT', body, signal, timeoutMs: 10_000, validate: validateBots }),
+  remove: (botId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}`, { method: 'DELETE', signal, timeoutMs: 8000, validate: validateBots }),
+  pair: (botId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/pair`, { method: 'POST', signal, timeoutMs: 8000, validate: validateBots }),
+  pairGroup: (botId: string, label: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/pair-group`, { method: 'POST', body: { label }, signal, timeoutMs: 8000, validate: validateBots }),
+  removeGroup: (botId: string, groupId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/groups/${encodeURIComponent(groupId)}`, { method: 'DELETE', signal, timeoutMs: 8000, validate: validateBots }),
+  cards: (signal: AbortSignal) => apiClient.request<{ cards: QqChatCardOption[] }>('/api/chat/cards', { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 10_000, validate: validateCards }),
+  voiceStatus: (signal: AbortSignal) => apiClient.request<QqVoiceServiceStatus>('/api/tts-status', { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, validate: validateVoiceStatus }),
 }
 
 export interface WeChatChannelSettings {

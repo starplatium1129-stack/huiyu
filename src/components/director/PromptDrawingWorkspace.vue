@@ -146,7 +146,7 @@
     </nav>
     <div ref="layoutRoot" class="director-workspace">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
-      <Teleport :to="inspectorActions" :disabled="!actionBarDocked">
+      <Teleport to="#drawing-inspector-actions" :disabled="!actionBarDocked" defer>
         <GenerationActionBar
           :engine="drawEngine"
           :busy="generationBusy"
@@ -222,7 +222,7 @@
 
         </template>
         <template #character>
-        <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }"><component :is="component" :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" /></AsyncPanel>
+        <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }"><component :is="component" :current-traits="currentTraits" @selectSource="selectCharacterSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" /></AsyncPanel>
         <section class="material-current-scene">
           <div><h3>这一幕</h3><button class="btn btn-quiet btn-sm" type="button" @click="openMaterials('scenes')">更换场景<ArchiveIcon name="chevron-down" /></button></div>
           <strong>{{ currentSceneTitle || '当前构想' }}</strong>
@@ -299,7 +299,7 @@
         <template #delivery>
           <AsyncPanel :loader="loadInspectorDelivery" label="任务与配音工具" v-slot="{ component }"><component :is="component" :bindings="deliveryBindings" /></AsyncPanel>
         </template>
-        <template #actions><div ref="inspectorActions" class="inspector-actions" /></template>
+        <template #actions><div id="drawing-inspector-actions" class="inspector-actions" /></template>
       </DirectorInspector>
     </div>
 
@@ -353,9 +353,9 @@ const DirectorStagePanel = defineAsyncComponent(() => import('@/components/direc
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
 const loadImageTools = () => import('@/components/director/DirectorImageTools.vue')
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
-const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
-const GenerationSizePicker = defineAsyncComponent(() => import('@/components/director/GenerationSizePicker.vue'))
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
+import GenerationSizePicker from '@/components/director/GenerationSizePicker.vue'
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 import { useDrawingCanvas } from '@/composables/prompt/useDrawingCanvas'
 const loadNativeControls = () => import('./NativeDrawingControls.vue')
@@ -364,7 +364,6 @@ const workspace = useDrawingCanvas(usePromptWorkspace())
 const { native, engineConnected } = workspace
 const { reuseRequest, reuseBusy, reuseLoading, reuseError, retryReuse, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
-const inspectorActions = ref<HTMLElement | null>(null)
 const actionBarHeight = ref(0)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
@@ -441,7 +440,18 @@ const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value 
   : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))
 const materialsVisible = computed(() => !pb.focusMode && (!directorLayout.desktop.value || !directorLayout.collapsed.value.materials))
 const inspectorVisible = computed(() => !pb.focusMode && (!directorLayout.desktop.value || !directorLayout.collapsed.value.inspector))
-const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && inspectorVisible.value)
+const actionBarDocked = computed(() => directorLayout.desktop.value && inspectorVisible.value)
+let characterSelection = 0
+async function selectCharacterSource(source: 'studio' | 'popular' | 'none') {
+  const request = ++characterSelection
+  const subject = pb.subject
+  if (source === 'popular') {
+    try { await pb.loadPopularCatalog() }
+    catch { if (request === characterSelection) pb.flash('热门角色暂时无法读取，请重试。'); return }
+    if (request !== characterSelection || route.path !== '/prompt-builder' || pb.subject !== subject) return
+  }
+  selectPopularSource(source)
+}
 const descriptionInHeader = computed(() => pb.focusMode)
 const exampleEditButton = ref<HTMLButtonElement | null>(null)
 const drawingSetupRoute = computed(() => {

@@ -17,6 +17,7 @@ pub(super) struct Ollama {
     slots: Arc<Semaphore>,
     active: Arc<Semaphore>,
     model: Mutex<String>,
+    model_observation: tokio::sync::Mutex<Option<(Instant, std::result::Result<Vec<Value>, String>)>>,
 }
 pub(super) struct Permit {
     _slot: OwnedSemaphorePermit,
@@ -28,6 +29,7 @@ impl Ollama {
             slots: Arc::new(Semaphore::new(16)),
             active: Arc::new(Semaphore::new(1)),
             model: Mutex::new(String::new()),
+            model_observation: tokio::sync::Mutex::new(None),
         }
     }
     pub fn queue_status(&self) -> Value {
@@ -90,8 +92,18 @@ impl Ollama {
         }
     }
     pub async fn status(&self, client: &Transport, settings: &Settings) -> Value {
+        let models = {
+            let mut observation = self.model_observation.lock().await;
+            if let Some((_, models)) = observation.as_ref().filter(|(when, _)| when.elapsed() < Duration::from_secs(2)) {
+                models.clone()
+            } else {
+                let models = self.models(client, settings).await.map_err(|error| error.message);
+                *observation = Some((Instant::now(), models.clone()));
+                models
+            }
+        };
         let active = self.model.lock().unwrap().clone();
-        match self.models(client, settings).await {
+        match models {
             Ok(models) => {
                 let mut value = json!({"online":true,"model":self.preferred(&models,settings),"models":null,"queue":null,"activeModel":active});
                 value["models"] = Value::Array(models);
@@ -99,7 +111,7 @@ impl Ollama {
                 value
             }
             Err(error) => {
-                json!({"online":false,"model":"","models":[],"queue":self.queue_status(),"activeModel":active,"error":error.message})
+                json!({"online":false,"model":"","models":[],"queue":self.queue_status(),"activeModel":active,"error":error})
             }
         }
     }
@@ -107,7 +119,7 @@ impl Ollama {
         &self,
         client: &Transport,
         settings: &Settings,
-        input: Input,
+        mut input: Input,
         admission: Option<&request_body::Admission>,
         cancel: &CancellationToken,
     ) -> Result<Prepared> {
@@ -175,8 +187,14 @@ impl Ollama {
             }
         }
         *self.model.lock().unwrap() = selected.clone();
+        let num_predict = if input.japanese_voice {
+            super::stream::japanese_voice::prompt(&mut input.messages);
+            (settings.num_predict * 2).min(2048)
+        } else {
+            settings.num_predict
+        };
         let mut body = json!({"model":selected,"stream":true,"think":false,"keep_alive":settings.keep_alive,
-            "options":{"temperature":0.72,"top_p":0.88,"repeat_penalty":1.1,"num_predict":settings.num_predict,"num_ctx":settings.num_context}});
+            "options":{"temperature":0.72,"top_p":0.88,"repeat_penalty":1.1,"num_predict":num_predict,"num_ctx":settings.num_context}});
         body["messages"] = Value::Array(persona::single_system_messages(input.messages));
         let body = request_body::encode(body, admission, cancel).await?;
         let response = client
@@ -199,6 +217,7 @@ impl Ollama {
             model: selected,
             wait_ms,
             protocol: Protocol::Ollama,
+            japanese_voice: input.japanese_voice,
             permit: Some(permit),
         })
     }

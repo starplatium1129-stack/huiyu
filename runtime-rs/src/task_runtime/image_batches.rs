@@ -197,7 +197,17 @@ impl TaskRuntime {
             } else if task.upstream_settled
                 && matches!(task.status, TaskStatus::Failed | TaskStatus::Cancelled)
             {
-                json!({"taskId":task.task_id,"submitted":true,"status":task.status,"error":task.error_code})
+                let mut patch = json!({"taskId":task.task_id,"submitted":true,"status":task.status,"error":task.error_code});
+                if task.status == TaskStatus::Failed
+                    && (task.error_code.as_deref() == Some("NATIVE_OUT_OF_MEMORY")
+                        || task.metadata["errorMessage"]
+                            .as_str()
+                            .is_some_and(|message| message.contains("CUDA out of memory")))
+                {
+                    patch["error"] = json!("NATIVE_OUT_OF_MEMORY");
+                    patch["message"] = json!("显存不足，请缩小画幅后重试。");
+                }
+                patch
             } else {
                 if task.result_state == ResultState::Unavailable {
                     return Err(ApiError::new(

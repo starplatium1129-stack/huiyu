@@ -6,9 +6,9 @@ use axum::{
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{
-    collections::HashMap,
+    collections::{BTreeMap, HashMap},
     fs,
-    io::{self, Read},
+    io::{self, Read, Write},
     path::{Path, PathBuf},
     sync::{LazyLock, RwLock},
     time::SystemTime,
@@ -34,8 +34,19 @@ struct Catalogue {
     stamp: Stamp,
     value: Value,
     images: HashMap<PathBuf, ImageSize>,
+    full: Option<EncodedCatalogue>,
+    cards: Option<EncodedCatalogue>,
+}
+struct EncodedCatalogue {
     bytes: Bytes,
+    gzip: Option<Bytes>,
     tag: String,
+}
+impl EncodedCatalogue {
+    fn body(&self, gzip: bool) -> (Bytes, String) {
+        let bytes = if gzip { self.gzip.as_ref().unwrap_or(&self.bytes) } else { &self.bytes };
+        (bytes.clone(), self.tag.clone())
+    }
 }
 static CACHE: LazyLock<RwLock<Option<Catalogue>>> = LazyLock::new(|| RwLock::new(None));
 
@@ -103,7 +114,52 @@ fn dimensions(
     size
 }
 
-fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
+impl Catalogue {
+    fn body(&self, cards: bool, gzip: bool) -> Option<(Bytes, String)> {
+        let encoded = if cards { &self.cards } else { &self.full };
+        encoded.as_ref().map(|encoded| encoded.body(gzip))
+    }
+}
+
+fn encode_cards(value: &Value) -> io::Result<Bytes> {
+    let fields = [
+        "id", "title", "story", "category", "char", "rating", "attempt", "type",
+        "artistId", "displayName", "image", "thumb", "width", "height",
+        "thumbWidth", "thumbHeight", "meta",
+    ];
+    let rows: Vec<_> = value["entries"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .map(|row| {
+            let Some(row) = row.as_object() else {
+                return BTreeMap::new();
+            };
+            let mut card: BTreeMap<_, _> = fields.iter()
+                .filter_map(|key| row.get(*key).map(|value| (*key, value)))
+                .collect();
+            if let Some(id) = row.get("id").and_then(Value::as_str) {
+                for (kind, directory) in [("image", "images"), ("thumb", "thumbs")] {
+                    if row.get(kind).and_then(Value::as_str)
+                        .is_some_and(|path| path == format!("{directory}/{id}.jpg"))
+                    {
+                        card.remove(kind);
+                    }
+                }
+            }
+            // The browser supplies empty captions when the field is absent.
+            card.retain(|key, value| !matches!(*key, "story" | "category") || value.as_str() != Some(""));
+            card
+        })
+        .collect();
+    #[derive(serde::Serialize)]
+    struct Cards<T> { entries: T }
+    serde_json::to_vec(&Cards { entries: rows })
+        .map(Bytes::from)
+        .map_err(io::Error::other)
+}
+
+fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(Bytes, String)> {
     {
         let canonical = fs::canonicalize(&root)?;
         let file = canonical.join("manifest.json");
@@ -111,14 +167,15 @@ fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
         let lock = CACHE
             .read()
             .map_err(|_| io::Error::other("Showcase cache unavailable"))?;
-        if let Some(cache) = lock
+        if let Some(body) = lock
             .as_ref()
             .filter(|cache| !refresh && cache.root == canonical && cache.stamp == current)
+            .and_then(|cache| cache.body(cards, gzip))
         {
             if stamp(&fs::metadata(&file)?) != current {
                 return Err(io::Error::other("Showcase changed while reading"));
             }
-            return Ok((cache.bytes.clone(), cache.tag.clone()));
+            return Ok(body);
         }
     }
     // Drop the read guard before waiting for a writer, then recheck the files.
@@ -128,14 +185,15 @@ fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
     let root = fs::canonicalize(root)?;
     let file = root.join("manifest.json");
     let current = stamp(&fs::metadata(&file)?);
-    if let Some(cache) = lock
+    if let Some(body) = lock
         .as_ref()
         .filter(|cache| !refresh && cache.root == root && cache.stamp == current)
+        .and_then(|cache| cache.body(cards, gzip))
     {
-        return Ok((cache.bytes.clone(), cache.tag.clone()));
+        return Ok(body);
     }
     let previous = lock.take();
-    let mut changed = previous
+    let changed = previous
         .as_ref()
         .is_none_or(|cache| cache.root != root || cache.stamp != current);
     let mut cache = if changed {
@@ -156,13 +214,16 @@ fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
             stamp: current.clone(),
             value,
             images: HashMap::new(),
-            bytes: Bytes::new(),
-            tag: String::new(),
+            full: None,
+            cards: None,
         }
     } else {
         previous.unwrap()
     };
-    if let Some(entries) = cache.value["entries"].as_array_mut() {
+    // Published cards already carry geometry. Only repair it on explicit refresh
+    // or when serving the full maintenance manifest.
+    let mut geometry_changed = false;
+    if (!cards || refresh) && let Some(entries) = cache.value["entries"].as_array_mut() {
         for entry in entries {
             let Some(id) = entry["id"].as_str() else {
                 continue;
@@ -179,12 +240,14 @@ fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
                 (&image, "width", "height"),
                 (&thumb, "thumbWidth", "thumbHeight"),
             ] {
-                if let Some((w, h)) = dimensions(&root, relative, &mut cache.images, &mut changed) {
+                if let Some((w, h)) = dimensions(&root, relative, &mut cache.images, &mut geometry_changed) {
+                    geometry_changed |= entry[width].as_u64() != Some(u64::from(w))
+                        || entry[height].as_u64() != Some(u64::from(h));
                     entry[width] = w.into();
                     entry[height] = h.into();
                 } else if let Some(row) = entry.as_object_mut() {
-                    row.remove(width);
-                    row.remove(height);
+                    geometry_changed |= row.remove(width).is_some();
+                    geometry_changed |= row.remove(height).is_some();
                 }
             }
         }
@@ -192,15 +255,29 @@ fn read(root: PathBuf, refresh: bool) -> io::Result<(Bytes, String)> {
     if stamp(&fs::metadata(&file)?) != current {
         return Err(io::Error::other("Showcase changed while reading"));
     }
-    if changed {
-        let bytes = serde_json::to_vec(&cache.value).map_err(io::Error::other)?;
-        cache.tag = format!(
-            "showcase-geometry-1-{}",
-            hex::encode(Sha256::digest(&bytes))
-        );
-        cache.bytes = bytes.into();
+    if geometry_changed {
+        cache.full = None;
+        cache.cards = None;
     }
-    let result = (cache.bytes.clone(), cache.tag.clone());
+    let encoded = if cards { &mut cache.cards } else { &mut cache.full };
+    if encoded.is_none() {
+        let bytes = if cards {
+            encode_cards(&cache.value)?
+        } else {
+            Bytes::from(serde_json::to_vec(&cache.value).map_err(io::Error::other)?)
+        };
+        let format = if cards { "cards" } else { "geometry" };
+        let tag = format!("showcase-{format}-1-{}", hex::encode(Sha256::digest(&bytes)));
+        let compressed = if cards {
+            let mut encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::fast());
+            encoder.write_all(&bytes)?;
+            Some(Bytes::from(encoder.finish()?))
+        } else {
+            None
+        };
+        *encoded = Some(EncodedCatalogue { bytes, gzip: compressed, tag });
+    }
+    let result = encoded.as_ref().unwrap().body(gzip);
     // Failed reads leave no partly updated catalogue for the shared fast path.
     *lock = Some(cache);
     Ok(result)
@@ -211,8 +288,10 @@ pub(super) async fn serve(
     head: bool,
     condition: Option<HeaderValue>,
     refresh: bool,
+    cards: bool,
+    gzip: bool,
 ) -> Response {
-    match tokio::task::spawn_blocking(move || read(root, refresh)).await {
+    match tokio::task::spawn_blocking(move || read(root, refresh, cards, gzip)).await {
         Ok(Ok((bytes, tag))) => {
             let length = bytes.len();
             let mut response = (
@@ -226,6 +305,12 @@ pub(super) async fn serve(
                 .into_response();
             if head {
                 *response.body_mut() = Body::empty();
+            }
+            if cards {
+                response.headers_mut().append("vary", HeaderValue::from_static("Accept-Encoding"));
+            }
+            if gzip {
+                response.headers_mut().insert("content-encoding", HeaderValue::from_static("gzip"));
             }
             response
                 .headers_mut()

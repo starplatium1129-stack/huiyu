@@ -82,6 +82,7 @@ export function useControlActions(
       ttsHost: status.ttsHost.value.trim(),
       ttsEngine: status.ttsEngine.value,
       voices: {
+        ...voices,
         nene: { ...neneBase, loraWeightsPath: status.voiceNeneLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNeneGpt.value.trim(), sovitsWeightsPath: status.voiceNeneSovits.value.trim() } : {}), refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
         natsume: { ...natBase, loraWeightsPath: status.voiceNatsumeLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNatsumeGpt.value.trim(), sovitsWeightsPath: status.voiceNatsumeSovits.value.trim() } : {}), refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
       },

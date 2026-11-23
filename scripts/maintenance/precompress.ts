@@ -18,9 +18,14 @@
  */
 
 const fs: typeof import('fs') = require('fs');
+const os: typeof import('os') = require('os');
 const path: typeof import('path') = require('path');
 const zlib: typeof import('zlib') = require('zlib');
+const { promisify }: typeof import('util') = require('util');
 import { COMPRESSIBLE, MIN_BYTES, compressAsync } from '../lib/precompressed-artifacts';
+
+const brotliDecompress = promisify(zlib.brotliDecompress);
+const gunzip = promisify(zlib.gunzip);
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const TARGET_DIRS = ['dist', 'data'];
@@ -70,18 +75,38 @@ export function purgeWoffFonts(root = ROOT, outputDirectory = 'dist') {
   }
 }
 
-/** 解压 .br/.gz 并与源文件字节比对——存在但内容陈旧同样算失效。 */
-function artifactMatchesSource(artifact: string) {
-  const source = artifact.replace(/\.(?:br|gz)$/i, '');
+/** 单次读取源文件并并行解压校验 .br/.gz，存在但内容陈旧同样算失效。 */
+async function checkFileArtifacts(root: string, file: string): Promise<string[]> {
+  const issues: string[] = [];
+  const hasBr = fs.existsSync(file + '.br');
+  const hasGz = fs.existsSync(file + '.gz');
+  if (!hasBr) issues.push(path.relative(root, file));
+  if (!hasBr && !hasGz) return issues;
+  let raw: Buffer;
   try {
-    const raw = fs.readFileSync(source);
-    const data = /\.gz$/i.test(artifact)
-      ? zlib.gunzipSync(fs.readFileSync(artifact))
-      : zlib.brotliDecompressSync(fs.readFileSync(artifact));
-    return raw.equals(data);
+    raw = await fs.promises.readFile(file);
   } catch {
-    return false;
+    if (hasBr) issues.push(path.relative(root, file + '.br') + ' (内容与源不一致)');
+    if (hasGz) issues.push(path.relative(root, file + '.gz') + ' (内容与源不一致)');
+    return issues;
   }
+  const options = { maxOutputLength: raw.length };
+  const checks = await Promise.all((['.br', '.gz'] as const).map(async ext => {
+    const exists = ext === '.br' ? hasBr : hasGz;
+    if (!exists) return null;
+    const artifact = file + ext;
+    try {
+      const compressed = await fs.promises.readFile(artifact);
+      const data = ext === '.gz'
+        ? await gunzip(compressed, options)
+        : await brotliDecompress(compressed, options);
+      return raw.equals(data) ? null : path.relative(root, artifact) + ' (内容与源不一致)';
+    } catch {
+      return path.relative(root, artifact) + ' (内容与源不一致)';
+    }
+  }));
+  for (const issue of checks) if (issue) issues.push(issue);
+  return issues;
 }
 
 /**
@@ -131,24 +156,22 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
       if (!COMPRESSIBLE.test(file)) continue;
       if (/\.(?:br|gz)$/i.test(file)) continue;
       if (fs.statSync(file).size < MIN_BYTES) continue;
-
-      if (checkOnly) {
-        if (!fs.existsSync(file + '.br')) missing.push(path.relative(root, file));
-        // 内容一致性：压缩产物存在但解压后与源不符 = 陈旧，须重建
-        for (const ext of ['.br', '.gz']) {
-          const artifact = file + ext;
-          if (fs.existsSync(artifact) && !artifactMatchesSource(artifact)) {
-            missing.push(path.relative(root, artifact) + ' (内容与源不一致)');
-          }
-        }
-        continue;
-      }
       pending.push(file);
     }
   }
 
   if (checkOnly) {
     // check 模式三类失效全部拦截：源缺 .br、产物内容陈旧、孤儿产物（源已删除/低于阈值）
+    const checkJobs = Math.min(4, Math.max(2, os.cpus().length), pending.length || 1);
+    const perFile: string[][] = new Array(pending.length);
+    let checkCursor = 0;
+    await Promise.all(Array.from({ length: checkJobs }, async () => {
+      while (checkCursor < pending.length) {
+        const index = checkCursor++;
+        perFile[index] = await checkFileArtifacts(root, pending[index]);
+      }
+    }));
+    for (const issues of perFile) if (issues) missing.push(...issues);
     const stale = listStaleArtifacts(root);
     if (missing.length || stale.length) {
       if (missing.length) {

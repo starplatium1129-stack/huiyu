@@ -1,7 +1,7 @@
 import type { useChatStorage } from './useChatStorage'
 import type { useVoice } from '../useVoice'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
-import { createChatTurnConnection, type ChatConnectionOptions } from './chatTurnConnection'
+import { createChatTurnConnection, usesLocalChat, type ChatConnectionOptions } from './chatTurnConnection'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import type { CompanionToolResult as ToolCallResult } from './executeCompanionTool'
 import { reactive, ref, type Ref, type ComputedRef } from 'vue'
@@ -184,11 +184,15 @@ export function useChatConversation(options: ChatConversationOptions) {
     const controller = new AbortController()
     activeRequest = controller
     const watchdog = startTurnWatchdog(controller)
+    const japaneseVoice = sendOptions.action !== 'generate-from-image' && isLocalStudioHost()
+      && usesLocalChat(connection) && options.voice.wantsJapanese(turn.character.voice)
+    let separateSpeech = false
     let resetEmotion = () => {}
     options.voice.startTurn({
       mid: turn.assistant.mid,
       voice: turn.character.voice,
       character: turn.characterId,
+      deferPreparation: japaneseVoice,
     })
     const ownsRequest = () => activeRequest === controller
     const ownsHistory = () => options.storage.branchId(turn.characterId) === turn.branch
@@ -232,7 +236,9 @@ export function useChatConversation(options: ChatConversationOptions) {
       else delete turn.assistant.recalledMemories
       const { buildChatRequestBody, createTurnEmotionTracker } = await abortableTask(() => import('./chatTurnRuntime'), controller.signal)
       checkCurrent()
-      const tracker = createTurnEmotionTracker(turn.characterId, options.voice.append,
+      const tracker = createTurnEmotionTracker(turn.characterId, delta => {
+        if (!separateSpeech) options.voice.append(delta)
+      },
         (emotion, explicit) => {
           if (explicit) options.voice.setTurnEmotion(emotion, true)
           if (canPresent()) options.onStreamEmotion?.(emotion)
@@ -283,6 +289,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       let toolRounds = 0
       // 视觉轮沿用本次选定的 API；模型是否支持图片由服务商确认。
       let visionRound = Boolean(imageUrls.length)
+      let japaneseSpeech = ''
       if (imageUrls.length) {
         roundMessages.push({
           role: 'user',
@@ -315,6 +322,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             useVision,
             toolsEnabled,
             museDrawing,
+            japaneseVoice,
             toolResultOrigin: usedTools.size ? toolOrigin : undefined,
             roundMessages,
             messages: turn.messages, connection, restricted: turn.restricted,
@@ -325,6 +333,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
         const toolCalls: PendingToolCall[] = []
         let drawing: Record<string, unknown> | undefined
+        let spoken = ''
         await parseNdjsonResponse(response, async event => {
           checkCurrent()
           watchdog.touch()
@@ -344,6 +353,14 @@ export function useChatConversation(options: ChatConversationOptions) {
           if (event.type === 'reasoning') {
             roundReasoning += event.content || ''
             if (canPresent()) options.onThinking?.(event.content || '')
+            return
+          }
+          if (event.type === 'japanese-speech-mode' && japaneseVoice) {
+            separateSpeech = true
+            return
+          }
+          if (event.type === 'japanese-speech' && separateSpeech) {
+            spoken = event.content || ''
             return
           }
           if (event.type !== 'token') return
@@ -366,7 +383,10 @@ export function useChatConversation(options: ChatConversationOptions) {
             if (canPresent()) options.onError(`出图提交未确认：${error instanceof Error ? error.message : '请稍后重试。'}`)
           }
         }
-        if (!toolCalls.length) break
+        if (!toolCalls.length) {
+          japaneseSpeech = spoken
+          break
+        }
         if (toolCalls.some(call => call.name === 'search_web' ? !searchEnabled : !toolsEnabled)) throw new Error('请求的工具当前未启用，已停止执行。')
         toolRounds += 1
         if (toolRounds > MAX_TOOL_ROUNDS) throw new Error('本次工具调用已达到上限，已停止。请缩小任务范围后继续。')
@@ -429,6 +449,10 @@ export function useChatConversation(options: ChatConversationOptions) {
       checkCurrent()
       turn.assistant.content = turn.assistant.content.trim()
       if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
+      if (separateSpeech && turn.assistant.content) {
+        if (japaneseSpeech) options.voice.appendJapanese(japaneseSpeech)
+        else options.voice.append(turn.assistant.content)
+      }
       if (!turn.assistant.drawingBatchId) turn.assistant.content ||= '……'
       if (canPresent() && turn.assistant.content) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
       options.voice.finishTurn()

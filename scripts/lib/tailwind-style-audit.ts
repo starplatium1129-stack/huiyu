@@ -21,6 +21,7 @@ const layout: Record<string, string> = {
   'grid-cols': 'grid-template-columns', 'grid-rows': 'grid-template-rows',
   gap: 'gap', 'gap-x': 'column-gap', 'gap-y': 'row-gap', basis: 'flex-basis',
 };
+const layoutEntries = Object.entries(layout).sort(([a], [b]) => b.length - a.length);
 const colorPrefixes = /^(bg|text|border(?:-[xytrblse])?|ring|ring-offset|outline|accent|caret|fill|stroke|decoration|from|via|to|shadow|inset-shadow|divide-[xy])$/;
 const literalColor = /#[\da-f]{3,8}\b|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/i;
 const colorProperties = /^(?:color|background(?:-color|-image)?|border(?:-[\w-]+)?|(?:box|text)-shadow|(?:outline|text-decoration|caret|accent|fill|stroke)(?:-color)?|--tw-gradient-.+)$/;
@@ -70,7 +71,7 @@ function utilityDeclarations(candidate: string): TailwindUtility['declarations']
   if (/^-?z-\d+$/.test(core)) return declaration('z-index', core.replace(/^-?z-/, core.startsWith('-') ? '-' : ''));
   const layoutCore = core.replace(/^-/, '');
   if (layoutCore.startsWith('size-')) return size(layoutCore.slice(5));
-  for (const [prefix, property] of Object.entries(layout).sort(([a], [b]) => b.length - a.length)) {
+  for (const [prefix, property] of layoutEntries) {
     if (layoutCore.startsWith(`${prefix}-`)) return declaration(property, layoutCore.slice(prefix.length + 1));
   }
   return [];
@@ -80,8 +81,14 @@ function utilityDeclarations(candidate: string): TailwindUtility['declarations']
 export function tailwindUtilities(source: string): TailwindUtility[] {
   const text = source.replace(/\/\*[\s\S]*?\*\/|<!--[\s\S]*?-->/g, comment => comment.replace(/[^\n]/g, ' '));
   const result: TailwindUtility[] = [];
+  let line = 1;
+  let lineCursor = 0;
   for (const match of text.matchAll(/\btw:/g)) {
     const start = match.index;
+    for (let pos = text.indexOf('\n', lineCursor); pos !== -1 && pos < start; pos = text.indexOf('\n', pos + 1)) {
+      line++;
+    }
+    lineCursor = start;
     let depth = 0;
     let end = start;
     for (; end < text.length; end++) {
@@ -92,7 +99,7 @@ export function tailwindUtilities(source: string): TailwindUtility[] {
       else if (!depth && /[\s'"`<>;{},]/.test(char)) break;
     }
     const candidate = text.slice(start, end);
-    result.push({ candidate, index: start, line: text.slice(0, start).split('\n').length, declarations: utilityDeclarations(candidate) });
+    result.push({ candidate, index: start, line, declarations: utilityDeclarations(candidate) });
   }
   return result;
 }

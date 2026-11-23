@@ -4,6 +4,67 @@ use axum::http::{Method, Uri};
 
 pub(crate) async fn catalog(state: &AppState, uri: &Uri) -> Result<Value> {
     check_permission(state, "search_drawing_catalog").await?;
+    catalog_inner(state, uri).await
+}
+
+pub(crate) async fn catalog_channel(state: &AppState, uri: &Uri) -> Result<Value> {
+    catalog_inner(state, uri).await
+}
+
+pub(crate) async fn catalog_detail(state: &AppState, kind: &str, id: &str) -> Result<Value> {
+    details::describe(state, kind.into(), id.into()).await
+}
+
+pub(crate) async fn drawing_options(
+    state: &AppState,
+    model_id: Option<&str>,
+    character: Option<&str>,
+    cancel: tokio_util::sync::CancellationToken,
+) -> Result<Value> {
+    state.host.check_running()?;
+    let images = state.images.as_ref().ok_or_else(closed)?;
+    if images.backend.native_settings()?.engine != "native" {
+        return Ok(json!({"available":false,"models":[]}));
+    }
+    let status = crate::images::native::status(&images.backend, "", cancel).await?;
+    let models: Vec<_> = status["models"].as_array().into_iter().flatten()
+        .filter(|model| matches!(model["family"].as_str(), Some("anima" | "krea2" | "moss-image" | "qwen-image"))
+            && (model["available"] == true || model_id.is_some_and(|id| model["id"] == id)))
+        .filter(|model| model_id.is_none_or(|id| model["id"] == id))
+        .map(|model| {
+            let id = model["id"].as_str().unwrap_or("");
+            let size_limits = generation::native::adapters::model(id)
+                .map(|spec| json!({"min":512,"max":spec["maxSize"],"step":spec["alignment"]}))
+                .unwrap_or_else(|| model["capabilities"]["customSize"].clone());
+            let default_size = if model["family"] == "qwen-image" {
+                json!("1024x1024")
+            } else {
+                model["sizes"][0].clone()
+            };
+            json!({"id":id,"label":model["label"],"family":model["family"],"available":model["available"],
+                "catalogRecipes":RECIPE_MODELS.contains(&id),"sizes":model["sizes"],"sizeLimits":size_limits,
+                "defaultSize":default_size,"defaults":model["defaults"],"negative":model["capabilities"]["negative"],
+                "hiresUpscalers":model["capabilities"]["hiresUpscalers"],"mossErSde":model["mossErSde"]})
+        })
+        .collect();
+    let default_lora = character.and_then(|character| {
+        let binding = status["characters"].as_array()?.iter().find(|item| {
+            item["id"] == character || item["label"] == character
+        })?;
+        let lora = status["loras"].as_array()?.iter().find(|lora| {
+            lora["id"] == binding["loraId"] && lora["available"] == true
+        })?;
+        Some(json!({"character":binding["id"],"loraId":lora["id"],"compatibleModels":lora["compatibleModels"]}))
+    });
+    let installed = |key: &str| status[key].as_array().into_iter().flatten()
+        .filter(|lora| lora["available"] == true).cloned().collect::<Vec<_>>();
+    let guide = super::super::guide::Guide::document();
+    Ok(json!({"available":status["online"],"defaultModelId":ANIMA,"models":models,
+        "characterDefaultLora":default_lora,"loras":installed("loras"),"styleLoras":installed("styleLoras"),
+        "upscale":guide["upscale"],"moss":guide["moss"]}))
+}
+
+async fn catalog_inner(state: &AppState, uri: &Uri) -> Result<Value> {
     let Query(mut input) =
         Query::<Search>::try_from_uri(uri).map_err(|_| ApiError::invalid("素材查询参数无效"))?;
     input.page_size = input.page_size.min(20);
@@ -18,16 +79,28 @@ pub(crate) async fn batch(
     id: &str,
     body: &[u8],
 ) -> Result<Value> {
-    batch_for(state, storage, &session.principal_id, method, id, body).await
+    batch_inner(state, storage, &session.principal_id, method, id, body, true).await
 }
 
-pub(crate) async fn batch_for(
+pub(crate) async fn batch_for_channel(
     state: &AppState,
     storage: &Storage,
     principal: &str,
     method: &Method,
     id: &str,
     body: &[u8],
+) -> Result<Value> {
+    batch_inner(state, storage, principal, method, id, body, false).await
+}
+
+async fn batch_inner(
+    state: &AppState,
+    storage: &Storage,
+    principal: &str,
+    method: &Method,
+    id: &str,
+    body: &[u8],
+    enforce_room_permission: bool,
 ) -> Result<Value> {
     if uuid::Uuid::parse_str(id).is_err() {
         return Err(ApiError::invalid("出图批次编号无效"));
@@ -46,7 +119,9 @@ pub(crate) async fn batch_for(
         Method::GET => get,
         Method::DELETE => json!({"kind":"imageBatch.control","id":id,"action":"cancel"}),
         Method::PATCH if matches!(existing["state"].as_str(), Some("draft" | "paused")) => {
-            check_permission(state, "generate_drawing_batch").await?;
+            if enforce_room_permission {
+                check_permission(state, "generate_drawing_batch").await?;
+            }
             if existing["cancelRequested"] == true {
                 json!({"kind":"imageBatch.control","id":id,"action":"cancel"})
             } else {
@@ -55,9 +130,11 @@ pub(crate) async fn batch_for(
         }
         Method::PATCH => return Ok(existing),
         Method::POST => {
-            check_permission(state, "generate_drawing_batch")
-                .await
-                .map_err(ApiError::not_accepted)?;
+            if enforce_room_permission {
+                check_permission(state, "generate_drawing_batch")
+                    .await
+                    .map_err(ApiError::not_accepted)?;
+            }
             let input: Value = serde_json::from_slice(body)
                 .map_err(|_| ApiError::invalid("对话批次参数无效").not_accepted())?;
             let fingerprint = crate::storage::json_fingerprint(&input);

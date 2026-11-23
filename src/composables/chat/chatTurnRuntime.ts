@@ -74,6 +74,7 @@ function isVisionMessage(message: Record<string, unknown>): boolean {
 export function buildChatRequestBody(args: {
   characterId: string; sessionId: string; imageUrls: string[]; hostMode: boolean; useVision: boolean
   toolsEnabled: boolean; museDrawing: boolean; toolResultOrigin?: string; restricted: boolean; roundMessages: Array<Record<string, unknown>>
+  japaneseVoice: boolean
   messages: ChatMessage[]; connection: TurnConnection; userProfile: ChatUserProfile; memories: string[]
 }): string {
   const { characterId, sessionId, imageUrls, hostMode, useVision, toolsEnabled, restricted,
@@ -98,6 +99,7 @@ export function buildChatRequestBody(args: {
     webSearch: !restricted && (connection.provider === 'api' || connection.provider === 'chatgpt') && connection.webSearch && isLocalStudioHost(),
     companionTools: toolsEnabled || undefined,
     museDrawing: args.museDrawing || undefined,
+    japaneseVoice: args.japaneseVoice || undefined,
     toolResultOrigin: args.toolResultOrigin,
     reasoning: connection.reasoning,
     userProfile: hasChatUserProfile(userProfile) ? userProfile : undefined,

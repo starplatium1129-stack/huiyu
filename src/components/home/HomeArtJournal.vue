@@ -9,9 +9,9 @@
     </header>
     <p v-if="error" class="journal-error" role="status">{{ error }}</p>
     <div id="journal-spread" ref="listRoot" class="journal-spread tw:grid" :aria-busy="loading">
-      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.image || '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, loaded, failed }">
+      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.thumb || '/scene-showcase/thumbs/' + scene.id + '.jpg' : undefined" v-slot="{ image, loaded, failed }">
       <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :data-list-key="scene.id" :data-sensitive="scene.rating === 'R18' || scene.mature" :to="failed ? scene.fallbackTo : '/showcase?scene=' + encodeURIComponent(scene.id)">
-        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张未找到' : '样张加载中…' }}</span><CardEdgeLight /></div>
+        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" :width="scene.thumbWidth" :height="scene.thumbHeight" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张未找到' : '样张加载中…' }}</span><CardEdgeLight /></div>
         <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? scene.fallbackLabel : '查看场景' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
       </RuntimeImage>
@@ -57,8 +57,7 @@ function activateImages() {
 }
 onMounted(() => {
   if (!('IntersectionObserver' in window)) { activateImages(); return }
-  // Keep the original sample quality, but do not let native lazy loading fetch
-  // three large samples several screens ahead of the journal itself.
+  // The spread and its thumbnails only need to load when the reader approaches it.
   observer = new IntersectionObserver(entries => {
     if (entries.some(entry => entry.isIntersecting)) activateImages()
   }, { rootMargin: '300px' })

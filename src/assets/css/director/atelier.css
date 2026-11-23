@@ -9,8 +9,8 @@
   --fs-body:1rem; --fs-title:calc(24rem / 15); --fs-title-sm:calc(18rem / 15);
 }
 .pb.atelier-workspace .material-drawer,.pb.atelier-workspace .director-inspector { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-.pb.atelier-workspace :is(.material-heading,.inspector-heading,.canvas-heading) { color:var(--text-primary); background:var(--bg-surface); border:0; font-size:var(--fs-title-xs); font-weight:600; }
-.pb.atelier-workspace :is(.material-heading,.inspector-heading) { min-height:calc(var(--control-height-sm) + var(--s-3)); padding:var(--s-2) var(--s-4); }
+.pb.atelier-workspace :is(.material-heading,.inspector-heading,.canvas-heading) { color:var(--text-primary); border:0; font-size:var(--fs-title-xs); font-weight:600; }
+.pb.atelier-workspace :is(.material-heading,.inspector-heading) { min-height:calc(var(--control-height-sm) + var(--s-3)); padding:var(--s-2) var(--s-4); background:var(--bg-surface); }
 .pb.atelier-workspace .canvas-heading { min-height:calc(var(--control-height-sm) + 2 * var(--s-2)); padding:var(--s-2) var(--s-4); }
 .pb.atelier-workspace :is(.material-heading>span,.inspector-heading>strong) { display:inline-flex; align-items:center; gap:var(--s-2); }
 .pb.atelier-workspace .workbench-heading-icon { display:grid; place-items:center; flex:none; width:var(--control-height-sm); height:var(--control-height-sm); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--accent-soft); color:var(--accent); }
@@ -18,7 +18,7 @@
 .pb.atelier-workspace .inspector-heading strong { font-size:inherit; font-weight:600; letter-spacing:0; }
 .pb.atelier-workspace .inspector-heading span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { border-radius:var(--r-lg); box-shadow:none; }
-.pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; box-shadow:none; }
+.pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; background:transparent; box-shadow:none; }
 .pb.journal-workspace.atelier-workspace .stage-viewport,
 .pb.journal-workspace.atelier-workspace .result-image-wrap { border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .stage-placeholder::before { display:none; }

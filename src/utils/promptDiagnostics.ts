@@ -127,11 +127,18 @@ const MUTUAL_EXCLUSION_GROUPS = [
   ...ENVIRONMENT_GROUPS,
 ]
 
+// 词条到互斥组的索引；同一词条出现在多组时保留首个命中组，与逐组查找的顺序一致。
+const MUTUAL_GROUP_BY_KEY = new Map<string, string>()
+for (const group of MUTUAL_EXCLUSION_GROUPS) {
+  for (const token of group.tokens) {
+    const key = normalizeKey(token)
+    if (!MUTUAL_GROUP_BY_KEY.has(key)) MUTUAL_GROUP_BY_KEY.set(key, group.name)
+  }
+}
+
 /** 返回 tag 命中的互斥组名（无则 null） */
 function mutualGroupOf(tag: string): string | null {
-  const key = normalizeKey(tag)
-  const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.tokens.some(t => normalizeKey(t) === key))
-  return group ? group.name : null
+  return MUTUAL_GROUP_BY_KEY.get(normalizeKey(tag)) ?? null
 }
 
 /** 互斥组类别。 */

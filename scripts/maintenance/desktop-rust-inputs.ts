@@ -52,8 +52,7 @@ function developmentNativeEnvironment(root:string, supplied:NodeJS.ProcessEnv=pr
   checkedBytes(root,entry.source,entry);env.AICS_VIPS_DYLIB_PATH=safe.resolveSafe(root,entry.source);
   return env;
 }
-function copyRustPayload(root: string, gateway: string, profile: DesktopBuildProfile = 'release') {
-  const { receipt, bytes } = runtimeBuild(root, profile);
+function copyRustPayload(root: string, gateway: string, profile: DesktopBuildProfile, { receipt, bytes }: ReturnType<typeof runtimeBuild>) {
   fs.writeFileSync(path.join(gateway, 'huiyu-runtime.exe'), bytes);
   const manifestBytes=fs.readFileSync(safe.resolveSafe(root,NATIVE_MANIFEST));
   const manifest = nativeManifest(manifestBytes);

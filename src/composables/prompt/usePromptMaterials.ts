@@ -85,7 +85,12 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     const fingerprint = () => { const { updatedAt: _updatedAt, ...draft } = currentBlueprintData.value; return JSON.stringify(draft) }
     const before = fingerprint()
     try {
-      const { loadBlueprint } = await import('./promptBlueprintActions')
+      const { loadBlueprint, parsePromptBuilderDraft } = await import('./promptBlueprintActions')
+      const draft = parsePromptBuilderDraft({ ...data, updatedAt: data.updatedAt ?? data.exportedAt ?? Date.now() })
+      if (draft?.subject === 'popular' && draft.characterId) {
+        if (draft.blueprintId) await pb.loadPopularCharacter(draft.characterId)
+        else await pb.loadPopularCatalog()
+      }
       if (!current() || before !== fingerprint()) return
       const result = await loadBlueprint(data, {
         pb, selectScene, setDrawEngine, sdSize, setDirectorMode, isCurrent: current, getDrawEngine: () => drawEngine.value, getAnimaSettingsRevision: input.getAnimaSettingsRevision,

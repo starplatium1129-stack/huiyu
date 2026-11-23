@@ -1,9 +1,17 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 import type { FileIdentity, FileFailure, JsonRecord } from './delivery-types';
+import { AsyncLocalStorage } from 'node:async_hooks';
 'use strict';
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { createHash }: typeof import('node:crypto') = require('node:crypto');
+type FileStat = import('node:fs').BigIntStats;
+type CheckedPath = { file: string; stat: FileStat };
+const localHashes = new AsyncLocalStorage<Map<string, { stat: FileStat; sha256: string }>>();
+
+function withLocalFileHashes<T>(run: () => T): T {
+  return localHashes.getStore() ? run() : localHashes.run(new Map(), run);
+}
 
 // All generated records live here. It is excluded from BOTH content identities.
 const EVIDENCE_DIR = 'runtime/delivery-evidence';
@@ -59,21 +67,54 @@ function resolveSafe(root: string, value: unknown, allowMissing = false) {
   if (rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) throw Error(`真实路径越过 root: ${name}`);
   return current;
 }
-function fileEntry(root: string, name: string): FileIdentity | FileFailure {
+function pathScan(root: string) {
+  const parents = localHashes.getStore() ? new Set<string>() : undefined;
+  return (name: string): CheckedPath => {
+    name = relative(name, true);
+    if (!parents || name === '.') {
+      const file = resolveSafe(root, name);
+      return { file, stat: fs.lstatSync(file, { bigint: true }) };
+    }
+    const parent = path.posix.dirname(name);
+    if (!parents.has(parent)) {
+      resolveSafe(root, parent);
+      parents.add(parent);
+    }
+    const file = path.join(root, name);
+    const stat = fs.lstatSync(file, { bigint: true });
+    if (stat.isSymbolicLink()) throw Error(`不允许 symlink/junction: ${name}`);
+    // Recheck the current physical path even on a cached parent. A directory
+    // replaced by a junction mid-scan must go through the full segment check.
+    if (path.relative(file, fs.realpathSync.native(file))) resolveSafe(root, name);
+    return { file, stat };
+  };
+}
+function sameFile(a: FileStat, b: FileStat) {
+  return a.dev === b.dev && a.ino === b.ino && a.size === b.size && a.mode === b.mode && a.nlink === b.nlink
+    && a.mtimeNs === b.mtimeNs && a.ctimeNs === b.ctimeNs && a.birthtimeNs === b.birthtimeNs;
+}
+function fileEntry(root: string, name: string, scan = pathScan(root), checked?: CheckedPath): FileIdentity | FileFailure {
   let fd;
   try {
-    const file = resolveSafe(root, name);
+    const { file, stat } = checked ?? scan(name);
+    if (!stat.isFile() || stat.nlink > 1n) throw Error('目标必须为无硬链接的普通文件');
+    const cache = stat.ino !== 0n && stat.ctimeNs !== 0n ? localHashes.getStore() : undefined;
+    const key = cache ? `${stat.dev}:${stat.ino}` : '';
+    const cached = cache?.get(key);
+    if (cached && sameFile(stat, cached.stat)) {
+      return { path: name, status: 'file', bytes: Number(stat.size), sha256: cached.sha256 };
+    }
     fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
-    const before = fs.fstatSync(fd);
-    if (!before.isFile() || before.nlink > 1) throw Error('目标必须为无硬链接的普通文件');
+    const before = fs.fstatSync(fd, { bigint: true });
+    if (!sameFile(stat, before)) throw Error('打开期间文件发生变化');
     const hash = createHash('sha256'), buffer = Buffer.allocUnsafe(64 * 1024);
     let bytes = 0, size;
     while ((size = fs.readSync(fd, buffer, 0, buffer.length, null)) > 0) { hash.update(buffer.subarray(0, size)); bytes += size; }
-    const after = fs.fstatSync(fd);
-    const visible = fs.lstatSync(resolveSafe(root, name));
-    if (bytes !== before.size || before.size !== after.size || before.mtimeMs !== after.mtimeMs
-      || before.ctimeMs !== after.ctimeMs || after.ino !== visible.ino || after.dev !== visible.dev) throw Error('读取期间文件发生变化');
-    return { path: name, status: 'file', bytes, sha256: hash.digest('hex') };
+    const after = fs.fstatSync(fd, { bigint: true });
+    if (BigInt(bytes) !== before.size || !sameFile(before, after) || !sameFile(after, scan(name).stat)) throw Error('读取期间文件发生变化');
+    const sha256 = hash.digest('hex');
+    cache?.set(key, { stat: after, sha256 });
+    return { path: name, status: 'file', bytes, sha256 };
   } catch (error) {
     return { path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) };
   } finally { if (fd !== undefined) fs.closeSync(fd); }
@@ -101,4 +142,4 @@ function saveJson(root: string, name: string, value: unknown) {
   // Exclusive creation preserves earlier evidence; an existing file is never overwritten.
   fs.writeFileSync(resolveSafe(root, name, true), `${JSON.stringify(value, null, 2)}\n`, { flag: 'wx' });
 }
-export = { object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, fileEntry, readJson, saveJson };
+export = { object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, pathScan, fileEntry, withLocalFileHashes, readJson, saveJson };

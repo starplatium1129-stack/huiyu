@@ -195,15 +195,22 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         return StatusCode::NOT_FOUND.into_response();
     };
     if path == "/scene-showcase/manifest.json" {
-        let refresh = request.uri().query().is_some_and(|query| {
-            url::form_urlencoded::parse(query.as_bytes())
-                .any(|(key, value)| key == "refresh" && value == "1")
-        });
+        let mut refresh = false;
+        let mut cards = false;
+        for (key, value) in url::form_urlencoded::parse(request.uri().query().unwrap_or_default().as_bytes()) {
+            refresh |= key == "refresh" && value == "1";
+            cards |= key == "view" && value == "cards";
+        }
+        let gzip = cards && request.headers().get("accept-encoding")
+            .and_then(|value| value.to_str().ok())
+            .is_some_and(|value| crate::remote_content::encoding_quality(value, "gzip") > 0.0);
         return showcase::serve(
             base,
             request.method() == Method::HEAD,
             request.headers().get("if-none-match").cloned(),
             refresh,
+            cards,
+            gzip,
         )
         .await;
     }

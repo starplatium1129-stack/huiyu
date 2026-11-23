@@ -3,6 +3,16 @@ use serde::Deserialize;
 use serde_json::Value;
 use std::{collections::HashMap, env, path::PathBuf, sync::Arc};
 
+pub(crate) fn is_valid_voice_id(id: &str) -> bool {
+    !id.is_empty()
+        && id.len() <= 64
+        && id.bytes().enumerate().all(|(index, byte)| {
+            byte.is_ascii_lowercase()
+                || byte.is_ascii_digit()
+                || (index > 0 && matches!(byte, b'_' | b'-'))
+        })
+}
+
 #[derive(Clone, Default, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Reference {
@@ -19,6 +29,10 @@ pub(super) struct Profile {
     #[serde(flatten)]
     pub reference: Reference,
     #[serde(default)]
+    pub display_name: String,
+    #[serde(default)]
+    pub catalog_id: String,
+    #[serde(default)]
     pub gpt_weights_path: String,
     #[serde(default)]
     pub sovits_weights_path: String,
@@ -34,6 +48,17 @@ pub(super) struct Profile {
 impl Profile {
     pub fn configured(&self) -> bool {
         !self.reference.ref_audio_path.is_empty() && !self.reference.prompt_text.is_empty()
+    }
+
+    pub fn native_files_present(&self) -> bool {
+        self.configured()
+            && [
+                &self.gpt_weights_path,
+                &self.sovits_weights_path,
+                &self.reference.ref_audio_path,
+            ]
+            .iter()
+            .all(|path| std::path::Path::new(path).is_file())
     }
 }
 
@@ -125,6 +150,95 @@ impl Settings {
             Engine::GptSoVits | Engine::GptSoVitsNative | Engine::VoxCpm2
         )
     }
+
+    pub fn voice_ids(&self) -> Vec<String> {
+        let mut extra: Vec<String> = self
+            .profiles
+            .keys()
+            .filter(|id| !matches!(id.as_str(), "nene" | "natsume") && is_valid_voice_id(id))
+            .cloned()
+            .collect();
+        extra.sort();
+        let mut ids = vec!["nene".to_owned(), "natsume".to_owned()];
+        ids.extend(extra);
+        ids
+    }
+
+    pub fn voice_labels(&self) -> HashMap<String, String> {
+        let mut labels = HashMap::new();
+        for id in self.voice_ids() {
+            let custom = self
+                .profiles
+                .get(&id)
+                .map(|profile| profile.display_name.trim())
+                .filter(|name| !name.is_empty());
+            let label = match custom {
+                Some(name) => name.to_owned(),
+                None => match id.as_str() {
+                    "nene" => "绫地宁宁".to_owned(),
+                    "natsume" => "四季夏目".to_owned(),
+                    "roxy" => "洛琪希".to_owned(),
+                    _ => id.clone(),
+                },
+            };
+            labels.insert(id, label);
+        }
+        labels
+    }
+
+    fn profile_available(&self, profile: &Profile) -> bool {
+        match self.engine {
+            Engine::GptSoVitsNative => profile.native_files_present(),
+            Engine::VoxCpm2 => profile.configured() && !profile.lora_weights_path.is_empty(),
+            _ => profile.configured(),
+        }
+    }
+
+    pub fn voice_catalog_map(&self) -> HashMap<String, String> {
+        let mut map = HashMap::new();
+        for (id, profile) in &self.profiles {
+            if !is_valid_voice_id(id) || !self.profile_available(profile) {
+                continue;
+            }
+            let explicit = profile.catalog_id.trim();
+            if !explicit.is_empty() {
+                map.insert(explicit.to_owned(), id.clone());
+            } else if id == "roxy" {
+                map.insert("roxy_migurdia".to_owned(), id.clone());
+            }
+            map.entry(id.clone()).or_insert_with(|| id.clone());
+        }
+        map
+    }
+
+    pub fn resolve_voice_for_catalog(&self, catalog_id: &str) -> Option<String> {
+        let catalog_id = catalog_id.trim();
+        if catalog_id.is_empty() {
+            return None;
+        }
+        if let Some(profile) = self.profiles.get(catalog_id)
+            && self.profile_available(profile)
+        {
+            return Some(catalog_id.to_owned());
+        }
+        if let Some((id, _)) = self.profiles.iter().find(|(id, profile)| {
+            is_valid_voice_id(id)
+                && self.profile_available(profile)
+                && (profile.catalog_id.trim() == catalog_id
+                    || (catalog_id == "roxy_migurdia" && id.as_str() == "roxy"))
+        }) {
+            return Some(id.clone());
+        }
+        let mut prefix_matches = self.profiles.iter().filter(|(id, profile)| {
+            is_valid_voice_id(id)
+                && self.profile_available(profile)
+                && catalog_id
+                    .strip_prefix(id.as_str())
+                    .is_some_and(|rest| rest.starts_with('_'))
+        });
+        let first = prefix_matches.next()?.0.clone();
+        prefix_matches.next().is_none().then_some(first)
+    }
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(super) enum Engine {
@@ -179,8 +293,9 @@ impl Settings {
                 voices
                     .iter()
                     .filter_map(|(id, value)| {
-                        Profile::deserialize(value)
-                            .ok()
+                        is_valid_voice_id(id)
+                            .then(|| Profile::deserialize(value).ok())
+                            .flatten()
                             .map(|profile| (id.clone(), Arc::new(profile)))
                     })
                     .collect()

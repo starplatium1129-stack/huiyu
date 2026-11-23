@@ -2,6 +2,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
+  getCompanionCharacter,
   getCompanionCharacterConfig,
   renderChatGreeting,
 } from '@/utils/companionRegistry'
@@ -166,7 +167,23 @@ export function useCharacterRoomSession(
     const config = getCompanionCharacterConfig(activeChar.value)
       || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
     if (!config) throw new Error('No companion character presentation is registered')
-    return config
+    const catalogId = getCompanionCharacter(activeChar.value)?.catalogId
+    const availability = voice.availability.value
+    let resolvedVoice = config.voice
+    if (catalogId) {
+      const mapped = availability.voiceCatalogMap?.[catalogId]
+      if (mapped) {
+        resolvedVoice = mapped
+      } else if (availability.voices) {
+        if (Object.hasOwn(availability.voices, catalogId)) {
+          resolvedVoice = catalogId
+        } else {
+          const prefixMatches = Object.keys(availability.voices).filter(id => catalogId.startsWith(`${id}_`))
+          if (prefixMatches.length === 1) resolvedVoice = prefixMatches[0]
+        }
+      }
+    }
+    return resolvedVoice === config.voice ? config : { ...config, voice: resolvedVoice }
   })
   watch(() => route.query.character, id => { if (typeof id === 'string') switchCharacter(id) })
 
@@ -373,6 +390,7 @@ export function useCharacterRoomSession(
     document.documentElement.style.setProperty('--character-accent', nextCharacter.accent)
     inputText.value = storage.draft(char)
     updateVoiceCapability()
+    if (nextCharacter.voice || getCompanionCharacter(char)?.catalogId) void refreshVoiceStatus()
     setError('')
   }
 
@@ -431,12 +449,8 @@ export function useCharacterRoomSession(
       inputText.value = storage.draft(activeChar.value)
     }
     document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
-    // 预热角色设定卡（约几十 KB，失败不影响聊天：recall 走空设定 + 会话事实）。
+    // Share the room directory's profile read with persona recall.
     void loadCharacterSettingCards().catch(() => {})
-    await refreshChatStatus()
-    if (disposed) return
-    await refreshVoiceStatus()
-    if (disposed) return
     if (chatProvider.value === 'api') {
       if (useHostConfig.value) {
         setChatStatus(`站主配置 · ${hostApiModel.value || 'API'}`, 'online')
@@ -448,6 +462,7 @@ export function useCharacterRoomSession(
       }
     }
     voice.setVolume(volume.value / 100)
+    void Promise.all([refreshChatStatus(), refreshVoiceStatus()])
     statusTimer = window.setInterval(() => {
       if (document.hidden) return
       if (!busy.value) void refreshChatStatus()

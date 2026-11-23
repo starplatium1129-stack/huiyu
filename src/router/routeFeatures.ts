@@ -22,7 +22,7 @@ export function prefetchDrawingResources(): void {
   if (drawingResourcePrefetch) return
   const current = import('@/stores/sceneStore').then(async ({ useSceneStore }) => {
     const store = useSceneStore()
-    await Promise.all([store.load(), store.loadPresetCatalog()])
+    await store.loadDrawingCatalog()
   })
   drawingResourcePrefetch = current
   void current.catch(error => {

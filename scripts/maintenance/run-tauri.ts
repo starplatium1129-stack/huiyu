@@ -5,6 +5,7 @@ import fs = require('node:fs');
 import development = require('../lib/rust-development');
 import nativeInputs = require('./desktop-rust-inputs');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
+import safe = require('../lib/delivery-paths');
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
@@ -70,7 +71,7 @@ async function runTauri(argv: string[]): Promise<number> {
   const fastDevelopment = mode === 'dev' && !cliArgs.includes('--release') && !customProfile;
   const refreshUi = fastDevelopment && cliArgs.includes('--refresh-ui');
   if (refreshUi) args.splice(args.indexOf('--refresh-ui'), 1);
-  return withWorkspaceLock({ workspaceRoot }, async () => {
+  const build = () => withWorkspaceLock({ workspaceRoot }, async () => {
     assertDesktopBuildEnvironment(workspaceRoot);
     if (mode === 'build') {
       // Packaging must refresh stale ignored products before either UI captures DATA_VERSION.
@@ -141,6 +142,7 @@ async function runTauri(argv: string[]): Promise<number> {
     }
     return result;
   });
+  return localBuild ? safe.withLocalFileHashes(build) : build();
 }
 
 if (require.main === module) {

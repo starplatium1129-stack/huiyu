@@ -30,8 +30,21 @@ export function proseToken(value: string): string {
   return readable.replace(/_/g, ' ').replace(/\b1girl\b/gi, 'one girl').replace(/\b1boy\b/gi, 'one man').replace(/\b2people\b/gi, 'two people').replace(/\bsolo\b/gi, 'alone')
 }
 
+// 纯函数结果缓存：批量编译会对同一词条反复规范化；超过上限整体清空，避免长会话无限增长。
+const PROSE_KEYS = new Map<string, string>()
+
 export function normalizeProseKey(value: string): string {
-  return String(value || '')
+  const input = String(value || '')
+  const cached = PROSE_KEYS.get(input)
+  if (cached !== undefined) return cached
+  if (PROSE_KEYS.size >= 20000) PROSE_KEYS.clear()
+  const key = computeProseKey(input)
+  PROSE_KEYS.set(input, key)
+  return key
+}
+
+function computeProseKey(input: string): string {
+  return input
     .replace(/^\(+|\)+$/g, '')
     .replace(/:\s*-?\d+(?:\.\d+)?\s*$/g, '')
     .trim()

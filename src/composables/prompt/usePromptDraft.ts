@@ -1,5 +1,5 @@
 import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
-import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
+import { normalizeDirectorSources } from '@/utils/promptDirector'
 import type { DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
 import type { SceneBlueprint } from '@/types/sceneBlueprint'
 import { profileLocalStorage as localStorage, writeProfileLocal } from '../../platform/web/profileStorage.ts'
@@ -27,6 +27,7 @@ export interface PromptDraftState {
   inheritedDirectorValues: ComputedRef<DirectorControlValues>
   sceneBlueprints: ComputedRef<SceneBlueprint[]>
   loadPopularCharacter: (id: string) => Promise<void>
+  loadPopularCatalog: () => Promise<void>
   manualTags: Ref<Set<string>>
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
@@ -175,10 +176,10 @@ export function usePromptDraft(state: PromptDraftState) {
       restoreParticipants.add(release)
       const { parsePromptBuilderDraft, restorePromptDraft } = await import('./promptBlueprintActions')
       const draft = parsePromptBuilderDraft(JSON.parse(raw))
-      // Old popular drafts have no saved baseline. Read it before inferring ownership once.
-      if (draft?.subject === 'popular' && draft.characterId && draft.blueprintId && !draft.sceneStyleBaseline
-        && DIRECTOR_CONTROL_KEYS.some(key => !draft.directorSources?.[key])) {
-        await state.loadPopularCharacter(draft.characterId)
+      // Load the character and scene baseline before restoring a saved popular draft.
+      if (draft?.subject === 'popular' && draft.characterId) {
+        if (draft.blueprintId) await state.loadPopularCharacter(draft.characterId)
+        else await state.loadPopularCatalog()
       }
       if (disposed || revision !== restoreRevision || !isCurrent() || !sameTempResultOwner(owner)
         || localStorage.getItem(DRAFT_KEY) !== raw || fingerprint() !== before) return false

@@ -4,23 +4,49 @@
 </template>
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { needsDocumentReload } from '@/router/documentPolicy'
 import { announceNavigationIntent, useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { playInterfaceTone } from '@/composables/useInterfaceFeedback'
 
+type NetworkHint = { saveData?: boolean; effectiveType?: string }
+const warmedRouteLoaders = new WeakSet<() => Promise<unknown>>()
+
+const router = useRouter()
 const { loading } = useNavigationFeedback()
 
-function announceLink(event: Event) {
-  const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
-  if (!el || (el.target && el.target.toLowerCase() !== '_self') || el.hasAttribute('download')) return
-  const url = new URL(el.href, location.href)
-  if (url.origin !== location.origin || url.href === location.href) return
-  announceNavigationIntent(import.meta.env.MODE === 'desktop' ? url.hash.slice(1) || '/' : `${url.pathname}${url.search}${url.hash}`)
+/** Warm only the route's JS/CSS module chunk on committed pointerdown intent (no catalog/data fetch). */
+function prefetchRouteChunk(path: string) {
+  const connection = (navigator as Navigator & { connection?: NetworkHint }).connection
+  if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? '')) return
+  const resolved = router.resolve(path)
+  if (!resolved.matched.length || resolved.name === 'not-found') return
+  if (import.meta.env.MODE !== 'desktop' && needsDocumentReload(router.currentRoute.value.path, resolved.path)) return
+  for (const record of resolved.matched) {
+    const component = record.components?.default
+    if (typeof component !== 'function') continue
+    const loader = component as () => Promise<unknown>
+    if (warmedRouteLoaders.has(loader)) continue
+    warmedRouteLoaders.add(loader)
+    void Promise.resolve().then(loader).catch(() => { warmedRouteLoaders.delete(loader) })
+  }
 }
-// Show press feedback immediately. Let the selected route load its own code
-// and catalogs, so moving across links or focusing a newly opened menu is cheap.
+
+function announceLink(event: Event): string | null {
+  const el = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null
+  if (!el || (el.target && el.target.toLowerCase() !== '_self') || el.hasAttribute('download')) return null
+  const url = new URL(el.href, location.href)
+  if (url.origin !== location.origin || url.href === location.href) return null
+  const destination = import.meta.env.MODE === 'desktop' ? url.hash.slice(1) || '/' : `${url.pathname}${url.search}${url.hash}`
+  announceNavigationIntent(destination)
+  return destination
+}
+// Show press feedback immediately and warm only the route JS chunk during pointerdown->click.
+// Never prefetch on hover/focus or pull catalog data here so traversing links stays free.
 function pointerActivate(event: PointerEvent) {
   if (event.button !== 0 || !event.isPrimary || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.defaultPrevented) return
-  announceLink(event)
+  const destination = announceLink(event)
+  if (destination) prefetchRouteChunk(destination)
 }
 function keyboardActivate(event: KeyboardEvent) {
   // Space scrolls a native link; modified Enter belongs to another browsing context.

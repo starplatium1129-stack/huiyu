@@ -151,6 +151,17 @@ export function useControlStatus({ showToast }: StatusHooks) {
     let n = 0
     if (voiceNeneRef.value.trim() && voiceNenePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNeneLora.value.trim()) && (ttsEngine.value !== 'gpt-sovits-native' || voiceNeneGpt.value.trim() && voiceNeneSovits.value.trim())) n += 1
     if (voiceNatsumeRef.value.trim() && voiceNatsumePrompt.value.trim() && (ttsEngine.value !== 'voxcpm2' || voiceNatsumeLora.value.trim()) && (ttsEngine.value !== 'gpt-sovits-native' || voiceNatsumeGpt.value.trim() && voiceNatsumeSovits.value.trim())) n += 1
+    const extra = (lastStatus?.restartRequired ? lastStatus.savedConfig?.voices : lastStatus?.voices) ?? {}
+    for (const [id, profile] of Object.entries(extra)) {
+      if (id === 'nene' || id === 'natsume' || !profile) continue
+      const hasPrompt = Boolean(profile.refAudioPath?.trim() && profile.promptText?.trim())
+      const hasWeights = ttsEngine.value === 'voxcpm2'
+        ? Boolean(profile.loraWeightsPath?.trim())
+        : ttsEngine.value === 'gpt-sovits-native'
+          ? Boolean(profile.gptWeightsPath?.trim() && profile.sovitsWeightsPath?.trim())
+          : true
+      if (hasPrompt && hasWeights) n += 1
+    }
     return n
   })
 

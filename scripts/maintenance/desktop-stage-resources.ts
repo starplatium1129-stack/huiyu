@@ -1,13 +1,15 @@
 'use strict';
-// Stage only Rust runtime inputs. Node/Vite are build tools, never shipped services.
+// Stage the Rust gateway and the tools that it launches on demand.
 import fs = require('node:fs');
 import path = require('node:path');
 import crypto = require('node:crypto');
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
 const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
-const { stageRemoteSceneRecipes }: typeof import('../lib/remote-scene-recipes') = require('../lib/remote-scene-recipes');
+import { stageRemoteSceneRecipes } from '../lib/remote-scene-recipe-cache';
+import { timeDesktopBuild } from '../lib/desktop-build-timing';
 const { includeAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 import safe = require('../lib/delivery-paths');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
@@ -60,6 +62,28 @@ function copyDir(src: string, dest: string, include: (file: string) => boolean =
     else throw Error(`Staging input is not a regular file: ${from}`);
   }
 }
+function stageQqSdk(root: string, gateway: string) {
+  const qq = path.join(gateway, 'qq-sdk');
+  const modules = path.join(qq, 'node_modules');
+  const sdkModule = safe.resolveSafe(root, 'node_modules/@tencent-connect/qqbot-nodejs');
+  const sdkTarget = path.join(modules, '@tencent-connect/qqbot-nodejs');
+  const resolveSdkDep = createRequire(path.join(sdkModule, 'package.json'));
+  const wsModule = path.dirname(resolveSdkDep.resolve('ws/package.json'));
+  const wsTarget = path.join(modules, 'ws');
+  fs.mkdirSync(qq, { recursive: true });
+  fs.copyFileSync(safe.resolveSafe(root, 'node_modules/node-win-x64/bin/node.exe'), path.join(qq, 'node.exe'));
+  fs.copyFileSync(safe.resolveSafe(root, 'tools/qq/Node-LICENSE.txt'), path.join(qq, 'Node-LICENSE.txt'));
+  fs.copyFileSync(safe.resolveSafe(root, 'scripts/maintenance/qq-sdk-worker.mjs'), path.join(qq, 'sdk-worker.mjs'));
+  copyDir(path.join(sdkModule, 'dist'), path.join(sdkTarget, 'dist'), file => fs.statSync(file).isDirectory() || file.endsWith('.js'));
+  copyDir(path.join(wsModule, 'lib'), path.join(wsTarget, 'lib'));
+  for (const name of ['package.json', 'LICENSE']) {
+    fs.copyFileSync(path.join(sdkModule, name), path.join(sdkTarget, name));
+    fs.copyFileSync(path.join(wsModule, name), path.join(wsTarget, name));
+  }
+  for (const name of ['index.js', 'wrapper.mjs', 'browser.js']) {
+    fs.copyFileSync(path.join(wsModule, name), path.join(wsTarget, name));
+  }
+}
 function resolveNpmInvocation() {
   const candidates = [process.env.npm_execpath, path.join(path.dirname(process.execPath), 'node_modules/npm/bin/npm-cli.js'),
     path.join(process.env.ProgramFiles || 'C:\\Program Files', 'nodejs/node_modules/npm/bin/npm-cli.js')];
@@ -78,13 +102,14 @@ function publishStage(tempStage: string, stage: string, logger: Logger) {
 // It lets a later installer distinguish retired application files from extras.
 function writeResourceInventory(stage: string) {
   const files: { path: string; bytes: number; sha256: string }[] = [];
+  const scan = safe.pathScan(stage);
   function visit(directory: string) {
     for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
       const file = path.join(directory, entry.name);
       if (entry.isDirectory()) visit(file);
       else if (entry.isFile()) {
         const relative = path.relative(stage, file).replaceAll('\\', '/');
-        const identity = safe.fileEntry(stage, relative);
+        const identity = safe.fileEntry(stage, relative, scan);
         if (identity.status !== 'file') throw Error(`Cannot inventory bundled resource: ${relative}`);
         files.push({ path: relative, bytes: identity.bytes, sha256: identity.sha256 });
       } else throw Error(`Bundled resource is not a regular file: ${file}`);
@@ -94,7 +119,7 @@ function writeResourceInventory(stage: string) {
   files.sort((a, b) => a.path.localeCompare(b.path, 'en'));
   fs.writeFileSync(path.join(stage, 'gateway/bundled-resource-inventory.json'), JSON.stringify({ schemaVersion: 1, kind: 'huiyu-bundled-resources', files }));
 }
-function stageResources(options: StageOptions = {}) {
+async function stageResources(options: StageOptions = {}) {
   const root = fs.realpathSync(options.root || ROOT), stage = path.resolve(options.stage || path.join(root, 'desktop-tauri/src-tauri/resources'));
   const rel = path.relative(root, stage).replaceAll('\\', '/');
   if (!rel || rel.startsWith('../') || path.isAbsolute(rel) || ['data', 'assets', 'dist', 'tools', 'docs', 'runtime-rs'].some(dir => rel === dir || rel.startsWith(dir + '/'))) throw Error('Staging destination must be an isolated child of workspace');
@@ -102,7 +127,7 @@ function stageResources(options: StageOptions = {}) {
   const logger = options.logger || console.log, profile = options.resourceProfile || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'full';
   if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
   const buildProfile = options.buildProfile || 'release';
-  runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
+  const runtime = runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
   const catalogRows = catalog.read(root);
   const catalogSnapshot = catalogRows !== null;
   for (const name of OFFLINE_TOOLS) {
@@ -113,7 +138,8 @@ function stageResources(options: StageOptions = {}) {
   const temporary = fs.mkdtempSync(`${stage}.tmp-${process.pid}-`), gateway = path.join(temporary, 'gateway');
   fs.mkdirSync(gateway);
   try {
-    const report = copyRustPayload(root, gateway, buildProfile);
+    const report = copyRustPayload(root, gateway, buildProfile, runtime);
+    stageQqSdk(root, gateway);
     fs.copyFileSync(safe.resolveSafe(root, 'desktop-tauri/src-tauri/installer/generated/HuiyuResourceCleanup.exe'), path.join(gateway, 'installer-resource-cleanup.exe'));
     for (const source of ENTRIES) {
       const from = safe.resolveSafe(root, source);
@@ -136,7 +162,11 @@ function stageResources(options: StageOptions = {}) {
     const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
     for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
-    if (catalogRows) logger(`[stage] 远程场景配方 ${stageRemoteSceneRecipes(root, gateway, catalogRows)} 条`);
+    if (catalogRows) {
+      const count = await timeDesktopBuild('remote scene recipes', () =>
+        stageRemoteSceneRecipes(root, gateway, catalogRows, buildProfile === 'desktop-local', logger));
+      logger(`[stage] 远程场景配方 ${count} 条`);
+    }
     writeResourceInventory(temporary);
     const after = runtimeBuild(root, buildProfile);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');

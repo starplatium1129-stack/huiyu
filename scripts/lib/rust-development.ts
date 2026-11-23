@@ -6,6 +6,19 @@ import { spawn, spawnSync } from 'node:child_process';
 const MSVC_LINKER = 'CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER';
 type DevelopmentCargo = { cargo: string; env: NodeJS.ProcessEnv };
 
+function bundledMsvcLinker(cwd: string, env: NodeJS.ProcessEnv, bin: string) {
+  if (process.platform !== 'win32' || process.arch !== 'x64') return;
+  const candidate = path.join(bin, 'rustc.exe');
+  const compiler = env.RUSTC || env.CARGO_BUILD_RUSTC || (fs.existsSync(candidate) ? candidate : 'rustc');
+  const options = { cwd, env, encoding: 'utf8', windowsHide: true } as const;
+  const version = spawnSync(compiler, ['-vV'], options);
+  if (version.status !== 0 || !/^host: x86_64-pc-windows-msvc$/m.test(version.stdout)) return;
+  const sysroot = spawnSync(compiler, ['--print', 'sysroot'], options);
+  if (sysroot.status !== 0 || !sysroot.stdout.trim()) return;
+  const linker = path.join(sysroot.stdout.trim(), 'lib/rustlib/x86_64-pc-windows-msvc/bin/rust-lld.exe');
+  if (fs.existsSync(linker)) return linker;
+}
+
 /** Defaults apply only to development children. Caller overrides remain authoritative. */
 function developmentCargo(manifest: string, cwd: string, source: NodeJS.ProcessEnv = process.env, defaultLinker: 'default' | 'lld' = 'default'): DevelopmentCargo {
   const env = { ...source };
@@ -25,14 +38,8 @@ function developmentCargo(manifest: string, cwd: string, source: NodeJS.ProcessE
     // overrides Cargo config's MSVC linker; use preference=default to retain it.
     if (env[MSVC_LINKER] !== undefined || Object.keys(env).some(key => /^(?:RUSTFLAGS|CARGO_ENCODED_RUSTFLAGS|CARGO_BUILD_RUSTFLAGS|CARGO_TARGET_.+_RUSTFLAGS)$/.test(key))) linker = 'custom';
     else if (preference === 'lld' && process.platform === 'win32' && process.arch === 'x64') {
-      const rustc = env.RUSTC || env.CARGO_BUILD_RUSTC || path.join(bin, 'rustc.exe');
-      const compiler = fs.existsSync(rustc) ? rustc : (env.RUSTC || env.CARGO_BUILD_RUSTC || 'rustc');
-      const version = spawnSync(compiler, ['-vV'], { cwd, env, encoding: 'utf8', windowsHide: true });
-      if (version.status === 0 && /host: x86_64-pc-windows-msvc/.test(version.stdout)) {
-        const sysroot = spawnSync(compiler, ['--print', 'sysroot'], { cwd, env, encoding: 'utf8', windowsHide: true });
-        const lld = path.join(sysroot.stdout?.trim() || '', 'lib/rustlib/x86_64-pc-windows-msvc/bin/rust-lld.exe');
-        if (sysroot.status === 0 && fs.existsSync(lld)) { env[MSVC_LINKER] = lld; linker = 'lld'; }
-      }
+      const lld = bundledMsvcLinker(cwd, env, bin);
+      if (lld) { env[MSVC_LINKER] = lld; linker = 'lld'; }
       if (linker !== 'lld') console.warn('[rust dev] Compatible bundled LLD unavailable; using the configured linker.');
     }
   }
@@ -81,4 +88,4 @@ async function buildDevelopmentRuntime(root: string, context?: DevelopmentCargo)
   return { executable, env: prepared.env };
 }
 
-export = { developmentCargo, buildDevelopmentRuntime };
+export = { developmentCargo, buildDevelopmentRuntime, bundledMsvcLinker };

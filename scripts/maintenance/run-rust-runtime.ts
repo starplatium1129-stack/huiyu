@@ -40,7 +40,18 @@ async function main(): Promise<void> {
     const selected = nativeInputs.SOURCES;
     const before = identity.snapshot(root, selected);
     if (before.status !== 'complete') throw new Error('Rust source identity is incomplete');
-    run(['build', '--manifest-path', manifest, '--locked', '--profile', profile]);
+    const flags = ['--manifest-path', manifest, '--locked', '--profile', profile];
+    const linkerFlags = [env.RUSTFLAGS, env.CARGO_ENCODED_RUSTFLAGS, env.CARGO_BUILD_RUSTFLAGS, env.CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS].join(' ');
+    const linker = profile === 'desktop-local' && !env.CARGO_BUILD_TARGET && !env.CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER
+      && !/\blinker(?:=|\s)/.test(linkerFlags)
+      ? development.bundledMsvcLinker(root, env, path.join(cargoHome, 'bin')) : undefined;
+    if (linker) {
+      console.log('[rust desktop-local] Linking huiyu-runtime with rust-lld');
+      // Applying the linker only to this binary preserves Cargo's dependency cache.
+      run(['rustc', ...flags, '--bin', 'huiyu-runtime', '--', '-C', `linker=${linker}`]);
+    } else {
+      run(['build', ...flags]);
+    }
     const source = identity.snapshot(root, selected);
     if (source.sha256 !== before.sha256) throw new Error('Rust sources changed during the build; rebuild the stable candidate');
     const executable = path.join(root, desktopRuntimeExecutable(profile));

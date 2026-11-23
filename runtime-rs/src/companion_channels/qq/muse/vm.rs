@@ -1,3 +1,4 @@
+use super::replies::{ReplyBody, submit_reply};
 use super::*;
 use std::{net::Ipv4Addr, sync::atomic::AtomicBool};
 use tokio::sync::Semaphore;
@@ -54,7 +55,10 @@ pub(super) async fn load(root: &Path) -> Result<Route> {
     let Some(config) = config(root).await? else {
         return Ok(Route::Pull);
     };
-    let callback = PeerConfig { peer: config.peer()?, names: config.nicknames };
+    let callback = PeerConfig {
+        peer: config.peer()?,
+        names: config.nicknames,
+    };
     if let Mode::Poll = config.mode {
         return Ok(Route::VmPoll(callback));
     }

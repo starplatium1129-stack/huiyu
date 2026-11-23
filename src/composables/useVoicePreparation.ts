@@ -11,6 +11,8 @@ export interface VoiceAvailability {
   needsTranslation?: boolean
   clientSide?: boolean
   voices?: Record<string, boolean>
+  voiceLabels?: Record<string, string>
+  voiceCatalogMap?: Record<string, string>
   translation?: { ready: boolean }
   activeVoice?: string
   streamingPcm?: boolean
@@ -38,6 +40,12 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
   const voices = isRecord(value.voices)
     ? Object.fromEntries(Object.entries(value.voices).map(([key, available]) => [key, Boolean(available)]))
     : {}
+  const voiceLabels = isRecord(value.voiceLabels)
+    ? Object.fromEntries(Object.entries(value.voiceLabels).filter(([, label]) => typeof label === 'string').map(([key, label]) => [key, String(label)]))
+    : undefined
+  const voiceCatalogMap = isRecord(value.voiceCatalogMap)
+    ? Object.fromEntries(Object.entries(value.voiceCatalogMap).filter(([, voice]) => typeof voice === 'string').map(([key, voice]) => [key, String(voice)]))
+    : undefined
   const translation = isRecord(value.translation)
     ? { ready: Boolean(value.translation.ready) }
     : undefined
@@ -48,6 +56,8 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
     needsTranslation: typeof value.needsTranslation === 'boolean' ? value.needsTranslation : undefined,
     clientSide: value.clientSide === true,
     voices,
+    voiceLabels,
+    voiceCatalogMap,
     translation,
     activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
     streamingPcm: value.streamingPcm === true,

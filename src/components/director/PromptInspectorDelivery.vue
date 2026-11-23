@@ -22,7 +22,7 @@
                 class="btn btn-ghost"
                 type="button"
                 :disabled="generationBusy"
-                @click="batchOpen = true"
+                @click="openBatch"
               >{{ batchRunning ? '批量进度' : '批量出图' }}</button>
             </StudioTooltip>
           </div>
@@ -38,7 +38,7 @@
 
           <VoiceStudio
             ref="voiceStudioRef"
-            :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
+            :initial-voice="pb.char || 'nene'"
             :suggested-caption="pb.activeScene?.story || pb.story"
           />
 
@@ -68,6 +68,10 @@ import DeferredPanel from '@/components/director/DeferredPanel.vue'
 
 const props = defineProps<{ bindings: PromptDeliveryBindings }>()
 const { voiceStudioRef, pb, generationBusy, legacyProgress, animaOnline, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, queuePausedReason, scenes, batchPanelDeps } = props.bindings
+async function openBatch() {
+  try { await batchPanelDeps.pb.loadPopularCatalog(); batchOpen.value = true }
+  catch { batchPanelDeps.pb.flash('批量绘制的角色资料暂时无法读取，请重试。') }
+}
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorDelivery.css"></style>

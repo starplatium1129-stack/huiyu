@@ -1,6 +1,19 @@
 /** Shared token and rating operations; no policy, diagnostics or platform dependencies. */
+// 纯函数结果缓存：批量编译会对同一词条反复规范化；超过上限整体清空，避免长会话无限增长。
+const NORMALIZED_KEYS = new Map<string, string>()
+
 export function normalizeKey(token: string): string {
-  return String(token || '')
+  const input = String(token || '')
+  const cached = NORMALIZED_KEYS.get(input)
+  if (cached !== undefined) return cached
+  if (NORMALIZED_KEYS.size >= 20000) NORMALIZED_KEYS.clear()
+  const key = computeNormalizedKey(input)
+  NORMALIZED_KEYS.set(input, key)
+  return key
+}
+
+function computeNormalizedKey(input: string): string {
+  return input
     .replace(/^\s*\[NEG\]\s*/i, '')
     .replace(/^\s*<lora:|>\s*$/gi, '')
     .replace(/^\s*\(+|\)+\s*$/g, '')

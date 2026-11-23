@@ -152,6 +152,7 @@ pub(super) async fn prepare(
         wait_ms: 0,
         protocol: Protocol::ResponsesSse(Box::new(context)),
         permit: None,
+        japanese_voice: false,
     })
 }
 
@@ -288,29 +289,26 @@ fn payload(input: Input, model: &str) -> Value {
         body["reasoning"] = json!({ "effort": input.reasoning });
     }
 
-    let mut raw_tools = persona::tools(input.tools, input.web_search);
-    if input.card_tools {
-        raw_tools.retain(|tool| {
-            matches!(
-                tool["function"]["name"].as_str(),
-                Some(
-                    "search_web"
-                        | "generate_character_image"
-                        | "search_drawing_catalog"
-                        | "generate_drawing_batch"
-                        | "generate_image_from_reference"
+    let raw_tools = if input.channel_tools {
+        persona::channel_tools(input.tools, input.channel_voice)
+    } else {
+        let mut raw_tools = persona::tools(input.tools, input.web_search);
+        if input.card_tools {
+            raw_tools.retain(|tool| {
+                matches!(
+                    tool["function"]["name"].as_str(),
+                    Some(
+                        "search_web"
+                            | "generate_character_image"
+                            | "search_drawing_catalog"
+                            | "generate_drawing_batch"
+                            | "generate_image_from_reference"
+                    )
                 )
-            )
-        });
-    }
-    if input.channel_tools {
-        raw_tools.retain(|tool| {
-            matches!(
-                tool["function"]["name"].as_str(),
-                Some("search_drawing_catalog" | "generate_drawing_batch")
-            )
-        });
-    }
+            });
+        }
+        raw_tools
+    };
     if !raw_tools.is_empty() {
         let tools: Vec<Value> = raw_tools
             .into_iter()

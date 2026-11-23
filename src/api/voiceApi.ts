@@ -84,13 +84,14 @@ export interface VoiceApi {
   translate(text: string, options?: VoiceCallOptions): Promise<TranslateResult>
   synthesize(payload: VoiceSynthesisPayload, options?: VoiceCallOptions): Promise<VoiceAudioResult>
   getSetupStatus(options?: VoiceCallOptions): Promise<VoiceSetupStatus>
-  importPack(payload: { folderPath: string; characterId?: 'nene' | 'natsume'; apply?: boolean }, options?: VoiceCallOptions): Promise<VoicePackImportResult>
+  importPack(payload: { folderPath: string; characterId?: string; displayName?: string; catalogId?: string; apply?: boolean }, options?: VoiceCallOptions): Promise<VoicePackImportResult>
+  removeProfile(id: string, options?: VoiceCallOptions): Promise<{ ok: true; removed: boolean }>
   testApi(payload: Partial<TtsApiPatch> & { voice?: string; text?: string }, options?: VoiceCallOptions): Promise<VoiceApiTestResult>
 }
 
 export const voiceApi: VoiceApi = {
   getStatus(options = {}) {
-    return apiClient.request<TtsStatus>('/api/tts-status', {
+    return apiClient.request<TtsStatus>('/api/tts-status?scope=room', {
       cache: 'no-store', signal: options.signal, timeoutMs: VOICE_API_TIMEOUTS.status,
       validate: isTtsStatus,
     })
@@ -122,6 +123,13 @@ export const voiceApi: VoiceApi = {
       method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
       timeoutMs: VOICE_API_TIMEOUTS.status,
       validate: value => value.ok === true && isObject(value.voices),
+    })
+  },
+  removeProfile(id, options = {}) {
+    return apiClient.request<{ ok: true; removed: boolean }>(`/api/voice/profiles/${encodeURIComponent(id)}`, {
+      method: 'DELETE', cache: 'no-store', signal: options.signal,
+      timeoutMs: VOICE_API_TIMEOUTS.status,
+      validate: value => value.ok === true && typeof value.removed === 'boolean',
     })
   },
   testApi(payload, options = {}) {

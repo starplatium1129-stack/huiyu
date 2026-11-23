@@ -1,160 +1,245 @@
 use super::*;
-use futures_util::SinkExt;
-use rustls::{ClientConfig, RootCertStore, crypto::aws_lc_rs};
-use tokio::net::TcpStream;
-use tokio_tungstenite::{
-    Connector, MaybeTlsStream, WebSocketStream, connect_async_tls_with_config,
-    tungstenite::{Message as Frame, protocol::WebSocketConfig},
+use crate::processes::Processes;
+use std::{
+    path::{Path, PathBuf},
+    process::Stdio,
+};
+use tokio::{
+    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
+    process::{ChildStdout, Command},
 };
 
-type Socket = WebSocketStream<MaybeTlsStream<TcpStream>>;
 type GatewayResult<T> = std::result::Result<T, &'static str>;
-const NEW_SESSION: &str = "QQ 长连接会话已失效，正在重新登录";
+const FRAME_LIMIT: u64 = 1024 * 1024;
+const WORKER_ERROR: &str = "QQ SDK 连接进程已退出，正在重试";
+const WORKER_UNAVAILABLE: &str = "QQ SDK 运行文件缺失或无法启动";
+const PIPE_WRITE_ERROR: &str = "无法向 QQ SDK 发送启动参数";
+const PIPE_READ_ERROR: &str = "无法读取 QQ SDK 事件";
+const PIPE_FRAME_ERROR: &str = "QQ SDK 事件格式无效";
+
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Session {
+    session_id: String,
+    last_seq: Option<u64>,
+}
 
 #[derive(Default)]
 pub(super) struct Resume {
-    session: Option<String>,
+    session: Option<Session>,
     bot_id: Option<String>,
-    sequence: Option<u64>,
     pub connected: bool,
 }
 
+#[derive(Deserialize)]
+#[serde(tag = "type", rename_all = "kebab-case")]
+enum Event {
+    Ready {
+        session: Session,
+        #[serde(rename = "botId")]
+        bot_id: Option<String>,
+    },
+    Resumed,
+    Reset,
+    Disconnected {
+        code: u16,
+    },
+    Failed {
+        code: u16,
+    },
+    Message {
+        kind: String,
+        sequence: Option<u64>,
+        data: Value,
+    },
+}
+
+#[allow(clippy::too_many_arguments)]
 pub(super) async fn connect(
     app: &AppState,
     storage: &Storage,
+    bot_id: &str,
     api: &Api,
     inboxes: &Inboxes,
     resume: &mut Resume,
+    processes: &Arc<Processes>,
+    cancel: &CancellationToken,
 ) -> GatewayResult<()> {
-    let address = api
-        .authenticated(api.client.get(format!("{API}/gateway")))
-        .await
-        .map_err(|error| match error.code.as_str() {
-            "QQ_CREDENTIALS" | "QQ_TOKEN_REJECTED" => "QQ 凭据验证失败，请核对 AppID 和 AppSecret",
-            "QQ_PERMISSION_DENIED" => "QQ 机器人缺少连接权限，请检查开放平台设置",
-            "QQ_RATE_LIMIT" => "QQ 连接请求已限频，正在稍后重试",
-            _ => "无法获取 QQ 长连接，请检查机器人权限和网络",
-        })?;
-    let address = address["url"]
-        .as_str()
-        .and_then(|value| url::Url::parse(value).ok())
-        .filter(|url| {
-            url.scheme() == "wss"
-                && matches!(url.host_str(), Some("api.bot.qq.com" | "api.sgroup.qq.com"))
-                && url.port().is_none_or(|port| port == 443)
-                && url.username().is_empty()
-                && url.password().is_none()
-        })
-        .ok_or("QQ 没有返回有效的长连接地址")?;
-    let config = WebSocketConfig::default()
-        .max_message_size(Some(512 * 1024))
-        .max_frame_size(Some(512 * 1024));
-    // The runtime links both Rustls providers, so choose one explicitly for QQ.
-    let roots = RootCertStore::from_iter(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
-    let tls = ClientConfig::builder_with_provider(Arc::new(aws_lc_rs::default_provider()))
-        .with_safe_default_protocol_versions()
-        .map_err(|_| CONNECTION_ERROR)?
-        .with_root_certificates(roots)
-        .with_no_client_auth();
-    let (mut socket, _) = tokio::time::timeout(
-        Duration::from_secs(12),
-        connect_async_tls_with_config(
-            address.as_str(),
-            Some(config),
-            false,
-            Some(Connector::Rustls(Arc::new(tls))),
-        ),
-    )
-    .await
-    .map_err(|_| CONNECTION_ERROR)?
-    .map_err(|_| CONNECTION_ERROR)?;
-    let hello = tokio::time::timeout(Duration::from_secs(12), read(&mut socket))
-        .await
-        .map_err(|_| CONNECTION_ERROR)??;
-    let interval = hello["d"]["heartbeat_interval"]
-        .as_u64()
-        .filter(|value| (1000..=180_000).contains(value))
-        .filter(|_| hello["op"] == 10)
-        .ok_or(CONNECTION_ERROR)?;
-    let token = api.token().await.map_err(|_| "无法取得 QQ 登录凭据")?;
-    let credentials = format!("QQBot {token}");
-    let sign_in = match (resume.session.as_ref(), resume.sequence) {
-        (Some(session), Some(sequence)) => {
-            json!({"op":6,"d":{"token":credentials,"session_id":session,"seq":sequence}})
-        }
-        _ => json!({"op":2,"d":{"token":credentials,"intents":1_u32 << 25,"shard":[0,1]}}),
+    let (node, script) = if app.config.is_packaged() {
+        let helper = app.config.app_root.join("qq-sdk");
+        (helper.join("node.exe"), helper.join("sdk-worker.mjs"))
+    } else {
+        (
+            PathBuf::from("node"),
+            app.config
+                .app_root
+                .join("scripts/maintenance/qq-sdk-worker.mjs"),
+        )
     };
-    write(&mut socket, &sign_in).await?;
-    let mut heartbeat = tokio::time::interval_at(
-        Instant::now() + Duration::from_millis(interval),
-        Duration::from_millis(interval),
-    );
-    let mut awaiting_ack = false;
-    let authentication = tokio::time::sleep(Duration::from_secs(20));
-    tokio::pin!(authentication);
-    let mut ready = false;
+    if !script.is_file() || (app.config.is_packaged() && !node.is_file()) {
+        return Err(WORKER_UNAVAILABLE);
+    }
+    let directory = script.parent().ok_or(WORKER_UNAVAILABLE)?;
+    let filename = script.file_name().ok_or(WORKER_UNAVAILABLE)?;
+    let mut command = Command::new(node);
+    command
+        .current_dir(node_directory(directory))
+        .arg(filename)
+        .env_remove("NODE_OPTIONS")
+        .env_remove("NODE_PATH")
+        .env_remove("NODE_V8_COVERAGE")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null());
+    let process = processes
+        .spawn(&mut command)
+        .map_err(|_| WORKER_UNAVAILABLE)?;
+    let mut input = process.take_input().ok_or(WORKER_UNAVAILABLE)?;
+    let (output, _) = process.take_output();
+    let mut output = BufReader::new(output.ok_or(WORKER_UNAVAILABLE)?);
+    let mut start = serde_json::to_vec(&json!({
+        "appId": api.app_id,
+        "appSecret": api.secret,
+        "session": resume.session,
+    }))
+    .map_err(|_| WORKER_UNAVAILABLE)?;
+    start.push(b'\n');
+    let result = tokio::select! {
+        _ = cancel.cancelled() => Ok(()),
+        result = async {
+            tokio::time::timeout(Duration::from_secs(5), async {
+                input.write_all(&start).await?;
+                input.flush().await
+            }).await.map_err(|_| PIPE_WRITE_ERROR)?.map_err(|_| PIPE_WRITE_ERROR)?;
+            follow(app, storage, bot_id, api, inboxes, resume, &mut output).await
+        } => result,
+    };
+    if let Err(detail) = result
+        && let Ok(Some(status)) = process.exit_status()
+    {
+        eprintln!("QQ SDK 进程退出（{bot_id}）：{detail}，{status}");
+    }
+    // Closing the pipe tells Node to stop the SDK. Reap it before allowing a retry.
+    drop(input);
+    if process.stop().await.is_err() {
+        let detail = "QQ SDK 进程退出未确认，请重启绘遇后再试";
+        app.channels.report(storage, bot_id, "error", Some(detail));
+        cancel.cancel();
+        return Err(detail);
+    }
+    result
+}
+
+fn node_directory(directory: &Path) -> Cow<'_, Path> {
+    // Node's main-module lookup on Windows cannot resolve a verbatim cwd.
+    #[cfg(windows)]
+    if let Some(directory) = directory.to_str() {
+        if let Some(unc) = directory.strip_prefix(r"\\?\UNC\") {
+            return Cow::Owned(PathBuf::from(format!(r"\\{unc}")));
+        }
+        if let Some(drive) = directory.strip_prefix(r"\\?\") {
+            return Cow::Borrowed(Path::new(drive));
+        }
+    }
+    Cow::Borrowed(directory)
+}
+
+async fn follow(
+    app: &AppState,
+    storage: &Storage,
+    bot_id: &str,
+    api: &Api,
+    inboxes: &Inboxes,
+    resume: &mut Resume,
+    output: &mut BufReader<ChildStdout>,
+) -> GatewayResult<()> {
+    let mut startup = Some(Instant::now() + Duration::from_secs(65));
+    let mut line = Vec::new();
     loop {
-        tokio::select! {
-            _ = &mut authentication, if !ready => {
+        line.clear();
+        let mut limited = (&mut *output).take(FRAME_LIMIT);
+        let read = limited.read_until(b'\n', &mut line);
+        let bytes = if let Some(deadline) = startup {
+            tokio::time::timeout_at(deadline, read)
+                .await
+                .map_err(|_| "QQ SDK 登录超时，正在重连")?
+        } else {
+            read.await
+        }
+        .map_err(|_| PIPE_READ_ERROR)?;
+        if bytes == 0 {
+            return Err(WORKER_ERROR);
+        }
+        if line.last() != Some(&b'\n') {
+            return Err(PIPE_FRAME_ERROR);
+        }
+        match serde_json::from_slice::<Event>(&line).map_err(|_| PIPE_FRAME_ERROR)? {
+            Event::Ready { session, bot_id } => {
+                resume.session = Some(session);
+                resume.bot_id = bot_id.filter(|id| open_id(&json!(id)).is_some());
+            }
+            Event::Resumed => {}
+            Event::Reset => {
                 resume.session = None;
-                resume.sequence = None;
-                return Err("QQ 长连接登录超时，请检查机器人消息权限");
+                continue;
             }
-            _ = heartbeat.tick() => {
-                if awaiting_ack { return Err(CONNECTION_ERROR); }
-                write(&mut socket, &json!({"op":1,"d":resume.sequence})).await?;
-                awaiting_ack = true;
+            Event::Disconnected { code } => {
+                app.channels
+                    .report(storage, bot_id, "connecting", Some(disconnect_detail(code)));
+                continue;
             }
-            event = read(&mut socket) => {
-                let event = event.inspect_err(|detail| {
-                    if *detail == NEW_SESSION {
-                        resume.session = None;
-                        resume.sequence = None;
-                    }
-                })?;
-                match event["op"].as_u64() {
-                    Some(0) => {
-                        match event["t"].as_str() {
-                            Some("READY") => {
-                                resume.session = event["d"]["session_id"].as_str().map(str::to_owned);
-                                resume.bot_id = open_id(&event["d"]["user"]["id"]).map(str::to_owned);
-                                ready = true;
-                            }
-                            Some("RESUMED") => ready = true,
-                            Some(kind @ ("GROUP_AT_MESSAGE_CREATE" | "GROUP_MESSAGE_CREATE" | "C2C_MESSAGE_CREATE")) => {
-                                queue_message(kind, &event, resume.bot_id.as_deref(), inboxes, api)?;
-                            }
-                            _ => {}
-                        }
-                        if ready && !resume.connected {
-                            resume.connected = true;
-                            app.channels.report(storage, "online", None);
-                            eprintln!("QQ WebSocket 已连接");
-                        }
-                        if let Some(sequence) = event["s"].as_u64() { resume.sequence = Some(sequence); }
-                    }
-                    Some(1) => write(&mut socket, &json!({"op":1,"d":resume.sequence})).await?,
-                    Some(7) => return Ok(()),
-                    Some(9) => {
-                        if event["d"] != true { resume.session = None; resume.sequence = None; }
-                        return Err(NEW_SESSION);
-                    }
-                    Some(11) => awaiting_ack = false,
-                    _ => {}
+            Event::Failed { code } => return Err(disconnect_detail(code)),
+            Event::Message {
+                kind,
+                sequence,
+                data,
+            } => {
+                queue_message(
+                    &kind,
+                    &data,
+                    sequence,
+                    resume.bot_id.as_deref(),
+                    inboxes,
+                    api,
+                    |scope, code| {
+                        app.channels.pair_code(storage, bot_id, scope).0.as_deref() == Some(code)
+                    },
+                )?;
+                if let Some(session) = &mut resume.session
+                    && sequence > session.last_seq
+                {
+                    session.last_seq = sequence;
                 }
+                continue;
             }
         }
+        startup = None;
+        app.channels.report(storage, bot_id, "online", None);
+        if !resume.connected {
+            resume.connected = true;
+            eprintln!("QQ WebSocket 已连接（{bot_id}，腾讯 SDK）");
+        }
+    }
+}
+
+fn disconnect_detail(code: u16) -> &'static str {
+    match code {
+        4004 => "QQ 登录凭据无效，请检查开放平台设置",
+        4013 | 4014 => "QQ 机器人缺少消息权限，请检查开放平台设置",
+        4914 | 4915 => "QQ 机器人当前无法连接，请检查开放平台状态",
+        _ => CONNECTION_ERROR,
     }
 }
 
 fn queue_message(
     kind: &str,
-    event: &Value,
+    data: &Value,
+    sequence: Option<u64>,
     bot_id: Option<&str>,
     inboxes: &Inboxes,
     api: &Api,
+    can_pair: impl FnOnce(QqScope, &str) -> bool,
 ) -> GatewayResult<()> {
-    let data = &event["d"];
     let log = |stage: &str, detail: &str| {
         if kind.starts_with("GROUP_") {
             let tag = event_message_id(data)
@@ -168,7 +253,7 @@ fn queue_message(
                 .as_deref()
                 .zip(member)
                 .map(|(group, member)| muse_sender_id(group, member));
-            let sequence = event["s"].as_u64();
+
             eprintln!(
                 "QQ 入站 type={kind} seq={sequence:?} group={:.12} sender={:.12} msg={tag} stage={stage} detail={detail}",
                 group.as_deref().unwrap_or("-"),
@@ -176,14 +261,45 @@ fn queue_message(
             );
         }
     };
-    let message = match Message::parse(kind, data, bot_id, inboxes) {
+    let message = match Message::parse(kind, data, bot_id, inboxes, api) {
         Ok(message) => message,
         Err(reason) => {
             log("filtered", reason);
             return Ok(());
         }
     };
-    let (inbox, route) = inboxes.for_message(&message);
+    if let Some((scope, code)) = message.pairing_request() {
+        if scope != message.scope || !can_pair(scope, code) {
+            log("filtered", "invalid-pairing");
+            return Ok(());
+        }
+    } else if !inboxes
+        .bindings
+        .read()
+        .unwrap()
+        .allows(message.destination())
+    {
+        log("filtered", "unbound");
+        return Ok(());
+    }
+    if message.scope == QqScope::Group
+        && !message.to_muse
+        && let Some(activity) = &inboxes.ambient
+    {
+        activity.observe(&message);
+        if message.ambient {
+            log("observed", "local-group-conversation");
+            return Ok(());
+        }
+    }
+    let (inbox, mut route) = inboxes.for_message(&message);
+    if route == "local-group" && !message.ambient {
+        route = if message.quoted.is_some() {
+            "local-group-quote"
+        } else {
+            "local-group-mention"
+        };
+    }
     // Advance the resume sequence only after a message is queued or deliberately filtered.
     match inbox.try_send(message) {
         Ok(()) => log("queued", route),
@@ -197,34 +313,4 @@ fn queue_message(
         }
     }
     Ok(())
-}
-
-async fn write(socket: &mut Socket, json: &Value) -> GatewayResult<()> {
-    tokio::time::timeout(
-        Duration::from_secs(8),
-        socket.send(Frame::Text(json.to_string().into())),
-    )
-    .await
-    .map_err(|_| CONNECTION_ERROR)?
-    .map_err(|_| CONNECTION_ERROR)
-}
-
-async fn read(socket: &mut Socket) -> GatewayResult<Value> {
-    loop {
-        match socket.next().await {
-            Some(Ok(Frame::Text(text))) => {
-                return serde_json::from_str(&text).map_err(|_| CONNECTION_ERROR);
-            }
-            Some(Ok(Frame::Close(close))) => {
-                return Err(match close.map(|close| u16::from(close.code)) {
-                    Some(4006 | 4007 | 4900..=4913) => NEW_SESSION,
-                    Some(4013 | 4014) => "QQ 机器人缺少消息权限，请检查开放平台设置",
-                    Some(4914 | 4915) => "QQ 机器人当前无法连接，请检查开放平台状态",
-                    _ => CONNECTION_ERROR,
-                });
-            }
-            Some(Ok(_)) => {}
-            _ => return Err(CONNECTION_ERROR),
-        }
-    }
 }

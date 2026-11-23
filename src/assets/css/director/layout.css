@@ -115,11 +115,10 @@
   .pb.journal-workspace[data-director-mode] .col-left { @apply tw:static; max-height: none; @apply tw:min-h-0 tw:overflow-clip; }
   .pb.journal-workspace[data-director-mode] .col-center { @apply tw:min-h-0; }
   .pb.journal-workspace[data-director-mode] .director-inspector { grid-area: inspector; @apply tw:min-h-0; }
-  /* Both empty and finished states share the same frame and compact action row. */
+  /* Let the canvas and its footer fit inside the available desktop height. */
   .pb.journal-workspace[data-director-mode] .stage-slot {
     flex: 1;
-    @apply tw:min-h-0 tw:overflow-hidden tw:grid;
-    grid-template-rows:auto minmax(0,1fr);
+    min-height:0;
   }
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
@@ -129,19 +128,21 @@
 
 /* Keep the canvas frame in the route while its image tools load on demand. */
 .pb .stage-slot { position:relative; }
-.pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-stage); background:var(--bg-deep); }
-.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(18rem,60dvh,48rem); container:drawing-stage / size; background:var(--bg-deep); }
+.pb.atelier-workspace .stage-slot {
+  display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto;
+  overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-stage); background:var(--bg-deep);
+}
+.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(18rem,60dvh,48rem); container:drawing-stage / size; }
 .pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); }
 .pb.atelier-workspace .canvas-heading>div { display:flex; align-items:center; gap:var(--s-2); min-width:0; }
-.pb.atelier-workspace .canvas-heading strong { font-size:inherit; font-weight:600; overflow-wrap:anywhere; }
+.pb.atelier-workspace .canvas-heading strong { min-width:0; font-size:inherit; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .pb.atelier-workspace .canvas-heading>div>span { font-size:var(--fs-label-xs); color:var(--text-muted); border-left:1px solid var(--border-soft); padding-left:var(--s-2); }
 .pb.atelier-workspace .canvas-heading .archive-icon { width:var(--fs-title-sm); height:var(--fs-title-sm); }
-.pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:var(--fs-label); }
+.pb.atelier-workspace .canvas-heading button { flex:none; white-space:nowrap; font-size:var(--fs-label); }
 .pb .director-canvas-loading { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--s-4); padding:var(--s-5); color:var(--text-secondary); }
 .director-canvas-loading p { margin:0; font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .director-canvas-loading-actions { visibility:hidden; }
 @media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
-@media (max-width:1023px) { .pb.atelier-workspace .stage-slot { display:grid; grid-template-rows:auto minmax(0,1fr); } }
 @container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading>div>span { display:none; } }
 
 @media (min-width:1024px) {

@@ -163,17 +163,20 @@
         </div>
         <div class="voice-field">
           <label :for="ids.targetChar">目录归属角色</label>
-          <StudioSelect :id="ids.targetChar" v-model="packTargetChar" label="目录归属角色"
-            :options="[
-              { value: 'auto', label: '自动识别（含 profiles.json 或 宁宁/夏目 子目录）' },
-              { value: 'nene', label: '导入为 绫地宁宁 声线' },
-              { value: 'natsume', label: '导入为 四季夏目 声线' },
-            ]" />
+          <StudioSelect
+            :id="ids.targetChar"
+            v-model="packTargetChar"
+            label="目录归属角色"
+            :groups="packTargetGroups"
+            searchable
+            search-placeholder="搜索角色名或角色 ID…"
+            empty-text="没有找到匹配的角色"
+          />
         </div>
         <div class="voice-field voice-field-span">
           <label :for="ids.packPath">语音包文件夹路径</label>
           <div class="voice-key-row">
-            <input :id="ids.packPath" v-model.trim="packFolderPath" class="input input-mono" type="text" placeholder="例如 D:\AI\VoicePacks\nene" spellcheck="false" />
+            <input :id="ids.packPath" v-model.trim="packFolderPath" class="input input-mono" type="text" placeholder="例如 E:\code\2\lora\AI\Voice\models\roxy\v2ProPlus\Roxy3.0" spellcheck="false" />
             <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" :disabled="packBusy || saving" @click="pickPackFolder">
               <ArchiveIcon name="folder" />选择文件夹
             </button>
@@ -199,21 +202,45 @@
           <li v-for="file in packPreview.detectedFiles" :key="file"><code>{{ file }}</code></li>
         </ul>
         <p v-for="warn in packPreview.warnings" :key="warn" class="voice-warn">{{ warn }}</p>
+        <div v-if="packPreview.warnings.length" class="voice-field voice-prompt-override">
+          <label :for="ids.packPrompt">参考音频台词（若包内缺少 .txt，可在此补填后直接导入）</label>
+          <input :id="ids.packPrompt" v-model.trim="packPromptOverride" class="input" type="text" placeholder="填入参考音频对应的日文/中文原台词" spellcheck="false" />
+        </div>
       </div>
 
-      <details class="voice-diagnostics">
-        <StudioDisclosureSummary>工作区本地环境检查清单与受管语音包说明</StudioDisclosureSummary>
+      <details class="voice-diagnostics" open>
+        <StudioDisclosureSummary>已配置的本地角色声线（{{ profileEntries.filter(p => p.ready).length }} / {{ profileEntries.length }} 就绪）与运行环境检查</StudioDisclosureSummary>
         <div class="voice-diag-body" data-disclosure-content>
+          <ul v-if="profileEntries.length" class="voice-check-list">
+            <li v-for="entry in profileEntries" :key="entry.id" class="voice-profile-row">
+              <div class="voice-profile-main">
+                <ArchiveIcon :name="entry.ready ? 'success' : entry.configured ? 'warning' : 'info'" />
+                <span>
+                  <strong>{{ entry.displayName }}</strong>
+                  <code class="voice-profile-id">{{ entry.id }}</code>
+                  <span v-if="entry.catalogId" class="voice-profile-meta"> · 绑定 {{ entry.catalogId }}</span>
+                  <span class="voice-profile-meta"> · {{ entry.ready ? '模型与参考音频就绪' : entry.configured ? '已配置，部分本地文件未找到' : '未配置' }}</span>
+                </span>
+              </div>
+              <button
+                v-if="!entry.builtin"
+                class="btn btn-quiet btn-sm"
+                type="button"
+                :disabled="removingProfileId === entry.id || saving"
+                @click="removeVoiceProfile(entry.id)"
+              >
+                {{ removingProfileId === entry.id ? '移除中…' : '移除' }}
+              </button>
+            </li>
+          </ul>
           <ul v-if="setupStatus" class="voice-check-list">
             <li><ArchiveIcon :name="setupStatus.checks.gptSovitsEnv ? 'success' : 'warning'" /><span>GPT-SoVITS-env Python：{{ setupStatus.checks.gptSovitsEnv ? '已发现' : '未发现' }}</span></li>
             <li><ArchiveIcon :name="setupStatus.checks.gptSovitsDir ? 'success' : 'warning'" /><span>GPT-SoVITS 源码目录：{{ setupStatus.checks.gptSovitsDir ? '已发现' : '未发现' }}</span></li>
             <li><ArchiveIcon :name="setupStatus.checks.ttsInferConfig ? 'success' : 'warning'" /><span>tts_infer.yaml 配置：{{ setupStatus.checks.ttsInferConfig ? '已发现' : '未发现' }}</span></li>
             <li><ArchiveIcon :name="setupStatus.checks.voxcpmDir ? 'success' : 'info'" /><span>VoxCPM 目录：{{ setupStatus.checks.voxcpmDir ? '已发现' : '未安装（可选）' }}</span></li>
-            <li><ArchiveIcon :name="setupStatus.profiles.nene.configured ? 'success' : 'info'" /><span>宁宁声线：{{ setupStatus.profiles.nene.configured ? '已配置' : '未配置' }}</span></li>
-            <li><ArchiveIcon :name="setupStatus.profiles.natsume.configured ? 'success' : 'info'" /><span>夏目声线：{{ setupStatus.profiles.natsume.configured ? '已配置' : '未配置' }}</span></li>
           </ul>
           <p class="control-section-note">
-            在线语音包清单（<code>tools/voice/managed-voice-packs.json</code>）：{{ setupStatus?.packs?.length ? `已登记 ${setupStatus.packs.length} 个语音包` : '暂未公布可一键下载的公开语音包，目前请通过上方文件夹选择器导入本地语音包，或直接使用「系统朗读 / 云端语音接口」。' }}
+            在线语音包清单（<code>tools/voice/managed-voice-packs.json</code>）：{{ setupStatus?.packs?.length ? `已登记 ${setupStatus.packs.length} 个语音包` : '支持通过上方「目录归属角色 + 文件夹选择器」导入任意社区现成的 GPT-SoVITS 语音包（含 .ckpt / .pth 与参考音频）。' }}
           </p>
         </div>
       </details>
@@ -241,9 +268,10 @@ const {
   currentEngine, currentEngineLabel, activeModeGroup, localEngine, speechSupported, systemPreviewBusy,
   apiBaseUrl, apiKey, showApiKey, clearApiKey, apiModel, apiVoiceNene, apiVoiceNatsume, apiDefaultVoice,
   apiFormat, hasSavedApiKey, apiTesting, testAudioUrl, desktop,
-  packFolderPath, packTargetChar, packBusy, packPreview,
+  packFolderPath, packTargetChar, packTargetGroups, packPromptOverride, packBusy, packPreview,
+  profileEntries, removingProfileId,
   refreshSetup, applyEngine, previewSystemCharacter, applyApiPreset, saveOpenAiTts, testOpenAiTts,
-  pickPackFolder, scanOrApplyPack,
+  pickPackFolder, scanOrApplyPack, removeVoiceProfile,
 } = useVoiceConfigPanel()
 
 const selectedView = ref<'system' | 'openai-tts' | 'local' | 'off'>(activeModeGroup.value)
@@ -261,6 +289,7 @@ const ids = {
   localEngine: useId(),
   targetChar: useId(),
   packPath: useId(),
+  packPrompt: useId(),
 }
 </script>
 
@@ -298,5 +327,10 @@ const ids = {
 .voice-check-list .archive-icon { width:16px; height:16px; flex-shrink:0; }
 .voice-diagnostics { border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
 .voice-diag-body { display:grid; gap:var(--s-3); padding-top:var(--s-3); }
+.voice-prompt-override { margin-top:var(--s-3); }
+.voice-profile-row { justify-content:space-between; gap:var(--s-3); }
+.voice-profile-main { display:flex; align-items:center; gap:var(--s-2); min-width:0; }
+.voice-profile-id { margin-left:var(--s-2); padding:1px var(--s-2); border-radius:var(--r-sm); background:var(--bg-surface); font-size:var(--fs-label-xs); }
+.voice-profile-meta { color:var(--text-tertiary); font-size:var(--fs-label-xs); }
 @media (max-width:768px) { .voice-mode-grid, .voice-form-grid { grid-template-columns:1fr; } }
 </style>

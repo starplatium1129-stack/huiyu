@@ -64,3 +64,6 @@ opt-level = 2
 lto = "off"
 codegen-units = 16
 incremental = true
+
+[profile.desktop-local.package.huiyu-runtime]
+codegen-units = 256

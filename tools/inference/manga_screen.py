@@ -13,13 +13,47 @@ def print_screen(cover, pitch):
     """Page-aligned AM dots for a coverage map, rendered 3x supersampled so dots are round."""
     h, w = cover.shape
     s = 3
-    y, x = np.mgrid[0:h * s, 0:w * s].astype(np.float32)
+    hs, ws = h * s, w * s
     a = np.deg2rad(ANGLE)
-    u = (x * np.cos(a) + y * np.sin(a)) / (pitch * s)
-    v = (-x * np.sin(a) + y * np.cos(a)) / (pitch * s)
-    spot = 1 - (np.cos(2 * np.pi * u) + np.cos(2 * np.pi * v) + 2) / 4
-    c = cv2.resize(cover, (w * s, h * s), interpolation=cv2.INTER_LINEAR)
-    return cv2.resize((spot < c).astype(np.float32), (w, h), interpolation=cv2.INTER_AREA) > 0.5
+    scale = (2.0 * np.pi) / (pitch * s)
+    alpha = scale * np.cos(a)
+    beta = scale * np.sin(a)
+    xs = np.arange(ws, dtype=np.float64)
+    ys = np.arange(hs, dtype=np.float64)
+    c = cv2.resize(cover, (ws, hs), interpolation=cv2.INTER_LINEAR)
+    out = np.empty((h, w), dtype=bool)
+    band_rows = 128
+    if ANGLE == 45.0:
+        # cos(k*y + k*x) + cos(k*y - k*x) == 2*cos(k*y)*cos(k*x); avoids 3x*3x 2D trig grids.
+        cos_x = np.cos(alpha * xs).astype(np.float32)
+        neg_half_cos_y = (-0.5 * np.cos(alpha * ys)).astype(np.float32)
+        for y0 in range(0, h, band_rows):
+            y1 = min(h, y0 + band_rows)
+            spot = np.float32(0.5) + neg_half_cos_y[y0 * s:y1 * s, None] * cos_x[None, :]
+            hits = (spot < c[y0 * s:y1 * s]).reshape(y1 - y0, s, w, s)
+            out[y0:y1] = hits.sum(axis=(1, 3), dtype=np.uint8) >= 5
+    else:
+        cos_ax = np.cos(alpha * xs).astype(np.float32)
+        sin_ax = np.sin(alpha * xs).astype(np.float32)
+        cos_bx = np.cos(beta * xs).astype(np.float32)
+        sin_bx = np.sin(beta * xs).astype(np.float32)
+        cos_ay = np.cos(alpha * ys).astype(np.float32)
+        sin_ay = np.sin(alpha * ys).astype(np.float32)
+        cos_by = np.cos(beta * ys).astype(np.float32)
+        sin_by = np.sin(beta * ys).astype(np.float32)
+        for y0 in range(0, h, band_rows):
+            y1 = min(h, y0 + band_rows)
+            ys_slice = slice(y0 * s, y1 * s)
+            cos_sum = (
+                cos_by[ys_slice, None] * cos_ax[None, :]
+                - sin_by[ys_slice, None] * sin_ax[None, :]
+                + cos_ay[ys_slice, None] * cos_bx[None, :]
+                + sin_ay[ys_slice, None] * sin_bx[None, :]
+            )
+            spot = np.float32(0.5) - np.float32(0.25) * cos_sum
+            hits = (spot < c[ys_slice]).reshape(y1 - y0, s, w, s)
+            out[y0:y1] = hits.sum(axis=(1, 3), dtype=np.uint8) >= 5
+    return out
 
 
 def ink_layer(L, k):
@@ -56,26 +90,36 @@ def tone_plan(V, k, white, split, black, min_region=600):
     melt into their surroundings, so every tone is a deliberate flat area."""
     level = cv2.medianBlur(np.digitize(-V, [-white, -split, -black]).astype(np.uint8), int(11 * k) | 1)
     for lv in (1, 2, 3, 0):
-        _, lab, st, _ = cv2.connectedComponentsWithStats((level == lv).astype(np.uint8), connectivity=4)
+        mask = level == lv
+        if not mask.any():
+            continue
+        _, lab, st, _ = cv2.connectedComponentsWithStats(mask.view(np.uint8), connectivity=4)
         small = st[:, cv2.CC_STAT_AREA] < min_region * k * k
         small[0] = False
         hole = small[lab]
         if hole.any():
-            fill = cv2.medianBlur(np.where(hole, 255, level).astype(np.uint8), int(21 * k) | 1)
-            level = np.where(hole & (fill != 255), fill, level).astype(np.uint8)
+            fill = cv2.medianBlur(np.where(hole, np.uint8(255), level), int(21 * k) | 1)
+            replace = hole & (fill != 255)
+            level[replace] = fill[replace]
     return level
 
 
 def region_spread(level, V):
     """Standard deviation of V inside each flat region of the plan: a region that hides a gradient spreads wide."""
-    out = np.zeros_like(V)
+    out = np.zeros(V.shape, dtype=np.float32)
+    v_flat = V.ravel()
+    v2_flat = v_flat * v_flat
     for lv in range(4):
-        n, lab = cv2.connectedComponents((level == lv).astype(np.uint8), connectivity=4)
-        cnt = np.maximum(np.bincount(lab.ravel(), minlength=n), 1)
-        mean = np.bincount(lab.ravel(), V.ravel(), minlength=n) / cnt
-        std = np.sqrt(np.maximum(np.bincount(lab.ravel(), (V * V).ravel(), minlength=n) / cnt - mean * mean, 0))
-        out = np.where(level == lv, std[lab], out)
-    return out.astype(np.float32)
+        mask = level == lv
+        if not mask.any():
+            continue
+        n, lab = cv2.connectedComponents(mask.view(np.uint8), connectivity=4)
+        flat = lab.ravel()
+        cnt = np.maximum(np.bincount(flat, minlength=n), 1)
+        mean = np.bincount(flat, v_flat, minlength=n) / cnt
+        std = np.sqrt(np.maximum(np.bincount(flat, v2_flat, minlength=n) / cnt - mean * mean, 0)).astype(np.float32)
+        out[mask] = std[lab[mask]]
+    return out
 
 
 def white_cut(candidates, k):
@@ -127,8 +171,11 @@ def noise(h, w, scales, seed):
     rng = np.random.default_rng(seed)
     out = np.zeros((h, w), np.float32)
     for s, amp in scales:
-        n = rng.standard_normal((max(2, h // s), max(2, w // s))).astype(np.float32)
-        out += amp * cv2.resize(n, (w, h), interpolation=cv2.INTER_CUBIC)
+        nh, nw = max(2, h // s), max(2, w // s)
+        n = rng.standard_normal((nh, nw)).astype(np.float32)
+        if nh != h or nw != w:
+            n = cv2.resize(n, (w, h), interpolation=cv2.INTER_CUBIC)
+        out += amp * n
     return out
 
 
@@ -154,5 +201,7 @@ def print_look(ink, paper, strength, k):
         a = np.clip((cv2.GaussianBlur(a, (0, 0), 0.6 * k * strength) - 0.35) / 0.4, 0, 1)
         a *= 1 - 0.05 * strength * (0.5 + 0.5 * np.tanh(noise(h, w, [(int(64 * k), 1.0), (int(16 * k), 0.5)], 1)))
     rgb, fibre = PAPERS[paper]
-    base = np.float32(rgb)[None, None] + fibre * noise(h, w, [(3, 1.0), (1, 0.6)], 2)[..., None]
+    base = np.float32(rgb)[None, None]
+    if fibre:
+        base = base + fibre * noise(h, w, [(3, 1.0), (1, 0.6)], 2)[..., None]
     return np.clip(base * (1 - a[..., None]) + INK_RGB * strength * a[..., None], 0, 255)

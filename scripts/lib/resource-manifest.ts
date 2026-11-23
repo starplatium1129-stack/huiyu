@@ -1,6 +1,7 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 import type { ManifestEntry, ManifestIssue } from './resource-manifest-types';
-'use strict';
+import { SCAN_ROOT, EXCLUDED_PATHS, UsageError, checkManifestPath, isExcluded, isInsideRoot, resolveRealpathBoundary, resolveRoot, type ManifestOptions } from './resource-manifest/paths';
+import { SCHEMA_VERSION, DIFF_SCOPE, comparePath, parseManifestStructure, compareManifests } from './resource-manifest/schema';
 
 /**
  * scripts/lib/resource-manifest.js — 本地资源清单生成与校验（只读纯函数，schemaVersion 1）
@@ -35,105 +36,7 @@ const nodeFs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { createHash }: typeof import('node:crypto') = require('node:crypto');
 
-const SCHEMA_VERSION = 1;
-const SCAN_ROOT = 'assets';
-const EXCLUDED_PATHS = Object.freeze(['assets/character-references', 'assets/live2d-candidates']);
-const HEX_ESCAPE_RE = /%[0-9a-fA-F]{2}/;
-const FORBIDDEN_CHARS_RE = /[\\:\u0000-\u001f\u007f]/;
-
 type ScanItem = { kind: string; path: string; message?: string };
-type ManifestOptions = { root: string; io?: typeof import('node:fs') };
-type PathCheck = { ok: true } | { ok: false; code: string; message: string };
-const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
-
-/** 参数/环境级失败；CLI 捕获后退出 2，区别于目标内容问题（退出 1）。 */
-class UsageError extends Error {}
-
-function isExcluded(rel: string) {
-  const value = process.platform === 'win32' ? rel.toLowerCase() : rel;
-  return EXCLUDED_PATHS.some((p) => value === p || value.startsWith(p + '/'));
-}
-
-function isInsideRoot(rootReal: string, target: string) {
-  const rel = path.relative(rootReal, target);
-  return rel !== '' && rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel);
-}
-
-/** 单字节字面解码：仅还原合法 %XX（含孤立 % 的文件名不受影响）；无变化返回 null。 */
-function tryDecodePercent(text: string) {
-  if (!text.includes('%')) return null;
-  let out = '';
-  let changed = false;
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === '%' && HEX_ESCAPE_RE.test(text.slice(i, i + 3))) {
-      out += String.fromCharCode(parseInt(text.slice(i + 1, i + 3), 16));
-      i += 2;
-      changed = true;
-    } else out += text[i];
-  }
-  return changed ? out : null;
-}
-
-/**
- * 清单路径合规检查（字面路径，非 URL）。返回 { ok: true } 或 { ok: false, code, message }。
- * 非法路径不得触发任何 fs 访问。
- */
-function checkManifestPath(rel: unknown): PathCheck {
-  if (typeof rel !== 'string' || rel === '') return { ok: false, code: 'bad-entry', message: '路径必须是非空字符串' };
-  if (FORBIDDEN_CHARS_RE.test(rel)) return { ok: false, code: 'illegal-path', message: '路径包含反斜杠、冒号或控制字符（Windows 分隔符/盘符/数据流形态不是资源路径）' };
-  const normalized = path.posix.normalize(rel);
-  if (normalized !== rel || normalized === '..' || normalized.startsWith('../') || normalized.startsWith('/')) {
-    return { ok: false, code: 'illegal-path', message: `路径必须使用归一化的 root 相对 posix 形式，收到: ${rel}` };
-  }
-  const segments = normalized.split('/');
-  if (segments.some((s) => s === '' || s === '.' || s === '..')) {
-    return { ok: false, code: 'illegal-path', message: '路径含空段或点段' };
-  }
-  if (normalized === SCAN_ROOT || !normalized.startsWith(SCAN_ROOT + '/')) {
-    return { ok: false, code: 'out-of-scope', message: `条目必须在 ${SCAN_ROOT}/ 下` };
-  }
-  if (isExcluded(normalized)) {
-    return { ok: false, code: 'out-of-scope', message: `条目位于排除域 ${EXCLUDED_PATHS.join(', ')} 内` };
-  }
-  if (normalized.includes('%')) {
-    const decoded = tryDecodePercent(normalized);
-    if (decoded !== null) {
-      if (FORBIDDEN_CHARS_RE.test(decoded)) return { ok: false, code: 'illegal-path', message: '百分号解码后出现分隔符/盘符/控制字符（编码越界被拒绝）' };
-      if (decoded.split('/').length !== segments.length || decoded.split('/').some((s) => s === '' || s === '.' || s === '..')) {
-        return { ok: false, code: 'illegal-path', message: '百分号解码改变路径段结构（编码分隔符或编码穿越被拒绝）' };
-      }
-    }
-  }
-  return { ok: true };
-}
-
-/**
- * 真实路径边界检查：解析 absPath 的真实位置，要求落在 rootReal 内。目标不存在时
- * 向上找最近存在祖先（覆盖悬空链接），不能以「目标不存在」跳过边界。只解析路径，
- * 不读取任何文件内容；junction/symlink 越界在 stat/读取之前被拒绝。
- */
-function resolveRealpathBoundary(io: typeof import("node:fs"), absPath: string, rootReal: string): { ok: true; realTarget: string } | { ok: false; code: string; message: string } {
-  let cur = absPath;
-  const missingTail = [];
-  for (;;) {
-    let real;
-    try {
-      real = io.realpathSync(cur);
-    } catch (err) {
-      if (runtimeErrorCode(err) === 'ENOENT') {
-        const parent = path.dirname(cur);
-        if (parent === cur) return { ok: false, code: 'realpath-error', message: '无法解析任何存在祖先的真实路径' };
-        missingTail.unshift(path.basename(cur));
-        cur = parent;
-        continue;
-      }
-      return { ok: false, code: 'realpath-error', message: `realpath 失败: ${runtimeErrorCode(err) || runtimeErrorMessage(err)}` };
-    }
-    const realTarget = missingTail.length ? path.join(real, ...missingTail) : real;
-    if (isInsideRoot(rootReal, realTarget)) return { ok: true, realTarget };
-    return { ok: false, code: 'realpath-outside-root', message: `真实路径 ${realTarget} 落在 root 外（junction/symlink 越界），未做任何读取` };
-  }
-}
 
 function hashFile(io: typeof import("node:fs"), abs: string) {
   const fd = io.openSync(abs, 'r');
@@ -143,10 +46,6 @@ function hashFile(io: typeof import("node:fs"), abs: string) {
     while ((size = io.readSync(fd, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, size));
     return hash.digest('hex');
   } finally { io.closeSync(fd); }
-}
-
-function comparePath(a: string, b: string) {
-  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 /** 物理遍历 assets：符号链接/junction 不跟随不进入；目录仅作容器；异常目录单列。 */
@@ -172,24 +71,6 @@ function collectFiles(io: typeof import("node:fs"), absDir: string, relPrefix: s
       out.push({ kind: 'not-regular-file', path: childPath, message: '非普通文件（FIFO/设备等），不哈希' });
     }
   }
-}
-
-function resolveRoot({ root, io = nodeFs }: ManifestOptions, label = 'root') {
-  if (!root || typeof root !== 'string') throw new UsageError(`${label} 缺失或不是字符串`);
-  let rootReal;
-  try {
-    rootReal = io.realpathSync(root);
-  } catch (err) {
-    throw new UsageError(`root 不可解析: ${runtimeErrorMessage(err)}`);
-  }
-  let st;
-  try {
-    st = io.statSync(rootReal);
-  } catch (err) {
-    throw new UsageError(`root 不可访问: ${runtimeErrorMessage(err)}`);
-  }
-  if (!st.isDirectory()) throw new UsageError('root 不是目录');
-  return rootReal;
 }
 
 /**
@@ -264,79 +145,6 @@ function generateManifest({ root, io = nodeFs }: ManifestOptions) {
     entries,
     unverified,
   };
-}
-
-/**
- * 清单结构检查（纯函数，不触 fs，核验与比较共用同一套检查）：对象/schemaVersion/
- * entries 数组/unverified 形态、逐条目 path/bytes/sha256 类型、Windows 大小写与精确
- * 重复、路径合规。返回 errors、listed（含坏条目在内的条目数）、byPath（唯一路径 →
- * { count, bytes, sha256 }）与 invalidPaths（路径合规失败的路径，调用方跳过其后续
- * fs 检查，比较端不得用其产出差异）。
- */
-function parseManifestStructure(manifest: unknown) {
-  const errors: ManifestIssue[] = [];
-  const push = (error: ManifestIssue) => errors.push(error);
-  const byPath = new Map<string, { count: number; bytes: number; sha256: string }>();
-  const invalidPaths = new Set<string>();
-  const empty = () => ({ errors, listed: 0, byPath, invalidPaths });
-  if (!object(manifest)) {
-    push({ code: 'bad-manifest', message: '清单必须是 JSON 对象' });
-    return empty();
-  }
-  if (manifest.schemaVersion !== SCHEMA_VERSION) {
-    push({ code: 'unsupported-schema', message: `不支持的 schemaVersion: ${JSON.stringify(manifest.schemaVersion)}（本工具支持 ${SCHEMA_VERSION}）` });
-    return empty();
-  }
-  if (!Array.isArray(manifest.entries)) {
-    push({ code: 'bad-manifest', message: 'entries 必须是数组' });
-    return empty();
-  }
-  if (manifest.unverified !== undefined) {
-    if (!Array.isArray(manifest.unverified)) {
-      push({ code: 'bad-manifest', message: 'unverified 必须是数组' });
-    } else if (manifest.unverified.length) {
-      push({ code: 'unverified-items', count: manifest.unverified.length, message: '清单仍包含未核验项；已列条目字节正确不代表完整清单通过' });
-    }
-  }
-  const pathIdentities = new Map<string, string>();
-  let listed = 0;
-  for (const entry of manifest.entries) {
-    listed++;
-    if (!object(entry)) {
-      push({ code: 'bad-entry', message: '条目必须是对象' });
-      continue;
-    }
-    const { path: rel, bytes, sha256 } = entry;
-    if (typeof rel !== 'string' || rel === '') {
-      push({ code: 'bad-entry', message: '条目缺少非空字符串 path' });
-      continue;
-    }
-    if (typeof bytes !== 'number' || !Number.isSafeInteger(bytes) || bytes < 0) {
-      push({ path: rel, code: 'bad-entry', message: `bytes 必须是非负整数，收到 ${JSON.stringify(bytes)}` });
-      continue;
-    }
-    if (typeof sha256 !== 'string' || !/^[0-9a-fA-F]{64}$/.test(sha256)) {
-      push({ path: rel, code: 'bad-entry', message: 'sha256 必须是 64 位十六进制字符串' });
-      continue;
-    }
-    const identity = process.platform === 'win32' ? rel.toLowerCase() : rel;
-    const previous = pathIdentities.get(identity);
-    if (previous !== undefined && previous !== rel) {
-      push({ path: rel, code: 'duplicate-path', message: '路径与 ' + previous + ' 指向相同的 Windows 路径' });
-      push({ path: previous, code: 'duplicate-path', message: '路径存在 Windows 大小写重复条目' });
-    }
-    pathIdentities.set(identity, rel);
-    byPath.set(rel, { count: (byPath.get(rel)?.count || 0) + 1, bytes, sha256 });
-  }
-  for (const [rel, record] of byPath) {
-    if (record.count > 1) push({ path: rel, code: 'duplicate-path', message: `路径在清单中出现 ${record.count} 次` });
-    const check = checkManifestPath(rel);
-    if (!check.ok) {
-      push({ path: rel, code: check.code, message: check.message });
-      invalidPaths.add(rel);
-    }
-  }
-  return { errors, listed, byPath, invalidPaths };
 }
 
 /** 清单条目内容核验（不可信数据）：先结构，再边界，最后 stat/字节/哈希。 */
@@ -451,69 +259,6 @@ function verifyManifest({ root, manifestPath, io = nodeFs }: { root: string; man
   }
   const result = verifyManifestEntries({ root: rootReal, manifest, io });
   return { ...result, manifestPath: manifestRelPath(rootReal, resolved) };
-}
-
-/**
- * 差异比较结果的范围说明（G7）：identical 只覆盖两份清单已列条目；「完整一致」
- * 的成功结论要求 ok 且 identical 同时为真。
- */
-const DIFF_SCOPE = Object.freeze({
-  basis: '按精确路径比较两份清单已列条目；不读取实际资产；不用 generatedAt 判定新旧；不按相同哈希猜测重命名',
-  coverageNote: '一致仅表示两份清单已列条目的集合与记录内容一致；不证明目录覆盖完整、当前文件存在、内容已审核或已交付。「完整一致」结论要求 ok 且 identical 同时为真',
-});
-
-/**
- * 纯比较两份清单对象（G7，不触 fs、不读取实际资产）：先做与核验一致的结构检查；
- * 除非空 unverified 外的任何结构错误（坏格式、不支持 schema、坏条目、重复或非法/
- * 越界路径）都阻止差异计算——不可信的条目集合不产出可信差异；非空 unverified 时
- * 仍比较已列条目，但整体 ok=false，不构成「完整一致」的成功结论。old→new 由调用
- * 参数顺序决定；结果路径按码元顺序稳定排序。
- */
-function compareManifests({ oldManifest, newManifest }: { oldManifest: unknown; newManifest: unknown }) {
-  const oldStructure = parseManifestStructure(oldManifest);
-  const newStructure = parseManifestStructure(newManifest);
-  const errors = [
-    ...oldStructure.errors.map((e) => ({ ...e, side: 'old' })),
-    ...newStructure.errors.map((e) => ({ ...e, side: 'new' })),
-  ];
-  const added: ManifestEntry[] = [];
-  const removed: ManifestEntry[] = [];
-  const changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }> = [];
-  const result = {
-    schemaVersion: SCHEMA_VERSION,
-    kind: 'resource-manifest-diff',
-    ok: errors.length === 0,
-    identical: false,
-    totals: { added: 0, removed: 0, changed: 0, unchanged: 0 },
-    added,
-    removed,
-    changed,
-    errors,
-    scope: DIFF_SCOPE,
-  };
-  const blocking = (list: ManifestIssue[]) => list.some((e) => e.code !== 'unverified-items');
-  if (blocking(oldStructure.errors) || blocking(newStructure.errors)) return result;
-  let unchanged = 0;
-  for (const [rel, before] of oldStructure.byPath) {
-    const after = newStructure.byPath.get(rel);
-    if (!after) {
-      removed.push({ path: rel, bytes: before.bytes, sha256: before.sha256 });
-    } else if (after.bytes !== before.bytes || after.sha256.toLowerCase() !== before.sha256.toLowerCase()) {
-      changed.push({ path: rel, before: { bytes: before.bytes, sha256: before.sha256 }, after: { bytes: after.bytes, sha256: after.sha256 } });
-    } else {
-      unchanged++;
-    }
-  }
-  for (const [rel, entry] of newStructure.byPath) {
-    if (!oldStructure.byPath.has(rel)) added.push({ path: rel, bytes: entry.bytes, sha256: entry.sha256 });
-  }
-  const byPathOrder = (a: { path: string; }, b: { path: string; }) => comparePath(a.path, b.path);
-  added.sort(byPathOrder);
-  removed.sort(byPathOrder);
-  changed.sort(byPathOrder);
-  result.totals = { added: added.length, removed: removed.length, changed: changed.length, unchanged };
-  result.identical = added.length === 0 && removed.length === 0 && changed.length === 0;
-  return result;
 }
 
 /**

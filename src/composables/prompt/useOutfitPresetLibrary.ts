@@ -102,6 +102,7 @@ export function useOutfitPresetLibrary(
   tagMeaning: (tag: string, label?: string) => string,
 ) {
   const pb = usePromptBuilderStore(), scenes = useSceneStore()
+  void pb.loadPopularCatalog().catch(() => {})
   const { toggleOutfitBundle } = usePromptTagTools(pb)
   const limit = ref(48), type = ref('all'), source = ref('all')
   const canApply = computed(() => pb.isPopular || (!pb.isUnbound && pb.char !== 'triad'))
@@ -126,7 +127,7 @@ export function useOutfitPresetLibrary(
         search: searchText([tag.en, meaning, tag.cn || '', ...(tag.aliases || []), tag.desc || ''].join(' ')),
         types: outfitTypes([tag.en, meaning, tag.cn || '', ...(tag.aliases || [])].join(' ')) }
     })
-    const catalog: CatalogOutfit[] = catalogWardrobe(scenes.characters, pb.popularCharacters).map(recipe => ({
+    const catalog: CatalogOutfit[] = catalogWardrobe(scenes.drawingProfiles, pb.popularCharacters).map(recipe => ({
       ...recipe, kind: 'catalog', search: searchText(recipe.searchWords.join(' ')),
       types: outfitTypes([recipe.outfitId, recipe.name, ...recipe.tokens].join(' ')),
     }))

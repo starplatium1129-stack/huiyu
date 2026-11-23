@@ -19,7 +19,7 @@ fn mime(path: &str) -> Option<&'static str> {
         _ => None,
     }
 }
-fn quality(header: &str, encoding: &str) -> f32 {
+pub(crate) fn quality(header: &str, encoding: &str) -> f32 {
     let mut wildcard = None;
     let mut exact = None;
     for item in header.split(',') {

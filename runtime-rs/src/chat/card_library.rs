@@ -285,10 +285,12 @@ async fn list(
     let catalog = Options::from_config(&app.config);
     let cards = tokio::task::spawn_blocking(move || -> Result<Vec<Value>> {
         let mut cards = match project_catalog(catalog)? {
-            Some(catalog) => catalog.chat_cards().map_err(storage_error)?,
+            Some(catalog) => catalog.chat_cards(filter.id.as_deref()).map_err(storage_error)?,
             None => Vec::new(),
         };
-        if let Some(id) = &filter.id { cards.retain(|card| card["id"].as_str() == Some(id)); }
+        if !root.join("state/chat-cards.sqlite").try_exists().map_err(storage_error)? {
+            return Ok(cards);
+        }
         let project_indices: HashMap<String, usize> = cards
             .iter()
             .enumerate()

@@ -115,6 +115,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const scenes = ref<Scene[]>([])
   const curation = ref<CurationData>({})
   const characters = ref<Array<Record<string, unknown>>>([])
+  const drawingProfiles = shallowRef<Array<Record<string, unknown>>>([])
   const archiveProfiles = shallowRef<Array<Record<string, unknown>>>([])
   const loras = ref<LoraMeta[]>([])
   const tags = ref<TagMeta[]>([])
@@ -178,6 +179,31 @@ export const useSceneStore = defineStore('scenes', () => {
     },
     parse: raw => requireDataRecords(raw, '角色档案'),
     apply: data => { archiveProfiles.value = data as Array<Record<string, unknown>>; adoptCatalogPendingPortraits(data) },
+  }
+  const drawingProfilesSpec: MetaSpec = {
+    file: 'character-drawing.json', required: true,
+    read: async (epoch, version) => {
+      const fullProfiles = async () => {
+        const read = await loadMetaSpec(metadata('characters.json'), epoch, version)
+        if (!read.ok) throw read.error
+        return toRaw(characters.value)
+      }
+      return metaOk.has('characters.json') || !isLocalStudioHost()
+        ? fullProfiles() : fetchJson('character-drawing.json', version, fullProfiles)
+    },
+    parse: raw => requireDataRecords(raw, '绘制角色'),
+    apply: data => { drawingProfiles.value = data as Array<Record<string, unknown>> },
+  }
+  const drawingScenesSpec: MetaSpec = {
+    file: 'scenes.json', required: true,
+    read: (epoch, version) => {
+      if (loaded.value) return Promise.resolve(toRaw(scenes.value))
+      const shards = () => Promise.all((['shared', 'nene', 'natsume'] as const)
+        .map(shard => loadShard(shard, epoch, version))).then(lists => mergeScenes(...lists))
+      return isLocalStudioHost() ? fetchJson('scenes.json', version, shards) : shards()
+    },
+    parse: raw => sortScenes(requireDataRecords(raw, '工作台场景') as Scene[]),
+    apply: data => { scenes.value = data as Scene[] },
   }
   const titlesSpec: MetaSpec = {
     file: 'scene-titles.json', required: true,
@@ -325,7 +351,7 @@ export const useSceneStore = defineStore('scenes', () => {
     blueprintCatalog.invalidate(scope?.blueprints)
     if (sourceChanged) {
       directoryCharacters.value = []; sceneTitles.value = new Map(); cachedCuration = {}
-      scenes.value = []; curation.value = {}; characters.value = []; archiveProfiles.value = []; loras.value = []
+      scenes.value = []; curation.value = {}; characters.value = []; archiveProfiles.value = []; drawingProfiles.value = []; loras.value = []
       adoptCatalogPendingPortraits([])
       tags.value = []; presets.value = []; popularCharacters.value = []
       error.value = null
@@ -403,12 +429,19 @@ export const useSceneStore = defineStore('scenes', () => {
     if (force) invalidate()
     return loadMeta([metadata('characters.json'), metadata('popular-characters.json')])
   }
+  function loadDrawingCatalog() {
+    const files = ['curation.json', 'loras.json', 'tags.json']
+    return Promise.all([
+      loadMeta([drawingProfilesSpec, drawingScenesSpec, ...files.map(metadata)]),
+      loadPresetCatalog(),
+    ]).then(() => undefined)
+  }
 
   return {
     scenes, curation, characters, loras, tags, presets,
     popularCharacters, sceneBlueprints, hasBlueprintCharacter,
     loading, error, loaded, version, metaFailedFiles,
-    archiveProfiles, loadCharacterArchive, loadCharacterProfiles,
+    archiveProfiles, drawingProfiles, loadCharacterArchive, loadCharacterProfiles, loadDrawingCatalog,
     directoryCharacters, sceneTitles, loadCharacterDirectory, loadSceneTitles, loadCuration, loadPopularCharacters,
     load, loadBrowserScenes, loadBlueprintCharacter, loadCharacterShell, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
   }

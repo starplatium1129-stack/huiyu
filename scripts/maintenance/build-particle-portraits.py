@@ -25,9 +25,12 @@ SemanticParticleField 的 portraitId 重组为完整图片的点阵成像。
     整图 LANCZOS 降到 200px 宽 → k-means 32 主色（确定性初始化）→
     每格最近主色量化 → base36 字符画输出。
 """
-import json
+from concurrent.futures import ThreadPoolExecutor
 import hashlib
+import json
+import os
 import sys
+import threading
 from pathlib import Path
 
 from PIL import Image
@@ -49,22 +52,34 @@ FEATHER_RATIO = 0.05
 STUDIO_PORTRAITS = {"nene": "nene-portrait.webp", "natsume": "natsume-portrait.webp"}
 
 
+_CELL_LUT = np.frombuffer((BASE36 + ".").encode("ascii"), dtype=np.uint8)
+_PRINT_LOCK = threading.Lock()
+
+
+def _nearest_centers(pixels: np.ndarray, centers: np.ndarray) -> np.ndarray:
+    """用矩阵乘法替代 (N, k, 3) 广播，消除每次迭代数十 MB 临时分配。"""
+    scores = pixels @ centers.T
+    scores *= -2.0
+    scores += np.einsum("ij,ij->i", centers, centers)
+    return scores.argmin(axis=1)
+
+
 def kmeans_palette(pixels: np.ndarray, k: int, seed: str) -> list[tuple[int, int, int]]:
     """全图像素 k-means（确定性初始化），返回按占比降序的主色——
     32 色足够保留背景/服饰/发色的层次（8 色会明显断层）。"""
     rng = np.random.default_rng(sum(ord(c) for c in seed) % (2 ** 32))
-    pixels = pixels.astype(float)
-    centers = pixels[rng.choice(len(pixels), size=k, replace=False)]
-    assign = None
+    pixels = pixels.astype(np.float64, copy=False)
+    centers = pixels[rng.choice(len(pixels), size=k, replace=False)].copy()
+    counts = np.zeros(k, dtype=np.intp)
     for _ in range(12):
-        dists = ((pixels[:, None, :] - centers[None, :, :]) ** 2).sum(axis=2)
-        assign = dists.argmin(axis=1)
-        for i in range(k):
-            sel = pixels[assign == i]
-            if len(sel):
-                centers[i] = sel.mean(axis=0)
-    counts = [(assign == i).sum() for i in range(k)]
-    ranked = sorted(range(k), key=lambda i: -counts[i])
+        assign = _nearest_centers(pixels, centers)
+        counts = np.bincount(assign, minlength=k)
+        nonzero = counts > 0
+        if nonzero.any():
+            for channel in range(3):
+                sums = np.bincount(assign, weights=pixels[:, channel], minlength=k)
+                centers[nonzero, channel] = sums[nonzero] / counts[nonzero]
+    ranked = sorted(range(k), key=lambda i: -int(counts[i]))
     return [tuple(int(round(v)) for v in centers[i]) for i in ranked]
 
 
@@ -83,11 +98,10 @@ def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, fl
     mask = alpha > 60  # 无透明通道的图全为 True；带透明的立绘 '.' 透出画布底
 
     palette_rgb = kmeans_palette(rgb[mask], PALETTE_SIZE, char_id)
-    palette_arr = np.array(palette_rgb, dtype=float)
-    flat = rgb[mask].astype(float)
-    dists = ((flat[:, None, :] - palette_arr[None, :, :]) ** 2).sum(axis=2)
-    nearest = dists.argmin(axis=1)
-    color_index = np.full(mask.shape, -1, dtype=int)
+    palette_arr = np.array(palette_rgb, dtype=np.float64)
+    flat = rgb[mask].astype(np.float64)
+    nearest = _nearest_centers(flat, palette_arr)
+    color_index = np.full(mask.shape, -1, dtype=np.int16)
     color_index[mask] = nearest
 
     # 边缘羽化：确定性 smoothstep 概率（到最近边的距离归一后平滑过渡）
@@ -102,28 +116,25 @@ def grid_from_image(image: Image.Image, char_id: str) -> tuple[str, int, int, fl
     keep = rng.random(mask.shape) < fy[:, None] * fx[None, :]
     mask &= keep
 
-    rows = [
-        "".join(
-            "." if color_index[y, x] < 0 or not mask[y, x] else BASE36[color_index[y, x]]
-            for x in range(gw)
-        )
-        for y in range(gh)
-    ]
+    idx = np.where(mask & (color_index >= 0), color_index, len(BASE36))
+    cells = _CELL_LUT[idx].tobytes().decode("ascii")
     aspect = gw / gh
     palette = ["#%02x%02x%02x" % c for c in palette_rgb]
-    return "".join(rows), int(gw), int(gh), aspect, palette
+    return cells, int(gw), int(gh), aspect, palette
 
 
 def build_one(char_id: str, source: Path) -> bool:
-    image = Image.open(source)
-    result = grid_from_image(image, char_id)
+    with Image.open(source) as image:
+        result = grid_from_image(image, char_id)
     if result is None:
-        print(f"[skip] {char_id}: 生成失败（{source.name}）")
+        with _PRINT_LOCK:
+            print(f"[skip] {char_id}: 生成失败（{source.name}）")
         return False
     cells, grid_w, grid_h, aspect, palette = result
     filled = len(cells) - cells.count(".")
     if filled < 200:
-        print(f"[skip] {char_id}: 有效网格不足（{filled}）")
+        with _PRINT_LOCK:
+            print(f"[skip] {char_id}: 有效网格不足（{filled}）")
         return False
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -136,7 +147,8 @@ def build_one(char_id: str, source: Path) -> bool:
         "grid": {"w": int(grid_w), "h": int(grid_h), "cells": cells},
     }
     out.write_bytes((json.dumps(payload, separators=(",", ":")) + "\n").encode("utf-8"))
-    print(f"[ok] {char_id}: 网格 {grid_w}x{grid_h}（{filled} 格）{len(palette)} 色 → {out.relative_to(ROOT)} ({out.stat().st_size // 1024}KB)")
+    with _PRINT_LOCK:
+        print(f"[ok] {char_id}: 网格 {grid_w}x{grid_h}（{filled} 格）{len(palette)} 色 → {out.relative_to(ROOT)} ({out.stat().st_size // 1024}KB)")
     return True
 
 
@@ -156,11 +168,28 @@ def main() -> None:
         print("没有可处理的图片")
         return
     ok = 0
-    for char_id, source in targets.items():
+    items = list(targets.items())
+    if len(items) == 1:
+        char_id, source = items[0]
         try:
             ok += build_one(char_id, source)
         except Exception as error:  # 单张失败不阻断批量
             print(f"[fail] {char_id}: {error}")
+    else:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        workers = min(os.cpu_count() or 1, 8, len(items))
+
+        def run_item(item: tuple[str, Path]) -> int:
+            char_id, source = item
+            try:
+                return int(build_one(char_id, source))
+            except Exception as error:  # 单张失败不阻断批量
+                with _PRINT_LOCK:
+                    print(f"[fail] {char_id}: {error}")
+                return 0
+
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            ok = sum(pool.map(run_item, items))
     print(f"完成 {ok}/{len(targets)}")
 
 

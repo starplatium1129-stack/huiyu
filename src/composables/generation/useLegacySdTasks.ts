@@ -1,5 +1,5 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
-import type { LegacySdResultInput } from '@/utils/legacySdResult'
+import { legacySdResultFacts, type LegacySdResultInput } from '@/utils/legacySdResult'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import type { TaskRecord } from '../../../types/tasks'
 import type { RuntimeSdAttempt } from './legacySdTaskSession'
@@ -117,7 +117,6 @@ export function useLegacySdTasks() {
       if (!options.resumeId) throw new Error('旧浏览器任务没有接收编号，请在任务中心核对；不会重新提交。')
       activeJobId = options.resumeId
       // Frozen legacy parameters supply result facts, never a new request.
-      const { legacySdResultFacts } = await import('@/utils/legacySdResult')
       const result = legacySdResultFacts(params)
       const { observeWebGeneration } = await import('@/platform/web/generationSession')
       const { blob, seed } = await observeWebGeneration(options.resumeId, {

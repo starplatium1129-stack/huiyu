@@ -2,6 +2,7 @@
 import { errorMessage as runtimeErrorMessage, errorOutput as runtimeErrorOutput } from '../lib/runtime-errors';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
 import { hashInstallerFile, verifyUpdaterSignature } from '../lib/installer-integrity';
+import safe = require('../lib/delivery-paths');
 'use strict';
 
 /**
@@ -200,7 +201,7 @@ async function main() {
   }
   if ((UPGRADE_ONLY && !INSTALL_DIR) || (INSTALL_DIR_INDEX >= 0 && (!INSTALL_DIR || INSTALL_DIR.startsWith('--')))) fail('本机升级必须用 --install-dir 明确已有安装位置');
   if (INSTALL_DIR_INDEX >= 0 && !UPGRADE_ONLY) fail('--install-dir 仅用于 --upgrade-only 本机升级封装');
-  if (UPGRADE_ONLY) {
+  if (UPGRADE_ONLY) return safe.withLocalFileHashes(async () => {
     if (!SKIP_BUILD) {
       const status = await (require('./run-tauri') as typeof import('./run-tauri')).runTauri(['build', '--local', '--no-bundle', '--ci', '--no-sign']);
       if (status !== 0) throw Error('Local desktop build failed');
@@ -213,8 +214,7 @@ async function main() {
     fs.writeFileSync(`${executable}.sha256`, `${hashInstallerFile(executable, 'sha256').toString('hex').toUpperCase()}  ${path.basename(executable)}\n`);
     binding.verifyDistribution(ROOT, executable);
     console.log(`[release-desktop-update] 本机升级包：${executable}；复用 ${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB 基础素材，未构建完整包、修改 latest.json 或发布`);
-    return;
-  }
+  });
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {
     fail(`缺少原更新签名私钥 ${KEY_FILE}。请在持有原私钥的主机签名；手动安装版必须显式使用 --manual，不能生成替代私钥。`);
   }

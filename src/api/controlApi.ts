@@ -47,7 +47,7 @@ function isObject(value: unknown): value is ApiResponseObject {
 function isVoiceProfiles(value: ApiResponseObject): boolean {
   if (value.ok !== true || !isObject(value.voices)) return false
   return Object.entries(value.voices).every(([id, profile]) => {
-    if (!['nene', 'natsume'].includes(id) || !isObject(profile)) return false
+    if (!/^[a-z0-9][a-z0-9_-]{0,63}$/.test(id) || !isObject(profile)) return false
     return ['refAudioPath', 'promptText', 'gptWeightsPath', 'sovitsWeightsPath'].every(key =>
       profile[key] === undefined || typeof profile[key] === 'string')
   })

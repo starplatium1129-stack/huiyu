@@ -3,22 +3,21 @@ use axum::response::IntoResponse;
 
 impl Speech {
     pub(super) fn native_status(&self, settings: &Settings) -> Value {
-        let configured = |id: &str| {
-            settings.profiles.get(id).is_some_and(|profile| {
-                profile.configured()
-                    && [
-                        &profile.gpt_weights_path,
-                        &profile.sovits_weights_path,
-                        &profile.reference.ref_audio_path,
-                    ]
-                    .iter()
-                    .all(|path| !path.is_empty() && std::path::Path::new(path).is_file())
+        let voices: serde_json::Map<String, Value> = settings
+            .voice_ids()
+            .into_iter()
+            .map(|id| {
+                let ok = settings
+                    .profiles
+                    .get(&id)
+                    .is_some_and(|profile| profile.native_files_present());
+                (id, Value::Bool(ok))
             })
-        };
+            .collect();
         let ready = self.native.ready();
         json!({"online":ready,"available":self.native.files_present(),"engine":settings.engine.label(),
             "engineId":settings.engine.id(),"needsTranslation":true,
-            "streamingPcm":false,"voices":{"nene":configured("nene"),"natsume":configured("natsume")},
+            "streamingPcm":false,"voices":voices,"voiceLabels":settings.voice_labels(),"voiceCatalogMap":settings.voice_catalog_map(),
             "activeVoice":if ready { self.active.lock().unwrap().voice.clone() } else { String::new() },"queue":self.queue.status()})
     }
 

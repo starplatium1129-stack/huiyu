@@ -19,7 +19,7 @@
       <DeferredPanel :active="!collapsed">
         <div class="voice-controls">
           <label class="voice-field">角色
-            <StudioSelect v-model="voiceChar" label="角色" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }]" />
+            <StudioSelect v-model="voiceChar" label="角色" :options="voiceCharOptions" />
           </label>
           <label class="voice-field">语言
             <StudioSelect v-model="voiceLang" label="语言" :options="[{ value: 'ja', label: '日语配音' }, { value: 'zh', label: '中文配音' }]" />
@@ -80,7 +80,7 @@ import '@/assets/css/director/components/VoiceStudio.css'
 
 const props = defineProps<{
   /** 导演台角色切换时同步默认声线；用户仍可在本组件内手动改回来。 */
-  initialVoice: 'nene' | 'natsume'
+  initialVoice: string
   /** 只在字幕为空时填入，绝不覆盖用户已经写好的配音稿。 */
   suggestedCaption?: string
 }>()
@@ -99,7 +99,26 @@ const COLLAPSED_KEY = 'aics-voice-studio-collapsed'
 const storedCollapsed = localStorage.getItem(COLLAPSED_KEY)
 const collapsed = ref(storedCollapsed === null ? true : storedCollapsed === '1')
 watch(collapsed, value => localStorage.setItem(COLLAPSED_KEY, value ? '1' : '0'), { immediate: true })
-const voiceChar = ref<'nene' | 'natsume'>(props.initialVoice)
+const availableVoices = ref<Record<string, boolean>>({ nene: false, natsume: false })
+const voiceLabels = ref<Record<string, string>>({ nene: '宁宁', natsume: '夏目' })
+const voiceCatalogMap = ref<Record<string, string>>({})
+function resolveInitialVoice(raw: string): string {
+  const key = raw.trim()
+  if (!key) return 'nene'
+  if (voiceCatalogMap.value[key]) return voiceCatalogMap.value[key]
+  if (Object.hasOwn(availableVoices.value, key)) return key
+  const prefixMatches = Object.keys(availableVoices.value).filter(id => key.startsWith(`${id}_`))
+  if (prefixMatches.length === 1) return prefixMatches[0]
+  return key === 'natsume' ? 'natsume' : 'nene'
+}
+const voiceCharOptions = computed(() => {
+  const ids = new Set(['nene', 'natsume', ...Object.keys(availableVoices.value)])
+  return Array.from(ids).map(id => ({
+    value: id,
+    label: voiceLabels.value[id] || (id === 'nene' ? '宁宁' : id === 'natsume' ? '夏目' : id),
+  }))
+})
+const voiceChar = ref<string>(resolveInitialVoice(props.initialVoice))
 const voiceLang = ref<'ja' | 'zh'>('ja')
 const voiceCaption = ref('')
 const lastSuggestedCaption = ref('')
@@ -189,14 +208,20 @@ async function refreshVoiceStatus() {
   if (!viewActive) return
   const controller = lifecycle, operation = operationRevision, callOptions = { signal: controller.signal }
   const request = ++statusRequest
-  const voice = voiceChar.value
   try {
     const data = await voiceApi.getStatus(callOptions)
     if (!viewActive || controller.signal.aborted || request !== statusRequest) return
+    availableVoices.value = data.voices
+    if (data.voiceLabels) voiceLabels.value = { nene: '宁宁', natsume: '夏目', ...data.voiceLabels }
+    if (data.voiceCatalogMap) voiceCatalogMap.value = data.voiceCatalogMap
+    const mapped = resolveInitialVoice(props.initialVoice)
+    if (!Object.hasOwn(data.voices, voiceChar.value) && Object.hasOwn(data.voices, mapped)) {
+      voiceChar.value = mapped
+    }
     voiceEngineId.value = data.engineId
     voiceOnline.value = data.online || data.available === true
     voiceLoaded.value = data.online
-    voiceConfigured.value = Boolean(data.voices[voice])
+    voiceConfigured.value = Boolean(data.voices[voiceChar.value])
     if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     if (data.engineId === 'system') {
       voiceStatus.value = '当前使用系统朗读；可点击「系统试听」，或前往「语音配置」接入云端/本地角色声线。'
@@ -320,7 +345,7 @@ watch([voiceCaption, voiceScript, voiceChar, voiceLang, voiceEmotion, voiceSpeed
   stopOwnedSpeech()
 }, { flush: 'sync' })
 
-watch(() => props.initialVoice, voice => { voiceChar.value = voice })
+watch(() => props.initialVoice, voice => { voiceChar.value = resolveInitialVoice(voice) })
 watch(() => props.suggestedCaption, caption => {
   const nextCaption = caption?.trim() || ''
   // 场景切换时，若当前字幕仍是上一个场景自动填入的内容，就替换成新场景；

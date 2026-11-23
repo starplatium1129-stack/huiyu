@@ -106,11 +106,14 @@ def main() -> None:
                 output.write(json.dumps(header, ensure_ascii=False).encode("utf-8") + b"\n")
                 if audio:
                     output.write(audio)
-            except Exception:
+            except Exception as error:
                 traceback.print_exc(file=sys.stderr)
                 # A failed load or inference may leave the upstream model in an
                 # unknown state. Do not accept another request in this process.
                 reply = {"id": request_id, "event": "error", "message": "本机语音模型加载或生成失败，请查看语音日志"}
+                message = str(error).lower()
+                if isinstance(error, MemoryError) or "out of memory" in message or "cublas_status_alloc_failed" in message:
+                    reply["code"] = "TTS_OUT_OF_MEMORY"
                 output.write(json.dumps(reply, ensure_ascii=False).encode("utf-8") + b"\n")
                 return
     finally:

@@ -191,7 +191,8 @@
           "character": { "type": "string", "description": "角色名字或 ID，如夏目或 natsume。" },
           "category": { "type": "string", "description": "已有目录分类，可选。" },
           "rating": { "type": "string", "enum": ["All", "SFW", "Sensitive", "R15", "R18", "Unrated"], "description": "仅在用户希望筛选分级时填写。" },
-          "page": { "type": "integer", "minimum": 1, "description": "继续浏览时使用返回的 nextPage。" }
+          "page": { "type": "integer", "minimum": 1, "description": "继续浏览时使用返回的 nextPage。" },
+          "pageSize": { "type": "integer", "minimum": 1, "maximum": 20, "description": "每页条数。列出更多素材时可传 20，再按 nextPage 翻页。" }
         }
       }
     }
@@ -206,10 +207,15 @@
         "properties": {
           "action": { "type": "string", "enum": ["generate", "preview", "resume", "cancel"], "description": "缺省 generate。用户想先看出图方案或确认后再画时用 preview，照常填写 items，等待用户自己点击开始绘图。用户明确要取回上一批时用 resume，要停止上一批时用 cancel。" },
           "modelId": { "type": "string", "description": "整批模型 ID。目录配方默认 anima-miaomiao-v1.6，也可选已安装的 moss-miaomiao-base-v1.0 或 moss-miaomiao-base-v1.1。" },
+          "ids": { "type": "array", "items": { "type": "string" }, "maxItems": 16, "description": "只画已查到的多个目录 ID 时可以用 ids；不能同时传 items。需要分别调参数时用 items。" },
           "variants": { "type": "integer", "minimum": 1, "maximum": 8, "description": "每项默认张数。" },
           "seed": { "type": "integer", "minimum": 0, "description": "每项默认起始种子，后续变体递增。" },
-          "width": { "type": "integer", "description": "整批默认宽度。需同时提供 height。" },
-          "height": { "type": "integer", "description": "整批默认高度。需同时提供 width。" },
+          "width": { "type": "integer", "description": "整批默认宽度。与 height 一起填放大前像素；没有画幅要求则省略。" },
+          "height": { "type": "integer", "description": "整批默认高度。与 width 一起填放大前像素；没有画幅要求则省略。" },
+          "upscale": { "type": "string", "enum": ["off", "ultrasharp", "remacri"], "description": "Anima 出图后放大 1.5 倍。UltraSharp 会重绘，Remacri 只放大。单项可覆盖。" },
+          "mossSampler": { "type": "string", "enum": ["euler", "er-sde"] },
+          "mossAcceleration": { "type": "string", "enum": ["off", "spectrum", "spectrum-adaptive"] },
+          "mossSpectrumFlexWindow": { "type": "number", "minimum": 0, "maximum": 2 },
           "items": {
             "type": "array",
             "maxItems": 16,
@@ -222,12 +228,19 @@
                 "outfitId": { "type": "string", "description": "查到的完整服装 ID。可以单独出服装图，或与场景 id 一起使用。" },
                 "prompt": { "type": "string", "description": "自定义绘图提示词，按模型使用英文标签或英文自然语言。" },
                 "negative": { "type": "string", "description": "仅用于自定义 prompt。" },
-                "character": { "type": "string", "description": "仅用于 Anima 自定义 prompt，用已有角色 ID 匹配其 LoRA。" },
+                "character": { "type": "string", "description": "只有使用已确认的 Anima 角色 LoRA 才填。纯提示词塑造角色时把身份写进 prompt。" },
+                "loraId": { "type": "string", "description": "可选。仅用于 Anima 自定义 prompt，使用已安装且支持该模型的真实 LoRA ID。" },
+                "loraStrength": { "type": "number", "description": "角色 LoRA 权重，启用了兼容的角色 LoRA 才填。" },
+                "styleLoraId": { "type": "string", "description": "已安装、当前模型支持的画风 LoRA ID。仅用于自定义 prompt。" },
                 "modelId": { "type": "string", "description": "覆盖整批默认模型，可选。" },
                 "seed": { "type": "integer", "minimum": 0 },
                 "variants": { "type": "integer", "minimum": 1, "maximum": 8 },
                 "width": { "type": "integer", "description": "与 height 成对填写，覆盖整批尺寸。" },
                 "height": { "type": "integer", "description": "与 width 成对填写，覆盖整批尺寸。" },
+                "upscale": { "type": "string", "enum": ["off", "ultrasharp", "remacri"] },
+                "mossSampler": { "type": "string", "enum": ["euler", "er-sde"] },
+                "mossAcceleration": { "type": "string", "enum": ["off", "spectrum", "spectrum-adaptive"] },
+                "mossSpectrumFlexWindow": { "type": "number", "minimum": 0, "maximum": 2 },
                 "steps": { "type": "integer", "description": "仅用于自定义 prompt。" },
                 "cfg": { "type": "number", "description": "仅用于自定义 prompt。" }
               }

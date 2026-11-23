@@ -23,6 +23,8 @@ pub(super) struct Input {
     pub tool_result_origin: Option<String>,
     pub tools: bool,
     pub channel_tools: bool,
+    pub channel_voice: bool,
+    pub japanese_voice: bool,
     pub card_tools: bool,
     pub web_search: bool,
     pub reasoning: String,
@@ -335,6 +337,8 @@ pub(super) fn chat(
     }
     Ok(Input {
         channel_tools: false,
+        channel_voice: false,
+        japanese_voice: false,
         card_tools: imported.is_some(),
         model: string(&body["model"]),
         session_id,

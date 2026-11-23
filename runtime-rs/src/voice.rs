@@ -1,4 +1,7 @@
 mod config;
+pub(crate) use config::is_valid_voice_id;
+mod http;
+pub use http::router;
 pub(crate) mod muse;
 mod native;
 mod payload;
@@ -11,24 +14,11 @@ use crate::{
     AppState,
     config::Config,
     error::{ApiError, Result},
-    security,
     upstream::{HealthProbes, LocalUpstream},
-};
-use axum::{
-    Extension, Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, Query, State},
-    http::{HeaderMap, HeaderValue},
-    response::{IntoResponse, Response},
-    routing::{get, post},
 };
 use config::Settings;
 use serde_json::{Value, json};
-use std::{
-    collections::HashMap,
-    net::SocketAddr,
-    sync::Arc,
-    time::{Duration, Instant},
-};
+use std::{sync::Arc, time::Duration};
 use tokio::time::Instant as Deadline;
 use tokio_util::sync::CancellationToken;
 
@@ -38,6 +28,20 @@ pub struct VoiceService {
     shutdown: CancellationToken,
     probes: Arc<HealthProbes>,
 }
+
+#[derive(Default)]
+pub(crate) struct ChannelSpeech<'a> {
+    pub japanese: Option<&'a str>,
+    pub emotion: Option<&'a str>,
+    pub reference_emotion: Option<&'a str>,
+    pub consistency: Option<&'a str>,
+    pub speed: Option<f64>,
+}
+
+pub(crate) fn is_kana(ch: char) -> bool {
+    matches!(ch, '\u{3041}'..='\u{3096}' | '\u{30A1}'..='\u{30F6}')
+}
+
 impl VoiceService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
         Self::with_settings(Settings::load(config), shutdown)
@@ -46,19 +50,23 @@ impl VoiceService {
         let settings = Arc::new(settings);
         let transport = LocalUpstream::new();
         let probes = HealthProbes::new(transport.clone(), shutdown.clone());
+        let translation = translation::Translation::new(
+            settings.clone(),
+            transport.clone(),
+            shutdown.clone(),
+            probes.clone(),
+        );
+        let speech = speech::Speech::new(
+            settings,
+            transport,
+            shutdown.clone(),
+            probes.clone(),
+            translation.clone(),
+        );
+        translation.bind_native(&speech.native);
         Self {
-            speech: speech::Speech::new(
-                settings.clone(),
-                transport.clone(),
-                shutdown.clone(),
-                probes.clone(),
-            ),
-            translation: translation::Translation::new(
-                settings,
-                transport,
-                shutdown.clone(),
-                probes.clone(),
-            ),
+            speech,
+            translation,
             shutdown,
             probes,
         }
@@ -100,11 +108,20 @@ impl VoiceService {
     pub(crate) fn engine_id(&self) -> &'static str {
         self.speech.current_settings().engine.id()
     }
+    pub(crate) fn speech_requires_japanese(&self) -> bool {
+        self.speech.current_settings().needs_translation()
+    }
     pub(crate) fn openai_configured(&self) -> bool {
         self.speech.current_settings().openai.configured()
     }
     pub(crate) fn native_files_present(&self) -> bool {
         self.speech.native.files_present()
+    }
+
+    pub(crate) fn resolve_catalog_voice(&self, catalog_id: &str) -> Option<String> {
+        self.speech
+            .current_settings()
+            .resolve_voice_for_catalog(catalog_id)
     }
     pub(crate) async fn test_openai_tts(
         &self,
@@ -170,10 +187,11 @@ impl VoiceService {
     }
     pub(crate) async fn start_native(&self) -> Result<()> {
         let settings = self.speech.current_settings();
-        let voice = ["nene", "natsume"]
+        let voice = settings
+            .voice_ids()
             .into_iter()
             .find(|id| {
-                settings.profiles.get(*id).is_some_and(|profile| {
+                settings.profiles.get(id).is_some_and(|profile| {
                     profile.configured()
                         && !profile.gpt_weights_path.is_empty()
                         && !profile.sovits_weights_path.is_empty()
@@ -192,219 +210,120 @@ impl VoiceService {
         }
         Ok(())
     }
-}
 
-pub fn router(service: Arc<VoiceService>) -> Router<AppState> {
-    Router::new()
-        .route("/api/translate", post(translate))
-        .route("/api/tts-status", get(status))
-        .route(
-            "/api/voice/prepare",
-            post(prepare).layer(DefaultBodyLimit::max(4 * 1024)),
-        )
-        .route("/api/tts", get(get_audio).post(post_audio))
-        .route("/api/tts-stream", get(get_pcm))
-        .layer(DefaultBodyLimit::max(32 * 1024))
-        .layer(Extension(service))
-}
-
-async fn translate(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    Json(input): Json<Value>,
-) -> Result<Response> {
-    let deadline = Deadline::now() + Duration::from_secs(200);
-    service.running(&state)?;
-    let text = input["text"].as_str().unwrap_or("").trim();
-    if text.is_empty() || text.encode_utf16().count() > 2000 {
-        return Err(ApiError::new(
-            400,
-            "TRANSLATION_INVALID",
-            "待翻译中文需在 1—2000 字之间",
-        ));
-    }
-    let result = service.translation.translate(text.into(), deadline).await?;
-    #[derive(serde::Serialize)]
-    #[serde(rename_all = "camelCase")]
-    struct TranslationBody<'a> {
-        ok: bool,
-        source_language: &'static str,
-        target_language: &'static str,
-        translation: &'a Value,
-        segments: &'a Value,
-    }
-    let empty_segments = Value::Array(Vec::new());
-    Ok(Json(TranslationBody {
-        ok: true,
-        source_language: "zh",
-        target_language: "ja",
-        translation: &result["translation"],
-        segments: result.get("segments").unwrap_or(&empty_segments),
-    })
-    .into_response())
-}
-async fn status(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    Query(query): Query<HashMap<String, String>>,
-) -> Result<Json<Value>> {
-    service.running(&state)?;
-    let fresh = query.get("fresh").is_some_and(|value| value == "1");
-    let (mut result, translation) = tokio::join!(
-        service.speech.status_observed(fresh),
-        service.translation.status(fresh)
-    );
-    result["translation"] = translation;
-    Ok(Json(result))
-}
-async fn prepare(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    Json(input): Json<Value>,
-) -> Result<Json<Value>> {
-    let deadline = Deadline::now() + Duration::from_secs(200);
-    service.running(&state)?;
-    let voice = input["voice"].as_str().unwrap_or("");
-    let settings = service.speech.current_settings();
-    match settings.engine {
-        config::Engine::Off | config::Engine::System => {
-            return Ok(Json(
-                json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": false, "prepareMs": 0}),
-            ));
+    pub(crate) async fn synthesize_channel_mp3(
+        &self,
+        state: &AppState,
+        text: &str,
+        voice: &str,
+        options: ChannelSpeech<'_>,
+        cancel: &CancellationToken,
+    ) -> Result<axum::body::Bytes> {
+        self.running(state)?;
+        let raw: String = text.trim().chars().take(500).collect();
+        if raw.is_empty() {
+            return Err(ApiError::invalid("语音台词不能为空"));
         }
-        config::Engine::OpenAiTts => {
-            if !settings.openai.configured() {
+        let settings = self.speech.current_settings();
+        match settings.engine {
+            config::Engine::Off => {
+                return Err(ApiError::new(
+                    409,
+                    "VOICE_DISABLED",
+                    "语音功能已关闭，请先在控制面板「语音设置」启用云端语音接口或本机角色语音。",
+                ));
+            }
+            config::Engine::System => {
+                return Err(ApiError::new(
+                    409,
+                    "VOICE_CLIENT_SIDE",
+                    "QQ 语音不支持浏览器系统朗读，请在控制面板「语音设置」改用云端语音接口或本机角色语音。",
+                ));
+            }
+            config::Engine::OpenAiTts if !settings.openai.configured() => {
                 return Err(ApiError::new(
                     409,
                     "VOICE_UNCONFIGURED",
-                    "请先在控制室「语音配置」填写语音接口地址与模型",
+                    "请先在控制面板「语音设置」填好云端语音接口与模型。",
                 ));
             }
-            return Ok(Json(
-                json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": false, "prepareMs": 0}),
-            ));
+            _ => {}
         }
-        _ => {}
-    }
-    let value = payload::validate(&json!({"voice": voice, "text": "準備"}), &settings)?;
-    let needs_translation = input["translation"] == true;
-    let started = Instant::now();
-    let translation = async {
-        if needs_translation {
-            service.translation.prepare(deadline).await?;
+        let emotion = options
+            .emotion
+            .filter(|value| payload::EMOTIONS.contains(value))
+            .unwrap_or("neutral");
+        let reference_emotion = options
+            .reference_emotion
+            .filter(|value| emotion != "neutral" && payload::EMOTIONS.contains(value))
+            .unwrap_or(emotion);
+        let consistency = options
+            .consistency
+            .filter(|value| *value == "adaptive")
+            .unwrap_or("locked");
+        let deadline = Deadline::now() + Duration::from_secs(120);
+        let work = async {
+            let started = Deadline::now();
+            let (spoken, language, source) = if settings.needs_translation() {
+                let kana_count = raw.chars().filter(|&ch| is_kana(ch)).count();
+                let all_kana =
+                    kana_count > 0 && raw.chars().all(|ch| !ch.is_alphabetic() || is_kana(ch));
+                let japanese = options
+                    .japanese
+                    .map(str::trim)
+                    .filter(|text| text.chars().any(is_kana));
+                if let Some(japanese) = japanese {
+                    (japanese.chars().take(500).collect(), "ja", "chat")
+                } else if kana_count >= 3 || all_kana {
+                    (raw, "ja", "input")
+                } else {
+                    let result = self.translation.translate(raw, deadline).await?;
+                    let translated = result["translation"]
+                        .as_str()
+                        .map(str::trim)
+                        .filter(|s| !s.is_empty())
+                        .ok_or_else(|| {
+                            ApiError::new(503, "VOICE_TRANSLATION_FAILED", "语音日语翻译结果为空")
+                        })?
+                        .to_owned();
+                    (translated, "ja", "local-translation")
+                }
+            } else {
+                (raw, "zh", "input")
+            };
+            let value = payload::validate(
+                &json!({
+                    "text": spoken,
+                    "voice": voice,
+                    "language": language,
+                    "emotion": emotion,
+                    "referenceEmotion": reference_emotion,
+                    "consistency": consistency,
+                    "speed": options.speed,
+                }),
+                &settings,
+            )?;
+            let speech_started = Deadline::now();
+            let (bytes, mime, cached) = self.speech.buffered(value, deadline).await?;
+            let audio = muse::encode_mp3(bytes, &mime).await?;
+            let reference = if consistency == "adaptive" {
+                emotion
+            } else {
+                reference_emotion
+            };
+            eprintln!(
+                "QQ 语音已合成：voice={voice} emotion={emotion} reference={reference} source={source} cached={cached} prepare_ms={} speech_ms={}",
+                (speech_started - started).as_millis(),
+                speech_started.elapsed().as_millis(),
+            );
+            Ok(audio)
+        };
+        tokio::select! {
+            biased;
+            _ = cancel.cancelled() => Err(ApiError::new(499, "ABORT_ERR", "语音合成已停止")),
+            _ = self.shutdown.cancelled() => Err(queue::cancelled()),
+            result = tokio::time::timeout_at(deadline, work) => result
+                .map_err(|_| ApiError::new(504, "VOICE_TIMEOUT", "语音合成超时，请稍后重试"))?,
         }
-        Ok::<_, ApiError>(())
-    };
-    if service.native_selected() {
-        let (voice, translated) =
-            tokio::join!(service.speech.prepare(&value, deadline), translation);
-        voice?;
-        translated?;
-    } else {
-        tokio::try_join!(service.speech.prepare(&value, deadline), translation)?;
     }
-    Ok(Json(
-        json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": needs_translation, "prepareMs": started.elapsed().as_millis()}),
-    ))
-}
-async fn post_audio(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    headers: HeaderMap,
-    Json(input): Json<Value>,
-) -> Result<Response> {
-    let deadline = Deadline::now() + Duration::from_secs(240);
-    service.running(&state)?;
-    let settings = service.speech.current_settings();
-    let value = payload::validate(&input, &settings)?;
-    let mut response = service
-        .speech
-        .audio(value, deadline)
-        .await
-        .map_err(|error| tts_error(error, &headers, peer))?;
-    response
-        .headers_mut()
-        .insert("cache-control", HeaderValue::from_static("no-store"));
-    Ok(response)
-}
-async fn get_audio(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    headers: HeaderMap,
-    Query(query): Query<HashMap<String, String>>,
-) -> Result<Response> {
-    let deadline = Deadline::now() + Duration::from_secs(240);
-    service.running(&state)?;
-    if query
-        .get("text")
-        .is_some_and(|text| text.encode_utf16().count() > 1200)
-    {
-        return Err(ApiError::new(
-            413,
-            "VOICE_TEXT_TOO_LONG",
-            "长文本请使用 POST /api/tts",
-        ));
-    }
-    let input = serde_json::to_value(query).expect("String query serializes");
-    let settings = service.speech.current_settings();
-    let value = payload::validate(&input, &settings)?;
-    let (bytes, content_type, cached) = service
-        .speech
-        .buffered(value, deadline)
-        .await
-        .map_err(|error| tts_error(error, &headers, peer))?;
-    let mut response = (
-        [
-            ("cache-control", "no-store"),
-            ("x-accel-buffering", "no"),
-            ("x-tts-cache", if cached { "hit" } else { "miss" }),
-        ],
-        bytes,
-    )
-        .into_response();
-    if let Ok(ct) = HeaderValue::from_str(&content_type) {
-        response.headers_mut().insert("content-type", ct);
-    } else {
-        response
-            .headers_mut()
-            .insert("content-type", HeaderValue::from_static("audio/wav"));
-    }
-    Ok(response)
-}
-async fn get_pcm(
-    State(state): State<AppState>,
-    Extension(service): Extension<Arc<VoiceService>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    headers: HeaderMap,
-    Query(query): Query<HashMap<String, String>>,
-) -> Result<Response> {
-    let deadline = Deadline::now() + Duration::from_secs(180);
-    service.running(&state)?;
-    let input = serde_json::to_value(query).expect("String query serializes");
-    let settings = service.speech.current_settings();
-    let value = payload::validate(&input, &settings)?;
-    let mut response = service
-        .speech
-        .stream_pcm(value, deadline)
-        .await
-        .map_err(|error| tts_error(error, &headers, peer))?;
-    response
-        .headers_mut()
-        .insert("cache-control", HeaderValue::from_static("no-store"));
-    response.headers_mut().insert(
-        "access-control-expose-headers",
-        HeaderValue::from_static("X-Audio-Sample-Rate, X-Audio-Channels, X-Audio-Format"),
-    );
-    Ok(response)
-}
-
-// Provider diagnostics can contain local filenames. Keep them inside the local
-// studio boundary, including when buffered callers share an in-flight result.
-fn tts_error(mut error: ApiError, headers: &HeaderMap, peer: SocketAddr) -> ApiError {
-    if error.code == "TTS_FAILED" && !security::is_direct_local(headers, peer.ip()) {
-        error.message = "语音生成失败".into();
-    }
-    error
 }

@@ -66,7 +66,7 @@ async function readCatalogue(signal: AbortSignal, fresh: boolean, refreshImages:
   const revision = ++nextRequest
   const source = identity
   const previous = snapshot
-  const path = '/scene-showcase/manifest.json'
+  const path = '/scene-showcase/manifest.json?view=cards'
   // Revalidate on return without transferring or parsing unchanged prompts and metadata.
   if (previous?.etag && !fresh && !refreshImages) {
     const head = await runtimeFetch(path, { method: 'HEAD', signal, cache: 'no-cache' }).catch(() => {
@@ -80,7 +80,7 @@ async function readCatalogue(signal: AbortSignal, fresh: boolean, refreshImages:
       return snapshot.entries
     }
   }
-  const response = await runtimeFetch(fresh ? path + '?refresh=1' : path, { signal, cache: 'no-cache' })
+  const response = await runtimeFetch(fresh ? path + '&refresh=1' : path, { signal, cache: 'no-cache' })
   const raw = await readResponse(response, signal)
   if (source !== identity) throw new DOMException('样张来源已更改', 'AbortError')
   if (revision < publishedRequest) {

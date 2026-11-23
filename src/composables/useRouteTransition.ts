@@ -5,6 +5,47 @@ import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPrefere
 import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
+const MAX_STAGGER_SURFACES = 4
+const STAGGER_DELAY_MS = [0, 30, 60, 85] as const
+const ENTER_OFFSET_X = 14
+const ENTER_OFFSET_Y = 8
+/** Critically-damped route arrival frequency (Hz): readable travel without bouncing large text. */
+const ROUTE_SPRING_FREQUENCY = 3.2
+
+let cachedRouteCurve: { samples: number[]; duration: number } | undefined
+
+/** Sample the critically-damped arrival curve once; WAAPI plays it on the compositor. */
+function routeArrivalCurve() {
+  if (cachedRouteCurve) return cachedRouteCurve
+  // Exact closed-form critically damped spring (damping = 1): x(t) = 1 - (1 + ωt)e^(-ωt).
+  const omega = 2 * Math.PI * ROUTE_SPRING_FREQUENCY
+  const samples = [0]
+  for (let index = 1; index <= 48; index++) {
+    const wt = omega * (index / 60)
+    const value = 1 - (1 + wt) * Math.exp(-wt)
+    if (value >= 0.998) break
+    samples.push(value)
+  }
+  samples.push(1)
+  cachedRouteCurve = { samples, duration: Math.max(180, (samples.length - 1) * 1000 / 60) }
+  return cachedRouteCurve
+}
+
+function collectArrivalSurfaces(content: HTMLElement): HTMLElement[] {
+  const candidates: HTMLElement[] = []
+  for (const node of content.querySelectorAll<HTMLElement>('[data-route-arrive]')) {
+    if (node.parentElement?.closest('[data-route-arrive]') || node.hasAttribute('data-reveal')
+      || node.closest('[hidden], [inert]')) continue
+    candidates.push(node)
+    if (candidates.length === MAX_STAGGER_SURFACES) break
+  }
+  if (candidates.length) return candidates
+  const heading = content.querySelector<HTMLElement>('h1:not(.sr-only), [data-route-arrive] h2')
+  if (!heading) return []
+  const intro = heading.closest<HTMLElement>('header') ?? heading.parentElement
+  return [intro && intro !== content && content.contains(intro) ? intro : heading]
+}
+
 /** Release the outgoing page immediately; only the incoming content owns an animation. */
 export function useRouteTransition() {
   const route = useRoute()
@@ -13,6 +54,10 @@ export function useRouteTransition() {
   let arrival: { root: HTMLElement; finish: () => void } | undefined
   let focusReturn: { origin: Element; href: string | null } | undefined
   let stopPreferences: (() => void) | undefined
+  let timing: { duration: number; easing: string } | undefined
+  let timingFrame = 0
+  let focusFrame = 0
+  let pendingFocus: Element | undefined
 
   function restoreFocus(root: HTMLElement) {
     const ticket = focusReturn
@@ -33,7 +78,15 @@ export function useRouteTransition() {
   function onEnter(element: Element, done: () => void) {
     const root = element as HTMLElement
     arrival?.finish()
-    restoreFocus(root)
+    if (focusReturn && !pendingFocus) {
+      pendingFocus = root
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = requestAnimationFrame(() => {
+          pendingFocus = undefined
+          if (root.isConnected && !root.inert) restoreFocus(root)
+        })
+      })
+    }
     root.dataset.routeEntered = 'true'
     // The nested RouterView owns the page inside the persistent navigation shell.
     const path = root.classList.contains('page-root') ? undefined : root.dataset.routePath
@@ -57,21 +110,32 @@ export function useRouteTransition() {
       : root.classList.contains('route-view') ? root : null
     if (!path || !content?.animate || document.hidden || prefersReducedMotion()) { finish(); return }
 
-    const tokens = getComputedStyle(document.documentElement)
-    const duration = cssTimeToMilliseconds(tokens.getPropertyValue('--motion-route'))
-    if (!(duration > 0)) { finish(); return }
-    const timing = { duration, easing: tokens.getPropertyValue('--ease-out').trim() || 'ease-out' }
-    // Even a route whose header is still loading has a visible page transition.
-    // Only opacity touches the full content so fixed tools and native canvas anchors stay put.
-    effects.push(content.animate([{ opacity: 0.22 }, { opacity: 1 }], timing))
-    const heading = content.querySelector<HTMLElement>('h1:not(.sr-only), [data-route-arrive] h2')
-    if (heading) {
-      const intro = heading.closest<HTMLElement>('header') ?? heading.parentElement
-      const surface = intro && intro !== content && content.contains(intro) ? intro : heading
-      effects.push(surface.animate([
-        { translate: `${direction * 16}px 8px` },
-        { translate: '0 0' },
-      ], timing))
+    if (!timing || !(timing.duration > 0)) { finish(); return }
+    const { duration, easing } = timing
+    const surfaces = collectArrivalSurfaces(content)
+    // Only opacity touches the outer content so fixed tools and sticky chrome keep their viewport context.
+    effects.push(content.animate(
+      [{ opacity: surfaces.length ? 0.55 : 0.22 }, { opacity: 1 }],
+      { duration: surfaces.length ? Math.min(duration, 220) : duration, easing },
+    ))
+    if (surfaces.length) {
+      const { samples, duration: springDuration } = routeArrivalCurve()
+      const travelDuration = Math.min(springDuration, duration + 60)
+      for (let index = 0; index < surfaces.length; index++) {
+        const surface = surfaces[index]!
+        const startX = direction * ENTER_OFFSET_X
+        const startY = ENTER_OFFSET_Y + index * 2
+        const frames = samples.map(progress => ({
+          opacity: Math.min(1, 0.25 + 0.75 * Math.min(1, progress * 1.4)),
+          translate: `${((1 - progress) * startX).toFixed(2)}px ${((1 - progress) * startY).toFixed(2)}px`,
+        }))
+        effects.push(surface.animate(frames, {
+          duration: travelDuration,
+          delay: STAGGER_DELAY_MS[index] ?? 0,
+          fill: 'both',
+          easing: 'linear',
+        }))
+      }
     }
     arrival = { root, finish }
     root.addEventListener('pointerdown', finish, true)
@@ -85,6 +149,10 @@ export function useRouteTransition() {
 
   function onLeave(element: Element, done: () => void) {
     const root = element as HTMLElement
+    if (pendingFocus === root) {
+      cancelAnimationFrame(focusFrame)
+      pendingFocus = undefined
+    }
     const origin = document.activeElement
     focusReturn = origin && root.contains(origin) && origin.matches(':focus-visible')
       ? { origin, href: origin.closest<HTMLAnchorElement>('a[href]')?.href ?? null } : undefined
@@ -93,13 +161,31 @@ export function useRouteTransition() {
     done()
   }
 
+  function readTimingAfterPaint() {
+    cancelAnimationFrame(timingFrame)
+    timingFrame = requestAnimationFrame(() => {
+      timingFrame = requestAnimationFrame(() => {
+        const tokens = getComputedStyle(document.documentElement)
+        timing = {
+          duration: cssTimeToMilliseconds(tokens.getPropertyValue('--motion-route')),
+          easing: tokens.getPropertyValue('--ease-out').trim() || 'ease-out',
+        }
+      })
+    })
+  }
   function start() {
-    stopPreferences ??= listenMotionChanges(() => {
+    if (stopPreferences) return
+    readTimingAfterPaint()
+    stopPreferences = listenMotionChanges(() => {
       if (document.hidden || prefersReducedMotion()) arrival?.finish()
+      else readTimingAfterPaint()
     })
   }
   function stop() {
     arrival?.finish()
+    cancelAnimationFrame(timingFrame)
+    cancelAnimationFrame(focusFrame)
+    pendingFocus = undefined
     stopPreferences?.()
     stopPreferences = undefined
     focusReturn = undefined

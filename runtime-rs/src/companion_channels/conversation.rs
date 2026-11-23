@@ -1,8 +1,13 @@
+mod drawing;
+mod memory;
+mod turn;
+mod voice;
+
+pub(super) use drawing::batch_message;
+use voice::synthesize_voice;
+
 use super::*;
-use crate::{
-    chat::{ChannelReply, ChannelTool},
-    images::remote::muse::companion,
-};
+use crate::{chat::ChannelTurnOptions, voice::ChannelSpeech};
 use std::collections::VecDeque;
 
 #[derive(Deserialize, Serialize, Default)]
@@ -10,15 +15,21 @@ struct Record {
     seen: VecDeque<String>,
     history: Vec<Value>,
     batch: Option<Batch>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    photos: Vec<memory::Photo>,
 }
 
 #[derive(Clone, Deserialize, Serialize)]
 pub(super) struct Batch {
     id: String,
     #[serde(default)]
-    requested_by: Option<String>,
+    pub requested_by: Option<String>,
     pub message_id: String,
     pub received_at: u64,
+    #[serde(default)]
+    pub reply_omitted: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    photo_description: Option<String>,
     pub notified: bool,
     pub delivered: usize,
 }
@@ -27,6 +38,7 @@ pub(super) struct Conversation {
     file: PathBuf,
     session: String,
     record: Record,
+    qq: bool,
 }
 
 pub(super) struct Context<'a> {
@@ -34,14 +46,76 @@ pub(super) struct Context<'a> {
     pub storage: &'a Storage,
     pub principal: &'a str,
     pub character: &'a str,
+    pub chat_provider: crate::chat::ChannelProvider,
+    pub is_owner: bool,
+    pub owner_bond: crate::chat::ChannelOwnerBond,
+    pub owner_call_name: &'a str,
+    pub owner_note: &'a str,
     pub drawing: bool,
+    pub voice: bool,
+    pub voice_auto: bool,
+    pub voice_profile: &'a str,
     pub group_member: Option<&'a str>,
     pub cancel: &'a CancellationToken,
 }
 
 pub(super) enum Reply {
     Text(String),
+    Voice {
+        caption: Option<String>,
+        spoken: String,
+        audio: Bytes,
+    },
     Results(Value),
+}
+
+pub(super) struct Incoming<'a> {
+    pub id: &'a str,
+    pub received_at: u64,
+    pub text: &'a str,
+    pub quoted: Option<&'a str>,
+}
+
+pub(super) fn is_command(text: &str) -> bool {
+    matches!(
+        text,
+        "/帮助" | "/help" | "/取图" | "/开始绘图" | "/取消" | "/语音"
+    ) || text.starts_with("/语音 ")
+}
+
+#[derive(Clone, Copy)]
+pub(super) enum DeliveryIssue {
+    Voice,
+    Drawing,
+    DrawingBusy,
+    DrawingWaiting,
+    DrawingMemory,
+    DrawingStopped,
+}
+
+impl DeliveryIssue {
+    fn fallback(self) -> &'static str {
+        match self {
+            Self::Voice => "刚才那条语音没发成，我先打字。",
+            Self::Drawing => "刚才那张图没弄好。",
+            Self::DrawingBusy => "刚才那张还没弄好，这张得等一会儿。",
+            Self::DrawingWaiting => "上一张还停着，这张得先等等。",
+            Self::DrawingMemory => "这张图没弄出来。可以试试小一点的。",
+            Self::DrawingStopped => "那张已经停了，手上还没出图。",
+        }
+    }
+}
+
+enum RespondOutcome {
+    Text {
+        answer: String,
+        can_auto_voice: bool,
+    },
+    Voice {
+        spoken: String,
+        audio: Bytes,
+    },
+    Silent,
 }
 
 impl Conversation {
@@ -53,11 +127,19 @@ impl Conversation {
             &json!([channel, account, peer, ctx.character]),
         );
         let session = file.file_stem().unwrap().to_string_lossy().into_owned();
-        let record = read(&file).await?.unwrap_or_default();
+        let qq = matches!(channel, "qq" | "qq-group");
+        let mut record: Record = read(&file).await?.unwrap_or_default();
+        if qq
+            && record.photos.is_empty()
+            && let Some(batch) = record.batch.as_ref().filter(|batch| batch.delivered != 0)
+        {
+            memory::remember_photo(&mut record.photos, batch);
+        }
         Ok(Self {
             file,
             session,
             record,
+            qq,
         })
     }
 
@@ -69,303 +151,225 @@ impl Conversation {
         if let Some(batch) = &mut self.record.batch {
             batch.delivered += count;
             batch.notified |= notified;
+            if self.qq && count != 0 {
+                memory::remember_photo(&mut self.record.photos, batch);
+            }
             self.save().await?;
         }
         Ok(())
     }
 
+    pub fn has_seen(&self, id: &str) -> bool {
+        self.record.seen.iter().any(|seen| seen == id)
+    }
+
+    pub fn recent_replies(&self) -> impl Iterator<Item = &str> {
+        self.record.history.iter().rev().filter_map(|message| {
+            (message["role"] == "assistant").then(|| message["content"].as_str()).flatten()
+        }).take(16)
+    }
+
     pub async fn receive(
         &mut self,
         ctx: &Context<'_>,
-        id: &str,
-        received_at: u64,
-        text: &str,
+        incoming: &[Incoming<'_>],
     ) -> Result<Option<Reply>> {
-        if self.record.seen.iter().any(|seen| seen == id) {
-            return Ok(None);
+        let mut accepted = Vec::new();
+        for message in incoming {
+            if self.has_seen(message.id) {
+                continue;
+            }
+            self.record.seen.push_back(message.id.into());
+            accepted.push(message);
         }
-        self.record.seen.push_back(id.into());
-        if self.record.seen.len() > 200 {
+        let Some(latest) = accepted.last() else {
+            return Ok(None);
+        };
+        while self.record.seen.len() > 200 {
             self.record.seen.pop_front();
         }
-        self.save().await?;
-        let text = text.trim();
+        let id = latest.id;
+        let received_at = latest.received_at;
+        let text = latest.text.trim();
+        if is_command(text) || !self.qq {
+            self.save().await?;
+        }
         let output = match text {
-            "/帮助" | "/help" if ctx.group_member.is_some() => Reply::Text("在群里 @ 我就能聊天。机主开启 Muse 后，直接 @ 我提问就由 Muse 回复，也可以保留 /muse 前缀。@ 我发 /取图 可查看本群的绘图进度和收图，发起者可以发 /开始绘图 或 /取消。".into()),
-            "/帮助" | "/help" => Reply::Text("直接发文字就能聊天。开启手机绘图后，可以说「用宁宁画一张雨夜街景」。/取图 查看进度和未回传的成图，/开始绘图 开始已预览的批次，/取消 停止上次绘图。".into()),
+            "/帮助" | "/help" if ctx.group_member.is_some() => Reply::Text(
+                if ctx.voice {
+                    "在群里 @ 我就能聊天。@ 我发 /语音 可朗读回复（或 /语音 要说的话），@ 我发 /取图 可查看本群绘图进度和收图，发起者可以发 /开始绘图 或 /取消。"
+                } else {
+                    "在群里 @ 我就能聊天。机主开启 Muse 后，直接 @ 我提问就由 Muse 回复，也可以保留 /muse 前缀。@ 我发 /取图 可查看本群的绘图进度和收图，发起者可以发 /开始绘图 或 /取消。"
+                }
+                .into(),
+            ),
+            "/帮助" | "/help" => Reply::Text(
+                if ctx.voice {
+                    "直接发文字就能聊天。开启语音后，可直接让我发语音，或发 /语音（可跟台词）听语音。开启手机绘图后可要求画图，/取图 查进度和收图，/开始绘图 开始已预览批次，/取消 停止绘图。"
+                } else {
+                    "直接发文字就能聊天。开启手机绘图后，可以说「画一张雨夜街景」。/取图 查看进度和未回传的成图，/开始绘图 开始已预览的批次，/取消 停止上次绘图。"
+                }
+                .into(),
+            ),
             "/取图" | "/开始绘图" | "/取消" => self.batch_action(ctx, id, received_at, text).await?,
+            _ if text == "/语音" || text.starts_with("/语音 ") => {
+                self.voice_command(ctx, text.strip_prefix("/语音").unwrap_or("").trim())
+                    .await?
+            }
             _ => {
-                let line: String = text.chars().take(1200).collect();
+                let message_limit = if accepted.len() == 1 { 1200 } else { 2400 };
+                let per_message = message_limit / accepted.len();
+                let line = accepted
+                    .iter()
+                    .map(|message| {
+                        let text: String = message.text.trim().chars().take(per_message).collect();
+                        if let Some(quote) = message.quoted {
+                            let quote: String = quote.chars().take(320).collect();
+                            format!("（引用的群消息）{quote}\n（新消息）{text}")
+                        } else {
+                            text
+                        }
+                    })
+                    .collect::<Vec<_>>()
+                    .join("\n");
                 let line = if let Some(member) = ctx.group_member {
-                    let speaker = crate::storage::json_fingerprint(&json!([self.session, member]));
-                    format!("群友 {}：{line}", &speaker[..10])
+                    if ctx.is_owner {
+                        let tag = if ctx.owner_call_name.trim().is_empty() {
+                            "机主（你的主人）".to_owned()
+                        } else {
+                            format!("机主·{}（你的主人）", ctx.owner_call_name.trim())
+                        };
+                        format!("{tag}：{line}")
+                    } else {
+                        let speaker =
+                            crate::storage::json_fingerprint(&json!([self.session, member]));
+                        format!("群友 {}：{line}", &speaker[..10])
+                    }
                 } else {
                     line
                 };
-                let answer = self.respond(ctx, id, received_at, &line).await?;
-                self.record.history.push(json!({"role":"user","content":line}));
-                self.record.history.push(json!({"role":"assistant","content":answer}));
-                let excess = self.record.history.len().saturating_sub(12);
-                self.record.history.drain(..excess);
-                self.save().await?;
-                Reply::Text(answer)
+                if self.qq {
+                    self.push_history("user", line.clone()).await?;
+                }
+                match self.respond(ctx, id, received_at, &line).await? {
+                    RespondOutcome::Text {
+                        answer,
+                        can_auto_voice,
+                    } => {
+                        if !self.qq {
+                            self.record.history.push(json!({"role":"user","content":line}));
+                            self.remember_reply(&answer).await?;
+                        }
+                        if ctx.voice_auto && can_auto_voice {
+                            match tokio::time::timeout(
+                                Duration::from_secs(90),
+                                synthesize_voice(ctx, &answer, ChannelSpeech::default()),
+                            )
+                            .await
+                            {
+                                Ok(Ok(audio)) => Reply::Voice {
+                                    caption: self.voice_caption(ctx, &answer).await,
+                                    spoken: answer,
+                                    audio,
+                                },
+                                Ok(Err(error)) => {
+                                    eprintln!("QQ 自动语音跳过：{}", error.code);
+                                    Reply::Text(answer)
+                                }
+                                Err(_) => {
+                                    eprintln!("QQ 自动语音超时，已回退文字回复");
+                                    Reply::Text(answer)
+                                }
+                            }
+                        } else {
+                            Reply::Text(answer)
+                        }
+                    }
+                    RespondOutcome::Voice { spoken, audio } => {
+                        let caption = self.voice_caption(ctx, &spoken).await;
+                        Reply::Voice { caption, spoken, audio }
+                    }
+                    RespondOutcome::Silent => return Ok(None),
+                }
             }
         };
         Ok(Some(output))
     }
 
-    pub async fn current_batch(&self, ctx: &Context<'_>) -> Result<Value> {
-        self.load_batch(ctx, &Method::GET).await
-    }
-
-    fn can_control_batch(&self, ctx: &Context<'_>) -> bool {
-        ctx.group_member.is_none()
-            || self.batch().and_then(|batch| batch.requested_by.as_deref()) == ctx.group_member
-    }
-
-    async fn batch_action(
-        &mut self,
-        ctx: &Context<'_>,
-        id: &str,
-        received_at: u64,
-        command: &str,
-    ) -> Result<Reply> {
-        if self.batch().is_none() {
-            return Ok(Reply::Text("这个手机会话还没有绘图批次。".into()));
+    pub async fn remember_reply(&mut self, text: &str) -> Result<()> {
+        let result = self.push_history("assistant", text.to_owned()).await;
+        if let Err(error) = &result {
+            eprintln!("消息对话记录保存失败：{}", error.code);
         }
-        let method = match command {
-            "/取消" => Method::DELETE,
-            "/开始绘图" if ctx.drawing => Method::PATCH,
-            _ => Method::GET,
+        result
+    }
+
+    async fn push_history(&mut self, role: &str, text: String) -> Result<()> {
+        self.record
+            .history
+            .push(json!({"role":role,"content":text}));
+        memory::trim(&mut self.record.history, self.qq);
+        self.save().await
+    }
+
+    fn chat_context(&self, ctx: &Context<'_>) -> (Vec<Value>, Vec<String>) {
+        if self.qq {
+            memory::context(
+                &self.record.history,
+                &self.record.photos,
+                ctx.group_member.is_some(),
+            )
+        } else {
+            (self.record.history.clone(), Vec::new())
+        }
+    }
+
+    pub async fn delivery_reply(&self, ctx: &Context<'_>, issue: DeliveryIssue) -> String {
+        let fallback = issue.fallback();
+        let Some(chat) = ctx.app.chat.as_ref().filter(|_| self.qq) else {
+            return fallback.into();
         };
-        if method != Method::GET && !self.can_control_batch(ctx) {
-            return Ok(Reply::Text("请让发起这批绘图的群成员来操作。".into()));
+        let (messages, memories) = self.chat_context(ctx);
+        let answer = tokio::time::timeout(
+            Duration::from_secs(5),
+            chat.channel_turn(
+                ctx.app,
+                ctx.character,
+                &self.session,
+                &messages,
+                ChannelTurnOptions {
+                    delivery_issue: Some(fallback),
+                    ..ctx.chat_options(&memories)
+                },
+                ctx.cancel,
+            ),
+        )
+        .await;
+        if let Ok(Ok(answer)) = answer {
+            let text = answer.text.trim();
+            if !text.is_empty() && answer.tools.is_empty() && text.chars().count() <= 100 {
+                return text.to_owned();
+            }
         }
-        let value = self.load_batch(ctx, &method).await?;
-        if method == Method::PATCH
-            && value["state"] == "running"
-            && let Some(batch) = &mut self.record.batch
-        {
-            batch.message_id = id.into();
-            batch.received_at = received_at;
-            batch.notified = false;
-            self.save().await?;
-        }
-        if command == "/取图" {
-            return Ok(Reply::Results(value));
-        }
-        Ok(Reply::Text(batch_message(&value)))
-    }
-
-    async fn load_batch(&self, ctx: &Context<'_>, method: &Method) -> Result<Value> {
-        let Some(batch) = self.batch() else {
-            return Ok(Value::Null);
-        };
-        self.draw(ctx, method, &batch.id, &[]).await
+        fallback.into()
     }
 
     async fn save(&self) -> Result<()> {
         write(&self.file, &self.record).await
     }
-
-    async fn respond(
-        &mut self,
-        ctx: &Context<'_>,
-        id: &str,
-        received_at: u64,
-        text: &str,
-    ) -> Result<String> {
-        let chat = ctx
-            .app
-            .chat
-            .as_ref()
-            .ok_or_else(|| ApiError::invalid("聊天服务还没准备好"))?;
-        let mut messages = self.record.history.clone();
-        messages.push(json!({"role":"user","content":text}));
-        for _ in 0..4 {
-            let ChannelReply { text, tools } = chat
-                .channel_turn(
-                    ctx.app,
-                    ctx.character,
-                    &self.session,
-                    &messages,
-                    ctx.drawing,
-                    ctx.group_member.is_some(),
-                    ctx.cancel,
-                )
-                .await?;
-            if tools.is_empty() {
-                let answer: String = text.trim().chars().take(1600).collect();
-                if answer.is_empty() {
-                    return Err(ApiError::invalid("聊天模型没有返回文字"));
-                }
-                return Ok(answer);
-            }
-            if !ctx.drawing {
-                return Ok("请先在绘遇的手机聊天设置里开启绘图。".into());
-            }
-            messages.push(assistant_call(&text, &tools));
-            for tool in tools {
-                let arguments: Value = serde_json::from_str(&tool.arguments).unwrap_or(Value::Null);
-                let result = match tool.name.as_str() {
-                    "generate_drawing_batch" => self.plan(ctx, id, received_at, arguments).await?,
-                    "search_drawing_catalog" => catalog(ctx.app, &arguments)
-                        .await
-                        .unwrap_or_else(|_| json!({"error":"本机素材查询暂不可用"})),
-                    _ => json!({"error":"手机聊天只提供素材查询和绘图"}),
-                };
-                if tool.name == "generate_drawing_batch" {
-                    return Ok(result
-                        .as_str()
-                        .unwrap_or("批次已受理。发送 /取图 查看进度。")
-                        .to_owned());
-                }
-                let content: String = result.to_string().chars().take(14_000).collect();
-                messages.push(json!({"role":"tool","tool_call_id":tool.id,"content":content}));
-            }
-        }
-        Ok("我还没找到合适的素材。可以换个关键词，或者直接描述想画的画面。".into())
-    }
-
-    async fn plan(
-        &mut self,
-        ctx: &Context<'_>,
-        id: &str,
-        received_at: u64,
-        mut args: Value,
-    ) -> Result<Value> {
-        match args["action"].as_str() {
-            Some("cancel") => {
-                if !self.can_control_batch(ctx) {
-                    return Ok(json!("请让发起这批绘图的群成员来取消。"));
-                }
-                return Ok(json!(batch_message(
-                    &self.load_batch(ctx, &Method::DELETE).await?
-                )));
-            }
-            Some("resume") => {
-                return Ok(json!(format!(
-                    "{} 发送 /取图 收取图片。",
-                    batch_message(&self.load_batch(ctx, &Method::GET).await?)
-                )));
-            }
-            _ => {}
-        }
-        if self.batch().is_some() {
-            let status = self.load_batch(ctx, &Method::GET).await?;
-            if matches!(
-                status["state"].as_str(),
-                Some("running" | "cancelling" | "draft" | "paused")
-            ) {
-                return Ok(json!(format!(
-                    "{} 可以先发送 /取图 或 /取消。",
-                    batch_message(&status)
-                )));
-            }
-        }
-        let input = args
-            .as_object_mut()
-            .ok_or_else(|| ApiError::invalid("本机绘图参数无效"))?;
-        let preview = input.remove("action").as_ref().and_then(Value::as_str) == Some("preview");
-        input.insert("preview".into(), json!(preview));
-        let key = crate::storage::json_fingerprint(&json!([self.session, id]));
-        let mut bytes = [0_u8; 16];
-        hex::decode_to_slice(&key[..32], &mut bytes).expect("fingerprint is hexadecimal");
-        let batch_id = uuid::Uuid::from_bytes(bytes).to_string();
-        // Record the stable batch identity before any submission can be accepted.
-        let prior = self.record.batch.replace(Batch {
-            id: batch_id.clone(),
-            requested_by: ctx.group_member.map(str::to_owned),
-            message_id: id.into(),
-            received_at,
-            notified: false,
-            delivered: 0,
-        });
-        self.save().await?;
-        let result = self
-            .draw(ctx, &Method::POST, &batch_id, &serde_json::to_vec(&args)?)
-            .await;
-        if let Err(error) = &result
-            && error.submission_not_accepted
-        {
-            self.record.batch = prior;
-            self.save().await?;
-        }
-        let result = result?;
-        Ok(json!(batch_message(&result)))
-    }
-
-    async fn draw(
-        &self,
-        ctx: &Context<'_>,
-        method: &Method,
-        id: &str,
-        bytes: &[u8],
-    ) -> Result<Value> {
-        if ctx.cancel.is_cancelled() || !is_current(ctx.app, ctx.storage) {
-            return Err(ApiError::invalid("工作区已切换"));
-        }
-        let _admission = ctx.app.host.admit_owned()?;
-        companion::batch_for(ctx.app, ctx.storage, ctx.principal, method, id, bytes).await
-    }
 }
 
-pub(super) fn batch_message(batch: &Value) -> String {
-    match batch["state"].as_str() {
-        Some("draft") => format!(
-            "出图方案已准备，共 {} 张。发 /开始绘图 确认，或发 /取消。",
-            batch["jobs"].as_array().map_or(0, Vec::len)
-        ),
-        Some("running") => {
-            let jobs = batch["jobs"].as_array();
-            let done = jobs
-                .into_iter()
-                .flatten()
-                .filter(|job| {
-                    matches!(
-                        job["status"].as_str(),
-                        Some("succeeded" | "failed" | "cancelled")
-                    )
-                })
-                .count();
-            format!(
-                "本机出图已处理 {done}/{} 张。发 /取图 查进度，或发 /取消。",
-                jobs.map_or(0, Vec::len)
-            )
+impl Context<'_> {
+    fn chat_options<'a>(&'a self, memories: &'a [String]) -> ChannelTurnOptions<'a> {
+        ChannelTurnOptions {
+            in_group: self.group_member.is_some(),
+            is_owner: self.is_owner,
+            owner_bond: self.owner_bond,
+            owner_call_name: self.owner_call_name,
+            owner_note: self.owner_note,
+            provider: self.chat_provider,
+            memories,
+            ..Default::default()
         }
-        Some("cancelling") => "正在停止这批图片。".into(),
-        Some("cancelled") => "这批出图已停止。已完成的图可以发 /取图 收取。".into(),
-        Some("paused") => "本机绘图暂停。发 /开始绘图 继续。".into(),
-        Some("succeeded" | "failed") => "这批绘图已处理。发 /取图 收取成图。".into(),
-        _ => "还没有查到这个批次的回执。".into(),
     }
-}
-
-fn assistant_call(text: &str, tools: &[ChannelTool]) -> Value {
-    let calls = tools.iter().map(|tool| {
-        let mut value = json!({"id":tool.id,"type":"function","function":{"name":tool.name,"arguments":tool.arguments}});
-        if let Some(signature) = &tool.signature { value["extra_content"] = json!({"google":{"thought_signature":signature}}); }
-        value
-    }).collect::<Vec<_>>();
-    json!({"role":"assistant","content":text,"tool_calls":calls})
-}
-
-async fn catalog(app: &AppState, args: &Value) -> Result<Value> {
-    let query = {
-        let mut query = url::form_urlencoded::Serializer::new(String::new());
-        for key in ["kind", "search", "character", "category", "rating"] {
-            if let Some(text) = args[key].as_str().filter(|text| text.len() <= 240) {
-                query.append_pair(key, text);
-            }
-        }
-        if let Some(page) = args["page"].as_u64() {
-            query.append_pair("page", &page.to_string());
-        }
-        query.append_pair("pageSize", "8");
-        query.finish()
-    };
-    let uri = format!("/catalog?{query}")
-        .parse()
-        .map_err(|_| ApiError::invalid("素材搜索参数无效"))?;
-    companion::catalog(app, &uri).await
 }

@@ -278,6 +278,11 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         // while retaining the content hash and original manifest chunk names.
         chunkFileNames: (chunk: { name: string }) => `_app/${chunk.name.split('~')[0]}-[hash].js`,
         codeSplitting: {
+          // Inline small automatic shared chunks without copying extracted styles.
+          experimentalInlineCommonChunks: {
+            maxSize: 4 * 1024,
+            exclude: /\.(css|scss|sass|less|styl|stylus|pcss|postcss|sss)(\?|$)/,
+          },
           // Split feature groups by their actual consumers, retaining lazy
           // boundaries when shared helpers also appear in another route.
           // Keep the HTML wrapper and main's startup effects out of shared helpers.
@@ -286,12 +291,12 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           groups: [
             { name: 'startup', test: /[\\/](?:src[\\/]main\.ts|index\.html)$/,
               priority: 110, includeDependenciesRecursively: false },
-            { name: 'bootstrap', tags: ['$initial'], priority: 100, entriesAware: true },
+            { name: 'bootstrap', tags: ['$initial'], priority: 100, entriesAware: true, entriesAwareMergeThreshold: 2 * 1024 },
             { name: 'ui-base', priority: 95, entriesAware: true,
               test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },
             ...['vendor', 'shared', 'motion', 'prompt', 'live2d'].map((name, index) => ({
               name, test: (id: string) => featureChunk(id) === name,
-              priority: 80 - index * 10, entriesAware: true,
+              priority: 80 - index * 10, entriesAware: true, entriesAwareMergeThreshold: 2 * 1024,
             })),
           ],
         },

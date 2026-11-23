@@ -1,10 +1,12 @@
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue'
 import { controlApi } from '@/api/controlApi'
 import { voiceApi } from '@/api/voiceApi'
 import { useControlContext } from '@/composables/useControlContext'
 import { cancelSystemSpeech, isSystemSpeechSupported, playSystemSpeech } from '@/composables/voiceSpeechSynthesis'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
-import type { TtsApiPatch, TtsEngine, VoicePackImportResult, VoiceSetupStatus } from '@/types/api'
+import { loadChatCharacterProfiles } from '@/utils/chatCharacterProfiles'
+import type { StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
+import type { TtsApiPatch, TtsEngine, VoicePackImportResult, VoiceProfileView, VoiceSetupStatus } from '@/types/api'
 
 const ENGINE_LABELS: Record<TtsEngine, string> = {
   off: '已关闭',
@@ -46,9 +48,12 @@ export function useVoiceConfigPanel() {
   const testAudioUrl = ref('')
 
   const packFolderPath = ref('')
-  const packTargetChar = ref<'auto' | 'nene' | 'natsume'>('auto')
+  const packTargetChar = ref('auto')
+  const packPromptOverride = ref('')
   const packBusy = ref(false)
   const packPreview = ref<VoicePackImportResult | null>(null)
+  const removingProfileId = ref('')
+  const catalogCharacters = shallowRef<{ id: string; name: string; source?: string }[]>([])
   const systemPreviewBusy = ref<'nene' | 'natsume' | null>(null)
 
   const currentEngine = computed<TtsEngine>(() => status.ttsEngine.value)
@@ -109,9 +114,69 @@ export function useVoiceConfigPanel() {
     }
   }
 
-  function buildVoicesPayload() {
+  const profileEntries = computed(() => {
+    const profiles = setupStatus.value?.profiles ?? {}
+    return Object.entries(profiles).map(([id, check]) => {
+      const ready = check.configured && (
+        localEngine.value === 'gpt-sovits-native'
+          ? check.gptWeights.present && check.sovitsWeights.present && check.refAudio.present
+          : localEngine.value === 'voxcpm2'
+            ? check.loraWeights.present && check.refAudio.present
+            : check.refAudio.present
+      )
+      return {
+        id,
+        displayName: check.displayName?.trim() || id,
+        catalogId: check.catalogId?.trim() || '',
+        emotions: check.emotions ?? [],
+        configured: check.configured,
+        ready,
+        builtin: id === 'nene' || id === 'natsume',
+        check,
+      }
+    })
+  })
+
+  const packTargetGroups = computed<StudioSelectGroup[]>(() => {
+    const groups: StudioSelectGroup[] = [
+      {
+        label: '自动与默认角色',
+        options: [
+          { value: 'auto', label: '自动识别（含 profiles.json 或目录名）' },
+          { value: 'nene', label: '导入为 绫地宁宁（nene）' },
+          { value: 'natsume', label: '导入为 四季夏目（natsume）' },
+        ],
+      },
+    ]
+    const extraProfiles = profileEntries.value.filter(item => !item.builtin)
+    if (extraProfiles.length) {
+      groups.push({
+        label: '已配置的额外声线',
+        options: extraProfiles.map(item => ({
+          value: item.id,
+          label: `${item.displayName}（${item.id}）`,
+        })),
+      })
+    }
+    if (catalogCharacters.value.length) {
+      groups.push({
+        label: `项目角色卡（${catalogCharacters.value.length}）`,
+        options: catalogCharacters.value.map(item => ({
+          value: `catalog:${item.id}`,
+          label: item.source ? `${item.name} · ${item.source}（${item.id}）` : `${item.name}（${item.id}）`,
+        })),
+      })
+    }
+    return groups
+  })
+
+  function buildVoicesPayload(): Record<string, VoiceProfileView | undefined> {
+    const last = status.lastStatus()
+    const existing = (last?.restartRequired ? last.savedConfig?.voices : last?.voices) ?? {}
     return {
+      ...existing,
       nene: {
+        ...(existing.nene ?? {}),
         loraWeightsPath: status.voiceNeneLora.value.trim(),
         gptWeightsPath: status.voiceNeneGpt.value.trim(),
         sovitsWeightsPath: status.voiceNeneSovits.value.trim(),
@@ -121,6 +186,7 @@ export function useVoiceConfigPanel() {
         textLang: 'ja',
       },
       natsume: {
+        ...(existing.natsume ?? {}),
         loraWeightsPath: status.voiceNatsumeLora.value.trim(),
         gptWeightsPath: status.voiceNatsumeGpt.value.trim(),
         sovitsWeightsPath: status.voiceNatsumeSovits.value.trim(),
@@ -261,6 +327,27 @@ export function useVoiceConfigPanel() {
     }
   }
 
+  function resolveImportTarget() {
+    const selected = packTargetChar.value
+    if (selected === 'auto') return {}
+    if (selected.startsWith('catalog:')) {
+      const catalogId = selected.slice('catalog:'.length)
+      const entry = catalogCharacters.value.find(item => item.id === catalogId)
+      const matched = profileEntries.value.find(item => item.id === catalogId || item.catalogId === catalogId)
+      return {
+        characterId: matched?.id ?? catalogId,
+        displayName: entry?.name || matched?.displayName || catalogId,
+        catalogId,
+      }
+    }
+    const existing = profileEntries.value.find(item => item.id === selected)
+    return {
+      characterId: selected,
+      ...(existing?.displayName ? { displayName: existing.displayName } : {}),
+      ...(existing?.catalogId ? { catalogId: existing.catalogId } : {}),
+    }
+  }
+
   async function scanOrApplyPack(apply: boolean) {
     const folderPath = packFolderPath.value.trim()
     if (!folderPath) {
@@ -271,25 +358,42 @@ export function useVoiceConfigPanel() {
     localError.value = ''
     notice.value = ''
     try {
+      const target = resolveImportTarget()
       const result = await voiceApi.importPack({
         folderPath,
-        ...(packTargetChar.value !== 'auto' ? { characterId: packTargetChar.value } : {}),
+        ...target,
         apply,
       })
+      const promptOverride = packPromptOverride.value.trim()
+      if (promptOverride) {
+        for (const profile of Object.values(result.voices)) {
+          if (profile && !profile.promptText?.trim()) {
+            profile.promptText = promptOverride
+            profile.promptLang = profile.promptLang || 'ja'
+          }
+        }
+      }
       packPreview.value = result
       if (apply) {
         status.ttsEngine.value = localEngine.value
         const existing = buildVoicesPayload()
+        const merged: Record<string, VoiceProfileView | undefined> = { ...existing }
+        for (const [id, profile] of Object.entries(result.voices)) {
+          if (!profile) continue
+          merged[id] = { ...(existing[id] ?? {}), ...profile }
+        }
         await controlApi.saveConfig({
           sdHost: status.sdHost.value.trim(),
           comfyHost: status.comfyHost.value.trim(),
           ttsHost: status.ttsHost.value.trim(),
           ttsEngine: localEngine.value,
-          voices: { ...existing, ...result.voices },
+          voices: merged,
         })
         await Promise.allSettled([status.pollStatus(true), refreshSetup()])
         notice.value = `已导入声线并切换到「${ENGINE_LABELS[localEngine.value]}」，无需重启。`
       } else {
+        const firstMissingPrompt = Object.values(result.voices).every(profile => !profile?.promptText?.trim())
+        if (!firstMissingPrompt) packPromptOverride.value = ''
         notice.value = `已识别 ${result.detectedFiles.length} 个语音文件，确认后点击「导入并启用」。`
       }
     } catch (error) {
@@ -299,7 +403,36 @@ export function useVoiceConfigPanel() {
     }
   }
 
-  onMounted(() => { void refreshSetup() })
+  async function removeVoiceProfile(id: string) {
+    if (removingProfileId.value || saving.value) return
+    removingProfileId.value = id
+    localError.value = ''
+    notice.value = ''
+    try {
+      await voiceApi.removeProfile(id)
+      await Promise.allSettled([status.pollStatus(true), refreshSetup()])
+      notice.value = `已移除声线「${id}」，不会删除本地权重文件。`
+    } catch (error) {
+      localError.value = actions.errorMessage(error, '移除声线失败')
+    } finally {
+      removingProfileId.value = ''
+    }
+  }
+
+  onMounted(() => {
+    void refreshSetup()
+    void loadChatCharacterProfiles().then(rows => {
+      catalogCharacters.value = rows
+        .map(row => ({
+          id: typeof row.id === 'string' ? row.id : '',
+          name: typeof row.name === 'string' && row.name.trim() ? row.name.trim() : String(row.id || ''),
+          source: typeof row.franchise === 'string' && row.franchise.trim()
+            ? row.franchise.trim()
+            : typeof row.source === 'string' ? row.source.trim() : undefined,
+        }))
+        .filter(item => item.id && item.id !== 'nene' && item.id !== 'natsume')
+    }).catch(() => {})
+  })
   onUnmounted(() => {
     cancelSystemSpeech()
     revokeTestAudio()
@@ -310,8 +443,9 @@ export function useVoiceConfigPanel() {
     currentEngine, currentEngineLabel, activeModeGroup, localEngine, speechSupported, systemPreviewBusy,
     apiBaseUrl, apiKey, showApiKey, clearApiKey, apiModel, apiVoiceNene, apiVoiceNatsume, apiDefaultVoice,
     apiFormat, hasSavedApiKey, apiTesting, testAudioUrl,
-    packFolderPath, packTargetChar, packBusy, packPreview,
+    packFolderPath, packTargetChar, packTargetGroups, packPromptOverride, packBusy, packPreview,
+    profileEntries, removingProfileId,
     refreshSetup, applyEngine, previewSystemCharacter, applyApiPreset, saveOpenAiTts, testOpenAiTts,
-    pickPackFolder, scanOrApplyPack,
+    pickPackFolder, scanOrApplyPack, removeVoiceProfile,
   }
 }

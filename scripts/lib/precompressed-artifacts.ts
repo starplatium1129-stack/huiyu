@@ -4,6 +4,8 @@ import { promisify } from 'node:util';
 
 const brotliCompress = promisify(zlib.brotliCompress);
 const gzipCompress = promisify(zlib.gzip);
+const brotliDecompress = promisify(zlib.brotliDecompress);
+const gunzip = promisify(zlib.gunzip);
 export const COMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
 /** Small files rarely benefit from separate compressed artifacts. */
 export const MIN_BYTES = 1024;
@@ -51,11 +53,28 @@ function writeArtifacts(file: string, raw: Buffer, brotli: Buffer, gzip: Buffer)
   return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: false };
 }
 
+async function reuseArtifactsAsync(file: string, raw: Buffer) {
+  try {
+    const [brotli, gzip] = await Promise.all([
+      fs.promises.readFile(file + '.br'),
+      fs.promises.readFile(file + '.gz'),
+    ]);
+    if (brotli.length >= raw.length || gzip.length >= raw.length) return null;
+    const options = { maxOutputLength: raw.length };
+    const [decompressedBr, decompressedGz] = await Promise.all([
+      brotliDecompress(brotli, options),
+      gunzip(gzip, options),
+    ]);
+    if (!decompressedBr.equals(raw) || !decompressedGz.equals(raw)) return null;
+    return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: true };
+  } catch { return null; }
+}
+
 /** The async path uses the same quality/options and bytes as the synchronous API. */
 export async function compressAsync(file: string) {
-  const raw = fs.readFileSync(file);
+  const raw = await fs.promises.readFile(file);
   if (raw.length < MIN_BYTES) return null;
-  const reused = reuseArtifacts(file, raw);
+  const reused = await reuseArtifactsAsync(file, raw);
   if (reused) return reused;
   const [brotli, gzip] = await Promise.all([
     brotliCompress(raw, brotliOptions(raw.length)),

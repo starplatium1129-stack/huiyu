@@ -61,7 +61,6 @@
 .pb.journal-workspace .stage-quick-actions .btn { @apply tw:text-label; }
 .pb.journal-workspace .stage-quick-actions .btn-primary { box-shadow:var(--shadow-sm); }
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
-.pb.journal-workspace .result-image-wrap { background:var(--bg-deep); box-shadow:none; }
 .pb.journal-workspace .drawing-jump-links { @apply tw:hidden; }
 /* Materials and parameters use the same tabs; AnimatedSelection owns motion. */
 .pb .workbench-tabs { position:relative; display:flex; flex-shrink:0; gap:var(--s-1); margin:0 var(--s-4); padding:0; border-bottom:1px solid var(--border-soft); }

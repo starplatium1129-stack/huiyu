@@ -30,7 +30,7 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
     let voice = field(input, "voice", "");
     let language = field(input, "language", "ja").to_lowercase();
     let raw = field(input, "text", "").trim();
-    if !["nene", "natsume"].contains(&voice) {
+    if !super::config::is_valid_voice_id(voice) {
         return Err(ApiError::new(400, "VOICE_INVALID", "不支持的角色声线"));
     }
     if !["ja", "zh"].contains(&language.as_str()) {

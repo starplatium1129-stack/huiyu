@@ -8,6 +8,7 @@ mod projection;
 
 pub use paths::{PUBLIC_DATA_FILES, is_private_asset_path};
 pub use precompressed::serve as precompressed;
+pub(crate) use precompressed::quality as encoding_quality;
 
 use crate::{
     config::Config,

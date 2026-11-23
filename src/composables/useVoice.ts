@@ -134,9 +134,13 @@ export function useVoice(options: {
   function ownsTurn(mid: string) { return turn?.mid === mid }
   function notifyActivity() { onActivity(isActive()) }
 
-  function startTurn(meta: { mid: string; voice: string; character: string; emotion?: string }) {
+  function wantsJapanese(voice: string) {
+    return enabled() && availability.value.needsTranslation === true && readyFor(voice)
+  }
+
+  function startTurn(meta: { mid: string; voice: string; character: string; emotion?: string; deferPreparation?: boolean }) {
     if (destroyed) return
-    stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && preparation.matches(meta.voice, true) })
+    stop({ preserveMessageAudio: true, silent: true, preservePreparation: !meta.deferPreparation && enabled() && preparation.matches(meta.voice, true) })
     if (!meta.voice) return
     if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
@@ -152,7 +156,7 @@ export function useVoice(options: {
       explicitEmotion: initialEmotion,
     }
     _lastEmotion = initialEmotion || 'neutral'; _neutralStreak = 0
-    prepare(meta.voice, availability.value.needsTranslation !== false)
+    if (!meta.deferPreparation) prepare(meta.voice, availability.value.needsTranslation !== false)
     if (enabled() && !readyFor(meta.voice)) {
       if (availability.value.engineId === 'off') onStatus('语音朗读已关闭')
       else onStatus(availability.value.online || availability.value.available ? '当前角色声线未配置' : '语音服务未启动')
@@ -175,18 +179,24 @@ export function useVoice(options: {
     sentenceBuffer.push(text, false).forEach(s => enqueue(s, activeTurn))
   }
 
+  function appendJapanese(text: string) {
+    if (!turn || !enabled() || !readyFor(turn.voice)) return
+    const activeTurn = turn
+    sentenceBuffer.push(text, true).forEach(sentence => enqueue(sentence, activeTurn, true))
+  }
+
   function finishTurn() {
     if (!turn || !enabled() || !readyFor(turn.voice)) return
     const activeTurn = turn
     sentenceBuffer.push('', true).forEach(s => enqueue(s, activeTurn))
   }
 
-  function enqueue(sentence: string, meta: VoiceTurn) {
+  function enqueue(sentence: string, meta: VoiceTurn, directJapanese = false) {
     const sess = meta.session
     if (sess !== session || !controller) return
     const signal = controller.signal; pending++; if (!playing) onStatus('语音合成中…'); notifyActivity()
     const prepared = (translateChain = translateChain
-      .then(() => sess !== session || signal.aborted ? null : prepareSentence(sentence, meta, signal))
+      .then(() => sess !== session || signal.aborted ? null : prepareSentence(sentence, meta, signal, directJapanese))
       .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + voiceErrorMessage(e)); return null }))
     synthChain = synthChain.then(async () => {
       const req = await prepared
@@ -212,7 +222,7 @@ export function useVoice(options: {
     })
   }
 
-  async function prepareSentence(sourceText: string, meta: VoiceTurn, signal: AbortSignal): Promise<PreparedSentence | null> {
+  async function prepareSentence(sourceText: string, meta: VoiceTurn, signal: AbortSignal, directJapanese: boolean): Promise<PreparedSentence | null> {
     const dialogue = extractSpokenDialogue(sourceText)
     const cleaned = dialogue.text.replace(/[「」『』"""']/g, '').trim()
     if (!cleaned) return null
@@ -248,7 +258,7 @@ export function useVoice(options: {
       meta.referenceEmotion = emotion
     }
     const lockedReference = meta.referenceEmotion || emotion
-    const needsTranslate = availability.value.needsTranslation !== false
+    const needsTranslate = !directJapanese && availability.value.needsTranslation !== false
     let translated = '', translationFailed = false
     if (needsTranslate) {
       try {
@@ -263,7 +273,7 @@ export function useVoice(options: {
     }
     return {
       text: translated || cleaned,
-      language: translated ? 'ja' : 'zh',
+      language: directJapanese || translated ? 'ja' : 'zh',
       emotion,
       referenceEmotion: lockedReference,
       consistency: 'locked',
@@ -554,5 +564,5 @@ export function useVoice(options: {
     releaseAudioContext()
   }
 
-  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, startTurn, setTurnEmotion, append, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
+  return { availability, refreshAvailability, readyFor, prepare, ensureAudioContext, isActive, ownsTurn, wantsJapanese, startTurn, setTurnEmotion, append, appendJapanese, finishTurn, stop, destroy, playMessage, hasAudio, clearMessages, setVolume }
 }

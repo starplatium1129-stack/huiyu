@@ -13,19 +13,22 @@ fn scene_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Value> {
     Ok(data)
 }
 impl Catalog {
-    pub(crate) fn chat_cards(&self) -> Result<Vec<Value>> {
+    pub(crate) fn chat_cards(&self, id: Option<&str>) -> Result<Vec<Value>> {
         let mut query = self.connection.prepare(
             "SELECT json_object(
                  'id', card.value->>'$.id', 'catalogId', c.id,
                  'name', card.value->>'$.document.data.name',
                  'description', substr(card.value->>'$.document.data.description',1,160),
                  'greeting', card.value->>'$.document.data.first_mes', 'avatarUrl', '')
-             FROM content_records d, json_each(d.payload) card
-             JOIN content_records c ON c.kind='character' AND c.id=card.key AND c.deleted=0
-             WHERE d.kind='document' AND d.id='chat-cards' AND d.deleted=0 ORDER BY c.sort_order,c.id",
+             FROM content_records d CROSS JOIN json_each(d.payload) card
+             CROSS JOIN content_records c
+             WHERE d.kind='document' AND d.id='chat-cards' AND d.deleted=0
+                 AND (?1 IS NULL OR card.value->>'$.id'=?1)
+                 AND c.kind='character' AND c.id=card.key AND c.deleted=0
+             ORDER BY c.sort_order,c.id",
         )?;
         Ok(query
-            .query_map([], |row| json_column(row, 0))?
+            .query_map([id], |row| json_column(row, 0))?
             .collect::<rusqlite::Result<Vec<_>>>()?)
     }
 
@@ -144,6 +147,30 @@ impl Catalog {
         Ok(value)
     }
     pub(super) fn projection_owned(&self, name: &str) -> Result<Option<Value>> {
+        if name == "character-chat.json" || name == "character-drawing.json" {
+            let sql = if name == "character-chat.json" {
+                "SELECT json_object(
+                    'id', payload->>'$.profile.id', 'name', payload->>'$.profile.name',
+                    'bg_story', payload->>'$.profile.bg_story', 'personality', payload->'$.profile.personality',
+                    'likes', payload->'$.profile.likes', 'speech', payload->>'$.profile.speech',
+                    'identity', payload->'$.profile.identity', 'portrait', payload->'$.profile.portrait',
+                    'source', payload->>'$.profile.source', 'alias', payload->'$.profile.alias',
+                    'franchise', payload->>'$.popular.franchise', 'aliases', payload->'$.popular.aliases',
+                    'originalName', payload->>'$.popular.originalName')
+                 FROM content_records WHERE kind='character' AND deleted=0
+                    AND json_type(payload,'$.profile.id')='text' ORDER BY sort_order,id"
+            } else {
+                "SELECT CASE WHEN payload->>'$.profile.type' = 'popular'
+                    THEN json_object('id', payload->>'$.profile.id', 'accent_color', payload->>'$.profile.accent_color')
+                    ELSE payload->'$.profile' END
+                 FROM content_records WHERE kind='character' AND deleted=0
+                    AND json_type(payload,'$.profile.id')='text' ORDER BY sort_order,id"
+            };
+            let mut query = self.connection.prepare(sql)?;
+            let profiles = query.query_map([], |row| json_column(row, 0))?
+                .collect::<rusqlite::Result<Vec<_>>>()?;
+            return Ok(Some(Value::Array(profiles)));
+        }
         if name == "character-archive.json" {
             // The bookshelf and biography never read the relationship atlas.
             let mut query = self.connection.prepare(
@@ -364,6 +391,8 @@ pub(super) fn projected_file(name: &str) -> bool {
     [
         "popular-directory.json",
         "character-archive.json",
+        "character-chat.json",
+        "character-drawing.json",
         "scene-titles.json",
         "characters.json",
         "popular-characters.json",

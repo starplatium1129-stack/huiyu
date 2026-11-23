@@ -89,7 +89,7 @@
         </template>
 
         <details class="voice-config">
-          <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></StudioDisclosureSummary>
+          <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} 套已配置</span></StudioDisclosureSummary>
           <div data-disclosure-content>
           <button v-if="ttsEngine === 'gpt-sovits-native'" class="btn btn-quiet btn-sm voice-import" type="button" :disabled="readingVoices || opBusy" @click="readExistingVoices">{{ readingVoices ? '读取中…' : '读取已有声线' }}</button>
           <div class="voice-grid">

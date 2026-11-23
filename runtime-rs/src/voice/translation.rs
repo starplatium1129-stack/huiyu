@@ -1,5 +1,6 @@
 use super::{
     config::Settings,
+    native::Native,
     queue::{Permit, Queue, cancelled, remaining, translation_timeout},
 };
 use crate::{
@@ -12,7 +13,7 @@ use std::{
     collections::VecDeque,
     process::Stdio,
     sync::{
-        Arc, Mutex,
+        Arc, Mutex, OnceLock, Weak,
         atomic::{AtomicBool, Ordering},
     },
     time::Duration,
@@ -23,7 +24,7 @@ use tokio::{
     sync::watch,
     time::Instant as Deadline,
 };
-use tokio_util::sync::CancellationToken;
+use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
 type Startup = watch::Receiver<Option<std::result::Result<(), String>>>;
 fn translation_process_error(error: ApiError) -> ApiError {
@@ -42,7 +43,9 @@ pub(super) struct Translation {
     ready: AtomicBool,
     starting: Mutex<Option<Startup>>,
     managed: Mutex<Option<OwnedProcess>>,
+    native: OnceLock<Weak<Native>>,
     processes: Arc<Processes>,
+    tasks: TaskTracker,
     probes: Arc<HealthProbes>,
 }
 impl Translation {
@@ -61,9 +64,14 @@ impl Translation {
             ready: AtomicBool::new(false),
             starting: Mutex::new(None),
             managed: Mutex::new(None),
+            native: OnceLock::new(),
             processes: Arc::new(Processes::default()),
+            tasks: TaskTracker::new(),
             probes,
         })
+    }
+    pub fn bind_native(&self, native: &Arc<Native>) {
+        self.native.get_or_init(|| Arc::downgrade(native));
     }
     fn current_settings(&self) -> Arc<Settings> {
         self.settings.read().unwrap().clone()
@@ -90,19 +98,81 @@ impl Translation {
     }
     pub async fn status(&self, fresh: bool) -> Value {
         let ready = self.ping_observed(fresh).await;
-        self.ready.store(ready, Ordering::Relaxed);
         let managed = self
             .managed
             .lock()
             .unwrap()
             .as_ref()
-            .is_some_and(|child| child.exited().ok().flatten().is_none());
+            .is_some_and(|child| child.exited().is_ok_and(|exit| exit.is_none()));
         json!({"ready": ready, "managed": managed, "queue": self.queue.status(), "cached": self.cache.lock().unwrap().len()})
     }
     pub fn owned(&self) -> bool {
         self.managed.lock().unwrap().is_some()
     }
+    async fn enter(&self, deadline: Deadline) -> Result<Arc<Permit>> {
+        self.queue
+            .enter(
+                self.queue.reserve()?,
+                &self.cancel,
+                deadline,
+                translation_timeout,
+            )
+            .await
+            .map(Arc::new)
+    }
+
+    pub async fn handoff_to_native(self: &Arc<Self>, deadline: Deadline) -> Result<Arc<Permit>> {
+        let permit = self.enter(deadline).await?;
+        self.retire_managed(&permit).await?;
+        Ok(permit)
+    }
+
+    async fn retire_managed(self: &Arc<Self>, permit: &Arc<Permit>) -> Result<()> {
+        self.ready.store(false, Ordering::Relaxed);
+        if !self.owned() {
+            return Ok(());
+        }
+        let owner = self.clone();
+        let permit = permit.clone();
+        // Retain exclusive access until the owned process exits, including
+        // when the request waiting for the handoff times out.
+        self.tasks
+            .spawn(async move {
+                let _permit = permit;
+                owner.stop_managed().await
+            })
+            .await
+            .map_err(|_| cancelled())?
+    }
+
+    async fn stop_managed(&self) -> Result<()> {
+        let child = self.managed.lock().unwrap().take();
+        if let Some(child) = child
+            && let Err(error) = child.stop().await
+        {
+            *self.managed.lock().unwrap() = Some(child);
+            return Err(error);
+        }
+        Ok(())
+    }
+
+    async fn retire_native(&self, permit: &Permit) -> Result<()> {
+        if let Some(native) = self.native.get().and_then(Weak::upgrade) {
+            native.retire(permit.serial.clone()).await?;
+        }
+        Ok(())
+    }
+
     pub async fn prepare(self: &Arc<Self>, deadline: Deadline) -> Result<()> {
+        let permit = self.enter(deadline).await?;
+        self.prepare_server(deadline, &permit).await
+    }
+
+    async fn prepare_server(
+        self: &Arc<Self>,
+        deadline: Deadline,
+        permit: &Arc<Permit>,
+    ) -> Result<()> {
         if self.cancel.is_cancelled() {
             return Err(cancelled());
         }
@@ -118,11 +188,12 @@ impl Translation {
                 let (send, receiver) = watch::channel(None);
                 *starting = Some(receiver.clone());
                 let service = self.clone();
-                tokio::spawn(async move {
+                let permit = permit.clone();
+                self.tasks.spawn(async move {
                     // This shared startup has its own original 120-second cap;
                     // timing out one prepare caller must not abort other callers.
                     let deadline = Deadline::now() + Duration::from_secs(120);
-                    let result = service.ensure_server(deadline).await;
+                    let result = service.ensure_server(deadline, &permit).await;
                     service.ready.store(result.is_ok(), Ordering::Relaxed);
                     let _ = send.send(Some(result.map_err(|error| error.message)));
                     service.starting.lock().unwrap().take();
@@ -145,7 +216,8 @@ impl Translation {
             }
         }
     }
-    async fn ensure_server(&self, deadline: Deadline) -> Result<()> {
+    async fn ensure_server(&self, deadline: Deadline, permit: &Permit) -> Result<()> {
+        self.retire_native(permit).await?;
         if tokio::time::timeout_at(deadline, self.ping())
             .await
             .map_err(|_| translation_timeout())?
@@ -163,7 +235,7 @@ impl Translation {
                 "本地日语翻译组件尚未安装",
             ));
         }
-        self.managed.lock().unwrap().take();
+        self.stop_managed().await?;
         let mut command = Command::new(&settings.python);
         command
             .arg(&settings.script)
@@ -220,7 +292,7 @@ impl Translation {
         };
         let result = tokio::select! { result = tokio::time::timeout_at(deadline, wait) => result.unwrap_or_else(|_| Err(ApiError::new(503, "TRANSLATION_TIMEOUT", "翻译常驻服务启动超时"))), _ = self.cancel.cancelled() => Err(cancelled()) };
         if result.is_err() {
-            self.managed.lock().unwrap().take();
+            self.stop_managed().await?;
         }
         result
     }
@@ -244,23 +316,14 @@ impl Translation {
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
-        let permit = Arc::new(
-            self.queue
-                .enter(
-                    self.queue.reserve()?,
-                    &self.cancel,
-                    deadline,
-                    translation_timeout,
-                )
-                .await?,
-        );
+        let permit = self.enter(deadline).await?;
         // A queued duplicate can use work completed while it waited.
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
         let settings = self.current_settings();
         let current = async {
-            self.prepare(deadline).await?;
+            self.prepare_server(deadline, &permit).await?;
             let (status, value) = self
                 .transport
                 .json(
@@ -290,10 +353,11 @@ impl Translation {
         let result = match current {
             Ok(value) => value,
             Err(error) => {
-                self.ready.store(false, Ordering::Relaxed);
                 if self.cancel.is_cancelled() {
                     return Err(cancelled());
                 }
+                self.retire_managed(&permit).await?;
+                self.retire_native(&permit).await?;
                 self.legacy(&text, deadline, permit.clone())
                     .await
                     .map_err(|_| {
@@ -402,6 +466,8 @@ impl Translation {
     }
     pub async fn close(&self) {
         self.cancel.cancel();
+        self.tasks.close();
+        self.tasks.wait().await;
         self.managed.lock().unwrap().take();
         self.processes.close().await;
         self.cache.lock().unwrap().clear();

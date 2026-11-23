@@ -46,7 +46,7 @@
     </section>
 
     <!-- 最近创作 -->
-    <section class="container home-section home-resume" v-if="recentWorks.length || recentWorksLoading || recentWorksError">
+    <section class="container home-section home-resume" data-route-arrive v-if="recentWorks.length || recentWorksLoading || recentWorksError">
       <div class="home-section-head">
         <h2 data-screentone-furniture>最近创作</h2>
         <RouterLink to="/gallery" class="link">查看全部 →</RouterLink>
@@ -87,7 +87,7 @@
           class="sc-link"
           :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
         >
-          <SceneCard :scene="s" mode="strip" :clickable="false" :sample-rating="sampleEntryFor(s.id)?.rating" :thumb-url="sampleThumbUrl(s.id)" :image-url="sampleImageUrl(s.id)" />
+          <SceneCard :scene="s" mode="strip" :clickable="false" :sample-rating="sampleEntryFor(s.id)?.rating" :thumb-url="sampleThumbUrl(s.id)" />
         </RouterLink>
       </div>
     </section>
@@ -275,7 +275,7 @@ async function retryRecentWorks(event: MouseEvent) {
 }
 const journalReady = ref(false)
 const { recentScenes, featuredScenes, loading: journalLoading, error: journalError, canRefresh: canRefreshJournal, refresh: refreshJournal } = useHomeSceneHighlights(() => journalReady.value)
-const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl, imageUrl: sampleImageUrl } = useShowcaseAssets(undefined, () => journalReady.value)
+const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl } = useShowcaseAssets(undefined, () => journalReady.value)
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const museDirection = ref<'next' | 'prev'>('next')

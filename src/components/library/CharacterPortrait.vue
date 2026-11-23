@@ -2,10 +2,16 @@
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { computed } from 'vue'
-const props = defineProps<{ src?: string; name: string }>()
-const { image, failed } = useRuntimeImage(() => props.src)
-const pending = computed(() => !props.src || props.src.includes('portrait-pending'))
+import { computed, ref, watch } from 'vue'
+const props = defineProps<{ src?: string; fallback?: string; name: string }>()
+const useFallback = ref(false)
+const source = computed(() => useFallback.value ? props.fallback : props.src)
+const { image, failed } = useRuntimeImage(source)
+const pending = computed(() => !source.value || source.value.includes('portrait-pending'))
+watch(() => [props.src, props.fallback], () => { useFallback.value = false }, { flush: 'sync' })
+watch(failed, broken => {
+  if (broken && props.fallback && props.fallback !== props.src) useFallback.value = true
+})
 </script>
 <style scoped>
 .character-portrait { border: 1px solid var(--border-soft); background: var(--bg-elevated); }

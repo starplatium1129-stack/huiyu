@@ -196,6 +196,8 @@ let archiveBrowse: { search: string; shelf?: CharacterBookshelfState } = { searc
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
+import neneShelfPortrait from '@/assets/illustrations/nene-portrait-384.webp'
+import natsumeShelfPortrait from '@/assets/illustrations/natsume-portrait-384.webp'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { clearCharacterAtmosphere } from '@/utils/characterTheme'
@@ -294,9 +296,15 @@ function selectCharacter(id: string) {
 const bgExpanded = ref(false)
 useScrollReveal()
 
+const shelfPortraits: Record<string, string> = {
+  'nene-portrait.webp': neneShelfPortrait, 'natsume-portrait.webp': natsumeShelfPortrait,
+}
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.name, source: character.source, aliases: character.alias,
-  image: character.type === 'popular' ? popularPortraitSrc(character.id) : character.portrait?.image,
+  image: character.type === 'popular' ? popularPortraitSrc(character.id)
+    : characterArtEntry(character.id)?.thumbnailUrl
+      || shelfPortraits[character.portrait?.image?.split('?')[0]?.split('/').at(-1) || '']
+      || character.portrait?.image,
   fullImage: character.type === 'popular' ? popularPortraitFullSrc(character.id) : characterArtEntry(character.id)?.portraitUrl || character.portrait?.image,
 })))
 
@@ -356,7 +364,7 @@ interface RecommendationScene extends CharacterScene {
   mature?: boolean
 }
 const sceneRatings = ref<ReadonlyMap<string, { rating?: string; mature?: boolean }>>(new Map())
-const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl } = useShowcaseAssets()
+const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl } = useShowcaseAssets(undefined, () => !showShelf.value && !!current.value)
 function recommendArchiveCode(id: string): string {
   const safe = String(id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '')
   return safe.replace(/^sc(?=\d)/, 'sc-').toUpperCase()

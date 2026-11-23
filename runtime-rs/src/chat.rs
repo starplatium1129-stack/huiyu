@@ -4,7 +4,9 @@ mod chatgpt;
 pub(crate) use card_library::validate_catalog_card;
 mod completion;
 mod channel_turn;
-pub(crate) use channel_turn::{ChannelReply, ChannelTool};
+pub(crate) use channel_turn::{
+    ChannelOwnerBond, ChannelProvider, ChannelReply, ChannelTool, ChannelTurnOptions,
+};
 mod local_persona;
 pub(crate) mod muse;
 mod ollama;
@@ -118,6 +120,20 @@ impl ChatService {
     }
 }
 
+pub(crate) async fn chat_card_exists(app: &AppState, id: &str) -> bool {
+    card_library::is_id(id) && card_library::load_card(app, id).await.is_ok()
+}
+
+pub(crate) async fn chat_card_catalog_id(app: &AppState, id: &str) -> Option<String> {
+    if !card_library::is_id(id) {
+        return None;
+    }
+    card_library::load_card(app, id)
+        .await
+        .ok()
+        .and_then(|card| card.catalog_id().map(str::to_owned))
+}
+
 pub fn router(service: Arc<ChatService>) -> Router<AppState> {
     Router::new()
         .merge(card_library::router())
@@ -219,7 +235,11 @@ async fn chat(
         } else {
             None
         };
-        let input = request_body::validate(body, persona, imported, direct, &admission, &scope).await?;
+        let japanese_voice = direct && !chatgpt_provider && muse_character.is_none()
+            && body["japaneseVoice"] == true
+            && app.voice.as_ref().is_some_and(|voice| voice.speech_requires_japanese());
+        let mut input = request_body::validate(body, persona, imported, direct, &admission, &scope).await?;
+        input.japanese_voice = japanese_voice;
         if let Some(character) = muse_character {
             return chat.muse.submit(character, input, muse_drawing);
         }

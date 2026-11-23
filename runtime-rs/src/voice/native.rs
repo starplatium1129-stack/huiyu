@@ -2,6 +2,7 @@ use super::{
     config::Settings,
     payload::Validated,
     queue::{Permit, cancelled, speech_timeout},
+    translation::Translation,
 };
 use crate::{
     control::ControlService,
@@ -31,6 +32,7 @@ const AUDIO_LIMIT: usize = 128 * 1024 * 1024;
 
 struct InFlight {
     _voice: Arc<OwnedSemaphorePermit>,
+    _translation: Arc<Permit>,
     _drawing: Option<OwnedSemaphorePermit>,
     _comfy: tokio::sync::OwnedMutexGuard<()>,
 }
@@ -84,6 +86,7 @@ impl From<&Settings> for NativePaths {
 pub(super) struct Native {
     paths: RwLock<NativePaths>,
     worker: tokio::sync::Mutex<Option<Worker>>,
+    translation: Arc<Translation>,
     control: RwLock<Weak<ControlService>>,
     processes: Arc<Processes>,
     tasks: TaskTracker,
@@ -92,10 +95,15 @@ pub(super) struct Native {
     failed_release: AtomicBool,
 }
 impl Native {
-    pub fn new(settings: &Settings, cancel: CancellationToken) -> Arc<Self> {
+    pub fn new(
+        settings: &Settings,
+        cancel: CancellationToken,
+        translation: Arc<Translation>,
+    ) -> Arc<Self> {
         Arc::new(Self {
             paths: RwLock::new(NativePaths::from(settings)),
             worker: tokio::sync::Mutex::new(None),
+            translation,
             control: RwLock::new(Weak::new()),
             processes: Arc::default(),
             tasks: TaskTracker::new(),
@@ -234,6 +242,7 @@ impl Native {
         if self.failed_release.load(Ordering::Acquire) {
             return Err(release_error());
         }
+        let translation = self.translation.handoff_to_native(deadline).await?;
         let control = self
             .control
             .read()
@@ -270,6 +279,7 @@ impl Native {
         worker.idle.cancel();
         *worker.lifetime.operation.lock().unwrap() = Some(InFlight {
             _voice: permit.serial.clone(),
+            _translation: translation,
             _drawing: drawing,
             _comfy: comfy,
         });
@@ -286,7 +296,10 @@ impl Native {
                 .take(16385)
                 .read_until(b'\n', &mut header)
                 .await?;
-            if size == 0 || size > 16384 || header.last() != Some(&b'\n') {
+            if size == 0 {
+                return Err(ApiError::new(502, "TTS_WORKER_EXITED", "本机语音进程提前退出"));
+            }
+            if size > 16384 || header.last() != Some(&b'\n') {
                 return Err(protocol_error());
             }
             let reply: Value = serde_json::from_slice(&header).map_err(|_| protocol_error())?;
@@ -294,6 +307,9 @@ impl Native {
                 return Err(protocol_error());
             }
             if reply["event"] == "error" {
+                if reply["code"] == "TTS_OUT_OF_MEMORY" {
+                    return Err(ApiError::new(503, "TTS_OUT_OF_MEMORY", "本机语音可用内存不足"));
+                }
                 return Err(ApiError::new(
                     502,
                     "TTS_FAILED",
@@ -371,13 +387,7 @@ impl Native {
     }
 
     async fn retire_worker(&self) -> Result<()> {
-        if self.failed_release.load(Ordering::Acquire) {
-            return Err(release_error());
-        }
-        let mut slot = self
-            .worker
-            .try_lock()
-            .map_err(|_| ApiError::new(409, "VOICE_BUSY", "语音正在生成，请稍后再绘图"))?;
+        let mut slot = self.worker.lock().await;
         if self.failed_release.load(Ordering::Acquire) {
             return Err(release_error());
         }

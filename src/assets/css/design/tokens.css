@@ -96,9 +96,9 @@
   --mood-warmth-text:   var(--mood-warmth);
 
   /* ---- Typography ---- */
-  --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
-  --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。优先矢量中/日文衬线，避免 Windows 直落点阵宋体。 */
   --font-serif:     "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "FangSong", "Yu Mincho", "Hiragino Mincho ProN", "SimSun", Georgia, serif;
   --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Source Han Serif JP", "Noto Serif JP", "Noto Serif CJK JP", var(--font-serif);
@@ -199,6 +199,8 @@
   --spring-bouncy-duration: 650ms;
   --spring-gentle-ease: var(--spring-soft);
   --spring-gentle-duration: var(--motion-control);
+  --spring-press-ease: var(--spring-bounce);
+  --spring-press-duration: var(--motion-control);
 
   /* ---- z-index scale(唯一来源,禁止页面内写魔法数字) ---- */
   --z-below: -1;      /* 背景光斑 / 装饰层 */
@@ -249,6 +251,9 @@
   :root {
     --spring-gentle-ease: linear(0, 0.0046 1.042%, 0.0173 2.083%, 0.0364 3.125%, 0.0607 4.167%, 0.1204 6.25%, 0.189 8.333%, 0.3696 13.542%, 0.4383 15.625%, 0.5027 17.708%, 0.5898 20.833%, 0.6413 22.917%, 0.6875 25%, 0.7287 27.083%, 0.7652 29.167%, 0.8119 32.292%, 0.8383 34.375%, 0.8812 38.542%, 0.9133 42.708%, 0.9319 45.833%, 0.9547 51.042%, 0.9786 60.417%, 0.9924 72.917%, 1);
     --spring-gentle-duration: 550ms;
+    /* BUTTON_SPRING (stiffness: 600, damping: 30, mass: 1) — transform/scale release rebound only. */
+    --spring-press-ease: linear(0, 0.0888 5%, 0.2868 10%, 0.5144 15%, 0.7219 20%, 0.8843 25%, 0.9949 30%, 1.0583 35%, 1.0847 40%, 1.0859 45%, 1.0726 50%, 1.0534 55%, 1.0338 60%, 1.0173 65%, 1.0051 70%, 0.9974 75%, 0.9935 80%, 0.9923 85%, 0.9929 90%, 0.9944 95%, 1);
+    --spring-press-duration: 380ms;
   }
 }
 

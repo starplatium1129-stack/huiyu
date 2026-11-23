@@ -79,11 +79,17 @@ pub(super) async fn prepare(
             "DeepSeek 思考工具模式需要跨轮完整思考上下文；请关闭思考，或关闭房间工具和联网检索",
         ));
     }
+    let destination = target(&api, &api.pathname)?;
+    let japanese_voice = input.japanese_voice
+        && crate::upstream::local_url(&destination.origin().ascii_serialization()).is_ok();
+    if japanese_voice {
+        super::stream::japanese_voice::prompt(&mut input.messages);
+    }
     let session_id = std::mem::take(&mut input.session_id);
     let body = request_body::encode(payload(input, &api), admission, cancel).await?;
     let response = client
         .send(
-            target(&api, &api.pathname)?,
+            destination,
             Request {
                 body: Some(body),
                 key: &api.key,
@@ -116,6 +122,7 @@ pub(super) async fn prepare(
         wait_ms: 0,
         protocol: if sse { Protocol::Sse } else { Protocol::Json },
         permit: None,
+        japanese_voice,
     })
 }
 pub(super) fn payload(input: Input, api: &Api) -> Value {
@@ -163,13 +170,15 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     } else if api.vendor == "opencode" && !input.reasoning.is_empty() && input.reasoning != "off" {
         value["reasoning_effort"] = json!(input.reasoning);
     }
-    let mut tools = persona::tools(input.tools, input.web_search);
-    if input.card_tools {
-        tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_web" | "generate_character_image" | "search_drawing_catalog" | "generate_drawing_batch" | "generate_image_from_reference")));
-    }
-    if input.channel_tools {
-        tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_drawing_catalog" | "generate_drawing_batch")));
-    }
+    let tools = if input.channel_tools {
+        persona::channel_tools(input.tools, input.channel_voice)
+    } else {
+        let mut tools = persona::tools(input.tools, input.web_search);
+        if input.card_tools {
+            tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_web" | "generate_character_image" | "search_drawing_catalog" | "generate_drawing_batch" | "generate_image_from_reference")));
+        }
+        tools
+    };
     if !tools.is_empty() {
         value["tools"] = Value::Array(tools);
     }

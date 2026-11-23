@@ -24,11 +24,7 @@ export function usePromptCatalogData(sceneStore: ReturnType<typeof useSceneStore
     dataReady.value = false; dataLoading.value = true
     dataRequest = (async () => {
       try {
-        await sceneStore.load()
-        check()
-        if (!sceneStore.loaded) throw new Error(sceneStore.error || '场景库暂时无法读取')
-        // Required profiles and scenes must both settle before applying defaults.
-        await sceneStore.loadPresetCatalog()
+        await sceneStore.loadDrawingCatalog()
         check()
         const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
         const catalog = parsePresetCatalog(sceneStore.presets)

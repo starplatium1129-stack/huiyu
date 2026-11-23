@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import StudioIllustratedCard from '@/components/ui/StudioIllustratedCard.vue'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
-import inspiration from '@/assets/illustrations/atelier-inspiration-spot.webp'
-import drawing from '@/assets/illustrations/atelier-create-spot.webp'
-import collection from '@/assets/illustrations/atelier-collection-spot.webp'
+import inspiration from '@/assets/illustrations/atelier-inspiration-spot-256.webp'
+import drawing from '@/assets/illustrations/atelier-create-spot-256.webp'
+import collection from '@/assets/illustrations/atelier-collection-spot-256.webp'
 
 defineEmits<{ navigate: [] }>()
 const steps = [
@@ -18,7 +18,7 @@ const steps = [
     <li v-for="step in steps" :key="step.to">
       <StudioIllustratedCard :to="step.to" :title="step.title" compact @click="$emit('navigate')">
         <template #art>
-          <img :src="step.art.value" class="step-art" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
+          <img :src="step.art.value" class="step-art" width="256" height="256" alt="" loading="lazy" decoding="async" draggable="false" />
         </template>
       </StudioIllustratedCard>
     </li>

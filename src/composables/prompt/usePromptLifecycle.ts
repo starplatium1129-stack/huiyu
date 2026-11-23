@@ -1,5 +1,4 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
-import { useSceneStore } from '@/stores/sceneStore'
 
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router';
@@ -96,7 +95,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     async function resumeWorkspace() {
         const request = initializationRequest;
         const current = () => !disposed && viewActive && request === initializationRequest;
-        if (!pb.dataReady || !useSceneStore().loaded) {
+        if (!pb.dataReady) {
             if (!await loadWorkspaceData()) return;
             if (!current()) return;
             await loadOptionalBlueprints();

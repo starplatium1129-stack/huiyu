@@ -2,8 +2,9 @@ use super::*;
 use crate::companion_channels::media::IMAGE_LIMIT;
 use axum::{
     body::Bytes,
-    extract::Path as RoutePath,
+    extract::{DefaultBodyLimit, Path as RoutePath},
     http::{HeaderMap, header},
+    routing::post,
 };
 
 pub(super) fn image_route() -> Router<AppState> {

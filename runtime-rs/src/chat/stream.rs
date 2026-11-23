@@ -11,6 +11,8 @@ use axum::{
 use futures_util::StreamExt;
 mod lines;
 mod sse;
+pub(super) mod japanese_voice;
+use japanese_voice::JapaneseVoice;
 use lines::Lines;
 use serde::Serialize;
 use serde_json::{Value, json};
@@ -29,6 +31,10 @@ pub(super) enum Event {
         content: String,
     },
     Token {
+        content: String,
+    },
+    JapaneseSpeechMode,
+    JapaneseSpeech {
         content: String,
     },
     Drawing {
@@ -61,6 +67,7 @@ pub(super) struct Prepared {
     pub wait_ms: u64,
     pub protocol: Protocol,
     pub permit: Option<Permit>,
+    pub japanese_voice: bool,
 }
 struct Events {
     lines: Lines,
@@ -73,12 +80,31 @@ struct Events {
     finished: bool,
     shutdown: CancellationToken,
     _permit: Option<Permit>,
+    japanese_voice: Option<JapaneseVoice>,
 }
 impl Events {
     async fn next(&mut self) -> Result<Option<Event>> {
         loop {
             if let Some(event) = self.pending.pop_front() {
-                return Ok(Some(event));
+                match event {
+                    Event::Token { content } if self.japanese_voice.is_some() => {
+                        if let Some(event) = self.japanese_voice.as_mut().unwrap().push(content) {
+                            return Ok(Some(event));
+                        }
+                        continue;
+                    }
+                    Event::Done => {
+                        if let Some(voice) = self.japanese_voice.take() {
+                            self.pending.push_front(Event::Done);
+                            for event in voice.finish().into_iter().flatten().rev() {
+                                self.pending.push_front(event);
+                            }
+                            continue;
+                        }
+                        return Ok(Some(Event::Done));
+                    }
+                    event => return Ok(Some(event)),
+                }
             }
             if self.finished {
                 return Ok(None);
@@ -226,6 +252,13 @@ impl Events {
 fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
     let wait = prepared.wait_ms;
     let vendor = super::validation::vendor(prepared.response.url());
+    let mut pending = VecDeque::from([Event::Meta {
+        model: prepared.model,
+        queue_wait_ms: wait,
+    }]);
+    if prepared.japanese_voice {
+        pending.push_back(Event::JapaneseSpeechMode);
+    }
     Events {
         lines: Lines::new(
             prepared.response.bytes_stream().boxed(),
@@ -240,14 +273,12 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         decoder: Decoder::new(vendor),
         responses: ResponsesDecoder::default(),
         sse: sse::Frames::default(),
-        pending: VecDeque::from([Event::Meta {
-            model: prepared.model,
-            queue_wait_ms: wait,
-        }]),
+        pending,
         json: String::new(),
         finished: false,
         shutdown,
         _permit: prepared.permit,
+        japanese_voice: prepared.japanese_voice.then(JapaneseVoice::default),
     }
 }
 

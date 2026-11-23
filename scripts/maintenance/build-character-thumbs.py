@@ -20,6 +20,8 @@ HomeView 的 portraitSrc 改用 thumbs 后单张体积降 ~99%。
 - 与 build-particle-portraits.py 同样的离线预生成模式：前端零改动、零运行时开销
 """
 
+from concurrent.futures import ThreadPoolExecutor
+import os
 import sys
 from pathlib import Path
 
@@ -51,17 +53,38 @@ def main() -> int:
     if not sources:
         print(f"no popular-*.png under {SRC_DIR}")
         return 1
-    built = skipped = 0
-    total_src = total_thumb = 0
+    pending: list[tuple[Path, Path]] = []
+    skipped = 0
     for src in sources:
         dst = THUMB_DIR / (src.stem + ".webp")
-        status = build_one(src, dst, force)
-        if status == "built":
-            built += 1
-            total_src += src.stat().st_size
-            total_thumb += dst.stat().st_size
-        else:
+        if not force and dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
             skipped += 1
+        else:
+            pending.append((src, dst))
+
+    built = 0
+    total_src = total_thumb = 0
+    if pending:
+        THUMB_DIR.mkdir(parents=True, exist_ok=True)
+        if len(pending) == 1:
+            src, dst = pending[0]
+            if build_one(src, dst, True) == "built":
+                built = 1
+                total_src = src.stat().st_size
+                total_thumb = dst.stat().st_size
+        else:
+            workers = min(os.cpu_count() or 1, 8, len(pending))
+
+            def run_pair(pair: tuple[Path, Path]) -> tuple[int, int]:
+                src, dst = pair
+                build_one(src, dst, True)
+                return src.stat().st_size, dst.stat().st_size
+
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                for src_bytes, thumb_bytes in pool.map(run_pair, pending):
+                    built += 1
+                    total_src += src_bytes
+                    total_thumb += thumb_bytes
     print(f"built={built} skipped={skipped}")
     if built:
         print(
