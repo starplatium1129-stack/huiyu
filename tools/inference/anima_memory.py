@@ -23,10 +23,14 @@ def _memory():
     return module
 
 
-def upload_component(component, tools, device):
+def upload_component(name, component, tools, device):
     """Retire one loaded CPU component before materializing the next one."""
     if device.memory_policy == "offload":
         return {"strategy": "deferred"}
+    if name == "text_encoder" and device.backend == "cuda":
+        # Qwen3Model only looks up input rows. A private CPU snapshot also
+        # survives reuse after switching model directories and file leases.
+        _memory().keep_token_table_on_cpu(component, copy_weight=True)
     observation = {}
     if device.backend != "cuda" or not tools("native_upload").try_packed_upload(
             [component], target_device=device.device, observation=observation):

@@ -34,7 +34,7 @@ def load(root, cfg, blocks, reusable, tools, device, stage=None):
             started = time.perf_counter()
             if stage is not None:
                 stage("uploading", component=name)
-            upload = memory.upload_component(components[name], tools, device)
+            upload = memory.upload_component(name, components[name], tools, device)
             loading.append(dict(name=name, readWallSeconds=read_wall,
                 uploadWallSeconds=time.perf_counter() - started, upload=upload))
         else:
