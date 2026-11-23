@@ -15,9 +15,8 @@
   </svg>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import type { ArchiveIconDef, ArchiveIconName } from './icons/types.ts'
+<script lang="ts">
+import type { ArchiveIconDef } from './icons/types.ts'
 import { navDefs } from './icons/nav.ts'
 import { statusDefs } from './icons/status.ts'
 import { emotionDefs } from './icons/emotion.ts'
@@ -41,6 +40,11 @@ const ICON_DEFS = {
 } satisfies Record<string, ArchiveIconDef>
 
 export type { ArchiveIconName } from './icons/types.ts'
+</script>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import type { ArchiveIconName } from './icons/types.ts'
 const props = defineProps<{ name: ArchiveIconName; definition?: ArchiveIconDef }>()
 // 老存档中的图标名可能已失效；文字和操作仍应正常呈现。
 const def = computed(() => props.definition ?? (Object.hasOwn(ICON_DEFS, props.name) ? ICON_DEFS[props.name] : statusDefs.info))

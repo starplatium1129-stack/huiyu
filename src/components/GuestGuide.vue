@@ -44,7 +44,6 @@
 </template>
 
 <script setup lang="ts">
-import StudioDialog from '@/components/ui/StudioDialog.vue'
 import { defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import { appearanceFocusOrigin } from '@/composables/useDesktopInteraction'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
@@ -63,6 +62,7 @@ const descriptionId = useId()
  * 反而永远看不到引导。`?guest=1` 保留作「强制再看一次」的开关。
  */
 const shouldShow = forcedGuest || (isLocalHost && !settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING))
+const StudioDialog = defineAsyncComponent(() => import('@/components/ui/StudioDialog.vue'))
 const CreationDestinations = defineAsyncComponent(() => import('@/components/home/CreationDestinations.vue'))
 const presented = ref(false)
 const visible = ref(false)

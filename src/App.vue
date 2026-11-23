@@ -5,6 +5,7 @@
     <RouteRecoveryBanner />
     <DesktopUpdateBanner v-if="desktop && !isCompanion" />
     <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
+      <p v-if="atelierWindow && !route.matched.length && !routeRecovery" class="startup-route-status" role="status">正在打开画室…</p>
       <RouterView v-slot="{ Component }">
         <Transition appear :css="false" @before-enter="layoutMotion.onBeforeEnter" @enter="layoutMotion.onEnter" @leave="layoutMotion.onLeave" @enter-cancelled="layoutMotion.onEnterCancelled">
           <KeepAlive include="AppLayout"><component :is="Component" v-if="!startupProfilePending || route.matched[0]?.path === '/'" :key="route.matched[0]?.path" :data-route-path="route.fullPath" /></KeepAlive>
@@ -38,7 +39,6 @@ import GlobalSearch from '@/components/GlobalSearchHost.vue'
 import DesktopTitleBar from '@/components/DesktopTitleBar.vue'
 import RuntimeConnectionNotice from '@/components/RuntimeConnectionNotice.vue'
 import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
-import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 import { routeRecovery } from '@/composables/useRouteRecovery'
@@ -66,15 +66,11 @@ onErrorCaptured((error, instance, info) => {
   return false
 })
 const layoutMotion = useRouteTransition()
-let detachDesktopWorkspace: (() => void) | undefined
 let detachDesktopNavigation: (() => void) | undefined
 onMounted(() => {
   if (getDesktopCapabilities()) detachDesktopNavigation = onDesktopNavigate(path => { void router.push(path) })
-  if (getDesktopCapabilities() && getDesktopWindowRole() === 'atelier') {
-    detachDesktopWorkspace = attachDesktopWorkspace(router)
-  }
 })
-onUnmounted(() => { detachDesktopWorkspace?.(); detachDesktopNavigation?.() })
+onUnmounted(() => detachDesktopNavigation?.())
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
 let stopThumbnailWarmup: (() => void) | undefined
@@ -106,6 +102,7 @@ onUnmounted(() => stopThumbnailWarmup?.())
 </script>
 
 <style>
+.startup-route-status { margin:var(--s-6) var(--workspace-gutter); color:var(--text-secondary); }
 .route-stage > * {
   grid-area: 1 / 1;
   min-width: 0;

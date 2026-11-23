@@ -43,6 +43,7 @@
     </div>
 
     <StudioDialog
+      v-if="activeEntry"
       ref="lightbox"
       v-model:open="lightboxOpen"
       size="md"
@@ -98,9 +99,8 @@
 </template>
 
 <script setup lang="ts">
-import { onDeactivated, ref, shallowRef } from 'vue'
+import { defineAsyncComponent, onDeactivated, ref, shallowRef, watch } from 'vue'
 import { CHARACTERS } from '@/config/characters'
-import StudioDialog from '@/components/ui/StudioDialog.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import neneNightThumb from '../../../assets/chibi/nene-night.webp'
 import neneNightFull from '../../../assets/chibi/nene-night-full.webp'
@@ -153,13 +153,26 @@ const entries: readonly ChibiPolaroidEntry[] = [
   },
 ]
 
+const StudioDialog = defineAsyncComponent(() => import('@/components/ui/StudioDialog.vue'))
 const lightbox = ref<InstanceType<typeof StudioDialog> | null>(null)
 const lightboxOpen = ref(false)
 const activeEntry = shallowRef<ChibiPolaroidEntry | null>(null)
+let opening: { source: HTMLElement; focus: Element | null } | null = null
+
+function showLightbox() {
+  if (!lightbox.value || !opening) return
+  const { source, focus } = opening
+  opening = null
+  if (source.isConnected && (document.activeElement === source || document.activeElement === focus)) {
+    lightbox.value.openDialog(source)
+  }
+}
+watch(lightbox, showLightbox, { flush: 'post' })
 
 function openLightbox(entry: ChibiPolaroidEntry, event: MouseEvent) {
+  opening = { source: event.currentTarget as HTMLElement, focus: document.activeElement }
   activeEntry.value = entry
-  lightbox.value?.openDialog(event.currentTarget as HTMLElement | null)
+  showLightbox()
 }
 
 function onDialogClose() {
@@ -167,6 +180,7 @@ function onDialogClose() {
 }
 
 onDeactivated(() => {
+  opening = null
   lightbox.value?.closeDialog('')
   lightboxOpen.value = false
 })

@@ -1,8 +1,10 @@
 import { startArtworkSession, stopArtworkSession } from './storage/artworkSession'
-import { createApp } from 'vue'
+import { createApp, h, type Component } from 'vue'
 import { createPinia } from 'pinia'
 import { initializePlatform, isDesktopHost } from './platform/initializePlatform'
 import { setStartupProfile } from './platform/startupProfile'
+import { getDesktopWindowRole } from './platform/desktop/runtime'
+import { attachDesktopWorkspace } from './composables/useDesktopWorkspace'
 import { installRouteRecovery } from './composables/useRouteRecovery'
 import { installNavigationFeedback } from './composables/useNavigationFeedback'
 import { initializeTheme } from './composables/useTheme'
@@ -33,11 +35,26 @@ import './assets/css/interaction-motion.css'
 let disposed = false
 let stopUi = () => {}
 let stopNavigationFeedback = () => {}
+let stopDesktopWorkspace = () => {}
 let stopPlatform = () => {}
 let stopFontLoad = () => {}
 void (async () => {
   const appPromise = import('./App.vue')
-  const routerPromise = import('./router')
+  let root: Component
+  const app = createApp(() => h(root)).directive('content-motion', contentMotion).use(createPinia())
+  const routerReady = import('./router').then(async ({ default: router }) => {
+    if (disposed) return
+    installRouteRecovery(router)
+    stopNavigationFeedback = installNavigationFeedback(router)
+    const atelier = getDesktopWindowRole() === 'atelier'
+    if (atelier) stopDesktopWorkspace = attachDesktopWorkspace(router)
+    const resolvingStartPage = atelier && router.options.history.location === '/'
+    app.use(router)
+    // Keep the title bar, connection status and recovery actions available
+    // while the native profile selects and loads its start page.
+    if (!resolvingStartPage) await router.isReady().catch(() => {})
+    return router
+  })
   const platformReady = initializePlatform().then(platform => {
     if (disposed) platform.stop()
     else stopPlatform = platform.stop
@@ -46,23 +63,15 @@ void (async () => {
   if (isDesktopHost()) setStartupProfile(platformReady)
   else void platformReady.catch(error => console.warn('资料初始化暂不可用', error))
   initializeTheme()
-  // Resolve the actual landing route while the document lease and theme are
-  // being acquired. All three must still complete before mounting a writable UI.
-  const [shell] = await Promise.all([
-    Promise.all([appPromise, routerPromise]).then(async ([{ default: App }, { default: router }]) => {
-      if (disposed) return
-      installRouteRecovery(router)
-      stopNavigationFeedback = installNavigationFeedback(router)
-      const app = createApp(App).directive('content-motion', contentMotion).use(createPinia()).use(router)
-      // A failed initial import still mounts the recovery banner.
-      await router.isReady().catch(() => {})
-      return { app, router }
-    }),
+  // Route and shell load in parallel with the theme and document lease.
+  // The atelier can mount its status UI while the initial page is pending.
+  const [shell, router] = await Promise.all([
+    appPromise, routerReady,
     initializeDesktopPreferences(),
     startArtworkSession().catch(error => console.warn('作品清理保护不可用', error)),
   ])
-  if (!shell || disposed) return
-  const { app, router } = shell
+  if (!router || disposed) return
+  root = shell.default
   app.mount('#app')
   let fontFrame = requestAnimationFrame(() => {
     fontFrame = requestAnimationFrame(() => {
@@ -110,6 +119,7 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   stopUi()
   stopPlatform()
   stopNavigationFeedback()
+  stopDesktopWorkspace()
   stopFontLoad()
   void stopArtworkSession().catch(() => {})
 })
