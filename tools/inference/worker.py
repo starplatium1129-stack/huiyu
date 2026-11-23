@@ -89,6 +89,9 @@ def load_mask_tools(name="masked_anima"):
     # -I excludes the script directory: load only this bundled sibling, never PYTHONPATH.
     import importlib.util
     try:
+        if name == "anima_acceleration":
+            # TorchDynamo reimports this module when tracing the attention processor.
+            return load_mask_tools("worker_lifecycle").load_sibling(name)
         spec = importlib.util.spec_from_file_location(f"huiyu_{name}", Path(__file__).with_name(f"{name}.py"))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

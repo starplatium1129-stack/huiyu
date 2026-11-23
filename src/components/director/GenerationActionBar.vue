@@ -34,13 +34,13 @@
           <span class="generation-action-content">
             <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="actionText">{{ actionText }}</span></span>
             <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
-            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
+            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" aria-hidden="true"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
           </span>
         </button>
       </StudioTooltip>
 
     </div>
-    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">{{ announcement }}</span>
+    <progress v-if="busy" class="sr-only" :value="progressValue ?? undefined" max="100" aria-label="当前绘制进度" />
   </div>
 </template>
 
@@ -94,9 +94,8 @@ const actionLabel = computed(() => status.value === 'success' ? '继续生成图
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
 const missingCharacter = computed(() => props.blockedReason?.startsWith('缺少角色 LoRA'))
 const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? props.provider === 'native' ? '原生配置待检查' : '服务未连接'
-  : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : props.connected === false ? '生成时启动服务' : '准备就绪')
-const announcement = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : props.stopped ? '绘制已停止。'
-  : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成。' : '')
+  : props.error ? '绘制未完成' : props.stopped ? '已停止' : status.value === 'success' ? '绘制完成'
+  : props.blockedReason ? '待补充设置' : props.connected === false ? '生成时启动服务' : '准备就绪')
 const unavailableReason = computed(() => !props.online ? props.readinessText || '绘图配置待检查' : props.blockedReason || '')
 const progressValue = computed(() => props.presentation.progress === null ? null : Math.round(props.presentation.progress * 100))
 function activate() {

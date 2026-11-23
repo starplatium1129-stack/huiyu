@@ -7,12 +7,6 @@
       <button v-else-if="generationPresentation.phase !== 'cancelling'" class="btn btn-ghost btn-sm anima-retry" type="button" :disabled="generationBusy" @click="retryAnima">按当前设置重试</button>
       <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
-    <details v-if="drawEngine !== 'sd' && generationBusy" class="inspector-route inspector-runtime">
-      <StudioDisclosureSummary data-spring-button><span data-press-content>绘制详情</span></StudioDisclosureSummary>
-      <div data-disclosure-content>
-        <p role="status">{{ generationPresentation.message }}</p>
-      </div>
-    </details>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
     <div v-content-motion:fade="drawEngine" class="base-model-picker">
       <label for="baseModel">基础模型</label>

@@ -74,13 +74,7 @@ export function useQqBotSettings(isActive: () => boolean) {
     return `已配置 ${bots.value.length} 个 · ${online} 个在线`
   })
 
-  const ownerBondHelp = computed(() => {
-    if (ownerBond.value === 'intimate') return '私聊和群内认主后，对你展现专属恋人级的亲密、偏爱与撒娇；群里其他成员发言时仍保持角色原本的礼貌分寸。'
-    if (ownerBond.value === 'close') return '私聊和群内认主后，把你当作最信赖、最偏爱的人，态度明显更温柔亲近；群里其他成员仍保持角色卡原状。'
-    return '按角色卡原本的语气与距离感和所有人对话。'
-  })
-
-  const serviceStatus = useQqServiceStatus({ chatProvider, chatGptStatus, groupDrawing, voiceMode, voiceStatus })
+  const serviceStatus = useQqServiceStatus({ chatProvider, chatGptStatus, groupDrawing, voiceStatus })
   const { usesChatGpt } = serviceStatus
 
 
@@ -287,6 +281,8 @@ export function useQqBotSettings(isActive: () => boolean) {
     if (idError.value || secretError.value) {
       await nextTick()
       const field = idError.value ? idField.value : secretField.value
+      const disclosure = field?.closest('details')
+      if (disclosure) disclosure.open = true
       field?.focus()
       return
     }
@@ -405,7 +401,7 @@ export function useQqBotSettings(isActive: () => boolean) {
     ...characterOptions,
     ...serviceStatus,
     workspace, loaded, bots, selectedId, creating, confirmDelete, busy, feedback, activeBot, summaryLabel,
-    botName, appId, secret, character, ownerBond, ownerBondHelp, ownerCallName, ownerNote, chatProvider,
+    botName, appId, secret, character, ownerBond, ownerCallName, ownerNote, chatProvider,
     voiceMode, groupVoice, voiceProfile, voiceProfileOptions, enabled, drawing, groupDrawing, groupNaturalReplies, groupLabel,
     groupMuse, privateMuse, groupMuseAll, museContextLimit, museProactive, showMuseDisclosure,
     groupHeading, idField, secretField, savedSecret, idError, secretError, pairCommand, groupPairCommand,

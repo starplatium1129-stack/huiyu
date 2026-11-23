@@ -89,12 +89,11 @@
       <GenerationParticles ref="generationOrbit" :progress="stageProgress" :palette="generationPalette" />
     </div>
 
-    <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
-    <Transition name="stage-feedback"><div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
-      <span class="stage-progress-caption" role="status">{{ stageStatus }}</span>
-      <progress class="stage-progress" :value="stageProgress ?? undefined" max="1" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" />
-      <strong v-if="stageProgress !== null" class="stage-progress-percent" aria-hidden="true">{{ Math.round(stageProgress * 100) }}%</strong>
-    </div></Transition>
+    <Transition name="stage-feedback">
+      <span v-if="waitingForResult && !generationBusy" class="stage-generation-feedback" role="status">
+        {{ retryingResult ? '正在重新读取成片…' : '正在读取成片…' }}
+      </span>
+    </Transition>
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-error': failedResultUrl === displayResultUrl }">
@@ -266,7 +265,6 @@ const revealedResults = ref(new Set<string>())
 const waitingForResult = computed(() => retryingResult.value || Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
 const stageProgress = computed(() => waitingForResult.value ? null : props.generation.progress)
-const stageStatus = computed(() => retryingResult.value ? '正在重新读取成片…' : waitingForResult.value ? '正在读取成片…' : props.generation.message)
 const tiltEnabled = ref(true)
 const restingResult = computed(() => tiltEnabled.value && canAnimate.value && !!loadedResultUrl.value && !props.generationBusy && !waitingForResult.value && !forming.value
   && !coveringResult.value && !props.inpaintCompareActive && !failedResultUrl.value)

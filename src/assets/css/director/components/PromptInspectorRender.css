@@ -16,7 +16,6 @@
 .pb .inspector-generation-error .anima-retry { justify-self:start; }
 .pb .inspector-generation-error summary { cursor:pointer; color:var(--text-secondary); }
 .pb .inspector-generation-error code { display:block; margin-top:var(--s-2); max-height:140px; overflow:auto; white-space:pre-wrap; color:var(--text-secondary); }
-.pb .inspector-runtime p { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); overflow-wrap:anywhere; }
 
 .pb .inspector-workbench #stepResult .result-frame { gap:0; }
 .pb .base-model-picker { margin-top:var(--s-1); }
