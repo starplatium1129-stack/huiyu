@@ -52,10 +52,14 @@ class PipelineCache:
             # reserves before loading a different model, not after its first image.
             settle_resources(False)
 
+    @staticmethod
+    def weight_scope(root, data, policy, style_path):
+        return (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
+                str(style_path) if style_path else None, data.get("_h3TurboSteps"),
+                data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"))
+
     def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, style_path=None, prepared_identity=None):
-        scope = (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
-                 str(style_path) if style_path else None, data.get("_h3TurboSteps"),
-                 data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"))
+        scope = self.weight_scope(root, data, policy, style_path)
         # Retire weights before attempting a new protection interval.
         if self.scope != scope or not self.lease.valid() or (style_path is not None and not self.style_lease.valid()):
             self.clear()

@@ -18,6 +18,7 @@ import json
 import os
 from pathlib import Path
 import sys
+import threading
 from types import SimpleNamespace
 
 for _key in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE", "HF_HUB_DISABLE_TELEMETRY", "DO_NOT_TRACK"):
@@ -363,10 +364,59 @@ def windows_weight_reads():
             os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
 
 
-def prepare_job(job):
+def resolve_moss_text_precision(root, data):
+    if data["mossTextPrecision"] == "auto":
+        variant = sibling("moss_int8").selected(root, "auto", contract, component="text_encoder", expected_model=data["modelId"])
+        data["mossTextPrecision"] = "int8" if variant else "bf16"
+
+
+def prepare_moss_start(root, data, resident, control, ready):
+    # The lease and DLL imports stay on the owner thread. Preload the stdlib
+    # helpers before starting the independent read of the protected bytes.
+    sibling("moss_int8")
+    sibling("native_hash")
+    resolve_moss_text_precision(root, data)
+
+    def import_pipeline():
+        try:
+            dependencies(data["modelId"])
+        finally:
+            ready()
+
+    def protected_identity(path):
+        stop = threading.Event()
+
+        def check():
+            control.check()
+            if stop.is_set():
+                raise InterruptedError("Stopped model verification after an import failure")
+
+        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="moss-verify") as pool:
+            verification = pool.submit(model_identity, path, data["modelId"], SimpleNamespace(check=check),
+                moss_weight_precision=data["mossWeightPrecision"], moss_text_precision=data["mossTextPrecision"])
+            try:
+                import_pipeline()
+                if not verification.done():
+                    control.stage("fingerprint")
+                return verification.result()
+            finally:
+                stop.set()
+
+    # Without NTFS protection, leave both full reads to the normal loader.
+    resident.lease.acquire(root, lambda _: None, prepared_identity=protected_identity)
+    if resident.lease.cached:
+        policy = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
+        resident.scope = resident.weight_scope(root, data, policy, None)
+    else:
+        import_pipeline()
+
+
+def prepare_job(job, *, resident=None, control=None, ready=None):
     data, spec = contract.validate(job)
     if "mossUpscaleScale" in data:
         runtime_dependencies()
+    elif resident is not None and os.name == "nt" and spec["family"] == "moss-image":
+        prepare_moss_start(contract.layout(job["modelDir"], spec), data, resident, control, ready)
     else:
         dependencies(data["modelId"])
     return data, spec
@@ -434,8 +484,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                 data["_h3AccelerationPath"] = contract.safe_file(root, root / extras[kind][0]["path"])
     elif data.get("videoAttention") in ("h3-sol", "h3-sla", "h3-fused") or "h3Decoder" in data or "h3VideoShift" in data:
         raise Error("UNSUPPORTED_ACCELERATION", "此选项需要本机量化版 H3 Turbo。")
-    if spec["family"] == "moss-image" and data["mossTextPrecision"] == "auto":
-        data["mossTextPrecision"] = "int8" if sibling("moss_int8").selected(root, "auto", contract, component="text_encoder", expected_model=data["modelId"]) else "bf16"
+    if spec["family"] == "moss-image":
+        resolve_moss_text_precision(root, data)
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
     if style_path is not None:
         sibling("krea_style").require_dependency()
@@ -715,8 +765,8 @@ def main():
                 print(json.dumps({"ok": True, "preparedModel": args.model_id, "weightsMapped": True}), file=stream, flush=True)
             else:
                 resident = sibling("resident_adapters").PipelineCache()
-                def initialize(job, ready):
-                    prepared = prepare_job(job)
+                def initialize(job, ready, control):
+                    prepared = prepare_job(job, resident=resident, control=control, ready=ready)
                     ready()
                     return prepared
                 try:

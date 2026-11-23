@@ -502,7 +502,7 @@ def main(argv=None):
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
                             cancel_cleanup=resident.cancel_cleanup,
-                            initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, lambda: dependencies(full=False), load_mask_tools, ready))
+                            initialize=lambda job, ready, _control: resident.prepare_job(job, validate_job, validate_model, lambda: dependencies(full=False), load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:
                         raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")

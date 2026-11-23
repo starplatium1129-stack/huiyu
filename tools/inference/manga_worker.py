@@ -192,7 +192,7 @@ def main():
                 emit(stream, None, "diagnostic", dependencies=dependencies(), scope="imports-only; no image processing", validation="依赖检查完成")
             else:
                 resident = sibling("manga_cache").Cache()
-                def initialize(job, ready):
+                def initialize(job, ready, _control):
                     data = contract.validate(job)
                     dependencies()
                     if data.get("rewrite") or data["autoLines"]:

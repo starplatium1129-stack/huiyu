@@ -155,7 +155,7 @@ def settle_resources(cancelled):
 def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None):
     """Run generate(job, control, prepared); return a process exit code.
 
-    initialize(job, imports_ready) releases the reader after imports and returns
+    initialize(job, imports_ready, control) releases the reader after imports and returns
     first-job preparation directly to generate, avoiding
     duplicate full-byte reads on filesystems without a reusable identity lease.
     generate owns its existing finally cleanup (TeaCache and temporary model
@@ -177,15 +177,15 @@ def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cle
             job, control = item
             job_id = control.id
             prepared = None
-            if not initialized:
-                try:
-                    control.stage("dependencies")
-                    prepared = initialize(job, requests.imports_ready.set)
-                    initialized = True
-                finally:
-                    requests.imports_ready.set()
             was_cancelled = False
             try:
+                if not initialized:
+                    try:
+                        control.stage("dependencies")
+                        prepared = initialize(job, requests.imports_ready.set, control)
+                        initialized = True
+                    finally:
+                        requests.imports_ready.set()
                 control.check()
                 generate(job, control, prepared)
             except GenerationCancelled:
