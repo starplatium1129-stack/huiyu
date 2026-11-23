@@ -14,6 +14,30 @@ def activation_reserve(pixels, image_conditioned):
                512 * 1024**2 + pixels * (1024 if image_conditioned else 512))
 
 
+def bind_qwen_token_table(encoder):
+    import torch
+
+    language = encoder.model.language_model
+    table = language.embed_tokens
+    if (type(table) is not torch.nn.Embedding or table.weight.device.type != "cpu"
+            or table.max_norm is not None or table.weight.dtype != torch.bfloat16):
+        return
+
+    class HostLookup(torch.nn.Module):
+        def __init__(self, embedding):
+            super().__init__()
+            # A plain tensor keeps the read-only file view alive and outside
+            # group offload. Only the rows looked up for this prompt travel.
+            self.weight = embedding.weight.detach()
+            self.padding_idx = embedding.padding_idx
+
+        def forward(self, ids):
+            rows = torch.nn.functional.embedding(ids.cpu(), self.weight, self.padding_idx)
+            return rows.to(device=ids.device)
+
+    language.embed_tokens = HostLookup(table)
+
+
 class Residency(memory.Residency):
     def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels, retain_components=False,
                  stream_text=False, stream_mapped_dit=False):

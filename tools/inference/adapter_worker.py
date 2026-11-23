@@ -422,6 +422,33 @@ def prepare_job(job, *, resident=None, control=None, ready=None):
     return data, spec
 
 
+def load_qwen_pipeline(root, spec, control):
+    import torch
+    from diffusers import (AutoencoderKLQwenImage21, FlowMatchEulerDiscreteScheduler,
+                           QwenImage21Pipeline, QwenImage21Transformer2DModel)
+    from transformers import Qwen3VLForConditionalGeneration, Qwen3VLProcessor
+
+    # layout() has checked the five fixed component classes and the model's
+    # sigma grid. The processor reads tokenizer/config files only, so it can
+    # overlap the sequential weight loaders without sharing their meta-init.
+    weights = dict(local_files_only=True, use_safetensors=True)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        processor = pool.submit(Qwen3VLProcessor.from_pretrained, str(root / "processor"),
+                                local_files_only=True, trust_remote_code=False)
+        control.check()
+        encoder = Qwen3VLForConditionalGeneration.from_pretrained(str(root / "text_encoder"),
+            dtype=torch.bfloat16, trust_remote_code=False, **weights)
+        control.check()
+        transformer = QwenImage21Transformer2DModel.from_pretrained(str(root / "transformer"),
+            torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
+        control.check()
+        vae = AutoencoderKLQwenImage21.from_pretrained(str(root / "vae"),
+            torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
+        scheduler = FlowMatchEulerDiscreteScheduler.from_pretrained(str(root / "scheduler"), local_files_only=True)
+        return QwenImage21Pipeline(scheduler=scheduler, vae=vae, text_encoder=encoder, processor=processor.result(),
+                                   transformer=transformer, sample_sigmas=spec.get("sampleSigmas"))
+
+
 def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None, manga_pixels=None):
     data, spec = prepared if prepared is not None else prepare_job(job)
     runner = spec.get("runner")
@@ -539,7 +566,10 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                     placement = video.placement(template.components, policy, data, spec, video_device, device_backend)
                 else:
                     with windows_weight_reads() if spec["family"] in ("qwen-image", "krea2") else contextlib.nullcontext():
-                        template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
+                        if spec["family"] == "qwen-image":
+                            template = load_qwen_pipeline(root, spec, control)
+                        else:
+                            template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
                     if spec["family"] == "krea2":
                         sibling("krea_adapter").configure(template)
                     if spec["family"] == "qwen-image":
@@ -550,6 +580,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                         # unused LM-head weights, KV cache and all intermediate states.
                         # Its task-local final-norm hook still selects pre-norm output.
                         encoder.lm_head = torch.nn.Identity()
+                        if policy == "offload":
+                            sibling("mapped_residency").bind_qwen_token_table(encoder)
                         def hidden_only(*args, **values):
                             values.update(output_hidden_states=False, use_cache=False)
                             mask = values.get("attention_mask")
