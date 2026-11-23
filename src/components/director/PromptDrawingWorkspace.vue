@@ -56,6 +56,7 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
+          <RandomInspirationButton :blocked="generationBusy || !workspace.draftReady.value" />
           <StudioDropdownMenu label="画室辅助工具">
             <template #trigger>
               <button
@@ -71,20 +72,11 @@
               </button>
             </template>
             <template #default="{ run }">
-              <div class="studio-dropdown-label">创作与档案</div>
-              <DropdownMenuItem
-                class="studio-dropdown-item"
-                :disabled="!pb.dataReady || utilityToolLoading === 'inspiration'"
-                @select.prevent="run(() => openUtilityTool('inspiration'))"
-              >
-                <ArchiveIcon name="dice" />
-                <span>夏目的灵感笔记</span>
-              </DropdownMenuItem>
               <DropdownMenuItem
                 class="studio-dropdown-item"
                 data-migration-control
-                :disabled="utilityToolLoading === 'data'"
-                @select.prevent="run(() => openUtilityTool('data'))"
+                :disabled="dataToolsLoading"
+                @select.prevent="run(openDataTools)"
               >
                 <ArchiveIcon name="download" />
                 <span>数据与备份</span>
@@ -107,12 +99,6 @@
               </DropdownMenuItem>
             </template>
           </StudioDropdownMenu>
-          <component
-            v-if="inspirationToolComp"
-            :is="inspirationToolComp"
-            v-model:open="inspirationOpen"
-            dialog-mode
-          />
           <component
             v-if="dataToolsComp"
             :is="dataToolsComp"
@@ -320,7 +306,7 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import '@/assets/css/director/components/DirectorStagePanel.css'
-import { computed, defineAsyncComponent, nextTick, ref, shallowRef, type Component } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, shallowRef } from 'vue'
 import { DropdownMenuItem } from 'reka-ui'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
@@ -342,7 +328,7 @@ import DirectorInspector from '@/components/director/DirectorInspector.vue'
 import DrawingEngineSelect from '@/components/director/DrawingEngineSelect.vue'
 const loadDataTools = () => import('@/components/PromptDataTools.vue')
 const PromptDraftNotice = defineAsyncComponent(() => import('@/components/director/PromptDraftNotice.vue'))
-const loadInspirationTool = () => import('@/components/RandomInspirationButton.vue')
+import RandomInspirationButton from '@/components/RandomInspirationButton.vue'
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
 const loadHistoryReuseDialog = () => import('@/components/director/HistoryReuseDialog.vue')
 const loadHistoryPanel = () => import('@/components/HistoryPanel.vue')
@@ -496,39 +482,26 @@ const currentCharacterLabel = computed(() => {
   return pb.char === 'natsume' ? '四季夏目' : pb.char === 'triad' ? '宁宁与夏目' : '绫地宁宁'
 })
 
-const inspirationToolComp = shallowRef<Component | null>(null)
-const dataToolsComp = shallowRef<Component | null>(null)
-const inspirationOpen = ref(false)
+const dataToolsComp = shallowRef<Awaited<ReturnType<typeof loadDataTools>>['default']>()
 const dataToolsOpen = ref(false)
-const utilityToolLoading = ref<'inspiration' | 'data' | null>(null)
+const dataToolsLoading = ref(false)
 
-async function openUtilityTool(kind: 'inspiration' | 'data') {
-  if (kind === 'inspiration' && !pb.dataReady) return
-  if (kind === 'inspiration' && inspirationToolComp.value) {
-    inspirationOpen.value = true
-    return
-  }
-  if (kind === 'data' && dataToolsComp.value) {
+async function openDataTools() {
+  if (dataToolsLoading.value) return
+  if (dataToolsComp.value) {
     dataToolsOpen.value = true
     return
   }
-  utilityToolLoading.value = kind
+  dataToolsLoading.value = true
   try {
-    if (kind === 'inspiration') {
-      const mod = await loadInspirationTool()
-      inspirationToolComp.value = mod.default
-      await nextTick()
-      inspirationOpen.value = true
-    } else {
-      const mod = await loadDataTools()
-      dataToolsComp.value = mod.default
-      await nextTick()
-      dataToolsOpen.value = true
-    }
+    const mod = await loadDataTools()
+    dataToolsComp.value = mod.default
+    await nextTick()
+    dataToolsOpen.value = true
   } catch {
-    pb.flash(`${kind === 'inspiration' ? '灵感工具' : '数据工具'}暂未加载，请刷新页面后重试。`)
+    pb.flash('数据工具暂未加载，请刷新页面后重试。')
   } finally {
-    utilityToolLoading.value = null
+    dataToolsLoading.value = false
   }
 }
 async function openMaterials(section: string) {

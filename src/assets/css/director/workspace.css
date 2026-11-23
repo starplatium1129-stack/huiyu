@@ -13,7 +13,7 @@
 .pb.journal-workspace .pb-header-meta .draft-save-notice[data-state='failed'] { flex-basis:100%; }
 .pb.journal-workspace .pb-top-actions { gap:var(--s-2) var(--s-4); min-width:0; flex-wrap:wrap; }
 .pb.journal-workspace .pb-mode-actions,
-.pb.journal-workspace .pb-utility-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0; }
+.pb.journal-workspace .pb-utility-actions { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:min-w-0; }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
 .pb.journal-workspace .api-status .badge { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: transparent; }
 .pb.journal-workspace .focus-mode-btn { @apply tw:text-label tw:min-h-[40px]; }

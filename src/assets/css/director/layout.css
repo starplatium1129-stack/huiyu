@@ -130,7 +130,7 @@
 .pb .stage-slot { position:relative; }
 .pb.atelier-workspace .stage-slot {
   display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(0,1fr) auto;
-  overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-stage); background:var(--bg-deep);
+  overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-stage); background:var(--bg-surface);
 }
 .pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(18rem,60dvh,48rem); container:drawing-stage / size; }
 .pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); }

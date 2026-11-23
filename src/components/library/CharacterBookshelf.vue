@@ -20,7 +20,7 @@
         <button type="button" class="bookshelf-open tw:w-full tw:flex tw:flex-col tw:items-center tw:p-0 tw:rounded-lg tw:cursor-pointer" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
           <span class="bookshelf-cover-stage tw:relative tw:block tw:w-full tw:mb-s-4 tw:isolate" :class="{ 'is-empty': !group.covers.length }" aria-hidden="true">
             <span v-for="(cover, index) in group.covers" :key="cover.id" class="bookshelf-cover tw:absolute tw:left-[21%] tw:top-[5%] tw:w-[58%] tw:h-[86%] tw:rounded-lg tw:overflow-hidden" :data-slot="coverSlot(group.key, index, group.covers.length)">
-              <CharacterPortrait v-if="index === coverOffset(group.key, group.covers.length)" :preview="shelfPortrait(cover.image)" :src="cover.image" :name="cover.name" />
+              <CharacterPortrait :preview="shelfPortrait(cover.image)" :src="cover.image" :fallback="cover.fullImage" :name="cover.name" />
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder tw:absolute tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:rounded-lg tw:text-muted tw:text-label-xs"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
           </span>
