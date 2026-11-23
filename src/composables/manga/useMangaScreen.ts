@@ -68,6 +68,12 @@ export function useMangaScreen(onSaved: () => void) {
   }, {flush:'sync'})
   watch(lines.previewAvailable, available => { if (!available && preview.value === 'lineart') preview.value = 'original' })
   const inputSize = computed(() => source.value ? mangaInputSize(source.value) : null)
+  const resizeInWorker = computed(() => {
+    const image = source.value
+    return !!image && redraw.value && rewrite.modelId === 'qwen-image-2.1-manga-int8'
+      && Math.max(image.width, image.height) <= mangaManifest.rewrite.maxSourceSide
+      && image.width * image.height <= mangaManifest.rewrite.maxSourcePixels
+  })
   const extractionIssue = computed(() => {
     if (!source.value) return '请先导入原图'
     if (!status.value?.available) return '原生漫画服务尚未就绪'
@@ -150,13 +156,15 @@ export function useMangaScreen(onSaved: () => void) {
       lastRedraw.value = null; submittedRedraw = null
       const { alignment, minSize, maxSize } = mangaManifest.rewrite
       const scale = Math.sqrt(mangaManifest.maxInputPixels / (image.width * image.height))
-      let width = Math.max(minSize, Math.min(maxSize, Math.round(image.width * scale / alignment) * alignment))
-      let height = Math.max(minSize, Math.min(maxSize, Math.round(image.height * scale / alignment) * alignment))
-      while (width * height > mangaManifest.maxInputPixels) {
-        if (width > minSize && (height <= minSize || width / image.width >= height / image.height)) width -= alignment
-        else height -= alignment
+      // The upstream 2 MP target is applied before rounding each side to 32.
+      const side = (pixels: number) => {
+        const units = pixels * scale / alignment
+        const lower = Math.floor(units)
+        // Python's round chooses the even grid coordinate when exactly between two.
+        const nearest = units - lower === 0.5 && lower % 2 === 0 ? lower : Math.round(units)
+        return Math.max(minSize, Math.min(maxSize, nearest * alignment))
       }
-      rewrite.width = width; rewrite.height = height
+      rewrite.width = side(image.width); rewrite.height = side(image.height)
       setUrl(sourceUrl, blob); setUrl(resultUrl, null); result.value = null; resultBlob.value = null; task.value = null
       lines.reset()
       preview.value = 'original'; saved.value = false; downloaded.value = false
@@ -168,8 +176,9 @@ export function useMangaScreen(onSaved: () => void) {
     if (modelIssue.value) throw new Error(modelIssue.value)
     if (redraw.value) {
       if (!rewrite.prompt.trim() || rewrite.prompt.length > 12000) throw new Error('请填写不超过 12000 字符的重绘指令')
-      if (![rewrite.width, rewrite.height].every(v => Number.isInteger(v) && v >= 512 && v <= 2816 && v % 32 === 0)
-        || rewrite.width * rewrite.height > mangaManifest.maxInputPixels) throw new Error('重绘宽高需为 512—2816 内的 32 倍数，总像素不超过 2097152')
+      const { minSize, maxSize, alignment, maxPixels } = mangaManifest.rewrite
+      if (![rewrite.width, rewrite.height].every(v => Number.isInteger(v) && v >= minSize && v <= maxSize && v % alignment === 0)
+        || rewrite.width * rewrite.height > maxPixels) throw new Error(`重绘宽高需为 ${minSize}—${maxSize} 内的 ${alignment} 倍数，总像素不超过 ${maxPixels}`)
       if (!randomSeed.value && (!Number.isInteger(rewrite.seed) || rewrite.seed < 0 || rewrite.seed > 2147483647)) throw new Error('种子需为 0—2147483647 的整数')
     }
     for (const group of mangaManifest.operations[operation.value]) {
@@ -279,7 +288,7 @@ export function useMangaScreen(onSaved: () => void) {
         if (newRedraw && seed === lastRedraw.value?.seed) seed ^= 1
         recipeSnapshot.rewrite.seed = seed
       }
-      const blob = await prepareMangaImage(source.value, resize.value); checkInput()
+      const blob = await prepareMangaImage(source.value, resize.value, !!recipeSnapshot.rewrite && resizeInWorker.value); checkInput()
       if (cancelRequested) { notice.value = '已取消，尚未提交任务'; return }
       const name = await uploadMangaImage(blob, lifetime.signal); checkInput()
       if (cancelRequested) { notice.value = '已取消，尚未提交任务'; return }
@@ -353,7 +362,7 @@ export function useMangaScreen(onSaved: () => void) {
       notice.value = '原任务和结果仍保留在任务中心，可导入图片开始新的处理'
     } catch (e) { error.value = message(e) }
   }
-  return { parameters, operation, redraw, randomSeed, rewrite, reuseRedraw, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
+  return { parameters, operation, redraw, randomSeed, rewrite, reuseRedraw, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl, resize, resizeInWorker, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
     error, notice, loading, submitting, observing, cancelling, exporting, saved, downloaded, acceptanceUnknown, job, preview,
     pending, locked, saveLocked, dirty, progress, startIssue, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult }
 }

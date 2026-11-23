@@ -423,6 +423,18 @@
       "edit": true, "negative": false, "distilled": true,
       "sampleSigmas": [1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568]
     },
+    "qwen-image-2.1-manga-int8": {
+      "label": "QWEN-Manga · Turbo INT8 · 8 步",
+      "family": "qwen-image", "media": "image", "pipeline": "QwenImage21Pipeline",
+      "repository": "ashukae/ComfyUI-MangaScreen",
+      "revision": "04c6867f8672d2de82c249076d8155f499e9aeb2",
+      "source": "https://github.com/ashukae/ComfyUI-MangaScreen",
+      "license": "Qwen Research License (non-commercial research/evaluation; commercial license separately)",
+      "licenseUrl": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/blob/main/LICENSE",
+      "steps": 8, "cfg": 1, "maxSize": 2816, "alignment": 32,
+      "edit": true, "negative": false, "distilled": true, "packedManga": true,
+      "sampleSigmas": [1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568]
+    },
     "wan2.2-ti2v-5b": {
       "label": "Wan 2.2 TI2V 5B · 原生 BF16",
       "family": "wan2.2", "media": "video", "pipeline": "WanPipeline",

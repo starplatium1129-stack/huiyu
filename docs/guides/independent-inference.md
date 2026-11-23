@@ -159,7 +159,10 @@ git -C $avatarSource switch --detach 58eb336edc5c8c63389838727e40b8c18434e54e
 
 ## 5. MangaScreen 漫画后处理
 
-原生 `/api/manga` 接口提供纯 CPU/混合加速漫画网点、色阶与线稿提取（默认遵循 QWEN-Manga 流程：先以 `qwen-image-2.1-turbo` 近 200 万像素重绘，再叠加 250 线网点与自动线稿）：
+漫画化默认使用原生 `qwen-image-2.1-manga-int8`。在控制室可准备该模型及 Manga Line Extraction 线稿权重。重绘沿用 QWEN-Manga 的 Turbo INT8 权重、Heretic 8B INT8 编码器、BF16 VAE、初始噪声和 8 步 Euler 配方，再叠加自动线稿与 250 线网点。重绘与后处理由原生 `/api/manga` 任务完成，不需要启动 ComfyUI。已有 BF16 配方可继续按原模型运行。
+
+控制室自带的 CUDA 12.8 运行时使用 PyTorch 做 INT8 矩阵乘法和缩放点积注意力（SDPA）。要复用上游环境，在推理设置的“图像与视频适配器 Python”中选择对应的解释器。CUDA 13 配合 `comfy-kitchen==0.2.37` 会使用 ConvRot 内核，显卡支持时还会为权重标记的注意力层使用上游 INT8 内核。两种运行时使用相同权重和种子，内核的数值差异可能改变重绘细节。
+
 - `lite`：色阶调整 + 网点平涂 + 原画框合成
 - `comic`：线稿强化 + 网点平涂 + 画框裁切
 - `lineart`：独立 `MangaLineExtraction` 黑线白底线稿提取（显存充足走 CUDA，否则回退 CPU）

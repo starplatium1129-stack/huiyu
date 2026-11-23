@@ -19,12 +19,13 @@ def input_image(path, error):
         raise error("INVALID_IMAGE", f"Cannot decode edit input: {exc}") from exc
 
 
-def pixels(value, data, channels, error):
+def pixels(value, data, channels, error, *, truncate=False):
     import numpy as np
     value = np.asarray(value)
     if value.ndim != 3 or value.shape[:2] != (data["height"], data["width"]) or value.shape[2] not in channels or not np.isfinite(value).all():
         raise error("INVALID_MODEL_OUTPUT", "Model returned invalid dimensions/channels/non-finite pixels")
-    return np.ascontiguousarray((value.clip(0, 1) * 255).round().astype(np.uint8))
+    scaled = value.clip(0, 1) * 255
+    return np.ascontiguousarray((scaled if truncate else scaled.round()).astype(np.uint8))
 
 
 def png(value, path, data, error):

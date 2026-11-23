@@ -57,7 +57,8 @@
           </section>
           <div v-if="inputSize?.resized" class="manga-resize">
             <StudioCheckbox :checked="resize" :disabled="locked" label="缩小处理副本" @update:checked="resize = $event">缩小处理副本</StudioCheckbox>
-            <p>本次按 {{ inputSize.width }} × {{ inputSize.height }} 处理，以满足约 200 万像素上限。原图保留。</p>
+            <p v-if="resizeInWorker">勾选后，漫画重绘会直接将原图缩放到 {{ rewrite.width }} × {{ rewrite.height }}。原图保留。</p>
+            <p v-else>本次按 {{ inputSize.width }} × {{ inputSize.height }} 处理，以满足约 200 万像素上限。原图保留。</p>
           </div>
           <MangaModels v-model:redraw="redraw" v-model:random-seed="randomSeed" :reuse-redraw="reuseRedraw" :can-redraw="!startIssue" :external-lines="lineMode === 'external'" :rewrite="rewrite" :status="status" :issue="modelIssue" :disabled="locked" @redraw="run('manga', true)" />
           <MangaLineControls v-model:mode="lineMode" v-model:polarity="linePolarity" v-model:stretch="lineStretch" :redraw="redraw" :disabled="locked"
@@ -118,7 +119,7 @@ const dialog = ref<HTMLDialogElement | null>(null), picker = ref<HTMLInputElemen
 const importButton = ref<HTMLButtonElement | null>(null)
 const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
-const { parameters, operation, redraw, randomSeed, rewrite, reuseRedraw, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
+const { parameters, operation, redraw, randomSeed, rewrite, reuseRedraw, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, resizeInWorker, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
   error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview,
   pending, locked, saveLocked, dirty, progress, startIssue, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
 const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineImported, inputReady:lineInputReady,

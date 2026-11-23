@@ -1,6 +1,6 @@
 """Optional local Qwen editing and official MangaLineExtraction; no auto-downloads.
 
-The plain MangaScreen path never imports this module. All adaptations remain
+The plain MangaScreen path never imports this module.
 Network definitions and their MIT notice are shipped separately.
 """
 import gc
@@ -60,7 +60,7 @@ def rewrite(job, data, rgb, control, *, resident=None):
             resident=resident.adapters() if resident is not None else None, manga_pixels=rgb,
             reference_resolution=round((request["width"] * request["height"]) ** 0.5))
         control.check()
-        if pixels.shape[-1] == 4:
+        if pixels.shape[-1] == 4 and not spec.get("packedManga"):
             with Image.fromarray(pixels) as image, Image.new("RGBA", image.size, "white") as background:
                 background.alpha_composite(image)
                 with background.convert("RGB") as flattened:
@@ -78,7 +78,7 @@ def rewrite(job, data, rgb, control, *, resident=None):
             torch.cuda.empty_cache()
 
 
-def extract(rgb, weight, control, *, resident=None):
+def extract(rgb, weight, control, *, resident=None, upstream=False):
     import cv2
     import numpy as np
     import torch
@@ -87,7 +87,7 @@ def extract(rgb, weight, control, *, resident=None):
         raise Error("MANGA_LINE_MODEL_MISSING", "需要本地 manga-line-extraction/erika.pth，不会自动下载")
     key = token = None
     if resident is not None:
-        key, token, cached = resident.line_input(source, rgb)
+        key, token, cached = resident.line_input(source, rgb, upstream)
         if cached is not None:
             control.stage("manga_line_extract")
             return cached
@@ -114,15 +114,31 @@ def extract(rgb, weight, control, *, resident=None):
         model = sibling("manga_line_model").res_skip().eval()
         model.load_state_dict(state, strict=True)
         del state
-        # Official CLI preprocessing: grayscale in [0,255], pad to 16 with 1,
-        # crop to the source size. No undocumented detect-resolution downsampling.
-        gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
-        h, w = gray.shape
-        patch = np.ones((1, 1, (h + 15) // 16 * 16, (w + 15) // 16 * 16), dtype=np.float32)
-        patch[0, 0, :h, :w] = gray
+        original_h, original_w = rgb.shape[:2]
+        if upstream:
+            # ControlNet Aux composites RGBA on white for line extraction.
+            # MangaFinish independently consumes the original RGB channels.
+            if rgb.shape[-1] == 4:
+                alpha = rgb[..., 3:].astype(np.float32) / 255
+                rgb = (rgb[..., :3] * alpha + 255 * (1 - alpha)).clip(0, 255).astype(np.uint8)
+            # The author wires image width into Manga Lineart. Its preprocessor
+            # rounds resolution in 256s, scales the short side, then edge-pads.
+            detect = (original_w + 255) // 256 * 256
+            limit = min(4096 / max(original_h, original_w), (8 * 1024**2 / (original_h * original_w)) ** 0.5)
+            scale = min(detect / min(original_h, original_w), limit)
+            h, w = round(original_h * scale), round(original_w * scale)
+            resized = cv2.resize(rgb, (w, h), interpolation=cv2.INTER_CUBIC if scale > 1 else cv2.INTER_AREA)
+            gray = cv2.cvtColor(resized, cv2.COLOR_RGB2GRAY)
+            patch = np.pad(gray, ((0, -h % 64), (0, -w % 64)), mode="edge")[None, None].astype(np.float32)
+        else:
+            # The standalone and legacy modes keep the original CLI preprocessing.
+            gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+            h, w = gray.shape
+            patch = np.ones((1, 1, (h + 15) // 16 * 16, (w + 15) // 16 * 16), dtype=np.float32)
+            patch[0, 0, :h, :w] = gray
         device = "cpu"
         if torch.cuda.is_available():
-            required = 256 * 1024**2 + h * w * 2048
+            required = 256 * 1024**2 + patch.shape[-1] * patch.shape[-2] * 2048
             free, _ = torch.cuda.mem_get_info()
             # A completed Qwen rewrite can still own almost all VRAM. Release
             # only as many offloadable denoiser groups as this line pass needs.
@@ -147,7 +163,11 @@ def extract(rgb, weight, control, *, resident=None):
             raise Error("MANGA_LINE_OUTPUT_INVALID", "线稿模型返回非有限值")
         # Author's output is black on white. MangaFinish pen_lines expects the
         # inverse (same polarity documented by comfyui_controlnet_aux Manga Lineart).
-        pen = 1 - line.clip(0, 255).astype(np.uint8).astype(np.float32) / 255
+        gray_line = line.clip(0, 255).astype(np.uint8)
+        pen = ((255 - gray_line).astype(np.float32) / 255 if upstream
+               else 1 - gray_line.astype(np.float32) / 255)
+        if (h, w) != (original_h, original_w):
+            pen = cv2.resize(pen, (original_w, original_h), interpolation=cv2.INTER_AREA)
         observation = {"model": contract.MANIFEST["lineart"]["id"], "modelSha256": digest.hexdigest(),
                        "sourceRevision": contract.MANIFEST["lineart"]["revision"],
                        "device": "cuda" if device != "cpu" else "cpu", "resultReused": False}

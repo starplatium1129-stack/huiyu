@@ -47,8 +47,8 @@ def parameters(data):
             value = rewrite[key]
             if type(value) is not int or not rules["minSize"] <= value <= rules["maxSize"] or value % rules["alignment"]:
                 raise invalid("Qwen sides must be 512–2816 in multiples of 32")
-        if rewrite["width"] * rewrite["height"] > MANIFEST["maxInputPixels"]:
-            raise invalid("Qwen output must fit the MangaScreen 2097152 pixel budget")
+        if rewrite["width"] * rewrite["height"] > rules["maxPixels"]:
+            raise invalid(f"Qwen redraw exceeds the {rules['maxPixels']} pixel budget")
         if type(rewrite["seed"]) is not int or not 0 <= rewrite["seed"] <= 2147483647:
             raise invalid("seed must be an integer in [0,2147483647]")
         result["rewrite"] = dict(rewrite)

@@ -28,6 +28,9 @@ const FILES: &[&str] = &[
     "mapped_residency.py",
     "resident_adapters.py",
     "qwen_prefix_cache.py",
+    "qwen_manga_int8.py",
+    "qwen_manga_euler.py",
+    "qwen_manga_vae.py",
     "locked_identity.py",
     "krea_style.py",
     "krea_adapter.py",
@@ -130,9 +133,12 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
                 return pinned_files(root.parent().ok_or("缺少原生模型根目录")?, model);
             }
             if model["runner"] == "longcat-avatar" {
-                return super::model_layout::inspect_managed_bundle(root, id);
+                return super::model_layout::inspect_managed_bundle(root, id, false);
             }
             super::model_layout::inspect_adapter(root, model)?;
+            if model["packedManga"] == true {
+                super::model_layout::inspect_managed_bundle(root, id, true)?;
+            }
             if id == "minimax-h3" && root.join("transformer/comfy.safetensors").is_file()
                 && h3_packed_steps(root).is_none() {
                 return Err("H3 本地权重与导入凭据不匹配，请在控制室重新准备。".into());

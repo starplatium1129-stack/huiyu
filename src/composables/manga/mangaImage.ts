@@ -49,10 +49,11 @@ export function mangaInputSize(image: MangaImage) {
     Math.sqrt(mangaManifest.maxInputPixels / (image.width * image.height)))
   return { width: Math.floor(image.width * scale), height: Math.floor(image.height * scale), resized: scale < 1 }
 }
-export async function prepareMangaImage(image: MangaImage, resize: boolean): Promise<Blob> {
+export async function prepareMangaImage(image: MangaImage, resize: boolean, resizeInWorker = false): Promise<Blob> {
   const size = mangaInputSize(image)
   if (!size.resized) return image.blob
   if (!resize) throw new Error('图片超过处理上限，请勾选缩小处理副本后再试')
+  if (resizeInWorker) return image.blob
   if (Math.min(size.width, size.height) < mangaManifest.minInputSide) throw new Error('图片比例过长，缩小后不足 128 像素，请先裁切图片')
   const bitmap = await createImageBitmap(image.blob)
   try {

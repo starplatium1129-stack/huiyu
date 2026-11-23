@@ -22,10 +22,11 @@
     "lineart": []
   },
   "rewrite": {
-    "models": ["qwen-image-2.1-turbo", "qwen-image-2.1"],
-    "defaultModel": "qwen-image-2.1-turbo",
-    "defaultPrompt": "Transform the reference into a printed monochrome manga panel. Preserve its framing, character design, anatomy, clothing state, expressions, poses, and original drawing style. Use varied, confident ink outlines. Render dark hair and deep shadows as solid black, keep skin and light surfaces paper white, shade fabric with hatching, and reserve regular screentone for midtones. Remove color and smooth gradients; add nothing absent from the source.",
-    "minSize": 512, "maxSize": 2816, "alignment": 32,
+    "models": ["qwen-image-2.1-manga-int8", "qwen-image-2.1-turbo", "qwen-image-2.1"],
+    "defaultModel": "qwen-image-2.1-manga-int8",
+    "defaultPrompt": "Redraw <image1> as a printed black-and-white manga page panel, as if inked by the original artist for serialization. Keep the exact composition, pose, character design, face, expression and drawing style of <image1>. Use confident ink lines with varied line weight, solid black for dark hair and deep shadows, white paper for skin and light surfaces, ink hatching lines for shadows on cloth, and regular screentone only where a mid tone is needed. No color and no smooth gradients. Do not add anything that is not in <image1>.",
+    "minSize": 512, "maxSize": 2816, "alignment": 32, "maxPixels": 2150400,
+    "maxSourceSide": 8192, "maxSourcePixels": 16777216,
     "validation": "待主力机验证"
   },
   "lineart": {

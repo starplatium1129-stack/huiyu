@@ -14,7 +14,7 @@ export function mangaTaskView(task: ImageTask): MangaJob {
     if (!object(line) || line.polarity !== 'black-on-white' || line.stage !== (operation === 'lineart' ? 'extracted' : 'before-panel')
       || typeof line.width !== 'number' || typeof line.height !== 'number'
       || ![line.width, line.height].every(v => Number.isInteger(v) && v >= 128 && v <= 4096)
-      || line.width * line.height > mangaManifest.maxInputPixels) throw new Error('任务线稿信息不完整，请在任务中心核对')
+      || line.width * line.height > (object(source.rewrite) ? mangaManifest.rewrite.maxPixels : mangaManifest.maxInputPixels)) throw new Error('任务线稿信息不完整，请在任务中心核对')
     lineart = {width:line.width, height:line.height}
   }
   return {task:structuredClone(task), id:task.taskId, operation:operation as MangaRequest['operation'], status:task.status,

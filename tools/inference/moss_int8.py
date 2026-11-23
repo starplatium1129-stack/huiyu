@@ -76,7 +76,7 @@ def require_backend(contract):
             pass
     if torch.cuda.is_available() and (hasattr(torch, "int8_mm") or hasattr(torch, "_int_mm")):
         return "torch"
-    raise contract.AdapterError("DEPENDENCY_MISSING", "MOSS INT8 需要带有 INT8 矩阵乘法的 NVIDIA CUDA PyTorch")
+    raise contract.AdapterError("DEPENDENCY_MISSING", "ConvRot INT8 需要带有 INT8 矩阵乘法的 NVIDIA CUDA PyTorch")
 
 
 @lru_cache(maxsize=4)

@@ -327,6 +327,8 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto", mos
                     for asset in extra_weights:
                         digest.update(imported_weight_digest(root, asset, control))
                     return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
+    if model.get("packedManga"):
+        raise Error("MODEL_CHANGED", "QWEN-Manga 模型文件或准备凭据已变化，请在控制室重新准备")
     return {"sha256": fingerprint(root, control), "scope": "full-byte-chunk-sha256"}
 
 
@@ -432,26 +434,36 @@ def load_qwen_pipeline(root, spec, control):
     # sigma grid. The processor reads tokenizer/config files only, so it can
     # overlap the sequential weight loaders without sharing their meta-init.
     weights = dict(local_files_only=True, use_safetensors=True)
+    manga = sibling("qwen_manga_euler") if spec.get("packedManga") else None
+    processor_cls = manga.MangaProcessor if manga else Qwen3VLProcessor
+    scheduler_cls = manga.MangaEulerScheduler if manga else FlowMatchEulerDiscreteScheduler
+    pipeline_cls = manga.MangaPipeline if manga else QwenImage21Pipeline
     with ThreadPoolExecutor(max_workers=1) as pool:
-        processor = pool.submit(Qwen3VLProcessor.from_pretrained, str(root / "processor"),
+        processor = pool.submit(processor_cls.from_pretrained, str(root / "processor"),
                                 local_files_only=True, trust_remote_code=False)
         control.check()
-        encoder = Qwen3VLForConditionalGeneration.from_pretrained(str(root / "text_encoder"),
-            dtype=torch.bfloat16, trust_remote_code=False, **weights)
-        control.check()
-        transformer = QwenImage21Transformer2DModel.from_pretrained(str(root / "transformer"),
-            torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
+        if manga:
+            encoder, transformer = sibling("qwen_manga_int8").load(root, control)
+        else:
+            encoder = Qwen3VLForConditionalGeneration.from_pretrained(str(root / "text_encoder"),
+                dtype=torch.bfloat16, trust_remote_code=False, **weights)
+            control.check()
+            transformer = QwenImage21Transformer2DModel.from_pretrained(str(root / "transformer"),
+                torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
         control.check()
         vae = AutoencoderKLQwenImage21.from_pretrained(str(root / "vae"),
             torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
-        scheduler = FlowMatchEulerDiscreteScheduler.from_pretrained(str(root / "scheduler"), local_files_only=True)
-        return QwenImage21Pipeline(scheduler=scheduler, vae=vae, text_encoder=encoder, processor=processor.result(),
+        if manga:
+            sibling("qwen_manga_vae").configure(vae)
+        scheduler = scheduler_cls.from_pretrained(str(root / "scheduler"), local_files_only=True)
+        return pipeline_cls(scheduler=scheduler, vae=vae, text_encoder=encoder, processor=processor.result(),
                                    transformer=transformer, sample_sigmas=spec.get("sampleSigmas"))
 
 
 def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None, manga_pixels=None):
     data, spec = prepared if prepared is not None else prepare_job(job)
     runner = spec.get("runner")
+    packed_manga = spec.get("packedManga", False)
     if runner in ("wan-a14b-sd", "musetalk-native") or (runner == "sd-cpp" and resident is not None):
         owned = resident is None
         cache = sibling("resident_adapters").PipelineCache() if owned else resident
@@ -528,6 +540,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     policy = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
     if policy not in ("resident", "offload"):
         raise Error("INVALID_MEMORY_POLICY", "Use resident or offload")
+    if packed_manga and policy == "resident" and torch.cuda.mem_get_info()[0] < 26 * 1024**3:
+        policy = "offload"  # Two model components, condition cache and activations do not fit together.
     if os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native") != "native":
         raise Error("UNSUPPORTED_ACCELERATION", "Anima acceleration modes are not supported by these adapters")
     render_pixels = data["width"] * data["height"]
@@ -673,6 +687,14 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         args = dict(prompt=data["prompt"], width=data["width"], height=data["height"],
                     num_inference_steps=data["steps"], generator=torch.Generator("cuda").manual_seed(data["seed"]),
                     output_type="np", callback_on_step_end=on_step, callback_on_step_end_tensor_inputs=[])
+        if packed_manga:
+            # The upstream RandomNoise node samples FP32 on the CPU, then moves
+            # those same values to the device for the eight Euler steps.
+            h, w = data["height"] // pipeline.vae_scale_factor, data["width"] // pipeline.vae_scale_factor
+            channels = pipeline.latent_channels
+            noise = torch.randn((1, channels, h, w), dtype=torch.float32, device="cpu",
+                                generator=torch.Generator("cpu").manual_seed(data["seed"]))
+            args["latents"] = noise.flatten(2).transpose(1, 2)
         if spec["family"] == "qwen-image":
             args["true_cfg_scale"] = data["cfg"]
             if data["negativePrompt"]:
@@ -684,11 +706,15 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                         control.check()
                         images.append(media.input_image(path, Error))
                 else:
-                    # Manga has already decoded, oriented and white-composited
-                    # its single input. Qwen receives the same opaque RGBA image.
+                    # Manga has already applied the selected workflow's RGB
+                    # and orientation rules. Qwen expects an opaque RGBA image.
                     from PIL import Image
                     with Image.fromarray(manga_pixels) as source:
-                        images.append(source.convert("RGBA"))
+                        if packed_manga and source.size != (data["width"], data["height"]):
+                            with source.resize((data["width"], data["height"]), Image.Resampling.LANCZOS) as scaled:
+                                images.append(scaled.convert("RGBA"))
+                        else:
+                            images.append(source.convert("RGBA"))
                 args["image"] = images
                 if reference_resolution is not None:
                     args["output_resolution"] = reference_resolution
@@ -699,12 +725,13 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         control.stage("encoding")
         use_prefix = policy == "offload" and spec["family"] == "qwen-image"
         branches = 2 if data["cfg"] > 1 and data["negativePrompt"] else 1
-        attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"),
+        attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image") and not packed_manga,
             compile_safe=spec["family"] == "moss-image" and data["mossCompile"],
             moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_attention", False)))
         with torch.inference_mode(), sibling("qwen_prefix_cache").context(
-                use_prefix, pipeline, branches, control, observation) as prefix, attention as backend:
-            observation["attentionBackend"] = backend
+                use_prefix, pipeline, branches, control, observation, allow_partial=packed_manga) as prefix, attention as backend:
+            observation["attentionBackend"] = ("comfy-kitchen-int8" if packed_manga
+                and pipeline.transformer._huiyu_manga_int8_attention else backend)
             if spec["family"] == "moss-image":
                 output = sibling("moss_adapter").generate(pipeline, data, control, observation, spec)
             elif spec["family"] == "krea2":
@@ -715,8 +742,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         if manga_pixels is None:
             media.png(output.images[0], job["outputPath"], data, Error)
         else:
-            # The nested caller consumes exactly the validated, rounded PNG pixels.
-            redraw = media.pixels(output.images[0], data, (3, 4), Error)
+            # Upstream MangaFinish and its line annotator truncate the VAE channels.
+            redraw = media.pixels(output.images[0], data, (3, 4), Error, truncate=packed_manga)
         control.check()
         success = True
         if manga_pixels is not None:

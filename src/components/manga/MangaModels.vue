@@ -32,12 +32,17 @@ import { RouterLink } from 'vue-router'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import type { MangaRewrite, MangaStatus } from '@/api/mangaApi'
+import { mangaManifest, type MangaRewrite, type MangaStatus } from '@/api/mangaApi'
 const props = defineProps<{ disabled: boolean; externalLines: boolean; reuseRedraw: boolean; canRedraw: boolean; status: MangaStatus | null; issue: string }>()
 const emit = defineEmits<{ redraw: [] }>()
 const redraw = defineModel<boolean>('redraw', {required:true})
 const randomSeed = defineModel<boolean>('randomSeed', {required:true})
 const rewrite = defineModel<MangaRewrite>('rewrite', {required:true})
-const models = [{value:'qwen-image-2.1-turbo',label:'Qwen-Image 2.1 Turbo · 8 步'}, {value:'qwen-image-2.1',label:'Qwen-Image 2.1 · 40 步'}]
+const modelLabels: Record<string, string> = {
+  'qwen-image-2.1-manga-int8': 'QWEN-Manga · Turbo INT8 · 8 步',
+  'qwen-image-2.1-turbo': 'Qwen-Image 2.1 Turbo · BF16 · 8 步',
+  'qwen-image-2.1': 'Qwen-Image 2.1 · BF16 · 40 步',
+}
+const models = mangaManifest.rewrite.models.map(value => ({ value, label: modelLabels[value] || value }))
 const selected = computed(() => props.status?.rewrite.find(model => model.id === rewrite.value.modelId))
 </script>

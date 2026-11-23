@@ -10,8 +10,9 @@ from contextlib import contextmanager
 class Prefix:
     SLOT_BYTES = 256 * 1024**2
 
-    def __init__(self, memory, branches, control):
+    def __init__(self, memory, branches, control, *, allow_partial=False):
         self.control, self.branches = control, branches
+        self.allow_partial = allow_partial
         self.reserve = max(512 * 1024**2, memory.observation().get("activationReserveBytes", 0))
         self.caches, self.pending, self.slots = [], {}, [None, None]
         self.capacities = {}
@@ -35,7 +36,8 @@ class Prefix:
             # room for activations and temporary block uploads as in Comfy.
             estimate = size * len(layer.cache.layer_caches) * self.branches
             layer.cache.gpu = free > self.reserve + 4 * estimate
-        gpu = layer.cache.gpu and free > self.reserve + 2 * size
+        headroom = 3 if self.allow_partial else 2
+        gpu = (layer.cache.gpu or self.allow_partial) and free > self.reserve + headroom * size
         device = key.device if gpu else "cpu"
         # Prefix slices may alias the full joint sequence: always detach/copy.
         layer.key = key.detach().to(device=device, copy=True)
@@ -166,13 +168,13 @@ class Prefix:
 
 
 @contextmanager
-def context(enabled, pipeline, branches, control, observation):
+def context(enabled, pipeline, branches, control, observation, *, allow_partial=False):
     if not enabled:
         yield None
         return
     from diffusers.pipelines.qwenimage21 import pipeline_qwenimage21 as implementation
     original = implementation.QwenImage21KVCache
-    owner = Prefix(pipeline._huiyu_memory, branches, control)
+    owner = Prefix(pipeline._huiyu_memory, branches, control, allow_partial=allow_partial)
 
     class Layer:
         def __init__(self, cache, index):

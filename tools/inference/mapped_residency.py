@@ -201,6 +201,19 @@ class Residency(memory.Residency):
             weights = memory.tensor_bytes(self.modules["vae"]) if self.retain_components else 0
             self.make_room(self.decode_reserve + weights)
 
+    def prepare_manga_vae(self, pixels, *, decode):
+        import torch
+        # Choose full-frame or tiled inference before the VAE dispatches to
+        # its encoder/decoder. Their own module entry hooks run too late.
+        vae = self.modules["vae"]
+        self.enter("vae")
+        # Wan's single-frame row strips bound intermediates. Comfy budgets
+        # 600 elements per input pixel to encode and 900 per output pixel to decode.
+        activations = pixels * (900 if decode else 600) * vae.dtype.itemsize
+        required = memory.tensor_bytes(vae) + max(self.decode_reserve, activations)
+        self.make_room(required)
+        vae.use_tiling = torch.cuda.mem_get_info()[0] < required
+
     def make_room(self, required):
         import torch
         free, _ = torch.cuda.mem_get_info()

@@ -74,7 +74,11 @@ pub(super) async fn validate(job: &Job, page: &Path, cancel: &CancellationToken)
     let (width, height) = output::png_dimensions(&path).await?;
     if !(128..=4096).contains(&width)
         || !(128..=4096).contains(&height)
-        || u64::from(width) * u64::from(height) > 2097152
+        || if job.input["rewrite"].is_object() {
+            job.input["rewrite"]["width"] != width || job.input["rewrite"]["height"] != height
+        } else {
+            u64::from(width) * u64::from(height) > 2097152
+        }
     {
         return Err(protocol_error());
     }

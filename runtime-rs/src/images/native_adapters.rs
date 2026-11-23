@@ -55,6 +55,14 @@ fn supported_options(raw: &Value) -> Result<()> {
     Ok(())
 }
 pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
+    validate_image(raw, family, false)
+}
+
+pub(super) fn validate_manga_rewrite(raw: &Value) -> Result<Value> {
+    validate_image(raw, "qwen-image", true)
+}
+
+fn validate_image(raw: &Value, family: &str, manga_rewrite: bool) -> Result<Value> {
     let object = raw
         .as_object()
         .ok_or_else(|| error("INVALID_BODY", "请求体必须为对象"))?;
@@ -70,6 +78,9 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     let spec = adapters::model(id)
         .filter(|m| m["media"] == "image")
         .ok_or_else(|| error("UNKNOWN_MODEL", "未知原生图像模型"))?;
+    if spec["packedManga"] == true && !manga_rewrite {
+        return Err(error("WRONG_ROUTE_FAMILY", "请在漫画化工具中使用 QWEN-Manga 重绘模型"));
+    }
     if !family.is_empty() && spec["family"] != family {
         return Err(error("WRONG_ROUTE_FAMILY", "请求路径与模型 family 不匹配"));
     }

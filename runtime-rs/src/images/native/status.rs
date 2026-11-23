@@ -48,7 +48,9 @@ fn local_status(
             .unwrap()
         {
             status_check(cancel)?;
-            if spec["media"] == "image" && (family.is_empty() || spec["family"] == family) {
+            if spec["media"] == "image" && spec["packedManga"] != true
+                && (family.is_empty() || spec["family"] == family)
+            {
                 adapter_models.push(adapters.model(id));
             }
         }

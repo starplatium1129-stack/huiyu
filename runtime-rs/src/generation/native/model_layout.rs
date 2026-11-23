@@ -35,19 +35,64 @@ fn inspect(root: &Path) -> Result<(), String> {
 pub(super) fn inspect_adapter(root: &Path, model: &Value) -> Result<(), String> {
     inspect_model(root, Some(model))
 }
-pub(super) fn inspect_managed_bundle(root: &Path, id: &str) -> Result<(), String> {
+pub(super) fn inspect_managed_bundle(root: &Path, id: &str, require_receipt: bool) -> Result<(), String> {
     static CATALOG: std::sync::LazyLock<Value> = std::sync::LazyLock::new(|| {
         serde_json::from_str(include_str!("../../../../tools/inference/managed-adapter-models.json"))
             .expect("bundled model assets")
     });
     let root = root.canonicalize().map_err(|_| "模型目录不可读")?;
-    let files = CATALOG["models"].as_array().and_then(|items| items.iter().find(|item| item["id"] == id))
-        .and_then(|item| item["files"].as_array()).filter(|files| !files.is_empty()).ok_or("模型文件清单缺失")?;
+    let bundle = CATALOG["models"].as_array().and_then(|items| items.iter().find(|item| item["id"] == id))
+        .ok_or("模型文件清单缺失")?;
+    let files = bundle["files"].as_array().filter(|files| !files.is_empty()).ok_or("模型文件清单缺失")?;
+    let receipt_name = "huiyu-model.json";
+    let prepared_at = if require_receipt {
+        let path = root.join(receipt_name);
+        let issue = "模型准备凭据无效，请在控制室重新准备";
+        let receipt = json(&path).map_err(|_| issue)?;
+        safe_config(&receipt, receipt_name)?;
+        if receipt["schemaVersion"] != 1 || receipt["scope"] != "downloaded-files-sha256"
+            || receipt["modelId"] != id || receipt["revision"] != bundle["revision"]
+        {
+            return Err(issue.into());
+        }
+        Some(fs::metadata(&path).and_then(|meta| meta.modified()).map_err(|_| issue)?)
+    } else {
+        None
+    };
     for asset in files {
         let name = asset["path"].as_str().ok_or("无效的模型文件清单")?;
         let path = root.join(name);
-        if !file(&root, &path) || fs::metadata(&path).ok().map(|meta| meta.len()) != asset["bytes"].as_u64() {
+        let meta = fs::metadata(&path).map_err(|_| format!("缺少完整模型文件：{name}"))?;
+        if !file(&root, &path) || Some(meta.len()) != asset["bytes"].as_u64() {
             return Err(format!("缺少完整模型文件：{name}"));
+        }
+        if prepared_at.is_some_and(|stamp| !meta.modified().is_ok_and(|modified| modified <= stamp)) {
+            return Err(format!("模型文件已变化，请在控制室重新准备：{name}"));
+        }
+    }
+    if require_receipt {
+        // Match the worker's treatment of unlisted weights and processor overrides.
+        let mut known: HashSet<_> = files.iter().filter_map(|asset| asset["path"].as_str())
+            .map(|name| root.join(name)).collect();
+        known.insert(root.join(receipt_name));
+        let mut dirs = vec![root.clone()];
+        let mut entries_seen = 0;
+        while let Some(dir) = dirs.pop() {
+            for entry in fs::read_dir(&dir).map_err(|_| "模型目录不可读")? {
+                entries_seen += 1;
+                if entries_seen > 10000 { return Err("模型目录条目过多".into()); }
+                let path = entry.map_err(|_| "模型目录不可读")?.path();
+                if path.is_dir() {
+                    if !linked(&path) { dirs.push(path); }
+                } else if !known.contains(&path) {
+                    match path.extension().and_then(|ext| ext.to_str()).map(str::to_ascii_lowercase).as_deref() {
+                        Some("json") => safe_config(&json(&path)?, &path.display().to_string())?,
+                        Some("safetensors" | "model" | "txt" | "jinja") =>
+                            return Err(format!("模型目录含未登记的文件：{}", path.display())),
+                        _ => {}
+                    }
+                }
+            }
         }
     }
     Ok(())

@@ -56,11 +56,11 @@ pub(super) fn parameters(raw: &Value, result: &mut Value) -> Result<()> {
                 "漫画重绘仅接入 Qwen-Image 2.1 / Turbo",
             ));
         }
-        let validated = super::super::native_adapters::validate(rewrite, "qwen-image")?;
+        let validated = super::super::native_adapters::validate_manga_rewrite(rewrite)?;
         if validated["width"].as_u64().unwrap() * validated["height"].as_u64().unwrap()
-            > MANIFEST["maxInputPixels"].as_u64().unwrap()
+            > MANIFEST["rewrite"]["maxPixels"].as_u64().unwrap()
         {
-            return Err(error("INVALID_PARAMETER", "重绘结果不得超过 2097152 像素"));
+            return Err(error("INVALID_PARAMETER", "重绘尺寸超过漫画画幅上限"));
         }
         result["rewrite"] = Value::Object(
             keys.iter()

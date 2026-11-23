@@ -994,6 +994,122 @@
       ]
     },
     {
+      "id": "qwen-image-2.1-manga-int8",
+      "label": "QWEN-Manga · Turbo INT8 · 8 步",
+      "revision": "04c6867f8672d2de82c249076d8155f499e9aeb2",
+      "license": "Qwen Research License (non-commercial research/evaluation; commercial license separately)",
+      "licenseUrl": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/blob/main/LICENSE",
+      "sourceUrl": "https://github.com/ashukae/ComfyUI-MangaScreen",
+      "requiresAccess": false,
+      "requiredBytes": 18923592753,
+      "files": [
+        {
+          "path": "LICENSE",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/LICENSE",
+          "bytes": 7831,
+          "sha256": "8dc973f024ff95966bea25866efa443fd16776dcb1001e681e3d467ea572b28d",
+          "gitBlobId": "13ae08d5a5828f508cf0e852b1b316c0c0bbb9b3",
+          "lfs": false
+        },
+        {
+          "path": "model_index.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/model_index.json",
+          "bytes": 578,
+          "sha256": "97e2febeb19d93cb41fa44807cde8bd42757950b5dffeacdb0331fb2d390cf20",
+          "gitBlobId": "cdc1dae2997ff637225c42c388196b38a9bbaae8",
+          "lfs": false
+        },
+        {
+          "path": "processor/chat_template.jinja",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/processor/chat_template.jinja",
+          "bytes": 5292,
+          "sha256": "3636d0f0bd6bef02654cdffdc447b79cb2cef8ab02cc75267345946291a489e4",
+          "gitBlobId": "124386803f142761528f710e77ae483f5f8c4fc4",
+          "lfs": false
+        },
+        {
+          "path": "processor/processor_config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/processor/processor_config.json",
+          "bytes": 1300,
+          "sha256": "14932921ca485d458a04dafd8069fbb0a4505622a48208d19ed247115801385b",
+          "gitBlobId": "7ad6acdf4203f22b7b990e36ccc3a1fe38563d5e",
+          "lfs": false
+        },
+        {
+          "path": "processor/tokenizer.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/processor/tokenizer.json",
+          "bytes": 11422650,
+          "sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+          "gitBlobId": "c7afbed2efcdf019f88ab0572ec29d3bf595dfe2",
+          "lfs": true
+        },
+        {
+          "path": "processor/tokenizer_config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/processor/tokenizer_config.json",
+          "bytes": 705,
+          "sha256": "fd42a0b35a8d13cd473e88e310b50cbf1bccaa9eb60ed0fd873af5f8f0c59307",
+          "gitBlobId": "6577e86ca277ad0367551e280ba1d58ad4d42c52",
+          "lfs": false
+        },
+        {
+          "path": "scheduler/scheduler_config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/scheduler/scheduler_config.json",
+          "bytes": 486,
+          "sha256": "16c948c71f9152a34cce6e3a2f309e97ad2dca32beecbe5e2fd3a7925b7eb4bb",
+          "gitBlobId": "72837792c1944182b3707415cdaeb825e6bf5598",
+          "lfs": false
+        },
+        {
+          "path": "text_encoder/config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/text_encoder/config.json",
+          "bytes": 1542,
+          "sha256": "89050cba6b66c4f68f52305b54fc37efe28d95232246b94aa8dc0cfa36f3b734",
+          "gitBlobId": "b5881fa79f7c988a9ac2f91e4f1192deed7ac034",
+          "lfs": false
+        },
+        {
+          "path": "transformer/config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/transformer/config.json",
+          "bytes": 370,
+          "sha256": "2c567038ca190824728844b8d06d94ae02360e668707afd9734e789a7eb58ce3",
+          "gitBlobId": "b3f8d1cf08a94a1d4ec09e2bfeb5344af25f2983",
+          "lfs": false
+        },
+        {
+          "path": "vae/config.json",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/vae/config.json",
+          "bytes": 2172,
+          "sha256": "42bfdec412459bbb7bc38a0617ab70edcfc873f84ec47e0c7d01c53ba09885a5",
+          "gitBlobId": "9b780c2dd9601cb0b93ae8f462b58dd3a7468347",
+          "lfs": false
+        },
+        {
+          "path": "vae/diffusion_pytorch_model.safetensors",
+          "url": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/resolve/fc13ba1986fcb905854dc8de2f52eee395f49b5b/vae/diffusion_pytorch_model.safetensors",
+          "bytes": 675508656,
+          "sha256": "71879ffd5321e6d10c3c87513e2b474b1252efa7f3dec2969214a9bf06a6dd5c",
+          "gitBlobId": "df155420cfc5637d1692ef211fc85545e907a86f",
+          "lfs": true
+        },
+        {
+          "path": "transformer/packed.safetensors",
+          "url": "https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/aacf31a6d48e707f352ecba714cee0680da3479b/diffusion_models/qwen_image_2.1_turbo_int8_convrot.safetensors",
+          "bytes": 7256787829,
+          "sha256": "8144a0182964aa8403ad6dbc011db837304167d235161b9aabaa8532e967314c",
+          "gitBlobId": "6db4f9120c73188df82aee4313eb8e1d6529301f",
+          "lfs": true
+        },
+        {
+          "path": "text_encoder/packed.safetensors",
+          "url": "https://huggingface.co/craftingmod/Qwen3-VL-8B-Heretic-INT8/resolve/7e6d17caa05b71423b92dc77119c047168ec333c/qwen3-vl-8b-heretic-1.3.0-int8convrot.safetensors",
+          "bytes": 10979853342,
+          "sha256": "b37cc29a3bb8e8c4dc09b19909919abd8016195af6ddaad99b0eae8e252b34f6",
+          "gitBlobId": "44ea21818bc66ddee3db691681385535d419d12d",
+          "lfs": true
+        }
+      ]
+    },
+    {
       "id": "moss-miaomiao-base-v1.1",
       "checkpointFilename": "MiaoMiao Harem _MOSS_1.1_INT8.safetensors",
       "label": "MiaoMiao Harem MOSS · BASE v1.1 · INT8",

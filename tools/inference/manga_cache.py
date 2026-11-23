@@ -11,6 +11,8 @@ import os
 from pathlib import Path
 from huiyu_worker_lifecycle import load_sibling
 
+MAX_CACHED_BYTES = 4 * load_sibling("manga_contract").MANIFEST["rewrite"]["maxPixels"]
+
 
 class Cache:
     def __init__(self):
@@ -55,9 +57,9 @@ class Cache:
         return rgb.copy(), observation
 
     def put(self, key, rgb, observation):
-        # The current contract caps redraws at 2 megapixels (~6 MiB RGB).
+        # A single bounded RGB/RGBA redraw can be reused across post-processing changes.
         self.rewritten = None
-        if self.protected() and rgb.nbytes <= 6 * 1024**2:
+        if self.protected() and rgb.nbytes <= MAX_CACHED_BYTES:
             self.rewritten = (key, self.weights.protection, rgb.copy(), copy.deepcopy(observation))
 
     def clear(self):
@@ -68,14 +70,14 @@ class Cache:
         if self.weights is not None:
             self.weights.clear()
 
-    def line_input(self, weight, rgb):
+    def line_input(self, weight, rgb, upstream):
         if self.line_lease is None:
             self.line_lease = load_sibling("locked_identity").AssetIdentityLease(tree=False)
         # Acquire protection only. The extractor still hashes and loads the same
         # open file on every miss, including unsupported/unprotected filesystems.
         self.line_lease.acquire(weight, lambda _path: None)
         token = self.line_lease.protection_token()
-        key = (str(weight.resolve()), rgb.shape, str(rgb.dtype), hashlib.sha256(memoryview(rgb)).digest())
+        key = (str(weight.resolve()), upstream, rgb.shape, str(rgb.dtype), hashlib.sha256(memoryview(rgb)).digest())
         if self.lines is not None:
             previous, protection, pen, observation = self.lines
             if token is None or token is not protection:
@@ -88,5 +90,5 @@ class Cache:
 
     def put_line(self, key, token, pen, observation):
         self.lines = None
-        if token is not None and token is self.line_lease.protection_token() and pen.nbytes <= 8 * 1024**2:
+        if token is not None and token is self.line_lease.protection_token() and pen.nbytes <= MAX_CACHED_BYTES:
             self.lines = (key, token, pen.copy(), copy.deepcopy(observation))

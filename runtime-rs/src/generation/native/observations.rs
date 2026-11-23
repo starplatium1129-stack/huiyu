@@ -153,7 +153,7 @@ pub(super) fn capture(value: &Value) -> Value {
         if let Some(timings) = super::execution::manga(&value["timings"]) { result["timings"] = timings; }
         if matches!(
             value["rewrite"]["adapter"].as_str(),
-            Some("qwen-image-2.1" | "qwen-image-2.1-turbo")
+            Some("qwen-image-2.1" | "qwen-image-2.1-turbo" | "qwen-image-2.1-manga-int8")
         ) {
             result["rewrite"] = capture(&value["rewrite"]);
         }
