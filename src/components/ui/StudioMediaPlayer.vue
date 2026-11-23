@@ -224,8 +224,9 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
     ></audio>
 
     <div class="studio-media-bar">
-      <button type="button" class="studio-media-btn" :aria-label="playing ? `暂停${label}` : `播放${label}`" @click="togglePlay">
-        <ArchiveIcon :name="playing ? 'pause' : 'play'" />
+      <button type="button" class="studio-media-btn" :data-active="playing" :aria-label="playing ? `暂停${label}` : `播放${label}`" @click="togglePlay">
+        <ArchiveIcon name="play" />
+        <ArchiveIcon name="pause" />
       </button>
       <input
         class="studio-slider-input studio-slider-compact studio-media-seek"
@@ -241,17 +242,20 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
         @input="onSeek"
       />
       <span class="studio-media-time">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
-      <button type="button" class="studio-media-btn" :aria-label="muted ? `取消静音${label}` : `静音${label}`" @click="toggleMute">
-        <ArchiveIcon :name="muted ? 'mute' : 'sound'" />
+      <button type="button" class="studio-media-btn" :data-active="muted" :aria-label="muted ? `取消静音${label}` : `静音${label}`" @click="toggleMute">
+        <ArchiveIcon name="sound" />
+        <ArchiveIcon name="mute" />
       </button>
       <button
         v-if="kind === 'video'"
         type="button"
         class="studio-media-btn"
+        :data-active="fullscreen"
         :aria-label="fullscreen ? `退出全屏${label}` : `全屏播放${label}`"
         @click="toggleFullscreen"
       >
-        <ArchiveIcon :name="fullscreen ? 'compress' : 'expand'" />
+        <ArchiveIcon name="expand" />
+        <ArchiveIcon name="compress" />
       </button>
     </div>
 

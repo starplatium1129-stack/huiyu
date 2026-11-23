@@ -72,7 +72,12 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   })
   const size = computed({ get: () => `${session.value?.form.width || 1024}x${session.value?.form.height || 1024}`,
     set: value => { if (!session.value || locked.value) return; const [width, height] = value.split('x').map(Number); session.value.form.width = width; session.value.form.height = height } })
-  const sizes = computed(() => [...new Set([size.value, ...(mode.value === 'moss' ? ['768x1280', '1280x768', '1280x1280', '960x1536', '1536x960', '1536x1536'] : ['1024x1024', '1024x1536', '1536x1024', '832x1216', '1216x832'])])])
+  const sizes = computed(() => {
+    const presets = mode.value === 'moss'
+      ? ['768x1280', '1280x768', '1280x1280', '960x1536', '1536x960', '1536x1536']
+      : ['1024x1024', '1024x1536', '1536x1024', '832x1216', '1216x832']
+    return presets.includes(size.value) ? presets : [...presets, size.value]
+  })
   const presentation = computed<GenerationPresentation>(() => {
     const state = session.value, task = state?.task.value
     const phase = state?.cancelling.value || task?.status === 'cancelling' ? 'cancelling'

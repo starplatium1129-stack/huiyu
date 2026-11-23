@@ -14,9 +14,22 @@
 .studio-media-btn {
   transition:none;
 }
-.studio-media-btn:hover { border-color: var(--border-soft); background: var(--bg-hover); }
+@media (hover:hover) and (pointer:fine) {
+  .studio-media-btn:hover { border-color:var(--border-soft); background:var(--bg-hover); }
+}
 .studio-media-btn:disabled { color: var(--text-disabled); cursor: not-allowed; }
-.studio-media-btn .archive-icon { width: 16px; height: 16px; }
+.studio-media-btn .archive-icon {
+  grid-area:1 / 1;
+  width:16px;
+  height:16px;
+  transition:opacity var(--control-feedback-duration,var(--motion-press)) var(--ease-out),
+    transform var(--control-feedback-duration,var(--motion-control)) var(--spring-soft);
+}
+.studio-media-btn[data-active='false'] > .archive-icon:last-of-type,
+.studio-media-btn[data-active='true'] > .archive-icon:first-of-type {
+  opacity:0;
+  transform:scale(.75);
+}
 
 @media (max-width: 600px) {
   .studio-media-btn { flex-basis: 40px; width: 40px; height: 40px; }

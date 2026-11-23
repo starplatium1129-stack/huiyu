@@ -114,7 +114,7 @@ function applyCustom() {
           <span class="size-chip-label">{{ card.label }}</span>
           <small class="size-chip-res">{{ card.value.replace('x', '×') }}</small>
         </span>
-        <ArchiveIcon v-if="size === card.value" name="success" class="size-chip-check" />
+        <ArchiveIcon name="success" class="size-chip-check" />
       </button>
     </div>
     <StudioPopover v-if="customSize && compact" label="自定义画幅" :open="customOpen" side="top" @update:open="openCustom">
@@ -176,7 +176,15 @@ function applyCustom() {
 .size-chip-label { font-weight:600; }
 .size-chip-res { color:var(--text-secondary); font:400 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
 .size-ratio-chip:disabled .size-chip-res { color:inherit; }
-.size-chip-check { inline-size:100%; block-size:auto; }
+.size-chip-check {
+  inline-size:100%;
+  block-size:auto;
+  opacity:0;
+  transform:translateY(2px) scale(.8);
+  transition:opacity var(--control-feedback-duration,var(--motion-press)) var(--ease-out),
+    transform var(--control-feedback-duration,var(--motion-control)) var(--spring-soft);
+}
+.size-ratio-chip[aria-pressed='true'] .size-chip-check { opacity:1; transform:none; }
 .size-picker-custom { min-height:28px; padding:2px var(--s-2); font-size:var(--fs-label-xs); flex-shrink:0; white-space:nowrap; }
 .size-picker-form { display:grid; gap:var(--s-3); }
 .size-picker-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }

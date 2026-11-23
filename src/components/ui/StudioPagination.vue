@@ -68,10 +68,25 @@ async function keyboard(event: KeyboardEvent) {
 </template>
 <style scoped>
 .studio-pagination { display:flex; align-items:center; justify-content:center; gap:var(--s-2); max-width:100%; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; }
-.page-arrow { display:grid; place-items:center; flex-shrink:0; width:var(--control-height-sm); height:var(--control-height-sm); padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; }
-.page-arrow .archive-icon { width:16px; height:16px; transform:rotate(90deg); }
-.page-next .archive-icon { transform:rotate(-90deg); }
-.page-arrow:hover:not([aria-disabled='true']) { color:var(--text-primary); background:transparent; }
+.page-arrow { --page-arrow-direction:-1; display:grid; place-items:center; flex-shrink:0; width:var(--control-height-sm); height:var(--control-height-sm); padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; }
+.page-next { --page-arrow-direction:1; }
+.page-arrow .archive-icon {
+  width:16px;
+  height:16px;
+  transform:translateX(calc(var(--page-arrow-direction) * var(--page-arrow-offset, 0px)))
+    rotate(calc(var(--page-arrow-direction) * -90deg));
+  transition:transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
+}
+@media (hover:hover) and (pointer:fine) {
+  .page-arrow:hover:not([aria-disabled='true']):not(:focus-visible) {
+    --page-arrow-offset:var(--control-feedback-shift, 2px);
+    color:var(--text-primary);
+    background:transparent;
+  }
+}
+.page-arrow:active:not([aria-disabled='true']):not(:focus-visible) {
+  --page-arrow-offset:var(--control-feedback-shift, 4px);
+}
 .studio-pagination button[aria-disabled='true'] { color:var(--text-disabled); cursor:default; }
 .page-arrow:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .page-numbers { min-width:0; flex-wrap:wrap; }
