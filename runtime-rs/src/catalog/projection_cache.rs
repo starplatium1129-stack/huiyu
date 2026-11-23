@@ -3,6 +3,7 @@ use axum::body::Bytes;
 use sha2::{Digest, Sha256};
 use std::{
     collections::HashMap,
+    io::Write,
     sync::{Arc, Mutex, OnceLock},
 };
 
@@ -11,7 +12,13 @@ const MAX_BYTES: usize = 16 * 1024 * 1024;
 #[derive(Clone, Debug)]
 pub(crate) struct Projection {
     pub(crate) bytes: Bytes,
+    pub(crate) gzip: Option<Bytes>,
     pub(crate) tag: String,
+}
+impl Projection {
+    fn size(&self) -> usize {
+        self.bytes.len() + self.gzip.as_ref().map_or(0, Bytes::len)
+    }
 }
 
 #[derive(Default)]
@@ -24,7 +31,7 @@ impl Encoded {
     fn select(&mut self, name: &str, identity: &(crate::file_identity::Identity, Vec<i64>)) {
         if self.identities.get(name) != Some(identity) {
             if let Some(previous) = self.entries.remove(name) {
-                self.bytes -= previous.bytes.len();
+                self.bytes -= previous.size();
             }
             self.identities.insert(name.into(), identity.clone());
         }
@@ -37,17 +44,17 @@ impl Encoded {
     ) {
         // An older request can finish encoding after a newer commit has already
         // populated the cache. It may answer its own reader, never rewind the cache.
-        if self.identities.get(name) != Some(identity) || projection.bytes.len() > MAX_BYTES {
+        if self.identities.get(name) != Some(identity) || projection.size() > MAX_BYTES {
             return;
         }
         if let Some(previous) = self.entries.remove(name) {
-            self.bytes -= previous.bytes.len();
+            self.bytes -= previous.size();
         }
-        if self.bytes + projection.bytes.len() > MAX_BYTES {
+        if self.bytes + projection.size() > MAX_BYTES {
             self.entries.clear();
             self.bytes = 0;
         }
-        self.bytes += projection.bytes.len();
+        self.bytes += projection.size();
         self.entries.insert(name.into(), projection.clone());
     }
 }
@@ -117,6 +124,15 @@ impl ProjectionCache {
             };
             transaction.commit()?;
             let bytes = Bytes::from(serde_json::to_vec(&value)?);
+            let gzip = if bytes.len() >= 32 * 1024 {
+                let mut encoder =
+                    flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::fast());
+                encoder.write_all(&bytes)?;
+                let packed = encoder.finish()?;
+                (packed.len() < bytes.len()).then(|| Bytes::from(packed))
+            } else {
+                None
+            };
             // The same authority key already governs byte-cache validity. Bind
             // validators to this encoder lifetime as well, so a changed binary
             // cannot validate a previous process's differently encoded response.
@@ -129,6 +145,7 @@ impl ProjectionCache {
             let projection = Projection {
                 tag: hex::encode(Sha256::digest(stamp.as_bytes())),
                 bytes,
+                gzip,
             };
             self.encoded
                 .lock()

@@ -14,7 +14,6 @@ import { useVoice } from '@/composables/useVoice'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
 import { clearStoredChatContent } from '@/utils/chatReset'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { loadCharacterSettingCards } from '@/utils/characterSettingMemory'
 import { confirmAction } from '@/composables/useConfirm'
 import { withChatTurn } from '@/utils/chatTurnOwnership'
 import { CHAT_TURN_KEY } from '@/utils/storageKeys'
@@ -185,7 +184,15 @@ export function useCharacterRoomSession(
     }
     return resolvedVoice === config.voice ? config : { ...config, voice: resolvedVoice }
   })
-  watch(() => route.query.character, id => { if (typeof id === 'string') switchCharacter(id) })
+  watch(() => route.query.character, (id, _previous, cleanup) => {
+    if (typeof id !== 'string') return
+    if (getCompanionCharacterConfig(id)) { switchCharacter(id); return }
+    let current = true
+    cleanup(() => { current = false })
+    void import('@/router/companionResources').then(({ loadActiveCompanion }) => loadActiveCompanion(id)).then(() => {
+      if (current && !disposed) switchCharacter(id)
+    }).catch(() => {})
+  })
 
   const voice = useVoice({
     enabled: () => autoVoice.value,
@@ -449,8 +456,6 @@ export function useCharacterRoomSession(
       inputText.value = storage.draft(activeChar.value)
     }
     document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
-    // Share the room directory's profile read with persona recall.
-    void loadCharacterSettingCards().catch(() => {})
     if (chatProvider.value === 'api') {
       if (useHostConfig.value) {
         setChatStatus(`站主配置 · ${hostApiModel.value || 'API'}`, 'online')

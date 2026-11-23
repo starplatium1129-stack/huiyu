@@ -235,13 +235,20 @@ async fn chat(
         } else {
             None
         };
-        let japanese_voice = direct && !chatgpt_provider && muse_character.is_none()
+        let japanese_voice = direct && muse_character.is_none()
             && body["japaneseVoice"] == true
             && app.voice.as_ref().is_some_and(|voice| voice.speech_requires_japanese());
         let mut input = request_body::validate(body, persona, imported, direct, &admission, &scope).await?;
         input.japanese_voice = japanese_voice;
         if let Some(character) = muse_character {
             return chat.muse.submit(character, input, muse_drawing);
+        }
+        if direct
+            && let Some(Value::String(system)) = input.messages.first_mut()
+                .filter(|message| message["role"] == "system")
+                .and_then(|message| message.get_mut("content"))
+        {
+            system.push_str("\n【聊天节奏】日常聊天按意思自然分成一到两句一条，分条时在中文消息之间留一个空行。简短回复一条就够，别拆开同一句话。对方要求长文、代码、列表或其他结构化内容时，按所需格式写。");
         }
         let managed_auth = app.control.as_ref().map(|control| control.llama_auth());
         let prepared = if chatgpt_provider {

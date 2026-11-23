@@ -34,8 +34,23 @@ struct Catalogue {
     stamp: Stamp,
     value: Value,
     images: HashMap<PathBuf, ImageSize>,
-    full: Option<EncodedCatalogue>,
-    cards: Option<EncodedCatalogue>,
+    encoded: HashMap<&'static str, EncodedCatalogue>,
+}
+pub(super) enum View {
+    Full,
+    Cards,
+    Index,
+    Stories,
+    Details(Vec<String>),
+}
+impl View {
+    fn name(&self) -> &'static str {
+        match self {
+            Self::Full => "geometry", Self::Cards => "cards", Self::Index => "index",
+            Self::Stories => "stories", Self::Details(_) => "details",
+        }
+    }
+    fn cacheable(&self) -> bool { !matches!(self, Self::Details(_)) }
 }
 struct EncodedCatalogue {
     bytes: Bytes,
@@ -114,23 +129,30 @@ fn dimensions(
     size
 }
 
-impl Catalogue {
-    fn body(&self, cards: bool, gzip: bool) -> Option<(Bytes, String)> {
-        let encoded = if cards { &self.cards } else { &self.full };
-        encoded.as_ref().map(|encoded| encoded.body(gzip))
-    }
-}
-
-fn encode_cards(value: &Value) -> io::Result<Bytes> {
-    let fields = [
+fn encode_cards(value: &Value, view: &View) -> io::Result<Bytes> {
+    let card_fields = [
         "id", "title", "story", "category", "char", "rating", "attempt", "type",
         "artistId", "displayName", "image", "thumb", "width", "height",
         "thumbWidth", "thumbHeight", "meta",
     ];
+    let fields: &[&str] = match view {
+        View::Index => &[
+            "id", "title", "category", "char", "rating", "attempt", "type", "artistId", "displayName",
+            "image", "thumb", "width", "height", "thumbWidth", "thumbHeight",
+        ],
+        View::Stories => &["id", "story"],
+        View::Details(_) => &["id", "title", "story", "category", "meta", "char", "type", "rating"],
+        _ => &card_fields,
+    };
     let rows: Vec<_> = value["entries"]
         .as_array()
         .into_iter()
         .flatten()
+        .filter(|row| match view {
+            View::Details(ids) => row["id"].as_str().is_some_and(|id| ids.iter().any(|item| item == id)),
+            View::Stories => row["story"].as_str().is_some_and(|story| !story.is_empty()),
+            _ => true,
+        })
         .map(|row| {
             let Some(row) = row.as_object() else {
                 return BTreeMap::new();
@@ -159,7 +181,30 @@ fn encode_cards(value: &Value) -> io::Result<Bytes> {
         .map_err(io::Error::other)
 }
 
-fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(Bytes, String)> {
+fn encode(value: &Value, view: &View) -> io::Result<EncodedCatalogue> {
+    let full = matches!(view, View::Full);
+    let bytes = if full {
+        Bytes::from(serde_json::to_vec(value).map_err(io::Error::other)?)
+    } else {
+        encode_cards(value, view)?
+    };
+    let tag = format!("showcase-{}-1-{}", view.name(), hex::encode(Sha256::digest(&bytes)));
+    let gzip = if full {
+        None
+    } else {
+        let mut encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::fast());
+        encoder.write_all(&bytes)?;
+        Some(Bytes::from(encoder.finish()?))
+    };
+    Ok(EncodedCatalogue { bytes, gzip, tag })
+}
+
+fn cached(cache: &Catalogue, view: &View, gzip: bool) -> io::Result<Option<(Bytes, String)>> {
+    if !view.cacheable() { return Ok(Some(encode(&cache.value, view)?.body(gzip))); }
+    Ok(cache.encoded.get(view.name()).map(|item| item.body(gzip)))
+}
+
+fn read(root: PathBuf, refresh: bool, view: &View, gzip: bool) -> io::Result<(Bytes, String)> {
     {
         let canonical = fs::canonicalize(&root)?;
         let file = canonical.join("manifest.json");
@@ -167,10 +212,10 @@ fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(By
         let lock = CACHE
             .read()
             .map_err(|_| io::Error::other("Showcase cache unavailable"))?;
-        if let Some(body) = lock
+        if let Some(cache) = lock
             .as_ref()
             .filter(|cache| !refresh && cache.root == canonical && cache.stamp == current)
-            .and_then(|cache| cache.body(cards, gzip))
+            && let Some(body) = cached(cache, view, gzip)?
         {
             if stamp(&fs::metadata(&file)?) != current {
                 return Err(io::Error::other("Showcase changed while reading"));
@@ -185,10 +230,10 @@ fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(By
     let root = fs::canonicalize(root)?;
     let file = root.join("manifest.json");
     let current = stamp(&fs::metadata(&file)?);
-    if let Some(body) = lock
+    if let Some(cache) = lock
         .as_ref()
         .filter(|cache| !refresh && cache.root == root && cache.stamp == current)
-        .and_then(|cache| cache.body(cards, gzip))
+        && let Some(body) = cached(cache, view, gzip)?
     {
         return Ok(body);
     }
@@ -214,8 +259,7 @@ fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(By
             stamp: current.clone(),
             value,
             images: HashMap::new(),
-            full: None,
-            cards: None,
+            encoded: HashMap::new(),
         }
     } else {
         previous.unwrap()
@@ -223,7 +267,7 @@ fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(By
     // Published cards already carry geometry. Only repair it on explicit refresh
     // or when serving the full maintenance manifest.
     let mut geometry_changed = false;
-    if (!cards || refresh) && let Some(entries) = cache.value["entries"].as_array_mut() {
+    if (matches!(view, View::Full) || refresh) && let Some(entries) = cache.value["entries"].as_array_mut() {
         for entry in entries {
             let Some(id) = entry["id"].as_str() else {
                 continue;
@@ -256,28 +300,13 @@ fn read(root: PathBuf, refresh: bool, cards: bool, gzip: bool) -> io::Result<(By
         return Err(io::Error::other("Showcase changed while reading"));
     }
     if geometry_changed {
-        cache.full = None;
-        cache.cards = None;
+        cache.encoded.clear();
     }
-    let encoded = if cards { &mut cache.cards } else { &mut cache.full };
-    if encoded.is_none() {
-        let bytes = if cards {
-            encode_cards(&cache.value)?
-        } else {
-            Bytes::from(serde_json::to_vec(&cache.value).map_err(io::Error::other)?)
-        };
-        let format = if cards { "cards" } else { "geometry" };
-        let tag = format!("showcase-{format}-1-{}", hex::encode(Sha256::digest(&bytes)));
-        let compressed = if cards {
-            let mut encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::fast());
-            encoder.write_all(&bytes)?;
-            Some(Bytes::from(encoder.finish()?))
-        } else {
-            None
-        };
-        *encoded = Some(EncodedCatalogue { bytes, gzip: compressed, tag });
+    let encoded = encode(&cache.value, view)?;
+    let result = encoded.body(gzip);
+    if view.cacheable() {
+        cache.encoded.insert(view.name(), encoded);
     }
-    let result = encoded.as_ref().unwrap().body(gzip);
     // Failed reads leave no partly updated catalogue for the shared fast path.
     *lock = Some(cache);
     Ok(result)
@@ -288,10 +317,11 @@ pub(super) async fn serve(
     head: bool,
     condition: Option<HeaderValue>,
     refresh: bool,
-    cards: bool,
+    view: View,
     gzip: bool,
 ) -> Response {
-    match tokio::task::spawn_blocking(move || read(root, refresh, cards, gzip)).await {
+    let compressed = !matches!(view, View::Full);
+    match tokio::task::spawn_blocking(move || read(root, refresh, &view, gzip)).await {
         Ok(Ok((bytes, tag))) => {
             let length = bytes.len();
             let mut response = (
@@ -306,7 +336,7 @@ pub(super) async fn serve(
             if head {
                 *response.body_mut() = Body::empty();
             }
-            if cards {
+            if compressed {
                 response.headers_mut().append("vary", HeaderValue::from_static("Accept-Encoding"));
             }
             if gzip {

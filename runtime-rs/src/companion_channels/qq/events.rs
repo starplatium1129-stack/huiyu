@@ -259,12 +259,6 @@ pub(super) fn event_message_id(data: &Value) -> Option<&str> {
         .filter(|id| !id.is_empty() && id.len() <= 512)
 }
 
-pub(super) fn message_tag(id: &str) -> String {
-    let mut digest = crate::storage::json_fingerprint(&json!(id));
-    digest.truncate(12);
-    digest
-}
-
 pub(super) fn muse_sender_id(conversation: &str, member: &str) -> String {
     crate::storage::json_fingerprint(&json!([conversation, member]))
 }

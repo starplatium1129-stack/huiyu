@@ -128,7 +128,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         const query = Object.fromEntries(Object.entries(route.query).map(([key, value]) => [key, Array.isArray(value) ? [...value] : value]));
         const current = () => !disposed && viewActive && request === initializationRequest && route.path === '/prompt-builder';
         void refreshShotsPending();
-        void refreshAnimaBackend();
+        const initialBackend = refreshAnimaBackend();
         // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
         // 会让网关反复探测 ComfyUI（2.5s 超时 + 磁盘资源检查），纯属浪费。
         if (drawEngine.value !== 'sd')
@@ -140,7 +140,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         }
         if (!await loadWorkspaceData()) return;
         if (!current()) return;
-        await refreshAnimaBackend();
+        await initialBackend;
         if (!current()) return;
         // Legacy SD observation uses saved task identities and frozen recipes.
         // Its explicit connection check must not gate Anima/Krea draft recovery.

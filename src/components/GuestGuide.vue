@@ -69,8 +69,10 @@ const visible = ref(false)
 const dismissButton = ref<HTMLButtonElement | null>(null)
 const setupButton = ref<HTMLButtonElement | null>(null)
 let openOrigin: HTMLElement | null = null
+let firstPaint = 0
 
 function openGuide() {
+  cancelAnimationFrame(firstPaint)
   openOrigin = document.activeElement instanceof HTMLElement ? document.activeElement : null
   presented.value = true
   visible.value = true
@@ -82,11 +84,16 @@ function beginSetup() {
 }
 
 onMounted(() => {
-  if (shouldShow) openGuide()
+  if (shouldShow) firstPaint = requestAnimationFrame(() => {
+    firstPaint = requestAnimationFrame(openGuide)
+  })
   window.addEventListener('atelier:welcome', openGuide)
 })
 
-onUnmounted(() => window.removeEventListener('atelier:welcome', openGuide))
+onUnmounted(() => {
+  cancelAnimationFrame(firstPaint)
+  window.removeEventListener('atelier:welcome', openGuide)
+})
 
 function persistDismissal() {
   settingsRepository.set(GUEST_GUIDE_DISMISSED_SETTING, true)

@@ -13,7 +13,7 @@ impl Catalog {
 
     pub(super) fn projection_stamp(&self, name: &str) -> Result<Vec<i64>> {
         let kinds: &[&str] = match name {
-            "characters.json" | "character-archive.json" | "character-chat.json" | "character-drawing.json" | "popular-directory.json" => &["character"],
+            "characters.json" | "character-archive.json" | "character-chat.json" | "character-chat-directory.json" | "character-drawing.json" | "popular-directory.json" => &["character"],
             "scene-titles.json" => &["scene"],
             "popular-characters.json" => &["character", "outfit"],
             "scene-blueprints.json" => &["blueprint"],

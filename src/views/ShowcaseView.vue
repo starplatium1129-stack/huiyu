@@ -106,7 +106,8 @@
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
-            <blockquote v-if="currentEntry.story" class="viewer-story viewer-story-quote">{{ currentEntry.story }}</blockquote>
+            <blockquote v-if="viewerStory" class="viewer-story viewer-story-quote">{{ viewerStory }}</blockquote>
+            <button v-if="viewerDetailsFailed" type="button" class="btn btn-ghost btn-sm" @click="viewerDetailsAttempt++">重试读取作品详情</button>
             <div class="viewer-actions">
               <template v-if="destinationError">
                 <span role="status">{{ destinationError }}</span>
@@ -117,14 +118,14 @@
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
             </div>
-            <details v-if="currentEntry.meta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
-              <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
-              <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
-              <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
-              <span v-if="currentEntry.meta.loraId">LoRA {{ currentEntry.meta.loraId }}<template v-if="currentEntry.meta.loraVersion"> · v{{ currentEntry.meta.loraVersion }}</template></span>
-              <span v-if="currentEntry.meta.seed !== undefined">Seed {{ currentEntry.meta.seed }}</span>
-              <span v-if="currentEntry.meta.steps !== undefined">步数 {{ currentEntry.meta.steps }}</span>
-              <span v-if="currentEntry.meta.cfg !== undefined">CFG {{ currentEntry.meta.cfg }}</span>
+            <details v-if="viewerMeta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
+              <span v-if="viewerMeta.engine">引擎 {{ viewerMeta.engine }}</span>
+              <span v-if="viewerMeta.checkpoint">Checkpoint {{ viewerMeta.checkpoint }}</span>
+              <span v-if="viewerMeta.model">模型 {{ viewerMeta.model }}</span>
+              <span v-if="viewerMeta.loraId">LoRA {{ viewerMeta.loraId }}<template v-if="viewerMeta.loraVersion"> · v{{ viewerMeta.loraVersion }}</template></span>
+              <span v-if="viewerMeta.seed !== undefined">Seed {{ viewerMeta.seed }}</span>
+              <span v-if="viewerMeta.steps !== undefined">步数 {{ viewerMeta.steps }}</span>
+              <span v-if="viewerMeta.cfg !== undefined">CFG {{ viewerMeta.cfg }}</span>
             </div>
             </details>
             </div>
@@ -137,13 +138,14 @@
 
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
-import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { readShowcaseDetails, readShowcaseStories, useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import { useCharacterBlueprints } from '@/composables/scene/useCharacterBlueprints'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
-import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+import { ref, shallowRef, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { useRoute, useRouter } from 'vue-router'
 import { orderShowcaseEntries } from '@/utils/showcaseBrowseOrder'
 import { showcaseDestination } from '@/utils/showcaseDestination'
@@ -281,9 +283,19 @@ function charLabel(value: string) { return LABELS[value] || characterLabels.valu
 const filterSummary = computed(() => [typeFilter.value === 'all' ? '' : typeLabel(typeFilter.value), charFilter.value === 'all' ? '' : charLabel(charFilter.value), ratingFilter.value === 'all' ? '' : ratingLabel(ratingFilter.value)].filter(Boolean).join(' · ') || '类型、角色与分级')
 const searchTerm = computed(() => norm(settledQuery.value))
 const searching = computed(() => !!searchTerm.value)
+const storyIndex = shallowRef<ReadonlyMap<string, string> | null>(null)
+watch([searching, runtimeResourceIdentity], ([active, identity], previous, cleanup) => {
+  if (previous?.[1] !== identity) storyIndex.value = null
+  if (!active || storyIndex.value) return
+  const controller = new AbortController()
+  cleanup(() => controller.abort())
+  void readShowcaseStories(AbortSignal.any([controller.signal, AbortSignal.timeout(10_000)]))
+    .then(rows => { if (!controller.signal.aborted) storyIndex.value = rows })
+    .catch(() => {})
+}, { immediate: true })
 const searchIndex = computed(() => searching.value ? new Map(entries.value.map(entry => [entry.id, {
   title: norm(entry.title), id: norm(entry.id),
-  text: norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' ')),
+  text: norm([entry.id, entry.title, storyIndex.value?.get(entry.id) ?? entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' ')),
 }])) : null)
 watch(searching, active => { if (!active) void searchIndex.value }, { flush: 'sync' })
 const hasFilters = computed(() => Boolean(selectedAlbum.value || searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
@@ -348,6 +360,21 @@ const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(entry => entry.id))
 const currentIdx = computed(() => currentId.value ? filtered.value.findIndex(e => e.id === currentId.value) : -1)
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
+const viewerDetails = shallowRef<ShowcaseEntry | undefined>()
+const viewerDetailsFailed = ref(false), viewerDetailsAttempt = ref(0)
+const viewerStory = computed(() => viewerDetails.value?.story ?? storyIndex.value?.get(currentId.value) ?? currentEntry.value?.story)
+const viewerMeta = computed(() => viewerDetails.value?.meta ?? currentEntry.value?.meta)
+const showDetails = computed(() => viewerMounted.value && (!narrowViewer.value || viewerInfoOpen.value))
+watch([currentId, showDetails, runtimeResourceIdentity, viewerDetailsAttempt], ([id, open], _previous, cleanup) => {
+  viewerDetails.value = undefined
+  viewerDetailsFailed.value = false
+  if (!id || !open || currentEntry.value?.meta) return
+  const controller = new AbortController()
+  cleanup(() => controller.abort())
+  void readShowcaseDetails([id], AbortSignal.any([controller.signal, AbortSignal.timeout(10_000)]))
+    .then(rows => { if (!controller.signal.aborted) viewerDetails.value = rows.get(id) })
+    .catch(() => { if (!controller.signal.aborted) viewerDetailsFailed.value = true })
+})
 // Let catalogue replacement and linked-scene filter resets settle before closing.
 watch(currentEntry, entry => {
   if (!entry && viewerMounted.value && viewActive && !unmounted) closeViewer()

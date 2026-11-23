@@ -1,5 +1,6 @@
 import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaGenerationState, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { useAnimaTask } from './useAnimaTask'
@@ -70,6 +71,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   let statusRequest: AbortController | null = null
   let statusRefresh: Promise<boolean> | null = null
+  let statusOwner = ''
+  let lastStatus: { owner: string; observedAt: number; data: AnimaStatusResponse } | undefined
   let statusEpoch = 0, refreshSettingsRevision = 0
   let disposed = false
   const statusPolling = usePolling({ intervalMs: 15_000, immediate: false, paused: () => document.hidden,
@@ -164,7 +167,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 拉取 ComfyUI / 网关状态并按当前角色与引擎族收敛 model / lora 白名单。
    * 成功响应即使 offline 也采用（清空列表）；只有请求失败才标记离线。
    */
-  // Awaiters follow a superseding refresh; false means the view cancelled discovery.
+  // The gateway returns all families and characters in one reply. Reapply the
+  // same discovery when startup restores the engine or subject just after it arrives.
   function refreshBackend(checkedStatus?: AnimaStatusResponse): Promise<boolean> {
     if (disposed) return Promise.resolve(false)
     const family = options.getFamily()
@@ -177,23 +181,31 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         teaCacheSettingsTouched = Boolean(stored); loraStrengthTouched = Boolean(stored)
       } finally { reconcilingSettings = false }
     }
+    const owner = runtimeResourceIdentity()
+    if (!checkedStatus && statusRequest && statusRefresh && statusOwner === owner) return statusRefresh
+    const recent = lastStatus?.owner === owner && performance.now() - lastStatus.observedAt < 1000
+      ? lastStatus.data : undefined
     // Superseding discovery still belongs to the pending read's edit baseline.
     if (!statusRequest) refreshSettingsRevision = settingsRevision
     statusRequest?.abort()
     const controller = new AbortController()
     statusRequest = controller
-    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision, checkedStatus)
+    statusOwner = owner
+    statusRefresh = readBackendStatus(controller, statusEpoch, refreshSettingsRevision, owner, checkedStatus, recent)
     return statusRefresh
   }
 
-  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number, checkedStatus?: AnimaStatusResponse): Promise<boolean> {
+  async function readBackendStatus(controller: AbortController, epoch: number, initialSettingsRevision: number,
+    owner: string, checkedStatus?: AnimaStatusResponse, recent?: AnimaStatusResponse): Promise<boolean> {
     const latest = () => epoch === statusEpoch && statusRequest !== controller ? statusRefresh ?? false : false
     try {
-      const data = checkedStatus ?? await client.request<AnimaStatusResponse>('/api/creative/status', {
+      const data = checkedStatus ?? recent ?? await client.request<AnimaStatusResponse>('/api/creative/status', {
         cache: 'no-store', signal: controller.signal, timeoutMs: 10_000,
         validate: value => value.ok === true,
       })
       if (statusRequest !== controller || controller.signal.aborted) return latest()
+      if (runtimeResourceIdentity() !== owner) return false
+      if (checkedStatus || !recent) lastStatus = { owner, observedAt: performance.now(), data }
       const models = Array.isArray(data.models) ? data.models : []
       const loras = (Array.isArray(data.loras) ? data.loras : [])
         .filter(lora => options.isPopular()
@@ -289,6 +301,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function discardStatusRead() {
     statusEpoch++
+    lastStatus = undefined
     statusRefresh = null
     statusRequest?.abort()
     statusRequest = null

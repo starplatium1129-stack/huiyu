@@ -147,8 +147,16 @@ impl Catalog {
         Ok(value)
     }
     pub(super) fn projection_owned(&self, name: &str) -> Result<Option<Value>> {
-        if name == "character-chat.json" || name == "character-drawing.json" {
-            let sql = if name == "character-chat.json" {
+        if ["character-chat.json", "character-chat-directory.json", "character-drawing.json"].contains(&name) {
+            let sql = if name == "character-chat-directory.json" {
+                "SELECT json_object('id', payload->>'$.profile.id',
+                    'portrait', json_object('image', payload->>'$.profile.portrait.image'),
+                    'source', payload->>'$.profile.source', 'alias', payload->'$.profile.alias',
+                    'franchise', payload->>'$.popular.franchise', 'aliases', payload->'$.popular.aliases',
+                    'originalName', payload->>'$.popular.originalName')
+                 FROM content_records WHERE kind='character' AND deleted=0
+                    AND json_type(payload,'$.profile.id')='text' ORDER BY sort_order,id"
+            } else if name == "character-chat.json" {
                 "SELECT json_object(
                     'id', payload->>'$.profile.id', 'name', payload->>'$.profile.name',
                     'bg_story', payload->>'$.profile.bg_story', 'personality', payload->'$.profile.personality',
@@ -392,6 +400,7 @@ pub(super) fn projected_file(name: &str) -> bool {
         "popular-directory.json",
         "character-archive.json",
         "character-chat.json",
+        "character-chat-directory.json",
         "character-drawing.json",
         "scene-titles.json",
         "characters.json",

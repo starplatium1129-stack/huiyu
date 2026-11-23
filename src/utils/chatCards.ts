@@ -30,7 +30,7 @@ function catalogProfiles() {
     profiles = undefined
   }
   if (profiles) return profiles
-  const current = loadChatCharacterProfiles().then(async portraits => {
+  const current = directoryRows('character-chat-directory.json').catch(() => loadChatCharacterProfiles()).then(async portraits => {
     const result = new Map<string, CatalogProfile>()
     for (const entry of portraits) {
       if (typeof entry?.id !== 'string') continue
@@ -111,12 +111,11 @@ export function loadChatCards(): Promise<void> {
   if (pending) return pending
   const previous = listCompanionCharacterIds().filter(id => id.startsWith('card-'))
   const current = (async () => {
-    const profilesRequest = catalogProfiles()
     const response = await runtimeFetch('/api/chat/cards', { signal: AbortSignal.timeout(10000) })
     if (!response.ok) throw new Error(`无法读取本机角色卡，请重试（HTTP ${response.status}）`)
     const { cards } = await response.json()
     if (!Array.isArray(cards)) throw new Error('本机角色卡目录格式错误')
-    const directory = await profilesRequest
+    const directory = cards.some(card => typeof card?.catalogId === 'string') ? await catalogProfiles() : undefined
     const ids = new Set(cards.map(card => registerCard(card, owner, directory)))
     if (owner === runtimeResourceIdentity()) previous.forEach(id => { if (!ids.has(id)) forgetChatCard(id) })
   })().finally(() => { if (pending === current) pending = undefined })

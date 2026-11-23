@@ -1,5 +1,6 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref, watch, type Ref } from 'vue'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacter,
@@ -15,7 +16,7 @@ import {
   type ChatMemoryCharacter,
   type ChatMemoryState,
 } from '@/utils/chatMemory'
-import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
+import { characterSettingCard, loadCharacterSettingCard, recallCharacterSetting } from '@/utils/characterSettingMemory'
 import { packChatMemoryContext } from '@/utils/chatMemoryContext'
 import { chatResetRevision } from '@/utils/chatReset'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
@@ -43,6 +44,10 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   function memoryCharacter(value = activeChar.value): ChatMemoryCharacter {
     return getCompanionCharacterConfig(value) ? value : DEFAULT_COMPANION_CHARACTER_ID
   }
+  const catalogCharacter = (id: string) => getCompanionCharacter(id)?.catalogId || (id.startsWith('card-') ? '' : id)
+  watch([() => catalogCharacter(activeChar.value), runtimeResourceIdentity], ([id]) => {
+    if (id) void loadCharacterSettingCard(id).catch(() => {})
+  }, { immediate: true })
 
   const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()] || [])
   const rememberedMessageIds = computed(() => new Set((currentMemories.value || []).map(item => item.sourceMid)))
@@ -119,10 +124,11 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
 
   function recallMemories(character: string, query: string) {
     if (!getCompanionCharacterConfig(character)) return []
-    if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
     // 人设先于用户事实呈现，但两类召回共用网关预算，不各自占满注入名额。
-    const catalogId = getCompanionCharacter(character)?.catalogId || character
-    const setting = recallCharacterSetting(characterSettingCards(), catalogId, query)
+    const catalogId = catalogCharacter(character)
+    const card = catalogId ? characterSettingCard(catalogId) : null
+    if (catalogId && !card) void loadCharacterSettingCard(catalogId).catch(() => {})
+    const setting = recallCharacterSetting(card, query)
     const facts = recallChatFacts(chatMemory.value, memoryCharacter(character), query)
     return packChatMemoryContext(setting, facts)
   }

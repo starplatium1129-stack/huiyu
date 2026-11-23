@@ -2,6 +2,7 @@ export interface ChatStreamEvent {
   type: string
   model?: string
   content?: string
+  speechFirst?: boolean
   /** 工具调用事件（type:'tool-call'）：index/id/name/arguments */
   index?: number
   id?: string
@@ -27,6 +28,7 @@ function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
     type: value.type,
     model: typeof value.model === 'string' ? value.model : undefined,
     content: typeof value.content === 'string' ? value.content : undefined,
+    speechFirst: value.speechFirst === true || undefined,
     index: typeof value.index === 'number' ? value.index : undefined,
     id: typeof value.id === 'string' ? value.id : undefined,
     name: typeof value.name === 'string' ? value.name : undefined,

@@ -15,7 +15,7 @@ use super::{
     *,
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
-use events::{event_message_id, message_tag, muse_sender_id, open_id};
+use events::{event_message_id, muse_sender_id, open_id};
 use futures_util::StreamExt;
 use inbox::process;
 use reqwest::Client;
@@ -36,6 +36,7 @@ struct Api {
     secret: String,
     token: AsyncMutex<Option<(String, Instant)>>,
     quotes: quotes::SentQuotes,
+    ambient: Option<Arc<ambient::GroupChat>>,
 }
 
 struct Message {
@@ -178,18 +179,19 @@ pub(super) async fn run(
         explicit if crate::voice::is_valid_voice_id(explicit) => explicit.to_owned(),
         _ => "nene".into(),
     };
+    let ambient = (settings.group_natural_replies && !settings.group_muse)
+        .then(|| Arc::new(ambient::GroupChat::default()));
     let api = Arc::new(Api {
         client,
         app_id: settings.app_id.clone(),
         secret,
         token: AsyncMutex::new(None),
         quotes: quotes::SentQuotes::default(),
+        ambient: ambient.clone(),
     });
     let (direct_sender, direct) = mpsc::channel(16);
     let (group_sender, groups) = mpsc::channel(16);
     let (muse_sender, muse_inbox) = mpsc::channel(16);
-    let ambient = (settings.group_natural_replies && !settings.group_muse)
-        .then(|| Arc::new(ambient::GroupChat::default()));
     let inboxes = Inboxes {
         private_muse: settings.private_muse,
         group_muse: settings.group_muse,

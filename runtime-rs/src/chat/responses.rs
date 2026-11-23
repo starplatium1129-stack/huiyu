@@ -47,7 +47,7 @@ impl Session {
 pub(super) async fn prepare(
     chat: &Arc<ChatService>,
     settings: &Settings,
-    input: Input,
+    mut input: Input,
     client_id: Option<&str>,
     admission: Option<&request_body::Admission>,
     cancel: &CancellationToken,
@@ -83,6 +83,10 @@ pub(super) async fn prepare(
         ));
     }
 
+    let japanese_voice = input.japanese_voice;
+    if japanese_voice {
+        super::stream::japanese_voice::prompt(&mut input.messages);
+    }
     let body = request_body::encode(payload(input, &model), admission, cancel).await?;
     let target = Url::parse(RESPONSES_URL).map_err(|_| Error::invalid("Responses 地址无效"))?;
     let mut context = Session {
@@ -152,7 +156,7 @@ pub(super) async fn prepare(
         wait_ms: 0,
         protocol: Protocol::ResponsesSse(Box::new(context)),
         permit: None,
-        japanese_voice: false,
+        japanese_voice,
     })
 }
 
@@ -362,6 +366,10 @@ pub(super) struct Decoder {
 }
 
 impl Decoder {
+    pub(super) fn has_tool_calls(&self) -> bool {
+        !self.calls.is_empty()
+    }
+
     pub(super) fn decode(
         &mut self,
         mut event: Value,

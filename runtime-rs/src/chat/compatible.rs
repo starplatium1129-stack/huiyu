@@ -80,8 +80,7 @@ pub(super) async fn prepare(
         ));
     }
     let destination = target(&api, &api.pathname)?;
-    let japanese_voice = input.japanese_voice
-        && crate::upstream::local_url(&destination.origin().ascii_serialization()).is_ok();
+    let japanese_voice = input.japanese_voice;
     if japanese_voice {
         super::stream::japanese_voice::prompt(&mut input.messages);
     }
@@ -267,6 +266,9 @@ impl Decoder {
             vendor,
             ..Self::default()
         }
+    }
+    pub(super) fn has_tool_calls(&self) -> bool {
+        !self.calls.is_empty()
     }
     pub fn decode(&mut self, mut event: Value) -> Result<[Option<Event>; 2]> {
         if let Some(error) = response_error(&event, &self.vendor) {

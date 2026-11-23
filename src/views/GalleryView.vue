@@ -166,7 +166,7 @@
           aria-label="作品观赏模式"
           ref="viewerEl"
         >
-      <ArtworkViewerStage :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
+      <ArtworkViewerStage v-if="displayedCurrent" :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
         :src="viewerUrl" :preview-src="viewerSurface.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
         :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
         @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer">

@@ -4,9 +4,11 @@ import { loadRoom, type RoomPage } from '@/router/roomResources'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { companionWindow, getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { provideCompanionInput } from '@/composables/chat/useCompanionInput'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{ page: RoomPage; label: string }>()
-const load = () => loadRoom(props.page)
+const route = useRoute()
+const load = () => loadRoom(props.page, typeof route.query.character === 'string' ? route.query.character : '')
 const input = props.page === 'companion' ? provideCompanionInput() : undefined
 const desktopPet = Boolean(input)
 const timedOut = ref(false)

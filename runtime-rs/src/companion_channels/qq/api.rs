@@ -101,7 +101,7 @@ impl Api {
     ) -> Result<()> {
         body["msg_id"] = json!(id);
         body["msg_seq"] = json!(seq);
-        self.send_message(target, body).await
+        self.send_message(target, body, Some(id)).await
     }
 
     pub(super) async fn proactive(&self, target: Destination<'_>, mut body: Value) -> Result<()> {
@@ -111,16 +111,23 @@ impl Api {
         for field in ["msg_id", "msg_seq", "event_id", "is_wakeup"] {
             fields.remove(field);
         }
-        self.send_message(target, body).await.map_err(|mut error| {
-            if !error.submission_not_accepted {
-                error.code = "QQ_DELIVERY_UNKNOWN".into();
-                error.message = format!("请先在 QQ 会话核对送达情况。{}", error.message);
-            }
-            error
-        })
+        self.send_message(target, body, None)
+            .await
+            .map_err(|mut error| {
+                if !error.submission_not_accepted {
+                    error.code = "QQ_DELIVERY_UNKNOWN".into();
+                    error.message = format!("请先在 QQ 会话核对送达情况。{}", error.message);
+                }
+                error
+            })
     }
 
-    async fn send_message(&self, target: Destination<'_>, mut body: Value) -> Result<()> {
+    async fn send_message(
+        &self,
+        target: Destination<'_>,
+        mut body: Value,
+        reply_to: Option<&str>,
+    ) -> Result<()> {
         // QQ's older rich-media handlers require a nonempty content field.
         if body["msg_type"] == 7 && body["content"].as_str().is_none_or(str::is_empty) {
             body["content"] = json!(" ");
@@ -131,6 +138,9 @@ impl Api {
         if value["id"].as_str().is_some_and(|id| !id.is_empty()) {
             if let Some(text) = text {
                 self.quotes.remember(target.id, &value, &text);
+                if let Some((activity, id)) = self.ambient.as_ref().zip(reply_to) {
+                    activity.remember_reply(target.id, id, &text);
+                }
             }
             Ok(())
         } else {

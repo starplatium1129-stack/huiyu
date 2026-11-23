@@ -35,11 +35,20 @@
   @apply tw:items-end;
 }
 
+.chat-page .message-bubbles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
 /*   ============================================================
    气泡细节：尾巴圆角 / 角色渐变条 / 说话与播放高亮
   ============================================================ */
 .chat-page .message-bubble {
   @apply tw:relative;
+  max-width: 100%;
   padding: 10px 13px;
   border: 1px solid var(--border-soft);
   /* bubble tail: tighten corner toward avatar */
@@ -62,13 +71,20 @@
   background: var(--accent-soft);
 }
 
-.chat-page .message.streaming .message-bubble::after {
+.chat-page .message.streaming .message-bubble:last-child::after {
   @apply tw:inline-block tw:w-[5px] tw:h-[1em] tw:ml-[3px];
   animation: cursor-blink .8s steps(2, end) infinite;
   background: var(--accent);
   content: "";
   vertical-align: -2px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .chat-page .message.streaming .message-bubble:last-child::after { animation: none; }
+}
+
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true'])
+  .chat-page .message.streaming .message-bubble:last-child::after { animation: none; }
 
 .chat-page .message-note { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 

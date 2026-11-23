@@ -65,9 +65,7 @@ async fn status(
 ) -> Result<Json<Value>> {
     service.running(&state)?;
     let fresh = query.get("fresh").is_some_and(|value| value == "1");
-    if query.get("scope").is_some_and(|value| value == "room")
-        && !service.speech.current_settings().needs_translation()
-    {
+    if query.get("scope").is_some_and(|value| value == "room") {
         return Ok(Json(service.speech.status_observed(fresh).await));
     }
     let (mut result, translation) = tokio::join!(

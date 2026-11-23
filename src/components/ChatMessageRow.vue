@@ -4,11 +4,16 @@
       <RuntimeImage :src="avatar" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
     </div>
     <div class="message-body">
-      <div class="message-bubble" v-content-motion:up="arrival ? message.mid : false">
-        <ChatMessageText v-if="message.content" :text="message.content" />
-        <ChatMessageAttachments :message="message" />
-        <ChatTurnIndicator v-if="!message.content && !message.drawingBatchId && streaming"
-          :label="activity || '正在回复…'" animated />
+      <div class="message-bubbles">
+        <div v-for="(text, index) in bubbles" :key="index" class="message-bubble"
+          v-content-motion:up="(index === 0 ? arrival : streaming) ? `${message.mid}:${index}` : false">
+          <ChatMessageText v-if="text" :text="text" />
+          <template v-if="index === bubbles.length - 1">
+            <ChatMessageAttachments :message="message" />
+            <ChatTurnIndicator v-if="!message.content && !message.drawingBatchId && streaming"
+              :label="activity || '正在回复…'" animated />
+          </template>
+        </div>
       </div>
       <span v-if="message.stopped || playing" class="message-note">{{ message.stopped ? '已停止' : '播放中' }}</span>
       <ChatReplyVariants v-if="message.variants?.length" :message="message" :disabled="storyDisabled" @select="emit('select-variant', $event)" />
@@ -29,6 +34,7 @@ const ChatReplyVariants = defineAsyncComponent(() => import('@/components/ChatRe
 </script>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ChatMessageText from '@/components/ChatMessageText.vue'
@@ -36,8 +42,9 @@ import ChatMessageAttachments from '@/components/ChatMessageAttachments.vue'
 import ChatTurnIndicator from '@/components/ChatTurnIndicator.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import type { ChatMessage } from '@/composables/chat/chatStorageTypes'
+import { chatMessageBubbles } from '@/utils/chatMessageBubbles'
 
-defineProps<{
+const props = defineProps<{
   message: ChatMessage
   avatar?: string | null
   chibi: boolean
@@ -50,5 +57,6 @@ defineProps<{
   canRegenerate?: boolean
   storyDisabled?: boolean
 }>()
+const bubbles = computed(() => chatMessageBubbles(props.message))
 const emit = defineEmits<{ copy: [text: string]; remember: [message: ChatMessage]; play: [mid: string]; regenerate: []; fork: []; 'select-variant': [mid: string] }>()
 </script>

@@ -36,11 +36,13 @@ function reveal(el: HTMLElement, direction = 'up') {
   }
   const previous = active.get(el)
   const state = previous?.motion.capture()
-  const transform = previous ? previous.base : getComputedStyle(el).transform
-  const base = transform === 'none' ? '' : transform
-  cancel(el)
   const offsets: Record<string, number[]> = { left: [-12, 0], right: [12, 0], up: [0, 12], down: [0, -12] }
   const offset = offsets[direction]
+  // Opacity-only reveals do not need the current transform. Reading it here
+  // can pull the entire just-mounted workspace into a synchronous layout.
+  const transform = offset ? previous?.base ?? getComputedStyle(el).transform : ''
+  const base = transform === 'none' ? '' : transform
+  cancel(el)
   const motion = createContentSpring(el, state?.values ?? [...(offset ?? [0, 0]), .8], ([x, y, opacity]) => ({
     opacity, ...(offset ? { transform: `translate(${x}px, ${y}px) ${base}` } : {}),
   }), { velocities: state?.velocities, opacity: 2 })

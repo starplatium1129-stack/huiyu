@@ -1,24 +1,42 @@
 <script setup lang="ts">
-import { computed, shallowRef } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import CompanionCharacterDialog from './CompanionCharacterDialog.vue'
 import { getCompanionCharacter } from '@/utils/companionRegistry'
+import { loadCompanionDirectory } from '@/router/companionResources'
 
 const props = withDefaults(defineProps<{ modelValue: string; label?: string }>(), { label: '切换角色' })
 const emit = defineEmits<{ 'update:modelValue': [id: string] }>()
 const opener = shallowRef<HTMLButtonElement | null>(null)
+const pending = ref(false), failed = ref(false)
 const name = computed(() => getCompanionCharacter(props.modelValue)?.name || '选择角色')
+async function readDirectory() {
+  if (pending.value) return
+  pending.value = true; failed.value = false
+  try { await loadCompanionDirectory() }
+  catch { failed.value = true }
+  finally { pending.value = false }
+}
+function open(event: MouseEvent) {
+  opener.value = event.currentTarget as HTMLButtonElement
+  void readDirectory()
+}
 </script>
 
 <template>
   <div class="companion-picker">
     <button class="companion-picker-trigger" type="button" aria-haspopup="dialog" :aria-expanded="!!opener"
-      :aria-label="`${label}，当前${name}`" @click="opener = $event.currentTarget as HTMLButtonElement">
+      :aria-label="`${label}，当前${name}`" @click="open">
       <span class="companion-picker-copy"><strong>{{ name }}</strong><small>{{ label }}</small></span>
       <ArchiveIcon name="chevron-down" />
     </button>
     <CompanionCharacterDialog v-if="opener" :opener="opener" :selected-id="modelValue"
-      @dismiss="opener = null" @select="emit('update:modelValue', $event)" />
+      @dismiss="opener = null" @select="emit('update:modelValue', $event)">
+      <template #actions>
+        <span v-if="pending" role="status" class="tw:text-secondary tw:text-label-sm">正在读取本地角色…</span>
+        <button v-else-if="failed" type="button" class="btn btn-quiet btn-sm" @click="readDirectory">重试读取本地角色</button>
+      </template>
+    </CompanionCharacterDialog>
   </div>
 </template>
 

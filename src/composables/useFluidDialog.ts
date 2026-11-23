@@ -103,6 +103,8 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     const el = dialog.value
     if (!el) return
     restoreAfterClose = null
+    // Capture the laid-out reading position before changing any dialog styles.
+    if (!locked) { locked = true; lockPageScroll() }
     el.setAttribute('data-fluid-dialog', '')
     if (!el.open) {
       returnFocus = source && source !== document.body ? source : null
@@ -110,8 +112,6 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
       const state = exit?.capture()
       exit?.cancel(); exit = undefined
       surface.dispose(el)
-      // Native showModal can move focus and scroll; capture the reading position first.
-      if (!locked) { locked = true; lockPageScroll() }
       prepareNativeModal(el)
       try { el.showModal() } catch (error) { releaseScrollLock(); throw error }
       // Measure after showModal: a closed native dialog has zero geometry.
@@ -124,7 +124,6 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
       // keep Reka's collision-aware origin in StudioPopover instead.
       el.style.transformOrigin = 'center center'
     }
-    if (!locked) { locked = true; lockPageScroll() }
     surface.enter(el, () => {})
   }
   function close(after?: () => void) {

@@ -66,7 +66,7 @@ async function readCatalogue(signal: AbortSignal, fresh: boolean, refreshImages:
   const revision = ++nextRequest
   const source = identity
   const previous = snapshot
-  const path = '/scene-showcase/manifest.json?view=cards'
+  const path = '/scene-showcase/manifest.json?view=index'
   // Revalidate on return without transferring or parsing unchanged prompts and metadata.
   if (previous?.etag && !fresh && !refreshImages) {
     const head = await runtimeFetch(path, { method: 'HEAD', signal, cache: 'no-cache' }).catch(() => {
@@ -120,6 +120,28 @@ export async function readShowcaseEntries(signal: AbortSignal, fresh = false, re
     signal.removeEventListener('abort', onAbort)
     if (--read.readers === 0) read.controller.abort()
   }
+}
+
+export async function readShowcaseDetails(ids: readonly string[], signal: AbortSignal): Promise<Map<string, ShowcaseEntry>> {
+  if (!ids.length) return new Map()
+  const query = new URLSearchParams({ view: 'details' })
+  for (const id of ids) query.append('id', id)
+  const response = await runtimeFetch(`/scene-showcase/manifest.json?${query}`, { signal, cache: 'no-cache' })
+  const raw = await readResponse(response, signal)
+  const requested = new Set(ids)
+  const selected = Array.isArray(raw.entries) ? raw.entries.filter(row => requested.has(row?.id)) : []
+  return new Map(parseShowcaseManifest({ entries: selected }).entries.map(entry => [entry.id, entry]))
+}
+
+export async function readShowcaseStories(signal: AbortSignal): Promise<Map<string, string>> {
+  const response = await runtimeFetch('/scene-showcase/manifest.json?view=stories', { signal, cache: 'no-cache' })
+  const raw = await readResponse(response, signal)
+  if (!Array.isArray(raw.entries)) throw new Error('样张故事索引格式无效')
+  const stories = new Map<string, string>()
+  for (const row of raw.entries) {
+    if (typeof row?.id === 'string' && typeof row.story === 'string') stories.set(row.id, row.story)
+  }
+  return stories
 }
 
 /** The manifest owns asset identity and paths, including images saved by older clients. */

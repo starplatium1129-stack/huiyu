@@ -22,18 +22,6 @@ export interface ChatConnectionOptions {
   reasoning: Ref<'off' | 'low' | 'medium' | 'high'>
 }
 
-export function usesLocalChat(connection: { provider: ChatProvider; baseUrl: string; hostConfig: boolean; hostBaseUrl: string }) {
-  if (connection.provider === 'local') return true
-  if (connection.provider !== 'api') return false
-  try {
-    const url = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl)
-    return url.protocol === 'http:'
-      && (url.hostname === 'localhost' || url.hostname === '[::1]' || /^127(?:\.\d{1,3}){3}$/.test(url.hostname))
-  } catch {
-    return false
-  }
-}
-
 export function createChatTurnConnection(options: ChatConnectionOptions) {
   function captureConnection() {
     return { provider: options.chatProvider.value, currentModel: options.currentModel.value,

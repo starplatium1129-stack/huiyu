@@ -33,7 +33,13 @@ pub(super) enum Event {
     Token {
         content: String,
     },
-    JapaneseSpeechMode,
+    JapaneseSpeechMode {
+        #[serde(rename = "speechFirst")]
+        speech_first: bool,
+    },
+    JapaneseSpeechChunk {
+        content: String,
+    },
     JapaneseSpeech {
         content: String,
     },
@@ -81,24 +87,34 @@ struct Events {
     shutdown: CancellationToken,
     _permit: Option<Permit>,
     japanese_voice: Option<JapaneseVoice>,
+    voice_events: VecDeque<Event>,
 }
 impl Events {
     async fn next(&mut self) -> Result<Option<Event>> {
         loop {
+            if let Some(event) = self.voice_events.pop_front() {
+                return Ok(Some(event));
+            }
             if let Some(event) = self.pending.pop_front() {
                 match event {
-                    Event::Token { content } if self.japanese_voice.is_some() => {
-                        if let Some(event) = self.japanese_voice.as_mut().unwrap().push(content) {
-                            return Ok(Some(event));
+                    Event::Token { content } => {
+                        if let Some(voice) = self.japanese_voice.as_mut() {
+                            // Tool deltas may arrive before the decoder publishes validated calls.
+                            let speak = !self.decoder.has_tool_calls()
+                                && !self.responses.has_tool_calls()
+                                && !self
+                                    .pending
+                                    .iter()
+                                    .any(|event| matches!(event, Event::ToolCall(_)));
+                            voice.push(content, &mut self.voice_events, speak);
+                            continue;
                         }
-                        continue;
+                        return Ok(Some(Event::Token { content }));
                     }
                     Event::Done => {
                         if let Some(voice) = self.japanese_voice.take() {
-                            self.pending.push_front(Event::Done);
-                            for event in voice.finish().into_iter().flatten().rev() {
-                                self.pending.push_front(event);
-                            }
+                            voice.finish(&mut self.voice_events);
+                            self.voice_events.push_back(Event::Done);
                             continue;
                         }
                         return Ok(Some(Event::Done));
@@ -257,7 +273,7 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         queue_wait_ms: wait,
     }]);
     if prepared.japanese_voice {
-        pending.push_back(Event::JapaneseSpeechMode);
+        pending.push_back(Event::JapaneseSpeechMode { speech_first: true });
     }
     Events {
         lines: Lines::new(
@@ -279,6 +295,7 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         shutdown,
         _permit: prepared.permit,
         japanese_voice: prepared.japanese_voice.then(JapaneseVoice::default),
+        voice_events: VecDeque::new(),
     }
 }
 

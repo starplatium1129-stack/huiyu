@@ -9,6 +9,7 @@ use futures_util::StreamExt;
 use std::path::Path;
 use tower_http::services::ServeFile;
 mod extra;
+pub(crate) mod preview;
 mod showcase;
 
 use crate::remote_content::PUBLIC_DATA_FILES;
@@ -70,6 +71,8 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         let selected = name.to_owned();
         let condition = request.headers().get("if-none-match").cloned();
         let head = request.method() == Method::HEAD;
+        let accepts_gzip = request.headers().get("accept-encoding").and_then(|value| value.to_str().ok())
+            .is_some_and(|value| crate::remote_content::encoding_quality(value, "gzip") > 0.0);
         match tokio::task::spawn_blocking(move || {
             // Presence checks stay with file/SQLite work, not on the request worker.
             if !config.runtime_root.join("content/catalog.sqlite").is_file()
@@ -89,15 +92,20 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
                 .read(crate::catalog::Options::from_config(&config), &selected)
                 .map(|value| {
                     value.map(|projection| {
-                        let length = projection.bytes.len();
+                        let vary = projection.gzip.is_some();
+                        let gzip = accepts_gzip && vary;
+                        let bytes = if gzip { projection.gzip.unwrap() } else { projection.bytes };
+                        let length = bytes.len();
                         let mut response = (
                             [
                                 ("cache-control", "no-cache"),
                                 ("content-type", "application/json"),
                             ],
-                            projection.bytes,
+                            bytes,
                         )
                             .into_response();
+                        if vary { response.headers_mut().append("vary", HeaderValue::from_static("Accept-Encoding")); }
+                        if gzip { response.headers_mut().insert("content-encoding", HeaderValue::from_static("gzip")); }
                         if head {
                             *response.body_mut() = Body::empty();
                             response
@@ -196,12 +204,24 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     };
     if path == "/scene-showcase/manifest.json" {
         let mut refresh = false;
-        let mut cards = false;
+        let mut view = showcase::View::Full;
+        let mut ids = Vec::new();
         for (key, value) in url::form_urlencoded::parse(request.uri().query().unwrap_or_default().as_bytes()) {
             refresh |= key == "refresh" && value == "1";
-            cards |= key == "view" && value == "cards";
+            if key == "view" {
+                view = match value.as_ref() {
+                    "cards" => showcase::View::Cards, "index" => showcase::View::Index,
+                    "stories" => showcase::View::Stories, "details" => showcase::View::Details(Vec::new()),
+                    _ => showcase::View::Full,
+                };
+            } else if key == "id" && ids.len() < 8 && !value.is_empty() && value.len() <= 320
+                && value.bytes().all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'-' | b'_'))
+            {
+                ids.push(value.into_owned());
+            }
         }
-        let gzip = cards && request.headers().get("accept-encoding")
+        if let showcase::View::Details(selected) = &mut view { *selected = ids; }
+        let gzip = !matches!(view, showcase::View::Full) && request.headers().get("accept-encoding")
             .and_then(|value| value.to_str().ok())
             .is_some_and(|value| crate::remote_content::encoding_quality(value, "gzip") > 0.0);
         return showcase::serve(
@@ -209,10 +229,18 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
             request.method() == Method::HEAD,
             request.headers().get("if-none-match").cloned(),
             refresh,
-            cards,
+            view,
             gzip,
         )
         .await;
+    }
+    if path.starts_with("/scene-showcase/images/")
+        && let Some(width) = url::form_urlencoded::parse(request.uri().query().unwrap_or_default().as_bytes())
+            .find_map(|(key, value)| (key == "preview").then(|| value.parse::<u32>().ok()).flatten())
+            .filter(|width| [560, 1120, 1680, 2240, 2800, 3360].contains(width))
+    {
+        return preview::serve(base, file, width, request.method() == Method::HEAD,
+            request.headers().get("if-none-match").cloned()).await;
     }
     let modified = metadata
         .modified()

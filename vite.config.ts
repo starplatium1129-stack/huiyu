@@ -291,12 +291,12 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
           groups: [
             { name: 'startup', test: /[\\/](?:src[\\/]main\.ts|index\.html)$/,
               priority: 110, includeDependenciesRecursively: false },
-            { name: 'bootstrap', tags: ['$initial'], priority: 100, entriesAware: true, entriesAwareMergeThreshold: 2 * 1024 },
+            { name: 'bootstrap', tags: ['$initial'], priority: 100, entriesAware: true, entriesAwareMergeThreshold: 3 * 1024 },
             { name: 'ui-base', priority: 95, entriesAware: true,
               test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },
             ...['vendor', 'shared', 'motion', 'prompt', 'live2d'].map((name, index) => ({
               name, test: (id: string) => featureChunk(id) === name,
-              priority: 80 - index * 10, entriesAware: true, entriesAwareMergeThreshold: 2 * 1024,
+              priority: 80 - index * 10, entriesAware: true, entriesAwareMergeThreshold: 3 * 1024,
             })),
           ],
         },

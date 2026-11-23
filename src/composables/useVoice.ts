@@ -135,7 +135,8 @@ export function useVoice(options: {
   function notifyActivity() { onActivity(isActive()) }
 
   function wantsJapanese(voice: string) {
-    return enabled() && availability.value.needsTranslation === true && readyFor(voice)
+    const status = availability.value
+    return enabled() && Boolean(voice) && status.needsTranslation !== false && status.voices?.[voice] !== false
   }
 
   function startTurn(meta: { mid: string; voice: string; character: string; emotion?: string; deferPreparation?: boolean }) {
@@ -180,7 +181,9 @@ export function useVoice(options: {
   }
 
   function appendJapanese(text: string) {
-    if (!turn || !enabled() || !readyFor(turn.voice)) return
+    // The chat gateway confirmed Japanese speech for this turn. The voice
+    // endpoint still validates the selected voice, even before status returns.
+    if (!turn || !enabled()) return
     const activeTurn = turn
     sentenceBuffer.push(text, true).forEach(sentence => enqueue(sentence, activeTurn, true))
   }

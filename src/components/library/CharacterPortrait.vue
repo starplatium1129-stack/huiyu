@@ -3,14 +3,15 @@
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
 import { computed, ref, watch } from 'vue'
-const props = defineProps<{ src?: string; fallback?: string; name: string }>()
-const useFallback = ref(false)
-const source = computed(() => useFallback.value ? props.fallback : props.src)
+const props = defineProps<{ preview?: string; src?: string; fallback?: string; name: string }>()
+const sources = computed(() => [...new Set([props.preview, props.src, props.fallback].filter(Boolean))])
+const sourceIndex = ref(0)
+const source = computed(() => sources.value[sourceIndex.value])
 const { image, failed } = useRuntimeImage(source)
 const pending = computed(() => !source.value || source.value.includes('portrait-pending'))
-watch(() => [props.src, props.fallback], () => { useFallback.value = false }, { flush: 'sync' })
+watch(sources, () => { sourceIndex.value = 0 }, { flush: 'sync' })
 watch(failed, broken => {
-  if (broken && props.fallback && props.fallback !== props.src) useFallback.value = true
+  if (broken && sourceIndex.value + 1 < sources.value.length) sourceIndex.value++
 })
 </script>
 <style scoped>

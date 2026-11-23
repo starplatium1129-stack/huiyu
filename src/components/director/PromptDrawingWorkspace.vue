@@ -325,13 +325,13 @@ import { DropdownMenuItem } from 'reka-ui'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
-const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
-const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
+import DirectorResizeHandle from '@/components/director/DirectorResizeHandle.vue'
+import DirectorLayoutControls from '@/components/director/DirectorLayoutControls.vue'
 import DeferredDialogHost from '@/components/director/DeferredDialogHost.vue'
 const loadGeneratedSceneDialog = () => import('@/components/maintenance/GeneratedSceneDialog.vue')
-const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
+import DirectorModeSwitch from '@/components/director/DirectorModeSwitch.vue'
 const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))
-import PromptResultDialogs from '@/components/director/PromptResultDialogs.vue'
+const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
 const loadInspectorRender = () => import('@/components/director/PromptInspectorRender.vue')
 const PromptInspectorStyle = defineAsyncComponent(() => import('@/components/director/PromptInspectorStyle.vue'))
 const loadInspectorPrompt = () => import('@/components/director/PromptInspectorPrompt.vue')

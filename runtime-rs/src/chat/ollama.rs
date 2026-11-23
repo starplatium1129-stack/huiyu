@@ -36,7 +36,7 @@ impl Ollama {
         let active = 1 - self.active.available_permits();
         json!({"name":"ollama-chat","active":active,"pending":(16-self.slots.available_permits()).saturating_sub(active),"maxPending":16})
     }
-    async fn models(&self, client: &Transport, settings: &Settings) -> Result<Vec<Value>> {
+    async fn models(&self, client: &Transport, settings: &Settings, timeout: Duration) -> Result<Vec<Value>> {
         let target = target(settings, "/api/tags")?;
         let response = client
             .send(
@@ -46,8 +46,8 @@ impl Ollama {
                     key: "",
                     session_id: None,
                     public_only: false,
-                    idle: Duration::from_secs(3),
-                    total: Duration::from_secs(3),
+                    idle: timeout,
+                    total: timeout,
                     accept: "application/json",
                 },
             )
@@ -97,7 +97,10 @@ impl Ollama {
             if let Some((_, models)) = observation.as_ref().filter(|(when, _)| when.elapsed() < Duration::from_secs(2)) {
                 models.clone()
             } else {
-                let models = self.models(client, settings).await.map_err(|error| error.message);
+                let models = tokio::time::timeout(Duration::from_millis(900), self.models(client, settings, Duration::from_millis(900)))
+                    .await
+                    .map_err(|_| "Ollama 状态检测超时".to_owned())
+                    .and_then(|result| result.map_err(|error| error.message));
                 *observation = Some((Instant::now(), models.clone()));
                 models
             }
@@ -146,7 +149,7 @@ impl Ollama {
             _active: active,
         };
         let wait_ms = started.elapsed().as_millis() as u64;
-        let models = self.models(client, settings).await?;
+        let models = self.models(client, settings, Duration::from_secs(3)).await?;
         let selected = if !input.model.is_empty() && models.iter().any(|v| v["name"] == input.model)
         {
             input.model

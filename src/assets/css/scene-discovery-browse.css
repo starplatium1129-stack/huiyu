@@ -84,8 +84,10 @@
    Scene actions need a 240px card and a taller target row than image-only captions. */
 .scene-grid { --scene-row-height:calc(380px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; align-items:stretch; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); }
 .scene-grid::after { content:''; flex:1000000 1 0; }
-.scene-grid :deep(.sc) { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(240px,100%); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:none; }
-.scene-grid :deep(.sc-band) { aspect-ratio:var(--scene-preview-ratio,3/4); min-height:0; padding:0; background:var(--art-stage); }
+.scene-grid :deep(.sc) { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(240px,100%); max-width:100%; contain:layout; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:none; }
+/* The row sets the width and the artwork ratio sets the height. Preview
+   children do not need to participate in the card's intrinsic sizing. */
+.scene-grid :deep(.sc-band) { aspect-ratio:var(--scene-preview-ratio,3/4); min-height:0; contain:size layout; padding:0; background:var(--art-stage); }
 .scene-grid :deep(.sc-thumb) { position:absolute; inset:0; height:100%; border:0; border-radius:0; box-shadow:inset 0 0 0 1px var(--border-soft); }
 .scene-grid :deep(.sc-band::after) { display:none; }
 .scene-grid :deep(.sc-cat) { display:none; }

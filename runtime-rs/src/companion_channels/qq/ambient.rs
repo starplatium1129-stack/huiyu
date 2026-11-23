@@ -9,6 +9,7 @@ const BATCH_DELAY: Duration = Duration::from_millis(2600);
 const CHECK_INTERVAL: Duration = Duration::from_secs(18);
 const REPLY_INTERVAL: Duration = Duration::from_secs(75);
 const ADDRESS_PAUSE: Duration = Duration::from_secs(25);
+const FOLLOW_UP_AGE: Duration = Duration::from_secs(60);
 
 #[derive(Default)]
 pub(super) struct GroupChat {
@@ -31,6 +32,12 @@ struct Line {
     text: String,
     at: Instant,
     addressed: bool,
+    reply: Option<DeliveredReply>,
+}
+
+struct DeliveredReply {
+    text: String,
+    at: Instant,
 }
 
 struct Candidate {
@@ -39,6 +46,7 @@ struct Candidate {
     latest_member: String,
     owner: Option<String>,
     started: Instant,
+    follow_up: bool,
     content: String,
 }
 
@@ -62,6 +70,7 @@ impl GroupChat {
         }
         if message.text.starts_with(['/', '／'])
             || message.text.contains("<@")
+            || message.text.contains("<qqbot-at-user")
             || message
                 .text
                 .chars()
@@ -82,9 +91,27 @@ impl GroupChat {
             text: message.text.chars().take(320).collect(),
             at: message.arrived_at,
             addressed,
+            reply: None,
         });
         if group.lines.len() > CONTEXT_LIMIT {
             group.lines.pop_front();
+        }
+    }
+
+    pub(super) fn remember_reply(&self, group: &str, message: &str, text: &str) {
+        let text = text.trim();
+        if text.is_empty() {
+            return;
+        }
+        let mut groups = self.groups.lock().unwrap();
+        if let Some(line) = groups
+            .get_mut(group)
+            .and_then(|group| group.lines.iter_mut().find(|line| line.id == message))
+        {
+            line.reply = Some(DeliveredReply {
+                text: text.chars().take(480).collect(),
+                at: Instant::now(),
+            });
         }
     }
 
@@ -104,6 +131,7 @@ impl GroupChat {
             .owner_member_id
             .clone();
         let latest = group.lines.back()?;
+        let follow_up = group.is_follow_up(now);
         let lines = group
             .lines
             .iter()
@@ -114,7 +142,13 @@ impl GroupChat {
                 } else {
                     line.nickname.as_deref().unwrap_or("群友")
                 };
-                json!({"speaker":speaker, "message":line.text, "addressedToYou":line.addressed})
+                json!({
+                    "speaker":speaker,
+                    "message":line.text,
+                    "addressedToYou":line.addressed,
+                    "sameSpeakerAsLatest":line.member == latest.member,
+                    "yourReply":line.reply.as_ref().map(|reply| &reply.text),
+                })
             })
             .collect::<Vec<_>>();
         let candidate = Candidate {
@@ -123,7 +157,8 @@ impl GroupChat {
             latest_member: latest.member.clone(),
             owner,
             started: now,
-            content: json!({"recent":lines}).to_string(),
+            follow_up,
+            content: json!({"followsRecentReply":follow_up,"recent":lines}).to_string(),
         };
         group.last_check = Some(now);
         group.pending_since = None;
@@ -192,20 +227,41 @@ impl GroupChat {
                 ),
             )
             .await;
+            if cancel.is_cancelled() || !is_current(app, storage) {
+                return;
+            }
+            let tag = message_tag(&candidate.id);
+            let follow_up = candidate.follow_up;
             let reply = match result {
-                Ok(Ok(reply)) if reply.tools.is_empty() => parse_reply(&reply.text),
-                Ok(Err(error)) if !cancel.is_cancelled() => {
-                    eprintln!("QQ 群聊接话判断未完成：{}", error.code);
-                    None
+                Ok(Ok(reply)) if reply.tools.is_empty() => match parse_reply(&reply.text) {
+                    Ok(Some(reply)) => reply,
+                    Ok(None) => {
+                        eprintln!("QQ 群聊选择不接话：msg={tag} follow_up={follow_up}");
+                        continue;
+                    }
+                    Err(()) => {
+                        eprintln!("QQ 群聊接话判断结果无效：msg={tag} follow_up={follow_up}");
+                        continue;
+                    }
+                },
+                Ok(Ok(_)) => {
+                    eprintln!("QQ 群聊接话判断返回操作：msg={tag} follow_up={follow_up}");
+                    continue;
                 }
-                _ => None,
+                Ok(Err(error)) => {
+                    eprintln!(
+                        "QQ 群聊接话判断未完成：{} msg={tag} follow_up={follow_up}",
+                        error.code
+                    );
+                    continue;
+                }
+                Err(_) => {
+                    eprintln!("QQ 群聊接话判断超时：msg={tag} follow_up={follow_up}");
+                    continue;
+                }
             };
-            let Some(reply) = reply else { continue };
-            if cancel.is_cancelled()
-                || !is_current(app, storage)
-                || !bindings.read().unwrap().allows(target)
-                || !self.still_relevant(&candidate)
-            {
+            if !bindings.read().unwrap().allows(target) || !self.still_relevant(&candidate) {
+                eprintln!("QQ 群聊接话时机已过：msg={tag} follow_up={follow_up}");
                 continue;
             }
             // Reserve the cooldown even if QQ leaves the delivery result uncertain.
@@ -213,14 +269,35 @@ impl GroupChat {
                 group.last_reply = Some(Instant::now());
             }
             match api.text(target, &candidate.id, &reply).await {
-                Ok(()) => eprintln!("QQ 群聊自然接话已送达"),
-                Err(error) => eprintln!("QQ 群聊自然接话发送失败：{}", error.code),
+                Ok(()) => eprintln!("QQ 群聊自然接话已送达：msg={tag} follow_up={follow_up}"),
+                Err(error) => eprintln!(
+                    "QQ 群聊自然接话发送失败：{} msg={tag} follow_up={follow_up}",
+                    error.code
+                ),
             }
         }
     }
 }
 
 impl Group {
+    fn is_follow_up(&self, now: Instant) -> bool {
+        let Some(latest) = self.lines.back() else {
+            return false;
+        };
+        self.lines
+            .iter()
+            .rev()
+            .skip(1)
+            .find_map(|line| line.reply.as_ref().map(|reply| (line, reply)))
+            .is_some_and(|(line, reply)| {
+                !latest.addressed
+                    && line.member == latest.member
+                    && self.last_addressed.is_none_or(|at| at <= line.at)
+                    && latest.at > reply.at
+                    && now.duration_since(reply.at) <= FOLLOW_UP_AGE
+            })
+    }
+
     fn ready(&self, now: Instant) -> bool {
         self.pending_since
             .is_some_and(|since| now.duration_since(since) >= BATCH_DELAY)
@@ -231,26 +308,34 @@ impl Group {
             && self
                 .last_check
                 .is_none_or(|last| now.duration_since(last) >= CHECK_INTERVAL)
-            && self
-                .last_reply
-                .is_none_or(|last| now.duration_since(last) >= REPLY_INTERVAL)
-            && self
-                .last_addressed
-                .is_none_or(|last| now.duration_since(last) >= ADDRESS_PAUSE)
+            && (self.is_follow_up(now)
+                || (self
+                    .last_reply
+                    .is_none_or(|last| now.duration_since(last) >= REPLY_INTERVAL)
+                    && self
+                        .last_addressed
+                        .is_none_or(|last| now.duration_since(last) >= ADDRESS_PAUSE)))
     }
 }
 
-fn parse_reply(output: &str) -> Option<String> {
+fn parse_reply(output: &str) -> std::result::Result<Option<String>, ()> {
     let output = output.trim();
     let json = output
         .strip_prefix("```json")
         .and_then(|value| value.strip_suffix("```"))
         .unwrap_or(output);
-    let value: Value = serde_json::from_str(json).ok()?;
-    let reply = value["reply"].as_str()?.trim();
-    (!reply.is_empty()
+    let value: Value = serde_json::from_str(json).map_err(|_| ())?;
+    if value.get("reply").is_some_and(Value::is_null) {
+        return Ok(None);
+    }
+    let reply = value["reply"].as_str().ok_or(())?.trim();
+    if !reply.is_empty()
         && reply.chars().count() <= 140
         && !reply.starts_with(['/', '／'])
-        && !reply.contains("<@"))
-    .then(|| reply.to_owned())
+        && !reply.contains("<@")
+    {
+        Ok(Some(reply.to_owned()))
+    } else {
+        Err(())
+    }
 }

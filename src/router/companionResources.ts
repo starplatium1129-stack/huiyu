@@ -15,8 +15,7 @@ export function savedCompanionCharacter() {
   return ''
 }
 
-export async function loadActiveCompanion() {
-  const id = savedCompanionCharacter()
+export async function loadActiveCompanion(id = savedCompanionCharacter()) {
   if (!id || getCompanionCharacterConfig(id)) return
   if (id.startsWith('card-')) {
     const { loadChatCard } = await import('@/utils/chatCards')

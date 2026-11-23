@@ -4,7 +4,7 @@ mod turn;
 mod voice;
 
 pub(super) use drawing::batch_message;
-use voice::synthesize_voice;
+use voice::{synthesize_voice, voice_fallback};
 
 use super::*;
 use crate::{chat::ChannelTurnOptions, voice::ChannelSpeech};
@@ -267,11 +267,7 @@ impl Conversation {
                             )
                             .await
                             {
-                                Ok(Ok(audio)) => Reply::Voice {
-                                    caption: self.voice_caption(ctx, &answer).await,
-                                    spoken: answer,
-                                    audio,
-                                },
+                                Ok(Ok(audio)) => self.voice_reply(ctx, answer, audio).await,
                                 Ok(Err(error)) => {
                                     eprintln!("QQ 自动语音跳过：{}", error.code);
                                     Reply::Text(answer)
@@ -286,8 +282,7 @@ impl Conversation {
                         }
                     }
                     RespondOutcome::Voice { spoken, audio } => {
-                        let caption = self.voice_caption(ctx, &spoken).await;
-                        Reply::Voice { caption, spoken, audio }
+                        self.voice_reply(ctx, spoken, audio).await
                     }
                     RespondOutcome::Silent => return Ok(None),
                 }

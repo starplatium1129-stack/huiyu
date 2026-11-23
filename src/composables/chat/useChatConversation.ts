@@ -1,7 +1,7 @@
 import type { useChatStorage } from './useChatStorage'
 import type { useVoice } from '../useVoice'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
-import { createChatTurnConnection, usesLocalChat, type ChatConnectionOptions } from './chatTurnConnection'
+import { createChatTurnConnection, type ChatConnectionOptions } from './chatTurnConnection'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import type { CompanionToolResult as ToolCallResult } from './executeCompanionTool'
 import { reactive, ref, type Ref, type ComputedRef } from 'vue'
@@ -185,15 +185,16 @@ export function useChatConversation(options: ChatConversationOptions) {
     activeRequest = controller
     const watchdog = startTurnWatchdog(controller)
     const japaneseVoice = sendOptions.action !== 'generate-from-image' && isLocalStudioHost()
-      && usesLocalChat(connection) && options.voice.wantsJapanese(turn.character.voice)
+      && connection.provider !== 'muse' && options.voice.wantsJapanese(turn.character.voice)
     let separateSpeech = false
     let resetEmotion = () => {}
-    options.voice.startTurn({
+    const voiceTurn = {
       mid: turn.assistant.mid,
       voice: turn.character.voice,
       character: turn.characterId,
       deferPreparation: japaneseVoice,
-    })
+    }
+    options.voice.startTurn(voiceTurn)
     const ownsRequest = () => activeRequest === controller
     const ownsHistory = () => options.storage.branchId(turn.characterId) === turn.branch
       && options.storage.messages(turn.characterId).includes(turn.assistant) && turn.assistant.mid === turnMid
@@ -289,7 +290,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       let toolRounds = 0
       // 视觉轮沿用本次选定的 API；模型是否支持图片由服务商确认。
       let visionRound = Boolean(imageUrls.length)
-      let japaneseSpeech = ''
+      let spokenThrough = 0
       if (imageUrls.length) {
         roundMessages.push({
           role: 'user',
@@ -332,9 +333,13 @@ export function useChatConversation(options: ChatConversationOptions) {
         })
 
         const toolCalls: PendingToolCall[] = []
+        const roundTextStart = turn.assistant.content.length
         let drawing: Record<string, unknown> | undefined
-        let spoken = ''
-        await parseNdjsonResponse(response, async event => {
+        let speechFirst = false
+        let textHasSpeech = false
+        let streamedSpeech = false
+        let legacySpeech = ''
+        await parseNdjsonResponse(response, event => {
           checkCurrent()
           watchdog.touch()
           if (event.type === 'meta' && event.model) {
@@ -342,6 +347,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type === 'tool-call') {
             if (event.id && event.name) {
+              if (!toolCalls.length && streamedSpeech) options.voice.stop({ preserveMessageAudio: true })
               toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}'), thoughtSignature: event.thoughtSignature })
             }
             return
@@ -357,15 +363,34 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type === 'japanese-speech-mode' && japaneseVoice) {
             separateSpeech = true
+            speechFirst = event.speechFirst === true
+            return
+          }
+          if (event.type === 'japanese-speech-chunk' && separateSpeech) {
+            if (toolCalls.length) return
+            const script = event.content?.trim()
+            if (speechFirst) textHasSpeech = Boolean(script)
+            if (!script || (!speechFirst && !turn.assistant.content.slice(roundTextStart).trim())) return
+            if (speechFirst) {
+              const unvoiced = turn.assistant.content.slice(spokenThrough)
+              if (unvoiced.trim()) {
+                options.voice.append(unvoiced)
+                options.voice.finishTurn()
+              }
+            }
+            options.voice.appendJapanese(script)
+            streamedSpeech = true
+            spokenThrough = turn.assistant.content.length
             return
           }
           if (event.type === 'japanese-speech' && separateSpeech) {
-            spoken = event.content || ''
+            legacySpeech = event.content || ''
             return
           }
           if (event.type !== 'token') return
           if (canPresent()) options.onThinking?.(null)
           tracker.applyTokenDelta(turn.assistant, event.content || '')
+          if (textHasSpeech) spokenThrough = turn.assistant.content.length
           if (options.nearBottom()) options.scrollBottom()
         })
 
@@ -384,7 +409,10 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
         }
         if (!toolCalls.length) {
-          japaneseSpeech = spoken
+          if (!streamedSpeech && legacySpeech && turn.assistant.content.slice(roundTextStart).trim()) {
+            options.voice.appendJapanese(legacySpeech)
+            spokenThrough = turn.assistant.content.length
+          }
           break
         }
         if (toolCalls.some(call => call.name === 'search_web' ? !searchEnabled : !toolsEnabled)) throw new Error('请求的工具当前未启用，已停止执行。')
@@ -443,16 +471,17 @@ export function useChatConversation(options: ChatConversationOptions) {
         }
         if (canPresent()) options.onToolActivity?.(null)
         if (options.nearBottom()) options.scrollBottom()
+        if (streamedSpeech) {
+          spokenThrough = turn.assistant.content.length
+          options.voice.startTurn(voiceTurn)
+        }
       }
 
       // 收尾：空回复兜底、屏幕阅读器播报、配音收轨。
       checkCurrent()
+      if (separateSpeech) options.voice.append(turn.assistant.content.slice(spokenThrough))
       turn.assistant.content = turn.assistant.content.trim()
       if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
-      if (separateSpeech && turn.assistant.content) {
-        if (japaneseSpeech) options.voice.appendJapanese(japaneseSpeech)
-        else options.voice.append(turn.assistant.content)
-      }
       if (!turn.assistant.drawingBatchId) turn.assistant.content ||= '……'
       if (canPresent() && turn.assistant.content) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
       options.voice.finishTurn()

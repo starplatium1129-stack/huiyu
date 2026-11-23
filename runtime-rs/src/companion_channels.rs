@@ -31,6 +31,12 @@ use tokio_util::sync::CancellationToken;
 
 use state_files::{read, read_bot, read_bot_by_app_id, read_bots, state_path, write, write_bots};
 
+fn message_tag(id: &str) -> String {
+    let mut digest = crate::storage::json_fingerprint(&json!(id));
+    digest.truncate(12);
+    digest
+}
+
 #[derive(Default)]
 pub(crate) struct Channels {
     updates: Notify,

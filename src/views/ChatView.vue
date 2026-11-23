@@ -209,6 +209,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
+import { chatMessageBubbles } from '@/utils/chatMessageBubbles'
 import { copyText } from '@/utils/clipboard'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
@@ -373,7 +374,10 @@ const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
 const arrivingMessages = useChatMessageArrival(() => currentMessages.value, () => `${activeChar.value}:${branchId.value}`, () => busy.value)
-const currentLine = computed(() => lastAssistantMessage.value?.content || currentCharacter.value.greeting)
+const currentLine = computed(() => {
+  const reply = lastAssistantMessage.value
+  return (reply && chatMessageBubbles(reply).at(-1)) || currentCharacter.value.greeting
+})
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
 async function copyMessage(content: string) {

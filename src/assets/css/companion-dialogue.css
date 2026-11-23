@@ -66,7 +66,11 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-avatar[data-chibi='true']:has(img) { border:0; border-radius:0; background:transparent; }
 .companion-dialogue-avatar[data-chibi='true'] img { object-fit:contain; }
 .companion-dialogue-bubble { position:relative; box-sizing:border-box; min-width:0; max-width:calc(100% - 40px); padding:var(--s-2) var(--s-3); border:1px solid transparent; border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--dialogue-surface); }
-.companion-dialogue-bubble:has(.chat-drawing-batch,.companion-chat-images) { flex:1; }
+.companion-dialogue-bubbles { display:flex; flex-direction:column; align-items:flex-start; gap:var(--s-1); min-width:0; max-width:calc(100% - 40px); }
+.companion-dialogue-bubbles .companion-dialogue-bubble { max-width:100%; }
+.companion-dialogue-bubbles:has(.chat-drawing-batch,.companion-chat-images) { flex:1; }
+.companion-dialogue-bubble:has(.chat-drawing-batch,.companion-chat-images) { align-self:stretch; }
+.companion-dialogue-message[data-role='user'] .companion-dialogue-bubbles { align-items:flex-end; max-width:100%; }
 .companion-dialogue-message[data-role='user'] .companion-dialogue-bubble { max-width:100%; border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:var(--dialogue-control-surface); }
 .companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:var(--fs-label-xs); font-weight:600; }
 .companion-dialogue-speaker button { transition:opacity var(--motion-hover); }
@@ -78,9 +82,8 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   .companion-dialogue-speaker button { transition:none; }
 }
 .companion-dialogue-bubble > small { display:block; margin-top:5px; color:var(--text-secondary); font-size:var(--fs-label-xs); }
-.companion-dialogue-copy { display:grid; gap:var(--s-2); min-width:0; }
 .companion-dialogue-line { margin:0; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); white-space:pre-wrap; overflow-wrap:anywhere; }
-.companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:var(--r-pill); vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
+.companion-dialogue-line.is-streaming::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:var(--r-pill); vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
 .companion-dialogue-waiting { min-height:var(--control-height-sm); font-size:var(--fs-label); }
 @keyframes companion-dialogue-pulse { 0%,100% { opacity:.35; } 50% { opacity:1; } }
 .companion-dialogue-presence { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:8px; padding:7px 10px; border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-secondary); font-size:var(--fs-label-xs); }
@@ -147,9 +150,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .companion-dialogue-send .archive-icon { transition:none; }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after { animation:none; }
+  :root:not([data-motion='full']) .companion-dialogue-line.is-streaming::after { animation:none; }
   :root:not([data-motion='full']) .companion-dialogue-speaker button, :root:not([data-motion='full']) .companion-dialogue-send .archive-icon { transition:none; }
 }
 
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .companion-dialogue-line.is-streaming::after { animation:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .companion-dialogue-speaker button { transition:none; }

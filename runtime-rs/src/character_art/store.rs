@@ -196,6 +196,8 @@ pub(super) fn asset(
     revision: &str,
     file: &str,
 ) -> Result<(Vec<u8>, &'static str)> {
+    let shelf = file == "shelf.webp";
+    let file = if shelf { "thumbnail.png" } else { file };
     if !id_ok(id)
         || !revision_ok(revision)
         || !["portrait.png", "thumbnail.png", "particles.json"].contains(&file)
@@ -212,6 +214,16 @@ pub(super) fn asset(
         disk(fs::read_limited(&path, false, Some(140 * 1024 * 1024)))?.ok_or_else(corrupt)?;
     if entry["hashes"][file] != derive::hash(&bytes) {
         return Err(corrupt());
+    }
+    if shelf {
+        let hash = entry["hashes"][file].as_str().ok_or_else(corrupt)?;
+        let key = format!("character-shelf/{hash}");
+        let image = crate::static_files::preview::cached(key, || {
+            crate::static_files::preview::resize(&bytes, 288, true)
+        });
+        if let Some(image) = image {
+            return Ok((image.bytes.to_vec(), image.mime));
+        }
     }
     Ok((
         bytes,

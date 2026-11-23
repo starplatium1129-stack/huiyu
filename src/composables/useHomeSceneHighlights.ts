@@ -7,7 +7,7 @@ import { SCENE_DATA_TIMEOUT_MS, useSceneStore, type CurationData, type Scene, ty
 import { readRecent } from '@/utils/sceneUX'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
-import { readShowcaseEntries } from './scene/useShowcaseAssets'
+import { readShowcaseDetails, readShowcaseEntries } from './scene/useShowcaseAssets'
 
 type HomeScene = Scene & { title?: string; mature?: boolean }
 export interface HomeJournalEntry {
@@ -101,12 +101,12 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
       if (current()) snapshot.samples = samples
       return samples
     }).catch(() => undefined)
-    function publish(selection: ReturnType<typeof selectScenes>, records: ReadonlyMap<string, HomeScene>) {
+    function publish(selection: ReturnType<typeof selectScenes>, records: ReadonlyMap<string, HomeScene>, details: ReadonlyMap<string, ShowcaseEntry>) {
       if (!current()) return
       const rows = (ids: string[]) => ids.map(id => structuredClone(toRaw(records.get(id)!)))
       featuredScenes.value = selection.featured.map(id => {
         const sample = snapshot.samples?.get(id), popular = sample?.type === 'popular'
-        const source = popular ? sample : records.get(id)!
+        const source = popular ? details.get(id) ?? sample : records.get(id)!
         const text = (key: 'title' | 'story' | 'category') => typeof source[key] === 'string' ? source[key] : sample?.[key] || ''
         return {
           id, title: text('title'), story: text('story'), category: text('category'),
@@ -126,6 +126,8 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
         const selection = selectScenes(curation, available, recent, snapshot)
         // Popular samples use their published captions; only scene cards need catalog records.
         const ids = [...new Set([...selection.featured.filter(id => snapshot.samples?.get(id)?.type !== 'popular'), ...selection.recent])]
+        const popular = selection.featured.filter(id => snapshot.samples?.get(id)?.type === 'popular')
+        const detailsRequest = readShowcaseDetails(popular, signal).catch(() => new Map<string, ShowcaseEntry>())
         await Promise.all(ids.map(async id => {
           if (records.has(id)) return
           const scene = known.get(id) ?? (await catalogApi.record('scene', id, undefined, signal)).record.data
@@ -143,7 +145,7 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
           continue
         }
         for (const id of records.keys()) if (!ids.includes(id)) records.delete(id)
-        publish(selection, records)
+        publish(selection, records, await detailsRequest)
         return
       }
     }

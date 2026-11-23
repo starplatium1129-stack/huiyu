@@ -1,4 +1,14 @@
 @reference "./tailwind.css";
+
+/* The two async browse grids can turn a viewport-height shell into a scroll
+   page. Reserve the gutter and keep the footer below the first viewport. */
+:root:has(.page-root) { scrollbar-gutter: stable; }
+@supports not (scrollbar-gutter: stable) {
+  :root:has(.page-root) { overflow-y: scroll; }
+}
+.page-main:has(> :is(.character-editorial, .scene-discovery)) {
+  min-block-size: calc(100svh - var(--desktop-chrome-height, 0px) - var(--app-navigation-visible-height, 80px));
+}
 /* Keyed filtering owns card continuity; browser scroll anchoring must not add
    a second displacement when headings or retained rows change. */
 :is(.scene-grid, .showcase-grid, .pop-grid, .lora-grid, .gallery-albums-track, .gallery-wall) { overflow-anchor: none; }

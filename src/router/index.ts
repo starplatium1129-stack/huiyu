@@ -133,7 +133,7 @@ const ROOM_RESOURCE_PATHS = new Set(['/chat', '/companion', '/companion-chat'])
 router.beforeEach((to, from) => {
   if (!ROOM_RESOURCE_PATHS.has(to.path)) return
   if (from.matched.length && import.meta.env.MODE !== 'desktop' && needsDocumentReload(from.path, to.path)) return
-  void loadRoom(to.path.slice(1) as RoomPage).catch(() => {})
+  void loadRoom(to.path.slice(1) as RoomPage, typeof to.query.character === 'string' ? to.query.character : '').catch(() => {})
 })
 // Capture while the old page is still laid out. Reading scrollY inside
 // scrollBehavior after the new DOM patch can itself force a full layout.

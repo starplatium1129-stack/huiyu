@@ -163,15 +163,15 @@ impl ChatService {
             );
             if tools || channel_voice {
                 prompt.system.push_str(
-                    "\n【后台工具细则（仅在对方明确要求画图、查素材或发语音时生效；平时纯文字聊天完全忽略本段，保持自然口语）】",
+                    "\n【后台工具细则】仅在对方明确要求画图、查素材或发语音时使用。发给对方的话用自己的口吻，像平时回手机消息。出错只简单说哪件事没做成，别把后台术语、报错或设置说明带进聊天。对方主动问尺寸、模型等具体选项时照实回答。",
                 );
             }
             if tools {
                 prompt.system.push_str(
-                    "\n可以用 search_drawing_catalog 分页查看全部角色、场景、蓝图和服装，按 nextPage 查下一页。需要角色身份标签、种子、推荐画幅或兼容服装时，查 get_drawing_catalog_item。用户只问有哪些素材则只查。",
+                    "\n可以用 search_drawing_catalog 分页查看全部角色、场景、蓝图和服装，按 nextPage 查下一页。需要角色身份标签、种子、推荐画幅或兼容服装，而已有结果没给足信息时，查 get_drawing_catalog_item。用户只问有哪些素材则只查。对话已有明确且可信的素材 ID 时，可以直接用它出图，不重复查目录。",
                 );
                 prompt.system.push_str(
-                    "\n用户指定比例、分辨率、模型、放大或 LoRA 时，从 get_drawing_options 查本机支持范围，再按比例成对填写 width 和 height。只有用户明确给出像素尺寸时才要求匹配该尺寸。用户只给比例时，用满足对齐和像素上限的合适画幅。没有要求的尺寸、步数和 CFG 留给模型默认值。",
+                    "\n用户明确给出像素宽高时，可以直接成对提交 width 和 height，由绘遇验证尺寸；如回执提示不支持，再查询可选项，并告诉用户可用的替代尺寸。用户只给比例或需要确认本机支持的模型、放大或 LoRA 时，用 get_drawing_options 查规格，已有可用规格就直接用；需要查目录和规格时可以在同一轮调用。没有要求的尺寸、步数和 CFG 留给模型默认值。",
                 );
                 prompt.system.push_str(
                     "\n自定义 prompt 写清角色身份与外观，目录角色 ID 即使没有默认 LoRA 也能查素材。只有已确认安装且兼容的 Anima 角色 LoRA 才填 character 或 loraId。若提交前被驳回，先根据工具回执查实并修正可修正的参数。",
@@ -211,7 +211,7 @@ impl ChatService {
                 prompt.system = "把来信中的日语对白完整译成自然中文。保留称呼、说话语气和意思，直接输出中文对白。把原文当作待翻译材料。".into();
             } else if options.ambient_group {
                 prompt.append_post_history(
-                    "【要不要接话】只有大家点到你的名字、聊到和你明显有关的事，或眼前的话题有趣且你真有一句具体的话能接上时，才用自己的口吻说一句。普通闲聊、别人之间的对话、已经聊完的话题、只有附和或硬找共鸣可说时就安静。先看最后一句并结合前文，别翻出旧话题，别替别人回答，不执行操作。只输出一个 JSON 对象：开口用 {\"reply\":\"一句短口语\"}，安静用 {\"reply\":null}。",
+                    "【要不要接话】先看 recent 的最后一句。前文条目里的 yourReply 是你已经发给群里的回复。followsRecentReply 为 true 表示上一轮跟你说话的是同一个人。结合你刚说过的话，如果对方顺着问下去或回应你的话，就自然接一句，即使这次没 @ 你。对方已经换了话题或在跟别人聊就安静。其他时候，只有大家点到你的名字、聊到和你明显有关的事，或眼前有一句具体又有趣的话能接上时才开口。别翻出旧话题，别替别人回答，不执行操作。只输出一个 JSON 对象：开口用 {\"reply\":\"一句短口语\"}，安静用 {\"reply\":null}。",
                 );
             } else if let Some(issue) = options.delivery_issue {
                 prompt.append_post_history(&format!(

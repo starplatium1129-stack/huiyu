@@ -20,7 +20,7 @@
         <button type="button" class="bookshelf-open tw:w-full tw:flex tw:flex-col tw:items-center tw:p-0 tw:rounded-lg tw:cursor-pointer" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
           <span class="bookshelf-cover-stage tw:relative tw:block tw:w-full tw:mb-s-4 tw:isolate" :class="{ 'is-empty': !group.covers.length }" aria-hidden="true">
             <span v-for="(cover, index) in group.covers" :key="cover.id" class="bookshelf-cover tw:absolute tw:left-[21%] tw:top-[5%] tw:w-[58%] tw:h-[86%] tw:rounded-lg tw:overflow-hidden" :data-slot="coverSlot(group.key, index, group.covers.length)">
-              <CharacterPortrait :src="cover.image" :name="cover.name" />
+              <CharacterPortrait v-if="index === coverOffset(group.key, group.covers.length)" :preview="shelfPortrait(cover.image)" :src="cover.image" :name="cover.name" />
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder tw:absolute tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:rounded-lg tw:text-muted tw:text-label-xs"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
           </span>
@@ -44,7 +44,7 @@
       </div>
       <div ref="characterGrid" class="bookshelf-characters tw:grid" role="group" aria-label="角色列表">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="bookshelf-character tw:relative tw:flex tw:flex-col tw:items-stretch tw:min-w-0 tw:p-s-2 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" :data-character="item.id" :data-list-key="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
-          <CharacterPortrait :src="item.image || item.fullImage" :fallback="item.fullImage" :name="item.name" />
+          <CharacterPortrait :preview="shelfPortrait(item.image)" :src="item.image" :fallback="item.fullImage" :name="item.name" />
           <span class="bookshelf-character-copy tw:grid tw:gap-s-1"><strong>{{ item.name }}</strong><small>{{ franchiseLabel(franchiseKey(item.source)) || '未标注作品' }}</small></span>
           <span v-if="selectedId === item.id" class="bookshelf-selected tw:absolute tw:right-s-3 tw:top-s-3 tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-pill tw:text-primary"><ArchiveIcon name="success" /><span class="sr-only">当前角色</span></span>
           <CardEdgeLight />
@@ -89,6 +89,11 @@ let revision = 0
 function interruptNavigation() { cancelRestore(); return ++revision }
 onScopeDispose(interruptNavigation)
 const coverOffsets = ref<Record<string, number>>({})
+function shelfPortrait(source?: string) {
+  if (source?.startsWith('/api/character-art/') && source.endsWith('/thumbnail.png')) {
+    return source.slice(0, -'thumbnail.png'.length) + 'shelf.webp'
+  }
+}
 function coverOffset(key: string, length: number) {
   return length > 0 ? (coverOffsets.value[key] || 0) % length : 0
 }
@@ -192,7 +197,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-primary; }
 .bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
 .bookshelf-cover-stage { aspect-ratio: 1.15; }
-.bookshelf-cover { border:3px solid var(--bg-surface); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-art-hover) var(--spring-soft); }
+.bookshelf-cover { border:3px solid var(--bg-surface); background:var(--bg-elevated); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-art-hover) var(--spring-soft); }
 .bookshelf-cover :deep(.character-portrait) { @apply tw:w-full tw:h-full; border: 0; border-radius: 0; }
 .bookshelf-cover :deep(img) { transform: none; }
 .bookshelf-cover[data-slot="0"] { --cover-rest:translateY(-3%) scale(1); z-index:calc(var(--z-base) + 4); }

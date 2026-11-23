@@ -25,17 +25,35 @@ impl Conversation {
         };
         Ok(
             match synthesize_voice(ctx, &spoken, ChannelSpeech::default()).await {
-                Ok(audio) => Reply::Voice {
-                    caption: self.voice_caption(ctx, &spoken).await,
-                    spoken,
-                    audio,
-                },
-                Err(error) => Reply::Text(self.voice_fallback(ctx, &spoken, &error).await),
+                Ok(audio) => self.voice_reply(ctx, spoken, audio).await,
+                Err(error) => Reply::Text(voice_fallback(&spoken, &error)),
             },
         )
     }
 
-    pub(super) async fn voice_caption(&self, ctx: &Context<'_>, spoken: &str) -> Option<String> {
+    pub(super) async fn voice_reply(
+        &self,
+        ctx: &Context<'_>,
+        spoken: String,
+        audio: Bytes,
+    ) -> Reply {
+        let caption = if self.qq {
+            None
+        } else {
+            self.voice_caption(ctx, &spoken).await
+        };
+        Reply::Voice {
+            caption,
+            spoken,
+            audio,
+        }
+    }
+
+    pub(in crate::companion_channels) async fn voice_caption(
+        &self,
+        ctx: &Context<'_>,
+        spoken: &str,
+    ) -> Option<String> {
         let line: String = spoken.trim().chars().take(500).collect();
         if !line.chars().any(crate::voice::is_kana) {
             return Some(line);
@@ -63,17 +81,11 @@ impl Conversation {
         let caption = reply.text.trim();
         (!caption.is_empty()).then(|| caption.chars().take(500).collect())
     }
+}
 
-    pub(super) async fn voice_fallback(
-        &self,
-        ctx: &Context<'_>,
-        spoken: &str,
-        error: &ApiError,
-    ) -> String {
-        eprintln!("QQ 语音合成失败：{}", error.code);
-        let note = self.delivery_reply(ctx, DeliveryIssue::Voice).await;
-        format!("{note}\n{spoken}")
-    }
+pub(super) fn voice_fallback(spoken: &str, error: &ApiError) -> String {
+    eprintln!("QQ 语音合成失败：{}", error.code);
+    format!("{}\n{spoken}", DeliveryIssue::Voice.fallback())
 }
 
 pub(super) async fn synthesize_voice(

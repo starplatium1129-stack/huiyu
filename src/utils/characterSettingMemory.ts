@@ -1,5 +1,7 @@
 import { runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 import { loadChatCharacterProfiles } from './chatCharacterProfiles'
+import { catalogApi } from '@/api/catalogApi'
+import { isLocalStudioHost } from './runtimeEnvironment'
 
 /**
  * 角色设定记忆（2026-08-28 路线图第 6 条 · 最小闭环）。
@@ -85,49 +87,39 @@ function parseRecord(value: unknown): CharacterSettingRecord | null {
   }
 }
 
-function parseCharacterSettingCards(value: unknown): CharacterSettingRecord[] {
-  if (!Array.isArray(value)) return []
-  const seen = new Set<string>()
-  const cards: CharacterSettingRecord[] = []
-  for (const raw of value) {
-    const card = parseRecord(raw)
-    if (!card || seen.has(card.id)) continue
-    seen.add(card.id)
-    cards.push(card)
-  }
-  return cards
-}
-
-let cardsCache: CharacterSettingRecord[] | null = null
-let cardsPromise: Promise<CharacterSettingRecord[]> | null = null
-let cardsRevision = 0
+const cards = new Map<string, CharacterSettingRecord | null>()
+const pending = new Map<string, Promise<CharacterSettingRecord | null>>()
 let cardsOwner: string | undefined
 
-export async function loadCharacterSettingCards(force = false): Promise<CharacterSettingRecord[]> {
+export function loadCharacterSettingCard(id: string): Promise<CharacterSettingRecord | null> {
   const owner = runtimeResourceIdentity()
   if (cardsOwner !== owner) {
     cardsOwner = owner
-    cardsCache = cardsPromise = null
+    cards.clear()
+    pending.clear()
   }
-  if (cardsCache && !force) return cardsCache
-  if (!cardsPromise || force) {
-    const revision = ++cardsRevision
-    cardsPromise = (async () => {
-      const data = await loadChatCharacterProfiles(force)
-      const cards = parseCharacterSettingCards(data)
-      if (revision === cardsRevision) cardsCache = cards
-      return cards
-    })().catch(error => {
-      if (revision === cardsRevision) cardsPromise = null
-      throw error
-    })
-  }
-  return cardsPromise
+  if (cards.has(id)) return Promise.resolve(cards.get(id) ?? null)
+  const existing = pending.get(id)
+  if (existing) return existing
+  const current = (async () => {
+    if (isLocalStudioHost()) {
+      const result = await catalogApi.record('character', id).catch(() => null)
+      const data = result?.record.data
+      const profile = data && !Array.isArray(data) ? parseRecord(data.profile) : null
+      if (profile?.id === id) return profile
+    }
+    return parseRecord((await loadChatCharacterProfiles()).find(profile => profile.id === id))
+  })().then(card => {
+    if (cardsOwner === owner && pending.get(id) === current) cards.set(id, card)
+    return card
+  }).finally(() => { if (pending.get(id) === current) pending.delete(id) })
+  pending.set(id, current)
+  return current
 }
 
-/** 同步读缓存（聊天组合根预热后每次回合取用，不阻塞请求体组装）。 */
-export function characterSettingCards(): CharacterSettingRecord[] {
-  return cardsOwner === runtimeResourceIdentity() ? cardsCache ?? [] : []
+/** Lookup never blocks the start of a chat turn. */
+export function characterSettingCard(id: string): CharacterSettingRecord | null {
+  return cardsOwner === runtimeResourceIdentity() ? cards.get(id) ?? null : null
 }
 
 // ── 检索与注入 ──────────────────────────────────────────────────────────
@@ -170,12 +162,10 @@ function relevanceTerms(value: string): Set<string> {
  * 否则按关键词重叠排序截取（聊天回合按用户输入召回，与 recallChatFacts 同思路）。
  */
 export function recallCharacterSetting(
-  cards: CharacterSettingRecord[],
-  characterId: string,
+  target: CharacterSettingRecord | null,
   query = '',
   limit = 6,
 ): string[] {
-  const target = cards.find(card => card.id === characterId)
   if (!target) return []
   const count = Math.max(0, Math.min(MAX_ITEMS, Number.isFinite(limit) ? Math.floor(limit) : 6))
   if (!count) return []

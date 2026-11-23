@@ -66,10 +66,15 @@ async function createPreview(source: string, width: number, signal: AbortSignal)
   await acquire(signal)
   try {
     const bounded = AbortSignal.any([signal, AbortSignal.timeout(30_000)])
-    const response = await runtimeFetch(source, { signal: bounded })
+    const url = new URL(source, window.location.href)
+    url.searchParams.set('preview', String(Math.min(width, 3360)))
+    const response = await runtimeFetch(url.href, { signal: bounded })
     if (!response.ok) throw new Error('样张预览暂不可用')
     const blob = await response.blob()
     bounded.throwIfAborted()
+    const providedWidth = Number(response.headers.get('X-Huiyu-Preview-Width'))
+    if (providedWidth > 0) return { blob, width: providedWidth }
+    // Earlier gateways ignore the size query and return the original.
     return await cardPreviewImage(blob, width, bounded)
   } finally {
     workers--

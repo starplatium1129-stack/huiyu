@@ -47,27 +47,33 @@
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
           </div>
-          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid"
+          <div v-for="{ message: msg, bubbles } in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid"
             role="group" :aria-label="msg.role === 'user' ? '你的消息' : `${currentCharacter.name}的回复`">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
-            <div class="companion-dialogue-bubble" v-content-motion:up="arrivingMessages.has(msg.mid) ? msg.mid : false">
-              <div class="companion-dialogue-speaker">
-                <span aria-hidden="true">{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
-                <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
-                  :can-regenerate="Boolean(bridge && liveState.chatReady && canRegenerateMessage(msg.mid))" :reply-missing="msg.role === 'user'"
-                  :can-fork="Boolean(bridge && msg.content)" :story-disabled="replyPending || storyBusy || attachments.sendingImage.value"
-                  @copy="copyMessage(msg.content)" @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })"
-                  @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })" />
+            <div class="companion-dialogue-bubbles">
+              <div v-for="(text, index) in bubbles" :key="index" class="companion-dialogue-bubble"
+                v-content-motion:up="(index === 0 ? arrivingMessages.has(msg.mid) : liveState.busy && msg.mid === latestReply?.mid) ? `${msg.mid}:${index}` : false">
+                <div v-if="index === 0" class="companion-dialogue-speaker">
+                  <span aria-hidden="true">{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
+                  <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
+                    :can-regenerate="Boolean(bridge && liveState.chatReady && canRegenerateMessage(msg.mid))" :reply-missing="msg.role === 'user'"
+                    :can-fork="Boolean(bridge && msg.content)" :story-disabled="replyPending || storyBusy || attachments.sendingImage.value"
+                    @copy="copyMessage(msg.content)" @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })"
+                    @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })" />
+                </div>
+                <p v-if="text" class="companion-dialogue-line"
+                  :class="{ 'is-streaming': index === bubbles.length - 1 && liveState.busy && msg.mid === latestReply?.mid }">
+                  <ChatMessageText :text="text" />
+                </p>
+                <template v-if="index === bubbles.length - 1">
+                  <ChatMessageAttachments :message="msg" />
+                  <ChatTurnIndicator v-if="!msg.content && !msg.drawingBatchId && msg.mid === latestReply?.mid && replyPending"
+                    class="companion-dialogue-waiting" :label="liveState.toolActivity || (liveState.thinking ? '思考中…' : '正在回复…')" animated />
+                  <small v-if="msg.stopped">回复已停止</small>
+                  <ChatReplyVariants :message="msg" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
+                    @select="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
+                </template>
               </div>
-              <div v-if="msg.content" class="companion-dialogue-copy" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }">
-                <p v-for="(paragraph, index) in dialogueParagraphs(msg.content)" :key="index" class="companion-dialogue-line"><ChatMessageText :text="paragraph" /></p>
-              </div>
-              <ChatMessageAttachments :message="msg" />
-              <ChatTurnIndicator v-if="!msg.content && !msg.drawingBatchId && msg.mid === latestReply?.mid && replyPending"
-                class="companion-dialogue-waiting" :label="liveState.toolActivity || (liveState.thinking ? '思考中…' : '正在回复…')" animated />
-              <small v-if="msg.stopped">回复已停止</small>
-              <ChatReplyVariants :message="msg" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
-                @select="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
             </div>
           </div>
         </div>
@@ -148,6 +154,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import CompanionImportRecoveryDialog from '@/components/CompanionImportRecoveryDialog.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
+import { chatMessageBubbles } from '@/utils/chatMessageBubbles'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
 import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
@@ -177,12 +184,10 @@ const historyOpen = ref(false)
 const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel = ref<HTMLElement | null>(null)
 useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
-const displayedMessages = computed(() => historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
+const displayedMessages = computed(() => (historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
+  .map(message => ({ message, bubbles: chatMessageBubbles(message) })))
 const arrivingMessages = useChatMessageArrival(() => visibleMessages.value, () => `${activeChar.value}:${branchId.value}`, () => replyPending.value)
 const interruptible = computed(() => replyPending.value || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value)
-function dialogueParagraphs(text: string): string[] {
-  return text.split(/\r?\n(?:[ \t]*\r?\n)+/).filter(paragraph => paragraph.trim())
-}
 const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
 const latestReply = computed(() => {
   const last = visibleMessages.value.at(-1)

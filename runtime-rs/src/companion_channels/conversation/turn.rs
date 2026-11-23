@@ -23,21 +23,52 @@ impl Conversation {
         }
         let request: String = line.chars().take(92).collect();
         let mut drawing_rejected = false;
+        let mut retried_chat = false;
         for _ in 0..4 {
-            let ChannelReply { text, tools } = chat
-                .channel_turn(
+            let options = ChannelTurnOptions {
+                drawing: ctx.drawing,
+                voice: ctx.voice,
+                ..ctx.chat_options(&memories)
+            };
+            let request_turn = || {
+                chat.channel_turn(
                     ctx.app,
                     ctx.character,
                     &self.session,
                     &messages,
-                    ChannelTurnOptions {
-                        drawing: ctx.drawing,
-                        voice: ctx.voice,
-                        ..ctx.chat_options(&memories)
-                    },
+                    options,
                     ctx.cancel,
                 )
-                .await?;
+            };
+            let started = tokio::time::Instant::now();
+            let result = match request_turn().await {
+                Err(error)
+                    if self.qq
+                        && !retried_chat
+                        && !ctx.cancel.is_cancelled()
+                        && matches!(
+                            error.code.as_str(),
+                            "UPSTREAM_UNAVAILABLE" | "UPSTREAM_TIMEOUT"
+                        ) =>
+                {
+                    retried_chat = true;
+                    eprintln!("QQ 聊天请求重试：{} msg={}", error.code, message_tag(id));
+                    // The model hasn't returned a tool call for this step yet.
+                    tokio::time::timeout(Duration::from_secs(12), request_turn())
+                        .await
+                        .unwrap_or(Err(error))
+                }
+                result => result,
+            };
+            let ChannelReply { text, tools } = result?;
+            if self.qq && !tools.is_empty() {
+                eprintln!(
+                    "QQ 聊天模型返回操作：msg={} count={} chat_ms={}",
+                    message_tag(id),
+                    tools.len(),
+                    started.elapsed().as_millis()
+                );
+            }
             if tools.is_empty() {
                 let answer: String = text.trim().chars().take(1600).collect();
                 if answer.is_empty() {
@@ -86,7 +117,7 @@ impl Conversation {
                     return Ok(match synthesize_voice(ctx, &spoken, options).await {
                         Ok(audio) => RespondOutcome::Voice { spoken, audio },
                         Err(error) => RespondOutcome::Text {
-                            answer: self.voice_fallback(ctx, &spoken, &error).await,
+                            answer: voice_fallback(&spoken, &error),
                             can_auto_voice: false,
                         },
                     });
@@ -239,6 +270,7 @@ impl Conversation {
             delivered: 0,
         });
         self.save().await?;
+        let started = tokio::time::Instant::now();
         let result = self
             .draw(ctx, &Method::POST, &batch_id, &serde_json::to_vec(&args)?)
             .await;
@@ -249,6 +281,13 @@ impl Conversation {
             self.save().await?;
         }
         let result = result?;
+        if self.qq {
+            eprintln!(
+                "QQ 绘图已提交：msg={} batch_ms={}",
+                message_tag(id),
+                started.elapsed().as_millis()
+            );
+        }
         if matches!(result["state"].as_str(), Some("running" | "succeeded")) {
             return Ok(reply);
         }
