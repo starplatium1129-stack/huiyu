@@ -30,11 +30,17 @@ def _check(status, operation):
         raise OSError(f"{operation} failed with NTSTATUS 0x{status & 0xffffffff:08x}")
 
 
-def file_sha256(path):
+def file_sha256(path, *, check=None):
     """Read every byte on every call; Windows CNG failures propagate explicitly."""
     with Path(path).open("rb", buffering=0) as source:
         if _bcrypt is None:
-            return hashlib.file_digest(source, "sha256").hexdigest()
+            if check is None:
+                return hashlib.file_digest(source, "sha256").hexdigest()
+            digest = hashlib.sha256()
+            while chunk := source.read(_CHUNK_BYTES):
+                check()
+                digest.update(chunk)
+            return digest.hexdigest()
 
         # Handles and buffers belong to this call, including concurrent callers.
         algorithm, digest_handle = ctypes.c_void_p(), ctypes.c_void_p()
@@ -47,6 +53,8 @@ def file_sha256(path):
             buffer = bytearray(_CHUNK_BYTES)
             native_buffer = (ctypes.c_ubyte * len(buffer)).from_buffer(buffer)
             while count := source.readinto(buffer):
+                if check is not None:
+                    check()
                 _check(_bcrypt.BCryptHashData(digest_handle, native_buffer, count, 0), "BCryptHashData")
             digest = (ctypes.c_ubyte * 32)()
             _check(_bcrypt.BCryptFinishHash(digest_handle, digest, len(digest), 0), "BCryptFinishHash")

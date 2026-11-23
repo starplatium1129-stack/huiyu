@@ -222,7 +222,15 @@ def converted_identity(root, receipt, trusted, control, *, read_extra_configs=Fa
     return {"sha256": identity.hexdigest(), "scope": "prepared-local-weights"}
 
 
-def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
+def imported_weight_digest(root, asset, control):
+    path = contract.safe_file(root, root / asset["path"])
+    checksum = sibling("native_hash").file_sha256(path, check=control.check)
+    if checksum != asset["sha256"]:
+        raise Error("MODEL_CHANGED", "MOSS INT8 权重校验不符，请重新导入该文件")
+    return asset["path"].encode() + b"\0" + bytes.fromhex(checksum)
+
+
+def model_identity(root, model_id, control, *, moss_weight_precision="auto", moss_text_precision=None):
     model = contract.model(model_id)
     moss = model["family"] == "moss-image"
     variant = sibling("moss_int8").selected(root, moss_weight_precision, contract, expected_model=model_id) if moss else None
@@ -286,22 +294,37 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
                     break
             if ready:
                 digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
+                imports = {}
                 if moss:
                     digest.update(json.dumps(variant or {"precision": "fp16"}, sort_keys=True).encode())
+                    if variant:
+                        imports[variant["path"]] = variant
+                    if moss_text_precision == "int8":
+                        text = sibling("moss_int8").selected(root, "int8", contract,
+                            component="text_encoder", expected_model=model_id)
+                        imports[text["path"]] = text
                 known = {item["path"] for item in files}
+                extra_weights = []
                 for path in sorted(root.rglob("*")):
                     control.check()
                     relative = path.relative_to(root).as_posix()
                     if path == marker or relative in known or path.suffix.lower() not in MODEL_SUFFIXES or path.is_dir():
                         continue
                     # A local tokenizer or weight variant can change what from_pretrained loads.
-                    # Only the downloaded files and the checked derived configs are covered here.
                     if path.suffix.lower() == ".json":
                         contract.config(root, path)
                         digest.update(relative.encode() + b"\0" + path.read_bytes())
+                    elif relative in imports:
+                        extra_weights.append(imports[relative])
                     else:
                         break
                 else:
+                    # Legacy installs can retain the original weights alongside
+                    # a separately imported INT8 file. Under the NTFS lease,
+                    # verify that entire extra file against its registered SHA.
+                    # The download receipt already covers the base components.
+                    for asset in extra_weights:
+                        digest.update(imported_weight_digest(root, asset, control))
                     return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
     return {"sha256": fingerprint(root, control), "scope": "full-byte-chunk-sha256"}
 
@@ -500,7 +523,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
             lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},
             load_pipeline, Error, style_path=style_path,
             prepared_identity=lambda path, task: model_identity(path, data["modelId"], task,
-                moss_weight_precision=data.get("mossWeightPrecision", "auto")))
+                moss_weight_precision=data.get("mossWeightPrecision", "auto"),
+                moss_text_precision=data.get("mossTextPrecision")))
         if spec["family"] in ("qwen-image", "moss-image", "krea2") and policy == "offload":
             cache.memory.plan(memory_pixels, image_conditioned=conditioned, control=control, decode_pixels=render_pixels)
         if is_video and hasattr(cache.memory, "plan_video"):
