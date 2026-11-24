@@ -6,6 +6,7 @@ import { assertWorkspaceMediaAuthority, type MediaSource } from '@/platform/desk
 export interface InterrogateRequestOptions {
   subjectMode?: InterrogateSubjectMode
   layout?: boolean
+  noCache?: boolean
 }
 
 function interrogateFailure(status: number): string {
@@ -33,6 +34,7 @@ export async function interrogateImageFile(file: Blob, signal: AbortSignal,
     query.set('subjectMode', options.subjectMode)
   }
   if (assist && options.layout) query.set('layout', '1')
+  if (options.noCache) query.set('noCache', '1')
   const response = await runtimeFetch(`/api/interrogate/raw?${query}`, { method: 'POST', signal,
     ...(assist ? { redirect: 'error' } : {}),
     headers: { 'Content-Type': 'application/octet-stream', ...personal }, body: file })

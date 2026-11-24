@@ -2,14 +2,57 @@
   "type": "function",
   "function": {
     "name": "huiyu_drawing",
-    "description": "与 Muse、QQ 和桌宠共用一台绘遇出图机。用于跨助手交接绘图、查询队列、任务和报错或归档原图。提交时先用 key 获取编号，在 draw/batch 的 batchKey 中原样使用；重试沿用原编号及参数。把回执中的 batchKey 告诉用户。普通对话内发图或预览仍可用原绘图工具。",
+    "description": "与 Muse、QQ 和桌宠共用一台绘遇出图机。用于跨助手交接绘图、图生图/参考图/蒙版、独立放大、图像反推、短视频生成、语音合成、作品册查询与排错归档。提交绘图/放大/视频任务时先用 key 获取编号，在 batchKey 中原样使用；重试沿用原编号及参数。把回执中的 batchKey 告诉用户。群聊受限模式仅开放本群当前发起人名下的绘图/放大查单与取消，全机敏感操作仅机主私聊可用。",
     "parameters": {
       "type": "object",
       "properties": {
-        "action": { "type": "string", "enum": ["status", "key", "catalog", "detail", "models", "draw", "batch", "queue", "recent", "job", "errors", "cancel", "save"] },
-        "batchKey": { "type": "string", "description": "提交、查单、取消或归档使用的共享编号。errors 可省略编号查看近期失败。" },
-        "item": { "type": "integer", "minimum": 1, "description": "单张取消或归档，序号从 1 开始。" },
-        "params": { "type": "object", "description": "catalog 支持 kind、search、character、category、rating、page、pageSize。detail 传 kind、id。models 可传 modelId、character。draw 传 id、独立 outfitId 或 prompt。kind 可为 scene、blueprint、outfit、prompt，目录 id 可附 outfitId 换装。通用出图字段有 modelId、seed、variants、width 和 height（成对传）、upscale（off、ultrasharp、remacri）、teaCache（布尔）、teaCacheThresh（0–1，0 停用）、mossSampler、mossAcceleration、mossSpectrumFlexWindow。自定义 prompt 可加 negative、steps、cfg、character、loraId、loraStrength、styleLoraId，具体支持依模型。batch 传 ids 或 items（兼容 scenes），items 内可用全部 draw 字段。通用出图字段可作整批默认值并由 items 逐项覆盖。TeaCache 仅用于 Anima，MOSS 加速字段仅用于 MOSS，混合模型时放对应项内。recent 支持 limit、before、since、agent、status，无编号的 errors 支持 limit、before、since、agent。其他操作省略 params。save 将 PNG 归档到工具运行的电脑。", "additionalProperties": true }
+        "action": {
+          "type": "string",
+          "enum": [
+            "status",
+            "health",
+            "key",
+            "catalog",
+            "detail",
+            "models",
+            "draw",
+            "batch",
+            "upscale",
+            "queue",
+            "recent",
+            "job",
+            "errors",
+            "cancel",
+            "save",
+            "interrogate_status",
+            "interrogate",
+            "voice_status",
+            "voice_say",
+            "video_status",
+            "video_preview",
+            "video_create",
+            "video_job",
+            "video_cancel",
+            "video_batch",
+            "video_concat",
+            "gallery_list",
+            "gallery_show"
+          ]
+        },
+        "batchKey": {
+          "type": "string",
+          "description": "提交、查单、取消或归档使用的共享编号（draw/batch/upscale/video_create/video_batch/voice_say/interrogate 可传 requestKey；video_job/video_cancel/video_concat 可传任务或批次 ID/编号）。errors 可省略编号查看近期失败。"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "单张取消或归档，序号从 1 开始。"
+        },
+        "params": {
+          "type": "object",
+          "description": "catalog 支持 kind、search、character、category、rating、page、pageSize。detail 传 kind、id。models 可传 modelId、character。draw 传 id、独立 outfitId、prompt、MOSS layout 或 manga initImage；kind 可为 scene、blueprint、outfit、prompt、manga，目录 id 可附 outfitId 换装（Krea 2 目录支持 styleLoraId）。通用出图字段有 modelId、seed、variants、width/height（成对）、upscale（off|ultrasharp|remacri）、teaCache、teaCacheThresh、mossSampler、mossAcceleration、mossSpectrumFlexWindow。进阶控制支持 initImage、denoisingStrength、maskImage/maskPrompt、maskThreshold、growMaskBy、referenceImages、sketchControl、regions、layout 及 manga 字段。batch 传 ids 或 items，通用与进阶字段可作整批默认并由 items 逐项覆盖。upscale 传 initImage 或 imageBase64（≤8 MiB）及可选 upscaler（remacri|ultrasharp）、scale、modelId、prompt、negative、hiresDenoise、hiresSteps、hiresCfg、seed。interrogate 传 imageBase64（≤8 MiB）及可选 mimeType、mode（tag|caption）、threshold、assist、subjectMode（free|bound）、layout、noCache（设为 true 跳过结果缓存强制重算）。voice_say 传日语 text 及可选 voice（nene|natsume）、emotion、referenceEmotion、consistency、speed、format。video_status 传可选 modelId；video_preview/video_create/video_batch 传视频生成参数；video_job/video_cancel/video_concat 可传 batch、byRequest。gallery_list 支持 page、pageSize、kind、character、search、favorite、tag、engine、model、reviewState；gallery_show 传 id 与可选 idType。recent/errors 支持 limit、before、since、agent、status。save 将 PNG 归档到工具运行的电脑。",
+          "additionalProperties": true
+        }
       },
       "required": ["action"],
       "additionalProperties": false

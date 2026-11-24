@@ -19,6 +19,18 @@ pub(super) struct Batch {
     moss_sampler: Option<String>,
     moss_acceleration: Option<String>,
     moss_spectrum_flex_window: Option<f64>,
+    #[serde(alias = "imageId")]
+    init_image: Option<String>,
+    reference_images: Option<Vec<String>>,
+    denoising_strength: Option<f64>,
+    mask_image: Option<String>,
+    mask_prompt: Option<String>,
+    mask_threshold: Option<f64>,
+    grow_mask_by: Option<u64>,
+    style_lora_id: Option<String>,
+    sketch_control: Option<Value>,
+    regions: Option<Vec<Value>>,
+    layout: Option<Value>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -53,6 +65,33 @@ impl Batch {
             scene.moss_spectrum_flex_window = scene
                 .moss_spectrum_flex_window
                 .or(self.moss_spectrum_flex_window);
+            if scene.init_image.is_none() {
+                scene.init_image.clone_from(&self.init_image);
+            }
+            if scene.reference_images.is_none() {
+                scene.reference_images.clone_from(&self.reference_images);
+            }
+            scene.denoising_strength = scene.denoising_strength.or(self.denoising_strength);
+            if scene.mask_image.is_none() {
+                scene.mask_image.clone_from(&self.mask_image);
+            }
+            if scene.mask_prompt.is_none() {
+                scene.mask_prompt.clone_from(&self.mask_prompt);
+            }
+            scene.mask_threshold = scene.mask_threshold.or(self.mask_threshold);
+            scene.grow_mask_by = scene.grow_mask_by.or(self.grow_mask_by);
+            if scene.style_lora_id.is_none() {
+                scene.style_lora_id.clone_from(&self.style_lora_id);
+            }
+            if scene.sketch_control.is_none() {
+                scene.sketch_control.clone_from(&self.sketch_control);
+            }
+            if scene.regions.is_none() {
+                scene.regions.clone_from(&self.regions);
+            }
+            if scene.layout.is_none() {
+                scene.layout.clone_from(&self.layout);
+            }
             if scene.width.is_none()
                 && scene.height.is_none()
                 && let Some((width, height)) = default_size
@@ -86,6 +125,73 @@ pub(super) async fn create(
     http::response(result, StatusCode::ACCEPTED)
 }
 
+async fn verify_owned_inputs(muse: &Muse, owner: &str, prepared: &[PreparedScene]) -> Result<()> {
+    let mut names: Vec<String> = prepared
+        .iter()
+        .flat_map(|scene| inputs::input_names(&scene.payload))
+        .map(str::to_owned)
+        .collect();
+    names.sort_unstable();
+    names.dedup();
+    if names.is_empty() {
+        return Ok(());
+    }
+    let root = inputs::root(&muse.images.config, muse.images.native);
+    let cancel = muse.images.shutdown.child_token();
+    let _guard = cancel.clone().drop_guard();
+    const MAX_INPUT_BYTES: usize = 16 * 1024 * 1024;
+    for name in names {
+        if !inputs::valid_name(&name) {
+            return Err(ApiError::invalid("输入图像文件名无效"));
+        }
+        let file = root.join(&name);
+        let meta = tokio::fs::symlink_metadata(&file).await.map_err(|_| {
+            ApiError::new(
+                404,
+                "TASK_INPUT_MISSING",
+                format!("找不到已上传的参考图 {name}，请先上传至对应模型 images/raw"),
+            )
+        })?;
+        if !meta.is_file() || meta.file_type().is_symlink() {
+            return Err(ApiError::new(
+                400,
+                "TASK_INPUT_INVALID",
+                "输入图像不是普通文件",
+            ));
+        }
+        if meta.len() == 0 || meta.len() > MAX_INPUT_BYTES as u64 {
+            return Err(ApiError::new(
+                400,
+                "TASK_INPUT_INVALID",
+                "输入图像超过 16 MiB 限制",
+            ));
+        }
+        let bytes = Arc::new(tokio::fs::read(&file).await?);
+        if bytes.is_empty() || bytes.len() > MAX_INPUT_BYTES {
+            return Err(ApiError::new(
+                400,
+                "TASK_INPUT_INVALID",
+                "输入图像超过 16 MiB 限制",
+            ));
+        }
+        if decode::sniff(&bytes).is_none() {
+            return Err(ApiError::new(
+                400,
+                "TASK_INPUT_INVALID",
+                "任务输入不是受支持的 PNG/JPEG/WebP 图像",
+            ));
+        }
+        if !admission::owner_matches(&root, &name, bytes, owner, &cancel).await? {
+            return Err(ApiError::new(
+                403,
+                "TASK_INPUT_FORBIDDEN",
+                "图像素材不属于当前所有者",
+            ));
+        }
+    }
+    Ok(())
+}
+
 pub(super) async fn enqueue(
     config: &crate::config::Config,
     muse: &Muse,
@@ -101,73 +207,218 @@ pub(super) async fn enqueue(
     if !(1..=MAX_BATCH).contains(&count) {
         return Err(ApiError::invalid("每批可提交 1–16 张图片，包含场景变体"));
     }
+    let store = muse.store()?;
+    if owner != store.owner {
+        return Err(ApiError::new(
+            403,
+            "TASK_INPUT_FORBIDDEN",
+            "远程出图需要有效的当前所有者凭据",
+        ));
+    }
     muse.images
         .requests
         .intent(key.clone(), owner.into(), "anima")?;
     let fingerprint = crate::storage::json_fingerprint(&json!([model, scenes]));
-    let store = muse.store()?;
     let settings = muse.images.backend.native_settings()?;
-    let config = config.clone();
-    let batch = key.clone();
-    let old_receipt = legacy::find(muse, &key).await?;
-    let replay = store.work(move |db, store| {
-        let existing = |db: &Connection| -> Result<bool> {
-            match db.query_row("SELECT fingerprint FROM muse_batches WHERE owner=?1 AND key=?2",
-                params![store.owner, batch], |r| r.get::<_, String>(0)).optional()? {
+    let batch_check = key.clone();
+    let fp_check = fingerprint.clone();
+    let already_exists = store
+        .work(move |db, store| {
+            match db
+                .query_row(
+                    "SELECT fingerprint FROM muse_batches WHERE owner=?1 AND key=?2",
+                    params![store.owner, batch_check],
+                    |r| r.get::<_, String>(0),
+                )
+                .optional()?
+            {
                 None => Ok(false),
-                Some(value) if value == fingerprint => Ok(true),
-                Some(_) => Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；修改参数后请换一个 requestKey")),
+                Some(value) if value == fp_check => Ok(true),
+                Some(_) => Err(ApiError::new(
+                    409,
+                    "MUSE_BATCH_CONFLICT",
+                    "此编号已用于其他出图参数；修改参数后请换一个 requestKey",
+                )),
             }
-        };
-        if existing(db)? { return Ok(None); }
-        let mut prepared = submission::prepare_batch(&config, settings.loras_root, scenes, model.as_deref())?;
-        if let Some(receipt) = old_receipt {
-            if !legacy::matches(&receipt, &mut prepared) {
-                return Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；新任务请换一个 requestKey"));
-            }
-            if receipt.job_id.is_some() || receipt.cancel_requested || !receipt.error.as_ref().is_some_and(|error| error.status == 429) {
-                return Ok(Some(receipt));
-            }
-        }
-        let upscalers = &settings.models_root;
-        for (name, installed) in [
-            ("4x-UltraSharp", generation::native::resources::ultrasharp(upscalers)),
-            ("Remacri", generation::native::resources::remacri(upscalers)),
-        ] {
-            if installed.is_none() && prepared.iter().any(|scene| {
-                scene.payload["hiresFix"] == true && scene.payload["hiresUpscaler"] == name
-            }) {
-                return Err(ApiError::new(409, "NATIVE_UPSCALER_UNAVAILABLE", format!("出图机尚未安装 {name}，请先在控制室准备权重")));
-            }
-        }
-        let tx = db.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        if existing(&tx)? { return Ok(None); }
-        let waiting: i64 = tx.query_row("SELECT count(*) FROM muse_items WHERE owner=?1 AND status='waiting'", [&store.owner], |r| r.get(0))?;
-        if waiting + count as i64 > MAX_WAITING {
-            return Err(ApiError::new(429, "MUSE_QUEUE_FULL", "远程批量队列已满，请等前面的任务完成或取消等待项"));
-        }
-        tx.execute("INSERT INTO muse_batches(owner,key,fingerprint,created) VALUES (?1,?2,?3,?4)", params![store.owner, batch, fingerprint, generation::now()])?;
-        let mut insert = tx.prepare("INSERT INTO muse_items(owner,batch,request,family,kind,scene,model,seed,variant,payload)
-            VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)")?;
-        for (index, mut scene) in prepared.into_iter().enumerate() {
-            let source = crate::storage::json_fingerprint(&json!([store.owner, batch, index]));
-            let base = scene.seed.unwrap_or_else(|| u64::from_str_radix(&source[..15], 16).unwrap() % (scene.max_seed+1));
-            let model = scene.payload["modelId"].as_str().unwrap().to_owned();
-            for variant in 0..scene.variants {
-                let request = format!("muse_{source}_{variant}");
-                let seed = (base + u64::from(variant)) % (scene.max_seed+1);
-                scene.payload["seed"] = json!(seed);
-                insert.execute(params![store.owner, batch, request, scene.family, scene.kind, scene.id, model, seed as i64,
-                    i64::from(variant)+1, scene.payload.to_string()])?;
-            }
-        }
-        drop(insert);
-        tx.commit()?;
-        Ok(None)
-    }).await?;
-    if let Some(receipt) = replay {
-        return legacy::view(muse, receipt).await;
+        })
+        .await?;
+    if already_exists {
+        return read(muse, key, None, false).await;
     }
+
+    let config = config.clone();
+    let loras_root = settings.loras_root.clone();
+    let mut prepared = tokio::task::spawn_blocking(move || {
+        submission::prepare_batch(&config, loras_root, scenes, model.as_deref())
+    })
+    .await
+    .map_err(|_| unavailable())??;
+
+    if let Some(receipt) = legacy::find(muse, &key).await? {
+        if !legacy::matches(&receipt, &mut prepared) {
+            return Err(ApiError::new(
+                409,
+                "MUSE_BATCH_CONFLICT",
+                "此编号已用于其他出图参数；新任务请换一个 requestKey",
+            ));
+        }
+        if receipt.job_id.is_some()
+            || receipt.cancel_requested
+            || !receipt
+                .error
+                .as_ref()
+                .is_some_and(|error| error.status == 429)
+        {
+            return legacy::view(muse, receipt).await;
+        }
+    }
+
+    verify_owned_inputs(muse, owner, &prepared).await?;
+
+    let needs_ultrasharp = prepared.iter().any(|scene| {
+        scene.payload["hiresFix"] == true && scene.payload["hiresUpscaler"] == "4x-UltraSharp"
+    });
+    let needs_remacri = prepared.iter().any(|scene| {
+        (scene.payload["hiresFix"] == true && scene.payload["hiresUpscaler"] == "Remacri")
+            || scene.payload["mossUpscaleScale"].is_number()
+    });
+    enqueue_prepared(
+        muse,
+        owner,
+        key,
+        fingerprint,
+        prepared,
+        needs_remacri,
+        needs_ultrasharp,
+    )
+    .await
+}
+
+pub(super) async fn enqueue_prepared(
+    muse: &Muse,
+    owner: &str,
+    key: String,
+    fingerprint: String,
+    prepared: Vec<PreparedScene>,
+    needs_remacri: bool,
+    needs_ultrasharp: bool,
+) -> Result<Value> {
+    let count: usize = prepared
+        .iter()
+        .map(|scene| usize::from(scene.variants.max(1)))
+        .sum();
+    if !(1..=MAX_BATCH).contains(&count) {
+        return Err(ApiError::invalid("每批可提交 1–16 张图片，包含场景变体"));
+    }
+    let store = muse.store()?;
+    if owner != store.owner {
+        return Err(ApiError::new(
+            403,
+            "TASK_INPUT_FORBIDDEN",
+            "远程出图需要有效的当前所有者凭据",
+        ));
+    }
+    let settings = muse.images.backend.native_settings()?;
+    let batch = key.clone();
+    store
+        .work(move |db, store| {
+            let existing = |db: &Connection| -> Result<bool> {
+                match db
+                    .query_row(
+                        "SELECT fingerprint FROM muse_batches WHERE owner=?1 AND key=?2",
+                        params![store.owner, batch],
+                        |r| r.get::<_, String>(0),
+                    )
+                    .optional()?
+                {
+                    None => Ok(false),
+                    Some(value) if value == fingerprint => Ok(true),
+                    Some(_) => Err(ApiError::new(
+                        409,
+                        "MUSE_BATCH_CONFLICT",
+                        "此编号已用于其他出图参数；修改参数后请换一个 requestKey",
+                    )),
+                }
+            };
+            if existing(db)? {
+                return Ok(());
+            }
+            let upscalers = &settings.models_root;
+            for (needed, name, installed) in [
+                (
+                    needs_ultrasharp,
+                    "4x-UltraSharp",
+                    generation::native::resources::ultrasharp(upscalers),
+                ),
+                (
+                    needs_remacri,
+                    "Remacri",
+                    generation::native::resources::remacri(upscalers),
+                ),
+            ] {
+                if needed && installed.is_none() {
+                    return Err(ApiError::new(
+                        409,
+                        "NATIVE_UPSCALER_UNAVAILABLE",
+                        format!("出图机尚未安装 {name}，请先在控制室准备权重"),
+                    ));
+                }
+            }
+            let tx = db.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+            if existing(&tx)? {
+                return Ok(());
+            }
+            let waiting: i64 = tx.query_row(
+                "SELECT count(*) FROM muse_items WHERE owner=?1 AND status='waiting'",
+                [&store.owner],
+                |r| r.get(0),
+            )?;
+            if waiting + count as i64 > MAX_WAITING {
+                return Err(ApiError::new(
+                    429,
+                    "MUSE_QUEUE_FULL",
+                    "远程批量队列已满，请等前面的任务完成或取消等待项",
+                ));
+            }
+            tx.execute(
+                "INSERT INTO muse_batches(owner,key,fingerprint,created) VALUES (?1,?2,?3,?4)",
+                params![store.owner, batch, fingerprint, generation::now()],
+            )?;
+            let mut insert = tx.prepare(
+                "INSERT INTO muse_items(owner,batch,request,family,kind,scene,model,seed,variant,payload)
+                 VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10)",
+            )?;
+            for (index, mut scene) in prepared.into_iter().enumerate() {
+                let source = crate::storage::json_fingerprint(&json!([store.owner, batch, index]));
+                let base = scene.seed.unwrap_or_else(|| {
+                    u64::from_str_radix(&source[..15], 16).unwrap() % (scene.max_seed + 1)
+                });
+                let model = scene.model_id.clone();
+                for variant in 0..scene.variants {
+                    let request = format!("muse_{source}_{variant}");
+                    let seed = (base + u64::from(variant)) % (scene.max_seed + 1);
+                    if scene.family != "manga-screen" {
+                        scene.payload["seed"] = json!(seed);
+                    }
+                    insert.execute(params![
+                        store.owner,
+                        batch,
+                        request,
+                        scene.family,
+                        scene.kind,
+                        scene.id,
+                        model,
+                        seed as i64,
+                        i64::from(variant) + 1,
+                        scene.payload.to_string()
+                    ])?;
+                }
+            }
+            drop(insert);
+            tx.commit()?;
+            Ok(())
+        })
+        .await?;
     muse.batch_ready.notify_one();
     read(muse, key, None, false).await
 }
@@ -189,7 +440,12 @@ pub(super) async fn dispatch(muse: Arc<Muse>, host: Arc<crate::host::HostAuthori
             }).await?;
             let Some((request, family, payload)) = item else { return Ok::<Option<Duration>, ApiError>(None); };
             let family = match family.as_str() {
-                "anima" => "anima", "krea2" => "krea2", "qwen-image" => "qwen-image", _ => "moss-image",
+                "anima" => "anima",
+                "krea2" => "krea2",
+                "qwen-image" => "qwen-image",
+                "keyframe" => "keyframe",
+                "manga-screen" => "manga-screen",
+                _ => "moss-image",
             };
             let (receipt, accepting) = match muse.images.requests.status(&request, &store.owner, family).await? {
                 Some(receipt) if receipt.job_id.is_none() && !receipt.cancel_requested && receipt.error.is_none() => {

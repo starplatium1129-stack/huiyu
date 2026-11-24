@@ -27,21 +27,25 @@
 
 ### 核心 API 速查
 
-Muse 和其他助手可以使用同一份 `cli-anything-huiyu` 命令行包。HTTPS 中转使用 `HUIYU_CLI_URL` 和 `MUSE_TOKEN`，任务通过 `batchKey` 在助手之间交接。用 `--json errors <batchKey>` 查询生成与交付错误。只支持 HTTP 的助手可直接使用下表的同一套接口。[多助手操作说明](../../tools/cli-anything-huiyu/SKILL.md)
+Muse 和其他助手可以使用同一份 `cli-anything-huiyu`（v1.5.0+）命令行包统一操作绘遇全部远程创作与通道能力（绘图、图生图/蒙版/参考图/MOSS 布局、图像反推、独立放大、短视频与分镜拼接、日语语音、桌面与 QQ 通道、以及只读健康与作品册查询）。HTTPS 中转使用 `HUIYU_CLI_URL` 和 `MUSE_TOKEN`，任务通过 `batchKey` 在助手之间交接。用 `--json errors <batchKey>` 查询生成与交付错误。只支持 HTTP 的助手可直接使用下表的同一套接口。[多助手操作说明](../../tools/cli-anything-huiyu/SKILL.md)
 
 | 用途 | 路径与方法 | 关键参数与说明 |
 | --- | --- | --- |
 | 接口说明与流转 | `GET /` | 返回 `resultFlow`（轮询地址、下载条件、响应类型） |
-| 连通与完整文档 | `GET /api/muse/connection`<br>`GET /api/muse/guide` | 查看出图机在线状态、中转存储和连接器能力，或读取完整字段手册 |
-| 查询目录 | `GET /api/muse/catalog` | `kind`：`media`（默认）\| `character` \| `outfit` \| `scene` \| `blueprint`；支持 `search`、`character`、`category`、`rating`、`pageSize=500`、`nextPage` |
+| 连通与完整文档 | `GET /api/muse/connection`<br>`GET /api/muse/guide`<br>`GET /api/muse/health` | 查看出图机在线状态、中转存储和连接器能力、完整协议手册或只读全机模块健康摘要 |
+| 查询目录与模型 | `GET /api/muse/catalog`<br>`GET /api/muse/options` | 目录支持 `kind`（`media`/`character`/`outfit`/`scene`/`blueprint`）、`search`、`character`、`rating`、`pageSize=500`；`options` 查已装模型（含 `keyframe`/`manga-screen`）、LoRA 与 `standaloneUpscale` |
 | 服装详情 | `GET /api/muse/catalog/outfit/{id}` | 如 `/studio/natsume-maid`，返回 `tokens` 与 `compatibleModels` |
-| 提交单张任务 | `POST /api/muse/jobs` | 传目录 `id` 或自定义 `prompt` + 新 UUID `requestKey`；可选成对 `width`/`height`、`outfitId`（不兼容报 `OUTFIT_INCOMPATIBLE`）、`modelId`、`seed`、`variants`、`negative`、`steps`、`cfg` |
-| 提交批量任务 | `POST /api/muse/batches` | 传 `ids` 或 `items` 数组（单项 ≤ 8 张，整批 ≤ 16 张）；顶层 `width`/`height`/`upscale` 可由单项覆盖 |
+| 参考图查重与上传 | `POST /api/muse/inputs/lookup`<br>`POST /api/{family}/images/raw` | 先传 ≤16 个小写 SHA-256 查复用（直连与中转均支持）；未命中再按 `anima`/`creative`/`moss`/`qwen`/`keyframe`/`manga` 原始二进制上传（≤16 MiB，**仅本机/Tailscale 直连支持**；中转场景下反推/放大/视频素材请用各自 Base64 JSON 通道） |
+| 提交单张任务 | `POST /api/muse/jobs` | 传目录 `id`、自定义 `prompt`、MOSS `layout` 或 `manga-screen` `initImage` + 新 `requestKey`；支持图生图/蒙版/参考图、`styleLoraId`、加速与高清放大参数 |
+| 提交批量任务 | `POST /api/muse/batches` | 传 `ids` 或 `items` 数组（单项 ≤ 8 张，整批 ≤ 16 张）；顶层通用与进阶参数可由单项覆盖 |
+| 独立图像放大 | `POST /api/muse/upscale` | `202` 异步批次队列；传 `initImage` 或 `imageBase64`（≤8 MiB）及 `upscaler`（`remacri`/`ultrasharp`）、`scale`（1.1–3.0） |
+| 远程图像反推 | `GET /api/muse/interrogate/status`<br>`POST /api/muse/interrogate` | 直连 raw（≤20 MiB）或中转 Base64 JSON（≤8 MiB）；支持 `mode`（`tag`/`caption`）、`threshold`、`assist`、`subjectMode`（`free`/`bound`）、`layout`、`noCache`（默认启用内存+本地 SQLite 14 天结果缓存，仅缓存成功结果，命中返回 `cacheHit: true`） |
 | 查询进度 / 取消 | `GET /api/muse/batches/{batchKey}`<br>`DELETE <cancelPath>` | 查看每项 `status`、`progress`、`resultUrl`；取消整批或单张 |
-| 队列与恢复 | `GET /api/muse/queue`<br>`GET /api/muse/jobs` | 查排队；按 `since` / `nextBefore` 找回近期单图或批次 |
+| 队列与恢复 | `GET /api/muse/queue`<br>`GET /api/muse/jobs` | 查排队；按 `since` / `nextBefore` / `agent` / `status` 找回近期单图或批次 |
 
-- **目录默认配方**：支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0`、`moss-miaomiao-base-v1.1`（以本机已安装版本为准）。
-- **Anima 高清放大**：请求传入 `"upscale": "ultrasharp" | "remacri" | "off"`（需先安装对应放大权重）。UltraSharp 放大 `1.5×` 后执行 10 步重绘（Euler/Normal，CFG 5.5，重绘 0.8，Shift 3）；Remacri 为 `1.5×` 纯像素放大。宽高仍按放大前填写。
+- **目录默认配方**：支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0`、`moss-miaomiao-base-v1.1` 及 `krea2-turbo` / `krea2-raw`（动态编译英文自然语言配方并支持 `styleLoraId`，以本机已安装版本为准）。
+- **进阶图像控制**：Anima 支持 `initImage`、`denoisingStrength`、`maskImage`/`maskPrompt`、`maskThreshold`、`growMaskBy`、`sketchControl`、`regions`；`qwen-image` 与 `keyframe`（`flux-kontext-dev`/`minimax-h3-image-q4`）支持 `initImage` + ≤3 张 `referenceImages`；`manga-screen` 支持 `initImage` + `operation`/`penLines` 等漫画网点参数；MOSS 支持直接传 `layout` 对象（自动换算 `assistLayout`/归一化 `0..1`/`rel_1000`/`xyxy` 为规范中心像素框）。
+- **Anima 高清放大与独立放大**：生图内联放大传 `"upscale": "ultrasharp" | "remacri" | "off"`；对已有图片放大调用 `POST /api/muse/upscale`（或 `cli-anything-huiyu upscale`），`remacri` 1.5×/2.0× 走原生纯像素通道，`ultrasharp` 走 Anima 放大重绘。
 
 `GET /api/muse/connection` 保留 `laptopOnline` 和 `lastSeenAt` 等连接字段。新版中转返回 `storage.usedBytes` 和 `storage.maxBytes`（字节）、`storage.readyFiles` 和 `storage.transferringFiles`（未过期张数）以及 `storage.oldestExpiresAt`（最早的未过期记录，Unix 毫秒，无记录时为 `null`）。`usedBytes` 包含已暂存和正在传输的原图所占容量。`capabilities.voice` 和 `capabilities.modelRead` 表示连接器最近上报的语音和模型查询支持情况。旧中转可能省略这两个对象。
 
@@ -136,3 +140,37 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu` 命令行包。HT
 
 - 绘遇向 VM 发送 `POST /qq/questions`（包含 `requestKey`、`groupOpenid`、`senderOpenid`、`senderNickname`、`senderRole`、`messageId`、`text`、`timestamp`、`expiresAt` 及 `callbackOrigin`/`operations`），VM 应立即幂等返回 `202 Accepted`（缺失昵称可在配置中用 `nicknames` 字典补充）。
 - 回复可由 VM 主动回调 `callbackOrigin` 的 `POST /qq/replies`，或由绘遇每 3 秒轮询 VM 的 `GET /qq/replies/{requestKey}`（`204` 等待、`200` 取回、`404` 触发重投）。启用期间旧收发接口返回 `409 QQ_MUSE_VM_ACTIVE`。
+
+---
+
+## 5. 远程短视频、语音合成与只读作品册
+
+均通过同一 `X-Token` 认证并支持 `cli-anything-huiyu` 命令行直接操作（直连走原始二进制/Range，HTTPS 中转自动切换 Base64 上传与 `?part=N&count=M` 分片下载并校验 SHA-256）。
+
+### 短视频生成与分镜拼接（`/api/muse/video/*`）
+
+| 操作 | 路径与方法 | 说明 |
+| --- | --- | --- |
+| 查询状态与模型 | `GET /api/muse/video/status` | 可选 `?modelId=`；返回 `minimax-h3`（含 `h3Dwd`/`h3LightVae`）、`wan2.2-*`、`ltx-*` 等模型与限额 |
+| 提示词预览 | `POST /api/muse/video/prompt/preview` | 返回编译后的 `prompt` / `negative` |
+| 上传输入素材 | `POST /api/muse/video/inputs` | 直连 `application/octet-stream` + `?kind=`（≤20 MiB）；中转 `application/json` `{kind,mimeType,data}`（Base64 解码 ≤3 MiB） |
+| 单任务管理 | `POST /api/muse/video/jobs`<br>`GET`/`DELETE` `/api/muse/video/jobs/{id}`<br>`GET`/`DELETE` `/api/muse/video/requests/{key}` | 提交（必填 `requestKey`）、查询、取消；就绪后提供 `resultUrl`/`resultBytes`/`resultSha256` |
+| 分镜批次与拼接 | `POST /api/muse/video/batches`<br>`GET`/`DELETE` `/api/muse/video/batches/{id}`<br>`POST /api/muse/video/batches/{id}/concat`<br>`POST /api/muse/video/batches/{id}/retry` | 批量分镜（Body ≤1 MiB）、拼接成片、按 1-based `indices` 重试失败分镜 |
+| 校验下载成片 | `GET`/`HEAD` `/api/muse/video/jobs/{id}/result`<br>`GET`/`HEAD` `/api/muse/video/batches/{id}/result` | 直连支持 `Range` + `If-Range`；中转支持 `?part=N&count=M`（128 KiB/片，每次 1–16 片）并核对 `X-Part-Sha256` / `X-Result-Sha256` |
+
+### 远程日语语音（`/api/muse/voice/*`）
+
+| 操作 | 路径与方法 | 说明 |
+| --- | --- | --- |
+| 查询语音状态 | `GET /api/muse/voice/status` | 返回引擎、声线（`nene`/`natsume`）与支持格式 |
+| 合成日语语音 | `POST /api/muse/voice/synthesize` | 传 `requestKey`、日语 `text`（1–500 字）及可选 `voice`/`emotion`/`referenceEmotion`/`consistency`/`speed`/`format`（`mp3`/`wav`），返回 Base64 `data` + `bytes` + `sha256` |
+
+### 只读健康检查与桌面作品册（`/api/muse/health`、`/api/muse/gallery*`）
+
+严格只读，绝不暴露本机绝对路径、密钥、Token 或写删接口：
+
+| 操作 | 路径与方法 | 说明 |
+| --- | --- | --- |
+| 主机健康摘要 | `GET /api/muse/health` | 返回 `inference`、`modules`（图像/视频/反推/语音/QQ/桌面）、模型计数、作品数量与 `capabilities` 开关 |
+| 分页浏览作品册 | `GET /api/muse/gallery` | 支持 `page`（1–200）、`pageSize`（1–50）、`kind`（`all`/`image`/`video`/`audio`）、`character`、`search`、`favorite`、`tag`、`engine`、`model`、`reviewState` |
+| 作品详情与原文件 | `GET /api/muse/gallery/{id}`<br>`GET`/`HEAD` `/api/muse/gallery/{id}/file` | 可选 `?idType=string|number`；下载支持直连 `Range` 与中转 `?part=N&count=M` 分片及 SHA-256 校验 |

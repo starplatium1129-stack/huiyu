@@ -1,4 +1,6 @@
 mod assist;
+mod cache;
+pub(crate) mod muse;
 mod pixai;
 mod results;
 mod settings;
@@ -25,9 +27,10 @@ use serde_json::{Value, json};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
-const MAX_BYTES: usize = 20 * 1024 * 1024;
+pub(super) const MAX_BYTES: usize = 20 * 1024 * 1024;
 pub struct InterrogateService {
     client: tokio::sync::RwLock<pixai::Client>,
+    cache: cache::InterrogateCache,
     shutdown: CancellationToken,
     validation: Arc<tokio::sync::Semaphore>,
     media_jobs: tokio_util::task::TaskTracker,
@@ -35,11 +38,16 @@ pub struct InterrogateService {
 }
 impl InterrogateService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
-        Self::with_settings(settings::load(config), shutdown)
+        Self::with_settings(settings::load(config), cache::InterrogateCache::new(config), shutdown)
     }
-    fn with_settings(settings: pixai::Settings, shutdown: CancellationToken) -> Self {
+    fn with_settings(
+        settings: pixai::Settings,
+        cache: cache::InterrogateCache,
+        shutdown: CancellationToken,
+    ) -> Self {
         Self {
             client: tokio::sync::RwLock::new(pixai::Client::new(settings)),
+            cache,
             shutdown,
             validation: Arc::new(tokio::sync::Semaphore::new(1)),
             media_jobs: tokio_util::task::TaskTracker::new(),
@@ -71,7 +79,13 @@ impl InterrogateService {
         *client = pixai::Client::new(settings::load(config));
         Ok(client.probe().await)
     }
-    async fn interrogate(
+    pub(super) async fn probe(&self) -> Value {
+        self.client.read().await.probe().await
+    }
+    pub(super) async fn cache_stats(&self) -> Value {
+        self.cache.stats().await
+    }
+    pub(super) async fn interrogate(
         &self,
         input: Value,
         image: Bytes,
@@ -88,19 +102,55 @@ impl InterrogateService {
             permit = self.validation.clone().acquire_owned() => permit.map_err(|_| closed())?,
         };
         let validation_cancel = cancel.clone();
-        let (input, upload_admission) = tokio::task::spawn_blocking(move || {
+        let (input, image_sha256, upload_admission) = tokio::task::spawn_blocking(move || {
             let _permit = permit;
             if validation_cancel.is_cancelled() {
                 return Err(closed());
             }
-            validate(input, image).map(|input| (input, upload_admission))
+            let validated = validate(input, image)?;
+            let digest = cache::image_sha256(&validated.image);
+            Ok((validated, digest, upload_admission))
         })
         .await
         .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
+
+        let assist_identity = match assistance {
+            Some((app, headers)) => match &app.chat {
+                Some(chat) => chat
+                    .vision_route(app, headers)
+                    .await
+                    .map(|route| route.cache_identity()),
+                None => None,
+            },
+            None => None,
+        };
+        let cache_key = if assistance.is_none() || assist_identity.is_some() {
+            Some(cache::cache_key(&cache::CacheKeyInput {
+                image_sha256: &image_sha256,
+                engine: "pixai",
+                mode: &input.mode,
+                threshold: input.threshold,
+                assist_identity: assist_identity.as_deref(),
+                subject_mode: input.subject_mode.as_str(),
+                layout: input.layout,
+            }))
+        } else {
+            None
+        };
+        if !input.no_cache
+            && let Some(key) = cache_key.as_deref()
+            && let Some((mut cached, cached_at)) = self.cache.get(key).await
+        {
+            drop(upload_admission);
+            cached["cacheHit"] = json!(true);
+            cached["cachedAt"] = json!(cached_at);
+            return Ok(cached);
+        }
+
         let upload_admission = Arc::new(upload_admission);
         let original = assistance.map(|_| (input.image.clone(), upload_admission.clone()));
         let threshold = if assistance.is_some() {
-            input.threshold.min(assist::EXPLICIT_MIN.next_down())
+            input.threshold.min(assist::GUARD_MIN.next_down())
         } else {
             input.threshold
         };
@@ -134,6 +184,12 @@ impl InterrogateService {
             )
             .await;
         }
+        let cacheable = result["ok"] == true
+            && (assistance.is_none() || result["assistUsed"] == true);
+        if cacheable && let Some(key) = cache_key {
+            self.cache.put(key, image_sha256, result.clone()).await;
+        }
+        result["cacheHit"] = json!(false);
         Ok(result)
     }
 }
@@ -145,7 +201,15 @@ struct Input {
     threshold: f64,
     subject_mode: assist::SubjectMode,
     layout: bool,
+    no_cache: bool,
     image: Bytes,
+}
+fn parse_flag(value: Option<&Value>) -> bool {
+    match value {
+        Some(Value::Bool(flag)) => *flag,
+        Some(Value::String(text)) => matches!(text.trim().to_ascii_lowercase().as_str(), "1" | "true"),
+        _ => false,
+    }
 }
 fn validate(input: Value, bytes: Bytes) -> Result<Input> {
     if !input.is_object() {
@@ -185,7 +249,8 @@ fn validate(input: Value, bytes: Bytes) -> Result<Input> {
             }
         },
     };
-    let layout = input["layout"].as_str().is_some_and(|value| value == "1");
+    let layout = parse_flag(input.get("layout"));
+    let no_cache = parse_flag(input.get("noCache"));
     if bytes.len() < 1024 {
         return Err(ApiError::new(400, "INVALID_IMAGE", "图片过小"));
     }
@@ -197,6 +262,7 @@ fn validate(input: Value, bytes: Bytes) -> Result<Input> {
         threshold,
         subject_mode,
         layout,
+        no_cache,
         image: bytes,
     })
 }
@@ -255,6 +321,6 @@ async fn status(
         None => None,
     };
     Ok(Json(
-        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.read().await.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES,"assist":crate::chat::VisionRoute::status(route.as_ref())}),
+        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.read().await.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES,"assist":crate::chat::VisionRoute::status(route.as_ref()),"cache":service.cache_stats().await}),
     ))
 }

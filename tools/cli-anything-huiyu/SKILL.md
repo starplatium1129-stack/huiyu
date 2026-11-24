@@ -1,27 +1,29 @@
 ---
 name: cli-anything-huiyu
-description: 为 Muse 和其他智能体操作同一台绘遇桌面出图机。支持本机、Tailscale 和 HTTPS 中转，可搜索素材、交接绘图任务、定位生成和交付错误并保存原图。
+description: 为 Muse 和其他智能体操作同一台绘遇桌面主机。支持本机、Tailscale 和 HTTPS 中转，统一覆盖绘图（含图生图/参考图/蒙版/构图/keyframe/manga/Krea 2/MOSS 布局）、独立放大、图像反推、短视频生成与分镜拼接、日语语音合成、桌面与 QQ 消息通道、以及只读健康与作品册查询归档。
 ---
 
-# 操作绘遇桌面绘图
+# 操作绘遇桌面全功能 CLI
 
 Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiyu\cli-anything-huiyu.exe`。将该目录加入当前终端的 PATH 后，可以直接使用下列命令。源码入口是 `node tools/cli-anything-huiyu/cli.mjs`，需要从任意目录调用时也可以在仓库根目录运行 `npm install --global ./tools/cli-anything-huiyu`。
 
-在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.4.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
+在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.5.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
 
-## 接到聊天模型
+## 接到聊天模型（`invoke`）
 
-项目聊天、桌宠和 QQ 使用支持工具调用的模型时，绘遇会注册 `huiyu_drawing`。项目聊天与桌宠需开启房间工具，QQ 需开启对应会话的本机绘图。外部 Muse 或其他模型客户端可以从 `cli-anything-huiyu --json help invoke` 返回的 `commands.invoke.tool` 注册相同的函数。调用时把模型的参数对象编码成 UTF-8 JSON，送入 `cli-anything-huiyu --json invoke` 的标准输入，读取本次进程的成功或错误回执。
+项目聊天、桌宠和 QQ 使用支持工具调用的模型时，绘遇会注册 `huiyu_drawing`。外部 Muse 或其他模型客户端可以从 `cli-anything-huiyu --json help invoke` 返回的 `commands.invoke.tool` 注册相同的函数。调用时把模型的参数对象编码成 UTF-8 JSON，送入 `cli-anything-huiyu --json invoke` 的标准输入，读取本次进程的成功或错误回执。
 
 ```powershell
 '{"action":"status"}' | cli-anything-huiyu --json invoke
 ```
 
-要交给另一位助手接手，先用 `{"action":"key"}` 获取编号，提交时传 `{"action":"draw","batchKey":"取得的编号","params":{"id":"目录 ID"}}`。把返回的 `batchKey` 发给对方，对方即可用 `{"action":"errors","batchKey":"同一个编号"}` 排错。普通对话出图卡沿用原会话的恢复和取图方式。内置群机器人只可凭编号查或取消本群当前发起人的共享任务，全机历史和归档在机主私聊使用。内置工具的 `save` 将 PNG 存入桌面运行目录的 `agent-drawings`；外部工具进程可用 `HUIYU_CLI_OUTPUT_DIR` 指定归档目录，默认使用当前目录。
+- `invoke` 除既有绘图操作（`status`、`key`、`catalog`、`detail`、`models`、`draw`、`batch`、`queue`、`recent`、`job`、`errors`、`cancel`、`save`）外，还支持 `health`、`upscale`、`interrogate_status`、`interrogate`、`voice_status`、`voice_say`、`video_status`、`video_preview`、`video_create`、`video_job`、`video_cancel`、`video_batch`、`video_concat`、`gallery_list`、`gallery_show`。
+- **群聊安全隔离**：设置 `HUIYU_CLI_SCOPE` 时仅允许操作本群当前发起人前缀（`<scope>_`）名下的绘图与独立放大任务（`status`、`key`、`catalog`、`detail`、`models`、`draw`、`batch`、`upscale`、`job`、`errors <batchKey>`、`cancel`）；全机队列、历史、归档、`health`、`gallery_*`、`interrogate*`、`voice_*`、`video_*` 均默认拒绝（`DRAWING_SCOPE_DENIED`）。
+- 要交给另一位助手接手，先用 `{"action":"key"}` 获取编号，提交时在 `batchKey` 中原样传入。内置工具的 `save` 将 PNG 存入桌面运行目录的 `agent-drawings`；外部工具进程可用 `HUIYU_CLI_OUTPUT_DIR` 指定归档目录，默认使用当前目录。聊天中的大回执会标记 `truncated`，可缩小分页或用对应的只读子命令查看全量。
 
-聊天模型可用 `{"action":"models","params":{"character":"nene"}}` 查询角色 LoRA。工具提交后会立即返回批次编号。命令行使用者可通过 `wait` 续查，或在提交时指定本机输出路径。
+## 连接配置
 
-各助手连接同一台出图机即可共享队列和回执。桌面端需开启「允许其他绘遇连接本机绘图」并在首次保存后重启。根据运行位置为助手进程配置连接。对接 QQ 收件箱的外部 Muse 应按每封来信的 `drawingAllowed` 决定是否提供工具，并把 `sharedDrawing.scope` 作为该次 `invoke` 子进程的 `HUIYU_CLI_SCOPE`。聊天中的大回执会标记 `truncated`，可缩小分页或用对应的只读子命令查看全量。
+各助手连接同一台绘遇主机即可共享队列和回执。桌面端需开启「允许其他绘遇连接本机绘图」并在首次保存后重启。
 
 | 助手位置 | 地址 | 凭据环境变量 |
 | --- | --- | --- |
@@ -29,54 +31,115 @@ Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiy
 | Tailscale 对端 | `HUIYU_CLI_URL=http://<出图机的 Tailscale IPv4>:<转发端口>` | `HUIYU_CLI_TOKEN` |
 | Muse HTTPS 中转 | `HUIYU_CLI_URL=https://<已配置的中转域名>` | `MUSE_TOKEN`，使用中转的 X-Token |
 
-在每个助手自己的进程环境设置可选的 `HUIYU_CLI_AGENT`，例如 `muse` 或 `codex`。新生成的编号带有该前缀，显式传入的编号会原样保留。共用连接凭据的助手具有相同的队列访问权限。
+可选环境变量 `HUIYU_CLI_AGENT`（如 `muse` 或 `codex`）会为新生成的 `requestKey` 加上助手名前缀；显式传入的编号会原样保留。
+
+## 诊断、目录与基础绘图
 
 ```powershell
 cli-anything-huiyu --json status
 cli-anything-huiyu --json doctor
+cli-anything-huiyu --json health
 cli-anything-huiyu --json models --model anima-miaomiao-v1.6 --character nene
 cli-anything-huiyu --json catalog --kind scene --character nene --page-size 5
 cli-anything-huiyu --json detail scene <目录ID>
 cli-anything-huiyu --json key
-cli-anything-huiyu --json draw --id <目录ID> --key <上一步的requestKey>
-cli-anything-huiyu --json wait <batchKey>
-cli-anything-huiyu --json save <batchKey> "成图.png" --item 1
-```
-
-- 搜索结果用 `items[].id` 取完整 ID，有 `nextPage` 时传给 `--page`。
-- 自定义绘图用 `draw --prompt "提示词"`，或用 `draw --prompt -` 从标准输入读取 UTF-8 文本。`draw --file -` 和 `batch -` 接收 UTF-8 JSON，体积上限分别为 64 KiB 和 256 KiB。批量也可用 `batch --ids sc041,sc093`，或重复传 `--ids`。
-- 交接时传递出图机标识和回执里的 `batchKey`。后续助手用同一编号查询；需要重发时沿用原编号和完整参数，避免重复出图。
-- `queue` 查看排队情况，`recent --agent muse --status failed` 按助手名和任务状态查历史。空页仍可能有 `nextBefore`，用 `--before` 继续。加 `--compact` 可精简 JSON 回执，完整元数据可用原命令查询。
-- `wait` 支持 `--item`、`--timeout` 和 `--interval`，默认等 300 秒，查询间隔至少两秒。超时回执带 `timedOut: true` 和 `batchKey`，可用同一编号继续等待。遇到失败或取消时读取该项的 `error`。
-- `save --all` 以 `huiyu-<batchKey>-<序号>.png` 命名，返回 `saved`、`pending` 和 `failed`。目标父目录自动创建，保存回执含绝对路径、字节数和 SHA-256。原图至少 1 MiB 时默认四路下载，必要时续传校验过的分片。用 `--single-connection` 改为单连接。Windows 支持硬链接或系统原子移动，其他平台的目标目录需要支持硬链接。
-- 用户要取消时用 `cancel <batchKey>`，或加 `--item 2` 只取消第二张。取消回执中的 `cancelErrors` 表示个别项目需要用 `job` 复查。
-- 用 `errors <batchKey>` 定位哪一张、哪个模型遇到生成或交付问题。尚无编号时用 `errors --agent muse --limit 50` 查一页历史。空页仍可能有 `nextBefore`，用 `--before` 继续。既有无前缀任务可用不带 `--agent` 的查询找回。主动取消可通过 `job` 查看。
-- 单次命令成功时 JSON 写入标准输出。命令失败时退出码为 1，标准错误含 `code`、`message`、`retryable` 以及适用的 `httpStatus`、`requestKey`、`hint` 和 `retryAfterSeconds`。请求被拒或未送达时，请保留这条错误回执供交接。交互模式的 `@last` 仅在当前会话内有效。
-- 只有 HTTP 工具的助手可带 X-Token 读取 `GET /api/muse/guide`，再用 `GET /api/muse/batches/{batchKey}` 查看相同的回执。错误位于 `items[].code`、`error` 和中转的 `deliveryStatus`。用 `GET /api/muse/jobs` 查看历史。
-
-## 设置本次出图的模型与加速
-
-```powershell
-cli-anything-huiyu --json draw --id sc093 --tea-cache-thresh 0.06
-cli-anything-huiyu --json draw --id sc093 --tea-cache off --seed 42
-cli-anything-huiyu --json batch 批量.json --tea-cache-thresh 0.08
-```
-
-目录出图可用 `--kind` 指定记录类型，配合 `--outfit` 给同角色换装，也可只传 `--outfit` 出服装图。自定义提示词可用 `--negative`、`--steps`、`--cfg`、`--character`、`--lora`、`--lora-strength`、`--style-lora`，具体支持随模型变化。
-
-Anima 的 TeaCache 默认开启，阈值通常为 `0.10`。可传 `0` 到 `1` 的小数，`0` 或 `--tea-cache off` 都会停用加速。省略这些参数时沿用模型或目录配方默认。使用 `--width` 和 `--height` 时一起指定。用 `help draw` 或 `help batch` 查看模型、种子、变体、放大和 MOSS 加速的选项。
-
-`--file`、`batch` 文件、工具的 `params` 和 Muse HTTP 请求都使用 `teaCache`（布尔值）和 `teaCacheThresh`（数字）。命令行参数覆盖文件顶层的同名值。批量时各项可以覆盖整批默认值，例如 `{"teaCacheThresh":0.08,"items":[{"id":"sc041"},{"id":"sc093","teaCache":false}]}`。混合模型的批次只在 Anima 项内填写 TeaCache 参数。
-
-`guide` 读取出图机的 Muse 接口说明。`models` 查询已装模型、尺寸默认值、LoRA、放大权重和加速方式。老版本出图机回退到接口说明与可访问的模型状态，其中 `available: null` 表示尚未确认。`doctor` 检查连接、凭据格式和协议能力，只报告环境变量的设置状态。TeaCache 参数需要出图机已支持它，可用 `doctor` 确认。
-
-## 提交、等待并保存
-
-```powershell
-cli-anything-huiyu --json draw --id sc093 --tea-cache-thresh 0.06 --out .\成图.png
+cli-anything-huiyu --json draw --id <目录ID> --key <requestKey> --out .\成图.png
 cli-anything-huiyu --json batch --ids sc041,sc093 --out-dir .\成图 --timeout 600
 cli-anything-huiyu --json wait <batchKey> --item 2 --timeout 300
 cli-anything-huiyu --json save <batchKey> .\成图 --all
 ```
 
-`draw --wait` 和 `batch --wait` 只等待回执。传 `--out` 或 `--out-dir` 时也会保存已就绪的图片，即使等待超时，剩余图片仍可凭原批次编号取回。`draw --out` 用于单张图片，多张用 `batch --out-dir`。
+- `doctor` 检查连接、凭据格式、协议版本、中转存储及全部新能力开关（兼容老版本出图机与中转）；`health` 返回只读主机模块在线状态、模型数量和推理引擎摘要。
+- `models` 返回所有已安装图像模型（含 `anima`、`moss-image`、`qwen-image`、`krea2`、`keyframe`、`manga-screen`）及其 `img2img`/`mask`/`maxReferenceImages`/`mossLayout` 与 `standaloneUpscale` 能力。
+- 目录出图支持 `--kind scene|blueprint|outfit|prompt|manga`、同角色 `--outfit` 换装、Krea 2 目录动态编译及 `--style-lora`。Anima 加速用 `--tea-cache on|off` 与 `--tea-cache-thresh 0–1`；MOSS 加速用 `--moss-sampler euler|er-sde`、`--moss-acceleration off|spectrum|spectrum-adaptive`、`--moss-spectrum-flex-window 0–2`。
+- `queue` 查队列，`recent --agent muse --status failed` 查历史，`errors <batchKey>` 或 `errors --agent muse` 排错，`cancel <batchKey> [--item 序号]` 取消任务。加 `--compact` 可精简 JSON 回执。
+
+## 参考图上传、图生图、反推与独立放大
+
+```powershell
+# 上传参考图（先按 SHA-256 查复用，未命中再上传到对应模型族）
+cli-anything-huiyu --json upload .\ref.png --family anima
+
+# 图生图 / 局部重绘 / 多参考图 / keyframe / manga-screen
+cli-anything-huiyu --json draw --prompt "1girl, window tea" --init-image .\base.png --denoise 0.65 --out .\i2i.png
+cli-anything-huiyu --json draw --model qwen-image-2.1 --prompt "change dress to sailor uniform" --init-image .\base.png --ref .\dress.png --out .\edit.png
+cli-anything-huiyu --json draw --model flux-kontext-dev --prompt "cinematic lighting" --init-image .\frame.png --out .\kf.png
+cli-anything-huiyu --json draw --kind manga --model manga-screen --init-image .\cg.png --operation lite --out .\manga.png
+
+# 远程图像反推（直连走 raw ≤20 MiB，中转自动切 Base64 JSON ≤8 MiB；默认命中服务端持久化结果缓存，加 --no-cache 强制重算）
+cli-anything-huiyu --json interrogate status
+cli-anything-huiyu --json interrogate .\sample.png --assist --subject-mode free --layout --out-json .\layout.json
+
+# 用反推结果直接衔接 MOSS / Krea 2 / Anima 出图
+cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --from-interrogate .\layout.json --width 1024 --height 1024 --out .\moss.png
+cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --prompt "window tea scene" --layout-file .\layout.json --out .\moss2.png
+
+# 独立图像放大（Remacri 纯像素放大或 UltraSharp 放大重绘）
+cli-anything-huiyu --json upscale .\sample.png --upscaler remacri --scale 1.5 --out .\up.png
+cli-anything-huiyu --json upscale --image-id <uploadedName> --upscaler ultrasharp --scale 1.5 --wait
+```
+
+- `draw` / `batch` 的 `--init-image`、`--mask`、`--ref`（可多次传入）、`--pen-lines` 同时接受服务器已上传文件名（`aics_anima_input_*`）或本地图片路径（自动 SHA-256 查复用或上传）。**注意中转边界**：HTTPS 中转仅放行 `POST /api/muse/inputs/lookup` 复用已缓存参考图，上传新参考图（`POST /api/{family}/images/raw`）需使用本机或 Tailscale 直连；经中转使用图像反推、独立放大与视频素材上传请直接调用 `interrogate`、`upscale`、`video upload` 的 Base64 JSON 通道。
+- 额外支持 `--mask-prompt`、`--mask-threshold`（0.05–0.95）、`--grow-mask-by`（0–32）、`--sketch-file`、`--regions-file`。
+- `draw --layout-file` 自动识别纯布局 JSON 或 `interrogate --layout --out-json` 产出的 `assistLayout`；后端自动将 `0..1` / `rel_1000` / `xyxy` 坐标换算为 MOSS 规范中心像素框。
+
+## 远程短视频与分镜拼接（`video`）
+
+```powershell
+cli-anything-huiyu --json video status
+cli-anything-huiyu --json video preview --model minimax-h3 --duration 5 --prompt "girl smiling by the window"
+cli-anything-huiyu --json video upload .\first.png --kind image
+cli-anything-huiyu --json video create --model minimax-h3 --image-file .\first.png --duration 5 --prompt "gentle breeze" --out .\clip.mp4
+cli-anything-huiyu --json video job <id或requestKey>
+cli-anything-huiyu --json video wait <id或requestKey> --timeout 1800
+cli-anything-huiyu --json video save <id或requestKey> .\clip.mp4
+cli-anything-huiyu --json video batch .\storyboard.json --wait --concat --out .\movie.mp4
+cli-anything-huiyu --json video retry <batchId> --shots 2,4 --wait
+cli-anything-huiyu --json video concat <batchId> --out .\movie.mp4
+cli-anything-huiyu --json video cancel <id或requestKey> [--batch]
+```
+
+- `video upload` 支持 `image` / `first-frame` / `last-frame` / `studio-frame` / `reference`（PNG/JPEG/WebP）、`driving-video`（MP4）、`driving-audio` / `studio-audio`（PCM WAV）。直连走 raw（≤20 MiB），HTTPS 中转自动切 Base64 JSON（≤3 MiB）。
+- `video save` / `video create --out` / `video concat --out` 在直连下使用 Range 校验下载，在中转下自动切 `?part=N&count=M` 分片校验下载，全程核对 SHA-256。
+
+## 远程日语语音（`voice`）
+
+```powershell
+cli-anything-huiyu --json voice status
+cli-anything-huiyu --json voice say "おかえりなさい、今日も頑張ったね。" --voice nene --emotion gentle --format mp3 --out .\nene.mp3
+```
+
+- 支持 `--voice nene|natsume`、`--emotion` / `--reference-emotion`（`neutral|gentle|happy|shy|serious|sad`）、`--consistency locked|adaptive`、`--speed`（0.25–4.0）、`--format mp3|wav`、`--key`、`--out`。自动校验 `bytes` 与 `sha256` 后解码保存。
+
+## 桌面聊天与 QQ 通道（`desktop` / `qq`）
+
+```powershell
+# 桌面聊天收发
+cli-anything-huiyu --json desktop inbox --wait 25
+cli-anything-huiyu --json desktop reply <requestKey> "好呀，等我画一张给你。" --drawing-ids sc093
+
+# QQ 群 / 私聊收发与联网搜索
+cli-anything-huiyu --json qq inbox --wait 25
+cli-anything-huiyu --json qq targets
+cli-anything-huiyu --json qq context <conversationId>
+cli-anything-huiyu --json qq reply <requestKey> --text "收到啦！" --image .\card.png --mention <senderId>
+cli-anything-huiyu --json qq reply <requestKey> --skip
+cli-anything-huiyu --json qq send <conversationId> --text "早安！"
+cli-anything-huiyu --json qq search "今日天气" --key <requestKey>
+```
+
+- `qq reply` / `qq send` 自动校验本地图片（JPEG/PNG ≤3 MiB）与 MP3 语音（`audio/mpeg` ≤3 MiB）魔数并做 Base64 编码；`qq send` 与 `qq search --conversation` 自动生成标准 UUID `requestKey`。
+
+## 只读作品册查询与归档（`gallery`）
+
+```powershell
+cli-anything-huiyu --json gallery list --kind image --character nene --page-size 20
+cli-anything-huiyu --json gallery show <作品ID>
+cli-anything-huiyu --json gallery save <作品ID> .\archive.png
+```
+
+- 严格只读，支持按 `kind`、`character`、`search`、`favorite`、`tag`、`engine`、`model`、`review-state` 筛选；`gallery save` 自动兼容直连 Range 与中转 `?part=N&count=M` 并校验 SHA-256。
+
+## 错误处理与退出码
+
+- 单次命令成功时 JSON 写入标准输出。命令失败时退出码为 1，标准错误含 `code`、`message`、`retryable` 以及适用的 `httpStatus`、`requestKey`、`hint` 和 `retryAfterSeconds`。交互模式的 `@last` 仅在当前会话内有效。

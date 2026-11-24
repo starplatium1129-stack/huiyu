@@ -5,7 +5,7 @@ const MAX_FILE = 32 * 1024 * 1024
 const MAX_TOTAL = 512 * 1024 * 1024
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 export const TTL = 48 * 60 * 60 * 1000
-export const resultRoute = /^\/api\/(?:anima|moss|creative|qwen)\/jobs\/[a-f0-9]{32}\/result$/
+export const resultRoute = /^\/api\/(?:anima|moss|creative|qwen|keyframe|manga)\/jobs\/[a-f0-9]{32}\/result$/
 const hash = bytes => createHash('sha256').update(new Uint8Array(bytes)).digest('hex')
 
 export function problem(status, code, message, extra = {}) {

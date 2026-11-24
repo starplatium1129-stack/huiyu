@@ -58,6 +58,7 @@ pub(super) async fn describe(state: &crate::AppState, kind: String, id: String) 
             };
             Ok(json!({"scene":{"kind":kind,"id":id,"title":data["title"],
                 "characterId":data.get("characterId").unwrap_or(&data["char"]),"outfitId":data["outfitId"],
-                "size":data["recommendedSize"],"seed":seed,"seedSource":source,"variants":1,"maxVariants":MAX_VARIANTS,"hasBundledRecipe":bundled}}))
+                "size":data["recommendedSize"],"seed":seed,"seedSource":source,"variants":1,"maxVariants":MAX_VARIANTS,"hasBundledRecipe":bundled,
+                "compatibleModels":if bundled { json!(RECIPE_MODELS) } else { json!([]) }}}))
         }).await.map_err(|_| unavailable())?
 }

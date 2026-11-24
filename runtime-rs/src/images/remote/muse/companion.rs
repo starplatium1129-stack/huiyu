@@ -67,28 +67,63 @@ pub(crate) async fn drawing_options(
         return Ok(json!({"available":false,"models":[]}));
     }
     let status = crate::images::native::status(&images.backend, "", cancel).await?;
-    let models: Vec<_> = status["models"].as_array().into_iter().flatten()
-        .filter(|model| matches!(model["family"].as_str(), Some("anima" | "krea2" | "moss-image" | "qwen-image"))
+    let mut models: Vec<_> = status["models"].as_array().into_iter().flatten()
+        .filter(|model| matches!(model["family"].as_str(), Some("anima" | "krea2" | "moss-image" | "qwen-image" | "keyframe"))
             && (model["available"] == true || model_id.is_some_and(|id| model["id"] == id)))
         .filter(|model| model_id.is_none_or(|id| model["id"] == id))
         .map(|model| {
             let id = model["id"].as_str().unwrap_or("");
+            let family = model["family"].as_str().unwrap_or("");
             let size_limits = generation::native::adapters::model(id)
-                .map(|spec| json!({"min":512,"max":spec["maxSize"],"step":spec["alignment"]}))
+                .map(|spec| {
+                    let min = spec["minSize"].as_u64().unwrap_or(512);
+                    json!({"min":min,"max":spec["maxSize"],"step":spec["alignment"]})
+                })
                 .unwrap_or_else(|| model["capabilities"]["customSize"].clone());
-            let default_size = if model["family"] == "qwen-image" {
+            let default_size = if matches!(family, "qwen-image" | "keyframe") {
                 json!("1024x1024")
             } else {
                 model["sizes"][0].clone()
             };
-            json!({"id":id,"label":model["label"],"family":model["family"],"available":model["available"],
+            let img2img = if family == "anima" {
+                json!(true)
+            } else {
+                model["capabilities"]["img2img"].clone()
+            };
+            let mask = if family == "anima" {
+                json!(true)
+            } else {
+                model["capabilities"]["mask"].clone()
+            };
+            json!({"id":id,"label":model["label"],"family":family,"available":model["available"],
                 "catalogRecipes":RECIPE_MODELS.contains(&id),"sizes":model["sizes"],"sizeLimits":size_limits,
                 "defaultSize":default_size,"defaults":model["defaults"],"negative":model["capabilities"]["negative"],
+                "img2img":img2img,"mask":mask,"maxReferenceImages":model["capabilities"]["maxReferenceImages"],
+                "requiresInitImage":family == "keyframe","modes":model["modes"],
                 "teaCache":model["capabilities"]["teaCache"],"hiresUpscalers":model["capabilities"]["hiresUpscalers"],
+                "mossLayout":family == "moss-image",
                 "mossErSde":model["mossErSde"],"mossAcceleration":model["mossAcceleration"],
                 "mossAdaptiveSpectrum":model["mossAdaptiveSpectrum"],"mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"]})
         })
         .collect();
+    if model_id.is_none() || model_id == Some("manga-screen") {
+        if let Ok(manga_status) = crate::images::manga::status(&images.backend).await {
+            let available = manga_status["available"] == true;
+            if available || model_id == Some("manga-screen") {
+                models.push(json!({
+                    "id": "manga-screen",
+                    "label": "MangaScreen · 漫画化处理",
+                    "family": "manga-screen",
+                    "available": available,
+                    "unavailableReason": manga_status["unavailableReason"],
+                    "catalogRecipes": false,
+                    "requiresInitImage": true,
+                    "defaults": manga_status["defaults"],
+                    "capabilities": manga_status["capabilities"],
+                }));
+            }
+        }
+    }
     let character = character.map(|value| match value.trim() {
         "宁宁" => "nene",
         "夏目" => "natsume",
@@ -133,6 +168,13 @@ pub(crate) async fn drawing_options(
     Ok(json!({"available":status["online"],"defaultModelId":ANIMA,"models":models,
         "characterDefaultLora":default_lora,"loras":loras,"styleLoras":style_loras,
         "upscale":guide["upscale"],"installedUpscalers":installed_upscalers,
+        "standaloneUpscale":{
+            "path":upscale::UPSCALE_PATH,
+            "upscalers":["remacri","ultrasharp"],
+            "remacriScales":[1.5,2.0],
+            "ultrasharpScaleRange":{"min":1.1,"max":3.0,"default":1.5},
+            "maxBase64Bytes":upscale::MAX_BASE64_IMAGE_BYTES
+        },
         "teaCache":guide["teaCache"],"moss":guide["moss"]}))
 }
 
@@ -406,11 +448,17 @@ async fn prepare(
         for variant in 0..scene.variants {
             let seed = (base + u64::from(variant)) % (scene.max_seed + 1);
             let mut payload = scene.payload.clone();
-            payload["seed"] = json!(seed);
+            if scene.family != "manga-screen" {
+                payload["seed"] = json!(seed);
+            }
+            let model_id = payload
+                .get("modelId")
+                .cloned()
+                .unwrap_or_else(|| json!(scene.model_id));
             jobs.push(json!({
                 "id":uuid::Uuid::new_v4().to_string(), "requestKey":format!("companion_{source}_{variant}"),
                 "sceneId":target, "sceneTitle":title, "seed":seed, "variant":variant,
-                "modelId":payload["modelId"],"width":payload["width"],"height":payload["height"],
+                "modelId":model_id,"width":payload["width"],"height":payload["height"],
                 "status":"pending", "submitted":false, "taskInput":payload,
                 "snapshot":{"engine":scene.family,"context":{
                     "source":"companion-chat","catalogKind":scene.kind,"catalogId":scene.id,"batchId":id,

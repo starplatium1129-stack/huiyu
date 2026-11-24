@@ -5,9 +5,18 @@ import { randomUUID } from 'node:crypto'
 import { open } from 'node:fs/promises'
 import pkg from './package.json' with { type: 'json' }
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export function requestKey(value) {
   if (typeof value !== 'string' || !/^[A-Za-z0-9_-]{1,160}$/.test(value)) {
     throw new Error('任务编号须为 1–160 个字母、数字、下划线或连字符。')
+  }
+  return value
+}
+
+export function uuidKey(value, label = '请求编号') {
+  if (typeof value !== 'string' || !UUID_PATTERN.test(value)) {
+    throw new Error(`${label}须为标准 UUID。`)
   }
   return value
 }
@@ -51,7 +60,7 @@ export function credentialStatus({ mode }) {
   return { variable, set: value !== undefined, valid: format.test(value ?? '') }
 }
 
-function response(method, path, body, { headers: extraHeaders, signal, publicGuide = false } = {}) {
+function response(method, path, body, { headers: extraHeaders, signal, publicGuide = false, timeoutMs = 45_000 } = {}) {
   const target = connection()
   const relay = target.mode === 'relay'
   const credentials = credentialStatus(target)
@@ -66,14 +75,16 @@ function response(method, path, body, { headers: extraHeaders, signal, publicGui
   }
   const headers = { ...extraHeaders, 'User-Agent': `cli-anything-huiyu/${pkg.version}` }
   if (!publicGuide) headers['X-Token'] = process.env[credentials.variable]
-  if (body) {
-    headers['Content-Type'] = 'application/json'
+  if (body !== undefined) {
+    if (!Object.keys(headers).some(key => key.toLowerCase() === 'content-type')) {
+      headers['Content-Type'] = 'application/json'
+    }
     headers['Content-Length'] = Buffer.byteLength(body)
   }
   return new Promise((accept, reject) => {
     const send = relay ? httpsRequest : httpRequest
     // The configured origin owns the credential. Receipt paths and redirects cannot select another host.
-    const deadline = AbortSignal.timeout(45_000)
+    const deadline = AbortSignal.timeout(timeoutMs)
     const req = send(target.endpoint, { path, method, headers, signal: signal ? AbortSignal.any([signal, deadline]) : deadline }, accept)
     req.on('error', reject)
     req.end(body)
@@ -121,7 +132,16 @@ export async function exchange(method, path, body, options) {
 }
 
 export async function api(method, path, payload, options) {
-  const res = await exchange(method, path, payload && JSON.stringify(payload), options)
+  const body = payload === undefined ? undefined : JSON.stringify(payload)
+  const res = await exchange(method, path, body, options)
+  const data = await bytes(res, 16 * 1024 * 1024)
+  try { return JSON.parse(data.toString('utf8')) }
+  catch { throw problem('CLI_RESPONSE_INVALID', '服务未返回完整的 JSON 回执，请核对地址并重查原请求。') }
+}
+
+export async function apiRaw(method, path, body, contentType, options = {}) {
+  const headers = { ...options.headers, 'Content-Type': contentType }
+  const res = await exchange(method, path, body, { ...options, headers })
   const data = await bytes(res, 16 * 1024 * 1024)
   try { return JSON.parse(data.toString('utf8')) }
   catch { throw problem('CLI_RESPONSE_INVALID', '服务未返回完整的 JSON 回执，请核对地址并重查原请求。') }
@@ -160,23 +180,33 @@ function decodeUtf8(data) {
   catch { throw new Error('请求内容需要使用 UTF-8 编码。') }
 }
 
-export async function readInput(file, batch) {
-  const limit = (batch ? 256 : 64) * 1024
-  if (file === '-') return JSON.parse(await readStdin(limit, 'JSON 请求'))
+export async function readFileBytes(file, limit, label = '文件') {
+  if (typeof file !== 'string' || !file.trim()) throw new Error(`${label}路径不能为空。`)
   const handle = await open(file, 'r')
   try {
     const stat = await handle.stat()
-    const invalid = () => new Error(`请求须为不超过 ${limit / 1024} KiB 的 JSON 文件。`)
+    const sizeText = limit >= 1024 * 1024 ? `${limit / (1024 * 1024)} MiB` : `${limit / 1024} KiB`
+    const invalid = () => new Error(`${label}须为不超过 ${sizeText} 的普通文件。`)
     if (!stat.isFile() || stat.size > limit) throw invalid()
-    const data = Buffer.allocUnsafe(limit + 1)
+    const chunks = []
     let size = 0
-    while (size <= limit) {
-      const { bytesRead } = await handle.read(data, size, data.length - size)
-      if (!bytesRead) return JSON.parse(decodeUtf8(data.subarray(0, size)))
+    const chunkSize = Math.min(limit + 1, 256 * 1024)
+    for (;;) {
+      const buffer = Buffer.allocUnsafe(Math.min(chunkSize, limit + 1 - size))
+      const { bytesRead } = await handle.read(buffer, 0, buffer.length)
+      if (!bytesRead) return Buffer.concat(chunks, size)
       size += bytesRead
+      if (size > limit) throw invalid()
+      chunks.push(bytesRead === buffer.length ? buffer : buffer.subarray(0, bytesRead))
     }
-    throw invalid()
   } finally {
     await handle.close()
   }
+}
+
+export async function readInput(file, batch) {
+  const limit = (batch ? 256 : 64) * 1024
+  if (file === '-') return JSON.parse(await readStdin(limit, 'JSON 请求'))
+  const data = await readFileBytes(file, limit, 'JSON 请求')
+  return JSON.parse(decodeUtf8(data))
 }

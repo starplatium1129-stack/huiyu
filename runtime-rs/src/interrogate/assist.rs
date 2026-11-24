@@ -8,13 +8,41 @@ use std::{collections::HashSet, io::Cursor, sync::Arc, time::Duration};
 use tokio::sync::{OwnedSemaphorePermit, Semaphore};
 use tokio_util::sync::CancellationToken;
 
-pub(super) const EXPLICIT_MIN: f64 = 0.25;
+pub(super) const GUARD_MIN: f64 = 0.20;
+const EXPLICIT_MIN: f64 = 0.25;
+const MINOR_MIN: f64 = 0.20;
+const NSFW_RATING_MIN: f64 = 0.30;
+const SENSITIVE_RATING_MIN: f64 = 0.50;
 const CAPTION_TIMEOUT_SECS: u64 = 25;
 const LAYOUT_TIMEOUT_SECS: u64 = 35;
 const MAX_CAPTION_CHARS: usize = 2400;
 const MAX_LAYOUT_ITEMS: usize = 12;
 const MAX_ITEM_CAPTION_CHARS: usize = 600;
 const MAX_ITEM_TEXT_CHARS: usize = 300;
+const MINOR: &[&str] = &[
+    "loli",
+    "shota",
+    "child",
+    "children",
+    "toddler",
+    "baby",
+    "infant",
+    "kid",
+    "little_girl",
+    "little_boy",
+    "young_girl",
+    "young_boy",
+    "kindergarten",
+    "kindergartener",
+    "elementary_school",
+    "elementary_school_student",
+    "primary_school",
+    "grade_school",
+    "middle_school",
+    "underage",
+    "minor",
+    "preteen",
+];
 const EXPLICIT: &[&str] = &[
     "nude",
     "completely_nude",
@@ -162,14 +190,14 @@ pub(super) struct Options {
 }
 
 pub(super) struct Evidence {
-    explicit: bool,
+    minor_nsfw: bool,
     anchors: Value,
 }
 
 impl Evidence {
     pub(super) fn from_pixai(result: &Value, options: Options) -> Self {
         Self {
-            explicit: has_explicit_tags(result),
+            minor_nsfw: has_minor_nsfw(result),
             anchors: anchors(result, options.subject_mode),
         }
     }
@@ -184,7 +212,7 @@ fn normalize_tag(tag: &str) -> String {
         .join("_")
 }
 
-fn has_explicit_tags(result: &Value) -> bool {
+fn has_tag_in(result: &Value, list: &[&str], min_score: f64) -> bool {
     result["tags"]
         .as_array()
         .into_iter()
@@ -193,9 +221,28 @@ fn has_explicit_tags(result: &Value) -> bool {
         .any(|tag| {
             result["scores"][tag]
                 .as_f64()
-                .is_some_and(|score| score >= EXPLICIT_MIN)
-                && EXPLICIT.contains(&normalize_tag(tag).as_str())
+                .is_some_and(|score| score >= min_score)
+                && list.contains(&normalize_tag(tag).as_str())
         })
+}
+
+fn has_minor_nsfw(result: &Value) -> bool {
+    if !has_tag_in(result, MINOR, MINOR_MIN) {
+        return false;
+    }
+    if has_tag_in(result, EXPLICIT, EXPLICIT_MIN) {
+        return true;
+    }
+    let rating = &result["rating"];
+    rating["explicit"]
+        .as_f64()
+        .is_some_and(|score| score >= NSFW_RATING_MIN)
+        || rating["questionable"]
+            .as_f64()
+            .is_some_and(|score| score >= NSFW_RATING_MIN)
+        || rating["sensitive"]
+            .as_f64()
+            .is_some_and(|score| score >= SENSITIVE_RATING_MIN)
 }
 
 type Original = (Bytes, Arc<OwnedSemaphorePermit>);
@@ -219,8 +266,8 @@ pub(super) async fn enrich(
             .await
             .ok_or(Fallback::Unavailable)?;
         let provider = route.provider();
-        if provider == "chatgpt" && evidence.explicit {
-            return Err(Fallback::Explicit);
+        if provider == "chatgpt" && evidence.minor_nsfw {
+            return Err(Fallback::MinorNsfw);
         }
         let model = route.model().to_owned();
         let permit = decoder_slots
@@ -282,7 +329,7 @@ pub(super) async fn enrich(
 
 enum Fallback {
     Unavailable,
-    Explicit,
+    MinorNsfw,
     Image,
     Refused,
     Unsupported,
@@ -298,9 +345,9 @@ impl Fallback {
                 "unavailable",
                 "未配置可用的视觉协同通道，已保留本地 PixAI 结果",
             ),
-            Self::Explicit => (
-                "explicit_tags",
-                "检测到 R18 露骨特征，图片未发送给 ChatGPT，已使用本地 PixAI",
+            Self::MinorNsfw => (
+                "minor_nsfw",
+                "检测到疑似未成年相关 NSFW 特征，图片未发送给 ChatGPT，已使用本地 PixAI",
             ),
             Self::Image => (
                 "image_encoding",

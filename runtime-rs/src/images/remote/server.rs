@@ -30,19 +30,41 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         .unwrap_or("");
     // This interface is for another runtime, not browser cross-origin requests.
     let path = request.uri().path();
+    let has_query = request.uri().query().is_some();
     let private = path.starts_with("/api/muse/qq/")
         || path.starts_with("/api/muse/desktop/")
-        || path.starts_with("/api/muse/voice/");
+        || path.starts_with("/api/muse/voice/")
+        || path.starts_with("/api/muse/video/")
+        || path == crate::interrogate::muse::STATUS_PATH
+        || path == crate::interrogate::muse::INTERROGATE_PATH
+        || path == super::muse::upscale::UPSCALE_PATH
+        || path == "/api/muse/health"
+        || path == "/api/muse/gallery"
+        || path.starts_with("/api/muse/gallery/");
     let inbox = request.method() == axum::http::Method::GET
         && matches!(path, "/api/muse/desktop/inbox" | "/api/muse/qq/inbox");
-    let allowed = ((inbox || request.uri().query().is_none())
+    let allowed = ((inbox || !has_query)
         && (super::relay::qq_route(request.method(), path)
             || super::relay::desktop_chat_route(request.method(), path)
             || super::relay::voice_route(request.method(), path)))
-        || ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
-            .iter()
-            .any(|prefix| path.starts_with(prefix))
-        || (request.method() == axum::http::Method::GET && path == super::muse::companion::OPTIONS_PATH)
+        || super::relay::interrogate_route(request.method(), path, has_query)
+        || super::relay::video_direct_route(request.method(), path, has_query)
+        || super::relay::ops_direct_route(request.method(), path, has_query)
+        || [
+            "/api/anima/",
+            "/api/creative/",
+            "/api/qwen/",
+            "/api/keyframe/",
+            "/api/moss/",
+            "/api/manga/",
+        ]
+        .iter()
+        .any(|prefix| path.starts_with(prefix))
+        || (request.method() == axum::http::Method::GET
+            && path == super::muse::companion::OPTIONS_PATH)
+        || (request.method() == axum::http::Method::POST
+            && path == super::muse::upscale::UPSCALE_PATH
+            && !has_query)
         || matches!(
             path,
             "/api/muse/catalog"
@@ -76,9 +98,18 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         axum::http::HeaderValue::from_static("1"),
     );
     if private {
+        let has_no_transform = response
+            .headers()
+            .get(header::CACHE_CONTROL)
+            .and_then(|v| v.to_str().ok())
+            .is_some_and(|v| v.contains("no-transform"));
         response.headers_mut().insert(
             header::CACHE_CONTROL,
-            HeaderValue::from_static("private, no-store"),
+            HeaderValue::from_static(if has_no_transform {
+                "private, no-store, no-transform"
+            } else {
+                "private, no-store"
+            }),
         );
     }
     if response.status().is_success() {
@@ -161,6 +192,9 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         )))))
         .layer(Extension(guide::Guide))
         .merge(super::muse::router(images.clone(), state.host.clone()))
+        .merge(crate::interrogate::muse::router())
+        .merge(crate::video::muse::router())
+        .merge(super::ops::router())
         .merge(crate::companion_channels::muse_qq_router())
         .merge(crate::voice::muse::router())
         .merge(desktop_chat)

@@ -4,7 +4,14 @@ import { bytes, connection, exchange, requestKey, retryAfterSeconds } from './mu
 const STOPPED = new Set(['failed', 'cancelled', 'interrupted'])
 const DELIVERY_STOPPED = new Set(['expired', 'storageFull', 'integrityError', 'invalidReceipt'])
 const DELIVERY_PENDING = new Set(['onDemand', 'transferring'])
-const FAMILY_ROUTE = new Map([['anima', 'anima'], ['moss-image', 'moss'], ['qwen-image', 'qwen'], ['krea2', 'creative']])
+const FAMILY_ROUTE = new Map([
+  ['anima', 'anima'],
+  ['moss-image', 'moss'],
+  ['qwen-image', 'qwen'],
+  ['krea2', 'creative'],
+  ['keyframe', 'keyframe'],
+  ['manga-screen', 'manga'],
+])
 const TRANSIENT_STATUS = new Set([408, 429, 500, 502, 503, 504])
 const TRANSIENT_ERROR = new Set(['ABORT_ERR', 'ECONNABORTED', 'ECONNREFUSED', 'ECONNRESET', 'EAI_AGAIN', 'EPIPE', 'ETIMEDOUT', 'ERR_STREAM_PREMATURE_CLOSE'])
 

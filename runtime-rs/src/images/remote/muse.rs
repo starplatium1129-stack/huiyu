@@ -15,16 +15,24 @@ mod batches;
 pub(crate) mod companion;
 mod details;
 mod history;
+mod krea;
 mod layout;
 mod legacy;
 mod submission;
+pub(crate) mod upscale;
 use submission::SceneSelection;
 
 pub(crate) const ANIMA: &str = "anima-miaomiao-v1.6";
 const RECIPE_DATABASE: &str = "remote-scene-recipes.sqlite";
 const MAX_SEED: u64 = 9_007_199_254_740_991;
 const MAX_VARIANTS: u8 = 8;
-const RECIPE_MODELS: &[&str] = &[ANIMA, "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"];
+const RECIPE_MODELS: &[&str] = &[
+    ANIMA,
+    "moss-miaomiao-base-v1.0",
+    "moss-miaomiao-base-v1.1",
+    krea::KREA_TURBO,
+    krea::KREA_RAW,
+];
 
 pub(crate) async fn guest_catalog(state: &crate::AppState, uri: &axum::http::Uri) -> Result<Value> {
     let Query(mut input) =
@@ -112,6 +120,10 @@ pub(super) fn router(
         .route(
             "/api/muse/batches",
             post(batches::create).layer(DefaultBodyLimit::max(256 * 1024)),
+        )
+        .route(
+            upscale::UPSCALE_PATH,
+            post(upscale::create).layer(DefaultBodyLimit::max(upscale::MAX_BODY_BYTES)),
         )
         .route(
             "/api/muse/batches/{key}",
@@ -262,6 +274,8 @@ struct SceneRecipe {
     anima_with_lora: Option<Value>,
     anima_lora_source: Option<[String; 2]>,
     moss: Value,
+    #[serde(default)]
+    krea2: Option<Value>,
 }
 
 fn unavailable() -> ApiError {
@@ -396,7 +410,7 @@ impl RecipeLibrary {
     fn prepare(&self, scene: SceneSelection, default_model: Option<&str>) -> Result<PreparedScene> {
         if scene.uses_prompt_only_fields() {
             return Err(ApiError::invalid(
-                "negative、steps、cfg 和角色 LoRA 参数需要与 prompt 一起使用；目录出图可以指定 width 和 height",
+                "negative、steps、cfg、角色 LoRA、layout、referenceImages 和漫画处理参数需要与自定义 prompt/manga 一起使用；目录出图支持 width/height、Anima 底图/蒙版和 Krea 2 styleLoraId",
             ));
         }
         let (kind, id, outfit) = match (scene.id.as_deref(), scene.outfit_id.as_deref()) {
@@ -421,12 +435,21 @@ impl RecipeLibrary {
         let family = match model {
             ANIMA => "anima",
             "moss-miaomiao-base-v1.0" | "moss-miaomiao-base-v1.1" => "moss-image",
+            krea::KREA_TURBO | krea::KREA_RAW => "krea2",
             _ => {
                 return Err(ApiError::invalid(
-                    "按目录 ID 出图支持 MiaoMiao Anima 1.6 和 MOSS BASE v1.0/v1.1",
+                    "按目录 ID 出图支持 MiaoMiao Anima 1.6、MOSS BASE v1.0/v1.1 与 Krea 2 Turbo/RAW",
                 ));
             }
         };
+        if scene.style_lora_id.is_some() && family != "krea2" {
+            return Err(ApiError::invalid("styleLoraId 仅适用于 Krea 2"));
+        }
+        if scene.has_edit_fields() && family != "anima" {
+            return Err(ApiError::invalid(
+                "目录出图的参考底图、蒙版和构图控制仅适用于 Anima",
+            ));
+        }
         let (max_seed, variants) = submission::limits(&scene, family)?;
         let mut recipe = self.read(&kind, id, outfit)?;
         let candidate = recipe.anima_with_lora.take().filter(|binding| {
@@ -453,15 +476,22 @@ impl RecipeLibrary {
                 "本机场景、角色或服装已经修改，请在画室使用当前内容出图",
             ));
         }
-        let mut payload = if family == "anima" {
-            candidate.unwrap_or(recipe.anima)
-        } else {
-            recipe.moss
+        let mut payload = match family {
+            "anima" => candidate.unwrap_or(recipe.anima),
+            "krea2" => match recipe.krea2.take() {
+                Some(krea_payload) => krea_payload,
+                None => krea::build_catalog_payload(self, &kind, id, outfit, model, &recipe.anima)?,
+            },
+            _ => recipe.moss,
         };
         let fields = payload.as_object_mut().ok_or_else(unavailable)?;
         fields.insert("modelId".into(), json!(model));
+        if let Some(style) = &scene.style_lora_id {
+            fields.insert("styleLoraId".into(), json!(style));
+        }
         scene.apply_tea_cache_options(&mut payload, family)?;
         scene.apply_moss_options(&mut payload, family)?;
+        scene.apply_edit_options(&mut payload, family)?;
         submission::apply_upscale(&mut payload, family, scene.upscale)?;
         let size = submission::dimensions(scene.width, scene.height)?;
         if let Some((width, height)) = size {
@@ -472,10 +502,13 @@ impl RecipeLibrary {
             payload["height"] = json!(height);
         }
         if family == "moss-image"
+            || family == "krea2"
             || size.is_some()
             || scene.upscale.is_some()
             || scene.tea_cache.is_some()
             || scene.tea_cache_thresh.is_some()
+            || scene.style_lora_id.is_some()
+            || scene.has_edit_fields()
         {
             submission::prepare_payload(&mut payload, family)?;
         }
@@ -483,6 +516,7 @@ impl RecipeLibrary {
             kind,
             id: id.to_owned(),
             family,
+            model_id: model.to_owned(),
             payload,
             seed: scene.seed,
             max_seed,
@@ -495,6 +529,7 @@ struct PreparedScene {
     kind: String,
     id: String,
     family: &'static str,
+    model_id: String,
     payload: Value,
     seed: Option<u64>,
     max_seed: u64,

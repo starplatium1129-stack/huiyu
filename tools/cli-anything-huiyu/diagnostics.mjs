@@ -21,15 +21,24 @@ function relayStorage(storage) {
   return { usedBytes, maxBytes, readyFiles, transferringFiles, oldestExpiresAt }
 }
 
+function readRelayCapabilities(raw) {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null
+  if (typeof raw.voice !== 'boolean' || typeof raw.modelRead !== 'boolean') return null
+  const result = {}
+  for (const [key, value] of Object.entries(raw)) {
+    if (typeof value === 'boolean') result[key] = value
+  }
+  return result
+}
+
 export async function status() {
   const target = connection()
   if (target.mode === 'relay') {
     const info = await api('GET', '/api/muse/connection')
     if (typeof info?.laptopOnline === 'boolean') {
-      const { voice, modelRead } = info.capabilities ?? {}
       return { ...target, reachable: true, connected: info.laptopOnline, lastSeenAt: info.lastSeenAt ?? null,
         storage: relayStorage(info.storage),
-        relayCapabilities: typeof voice === 'boolean' && typeof modelRead === 'boolean' ? { voice, modelRead } : null }
+        relayCapabilities: readRelayCapabilities(info.capabilities) }
     }
   } else {
     const info = await guide()
@@ -126,7 +135,13 @@ async function legacyModels(modelId, character) {
 
 export async function doctor() {
   const result = { mode: null, endpoint: null, credentials: null, reachable: null, connected: null,
-    protocol: null, version: null, capabilities: { teaCache: null, upscale: null, moss: null, options: null } }
+    protocol: null, version: null,
+    capabilities: {
+      teaCache: null, upscale: null, standaloneUpscale: null, moss: null, options: null,
+      health: null, video: null, videoH3Dwd: null, videoBatch: null,
+      interrogate: null, voice: null, qq: null, desktopChat: null, gallery: null,
+      partDownload: null, rangeDownload: null,
+    } }
   let target
   try {
     target = connection()
@@ -168,10 +183,28 @@ export async function doctor() {
       try {
         const value = await api('GET', `${optionsPath}?modelId=anima-miaomiao-v1.6`)
         result.capabilities.options = Array.isArray(value?.models)
+        if (value?.standaloneUpscale !== undefined) {
+          result.capabilities.standaloneUpscale = Boolean(value.standaloneUpscale)
+        }
       } catch (error) {
         result.capabilities.options = error.httpStatus === 404 ? false : null
         result.optionsError = probeError(error)
       }
+    }
+    try {
+      const health = await api('GET', '/api/muse/health', undefined, { signal: AbortSignal.timeout(10_000) })
+      if (health?.ok === true && health.capabilities && typeof health.capabilities === 'object') {
+        result.capabilities.health = true
+        for (const key of ['video', 'videoH3Dwd', 'videoBatch', 'interrogate', 'voice', 'qq', 'desktopChat', 'gallery', 'partDownload', 'rangeDownload']) {
+          if (typeof health.capabilities[key] === 'boolean') result.capabilities[key] = health.capabilities[key]
+        }
+        result.health = { inference: health.inference ?? null, counts: health.counts ?? null }
+      } else {
+        result.capabilities.health = false
+      }
+    } catch (error) {
+      result.capabilities.health = [404, 405].includes(error.httpStatus) ? false : null
+      if (![404, 405].includes(error.httpStatus)) result.healthError = probeError(error)
     }
   } catch (error) {
     result.reachable ??= Boolean(error.httpStatus) || ['CLI_PROTOCOL_MISMATCH', 'CLI_RESPONSE_INVALID'].includes(error.code)
@@ -230,6 +263,13 @@ export function failure(error, command) {
   else if (retryable && ['draw', 'batch'].includes(command)) hint = '先用 job 和原请求编号查询。仍需重发时沿用同一编号和请求体。'
   else if (retryable) hint = '按 retryAfterSeconds 退避，再查询同一任务。'
   else if (code === 'MUSE_BATCH_NOT_FOUND') hint = '核对目标出图机和批次编号，用 recent 查询近期回执。'
+  else if (code === 'QQ_MUSE_SEND_UNCERTAIN') hint = '请先确认目标会话是否已收到消息，重试务必沿用原 requestKey 和原内容。'
+  else if (code === 'VIDEO_UNAVAILABLE') hint = '请检查主力机视频生成引擎配置与运行状态，或运行 health / video status。'
+  else if (code === 'VIDEO_INPUT_TOO_LARGE') hint = '中转 Base64 模式素材上限 3 MiB，直连上限 20 MiB，请压缩素材后重试。'
+  else if (code === 'GALLERY_ITEM_NOT_FOUND') hint = '请先用 gallery list 核对作品 ID 与 idType。'
+  else if (code === 'TASK_INPUT_MISSING' || code === 'TASK_INPUT_FORBIDDEN') hint = '请确认参考图已由当前连接身份通过 upload 上传且未过期。'
+  else if (code === 'INTERROGATE_UNAVAILABLE') hint = '请确认主力机图像反推模型已就绪，可运行 interrogate status 或 health 检查。'
+  else if (code === 'NATIVE_UPSCALER_UNAVAILABLE') hint = '请确认主力机已安装 Remacri/UltraSharp 放大权重，可用 models 检查。'
   else if (command === 'save' && code === 'RESULT_UNAVAILABLE') hint = '用 job 查看是否仍在生成，用 errors 和批次编号检查生成或交付错误。'
   return { ok: false, command, target, code, message: error.message, httpStatus: error.httpStatus, requestKey: error.requestKey, deliveryStatus: error.deliveryStatus,
     retryable, retryAfterSeconds: error.retryAfterSeconds ?? (retryable ? 2 : undefined), relayRequestId: error.relayRequestId, hint }

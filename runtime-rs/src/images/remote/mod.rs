@@ -2,6 +2,7 @@ mod client;
 pub(crate) mod agent_cli;
 mod guide;
 pub(crate) mod muse;
+pub(crate) mod ops;
 mod relay;
 mod server;
 mod upload_index;

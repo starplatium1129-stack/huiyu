@@ -5,6 +5,7 @@ mod catalog;
 mod http;
 mod inputs;
 pub(crate) use inputs::driver_mime;
+pub(crate) mod muse;
 mod native;
 mod prompt_compiler;
 mod prose;

@@ -347,6 +347,8 @@ const FAMILIES: &[(&str, &str)] = &[
     ("krea2", "creative"),
     ("qwen-image", "qwen"),
     ("moss-image", "moss"),
+    ("keyframe", "keyframe"),
+    ("manga-screen", "manga"),
 ];
 
 pub(crate) fn image_route(family: &str) -> Option<&'static str> {

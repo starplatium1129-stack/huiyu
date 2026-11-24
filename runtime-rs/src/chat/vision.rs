@@ -28,6 +28,19 @@ impl VisionRoute {
         }
     }
 
+    /// Stable, secret-free cache scope identifier for this vision route.
+    pub(crate) fn cache_identity(&self) -> String {
+        match &self.0 {
+            Destination::ChatGpt { model, .. } => format!("chatgpt:{model}"),
+            Destination::Api(api) => {
+                use sha2::{Digest, Sha256};
+                let endpoint = format!("{}{}", api.base_url, api.pathname);
+                let hash = format!("{:x}", Sha256::digest(endpoint.as_bytes()));
+                format!("api:{}:{}", api.model, &hash[..16])
+            }
+        }
+    }
+
     pub(crate) fn status(route: Option<&Self>) -> Value {
         let Some(route) = route else {
             return json!({"available":false,"provider":null,"model":null,"label":null});

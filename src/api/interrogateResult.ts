@@ -33,6 +33,8 @@ export interface InterrogateResult {
   assistFallbackReason?: string
   assistSubjectMode?: InterrogateSubjectMode
   assistLayout?: InterrogateAssistLayout
+  cacheHit?: boolean
+  cachedAt?: number
 }
 
 function record(value: unknown): Record<string, unknown> | null {
@@ -116,7 +118,9 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     || (data.assistModel !== undefined && typeof data.assistModel !== 'string')
     || (data.assistFallbackReason !== undefined && typeof data.assistFallbackReason !== 'string')
     || (data.assistSubjectMode !== undefined && data.assistSubjectMode !== 'free' && data.assistSubjectMode !== 'bound')
-    || (data.assistLayout !== undefined && !assistLayout)) {
+    || (data.assistLayout !== undefined && !assistLayout)
+    || (data.cacheHit !== undefined && typeof data.cacheHit !== 'boolean')
+    || (data.cachedAt !== undefined && (typeof data.cachedAt !== 'number' || !Number.isFinite(data.cachedAt)))) {
     throw new Error('反推结果异常，请重试')
   }
   return {
@@ -134,5 +138,7 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     ...(typeof data.assistFallbackReason === 'string' ? { assistFallbackReason: data.assistFallbackReason } : {}),
     ...(data.assistSubjectMode === 'free' || data.assistSubjectMode === 'bound' ? { assistSubjectMode: data.assistSubjectMode } : {}),
     ...(assistLayout ? { assistLayout } : {}),
+    ...(typeof data.cacheHit === 'boolean' ? { cacheHit: data.cacheHit } : {}),
+    ...(typeof data.cachedAt === 'number' && Number.isFinite(data.cachedAt) ? { cachedAt: data.cachedAt } : {}),
   }
 }
