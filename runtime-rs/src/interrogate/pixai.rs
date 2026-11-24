@@ -93,7 +93,7 @@ impl Client {
         image: Bytes,
         threshold: f64,
         cancel: CancellationToken,
-        upload_admission: OwnedSemaphorePermit,
+        upload_admission: Arc<OwnedSemaphorePermit>,
     ) -> Result<Value> {
         if !threshold.is_finite() || !(0.0..=1.0).contains(&threshold) {
             return Err(ApiError::new(400, "INVALID_PARAMETER", "反推阈值无效"));

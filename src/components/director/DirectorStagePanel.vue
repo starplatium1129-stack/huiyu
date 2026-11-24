@@ -167,6 +167,7 @@ const props = defineProps<{
   sceneTitle?: string
   applyInterrogateResult: (result: InterrogateResult, current: () => boolean) => Promise<void>
   interrogateMode: InterrogateResult['mode']
+  interrogateAssist: boolean
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -370,7 +371,7 @@ async function runInterrogateFile(file: File | (() => Promise<File>)) {
   if (interrogateBusy.value) return
   interrogatedResultUrl = null
   try {
-    await interrogate(file, props.interrogateMode)
+    await interrogate(file, { mode: props.interrogateMode, assist: props.interrogateAssist })
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
@@ -386,7 +387,7 @@ async function interrogateCurrentImage() {
   if (interrogateBusy.value) return
   interrogatedResultUrl = props.displayResultUrl
   try {
-    await interrogate(interrogatedResultUrl, props.interrogateMode)
+    await interrogate(interrogatedResultUrl, { mode: props.interrogateMode, assist: props.interrogateAssist })
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)

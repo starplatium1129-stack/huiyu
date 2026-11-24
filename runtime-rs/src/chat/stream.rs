@@ -84,6 +84,7 @@ struct Events {
     pending: VecDeque<Event>,
     json: String,
     finished: bool,
+    reject_refusals: bool,
     shutdown: CancellationToken,
     _permit: Option<Permit>,
     japanese_voice: Option<JapaneseVoice>,
@@ -181,9 +182,10 @@ impl Events {
                 Protocol::Sse => {
                     if let Some(line) = line {
                         match self.sse.push(&line)? {
-                            Some(sse::Frame::Event(event)) => self
-                                .pending
-                                .extend(self.decoder.decode(event)?.into_iter().flatten()),
+                            Some(sse::Frame::Event(event)) => {
+                                self.check_compatible_refusal(&event)?;
+                                self.pending.extend(self.decoder.decode(event)?.into_iter().flatten());
+                            }
                             Some(sse::Frame::Done) => self.finish()?,
                             None => {}
                         }
@@ -196,6 +198,9 @@ impl Events {
                     if let Some(line) = line {
                         match self.sse.push(&line)? {
                             Some(sse::Frame::Event(event)) => {
+                                if self.reject_refusals && responses_refusal(&event) {
+                                    return Err(vision_refusal());
+                                }
                                 let decoded = match self.responses.decode(event, session.request_id.as_deref()) {
                                     Ok(events) => events,
                                     Err(error) => {
@@ -242,6 +247,7 @@ impl Events {
                         let value: Value = serde_json::from_str(&source).map_err(|_| {
                             Error::stream("INVALID_JSON", "自定义 API 返回了无法识别的响应")
                         })?;
+                        self.check_compatible_refusal(&value)?;
                         let missing_message = value["choices"]
                             .as_array()
                             .and_then(|v| v.first())
@@ -258,11 +264,39 @@ impl Events {
             }
         }
     }
+    fn check_compatible_refusal(&self, value: &Value) -> Result<()> {
+        let choice = &value["choices"][0];
+        if self.reject_refusals
+            && (choice["finish_reason"] == "content_filter"
+                || [&choice["message"]["refusal"], &choice["delta"]["refusal"]]
+                    .iter()
+                    .any(|refusal| refusal.as_str().is_some_and(|text| !text.trim().is_empty())))
+        {
+            return Err(vision_refusal());
+        }
+        Ok(())
+    }
+
     fn finish(&mut self) -> Result<()> {
         self.pending.extend(self.decoder.finish()?);
         self.finished = true;
         Ok(())
     }
+}
+
+fn responses_refusal(event: &Value) -> bool {
+    fn contains_refusal(parts: &Value) -> bool {
+        parts.as_array().into_iter().flatten().any(|part| part["type"] == "refusal")
+    }
+    event["type"].as_str().is_some_and(|kind| kind.starts_with("response.refusal."))
+        || event["part"]["type"] == "refusal"
+        || contains_refusal(&event["item"]["content"])
+        || event["response"]["output"].as_array().into_iter().flatten()
+            .any(|item| contains_refusal(&item["content"]))
+}
+
+fn vision_refusal() -> Error {
+    Error::stream("VISION_REFUSAL", "视觉服务拒绝描述此图")
 }
 
 fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
@@ -292,6 +326,7 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         pending,
         json: String::new(),
         finished: false,
+        reject_refusals: false,
         shutdown,
         _permit: prepared.permit,
         japanese_voice: prepared.japanese_voice.then(JapaneseVoice::default),
@@ -300,7 +335,16 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
 }
 
 pub(super) async fn collect_text(prepared: Prepared, cancel: CancellationToken) -> Result<String> {
-    let mut events = events(prepared, cancel);
+    collect_text_events(events(prepared, cancel)).await
+}
+
+pub(super) async fn collect_vision(prepared: Prepared, cancel: CancellationToken) -> Result<String> {
+    let mut stream = events(prepared, cancel);
+    stream.reject_refusals = true;
+    collect_text_events(stream).await
+}
+
+async fn collect_text_events(mut events: Events) -> Result<String> {
     let mut text = String::new();
     while let Some(event) = events.next().await? {
         match event {

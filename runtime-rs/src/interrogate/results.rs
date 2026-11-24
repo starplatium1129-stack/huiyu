@@ -1,5 +1,16 @@
 use serde_json::{Value, json};
 
+pub(super) fn retain_threshold(result: &mut Value, threshold: f64) {
+    let mut scores = std::mem::take(&mut result["scores"]);
+    scores.as_object_mut().unwrap().retain(|_, value| {
+        value.as_f64().is_some_and(|score| score > threshold)
+    });
+    result["tags"].as_array_mut().unwrap().retain(|tag| {
+        tag.as_str().is_some_and(|key| scores.get(key).is_some())
+    });
+    result["scores"] = scores;
+}
+
 pub(super) fn caption(tags: &Value) -> String {
     let mut subject = String::new();
     let mut phrases = Vec::<String>::new();

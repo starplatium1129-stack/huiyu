@@ -1,7 +1,7 @@
 import { computed, getCurrentScope, onScopeDispose, ref } from 'vue'
 import { readInterrogateReadiness, type InterrogateReadiness } from '@/api/interrogateReadiness'
 
-export function useInterrogateReadiness() {
+export function useInterrogateReadiness(includePersonal = false) {
   const status = ref<InterrogateReadiness>({ state: 'idle', message: '尚未检查' })
   let controller: AbortController | null = null, disposed = false
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; controller?.abort(); controller = null })
@@ -13,7 +13,7 @@ export function useInterrogateReadiness() {
     signal?.addEventListener('abort', abort, { once: true })
     status.value = { state: 'checking', message: '检查中…' }
     try {
-      const result = await readInterrogateReadiness(active.signal)
+      const result = await readInterrogateReadiness(active.signal, includePersonal)
       if (disposed || controller !== active || active.signal.aborted) return false
       status.value = result
       return status.value.state === 'ready'

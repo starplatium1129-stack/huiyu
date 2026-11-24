@@ -13,11 +13,13 @@ type HomeScene = Scene & { title?: string; mature?: boolean }
 export interface HomeJournalEntry {
   id: string; title: string; story: string; category: string
   thumb?: string; thumbWidth?: number; thumbHeight?: number; rating?: string; mature?: boolean
+  image?: string; width?: number; height?: number
   fallbackTo: string; fallbackLabel: string
 }
 interface HomeMetadata { curation: CurationData; index: SceneIndex }
-type HomeSample = Pick<ShowcaseEntry, 'id' | 'title' | 'story' | 'category' | 'rating' | 'char' | 'thumbWidth' | 'thumbHeight'>
+type HomeSample = Pick<ShowcaseEntry, 'id' | 'title' | 'story' | 'category' | 'rating' | 'char' | 'thumbWidth' | 'thumbHeight' | 'image' | 'width' | 'height'>
   & { type: 'scene' | 'popular'; thumb: string }
+const showcaseImagePath = /^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/
 interface HomeCache {
   key: string
   metadata?: HomeMetadata
@@ -91,11 +93,13 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
       for (const entry of entries) {
         if ((entry.type !== 'scene' && entry.type !== 'popular') || entry.rating === 'R18') continue
         const thumb = entry.thumb || `thumbs/${entry.id}.jpg`
-        if (/^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(thumb))
+        if (showcaseImagePath.test(thumb))
           samples.set(entry.id, {
             id: entry.id, title: entry.title, story: entry.story, category: entry.category,
             char: entry.char, type: entry.type, thumb: `/scene-showcase/${thumb}`, rating: entry.rating,
             thumbWidth: entry.thumbWidth, thumbHeight: entry.thumbHeight,
+            image: entry.image && showcaseImagePath.test(entry.image) ? `/scene-showcase/${entry.image}` : undefined,
+            width: entry.width, height: entry.height,
           })
       }
       if (current()) snapshot.samples = samples
@@ -111,6 +115,7 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
         return {
           id, title: text('title'), story: text('story'), category: text('category'),
           thumb: sample?.thumb, thumbWidth: sample?.thumbWidth, thumbHeight: sample?.thumbHeight,
+          image: sample?.image, width: sample?.width, height: sample?.height,
           rating: sample?.rating ?? (typeof source.rating === 'string' ? source.rating : undefined),
           fallbackTo: popular ? '/popular-scenes?character=' + encodeURIComponent(sample.char) : '/scene-explorer?scene=' + encodeURIComponent(id),
           fallbackLabel: popular ? '查看角色场景' : '查看场景设定',

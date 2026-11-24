@@ -192,6 +192,7 @@
           @restoreStashed="onRestoreStashed"
           :apply-interrogate-result="handleInterrogateResult"
           :interrogate-mode="interrogateMode"
+          :interrogate-assist="interrogateAssist"
           @interrogateError="handleInterrogateError"
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
@@ -259,6 +260,7 @@
                 :generation-busy="generationBusy"
                 :interrogate-busy="stagePanel.interrogateBusy"
                 :interrogate-mode="interrogateMode"
+                :interrogate-assist="interrogateAssist"
                 :interrogate-error="stagePanel.interrogateError"
                 :display-result-url="displayResultUrl"
                 :draw-engine="drawEngine"
@@ -271,6 +273,7 @@
                 @interrogateClipboard="stagePanel.interrogateClipboardImage()"
                 @interrogatePaste="stagePanel.onInterrogatePaste($event)"
                 @interrogateCancel="stagePanel.cancelInterrogate()"
+                @update:interrogateAssist="setInterrogateAssist"
                 @openInpaint="inpaintOpen = true"
                 @update:inpaintCompareActive="inpaintCompareActive = $event"
                 @upscale="upscaleCurrentResult"
@@ -451,6 +454,13 @@ const drawingSetupRoute = computed(() => {
   return { path: '/control', hash, query: model ? { model } : {} }
 })
 const interrogateMode = computed(() => drawEngine.value === 'krea2' || drawEngine.value === 'moss' && pb.isUnbound ? 'caption' : 'tag')
+const interrogateAssistKey = 'aics_interrogate_assist_v1'
+const interrogateAssist = ref(false)
+try { interrogateAssist.value = localStorage.getItem(interrogateAssistKey) === '1' } catch { /* Storage can be unavailable. */ }
+function setInterrogateAssist(value: boolean) {
+  interrogateAssist.value = value
+  try { localStorage.setItem(interrogateAssistKey, value ? '1' : '0') } catch { /* Keep the current session usable. */ }
+}
 const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
   || drawEngine.value === 'moss' && pb.isUnbound && !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
   || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value || native.usingMossTaskPrompt.value))

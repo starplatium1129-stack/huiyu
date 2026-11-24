@@ -1,4 +1,5 @@
 export type InterrogateMode = 'tag' | 'caption'
+export type InterrogateAssistProvider = 'chatgpt' | 'api'
 export interface InterrogateResult {
   engine: 'pixai'
   model: 'pixai-tagger-v1.0'
@@ -14,6 +15,10 @@ export interface InterrogateResult {
   styleTags: string[]
   rating: Record<'general' | 'sensitive' | 'questionable' | 'explicit', number>
   warning?: string
+  assistUsed?: boolean
+  assistProvider?: InterrogateAssistProvider
+  assistModel?: string
+  assistFallbackReason?: string
 }
 
 function record(value: unknown): Record<string, unknown> | null {
@@ -52,7 +57,11 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     || !probability(rating.general) || !probability(rating.sensitive)
     || !probability(rating.questionable) || !probability(rating.explicit)
     || (data.captionDerived !== undefined && data.captionDerived !== 'pixai-tags')
-    || (data.warning !== undefined && typeof data.warning !== 'string')) {
+    || (data.warning !== undefined && typeof data.warning !== 'string')
+    || (data.assistUsed !== undefined && typeof data.assistUsed !== 'boolean')
+    || (data.assistProvider !== undefined && data.assistProvider !== 'chatgpt' && data.assistProvider !== 'api')
+    || (data.assistModel !== undefined && typeof data.assistModel !== 'string')
+    || (data.assistFallbackReason !== undefined && typeof data.assistFallbackReason !== 'string')) {
     throw new Error('反推结果异常，请重试')
   }
   return {
@@ -64,5 +73,9 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
       questionable: rating.questionable, explicit: rating.explicit },
     ...(data.captionDerived === 'pixai-tags' ? { captionDerived: 'pixai-tags' as const } : {}),
     ...(typeof data.warning === 'string' ? { warning: data.warning } : {}),
+    ...(typeof data.assistUsed === 'boolean' ? { assistUsed: data.assistUsed } : {}),
+    ...(data.assistProvider === 'chatgpt' || data.assistProvider === 'api' ? { assistProvider: data.assistProvider } : {}),
+    ...(typeof data.assistModel === 'string' ? { assistModel: data.assistModel } : {}),
+    ...(typeof data.assistFallbackReason === 'string' ? { assistFallbackReason: data.assistFallbackReason } : {}),
   }
 }

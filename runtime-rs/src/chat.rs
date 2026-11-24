@@ -19,6 +19,8 @@ mod stream;
 
 mod transport;
 mod validation;
+mod vision;
+pub(crate) use vision::VisionRoute;
 
 use crate::{AppState, security};
 use axum::{

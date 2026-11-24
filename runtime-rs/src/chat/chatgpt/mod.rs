@@ -104,6 +104,23 @@ impl Default for ChatGptService {
 }
 
 impl ChatGptService {
+    pub(super) async fn vision_selection(&self, settings: &Settings) -> Option<(String, String, String)> {
+        let _guard = self.storage_lock.lock().await;
+        let store = storage::load(&settings.runtime).await.ok()?;
+        let account = store.active_account()?;
+        if !account.has_session() || !account.plan_enabled() || account.usage_paused
+            || account.selected_model.is_empty()
+        {
+            return None;
+        }
+        let label = if account.selected_model_name.is_empty() {
+            &account.selected_model
+        } else {
+            &account.selected_model_name
+        };
+        Some((account.client_id.clone(), account.selected_model.clone(), label.clone()))
+    }
+
     fn stop_account(&self, client_id: &str) {
         if let Some(account) = self.accounts.lock().unwrap().remove(client_id) {
             account.cancel.cancel();

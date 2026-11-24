@@ -1,3 +1,4 @@
+mod assist;
 mod pixai;
 mod results;
 mod settings;
@@ -14,7 +15,7 @@ use crate::{
 use axum::{
     Extension, Json, Router,
     body::Bytes,
-    extract::{ConnectInfo, DefaultBodyLimit, Query, Request},
+    extract::{ConnectInfo, DefaultBodyLimit, Query, Request, State},
     http::HeaderMap,
     middleware::Next,
     response::{IntoResponse, Response},
@@ -75,6 +76,7 @@ impl InterrogateService {
         input: Value,
         image: Bytes,
         upload_admission: tokio::sync::OwnedSemaphorePermit,
+        assistance: Option<(&AppState, &HeaderMap)>,
     ) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(closed());
@@ -95,18 +97,28 @@ impl InterrogateService {
         })
         .await
         .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
-        let result = self
+        let upload_admission = Arc::new(upload_admission);
+        let original = assistance.map(|_| (input.image.clone(), upload_admission.clone()));
+        let threshold = if assistance.is_some() {
+            input.threshold.min(assist::EXPLICIT_MIN.next_down())
+        } else {
+            input.threshold
+        };
+        let mut result = self
             .client
             .read()
             .await
-            .run(input.image, input.threshold, cancel, upload_admission)
+            .run(input.image, threshold, cancel.clone(), upload_admission)
             .await?;
-        Ok(results::finish(
-            result,
-            "pixai",
-            &input.mode,
-            input.threshold,
-        ))
+        let evidence = assistance.map(|_| assist::Evidence::from_pixai(&result));
+        if threshold < input.threshold {
+            results::retain_threshold(&mut result, input.threshold);
+        }
+        let mut result = results::finish(result, "pixai", &input.mode, input.threshold);
+        if let (Some((app, headers)), Some(original), Some(evidence)) = (assistance, original, evidence) {
+            assist::enrich(app, headers, self.validation.clone(), original, evidence, &cancel, &mut result).await;
+        }
+        Ok(result)
     }
 }
 fn closed() -> ApiError {
@@ -186,17 +198,28 @@ async fn local_only(
     next.run(request).await
 }
 async fn interrogate_raw(
+    State(app): State<AppState>,
     Extension(service): Extension<Arc<InterrogateService>>,
     Query(parameters): Query<HashMap<String, String>>,
+    headers: HeaderMap,
     RawUploadBody(image, admission): RawUploadBody,
 ) -> Result<Json<Value>> {
+    let assist = parameters.get("assist").is_some_and(|value| value == "1");
     service
-        .interrogate(json!(parameters), image, admission)
+        .interrogate(json!(parameters), image, admission, assist.then_some((&app, &headers)))
         .await
         .map(Json)
 }
-async fn status(Extension(service): Extension<Arc<InterrogateService>>) -> Result<Json<Value>> {
+async fn status(
+    State(app): State<AppState>,
+    Extension(service): Extension<Arc<InterrogateService>>,
+    headers: HeaderMap,
+) -> Result<Json<Value>> {
+    let route = match &app.chat {
+        Some(chat) => chat.vision_route(&app, &headers).await,
+        None => None,
+    };
     Ok(Json(
-        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.read().await.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES}),
+        json!({"ok":true,"local":true,"defaultEngine":"pixai","engines":["pixai"],"pixai":service.client.read().await.probe().await,"thresholdDefault":0.17,"maxBytes":MAX_BYTES,"assist":crate::chat::VisionRoute::status(route.as_ref())}),
     ))
 }

@@ -9,9 +9,9 @@
     </header>
     <p v-if="error" class="journal-error" role="status">{{ error }}</p>
     <div id="journal-spread" ref="listRoot" class="journal-spread tw:grid" :aria-busy="loading">
-      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.thumb || '/scene-showcase/thumbs/' + scene.id + '.jpg' : undefined" v-slot="{ image, loaded, failed }">
+      <RuntimeImage v-for="({ scene, src, width, height }, index) in cards" :key="scene.id" :src="imagesReady ? src : undefined" v-slot="{ image, loaded, failed }">
       <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :data-list-key="scene.id" :data-sensitive="scene.rating === 'R18' || scene.mature" :to="failed ? scene.fallbackTo : '/showcase?scene=' + encodeURIComponent(scene.id)">
-        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" :width="scene.thumbWidth" :height="scene.thumbHeight" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张未找到' : '样张加载中…' }}</span><CardEdgeLight /></div>
+        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" :width="width" :height="height" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张未找到' : '样张加载中…' }}</span><CardEdgeLight /></div>
         <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? scene.fallbackLabel : '查看场景' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
       </RuntimeImage>
@@ -31,7 +31,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, onScopeDispose, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onScopeDispose, ref, watch } from 'vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
@@ -43,6 +43,15 @@ const emit = defineEmits<{ refresh: []; approach: [] }>()
 const section = ref<HTMLElement | null>(null), imagesReady = ref(false)
 const refreshButton = ref<HTMLButtonElement | null>(null)
 const listRoot = ref<HTMLElement | null>(null)
+const cards = computed(() => props.scenes.slice(0, 3).map((scene, index) => {
+  const original = index === 0 ? scene.image : undefined
+  return {
+    scene,
+    src: original || scene.thumb || `/scene-showcase/thumbs/${scene.id}.jpg`,
+    width: (original ? scene.width : undefined) ?? scene.thumbWidth,
+    height: (original ? scene.height : undefined) ?? scene.thumbHeight,
+  }
+}))
 useListTransition(listRoot, () => props.scenes.slice(0, 3).map(scene => scene.id))
 watch(() => props.loading, async (loading, previous) => {
   if (loading || !previous || document.activeElement !== refreshButton.value) return
@@ -57,7 +66,7 @@ function activateImages() {
 }
 onMounted(() => {
   if (!('IntersectionObserver' in window)) { activateImages(); return }
-  // The spread and its thumbnails only need to load when the reader approaches it.
+  // Load the spread's artwork when the reader approaches it.
   observer = new IntersectionObserver(entries => {
     if (entries.some(entry => entry.isIntersecting)) activateImages()
   }, { rootMargin: '300px' })

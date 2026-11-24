@@ -36,7 +36,9 @@ export function useInterrogate(applyResult: (result: InterrogateResult, current:
   }
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancel() })
 
-  async function interrogate(source: File | string | (() => Promise<File>), mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult | null> {
+  async function interrogate(source: File | string | (() => Promise<File>),
+    { mode = 'tag', threshold = 0.17, assist = false }: { mode?: InterrogateMode; threshold?: number; assist?: boolean } = {},
+  ): Promise<InterrogateResult | null> {
     if (busy.value || disposed || !viewActive) return null
     if (appContext) activeRequests.get(appContext)?.()
     busy.value = true
@@ -51,7 +53,7 @@ export function useInterrogate(applyResult: (result: InterrogateResult, current:
     let applying = false
     activeController = controller
     if (appContext) activeRequests.set(appContext, cancel)
-    const timeout = setTimeout(() => controller.abort(), 120_000)
+    const timeout = setTimeout(() => controller.abort(), assist ? 155_000 : 120_000)
     try {
       // Start user-activated clipboard reads before the first await. Consume
       // rejection immediately while readiness is pending; nothing is uploaded
@@ -86,7 +88,7 @@ export function useInterrogate(applyResult: (result: InterrogateResult, current:
       const { interrogateImageFile } = await abortableTask(() => import('../api/interrogateImage.ts'), controller.signal)
       if (activeController !== controller) return null
       controller.signal.throwIfAborted()
-      const data = await interrogateImageFile(file, controller.signal, mode, threshold)
+      const data = await interrogateImageFile(file, controller.signal, mode, threshold, assist)
       if (activeController !== controller) return null
       controller.signal.throwIfAborted()
       applying = true

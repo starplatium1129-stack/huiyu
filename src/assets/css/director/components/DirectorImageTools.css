@@ -19,6 +19,7 @@
 .pb .image-tools .reference-interrogate > summary { cursor:pointer; list-style:none; }
 .pb .image-tools .reference-interrogate > summary::-webkit-details-marker { display:none; }
 .pb .image-tools .reference-interrogate-body { display:grid; gap:var(--s-3); padding:0 var(--s-3) var(--s-3); }
+.pb .image-tool-assist { display:grid; justify-items:start; gap:var(--s-1); min-width:0; }
 .pb .image-tool-subactions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-2); }
 .pb .image-tool-subactions > .studio-tooltip-anchor[data-anchor] { display:flex; min-width:0; }
 .pb .image-tool-subactions .btn { width:100%; min-width:0; white-space:normal; }

@@ -14,14 +14,18 @@ function interrogateFailure(status: number): string {
 
 /** Both callers have checked readiness and own cancellation before reaching image I/O. */
 export async function interrogateImageFile(file: Blob, signal: AbortSignal,
-  mode: InterrogateMode = 'tag', threshold = 0.17): Promise<InterrogateResult> {
+  mode: InterrogateMode = 'tag', threshold = 0.17, assist = false): Promise<InterrogateResult> {
   signal.throwIfAborted()
   if (!file.size) throw new Error('请选择图片')
   if (file.size > 20 * 1024 * 1024) throw new Error('图片超过 20MB 限制')
   if (!file.type.startsWith('image/')) throw new Error('仅支持图片文件')
   const query = new URLSearchParams({ mode, threshold: String(threshold) })
+  const personal = assist ? await (await import('./interrogateChatSettings')).interrogateChatHeaders(signal, true) : {}
+  signal.throwIfAborted()
+  if (assist) query.set('assist', '1')
   const response = await runtimeFetch(`/api/interrogate/raw?${query}`, { method: 'POST', signal,
-    headers: { 'Content-Type': 'application/octet-stream' }, body: file })
+    ...(assist ? { redirect: 'error' } : {}),
+    headers: { 'Content-Type': 'application/octet-stream', ...personal }, body: file })
   return readResult(response, signal, mode)
 }
 

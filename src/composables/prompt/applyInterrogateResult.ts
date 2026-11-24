@@ -6,6 +6,7 @@ import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
+import type { InterrogateResult } from '@/api/interrogateResult'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true, usingMoss = false) {
   if (!current() || !result || typeof result !== 'object') return
@@ -13,7 +14,11 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.flash('反推暂不可用，请稍后重试')
     return
   }
-  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; scores?: Record<string, unknown>; characterTags?: unknown; copyrightTags?: unknown; styleTags?: unknown; rating?: Record<string, unknown>; warning?: string }
+  const payload = result as Partial<InterrogateResult>
+  function flash(message: string, captionAdopted = false) {
+    if (payload.warning) pb.flash(`${payload.warning}；${message}`, 5200, 'warning')
+    else pb.flash(payload.assistUsed && captionAdopted ? `${message}；已通过${payload.assistProvider === 'chatgpt' ? ' ChatGPT' : '聊天 API'}协同补全描述` : message)
+  }
   const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
   const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
   const copyrightTags = strings(payload.copyrightTags)
@@ -28,14 +33,14 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const works = copyrightTags.length ? copyrightTags : [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
       .filter(subject => subject.characterTokens?.some(tag => characterKeys.has(normalizeKey(tag))))
       .flatMap(subject => subject.copyrightTokens ?? [])
-    const rating = ['general', 'sensitive', 'questionable', 'explicit']
+    const rating = (['general', 'sensitive', 'questionable', 'explicit'] as const)
       .map(key => [key, payload.rating?.[key]] as const)
-      .filter((item): item is readonly [string, number] => typeof item[1] === 'number' && Number.isFinite(item[1]) && item[1] > 0 && item[1] <= 1)
+      .filter((item): item is readonly [keyof InterrogateResult['rating'], number] => typeof item[1] === 'number' && Number.isFinite(item[1]) && item[1] > 0 && item[1] <= 1)
       .sort((a, b) => b[1] - a[1])[0]?.[0]
     const source = [...new Set([...resolved.tags, ...characterTags, ...works, ...artistTags])]
     const tags = source.filter(tag => !isCensorTag(tag))
-    const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
-    if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
+    const caption = (payload.mode === 'caption' || payload.assistUsed) && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
+    if (!tags.length && !caption) { flash('未找到可采用的反推内容，请调整阈值后重试'); return }
     if (tagMetadata && rating && tags.length) tags.unshift(rating === 'general' ? 'safe' : rating)
     const prior = pb.referenceInput
     const unchangedCaption = prior?.captionInEditor && pb.visualDescription === prior.caption
@@ -50,8 +55,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
     const adopted = [caption && '原图描述', tags.length && `${tags.length} 个原图词条`].filter(Boolean).join('和')
-    pb.flash(`已采用${adopted}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`)
-    if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
+    flash(`已采用${adopted}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`, Boolean(caption))
     return
   }
   const { splitReferenceTags } = await import('@/utils/interrogateReference')
@@ -63,7 +67,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   // A free caption can mix identity with clothes and scenery. Only structured
   // tags enter the transferable layer; never overwrite the user's own prose.
   if (!reference.tags.length && !artistTags.length) {
-    pb.flash('未找到可安全套用的非身份词条；人物特征与无法拆分的描述未写入，请核对后手动补充衣服、姿势或背景')
+    flash('未找到可安全套用的非身份词条；人物特征与无法拆分的描述未写入，请核对后手动补充衣服、姿势或背景')
     return
   }
   const subject = pb.subject
@@ -114,7 +118,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   for (const tag of accepted) if (!referenceOutfit.includes(tag)) next.add(tag)
   for (const tag of referenceArtists) next.add(tag)
   if (!accepted.size && !referenceOutfit.length && !referenceArtists.length) {
-    pb.flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
+    flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
     return
   }
   // A reference replaces inherited rendering input in both subject modes.
@@ -146,6 +150,5 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   if (merged.conflicts.length) parts.push(`保留现有设置，跳过冲突词条 ${merged.conflicts.length} 项：${merged.conflicts[0].reason}`)
   if (merged.filtered.length) parts.push(`过滤噪点或元数据 ${merged.filtered.length} 项`)
   if (note) parts.push(note)
-  pb.flash(parts.join('；'))
-  if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
+  flash(parts.join('；'))
 }
