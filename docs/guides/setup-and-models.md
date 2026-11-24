@@ -197,10 +197,10 @@ python -I -B tools/inference/studio_export_assets.py --models-root "D:\HuiyuAI\i
 
 ```powershell
 # 检查模型文件与路径状态
-npm run wf -- models:check --json
+npm run wf -- models:check-environment --json
 
 # 逐字节核对已知模型哈希（会产生磁盘读取）
-npm run wf -- models:check --json --verify-hashes
+npm run wf -- models:check-environment --json --verify-hashes
 ```
 
 ---

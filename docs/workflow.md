@@ -103,6 +103,8 @@ MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线�
 | `npm run typecheck` | 前端、Node 维护工具与独立脚本类型检查 |
 | `npm run build:runtime` | 从 TypeScript 构建运行时维护工具；仅在工具源变化时执行，不手改生成的 `.js` |
 | `npm run build` | 前端网页构建、包体预算核对与预压缩 |
+| `npm run wf -- models:check` | 离线核对模型 ID、文件字节数、SHA-256、镜像与脚本引用，识别固定 Git 对象和 Git LFS 指针 |
+| `npm run wf -- models:check-environment` | 检查本机硬件清单、模型文件及 PixAI 配置路径，可加 `--verify-hashes` 核对本机权重 |
 | `npm run wf -- rust:build` | 构建 Rust release 网关及绑定回执 |
 | `npm run wf -- rust:build:dev` | 快速构建开发后端（不生成发行回执） |
 | `npm run build:tauri` | 构建原生桌面端程序 |
