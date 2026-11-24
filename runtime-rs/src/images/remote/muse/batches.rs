@@ -14,6 +14,8 @@ pub(super) struct Batch {
     width: Option<u64>,
     height: Option<u64>,
     upscale: Option<submission::Upscale>,
+    tea_cache: Option<bool>,
+    tea_cache_thresh: Option<f64>,
     moss_sampler: Option<String>,
     moss_acceleration: Option<String>,
     moss_spectrum_flex_window: Option<f64>,
@@ -40,6 +42,8 @@ impl Batch {
             scene.variants = scene.variants.or(self.variants);
             scene.seed = scene.seed.or(self.seed);
             scene.upscale = scene.upscale.or(self.upscale);
+            scene.tea_cache = scene.tea_cache.or(self.tea_cache);
+            scene.tea_cache_thresh = scene.tea_cache_thresh.or(self.tea_cache_thresh);
             if scene.moss_sampler.is_none() {
                 scene.moss_sampler.clone_from(&self.moss_sampler);
             }

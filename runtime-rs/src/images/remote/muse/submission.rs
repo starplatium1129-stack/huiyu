@@ -24,6 +24,10 @@ pub(super) struct SceneSelection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) upscale: Option<Upscale>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) tea_cache: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) tea_cache_thresh: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) moss_sampler: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) moss_acceleration: Option<String>,
@@ -77,6 +81,23 @@ pub(super) fn apply_upscale(payload: &mut Value, family: &str, upscale: Option<U
 }
 
 impl SceneSelection {
+    pub(super) fn apply_tea_cache_options(&self, payload: &mut Value, family: &str) -> Result<()> {
+        if self.tea_cache.is_none() && self.tea_cache_thresh.is_none() {
+            return Ok(());
+        }
+        if family != "anima" {
+            return Err(ApiError::invalid("TeaCache 开关和阈值仅适用于 Anima"));
+        }
+        if let Some(enabled) = self.tea_cache {
+            payload["teaCache"] = json!(enabled);
+        }
+        if let Some(threshold) = self.tea_cache_thresh {
+            payload["teaCacheThresh"] =
+                validation::number(&json!(threshold), "teaCacheThresh", 0., 1., false)?;
+        }
+        Ok(())
+    }
+
     pub(super) fn apply_moss_options(&self, payload: &mut Value, family: &str) -> Result<()> {
         if family != "moss-image"
             && (self.moss_sampler.is_some()
@@ -202,6 +223,7 @@ pub(super) fn custom(
             .ok_or_else(|| ApiError::invalid("此模型需要显式指定 width 和 height"))?,
     };
     let mut payload = json!({"modelId":model,"prompt":input.prompt,"width":width,"height":height});
+    input.apply_tea_cache_options(&mut payload, family)?;
     input.apply_moss_options(&mut payload, family)?;
     apply_upscale(&mut payload, family, input.upscale)?;
     if let Some(value) = input.negative {

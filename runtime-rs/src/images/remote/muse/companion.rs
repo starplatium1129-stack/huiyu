@@ -2,6 +2,37 @@ use super::*;
 use crate::{AppState, host::Session, storage::Storage};
 use axum::http::{Method, Uri};
 
+pub(in crate::images::remote) const OPTIONS_PATH: &str = "/api/muse/options";
+
+#[derive(serde::Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub(super) struct DrawingOptionsQuery {
+    model_id: Option<String>,
+    character: Option<String>,
+}
+
+pub(super) async fn remote_drawing_options(
+    State(state): State<AppState>,
+    Extension(muse): Extension<Arc<Muse>>,
+    Query(query): Query<DrawingOptionsQuery>,
+) -> Response {
+    if let Some(response) = muse.search_limit.check(false) {
+        return response;
+    }
+    let cancel = state.shutdown.child_token();
+    let _guard = cancel.clone().drop_guard();
+    http::response(
+        drawing_options(
+            &state,
+            query.model_id.as_deref(),
+            query.character.as_deref(),
+            cancel,
+        )
+        .await,
+        StatusCode::OK,
+    )
+}
+
 pub(crate) async fn catalog(state: &AppState, uri: &Uri) -> Result<Value> {
     check_permission(state, "search_drawing_catalog").await?;
     catalog_inner(state, uri).await
@@ -21,9 +52,18 @@ pub(crate) async fn drawing_options(
     character: Option<&str>,
     cancel: tokio_util::sync::CancellationToken,
 ) -> Result<Value> {
+    if [model_id, character].into_iter().flatten().any(|value| {
+        value.trim().is_empty() || value.chars().count() > 160 || value.chars().any(char::is_control)
+    }) {
+        return Err(ApiError::invalid(
+            "modelId 和 character 须为 1–160 字且不含控制字符",
+        ));
+    }
+    let model_id = model_id.map(str::trim);
     state.host.check_running()?;
     let images = state.images.as_ref().ok_or_else(closed)?;
-    if images.backend.native_settings()?.engine != "native" {
+    let settings = images.backend.native_settings()?;
+    if settings.engine != "native" {
         return Ok(json!({"available":false,"models":[]}));
     }
     let status = crate::images::native::status(&images.backend, "", cancel).await?;
@@ -44,24 +84,56 @@ pub(crate) async fn drawing_options(
             json!({"id":id,"label":model["label"],"family":model["family"],"available":model["available"],
                 "catalogRecipes":RECIPE_MODELS.contains(&id),"sizes":model["sizes"],"sizeLimits":size_limits,
                 "defaultSize":default_size,"defaults":model["defaults"],"negative":model["capabilities"]["negative"],
-                "hiresUpscalers":model["capabilities"]["hiresUpscalers"],"mossErSde":model["mossErSde"]})
+                "teaCache":model["capabilities"]["teaCache"],"hiresUpscalers":model["capabilities"]["hiresUpscalers"],
+                "mossErSde":model["mossErSde"],"mossAcceleration":model["mossAcceleration"],
+                "mossAdaptiveSpectrum":model["mossAdaptiveSpectrum"],"mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"]})
         })
         .collect();
-    let default_lora = character.and_then(|character| {
-        let binding = status["characters"].as_array()?.iter().find(|item| {
+    let character = character.map(|value| match value.trim() {
+        "宁宁" => "nene",
+        "夏目" => "natsume",
+        name => name,
+    });
+    let binding = character.and_then(|character| {
+        status["characters"].as_array()?.iter().find(|item| {
             item["id"] == character || item["label"] == character
-        })?;
-        let lora = status["loras"].as_array()?.iter().find(|lora| {
-            lora["id"] == binding["loraId"] && lora["available"] == true
-        })?;
+        })
+    });
+    let character_id = binding.and_then(|value| value["id"].as_str()).or(character);
+    let contains = |values: &Value, expected: &str| {
+        values.as_array().is_some_and(|values| {
+            values.iter().any(|value| value.as_str() == Some(expected))
+        })
+    };
+    let compatible_lora = |lora: &Value| {
+        lora["available"] == true
+            && model_id.is_none_or(|id| contains(&lora["compatibleModels"], id))
+    };
+    let default_lora = binding.and_then(|binding| {
+        let lora = status["loras"].as_array()?.iter()
+            .find(|lora| lora["id"] == binding["loraId"] && compatible_lora(lora))?;
         Some(json!({"character":binding["id"],"loraId":lora["id"],"compatibleModels":lora["compatibleModels"]}))
     });
-    let installed = |key: &str| status[key].as_array().into_iter().flatten()
-        .filter(|lora| lora["available"] == true).cloned().collect::<Vec<_>>();
+    let loras: Vec<_> = status["loras"].as_array().into_iter().flatten()
+        .filter(|lora| compatible_lora(lora) && character_id.is_none_or(|id|
+            lora["character"] == id || contains(&lora["characters"], id)))
+        .collect();
+    let includes_styles = model_id.is_none_or(|id|
+        generation::native::adapters::model(id).is_some_and(|spec| spec["family"] == "krea2"));
+    let style_loras: Vec<_> = status["styleLoras"].as_array().into_iter().flatten()
+        .filter(|lora| includes_styles && lora["available"] == true)
+        .collect();
+    let models_root = settings.models_root;
+    let installed_upscalers = tokio::task::spawn_blocking(move || {
+        use generation::native::resources;
+        json!({"ultrasharp":resources::ultrasharp(&models_root).is_some(),
+            "remacri":resources::remacri(&models_root).is_some()})
+    }).await.map_err(|_| unavailable())?;
     let guide = super::super::guide::Guide::document();
     Ok(json!({"available":status["online"],"defaultModelId":ANIMA,"models":models,
-        "characterDefaultLora":default_lora,"loras":installed("loras"),"styleLoras":installed("styleLoras"),
-        "upscale":guide["upscale"],"moss":guide["moss"]}))
+        "characterDefaultLora":default_lora,"loras":loras,"styleLoras":style_loras,
+        "upscale":guide["upscale"],"installedUpscalers":installed_upscalers,
+        "teaCache":guide["teaCache"],"moss":guide["moss"]}))
 }
 
 async fn catalog_inner(state: &AppState, uri: &Uri) -> Result<Value> {

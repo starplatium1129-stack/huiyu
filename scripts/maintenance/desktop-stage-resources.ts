@@ -115,7 +115,7 @@ function stageDesktopCli(root: string, gateway: string, io = directIO, local = f
   const source = safe.resolveSafe(root, 'tools/cli-anything-huiyu');
   const target = path.join(gateway, 'tools/cli-anything-huiyu');
   io.directory(target);
-  for (const name of ['cli.mjs', 'muse.mjs', 'diagnostics.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
+  for (const name of ['cli.mjs', 'muse.mjs', 'diagnostics.mjs', 'download.mjs', 'wait.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
     io.copy(safe.resolveSafe(source, name), path.join(target, name));
   }
   const launcher = safe.resolveSafe(source, 'launcher.rs');

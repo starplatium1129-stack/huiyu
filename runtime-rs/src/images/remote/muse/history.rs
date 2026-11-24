@@ -6,6 +6,8 @@ pub(super) struct Recent {
     since: Option<String>,
     before: Option<String>,
     limit: Option<u32>,
+    agent: Option<String>,
+    status: Option<String>,
 }
 
 pub(super) async fn recent(
@@ -21,6 +23,18 @@ pub(super) async fn recent(
         let limit = input.limit.unwrap_or(30);
         if !(1..=100).contains(&limit) {
             return Err(ApiError::invalid("limit 须为 1–100"));
+        }
+        if let Some(agent) = &input.agent
+            && (agent.len() > 32
+                || !agent.as_bytes().first().is_some_and(u8::is_ascii_alphanumeric)
+                || !agent.bytes().all(|byte| byte.is_ascii_alphanumeric() || byte == b'-'))
+        {
+            return Err(ApiError::invalid("agent 须为 1–32 个字母、数字或连字符，并以字母或数字开头"));
+        }
+        if let Some(status) = input.status.as_deref()
+            && !matches!(status, "waiting" | "queued" | "running" | "cancelling" | "succeeded" | "failed" | "cancelled" | "interrupted" | "completed")
+        {
+            return Err(ApiError::invalid("status 需要有效的任务状态"));
         }
         let time = |value: &str| {
             value
@@ -102,6 +116,12 @@ pub(super) async fn recent(
                 }
             }
         }
+        let prefix = input.agent.map(|agent| format!("{agent}_"));
+        items.retain(|item| {
+            prefix.as_deref().is_none_or(|prefix| {
+                item["batchKey"].as_str().is_some_and(|key| key.starts_with(prefix))
+            }) && input.status.as_deref().is_none_or(|status| item["status"] == status)
+        });
         let batches = items
             .iter()
             .filter(|item| item["entryType"] == "batch")

@@ -51,6 +51,15 @@ $job = & $cli --json draw --id sc093 | ConvertFrom-Json
 & $cli save $job.batchKey ".\成图.png"
 ```
 
+也可以一次提交、等待并保存。Anima 可用 `--tea-cache-thresh 0.08` 调整本次加速阈值，或用 `--tea-cache off` 停用加速。
+
+```powershell
+& $cli --json draw --id sc093 --tea-cache-thresh 0.08 --out ".\成图.png"
+& $cli --json batch --ids sc041,sc093 --out-dir ".\成图"
+& $cli --json models
+& $cli --json doctor
+```
+
 默认端口为 3211。使用自定义端口时，先把 `$env:HUIYU_CLI_PORT` 设为控制室显示的值。输入 `& $cli --help` 查看命令，或输入 `& $cli` 逐条操作。在源码目录可直接运行 `node tools/cli-anything-huiyu/cli.mjs --help`。助手使用说明在命令入口旁的 `SKILL.md`。[CLI-Anything 项目](https://github.com/HKUDS/CLI-Anything)
 
 ### 多个助手共用一台出图机

@@ -6,10 +6,10 @@
     "parameters": {
       "type": "object",
       "properties": {
-        "action": { "type": "string", "enum": ["status", "key", "catalog", "detail", "draw", "batch", "queue", "recent", "job", "errors", "cancel", "save"] },
+        "action": { "type": "string", "enum": ["status", "key", "catalog", "detail", "models", "draw", "batch", "queue", "recent", "job", "errors", "cancel", "save"] },
         "batchKey": { "type": "string", "description": "提交、查单、取消或归档使用的共享编号。errors 可省略编号查看近期失败。" },
         "item": { "type": "integer", "minimum": 1, "description": "单张取消或归档，序号从 1 开始。" },
-        "params": { "type": "object", "description": "catalog 支持 kind/search/character/page/pageSize；detail 传 kind 和 id；draw 传 id 或 prompt 及绘图参数；batch 传 ids 或 items（可指定 modelId 等）；recent 或无编号 errors 支持 limit/before/since，errors 还可按 agent 筛选。其他操作省略。save 将 PNG 归档到工具运行的电脑。", "additionalProperties": true }
+        "params": { "type": "object", "description": "catalog 支持 kind、search、character、category、rating、page、pageSize。detail 传 kind、id。models 可传 modelId、character。draw 传 id、独立 outfitId 或 prompt。kind 可为 scene、blueprint、outfit、prompt，目录 id 可附 outfitId 换装。通用出图字段有 modelId、seed、variants、width 和 height（成对传）、upscale（off、ultrasharp、remacri）、teaCache（布尔）、teaCacheThresh（0–1，0 停用）、mossSampler、mossAcceleration、mossSpectrumFlexWindow。自定义 prompt 可加 negative、steps、cfg、character、loraId、loraStrength、styleLoraId，具体支持依模型。batch 传 ids 或 items（兼容 scenes），items 内可用全部 draw 字段。通用出图字段可作整批默认值并由 items 逐项覆盖。TeaCache 仅用于 Anima，MOSS 加速字段仅用于 MOSS，混合模型时放对应项内。recent 支持 limit、before、since、agent、status，无编号的 errors 支持 limit、before、since、agent。其他操作省略 params。save 将 PNG 归档到工具运行的电脑。", "additionalProperties": true }
       },
       "required": ["action"],
       "additionalProperties": false

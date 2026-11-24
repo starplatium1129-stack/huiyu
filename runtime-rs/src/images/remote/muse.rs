@@ -97,6 +97,7 @@ pub(super) fn router(
         .spawn(async move { batches::dispatch(worker, host).await });
     Router::new()
         .route("/api/muse/catalog", get(search))
+        .route(companion::OPTIONS_PATH, get(companion::remote_drawing_options))
         .route(
             "/api/muse/catalog/{kind}/{*id}",
             get(details::recipe_detail),
@@ -459,6 +460,7 @@ impl RecipeLibrary {
         };
         let fields = payload.as_object_mut().ok_or_else(unavailable)?;
         fields.insert("modelId".into(), json!(model));
+        scene.apply_tea_cache_options(&mut payload, family)?;
         scene.apply_moss_options(&mut payload, family)?;
         submission::apply_upscale(&mut payload, family, scene.upscale)?;
         let size = submission::dimensions(scene.width, scene.height)?;
@@ -469,7 +471,12 @@ impl RecipeLibrary {
             payload["width"] = json!(width);
             payload["height"] = json!(height);
         }
-        if family == "moss-image" || size.is_some() || scene.upscale.is_some() {
+        if family == "moss-image"
+            || size.is_some()
+            || scene.upscale.is_some()
+            || scene.tea_cache.is_some()
+            || scene.tea_cache_thresh.is_some()
+        {
             submission::prepare_payload(&mut payload, family)?;
         }
         Ok(PreparedScene {

@@ -42,6 +42,12 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "off": "关闭放大，可覆盖批量默认。",
             "usage": "单张、自定义及批量均可用；items 优先于顶层默认值。width/height 传放大前尺寸。"
         },
+        "teaCache": {
+            "family": "anima",
+            "teaCache": {"type": "boolean", "default": true},
+            "teaCacheThresh": {"min": 0, "max": 1, "default": 0.1},
+            "usage": "目录或自定义出图均可用。省略时沿用模型或配方默认值；false 或阈值 0 停用加速。整批可传顶层默认值，每项可覆盖；混合模型时只在 Anima 项内传。"
+        },
         "moss": {
             "mossSampler": ["euler", "er-sde"],
             "mossAcceleration": ["off", "spectrum", "spectrum-adaptive"],
@@ -83,27 +89,31 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
                 "method": "GET", "path": "/api/muse/catalog/{kind}/{id}",
                 "usage": "查场景/蓝图种子与变体，或服装 tokens 与 compatibleModels（保留 id 内斜杠）。"
             },
+            "options": {
+                "method": "GET", "path": super::muse::companion::OPTIONS_PATH,
+                "usage": "查询已安装模型、默认参数和尺寸、可用 LoRA 与放大权重。可传 modelId 查看指定模型，或用 character 查对应角色的 LoRA。"
+            },
             "draw": {
                 "method": "POST", "path": "/api/muse/jobs",
-                "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "upscale": "ultrasharp"},
-                "usage": "传场景/蓝图 id（可附同角色 outfitId 换装，或仅传 outfitId 出服装图）；可选成对 width/height、seed、modelId、upscale，单项 ≤8 张。"
+                "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "teaCacheThresh": 0.06},
+                "usage": "传场景/蓝图 id（可附同角色 outfitId 换装，或仅传 outfitId 出服装图）；可选成对 width/height、seed、modelId、upscale 和 Anima 的 TeaCache 参数，单项 ≤8 张。"
             },
             "prompt": {
                 "method": "POST", "path": "/api/muse/jobs",
                 "json": {"prompt":"your image prompt","requestKey":"replace-with-new-uuid"},
-                "usage": "自定义 prompt（不与目录 id 混用）；可选 modelId、width/height、seed、variants；Anima 支持 upscale 与 character 自动匹配本机 LoRA。"
+                "usage": "自定义 prompt（不与目录 id 混用）；可选 modelId、width/height、seed、variants；Anima 支持 TeaCache、upscale 与 character 自动匹配本机 LoRA。"
             },
             "batch": {
                 "method": "POST", "path": "/api/muse/batches",
                 "json": {"ids": ["sc041", "sc093"], "requestKey": "replace-with-new-uuid", "upscale": "remacri"},
-                "usage": "传 ids 或逐项 items，整批 ≤16 张；顶层 width/height/upscale 可作批量默认并由单项覆盖。"
+                "usage": "传 ids 或逐项 items，整批 ≤16 张；顶层 width/height/upscale、teaCache/teaCacheThresh 可作批量默认并由单项覆盖。"
             },
             "queue": {"method": "GET", "path": "/api/muse/queue", "usage": "查排队位置、进度与预估时间。"},
             "uploadedInputs": {
                 "method": "POST", "path": "/api/muse/inputs/lookup",
                 "usage": "传 ≤16 个小写 SHA-256 数组查询可复用参考图，缺少的再经对应模型 images/raw 上传。"
             },
-            "recent": {"method": "GET", "path": "/api/muse/jobs", "usage": "断线后按 items（entryType=batch|image）的 statusPath 恢复；支持 since（RFC3339 或 Unix 毫秒）。"}
+            "recent": {"method": "GET", "path": "/api/muse/jobs", "usage": "按 statusPath 恢复任务。支持 since（RFC3339 或 Unix 毫秒）、agent 和 status。筛选后空页也可能有 nextBefore。"}
         },
         "retry": "新任务用新 requestKey；断线/超时重试沿用原 requestKey 与原请求体。",
         "resultParts": {

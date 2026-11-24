@@ -42,6 +42,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         || ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
             .iter()
             .any(|prefix| path.starts_with(prefix))
+        || (request.method() == axum::http::Method::GET && path == super::muse::companion::OPTIONS_PATH)
         || matches!(
             path,
             "/api/muse/catalog"

@@ -10,6 +10,7 @@ const chatPath = path => path.startsWith('/api/muse/qq/') || path.startsWith('/a
 const VOICE_SYNTHESIZE = '/api/muse/voice/synthesize'
 const VOICE_STATUS = '/api/muse/voice/status'
 const voicePath = path => path === VOICE_STATUS || path === VOICE_SYNTHESIZE
+const modelReadPath = path => path === '/api/muse/options' || /^\/api\/(anima|moss|qwen|creative)\/status$/.test(path)
 const privateRpcPath = path => chatPath(path) || voicePath(path)
 const DESKTOP_INBOX = '/api/muse/desktop/inbox'
 const inboxPath = path => path === DESKTOP_INBOX || path === '/api/muse/qq/inbox'
@@ -30,6 +31,7 @@ const unavailable = () => problem(503, 'MUSE_LAPTOP_UNAVAILABLE', '出图机暂�
 const inboxUnavailable = () => problem(503, 'MUSE_CONNECTOR_INBOX_NO_REPLY', '出图机连接器近期在线，但这次取信未收到回执。请续接原收信地址', { 'Retry-After': '3' })
 const voiceBusy = () => ({ status: 429, data: { ok: false, code: 'MUSE_VOICE_BUSY', message: '语音合成繁忙，请稍后重试' }, retry: '3' })
 const voiceUnsupported = () => ({ status: 503, data: { ok: false, code: 'MUSE_VOICE_CONNECTOR_OUTDATED', message: '主力机连接器需要更新才能使用远程语音' } })
+const modelReadUnsupported = () => ({ status: 404, data: { ok: false, code: 'MUSE_OPTIONS_CONNECTOR_OUTDATED', message: '出图机连接器需要更新才能通过中转查询已装模型' } })
 const POLL_SECONDS = 2
 const RECEIVE_WAIT_SECONDS = 20
 const PARALLEL_DOWNLOAD_MIN = 1024 * 1024
@@ -38,7 +40,7 @@ const stopped = ['failed', 'cancelled', 'interrupted']
 const deliveryErrors = { expired: 410, storageFull: 507, integrityError: 502, invalidReceipt: 502 }
 const publicGuide = {
   name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
-  guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', partBytes: PART,
+  guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', optionsPath: '/api/muse/options', partBytes: PART,
   agentTools: { cli: 'cli-anything-huiyu --json help', history: 'GET /api/muse/jobs', batch: 'GET /api/muse/batches/{batchKey}',
     functionCalling: 'cli-anything-huiyu --json help invoke 可读取 huiyu_drawing 函数定义。把参数作为 JSON 写入 --json invoke 的标准输入。',
     handoff: '共享 batchKey 交接任务；各助手可用 助手名_UUID 作 requestKey。重试沿用原编号和请求体。',
@@ -141,7 +143,7 @@ function control(method, path) {
   if (qqMessagePath(path) || path === '/api/muse/qq/search') return method === 'POST'
   if (method === 'POST') return path === '/api/muse/jobs' || path === '/api/muse/batches'
   if (batchRoute.test(path) || directRoute.test(path)) return method === 'GET' || method === 'DELETE'
-  return method === 'GET' && (/^\/api\/muse\/(catalog|queue|jobs|guide)$/.test(path)
+  return method === 'GET' && (modelReadPath(path) || /^\/api\/muse\/(catalog|queue|jobs|guide)$/.test(path)
     || /^\/api\/muse\/catalog\/(character|scene|blueprint|outfit)(\/[A-Za-z0-9_-]{1,180})+$/.test(path))
 }
 
@@ -161,6 +163,7 @@ export class MuseRelay extends DurableObject {
     this.reads = new Map()
     this.lastAgent = 0
     this.voiceCapable = false
+    this.modelReadCapable = false
     this.reconnectWaiters = new Set()
     this.receivers = new Set()
   }
@@ -208,7 +211,10 @@ export class MuseRelay extends DurableObject {
     const url = new URL(request.url)
     try {
       if (url.pathname === '/_agent/next' && request.method === 'POST') {
-        if (!request.signal.aborted) this.voiceCapable = request.headers.get('X-Muse-Voice') === '1'
+        if (!request.signal.aborted) {
+          this.voiceCapable = request.headers.get('X-Muse-Voice') === '1'
+          this.modelReadCapable = request.headers.get('X-Muse-Options') === '1'
+        }
         return await this.next(request.signal, request.headers.get('X-Muse-Part-Count') === '16' ? 16 : 1, request.headers.get('X-Muse-Parallel') === '1')
       }
       const upload = uploadRoute.exec(url.pathname)
@@ -372,6 +378,7 @@ export class MuseRelay extends DurableObject {
   }
   rpc(command, timeout = 30000) {
     if (voicePath(command.path) && !this.voiceCapable) return voiceUnsupported()
+    if (modelReadPath(command.path.split('?')[0]) && !this.modelReadCapable) return modelReadUnsupported()
     if (command.method === 'GET') {
       for (const call of this.calls.values()) {
         if (call.command.method === 'GET' && call.command.path === command.path
@@ -469,6 +476,10 @@ export class MuseRelay extends DurableObject {
       if (call.sent) continue
       if (voicePath(call.command.path) && !this.voiceCapable) {
         call.resolve(voiceUnsupported())
+        continue
+      }
+      if (modelReadPath(call.command.path.split('?')[0]) && !this.modelReadCapable) {
+        call.resolve(modelReadUnsupported())
         continue
       }
       call.sent = true

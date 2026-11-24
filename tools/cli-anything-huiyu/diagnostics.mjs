@@ -1,4 +1,16 @@
-import { api, connection } from './muse.mjs'
+import { api, connection, credentialStatus } from './muse.mjs'
+
+const optionsPath = '/api/muse/options'
+const statusPaths = ['anima', 'moss', 'qwen', 'creative'].map(family => `/api/${family}/status`)
+const drawingFamilies = ['anima', 'moss-image', 'qwen-image', 'krea2']
+
+export async function guide() {
+  const value = await api('GET', '/api/muse/guide')
+  if (value?.protocol !== 'huiyu-muse') {
+    throw Object.assign(new Error('接口响应与绘遇协议不符，请核对目标地址。'), { code: 'CLI_PROTOCOL_MISMATCH' })
+  }
+  return value
+}
 
 export async function status() {
   const target = connection()
@@ -8,10 +20,158 @@ export async function status() {
       return { ...target, reachable: true, connected: info.laptopOnline, lastSeenAt: info.lastSeenAt ?? null }
     }
   } else {
-    const guide = await api('GET', '/api/muse/guide')
-    if (guide?.protocol === 'huiyu-muse') return { ...target, reachable: true, connected: true, protocol: guide.protocol, version: guide.version }
+    const info = await guide()
+    return { ...target, reachable: true, connected: true, protocol: info.protocol, version: info.version }
   }
   throw Object.assign(new Error('接口响应与绘遇协议不符，请核对目标地址。'), { code: 'CLI_PROTOCOL_MISMATCH' })
+}
+
+function probeError(error) {
+  if (Number.isInteger(error.httpStatus) && error.httpStatus >= 100 && error.httpStatus <= 599) {
+    return { code: `HTTP_${error.httpStatus}`, httpStatus: error.httpStatus }
+  }
+  const codes = ['CLI_PORT_INVALID', 'CLI_URL_INVALID', 'CLI_PROTOCOL_MISMATCH', 'CLI_RESPONSE_INVALID',
+    'ECONNREFUSED', 'ECONNRESET', 'ABORT_ERR', 'ETIMEDOUT', 'ENOTFOUND', 'EAI_AGAIN']
+  return { code: codes.includes(error.code) ? error.code : 'CLI_CONNECTION_ERROR' }
+}
+
+export async function models({ modelId, character } = {}) {
+  const query = new URLSearchParams()
+  for (const [name, value] of Object.entries({ modelId, character })) {
+    if (value === undefined) continue
+    if (typeof value !== 'string' || !value.trim() || [...value].length > 160 || /\p{Cc}/u.test(value)) {
+      throw new Error(`${name} 须为 1–160 字且不含控制字符。`)
+    }
+    query.set(name, value.trim())
+  }
+  try {
+    const value = await api('GET', query.size ? `${optionsPath}?${query}` : optionsPath)
+    if (!Array.isArray(value?.models)) {
+      throw Object.assign(new Error('模型接口缺少模型列表。'), { code: 'CLI_RESPONSE_INVALID' })
+    }
+    return value
+  } catch (error) {
+    if (error.httpStatus !== 404) throw error
+  }
+  return legacyModels(query.get('modelId'), query.get('character'))
+}
+
+function uniqueRows(sources, field) {
+  const rows = new Map()
+  for (const source of sources) {
+    for (const row of Array.isArray(source[field]) ? source[field] : []) {
+      if (typeof row?.id === 'string' && (!rows.has(row.id) || row.available === true)) rows.set(row.id, row)
+    }
+  }
+  return [...rows.values()]
+}
+
+async function legacyModels(modelId, character) {
+  const outcomes = await Promise.allSettled([guide(), ...statusPaths.map(path => api('GET', path))])
+  const [description, ...statuses] = outcomes.map(result => result.status === 'fulfilled' ? result.value : null)
+  const sources = statuses.filter(value => Array.isArray(value?.models))
+  const sceneModels = Array.isArray(description?.sceneModels) ? description.sceneModels : []
+  const rows = uniqueRows(sources, 'models').filter(model => drawingFamilies.includes(model.family))
+  const selected = rows.filter(model => modelId ? model.id === modelId : model.available === true)
+  const models = selected.map(model => ({
+    id: model.id, label: model.label, family: model.family, available: model.available ?? null,
+    catalogRecipes: description ? sceneModels.includes(model.id) : null,
+    sizes: model.sizes, sizeLimits: model.capabilities?.customSize ?? null,
+    defaultSize: model.family === 'qwen-image' ? '1024x1024' : model.sizes?.[0] ?? null,
+    defaults: model.defaults, negative: model.capabilities?.negative, teaCache: model.capabilities?.teaCache,
+    hiresUpscalers: model.capabilities?.hiresUpscalers, mossErSde: model.mossErSde,
+    mossAcceleration: model.mossAcceleration, mossAdaptiveSpectrum: model.mossAdaptiveSpectrum,
+    mossSpectrumFlexWindow: model.mossSpectrumFlexWindow,
+  }))
+  for (const id of sceneModels) {
+    if (typeof id === 'string' && (!modelId || modelId === id) && !rows.some(model => model.id === id)) {
+      models.push({ id, available: null, catalogRecipes: true })
+    }
+  }
+  const alias = character === '宁宁' ? 'nene' : character === '夏目' ? 'natsume' : character
+  const binding = alias && uniqueRows(sources, 'characters').find(entry => entry.id === alias || entry.label === alias)
+  const characterId = binding?.id ?? alias
+  const loras = uniqueRows(sources, 'loras').filter(lora => lora.available === true
+    && (!modelId || lora.compatibleModels?.includes(modelId))
+    && (!characterId || lora.character === characterId || lora.characters?.includes(characterId)))
+  const defaultLora = binding && loras.find(lora => lora.id === binding.loraId)
+  const styleLoras = !modelId || selected.some(model => model.family === 'krea2')
+    ? uniqueRows(sources, 'styleLoras').filter(lora => lora.available === true) : []
+  const upscalers = sources.map(source => source.capabilities?.hiresUpscalers).find(Array.isArray)
+    ?? rows.map(model => model.capabilities?.hiresUpscalers).find(choices => Array.isArray(choices) && choices.length)
+  const missingSources = ['/api/muse/guide', ...statusPaths].flatMap((path, index) => {
+    const outcome = outcomes[index]
+    if (outcome.status === 'rejected') return [{ path, ...probeError(outcome.reason) }]
+    if (index > 0 && !Array.isArray(outcome.value?.models)) return [{ path, code: 'CLI_RESPONSE_INVALID' }]
+    return []
+  })
+  return { source: 'legacy', available: sources.length ? sources.some(source => source.online === true) : null,
+    defaultModelId: sceneModels[0] ?? null, models, missingSources,
+    characterDefaultLora: defaultLora ? { character: binding.id, loraId: defaultLora.id, compatibleModels: defaultLora.compatibleModels } : null,
+    loras, styleLoras, installedUpscalers: { ultrasharp: upscalers?.includes('4x-UltraSharp') ?? null, remacri: upscalers?.includes('Remacri') ?? null },
+    upscale: description?.upscale ?? null, teaCache: description?.teaCache ?? null, moss: description?.moss ?? null }
+}
+
+export async function doctor() {
+  const result = { mode: null, endpoint: null, credentials: null, reachable: null, connected: null,
+    protocol: null, version: null, capabilities: { teaCache: null, upscale: null, moss: null, options: null } }
+  let target
+  try {
+    target = connection()
+  } catch (error) {
+    return { ...result, credentials: [credentialStatus({ mode: 'local' }), credentialStatus({ mode: 'relay' })], error: probeError(error) }
+  }
+  Object.assign(result, target, { credentials: credentialStatus(target) })
+  if (!result.credentials.valid) {
+    result.error = { code: 'CLI_TOKEN_INVALID' }
+    try {
+      const description = await api('GET', '/', undefined, { publicGuide: true, signal: AbortSignal.timeout(8_000) })
+      result.reachable = true
+      if (description?.protocol === 'huiyu-muse') {
+        describeCapabilities(result, description)
+        if (target.mode !== 'relay') result.connected = true
+      }
+    } catch (error) {
+      result.reachable = Boolean(error.httpStatus)
+      result.connectionError = probeError(error)
+    }
+    return result
+  }
+  try {
+    if (target.mode === 'relay') {
+      const info = await status()
+      result.reachable = info.reachable
+      result.connected = info.connected
+      result.lastSeenAt = Number.isSafeInteger(info.lastSeenAt) ? info.lastSeenAt : null
+      if (!result.connected) return result
+    }
+    const description = await guide()
+    result.reachable = true
+    result.connected = true
+    describeCapabilities(result, description)
+    if (result.capabilities.options) {
+      try {
+        const value = await api('GET', `${optionsPath}?modelId=anima-miaomiao-v1.6`)
+        result.capabilities.options = Array.isArray(value?.models)
+      } catch (error) {
+        result.capabilities.options = error.httpStatus === 404 ? false : null
+        result.optionsError = probeError(error)
+      }
+    }
+  } catch (error) {
+    result.reachable ??= Boolean(error.httpStatus) || ['CLI_PROTOCOL_MISMATCH', 'CLI_RESPONSE_INVALID'].includes(error.code)
+    result.error = probeError(error)
+  }
+  return result
+}
+
+function describeCapabilities(result, description) {
+  result.protocol = description.protocol
+  result.version = Number.isSafeInteger(description.version) ? description.version : null
+  if (result.version !== null) {
+    for (const capability of ['teaCache', 'upscale', 'moss']) result.capabilities[capability] = Boolean(description[capability])
+    result.capabilities.options = Boolean(description.operations?.options)
+  }
 }
 
 const delivery = {

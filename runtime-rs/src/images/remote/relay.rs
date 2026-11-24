@@ -115,7 +115,10 @@ fn allowed(method: &Method, path: &str) -> bool {
     match parts.as_slice() {
         ["", "api", "muse", "jobs"] => *method == Method::POST || *method == Method::GET,
         ["", "api", "muse", "batches"] => *method == Method::POST,
-        ["", "api", "muse", "guide" | "queue" | "catalog"] => *method == Method::GET,
+        ["", "api", "muse", "guide" | "queue" | "catalog" | "options"] => *method == Method::GET,
+        ["", "api", "anima" | "moss" | "qwen" | "creative", "status"] => {
+            *method == Method::GET && path == route
+        }
         [
             "",
             "api",
@@ -295,6 +298,7 @@ impl Bridge {
             .header("X-Muse-Part-Count", "16")
             .header("X-Muse-Parallel", "1")
             .header("X-Muse-Voice", "1")
+            .header("X-Muse-Options", "1")
             .bearer_auth(&self.agent_token)
             .send();
         // The relay holds an idle command poll for at most 15 seconds. Bound the
