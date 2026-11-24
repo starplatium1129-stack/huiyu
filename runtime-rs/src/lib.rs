@@ -28,6 +28,7 @@ mod images;
 mod interrogate;
 mod live2d;
 mod maintenance;
+mod media_packs;
 mod native_images;
 mod native_python;
 pub(crate) mod processes;
@@ -80,6 +81,7 @@ pub(crate) struct AppState {
     pub interrogate: Option<Arc<interrogate::InterrogateService>>,
     pub remote: Option<Arc<remote_content::RemoteAccess>>,
     pub resources: Option<Arc<resources::Service>>,
+    pub media_packs: Option<Arc<media_packs::MediaPacksService>>,
     pub control: Option<Arc<control::ControlService>>,
 }
 impl AppState {
@@ -107,6 +109,7 @@ impl AppState {
             interrogate: None,
             remote: None,
             resources: None,
+            media_packs: None,
             control: None,
         }
     }
@@ -166,6 +169,9 @@ pub(crate) fn router(state: AppState) -> Router {
     }
     if let Some(service) = &state.resources {
         router = router.merge(resources::router(service.clone()));
+    }
+    if let Some(service) = &state.media_packs {
+        router = router.merge(media_packs::router(service.clone()));
     }
     if let Some(service) = &state.control {
         router = router.merge(control::router(service.clone()));

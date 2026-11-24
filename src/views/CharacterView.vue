@@ -347,7 +347,7 @@ const portraitFeedback = computed(() => {
   if (portraitPending.value) return '正在读取新原画，当前画面保留。'
   if (portraitError.value) return '新原画暂时无法读取，已保留上次画面。'
   return paintedPortrait.value.state === 'fallback' && current.value && !isPopularPortraitPending(current.value.id)
-    ? '原图无法读取，已显示现有缩略图' : ''
+    ? '高清立绘包尚未下载，当前显示缩略图预览（可在控制室「资源与素材」一键补齐）' : ''
 })
 
 const hasIdentity = computed(() => {

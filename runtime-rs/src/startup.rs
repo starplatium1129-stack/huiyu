@@ -153,6 +153,10 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         &state.config,
         shutdown.clone(),
     )?));
+    state.media_packs = Some(crate::media_packs::MediaPacksService::new(
+        &state.config,
+        shutdown.clone(),
+    ));
     state.control = Some(crate::control::ControlService::new(
         state.config.clone(),
         shutdown.clone(),
@@ -208,6 +212,9 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     }
     tasks.close().await;
     if let Some(service) = &state.interrogate {
+        service.close().await;
+    }
+    if let Some(service) = &state.media_packs {
         service.close().await;
     }
     if let Some(service) = &state.resources {

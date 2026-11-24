@@ -1,14 +1,21 @@
 import { computed, onScopeDispose, readonly, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
 import { resolveRuntimeUrl, runtimeResourceCors, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
+function popularThumbFallback(resolvedUrl: string): string {
+  const match = resolvedUrl.match(/^(.*\/assets\/characters\/)popular-([\w-]+)\.(?:png|jpe?g|webp)(?:[?#].*)?$/i)
+  return match ? `${match[1]}thumbs/popular-${match[2]}.webp` : ''
+}
+
 /** Native img loading only: no preload, Blob ownership, canvas or automatic retry loop. */
 export function useRuntimeImage(source: MaybeRefOrGetter<string | null | undefined>) {
-  const src = computed(() => resolveRuntimeUrl(toValue(source)))
+  const baseSrc = computed(() => resolveRuntimeUrl(toValue(source)))
+  const fallbackThumb = ref('')
+  const src = computed(() => fallbackThumb.value || baseSrc.value)
   const loaded = ref(false), failed = ref(false), attempt = ref(0)
   let alive = true
   onScopeDispose(() => { alive = false })
-  function retry() { attempt.value++; loaded.value = false; failed.value = false }
-  watch([src, runtimeResourceIdentity], retry, { immediate: true, flush: 'sync' })
+  function retry() { fallbackThumb.value = ''; attempt.value++; loaded.value = false; failed.value = false }
+  watch([baseSrc, runtimeResourceIdentity], retry, { immediate: true, flush: 'sync' })
   function current(event: Event): event is Event & { target: HTMLImageElement } {
     const img = event.target
     return alive && img instanceof HTMLImageElement && !!src.value
@@ -28,6 +35,16 @@ export function useRuntimeImage(source: MaybeRefOrGetter<string | null | undefin
   }
   function onError(event: Event) {
     if (!current(event)) return false
+    if (!fallbackThumb.value) {
+      const thumb = popularThumbFallback(baseSrc.value)
+      if (thumb && thumb !== baseSrc.value) {
+        fallbackThumb.value = thumb
+        attempt.value++
+        loaded.value = false
+        failed.value = false
+        return false
+      }
+    }
     loaded.value = false; failed.value = true; return true
   }
   const image = computed(() => ({

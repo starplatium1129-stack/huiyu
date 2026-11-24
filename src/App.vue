@@ -15,6 +15,7 @@
     <AppInteractionLayer v-if="!isCompanion" />
     <AppToast v-if="!isCompanion" :placement="route.path === '/prompt-builder' ? 'bottom-left' : 'bottom-right'" />
     <ConfirmDialog v-if="confirmation.visible" />
+    <MediaPacksOnboardingModal v-if="!isCompanion && mediaOnboardingMounted" />
     <AppearanceHost />
     <TaskCenter v-if="!isCompanion" />
     <GlobalSearch v-if="!isCompanion" />
@@ -26,7 +27,7 @@ import '@/assets/css/control-feedback.css'
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
-import { computed, defineAsyncComponent, onErrorCaptured, onMounted, onUnmounted, watch } from 'vue'
+import { computed, defineAsyncComponent, onErrorCaptured, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { TooltipProvider } from 'reka-ui'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
@@ -42,9 +43,12 @@ import RouteRecoveryBanner from '@/components/RouteRecoveryBanner.vue'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 import { routeRecovery } from '@/composables/useRouteRecovery'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const route = useRoute()
 const desktop = Boolean(getDesktopCapabilities())
+const localStudioHost = isLocalStudioHost()
+const mediaOnboardingMounted = ref(false)
 const atelierWindow = desktop && getDesktopWindowRole() === 'atelier'
 const confirmation = useConfirmState()
 const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDialog.vue').catch(error => {
@@ -52,6 +56,7 @@ const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDia
   throw error
 }))
 const DesktopUpdateBanner = defineAsyncComponent(() => import('@/components/DesktopUpdateBanner.vue'))
+const MediaPacksOnboardingModal = defineAsyncComponent(() => import('@/components/MediaPacksOnboardingModal.vue'))
 useCharacterArtRefresh()
 const router = useRouter()
 onErrorCaptured((error, instance, info) => {
@@ -67,10 +72,21 @@ onErrorCaptured((error, instance, info) => {
 })
 const layoutMotion = useRouteTransition()
 let detachDesktopNavigation: (() => void) | undefined
+const onOpenMediaOnboarding = () => { mediaOnboardingMounted.value = true }
 onMounted(() => {
   if (getDesktopCapabilities()) detachDesktopNavigation = onDesktopNavigate(path => { void router.push(path) })
+  if (localStudioHost && !isCompanion.value) {
+    window.addEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
+    void import('@/composables/useMediaPacks').then(async mod => {
+      await mod.checkMediaPacksOnboarding()
+      if (mod.onboardingVisibleState.value) mediaOnboardingMounted.value = true
+    })
+  }
 })
-onUnmounted(() => detachDesktopNavigation?.())
+onUnmounted(() => {
+  detachDesktopNavigation?.()
+  window.removeEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
+})
 const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
 
 let stopThumbnailWarmup: (() => void) | undefined

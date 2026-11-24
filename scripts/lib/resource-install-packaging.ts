@@ -6,11 +6,18 @@ const path: typeof import('node:path') = require('node:path');
 const sharp: typeof import('sharp') = require('sharp');
 const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
-/** Brand masters produce the shipped SVG/ICO/tray assets; they are not runtime URLs. */
-function includeAsset(relative: string): boolean {
-  return relative !== 'app-icon.png' && relative !== 'brand-mark.svg'
-    && !/\.(?:[cm]?ts|map)$/i.test(relative)
-    && !/^(?:character-references|live2d-candidates)(?:\/|$)/i.test(relative);
+const isPortrait = (relative: string) => /^characters\/popular-[a-zA-Z0-9_-]+\.(png|jpe?g|webp)$/.test(relative);
+/** Brand masters produce the shipped SVG/ICO/tray assets; they are not runtime URLs.
+ * Slim installers omit full-res popular portraits (downloaded on demand via media packs)
+ * while retaining thumbnails, core hero art, Live2D and particle clouds. */
+function includeAsset(relative: string, profile = 'full'): boolean {
+  if (relative === 'app-icon.png' || relative === 'brand-mark.svg'
+    || /\.(?:[cm]?ts|map)$/i.test(relative)
+    || /^(?:character-references|live2d-candidates)(?:\/|$)/i.test(relative)) {
+    return false;
+  }
+  if (profile === 'slim' && isPortrait(relative)) return false;
+  return true;
 }
 
 type AssetEntry = { rel: string; sourceBytes: number };
@@ -21,7 +28,6 @@ type LocalAssetStage = {
   stageAsset: (relative: string, bytes: Buffer) => void;
   stageReport: (bytes: Buffer) => void;
 };
-const isPortrait = (relative: string) => /^characters\/popular-[a-zA-Z0-9_-]+\.(png|jpe?g|webp)$/.test(relative);
 const canPackPng = (relative: string) => relative === 'live2d/nene/textures/texture_00.png'
   || (isPortrait(relative) && /\.png$/i.test(relative));
 
@@ -30,12 +36,13 @@ function profileTransformsAsset(entry: AssetEntry, profile: string): boolean {
     || (canPackPng(entry.rel) && entry.sourceBytes > 256 * 1024);
 }
 
-// Every original URL remains available offline. Base changes only popular
-// portraits, never thumbnails/brand/Live2D.
+// Every original URL remains available offline in full/base; slim defers
+// full-res popular portraits to the on-demand portraits media pack while
+// keeping all thumbnails, brand assets, particles and Live2D bundled.
 async function applyResourceProfile({ root, gatewayRoot, profile = 'full', local }: {
   root: string; gatewayRoot: string; profile?: string; local?: LocalAssetStage;
 }) {
-  if (!['full', 'base'].includes(profile)) throw new Error('Resource profile must be full or base');
+  if (!['full', 'base', 'slim'].includes(profile)) throw new Error('Resource profile must be full, base or slim');
   root = path.resolve(root); gatewayRoot = path.resolve(gatewayRoot);
   const source = path.join(root, 'assets');
   const target = path.join(gatewayRoot, 'assets');
@@ -43,18 +50,34 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full', local
   noLinks(fs, source);
   if (!local) noLinks(fs, target);
   const entries: AssetEntry[] = local?.assets ?? [];
+  const deferredPortraits: Array<{ path: string; bytes: number }> = [];
   function walk(directory: string, prefix = '') {
     noLinks(fs, directory);
     for (const name of fs.readdirSync(directory).sort()) {
       const rel = prefix + name;
       const file = child(directory, name);
       const stat = noLinks(fs, file);
-      if (!includeAsset(rel)) continue;
+      if (profile === 'slim' && stat?.isFile() && isPortrait(rel)) {
+        deferredPortraits.push({ path: 'assets/' + rel, bytes: stat.size });
+        continue;
+      }
+      if (!includeAsset(rel, profile)) continue;
       if (stat!.isDirectory()) walk(file, rel + '/');
       else entries.push({ rel, sourceBytes: stat!.size });
     }
   }
   if (!local) walk(source);
+  else if (profile === 'slim') {
+    const charsDir = path.join(source, 'characters');
+    if (fs.existsSync(charsDir)) {
+      for (const name of fs.readdirSync(charsDir).sort()) {
+        const rel = 'characters/' + name;
+        if (!isPortrait(rel)) continue;
+        const stat = noLinks(fs, child(charsDir, name));
+        if (stat?.isFile()) deferredPortraits.push({ path: 'assets/' + rel, bytes: stat.size });
+      }
+    }
+  }
   const optional = [];
   const pngCache = path.join(root, 'runtime/desktop-png-cache');
   noLinks(fs, pngCache, { missing: true });
@@ -120,10 +143,13 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full', local
     local?.stageAsset(entry.rel, staged);
     sourceBytes += original.length; baseBytes += staged.length;
   }
+  const deferredBytes = deferredPortraits.reduce((sum, item) => sum + item.bytes, 0);
   const report = { schemaVersion: 1, kind: 'desktop-resource-layers', profile,
-    files: entries.length, bundledBytes: baseBytes, fullResourceBytes: sourceBytes,
-    optionalOriginalBytes: optional.reduce((sum, item) => sum + item.bytes, 0),
-    firstRequiredDownloadBytes: 0, optional, preservesOriginalUrls: true,
+    files: entries.length, bundledBytes: baseBytes, fullResourceBytes: sourceBytes + deferredBytes,
+    optionalOriginalBytes: optional.reduce((sum, item) => sum + item.bytes, 0) + deferredBytes,
+    deferredPortraitCount: deferredPortraits.length,
+    deferredPortraitBytes: deferredBytes,
+    firstRequiredDownloadBytes: 0, optional, preservesOriginalUrls: profile !== 'slim',
     note: 'Byte/decoder checks only; actual image quality and Windows display acceptance are separate.' };
   const bytes = Buffer.from(JSON.stringify(report, null, 2) + '\n');
   if (local) local.stageReport(bytes);

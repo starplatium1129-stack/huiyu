@@ -199,7 +199,18 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
         root
     };
     let file = base.join(&relative);
-    let Some(metadata) = inside(&base, &file).await else {
+    let (base, file, metadata) = if let Some(metadata) = inside(&base, &file).await {
+        (base, file, metadata)
+    } else if path.starts_with("/assets/")
+        && let Some(pack_assets) = state
+            .media_packs
+            .as_ref()
+            .and_then(|packs| packs.portraits_assets_root())
+        && let Some(metadata) = inside(&pack_assets, &pack_assets.join(&relative)).await
+    {
+        let pack_file = pack_assets.join(&relative);
+        (pack_assets, pack_file, metadata)
+    } else {
         return StatusCode::NOT_FOUND.into_response();
     };
     if path == "/scene-showcase/manifest.json" {

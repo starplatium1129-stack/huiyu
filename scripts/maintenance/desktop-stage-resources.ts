@@ -193,7 +193,7 @@ async function stageResourcesBound(options: StageOptions) {
   if (!rel || rel.startsWith('../') || path.isAbsolute(rel) || ['data', 'assets', 'dist', 'tools', 'docs', 'runtime-rs'].some(dir => rel === dir || rel.startsWith(dir + '/'))) throw Error('Staging destination must be an isolated child of workspace');
   safe.resolveSafe(root, rel, true);
   const logger = options.logger || console.log, profile = options.resourceProfile || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'full';
-  if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
+  if (!['full', 'base', 'slim'].includes(profile)) throw Error('Resource profile must be full, base or slim');
   const buildProfile = options.buildProfile || 'release';
   const runtime = runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
   const catalogRows = catalog.read(root);
@@ -227,7 +227,7 @@ async function stageResourcesBound(options: StageOptions) {
         // Desktop Chromium and modern browsers use Brotli; other clients can
         // still use the original file. Shipping both variants duplicates bytes.
         if ((source === 'dist' || source === 'data') && file.endsWith('.gz') && fs.existsSync(file.replace(/\.gz$/, '.br'))) return false;
-        if (source === 'assets' && !includeAsset(rel.join('/'))) return false;
+        if (source === 'assets' && !includeAsset(rel.join('/'), profile)) return false;
         // Promotional screenshots are referenced only by repository READMEs.
         if (source === 'docs' && rel[0] === 'images' && rel[1] === 'software-preview') return false;
         return !/\.(?:[cm]?ts|map)$/i.test(file) && !['node_modules', '.git', '__pycache__'].includes(path.basename(file));

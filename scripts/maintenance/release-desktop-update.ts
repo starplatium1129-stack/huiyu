@@ -41,6 +41,9 @@ const MANUAL = process.argv.includes('--manual');
 const COMPLETE_MANUAL = process.argv.includes('--complete-manual');
 const UPGRADE_ONLY = process.argv.includes('--upgrade-only');
 const FULL_ONLY = process.argv.includes('--full-only');
+const FULL_RESOURCES = process.argv.includes('--full-resources');
+const RESOURCE_PROFILE_ARG = process.argv.find(arg => arg.startsWith('--resource-profile='))?.slice('--resource-profile='.length);
+const RESOURCE_PROFILE = FULL_RESOURCES ? 'full' : (RESOURCE_PROFILE_ARG || process.env.AICS_DESKTOP_RESOURCE_PROFILE || 'slim');
 const INSTALL_DIR_INDEX = process.argv.indexOf('--install-dir');
 const INSTALL_DIR = INSTALL_DIR_INDEX < 0 ? undefined : process.argv[INSTALL_DIR_INDEX + 1];
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
@@ -158,7 +161,7 @@ function publishRelease(version: any, head: any, files: any) {
   const tag = releaseTag(version);
   const baseNotes = path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
-  const packageHelp = `> ${FULL_ONLY ? '本版只提供一个 **full 完整安装包**，用于首次安装、升级与修复。' : '新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。'}样张素材独立提供。\n> 如果电脑尚未安装 WebView2，完整包需要联网安装该运行库。使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
+  const packageHelp = `> ${FULL_ONLY ? '本版只提供一个 **full 完整安装包**，用于首次安装、升级与修复。' : '新用户或资源修复请选择 **full 安装包**；已有完整安装请选择 **upgrade 轻量升级包**。'}人物高清立绘与样张画册已独立为可按需下载的资源包，首次打开软件即可按需选择全量或精简下载，也可随时在控制室「资源与素材」补下。\n> 如果电脑尚未安装 WebView2，完整包需要联网安装该运行库。使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
   const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
   const outputDir = OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
@@ -235,13 +238,15 @@ async function main() {
       execFileSync(process.execPath, [path.join(ROOT, 'scripts/maintenance/build-game-installer.js')], { cwd: ROOT, stdio: 'inherit' });
     }
     const buildEnv = (require('../lib/desktop-build-environment') as typeof import('../lib/desktop-build-environment')).desktopBuildEnvironment();
+    if (!['full', 'base', 'slim'].includes(RESOURCE_PROFILE)) fail(`未知资源档位: ${RESOURCE_PROFILE}（slim|full|base）`);
+    buildEnv.AICS_DESKTOP_RESOURCE_PROFILE = RESOURCE_PROFILE;
     if (MANUAL) {
       delete buildEnv.TAURI_SIGNING_PRIVATE_KEY; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PATH; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
     } else {
       Object.assign(buildEnv, { TAURI_SIGNING_PRIVATE_KEY: fs.readFileSync(KEY_FILE, 'utf8').trim(), TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' });
     }
     if (MANUAL && BUNDLE_ONLY) fail('手动版请使用完整构建，或对已构建的同版本安装包使用 --skip-build');
-    console.log(`[release-desktop-update] ${MANUAL ? '构建手动安装版（不生成自动更新清单）' : '构建签名自动更新版'}`);
+    console.log(`[release-desktop-update] ${MANUAL ? '构建手动安装版（不生成自动更新清单）' : '构建签名自动更新版'}（资源档位：${RESOURCE_PROFILE}）`);
     const npm = resolveNpmInvocation();
     execFileSync(BUNDLE_ONLY ? process.execPath : npm.command, BUNDLE_ONLY
       ? [require.resolve('@tauri-apps/cli/tauri.js'), 'bundle', '--bundles', 'nsis', '--ci']

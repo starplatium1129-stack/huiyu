@@ -59,8 +59,9 @@ pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)
         }
         return state
             .maintenance
-            .as_ref()?
-            .showcase_root()
+            .as_ref()
+            .and_then(|service| service.showcase_root())
+            .or_else(|| state.media_packs.as_ref().and_then(|packs| packs.showcase_dir()))
             .map(|base| (base, relative[1..].into()));
     }
     None
