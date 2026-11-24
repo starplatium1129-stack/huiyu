@@ -407,6 +407,11 @@ function compactReceipt(receipt) {
 function display(result, json) {
   if (json) return log(JSON.stringify(result))
   if (typeof result === 'string') return log(result)
+  if (result.mode === 'relay' && result.storage) {
+    const mib = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 1 })
+    const format = bytes => mib.format(bytes / 1024 ** 2)
+    log(`中转暂存已用 ${format(result.storage.usedBytes)} MiB / ${format(result.storage.maxBytes)} MiB`)
+  }
   if (result.scope === 'batch' || result.scope === 'historyPage') {
     const { items, ...summary } = result
     log(inspect(summary, { colors: process.stdout.isTTY }))

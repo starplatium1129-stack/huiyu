@@ -170,11 +170,13 @@ export class MuseRelay extends DurableObject {
   async alarm() {
     const now = Date.now()
     this.sql.exec('DELETE FROM batches WHERE expires<=?', now)
-    this.sql.exec('DELETE FROM files WHERE expires<=?', now)
+    this.results.cleanup(now)
     await this.scheduleCleanup()
   }
   async scheduleCleanup() {
-    const { expires } = this.sql.exec('SELECT min(expires) AS expires FROM (SELECT min(expires) AS expires FROM batches UNION ALL SELECT min(expires) FROM files)').one()
+    const { expires } = this.sql.exec(`SELECT min(expires) AS expires FROM (
+      SELECT min(expires) AS expires FROM batches UNION ALL SELECT min(expires) FROM files
+      UNION ALL SELECT min(expires) FROM discarded_results)`).one()
     if (expires !== null) await this.ctx.storage.setAlarm(Math.max(Date.now() + 1000, expires))
   }
   watch(key) {
@@ -192,8 +194,11 @@ export class MuseRelay extends DurableObject {
     this.notifyReceivers()
   }
   present(data, collect = false) {
-    for (const job of [data.job, data.item, ...(Array.isArray(data.items) ? data.items : [])]) {
-      if (job) this.results.describe(job, collect)
+    const jobs = [data.job, data.item, ...(Array.isArray(data.items) ? data.items : [])].filter(Boolean)
+    for (const job of jobs) this.results.describe(job, collect)
+    // A later item in this response can evict a result found ready earlier.
+    if (collect && jobs.length > 1) {
+      for (const job of jobs) if (job.resultAvailable) this.results.describe(job, false)
     }
     if (batchRoute.test(data.statusPath) && data.statusPath === '/api/muse/batches/' + data.batchKey && Array.isArray(data.items)) {
       data.guidePath = publicGuide.guidePath
@@ -234,7 +239,8 @@ export class MuseRelay extends DurableObject {
       if (url.pathname.startsWith('/_agent/reply/') && request.method === 'POST') return await this.reply(request, url.pathname.slice(14))
       if (url.pathname === '/api/muse/connection' && request.method === 'GET') return json({ ok: true,
         laptopOnline: this.agentOnline(), lastSeenAt: this.lastAgent || null, partBytes: PART,
-        idlePollSeconds: AGENT_IDLE_POLL_MS / 1000, reconnectGraceSeconds: AGENT_RECONNECT_GRACE_MS / 1000 })
+        idlePollSeconds: AGENT_IDLE_POLL_MS / 1000, reconnectGraceSeconds: AGENT_RECONNECT_GRACE_MS / 1000,
+        storage: this.results.stats(), capabilities: { voice: this.voiceCapable, modelRead: this.modelReadCapable } })
       if (resultRoute.test(url.pathname) && ['GET','HEAD'].includes(request.method)) return this.results.serve(request, url)
       const receive = receiveRoute.exec(url.pathname)
       if (receive && request.method === 'GET') return await this.receive(request, receive[1], Number(receive[2]))

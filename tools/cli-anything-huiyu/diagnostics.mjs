@@ -12,12 +12,24 @@ export async function guide() {
   return value
 }
 
+function relayStorage(storage) {
+  const counts = ['usedBytes', 'maxBytes', 'readyFiles', 'transferringFiles']
+  if (!storage || !counts.every(key => Number.isSafeInteger(storage[key]) && storage[key] >= 0)
+      || storage.maxBytes === 0
+      || !(storage.oldestExpiresAt === null || Number.isSafeInteger(storage.oldestExpiresAt) && storage.oldestExpiresAt >= 0)) return null
+  const { usedBytes, maxBytes, readyFiles, transferringFiles, oldestExpiresAt } = storage
+  return { usedBytes, maxBytes, readyFiles, transferringFiles, oldestExpiresAt }
+}
+
 export async function status() {
   const target = connection()
   if (target.mode === 'relay') {
     const info = await api('GET', '/api/muse/connection')
     if (typeof info?.laptopOnline === 'boolean') {
-      return { ...target, reachable: true, connected: info.laptopOnline, lastSeenAt: info.lastSeenAt ?? null }
+      const { voice, modelRead } = info.capabilities ?? {}
+      return { ...target, reachable: true, connected: info.laptopOnline, lastSeenAt: info.lastSeenAt ?? null,
+        storage: relayStorage(info.storage),
+        relayCapabilities: typeof voice === 'boolean' && typeof modelRead === 'boolean' ? { voice, modelRead } : null }
     }
   } else {
     const info = await guide()
@@ -122,6 +134,7 @@ export async function doctor() {
     return { ...result, credentials: [credentialStatus({ mode: 'local' }), credentialStatus({ mode: 'relay' })], error: probeError(error) }
   }
   Object.assign(result, target, { credentials: credentialStatus(target) })
+  if (target.mode === 'relay') Object.assign(result, { storage: null, relayCapabilities: null })
   if (!result.credentials.valid) {
     result.error = { code: 'CLI_TOKEN_INVALID' }
     try {
@@ -143,6 +156,8 @@ export async function doctor() {
       result.reachable = info.reachable
       result.connected = info.connected
       result.lastSeenAt = Number.isSafeInteger(info.lastSeenAt) ? info.lastSeenAt : null
+      result.storage = info.storage
+      result.relayCapabilities = info.relayCapabilities
       if (!result.connected) return result
     }
     const description = await guide()

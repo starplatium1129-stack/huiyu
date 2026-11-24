@@ -23,7 +23,7 @@
 
 **接入须知：**
 - **请求头**：所有 API 请求均带 `X-Token`，并发送明确应用标识（如 `User-Agent: Huiyu-Muse/1.0`；Cloudflare 会以 `403/1010` 拦截默认 `Python-urllib`）。
-- **缓存与限额**：中转成图最多保留 **48 小时**（单张 ≤ 32 MiB，中转总容量 256 MiB）；桌面端任务记录保留约 7 天（本地缓存上限 2 GiB）。Cloudflare 免费套餐受官方每日额度限制。
+- **缓存与限额**　中转原图最多保留 **48 小时**，单张上限 **32 MiB**，总容量 **512 MiB**。空间不足时先清理过期或损坏的记录，再按完成顺序从最早的原图开始淘汰。正在传输且未过期的图片保留原有容量，若仍放不下新图则返回 `storageFull`（HTTP 507）。桌面端任务记录保留约 7 天，本地缓存上限 2 GiB。Cloudflare 免费套餐受官方每日额度限制。
 
 ### 核心 API 速查
 
@@ -32,7 +32,7 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu` 命令行包。HT
 | 用途 | 路径与方法 | 关键参数与说明 |
 | --- | --- | --- |
 | 接口说明与流转 | `GET /` | 返回 `resultFlow`（轮询地址、下载条件、响应类型） |
-| 连通与完整文档 | `GET /api/muse/connection`<br>`GET /api/muse/guide` | 查看出图机在线状态与完整字段手册 |
+| 连通与完整文档 | `GET /api/muse/connection`<br>`GET /api/muse/guide` | 查看出图机在线状态、中转存储和连接器能力，或读取完整字段手册 |
 | 查询目录 | `GET /api/muse/catalog` | `kind`：`media`（默认）\| `character` \| `outfit` \| `scene` \| `blueprint`；支持 `search`、`character`、`category`、`rating`、`pageSize=500`、`nextPage` |
 | 服装详情 | `GET /api/muse/catalog/outfit/{id}` | 如 `/studio/natsume-maid`，返回 `tokens` 与 `compatibleModels` |
 | 提交单张任务 | `POST /api/muse/jobs` | 传目录 `id` 或自定义 `prompt` + 新 UUID `requestKey`；可选成对 `width`/`height`、`outfitId`（不兼容报 `OUTFIT_INCOMPATIBLE`）、`modelId`、`seed`、`variants`、`negative`、`steps`、`cfg` |
@@ -42,6 +42,10 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu` 命令行包。HT
 
 - **目录默认配方**：支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0`、`moss-miaomiao-base-v1.1`（以本机已安装版本为准）。
 - **Anima 高清放大**：请求传入 `"upscale": "ultrasharp" | "remacri" | "off"`（需先安装对应放大权重）。UltraSharp 放大 `1.5×` 后执行 10 步重绘（Euler/Normal，CFG 5.5，重绘 0.8，Shift 3）；Remacri 为 `1.5×` 纯像素放大。宽高仍按放大前填写。
+
+`GET /api/muse/connection` 保留 `laptopOnline` 和 `lastSeenAt` 等连接字段。新版中转返回 `storage.usedBytes` 和 `storage.maxBytes`（字节）、`storage.readyFiles` 和 `storage.transferringFiles`（未过期张数）以及 `storage.oldestExpiresAt`（最早的未过期记录，Unix 毫秒，无记录时为 `null`）。`usedBytes` 包含已暂存和正在传输的原图所占容量。`capabilities.voice` 和 `capabilities.modelRead` 表示连接器最近上报的语音和模型查询支持情况。旧中转可能省略这两个对象。
+
+桌面端可在「Muse 远程出图」下点「检查中转状态」，共享 CLI 可用 `status` 或 `doctor` 查看相同信息。
 
 ### 自动收图、校验与 CLI
 

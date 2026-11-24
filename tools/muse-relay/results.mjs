@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 
 export const PART = 128 * 1024
 const MAX_FILE = 32 * 1024 * 1024
-const MAX_TOTAL = 256 * 1024 * 1024
+const MAX_TOTAL = 512 * 1024 * 1024
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 export const TTL = 48 * 60 * 60 * 1000
 export const resultRoute = /^\/api\/(?:anima|moss|creative|qwen)\/jobs\/[a-f0-9]{32}\/result$/
@@ -31,10 +31,68 @@ export class Results {
     );
     CREATE TABLE IF NOT EXISTS receipts (
       path TEXT PRIMARY KEY REFERENCES files(path) ON DELETE CASCADE, snapshot TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS discarded_results (
+      path TEXT PRIMARY KEY, state TEXT NOT NULL, expires INTEGER NOT NULL
     );`)
+  }
+  stats(now = Date.now()) {
+    const { usedBytes, readyFiles, transferringFiles, oldestExpiresAt } = this.sql.exec(`
+      SELECT coalesce(sum(CASE WHEN state IN ('ready','transferring') THEN size ELSE 0 END),0) AS usedBytes,
+        count(CASE WHEN state='ready' THEN 1 END) AS readyFiles,
+        count(CASE WHEN state='transferring' THEN 1 END) AS transferringFiles,
+        min(expires) AS oldestExpiresAt
+      FROM files WHERE expires>?`, now).one()
+    return { usedBytes, maxBytes: MAX_TOTAL, readyFiles, transferringFiles, oldestExpiresAt }
   }
   find(path) {
     return this.sql.exec('SELECT * FROM files WHERE path=?', path).toArray()[0]
+  }
+  discarded(path, now) {
+    return this.sql.exec('SELECT state,expires FROM discarded_results WHERE path=? AND expires>?', path, now).toArray()[0]
+  }
+  discard(file, state, now) {
+    // A cached batch can still refer to this result. Preserve only its status
+    // until the original deadline so polling cannot immediately queue it again.
+    if (file.expires > now) {
+      this.sql.exec('INSERT OR REPLACE INTO discarded_results(path,state,expires) VALUES(?,?,?)', file.path, state, file.expires)
+    }
+    this.sql.exec('DELETE FROM parts WHERE path=?', file.path)
+    this.sql.exec('DELETE FROM receipts WHERE path=?', file.path)
+    this.sql.exec('DELETE FROM files WHERE path=?', file.path)
+  }
+  reap(now) {
+    const stale = this.sql.exec("SELECT path,state,expires FROM files WHERE expires<=? OR state IN ('expired','integrityError')", now).toArray()
+    for (const file of stale) this.discard(file, file.state === 'integrityError' ? 'integrityError' : 'expired', now)
+    // Also clean any orphans left by older installations.
+    this.sql.exec('DELETE FROM parts WHERE NOT EXISTS (SELECT 1 FROM files WHERE files.path=parts.path)')
+    this.sql.exec('DELETE FROM receipts WHERE NOT EXISTS (SELECT 1 FROM files WHERE files.path=receipts.path)')
+    this.sql.exec('DELETE FROM discarded_results WHERE expires<=?', now)
+  }
+  cleanup(now) {
+    this.storage.transactionSync(() => this.reap(now))
+  }
+  reserve(path, size, digest, now, expires) {
+    return this.storage.transactionSync(() => {
+      const usedBytes = () => this.sql.exec('SELECT coalesce(sum(size),0) AS bytes FROM files').one().bytes
+      let used = usedBytes()
+      if (size + used > MAX_TOTAL) {
+        this.reap(now)
+        used = usedBytes()
+        if (size + used > MAX_TOTAL) {
+          const ready = this.sql.exec("SELECT path,size,expires FROM files WHERE state='ready' ORDER BY coalesce(ready,started) ASC,path ASC").toArray()
+          for (const old of ready) {
+            this.discard(old, 'expired', now)
+            used -= old.size
+            if (size + used <= MAX_TOTAL) break
+          }
+        }
+      }
+      if (size + used > MAX_TOTAL) return
+      this.sql.exec("INSERT INTO files(path,size,digest,state,due,started,expires) VALUES(?,?,?,'transferring',?,?,?)",
+        path, size, digest, now, now, expires)
+      return this.find(path)
+    })
   }
   job(path) {
     const receipt = this.sql.exec('SELECT snapshot FROM receipts WHERE path=?', path + '/result').toArray()[0]
@@ -57,22 +115,22 @@ export class Results {
     }
     const now = Date.now()
     let file = this.find(path)
+    const discarded = file ? undefined : this.discarded(path, now)
     let state = 'onDemand'
-    if (collect && !file) {
+    if (discarded) {
+      state = discarded.state
+      job.resultExpiresAt = discarded.expires
+    } else if (collect && !file) {
       const size = job.resultBytes
       const digest = job.resultSha256
-      const expires = Math.min(Number(job.resultExpiresAt) || now + TTL, now + TTL)
+      const finished = Number(job.finishedAt)
+      const expires = Math.min(Number(job.resultExpiresAt) || (finished > 0 ? finished : now) + TTL, now + TTL)
       if (expires <= now) state = 'expired'
       else if (!Number.isSafeInteger(size) || size <= 0 || size > MAX_FILE || !/^[a-f0-9]{64}$/.test(digest)) state = 'invalidReceipt'
       else {
-        const used = this.sql.exec("SELECT coalesce(sum(size),0) AS bytes FROM files WHERE state IN ('ready','transferring') AND expires>?", now).one().bytes
-        if (size + used > MAX_TOTAL) state = 'storageFull'
-        else {
-          this.sql.exec("INSERT INTO files(path,size,digest,state,due,started,expires) VALUES(?,?,?,'transferring',?,?,?)",
-            path, size, digest, now, now, expires)
-          file = this.find(path)
-          this.onQueued()
-        }
+        file = this.reserve(path, size, digest, now, expires)
+        if (file) this.onQueued()
+        else state = 'storageFull'
       }
     }
     if (file) {
@@ -165,9 +223,11 @@ export class Results {
   }
   serve(request, url) {
     const file = this.find(url.pathname)
+    const now = Date.now()
+    const state = file ? (file.expires <= now ? 'expired' : file.state) : this.discarded(url.pathname, now)?.state
+    if (state === 'expired') return problem(410, 'MUSE_RESULT_EXPIRED', '中转原图已过期或已淘汰')
+    if (state === 'integrityError') return problem(502, 'MUSE_RESULT_INTEGRITY', '整图校验失败，请检查出图机归档')
     if (!file) return problem(404, 'MUSE_RESULT_UNKNOWN', '请先查原任务的 statusPath')
-    if (file.expires <= Date.now() || file.state === 'expired') return problem(410, 'MUSE_RESULT_EXPIRED', '中转原图已过期')
-    if (file.state === 'integrityError') return problem(502, 'MUSE_RESULT_INTEGRITY', '整图校验失败，请检查出图机归档')
     if (file.state !== 'ready') return problem(409, 'MUSE_RESULT_TRANSFERRING', '已出图，正在传送原图', { 'Retry-After': '2' })
     const etag = '"' + file.digest + '"'
     const headers = { 'Accept-Ranges': 'bytes', 'Content-Type': 'image/png', ETag: etag,
@@ -179,7 +239,8 @@ export class Results {
       if (range) return problem(400, 'INVALID_RANGE', '按编号取片时请省略 Range')
       const n = url.searchParams.get('part')
       if (!/^\d{1,9}$/.test(n) || Number(n) * PART >= file.size) return invalid()
-      const part = this.sql.exec('SELECT data,digest FROM parts WHERE path=? AND n=?', file.path, Number(n)).one()
+      const part = this.sql.exec('SELECT data,digest FROM parts WHERE path=? AND n=?', file.path, Number(n)).toArray()[0]
+      if (!part) return problem(502, 'MUSE_RESULT_INTEGRITY', '中转原图缺少分片，请检查出图机归档')
       Object.assign(headers, { 'Content-Type': 'application/octet-stream', 'Content-Length': String(part.data.byteLength),
         'X-Part-Sha256': part.digest, 'X-Result-Sha256': file.digest, 'X-Result-Bytes': String(file.size), 'X-Result-Offset': String(Number(n) * PART) })
       return new Response(request.method === 'HEAD' ? null : part.data, { headers })
@@ -207,8 +268,12 @@ export class Results {
     const source = new ReadableStream({
       pull(controller) {
         const n = Math.floor(offset / PART)
-        const { data } = sql.exec('SELECT data FROM parts WHERE path=? AND n=?', file.path, n).one()
-        const chunk = new Uint8Array(data).subarray(offset % PART, Math.min(data.byteLength, last - n * PART + 1))
+        const part = sql.exec("SELECT data FROM parts JOIN files USING(path) WHERE path=? AND n=? AND state='ready' AND started=?", file.path, n, file.started).toArray()[0]
+        const chunk = part && new Uint8Array(part.data).subarray(offset % PART, Math.min(part.data.byteLength, last - n * PART + 1))
+        if (!chunk?.byteLength) {
+          controller.error(new Error('中转原图已淘汰或分片不可用'))
+          return
+        }
         offset += chunk.byteLength
         controller.enqueue(chunk)
         if (offset > last) controller.close()

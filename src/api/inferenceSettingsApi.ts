@@ -27,6 +27,21 @@ export interface InferenceSettingsResponse {
   remoteAddress?: string | null
   museRelayUrl?: string | null
 }
+export interface MuseRelayStatus {
+  ok: true
+  url: string
+  laptopOnline: boolean
+  lastSeenAt: number | null
+  storage: {
+    usedBytes: number
+    maxBytes: number
+    readyFiles: number
+    transferringFiles: number
+    oldestExpiresAt: number | null
+  } | null
+  capabilities: { voice: boolean; modelRead: boolean } | null
+}
+
 export interface InferenceDiagnostics {
   basis: 'configured'
   configuration: 'valid' | 'invalid'
@@ -101,6 +116,25 @@ export async function readMuseToken(signal: AbortSignal) {
     validate: value => value.ok === true && typeof value.url === 'string' && typeof value.token === 'string' && /^[a-f0-9]{64}$/i.test(value.token),
   })
 }
+const unsignedInteger = (value: unknown): value is number => typeof value === 'number' && Number.isSafeInteger(value) && value >= 0
+export async function readMuseRelayStatus(signal: AbortSignal) {
+  localOnly()
+  return apiClient.request<MuseRelayStatus>('/api/control/muse-relay/status', {
+    signal, timeoutMs: 12_000, cache: 'no-store', cachePolicy: 'bypass',
+    validate(value) {
+      const { storage, capabilities } = value
+      return value.ok === true && typeof value.url === 'string' && typeof value.laptopOnline === 'boolean'
+        && (value.lastSeenAt === null || unsignedInteger(value.lastSeenAt))
+        && (storage === null || object(storage) && unsignedInteger(storage.usedBytes)
+          && unsignedInteger(storage.maxBytes) && storage.maxBytes > 0
+          && unsignedInteger(storage.readyFiles) && unsignedInteger(storage.transferringFiles)
+          && (storage.oldestExpiresAt === null || unsignedInteger(storage.oldestExpiresAt)))
+        && (capabilities === null || object(capabilities)
+          && typeof capabilities.voice === 'boolean' && typeof capabilities.modelRead === 'boolean')
+    },
+  })
+}
+
 export const inferenceSettingsApi: InferenceSettingsApi = {
   async diagnose(signal) {
     localOnly()
