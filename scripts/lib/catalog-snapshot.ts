@@ -5,6 +5,17 @@ function canonical(value: any): string {
   return JSON.stringify(value, (_key, item) => item && typeof item === 'object' && !Array.isArray(item)
     ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
 }
+const SLIM_DEFERRED_PORTRAIT = /^popular-[a-z0-9_-]+\.(?:png|jpe?g|webp)$/i;
+function isSlimResourceGateway(root: string): boolean {
+  const layersFile = path.join(root, 'resource-layers.json');
+  if (!fs.existsSync(layersFile)) return false;
+  try {
+    const layers = JSON.parse(fs.readFileSync(layersFile, 'utf8'));
+    return layers?.kind === 'desktop-resource-layers' && layers?.profile === 'slim';
+  } catch {
+    return false;
+  }
+}
 /** Build/review reads committed snapshots. Runtime editing uses the native record service. */
 function read(root: string): RecordRow[] | null {
   const records = readDirectory(path.join(root, 'data/catalog'));
@@ -16,16 +27,24 @@ function read(root: string): RecordRow[] | null {
     }
   }
   if (records) {
+    const slimDeferred = isSlimResourceGateway(root);
+    const assetRoot = path.resolve(root, 'assets/characters');
+    const thumbRoot = path.resolve(assetRoot, 'thumbs');
     for (const record of records) {
       if (record.kind !== 'character') continue;
       const image = record.data?.profile?.portrait?.image;
       if (typeof image !== 'string' || !image.startsWith('../assets/characters/')) continue;
       const relative = image.split('?')[0].slice('../assets/characters/'.length);
-      const assetRoot = path.resolve(root, 'assets/characters');
       const asset = path.resolve(assetRoot, relative);
-      if (!asset.startsWith(assetRoot + path.sep) || !fs.existsSync(asset) || !fs.statSync(asset).isFile()) {
-        throw Error(`CATALOG_PORTRAIT_MISSING: ${record.id} 指向不存在的立绘 ${image}；请补齐素材或使用 portrait-pending.svg。`);
+      const hasOriginal = asset.startsWith(assetRoot + path.sep) && fs.existsSync(asset) && fs.statSync(asset).isFile();
+      if (hasOriginal) continue;
+      if (slimDeferred && SLIM_DEFERRED_PORTRAIT.test(relative)) {
+        const thumb = path.resolve(thumbRoot, relative.replace(/\.[^.]+$/, '.webp'));
+        if (thumb.startsWith(thumbRoot + path.sep) && fs.existsSync(thumb) && fs.statSync(thumb).isFile()) {
+          continue;
+        }
       }
+      throw Error(`CATALOG_PORTRAIT_MISSING: ${record.id} 指向不存在的立绘 ${image}；请补齐素材或使用 portrait-pending.svg。`);
     }
   }
   return records;
