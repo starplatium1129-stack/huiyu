@@ -2,7 +2,7 @@
 
 桌面部署与同步的唯一入口：**`deploy-desktop.bat`**（位于项目根目录）。
 
-- **日常开发**：默认生成 `desktop-local` 快速无压缩升级包，按 SHA-256 复用未变化的资源与二进制，秒级更新。
+- **日常开发**：已登记的同版本 Windows 安装默认使用 `desktop-local`。部署会按构建清单校验 SHA-256，等程序排水退出后原子替换变更文件，再核验安装目录并同步内容库。
 - **正式发行**：采用 release 配置与完整 LZMA 压缩包，保证分发独立性。
 - **用户数据保护**：部署按每条内容已接收的上游版本合并快照，并保留本机的自定义修改。
 
@@ -12,7 +12,8 @@
 
 | 场景 | 命令 | 说明 |
 |---|---|---|
-| **日常程序更新** | `.\deploy-desktop.bat` | 检查源码、构建与安装身份；自动选择复用升级包或快速重编；默认静默安装 |
+| **日常程序更新** | `.\deploy-desktop.bat` | 核对源码、构建和安装身份。同版本开发安装会复用候选或快速重建，再按清单直写差异 |
+| **复用当前本机构建** | `.\deploy-desktop.bat -SkipBuild` | 核对构建回执与当前源码是否一致，然后同步差异 |
 | **首次安装 / 完整修复** | `.\deploy-desktop.bat -UseInstaller -InstallerPath "<完整包路径>"` | 显式使用 full 完整包进行全新安装或覆盖修复 |
 | **仅同步静态资源** | `.\deploy-desktop.bat -ResourcesOnly` | 仅同步 `assets/` 与数据快照（要求已安装 EXE/DLL 字节一致；可加 `-SkipBuild` 跳过重新构建） |
 | **同步私有参考分片** | `.\deploy-desktop.bat -ResourcesOnly -ReferenceIds natsume,nene` | 同步指定角色的参考分片到个人目录，覆盖前自动备份 |
@@ -24,6 +25,8 @@
 
 > [!NOTE]
 > 部署过程中若弹出 Windows UAC（用户账户控制）提权弹窗，请点击“是”允许写入安装目录（默认 `C:\Program Files\AI-CG-Studio`）。
+
+首次安装、版本变更、修复和显式 `-UseInstaller` 继续使用绑定安装包。日常直写保留现有安装登记、WebView2 和用户内容库，发布前仍走正式安装包流程。执行一次 `.\deploy-desktop.bat` 后，可查看 `runtime/desktop-deploy-last.log` 中的 `[desktop:timing]` 行，详细构建输出在 `runtime/desktop-deploy-build.log`。
 
 ---
 

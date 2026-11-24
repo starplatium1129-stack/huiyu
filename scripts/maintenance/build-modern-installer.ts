@@ -17,12 +17,13 @@ function run(command: string, args: readonly string[], options: any = {}) {
   if (result.error || result.status !== 0) throw new Error(`Modern installer command failed: ${result.error?.message || result.status}`);
 }
 
-function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), uninstall = false, preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
+function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), uninstall = false, preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96, checkpoint }: any = {}) {
   if (uninstall && (payload || upgrade || upgradeVerifier)) throw new Error('Uninstaller UI cannot embed an installation payload');
   if (!preview && !uninstall && (!payload || !fs.existsSync(payload))) throw new Error('A verified NSIS payload is required');
   if (!preview && upgrade && !upgradeVerifier) throw Error('An upgrade requires its bound resource verifier');
-  if (!preview && !uninstall) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding'))
-    .verifyBuild(ROOT, upgrade ? [payload, upgradeVerifier] : payload);
+  const binding = !preview && !uninstall ? require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding') : undefined;
+  const selected = upgrade ? [payload, upgradeVerifier] : payload;
+  binding?.verifyBuildPayloads(ROOT, selected, checkpoint);
   if (!['dark', 'light'].includes(theme) || !(uninstall ? ['ready', 'confirm', 'installing', 'done', 'error'] : ['ready', 'installing', 'done', 'error']).includes(state)) throw new Error('Unknown preview theme or state');
   fs.mkdirSync(GENERATED, { recursive: true });
   const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
@@ -76,9 +77,9 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
     console.log(`Native preview: ${captureFile}`);
   }
   if (output) { fs.mkdirSync(path.dirname(output), { recursive: true }); fs.copyFileSync(executable, output); }
-  if (!preview && !uninstall) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).bindDistribution(ROOT, payload, output || executable);
+  const bound = binding?.bindDistribution(ROOT, checkpoint ? selected : payload, output || executable, checkpoint);
   console.log(`Modern installer: ${output || executable}`);
-  return { executable: output || executable, payloadHash, payloadLength, version };
+  return { executable: output || executable, payloadHash, payloadLength, version, checkpoint: checkpoint ? bound : undefined };
 }
 
 

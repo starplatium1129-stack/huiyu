@@ -3,6 +3,7 @@ import path = require('node:path');
 import crypto = require('node:crypto');
 import { spawnSync } from 'node:child_process';
 import binding = require('./desktop-build-binding');
+import { compareInstalledFilesParallel } from './desktop-installer-binding';
 import safe = require('./delivery-paths');
 import lock = require('./workspace-lock');
 import { timeDesktopBuild } from './desktop-build-timing';
@@ -109,7 +110,7 @@ function localUpgradeTemplate(root: string, receipt: ReturnType<typeof binding.v
     const sourcePath = safe.resolveSafe(root, relative);
     const directory = fs.statSync(sourcePath).isDirectory();
     const inputs: string[] = directory
-      ? receipt.build.entries.filter((entry: { status: string; path: string }) => entry.status === 'file' && entry.path.startsWith(`${relative}/`)).map((entry: Asset) => entry.path)
+      ? receipt.build.entries.filter(entry => entry.status === 'file' && entry.path.startsWith(`${relative}/`)).map(entry => entry.path)
       : [relative];
     if (!inputs.length) throw Error(`No bound local upgrade resources: ${source}`);
     for (const input of inputs) {
@@ -124,28 +125,34 @@ function localUpgradeTemplate(root: string, receipt: ReturnType<typeof binding.v
   return upgradeChecks(once(template, '  {{#each resources}}\n    File /a "/oname={{this.[1]}}" "{{no-escape @key}}"\n  {{/each}}', files.join('\n')), verifier);
 }
 
-export async function buildUpgradeInstaller(root: string, options: { installDir?: string; local?: boolean } = {}) {
+export async function buildUpgradeInstaller(root: string, options: { installDir?: string; local?: boolean; prepareInstallerAssets?: boolean } = {}) {
   return lock.withWorkspaceLock({ workspaceRoot: root }, async () => {
     if (options.local && !options.installDir) throw Error('Local upgrades require an existing installation directory');
-    const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root, undefined, options.local ? undefined : 'release'));
+    const receipt = await timeDesktopBuild('upgrade source verification', () => options.local
+      ? binding.verifyBuildParallel(root) : binding.verifyBuild(root, undefined, 'release'));
     const profile = desktopBuildProfile(receipt.buildProfile);
     const hostExecutable = path.join(root, desktopHostExecutable(profile));
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
     if (!options.local && !receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
       throw Error('Rendered NSIS inputs are not bound; perform a fresh desktop build');
-    const resources: Asset[] = receipt.build.entries.filter((entry: { path: string; status: string }) => entry.status === 'file'
-      && entry.path.startsWith('desktop-tauri/src-tauri/resources/'))
-      .map((entry: Asset) => ({ path: entry.path.slice('desktop-tauri/src-tauri/resources/'.length), bytes: entry.bytes, sha256: entry.sha256 }));
-    const assets = await timeDesktopBuild('upgrade retained file selection', () => resources.filter(entry => {
+    if (options.local && options.prepareInstallerAssets) {
+      const { buildGameInstaller }: typeof import('../maintenance/build-game-installer') = require('../maintenance/build-game-installer');
+      await timeDesktopBuild('installer assets', () => buildGameInstaller());
+    }
+    const resourcePrefix = 'desktop-tauri/src-tauri/resources/';
+    const resources: Asset[] = receipt.build.entries.flatMap(entry => entry.status === 'file' && entry.path.startsWith(resourcePrefix)
+      ? [{ path: entry.path.slice(resourcePrefix.length), bytes: entry.bytes, sha256: entry.sha256 }] : []);
+    const assets = await timeDesktopBuild('upgrade retained file selection', async () => {
       // The bundled Nene texture is re-encoded with the portraits; older releases
       // can have a different PNG at the same path.
-      if (!options.local) return RETAIN.test(entry.path) && entry.path !== 'gateway/assets/live2d/nene/textures/texture_00.png';
-      if (!LOCAL_RETAIN.test(entry.path)) return false;
+      if (!options.local) return resources.filter(entry => RETAIN.test(entry.path) && entry.path !== 'gateway/assets/live2d/nene/textures/texture_00.png');
+      const candidates = resources.filter(entry => LOCAL_RETAIN.test(entry.path));
       // Missing, changed or unsafe files are never authorized for reuse. The
       // embedded verifier rechecks every retained byte immediately before writes.
-      const installed = safe.fileEntry(options.installDir!, entry.path);
-      return installed.status === 'file' && installed.bytes === entry.bytes && installed.sha256 === entry.sha256;
-    }));
+      const { mismatchPaths } = await compareInstalledFilesParallel(candidates, options.installDir!);
+      const mismatches = new Set(mismatchPaths);
+      return candidates.filter(entry => !mismatches.has(entry.path));
+    });
     if (!assets.length) throw Error('Upgrade requires a nonempty retained asset inventory');
     const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
     const directory = safe.resolveSafe(root, `runtime/desktop-updates/payloads/${version}${options.local ? '/local' : ''}`, true);
@@ -187,8 +194,19 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
       fs.writeFileSync(script, upgradeScript(fs.readFileSync(nsisFile, 'utf8'), assets, verifier, host, output));
       await timeDesktopBuild('upgrade NSIS compression', () => command(path.join(process.env.LOCALAPPDATA || '', 'tauri/NSIS/makensis.exe'), ['/NOCD', '/INPUTCHARSET', 'UTF8', '/V2', script], path.dirname(nsisFile)));
     }
-    await timeDesktopBuild('upgrade payload binding', () => binding.bindDerivedPayloads(root, [output, verifier]));
+    const checkpoint = await timeDesktopBuild('upgrade payload binding', async () => {
+      if (!options.local || profile !== 'desktop-local') {
+        binding.bindDerivedPayloads(root, [output, verifier]);
+        return undefined;
+      }
+      // The NSIS subprocess consumes the staged tree. Recheck after it exits,
+      // then pass the same checkpoint to the WPF wrapper and output verifier.
+      const current = await binding.verifyBuildParallel(root, undefined, 'desktop-local');
+      if (current.source.sha256 !== receipt.source.sha256 || current.build.sha256 !== receipt.build.sha256
+        || current.sdk.inputs.sha256 !== receipt.sdk.inputs.sha256) throw Error('封装期间桌面构建发生变化');
+      return binding.bindDerivedPayloads(root, [output, verifier], current);
+    });
     return { payload: output, verifier, nsisFile, retainedFiles: assets.length, retainedBytes: assets.reduce((sum, file) => sum + file.bytes, 0),
-      requirementsSha256: crypto.createHash('sha256').update(fs.readFileSync(manifest)).digest('hex') };
+      requirementsSha256: crypto.createHash('sha256').update(fs.readFileSync(manifest)).digest('hex'), checkpoint };
   });
 }

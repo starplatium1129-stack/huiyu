@@ -20,7 +20,7 @@ function checkedFile(root: string, expected: FileIdentity) {
 
 /** Tauri 2.12 changes only this marker in its NSIS copy. Derive the installed
  * hash from verified build bytes while packaging, never from later source/SDK. */
-function installedHost(root: string, expected: FileIdentity): FileIdentity {
+export function installedHostBytes(root: string, expected: FileIdentity) {
   checkedFile(root, expected);
   const bytes = fs.readFileSync(safe.resolveSafe(root, expected.path));
   if (digest(bytes) !== expected.sha256) throw Error('生成安装清单时宿主已变化');
@@ -28,10 +28,10 @@ function installedHost(root: string, expected: FileIdentity): FileIdentity {
   const offset = bytes.indexOf(marker);
   if (offset < 0 || bytes.indexOf(marker, offset + marker.length) >= 0) throw Error('Tauri NSIS 宿主标记不明确，请重新打包');
   Buffer.from('__TAURI_BUNDLE_TYPE_VAR_NSS').copy(bytes, offset);
-  return { path: 'ai-cg-studio-desktop.exe', bytes: bytes.length, sha256: digest(bytes) };
+  return bytes;
 }
 
-function installedBuildFiles(root: string, receipt: unknown) {
+export function installedBuildFiles(root: string, receipt: unknown) {
   if (!safe.object(receipt) || receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('安装包构建回执无效');
   const source = identity.validateSnapshot(receipt.source);
   const build = identity.validateSnapshot(receipt.build);
@@ -40,10 +40,12 @@ function installedBuildFiles(root: string, receipt: unknown) {
   if (!host || host.status !== 'file') throw Error('原构建回执缺少宿主身份，无法准备旧包的安装校验清单');
   const files: FileIdentity[] = build.entries.filter((entry): entry is SnapshotFile => entry.status === 'file' && entry.path.startsWith(RESOURCE_PREFIX))
     .map(entry => ({ path: entry.path.slice(RESOURCE_PREFIX.length), bytes: entry.bytes, sha256: entry.sha256 }));
-  files.push(installedHost(root, host));
+  const installedHost = installedHostBytes(root, host);
+  files.push({ path: 'ai-cg-studio-desktop.exe', bytes: installedHost.length, sha256: digest(installedHost) });
   const icon = source.entries.find(entry => entry.path === 'desktop-tauri/src-tauri/icons/icon.ico');
   if (icon?.status === 'file') files.push({ path: 'huiyu-icon.ico', bytes: icon.bytes, sha256: icon.sha256 });
   if (REQUIRED.some(file => !files.some(entry => entry.path === file))) throw Error('构建缺少宿主、后端、原生库或内容快照');
+  validateFiles(files);
   return { source, files: files.sort((a, b) => a.path.localeCompare(b.path, 'en')), receipt };
 }
 
@@ -66,16 +68,20 @@ export function writeInstallerManifest(root: string, receipt: unknown, installer
 function validateManifest(manifest: DeploymentManifest, installer: string) {
   if (manifest.schemaVersion !== 1 || manifest.kind !== 'desktop-installer-deployment' || !identity.HASH.test(manifest.sourceSha256)
     || manifest.installer?.path?.toLowerCase() !== path.basename(installer).toLowerCase() || !Array.isArray(manifest.files) || !manifest.files.length) throw Error('安装校验清单格式无效');
+  validateFiles([manifest.installer, ...manifest.files]);
+  if (REQUIRED.some(file => !manifest.files.some(entry => entry.path === file))) throw Error('安装校验清单缺少宿主、后端、原生库或内容快照');
+}
+
+function validateFiles(files: FileIdentity[]) {
   const names = new Set<string>();
-  for (const file of [manifest.installer, ...manifest.files]) {
+  for (const file of files) {
     safe.relative(file.path);
     if (!Number.isSafeInteger(file.bytes) || file.bytes < 0 || !identity.HASH.test(file.sha256) || names.has(file.path.toLowerCase())) throw Error('安装校验清单的文件身份无效或重复');
     names.add(file.path.toLowerCase());
   }
-  if (REQUIRED.some(file => !manifest.files.some(entry => entry.path === file))) throw Error('安装校验清单缺少宿主、后端、原生库或内容快照');
 }
 
-function verifyInstaller(installer: string, expectedManifestSha256?: string, installedRoot?: string) {
+async function verifyInstaller(installer: string, expectedManifestSha256?: string, installedRoot?: string) {
   installer = path.resolve(installer);
   const directory = safe.rootPath(path.dirname(installer));
   const record = safe.readJson(directory, path.basename(manifestPath(installer)));
@@ -87,10 +93,10 @@ function verifyInstaller(installer: string, expectedManifestSha256?: string, ins
   validateManifest(manifest, installer);
   checkedFile(directory, manifest.installer);
   if (installedRoot) {
-    const root = safe.rootPath(installedRoot);
     // Only declared application files are checked. Extra user files, personal
     // SQLite content and AI directories are neither removed nor rewritten.
-    for (const file of manifest.files) checkedFile(root, file);
+    const result = await compareInstalledFilesParallel(manifest.files, installedRoot);
+    if (result.mismatchCount) throw Error(`安装文件字节不匹配：${result.mismatches.join('、')}`);
   }
   return { installer, manifestSha256: record.entry.sha256, installerSha256: manifest.installer.sha256, fileCount: manifest.files.length };
 }
@@ -98,28 +104,29 @@ function verifyInstaller(installer: string, expectedManifestSha256?: string, ins
 /** Read-only comparison used to choose between a no-op, resource sync and a
  * full installer run. Executable/runtime mismatches require the installer;
  * everything else can be refreshed from the bound staged resources. */
-export function inspectInstalled(installer: string, installedRoot: string) {
+export async function inspectInstalled(installer: string, installedRoot: string) {
   installer = path.resolve(installer);
-  const verified = verifyInstaller(installer);
+  const verified = await verifyInstaller(installer);
   const directory = safe.rootPath(path.dirname(installer));
   const manifest = safe.readJson(directory, path.basename(manifestPath(installer))).value as DeploymentManifest;
-  return { installer: verified.installer, manifestSha256: verified.manifestSha256,
-    ...compareInstalledFiles(manifest.files, installedRoot) };
+  const { mismatchPaths: _mismatchPaths, unsafePaths: _unsafePaths, ...comparison } = await compareInstalledFilesParallel(manifest.files, installedRoot);
+  return { installer: verified.installer, manifestSha256: verified.manifestSha256, ...comparison };
 }
 
 /** Caller verifies the current source/SDK/build before using these expected bytes.
  * Static repair and no-op detection do not depend on keeping an installer EXE. */
-export function inspectInstalledBuild(root: string, receipt: unknown, installedRoot: string) {
-  return compareInstalledFiles(installedBuildFiles(root, receipt).files, installedRoot);
+export async function inspectInstalledBuild(root: string, receipt: unknown, installedRoot: string) {
+  const { mismatchPaths: _mismatchPaths, unsafePaths: _unsafePaths, ...comparison } =
+    await compareInstalledFilesParallel(installedBuildFiles(root, receipt).files, installedRoot);
+  return comparison;
 }
 
-function compareInstalledFiles(files: FileIdentity[], installedRoot: string) {
+export async function compareInstalledFilesParallel(files: FileIdentity[], installedRoot: string) {
   const root = safe.rootPath(installedRoot);
-  const mismatches = files.filter(file => {
-    try {
-      const actual = safe.fileEntry(root, file.path);
-      return actual.status !== 'file' || actual.bytes !== file.bytes || actual.sha256 !== file.sha256;
-    } catch { return true; }
+  const actualFiles = await safe.fileEntriesParallel(root, files.map(file => file.path));
+  const mismatches = files.filter((file, index) => {
+    const actual = actualFiles[index];
+    return actual.status !== 'file' || actual.bytes !== file.bytes || actual.sha256 !== file.sha256;
   }).map(file => file.path);
   const isRuntime = (file: string) => file === 'ai-cg-studio-desktop.exe' || file === 'gateway/huiyu-runtime.exe'
     || file === 'gateway/qq-sdk/node.exe' || file === 'gateway/installer-resource-cleanup.exe' || file.startsWith('gateway/native/');
@@ -129,11 +136,13 @@ function compareInstalledFiles(files: FileIdentity[], installedRoot: string) {
     mismatchCount: mismatches.length,
     runtimeMismatchCount: runtimeMismatches.length,
     mismatches: mismatches.slice(0, 8),
+    mismatchPaths: mismatches,
+    unsafePaths: actualFiles.filter(file => file.status === 'unsafe-or-unreadable').map(file => file.path),
   };
 }
 
-function freezeInstaller(installer: string, directory: string, manifestSha256: string) {
-  verifyInstaller(installer, manifestSha256);
+async function freezeInstaller(installer: string, directory: string, manifestSha256: string) {
+  await verifyInstaller(installer, manifestSha256);
   fs.mkdirSync(directory, { recursive: true });
   const selected = path.join(directory, path.basename(installer));
   fs.copyFileSync(installer, selected, fs.constants.COPYFILE_EXCL);
@@ -143,30 +152,32 @@ function freezeInstaller(installer: string, directory: string, manifestSha256: s
   return verifyInstaller(selected, manifestSha256);
 }
 
-if (require.main === module) {
-  try {
-    const [action, installer, ...args] = process.argv.slice(2);
-    if (!installer) throw Error('需要明确指定安装包');
-    if (action === 'prepare') {
-      const root = args[0];
-      if (!root || args.length !== 1) throw Error('旧包准备需要原构建回执所在目录');
-      if (!fs.existsSync(manifestPath(installer))) {
-        let receipt: any;
-        try {
-          receipt = safe.readJson(root, 'runtime/delivery-evidence/desktop-build-binding.json', true).value;
-        } catch (error) {
-          throw Error(`安装包缺少同名 .deployment.json，当前工作区也没有可用的构建回执；请从发行附件同时保留该清单，或在本机构建后使用。`, { cause: error });
-        }
-        try {
-          writeInstallerManifest(root, receipt, path.resolve(installer));
-        } catch (error) {
-          throw Error(`安装包未登记在当前构建回执中，无法生成部署清单；请使用与当前源码匹配的构建产物。`, { cause: error });
-        }
+async function main() {
+  const [action, installer, ...args] = process.argv.slice(2);
+  if (!installer) throw Error('需要明确指定安装包');
+  if (action === 'prepare') {
+    const root = args[0];
+    if (!root || args.length !== 1) throw Error('旧包准备需要原构建回执所在目录');
+    if (!fs.existsSync(manifestPath(installer))) {
+      let receipt: unknown;
+      try {
+        receipt = safe.readJson(root, 'runtime/delivery-evidence/desktop-build-binding.json', true).value;
+      } catch (error) {
+        throw Error(`安装包缺少同名 .deployment.json，当前工作区也没有可用的构建回执；请从发行附件同时保留该清单，或在本机构建后使用。`, { cause: error });
       }
-      console.log(JSON.stringify(verifyInstaller(installer)));
-    } else if (action === 'freeze' && args.length === 2) console.log(JSON.stringify(freezeInstaller(installer, args[0], args[1])));
-    else if (action === 'verify' && args.length <= 2) console.log(JSON.stringify(verifyInstaller(installer, args[0] || undefined, args[1] || undefined)));
-    else if (action === 'inspect' && args.length === 1) console.log(JSON.stringify(inspectInstalled(installer, args[0])));
-    else throw Error('仅支持固定安装包 prepare / freeze / verify / inspect');
-  } catch (error) { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; }
+      try {
+        writeInstallerManifest(root, receipt, path.resolve(installer));
+      } catch (error) {
+        throw Error(`安装包未登记在当前构建回执中，无法生成部署清单；请使用与当前源码匹配的构建产物。`, { cause: error });
+      }
+    }
+    console.log(JSON.stringify(await verifyInstaller(installer)));
+  } else if (action === 'freeze' && args.length === 2) console.log(JSON.stringify(await freezeInstaller(installer, args[0], args[1])));
+  else if (action === 'verify' && args.length <= 2) console.log(JSON.stringify(await verifyInstaller(installer, args[0] || undefined, args[1] || undefined)));
+  else if (action === 'inspect' && args.length === 1) console.log(JSON.stringify(await inspectInstalled(installer, args[0])));
+  else throw Error('仅支持固定安装包 prepare / freeze / verify / inspect');
 }
+if (require.main === module) void main().catch(error => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
+});

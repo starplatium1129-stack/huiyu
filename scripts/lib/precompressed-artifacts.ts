@@ -10,9 +10,9 @@ export const COMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
 /** Small files rarely benefit from separate compressed artifacts. */
 export const MIN_BYTES = 1024;
 
-function brotliOptions(size: number): zlib.BrotliOptions {
+function brotliOptions(size: number, fast = false): zlib.BrotliOptions {
   return { params: {
-    [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
+    [zlib.constants.BROTLI_PARAM_QUALITY]: fast ? 4 : 11,
     [zlib.constants.BROTLI_PARAM_SIZE_HINT]: size,
   } };
 }
@@ -43,42 +43,41 @@ export function compress(file: string) {
   return writeArtifacts(file, raw, brotli, gzip);
 }
 
-function writeArtifacts(file: string, raw: Buffer, brotli: Buffer, gzip: Buffer) {
+function writeArtifacts(file: string, raw: Buffer, brotli: Buffer, gzip?: Buffer) {
   // 压不小就别留，免得服务端发出比原文更大的响应
   if (brotli.length < raw.length) fs.writeFileSync(file + '.br', brotli);
   else if (fs.existsSync(file + '.br')) fs.unlinkSync(file + '.br');
-  if (gzip.length < raw.length) fs.writeFileSync(file + '.gz', gzip);
+  if (gzip && gzip.length < raw.length) fs.writeFileSync(file + '.gz', gzip);
   else if (fs.existsSync(file + '.gz')) fs.unlinkSync(file + '.gz');
 
-  return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: false };
+  return { raw: raw.length, brotli: brotli.length, gzip: gzip?.length ?? 0, reused: false };
 }
 
-async function reuseArtifactsAsync(file: string, raw: Buffer) {
+async function reuseArtifactsAsync(file: string, raw: Buffer, fast: boolean) {
   try {
     const [brotli, gzip] = await Promise.all([
       fs.promises.readFile(file + '.br'),
-      fs.promises.readFile(file + '.gz'),
+      fast ? undefined : fs.promises.readFile(file + '.gz'),
     ]);
-    if (brotli.length >= raw.length || gzip.length >= raw.length) return null;
+    if (brotli.length >= raw.length || (gzip && gzip.length >= raw.length)) return null;
     const options = { maxOutputLength: raw.length };
     const [decompressedBr, decompressedGz] = await Promise.all([
       brotliDecompress(brotli, options),
-      gunzip(gzip, options),
+      gzip ? gunzip(gzip, options) : undefined,
     ]);
-    if (!decompressedBr.equals(raw) || !decompressedGz.equals(raw)) return null;
-    return { raw: raw.length, brotli: brotli.length, gzip: gzip.length, reused: true };
+    if (!decompressedBr.equals(raw) || (decompressedGz && !decompressedGz.equals(raw))) return null;
+    return { raw: raw.length, brotli: brotli.length, gzip: gzip?.length ?? 0, reused: true };
   } catch { return null; }
 }
 
-/** The async path uses the same quality/options and bytes as the synchronous API. */
-export async function compressAsync(file: string) {
+export async function compressAsync(file: string, fast = false) {
   const raw = await fs.promises.readFile(file);
   if (raw.length < MIN_BYTES) return null;
-  const reused = await reuseArtifactsAsync(file, raw);
+  const reused = await reuseArtifactsAsync(file, raw, fast);
   if (reused) return reused;
   const [brotli, gzip] = await Promise.all([
-    brotliCompress(raw, brotliOptions(raw.length)),
-    gzipCompress(raw, GZIP_OPTIONS),
+    brotliCompress(raw, brotliOptions(raw.length, fast)),
+    fast ? undefined : gzipCompress(raw, GZIP_OPTIONS),
   ]);
   return writeArtifacts(file, raw, brotli, gzip);
 }

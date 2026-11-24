@@ -5,10 +5,30 @@ import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import deliveryPaths = require('./delivery-paths');
 import installerBinding = require('./desktop-installer-binding');
-import type { Selection } from './delivery-types';
+import type { Selection, Snapshot } from './delivery-types';
 import { desktopBuildProfile, desktopHostExecutable, desktopRuntimeExecutable, type DesktopBuildProfile } from './desktop-build-profile';
 
 const receiptPath = 'runtime/delivery-evidence/desktop-build-binding.json';
+type LocalInputs = { frontend: string; host: string; data?: string };
+type BuildReceipt = {
+  schemaVersion: 1;
+  kind: 'desktop-build-binding';
+  buildProfile?: DesktopBuildProfile;
+  includeBundle: boolean;
+  source: Snapshot;
+  sdk: ReturnType<typeof sdkIdentity>;
+  build: Snapshot;
+  buildCommit: string | null;
+  localInputs?: LocalInputs;
+  derivedPayloads?: Snapshot;
+  distribution?: Snapshot;
+  releaseCommit?: string | null;
+};
+const localCheckpoints = new WeakMap<BuildReceipt, string>();
+function checkpointRoot(root: string) {
+  const canonical = deliveryPaths.rootPath(root);
+  return process.platform === 'win32' ? canonical.toLowerCase() : canonical;
+}
 function problemDetails(snapshot: ReturnType<typeof identity.snapshot>) {
   const problems = snapshot.entries.filter(entry => entry.status !== 'file' && entry.status !== 'directory');
   return problems.slice(0, 5).map(entry =>
@@ -17,6 +37,13 @@ function problemDetails(snapshot: ReturnType<typeof identity.snapshot>) {
 function completeSnapshot(root: string, selected: Selection[], failure: string) {
   let snapshot;
   try { snapshot = identity.snapshot(root, selected); }
+  catch (error) { throw Error(`${failure}: ${error instanceof Error ? error.message : String(error)}`, { cause:error }); }
+  if (snapshot.status !== 'complete') throw Error(`${failure}: ${problemDetails(snapshot)}`);
+  return snapshot;
+}
+async function completeSnapshotParallel(root: string, selected: Selection[], failure: string) {
+  let snapshot;
+  try { snapshot = await identity.snapshotParallel(root, selected); }
   catch (error) { throw Error(`${failure}: ${error instanceof Error ? error.message : String(error)}`, { cause:error }); }
   if (snapshot.status !== 'complete') throw Error(`${failure}: ${problemDetails(snapshot)}`);
   return snapshot;
@@ -81,18 +108,23 @@ function writeReceipt(root: string, receipt: unknown, stage: string) {
     if (fs.existsSync(temporary)) fs.unlinkSync(temporary);
   }
 }
-function sourceIdentity(root: string) {
+function sourceSelection(root: string): Selection[] {
   const names = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd:root, encoding:'utf8', windowsHide:true, maxBuffer: 16 * 1024 * 1024 }).split('\0')
     .filter(name => name && !/^(docs|plans)\//.test(name) && (!/\.md$/i.test(name) || name.startsWith('runtime-rs/native-licenses/') || name === 'tools/cli-anything-huiyu/SKILL.md'));
   const deleted = new Set(execFileSync('git', ['ls-files', '-z', '--deleted'], { cwd:root, encoding:'utf8', windowsHide:true, maxBuffer: 16 * 1024 * 1024 }).split('\0').filter(Boolean));
-  const selection: Selection[] = [...new Set(names)].filter(name => {
+  return [...new Set(names)].filter(name => {
     if (!deleted.has(name)) return true;
     // Staging a deletion must not change the identity of the same source bytes.
     // Recheck it now: a restored file, unsafe ancestor or IO error cannot vanish.
     try { deliveryPaths.resolveSafe(root, name); return true; }
     catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false; throw error; }
   }).map(name => ({ kind:'file', path:name }));
-  return completeSnapshot(root, selection, '发行源码身份不完整，请检查源码文件后完整构建');
+}
+function sourceIdentity(root: string) {
+  return completeSnapshot(root, sourceSelection(root), '发行源码身份不完整，请检查源码文件后完整构建');
+}
+function sourceIdentityParallel(root: string) {
+  return completeSnapshotParallel(root, sourceSelection(root), '发行源码身份不完整，请检查源码文件后完整构建');
 }
 function sdkIdentity(root: string, env: NodeJS.ProcessEnv = process.env) {
   const { resolveSdkRoot, sdkInputSnapshot }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
@@ -119,41 +151,88 @@ function buildSelection(root: string, includeBundle = true, profile: DesktopBuil
   }
   return selected;
 }
-function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root), profile: DesktopBuildProfile = 'release') {
-  if (sourceIdentity(root).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
+function verifyRecordedInputs(root: string, sdkBefore: ReturnType<typeof sdkIdentity>, profile: DesktopBuildProfile) {
   const { sdkInputSnapshot }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
   const sdk = {root:sdkBefore.root,inputs:sdkInputSnapshot(sdkBefore.root)};
   if (sdk.inputs.sha256 !== sdkBefore.inputs.sha256) throw Error('构建期间 Cubism SDK 输入发生变化，请重新完整构建');
   const runtime = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/resources/gateway/rust-runtime-build.json'), 'utf8'));
   if (desktopBuildProfile(runtime.buildProfile) !== profile || runtime.runtime?.path !== desktopRuntimeExecutable(profile)) throw Error('宿主与暂存后端的构建档位不一致，请完整重建');
   materializeNativeExecutable(root, desktopHostExecutable(profile));
+  return sdk;
+}
+function recordBuild(root: string, before: Snapshot, includeBundle = true, sdkBefore = sdkIdentity(root), profile: DesktopBuildProfile = 'release') {
+  if (sourceIdentity(root).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
+  const sdk = verifyRecordedInputs(root, sdkBefore, profile);
   const build = completeSnapshot(root, buildSelection(root, includeBundle, profile), '桌面产物不完整，不能生成发行绑定回执');
   writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', buildProfile:profile, includeBundle, source:before, sdk, build, buildCommit:identity.repository(root).commit }, '构建绑定');
 }
-function verifyBuild(root: string, payload?: string | readonly string[], expectedProfile?: DesktopBuildProfile) {
+async function recordBuildParallel(root: string, before: Snapshot, includeBundle: boolean, sdkBefore: ReturnType<typeof sdkIdentity>,
+  profile: DesktopBuildProfile, localInputs?: LocalInputs, verifyOutputs?: (build: Snapshot) => void) {
+  if (profile !== 'desktop-local') return recordBuild(root, before, includeBundle, sdkBefore, profile);
+  if ((await sourceIdentityParallel(root)).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
+  const sdk = verifyRecordedInputs(root, sdkBefore, profile);
+  const build = await completeSnapshotParallel(root, buildSelection(root, includeBundle, profile), '桌面产物不完整，不能生成发行绑定回执');
+  verifyOutputs?.(build);
+  writeReceipt(root, { schemaVersion:1, kind:'desktop-build-binding', buildProfile:profile, includeBundle, source:before, sdk, build,
+    buildCommit:identity.repository(root).commit, ...(localInputs ? { localInputs } : {}) }, '构建绑定');
+}
+function readBuildReceipt(root: string, expectedProfile?: DesktopBuildProfile): { receipt: BuildReceipt; profile: DesktopBuildProfile } {
   let receipt;
-  try { receipt = JSON.parse(fs.readFileSync(path.join(root, receiptPath), 'utf8')); }
+  try { receipt = deliveryPaths.readJson(root, receiptPath, true).value as BuildReceipt; }
   catch { throw Error('缺少桌面构建绑定回执；请从当前源码完整构建，不可复用同版本旧包'); }
   if (receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('发行回执格式无效');
   const profile = desktopBuildProfile(receipt.buildProfile);
   if (expectedProfile && profile !== expectedProfile) throw Error(`需要 ${expectedProfile} 构建，当前回执为 ${profile}；正式发行不可复用本机快速构建`);
   try { identity.validateSnapshot(receipt.source); identity.validateSnapshot(receipt.build); }
   catch (error) { throw Error(`发行源码/产物回执格式无效: ${error instanceof Error ? error.message : String(error)}`, { cause:error }); }
-  if (sourceIdentity(root).sha256 !== receipt.source.sha256) throw Error('发行源码与构建不匹配，请完整重建；版本号相同不能复用旧包');
   try { identity.validateSnapshot(receipt.sdk?.inputs); }
   catch (error) { throw Error('缺少或无效的 Cubism SDK 构建绑定，请完整重建', {cause:error}); }
-  if (sdkIdentity(root).inputs.sha256 !== receipt.sdk.inputs.sha256) throw Error('Cubism SDK 与构建绑定不匹配，请完整重建');
   if (typeof receipt.includeBundle !== 'boolean') throw Error('发行回执缺少产物模式');
+  return { receipt, profile };
+}
+function verifyBoundInputs(root: string, receipt: BuildReceipt, source: Snapshot) {
+  if (source.sha256 !== receipt.source.sha256) throw Error('发行源码与构建不匹配，请完整重建；版本号相同不能复用旧包');
+  if (sdkIdentity(root).inputs.sha256 !== receipt.sdk.inputs.sha256) throw Error('Cubism SDK 与构建绑定不匹配，请完整重建');
+}
+function verifyBuild(root: string, payload?: string | readonly string[], expectedProfile?: DesktopBuildProfile) {
+  const { receipt, profile } = readBuildReceipt(root, expectedProfile);
+  return verifySynchronousBuild(root, receipt, profile, payload);
+}
+function verifySynchronousBuild(root: string, receipt: BuildReceipt, profile: DesktopBuildProfile, payload?: string | readonly string[]) {
+  verifyBoundInputs(root, receipt, sourceIdentity(root));
   const build = completeSnapshot(root, buildSelection(root, receipt.includeBundle, profile), '桌面产物缺失或已改写，请从匹配源码完整重建');
   if (build.sha256 !== receipt.build.sha256) throw Error('桌面产物缺失或已改写，请从匹配源码完整重建');
+  verifyPayloads(root, receipt, payload);
+  return receipt;
+}
+async function verifyBuildParallel(root: string, payload?: string | readonly string[], expectedProfile?: DesktopBuildProfile) {
+  const { receipt, profile } = readBuildReceipt(root, expectedProfile);
+  if (profile !== 'desktop-local') return verifySynchronousBuild(root, receipt, profile, payload);
+  verifyBoundInputs(root, receipt, await sourceIdentityParallel(root));
+  const build = await completeSnapshotParallel(root, buildSelection(root, receipt.includeBundle, profile), '桌面产物缺失或已改写，请从匹配源码完整重建');
+  if (build.sha256 !== receipt.build.sha256) throw Error('桌面产物缺失或已改写，请从匹配源码完整重建');
+  verifyPayloads(root, receipt, payload);
+  localCheckpoints.set(receipt, checkpointRoot(root));
+  return receipt;
+}
+function verifyPayloads(root: string, receipt: BuildReceipt, payload?: string | readonly string[], recheck = false) {
   // Payload and its upgrade verifier share this checkpoint's complete source,
   // SDK and build scan. Each selected file still proves its own binding.
   for (const selected of typeof payload === 'string' ? [payload] : payload || []) {
     const relative = path.relative(root, selected).replace(/\\/g, '/');
-    if (!receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === relative && entry.status === 'file')) {
+    if (!receipt.build.entries.some(entry => entry.path === relative && entry.status === 'file')) {
       verifyBoundFile(root, receipt.derivedPayloads, selected, '安装 payload 未绑定本次构建');
-    }
+    } else if (recheck) verifyBoundFile(root, receipt.build, selected, '安装 payload 已变化');
   }
+}
+function verifiedLocalReceipt(root: string, receipt: BuildReceipt) {
+  if (localCheckpoints.get(receipt) !== checkpointRoot(root)) throw Error('本机构建回执必须在当前流程核验');
+  return receipt;
+}
+function verifyBuildPayloads(root: string, payload: string | readonly string[], checkpoint?: BuildReceipt) {
+  if (!checkpoint) return verifyBuild(root, payload);
+  const receipt = verifiedLocalReceipt(root, checkpoint);
+  verifyPayloads(root, receipt, payload, true);
   return receipt;
 }
 /** Bundle-only starts from a verified native/staged build and extends its receipt. */
@@ -182,27 +261,34 @@ function verifyBoundFile(root: string, input: unknown, output: string, message: 
   const actual = completeSnapshot(root, [{ kind:'file', path:relative }], message).entries[0];
   if (actual.status !== 'file' || actual.sha256 !== expected.sha256 || actual.bytes !== expected.bytes) throw Error(message);
 }
-function bindDerivedPayloads(root: string, outputs: string[]) {
-  const receipt = verifyBuild(root);
-  writeReceipt(root, { ...receipt, derivedPayloads:addBoundFiles(root, receipt.derivedPayloads, outputs) }, '升级载荷绑定');
+function bindDerivedPayloads(root: string, outputs: string[], checkpoint?: BuildReceipt) {
+  const receipt = checkpoint ? verifiedLocalReceipt(root, checkpoint) : verifyBuild(root);
+  const bound = { ...receipt, derivedPayloads:addBoundFiles(root, receipt.derivedPayloads, outputs) };
+  writeReceipt(root, bound, '升级载荷绑定');
+  if (checkpoint) localCheckpoints.set(bound, checkpointRoot(root));
+  return bound;
 }
-function bindDistribution(root: string, payload: string, output: string) {
-  const receipt = verifyBuild(root, payload);
+function bindDistribution(root: string, payload: string | readonly string[], output: string, checkpoint?: BuildReceipt) {
+  const receipt = verifyBuildPayloads(root, payload, checkpoint);
   const distribution = addBoundFiles(root, receipt.distribution, [output]);
   const bound = { ...receipt, distribution, releaseCommit:identity.repository(root).commit };
   writeReceipt(root, bound, '发行封装绑定');
   installerBinding.writeInstallerManifest(root, bound, output);
+  if (checkpoint) localCheckpoints.set(bound, checkpointRoot(root));
+  return bound;
 }
 function verifyBoundDistribution(root: string, receipt: ReturnType<typeof verifyBuild>, output: string) {
   try { identity.validateSnapshot(receipt.distribution); }
   catch (error) { throw Error('缺少或无效的发行封装绑定回执，请重新封装', { cause:error }); }
   verifyBoundFile(root, receipt.distribution, output, '发行封装产物已变化，拒绝签名或上传');
 }
-function verifyDistribution(root: string, output: string, expectedProfile?: DesktopBuildProfile) {
-  verifyBoundDistribution(root, verifyBuild(root, undefined, expectedProfile), output);
+function verifyDistribution(root: string, output: string, expectedProfile?: DesktopBuildProfile, checkpoint?: BuildReceipt) {
+  const receipt = checkpoint ? verifiedLocalReceipt(root, checkpoint) : verifyBuild(root, undefined, expectedProfile);
+  if (expectedProfile && desktopBuildProfile(receipt.buildProfile) !== expectedProfile) throw Error('构建回执档位与封装不一致');
+  verifyBoundDistribution(root, receipt, output);
 }
-function verifyDeployment(root:string,payload?:string){
-  const receipt=verifyBuild(root);
+async function verifyDeployment(root:string,payload?:string){
+  const receipt=await verifyBuildParallel(root);
   if(payload){const relative=path.relative(root,payload).replaceAll('\\','/');
     if(!receipt.build.entries.some((entry:{path:string;status:string})=>entry.status==='file'&&entry.path===relative)) {
       verifyBoundDistribution(root,receipt,payload);
@@ -210,18 +296,18 @@ function verifyDeployment(root:string,payload?:string){
   }
   return receipt;
 }
-function deploymentPlan(root: string, options: { installDir?: string; installed?: boolean } = {}) {
+async function deploymentPlan(root: string, options: { installDir?: string; installed?: boolean } = {}) {
   const installed = options.installed ?? (options.installDir
     ? fs.existsSync(path.join(options.installDir, 'ai-cg-studio-desktop.exe'))
     : undefined);
   if (installed === false) return { mode:'fresh', reason:'未检测到现有安装，需要发行完整包' };
   let receipt: ReturnType<typeof verifyBuild>;
-  try { receipt = verifyBuild(root); }
+  try { receipt = await verifyBuildParallel(root); }
   catch (error) { return { mode:'build', reason:error instanceof Error ? error.message : String(error) }; }
   let installationReason = '';
   if (options.installDir && installed) {
     try {
-      const detail = installerBinding.inspectInstalledBuild(root, receipt, options.installDir);
+      const detail = await installerBinding.inspectInstalledBuild(root, receipt, options.installDir);
       if (detail.mismatchCount === 0) {
         return { mode:'current', ...detail,
           reason:`已安装文件与当前源码和构建完全一致（${detail.fileCount} 项），无需升级包或重复部署` };
@@ -245,14 +331,19 @@ function deploymentPlan(root: string, options: { installDir?: string; installed?
   }
   return { mode:'installer', installer, reason:`${installationReason}源码、SDK、原生构建和升级包绑定均匹配，复用现有升级包` };
 }
-if(require.main===module){
-  try{const args=process.argv.slice(2);if(args[0]==='--deployment-plan'){
-    if(args.length<2||args.length>4)throw Error('Expected source root, optional installation directory and installed flag (0|1)');
-    if(args[3]!==undefined&&args[3]!=='0'&&args[3]!=='1')throw Error('Installed flag must be 0 or 1');
-    const installDir=args[2]?path.resolve(args[2]):undefined;
-    const installed=args[3]===undefined?undefined:args[3]==='1';
-    console.log(JSON.stringify(deploymentPlan(path.resolve(args[1]),{installDir,installed})));
-  }else{if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}}
-  catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
+async function main() {
+  const args = process.argv.slice(2);
+  if (args[0] === '--deployment-plan') {
+    if (args.length < 2 || args.length > 4) throw Error('Expected source root, optional installation directory and installed flag (0|1)');
+    if (args[3] !== undefined && args[3] !== '0' && args[3] !== '1') throw Error('Installed flag must be 0 or 1');
+    const installDir = args[2] ? path.resolve(args[2]) : undefined;
+    const installed = args[3] === undefined ? undefined : args[3] === '1';
+    console.log(JSON.stringify(await deploymentPlan(path.resolve(args[1]), { installDir, installed })));
+  } else {
+    if (args.length < 1 || args.length > 2) throw Error('Expected source root and optional bound installer');
+    await verifyDeployment(path.resolve(args[0]), args[1] || undefined);
+  }
 }
-export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution };
+if (require.main === module) void main().catch(error => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode=1; });
+export = { receiptPath, sourceIdentity, sourceIdentityParallel, sdkIdentity, recordBuild, recordBuildParallel, verifyBuild, verifyBuildParallel,
+  verifyBuildPayloads, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution };

@@ -11,11 +11,15 @@ const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalo
 import { stageRemoteSceneRecipes } from '../lib/remote-scene-recipe-cache';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
 import buildEnvironment = require('../lib/desktop-build-environment');
-const { includeAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
+import type { Snapshot } from '../lib/delivery-types';
+import { LocalResourceStage } from '../lib/desktop-local-resource-stage';
+const { includeAsset, profileTransformsAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 import safe = require('../lib/delivery-paths');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
 type Logger = (message: string) => void;
-interface StageOptions { root?: string; stage?: string; resourceProfile?: string; buildProfile?: DesktopBuildProfile; logger?: Logger }
+interface StageOptions { root?: string; stage?: string; resourceProfile?: string; buildProfile?: DesktopBuildProfile; logger?: Logger; source?: Snapshot }
+type StagingIO = { directory: (file: string) => void; copy: (source: string, destination: string) => void };
+const directIO: StagingIO = { directory: file => { fs.mkdirSync(file, { recursive: true }); }, copy: fs.copyFileSync };
 const ROOT = path.resolve(__dirname, '../..');
 const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
@@ -51,31 +55,76 @@ function includeData(parts:string[],file:string,catalogSnapshot=false):boolean {
   if(DATA_SHARDS.has(parts[0]))return fs.statSync(file).isDirectory()||/\.json$/i.test(parts.at(-1)!);
   return parts.length===1&&DATA_ROOTS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
-function copyDir(src: string, dest: string, include: (file: string) => boolean = () => true) {
+function copyDir(src: string, dest: string, include: (file: string) => boolean = () => true, io = directIO) {
   if (fs.lstatSync(src).isSymbolicLink()) throw Error(`Staging refuses linked directories: ${src}`);
-  fs.mkdirSync(dest, { recursive: true });
+  io.directory(dest);
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const from = path.join(src, entry.name), to = path.join(dest, entry.name);
     if (!include(from)) continue;
     if (entry.isSymbolicLink()) throw Error(`Staging refuses linked inputs: ${from}`);
-    if (entry.isDirectory()) copyDir(from, to, include);
-    else if (entry.isFile()) fs.copyFileSync(from, to);
+    if (entry.isDirectory()) copyDir(from, to, include, io);
+    else if (entry.isFile()) io.copy(from, to);
     else throw Error(`Staging input is not a regular file: ${from}`);
   }
 }
-function stageDesktopCli(root: string, gateway: string) {
+const launcherFlags = ['--edition=2024', '-C', 'opt-level=s', '-C', 'strip=symbols'];
+
+function compileLauncher(root: string, launcher: string, executable: string, env: NodeJS.ProcessEnv) {
+  execFileSync('rustc', [...launcherFlags, launcher, '-o', executable],
+    { cwd: root, env, windowsHide: true, stdio: 'inherit' });
+  fs.rmSync(executable.replace(/\.exe$/, '.pdb'), { force: true });
+}
+
+function cachedLauncher(root: string, launcher: string, env: NodeJS.ProcessEnv) {
+  const compiler = execFileSync('rustc', ['-vV'], { cwd: root, env, windowsHide: true, encoding: 'utf8' });
+  const source = safe.fileEntry(root, 'tools/cli-anything-huiyu/launcher.rs');
+  if (source.status !== 'file') throw Error('Cannot bind CLI launcher source: ' + source.message);
+  const key = safe.sha256(JSON.stringify({ source: source.sha256, compiler, launcherFlags }));
+  const cache = 'runtime/desktop-build-cache/cli-anything-huiyu';
+  const executable = cache + '/' + key + '.exe', receipt = cache + '/' + key + '.json';
+  try {
+    const expected = safe.readJson(root, receipt).value, binary = safe.fileEntry(root, executable);
+    if (expected.key === key && binary.status === 'file' && binary.sha256 === expected.sha256 && binary.bytes === expected.bytes) {
+      return safe.resolveSafe(root, executable);
+    }
+  } catch (error) {
+    // A partial or stale cache is rebuildable. Unsafe paths still fail the
+    // path checks before any new file is created or replaced below.
+    void error;
+  }
+  const directory = safe.resolveSafe(root, cache, true);
+  fs.mkdirSync(directory, { recursive: true });
+  const scratch = fs.mkdtempSync(path.join(directory, 'build-'));
+  const binaryPath = path.join(scratch, 'cli-anything-huiyu.exe');
+  const receiptPath = path.join(scratch, 'receipt.json');
+  try {
+    compileLauncher(root, launcher, binaryPath, env);
+    const result = safe.fileEntry(scratch, 'cli-anything-huiyu.exe');
+    const after = safe.fileEntry(root, source.path);
+    if (result.status !== 'file' || after.status !== 'file' || after.sha256 !== source.sha256) throw Error('CLI launcher changed during compilation');
+    fs.writeFileSync(receiptPath, JSON.stringify({ key, sha256: result.sha256, bytes: result.bytes }), { flag: 'wx' });
+    fs.renameSync(binaryPath, safe.resolveSafe(root, executable, true));
+    fs.renameSync(receiptPath, safe.resolveSafe(root, receipt, true));
+    return safe.resolveSafe(root, executable);
+  } finally {
+    fs.rmSync(safe.resolveSafe(root, path.relative(root, scratch)), { recursive: true, force: true });
+  }
+}
+
+function stageDesktopCli(root: string, gateway: string, io = directIO, local = false) {
   const source = safe.resolveSafe(root, 'tools/cli-anything-huiyu');
   const target = path.join(gateway, 'tools/cli-anything-huiyu');
-  fs.mkdirSync(target, { recursive: true });
+  io.directory(target);
   for (const name of ['cli.mjs', 'muse.mjs', 'diagnostics.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
-    fs.copyFileSync(safe.resolveSafe(source, name), path.join(target, name));
+    io.copy(safe.resolveSafe(source, name), path.join(target, name));
   }
-  execFileSync('rustc', ['--edition=2024', '-C', 'opt-level=s', '-C', 'strip=symbols',
-    safe.resolveSafe(source, 'launcher.rs'), '-o', path.join(target, 'cli-anything-huiyu.exe')],
-    { cwd: root, env: buildEnvironment.desktopBuildEnvironment(root), windowsHide: true, stdio: 'inherit' });
-  fs.rmSync(path.join(target, 'cli-anything-huiyu.pdb'), { force: true });
+  const launcher = safe.resolveSafe(source, 'launcher.rs');
+  const env = buildEnvironment.desktopBuildEnvironment(root);
+  const executable = path.join(target, 'cli-anything-huiyu.exe');
+  if (local) io.copy(cachedLauncher(root, launcher, env), executable);
+  else compileLauncher(root, launcher, executable, env);
 }
-function stageQqSdk(root: string, gateway: string) {
+function stageQqSdk(root: string, gateway: string, io = directIO) {
   const qq = path.join(gateway, 'qq-sdk');
   const modules = path.join(qq, 'node_modules');
   const sdkModule = safe.resolveSafe(root, 'node_modules/@tencent-connect/qqbot-nodejs');
@@ -83,18 +132,18 @@ function stageQqSdk(root: string, gateway: string) {
   const resolveSdkDep = createRequire(path.join(sdkModule, 'package.json'));
   const wsModule = path.dirname(resolveSdkDep.resolve('ws/package.json'));
   const wsTarget = path.join(modules, 'ws');
-  fs.mkdirSync(qq, { recursive: true });
-  fs.copyFileSync(safe.resolveSafe(root, 'node_modules/node-win-x64/bin/node.exe'), path.join(qq, 'node.exe'));
-  fs.copyFileSync(safe.resolveSafe(root, 'tools/qq/Node-LICENSE.txt'), path.join(qq, 'Node-LICENSE.txt'));
-  fs.copyFileSync(safe.resolveSafe(root, 'scripts/maintenance/qq-sdk-worker.mjs'), path.join(qq, 'sdk-worker.mjs'));
-  copyDir(path.join(sdkModule, 'dist'), path.join(sdkTarget, 'dist'), file => fs.statSync(file).isDirectory() || file.endsWith('.js'));
-  copyDir(path.join(wsModule, 'lib'), path.join(wsTarget, 'lib'));
+  io.directory(qq);
+  io.copy(safe.resolveSafe(root, 'node_modules/node-win-x64/bin/node.exe'), path.join(qq, 'node.exe'));
+  io.copy(safe.resolveSafe(root, 'tools/qq/Node-LICENSE.txt'), path.join(qq, 'Node-LICENSE.txt'));
+  io.copy(safe.resolveSafe(root, 'scripts/maintenance/qq-sdk-worker.mjs'), path.join(qq, 'sdk-worker.mjs'));
+  copyDir(path.join(sdkModule, 'dist'), path.join(sdkTarget, 'dist'), file => fs.statSync(file).isDirectory() || file.endsWith('.js'), io);
+  copyDir(path.join(wsModule, 'lib'), path.join(wsTarget, 'lib'), undefined, io);
   for (const name of ['package.json', 'LICENSE']) {
-    fs.copyFileSync(path.join(sdkModule, name), path.join(sdkTarget, name));
-    fs.copyFileSync(path.join(wsModule, name), path.join(wsTarget, name));
+    io.copy(path.join(sdkModule, name), path.join(sdkTarget, name));
+    io.copy(path.join(wsModule, name), path.join(wsTarget, name));
   }
   for (const name of ['index.js', 'wrapper.mjs', 'browser.js']) {
-    fs.copyFileSync(path.join(wsModule, name), path.join(wsTarget, name));
+    io.copy(path.join(wsModule, name), path.join(wsTarget, name));
   }
 }
 function resolveNpmInvocation() {
@@ -130,9 +179,15 @@ function writeResourceInventory(stage: string) {
   }
   visit(path.join(stage, 'gateway'));
   files.sort((a, b) => a.path.localeCompare(b.path, 'en'));
-  fs.writeFileSync(path.join(stage, 'gateway/bundled-resource-inventory.json'), JSON.stringify({ schemaVersion: 1, kind: 'huiyu-bundled-resources', files }));
+  fs.writeFileSync(path.join(stage, 'gateway/bundled-resource-inventory.json'), resourceInventory(files));
 }
-async function stageResources(options: StageOptions = {}) {
+function resourceInventory(files: { path: string; bytes: number; sha256: string }[]) {
+  return Buffer.from(JSON.stringify({ schemaVersion: 1, kind: 'huiyu-bundled-resources', files }));
+}
+function stageResources(options: StageOptions = {}) {
+  return safe.withLocalFileHashes(() => stageResourcesBound(options));
+}
+async function stageResourcesBound(options: StageOptions) {
   const root = fs.realpathSync(options.root || ROOT), stage = path.resolve(options.stage || path.join(root, 'desktop-tauri/src-tauri/resources'));
   const rel = path.relative(root, stage).replaceAll('\\', '/');
   if (!rel || rel.startsWith('../') || path.isAbsolute(rel) || ['data', 'assets', 'dist', 'tools', 'docs', 'runtime-rs'].some(dir => rel === dir || rel.startsWith(dir + '/'))) throw Error('Staging destination must be an isolated child of workspace');
@@ -148,13 +203,21 @@ async function stageResources(options: StageOptions = {}) {
     if (!fs.statSync(file).isFile() || fs.statSync(file).size === 0) throw Error(`Missing offline resource assistant: ${name}`);
   }
   fs.mkdirSync(path.dirname(stage), { recursive: true });
-  const temporary = fs.mkdtempSync(`${stage}.tmp-${process.pid}-`), gateway = path.join(temporary, 'gateway');
-  fs.mkdirSync(gateway);
+  const temporary = fs.mkdtempSync(`${stage}.tmp-${process.pid}-`);
+  const generated = path.join(temporary, 'gateway');
+  fs.mkdirSync(generated);
+  const local = buildProfile === 'desktop-local';
+  let incremental: LocalResourceStage | undefined;
   try {
-    const report = copyRustPayload(root, gateway, buildProfile, runtime);
-    stageQqSdk(root, gateway);
-    stageDesktopCli(root, gateway);
-    fs.copyFileSync(safe.resolveSafe(root, 'desktop-tauri/src-tauri/installer/generated/HuiyuResourceCleanup.exe'), path.join(gateway, 'installer-resource-cleanup.exe'));
+    if (local && fs.existsSync(stage)) incremental = new LocalResourceStage(root, stage, temporary, options.source);
+    const gateway = incremental ? path.join(stage, 'gateway') : generated;
+    const io: StagingIO = incremental
+      ? { copy: incremental.copy.bind(incremental), directory: incremental.directory.bind(incremental) } : directIO;
+    const assets: Array<{ rel: string; sourceBytes: number }> = [];
+    const report = copyRustPayload(root, generated, buildProfile, runtime);
+    stageQqSdk(root, gateway, io);
+    stageDesktopCli(root, gateway, io, local);
+    io.copy(safe.resolveSafe(root, 'desktop-tauri/src-tauri/installer/generated/HuiyuResourceCleanup.exe'), path.join(gateway, 'installer-resource-cleanup.exe'));
     for (const source of ENTRIES) {
       const from = safe.resolveSafe(root, source);
       copyDir(from, path.join(gateway, source), file => {
@@ -168,26 +231,57 @@ async function stageResources(options: StageOptions = {}) {
         // Promotional screenshots are referenced only by repository READMEs.
         if (source === 'docs' && rel[0] === 'images' && rel[1] === 'software-preview') return false;
         return !/\.(?:[cm]?ts|map)$/i.test(file) && !['node_modules', '.git', '__pycache__'].includes(path.basename(file));
-      });
+      }, incremental && source === 'assets' ? {
+        directory: io.directory,
+        copy(file, destination) {
+          const relative = path.relative(from, file).replaceAll('\\', '/');
+          const entry = { rel: relative, sourceBytes: fs.lstatSync(file).size };
+          assets.push(entry);
+          if (!profileTransformsAsset(entry, profile)) io.copy(file, destination);
+        },
+      } : io);
       logger(`[stage] ${source} -> gateway/${source}`);
     }
-    const scripts = path.join(gateway, 'scripts/lib'); fs.mkdirSync(scripts, { recursive: true });
-    for (const name of ['managed-comfyui.ps1', 'managed-voice.ps1', 'prepare-ai-environment.ps1', 'prepare-native-runtime.ps1', 'install-native-runtime.py', 'prepare-pixai-runtime.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/lib/${name}`), path.join(scripts, name));
-    const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
-    for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
-    execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
+    const scripts = path.join(gateway, 'scripts/lib'); io.directory(scripts);
+    for (const name of ['managed-comfyui.ps1', 'managed-voice.ps1', 'prepare-ai-environment.ps1', 'prepare-native-runtime.ps1', 'install-native-runtime.py', 'prepare-pixai-runtime.py']) io.copy(safe.resolveSafe(root, `scripts/lib/${name}`), path.join(scripts, name));
+    const inferencePrep = path.join(gateway, 'scripts/maintenance'); io.directory(inferencePrep);
+    for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) io.copy(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
+    if (incremental) {
+      const staged = incremental;
+      const { applyResourceProfile }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
+      assets.sort((a, b) => a.rel < b.rel ? -1 : a.rel > b.rel ? 1 : 0);
+      await applyResourceProfile({ root, gatewayRoot: gateway, profile, local: {
+        assets,
+        readOriginal: name => staged.readSource(path.join(root, 'assets', name)),
+        readThumbnail: name => staged.stagedBytes('gateway/assets/' + name),
+        stageAsset: (name, bytes) => staged.write(path.join(gateway, 'assets', name), bytes),
+        stageReport: bytes => staged.write(path.join(gateway, 'resource-layers.json'), bytes),
+      } });
+    } else {
+      execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
+    }
     if (catalogRows) {
       const count = await timeDesktopBuild('remote scene recipes', () =>
-        stageRemoteSceneRecipes(root, gateway, catalogRows, buildProfile === 'desktop-local', logger));
+        stageRemoteSceneRecipes(root, generated, catalogRows, local, logger));
       logger(`[stage] 远程场景配方 ${count} 条`);
     }
-    writeResourceInventory(temporary);
+    if (incremental) {
+      copyDir(generated, gateway, undefined, io);
+      incremental.write(path.join(gateway, 'bundled-resource-inventory.json'), resourceInventory(incremental.inventory()));
+    } else writeResourceInventory(temporary);
     const after = runtimeBuild(root, buildProfile);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');
-    publishStage(temporary, stage, logger);
+    if (incremental) {
+      const result = incremental.publish();
+      logger(`[stage] 增量暂存替换 ${result.written} 个文件，清理 ${result.removed} 个旧文件`);
+    } else publishStage(temporary, stage, logger);
     logger(`[stage] Rust payload staged; releaseReady=${report.releaseReady}`);
     return { stage, runtimeExecutable: path.join(stage, 'gateway/huiyu-runtime.exe'), releaseReady: report.releaseReady, pending: report.pending };
-  } catch (error) { fs.rmSync(temporary, { recursive: true, force: true }); throw error; }
+  } finally {
+    if (!incremental?.requiresRecovery && fs.existsSync(temporary)) {
+      fs.rmSync(safe.resolveSafe(root, path.relative(root, temporary)), { recursive: true, force: true });
+    }
+  }
 }
 if (require.main === module) withWorkspaceLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
 export = { includeData, resolveNpmInvocation, stageDesktopCli, stageResources };

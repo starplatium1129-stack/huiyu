@@ -1,6 +1,8 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 import type { FileIdentity, FileFailure, JsonRecord } from './delivery-types';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { availableParallelism } from 'node:os';
+import { Worker } from 'node:worker_threads';
 'use strict';
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
@@ -97,7 +99,7 @@ function fileEntry(root: string, name: string, scan = pathScan(root), checked?: 
   let fd;
   try {
     const { file, stat } = checked ?? scan(name);
-    if (!stat.isFile() || stat.nlink > 1n) throw Error('目标必须为无硬链接的普通文件');
+    if (!stat.isFile() || stat.nlink !== 1n) throw Error('目标必须为无硬链接的普通文件');
     const cache = stat.ino !== 0n && stat.ctimeNs !== 0n ? localHashes.getStore() : undefined;
     const key = cache ? `${stat.dev}:${stat.ino}` : '';
     const cached = cache?.get(key);
@@ -118,6 +120,32 @@ function fileEntry(root: string, name: string, scan = pathScan(root), checked?: 
   } catch (error) {
     return { path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) };
   } finally { if (fd !== undefined) fs.closeSync(fd); }
+}
+
+async function fileEntriesParallel(root: string, names: readonly string[]) {
+  const workerCount = Math.min(8, availableParallelism(), Math.ceil(names.length / 96));
+  if (workerCount <= 1) {
+    const scan = pathScan(root);
+    return names.map(name => fileEntry(root, name, scan));
+  }
+  const lanes: string[][] = Array.from({ length: workerCount }, () => []);
+  for (const [index, name] of names.entries()) lanes[index % workerCount].push(name);
+  const workers = new Set<Worker>();
+  try {
+    const results = await Promise.all(lanes.map(lane => new Promise<(FileIdentity | FileFailure)[]>((resolve, reject) => {
+      const worker = new Worker(path.join(__dirname, 'delivery-file-worker.js'), { workerData: { root, names: lane } });
+      workers.add(worker);
+      worker.once('message', resolve);
+      worker.once('error', reject);
+      worker.once('exit', code => {
+        workers.delete(worker);
+        reject(Error(`文件身份校验线程已退出 (${code})`));
+      });
+    })));
+    return names.map((_, index) => results[index % workerCount][Math.floor(index / workerCount)]);
+  } finally {
+    await Promise.all([...workers].map(worker => worker.terminate()));
+  }
 }
 function readJson(root: string, name: string, dedicated = false) {
   name = dedicated ? evidencePath(name) : relative(name);
@@ -142,4 +170,5 @@ function saveJson(root: string, name: string, value: unknown) {
   // Exclusive creation preserves earlier evidence; an existing file is never overwritten.
   fs.writeFileSync(resolveSafe(root, name, true), `${JSON.stringify(value, null, 2)}\n`, { flag: 'wx' });
 }
-export = { object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, pathScan, fileEntry, withLocalFileHashes, readJson, saveJson };
+export = { object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, pathScan, sameFile, fileEntry,
+  fileEntriesParallel, withLocalFileHashes, readJson, saveJson };

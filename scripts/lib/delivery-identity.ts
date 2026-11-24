@@ -3,7 +3,7 @@ import type { Repository, Selection, Snapshot, SnapshotChange, SnapshotCompariso
 'use strict';
 const fs: typeof import('node:fs') = require('node:fs');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-const { object, canonical, sha256, relative, excluded, pathScan, fileEntry }: typeof import('./delivery-paths') = require('./delivery-paths');
+const { object, canonical, sha256, relative, excluded, pathScan, fileEntry, fileEntriesParallel }: typeof import('./delivery-paths') = require('./delivery-paths');
 const HASH = /^[a-f\d]{64}$/;
 
 function hasTreeAncestor(name: string, trees: ReadonlySet<string>): boolean {
@@ -39,35 +39,64 @@ function payload(snapshot: Pick<Snapshot, 'selectors' | 'entries'>) {
     entries: snapshot.entries.map(entry => ({ path: entry.path, status: entry.status,
       ...(entry.status === 'file' ? { bytes: entry.bytes, sha256: entry.sha256 } : {}) })) };
 }
-function snapshot(root: string, input: unknown): Snapshot {
+function snapshotInputs(root: string, input: unknown, parallel: boolean) {
   const selection = selectors(input), entries: SnapshotEntry[] = [], names = new Set<string>();
+  const files: string[] = [];
   const scan = pathScan(root);
   function visit(name: string, kind: Selection['kind'], selectedRoot = false) {
     if (excluded(name)) return;
     if (names.has(name.toLowerCase())) throw Error(`路径大小写冲突: ${name}`);
     names.add(name.toLowerCase());
     try {
+      if (parallel && kind === 'file') { files.push(name); return; }
       const checked = scan(name);
       if (kind === 'file' || !checked.stat.isDirectory()) {
-        entries.push(selectedRoot && kind === 'tree' ? { path: name, status: 'not-directory' } : fileEntry(root, name, scan, checked));
+        if (selectedRoot && kind === 'tree') entries.push({ path: name, status: 'not-directory' });
+        else if (parallel) files.push(name);
+        else entries.push(fileEntry(root, name, scan, checked));
         return;
       }
       // Empty intermediate directories carry no input bytes. In particular,
       // creating runtime/ solely to save excluded evidence must not cause drift.
       if (selectedRoot) entries.push({ path: name, status: 'directory' });
-      for (const child of fs.readdirSync(checked.file).sort()) visit(name === '.' ? child : `${name}/${child}`, 'tree');
+      if (parallel) {
+        for (const child of fs.readdirSync(checked.file, { withFileTypes: true })) {
+          visit(name === '.' ? child.name : `${name}/${child.name}`, child.isDirectory() ? 'tree' : 'file');
+        }
+      } else {
+        for (const child of fs.readdirSync(checked.file).sort()) visit(name === '.' ? child : `${name}/${child}`, 'tree');
+      }
     } catch (error) {
       entries.push({ path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) });
     }
   }
-  for (const item of selection) {
-    const start = entries.length;
-    visit(item.path, item.kind, true);
-    if (item.kind === 'tree' && entries[start]?.status === 'directory' && !entries.slice(start).some(e => e.status === 'file')) entries[start].status = 'empty';
+  for (const item of selection) visit(item.path, item.kind, true);
+  return { selection, entries, files };
+}
+function finishSnapshot(selection: Selection[], entries: SnapshotEntry[]): Snapshot {
+  const directories = new Set(entries.filter(entry => entry.status === 'directory').map(entry => entry.path));
+  const nonempty = new Set<string>();
+  for (const entry of entries) {
+    if (entry.status !== 'file') continue;
+    if (directories.has('.')) nonempty.add('.');
+    for (let slash = entry.path.lastIndexOf('/'); slash > 0; slash = entry.path.lastIndexOf('/', slash - 1)) {
+      const ancestor = entry.path.slice(0, slash);
+      if (directories.has(ancestor)) { nonempty.add(ancestor); break; }
+    }
   }
+  for (const entry of entries) if (entry.status === 'directory' && !nonempty.has(entry.path)) entry.status = 'empty';
   entries.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const result: Omit<Snapshot, 'sha256'> = { selectors: selection, entries, status: entries.every(v => ['file', 'directory'].includes(v.status)) ? 'complete' : 'incomplete' };
   return { ...result, sha256: sha256(canonical(payload(result))) };
+}
+function snapshot(root: string, input: unknown): Snapshot {
+  const { selection, entries } = snapshotInputs(root, input, false);
+  return finishSnapshot(selection, entries);
+}
+async function snapshotParallel(root: string, input: unknown): Promise<Snapshot> {
+  const { selection, entries, files } = snapshotInputs(root, input, true);
+  for (const entry of await fileEntriesParallel(root, files)) entries.push(entry);
+  return finishSnapshot(selection, entries);
 }
 function validateSnapshot(record: unknown): Snapshot {
   if (!object(record) || typeof record.sha256 !== 'string' || !HASH.test(record.sha256) || !Array.isArray(record.entries)) throw Error('内容身份记录缺失或格式错误');
@@ -136,4 +165,4 @@ function repository(root: string): Repository {
     return { status: 'recorded', commit: commit.toLowerCase(), worktree: worktree ? 'dirty' : 'clean' };
   } catch (error) { return { status: 'unknown', commit: null, worktree: 'unknown', message: runtimeErrorMessage(error) }; }
 }
-export = { HASH, selectors, snapshot, validateSnapshot, compareSnapshot, repository };
+export = { HASH, selectors, snapshot, snapshotParallel, validateSnapshot, compareSnapshot, repository };

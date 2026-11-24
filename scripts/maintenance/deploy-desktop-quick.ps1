@@ -1,14 +1,13 @@
 ﻿# AI-CG-Studio 桌面端部署 —— 唯一入口
 #
 # 默认启动后先检测安装状态、已安装文件和源码/构建/升级包绑定，再自动选择：
-# 无需部署、仅同步资源、复用升级包、重新封装或重新构建；首次安装/修复使用当前版本完整包。
-# 自动模式默认静默安装，并按随包清单清理旧资源，只需用户确认 UAC。
+# 已登记同版本开发安装默认按绑定清单直写；首次安装、版本升级及修复使用安装包。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
 # -UseInstaller 复用已绑定安装包；显式指定 -InstallerPath 可覆盖自动选择。
 #
 # 常用组合：
 #   双击 deploy-desktop.bat                 自动检测并选择最合适的部署方式
-#   deploy-desktop.bat -SkipBuild           复用绑定构建，只封装并安装升级包
+#   deploy-desktop.bat -SkipBuild           复用已绑定的构建并直写差异
 #   deploy-desktop.bat -UseInstaller        安装已有升级包
 #   deploy-desktop.bat -NoRestart           部署后不自动启动
 #
@@ -35,6 +34,10 @@ param(
   [switch]$DeferRestart,
   # 内部使用：父进程已在 UAC 前完成检测并选定模式，子进程不再重复检测。
   [switch]$DeploymentPlanApplied,
+  [switch]$DirectInstall,
+  [string]$DirectPlanId,
+  [string]$DirectPlanSha256,
+  [string]$DeploymentLogId,
   [string]$InstallDir,
   [string]$InstallerPath,
   [string]$InstallerManifestSha256
@@ -44,8 +47,12 @@ $ErrorActionPreference = 'Stop'
 [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
 $OutputEncoding = [Console]::OutputEncoding
 $root = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
+if (-not $DeploymentLogId) { $DeploymentLogId = [Guid]::NewGuid().ToString('N') }
+if ($DeploymentLogId -cnotmatch '^[a-f0-9]{32}$') { throw '无效的部署日志编号' }
+$logRelative = "runtime\desktop-deploy-logs\$DeploymentLogId.log"
+$deploymentLogPath = Join-Path $root $logRelative
 function Write-DeploymentLog([string]$Message) {
-  try { Add-Content -LiteralPath (Join-Path $root 'runtime\desktop-deploy-last.log') -Value $Message -Encoding UTF8 } catch { }
+  try { Add-Content -LiteralPath $deploymentLogPath -Value $Message -Encoding UTF8 } catch { }
 }
 function Resolve-DesktopInstallDirectory([string]$Path) {
   $expanded = [Environment]::ExpandEnvironmentVariables($Path.Trim().Trim('"'))
@@ -77,6 +84,50 @@ $gatewayDir = Join-Path $installDir 'gateway'
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
 . (Join-Path $root 'scripts\lib\desktop-deploy-output.ps1')
+$deploymentLogPath = Resolve-DesktopChildPath -Root $root -Relative $logRelative
+New-Item -ItemType Directory -Path (Split-Path -Parent $deploymentLogPath) -Force | Out-Null
+function Publish-DeploymentLog {
+  if (Test-Path -LiteralPath $deploymentLogPath -PathType Leaf) {
+    $last = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy-last.log'
+    $temp = Resolve-DesktopChildPath -Root $root -Relative "runtime\desktop-deploy-logs\$DeploymentLogId.last.tmp"
+    try {
+      [IO.File]::Copy($deploymentLogPath, $temp)
+      if ([IO.File]::Exists($last)) { [IO.File]::Replace($temp, $last, $null) }
+      else { [IO.File]::Move($temp, $last) }
+    } finally { if ([IO.File]::Exists($temp)) { [IO.File]::Delete($temp) } }
+  }
+}
+function Remove-DirectDeploymentPlan {
+  if (-not $DirectPlanId) { return }
+  $directory = Resolve-DesktopChildPath -Root $root -Relative "runtime\desktop-deploy-packages\$DirectPlanId"
+  if (-not (Test-Path -LiteralPath $directory -PathType Container)) { return }
+  $plan = Resolve-DesktopChildPath -Root $directory -Relative 'local-plan.json'
+  if (@(Get-ChildItem -LiteralPath $directory -Force).Count -eq 1 -and [IO.File]::Exists($plan)) {
+    [IO.File]::Delete($plan)
+    [IO.Directory]::Delete($directory, $false)
+  }
+}
+function Remove-StaleDeploymentCopies {
+  $packages = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy-packages'
+  if (Test-Path -LiteralPath $packages -PathType Container) {
+    $frozen = @(Get-ChildItem -LiteralPath $packages -Directory -Force | Where-Object {
+      $_.Name -cmatch '^[a-f0-9]{32}$' -and -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint)
+    } | Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 3)
+    foreach ($candidate in $frozen) {
+      $directory = Resolve-DesktopChildPath -Root $packages -Relative $candidate.Name
+      $files = @(Get-ChildItem -LiteralPath $directory -Force)
+      if ($files | Where-Object { $_.PSIsContainer -or ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -or
+          $_.LinkType -or $_.Name -notmatch '^(local-plan\.json|[^/\\]+\.exe(?:\.deployment\.json)?)$' }) { continue }
+      foreach ($file in $files) { [IO.File]::Delete((Resolve-DesktopChildPath -Root $directory -Relative $file.Name)) }
+      [IO.Directory]::Delete($directory, $false)
+    }
+  }
+  $logs = Split-Path -Parent $deploymentLogPath
+  $oldLogs = @(Get-ChildItem -LiteralPath $logs -File -Filter '*.log' -Force | Where-Object {
+    $_.Name -cmatch '^[a-f0-9]{32}\.log$' -and -not $_.LinkType -and -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint)
+  } | Sort-Object LastWriteTimeUtc -Descending | Select-Object -Skip 3)
+  foreach ($file in $oldLogs) { [IO.File]::Delete((Resolve-DesktopChildPath -Root $logs -Relative $file.Name)) }
+}
 $referenceIdList = @()
 if ($ReferenceIds) {
   if ($ReferenceIds -cnotmatch '^[a-z0-9][a-z0-9_]*(,[a-z0-9][a-z0-9_]*)*$') { throw 'ReferenceIds 必须是逗号分隔的小写角色 ID。' }
@@ -118,13 +169,41 @@ function Start-DesktopClientAndWait {
     Start-Process -FilePath $appPath -WorkingDirectory $installDir -WindowStyle Normal | Out-Null
   }
   $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 120
-  Show-DesktopDeploymentWindow -InstallDir $installDir -ConfigRoot $configRoot -HostPid $startup.hostPid
-  Write-Host "宿主与所属 Rust 网关已就绪，Companion 窗口已显示（PID $($startup.hostPid)）" -ForegroundColor Green
-  Write-DeploymentLog "宿主与所属 Rust 网关已就绪，Companion 窗口已显示（PID $($startup.hostPid)）"
+  $visible = Show-DesktopDeploymentWindow -InstallDir $installDir -ConfigRoot $configRoot -HostPid $startup.hostPid
+  Write-Host "宿主与所属 Rust 网关已就绪，$visible（PID $($startup.hostPid)）" -ForegroundColor Green
+  Write-DeploymentLog "宿主与所属 Rust 网关已就绪，$visible（PID $($startup.hostPid)）"
   return $startup
 }
 function Get-DesktopProductVersion {
   (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw -Encoding UTF8 | ConvertFrom-Json).version
+}
+function Test-DesktopDirectInstall {
+  if ($installDir -notmatch '^[a-zA-Z]:\\.+') { return $false }
+  $hostPath = Resolve-DesktopChildPath -Root $installDir -Relative 'ai-cg-studio-desktop.exe'
+  $uninstaller = Resolve-DesktopChildPath -Root $installDir -Relative 'uninstall.exe'
+  if (-not ([IO.File]::Exists($hostPath) -and [IO.File]::Exists($uninstaller))) { return $false }
+  $version = Get-DesktopProductVersion
+  if ([Diagnostics.FileVersionInfo]::GetVersionInfo($hostPath).ProductVersion -ne $version) { return $false }
+  $versions = @('HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio', 'HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AI-CG-Studio') |
+    ForEach-Object { Get-ItemProperty -LiteralPath $_ -ErrorAction SilentlyContinue } |
+    Where-Object { $_.InstallLocation -and (Resolve-DesktopInstallDirectory $_.InstallLocation) -ieq $installDir } |
+    Select-Object -ExpandProperty DisplayVersion -Unique
+  if (@($versions).Count -ne 1 -or $versions -ne $version) { return $false }
+  $webview = '{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}'
+  foreach ($prefix in @('HKLM:\Software','HKLM:\Software\WOW6432Node','HKCU:\Software','HKCU:\Software\WOW6432Node')) {
+    $installedVersion = (Get-ItemProperty -LiteralPath "$prefix\Microsoft\EdgeUpdate\Clients\$webview" -ErrorAction SilentlyContinue).pv
+    $parsed = $null
+    if ([Version]::TryParse($installedVersion, [ref]$parsed) -and $parsed.Major -gt 0) { return $true }
+  }
+  return $false
+}
+
+function Invoke-BoundDirectDeployment([string]$Action, [string]$Id, [string]$Sha256) {
+  $arguments = @((Join-Path $root 'scripts\lib\desktop-direct-install.js'), $Action, $root, $installDir, $Id)
+  if ($Sha256) { $arguments += $Sha256 }
+  $output = & node @arguments 2>&1
+  if ($LASTEXITCODE -ne 0) { throw "本机绑定部署失败：$($output -join ' ')" }
+  return ($output | Out-String | ConvertFrom-Json)
 }
 function Find-CurrentFullInstaller {
   $version = Get-DesktopProductVersion
@@ -170,15 +249,55 @@ function Complete-CurrentDeployment {
     Write-DeploymentLog '[desktop:auto] 已是最新，按 -NoRestart 不启动桌面端。'
     return 0
   }
+  if ($hosts.Count -eq 1) {
+    $startup = Wait-DesktopDeploymentReady -InstallDir $installDir -ConfigRoot $configRoot -TimeoutSeconds 15
+    Write-Host "[desktop:auto] 已是最新，宿主和网关正在运行（PID $($startup.hostPid)）。" -ForegroundColor Green
+    Write-DeploymentLog "[desktop:auto] 已是最新，宿主和网关正在运行（PID $($startup.hostPid)）。"
+    return 0
+  }
   Write-Host '[desktop:auto] 已是最新，无需重复安装；启动或唤起桌面端并确认窗口显示。' -ForegroundColor Cyan
   Write-DeploymentLog '[desktop:auto] 已是最新，无需重复安装；启动或唤起桌面端并确认窗口显示。'
   $null = Start-DesktopClientAndWait -Prefix '[desktop:auto]'
   return 0
 }
 
+# Direct deployment is restricted to a registered machine install at the same
+# version. Installers still own registration, version upgrades and repair.
+if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $InstallerPath)) {
+  $eligible = Test-DesktopDirectInstall
+  if ($DirectInstall -and -not $eligible) { throw '本机直写条件已变化，请从原入口重新选择部署。' }
+  $DirectInstall = $eligible
+}
+if ($DirectInstall -and ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $InstallerPath)) { throw '本机直写不能与安装包、资源同步或修复组合' }
+if ($DirectPlanId -or $DirectPlanSha256) {
+  if (-not $DirectInstall -or $DirectPlanId -cnotmatch '^[a-f0-9]{32}$' -or $DirectPlanSha256 -cnotmatch '^[a-f0-9]{64}$') {
+    throw '无效的直写部署清单绑定'
+  }
+}
+if ($DirectInstall -and -not ($DirectPlanId -or $ForceBuild -or $DeploymentPlanApplied)) {
+  if (-not (Test-Path -LiteralPath (Join-Path $root 'scripts\lib\desktop-direct-install.js'))) {
+    Push-Location $root
+    try { Invoke-DesktopNpm -Arguments @('run','build:runtime') } finally { Pop-Location }
+  }
+  $plan = Invoke-BoundDirectDeployment -Action prepare -Id ([Guid]::NewGuid().ToString('N'))
+  if ($plan.mode -eq 'build') {
+    if ($SkipBuild) { throw "-SkipBuild 无可复用构建：$($plan.reason)" }
+    Write-Host "[desktop:auto] 本机候选需要重建：$($plan.reason)" -ForegroundColor Cyan
+  } else {
+    $DirectPlanId = $plan.id
+    $DirectPlanSha256 = $plan.sha256
+    $missingLedger = -not (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json') -PathType Leaf)
+    if ($plan.mode -eq 'current' -and -not ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog -or $referenceIdList.Count)) {
+      try { $null = Complete-CurrentDeployment; exit 0 } finally { Remove-DirectDeploymentPlan; Publish-DeploymentLog }
+    }
+    Write-Host "[desktop:auto] 复用构建，按绑定清单直写 $($plan.changed) 项" -ForegroundColor Cyan
+  }
+  $DeploymentPlanApplied = $true
+}
+
 # Detect before UAC: an already-current install or a missing full installer must
 # not require elevation, and the selected mode is passed to the child unchanged.
-if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or $ForceBuild -or $DeploymentPlanApplied -or $InstallerPath)) {
+if (-not ($DirectInstall -or $UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or $ForceBuild -or $DeploymentPlanApplied -or $InstallerPath)) {
   $QuietInstall = $true
   $Cleanup = $true
   $installHost = Join-Path $installDir 'ai-cg-studio-desktop.exe'
@@ -230,8 +349,7 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
           $SkipBuild = $true
           $QuietInstall = $false
         } else {
-          $null = Complete-CurrentDeployment
-          exit 0
+          try { $null = Complete-CurrentDeployment; exit 0 } finally { Publish-DeploymentLog }
         }
       }
       'resources' {
@@ -254,10 +372,10 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
 
 if ($StartupRepair -and ($UseInstaller -or $AdoptProjectCatalog)) { throw '-StartupRepair 不能与 -UseInstaller 或 -AdoptProjectCatalog 同时使用' }
 if ($ResourcesOnly -and $UseInstaller) { throw '-ResourcesOnly 与 -UseInstaller 不能同时使用' }
-$buildUpgrade = -not ($UseInstaller -or $ResourcesOnly -or $StartupRepair)
-if ($ForceBuild -and (-not $buildUpgrade -or $SkipBuild)) { throw '-ForceBuild 仅用于默认部署，不能与显式复用/修复模式组合' }
+$buildUpgrade = -not ($DirectInstall -or $UseInstaller -or $ResourcesOnly -or $StartupRepair)
+if ($ForceBuild -and ((-not $buildUpgrade -and -not $DirectInstall) -or $SkipBuild)) { throw '-ForceBuild 仅用于默认部署，不能与显式复用/修复模式组合' }
 $installWithPackage = $UseInstaller -or $buildUpgrade
-if ($QuietInstall -and -not $installWithPackage) { throw '-QuietInstall 仅用于安装包部署' }
+if ($QuietInstall -and -not ($installWithPackage -or $DirectInstall)) { throw '-QuietInstall 不适用于资源同步或修复' }
 if ($InstallerPath -and -not $UseInstaller) { throw '-InstallerPath 仅可与 -UseInstaller 一起使用' }
 $setup = $null
 if ($UseInstaller) {
@@ -324,6 +442,9 @@ if (-not $isElevated) {
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
   if ($ReferenceIds) { $argList += @('-ReferenceIds', $ReferenceIds) }
   if ($DeploymentPlanApplied) { $argList += '-DeploymentPlanApplied' }
+  if ($DirectInstall) { $argList += '-DirectInstall' }
+  if ($DirectPlanId) { $argList += @('-DirectPlanId', $DirectPlanId, '-DirectPlanSha256', $DirectPlanSha256) }
+  $argList += @('-DeploymentLogId', $DeploymentLogId)
   # The elevated process must not launch the desktop client: its window station
   # may differ from the interactive one, making the maintenance handshake fail.
   # It installs and exits; this non-elevated parent starts the client afterwards.
@@ -334,11 +455,11 @@ if (-not $isElevated) {
   $logReader = $null
   $elevatedProcess = $null
   try {
-    $logPath = Join-Path $root 'runtime\desktop-deploy-last.log'
+    $logPath = $deploymentLogPath
     if (Test-Path -LiteralPath $logPath) {
       $logStream = [IO.File]::Open($logPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
+      $null = $logStream.Seek(0, [IO.SeekOrigin]::End)
       $logReader = New-Object IO.StreamReader($logStream, [Text.Encoding]::UTF8, $true)
-      $null = $logReader.ReadToEnd()
     }
     try {
       $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
@@ -375,6 +496,7 @@ if (-not $isElevated) {
       $deploymentExitCode = 1
     }
   }
+  if ($deploymentExitCode -ne 73) { Publish-DeploymentLog }
   exit $deploymentExitCode
 }
 
@@ -389,8 +511,10 @@ try {
   exit 73
 }
 $transcriptStarted = $false
+$installMutex = $null
+$installMutexHeld = $false
 try {
-Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
+Start-Transcript -LiteralPath $deploymentLogPath -Append | Out-Null
 $transcriptStarted = $true
 $deployTimer = [Diagnostics.Stopwatch]::StartNew()
 $phaseTimer = [Diagnostics.Stopwatch]::StartNew()
@@ -402,6 +526,7 @@ $stageGateway = Join-Path $root 'desktop-tauri\src-tauri\resources\gateway'
 $hostExecutable = $null
 # Validate selected source/build/distribution before drain and before restart.
 function Assert-CurrentBuildBinding {
+  if ($DirectInstall) { $null = Invoke-BoundDirectDeployment -Action validate -Id $DirectPlanId -Sha256 $DirectPlanSha256; return }
   if ($installWithPackage) { Assert-FixedInstaller; return }
   & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') $root $InstallerPath
   if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_BUILD_BINDING: 源码/资源/安装包与构建回执不匹配；请重新完整构建。' }
@@ -410,7 +535,22 @@ function Assert-CurrentBuildBinding {
   if ($buildProfile -notin @('release', 'desktop-local')) { throw 'DESKTOP_BUILD_BINDING: 未知构建档位。' }
   $script:hostExecutable = Join-Path $root "desktop-tauri\src-tauri\target\$buildProfile\ai-cg-studio-desktop.exe"
 }
-if ($buildUpgrade) {
+if ($DirectInstall) {
+  Write-Host '[1/6] 准备本机清单直写 ...' -ForegroundColor Cyan
+  if (-not $DirectPlanId) {
+    if ($SkipBuild) { throw '-SkipBuild 需要已经核验的本机候选。' }
+    Push-Location $root
+    $previousForce = $env:AICS_DESKTOP_FORCE_BUILD
+    try {
+      if ($ForceBuild) { $env:AICS_DESKTOP_FORCE_BUILD = '1' }
+      Invoke-DesktopNpm -Arguments @('run','build:tauri','--','--local','--direct')
+    } finally { $env:AICS_DESKTOP_FORCE_BUILD = $previousForce; Pop-Location }
+    $plan = Invoke-BoundDirectDeployment -Action prepare -Id ([Guid]::NewGuid().ToString('N'))
+    if ($plan.mode -eq 'build') { throw "本机候选核验失败：$($plan.reason)" }
+    $DirectPlanId = $plan.id
+    $DirectPlanSha256 = $plan.sha256
+  }
+} elseif ($buildUpgrade) {
   Write-Host '[1/6] 准备本机快速构建与轻量升级包 ...' -ForegroundColor Cyan
   $candidate = $null
   if (-not $SkipBuild -and -not $ForceBuild -and -not $DeploymentPlanApplied) {
@@ -450,17 +590,30 @@ if ($buildUpgrade) {
   try { Invoke-DesktopNpm -Arguments @('run','build:tauri','--','--local') }
   finally { Pop-Location }
 } else { Write-Host $(if ($UseInstaller) { '[1/6] 复用本次固定安装包' } else { '[1/6] 复用当前已绑定构建' }) -ForegroundColor DarkGray }
+if ($DirectInstall) {
+  $hasher = [Security.Cryptography.SHA256]::Create()
+  try { $installKey = [BitConverter]::ToString($hasher.ComputeHash([Text.Encoding]::UTF8.GetBytes($installDir.ToLowerInvariant()))).Replace('-', '') }
+  finally { $hasher.Dispose() }
+  $installMutex = New-Object Threading.Mutex($false, "Global\HuiyuDesktopLocalDeploy_$installKey")
+  try { $installMutexHeld = $installMutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $installMutexHeld = $true }
+  if (-not $installMutexHeld) { throw 'DESKTOP_DEPLOY_BUSY: 该安装目录已有直写部署。' }
+}
 Assert-CurrentBuildBinding
-if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not ($installWithPackage -or $DirectInstall)) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '构建准备与首次校验'
 Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
 Write-DesktopDuration '应用维护退出'
 Write-Host '[2/6] 宿主与自有 Rust 网关已退出，工作区锁已释放' -ForegroundColor DarkGray
-Assert-CurrentBuildBinding
-if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not $DirectInstall) { Assert-CurrentBuildBinding }
+if (-not ($installWithPackage -or $DirectInstall)) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '写入前校验'
 Write-Host '[3/6] 安装边界核验完成' -ForegroundColor DarkGray
-if ($installWithPackage) {
+if ($DirectInstall) {
+  Write-Host '[4/6] 原子替换绑定清单中的差异文件 ...' -ForegroundColor Cyan
+  Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot
+  $applied = Invoke-BoundDirectDeployment -Action apply -Id $DirectPlanId -Sha256 $DirectPlanSha256
+  Write-Host "[desktop:direct] 替换 $($applied.changed) 项，安装后校验 $($applied.files) 项。"
+} elseif ($installWithPackage) {
   Write-Host '[4/6] 运行本次已绑定的安装包 ...' -ForegroundColor Cyan
   # NSIS requires /D= last and unquoted; the modern wrapper forwards it and
   # also uses it as the default directory for the interactive installer.
@@ -508,11 +661,13 @@ if ($SyncLocalModels) {
   if ($LASTEXITCODE -ne 0) { throw '本机 Live2D 同步核验失败' }
 }
 Write-DesktopDuration '安装与资源同步'
-Assert-CurrentBuildBinding
-if ($installWithPackage) { Assert-FixedInstaller -Installed }
-else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not $DirectInstall) {
+  Assert-CurrentBuildBinding
+  if ($installWithPackage) { Assert-FixedInstaller -Installed }
+  else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+}
 if (-not $StartupRepair) {
-  Invoke-DesktopResourceCleanup -Root $root -InstallDir $installDir -StageGateway $stageGateway -InstalledFromPackage:$installWithPackage -InstallerPath $InstallerPath
+  Invoke-DesktopResourceCleanup -Root $root -InstallDir $installDir -StageGateway $stageGateway -InstalledFromPackage:$installWithPackage -DirectFromBuild:$DirectInstall -InstallerPath $InstallerPath
 }
 Write-DesktopDuration '安装后校验'
 if (-not $StartupRepair) {
@@ -562,6 +717,8 @@ if ($NoRestart) {
 }
 Write-DesktopDuration '启动确认'
 Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.TotalSeconds)
+try { Remove-DirectDeploymentPlan; Remove-StaleDeploymentCopies }
+catch { Write-Host "[desktop:cleanup] 清理历史副本失败：$($_.Exception.Message)" -ForegroundColor Yellow }
 } catch {
   Write-Host "[desktop:failed] $($_.Exception.Message)" -ForegroundColor Red
   if ($installWithPackage -and $InstallerManifestSha256) {
@@ -570,6 +727,9 @@ Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.
   }
   throw
 } finally {
-  try { if ($transcriptStarted) { Stop-Transcript | Out-Null } }
-  finally { if ($deploymentLock) { $deploymentLock.Dispose() } }
+  try { if ($transcriptStarted) { Stop-Transcript | Out-Null; Publish-DeploymentLog } }
+  finally {
+    if ($installMutex) { if ($installMutexHeld) { $installMutex.ReleaseMutex() }; $installMutex.Dispose() }
+    if ($deploymentLock) { $deploymentLock.Dispose() }
+  }
 }

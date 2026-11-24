@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import snapshot = require('./catalog-snapshot');
+import delivery = require('./delivery-paths');
 
 const CATALOG_FILES = ['catalog.sqlite', 'catalog.sqlite-wal', 'catalog.sqlite-shm', 'catalog.identity.json'];
 const PIN_FILES = ['data/prompt-pinned-scenes.json', 'data/prompt-pinned-scenes.json.br', 'data/prompt-pinned-scenes.json.gz'];
@@ -96,6 +97,24 @@ function adoptProjectCatalog(app: string, runtime: string, evidence: string, inc
   }
 }
 
+function pinsAlreadyInstalled(app: string, content: string) {
+  return PIN_FILES.every((name, index) => {
+    const bundled = delivery.fileEntry(app, name);
+    if (bundled.status === 'missing') return index !== 0;
+    if (bundled.status !== 'file') return false;
+    const current = delivery.fileEntry(content, name);
+    return current.status === 'file' && current.bytes === bundled.bytes && current.sha256 === bundled.sha256;
+  });
+}
+
+function isLocalBuild(app: string) {
+  try {
+    return delivery.readJson(app, 'rust-runtime-build.json').value.buildProfile === 'desktop-local';
+  } catch {
+    return false;
+  }
+}
+
 /** Called by deployment after the desktop has drained, using the installed payload. */
 function updateCatalog(app: string, runtime: string, adopt = false) {
   const records = snapshot.read(app);
@@ -104,10 +123,7 @@ function updateCatalog(app: string, runtime: string, adopt = false) {
   // not by opening SQLite before its reference/index files have been copied.
   if (!fs.existsSync(path.join(runtime, 'content'))) return { changed: 0, firstLaunch: true };
   const manifest = JSON.parse(fs.readFileSync(path.join(app, 'data/catalog/manifest.json'), 'utf8'));
-  const evidence = path.join(runtime, 'content-update-backups', randomUUID());
-  fs.mkdirSync(evidence, { recursive: true });
-  const incoming = path.join(evidence, 'incoming.json');
-  fs.writeFileSync(incoming, JSON.stringify({ version: 1, records, retired: manifest.retired || [] }));
+  const bundled = JSON.stringify({ version: 1, records, retired: manifest.retired || [] });
   const content = path.join(runtime, 'content');
   const run = (command: string, args: string[] = [], source = content) => {
     const result = JSON.parse(execFileSync(path.join(app, 'huiyu-runtime.exe'),
@@ -116,6 +132,26 @@ function updateCatalog(app: string, runtime: string, adopt = false) {
     if (result.ok !== true) throw Error(`内容库${command}失败：${JSON.stringify(result)}`);
     return result;
   };
+  if (!adopt && isLocalBuild(app) && pinsAlreadyInstalled(app, content)) {
+    const scratch = fs.mkdtempSync(path.join(runtime, '.content-update-preview-'));
+    const candidate = path.join(scratch, 'incoming.json');
+    try {
+      fs.writeFileSync(candidate, bundled, { flag: 'wx' });
+      const preview = run('import', ['--file', candidate, '--sync-bundle']);
+      // Older runtimes omit seedChanges. Their invisible provenance updates
+      // still go through normal backup and import.
+      if (preview.items.length === 0 && preview.seedChanges === 0 && preview.pinsMatchBundle === true) {
+        return { changed: 0, preservedLocal: preview.preservedLocal, keptNewer: preview.keptNewer };
+      }
+    } finally {
+      fs.rmSync(candidate, { force: true });
+      fs.rmdirSync(scratch);
+    }
+  }
+  const evidence = path.join(runtime, 'content-update-backups', randomUUID());
+  fs.mkdirSync(evidence, { recursive: true });
+  const incoming = path.join(evidence, 'incoming.json');
+  fs.writeFileSync(incoming, bundled);
   // Application upgrades preserve personal creative overrides. Native import
   // retains their exact records and advances only the incoming seed baseline;
   // interactive/manual imports keep their existing strict conflict policy.

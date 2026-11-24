@@ -206,13 +206,15 @@ async function main() {
       const status = await (require('./run-tauri') as typeof import('./run-tauri')).runTauri(['build', '--local', '--no-bundle', '--ci', '--no-sign']);
       if (status !== 0) throw Error('Local desktop build failed');
     }
-    const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer')).buildUpgradeInstaller(ROOT, { installDir: INSTALL_DIR, local: true });
+    const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer'))
+      .buildUpgradeInstaller(ROOT, { installDir: INSTALL_DIR, local: true, prepareInstallerAssets: SKIP_BUILD });
     const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
     const executable = path.join(OUT_DIR, `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
     const modern = require('./build-modern-installer') as typeof import('./build-modern-installer');
-    await timeDesktopBuild('local upgrade wrapper', () => modern.buildModernInstaller({ payload: upgrade.payload, output: executable, upgradeVerifier: upgrade.verifier, nsisFile: upgrade.nsisFile }));
+    const wrapper = await timeDesktopBuild('local upgrade wrapper', () => modern.buildModernInstaller({ payload: upgrade.payload, output: executable,
+      upgradeVerifier: upgrade.verifier, nsisFile: upgrade.nsisFile, checkpoint: upgrade.checkpoint }));
     fs.writeFileSync(`${executable}.sha256`, `${hashInstallerFile(executable, 'sha256').toString('hex').toUpperCase()}  ${path.basename(executable)}\n`);
-    binding.verifyDistribution(ROOT, executable);
+    binding.verifyDistribution(ROOT, executable, undefined, wrapper.checkpoint);
     console.log(`[release-desktop-update] 本机升级包：${executable}；复用 ${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB 基础素材，未构建完整包、修改 latest.json 或发布`);
   });
   if (!MANUAL && !fs.existsSync(KEY_FILE)) {

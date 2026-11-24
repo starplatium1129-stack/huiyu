@@ -13,7 +13,7 @@
  * .br/.gz 会把陈旧内容发给浏览器——常规预压只遍历仍存在的源文件，压不掉孤儿。
  * 现在正常模式成对清理孤儿/陈旧产物；--check 校验存在性 + 解压内容与源一致。
  *
- * 用法: node scripts/maintenance/precompress.js [--check]
+ * 用法: node scripts/maintenance/precompress.js [--check | --fast] [--data-only]
  * 由 npm run build:web:run 在 Vite 构建和包体校验后执行。
  */
 
@@ -113,10 +113,10 @@ async function checkFileArtifacts(root: string, file: string): Promise<string[]>
  * 孤儿/陈旧预压产物清单：源已删除、低于压缩阈值或不再属于可压类型的 .br/.gz。
  * 只扫 TARGET_DIRS，不越界（审计 2026-09-05 P2-06）。
  */
-function listStaleArtifacts(root = ROOT) {
+function listStaleArtifacts(root: string, targetDirs: string[]) {
   const stale: string[] = [];
   const catalog = path.join(root, 'data', 'catalog') + path.sep;
-  for (const dir of TARGET_DIRS) {
+  for (const dir of targetDirs) {
     for (const file of walk(path.join(root, dir))) {
       if (!/\.(?:br|gz)$/i.test(file)) continue;
       const source = file.replace(/\.(?:br|gz)$/i, '');
@@ -131,10 +131,16 @@ function listStaleArtifacts(root = ROOT) {
 
 async function main(root = ROOT, argv = process.argv.slice(2)) {
   const checkOnly = argv.includes('--check');
-  const configured = process.env.PRECOMPRESS_JOBS ?? '2';
-  if (!checkOnly && !/^[1-4]$/.test(configured)) throw new Error('PRECOMPRESS_JOBS must be an integer from 1 to 4');
+  const fast = !checkOnly && (argv.includes('--fast') || process.env.AICS_PRECOMPRESS_FAST === '1');
+  const maxJobs = fast ? 8 : 4;
+  const configured = process.env.PRECOMPRESS_JOBS ?? String(fast ? Math.min(maxJobs, os.availableParallelism()) : 2);
   const jobs = Number(configured);
-  if (!checkOnly) purgeWoffFonts(root);
+  if (!checkOnly && (!/^[1-8]$/.test(configured) || jobs > maxJobs)) {
+    throw Error('PRECOMPRESS_JOBS must be an integer from 1 to ' + maxJobs);
+  }
+  const dataOnly = argv.includes('--data-only');
+  const targetDirs = dataOnly ? ['data'] : TARGET_DIRS;
+  if (!checkOnly && !dataOnly) purgeWoffFonts(root);
   let files = 0;
   let reused = 0;
   let rawTotal = 0;
@@ -144,14 +150,24 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
   const pending: string[] = [];
 
   if (!checkOnly) {
-    const stale = listStaleArtifacts(root);
+    const stale = listStaleArtifacts(root, targetDirs);
+    if (fast) {
+      // Quality-4 Brotli must never be paired with old gzip and mistaken for
+      // reusable release output. Release mode recreates both sidecars.
+      const knownStale = new Set(stale);
+      for (const dir of targetDirs) {
+        for (const file of walk(path.join(root, dir))) {
+          if (/\.gz$/i.test(file) && COMPRESSIBLE.test(file.slice(0, -3)) && !knownStale.has(file)) stale.push(file);
+        }
+      }
+    }
     for (const file of stale) fs.unlinkSync(file);
     if (stale.length) {
       console.log(`Pruned ${stale.length} unused precompress artifacts`);
     }
   }
 
-  for (const dir of TARGET_DIRS) {
+  for (const dir of targetDirs) {
     for (const file of walk(path.join(root, dir), path.join(root, 'data', 'catalog'))) {
       if (!COMPRESSIBLE.test(file)) continue;
       if (/\.(?:br|gz)$/i.test(file)) continue;
@@ -172,7 +188,7 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
       }
     }));
     for (const issues of perFile) if (issues) missing.push(...issues);
-    const stale = listStaleArtifacts(root);
+    const stale = listStaleArtifacts(root, targetDirs);
     if (missing.length || stale.length) {
       if (missing.length) {
         console.error('预压产物缺失或内容陈旧（跑 npm run precompress 重建并清理孤儿）:');
@@ -192,7 +208,7 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
   async function worker() {
     while (cursor < pending.length && !failed) {
       try {
-        const result = await compressAsync(pending[cursor++]);
+        const result = await compressAsync(pending[cursor++], fast);
         if (!result) continue;
         if (result.reused) reused++;
         files++; rawTotal += result.raw; brTotal += result.brotli; gzTotal += result.gzip;
@@ -204,10 +220,10 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
   for (const result of completed) if (result.status === 'rejected') throw result.reason;
 
   const kb = (n: number) => (n / 1024).toFixed(1) + ' KB';
-  console.log('Precompressed ' + files + ' files: ' +
-    kb(rawTotal) + ' raw → ' + kb(gzTotal) + ' gzip → ' + kb(brTotal) + ' brotli' +
-    ' (brotli 比 gzip 再省 ' + (100 - (brTotal / gzTotal) * 100).toFixed(0) + '%)');
-  console.log(`Precompression reused ${reused} verified pairs; encoded ${files - reused} files.`);
+  const encoding = fast ? kb(brTotal) + ' brotli (desktop-local)' :
+    kb(gzTotal) + ' gzip → ' + kb(brTotal) + ' brotli';
+  console.log('Precompressed ' + files + ' files: ' + kb(rawTotal) + ' raw → ' + encoding);
+  console.log(`Precompression reused ${reused} verified artifacts; encoded ${files - reused} files.`);
   return 0;
 }
 

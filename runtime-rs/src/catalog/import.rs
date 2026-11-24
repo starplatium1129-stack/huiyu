@@ -34,6 +34,8 @@ impl Catalog {
         let mut preserved = Vec::new();
         let mut newer_records = Vec::new();
         let mut kept_newer = Vec::new();
+        let mut seed_changes = 0;
+        let mut pins_match_bundle = false;
         let mut seeds = records
             .into_iter()
             .map(|r| (r, false))
@@ -85,9 +87,28 @@ impl Catalog {
                 (*incoming, *bundle_removed) = base.unwrap();
                 continue;
             }
+            // A preserved local row can accept a new upstream seed without
+            // producing a visible edit in items. Report that work to deployment.
+            if policy == Policy::SyncBundle
+                && base.as_ref().is_none_or(|(accepted, deleted)| {
+                    *deleted != removed
+                        || accepted.revision != incoming.revision
+                        || accepted.created_at != incoming.created_at
+                        || accepted.updated_at != incoming.updated_at
+                        || !same(accepted, incoming)
+                })
+            {
+                seed_changes += 1;
+            }
             let equal = current
                 .as_ref()
                 .is_some_and(|(r, old_removed)| same(r, incoming) && *old_removed == removed);
+            if policy == Policy::SyncBundle
+                && incoming.kind == "document"
+                && incoming.id == "prompt-pinned-scenes"
+            {
+                pins_match_bundle = equal;
+            }
             let untouched = !equal
                 && current.as_ref().zip(base.as_ref()).is_some_and(
                     |((r, old_removed), (b, base_removed))| {
@@ -159,6 +180,8 @@ impl Catalog {
             self.apply_with_seeds(&changes, preview, &seeds, &preserved, &newer_records)?;
         if policy == Policy::SyncBundle {
             receipt["keptNewer"] = Value::Array(kept_newer);
+            receipt["seedChanges"] = json!(seed_changes);
+            receipt["pinsMatchBundle"] = json!(pins_match_bundle);
         }
         Ok(receipt)
     }

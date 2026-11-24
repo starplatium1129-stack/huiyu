@@ -124,13 +124,13 @@ async function bitmap(source: any, destination: any, width: any = 1920, height: 
   fs.writeFileSync(destination, bmp);
 }
 
-async function buildGameInstaller({ preview = false, capture = false, page = 'welcome', theme = 'system' }: any = {}) {
-  const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.5.nsi'));
-  if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
+async function buildGameInstaller({ preview = false, capture = false, page = 'welcome', theme = 'system', resourcesOnly = false }: any = {}) {
+  const vendor = resourcesOnly ? undefined : fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.5.nsi'));
+  if (vendor && crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
   fs.mkdirSync(generated, { recursive: true });
   // Embedded in the uninstaller itself, not in the directory it will delete.
-  (require('./build-modern-installer') as typeof import('./build-modern-installer')).buildModernInstaller({ uninstall: true });
+  if (vendor) (require('./build-modern-installer') as typeof import('./build-modern-installer')).buildModernInstaller({ uninstall: true });
   const framework = path.join(process.env.WINDIR || 'C:/Windows', 'Microsoft.NET/Framework64/v4.0.30319');
   const cleanupExe = path.join(generated, 'HuiyuResourceCleanup.exe');
   const cleanupReceipt = path.join(generated, 'resource-cleanup-build.json');
@@ -152,6 +152,10 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
       `/win32manifest:${path.join(INSTALLER, 'modern/app.manifest')}`, path.join(INSTALLER, 'ResourceInventory.cs')], { cwd: ROOT, stdio: 'inherit', windowsHide: true });
     if (compiler.error || compiler.status !== 0) throw new Error(`Resource cleanup compiler failed: ${compiler.error?.message || compiler.status}`);
     fs.writeFileSync(cleanupReceipt, JSON.stringify({ inputHash, outputHash: hashFile(cleanupExe) }));
+  }
+  if (!vendor) {
+    console.log('[installer] resource cleanup tool ready');
+    return;
   }
   const background = path.join(generated, 'atelier-background.bmp');
   await bitmap(path.join(INSTALLER, 'atelier-keyart.png'), background);
@@ -189,7 +193,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  if (args.includes('--help')) console.log('Build native installer UI. Options: --preview [--capture] [--theme=system|dark|light] [--page=welcome|directory|install|finish|maintenance|uninstall|uninstall-progress|uninstall-finish]');
-  else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome', theme: args.find((arg: any) => arg.startsWith('--theme='))?.slice(8) || 'system' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
+  if (args.includes('--help')) console.log('Build native installer UI. Options: --resources-only | --preview [--capture] [--theme=system|dark|light] [--page=welcome|directory|install|finish|maintenance|uninstall|uninstall-progress|uninstall-finish]');
+  else buildGameInstaller({ resourcesOnly: args.includes('--resources-only'), preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome', theme: args.find((arg: any) => arg.startsWith('--theme='))?.slice(8) || 'system' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
 }
 export = { buildGameInstaller };

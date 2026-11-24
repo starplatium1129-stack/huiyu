@@ -119,6 +119,17 @@ function Show-DesktopDeploymentWindow {
   param([string]$InstallDir, [string]$ConfigRoot, [int]$HostPid)
   $identity = Get-DesktopMaintenanceIdentity -InstallDir $InstallDir -ConfigRoot $ConfigRoot
   if ($identity.hostPid -ne $HostPid) { throw 'DESKTOP_MAINTENANCE_IDENTITY: 启动确认后运行实例已变化，未操作未知窗口。' }
+  $mode = 'companion'
+  $preferences = Join-Path $ConfigRoot 'companion-preferences.json'
+  if (Test-Path -LiteralPath $preferences -PathType Leaf) {
+    $file = Get-Item -LiteralPath $preferences
+    if ($file.Length -le 16384 -and -not ($file.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
+      $preference = (Get-Content -LiteralPath $preferences -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction SilentlyContinue).startupMode
+      if ($preference -in @('atelier', 'both', 'tray')) { $mode = $preference }
+    }
+  }
+  if ($mode -eq 'tray') { return '已按设置启动到托盘' }
+  $title = if ($mode -eq 'atelier') { '绘遇 · HUIYU' } else { '绘遇 Companion' }
   if (-not ('HuiyuDesktopDeploymentWindow' -as [type])) {
     Add-Type -TypeDefinition @'
 using System;
@@ -133,7 +144,7 @@ public static class HuiyuDesktopDeploymentWindow {
   [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr window);
   [DllImport("user32.dll")] private static extern bool ShowWindowAsync(IntPtr window, int command);
   [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr window);
-  public static IntPtr Find(uint hostPid) {
+  public static IntPtr Find(uint hostPid, string expectedTitle) {
     IntPtr found = IntPtr.Zero;
     EnumWindows(delegate(IntPtr window, IntPtr data) {
       uint owner;
@@ -141,7 +152,7 @@ public static class HuiyuDesktopDeploymentWindow {
       if (owner != hostPid) return true;
       var title = new StringBuilder(256);
       GetWindowText(window, title, title.Capacity);
-      if (title.ToString() != "绘遇 Companion") return true;
+      if (title.ToString() != expectedTitle) return true;
       found = window;
       return false;
     }, IntPtr.Zero);
@@ -162,16 +173,16 @@ public static class HuiyuDesktopDeploymentWindow {
   $deadline = [DateTime]::UtcNow.AddSeconds(10)
   $requestedWindow = [IntPtr]::Zero
   while ([DateTime]::UtcNow -lt $deadline) {
-    $window = [HuiyuDesktopDeploymentWindow]::Find([uint32]$HostPid)
+    $window = [HuiyuDesktopDeploymentWindow]::Find([uint32]$HostPid, $title)
     if ($window -ne [IntPtr]::Zero) {
       if ($window -ne $requestedWindow) {
         [HuiyuDesktopDeploymentWindow]::Show($window)
         $requestedWindow = $window
-      } elseif ([HuiyuDesktopDeploymentWindow]::IsShown($window)) { return }
+      } elseif ([HuiyuDesktopDeploymentWindow]::IsShown($window)) { return "$title 窗口已显示" }
     }
     Start-Sleep -Milliseconds 100
   }
-  throw 'DESKTOP_WINDOW_UNCONFIRMED: 宿主与网关已就绪，但未确认 Companion 窗口可见。请在当前用户桌面检查应用；未停止应用或删除资料。'
+  throw "DESKTOP_WINDOW_UNCONFIRMED: 宿主与网关已就绪，但未确认 $title 窗口可见。"
 }
 
 function Assert-DesktopDeploymentStopped {
@@ -280,7 +291,7 @@ function Assert-DesktopRuntimeMatches {
 }
 
 function Invoke-DesktopResourceCleanup {
-  param([string]$Root, [string]$InstallDir, [string]$StageGateway, [switch]$InstalledFromPackage, [string]$InstallerPath)
+  param([string]$Root, [string]$InstallDir, [string]$StageGateway, [switch]$InstalledFromPackage, [switch]$DirectFromBuild, [string]$InstallerPath)
   $gateway = Join-Path $InstallDir 'gateway'
   if ($InstalledFromPackage) {
     $bound = Get-Content -LiteralPath "$InstallerPath.deployment.json" -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -298,7 +309,9 @@ function Invoke-DesktopResourceCleanup {
   # A verified portable manifest can bootstrap installations predating the ledger.
   $legacy = @()
   $directory = Join-Path $Root 'runtime\desktop-updates'
-  if (Test-Path -LiteralPath $directory -PathType Container) {
+  $ledger = Resolve-DesktopChildPath -Root $InstallDir -Relative '.huiyu-installed-resources.json'
+  if ((-not $DirectFromBuild -or -not (Test-Path -LiteralPath $ledger -PathType Leaf)) -and
+      (Test-Path -LiteralPath $directory -PathType Container)) {
     foreach ($manifest in @(Get-ChildItem -LiteralPath $directory -Filter '*.deployment.json' -File)) {
       $candidate = $manifest.FullName -replace '\.deployment\.json$', ''
       if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { continue }
