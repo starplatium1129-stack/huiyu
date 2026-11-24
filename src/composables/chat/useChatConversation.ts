@@ -20,6 +20,7 @@ import { MAX_CHAT_DRAWINGS, parseCompanionChatImages, type CompanionChatSendOpti
 import type { CompanionToolContext } from './companionChatTools'
 import { captureCompanionImageSource } from './companionChatImages'
 import { startTurnWatchdog } from './chatTurnWatchdog'
+import { buildChatFallbackCandidates, shouldFallbackOnError, type ChatFallbackCandidate } from './chatTurnFallback'
 import { abortableTask } from '@/utils/abortableTask'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
@@ -181,9 +182,18 @@ export function useChatConversation(options: ChatConversationOptions) {
   async function runTurn(turn: ChatTurn, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     options.onError('')
     const connection = captureConnection(), text = turn.text, turnMid = turn.assistant.mid
+    let activeConnection = connection
+    let activeFallbackLabel = ''
+    let fallbackCandidates: ChatFallbackCandidate[] | null = null
+    let fallbackIndex = 0
+    let triedModels = 1
+    let notifiedChatGptFailure = false
     const controller = new AbortController()
     activeRequest = controller
-    const watchdog = startTurnWatchdog(controller)
+    let attemptController = new AbortController()
+    const forwardAbort = () => attemptController.abort(controller.signal.reason)
+    controller.signal.addEventListener('abort', forwardAbort, { once: true })
+    let watchdog = startTurnWatchdog(attemptController)
     const japaneseVoice = sendOptions.action !== 'generate-from-image' && isLocalStudioHost()
       && connection.provider !== 'muse' && options.voice.wantsJapanese(turn.character.voice)
     let separateSpeech = false
@@ -214,7 +224,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       async onDrawingBatch(id) {
         const { retainCompanionImageMessage } = await import('./companionChatTools')
         checkCurrent()
-        if (connection.provider !== 'muse' || !turn.messages.some(message => message.drawingBatchId === id)) {
+        if (activeConnection.provider !== 'muse' || !turn.messages.some(message => message.drawingBatchId === id)) {
           turn.assistant.drawingBatchId = id
         }
         await retainCompanionImageMessage(options.storage)
@@ -223,11 +233,16 @@ export function useChatConversation(options: ChatConversationOptions) {
       },
     }
     let toolOrigin: string | undefined
-    if (connection.provider === 'chatgpt') {
-      toolOrigin = toolContext.screenDestination = 'https://api.openai.com'
-    } else {
-      try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
+    const syncToolOrigin = (target: typeof activeConnection) => {
+      toolOrigin = undefined
+      toolContext.screenDestination = undefined
+      if (target.provider === 'chatgpt') {
+        toolOrigin = toolContext.screenDestination = 'https://api.openai.com'
+      } else {
+        try { toolOrigin = toolContext.screenDestination = new URL(target.hostConfig ? target.hostBaseUrl : target.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
+      }
     }
+    syncToolOrigin(activeConnection)
     const usedTools = new Set<string>()
     const drawingResults = new Map<string, ToolCallResult>()
 
@@ -307,31 +322,11 @@ export function useChatConversation(options: ChatConversationOptions) {
           if (!connectionMatches(connection) || [...usedTools].some(name => !companionToolAllowed(name, policy))) throw new Error('工具权限或 API 配置已改变，已停止发送工具结果。')
           checkCurrent()
         }
-        const hostMode = connection.provider === 'api' && connection.hostConfig
+        const hostMode = activeConnection.provider === 'api' && activeConnection.hostConfig
         const useVision = visionRound
         visionRound = false
         // DeepSeek V4：思考轮带 tool_calls 时必须回传 reasoning_content
         let roundReasoning = ''
-        const response = await runtimeFetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: buildChatRequestBody({
-            characterId: turn.characterId,
-            sessionId: turn.sessionId,
-            imageUrls,
-            hostMode,
-            useVision,
-            toolsEnabled,
-            museDrawing,
-            japaneseVoice,
-            toolResultOrigin: usedTools.size ? toolOrigin : undefined,
-            roundMessages,
-            messages: turn.messages, connection, restricted: turn.restricted,
-            userProfile: options.userProfile.value, memories,
-          }),
-          signal: controller.signal,
-        })
-
         const toolCalls: PendingToolCall[] = []
         const roundTextStart = turn.assistant.content.length
         let drawing: Record<string, unknown> | undefined
@@ -339,60 +334,137 @@ export function useChatConversation(options: ChatConversationOptions) {
         let textHasSpeech = false
         let streamedSpeech = false
         let legacySpeech = ''
-        await parseNdjsonResponse(response, event => {
-          checkCurrent()
-          watchdog.touch()
-          if (event.type === 'meta' && event.model) {
-            applyModelWriteback(event.model, hostMode, useVision, connection)
-          }
-          if (event.type === 'tool-call') {
-            if (event.id && event.name) {
-              if (!toolCalls.length && streamedSpeech) options.voice.stop({ preserveMessageAudio: true })
-              toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}'), thoughtSignature: event.thoughtSignature })
+        try {
+          const response = await runtimeFetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: buildChatRequestBody({
+              characterId: turn.characterId,
+              sessionId: turn.sessionId,
+              imageUrls,
+              hostMode,
+              useVision,
+              toolsEnabled,
+              museDrawing,
+              japaneseVoice,
+              toolResultOrigin: usedTools.size ? toolOrigin : undefined,
+              roundMessages,
+              messages: turn.messages, connection: activeConnection, restricted: turn.restricted,
+              userProfile: options.userProfile.value, memories,
+            }),
+            signal: attemptController.signal,
+          })
+
+          await parseNdjsonResponse(response, event => {
+            checkCurrent()
+            watchdog.touch()
+            if (event.type === 'meta' && event.model && !activeFallbackLabel) {
+              applyModelWriteback(event.model, hostMode, useVision, activeConnection)
             }
-            return
-          }
-          if (event.type === 'drawing' && museDrawing) {
-            drawing = event.drawing
-            return
-          }
-          if (event.type === 'reasoning') {
-            roundReasoning += event.content || ''
-            if (canPresent()) options.onThinking?.(event.content || '')
-            return
-          }
-          if (event.type === 'japanese-speech-mode' && japaneseVoice) {
-            separateSpeech = true
-            speechFirst = event.speechFirst === true
-            return
-          }
-          if (event.type === 'japanese-speech-chunk' && separateSpeech) {
-            if (toolCalls.length) return
-            const script = event.content?.trim()
-            if (speechFirst) textHasSpeech = Boolean(script)
-            if (!script || (!speechFirst && !turn.assistant.content.slice(roundTextStart).trim())) return
-            if (speechFirst) {
-              const unvoiced = turn.assistant.content.slice(spokenThrough)
-              if (unvoiced.trim()) {
-                options.voice.append(unvoiced)
-                options.voice.finishTurn()
+            if (event.type === 'tool-call') {
+              if (event.id && event.name) {
+                if (!toolCalls.length && streamedSpeech) options.voice.stop({ preserveMessageAudio: true })
+                toolCalls.push({ id: event.id, name: event.name, arguments: String(event.arguments || '{}'), thoughtSignature: event.thoughtSignature })
+              }
+              return
+            }
+            if (event.type === 'drawing' && museDrawing) {
+              drawing = event.drawing
+              return
+            }
+            if (event.type === 'reasoning') {
+              roundReasoning += event.content || ''
+              if (canPresent()) options.onThinking?.(event.content || '')
+              return
+            }
+            if (event.type === 'japanese-speech-mode' && japaneseVoice) {
+              separateSpeech = true
+              speechFirst = event.speechFirst === true
+              return
+            }
+            if (event.type === 'japanese-speech-chunk' && separateSpeech) {
+              if (toolCalls.length) return
+              const script = event.content?.trim()
+              if (speechFirst) textHasSpeech = Boolean(script)
+              if (!script || (!speechFirst && !turn.assistant.content.slice(roundTextStart).trim())) return
+              if (speechFirst) {
+                const unvoiced = turn.assistant.content.slice(spokenThrough)
+                if (unvoiced.trim()) {
+                  options.voice.append(unvoiced)
+                  options.voice.finishTurn()
+                }
+              }
+              options.voice.appendJapanese(script)
+              streamedSpeech = true
+              spokenThrough = turn.assistant.content.length
+              return
+            }
+            if (event.type === 'japanese-speech' && separateSpeech) {
+              legacySpeech = event.content || ''
+              return
+            }
+            if (event.type !== 'token') return
+            if (canPresent()) options.onThinking?.(null)
+            tracker.applyTokenDelta(turn.assistant, event.content || '')
+            if (textHasSpeech) spokenThrough = turn.assistant.content.length
+            if (options.nearBottom()) options.scrollBottom()
+          })
+        } catch (attemptError) {
+          const userAborted = controller.signal.aborted
+          const attemptAborted = attemptController.signal.aborted || isAbortError(attemptError)
+          const canSwitch = !userAborted
+            && !turn.assistant.content.length
+            && !usedTools.size
+            && !toolCalls.length
+            && !turn.assistant.drawingBatchId
+            && !separateSpeech
+            && shouldFallbackOnError(attemptError, attemptAborted, watchdog.idleTimedOut, watchdog.sawFirstEvent)
+          if (canSwitch) {
+            if (activeConnection.provider === 'chatgpt' && !notifiedChatGptFailure) {
+              const code = streamErrorCode(attemptError)
+              if (['CHATGPT_USAGE_LIMIT', 'CHATGPT_REAUTH_REQUIRED', 'CHATGPT_PLAN_NOT_ENABLED', 'CHATGPT_SCOPE_DENIED', 'CHATGPT_SELECTION_CHANGED'].includes(code)) {
+                notifiedChatGptFailure = true
+                options.onChatGptStatusChanged?.()
               }
             }
-            options.voice.appendJapanese(script)
-            streamedSpeech = true
-            spokenThrough = turn.assistant.content.length
-            return
+            if (fallbackCandidates === null) {
+              fallbackCandidates = await buildChatFallbackCandidates(connection, {
+                configured: Boolean(options.hostApiConfigured?.value),
+                baseUrl: options.hostApiBaseUrl?.value || '',
+                model: options.hostApiModel?.value || '',
+              })
+              checkCurrent()
+            }
+            const nextCandidate = fallbackCandidates[fallbackIndex++]
+            if (nextCandidate) {
+              triedModels += 1
+              activeFallbackLabel = nextCandidate.label
+              activeConnection = {
+                ...connection,
+                provider: 'api',
+                hostConfig: nextCandidate.kind === 'host',
+                baseUrl: nextCandidate.baseUrl,
+                hostBaseUrl: nextCandidate.kind === 'host' ? nextCandidate.baseUrl : connection.hostBaseUrl,
+                apiModel: nextCandidate.model,
+                apiKey: nextCandidate.apiKey,
+              }
+              syncToolOrigin(activeConnection)
+              visionRound = useVision
+              tracker.reset()
+              if (canPresent()) {
+                options.onThinking?.(null)
+                options.onToolActivity?.(`当前模型暂不可用，正在切换至 ${nextCandidate.label} 重试…`)
+              }
+              watchdog.stop()
+              controller.signal.removeEventListener('abort', forwardAbort)
+              attemptController = new AbortController()
+              controller.signal.addEventListener('abort', forwardAbort, { once: true })
+              watchdog = startTurnWatchdog(attemptController)
+              continue
+            }
           }
-          if (event.type === 'japanese-speech' && separateSpeech) {
-            legacySpeech = event.content || ''
-            return
-          }
-          if (event.type !== 'token') return
-          if (canPresent()) options.onThinking?.(null)
-          tracker.applyTokenDelta(turn.assistant, event.content || '')
-          if (textHasSpeech) spokenThrough = turn.assistant.content.length
-          if (options.nearBottom()) options.scrollBottom()
-        })
+          throw attemptError
+        }
 
         if (drawing) {
           try {
@@ -484,10 +556,13 @@ export function useChatConversation(options: ChatConversationOptions) {
       if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
       if (!turn.assistant.drawingBatchId) turn.assistant.content ||= '……'
       if (canPresent() && turn.assistant.content) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
+      if (canPresent() && activeFallbackLabel) {
+        options.onError(`原模型暂不可用，已自动切换至 ${activeFallbackLabel} 完成本次回复。`, 'info', 4500)
+      }
       options.voice.finishTurn()
     } catch (error) {
       if (!ownsRequest() || !ownsHistory()) return
-      const aborted = controller.signal.aborted || isAbortError(error)
+      const aborted = controller.signal.aborted || attemptController.signal.aborted || isAbortError(error)
       if (sendOptions.action === 'generate-from-image' && !aborted && !turn.assistant.content) {
         turn.assistant.content = `这次未能生成图片：${error instanceof Error ? error.message : '请检查绘图和反推服务后重试。'}`
       }
@@ -502,27 +577,31 @@ export function useChatConversation(options: ChatConversationOptions) {
         if (watchdog.idleTimedOut) {
           // 超时中断：与用户主动停止不同，按失败处理并给出可理解的提示。
           options.voice.stop({ preserveMessageAudio: true, silent: true })
+          const prefix = triedModels > 1 ? `已尝试 ${triedModels} 个可用模型，均响应超时：` : ''
           if (canPresent()) options.onError(watchdog.sawFirstEvent
-            ? '对话长时间无响应，已中断，请重试。'
-            : '对话等待超时（长时间未开始），请重试。')
+            ? `${prefix}对话长时间无响应，已中断，请重试。`
+            : `${prefix}对话等待超时（长时间未开始），请重试。`)
         }
       } else {
         options.voice.stop({ preserveMessageAudio: true, silent: true })
         const code = streamErrorCode(error)
         const sticky = ['CHATGPT_USAGE_LIMIT', 'CHATGPT_REAUTH_REQUIRED', 'CHATGPT_PLAN_NOT_ENABLED', 'CHATGPT_SCOPE_DENIED'].includes(code)
-        if (connection.provider === 'chatgpt' && (sticky || code === 'CHATGPT_SELECTION_CHANGED')) {
+        if (connection.provider === 'chatgpt' && !notifiedChatGptFailure && (sticky || code === 'CHATGPT_SELECTION_CHANGED')) {
           options.onChatGptStatusChanged?.()
         }
-        if (canPresent()) options.onError(streamErrorMessage(
+        const detail = streamErrorMessage(
           error,
-          connection.provider === 'muse' ? 'Muse 暂时无法回复，请在聊天设置中检查收信状态。'
-            : connection.provider === 'chatgpt' ? 'ChatGPT 订阅对话暂不可用，请检查账号状态与用量限额。'
-              : connection.provider === 'api'
+          activeConnection.provider === 'muse' ? 'Muse 暂时无法回复，请在聊天设置中检查收信状态。'
+            : activeConnection.provider === 'chatgpt' ? 'ChatGPT 订阅对话暂不可用，请检查账号状态与用量限额。'
+              : activeConnection.provider === 'api'
                 ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
                 : '聊天暂不可用，请检查 Ollama。',
-        ), 'error', sticky ? 0 : 7000, code)
+        )
+        const finalMessage = triedModels > 1 ? `已尝试 ${triedModels} 个可用模型，均暂不可用：${detail}` : detail
+        if (canPresent()) options.onError(finalMessage, 'error', sticky && triedModels === 1 ? 0 : 7000, code)
       }
     } finally {
+      controller.signal.removeEventListener('abort', forwardAbort)
       sourceImage?.release()
       originalImages?.release()
       watchdog.stop()

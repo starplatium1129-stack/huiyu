@@ -208,11 +208,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
       />
 
       <div class="inpaint-body">
-      <p v-if="native && !wholeImage" class="modal-intro">局部重绘：选区参与采样，遮罩外按原图合成保留。换装效果取决于选区与重绘幅度。</p>
-      <p v-if="wholeImage" class="modal-intro">整图重绘将重新生成全图，不保留遮罩外画面。</p>
-      <p v-else-if="!native" class="modal-intro">
-        <b>手绘遮罩</b>指定修改范围；<b>自动识别</b>通过服装关键词生成蒙版。
-      </p>
+      <p v-if="wholeImage" class="modal-intro">整图重绘：将重新生成全图，不保留遮罩外画面。</p>
 
       <div class="inpaint-layout">
         <!-- 左侧：原图预览与智能遮罩提示 -->
@@ -313,22 +309,22 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <span>重绘区域</span>
               </span>
             </label>
-            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 模型已就绪。' : '自动识别缺少本地 CLIPSeg，可在控制室准备；当前可使用手绘遮罩。' }}</p>
-            <p v-else-if="!native && !wholeImage" class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已就绪。' : '自动识别节点尚未确认；提交时会自动检查。') }}</p>
-            <RouterLink v-if="!wholeImage && maskUnavailable" class="btn btn-ghost" :to="native ? { path: '/control', query: { resource: 'clipseg-rd64-refined' }, hash: '#control-setup' } : { path: '/control', query: { engine: 'anima' } }" @click="emit('close')">{{ native ? '准备 CLIPSeg 自动蒙版' : '查看控制面板与准备范围' }}</RouterLink>
-            <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">选择整图重绘（人物与背景均可能变化）</button>
-            <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="returnToMask">返回局部遮罩换装</button>
+            <p v-if="native && !wholeImage && !automaticMaskAllowed" class="field-hint">自动识别缺少本地 CLIPSeg，可先使用手绘遮罩。</p>
+            <p v-else-if="!native && !wholeImage && (maskUnavailable || !automaticMaskAvailable)" class="field-hint" role="status">{{ maskUnavailable || '自动识别节点将在提交时检查。' }}</p>
+            <RouterLink v-if="!wholeImage && maskUnavailable" class="btn btn-ghost" :to="native ? { path: '/control', query: { resource: 'clipseg-rd64-refined' }, hash: '#control-setup' } : { path: '/control', query: { engine: 'anima' } }" @click="emit('close')">{{ native ? '准备 CLIPSeg 自动蒙版' : '查看控制面板' }}</RouterLink>
+            <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">整图重绘</button>
+            <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="returnToMask">返回局部遮罩</button>
             <div v-if="!wholeImage" class="mask-mode-switch studio-segments studio-segments--compact" role="group" aria-label="遮罩模式">
               <AnimatedSelection />
               <button type="button" :aria-pressed="maskMode === 'paint'"
-                @click="maskMode = 'paint'">手绘精确遮罩</button>
+                @click="maskMode = 'paint'">手绘遮罩</button>
               <button type="button" :disabled="!automaticMaskAllowed" :aria-pressed="maskMode === 'auto'"
                 @click="maskMode = 'auto'">自动识别</button>
             </div>
             <template v-if="!wholeImage && maskMode === 'paint'">
               <div class="brush-size-header">
                 <label class="field-label" for="brushSizeInput">画笔大小 <span class="param-value">{{ brushSize }} px</span></label>
-                <span class="wheel-shortcut-hint">Alt+滚轮缩放</span>
+                <span class="wheel-shortcut-hint">Alt+滚轮</span>
               </div>
               <input id="brushSizeInput" v-model.number="brushSize" class="slider" type="range" min="8" max="96" step="4" />
               <div class="mask-action-btns">
@@ -345,12 +341,9 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 </StudioTooltip>
                 <button type="button" class="btn btn-quiet btn-sm" @click="clearMask">清空遮罩</button>
               </div>
-              <span class="field-hint">
-                涂白服装区域（支持 <kbd>Alt</kbd>+<kbd>滚轮</kbd> 调粗细；按住 <kbd>Shift</kbd> 或右键擦除保护五官手脚）。
-              </span>
             </template>
             <template v-else-if="automaticMaskAllowed && !wholeImage">
-              <label class="field-label" for="maskPromptInput">自动识别区域</label>
+              <label class="field-label" for="maskPromptInput">识别词</label>
               <input id="maskPromptInput" v-model="maskPrompt" class="input" placeholder="clothing | clothes | outfit | dress | shirt..." />
               <div class="param-slider-group">
                 <div class="param-header">
@@ -366,9 +359,8 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                   class="slider"
                   aria-label="自动识别阈值，越低识别区域越大"
                 />
-                <span class="slider-hint">偏低会误把身体/背景划进重绘区；推荐 0.45 ~ 0.60</span>
+                <span class="slider-hint">推荐 0.45–0.60 · 越低范围越大</span>
               </div>
-              <span class="field-hint">仅作为快速起点。高质量换装建议使用手绘精确遮罩。</span>
             </template>
           </div>
         </div>
@@ -442,29 +434,29 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 step="0.01"
                 class="slider"
               />
-              <span class="slider-hint">越高换装越彻底（推荐 0.85 ~ 0.95）</span>
+              <span class="slider-hint">推荐 0.85–0.95</span>
             </div>
 
             <div v-if="!wholeImage" class="param-slider-group">
               <div class="param-header">
-                <span>{{ native ? '遮罩外扩 (Grow)' : '遮罩边缘羽化外扩 (Grow)' }}</span>
+                <span>遮罩外扩 (Grow)</span>
                 <span class="param-value">{{ growMaskBy }} px</span>
               </div>
               <input
                 v-model.number="growMaskBy"
                 type="range"
-                aria-label="遮罩边缘羽化外扩"
+                aria-label="遮罩外扩"
                 min="0"
                 max="24"
                 step="2"
                 class="slider"
               />
-              <span class="slider-hint">{{ native ? '按输出像素向外扩展编辑区域，扩展区域也会参与重绘' : '防止衣物边缘与皮肤交界处出现硬边缝隙' }}</span>
+              <span class="slider-hint">{{ native ? '按输出像素外扩重绘区' : '柔化服装边缘衔接' }}</span>
             </div>
           </div>
 
             <ToggleSwitch v-model="preserveSeed" label="锁定原图 Seed" class="seed-toggle">
-              <span>锁定原图 Seed ({{ seed ?? '随机' }}) 保持光影与环境色调高度一致</span>
+              <span>锁定原图 Seed（{{ seed ?? '随机' }}）</span>
             </ToggleSwitch>
         </div>
       </div>
@@ -476,7 +468,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
         </button>
         <button class="btn btn-primary" type="button" :disabled="submitting || readingSource || !imageReady" @click="handleStart">
           <ArchiveIcon name="lightning" />
-          <span>{{ preparing || readingSource ? '正在准备图片…' : submitting ? '正在生成…' : wholeImage ? '开始整图重绘' : native ? '开始手绘局部重绘（实验性）' : '开始智能换装' }}</span>
+          <span>{{ preparing || readingSource ? '正在准备图片…' : submitting ? '正在生成…' : wholeImage ? '开始整图重绘' : native ? '开始局部重绘' : '开始智能换装' }}</span>
         </button>
       </footer>
     </div>

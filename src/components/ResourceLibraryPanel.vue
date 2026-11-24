@@ -43,7 +43,7 @@
         </div>
         <button v-if="status?.canRollback" class="btn btn-ghost btn-sm" type="button" :disabled="!enabled" @click="run('rollback')">回退上一版本</button>
       </div>
-      <p class="resource-footnote tw:mb-0">取消后保留可恢复内容；资源更新不覆盖你的作品。</p>
+      <p class="resource-footnote tw:mb-0">取消可恢复 · 更新不覆盖作品</p>
     </template>
   </section>
 </template>

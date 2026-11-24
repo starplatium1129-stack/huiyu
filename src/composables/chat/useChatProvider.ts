@@ -159,7 +159,9 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   })
   const chatReady = computed(() => {
     if (chatProvider.value === 'muse') return isLocalStudioHost() && museStatus.value?.available === true
-    if (chatProvider.value === 'chatgpt') return chatGpt.ready.value
+    if (chatProvider.value === 'chatgpt') {
+      return chatGpt.ready.value || (isLocalStudioHost() && (apiConfigured.value || hostApiConfigured.value))
+    }
     if (chatProvider.value === 'api') return apiConfigured.value || useHostConfig.value
     return ollamaOnline.value
   })

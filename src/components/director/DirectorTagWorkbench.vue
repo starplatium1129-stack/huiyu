@@ -6,9 +6,9 @@
         <strong v-else>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
         <a v-if="!isOutfitLibrary && usesTagSyntax" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
       </div>
-      <p v-if="!isOutfitLibrary && isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
-      <p v-else-if="!isOutfitLibrary && isMoss" class="tag-dictionary-note">MOSS 使用词条＋自然语言：词条控制画面元素，描述补充动作与空间关系。括号权重不生效。</p>
-      <p v-else-if="!isOutfitLibrary && promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
+      <p v-if="!isOutfitLibrary && isAnima" class="tag-dictionary-note">词条 Gelbooru · 画师 Danbooru</p>
+      <p v-else-if="!isOutfitLibrary && isMoss" class="tag-dictionary-note">词条 + 自然语言 · 括号权重不生效</p>
+      <p v-else-if="!isOutfitLibrary && promptFormat === 'natural-language'" class="tag-dictionary-note">自动编译为自然语言</p>
       <div class="tag-search-row">
         <StudioSearch v-model="tagSearch" class="tag-search" :label="isOutfitLibrary ? '搜索服装' : '搜索词条'"
           :placeholder="isOutfitLibrary ? '搜索服装、角色或词条…' : '搜索中文含义、英文词条或别名…'" />

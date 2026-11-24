@@ -46,7 +46,7 @@
               <StudioSelect id="inference-video-engine" v-model="draft.videoEngine" label="故事短片使用的引擎" :options="videoEngineOptions"
                 :disabled="blocked || loading || saving || setupBusy || restarting" />
             </div>
-            <p v-if="videoSetupRequested">可在下方为支持的 NVIDIA 显卡准备原生运行库与视频模型。导出 MP4 需要本机安装 ffmpeg。</p>
+            <p v-if="videoSetupRequested">导出 MP4 需本机已安装 ffmpeg。</p>
             <div class="inference-actions">
               <button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || loading || saving || setupBusy || restarting || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
               <button v-if="videoRestart && desktop?.restartForSetup" class="btn btn-ghost btn-sm" type="button"
@@ -60,9 +60,8 @@
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <p v-if="blocked" role="status">模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty && draft.engine !== 'remote'">请先保存引擎设置的修改，再继续本机准备。</p>
         <details id="control-remote" ref="remoteDetails" class="inference-remote">
-          <StudioDisclosureSummary><span>绘图引擎与远程连接<small class="inference-disclosure-hint">使用另一台绘遇的显卡，或开放本机绘图</small></span></StudioDisclosureSummary>
+          <StudioDisclosureSummary><span>绘图引擎与远程连接</span></StudioDisclosureSummary>
           <form class="inference-form" aria-label="绘图引擎与远程连接" data-disclosure-content @submit.prevent="saveSettings">
-            <p v-if="draft.engine === 'remote'" class="inference-paths">在有显卡的电脑上启用远程绘图并准备模型，再填入那台电脑的私网地址和连接密钥。</p>
             <div class="inference-field">
               <label for="inference-engine">绘图引擎</label>
               <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
@@ -77,22 +76,22 @@
               <input id="inference-remote-port" v-model.number="draft.remotePort" class="input input-mono" type="number" min="1" max="65535" :disabled="blocked || saving || loading || setupBusy" />
             </div>
             <div v-if="draft.engine === 'remote' || draft.remoteServe" class="inference-field inference-paths">
-              <label for="inference-remote-key">连接密钥</label>
+              <label for="inference-remote-key">连接密钥（64 位十六进制）</label>
               <input id="inference-remote-key" v-model.trim="draft.remoteKey" class="input input-mono" :type="showRemoteKey ? 'text' : 'password'" name="remoteKey" required minlength="64" maxlength="64" pattern="[0-9A-Fa-f]{64}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="inference-remote-key-hint" :disabled="blocked || saving || loading || setupBusy || restarting" />
-              <small id="inference-remote-key-hint">粘贴两端共用的 64 字符密钥。连接使用 Tailscale 等加密私网。</small>
+              <small id="inference-remote-key-hint">两端共用 · 建议经 Tailscale 等私网连接</small>
               <div class="inference-actions"><button class="btn btn-quiet btn-sm" type="button" @click="showRemoteKey = !showRemoteKey">{{ showRemoteKey ? '隐藏密钥' : '显示密钥' }}</button><button v-if="draft.remoteServe" class="btn btn-quiet btn-sm" type="button" :disabled="blocked || saving || loading || setupBusy" @click="generateRemoteKey">生成密钥</button></div>
             </div>
-            <p v-if="draft.engine === 'remote'" class="inference-paths">远端负责出图，成图保存到这台电脑。</p>
+            <p v-if="draft.engine === 'remote'" class="inference-paths">远端出图 · 成图存回本机</p>
             <div class="inference-actions">
               <button v-if="remoteRestart && desktop?.restartForSetup && !dirty" class="btn btn-primary btn-sm" type="button" :disabled="blocked || loading || setupBusy || restarting" @click="restartSetup">{{ restarting ? '正在重启…' : '重启并检查远端' }}</button>
               <button v-else class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || restarting || !dirty">{{ saving ? '保存中…' : draft.engine === 'remote' ? '保存远程连接' : '保存设置' }}</button>
-              <span v-if="dirty">保存后重启绘遇生效</span>
+              <span v-if="dirty">保存后重启生效</span>
               <button v-if="draft.engine === 'remote' && !showLocalPreparation" class="btn btn-quiet btn-sm" type="button" :disabled="saving || restarting" @click="openLocalPreparation">准备本机模型</button>
             </div>
           </form>
         </details>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
-          <StudioDisclosureSummary><span>复用已有资源与高级设置<small class="inference-disclosure-hint">路径配置与性能选项</small></span></StudioDisclosureSummary>
+          <StudioDisclosureSummary><span>复用已有资源与高级设置</span></StudioDisclosureSummary>
           <div data-disclosure-content>
           <button class="btn btn-quiet btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
@@ -125,12 +124,11 @@
           <div class="inference-field">
             <label for="inference-adapter-memory">其他模型显存策略</label>
             <StudioSelect id="inference-adapter-memory" v-model="draft.adapterMemoryPolicy" label="其他原生模型显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterMemoryPolicy')" aria-describedby="inference-adapter-memory-hint" />
-            <small id="inference-adapter-memory-hint">用于 Krea、Qwen、MOSS 与视频模型。大模型默认分阶段加载。</small>
+            <small id="inference-adapter-memory-hint">Krea · Qwen · MOSS · 视频模型</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
-            <StudioDisclosureSummary id="inference-paths-summary">高级路径设置</StudioDisclosureSummary>
+            <StudioDisclosureSummary id="inference-paths-summary">高级路径设置（本机绝对路径）</StudioDisclosureSummary>
             <div data-disclosure-content>
-            <p>填写本机绝对路径。</p>
             <div class="inference-path-grid">
               <div v-for="field in pathFields" :key="field.key" class="inference-field">
                 <label :for="`inference-${field.key}`">{{ field.label }}</label>
@@ -138,16 +136,16 @@
                 <small :id="`inference-${field.key}-hint`">{{ field.hint }}</small>
               </div>
             <div class="inference-field inference-paths">
-              <label for="inference-adapter-python">图像与视频适配器 Python</label>
+              <label for="inference-adapter-python">适配器 Python（可选）</label>
               <input id="inference-adapter-python" v-model="draft.adapterPython" class="input" type="text" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
-              <small id="inference-adapter-python-hint">可选。独立 Python 解释器路径（含 adapters 依赖与视频支持）。</small>
+              <small id="inference-adapter-python-hint">含图像/视频适配器依赖的独立解释器</small>
             </div>
             </div>
             </div>
           </details>
           <div class="inference-actions">
             <button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
-            <span v-if="dirty">保存后重启绘遇生效</span>
+            <span v-if="dirty">保存后重启生效</span>
           </div>
         </form>
         <details class="inference-diagnostics" :open="diagnosticsOpen" @toggle="diagnosticsOpen = ($event.target as HTMLDetailsElement).open">
@@ -170,8 +168,11 @@
         <details class="inference-capabilities">
           <StudioDisclosureSummary>支持范围</StudioDisclosureSummary>
           <div data-disclosure-content>
-            <p>支持 Anima 绘图、图生图、蒙版重绘、高清修复与放大。模型需使用完整 Diffusers 目录。</p>
-            <p>Krea 2 与 Qwen 使用单独的原生运行库和完整模型目录，当前仍需设备与成图验收；SDXL 与 DoRA 尚未接入。</p>
+            <ul>
+              <li>Anima：文生图 · 图生图 · 局部重绘 · 高清修复 · 放大（需完整 Diffusers 目录）</li>
+              <li>Krea 2 / Qwen：独立原生运行库与完整目录</li>
+              <li>暂未接入：SDXL · DoRA</li>
+            </ul>
           </div>
         </details>
         </div>

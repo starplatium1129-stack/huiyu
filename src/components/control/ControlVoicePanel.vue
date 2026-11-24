@@ -3,11 +3,8 @@
     <section class="panel-card voice-summary" aria-label="当前语音状态">
       <div class="voice-summary-head">
         <div>
-          <span class="panel-kicker">当前语音方案</span>
+          <span class="panel-kicker">当前语音方案 · 即时生效</span>
           <h2 class="panel-heading">{{ currentEngineLabel }}</h2>
-          <p class="control-section-note">
-            新装软件默认开启「系统朗读」（无需下载大模型，也不依赖未上传仓库的私人音色权重）；更改以下任意设置均立即生效，无需重启。
-          </p>
         </div>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="setupLoading || saving" @click="refreshSetup">
           <ArchiveIcon name="refresh" />{{ setupLoading ? '检查中…' : '刷新检查' }}
@@ -19,13 +16,13 @@
 
     <section class="panel-card">
       <fieldset class="voice-mode-fieldset">
-        <legend class="voice-mode-legend">选择语音朗读方式</legend>
+        <legend class="voice-mode-legend">语音方式</legend>
         <div class="voice-mode-grid">
           <label class="voice-mode-card" :data-selected="activeModeGroup === 'system'">
             <input type="radio" name="voice-mode-group" value="system" :checked="activeModeGroup === 'system'" :disabled="saving" @change="applyEngine('system')" />
             <div class="voice-mode-copy">
-              <div class="voice-mode-title"><ArchiveIcon name="sound" /><strong>系统朗读</strong><span class="voice-badge">推荐新手 · 开箱即用</span></div>
-              <p>使用本机 Windows 系统语音朗读中文回复，零模型下载、零显存占用。</p>
+              <div class="voice-mode-title"><ArchiveIcon name="sound" /><strong>系统朗读</strong><span class="voice-badge">默认</span></div>
+              <p>本机语音 · 零下载 · 零显存</p>
             </div>
           </label>
 
@@ -33,23 +30,23 @@
             <input type="radio" name="voice-mode-group" value="openai-tts" :checked="activeModeGroup === 'openai-tts'" :disabled="saving" @change="selectedView = 'openai-tts'" />
             <div class="voice-mode-copy">
               <div class="voice-mode-title"><ArchiveIcon name="spark" /><strong>云端语音接口</strong><span class="voice-badge">OpenAI 兼容</span></div>
-              <p>接入硅基流动（CosyVoice）、OpenAI TTS 或兼容服务，音色自然，不占本机显存。</p>
+              <p>硅基流动 · OpenAI TTS · 零显存</p>
             </div>
           </label>
 
           <label class="voice-mode-card" :data-selected="activeModeGroup === 'local'">
             <input type="radio" name="voice-mode-group" value="local" :checked="activeModeGroup === 'local'" :disabled="saving" @change="selectedView = 'local'" />
             <div class="voice-mode-copy">
-              <div class="voice-mode-title"><ArchiveIcon name="folder" /><strong>本机角色语音</strong><span class="voice-badge">进阶 · 导入语音包</span></div>
-              <p>导入自行训练的 GPT-SoVITS / VoxCPM2 声线权重与参考音频，生成专属角色声音。</p>
+              <div class="voice-mode-title"><ArchiveIcon name="folder" /><strong>本机角色语音</strong><span class="voice-badge">本地语音包</span></div>
+              <p>GPT-SoVITS · VoxCPM2 专属声线</p>
             </div>
           </label>
 
           <label class="voice-mode-card" :data-selected="activeModeGroup === 'off'">
             <input type="radio" name="voice-mode-group" value="off" :checked="activeModeGroup === 'off'" :disabled="saving" @change="applyEngine('off')" />
             <div class="voice-mode-copy">
-              <div class="voice-mode-title"><ArchiveIcon name="mute" /><strong>关闭语音</strong><span class="voice-badge">纯文字模式</span></div>
-              <p>仅文字聊天，不启动任何语音合成，可随时再打开。</p>
+              <div class="voice-mode-title"><ArchiveIcon name="mute" /><strong>关闭语音</strong><span class="voice-badge">纯文字</span></div>
+              <p>仅文字回复</p>
             </div>
           </label>
         </div>
@@ -58,20 +55,18 @@
 
     <section v-if="shownSection === 'system'" class="panel-card voice-detail-card" aria-label="系统朗读设置">
       <div class="voice-card-head">
-        <h3 class="panel-heading">系统朗读（已就绪）</h3>
+        <h3 class="panel-heading">系统朗读</h3>
         <button v-if="currentEngine !== 'system'" class="btn btn-primary btn-sm" type="button" :disabled="saving" @click="applyEngine('system')">
           设为当前方式
         </button>
       </div>
-      <p class="control-section-note">
-        {{ speechSupported ? '系统语音可用。进入角色房间或桌面陪伴打开「实时配音 / 自动播放语音」即可开口说话。' : '当前运行环境未检测到系统语音合成接口，建议改用「云端语音接口」。' }}
-      </p>
+      <p v-if="!speechSupported" class="control-section-note" role="status">未检测到系统语音合成接口，建议改用云端语音接口。</p>
       <div class="voice-action-row">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!speechSupported || systemPreviewBusy === 'nene'" @click="previewSystemCharacter('nene')">
-          <ArchiveIcon name="nene" />试听宁宁系统音色
+          <ArchiveIcon name="nene" />试听宁宁
         </button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!speechSupported || systemPreviewBusy === 'natsume'" @click="previewSystemCharacter('natsume')">
-          <ArchiveIcon name="natsume" />试听夏目系统音色
+          <ArchiveIcon name="natsume" />试听夏目
         </button>
       </div>
     </section>
@@ -145,20 +140,17 @@
 
     <section v-else-if="shownSection === 'local'" class="panel-card voice-detail-card" aria-label="本机角色语音设置">
       <div class="voice-card-head">
-        <h3 class="panel-heading">本机角色语音（GPT-SoVITS / VoxCPM2）</h3>
+        <h3 class="panel-heading">本机角色语音</h3>
       </div>
-      <p class="control-section-note">
-        注：本机训练的模型权重未随仓库源码发布。若你已从作者或网盘取得语音包文件夹，直接在下方选择目录即可自动识别 `.ckpt` / `.pth` 与参考音频并导入。
-      </p>
 
       <div class="voice-form-grid">
         <div class="voice-field">
           <label :for="ids.localEngine">本机引擎类型</label>
           <StudioSelect :id="ids.localEngine" v-model="localEngine" label="本机引擎类型"
             :options="[
-              { value: 'gpt-sovits-native', label: 'GPT-SoVITS 本机推理（按需启动，推荐）' },
-              { value: 'gpt-sovits', label: 'GPT-SoVITS 兼容接口（手动或脚本启动）' },
-              { value: 'voxcpm2', label: 'VoxCPM2 兼容服务（支持流式 PCM）' },
+              { value: 'gpt-sovits-native', label: 'GPT-SoVITS 本机推理（推荐）' },
+              { value: 'gpt-sovits', label: 'GPT-SoVITS 外部接口' },
+              { value: 'voxcpm2', label: 'VoxCPM2（流式 PCM）' },
             ]" />
         </div>
         <div class="voice-field">
@@ -174,9 +166,9 @@
           />
         </div>
         <div class="voice-field voice-field-span">
-          <label :for="ids.packPath">语音包文件夹路径</label>
+          <label :for="ids.packPath">语音包文件夹（自动识别 .ckpt / .pth 与参考音频）</label>
           <div class="voice-key-row">
-            <input :id="ids.packPath" v-model.trim="packFolderPath" class="input input-mono" type="text" placeholder="例如 E:\code\2\lora\AI\Voice\models\roxy\v2ProPlus\Roxy3.0" spellcheck="false" />
+            <input :id="ids.packPath" v-model.trim="packFolderPath" class="input input-mono" type="text" placeholder="选择包含 .ckpt / .pth 与参考音频的目录" spellcheck="false" />
             <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" :disabled="packBusy || saving" @click="pickPackFolder">
               <ArchiveIcon name="folder" />选择文件夹
             </button>
@@ -208,8 +200,8 @@
         </div>
       </div>
 
-      <details class="voice-diagnostics" open>
-        <StudioDisclosureSummary>已配置的本地角色声线（{{ profileEntries.filter(p => p.ready).length }} / {{ profileEntries.length }} 就绪）与运行环境检查</StudioDisclosureSummary>
+      <details class="voice-diagnostics">
+        <StudioDisclosureSummary>已配置声线（{{ profileEntries.filter(p => p.ready).length }} / {{ profileEntries.length }} 就绪）与环境检查</StudioDisclosureSummary>
         <div class="voice-diag-body" data-disclosure-content>
           <ul v-if="profileEntries.length" class="voice-check-list">
             <li v-for="entry in profileEntries" :key="entry.id" class="voice-profile-row">
@@ -218,8 +210,8 @@
                 <span>
                   <strong>{{ entry.displayName }}</strong>
                   <code class="voice-profile-id">{{ entry.id }}</code>
-                  <span v-if="entry.catalogId" class="voice-profile-meta"> · 绑定 {{ entry.catalogId }}</span>
-                  <span class="voice-profile-meta"> · {{ entry.ready ? '模型与参考音频就绪' : entry.configured ? '已配置，部分本地文件未找到' : '未配置' }}</span>
+                  <span v-if="entry.catalogId" class="voice-profile-meta"> · {{ entry.catalogId }}</span>
+                  <span class="voice-profile-meta"> · {{ entry.ready ? '就绪' : entry.configured ? '缺少文件' : '未配置' }}</span>
                 </span>
               </div>
               <button
@@ -239,19 +231,16 @@
             <li><ArchiveIcon :name="setupStatus.checks.ttsInferConfig ? 'success' : 'warning'" /><span>tts_infer.yaml 配置：{{ setupStatus.checks.ttsInferConfig ? '已发现' : '未发现' }}</span></li>
             <li><ArchiveIcon :name="setupStatus.checks.voxcpmDir ? 'success' : 'info'" /><span>VoxCPM 目录：{{ setupStatus.checks.voxcpmDir ? '已发现' : '未安装（可选）' }}</span></li>
           </ul>
-          <p class="control-section-note">
-            在线语音包清单（<code>tools/voice/managed-voice-packs.json</code>）：{{ setupStatus?.packs?.length ? `已登记 ${setupStatus.packs.length} 个语音包` : '支持通过上方「目录归属角色 + 文件夹选择器」导入任意社区现成的 GPT-SoVITS 语音包（含 .ckpt / .pth 与参考音频）。' }}
-          </p>
+          <p v-if="setupStatus?.packs?.length" class="control-section-note">语音包清单：已登记 {{ setupStatus.packs.length }} 项</p>
         </div>
       </details>
     </section>
 
     <section v-else class="panel-card voice-detail-card" aria-label="语音已关闭">
       <div class="voice-card-head">
-        <h3 class="panel-heading">当前已关闭语音朗读</h3>
-        <button class="btn btn-primary btn-sm" type="button" :disabled="saving" @click="applyEngine('system')">重新开启系统朗读</button>
+        <h3 class="panel-heading">已关闭语音朗读</h3>
+        <button class="btn btn-primary btn-sm" type="button" :disabled="saving" @click="applyEngine('system')">开启系统朗读</button>
       </div>
-      <p class="control-section-note">随时可以切回「系统朗读」或配置「云端语音接口」。</p>
     </section>
   </div>
 </template>

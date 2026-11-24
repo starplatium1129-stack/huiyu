@@ -68,12 +68,15 @@ impl ChatService {
                 .as_ref()
                 .and_then(|card| card.catalog_id())
                 .or_else(|| matches!(character, "nene" | "natsume").then_some(character));
-            let api = match options.provider {
-                ChannelProvider::Default => settings
-                    .read_host()
-                    .await
-                    .map(validation::ApiSource::Personal),
-                ChannelProvider::ChatGpt => None,
+            let host_api = settings.read_host().await;
+            let (api, fallback_host) = match options.provider {
+                ChannelProvider::Default => (host_api.map(validation::ApiSource::Personal), None),
+                ChannelProvider::ChatGpt => (
+                    None,
+                    host_api.filter(|api| {
+                        !api.key.is_empty() || crate::upstream::local_url(&api.base_url).is_ok()
+                    }),
+                ),
             };
             let supports_tools =
                 matches!(options.provider, ChannelProvider::ChatGpt) || api.is_some();
@@ -222,10 +225,12 @@ impl ChatService {
                     "【QQ回复提醒】用角色一贯的口吻接上当前这句手机消息：保持7分真人生活感+3分角色底色，短句口语为主，普通日常把话说顺，不必总用「那个……」开头，也别每轮都拿同一套背景事由（如刚忙完备课/文献）或「记得吃饭/喝水」当口头禅，别背人设清单，别习惯性反问或总结。",
                 );
             }
-            let input = validation::Input {
+            let built_messages = prompt.messages(messages.to_vec());
+            let make_input = |selected_api: Option<validation::ApiSource>,
+                              msgs: Vec<Value>| validation::Input {
                 model: String::new(),
                 session_id: session_id.into(),
-                api,
+                api: selected_api,
                 tool_result_origin: None,
                 tools,
                 channel_tools: true,
@@ -234,27 +239,101 @@ impl ChatService {
                 card_tools: false,
                 web_search: false,
                 reasoning: "off".into(),
-                messages: prompt.messages(messages.to_vec()),
+                messages: msgs,
             };
-            let prepared = if matches!(options.provider, ChannelProvider::ChatGpt) {
-                responses::prepare(self, settings, input, None, None, cancel).await?
-            } else if input.api.is_some() {
-                compatible::prepare(
+
+            let run_chatgpt = |msgs: Vec<Value>| async {
+                let prepared =
+                    responses::prepare(self, settings, make_input(None, msgs), None, None, cancel)
+                        .await?;
+                stream::collect_channel(prepared, cancel.clone()).await
+            };
+            let run_compatible = |selected_api: validation::ApiSource, msgs: Vec<Value>| async {
+                let prepared = compatible::prepare(
                     &self.transport,
                     settings,
-                    input,
+                    make_input(Some(selected_api), msgs),
                     false,
                     managed.as_ref(),
                     None,
                     cancel,
                 )
-                .await?
-            } else {
-                self.ollama
-                    .prepare(&self.transport, settings, input, None, cancel)
-                    .await?
+                .await?;
+                stream::collect_channel(prepared, cancel.clone()).await
             };
-            let (text, calls) = stream::collect_channel(prepared, cancel.clone()).await?;
+
+            let primary_is_chatgpt = matches!(options.provider, ChannelProvider::ChatGpt);
+            let has_fallback = if primary_is_chatgpt {
+                fallback_host.is_some()
+            } else {
+                api.is_some()
+            };
+            let primary_budget = if has_fallback {
+                Duration::from_secs(75)
+            } else {
+                Duration::from_secs(150)
+            };
+
+            let primary_result = if primary_is_chatgpt {
+                tokio::time::timeout(primary_budget, run_chatgpt(built_messages.clone()))
+                    .await
+                    .unwrap_or_else(|_| Err(Error::stream("UPSTREAM_TIMEOUT", "聊天模型回复超时")))
+            } else if let Some(selected_api) = api {
+                tokio::time::timeout(
+                    primary_budget,
+                    run_compatible(selected_api, built_messages.clone()),
+                )
+                .await
+                .unwrap_or_else(|_| Err(Error::stream("UPSTREAM_TIMEOUT", "聊天模型回复超时")))
+            } else {
+                let prepared = self
+                    .ollama
+                    .prepare(
+                        &self.transport,
+                        settings,
+                        make_input(None, built_messages.clone()),
+                        None,
+                        cancel,
+                    )
+                    .await?;
+                stream::collect_channel(prepared, cancel.clone()).await
+            };
+
+            let (text, calls) = match primary_result {
+                Ok(outcome) => outcome,
+                Err(primary_error)
+                    if !cancel.is_cancelled() && primary_error.code != "ABORTED" =>
+                {
+                    if primary_is_chatgpt
+                        && let Some(fallback_api) = fallback_host
+                    {
+                        let fallback_model = fallback_api.model.clone();
+                        eprintln!(
+                            "QQ 聊天模型自动切换：ChatGPT 暂不可用（{}），改用已配置 API（{}）重试",
+                            primary_error.code, fallback_model
+                        );
+                        run_compatible(
+                            validation::ApiSource::Personal(fallback_api),
+                            built_messages,
+                        )
+                        .await?
+                    } else if !primary_is_chatgpt && has_fallback {
+                        match run_chatgpt(built_messages).await {
+                            Ok(outcome) => {
+                                eprintln!(
+                                    "QQ 聊天模型自动切换：托管 API 暂不可用（{}），已自动切换至 ChatGPT 订阅完成回复",
+                                    primary_error.code
+                                );
+                                outcome
+                            }
+                            Err(_) => return Err(primary_error),
+                        }
+                    } else {
+                        return Err(primary_error);
+                    }
+                }
+                Err(primary_error) => return Err(primary_error),
+            };
             Ok::<_, Error>(ChannelReply {
                 text,
                 tools: calls

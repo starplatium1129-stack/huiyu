@@ -63,11 +63,11 @@ pub(super) async fn prepare(
     }
 
     let client = &chat.transport;
-    let session = chat
+    let mut session = chat
         .chatgpt
         .ensure_access_token(client, settings, client_id, true, cancel)
         .await?;
-    let model = session.model;
+    let model = session.model.clone();
     if model.is_empty() {
         return Err(Error::new(
             400,
@@ -92,14 +92,15 @@ pub(super) async fn prepare(
     let mut context = Session {
         chat: Arc::clone(chat),
         runtime: settings.runtime.clone(),
-        client_id: session.client_id,
-        saved_at: session.saved_at,
+        client_id: session.client_id.clone(),
+        saved_at: session.saved_at.clone(),
         request_id: None,
-        cancel: session.cancel,
+        cancel: session.cancel.clone(),
     };
-    let mut retried = false;
+    let mut transient_retries = 0u8;
+    let mut refreshed_on_401 = false;
     let response = loop {
-        let response = tokio::select! {
+        let attempt = tokio::select! {
             biased;
             _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
             _ = context.cancel.cancelled() => return Err(session_ended()),
@@ -111,7 +112,23 @@ pub(super) async fn prepare(
                 idle: Duration::from_secs(120),
                 total: Duration::from_secs(600),
                 accept: "text/event-stream, application/json",
-            }) => result?,
+            }) => result,
+        };
+        let response = match attempt {
+            Ok(response) => response,
+            Err(error)
+                if transient_retries < 2
+                    && matches!(error.code.as_str(), "UPSTREAM_UNAVAILABLE" | "UPSTREAM_TIMEOUT") =>
+            {
+                let delay = Duration::from_millis(if transient_retries == 0 { 600 } else { 1500 });
+                transient_retries += 1;
+                tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
+                    _ = context.cancel.cancelled() => return Err(session_ended()),
+                    _ = tokio::time::sleep(delay) => continue,
+                }
+            }
+            Err(error) => return Err(error),
         };
         context.request_id = request_id(response.headers());
         if response.status().is_success() {
@@ -119,26 +136,42 @@ pub(super) async fn prepare(
         }
         let status = response.status().as_u16();
         let retry_delay = response.headers().get("retry-after").map_or(
-            Some(Duration::from_millis(500)),
+            Some(Duration::from_millis(if transient_retries == 0 { 700 } else { 1500 })),
             |value| {
                 let seconds = value.to_str().ok()?.parse::<u64>().ok()?;
-                (seconds <= 2).then(|| Duration::from_secs(seconds).max(Duration::from_millis(500)))
+                (seconds <= 5).then(|| Duration::from_secs(seconds).max(Duration::from_millis(500)))
             },
         );
         let bytes = transport::bounded(response, 64 * 1024).await?;
         let body: Value = serde_json::from_slice(bytes.as_ref()).unwrap_or_default();
-        let temporary = status == 503
-            && (body.get("detail").is_some()
-                || matches!(
-                    upstream_code(&body),
-                    "subscription_sharing_usage_unavailable"
-                        | "subscription_sharing_user_unavailable"
-                ));
+        let code = upstream_code(&body);
+        if status == 401
+            && !refreshed_on_401
+            && code != "subscription_sharing_invalid_user"
+            && let Ok(next_session) = chat
+                .chatgpt
+                .force_refresh_access_token(
+                    client,
+                    settings,
+                    Some(&context.client_id),
+                    true,
+                    cancel,
+                )
+                .await
+        {
+            refreshed_on_401 = true;
+            session = next_session;
+            context.saved_at = session.saved_at.clone();
+            context.cancel = session.cancel.clone();
+            continue;
+        }
+        let temporary = matches!(status, 500 | 502 | 503 | 504)
+            || (status == 429 && code != "subscription_sharing_usage_limit_exceeded");
         if temporary
-            && !retried
+            && transient_retries < 2
             && let Some(delay) = retry_delay
         {
-            retried = true;
+            transient_retries += 1;
             tokio::select! {
                 _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
                 _ = context.cancel.cancelled() => return Err(session_ended()),

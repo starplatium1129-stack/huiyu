@@ -47,9 +47,8 @@
         type="button"
         @click.stop="handleAvatarAction"
       >
-        <span class="live2d-enable-cta-kicker">LIVE2D / ON DEMAND</span>
         <strong>加载{{ character.name }}动态立绘</strong>
-        <small>点击后按需下载模型与动作</small>
+        <small>按需下载模型</small>
       </button>
     </div>
 
@@ -85,7 +84,6 @@
         >
           <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
           <span class="wardrobe-copy">
-            <small>SINGLE COSTUME</small>
             <strong>{{ activeOutfitLabel }}</strong>
           </span>
         </div>
@@ -100,7 +98,6 @@
         >
           <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
           <span class="wardrobe-copy">
-            <small>WARDROBE</small>
             <strong>{{ activeOutfitLabel }}</strong>
           </span>
           <ArchiveIcon class="wardrobe-chevron" name="chevron-down" aria-hidden="true" />

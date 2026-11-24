@@ -14,7 +14,6 @@
         <!-- ── 配置态 ── -->
         <template v-if="phase === 'config'">
           <div v-content-motion="contentMotionKey" class="batch-body">
-          <p class="batch-description">{{ batchDescription }}</p>
           <p v-if="startError" class="batch-card-error" role="alert">{{ startError }}</p>
           <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">读取失败：{{ batchDraw.storageError.value }}</p>
           <div class="batch-config-row">
@@ -96,10 +95,9 @@
               </p>
             </div>
             <div class="batch-field">
-              <label class="field-label" :for="descriptionId">通用画面描述（英文，可选）</label>
+              <label class="field-label" :for="descriptionId">通用画面描述（英文，可选，留空沿用原文）</label>
               <textarea :id="descriptionId" v-model="universalDescription" class="input" rows="4" lang="en"
-                :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
-              <p :id="`${descriptionId}-hint`" class="batch-description">留空沿用原文；填写将替换原场景正文。</p>
+                placeholder="Describe the shared action, composition and lighting…" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
             </div>
 
             <div class="batch-scene-toolbar">
@@ -160,7 +158,6 @@
         <!-- ── 结果态（进行中与完成后统一，完成后不自动弹回配置）── -->
         <template v-else>
           <div v-content-motion="contentMotionKey" class="batch-body">
-          <p class="batch-description">{{ batchDescription }}</p>
           <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
           <div class="batch-progress-head">
             <strong>{{ isRunning ? (batchDraw.cancelRequested.value ? '当前张完成后停止…' : '正在逐张出图…') : (progress.unresolved ? '本批待核对' : progress.remaining ? '本批已暂停' : '本批完成') }}</strong>
@@ -279,9 +276,6 @@ const count = ref<1 | 3>(1)
 const universalDescription = ref(''), descriptionId = useId()
 const phase = ref<'config' | 'results'>('config')
 const contentMotionKey = ref<string | false>(false)
-const batchDescription = computed(() => phase.value === 'config'
-  ? batchMode.value === 'scene' ? '按场景蓝图逐张出图，成片自动入册。' : '沿用当前构图，为选中角色逐张生成。'
-  : '逐张串行生成，离页保留进度。')
 const previewJob = shallowRef<DeepReadonly<BatchDrawJob> | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
 useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close'), initialFocus: closeButton })

@@ -1,7 +1,7 @@
 <template>
   <section v-if="isDesktop" ref="preferences" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
     <h2 id="desktop-preferences-title">桌面偏好</h2>
-    <label for="desktop-start-mode">启动方式</label>
+    <label for="desktop-start-mode">启动方式（下次启动生效）</label>
     <StudioSelect
       id="desktop-start-mode"
       :model-value="startupMode"
@@ -10,9 +10,9 @@
       :disabled="startupBusy || startupMode === undefined"
       @update:model-value="saveStartupMode"
     />
-    <p role="status">{{ startupFeedback }}</p>
+    <p v-if="startupFeedback" role="status">{{ startupFeedback }}</p>
     <button v-if="startupReadFailed" class="btn btn-ghost btn-sm" type="button" @click="readStartupMode">重读启动方式</button>
-    <label for="desktop-start-page">画室默认启动页</label>
+    <label for="desktop-start-page">默认启动页</label>
     <StudioSelect
       id="desktop-start-page"
       :model-value="startPage"
@@ -50,7 +50,7 @@ async function readStartupMode() {
   if (!bridge || startupBusy.value) return
   startupBusy.value = true
   startupReadFailed.value = false
-  try { startupMode.value = await bridge.getStartupMode(); startupFeedback.value = '下次启动生效' }
+  try { startupMode.value = await bridge.getStartupMode(); startupFeedback.value = '' }
   catch { startupReadFailed.value = true; startupFeedback.value = '启动方式暂时无法读取。' }
   finally { startupBusy.value = false }
 }

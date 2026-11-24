@@ -7,7 +7,7 @@
       <StudioSelect :id="sourceId" v-model="source" label="服装来源" :options="OUTFIT_SOURCE_OPTIONS" size="sm" />
     </div>
     <div ref="results" class="wardrobe-results">
-      <p class="wardrobe-description">套装一键装配，词条单独添加；类型按名称和词条归类，可重叠。<template v-if="!canApply">角色套装需先选择单个角色。</template></p>
+      <p v-if="!canApply" class="wardrobe-description">角色套装需先选择单个角色。</p>
       <p v-if="pb.outfitOverride?.label" class="wardrobe-description" role="status">已换装：{{ pb.outfitOverride.label }}</p>
       <div v-if="visible.length" class="outfit-preset-list">
         <div v-for="group in visible" :key="group.id" class="wardrobe-entry">

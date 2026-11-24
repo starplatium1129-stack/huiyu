@@ -2,7 +2,6 @@
   <details class="preparation">
     <StudioDisclosureSummary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项待核对</span></StudioDisclosureSummary>
     <div data-disclosure-content class="preparation-body">
-      <p>核对运行方式、模型目录与来源许可后下载。绘遇不代为安装程序或接受许可。</p>
       <label class="route-label" for="setup-comfy-route">ComfyUI 运行方式</label>
       <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 运行方式" :options="[
         { value: 'desktop', label: '官方 Desktop' },
@@ -13,35 +12,34 @@
         <li>
           <h3>准备运行环境</h3>
           <template v-if="route === 'desktop'">
-            <p>安装并启动官方 Desktop 实例，在设置中确认实际模型目录。Python 环境由 Desktop 维护，不在此接管。</p>
-            <a href="https://docs.comfy.org/installation/desktop/windows" target="_blank" rel="noopener noreferrer">官方 Desktop 文档</a>
+            <p>确认 Desktop 实际模型目录（Python 由 Desktop 维护）。</p>
+            <a href="https://docs.comfy.org/installation/desktop/windows" target="_blank" rel="noopener noreferrer">Desktop 文档</a>
           </template>
           <template v-else-if="route === 'portable'">
-            <p>解压官方便携包，保留 python_embeded 原名，使用包内启动脚本。受管启动可复用此 Python。</p>
-            <a href="https://docs.comfy.org/installation/comfyui_portable_windows" target="_blank" rel="noopener noreferrer">官方 Portable 文档</a>
+            <p>解压便携包并保留 <code>python_embeded</code> 原名。</p>
+            <a href="https://docs.comfy.org/installation/comfyui_portable_windows" target="_blank" rel="noopener noreferrer">Portable 文档</a>
           </template>
           <template v-else>
-            <p>根据官方要求配置 Python、PyTorch 与 requirements.txt。受管启动仅识别 ComfyUI/main.py 与 venv 目录。</p>
-            <a href="https://docs.comfy.org/installation/manual_install" target="_blank" rel="noopener noreferrer">官方手动安装说明</a>
+            <p>受管启动识别 <code>ComfyUI/main.py</code> 与 <code>venv</code>。</p>
+            <a href="https://docs.comfy.org/installation/manual_install" target="_blank" rel="noopener noreferrer">手动安装说明</a>
           </template>
-          <p>硬件兼容性未确认；显存容量不等于可直接运行。下载前将检查磁盘空间。</p>
-          <a href="https://docs.comfy.org/installation/system_requirements" target="_blank" rel="noopener noreferrer">系统与硬件要求</a>
+          <div class="preparation-links"><a href="https://docs.comfy.org/installation/system_requirements" target="_blank" rel="noopener noreferrer">系统与硬件要求</a></div>
         </li>
         <li>
-          <h3>核对工作区目录</h3>
-          <p>当前检查目录：</p><code>{{ snapshot.comfy.path }}</code>
-          <p>手动管理时选择 ComfyUI 根目录。修改工作区后需重启绘遇生效。服务地址：{{ snapshot.comfy.host }}。</p>
+          <h3>工作区目录</h3>
+          <code>{{ snapshot.comfy.path }}</code>
+          <p>服务地址 {{ snapshot.comfy.host }} · 更改目录需重启生效</p>
           <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId" @click="$emit('workspace')">选择 AI 工作区</button>
         </li>
         <li>
-          <h3>工作流依赖节点</h3>
-          <p>需安装并启用 KJNodes（提供 ImageSharpenKJ 节点）。</p>
-          <a href="https://github.com/kijai/ComfyUI-KJNodes" target="_blank" rel="noopener noreferrer">KJNodes 仓库</a>
-          <p v-if="snapshot.nodes.state === 'checked'">{{ snapshot.nodes.missing.length ? '缺少节点：' + snapshot.nodes.missing.join(' · ') : '所需节点已就绪。' }}</p>
-          <p v-else>节点状态未知，启动 ComfyUI 后检查。</p>
+          <h3>依赖节点 · KJNodes</h3>
+          <div class="preparation-links">
+            <a href="https://github.com/kijai/ComfyUI-KJNodes" target="_blank" rel="noopener noreferrer">KJNodes 仓库</a>
+            <span>{{ snapshot.nodes.state === 'checked' ? (snapshot.nodes.missing.length ? '缺少：' + snapshot.nodes.missing.join(' · ') : '已就绪') : '启动 ComfyUI 后检查' }}</span>
+          </div>
         </li>
         <li>
-          <h3>模型文件核对与下载</h3>
+          <h3>模型文件</h3>
           <p>基础模型共 {{ formatBytes(totalBytes) }}；待下载/校验 {{ formatBytes(pendingBytes) }}。</p>
           <div v-if="models[0]?.preparation" class="preparation-links">
             <a :href="models[0].preparation.modelCardUrl" target="_blank" rel="noopener noreferrer">模型说明</a>
@@ -62,13 +60,11 @@
               <p v-if="notices[model.id]" role="status">{{ notices[model.id] }}</p>
             </li>
           </ul>
-          <p>校验为只读操作，一次校验一个文件，可随时取消。</p>
-          <label class="preparation-ack"><input v-model="reviewed" type="checkbox">我已核对运行方式、模型目录与来源许可</label>
+          <label class="preparation-ack"><input v-model="reviewed" type="checkbox">已核对运行方式、目录与来源许可</label>
           <p v-if="workspacePending" role="status">工作区修改尚未生效，重启绘遇后继续。</p>
           <p v-else-if="workspaceUnconfirmed" role="status">桌面工作区未确认，请先选择工作区。</p>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="!reviewed || workspaceBlocked" @click="confirmed = true">查看准备清单</button>
           <div v-if="confirmed && reviewed && !workspaceBlocked" class="download-checklist" role="region" aria-label="模型下载与校验清单">
-            <p>文件下载至临时目录，校验通过后自动就位。一次处理一个文件。</p>
             <ol>
               <li v-for="model in models" :key="model.id">
                 <template v-if="model.preparation">
@@ -90,16 +86,17 @@
                   <p v-if="downloadId === model.id" role="status">{{ downloadPhaseLabel }} {{ formatBytes(downloadBytes) }} / {{ formatBytes(downloadExpected) }}（{{ Math.floor(downloadBytes / downloadExpected * 100) }}%）</p>
                   <p v-if="downloadNotices[model.id]" role="status">{{ downloadNotices[model.id] }}</p>
                   <a :href="model.preparation.url" target="_blank" rel="noopener noreferrer">手动下载（{{ formatBytes(model.preparation.expectedBytes) }}）</a>
-                  <p>保存到：</p><code>{{ model.path }}</code>
-                  <p>SHA-256：</p><code>{{ model.preparation.sha256 }}</code>
-                  <details><StudioDisclosureSummary>PowerShell 校验命令</StudioDisclosureSummary><p>运行以下只读命令比对 SHA-256：</p><code>{{ hashCommand(model.path) }}</code></details>
+                  <code>{{ model.path }}</code>
+                  <code>SHA-256: {{ model.preparation.sha256 }}</code>
+                  <details><StudioDisclosureSummary>PowerShell 校验命令</StudioDisclosureSummary><code>{{ hashCommand(model.path) }}</code></details>
                 </template>
               </li>
             </ol>
-            <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制清单</button>
-            <span v-if="copyNotice" role="status">{{ copyNotice }}</span>
-            <p>下载完成后自动检查；手动放置文件后点击重新检查。</p>
-            <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">重新检查</button>
+            <div class="verification-actions">
+              <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制清单</button>
+              <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">重新检查</button>
+              <span v-if="copyNotice" role="status">{{ copyNotice }}</span>
+            </div>
           </div>
         </li>
       </ol>

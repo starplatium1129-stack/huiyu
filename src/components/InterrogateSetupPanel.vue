@@ -1,34 +1,39 @@
 <template>
   <section ref="panel" class="panel-card interrogate-setup" aria-labelledby="interrogate-setup-title">
     <div class="interrogate-heading">
-      <div><h2 id="interrogate-setup-title" ref="title" class="panel-heading" tabindex="-1">图片反推</h2><p>准备 PixAI 模型，将参考图变成创作词条。</p></div>
+      <div><h2 id="interrogate-setup-title" ref="title" class="panel-heading" tabindex="-1">图片反推 · PixAI</h2></div>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="checking || submitting" @click="refresh">{{ checking ? '检查中…' : '重新检查' }}</button>
     </div>
     <div class="interrogate-status" :data-ready="ready" role="status" aria-live="polite">
       <ArchiveIcon :name="ready ? 'success' : 'info'" />
-      <span>{{ ready ? '反推组件已准备，首次使用时加载模型。' : checking ? '正在检查本机环境与准备计划…' : running ? '正在准备图片反推。' : readiness.status.value.message }}</span>
+      <span>{{ ready ? '已就绪 · 首次使用时加载' : checking ? '正在检查环境…' : running ? '正在准备图片反推…' : readiness.status.value.message }}</span>
     </div>
     <template v-if="plan">
       <div class="interrogate-location"><span>AI 工作区</span><code>{{ plan.workspacePath }}</code></div>
-      <p v-if="workspacePending" class="interrogate-warning" role="status">AI 工作区已更改，请先在<RouterLink :to="{ query: $route.query, hash: '#control-setup' }">首次配置</RouterLink>中完成目录切换，再重新检查。</p>
+      <p v-if="workspacePending" class="interrogate-warning" role="status">AI 工作区已更改，请先在<RouterLink :to="{ query: $route.query, hash: '#control-setup' }">首次配置</RouterLink>完成目录切换后再检查。</p>
       <ul v-if="!plan.supported && plan.reasons.length" class="interrogate-reasons"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul>
-      <p v-else-if="!plan.supported" class="interrogate-warning">当前环境尚不能准备反推模型，请检查 AI 工作区与设备后重试。</p>
+      <p v-else-if="!plan.supported" class="interrogate-warning">当前环境暂不支持自动准备，请检查工作区与设备。</p>
       <template v-if="!ready">
         <dl class="interrogate-budget">
-          <div><dt>本次最多下载</dt><dd>{{ formatSetupBytes(plan.downloadBytes) }}</dd></div>
+          <div><dt>最多下载</dt><dd>{{ formatSetupBytes(plan.downloadBytes) }}</dd></div>
           <div><dt>所需空间</dt><dd>{{ formatSetupBytes(plan.requiredBytes) }}</dd></div>
-          <div><dt>可用空间</dt><dd>{{ plan.freeBytes === null ? '尚未确认' : formatSetupBytes(plan.freeBytes) }}</dd></div>
+          <div><dt>可用空间</dt><dd>{{ plan.freeBytes === null ? '未知' : formatSetupBytes(plan.freeBytes) }}</dd></div>
+          <div><dt>运行显存</dt><dd>≈ 4 GiB</dd></div>
         </dl>
-        <p v-if="plan.supported && !enoughSpace" class="interrogate-warning" role="status">请释放足够空间或在首次配置中选择可写目录，再重新检查。</p>
-        <p class="interrogate-hint">自动准备独立 Python、CUDA 运行库与 PixAI 模型，无需 ComfyUI。逐项校验文件，完成后无需重启绘遇；反推时需约 4 GiB 空闲显存。</p>
+        <p v-if="plan.supported && !enoughSpace" class="interrogate-warning" role="status">空间不足，请释放空间或更换可写目录。</p>
+        <p class="interrogate-hint">独立 Python 与 CUDA 运行库 · 无需 ComfyUI 与重启</p>
       </template>
       <details class="interrogate-details">
         <StudioDisclosureSummary>下载位置与来源</StudioDisclosureSummary>
         <div class="interrogate-detail-content">
-          <p>{{ plan.runtime.label }}：{{ plan.runtime.installed ? '已有安装记录' : formatSetupBytes(plan.runtime.downloadBytes) }}<br />{{ plan.model.label }}：{{ plan.model.installed ? '已找到文件' : formatSetupBytes(plan.model.downloadBytes) }}</p>
-          <dl class="interrogate-paths"><template v-for="item in paths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.path }}</code></dd></template></dl>
+          <dl class="interrogate-paths">
+            <dt>{{ plan.runtime.label }}</dt><dd>{{ plan.runtime.installed ? '已安装' : formatSetupBytes(plan.runtime.downloadBytes) }}</dd>
+            <dt>{{ plan.model.label }}</dt><dd>{{ plan.model.installed ? '已就绪' : formatSetupBytes(plan.model.downloadBytes) }}</dd>
+            <template v-for="item in paths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.path }}</code></dd></template>
+            <dt>模型版本</dt><dd><code>{{ plan.model.revision }}</code></dd>
+          </dl>
           <ul class="interrogate-sources"><li v-for="source in plan.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ source.label }}</a><a v-if="source.licenseUrl" :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}许可，在新窗口打开`">许可</a></li></ul>
-          <p class="interrogate-hint">模型版本：<code>{{ plan.model.revision }}</code>。公开模型与 Python 依赖优先尝试国内镜像，失败后切换原始来源；断流自动重试两次。取消或失败会保留已下载部分，重试时续传并核验完整文件。</p>
+          <small>优先国内镜像 · 断流自动重试并支持续传</small>
         </div>
       </details>
     </template>

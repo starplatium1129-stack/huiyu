@@ -9,7 +9,6 @@
       <ArchiveIcon name="health" /> {{ backupReminder }}
     </div>
     <div class="utility-label tw:text-muted">本地数据</div>
-    <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包含工作区记录与原始媒体，可迁移至其他设备恢复。' : '备份 JSON 包含作品记录、图片与配置，可通过「从备份恢复」导入。' }}</p>
     <div v-if="backup.desktopActive.value && backup.portable.available" class="utility-actions tw:grid tw:gap-s-1">
       <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('export')"><ArchiveIcon name="download" />保存完整备份包…</button>
       <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('import')"><ArchiveIcon name="upload" />从完整备份包恢复…</button>
@@ -41,7 +40,7 @@
       </button>
     </div>
     <div class="utility-divider tw:h-[1px]"></div>
-    <p class="backup-scope">仅导出原图请选「导出作品图片」；角色、服装与场景请在<RouterLink to="/scene-manager">内容维护</RouterLink>单独导出。</p>
+    <p class="backup-scope">角色与场景 → <RouterLink to="/scene-manager">内容维护</RouterLink></p>
     <div v-if="getBlueprint" class="utility-label tw:text-muted">创作蓝图</div>
     <div v-if="getBlueprint" class="utility-actions tw:grid tw:gap-s-1">
       <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
@@ -91,7 +90,6 @@
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label tw:text-muted">本地数据</div>
-      <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包含工作区记录与原始媒体，可迁移至其他设备恢复。' : '备份 JSON 包含作品记录、图片与配置，可通过「从备份恢复」导入。' }}</p>
       <div v-if="backup.desktopActive.value && backup.portable.available" class="utility-actions tw:grid tw:gap-s-1">
         <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('export')"><ArchiveIcon name="download" />保存完整备份包…</button>
         <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('import')"><ArchiveIcon name="upload" />从完整备份包恢复…</button>
@@ -123,7 +121,7 @@
         </button>
       </div>
       <div class="utility-divider tw:h-[1px]"></div>
-      <p class="backup-scope">仅导出原图请选「导出作品图片」；角色、服装与场景请在<RouterLink to="/scene-manager">内容维护</RouterLink>单独导出。</p>
+      <p class="backup-scope">角色与场景 → <RouterLink to="/scene-manager">内容维护</RouterLink></p>
       <div v-if="getBlueprint" class="utility-label tw:text-muted">创作蓝图</div>
       <div v-if="getBlueprint" class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">

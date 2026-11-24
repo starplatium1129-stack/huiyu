@@ -4,26 +4,25 @@
       <div class="control-start-copy">
         <span class="panel-kicker">画室入门</span>
         <h2 id="control-start-title">准备绘图环境</h2>
-        <p>推荐先一键配置本机 Anima 绘图模型；语音默认已开启「系统朗读」，本地聊天与云端音色随时可扩充。</p>
         <div class="control-start-actions">
           <RouterLink class="btn btn-primary" to="/control#control-inference"><ArchiveIcon name="download" />{{ drawingReady ? '管理绘图模型' : '一键准备本机绘图' }}</RouterLink>
-          <RouterLink class="btn btn-ghost" to="/control#control-voice"><ArchiveIcon name="sound" />语音设置（{{ activeVoiceEngine }}）</RouterLink>
-          <RouterLink class="btn btn-quiet" to="/scene-explorer">浏览灵感场景<ArchiveIcon name="chevron-down" class="control-forward-icon" /></RouterLink>
+          <RouterLink class="btn btn-ghost" to="/control#control-voice"><ArchiveIcon name="sound" />语音（{{ activeVoiceEngine }}）</RouterLink>
+          <RouterLink class="btn btn-quiet" to="/scene-explorer">浏览场景<ArchiveIcon name="chevron-down" class="control-forward-icon" /></RouterLink>
         </div>
       </div>
       <img :src="modelArt" width="512" height="512" class="control-start-art" alt="" />
       <ol class="control-start-steps" aria-label="入门流程">
         <li :data-done="drawingReady">
           <span><ArchiveIcon v-if="drawingReady" name="success" /><template v-else>1</template></span>
-          <div><strong>准备绘图引擎</strong><small>{{ drawingReady ? '绘图环境已就绪' : '推荐一键安装 Anima 底模' }}</small></div>
+          <div><strong>绘图引擎</strong><small>{{ drawingReady ? '已就绪' : '安装 Anima 底模' }}</small></div>
         </li>
         <li :data-done="voiceOrChatReady">
           <span><ArchiveIcon v-if="voiceOrChatReady" name="success" /><template v-else>2</template></span>
-          <div><strong>语音与聊天</strong><small>{{ voiceOrChatReady ? `语音当前：${activeVoiceEngine}` : '前往配置语音与聊天' }}</small></div>
+          <div><strong>语音与聊天</strong><small>{{ voiceOrChatReady ? activeVoiceEngine : '按需配置' }}</small></div>
         </li>
         <li>
           <span>3</span>
-          <div><strong>进入创作</strong><small>打开绘图画室或角色聊天</small></div>
+          <div><strong>开始创作</strong><small>画室 · 角色聊天</small></div>
         </li>
       </ol>
     </section>
@@ -34,8 +33,7 @@
     </section>
     <section aria-labelledby="control-next-title">
       <div class="control-section-heading">
-        <h2 id="control-next-title">核心功能与快捷入口</h2>
-        <p>先确保基础画室与声音正常，再按需要扩展进阶工具。</p>
+        <h2 id="control-next-title">快捷入口</h2>
       </div>
       <div class="control-feature-grid">
         <RouterLink v-for="feature in features" :key="feature.id" class="control-feature" data-control-motion :to="{ query: route.query, hash: '#' + feature.id }">
@@ -85,8 +83,8 @@ const features = computed<Array<{ id: string; icon: ArchiveIconName; title: stri
     id: 'control-inference',
     icon: 'download',
     title: '绘图与模型',
-    badge: drawingReady.value ? '已就绪' : '新手推荐',
-    description: '一键安装原生 Anima 绘图运行库与底模，支持自动镜像切换与断点续传。',
+    badge: drawingReady.value ? '已就绪' : '推荐',
+    description: 'Anima 原生运行库 · 底模 · 断点续传',
     action: '配置绘图',
   },
   {
@@ -94,23 +92,23 @@ const features = computed<Array<{ id: string; icon: ArchiveIconName; title: stri
     icon: 'sound',
     title: '语音与朗读',
     badge: activeVoiceEngine.value,
-    description: '默认开箱即用系统朗读，也支持硅基流动/OpenAI 语音接口与本地语音包导入。',
+    description: '系统朗读 · 云端接口 · 本地语音包',
     action: '语音配置',
   },
   {
     id: 'setup-chat-options',
     icon: 'chat',
     title: '本地聊天与进阶',
-    badge: llamaOnline.value || ollamaOnline.value ? '已连接' : '按需选用',
-    description: '下载本机 Qwen 对话模型或管理 ComfyUI，独立磁盘校验避免误下大模型。',
+    badge: llamaOnline.value || ollamaOnline.value ? '已连接' : '按需',
+    description: '本机 Qwen 模型 · ComfyUI 管理',
     action: '配置聊天',
   },
   {
     id: 'control-share',
     icon: 'upload',
     title: '好友试玩与画册',
-    badge: '分享工具',
-    description: '一键生成好友临时体验链接，或前往资源中心管理离线立绘与场景素材。',
+    badge: '分享',
+    description: '临时试玩链接 · 局域网访问',
     action: '分享设置',
   },
 ])

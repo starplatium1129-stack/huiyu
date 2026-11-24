@@ -47,7 +47,6 @@
     <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
       <span>降低玻璃效果</span>
     </ToggleSwitch>
-    <p v-if="themeStyle === 'atelier'" class="appearance-note">高对比度或系统减弱透明度时自动生效。</p>
   </div>
   <dl v-else v-content-motion:up="section" class="appearance-shortcuts">
     <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>

@@ -92,20 +92,34 @@ impl JwksCache {
             }
         }
         let target = Url::parse(DISCOVERY_URL).map_err(|_| auth_error("OpenAI 发现地址无效"))?;
-        let response = client
-            .send(
-                target,
-                Request {
-                    body: None,
-                    key: "",
-                    session_id: None,
-                    public_only: false,
-                    idle: Duration::from_secs(15),
-                    total: Duration::from_secs(20),
-                    accept: "application/json",
-                },
-            )
-            .await?;
+        let mut attempts = 0u8;
+        let response = loop {
+            match client
+                .send(
+                    target.clone(),
+                    Request {
+                        body: None,
+                        key: "",
+                        session_id: None,
+                        public_only: false,
+                        idle: Duration::from_secs(15),
+                        total: Duration::from_secs(20),
+                        accept: "application/json",
+                    },
+                )
+                .await
+            {
+                Ok(response) => break response,
+                Err(error)
+                    if attempts < 1
+                        && matches!(error.code.as_str(), "UPSTREAM_UNAVAILABLE" | "UPSTREAM_TIMEOUT") =>
+                {
+                    attempts += 1;
+                    tokio::time::sleep(Duration::from_millis(600)).await;
+                }
+                Err(error) => return Err(error),
+            }
+        };
         let response = transport::success(response, 64 * 1024, "OpenAI OIDC 发现配置").await?;
         let bytes = transport::bounded(response, 64 * 1024).await?;
         let doc: Discovery = serde_json::from_slice(bytes.as_ref())

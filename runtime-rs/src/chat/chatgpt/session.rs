@@ -20,6 +20,45 @@ impl ChatGptService {
         for_inference: bool,
         cancel: &CancellationToken,
     ) -> Result<ActiveSession> {
+        self.ensure_access_token_inner(
+            transport,
+            settings,
+            requested_client_id,
+            for_inference,
+            false,
+            cancel,
+        )
+        .await
+    }
+
+    pub(in crate::chat) async fn force_refresh_access_token(
+        &self,
+        transport: &Transport,
+        settings: &Settings,
+        requested_client_id: Option<&str>,
+        for_inference: bool,
+        cancel: &CancellationToken,
+    ) -> Result<ActiveSession> {
+        self.ensure_access_token_inner(
+            transport,
+            settings,
+            requested_client_id,
+            for_inference,
+            true,
+            cancel,
+        )
+        .await
+    }
+
+    async fn ensure_access_token_inner(
+        &self,
+        transport: &Transport,
+        settings: &Settings,
+        requested_client_id: Option<&str>,
+        for_inference: bool,
+        force_refresh: bool,
+        cancel: &CancellationToken,
+    ) -> Result<ActiveSession> {
         let guard = tokio::select! {
             biased;
             _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "聊天已停止")),
@@ -74,17 +113,20 @@ impl ChatGptService {
             .clone();
 
         let now = chrono::Utc::now().timestamp();
-        let needs_refresh = account
-            .expires_at
-            .is_none_or(|exp| now + REFRESH_LEEWAY_SECONDS >= exp);
-        let can_refresh_now = account
-            .earliest_refresh_at
-            .is_none_or(|earliest| now >= earliest)
+        let needs_refresh = force_refresh
+            || account
+                .expires_at
+                .is_none_or(|exp| now + REFRESH_LEEWAY_SECONDS >= exp);
+        let can_refresh_now = force_refresh
+            || account
+                .earliest_refresh_at
+                .is_none_or(|earliest| now >= earliest)
             || account.expires_at.is_none_or(|exp| now >= exp);
 
         if !needs_refresh
             || !can_refresh_now
             || (account.sealed_refresh_token.is_none()
+                && !force_refresh
                 && account.expires_at.is_some_and(|exp| exp > now))
         {
             let access_token = account.access_token()?.ok_or_else(|| {
@@ -159,9 +201,23 @@ impl ChatGptService {
             ("refresh_token", refresh_token.as_str()),
             ("resource", RESOURCE_URI),
         ];
-        let response = transport
-            .send_form(token_url, &form, Duration::from_secs(20))
-            .await?;
+        let mut attempts = 0u8;
+        let response = loop {
+            match transport
+                .send_form(token_url.clone(), &form, Duration::from_secs(20))
+                .await
+            {
+                Ok(response) => break response,
+                Err(error)
+                    if attempts < 1
+                        && matches!(error.code.as_str(), "UPSTREAM_UNAVAILABLE" | "UPSTREAM_TIMEOUT") =>
+                {
+                    attempts += 1;
+                    tokio::time::sleep(Duration::from_millis(600)).await;
+                }
+                Err(error) => return Err(error),
+            }
+        };
         let status = response.status();
         let bytes = transport::bounded(response, 128 * 1024).await?;
         let body: Value = serde_json::from_slice(bytes.as_ref()).unwrap_or_default();

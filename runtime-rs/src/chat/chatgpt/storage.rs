@@ -42,6 +42,8 @@ pub(super) struct StoredAccount {
     pub label: String,
     pub selected_model: String,
     pub selected_model_name: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cached_models: Vec<super::Model>,
     pub usage_paused: bool,
     pub scopes: Vec<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -111,6 +113,7 @@ impl StoredAccount {
         self.expires_at = None;
         self.earliest_refresh_at = None;
         self.scopes.clear();
+        self.cached_models.clear();
         self.saved_at = None;
     }
 }

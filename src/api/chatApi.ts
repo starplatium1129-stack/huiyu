@@ -142,7 +142,7 @@ export interface ChatApi {
   getChatGptStatus(options?: ChatCallOptions): Promise<ChatGptStatus>
   startChatGptAuth(payload: { mode: 'new' | 'retry' | 'reauth' | 'consent'; clientId?: string }, options?: ChatCallOptions): Promise<ChatGptStatus>
   cancelChatGptAuth(options?: ChatCallOptions): Promise<ChatGptStatus>
-  getChatGptModels(options?: ChatCallOptions): Promise<ChatGptModelsResult>
+  getChatGptModels(options?: ChatCallOptions & { refresh?: boolean }): Promise<ChatGptModelsResult>
   selectChatGptAccount(clientId: string, options?: ChatCallOptions): Promise<ChatGptStatus>
   setChatGptModel(clientId: string, model: string, options?: ChatCallOptions): Promise<ChatGptStatus>
   resumeChatGptUsage(clientId: string, options?: ChatCallOptions): Promise<ChatGptStatus>
@@ -185,7 +185,8 @@ export const chatApi: ChatApi = {
     })
   },
   getChatGptModels(options = {}) {
-    return apiClient.request<ChatGptModelsResult>('/api/chat/chatgpt/models', {
+    const path = options.refresh ? '/api/chat/chatgpt/models?refresh=1' : '/api/chat/chatgpt/models'
+    return apiClient.request<ChatGptModelsResult>(path, {
       cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.providerTest,
       validate: isChatGptModels,
     })

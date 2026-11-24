@@ -64,28 +64,26 @@
       </section>
 
       <details id="control-connection-settings" class="panel-card service-config-panel">
-        <StudioDisclosureSummary><span>高级服务地址与本地连接<small class="inference-disclosure-hint">切换系统朗读 / 云端接口 / 导入语音包请前往「语音与朗读」</small></span></StudioDisclosureSummary>
+        <StudioDisclosureSummary><span>服务地址与声线</span></StudioDisclosureSummary>
         <div data-disclosure-content>
         <div class="tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-2 tw:mb-s-3">
-          <span class="field-help">当前语音引擎：{{ activeVoiceEngine }}</span>
-          <RouterLink class="btn btn-ghost btn-sm" to="/control?section=control-voice"><ArchiveIcon name="sound" />打开语音与朗读设置</RouterLink>
+          <span class="field-help">语音引擎：{{ activeVoiceEngine }}</span>
+          <RouterLink class="btn btn-ghost btn-sm" to="/control?section=control-voice"><ArchiveIcon name="sound" />语音与朗读</RouterLink>
         </div>
-        <label class="field-label" for="comfy-host">ComfyUI 地址</label>
+        <label class="field-label" for="comfy-host">ComfyUI 地址（原生模式可留空）</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="comfyHost">
-            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
+            <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="comfy-host-help" class="field-help">ComfyUI 绘图与视频地址（原生模式无需连接）。</p>
 
         <template v-if="localScriptVoiceMode">
-        <label class="field-label" for="tts-host">本地语音服务 API 地址</label>
+        <label class="field-label" for="tts-host">本地语音服务地址（GPT-SoVITS / VoxCPM2）</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
-            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
+            <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="tts-host-help" class="field-help">GPT-SoVITS / VoxCPM2 本地接口地址。</p>
         </template>
 
         <details class="voice-config">

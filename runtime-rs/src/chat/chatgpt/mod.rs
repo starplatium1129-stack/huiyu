@@ -9,16 +9,18 @@ mod storage;
 pub(super) use http::router;
 
 use crate::chat::{Error, Result, settings::Settings};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use std::{
     collections::HashMap,
     sync::{Arc, Mutex as StdMutex},
+    time::{Duration, Instant},
 };
 use tokio::sync::Mutex;
 use tokio_util::sync::CancellationToken;
 
 const RESOURCE_URI: &str = "https://api.openai.com/v1";
+pub(super) const MODELS_CACHE_TTL: Duration = Duration::from_secs(15 * 60);
 
 #[derive(Clone)]
 struct AuthFlowState {
@@ -69,17 +71,18 @@ pub(super) struct ActiveSession {
     pub cancel: CancellationToken,
 }
 
-#[derive(Serialize)]
+#[derive(Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
-struct Model {
-    slug: String,
-    display_name: String,
+pub(super) struct Model {
+    pub slug: String,
+    pub display_name: String,
 }
 
 #[derive(Default)]
 struct AccountRuntime {
     cancel: CancellationToken,
     models: Vec<Model>,
+    models_fetched_at: Option<Instant>,
 }
 
 pub(super) struct ChatGptService {

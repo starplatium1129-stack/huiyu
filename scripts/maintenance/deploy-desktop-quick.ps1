@@ -91,8 +91,8 @@ function Publish-DeploymentLog {
     $last = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy-last.log'
     $temp = Resolve-DesktopChildPath -Root $root -Relative "runtime\desktop-deploy-logs\$DeploymentLogId.last.tmp"
     try {
-      [IO.File]::Copy($deploymentLogPath, $temp)
-      if ([IO.File]::Exists($last)) { [IO.File]::Replace($temp, $last, $null) }
+      [IO.File]::Copy($deploymentLogPath, $temp, $true)
+      if ([IO.File]::Exists($last)) { [IO.File]::Replace($temp, $last, [Management.Automation.Language.NullString]::Value) }
       else { [IO.File]::Move($temp, $last) }
     } finally { if ([IO.File]::Exists($temp)) { [IO.File]::Delete($temp) } }
   }

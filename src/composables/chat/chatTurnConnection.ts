@@ -11,6 +11,8 @@ export interface ChatConnectionOptions {
   chatgptClientId?: Ref<string>
   apiBaseUrl: Ref<string>
   hostApiBaseUrl?: Ref<string>
+  hostApiConfigured?: Ref<boolean>
+  hostApiModel?: Ref<string>
   apiModel: Ref<string>
   apiKey: Ref<string>
   webSearchEnabled: Ref<boolean>

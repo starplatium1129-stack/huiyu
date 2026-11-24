@@ -54,8 +54,10 @@ export function useChatGptAuth(onStatusChange?: () => void) {
   const canRetryRegistration = computed(() => Boolean(status.value?.authFlow.retryRegistration))
   const selectedModel = computed(() => status.value?.selectedModel || '')
   const selectedModelName = computed(() => status.value?.selectedModelName || status.value?.selectedModel || '')
-  const ready = computed(() => isLocalStudioHost() && planEnabled.value && !usagePaused.value
-    && models.value.some(model => model.slug === selectedModel.value))
+  const ready = computed(() => {
+    if (!isLocalStudioHost() || !planEnabled.value || usagePaused.value || !selectedModel.value) return false
+    return !modelsLoaded.value || models.value.some(model => model.slug === selectedModel.value)
+  })
 
   const statusText = computed(() => {
     if (!isLocalStudioHost()) return 'ChatGPT 订阅额度仅支持在本机使用。'
@@ -64,6 +66,9 @@ export function useChatGptAuth(onStatusChange?: () => void) {
     if (!signedIn.value) return '请在聊天设置中登录 ChatGPT。'
     if (!planEnabled.value) return '已登录 ChatGPT 账号，但尚未开启订阅额度授权。'
     if (usagePaused.value) return 'ChatGPT 订阅额度已达上限，发送已暂停。'
+    if (selectedModel.value && (!modelsLoaded.value || models.value.some(model => model.slug === selectedModel.value))) {
+      return `ChatGPT 订阅 · ${selectedModelName.value}`
+    }
     if (loadingModels.value) return '正在获取 ChatGPT 可用模型…'
     if (!modelsLoaded.value) return '请在聊天设置中获取 ChatGPT 可用模型。'
     if (!selectedModel.value) return '当前 ChatGPT 账号没有可用模型。'
@@ -137,7 +142,7 @@ export function useChatGptAuth(onStatusChange?: () => void) {
     }
   }
 
-  async function refreshModels() {
+  async function refreshModels(force = false) {
     const clientId = activeClientId.value
     const modelBeforeFetch = selectedModel.value
     if (disposed || !clientId || !planEnabled.value || loadingModels.value) return
@@ -146,7 +151,7 @@ export function useChatGptAuth(onStatusChange?: () => void) {
     loadingModels.value = true
     errorText.value = ''
     try {
-      const result = await chatApi.getChatGptModels({ signal: current.signal })
+      const result = await chatApi.getChatGptModels({ signal: current.signal, refresh: force })
       if (disposed || modelsController !== current || activeClientId.value !== clientId) return
       if (result.clientId !== clientId) {
         void refreshStatus(true)

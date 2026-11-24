@@ -43,22 +43,21 @@ onBeforeUnmount(() => { attached = false; close() })
     <p v-if="baseIssue" class="composition-help">{{ baseIssue }}</p>
     <Teleport to="body">
       <dialog ref="dialog" class="anima-composition-dialog" aria-labelledby="anima-composition-title" @cancel.prevent="close" @close="onNativeClose" @click="backdrop">
-        <header class="composition-dialog-heading"><div><h2 id="anima-composition-title"><ArchiveIcon name="rule3" />构图控制</h2><p>上传草图引导布局，或为不同区域补充描述。</p></div>
+        <header class="composition-dialog-heading"><div><h2 id="anima-composition-title"><ArchiveIcon name="rule3" />构图控制</h2></div>
           <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭构图编辑" autofocus @click="close"><ArchiveIcon name="close" /></button>
         </header>
         <div class="composition-editor-body">
           <section class="composition-preview-column" aria-label="构图范围预览">
-            <div class="composition-preview-meta"><strong>输出画幅 {{ state.width }} × {{ state.height }}</strong><span>{{ regions.length ? '点击矩形选择区域' : '区域会标记在这里' }}</span></div>
+            <div class="composition-preview-meta"><strong>{{ state.width }} × {{ state.height }}</strong><span>{{ regions.length ? '点击选区编辑' : '拖拽草图或添加区域' }}</span></div>
             <div class="composition-preview-fit"><div class="composition-preview" :style="{ aspectRatio, '--composition-ratio': state.width / state.height }" @dragover.prevent @drop.prevent="drop">
               <img v-if="sketch" :src="sketch.url" :alt="`草图预览：${sketch.name}`" />
-              <span v-else class="composition-empty-preview"><ArchiveIcon name="image" />导入草图或添加区域<br />全局画面描述仍参与生成</span>
+              <span v-else class="composition-empty-preview"><ArchiveIcon name="image" />拖入草图或添加区域</span>
               <button v-for="(region, index) in regions" :key="region.id" class="composition-region-outline" type="button"
                 :aria-label="`选择区域 ${index + 1}`" :aria-pressed="selectedId === region.id" :disabled="locked"
                 :style="{ left: `${region.x * 100}%`, top: `${region.y * 100}%`, width: `${region.width * 100}%`, height: `${region.height * 100}%`, '--region-color': colors[index] }"
                 @click="selectedId = region.id"><span>区域 {{ index + 1 }}{{ selectedId === region.id ? ' · 当前' : '' }}</span></button>
             </div></div>
-            <p v-if="stretched" class="composition-help">草图比例与输出不同，将按输出画幅拉伸。请调整画幅或换用相同比例的草图。</p>
-            <p class="composition-help">矩形位置按整个输出画幅计算；区域外继续使用全局提示词。</p>
+            <p v-if="stretched" class="composition-help">草图比例与输出不同，将按输出画幅拉伸。</p>
           </section>
           <div class="composition-editor-fields">
             <section class="composition-sketch" aria-labelledby="composition-sketch-title">
@@ -72,7 +71,7 @@ onBeforeUnmount(() => { attached = false; close() })
                 <button v-if="sketch" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="session.removeSketch()">移除草图</button>
               </div>
               <input ref="fileInput" class="sr-only" type="file" tabindex="-1" accept="image/png,image/jpeg,image/webp" aria-label="选择草图或线稿" @change="pick" />
-              <p class="composition-help">PNG、JPEG、WebP · 每张不超过 16 MiB，也可拖入左侧预览。</p>
+              <p class="composition-help">PNG / JPEG / WebP · ≤ 16 MiB</p>
               <fieldset v-if="sketch" class="composition-sketch-settings" :disabled="locked || !!sketchIssue">
                 <legend class="sr-only">草图引导参数</legend>
                 <label class="composition-field"><span>控制强度 <output>{{ Number(sketchSettings.strength).toFixed(2) }}</output></span><input v-model.number="sketchSettings.strength" type="range" min="0" max="2" step="0.05" /></label>
@@ -80,14 +79,14 @@ onBeforeUnmount(() => { attached = false; close() })
                   <label class="composition-field"><span>开始比例</span><input v-model.number="sketchSettings.start" type="number" min="0" max="1" step="0.05" /></label>
                   <label class="composition-field"><span>结束比例</span><input v-model.number="sketchSettings.end" type="number" min="0" max="1" step="0.05" /></label>
                 </div>
-                <p class="composition-help">0 是采样开始，1 是结束；开始比例应小于结束比例。</p>
+                <p class="composition-help">范围 0–1，开始须小于结束</p>
               </fieldset>
             </section>
             <AnimaCompositionRegions :session="session" />
           </div>
         </div>
         <footer class="composition-dialog-footer">
-          <div class="composition-footer-copy"><p>构图生成采用完整采样，关闭特征缓存；暂不支持高清修复。</p><p v-if="error || draftIssue" :role="error ? 'alert' : 'status'">{{ error || draftIssue }}</p><p v-else-if="preparing" role="status">正在准备草图与本次构图，可以取消准备。</p></div>
+          <div class="composition-footer-copy"><p>完整采样 · 不含特征缓存与高清修复</p><p v-if="error || draftIssue" :role="error ? 'alert' : 'status'">{{ error || draftIssue }}</p><p v-else-if="preparing" role="status">正在准备草图与本次构图…</p></div>
           <button v-if="preparing" class="btn btn-ghost" type="button" @click="session.cancelPreparation()">取消准备</button>
           <button class="btn btn-primary" type="button" :disabled="!canGenerate && !preparing" :aria-disabled="!canGenerate || undefined" :aria-busy="preparing" @click="session.generate()"><ArchiveIcon name="palette" />{{ preparing ? '准备中…' : '按构图生成' }}</button>
         </footer>

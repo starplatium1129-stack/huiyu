@@ -1,4 +1,4 @@
-use super::{ChatGptService, Model, selection_changed, storage};
+use super::{ChatGptService, MODELS_CACHE_TTL, Model, selection_changed, storage};
 use crate::chat::{
     Duration, Error, Result, responses,
     settings::Settings,
@@ -6,6 +6,7 @@ use crate::chat::{
 };
 use axum::http::StatusCode;
 use serde_json::{Value, json};
+use std::time::Instant;
 use tokio_util::sync::CancellationToken;
 use url::Url;
 
@@ -16,41 +17,135 @@ impl ChatGptService {
         &self,
         transport: &Transport,
         settings: &Settings,
+        force_refresh: bool,
         cancel: &CancellationToken,
     ) -> Result<Value> {
-        let session = self
+        if !force_refresh {
+            let cached = {
+                let _guard = self.storage_lock.lock().await;
+                let store = storage::load(&settings.runtime).await?;
+                if let Some(account) = store
+                    .active_account()
+                    .filter(|account| account.plan_enabled())
+                {
+                    let client_id = account.client_id.clone();
+                    let mut runtime = self.accounts.lock().unwrap();
+                    let entry = runtime.entry(client_id.clone()).or_default();
+                    let fresh_memory = !entry.models.is_empty()
+                        && entry
+                            .models_fetched_at
+                            .is_some_and(|at| at.elapsed() < MODELS_CACHE_TTL);
+                    let models = if fresh_memory {
+                        Some(entry.models.clone())
+                    } else if !account.cached_models.is_empty() {
+                        entry.models = account.cached_models.clone();
+                        entry.models_fetched_at = Some(Instant::now());
+                        Some(entry.models.clone())
+                    } else {
+                        None
+                    };
+                    models.map(|models| {
+                        let selected = models
+                            .iter()
+                            .find(|model| model.slug == account.selected_model)
+                            .or_else(|| models.first());
+                        let (slug, name) = selected.map_or(("", ""), |model| {
+                            (model.slug.as_str(), model.display_name.as_str())
+                        });
+                        json!({
+                            "ok": true,
+                            "clientId": client_id,
+                            "models": models,
+                            "selectedModel": slug,
+                            "selectedModelName": name,
+                        })
+                    })
+                } else {
+                    None
+                }
+            };
+            if let Some(result) = cached {
+                return Ok(result);
+            }
+        }
+
+        let mut session = self
             .ensure_access_token(transport, settings, None, false, cancel)
             .await?;
         let target = Url::parse(MODELS_URL).map_err(|_| Error::invalid("模型列表地址无效"))?;
-        let response = tokio::select! {
-            _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "已取消获取模型")),
-            result = transport.send(
-                target,
-                Request {
-                    body: None,
-                    key: &session.access_token,
-                    session_id: None,
-                    public_only: false,
-                    idle: Duration::from_secs(20),
-                    total: Duration::from_secs(25),
-                    accept: "application/json",
-                },
-            ) => result?,
-        };
-        if !response.status().is_success() {
+        let mut refreshed_on_401 = false;
+        let mut transient_retries = 0u8;
+        let response = loop {
+            let attempt = tokio::select! {
+                _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "已取消获取模型")),
+                result = transport.send(
+                    target.clone(),
+                    Request {
+                        body: None,
+                        key: &session.access_token,
+                        session_id: None,
+                        public_only: false,
+                        idle: Duration::from_secs(20),
+                        total: Duration::from_secs(25),
+                        accept: "application/json",
+                    },
+                ) => result,
+            };
+            let response = match attempt {
+                Ok(response) => response,
+                Err(error)
+                    if transient_retries < 1
+                        && matches!(error.code.as_str(), "UPSTREAM_UNAVAILABLE" | "UPSTREAM_TIMEOUT") =>
+                {
+                    transient_retries += 1;
+                    tokio::select! {
+                        _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "已取消获取模型")),
+                        _ = tokio::time::sleep(Duration::from_millis(600)) => continue,
+                    }
+                }
+                Err(error) => return Err(error),
+            };
+            if response.status().is_success() {
+                break response;
+            }
             let status = response.status().as_u16();
             let request_id = responses::request_id(response.headers());
             let bytes = transport::bounded(response, 64 * 1024).await?;
             let body: Value = serde_json::from_slice(bytes.as_ref()).unwrap_or_default();
+            let code = responses::upstream_code(&body);
+            if status == 401
+                && !refreshed_on_401
+                && code != "subscription_sharing_invalid_user"
+                && let Ok(next_session) = self
+                    .force_refresh_access_token(
+                        transport,
+                        settings,
+                        Some(&session.client_id),
+                        false,
+                        cancel,
+                    )
+                    .await
+            {
+                refreshed_on_401 = true;
+                session = next_session;
+                continue;
+            }
+            if matches!(status, 502 | 503 | 504) && transient_retries < 1 {
+                transient_retries += 1;
+                tokio::select! {
+                    _ = cancel.cancelled() => return Err(Error::stream("ABORTED", "已取消获取模型")),
+                    _ = tokio::time::sleep(Duration::from_millis(700)) => continue,
+                }
+            }
             self.handle_upstream_failure(
                 &settings.runtime,
                 &session.client_id,
                 session.saved_at.as_deref(),
-                responses::upstream_code(&body),
+                code,
             )
             .await?;
             return Err(responses::siwc_error(status, body, request_id.as_deref()));
-        }
+        };
         let bytes = transport::bounded(response, 2 * 1024 * 1024).await?;
         let data: Value = serde_json::from_slice(bytes.as_ref())
             .map_err(|_| Error::stream("INVALID_MODEL_LIST", "模型目录不是有效 JSON"))?;
@@ -101,9 +196,13 @@ impl ChatGptService {
         let (slug, name) = selected.map_or(("", ""), |model| {
             (model.slug.as_str(), model.display_name.as_str())
         });
-        if account.selected_model != slug || account.selected_model_name != name {
+        if account.selected_model != slug
+            || account.selected_model_name != name
+            || account.cached_models != models
+        {
             account.selected_model = slug.to_owned();
             account.selected_model_name = name.to_owned();
+            account.cached_models = models.clone();
             storage::save(&settings.runtime, &store).await?;
         }
         let result = json!({
@@ -113,12 +212,12 @@ impl ChatGptService {
             "selectedModel": slug,
             "selectedModelName": name,
         });
-        self.accounts
-            .lock()
-            .unwrap()
-            .entry(session.client_id)
-            .or_default()
-            .models = models;
+        {
+            let mut runtime = self.accounts.lock().unwrap();
+            let entry = runtime.entry(session.client_id).or_default();
+            entry.models = models;
+            entry.models_fetched_at = Some(Instant::now());
+        }
         Ok(result)
     }
 
@@ -166,6 +265,13 @@ impl ChatGptService {
             .get(client_id)
             .and_then(|state| state.models.iter().find(|entry| entry.slug == model))
             .map(|entry| entry.display_name.clone())
+            .or_else(|| {
+                account
+                    .cached_models
+                    .iter()
+                    .find(|entry| entry.slug == model)
+                    .map(|entry| entry.display_name.clone())
+            })
             .ok_or_else(|| {
                 Error::new(
                     400,

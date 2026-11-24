@@ -64,43 +64,42 @@
       <div class="setup-choice-grid">
         <div class="setup-choices">
           <div v-if="automation.chatModels.value.length" class="setup-quick-chat-bar">
-            <span>只想体验本机文字聊天，不下载 ComfyUI 大模型？</span>
+            <span>只需本地文字聊天？</span>
             <button class="btn btn-quiet btn-sm" type="button" @click="automation.enterChatSetup">仅准备本地聊天</button>
           </div>
           <article class="setup-choice" :data-selected="automation.drawing.value">
-            <label class="setup-choice-toggle"><input v-model="automation.drawing.value" type="checkbox" /><ArchiveIcon name="image" /><strong>AI 绘图</strong><span class="setup-optional">入门推荐</span></label>
+            <label class="setup-choice-toggle"><input v-model="automation.drawing.value" type="checkbox" /><ArchiveIcon name="image" /><strong>AI 绘图</strong><span class="setup-optional">推荐</span></label>
             <div class="setup-choice-body">
-              <label for="setup-image-model" class="setup-field-label">选择绘图模型</label>
+              <label for="setup-image-model" class="setup-field-label">绘图模型</label>
               <StudioSelect id="setup-image-model" v-model="automation.modelId.value" label="绘图模型" :options="imageOptions" :disabled="!automation.drawing.value" />
               <small v-if="selectedImage">{{ formatBytes(selectedImage.preparation!.expectedBytes) }} · ComfyUI</small>
-              <label v-if="automation.drawing.value" class="setup-addon"><input v-model="automation.loras.value" type="checkbox" /><span><strong>添加宁宁 / 夏目角色包</strong><small>宁宁与夏目角色专用</small></span></label>
+              <label v-if="automation.drawing.value" class="setup-addon"><input v-model="automation.loras.value" type="checkbox" /><span><strong>宁宁 / 夏目角色包</strong></span></label>
             </div>
           </article>
           <article id="setup-chat-options" class="setup-choice" :data-selected="chatEnabled">
             <label class="setup-choice-toggle"><input v-model="chatEnabled" type="checkbox" /><ArchiveIcon name="chat" /><strong>本地聊天</strong><span class="setup-optional">可选</span></label>
             <div v-if="chatEnabled" class="setup-choice-body">
               <StudioSelect id="setup-chat-model" v-model="automation.chatId.value" label="聊天模型" :options="chatOptions" />
-              <small>{{ automation.recommendation.value.label }} · 本机聊天</small>
+              <small>{{ automation.recommendation.value.label }}</small>
             </div>
           </article>
-          <details v-if="automation.drawing.value && snapshot.comfy.installation === 'present'"><StudioDisclosureSummary>修复环境</StudioDisclosureSummary><div data-disclosure-content><label class="setup-addon"><input v-model="automation.rebuildComfy.value" type="checkbox" /><span><strong>重新解压运行包</strong><small>旧环境与模型保留；仅在环境损坏时使用。</small></span></label></div></details>
+          <details v-if="automation.drawing.value && snapshot.comfy.installation === 'present'"><StudioDisclosureSummary>修复环境</StudioDisclosureSummary><div data-disclosure-content><label class="setup-addon"><input v-model="automation.rebuildComfy.value" type="checkbox" /><span><strong>重新解压运行包</strong><small>保留已有模型</small></span></label></div></details>
           <div v-if="automation.drawing.value && automation.externalEnvironment.value" class="setup-existing">
-            <ArchiveIcon name="info" /><strong>使用已有 ComfyUI</strong><small>由原入口启动后刷新检查</small>
-            <div class="setup-buttons"><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查连接</button><button v-if="canChooseWorkspace" class="btn btn-quiet btn-sm" type="button" @click="emit('workspace')">更换工作区</button></div>
+            <ArchiveIcon name="info" /><strong>已检测到 ComfyUI</strong>
+            <div class="setup-buttons"><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查</button><button v-if="canChooseWorkspace" class="btn btn-quiet btn-sm" type="button" @click="emit('workspace')">更换工作区</button></div>
           </div>
           <div v-else-if="automation.drawing.value && (snapshot.comfy.installation !== 'present' || automation.rebuildComfy.value)" class="setup-runtime">
             <strong>Windows · 绘图运行环境</strong>
-            <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }, { value: 'comfy-amd', label: 'AMD 显卡 / Radeon 880M 核显 · 实验性' }]" />
+            <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择显卡运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA · CUDA 13.0' }, { value: 'comfy-cu126', label: '旧款 NVIDIA · CUDA 12.6' }, { value: 'comfy-amd', label: 'AMD / Radeon 880M（实验性）' }]" />
             <small v-if="automation.comfyDriverNote.value" class="setup-driver-note" role="status">{{ automation.comfyDriverNote.value }}</small>
-            <small v-else-if="automation.environment.value === 'comfy-amd'">AMD 官方包，需适配驱动。原生生成推荐 NVIDIA。</small>
-            <small v-else>按显卡选择运行环境；Intel 暂未支持自动安装。</small>
+            <small v-else-if="automation.environment.value === 'comfy-amd'">需适配驱动 · 原生生成推荐 NVIDIA</small>
+            <small v-else>Intel 暂不支持自动安装</small>
           </div>
           <div v-if="automation.chatId.value && snapshot.chat?.runtimePresent" class="setup-existing" role="status">
-            <ArchiveIcon name="info" /><strong>沿用已有聊天运行环境</strong>
-            <small>检测到 llama-server.exe。将准备所选模型，不替换运行环境。</small>
-            <small>若与硬件不兼容，请先停止服务并核对目录。</small>
+            <ArchiveIcon name="info" /><strong>沿用已有 llama-server.exe</strong>
+            <small>仅准备所选模型，不替换运行环境</small>
           </div>
-          <div v-else-if="automation.chatId.value" class="setup-runtime"><label for="setup-llama-runtime">首次安装的聊天运行环境</label><StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="首次安装的聊天运行环境" :options="[{ value: 'llama-cuda', label: 'NVIDIA 显卡 · CUDA（默认）' }, { value: 'llama-vulkan', label: 'Vulkan · 进阶选项' }]" /></div>
+          <div v-else-if="automation.chatId.value" class="setup-runtime"><label for="setup-llama-runtime">聊天运行环境</label><StudioSelect id="setup-llama-runtime" v-model="automation.llamaEnvironment.value" label="聊天运行环境" :options="[{ value: 'llama-cuda', label: 'NVIDIA · CUDA（默认）' }, { value: 'llama-vulkan', label: 'Vulkan（进阶）' }]" /></div>
         </div>
         <div class="setup-manifest">
           <div class="setup-manifest-heading"><h3>本次下载</h3><strong>{{ formatBytes(automation.downloadBytes.value) }}</strong></div>

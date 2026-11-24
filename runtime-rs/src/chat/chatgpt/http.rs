@@ -4,7 +4,7 @@ use crate::{
 };
 use axum::{
     Extension, Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, State},
+    extract::{ConnectInfo, DefaultBodyLimit, Query, State},
     http::HeaderMap,
     response::{IntoResponse, Response},
     routing::{get, post},
@@ -71,6 +71,12 @@ struct SelectAccountRequest {
 struct SelectModelRequest {
     client_id: String,
     model: String,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(default, rename_all = "camelCase")]
+struct ModelsQuery {
+    refresh: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -147,16 +153,21 @@ async fn models_handler(
     State(app): State<AppState>,
     Extension(chat): Extension<Arc<ChatService>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    Query(query): Query<ModelsQuery>,
     headers: HeaderMap,
 ) -> Response {
     if let Err(error) = local(&headers, peer).and_then(|()| running(&app)) {
         return error.into_response();
     }
+    let force_refresh = matches!(
+        query.refresh.as_deref(),
+        Some("1" | "true" | "TRUE" | "yes")
+    );
     let settings = chat.settings(&app).await;
     let cancel = app.shutdown.child_token();
     match chat
         .chatgpt
-        .list_models(&chat.transport, settings, &cancel)
+        .list_models(&chat.transport, settings, force_refresh, &cancel)
         .await
     {
         Ok(value) => no_store_json(value),

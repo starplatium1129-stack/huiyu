@@ -40,6 +40,41 @@ export async function rememberSavedChatApiDraft(vendor: string, entry: ChatApiDr
   await flushProfileWrites()
 }
 
+export interface SavedApiKeyDraft {
+  vendor: string
+  baseUrl: string
+  model: string
+  apiKey: string
+}
+
+/** Read-only snapshot of saved provider drafts that currently have a non-empty API key. */
+export async function loadSavedApiKeyDrafts(): Promise<SavedApiKeyDraft[]> {
+  let saved: Record<string, ChatApiDraft> = {}
+  try { saved = read() } catch { return [] }
+  const credentials = createChatCredentials()
+  const entries = new Map<string, ChatApiDraft>()
+  for (const [vendor, entry] of Object.entries(saved)) entries.set(vendor, entry)
+  for (const [vendor, entry] of Object.entries(sessionDrafts)) {
+    if (!entries.has(vendor) && !entry.keyCleared && entry.apiKey.trim()) entries.set(vendor, entry)
+  }
+  const results = await Promise.all([...entries.entries()].map(async ([vendor, entry]): Promise<SavedApiKeyDraft | null> => {
+    if (entry.keyCleared || !entry.baseUrl.trim()) return null
+    const memory = sessionDrafts[vendor]
+    let apiKey = (memory?.baseUrl === entry.baseUrl && !memory.keyCleared ? memory.apiKey : '') || entry.apiKey || ''
+    if (!apiKey.trim()) {
+      try {
+        if (credentials.desktop) apiKey = await credentials.load(entry.baseUrl, '')
+        if (!apiKey.trim()) apiKey = await credentials.load(scope(vendor, entry.baseUrl), '')
+      } catch {
+        return null
+      }
+    }
+    if (!apiKey.trim()) return null
+    return { vendor, baseUrl: entry.baseUrl.trim(), model: entry.model.trim(), apiKey: apiKey.trim() }
+  }))
+  return results.filter((item): item is SavedApiKeyDraft => item !== null)
+}
+
 export function createChatApiDrafts(onError: () => void) {
   const credentials = createChatCredentials()
   let initial: Record<string, ChatApiDraft> = {}

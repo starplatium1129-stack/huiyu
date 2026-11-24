@@ -3,8 +3,6 @@
         <header class="panel-summary"><span class="panel-heading" id="control-share-title" role="heading" aria-level="2">好友试玩</span><span class="summary-state" role="status">{{ shareStatus }}</span></header>
         <div data-disclosure-content class="share-content">
 
-        <p class="security-note">好友用浏览器打开邀请链接，你的电脑负责出图。试玩期间请保持绘遇运行、电脑联网。</p>
-
         <button
           class="btn share-start"
           :class="tunnelActive ? 'btn-danger' : 'btn-primary'"
@@ -31,7 +29,7 @@
           </div>
         </div>
         <div class="uptime">{{ uptime }}</div>
-        <p class="security-note">{{ tunnelManaged ? '网络恢复后可继续使用原链接。手动停止后，旧邀请立即失效。' : '临时链接可能随重连更换。固定域名可保留同一个链接。' }}</p>
+        <p class="security-note">本机出图 · 需保持运行并联网 · {{ tunnelManaged ? '手动停止后旧邀请失效' : '重连可能更换临时链接' }}</p>
 
         <!-- 前端构建：分享伺服 dist/，源码改动后需重建 -->
         <details class="build-card" :data-stale="webBuildStale ? 'true' : 'false'">

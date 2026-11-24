@@ -8,7 +8,6 @@
           <RouterLink to="/studio-projects?tool=video" class="btn btn-primary">
             <ArchiveIcon name="clap" />进入分镜首尾帧
           </RouterLink>
-          <span>用项目里的角色和场景定好首尾画面，再逐镜生成视频。</span>
         </div>
       </div>
       <div class="video-header-actions">
@@ -219,11 +218,11 @@
               <label for="video-shot-description" class="field-label">镜头描述</label>
               <span class="video-count" :data-warning="prompt.length > 900 || undefined">{{ prompt.length }} / 4000</span>
             </div>
-            <p id="video-description-hint" class="field-hint">
-              {{ driverKind ? videoPromptGuidance[promptMode] : '选好积木即可生成，也可以手写描述。手写的动作和运镜优先。' }}
+            <p v-if="driverKind" id="video-description-hint" class="field-hint">
+              {{ videoPromptGuidance[promptMode] }}
             </p>
             <textarea id="video-shot-description" v-model="prompt" name="prompt" class="textarea video-prompt"
-              maxlength="4000" rows="4" aria-describedby="video-description-hint"
+              maxlength="4000" rows="4" :aria-describedby="driverKind ? 'video-description-hint' : undefined"
               :placeholder="driverKind ? undefined : videoPromptGuidance[promptMode]"
               spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
           </div>
@@ -246,17 +245,17 @@
               >
                 <span>
                   <strong>极速 4 步</strong>
-                  <small>关闭后使用 8 步生成。</small>
+                  <small>关闭用 8 步</small>
                 </span>
               </ToggleSwitch>
               <div v-if="nativeVideo" class="field">
                 <label for="video-attention" class="field-label">{{ activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速' }}</label>
-                <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '社区融合权重内置 Mystic 动作风格，画面和运镜会随之变化。' : videoAttention === 'h3-sla' ? '使用专门训练的四步权重，保留音轨和首尾帧条件。' : 'SageAttention 和 FlashAttention 2 需要兼容的显卡及本地内核。' }}</small>
+                <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '内置 Mystic 动作风格' : videoAttention === 'h3-sla' ? '四步权重 · 保留音轨与首尾帧' : '需兼容显卡与本地内核' }}</small>
                 <StudioSelect id="video-attention" v-model="videoAttention" :label="activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速'"
                   aria-describedby="video-attention-hint" :options="attentionOptions" />
               </div>
               <ToggleSwitch v-if="nativeVideo && activeModel?.h3LightVae" v-model="h3LightVae" label="轻量视频解码">
-                <span><strong>轻量视频解码</strong><small>LightVAE 加快成片，关闭可使用原版解码器。</small></span>
+                <span><strong>轻量视频解码</strong><small>LightVAE 加速</small></span>
               </ToggleSwitch>
               <label v-if="supportsNegative" class="field">
                 <span class="field-label">负向描述</span>
@@ -307,8 +306,8 @@
           <div v-if="!job && !jobSelectionPending" class="video-queue-empty">
             <CornerFrame variant="editorial" />
             <span class="video-empty-reel" aria-hidden="true"><ArchiveIcon name="play" /></span>
-            <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '胶片暗房待机中' }}</strong>
-            <span v-if="reconnectState === 'idle'">选好场景或写下镜头，生成后在这里查看成片。</span>
+            <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '待机中' }}</strong>
+            <span v-if="reconnectState === 'idle'">生成后在此查看成片</span>
             <button v-if="reconnectState === 'failed'" class="btn btn-ghost" type="button" @click="reconnectVideo">重新读取上次任务</button>
             <button v-if="reconnectState !== 'idle'" class="btn btn-ghost" type="button" @click="openTaskCenter">到任务中心核对</button>
           </div>

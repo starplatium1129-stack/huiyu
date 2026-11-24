@@ -170,7 +170,6 @@ function discard() {
     <StudioDialog
       v-model:open="panelOpen"
       title="数据与备份"
-      :subtitle="backup.desktopActive.value ? '完整备份包含工作区记录与原始媒体，可迁移至其他设备恢复。' : '备份 JSON 包含作品记录、图片与配置，可通过「从备份恢复」导入。'"
       size="md"
       close-label="关闭数据与备份"
     >
@@ -216,7 +215,7 @@ function discard() {
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" />存储体检</button>
           <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.cleanOrphanImages()"><ArchiveIcon name="broom" />清理未引用图片</button>
         </div>
-        <p class="gallery-backup-scope">角色、服装与场景请在<RouterLink to="/scene-manager" @click="panelOpen = false">内容维护</RouterLink>单独导出。</p>
+        <p class="gallery-backup-scope">角色与场景 → <RouterLink to="/scene-manager" @click="panelOpen = false">内容维护</RouterLink></p>
       </div>
     </StudioDialog>
 

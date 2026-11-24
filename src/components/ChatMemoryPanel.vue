@@ -2,13 +2,12 @@
   <section class="chat-memory-panel room-tool-panel" aria-labelledby="chatMemoryTitle">
     <header class="room-tool-heading">
       <div>
-        <span>LONG-TERM MEMORY</span>
         <h2 id="chatMemoryTitle">长期记忆 · {{ characterName }}</h2>
       </div>
       <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>保存对话固定的事实，同一主题召回最新一条（最多 4 条）。</p>
+      <p>同主题召回最新 1 条 · 每次最多 4 条</p>
       <label class="studio-field-label" for="memory-recall-query">检索测试</label>
       <input id="memory-recall-query" v-model="query" class="input" placeholder="输入你想说的话" maxlength="1200" />
       <p v-if="query.trim()" role="status">{{ recalled.length ? `匹配 ${recalled.length} 条` : '未匹配到相关记忆' }}</p>

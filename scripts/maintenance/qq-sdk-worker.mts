@@ -16,6 +16,22 @@ interface Start {
   session?: PersistedSession
 }
 
+interface SocketLike {
+  readyState?: number
+  terminate?: () => void
+}
+
+interface GatewayInternals {
+  handleHello?: (ws: SocketLike, data: { heartbeat_interval?: unknown }, accessToken: string) => void
+  handlePayload?: (ws: SocketLike, payload: { op?: unknown }, accessToken: string) => void
+  cleanup?: () => void
+}
+
+function logDiagnostic(message: string) {
+  const clean = message.replace(/[\r\n]+/g, ' ').slice(0, 240)
+  if (clean) process.stderr.write(`${clean}\n`)
+}
+
 function emit(event: object) {
   if (cancel.signal.aborted) return
   const line = `${JSON.stringify(event)}\n`
@@ -27,6 +43,71 @@ function emit(event: object) {
     return
   }
   process.stdout.write(line)
+}
+
+/**
+ * The upstream QQ SDK sends HEARTBEAT frames on an interval but ignores
+ * HEARTBEAT_ACK responses, so half-open sockets stay stuck in OPEN forever.
+ * Monitor inbound gateway frames and terminate zombie sockets after two
+ * missed heartbeat windows, while emitting liveness ticks to the parent.
+ */
+function attachHeartbeatWatchdog(connection: GatewayConnection) {
+  const target = connection as unknown as GatewayInternals
+  if (typeof target.handleHello !== 'function' || typeof target.handlePayload !== 'function' || typeof target.cleanup !== 'function') {
+    return
+  }
+  const origHello = target.handleHello.bind(connection)
+  const origPayload = target.handlePayload.bind(connection)
+  const origCleanup = target.cleanup.bind(connection)
+  let watchdog: ReturnType<typeof setInterval> | null = null
+  let lastInboundAt = Date.now()
+  let lastEmittedHeartbeatAt = 0
+
+  const clearWatchdog = () => {
+    if (watchdog !== null) {
+      clearInterval(watchdog)
+      watchdog = null
+    }
+  }
+
+  target.cleanup = () => {
+    clearWatchdog()
+    origCleanup()
+  }
+
+  target.handleHello = (ws, data, accessToken) => {
+    origHello(ws, data, accessToken)
+    clearWatchdog()
+    const rawInterval = Number(data?.heartbeat_interval)
+    const intervalMs = Number.isFinite(rawInterval) && rawInterval >= 10_000 && rawInterval <= 120_000 ? rawInterval : 41_250
+    const timeoutMs = Math.max(intervalMs * 2 + 15_000, 95_000)
+    const checkMs = Math.max(5_000, Math.min(15_000, Math.floor(intervalMs / 2)))
+    lastInboundAt = Date.now()
+    lastEmittedHeartbeatAt = lastInboundAt
+    emit({ type: 'heartbeat' })
+    watchdog = setInterval(() => {
+      if (cancel.signal.aborted) {
+        clearWatchdog()
+        return
+      }
+      if (Date.now() - lastInboundAt > timeoutMs) {
+        clearWatchdog()
+        logDiagnostic(`heartbeat watchdog triggered after ${Math.round((Date.now() - lastInboundAt) / 1000)}s silence; terminating socket`)
+        try { ws.terminate?.() } catch { /* socket already closing */ }
+      }
+    }, checkMs)
+    watchdog.unref?.()
+  }
+
+  target.handlePayload = (ws, payload, accessToken) => {
+    const now = Date.now()
+    lastInboundAt = now
+    if (payload?.op === 11 || now - lastEmittedHeartbeatAt >= 20_000) {
+      lastEmittedHeartbeatAt = now
+      emit({ type: 'heartbeat' })
+    }
+    origPayload(ws, payload, accessToken)
+  }
 }
 
 async function start(line: string) {
@@ -62,11 +143,13 @@ async function start(line: string) {
     onReady: data => emit({ type: 'ready', session, botId: (data as { user?: { id?: string } })?.user?.id }),
     onResumed: () => emit({ type: 'resumed' }),
     onDisconnected: ({ code }) => emit({ type: 'disconnected', code }),
+    onError: error => logDiagnostic(`gateway error: ${error?.message || String(error)}`),
     onMessage(message) {
       if (!messageKinds.has(message.rawEventType)) return
       emit({ type: 'message', kind: message.rawEventType, sequence: session?.lastSeq, data: message.raw })
     },
   })
+  attachHeartbeatWatchdog(connection)
   await connection.start()
 }
 
@@ -75,6 +158,7 @@ input.once('close', () => cancel.abort())
 input.once('line', line => {
   void start(line).catch((error: unknown) => {
     const closeCode = error && typeof error === 'object' && 'closeCode' in error ? error.closeCode : undefined
+    logDiagnostic(`worker exited: ${error instanceof Error ? error.message : String(error)}`)
     emit({ type: 'failed', code: typeof closeCode === 'number' ? closeCode : 0 })
     process.exitCode = 1
   }).finally(() => {

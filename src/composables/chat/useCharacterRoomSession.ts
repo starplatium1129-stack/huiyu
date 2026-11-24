@@ -319,6 +319,8 @@ export function useCharacterRoomSession(
     apiKey,
     webSearchEnabled,
     hostApiBaseUrl,
+    hostApiConfigured,
+    hostApiModel,
     useHostConfig,
     companionTools,
     reasoning,

@@ -11,6 +11,8 @@ use tokio::{
 
 type GatewayResult<T> = std::result::Result<T, &'static str>;
 const FRAME_LIMIT: u64 = 1024 * 1024;
+const IDLE_WATCHDOG: Duration = Duration::from_secs(150);
+const RECONNECT_DEADLINE: Duration = Duration::from_secs(75);
 const WORKER_ERROR: &str = "QQ SDK 连接进程已退出，正在重试";
 const WORKER_UNAVAILABLE: &str = "QQ SDK 运行文件缺失或无法启动";
 const PIPE_WRITE_ERROR: &str = "无法向 QQ SDK 发送启动参数";
@@ -40,6 +42,7 @@ enum Event {
         bot_id: Option<String>,
     },
     Resumed,
+    Heartbeat,
     Reset,
     Disconnected {
         code: u16,
@@ -90,12 +93,37 @@ pub(super) async fn connect(
         .env_remove("NODE_V8_COVERAGE")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
-        .stderr(Stdio::null());
+        .stderr(Stdio::piped());
     let process = processes
         .spawn(&mut command)
         .map_err(|_| WORKER_UNAVAILABLE)?;
     let mut input = process.take_input().ok_or(WORKER_UNAVAILABLE)?;
-    let (output, _) = process.take_output();
+    let (output, stderr) = process.take_output();
+    if let Some(stderr) = stderr {
+        let log_bot = bot_id.to_owned();
+        tokio::spawn(async move {
+            let mut reader = BufReader::new(stderr);
+            let mut buf = Vec::new();
+            let mut logged = 0usize;
+            loop {
+                buf.clear();
+                let mut limited = (&mut reader).take(1024);
+                match limited.read_until(b'\n', &mut buf).await {
+                    Ok(0) | Err(_) => break,
+                    Ok(_) => {
+                        if logged < 64 {
+                            let text = String::from_utf8_lossy(&buf);
+                            let line = text.trim();
+                            if !line.is_empty() {
+                                eprintln!("QQ SDK（{log_bot}）：{line}");
+                                logged += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
     let mut output = BufReader::new(output.ok_or(WORKER_UNAVAILABLE)?);
     let mut start = serde_json::to_vec(&json!({
         "appId": api.app_id,
@@ -162,9 +190,11 @@ async fn follow(
         let bytes = if let Some(deadline) = startup {
             tokio::time::timeout_at(deadline, read)
                 .await
-                .map_err(|_| "QQ SDK 登录超时，正在重连")?
+                .map_err(|_| "QQ SDK 登录或重连超时，正在重连")?
         } else {
-            read.await
+            tokio::time::timeout(IDLE_WATCHDOG, read)
+                .await
+                .map_err(|_| "QQ 连接心跳超时，正在自动重连")?
         }
         .map_err(|_| PIPE_READ_ERROR)?;
         if bytes == 0 {
@@ -179,11 +209,16 @@ async fn follow(
                 resume.bot_id = bot_id.filter(|id| open_id(&json!(id)).is_some());
             }
             Event::Resumed => {}
+            Event::Heartbeat => continue,
             Event::Reset => {
                 resume.session = None;
                 continue;
             }
             Event::Disconnected { code } => {
+                if std::mem::take(&mut resume.connected) {
+                    eprintln!("QQ WebSocket 断开（{bot_id}，code={code}），等待自动重连");
+                }
+                startup = Some(Instant::now() + RECONNECT_DEADLINE);
                 app.channels
                     .report(storage, bot_id, "connecting", Some(disconnect_detail(code)));
                 continue;

@@ -3,7 +3,6 @@
     <div class="chatgpt-head">
       <div class="chatgpt-title">
         <strong>ChatGPT 订阅额度</strong>
-        <small>用你的 ChatGPT 订阅额度在绘遇里聊天</small>
       </div>
       <span class="chatgpt-storage-note" role="note" aria-label="令牌加密保存在本机，不写入浏览器存储">
         <ArchiveIcon name="lock" aria-hidden="true" />本机加密
@@ -55,7 +54,7 @@
             @update:model-value="auth.selectModel(String($event))"
           />
         </div>
-        <button class="btn btn-ghost chatgpt-refresh-btn" type="button" :disabled="locked || auth.loadingModels.value" @click="auth.refreshModels()">
+        <button class="btn btn-ghost chatgpt-refresh-btn" type="button" :disabled="locked || auth.loadingModels.value" @click="auth.refreshModels(true)">
           <ArchiveIcon name="refresh" />{{ auth.loadingModels.value ? '获取中…' : '刷新模型' }}
         </button>
       </div>
@@ -73,7 +72,7 @@
         <span lang="en">Continue with ChatGPT</span>
       </button>
       <p v-if="auth.activeAccount.value" class="chatgpt-signin-hint">继续使用 {{ auth.activeAccount.value.label }}</p>
-      <p v-else class="chatgpt-signin-hint">需要支持订阅额度共享的 ChatGPT 计划。</p>
+      <p v-else class="chatgpt-signin-hint">需支持额度共享的 ChatGPT 计划</p>
     </div>
 
     <p class="chatgpt-feedback" :class="{ 'sr-only': !feedback }" :data-state="auth.errorText.value ? 'error' : 'info'" role="status">{{ feedback }}</p>
@@ -194,7 +193,14 @@ const welcomeMotion = useFluidDialog(welcomeDialog)
 const accounts = computed(() => props.auth.status.value?.accounts ?? [])
 const locked = computed(() => Boolean(props.busy || props.auth.acting.value || props.auth.authPending.value))
 const feedback = computed(() => props.auth.errorText.value || props.auth.noticeText.value)
-const modelOptions = computed(() => props.auth.models.value.map(({ slug, displayName }) => ({ value: slug, label: displayName })))
+const modelOptions = computed(() => {
+  const list = props.auth.models.value.map(({ slug, displayName }) => ({ value: slug, label: displayName }))
+  const current = props.auth.selectedModel.value
+  if (current && !list.some(item => item.value === current)) {
+    return [{ value: current, label: props.auth.selectedModelName.value || current }, ...list]
+  }
+  return list
+})
 
 watch(() => props.auth.welcomeOpen.value, async open => {
   if (!open) {

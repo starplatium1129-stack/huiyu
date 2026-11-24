@@ -24,22 +24,25 @@ pub(super) struct Request<'a> {
 fn builder() -> reqwest::ClientBuilder {
     reqwest::Client::builder()
         .user_agent(concat!("Huiyu/", env!("CARGO_PKG_VERSION")))
-        .no_proxy()
         .redirect(reqwest::redirect::Policy::none())
         .retry(reqwest::retry::never())
         .connect_timeout(Duration::from_secs(15))
-        .pool_idle_timeout(Duration::from_secs(60))
-        .pool_max_idle_per_host(32)
+        .pool_idle_timeout(Duration::from_secs(20))
+        .pool_max_idle_per_host(16)
         .tcp_keepalive(Duration::from_secs(15))
+        .http2_keep_alive_interval(Duration::from_secs(15))
+        .http2_keep_alive_timeout(Duration::from_secs(10))
+        .http2_keep_alive_while_idle(true)
 }
 impl Transport {
     pub fn new() -> Self {
-        Self {
-            trusted: builder()
-                .proxy(reqwest::Proxy::custom(proxy))
-                .build()
-                .expect("Initialize chat HTTP client"),
-        }
+        // Respect Windows system proxy + standard env vars first; fall back to
+        // custom HTTP-only env proxy if an unsupported scheme (e.g. socks5) is set.
+        let trusted = builder()
+            .build()
+            .or_else(|_| builder().no_proxy().proxy(reqwest::Proxy::custom(proxy)).build())
+            .expect("Initialize chat HTTP client");
+        Self { trusted }
     }
     pub async fn send(&self, target: Url, options: Request<'_>) -> Result<reqwest::Response> {
         if !["http", "https"].contains(&target.scheme())
@@ -54,6 +57,7 @@ impl Transport {
                 .await
                 .map_err(|_| timeout())??;
             public = builder()
+                .no_proxy()
                 .pool_max_idle_per_host(0)
                 .resolve(target.host_str().unwrap(), address)
                 .build()
