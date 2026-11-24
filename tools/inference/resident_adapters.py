@@ -56,7 +56,8 @@ class PipelineCache:
     def weight_scope(root, data, policy, style_path):
         return (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
                 str(style_path) if style_path else None, data.get("_h3TurboSteps"),
-                data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"))
+                data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"), data.get("_h3DwdPath"),
+                bool(data.get("_h3DwdPath") and data.get("_videoImage")))
 
     def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, style_path=None, prepared_identity=None):
         scope = self.weight_scope(root, data, policy, style_path)
@@ -119,7 +120,8 @@ class PipelineCache:
                                 if name in self.configs else value) for name, value in self.components.items()}
             if spec["media"] == "video":
                 pipeline = load_sibling("adapter_video").task_pipeline(self.pipeline_class, components,
-                    copy.deepcopy(self.parameters), spec, data.get("_videoImage", False))
+                    copy.deepcopy(self.parameters), spec, data.get("_videoImage", False),
+                    dwd=data.get("h3Decoder") == "dwd")
             else:
                 pipeline = self.pipeline_class(**components, **copy.deepcopy(self.parameters))
             for component in self.memory.modules.values():

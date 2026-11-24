@@ -203,6 +203,9 @@ async fn attempt(
                             return Err(protocol_error());
                         }
                         runtime_observation = observations::capture(&event["nativeRuntime"]);
+                        if plan.input["h3Decoder"] == "dwd" && runtime_observation["h3Decoder"] != "dwd" {
+                            return Err(ApiError::new(502, "H3_DWD_UNVERIFIED", "工作进程没有返回两步 DWD 采样及像素解码记录"));
+                        }
                         // Single-shot CLI adapters report no resident context. Accept an
                         // affirmative runtime observation before advertising retained weights.
                         worker.model_loaded = event["modelReused"].is_boolean()
@@ -276,7 +279,8 @@ async fn attempt(
         }
         // Save effective output dimensions and verified worker observations before
         // the result collector settles the desktop task. The original input stays frozen.
-        if (plan.input["modelId"] == crate::studio_workflows::MODEL || plan.input["modelId"] == crate::studio_workflows::DIALOGUE || plan.input["family"] == "keyframe")
+        if (plan.input["modelId"] == crate::studio_workflows::MODEL || plan.input["modelId"] == crate::studio_workflows::DIALOGUE || plan.input["family"] == "keyframe"
+            || plan.input["h3Decoder"] == "dwd")
             && let Some(hooks) = &job.hooks {
             let snapshot = job.state.lock().await.metadata.clone();
             hooks.execution_metadata(json!({"nativeRuntime":snapshot["nativeRuntime"],

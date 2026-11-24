@@ -161,13 +161,15 @@ import { usePressRipple } from '@/composables/usePressRipple'
 import type { GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
-import type { InterrogateResult } from '@/composables/useInterrogate'
+import type { InterrogateResult, InterrogateSubjectMode } from '@/composables/useInterrogate'
 
 const props = defineProps<{
   sceneTitle?: string
   applyInterrogateResult: (result: InterrogateResult, current: () => boolean) => Promise<void>
   interrogateMode: InterrogateResult['mode']
   interrogateAssist: boolean
+  interrogateSubjectMode?: InterrogateSubjectMode
+  interrogateLayout?: boolean
   displayResultUrl: string
   resultRevealUrl?: string
   canvasSize?: string
@@ -322,7 +324,7 @@ const { busy: interrogateBusy, error: interrogateError, interrogate, cancel } = 
 // Keep the source identity after success so delayed notices also retire when
 // the current picture changes. File/clipboard requests do not own the canvas.
 let interrogatedResultUrl: string | null = null
-watch([() => props.drawEngine, () => props.interrogateMode], cancel, { flush: 'sync' })
+watch([() => props.drawEngine, () => props.interrogateMode, () => props.interrogateSubjectMode, () => props.interrogateLayout], cancel, { flush: 'sync' })
 watch(() => props.displayResultUrl, url => { if (interrogatedResultUrl !== null && url !== interrogatedResultUrl) cancel() }, { flush: 'sync' })
 
 function triggerInterrogatePick() {
@@ -366,12 +368,21 @@ async function interrogateClipboardImage() {
   })
 }
 
+function interrogateOptions() {
+  return {
+    mode: props.interrogateMode,
+    assist: props.interrogateAssist,
+    subjectMode: props.interrogateSubjectMode ?? (pb.isUnbound ? 'free' : 'bound'),
+    layout: props.interrogateLayout ?? (props.interrogateAssist && props.drawEngine === 'moss'),
+  }
+}
+
 /** 文件选择、粘贴事件与点击剪贴板共用同一请求及取消机制。 */
 async function runInterrogateFile(file: File | (() => Promise<File>)) {
   if (interrogateBusy.value) return
   interrogatedResultUrl = null
   try {
-    await interrogate(file, { mode: props.interrogateMode, assist: props.interrogateAssist })
+    await interrogate(file, interrogateOptions())
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)
@@ -387,7 +398,7 @@ async function interrogateCurrentImage() {
   if (interrogateBusy.value) return
   interrogatedResultUrl = props.displayResultUrl
   try {
-    await interrogate(interrogatedResultUrl, { mode: props.interrogateMode, assist: props.interrogateAssist })
+    await interrogate(interrogatedResultUrl, interrogateOptions())
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     emit('interrogateError', msg)

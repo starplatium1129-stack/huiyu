@@ -131,7 +131,7 @@ pub(in crate::generation) async fn recover(
 impl Service {
     /// Called only after the workspace has confirmed persistence or discard.
     pub(crate) async fn release_native_result(&self, task: &TaskRecord) {
-        if task.provider == "native"
+        if task.provider == "native" && task.kind != TaskKind::Batch
             && (task.result_state == ResultState::Available
                 || task.delivery_state == DeliveryState::Discarded
                 || task.status == TaskStatus::Cancelled && task.cancel_requested_at.is_some())
@@ -140,5 +140,16 @@ impl Service {
                 forget(&path).await;
             }
         }
+    }
+
+    /// A recovered batch owns a distinct worker output record for each submitted shot.
+    pub(crate) async fn release_native_shot(&self, task: &TaskRecord, checkpoint: &Value) -> Result<()> {
+        let shot = RecoveryTask {
+            kind: TaskKind::Video, provider: "native", checkpoint: Some(checkpoint),
+            result_available: true, cancel_requested: false, ..RecoveryTask::from(task)
+        };
+        // Verify the gateway id and principal in the sidecar before releasing ownership.
+        recover(&self.inner, &shot).await?;
+        Ok(())
     }
 }

@@ -21,7 +21,7 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
 pub use http::router;
 
-const DEFAULT_MANIFEST_URL: &str = "https://github.com/starplatium1129-stack/huiyu/releases/download/media-packs-latest/media-packs.json";
+const DEFAULT_MANIFEST_URL: &str = "https://github.com/starplatium1129-stack/huiyu/releases/latest/download/media-packs.json";
 const DEFAULT_PORTRAITS_ESTIMATE: u64 = 436_500_000;
 const DEFAULT_SHOWCASE_ESTIMATE: u64 = 1_650_000_000;
 

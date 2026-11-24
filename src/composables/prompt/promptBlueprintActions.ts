@@ -11,6 +11,7 @@ import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
 import { cloneReferenceInput, parseOutfitOverride, isSDParamKey, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { parseAssistLayout } from '@/api/interrogateResult'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit, type SceneBlueprint } from '@/utils/popularContent'
 import type { DrawEngine } from '@/storage/settingsRepository'
 
@@ -261,7 +262,9 @@ function draftStrings(value: unknown): string[] {
 function parseReferenceInput(value: unknown): DraftReferenceInput | null {
   if (!draftRecord(value)) return null
   const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
+  const layout = parseAssistLayout(value.layout) ?? undefined
   return cloneReferenceInput({ tags, caption: draftText(value.caption), captionInEditor: value.captionInEditor === true,
+    ...(layout ? { layout } : {}),
     characterTokens: draftStrings(value.characterTokens), copyrightTokens: draftStrings(value.copyrightTokens) })
 }
 

@@ -63,6 +63,45 @@ def model(model_id):
     return MANIFEST["models"][model_id]
 
 
+def resolve_local_h3(root, spec, data, local_steps, *, auto_steps):
+    """Resolve only verified assets for this job. Saved decoder/step choices are binding."""
+    if spec["family"] != "minimax-h3":
+        return
+    mode = data.get("videoAttention", "auto")
+    decoder = data.get("h3Decoder")
+    extras = load_sibling("import_h3").prepared_accelerators(root) if local_steps else {}
+    if auto_steps and local_steps:
+        use_dwd = decoder == "dwd" or (decoder is None and "dwd" in extras and mode not in ("h3-sla", "h3-fused"))
+        data["steps"] = 2 if use_dwd else local_steps[0]
+        if not use_dwd and decoder is None:
+            decoder = data["h3Decoder"] = "lightvae" if "lightvae" in extras else "original"
+    steps = data["steps"]
+    dwd = steps == 2 or decoder == "dwd"
+    if dwd:
+        if steps != 2 or decoder not in (None, "dwd") or mode in ("h3-sla", "h3-fused"):
+            raise AdapterError("UNSUPPORTED_ACCELERATION", "pi-H3 DWD 需要 2 步，不能搭配 Turbo 解码器、SLA 或融合权重。")
+        if "dwd" not in extras:
+            raise AdapterError("MODEL_CHANGED", "pi-H3 DWD 的本地权重或校验凭据未就绪，请先导入 2 步 DWD 加速包。")
+        data["_h3DwdPath"] = safe_file(root, root / extras["dwd"][0]["path"])
+        data["h3Decoder"] = "dwd"
+    elif local_steps is None:
+        if mode.startswith("h3-") or decoder is not None or "h3VideoShift" in data:
+            raise AdapterError("UNSUPPORTED_ACCELERATION", "此选项需要本机量化版 H3。")
+        return
+    elif steps not in local_steps:
+        raise AdapterError("INVALID_PARAMETER", f"本地 H3 Turbo 已安装的步数为 {local_steps}，请重新选择步数。")
+    data["_h3TurboSteps"] = steps
+    data.setdefault("h3VideoShift", 6 if steps == 4 and mode != "h3-fused" else 12)
+    if mode in ("h3-sla", "h3-fused") or decoder == "lightvae":
+        if decoder == "lightvae" and "lightvae" not in extras:
+            raise AdapterError("MODEL_CHANGED", "此配方所需的 H3 LightVAE 权重未就绪。")
+        if mode in ("h3-sla", "h3-fused"):
+            kind = mode.removeprefix("h3-")
+            if steps != 4 or kind not in extras or data["h3VideoShift"] != (6 if kind == "sla" else 12):
+                raise AdapterError("UNSUPPORTED_ACCELERATION", "所选 H3 加速需要对应的四步权重和采样偏移。")
+            data["_h3AccelerationPath"] = safe_file(root, root / extras[kind][0]["path"])
+
+
 def safe_file(root, path):
     if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
         raise AdapterError("MODEL_INVALID", f"Linked model asset is unsupported: {path}")
@@ -208,7 +247,7 @@ def validate(job):
             or data["nativeModelFormat"] not in ("diffusers", spec["localPack"]["format"])):
         raise AdapterError("INVALID_PARAMETER", "Unknown native model format")
     is_video = spec["media"] == "video"
-    if "h3Decoder" in data and (spec["family"] != "minimax-h3" or data["h3Decoder"] not in ("lightvae", "original")):
+    if "h3Decoder" in data and (spec["family"] != "minimax-h3" or data["h3Decoder"] not in ("dwd", "lightvae", "original")):
         raise AdapterError("UNSUPPORTED_OPTION", "H3 视频解码器选项不适用于此配方。")
     if "h3VideoShift" in data and (spec["family"] != "minimax-h3" or data["h3VideoShift"] != 12
             and not (data["h3VideoShift"] == 6 and data.get("steps") == 4)):
@@ -275,7 +314,8 @@ def validate(job):
         result[key] = number(data, key, 1024, spec.get("minSize", 512), spec["maxSize"], True)
         if result[key] % spec["alignment"]:
             raise AdapterError("INVALID_PARAMETER", f"{key} must be divisible by {spec['alignment']}")
-    result["steps"] = number(data, "steps", sampling_defaults["steps"], spec.get("minSteps", 1), 100, True)
+    default_steps = 2 if data.get("h3Decoder") == "dwd" else sampling_defaults["steps"]
+    result["steps"] = number(data, "steps", default_steps, spec.get("minSteps", 1), 100, True)
     result["cfg"] = number(data, "cfg", sampling_defaults["cfg"], 0, 20)
     result["seed"] = number(data, "seed", 0, 0, 2147483647, True)
     if spec["distilled"] and (result["steps"] not in spec.get("stepOptions", (spec["steps"],)) or result["cfg"] != spec["cfg"]):

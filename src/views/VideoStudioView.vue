@@ -237,26 +237,25 @@
                 <StudioSelect id="video-motion" v-model="motion" label="默认主体运动" :options="motionSelectOptions" />
               </div>
               <ToggleSwitch
-                v-if="activeModel?.id === 'minimax-h3' && (!nativeVideo || activeModel.turboSteps?.includes(8))"
+                v-if="activeModel?.id === 'minimax-h3' && !nativeVideo"
                 class="video-steps-toggle"
-                :model-value="h3Steps === 4"
+                :model-value="steps === 4"
                 label="极速 4 步"
-                @update:model-value="h3Steps = $event ? 4 : 8"
+                @update:model-value="steps = $event ? 4 : 8"
               >
                 <span>
                   <strong>极速 4 步</strong>
                   <small>关闭用 8 步</small>
                 </span>
               </ToggleSwitch>
+              <NativeH3RecipeFields v-if="nativeVideo && activeModel?.id === 'minimax-h3' && (activeModel.turboSteps || nativeH3Steps === 2)"
+                :model="activeModel" :default-steps="h3DefaultSteps" :issue="h3Issue" v-model:choice="nativeH3Steps" v-model:light-vae="h3LightVae" />
               <div v-if="nativeVideo" class="field">
                 <label for="video-attention" class="field-label">{{ activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速' }}</label>
                 <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '内置 Mystic 动作风格' : videoAttention === 'h3-sla' ? '四步权重 · 保留音轨与首尾帧' : '需兼容显卡与本地内核' }}</small>
                 <StudioSelect id="video-attention" v-model="videoAttention" :label="activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速'"
                   aria-describedby="video-attention-hint" :options="attentionOptions" />
               </div>
-              <ToggleSwitch v-if="nativeVideo && activeModel?.h3LightVae" v-model="h3LightVae" label="轻量视频解码">
-                <span><strong>轻量视频解码</strong><small>LightVAE 加速</small></span>
-              </ToggleSwitch>
               <label v-if="supportsNegative" class="field">
                 <span class="field-label">负向描述</span>
                 <textarea
@@ -323,7 +322,7 @@
               <template v-if="job.execution">
                 <span>推理设备 {{ job.execution.device }}</span>
                 <span v-if="job.execution.attention.length">注意力 {{ job.execution.attention.join('、') }}</span>
-                <span v-if="job.execution.decoder">视频解码 {{ job.execution.decoder }}</span>
+                <span v-if="job.execution.decoder">视频解码 {{ job.execution.decoder }}<template v-if="job.execution.dwdDecodeMs !== undefined"> · {{ (job.execution.dwdDecodeMs / 1000).toFixed(2) }} 秒</template></span>
                 <span>MP4 编码 {{ job.execution.encoder }}</span>
               </template>
             </div>
@@ -408,6 +407,7 @@ import VideoDraftNotice from '@/components/video/VideoDraftNotice.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import VideoPromptWorkbench from '@/components/video/VideoPromptWorkbench.vue'
 import VideoPromptPreview from '@/components/video/VideoPromptPreview.vue'
+import NativeH3RecipeFields from '@/components/video/NativeH3RecipeFields.vue'
 import { videoPromptGuidance } from '@/components/video/videoPromptPresets'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -474,7 +474,7 @@ qualities,
 durationOptions,
 duration,
 activeModel,
-h3Steps,
+steps, h3Steps, h3DefaultSteps, nativeH3Steps, h3Issue,
 videoAttention,
 h3LightVae,
 negative,
@@ -515,8 +515,9 @@ const attentionOptions = computed(() => [
   { value: 'h3-sol', label: 'Sol-Attn · 动态稀疏' },
   { value: 'h3-sla', label: 'Turbo-SLA · 四步稀疏' },
   { value: 'h3-fused', label: 'Fused Turbo · Mystic 动作风格' },
-].filter(option => (!['h3-sla', 'h3-fused'].includes(option.value) || h3Steps.value === 4)
-  && (activeModel.value?.attentionModes?.some(mode => mode === option.value) ?? !option.value.startsWith('h3-'))))
+].filter(option => option.value === videoAttention.value ||
+  (activeModel.value?.attentionModes?.some(mode => mode === option.value) ?? !option.value.startsWith('h3-')))
+  .map(option => ({ ...option, disabled: ['h3-sla', 'h3-fused'].includes(option.value) && h3Steps.value !== 4 })))
 const videoReturnQuery = computed(() => ({
   ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
   ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),

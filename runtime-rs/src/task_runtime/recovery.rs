@@ -429,7 +429,7 @@ impl TaskRuntime {
         task: &TaskRecord,
         cancellation: &mut RecoveryState,
     ) -> Result<crate::execution::Observation> {
-        if task.provider == "native" {
+        if task.provider == "native" && task.kind != TaskKind::Batch {
             // A live child whose termination is unconfirmed is not a restart.
             // Preserve its authoritative unsettled observation before recovery.
             let gateway = task.upstream_id.as_deref().or_else(|| {

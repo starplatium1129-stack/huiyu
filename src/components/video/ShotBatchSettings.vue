@@ -67,6 +67,7 @@ const aspectOptions: Array<{
       </span>
     </ToggleSwitch>
 
+    <slot name="recipe">
     <ToggleSwitch
       :model-value="steps === 4"
       :disabled="disabled"
@@ -78,6 +79,7 @@ const aspectOptions: Array<{
         <small>更快生成预览，画面细节会略有减少。</small>
       </span>
     </ToggleSwitch>
+    </slot>
   </div>
 
   <label class="field shot-identity-field">

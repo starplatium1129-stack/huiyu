@@ -209,17 +209,7 @@ impl Service {
             let pack = native::packed_h3(&settings, &input["modelId"]).await?;
             let input = native::normalize(input, pack.as_ref())?;
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
-            let first = originals.frame(&input["image"])?;
-            let last = originals.frame(&input["lastFrame"])?;
-            let driver = match input.get("drivingAudio").or_else(|| input.get("drivingVideo")) {
-                Some(name) => originals.frame(name)?,
-                None => None,
-            };
-            let mut plan = generation::native::adapters::plan(&settings, input, first).await?;
-            *plan.last_frame.get_mut().unwrap() = last;
-            *plan.driving_media.get_mut().unwrap() = driver;
-            let backend = self.backend.prepare_native(plan, permit, &cancel)?;
-            return Ok(Prepared { backend, originals });
+            return self.prepare_native_captured(input, &settings, permit, originals, &cancel).await;
         }
         if input["inferenceEngine"] == "native" {
             return Err(error(
@@ -233,6 +223,19 @@ impl Service {
         let backend = self.backend.prepare_comfy(plan, cancel.clone()).await?;
         let originals =
             inputs::capture(&self.config, &backend.input, local, owner, &cancel).await?;
+        Ok(Prepared { backend, originals })
+    }
+    pub(super) async fn prepare_native_captured(
+        &self, input: Value, settings: &generation::native::Settings,
+        permit: tokio::sync::OwnedSemaphorePermit, originals: inputs::Captured, cancel: &CancellationToken,
+    ) -> Result<Prepared> {
+        let first = originals.frame(&input["image"])?;
+        let last = originals.frame(&input["lastFrame"])?;
+        let driver = originals.frame(input.get("drivingAudio").unwrap_or(&input["drivingVideo"]))?;
+        let mut plan = generation::native::adapters::plan(settings, input, first).await?;
+        *plan.last_frame.get_mut().unwrap() = last;
+        *plan.driving_media.get_mut().unwrap() = driver;
+        let backend = self.backend.prepare_native(plan, permit, cancel)?;
         Ok(Prepared { backend, originals })
     }
     pub async fn submit(

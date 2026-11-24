@@ -124,6 +124,19 @@ npm run wf -- models:prepare-pixai --target-dir 'D:\HuiyuAI\PixAI'
   - `vae/wan2.2_vae.safetensors`
 - **MiniMax H3 联合音视频**：六文件全套约 43.99 GB，可通过 `npm run wf -- models:download-h3 --models-root "D:\HuiyuAI\ComfyUI\models"` 校验下载。
 
+已导入原生 H3 INT8 ConvRot 主干的桌面端，可加装 **pi-H3 DWD 两步加速**。在源码根目录运行以下命令，将示例路径换成控制室显示的 AI 工作区。已有官方适配器时，第二条命令的 `--accelerators` 可直接指向文件所在目录。
+
+```powershell
+npm run wf -- models:download-h3 --models-root "D:\HuiyuAI\ComfyUI\models" --dwd
+& "D:\HuiyuAI\ComfyUI\venv\Scripts\python.exe" -I -B tools/inference/import_h3.py --accelerators "D:\HuiyuAI\ComfyUI\models\loras" --models-root "D:\HuiyuAI\inference\models" --apply
+```
+
+权重通过大小和 SHA-256 校验后，导入器会写入 `minimax-h3/accelerators/dwd.receipt`。在视频工作台重新检测，新建单镜头和批量分镜默认选用 2 步 DWD。也可手动切回已装的 4/8 步 Turbo 和原版解码器或 LightVAE。DWD 支持普通注意力和 Sol，SLA 与融合版权重各自需要四步配方。[官方权重与许可证](https://huggingface.co/Lakonik/pi-H3) · [官方 INT8 ConvRot 工作流](https://github.com/Lakonik/ComfyUI-piFlow/blob/4355cc47944e3dbfb175d5f4be3f5af0cfdc08f1/docs/piH3.md)
+
+该版 safetensors 将 rank 64 的 FP16 LoRA、最后四个主干块的替换权重和 DWD 像素头放在同一文件里。量化线性层使用 INT8 ConvRot 和 FP32 缩放系数。像素头包含 FP16 的 `dwd_norm_out.linear`、`dwd_pixel_refiner.feature_expand`、`first_frame_proj_out` 和 `proj_out`。文件名、字节数、SHA-256 和固定版本下载地址见[原生模型清单](../../tools/inference/adapter-models.json)。
+
+两步配方的原始时间网格为 `[0.93, 0.34875, 0]`。对每个网格点 r 计算 σ = sr / (1 + (s − 1)r)，视频 s = 12，音频 s = 3。主干在 t = 1 − σ 处预测朝向成品的速度，每一步按相邻 σ 的差值做 Euler 更新。第二步的目标画面特征直接投影为 RGB，按上游通道均值和标准差还原至 [−1, 1]，再转为 RGB24 编码。纯文本模式跳过整个 Video VAE；单首帧与首尾帧模式仅加载它的编码器。三种模式均通过 Audio VAE 输出 32 kHz 双声道，24 fps 下 5 秒档为 124 帧，10 秒档为 243 帧。显式选择 Sol 需要 CUDA 内核和至少 12,288 个有效序列行。[上游采样与工作流](https://github.com/Lakonik/ComfyUI-piFlow/blob/4355cc47944e3dbfb175d5f4be3f5af0cfdc08f1/workflows/pi-H3-DWD.json)
+
 ---
 
 ### 原生关键帧工坊

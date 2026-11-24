@@ -20,11 +20,12 @@ import { COLOR_MOODS } from '@/config/promptConstants.ts'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 import { mossArtistTags } from '@/utils/mossPrompt.ts'
 import { withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
+import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
   | 'manualTags' | 'modelProfiles' | 'outfitOverride' | 'popularCharacters' | 'randomVariation' | 'sceneBlueprints' | 'selections'
-  | 'directorSources' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId' | 'sdParams'>
+  | 'directorSources' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId' | 'sdParams' | 'referenceInput'>
 
 /**
  * 热门角色无 LoRA 模式的 Prompt 组装。
@@ -86,9 +87,15 @@ export function usePopularPromptAssembly(
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !character.value || !outfit.value) return null
+    const refCaption = !subject.blueprintId && (target === 'krea2' || target === 'moss')
+      ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription)
+      : ''
+    const referenceLayout = !subject.blueprintId && target === 'moss' ? pb.referenceInput?.layout ?? null : null
     return compilePromptRecipe({
       kind: 'popular',
-      randomSetting: !subject.blueprintId && randomVariation.value?.source === '',
+      randomSetting: !refCaption && !subject.blueprintId && randomVariation.value?.source === '',
+      backgroundProse: refCaption,
+      referenceLayout,
       character: character.value,
       outfit: outfit.value,
       blueprint: blueprint.value,

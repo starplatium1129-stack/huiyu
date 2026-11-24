@@ -1,6 +1,9 @@
 """Optional CUDA block-sparse attention over a MiniMax H3 packed sequence."""
 from contextlib import contextmanager, ExitStack
 
+from huiyu_worker_lifecycle import load_sibling
+
+Error = load_sibling("adapter_contract").AdapterError
 
 BLOCK = 64
 MIN_ROWS = 12288
@@ -28,12 +31,13 @@ def _conditioning_prefix(video, audio, text):
     if (not torch.equal(video[:anchors], torch.arange(text.numel(), audio_start, device="cpu"))
             or not torch.equal(video[anchors:], torch.arange(target_start, length, device="cpu"))):
         return None
-    return length, target_start
+    return length, target_start, audio_start
 
 
 class _Route:
-    def __init__(self, report):
+    def __init__(self, report, dwd):
         self.report = report
+        self.dwd = dwd
         self.mode = report["requested"]
         self.keep = {"h3-sla": 0.15, "h3-fused": 0.10}.get(self.mode, 0.0)
         self.details = report["sparse"] = {
@@ -57,7 +61,9 @@ class _Route:
             self.indices = indices
             self.layout = _conditioning_prefix(*indices)
             if self.layout is not None:
-                self.details["rows"], self.details["protectedRows"] = self.layout
+                self.details["rows"], self.details["protectedRows"] = self.layout[:2]
+        if self.dwd and (self.layout is None or self.layout[0] < MIN_ROWS):
+            raise Error("UNSUPPORTED_ACCELERATION", "pi-H3 的 Sol 注意力需要至少 12288 个有效序列行，请选择自动注意力或增大画幅。")
         if self.layout is None:
             self.details["reason"] = "unsupported-layout"
 
@@ -70,7 +76,7 @@ class _Route:
     def try_attention(self, query, key, value, scale):
         if self.no_kernel or not self.in_blocks or self.layout is None:
             return None
-        length, protected = self.layout
+        length, protected, audio_start = self.layout
         if query.size(1) != length or query.shape != key.shape or query.shape != value.shape or query.size(-1) != 128:
             self.details["reason"] = "unsupported-shape"
             return None
@@ -80,7 +86,7 @@ class _Route:
         if length < minimum or protected + BLOCK >= length:
             self.details["reason"] = "short-sequence"
             return None
-        if not self.keep and self.passes == 1:
+        if not self.dwd and not self.keep and self.passes == 1:
             self.details["reason"] = "dense-first-pass"
             return None
         if self.kernel is None:
@@ -93,17 +99,22 @@ class _Route:
             except (ImportError, OSError, AttributeError):
                 pass
             if self.kernel is None:
+                if self.dwd:
+                    raise Error("UNSUPPORTED_ACCELERATION", "pi-H3 所需的 Sol CUDA 内核未就绪。")
                 self.no_kernel = True
                 self.details["reason"] = "compiled-kernel-unavailable"
                 return None
         # A partial boundary block is deliberately protected in full in both
         # directions, preserving text, target audio, and both keyframe anchors.
         sinks = [0, (protected + BLOCK - 1) // BLOCK]
+        # The pi-H3 workflow keeps the conditioning prefix as exact K/V
+        # and protects the target audio queries in both evaluations.
+        sink_q = [audio_start // BLOCK, sinks[1]] if self.dwd else sinks
         try:
             # The LightX2V H3 recipe uses routed softmax without a learned
             # linear branch. The Comfy CUDA backend keeps its diagonal and
             # exact conditioning blocks in addition to the 15% video budget.
-            output = self.kernel(query, key, value, tau=1.0, scale=scale, sink_blocks=sinks, sink_q=sinks,
+            output = self.kernel(query, key, value, tau=1.0, scale=scale, sink_blocks=sinks, sink_q=sink_q,
                                  topk_ratio=self.keep, tail=not self.keep)
         except (ImportError, OSError, NotImplementedError, ValueError, RuntimeError) as exc:
             # Allocation failures and device faults must propagate to the worker.
@@ -111,6 +122,8 @@ class _Route:
                 word in str(exc).lower() for word in ("no kernel image", "not compiled", "unsupported cuda architecture")
             ):
                 raise
+            if self.dwd:
+                raise Error("UNSUPPORTED_ACCELERATION", f"pi-H3 Sol 内核无法执行：{exc}") from exc
             self.no_kernel = True
             self.details["reason"] = "kernel-rejected-call"
             return None
@@ -121,8 +134,8 @@ class _Route:
 
 
 @contextmanager
-def routing(transformer, report):
-    route = _Route(report)
+def routing(transformer, report, *, dwd=False):
+    route = _Route(report, dwd)
     report["calls"][route.mode] = 0
     with ExitStack() as hooks:
         if type(transformer).__name__ != "MiniMaxH3Transformer3DModel":
@@ -132,5 +145,10 @@ def routing(transformer, report):
         else:
             hooks.callback(transformer.register_forward_pre_hook(route.begin, with_kwargs=True).remove)
             hooks.callback(transformer.register_forward_hook(route.end, always_call=True).remove)
-            hooks.callback(transformer.transformer_blocks[0].register_forward_pre_hook(route.enter).remove)
+            first_sparse_block = 2 if dwd else 0
+            hooks.callback(transformer.transformer_blocks[first_sparse_block].register_forward_pre_hook(route.enter).remove)
+        if dwd and report["device"] != "cuda":
+            raise Error("UNSUPPORTED_ACCELERATION", "pi-H3 Sol 注意力需要支持 Sol 内核的 CUDA 显卡。")
         yield route
+        if dwd and not report["calls"][route.mode]:
+            raise Error("UNSUPPORTED_ACCELERATION", f"pi-H3 Sol 注意力未执行，请检查内核：{route.details['reason']}")

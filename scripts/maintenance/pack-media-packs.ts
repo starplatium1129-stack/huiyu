@@ -8,9 +8,18 @@ import { execFileSync } from 'node:child_process';
 import { once } from 'node:events';
 
 const RELEASE_REPOSITORY = 'starplatium1129-stack/huiyu';
-const DEFAULT_TAG = 'media-packs-latest';
 const PORTRAIT_FILE = /^popular-[a-zA-Z0-9_-]+\.(?:png|jpe?g|webp)$/i;
 const SHOWCASE_SAMPLE = /^(?:images|thumbs)\/(?:sc\d{3,}|artist_[a-zA-Z0-9_-]+|pc_[a-zA-Z0-9_-]+|lora_[a-zA-Z0-9_-]+)\.(?:jpg|png|webp)$/i;
+
+function resolveDefaultTag(root: string): string {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+    if (typeof pkg.version === 'string' && /^\d+\.\d+\.\d+$/.test(pkg.version.trim())) {
+      return `v${pkg.version.trim()}`;
+    }
+  } catch { /* fall back */ }
+  return 'media-packs-latest';
+}
 
 const HELP = `media:pack --out <输出目录> [--portraits] [--showcase-root <已发布样张目录>] [--version <版本号>] [--tag <GitHubRelease标签>] [--apply] [--publish]
 默认只读预览打包清单；加 --apply 生成免重压缩 STORE ZIP、SHA-256 与 media-packs.json 索引。
@@ -18,9 +27,9 @@ const HELP = `media:pack --out <输出目录> [--portraits] [--showcase-root <�
   --showcase-root <目录>    打包已发布的场景样张（manifest.json、images/、thumbs/）为独立样张资源包
   --out <目录>              输出目录（已存在时自动合并更新 media-packs.json 中对应包信息）
   --version <版本>          资源包版本标识（默认当日 YYYYMMDD）
-  --tag <标签>              GitHub Release 标签（默认 ${DEFAULT_TAG}）
+  --tag <标签>              GitHub Release 标签（默认当前 package.json 版本 v<version>，与桌面安装包合并到同一 Release）
   --apply                   实际写出 ZIP 与 media-packs.json
-  --publish                 通过 gh CLI 上传到 GitHub Release（需先 --apply 或目录中已有构建产物）
+  --publish                 通过 gh CLI 上传到目标 GitHub Release（目标 Release 已存在时直接 --clobber 追加资产）
 `;
 
 interface PackEntry {
@@ -307,7 +316,7 @@ async function main(argv = process.argv.slice(2)) {
   let showcaseRoot = '';
   let includePortraits = false;
   let version = defaultVersion();
-  let tag = DEFAULT_TAG;
+  let tag = '';
   let apply = false;
   let publish = false;
   let root = path.resolve(__dirname, '../..');
@@ -324,6 +333,7 @@ async function main(argv = process.argv.slice(2)) {
     else if (flag === '--root') root = path.resolve(argv[++i] || '');
     else throw new Error(`未知参数: ${flag}`);
   }
+  if (!tag) tag = resolveDefaultTag(root);
   if (!outDir) throw new Error('必须指定 --out <输出目录>');
   if (!includePortraits && !showcaseRoot) throw new Error('至少指定 --portraits 或 --showcase-root <目录> 之一');
   if (!/^[a-zA-Z0-9._-]{1,48}$/.test(version)) throw new Error(`无效版本号: ${version}`);

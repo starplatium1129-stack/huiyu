@@ -70,7 +70,7 @@ export interface VideoDraftPayload {
   aspectRatio: string
   quality: string
   steps: number
-  nativeH3Steps?: 4 | 8
+  nativeH3Steps?: import('@/api/videoApi').H3StepChoice
   videoAttention?: import('@/api/videoApi').VideoAttention
   h3LightVae?: boolean
   driver?: import('@/api/videoApi').VideoDriver
@@ -137,6 +137,8 @@ export interface ShotsDraftPayload {
   aspectRatio: string
   quality: string
   steps: number
+  nativeH3Steps?: import('@/api/videoApi').H3StepChoice
+  h3LightVae?: boolean
   linkLastFrame: boolean
   identityCard: string
   cards: ShotsDraftCard[]

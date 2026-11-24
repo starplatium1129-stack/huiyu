@@ -81,6 +81,7 @@ function isVideoModelStatus(value: unknown): value is VideoModelStatus {
     && (value.attentionModes === undefined || Array.isArray(value.attentionModes) && value.attentionModes.length > 0
       && value.attentionModes.every(mode => ['auto', 'sdpa', 'sage', 'flash2', 'h3-sol', 'h3-sla', 'h3-fused'].includes(mode)))
     && (value.h3LightVae === undefined || value.id === 'minimax-h3' && typeof value.h3LightVae === 'boolean')
+    && (value.h3Dwd === undefined || value.id === 'minimax-h3' && typeof value.h3Dwd === 'boolean')
     && (value.canvases == null || isRecord(value.canvases) && Object.values(value.canvases).every(size =>
       Array.isArray(size) && size.length === 2 && size.every(n => Number.isSafeInteger(n) && n > 0)))
     && Array.isArray(value.requirements) && value.requirements.every(isText)
@@ -133,9 +134,12 @@ export function videoJobExecution(provider: string, status: string, metadata: un
     if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) return
     if (count > 0) attention.push(label)
   }
-  const decoder = metadata.nativeRuntime.h3Decoder === 'lightvae-lite-fp16' ? 'LightVAE'
-    : metadata.nativeRuntime.h3Decoder === 'original' ? 'H3 原版' : undefined
-  return { device: { cuda: 'CUDA', rocm: 'ROCm', xpu: 'XPU' }[device], attention, encoder, decoder }
+  const runtime = metadata.nativeRuntime
+  const dwd = runtime.h3Decoder === 'dwd' && runtime.h3Sampler === 'pi-flow-v2' && runtime.h3Steps === 2
+  const decoder = dwd ? 'pi-H3 DWD · 2 步' : runtime.h3Decoder === 'lightvae-lite-fp16' ? 'LightVAE'
+    : runtime.h3Decoder === 'original' ? 'H3 原版' : undefined
+  return { device: { cuda: 'CUDA', rocm: 'ROCm', xpu: 'XPU' }[device], attention, encoder, decoder,
+    ...(dwd && isFiniteNumber(runtime.h3DwdDecodeMs) && runtime.h3DwdDecodeMs >= 0 ? { dwdDecodeMs: runtime.h3DwdDecodeMs } : {}) }
 }
 export function videoJobResponse(value: unknown, expectedId?: string): { ok: true; job: VideoJob } {
   if (!isRecord(value) || value.ok !== true || !isVideoJob(value.job)) throw new ApiClientError('视频任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })
@@ -190,7 +194,7 @@ function isVideoBatch(value: unknown): value is VideoBatch {
     && isNonEmptyText(value.modelId)
     && ['landscape', 'portrait', 'square'].includes(String(value.aspectRatio))
     && ['fast', 'standard', 'fine'].includes(String(value.quality))
-    && [4, 8].includes(Number(value.steps))
+    && (value.modelId === 'minimax-h3' && value.steps === 2 || value.steps === 4 || value.steps === 8)
     && typeof value.linkLastFrame === 'boolean'
     && isRecord(value.progress)
     && isFiniteNumber(value.progress.total) && value.progress.total >= 0 && Number.isInteger(value.progress.total)
@@ -211,7 +215,8 @@ export function videoBatchResponse(value: unknown, expectedId?: string): { ok: t
   const batch = value.batch as VideoBatch
   if (expectedId && batch.id !== expectedId) throw new ApiClientError('分镜任务编号与原请求不符。', { kind: 'invalid-response' })
   const upstreamSettled = batch.upstreamSettled === true, unknown = batch.unknown !== false
-  return { ok: true, batch: { ...batch, shots: batch.shots.map(shot => ({ ...shot })), progress: { ...batch.progress },
+  return { ok: true, batch: { ...batch, shots: batch.shots.map(shot => ({ ...shot,
+    execution: videoJobExecution('native', shot.status, shot) })), progress: { ...batch.progress },
     ...(batch.retrySource ? { retrySource: { batchId: batch.retrySource.batchId, stepIndices: [...batch.retrySource.stepIndices] } } : {}), upstreamSettled, unknown,
     needsReview: batch.needsReview === true || unknown || batch.status !== 'running' && !upstreamSettled } }
 }

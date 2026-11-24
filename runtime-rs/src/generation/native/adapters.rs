@@ -13,6 +13,8 @@ const FILES: &[&str] = &[
     "wan_pipeline.py",
     "wan22-import.json",
     "h3_packed.py",
+    "h3_dwd.py",
+    "h3_piflow.py",
     "h3_sparse.py",
     "h3_modulation.py",
     "h3_rotary.py",

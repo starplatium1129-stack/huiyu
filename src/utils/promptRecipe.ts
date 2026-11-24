@@ -15,7 +15,7 @@ export type PromptRecipe = (
 export function compilePromptRecipe(recipe: PromptRecipe) {
   // Recheck the current controls on every compilation. Editing an anchor or light
   // retires its caption, and an explicit user description always owns the prose.
-  if (recipe.randomSetting && !recipe.visualDescription?.trim()) {
+  if (recipe.randomSetting && !recipe.visualDescription?.trim() && !recipe.backgroundProse?.trim()) {
     const setting = matchingRandomSetting(recipe.manual ?? [], recipe.lighting)
     if (setting) recipe = { ...recipe, backgroundProse: setting.caption }
   }

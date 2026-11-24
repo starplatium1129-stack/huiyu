@@ -36,6 +36,7 @@ import { compositionTokens } from '@/utils/blueprintComposition'
 import { mossArtistTags } from '@/utils/mossPrompt'
 import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 import { sanitizeOutfitOverride, wardrobeTokens } from '@/utils/wardrobeContent'
+import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
@@ -267,9 +268,15 @@ export function usePromptAssembly(
   })
 
   function buildStructuredResult(target: 'anima' | 'krea2' | 'moss') {
+    const refCaption = !pb.sceneId && (target === 'krea2' || target === 'moss')
+      ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription)
+      : ''
+    const referenceLayout = !pb.sceneId && target === 'moss' ? pb.referenceInput?.layout ?? null : null
     return compilePromptRecipe({
       kind: 'studio', character: pb.char, scene: effectiveScene.value,
-      randomSetting: !pb.sceneId && pb.randomVariation?.source === '',
+      randomSetting: !refCaption && !pb.sceneId && pb.randomVariation?.source === '',
+      backgroundProse: refCaption,
+      referenceLayout,
       engine: target, profile: target === 'moss' ? null : modelProfile.value, identity: pb.charPrompt,
       activeLoras: target === 'moss' ? {} : controlLoraIds.value, loraMeta: pb.loraMeta,
       artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTags.value,

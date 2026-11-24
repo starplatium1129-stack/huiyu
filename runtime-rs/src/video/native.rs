@@ -5,6 +5,7 @@ use std::path::Path;
 #[derive(Default)]
 pub(super) struct PackedH3 {
     steps: Vec<u64>,
+    dwd: bool,
     lightvae: bool,
     sla: bool,
     fused: bool,
@@ -12,7 +13,8 @@ pub(super) struct PackedH3 {
 
 fn local_pack(root: &Path) -> Option<PackedH3> {
     let steps = adapters::h3_packed_steps(root)?;
-    Some(PackedH3 { steps, lightvae: adapters::h3_accelerator(root, "lightvae"), sla: adapters::h3_accelerator(root, "sla"),
+    Some(PackedH3 { steps, dwd: adapters::h3_accelerator(root, "dwd"),
+        lightvae: adapters::h3_accelerator(root, "lightvae"), sla: adapters::h3_accelerator(root, "sla"),
         fused: adapters::h3_accelerator(root, "fused") })
 }
 
@@ -40,10 +42,12 @@ pub(super) fn validate(
     input["inferenceEngine"] = json!("native");
     if let Some(pack) = pack {
         if raw.get("steps").is_none() {
-            input["steps"] = json!(pack.steps[0]);
+            let auto_dwd = pack.dwd && raw.get("h3Decoder").is_none()
+                && !matches!(raw["videoAttention"].as_str(), Some("h3-sla" | "h3-fused"));
+            input["steps"] = json!(if raw["h3Decoder"] == "dwd" || auto_dwd { 2 } else { pack.steps[0] });
         }
         input["h3Decoder"] = raw.get("h3Decoder").cloned()
-            .unwrap_or_else(|| json!(if pack.lightvae { "lightvae" } else { "original" }));
+            .unwrap_or_else(|| json!(if input["steps"] == 2 { "dwd" } else if pack.lightvae { "lightvae" } else { "original" }));
         input["h3VideoShift"] = json!(if input["steps"] == 4 && input["videoAttention"] != "h3-fused" { 6 } else { 12 });
         input["nativeModelFormat"] = spec["localPack"]["format"].clone();
     }
@@ -122,7 +126,16 @@ pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Val
     if input.get("nativeModelFormat") != format {
         return Err(error(409, "TASK_RESUME_UNSAFE", "此任务保存的模型配方与本机视频权重不匹配，请核对所选模型"));
     }
-    if let Some(options) = pack.map(|p| &p.steps)
+    let wants_dwd = spec["family"] == "minimax-h3" && (input["steps"] == 2 || input["h3Decoder"] == "dwd");
+    if wants_dwd {
+        if !pack.is_some_and(|p| p.dwd) {
+            return Err(error(400, "UNSUPPORTED_ACCELERATION", "本机尚未验证 pi-H3 DWD 两步权重，请先导入加速包。"));
+        }
+        if input["steps"] != 2 || input["h3Decoder"] != "dwd"
+            || matches!(input["videoAttention"].as_str(), Some("h3-sla" | "h3-fused")) {
+            return Err(error(400, "UNSUPPORTED_ACCELERATION", "pi-H3 DWD 需要 2 步，不能搭配 Turbo 解码器、SLA 或融合权重。"));
+        }
+    } else if let Some(options) = pack.map(|p| &p.steps)
         && !input["steps"].as_u64().is_some_and(|n| options.contains(&n))
     {
         let supported = options.iter().map(u64::to_string).collect::<Vec<_>>().join(" 或 ");
@@ -142,6 +155,7 @@ pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Val
         None => {} // Older tasks used the original decoder.
         Some(Some("original")) if pack.is_some() => {}
         Some(Some("lightvae")) if pack.is_some_and(|p| p.lightvae) => {}
+        Some(Some("dwd")) if wants_dwd => {}
         _ => return Err(error(400, "UNSUPPORTED_ACCELERATION", "所选 H3 视频解码器在本机未就绪")),
     }
     if pack.is_some() {
@@ -215,8 +229,8 @@ pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Val
     input["validation"] = json!("待主力机验证");
     // Zero means unknown to existing clients; never reuse Comfy timing estimates.
     input["estimatedSeconds"] = json!(0);
-    input["sampler"] = spec["sampler"].clone();
-    input["scheduler"] = json!("model-config");
+    input["sampler"] = if wants_dwd { json!("pi-flow-v2") } else { spec["sampler"].clone() };
+    input["scheduler"] = json!(if wants_dwd { "pi-flow-v2-dx-grid" } else { "model-config" });
     input["audio"] = spec["audio"].clone();
     input["encodedDuration"] =
         json!(input["frames"].as_f64().unwrap() / input["fps"].as_f64().unwrap());
@@ -263,13 +277,19 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
             {
                 let steps = &pack.steps;
                 status["h3LightVae"] = json!(pack.lightvae);
+                status["h3Dwd"] = json!(pack.dwd);
                 status["attentionModes"] = json!(spec["localPack"]["attentionModes"].as_array().unwrap()
                     .iter().filter(|mode| (**mode != "h3-sla" || pack.sla) && (**mode != "h3-fused" || pack.fused)).collect::<Vec<_>>());
-                if let Some(label) = spec["localPack"]["label"].as_str() {
+                if pack.dwd {
+                    status["label"] = json!("MiniMax H3 · pi-H3 DWD / Turbo");
+                    status["defaults"]["sampler"] = json!("pi-flow-v2");
+                    status["defaults"]["scheduler"] = json!("pi-flow-v2-dx-grid");
+                } else if let Some(label) = spec["localPack"]["label"].as_str() {
                     status["label"] = json!(label);
                 }
-                status["defaults"]["steps"] = json!(steps[0]);
-                status["summary"] = json!(if steps.contains(&8) { "原生音视频，可选 4 步或 8 步" } else { "原生音视频，4 步生成" });
+                status["defaults"]["steps"] = json!(if pack.dwd { 2 } else { steps[0] });
+                status["summary"] = json!(if pack.dwd { "原生音视频，默认使用 pi-H3 DWD 两步生成" }
+                    else if steps.contains(&8) { "原生音视频，可选 4 步或 8 步" } else { "原生音视频，4 步生成" });
                 status["turboSteps"] = json!(steps);
             }
             if spec["runner"] == "wan-a14b-sd" {

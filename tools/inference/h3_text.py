@@ -249,7 +249,6 @@ def bind_conditioning(pipeline, entries, control):
 
 
 def load_encoder(root, control):
-    from accelerate import init_empty_weights
     from transformers import Qwen3VLConfig, Qwen3VLForConditionalGeneration
     folder = root / "text_encoder"
     config = Qwen3VLConfig.from_pretrained(str(folder), local_files_only=True)
@@ -257,10 +256,17 @@ def load_encoder(root, control):
     # never evaluates the final RMSNorm or a vocabulary projection.
     original_depth = config.text_config.num_hidden_layers
     config.text_config.num_hidden_layers = 50
-    with init_empty_weights(include_buffers=False):
+    # Even a transient full vocabulary projection costs 3 GB of Windows
+    # commit. Construct all parameters on meta and rebuild the two small
+    # non-persistent rotary tables with the installed Transformers classes.
+    with torch.device("meta"):
         encoder = Qwen3VLForConditionalGeneration(config)
-    encoder.set_attn_implementation("sdpa")
     language = encoder.model.language_model
+    language.rotary_emb = type(language.rotary_emb)(config.text_config)
+    visual = encoder.model.visual
+    rope = visual.rotary_pos_emb
+    visual.rotary_pos_emb = type(rope)(config.vision_config) if hasattr(rope, "config") else type(rope)(rope.dim, rope.theta)
+    encoder.set_attn_implementation("sdpa")
     language.norm = nn.Identity()
     encoder.lm_head = nn.Identity()
     with load_sibling("mapped_weights").ReadOnlyWeights(folder / "comfy.safetensors") as source:

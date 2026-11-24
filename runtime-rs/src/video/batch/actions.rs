@@ -48,6 +48,10 @@ impl Service {
             .enumerate()
             .filter_map(|(index, shot)| {
                 let intent = shot.intent?;
+                if shot.input["inferenceEngine"] == "native"
+                    && shot.code.as_deref() == Some("NATIVE_RESTART_INTERRUPTED") {
+                    return None;
+                }
                 (shot.status != "succeeded").then(|| (index, intent, shot.gateway.clone()))
             })
             .collect::<Vec<_>>();
@@ -183,14 +187,16 @@ impl Service {
                     let name = if let Some(name) = tail {
                         Some(name)
                     } else if let Some(output) = output {
-                        transcode::tail(&self, &output, cancel.clone()).await.ok()
+                        let native = batch.input["inferenceEngine"] == "native";
+                        let result = transcode::tail(&self, &output, native, cancel.clone()).await;
+                        if native { Some(result?) } else { result.ok() }
                     } else {
                         None
                     };
                     if let Some(name) = name {
                         let mut s = batch.state.lock().await;
                         s.shots[index - 1].tail = Some(name.clone());
-                        let key = if generation::truthy(&s.shots[index].input["image"]) {
+                        let key = if generation::truthy(&s.shots[index].input["image"]) && s.shots[index].input["image"] != name {
                             "lastFrame"
                         } else {
                             "image"
@@ -313,6 +319,7 @@ impl Service {
                 shot.error = None;
                 shot.code = None;
                 shot.result = None;
+                shot.native_runtime = None;
                 shot.tail = None;
             }
             let concat = s.concat.take();
@@ -376,7 +383,7 @@ impl Service {
             batch.state.lock().await.concat_stage = "none";
             return Err(e);
         }
-        let work = transcode::concat(self, &batch.id, &outputs, &canvas, scope.clone());
+        let work = transcode::concat(self, &batch.id, &outputs, &canvas, batch.input["inferenceEngine"] == "native", scope.clone());
         tokio::pin!(work);
         let result = tokio::select! {result=&mut work=>result,_=cancel.cancelled()=>{scope.cancel();work.await}};
         match result {

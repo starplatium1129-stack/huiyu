@@ -578,6 +578,19 @@
         "label": "MiniMax H3 · 本地量化 Turbo",
         "attentionModes": ["auto", "sdpa", "sage", "flash2", "h3-sol", "h3-sla", "h3-fused"],
         "accelerators": {
+          "dwd": [
+            {
+              "path": "accelerators/pi_h3_2step_dwd_adapter_int8_convrot.safetensors",
+              "bytes": 2192176240,
+              "sha256": "ef98527409eee4eaec8183265f4ee22d265680524237fae7149dbc203e11e739",
+              "url": "https://huggingface.co/Lakonik/pi-H3/resolve/4a864589b0fac3d14768f932c930c4dcf1a17b56/pi_h3_2step_dwd_adapter_int8_convrot.safetensors",
+              "license": "minimax-h3-community-license-agreement",
+              "workflow": "https://github.com/Lakonik/ComfyUI-piFlow/blob/4355cc47944e3dbfb175d5f4be3f5af0cfdc08f1/workflows/pi-H3-DWD.json",
+              "format": "safetensors; FP16 LoRA, ConvRot INT8 overlays and DWD pixel refiner",
+              "policy": "DX grid", "steps": 2, "maxRawT": 0.93, "finalStepSizeScale": 0.6,
+              "videoShift": 12, "audioShift": 3
+            }
+          ],
           "lightvae": [
             {"path":"accelerators/lightvae-lite-h3-decoder.safetensors","bytes":3248356840,"sha256":"d060ad616a33f422fcb8395f525d6d71185b5ddb3e016b31cc210ba2c9c06ee9"},
             {"path":"accelerators/lightvae-lite-h3-decoder-fp16.safetensors","bytes":1624394096,"sha256":"effb1286095dbbd8b9c62300d99ace8d113ad43a53c35fc290d73d219d3e0bde"}
@@ -614,7 +627,7 @@
     }
   },
   "pendingVideo": {
-    "minimax-h3": "支持 5 秒和 10 秒、本地量化及 4/8 步 Turbo。Ref2VA 与对白专用参数尚未接入。",
+    "minimax-h3": "支持 5 秒和 10 秒、本地量化、2 步 pi-H3 DWD 及 4/8 步 Turbo。Ref2VA 与对白专用参数尚未接入。",
     "wan2.2-14b": "尚缺独立 I2V 权重及图生视频、LightX2V/量化；当前仅 T2V A14B 双噪声模型。",
     "hunyuan-video-1.5": "尚缺 720p、I2V、蒸馏与超分；当前固定 480p T2V 版本和 standard 画质画布。",
     "ltx-2.3": "尚缺多阶段超分与 distilled 配方；当前使用 2.3 基础单阶段联合音视频。"

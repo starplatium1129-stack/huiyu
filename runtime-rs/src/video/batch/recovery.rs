@@ -92,6 +92,7 @@ impl Service {
                 result: None,
                 code: row["errorCode"].as_str().map(str::to_owned),
                 error: None,
+                native_runtime: row.get("nativeRuntime").cloned(),
             };
             if shot.intent.is_none() {
                 if task.cancel_requested_at.is_some() {
@@ -103,6 +104,8 @@ impl Service {
                 shots.push(shot);
                 continue;
             }
+            let native = shot.input["inferenceEngine"] == "native";
+            let checkpoint = json!({"gatewayJobId":shot.gateway});
             if let Some(output) = saved_output(
                 self,
                 &row["result"],
@@ -113,22 +116,21 @@ impl Service {
             )
             .await?
             {
+                if native { self.backend.release_native_shot(task, &checkpoint).await?; }
                 shot.result = Some(output);
                 shot.status = "succeeded".into();
                 shots.push(shot);
                 continue;
             }
-            // Comfy recovery observes this shot's upstream identity and recorded
-            // status/cancellation/metadata. The batch input, checkpoint and
-            // other result references have no consumer in recover_task.
+            // Native recovery uses the shot's gateway output record; Comfy uses its upstream id.
             let task_id = format!("{}-{}", task.task_id, index + 1);
             let single = generation::RecoveryTask {
                 kind: crate::task_contract::TaskKind::Video,
-                provider: "comfy",
+                provider: if native { "native" } else { "comfy" },
                 result_available: false,
                 task_id: &task_id,
                 upstream_id: shot.upstream.as_deref(),
-                checkpoint: None,
+                checkpoint: native.then_some(&checkpoint),
                 ..generation::RecoveryTask::from(task)
             };
             let observation = self
@@ -137,6 +139,10 @@ impl Service {
                 .await?;
             if let Some(output) = observation.outputs.first() {
                 hooks.collect_indexed(vec![(index, output.clone())]).await?;
+                if native {
+                    self.backend.release_native_shot(task, &checkpoint).await?;
+                    shot.native_runtime = observation.metadata.get("nativeRuntime").cloned();
+                }
                 shot.result = Some(output.clone());
             }
             if observation.settled {
@@ -202,6 +208,11 @@ impl Service {
         } else {
             // Recipes were restored into shots; the batch only consumes settings.
             let mut input = json!({"steps":task.input.get("steps")});
+            if task.input.get("inferenceEngine").and_then(Value::as_str) == Some("native") {
+                for key in ["inferenceEngine", "h3Decoder", "videoAttention"] {
+                    if let Some(value) = task.input.get(key) { input[key] = value.clone(); }
+                }
+            }
             for key in ["modelId", "aspectRatio", "quality", "linkLastFrame"] {
                 input[key] = checkpoint[key].clone();
             }

@@ -214,7 +214,8 @@ pub(super) fn validate_for(
         None
     };
     let steps = if let Some(spec) = native {
-        let default_steps = if spec["runner"] == "wan-a14b-sd" && quality == "fine" { json!(8) } else { spec["steps"].clone() };
+        let default_steps = if h3 && body["h3Decoder"] == "dwd" { json!(2) }
+            else if spec["runner"] == "wan-a14b-sd" && quality == "fine" { json!(8) } else { spec["steps"].clone() };
         integer(body.get("steps").unwrap_or(&default_steps))
             .filter(|n| (spec["minSteps"].as_u64().unwrap_or(1)..=100).contains(n))
             .ok_or_else(|| invalid("原生模型步数超出支持范围"))?

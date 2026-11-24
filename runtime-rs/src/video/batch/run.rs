@@ -23,9 +23,10 @@ pub(super) async fn execute(service: Arc<Service>, batch: Arc<Batch>, mut first:
             let prepared = match input {
                 None => first.take().unwrap(),
                 Some(input) => {
-                    let recomposed = batch_input::recompose(&input, &batch.input)?;
-                    drop(input);
-                    let input = recomposed;
+                    let input = if input["inferenceEngine"] == "native" {
+                        // The frame link only changes the condition image; keep the frozen native recipe.
+                        input
+                    } else { batch_input::recompose(&input, &batch.input)? };
                     if let Some(hooks) = &batch.hooks {
                         resume::restore(&service.config, &input, hooks.as_ref(), &cancel).await?;
                     }
@@ -98,7 +99,8 @@ pub(super) async fn execute(service: Arc<Service>, batch: Arc<Batch>, mut first:
                 let output = state.shots[index].result.clone();
                 drop(state);
                 if link && let Some(output) = output {
-                    match transcode::tail(&service, &output, cancel.clone()).await {
+                    let native = batch.input["inferenceEngine"] == "native";
+                    match transcode::tail(&service, &output, native, cancel.clone()).await {
                         Ok(name) => {
                             let mut state = batch.state.lock().await;
                             state.shots[index].tail = Some(name.clone());
@@ -111,8 +113,8 @@ pub(super) async fn execute(service: Arc<Service>, batch: Arc<Batch>, mut first:
                             next.input[key] = json!(name);
                         }
                         Err(e) => {
-                            if cancel.is_cancelled() {
-                                pause(&batch, index, e, true).await;
+                            if cancel.is_cancelled() || native {
+                                pause(&batch, index, e, cancel.is_cancelled()).await;
                                 return;
                             } /* Legacy extraction failure proceeds without a tail. */
                         }

@@ -1,6 +1,6 @@
 """Native video execution with pinned upstream pipelines and local model layouts.
 
-H3 text and keyframe workflows share the transformer and both VAEs.
+H3 loads the video encoder only for DWD tasks with keyframes.
 """
 from contextlib import contextmanager, nullcontext
 from huiyu_worker_lifecycle import load_sibling
@@ -12,10 +12,14 @@ def load(root, spec, data, control, contract):
     if spec.get("blocks"):
         import transformers
         kwargs = {"workflow": spec["workflow"]} if spec.get("workflow") else {}
-        pipeline = getattr(diffusers, spec["pipeline"])(**kwargs)
+        cls = getattr(diffusers, spec["pipeline"])
+        dwd = data.get("h3Decoder") == "dwd"
+        pipeline = load_sibling("h3_piflow").pipeline(cls, data["_videoImage"]) if dwd else cls(**kwargs)
         index = contract.config(root, root / spec["indexFile"])
         components = {}
         for name in contract.MANIFEST["layouts"][spec["pipeline"]]:
+            if dwd and name not in pipeline.pretrained_component_names:
+                continue
             control.stage("loading", component=name)
             library, class_name = index[name][:2]
             cls = getattr(transformers if library == "transformers" else diffusers, class_name)
@@ -29,6 +33,8 @@ def load(root, spec, data, control, contract):
                     packed = load_sibling("h3_packed")
                     variant = data.get("_h3AccelerationPath")
                     extra = {("fused_path" if data["videoAttention"] == "h3-fused" else "sla_path"): variant} if variant else {}
+                    if dwd:
+                        extra["dwd_path"] = data["_h3DwdPath"]
                     components[name] = packed.load_transformer(root, data["steps"], control, contract, **extra)
                     continue
                 if name == "text_encoder":
@@ -36,10 +42,9 @@ def load(root, spec, data, control, contract):
                     continue
                 if name in ("vae", "audio_vae"):
                     vae = load_sibling("h3_vae")
-                    if name == "vae" and data.get("h3Decoder") == "lightvae":
-                        components[name] = vae.load_vae(root, name, control, contract, lightvae=True)
-                    else:
-                        components[name] = vae.load_vae(root, name, control, contract)
+                    components[name] = vae.load_vae(root, name, control, contract,
+                        lightvae=name == "vae" and data.get("h3Decoder") == "lightvae",
+                        encoder_only=name == "vae" and dwd)
                     continue
             component = cls.from_pretrained(str(root / name), **kwargs)
             if name == "text_encoder" and spec["pipeline"] == "MiniMaxH3ModularPipeline":
@@ -69,10 +74,10 @@ def load(root, spec, data, control, contract):
     return getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
 
 
-def task_pipeline(pipeline_class, components, parameters, spec, image_conditioned):
+def task_pipeline(pipeline_class, components, parameters, spec, image_conditioned, *, dwd=False):
     if spec.get("blocks"):
         kwargs = {"workflow": "fl2va" if image_conditioned else "t2va"} if spec["pipeline"] == "MiniMaxH3ModularPipeline" else {}
-        pipeline = pipeline_class(**kwargs)
+        pipeline = load_sibling("h3_piflow").pipeline(pipeline_class, image_conditioned) if dwd else pipeline_class(**kwargs)
         # A modular workflow creates its own preprocessing components from
         # config, including the keyframe resizer for fl2va.
         pipeline.update_components(**{name: components[name] for name in pipeline.pretrained_component_names})
@@ -104,7 +109,7 @@ def prepare(pipeline, spec, data):
         # The fresh task's guider owns CFG, never the cached model components.
         pipeline.guider = ClassifierFreeGuidance.from_config(pipeline.guider.config, guidance_scale=data["cfg"])
     if (spec["pipeline"] in ("HunyuanVideo15Pipeline", "LTX2Pipeline", "Kandinsky6TI2VAPipeline")
-            or data.get("_h3TurboSteps")
+            or data.get("_h3TurboSteps") and getattr(pipeline, "vae", None) is not None
             or spec["pipeline"] in ("WanPipeline", "WanAnimate2DistilledModularPipeline")
             and pipeline._huiyu_memory.policy == "offload"):
         pipeline.vae.enable_tiling()
@@ -157,6 +162,10 @@ def generate(pipeline, spec, data, control, *, device, image=None, last_frame=No
     if name == "MiniMaxH3ModularPipeline":
         context = nullcontext()
         if data.get("_h3TurboSteps"):
+            context = load_sibling("h3_packed").refine_context(pipeline.transformer, pipeline._huiyu_h3_conditioning)
+            if data.get("h3Decoder") == "dwd":
+                with context:
+                    return load_sibling("h3_piflow").generate(pipeline, args, data, control, device, observe_scheduler)
             # The installed four-step adapter is the 768p release. The eight-step
             # adapter is the 544p release, whose video noise shift differs.
             pipeline.scheduler.set_shift(float(data["h3VideoShift"]))
@@ -164,7 +173,6 @@ def generate(pipeline, spec, data, control, *, device, image=None, last_frame=No
             # MiniMaxH3Scheduler includes zero in its grid. N Turbo evaluations
             # require N+1 grid points on both the video and audio schedules.
             args["num_inference_steps"] = data["steps"] + 1
-            context = load_sibling("h3_packed").refine_context(pipeline.transformer, pipeline._huiyu_h3_conditioning)
         with context, observe_scheduler(pipeline.audio_scheduler, control):
             result = pipeline(**args, output=["videos", "audio", "sampling_rate"])
         return result["videos"][0], result["audio"][0], result["sampling_rate"]

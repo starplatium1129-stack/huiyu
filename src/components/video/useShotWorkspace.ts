@@ -12,6 +12,7 @@ import type { ShotDraft } from './shotListTypes';
 import { useReferenceCards, removeCastSlot } from './useReferenceCards';
 import { useShotAiTools } from './useShotAiTools';
 import { useShotBatchMachine } from './useShotBatchMachine';
+import { useNativeH3Recipe } from '@/composables/video/useNativeH3Recipe'
 import { useShotDraft } from './useShotDraft';
 import { useShotFirstFrames } from './useShotFirstFrames';
 import { useShotImport } from './useShotImport';
@@ -25,7 +26,10 @@ export function useShotWorkspace(props: {
     const route = useRoute(), router = useRouter();
     const sceneStore = useSceneStore();
     const popularCharacters = computed(() => sceneStore.directoryCharacters);
-    const h3Ready = computed(() => props.status?.provider !== 'native' && props.status?.models.some((model) => model.id === 'minimax-h3' && model.available) === true);
+    const h3Model = computed(() => props.status?.models.find(model => model.id === 'minimax-h3') ?? null)
+    const nativeVideo = computed(() => props.status?.provider === 'native')
+    const h3 = useNativeH3Recipe(h3Model)
+    const h3Ready = computed(() => h3Model.value?.available === true && (!nativeVideo.value || h3Model.value.h3Dwd !== undefined))
     const cameraOptions: Array<{
         value: VideoDefaults['camera'];
         label: string;
@@ -95,12 +99,27 @@ export function useShotWorkspace(props: {
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
+    const recipeIssue = computed(() => {
+        if (!nativeVideo.value) return ''
+        if (h3.issue.value) return h3.issue.value
+        const durations = h3Model.value?.durations
+        for (const [index, shot] of shots.value.entries()) {
+            if (durations && !durations.includes(shot.duration))
+                return `请将第 ${index + 1} 镜调整为本机支持的时长（${durations.join(' / ')} 秒）。`
+            if (shot.dialogue.trim() || shot.shotSize)
+                return `请将第 ${index + 1} 镜的台词与景别写入镜头描述，并清空对应单独选项。`
+            if (referencesReady(shot) && shotReferences(shot)?.length)
+                return `本机 H3 支持首帧条件，请移除第 ${index + 1} 镜选用的角色参考图。`
+        }
+        return ''
+    })
     const { batch, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, cancelOriginalRequest, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
         shots,
         identityCard,
         aspectRatio,
         quality,
-        steps,
+        recipe: computed(() => nativeVideo.value ? h3.input.value : { steps: steps.value }),
+        recipeIssue,
         linkLastFrame,
         shotReferences, referencesReady,
         inputsBusy: computed(() => storyboardBusy.value || loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0),
@@ -139,11 +158,11 @@ export function useShotWorkspace(props: {
         if (batchRecoveryPending.value) return batchReading.value ? '正在恢复已有批次' : '已有批次状态尚未确认';
         if (batchActive.value)
             return '整批正在生成中';
-        if (props.status?.provider === 'native') return '分镜批量生成需选择 ComfyUI 引擎';
         if (!props.status?.online)
-            return '先启动 ComfyUI';
+            return nativeVideo.value ? '先准备本机视频运行环境' : '先启动 ComfyUI';
         if (!h3Ready.value)
-            return '先安装 MiniMax H3 权重';
+            return nativeVideo.value ? '先准备原生 H3 量化模型包' : '先安装 MiniMax H3 权重';
+        if (recipeIssue.value) return recipeIssue.value
         if (shots.value.length === 0)
             return '先添加镜头';
         if (submitting.value) return '正在提交镜头';
@@ -381,7 +400,7 @@ export function useShotWorkspace(props: {
     // 切模式保留缓存实例；真正卸载后恢复镜头文本、身份锚点和参考卡元信息。
     // 首帧图只存耐久图片 ID，恢复时从原图重挂载，不以受控上传名作为恢复凭据。
     const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission, recoverShotSubmission } = useShotDraft({
-        aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
+        aspectRatio, quality, steps, nativeH3Steps: h3.choice, h3LightVae: h3.lightVae, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
     const { importScenarioActs, pendingScenarioCount, scenarioImportBlocked } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft, referenceCards, adoptOutfitProse,
@@ -446,7 +465,8 @@ export function useShotWorkspace(props: {
     }
     return {
 frameInputs, openProjectImport,
-        h3Ready, aspectRatio, quality, linkLastFrame, steps,
+        h3Ready, h3Model, nativeVideo, nativeH3Steps: h3.choice, h3LightVae: h3.lightVae, h3DefaultSteps: h3.defaultSteps, h3Issue: h3.issue,
+        aspectRatio, quality, linkLastFrame, steps,
         identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
         popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, retryReferences, shots, addShot,

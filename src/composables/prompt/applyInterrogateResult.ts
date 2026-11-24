@@ -6,7 +6,7 @@ import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
-import type { InterrogateResult } from '@/api/interrogateResult'
+import { parseAssistLayout, type InterrogateResult } from '@/api/interrogateResult'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true, usingMoss = false) {
   if (!current() || !result || typeof result !== 'object') return
@@ -15,9 +15,13 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     return
   }
   const payload = result as Partial<InterrogateResult>
-  function flash(message: string, captionAdopted = false) {
+  function flash(message: string, captionAdopted = false, boundAssist = false) {
+    const assistLabel = payload.assistProvider === 'chatgpt' ? ' ChatGPT' : '聊天 API'
+    const assistNote = payload.assistUsed && captionAdopted
+      ? `；已通过${assistLabel}协同补全${boundAssist ? '动作与环境描述' : '描述'}`
+      : ''
     if (payload.warning) pb.flash(`${payload.warning}；${message}`, 5200, 'warning')
-    else pb.flash(payload.assistUsed && captionAdopted ? `${message}；已通过${payload.assistProvider === 'chatgpt' ? ' ChatGPT' : '聊天 API'}协同补全描述` : message)
+    else pb.flash(`${message}${assistNote}`)
   }
   const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
   const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
@@ -40,7 +44,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const source = [...new Set([...resolved.tags, ...characterTags, ...works, ...artistTags])]
     const tags = source.filter(tag => !isCensorTag(tag))
     const caption = (payload.mode === 'caption' || payload.assistUsed) && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
-    if (!tags.length && !caption) { flash('未找到可采用的反推内容，请调整阈值后重试'); return }
+    const layout = payload.assistUsed ? parseAssistLayout(payload.assistLayout) : null
+    if (!tags.length && !caption && !layout) { flash('未找到可采用的反推内容，请调整阈值后重试'); return }
     if (tagMetadata && rating && tags.length) tags.unshift(rating === 'general' ? 'safe' : rating)
     const prior = pb.referenceInput
     const unchangedCaption = prior?.captionInEditor && pb.visualDescription === prior.caption
@@ -50,12 +55,12 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     if (!usingMoss) pb.sdParams.negativeCustom = ''
     pb.manualTags = new Set(tags)
     pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works,
-      caption, captionInEditor: Boolean(caption && !usingMoss) })
+      caption, captionInEditor: Boolean(caption && !usingMoss), ...(layout ? { layout } : {}) })
     pb.visualDescription = usingMoss ? handwritten : caption
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
-    const adopted = [caption && '原图描述', tags.length && `${tags.length} 个原图词条`].filter(Boolean).join('和')
-    flash(`已采用${adopted}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`, Boolean(caption))
+    const adopted = [caption && '原图描述', tags.length && `${tags.length} 个原图词条`].filter(Boolean).join('和') || '原图布局'
+    flash(`已采用${adopted}${usingMoss && layout ? `；已识别 ${layout.items.length} 个布局区域` : ''}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`, Boolean(caption))
     return
   }
   const { splitReferenceTags } = await import('@/utils/interrogateReference')
@@ -64,9 +69,14 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     knownCharacterTags: [...characterTags, ...pb.popularCharacters.flatMap(character => [...character.exactTokens, ...character.aliases])],
     catalog: pb.tags,
   })
-  // A free caption can mix identity with clothes and scenery. Only structured
-  // tags enter the transferable layer; never overwrite the user's own prose.
-  if (!reference.tags.length && !artistTags.length) {
+  const assistCaption = payload.assistUsed && payload.assistSubjectMode === 'bound'
+    && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
+  const assistLayout = payload.assistUsed && payload.assistSubjectMode === 'bound'
+    ? parseAssistLayout(payload.assistLayout) : null
+  // A free caption can mix identity with clothes and scenery. Only structured tags
+  // and bound-mode de-identified assist prose/layout enter the transferable layer;
+  // never overwrite the user's own prose.
+  if (!reference.tags.length && !artistTags.length && !assistCaption && !assistLayout) {
     flash('未找到可安全套用的非身份词条；人物特征与无法拆分的描述未写入，请核对后手动补充衣服、姿势或背景')
     return
   }
@@ -117,7 +127,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   }).map(normalizeKey) : []
   for (const tag of accepted) if (!referenceOutfit.includes(tag)) next.add(tag)
   for (const tag of referenceArtists) next.add(tag)
-  if (!accepted.size && !referenceOutfit.length && !referenceArtists.length) {
+  if (!accepted.size && !referenceOutfit.length && !referenceArtists.length && !assistCaption && !assistLayout) {
     flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
     return
   }
@@ -139,16 +149,28 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   pb.manualTags = next
   const userKeys = new Set([...userTags].map(tag => normalizeKey(pb.tagDictionary.canonicalize(tag))))
   const sourceTags = [...pb.manualTags].filter(tag => !userKeys.has(normalizeKey(tag)))
-  pb.referenceInput = sourceTags.length ? { tags: sourceTags } : null
+  pb.referenceInput = cloneReferenceInput({
+    tags: sourceTags,
+    ...(assistCaption ? { caption: assistCaption, captionInEditor: false } : {}),
+    ...(assistLayout ? { layout: assistLayout } : {}),
+  })
   const note = characterConflictNote(characterTags, context.identityTokens, context.aliases)
-  const parts = [`已采用 ${new Set([...accepted, ...referenceOutfit, ...referenceArtists]).size} 个参考词条，可连续切换角色；人物身份跟随目标角色`]
+  const adoptedTagCount = new Set([...accepted, ...referenceOutfit, ...referenceArtists]).size
+  const parts = [adoptedTagCount
+    ? `已采用 ${adoptedTagCount} 个参考词条，可连续切换角色；人物身份跟随目标角色`
+    : `已采用参考${assistCaption ? '画面描述' : '画面布局'}，可连续切换角色；人物身份跟随目标角色`]
+  if (usingMoss && assistLayout) parts.push(`已识别 ${assistLayout.items.length} 个布局区域`)
   if (referenceOutfit.length) parts.push('参考服装已独立保留')
   if (referenceArtists.length) parts.push('反推画师已放入画师段')
   if (reference.excludedIdentity.length) parts.push(`已排除参考人物特征 ${reference.excludedIdentity.length} 项`)
   if (reference.uncertain.length) parts.push(`另有 ${reference.uncertain.length} 项描述无法可靠区分，未自动套用`)
-  if (payload.mode === 'caption') parts.push('已采用结构化标签，原始散文未覆盖手写画面描述')
+  if (assistCaption) {
+    if (pb.visualDescription.trim()) parts.push('已保留手写画面描述')
+  } else if (payload.mode === 'caption') {
+    parts.push('已采用结构化标签，原始散文未覆盖手写画面描述')
+  }
   if (merged.conflicts.length) parts.push(`保留现有设置，跳过冲突词条 ${merged.conflicts.length} 项：${merged.conflicts[0].reason}`)
   if (merged.filtered.length) parts.push(`过滤噪点或元数据 ${merged.filtered.length} 项`)
   if (note) parts.push(note)
-  flash(parts.join('；'))
+  flash(parts.join('；'), Boolean(assistCaption), true)
 }

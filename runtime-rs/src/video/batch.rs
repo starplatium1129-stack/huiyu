@@ -43,6 +43,7 @@ pub(super) struct State {
 }
 struct Shot {
     input: Value,
+    native_runtime: Option<Value>,
     status: String,
     attempts: u64,
     upstream: Option<String>,
@@ -74,11 +75,17 @@ impl Batch {
         let shots = s.shots.iter().enumerate().map(|(i, s)| {
             let mut value = json!({"index":i+1,"input":s.input,"status":s.status,"attempts":s.attempts,"upstreamId":s.upstream,"submissionIntentAt":s.intent,"gatewayJobId":s.gateway,"tailFrame":s.tail,"result":null,"errorCode":s.code});
             value["result"] = output(&s.result);
+            if let Some(observed) = &s.native_runtime { value["nativeRuntime"] = observed.clone(); }
             value
         }).collect();
         let mut value = json!({"gatewayJobId":self.id,"status":s.status,"linkLastFrame":self.input["linkLastFrame"],"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"concatStage":s.concat_stage,"concat":null,"shots":null});
         value["concat"] = output(&s.concat);
         value["shots"] = Value::Array(shots);
+        if self.input["inferenceEngine"] == "native" {
+            for key in ["inferenceEngine", "h3Decoder", "videoAttention"] {
+                value[key] = self.input[key].clone();
+            }
+        }
         value
     }
     async fn save(&self) -> Result<()> {
@@ -108,9 +115,15 @@ impl Batch {
         let settled = stopped && observed == Some(true);
         let unknown = if stopped { !settled } else { s.unknown };
         let shots = s.shots.iter().enumerate().map(|(i, s)| {
-            json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))})
+            let mut row = json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))});
+            if let Some(observed) = &s.native_runtime { row["nativeRuntime"] = observed.clone(); }
+            row
         }).collect();
         let mut value = json!({"id":self.id,"status":s.status,"upstreamSettled":settled,"unknown":unknown,"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"steps":self.input["steps"],"linkLastFrame":self.input["linkLastFrame"],"progress":{"total":s.shots.len(),"succeeded":s.shots.iter().filter(|s|s.status=="succeeded").count(),"failed":s.shots.iter().filter(|s|s.status=="failed").count()},"createdAt":self.created,"shots":null,"concatAvailable":s.concat.is_some(),"concatUrl":s.concat.as_ref().map(|_|format!("/api/video/batches/{}/result",self.id))});
+        if self.input["inferenceEngine"] == "native" {
+            value["h3Decoder"] = self.input["h3Decoder"].clone();
+            value["videoAttention"] = self.input["videoAttention"].clone();
+        }
         value["shots"] = Value::Array(shots);
         value
     }
@@ -139,30 +152,60 @@ impl Service {
         owner: Option<&str>,
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
-        let input = batch_input::validate_batch(&raw)?;
+        let pack = if self.backend.native_enabled() {
+            let pack = native::packed_h3(&self.backend.native_settings()?, &raw["modelId"]).await?;
+            if pack.is_none() {
+                if raw["modelId"] == "minimax-h3" && (raw["steps"] == 2 || raw["h3Decoder"] == "dwd") {
+                    return Err(error(400, "UNSUPPORTED_ACCELERATION", "本机尚未验证 H3 INT8 主干和 pi-H3 DWD 两步权重，请先导入。"));
+                }
+                return Err(error(400, "NATIVE_VIDEO_BATCH_UNSUPPORTED", "原生分镜批量需要已导入的 MiniMax H3 本地量化主干。"));
+            }
+            pack
+        } else { None };
+        let input = batch_input::validate_batch(&raw, pack.as_ref())?;
         drop(raw);
         self.prepare_batch_validated(input, local, owner, cancel)
             .await
     }
     async fn prepare_batch_validated(
         &self,
-        input: Value,
+        mut input: Value,
         local: bool,
         owner: Option<&str>,
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
-        if self.backend.native_enabled() {
-            return Err(error(
-                501,
-                "NATIVE_VIDEO_BATCH_UNSUPPORTED",
-                "原生视频本轮仅接入单镜头任务；分镜批量、衔接与合成尚未接入，不会回退 ComfyUI",
-            ));
+        let native = input["inferenceEngine"] == "native";
+        if native != self.backend.native_enabled() {
+            return Err(error(409, "TASK_RESUME_UNSAFE", "分镜批次保存的推理引擎与当前设置不一致"));
         }
+        let id = input["modelId"].clone();
+        let linked = input["linkLastFrame"] == true;
         let shots = input["shots"]
-            .as_array()
+            .as_array_mut()
             .filter(|a| !a.is_empty() && a.len() <= 30)
             .ok_or_else(|| error(409, "TASK_RESUME_UNSAFE", "已保存的分镜参数无效"))?;
-        if input["modelId"] == "wan2.2-ti2v-5b" && input["linkLastFrame"] == true && shots.len() > 1
+        let mut combined = json!({});
+        combined["references"] = json!(shots.iter().flat_map(|s| inputs::names(&s["input"])).collect::<Vec<_>>());
+        if native {
+            let settings = self.backend.native_settings()?;
+            let pack = native::packed_h3(&settings, &id).await?
+                .ok_or_else(|| error(400, "UNSUPPORTED_ACCELERATION", "原生分镜批量需要已验证的 H3 本地权重。"))?;
+            for shot in shots.iter_mut() {
+                if shot["input"]["modelId"] != id {
+                    return Err(error(409, "TASK_RESUME_UNSAFE", "分镜镜头的模型与批次不一致"));
+                }
+                shot["input"] = native::normalize(shot["input"].take(), Some(&pack))?;
+            }
+            let permit = self.backend.reserve_native(&cancel)?;
+            let originals = inputs::capture(&self.config, &combined, local, owner, &cancel).await?;
+            let shot = &shots[0]["input"];
+            let first = self.prepare_native_captured(shot.clone(), &settings, permit, originals.subset(shot), &cancel).await?;
+            return Ok(BatchPrepared { input, first, originals });
+        }
+        if shots.iter().any(|s| s["input"]["inferenceEngine"] == "native") {
+            return Err(error(409, "TASK_RESUME_UNSAFE", "分镜镜头的推理引擎与批次不一致"));
+        }
+        if id == "wan2.2-ti2v-5b" && linked && shots.len() > 1
         {
             return Err(error(
                 400,
@@ -171,7 +214,7 @@ impl Service {
             ));
         }
         let t8 = self.t8(&cancel).await;
-        for shot in shots {
+        for shot in shots.iter() {
             // Preflight every shot without cloning recipes or compiling graphs
             // that execution will rebuild with the current linked frame.
             resources::requirements(&self.config, &shot["input"], t8)?;
@@ -185,12 +228,6 @@ impl Service {
                 cancel.clone(),
             )
             .await?;
-        let mut combined = json!({"references":[]});
-        let names = shots
-            .iter()
-            .flat_map(|s| inputs::names(&s["input"]))
-            .collect::<Vec<_>>();
-        combined["references"] = json!(names);
         let originals = inputs::capture(&self.config, &combined, local, owner, &cancel).await?;
         let first = Prepared {
             originals: originals.subset(&backend.input),
@@ -233,6 +270,7 @@ impl Service {
             .drain(..)
             .map(|mut s| Shot {
                 input: s.get_mut("input").map(Value::take).unwrap_or_default(),
+                native_runtime: None,
                 status: "pending".into(),
                 attempts: 0,
                 upstream: None,

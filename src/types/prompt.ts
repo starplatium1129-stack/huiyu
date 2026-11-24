@@ -30,6 +30,10 @@ export interface PromptPlan {
   mossLayout?: {
     compositionIntent?: PromptSceneContext['compositionIntent']
     subjects?: readonly { caption: string; side?: import('../utils/mossLayout').MossLayoutSide }[]
+    referenceLayout?: {
+      layout: import('../api/interrogateResult').InterrogateAssistLayout
+      boundSubject?: boolean
+    }
   }
   quality: string[]; rating: string[]; identity: string[]; exactControls: string[]
   /** Name/alias classification only; appearance and outfit tokens stay in ordinary tags. */

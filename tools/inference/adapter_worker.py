@@ -506,23 +506,7 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     actual_format = spec["localPack"]["format"] if local_steps is not None else "diffusers"
     if data.get("nativeModelFormat", actual_format) != actual_format:
         raise Error("MODEL_CHANGED", "视频模型已更换，请使用当前模型重新提交任务。")
-    if local_steps is not None:
-        if data["steps"] not in local_steps:
-            raise Error("INVALID_PARAMETER", f"本地 H3 Turbo 已安装的步数为 {local_steps}，请重新选择步数。")
-        data["_h3TurboSteps"] = data["steps"]
-        mode = data.get("videoAttention")
-        data.setdefault("h3VideoShift", 6 if data["steps"] == 4 and mode != "h3-fused" else 12)
-        if mode in ("h3-sla", "h3-fused") or data.get("h3Decoder") == "lightvae":
-            extras = sibling("import_h3").prepared_accelerators(root)
-            if data.get("h3Decoder") == "lightvae" and "lightvae" not in extras:
-                raise Error("MODEL_CHANGED", "此配方所需的 H3 LightVAE 权重未就绪。")
-            if mode in ("h3-sla", "h3-fused"):
-                kind = mode.removeprefix("h3-")
-                if data["steps"] != 4 or kind not in extras or data["h3VideoShift"] != (6 if kind == "sla" else 12):
-                    raise Error("UNSUPPORTED_ACCELERATION", "所选 H3 加速需要对应的四步权重和采样偏移。")
-                data["_h3AccelerationPath"] = contract.safe_file(root, root / extras[kind][0]["path"])
-    elif data.get("videoAttention") in ("h3-sol", "h3-sla", "h3-fused") or "h3Decoder" in data or "h3VideoShift" in data:
-        raise Error("UNSUPPORTED_ACCELERATION", "此选项需要本机量化版 H3 Turbo。")
+    contract.resolve_local_h3(root, spec, data, local_steps, auto_steps="steps" not in job["input"])
     if spec["family"] == "moss-image":
         resolve_moss_text_precision(root, data)
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
@@ -646,20 +630,24 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                           calls=dict(sdpa=0, slicedSdpa=0, flash2=0, sage=0))
             if local_steps is not None:
                 observation["nativeModelFormat"] = actual_format
-                observation["turboSteps"] = data["steps"]
+                if data.get("h3Decoder") != "dwd":
+                    observation["turboSteps"] = data["steps"]
+                    observation["h3Decoder"] = getattr(pipeline.vae, "_huiyu_video_decoder", "original")
                 observation["h3VideoShift"] = data["h3VideoShift"]
                 observation["h3AudioShift"] = 3
-                observation["h3Decoder"] = getattr(pipeline.vae, "_huiyu_video_decoder", "original")
                 observation["h3Conditioning"] = getattr(pipeline, "_huiyu_h3_conditioning", {})
                 observation["h3Modulation"] = sibling("h3_modulation").begin(pipeline.transformer)
             observation["videoAcceleration"] = report
             rotary = sibling("h3_rotary").rotary(pipeline.transformer) if local_steps is not None else contextlib.nullcontext()
-            with torch.inference_mode(), acceleration.attention(pipeline, control, report), rotary as rotary_stats:
+            with torch.inference_mode(), acceleration.attention(pipeline, control, report,
+                    dwd=data.get("h3Decoder") == "dwd"), rotary as rotary_stats:
                 if rotary_stats is not None:
                     observation["h3Rotary"] = rotary_stats
                 frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control, device=video_device,
                     image=images[0] if images else None, last_frame=images[1] if len(images) == 2 else None,
                     driving_video=job.get("drivingVideoPath"))
+            if data.get("h3Decoder") == "dwd":
+                observation.update(pipeline._huiyu_dwd_observation)
             control.stage("saving")
             if spec["audio"] and (soundtrack is None or sample_rate != spec["sampleRate"]):
                 raise Error("INVALID_MODEL_OUTPUT", "Joint audio output or its sample rate is missing/invalid")

@@ -1,5 +1,17 @@
 export type InterrogateMode = 'tag' | 'caption'
 export type InterrogateAssistProvider = 'chatgpt' | 'api'
+export type InterrogateSubjectMode = 'free' | 'bound'
+export type InterrogateAssistLayoutCanvas = 'single' | 'multi_panel' | 'collage'
+export interface InterrogateAssistLayoutItem {
+  label: 'character' | 'object' | 'text'
+  caption: string
+  bbox: [number, number, number, number]
+  text?: string
+}
+export interface InterrogateAssistLayout {
+  canvas: InterrogateAssistLayoutCanvas
+  items: InterrogateAssistLayoutItem[]
+}
 export interface InterrogateResult {
   engine: 'pixai'
   model: 'pixai-tagger-v1.0'
@@ -19,6 +31,8 @@ export interface InterrogateResult {
   assistProvider?: InterrogateAssistProvider
   assistModel?: string
   assistFallbackReason?: string
+  assistSubjectMode?: InterrogateSubjectMode
+  assistLayout?: InterrogateAssistLayout
 }
 
 function record(value: unknown): Record<string, unknown> | null {
@@ -36,6 +50,44 @@ function tags(value: unknown, limit = Infinity): value is string[] {
     && new Set(value).size === value.length
 }
 
+const ASSIST_CANVASES = new Set<InterrogateAssistLayoutCanvas>(['single', 'multi_panel', 'collage'])
+const ASSIST_LABELS = new Set<InterrogateAssistLayoutItem['label']>(['character', 'object', 'text'])
+
+/** Validate and deep-clone a normalized assist layout (`bbox` in [y1, x1, y2, x2] 0..1). */
+export function parseAssistLayout(value: unknown): InterrogateAssistLayout | null {
+  const data = record(value)
+  if (!data || typeof data.canvas !== 'string' || !ASSIST_CANVASES.has(data.canvas as InterrogateAssistLayoutCanvas)) {
+    return null
+  }
+  if (!Array.isArray(data.items) || data.items.length < 1 || data.items.length > 12) {
+    return null
+  }
+  const items: InterrogateAssistLayoutItem[] = []
+  for (const entry of data.items) {
+    const item = record(entry)
+    if (!item || typeof item.label !== 'string' || !ASSIST_LABELS.has(item.label as InterrogateAssistLayoutItem['label'])) {
+      return null
+    }
+    if (typeof item.caption !== 'string' || !item.caption.trim()) return null
+    if (!Array.isArray(item.bbox) || item.bbox.length !== 4) return null
+    const [y1, x1, y2, x2] = item.bbox
+    if (!probability(y1) || !probability(x1) || !probability(y2) || !probability(x2) || !(y1 < y2 && x1 < x2)) {
+      return null
+    }
+    const label = item.label as InterrogateAssistLayoutItem['label']
+    if (item.text !== undefined && typeof item.text !== 'string') return null
+    const text = typeof item.text === 'string' ? item.text.trim() : ''
+    if (label === 'text' && !text) return null
+    items.push({
+      label,
+      caption: item.caption.trim(),
+      bbox: [y1, x1, y2, x2],
+      ...(label === 'text' || text ? { text } : {}),
+    })
+  }
+  return { canvas: data.canvas as InterrogateAssistLayoutCanvas, items }
+}
+
 /** Keep the model's categories separate; never turn character/style/meta rows into general tags. */
 export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): InterrogateResult {
   const data = record(value)
@@ -48,6 +100,7 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
   // Older installed runtimes omit these categories; keep their original result usable.
   const copyrightTags = data?.copyrightTags === undefined ? [] : data.copyrightTags
   const styleTags = data?.styleTags === undefined ? [] : data.styleTags
+  const assistLayout = data?.assistLayout === undefined ? undefined : parseAssistLayout(data.assistLayout)
   if (!data || data.engine !== 'pixai' || data.model !== 'pixai-tagger-v1.0'
     || data.mode !== mode || !probability(data.threshold)
     || !tags(data.tags, 100) || !tags(characterTags, 100) || !tags(copyrightTags, 100) || !tags(styleTags, 100)
@@ -61,7 +114,9 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     || (data.assistUsed !== undefined && typeof data.assistUsed !== 'boolean')
     || (data.assistProvider !== undefined && data.assistProvider !== 'chatgpt' && data.assistProvider !== 'api')
     || (data.assistModel !== undefined && typeof data.assistModel !== 'string')
-    || (data.assistFallbackReason !== undefined && typeof data.assistFallbackReason !== 'string')) {
+    || (data.assistFallbackReason !== undefined && typeof data.assistFallbackReason !== 'string')
+    || (data.assistSubjectMode !== undefined && data.assistSubjectMode !== 'free' && data.assistSubjectMode !== 'bound')
+    || (data.assistLayout !== undefined && !assistLayout)) {
     throw new Error('反推结果异常，请重试')
   }
   return {
@@ -77,5 +132,7 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     ...(data.assistProvider === 'chatgpt' || data.assistProvider === 'api' ? { assistProvider: data.assistProvider } : {}),
     ...(typeof data.assistModel === 'string' ? { assistModel: data.assistModel } : {}),
     ...(typeof data.assistFallbackReason === 'string' ? { assistFallbackReason: data.assistFallbackReason } : {}),
+    ...(data.assistSubjectMode === 'free' || data.assistSubjectMode === 'bound' ? { assistSubjectMode: data.assistSubjectMode } : {}),
+    ...(assistLayout ? { assistLayout } : {}),
   }
 }

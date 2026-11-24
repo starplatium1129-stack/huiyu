@@ -25,6 +25,7 @@ import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import { withoutReplacedPose } from './promptCaption.ts'
 import { sceneProseWithChangedOutfit } from './outfitReplacement.ts'
 import { isWardrobeContextTag, wardrobeProse, wardrobeTokens } from './wardrobeContent.ts'
+import type { InterrogateAssistLayout } from '../api/interrogateResult.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -44,6 +45,7 @@ export interface PopularPromptOptions {
   /** 用户补充的画面描述；只追加，不得替换角色服装。 */
   visualDescription?: string
   backgroundProse?: string
+  referenceLayout?: InterrogateAssistLayout | null
   negativeCustom?: string
   /** Model-specific style recipe; omitted values inherit the blueprint's recipe. */
   style?: ResolvedStyle | null
@@ -363,7 +365,10 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       }
   const plan = createPromptPlan({ ...commonInput, ...modelInput })
   if (engine === 'moss') {
-    plan.mossLayout = { compositionIntent: compositionSource?.compositionIntent }
+    plan.mossLayout = {
+      compositionIntent: compositionSource?.compositionIntent,
+      ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true } } : {}),
+    }
     const rendered = renderMossDrawingPrompt(plan, userVisual, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
   }

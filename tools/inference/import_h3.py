@@ -193,7 +193,7 @@ def register_accelerators(source, models_root, apply):
     return dict(ok=True, preparedModel="minimax-h3", modelDir=str(root), available=found, installed=list(installed))
 
 
-def register(source_root, models_root, apply):
+def register(source_root, models_root, apply, *, discover_dwd=False):
     model_id = "minimax-h3"
     pack = read_catalog("adapter-models.json")["models"][model_id]["localPack"]
     bundle = next(row for row in read_catalog("managed-adapter-models.json")["models"] if row["id"] == model_id)
@@ -256,6 +256,17 @@ def register(source_root, models_root, apply):
                        scope="converted-local-weights-sha256", representation=pack["format"],
                        sourceRevision=pack["revision"], sources=sources, files=files)
         (stage / "huiyu-model.json").write_text(json.dumps(receipt, indent=2), encoding="utf-8")
+        if discover_dwd:
+            rows = pack["accelerators"]["dwd"]
+            folder = source_root / "loras"
+            if (folder / Path(rows[0]["path"]).name).is_file():
+                try:
+                    _publish_accelerator(stage, folder, "dwd", rows)
+                    result["h3Dwd"] = True
+                except (ValueError, OSError) as exc:
+                    # Optional discovery during a base import must not strand a usable Turbo pack.
+                    # The explicit --accelerators import surfaces verification errors to the caller.
+                    print(f"Skipping optional pi-H3 DWD: {exc}", file=sys.stderr, flush=True)
         stage.rename(destination)
     return dict(result, ok=True)
 
@@ -266,13 +277,14 @@ if __name__ == "__main__":
     source.add_argument("--comfy-models", type=Path)
     source.add_argument("--accelerators", type=Path, help="Directory with optional author-released H3 checkpoints")
     parser.add_argument("--models-root", type=Path, required=True)
+    parser.add_argument("--discover-dwd", action="store_true", help="Also import a verified pi-H3 DWD adapter from ComfyUI/models/loras on initial setup")
     parser.add_argument("--apply", action="store_true")
     args = parser.parse_args()
     try:
         if args.accelerators:
             result = register_accelerators(args.accelerators.resolve(), args.models_root.resolve(), args.apply)
         else:
-            result = register(args.comfy_models.resolve(), args.models_root.resolve(), args.apply)
+            result = register(args.comfy_models.resolve(), args.models_root.resolve(), args.apply, discover_dwd=args.discover_dwd)
         print(json.dumps(result))
     except (OSError, ValueError, KeyError, FloatingPointError) as exc:
         parser.exit(1, f"{exc}\n")

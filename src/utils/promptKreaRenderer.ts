@@ -273,8 +273,10 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
   // Authored blueprint/recipe prose also carries actions and spatial relations, so keep it.
   // Its presence must not swallow manual background tags; make their narrower priority explicit.
-  if (authoredProse && manualBackground.length) {
-    parts.push(sentence(`For the background, use ${naturalList(manualBackground)} in preference to the earlier setting`))
+  const authoredLower = authoredProse.toLowerCase()
+  const overridingBackground = manualBackground.filter(bg => !authoredLower.includes(bg.toLowerCase()))
+  if (authoredProse && overridingBackground.length) {
+    parts.push(sentence(`For the background, use ${naturalList(overridingBackground)} in preference to the earlier setting`))
   }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
   const atmosphere = naturalList(lighting)

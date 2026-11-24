@@ -258,6 +258,9 @@ impl ControlService {
             .join("tools/inference")
             .join(import.script);
         let mut command = crate::native_python::command(&settings.python, &script);
+        if model.id == "minimax-h3" {
+            command.arg("--discover-dwd");
+        }
         command
             .arg("--comfy-models")
             .arg(workspace.join("ComfyUI/models"))

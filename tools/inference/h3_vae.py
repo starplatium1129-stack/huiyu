@@ -86,7 +86,7 @@ def _video_tensors(name, tensor, config):
     yield name.replace(".ff.w1.", ".ff.net.0.proj.").replace(".ff.w2.", ".ff.net.2."), tensor
 
 
-def load_vae(root, name, control, contract, *, lightvae=False):
+def load_vae(root, name, control, contract, *, lightvae=False, encoder_only=False):
     from accelerate import init_empty_weights
     from diffusers import AutoencoderKLMiniMaxH3, AutoencoderKLMiniMaxH3Audio
     video = name == "vae"
@@ -104,7 +104,11 @@ def load_vae(root, name, control, contract, *, lightvae=False):
         config = {**config, "decoder_num_layers": 12}
     with init_empty_weights(include_buffers=False):
         model = cls.from_config(config)
-        if video and lite_path is None:
+        if encoder_only:
+            # Drop the meta decoder before enumerating tensors. Keyframes only
+            # enter encode(), which uses the encoder and quant_conv.
+            model.decoder = model.post_quant_conv = None
+        elif video and lite_path is None:
             _video_shell(model, config)
         elif not video:
             # Comfy's audio pack contains final convolution weights, while
@@ -121,7 +125,7 @@ def load_vae(root, name, control, contract, *, lightvae=False):
     with load_sibling("mapped_weights").ReadOnlyWeights(path) as reader:
         for source in reader.keys():
             control.check()
-            if lite_path and source.startswith(("decoder.", "post_quant_conv.")):
+            if (lite_path or encoder_only) and source.startswith(("decoder.", "post_quant_conv.")):
                 continue
             tensor = reader.get_tensor(source)
             if tensor.dtype != source_dtype:

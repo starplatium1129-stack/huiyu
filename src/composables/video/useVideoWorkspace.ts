@@ -11,6 +11,7 @@ import { computed,onBeforeUnmount,onMounted,ref,watch,onActivated,onDeactivated 
 import { useRoute,useRouter } from 'vue-router'
 
 import { useVideoModeOptions, type StudioMode } from './useVideoModeOptions'
+import { useNativeH3Recipe } from './useNativeH3Recipe'
 
 import { cancelVideoJob, fetchVideoJob, fetchVideoStatus,
   type VideoAttention, type VideoDefaults, type VideoJob, type VideoStatusResponse } from '@/api/videoApi'
@@ -55,9 +56,7 @@ const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
 const quality = ref<VideoDefaults['quality']>('standard')
 
 const steps = ref<4 | 8>(8)
-const nativeH3Steps = ref<4 | 8>(4)
 const videoAttention = ref<VideoAttention>('auto')
-const h3LightVae = ref(true)
 
 const duration = ref<VideoDefaults['duration']>(3)
 
@@ -124,6 +123,8 @@ const videoImageId = ref('')
 const lastFrameImageId = ref('')
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
+const h3 = useNativeH3Recipe(activeModel, videoAttention)
+const { choice: nativeH3Steps, lightVae: h3LightVae } = h3
 const { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, motionOptions, durationOptions, qualities } =
   useVideoModeOptions(status, statusLoading, statusReadError, selectedMode, quality, activeModel)
 const driverKind = computed(() => selectedMode.value === 'image' ? activeModel.value?.drivingInput : undefined)
@@ -155,11 +156,10 @@ const promptPreviewRequest = computed<VideoPromptPreviewRequest | null>(() =>
   selectedMode.value !== 'shots' && promptContent.value && prompt.value.length <= 4000
     ? { ...promptSource.value, mode: selectedMode.value } : null)
 const { source: driverSource, selected: driver, choose: chooseDriver, busy: driverBusy } = useVideoDriver(driverKind, checkOwner, statusError)
-watch([activeModel, videoAttention, nativeH3Steps], ([model, attention, count]) => {
-  if (!model) return
+watch([activeModel, videoAttention], ([model, attention]) => {
+  if (!model || model.id === 'minimax-h3') return
   if ((model.attentionModes && !model.attentionModes.includes(attention))
-    || (attention.startsWith('h3-') && !model.attentionModes?.includes(attention))
-    || (['h3-sla', 'h3-fused'].includes(attention) && count !== 4)) videoAttention.value = 'auto'
+    || (attention.startsWith('h3-') && !model.attentionModes?.includes(attention))) videoAttention.value = 'auto'
 })
 watch(aspectOptions, options => {
   if (options[0] && !options.some(option => option.id === aspectRatio.value)) aspectRatio.value = options[0].id
@@ -167,15 +167,7 @@ watch(aspectOptions, options => {
 const { nativeVideo, environmentState, environmentLabel, archiveStatus, archiveState } = useVideoEnvironment({
   status, activeModel, statusLoading, statusReadError, job,
 })
-const h3Steps = computed({
-  get: () => nativeVideo.value
-    ? (activeModel.value?.turboSteps?.includes(nativeH3Steps.value) ? nativeH3Steps.value : 4)
-    : steps.value,
-  set(value: 4 | 8) {
-    if (nativeVideo.value) nativeH3Steps.value = value
-    else steps.value = value
-  },
-})
+const h3Issue = computed(() => nativeVideo.value ? h3.issue.value : '')
 watch([durationOptions, duration], ([options, value]) => {
   if (activeModel.value && options[0] && !options.includes(value)) duration.value = options[0]
 })
@@ -207,6 +199,7 @@ const canGenerate = computed(() => {
     && prompt.value.length <= 4000
     && parsedSeed.value !== null
     && canExecuteVideo(activeModel.value, mode, status.value?.online === true)
+    && !h3Issue.value
     && !statusLoading.value && !statusReadError.value
     && !submitting.value && !requestPending.value && !videoStore.videoTaskIssue
     && !uploadingImage.value
@@ -232,6 +225,7 @@ const submitTitle = computed(() => {
   if (activeModel.value && !activeModel.value.executable) return '当前模型暂不支持生成'
   if (!status.value?.online) return nativeVideo.value ? '先准备视频模型与运行环境' : '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
+  if (h3Issue.value) return h3Issue.value
   if (selectedMode.value !== 'shots' && !activeModel.value.modes.includes(selectedMode.value)) return '当前模型不支持该创作方式'
   if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
     return hasFirstFrame.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
@@ -374,10 +368,7 @@ async function submitVideo() {
       ...(driver.value?.kind === 'audio' ? { drivingAudio: driver.value.name }
         : driver.value?.kind === 'video' ? { drivingVideo: driver.value.name } : {}),
       ...(nativeVideo.value ? { videoAttention: videoAttention.value } : {}),
-      ...(nativeVideo.value && activeModel.value?.h3LightVae
-        ? { h3Decoder: h3LightVae.value ? 'lightvae' : 'original' } : {}),
-      ...(selectedModelId.value === 'minimax-h3' && (!nativeVideo.value || activeModel.value?.turboSteps)
-        ? { steps: h3Steps.value } : {}),
+      ...(nativeVideo.value ? h3.input.value : selectedModelId.value === 'minimax-h3' ? { steps: steps.value } : {}),
     }
     const frames = await resolveSubmitFrames(mode, controller.signal)
     if (disposed || !pageActive || selection !== selectionVersion) return
@@ -543,7 +534,8 @@ modeBadge, unsupportedMode, t8State, status, videoImageUrl, clearFirstFrame, has
 uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, promptMode, promptRecipe, promptPreviewRequest,
 supportsGeneratedAudio, supportsDialogueAndMusic, supportsNegative, aspectOptions,
 aspectRatio, aspectSize, motion, motionOptions,
-quality, qualities, durationOptions, duration, activeModel, h3Steps, videoAttention, h3LightVae, negative,
+quality, qualities, durationOptions, duration, activeModel, steps, nativeH3Steps, h3Steps: h3.steps,
+h3DefaultSteps: h3.defaultSteps, h3Issue, videoAttention, h3LightVae, negative,
 seedText, canGenerate, submitTitle, submitDescription, submitVideo, submitting,
 environmentState, environmentLabel, statusError: statusFeedback, selectedModelId, job, jobStatusLabel,
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,

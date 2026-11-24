@@ -60,6 +60,7 @@ export function taskVideoBatch(task: TaskRecord): VideoBatch {
     const item = record(value), shot = record(item.input)
     const result = task.resultRefs.some(ref => ref.index === position)
     return { index: position + 1, status: result ? 'succeeded' : (text(item.status) || 'pending') as VideoBatchShot['status'],
+      execution: videoJobExecution(task.provider, result ? 'succeeded' : text(item.status), item),
       prompt: text(shot.originalPrompt || shot.prompt), dialogue: text(shot.dialogue) || null,
       shotSize: (text(shot.shotSize) || null) as VideoBatchShot['shotSize'], camera: text(shot.camera) as VideoDefaults['camera'], motion: text(shot.motion) as VideoDefaults['motion'],
       duration: number(shot.duration), seed: number(shot.seed), attempts: number(item.attempts),
@@ -72,7 +73,7 @@ export function taskVideoBatch(task: TaskRecord): VideoBatch {
   const needsReview = unknown || task.resultState === 'unavailable' || terminal && !task.upstreamSettled
   return { id: task.taskId, retrySource: videoRetrySource(task), upstreamSettled: task.upstreamSettled, unknown, needsReview, status: task.status === 'succeeded' ? 'done' : task.status === 'cancelled' ? 'cancelled' : task.recoveryState !== 'normal' || task.status === 'failed' ? 'paused' : 'running',
     modelId: text(input.modelId), aspectRatio: text(input.aspectRatio) as VideoBatch['aspectRatio'], quality: text(input.quality) as VideoQuality,
-    steps: input.steps === 4 ? 4 : 8, linkLastFrame: input.linkLastFrame === true,
+    steps: input.steps === 2 || input.steps === 4 ? input.steps : 8, linkLastFrame: input.linkLastFrame === true,
     progress: { total: shots.length, succeeded: shots.filter(shot => shot.status === 'succeeded').length, failed: shots.filter(shot => shot.status === 'failed').length },
     createdAt: task.createdAt, shots, concatAvailable, concatUrl: concatAvailable ? runtimeResultPath(task, shots.length) : null }
 }
@@ -93,9 +94,14 @@ export async function prepareRuntimeVideoRetry(id: string, indices: number[], si
     return { prompt: text(input.originalPrompt || input.prompt), seed: number(input.seed), duration: number(input.duration) as VideoDefaults['duration'],
       camera: text(input.camera) as VideoDefaults['camera'], motion: text(input.motion) as VideoDefaults['motion'],
       ...(input.dialogue ? { dialogue: text(input.dialogue) } : {}), ...(input.shotSize ? { shotSize: input.shotSize as VideoBatchShot['shotSize'] } : {}),
-      ...(input.image ? { image: text(input.image) } : {}), ...(Array.isArray(input.references) ? { references: [...input.references] as string[] } : {}) }
+      ...(input.image ? { image: text(input.image) } : {}),
+      ...(task.provider === 'native' && input.lastFrame ? { lastFrame: text(input.lastFrame) } : {}),
+      ...(Array.isArray(input.references) ? { references: [...input.references] as string[] } : {}) }
   })
   const input = { modelId: text(task.input.modelId), aspectRatio: task.input.aspectRatio, quality: task.input.quality,
-    steps: task.input.steps, linkLastFrame: false, shots } as CreateVideoBatchInput
+    steps: task.input.steps ?? 8, linkLastFrame: false, shots,
+    ...(task.input.h3Decoder ? { h3Decoder: task.input.h3Decoder } : {}),
+    ...(task.input.videoAttention ? { videoAttention: task.input.videoAttention } : {}),
+  } as CreateVideoBatchInput
   return { input: input as unknown as Record<string, unknown>, context: { retriedTaskId: id, stepIndices: indices.map(index => index - 1) } }
 }

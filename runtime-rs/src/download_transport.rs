@@ -93,7 +93,9 @@ pub(crate) fn public_mirrors(url: &str) -> Vec<String> {
         return out;
     }
     if let Some(rest) = url.strip_prefix("https://github.com/")
-        && (rest.contains("/releases/download/") || rest.contains("/archive/"))
+        && (rest.contains("/releases/download/")
+            || rest.contains("/releases/latest/download/")
+            || rest.contains("/archive/"))
     {
         if let Some(custom) = env_mirror_origin("HUIYU_GITHUB_MIRROR") {
             push_unique(&mut out, format!("{custom}/{url}"));

@@ -13,7 +13,7 @@
       <button v-if="requestPending" class="btn btn-ghost btn-sm" type="button" :disabled="cancelling || submitting || retrying" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
     </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
-      <p>{{ status?.provider === 'native' ? '可以在这里编辑镜头，也可以把草稿转入创作项目，用本机绘图模型制作首尾帧。' : '可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。' }}</p>
+      <p>{{ nativeVideo ? '原生分镜需要本机 H3 量化模型包，准备后点击「重新检测」。' : '可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。' }}</p>
     </div>
 
       <ShotStoryboardStrip v-if="shots.length" :shots="shots" @locate="locateShot" />
@@ -26,7 +26,12 @@
         </div>
 
         <ShotBatchSettings v-model:aspect-ratio="aspectRatio" v-model:quality="quality" v-model:link-last-frame="linkLastFrame"
-          v-model:steps="steps" v-model:identity-card="identityCard" :qualities="status?.qualities ?? []" :disabled="batchActive || submitting" />
+          v-model:steps="steps" v-model:identity-card="identityCard" :qualities="status?.qualities ?? []" :disabled="batchActive || submitting">
+          <template v-if="nativeVideo" #recipe>
+            <NativeH3RecipeFields v-if="h3Model?.turboSteps || (h3Model && nativeH3Steps === 2)" :model="h3Model" :default-steps="h3DefaultSteps" :issue="h3Issue" :disabled="batchActive || submitting"
+              v-model:choice="nativeH3Steps" v-model:light-vae="h3LightVae" />
+          </template>
+        </ShotBatchSettings>
       </section>
       <section class="video-panel shot-reference-panel" aria-labelledby="shotReferencesTitle">
         <div class="shot-reference-section">
@@ -253,6 +258,7 @@
             </span>
             <span v-if="serverShot(index)" class="shot-row-status" :data-state="serverShot(index)?.status">
               {{ shotStatusLabel(serverShot(index)?.status) }}
+              <template v-if="serverShot(index)?.execution?.decoder"> · {{ serverShot(index)?.execution?.decoder }}</template>
             </span>
             <div class="shot-row-actions">
               <StudioTooltip anchor content="上移镜头">
@@ -346,7 +352,7 @@
               </label>
               <label class="field">
                 <span class="field-label">时长</span>
-                <StudioSelect size="sm" label="时长" v-model="shot.duration" :options="durationOptions" :disabled="batchActive || submitting" />
+                <StudioSelect size="sm" label="时长" v-model="shot.duration" :options="shotDurationOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">Seed</span>
@@ -452,6 +458,7 @@ import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
 import ShotBatchProgress from './ShotBatchProgress.vue'
 import ShotPromptComposer from './ShotPromptComposer.vue'
+import NativeH3RecipeFields from './NativeH3RecipeFields.vue'
 import type { ShotDraft } from './shotListTypes'
 import { characterSelectGroups, durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
@@ -464,7 +471,7 @@ function locateShot(index: number) {
   row?.focus({ preventScroll:true })
 }
 const {
- frameInputs,openProjectImport,h3Ready, aspectRatio, quality, linkLastFrame, steps,
+ frameInputs,openProjectImport,h3Ready, h3Model, nativeVideo, h3DefaultSteps, nativeH3Steps, h3LightVae, h3Issue, aspectRatio, quality, linkLastFrame, steps,
 identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
 popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, blueprintCharacter, blueprintReady, blueprintError, retryBlueprints, sceneBlueprints, addShot,
@@ -479,6 +486,9 @@ scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, cancelOriginalRequest, batch, retryAllFailed, canConcat, concating, concatBatch,
 submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, retryBatchRead, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
+const shotDurationOptions = computed(() => durationOptions.map(option => ({ ...option,
+  disabled: nativeVideo.value && !!h3Model.value?.durations && !h3Model.value.durations.some(duration => duration === option.value),
+})))
 
 const shotPromptLimit = computed(() => {
   const identity = identityCard.value.trim()

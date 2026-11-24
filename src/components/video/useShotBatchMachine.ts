@@ -1,6 +1,6 @@
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, type ComputedRef, type Ref } from 'vue'
-import { cancelVideoBatch, concatVideoBatch, fetchVideoBatch, type VideoBatch, type VideoQuality } from '@/api/videoApi'
+import { cancelVideoBatch, concatVideoBatch, fetchVideoBatch, type CreateVideoBatchInput, type VideoBatch, type VideoQuality } from '@/api/videoApi'
 import { prepareRuntimeVideoRetry } from '@/api/runtimeVideo'
 import { hasRuntimeTasks, isRuntimeTaskId } from '@/api/runtimeTasks'
 import { useVideoRequest, videoRequestSettled } from '@/composables/video/useVideoRequest'
@@ -18,7 +18,8 @@ export interface ShotBatchMachineDeps {
   identityCard: Ref<string>
   aspectRatio: Ref<VideoBatch['aspectRatio']>
   quality: Ref<VideoQuality>
-  steps: Ref<4 | 8>
+  recipe: ComputedRef<Pick<CreateVideoBatchInput, 'steps' | 'h3Decoder'>>
+  recipeIssue: ComputedRef<string>
   linkLastFrame: Ref<boolean>
   shotReferences: (shot: ShotCastRef) => string[] | undefined
   referencesReady: (shot: ShotCastRef) => boolean
@@ -33,7 +34,7 @@ export interface ShotBatchMachineDeps {
 
 /** Admission and row provenance survive presentation changes; reads never submit. */
 export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
-  const { shots, identityCard, aspectRatio, quality, steps, linkLastFrame, shotReferences, h3Ready, online, batchError } = deps
+  const { shots, identityCard, aspectRatio, quality, linkLastFrame, shotReferences, h3Ready, online, batchError } = deps
   const batch = ref<VideoBatch | null>(null), submitting = ref(false), cancelling = ref(false), concating = ref(false), retrying = ref(false)
   const ownsTrackedTask = ref(false)
   const unboundTaskStatus = ref<'interrupted' | 'failed' | 'cancelled'>('interrupted')
@@ -59,7 +60,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const batchSelectionPending = computed(() => Boolean(reconnectTarget.value && reconnectTarget.value !== batch.value?.id))
   const canSubmit = computed(() => shots.value.length > 0 && shots.value.every(shot => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000 && (!shot.imageId || shot.imageName) && deps.referencesReady(shot))
     && !submitting.value && !batchRecoveryPending.value && !deps.inputsBusy?.value && !retrying.value && !cancelling.value && !concating.value
-    && h3Ready.value && online.value && !batchActive.value
+    && h3Ready.value && online.value && !deps.recipeIssue.value && !batchActive.value
     && shots.value.every(shot => !shot.seedText.trim() || Number.isSafeInteger(Number(shot.seedText)) && Number(shot.seedText) >= 0 && Number(shot.seedText) <= 0x7fffffff))
   const canConcat = computed(() => Boolean(batch.value && !batchRecoveryPending.value && batch.value.progress.succeeded >= 2 && !batch.value.concatAvailable && batch.value.status === 'done'))
   const progressPercent = computed(() => Math.min(100, Math.round(((batch.value?.progress.succeeded || 0) + (batch.value?.progress.failed || 0)) / Math.max(1, batch.value?.progress.total || 0) * 100)))
@@ -105,7 +106,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     ownsTrackedTask.value = true
     try {
       check()
-      const input = { modelId: 'minimax-h3', aspectRatio: aspectRatio.value, quality: quality.value, steps: steps.value, linkLastFrame: linkLastFrame.value,
+      const input = { modelId: 'minimax-h3', aspectRatio: aspectRatio.value, quality: quality.value, ...deps.recipe.value, linkLastFrame: linkLastFrame.value,
         shots: targets.map(shot => ({ prompt: [identityCard.value.trim(), shot.prompt.trim()].filter(Boolean).join('\n'), dialogue: shot.dialogue.trim() || undefined,
           shotSize: shot.shotSize || undefined, camera: shot.camera, motion: shot.motion, duration: shot.duration,
           seed: shot.seedText.trim() ? Number(shot.seedText) : undefined, image: shot.imageName || undefined, references: shotReferences(shot) })) }

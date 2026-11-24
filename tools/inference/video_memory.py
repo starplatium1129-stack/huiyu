@@ -159,7 +159,8 @@ class Residency(mapped.Residency):
         self.can_retain = False
         self.transfer = None
         self.prefetch_enabled = False
-        self.temporal_stride = max(1, int(getattr(components["vae"].config, "scale_factor_temporal", 4)))
+        vae_config = getattr(components.get("vae"), "config", None)
+        self.temporal_stride = max(1, int(getattr(vae_config, "scale_factor_temporal", 4)))
         pixels = data["width"] * data["height"]
         super().__init__(components, "offload", self.sampling_pixels(data),
                          image_conditioned=False, decode_pixels=pixels)

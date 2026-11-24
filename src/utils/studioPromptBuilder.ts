@@ -12,6 +12,7 @@ import { isManualDirectorValue } from './promptDirector.ts'
 import { studioDualSubject } from './studioDualSubject.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import type { DraftOutfitOverride } from './promptBuilderPersistence'
+import type { InterrogateAssistLayout } from '../api/interrogateResult.ts'
 import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from './outfitReplacement.ts'
 import { sanitizeOutfitOverride, wardrobeProse, wardrobeTokens } from './wardrobeContent.ts'
 
@@ -43,6 +44,7 @@ export interface StudioPromptOptions {
   artistProse?: string
   visualDescription?: string
   backgroundProse?: string
+  referenceLayout?: InterrogateAssistLayout | null
   negativeCustom?: string
   matureTokens?: ReadonlySet<string>
 }
@@ -130,9 +132,11 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     visualDescription, scene, sceneProse: options.backgroundProse,
   })
   if (engine === 'moss') {
-    if (character === 'triad') {
-      plan.mossLayout = { compositionIntent: scene?.compositionIntent || 'group',
-        subjects: subject.subjects }
+    if (character === 'triad' || options.referenceLayout) {
+      plan.mossLayout = {
+        ...(character === 'triad' ? { compositionIntent: scene?.compositionIntent || 'group', subjects: subject.subjects } : {}),
+        ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true } } : {}),
+      }
     }
     const rendered = renderMossDrawingPrompt(plan, options.visualDescription || '', '')
     return { plan, ...rendered, adult: sceneRating(scene) === 'R18', profile, selections }

@@ -246,6 +246,7 @@ pub(super) fn stage_text(event: &Value) -> Result<String> {
         Some("text_conditioner") => " · 文本条件模型",
         Some("transformer") => " · 扩散模型",
         Some("vae") => " · VAE",
+        Some("dwd") => " · DWD 像素头",
         Some("audio_vae") => " · 音频 VAE",
         Some("processor") => " · 多模态处理器",
         Some("tokenizer" | "t5_tokenizer") => " · 分词器",

@@ -1,5 +1,5 @@
 import { onActivated, onBeforeUnmount, onDeactivated, watch, type Ref } from 'vue'
-import type { VideoBatch, VideoQuality } from '@/api/videoApi'
+import type { H3StepChoice, VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard, useReferenceCards } from './useReferenceCards'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
@@ -11,6 +11,8 @@ interface ShotDraftDeps {
   aspectRatio: Ref<VideoBatch['aspectRatio']>
   quality: Ref<VideoQuality>
   steps: Ref<4 | 8>
+  nativeH3Steps: Ref<H3StepChoice>
+  h3LightVae: Ref<boolean>
   linkLastFrame: Ref<boolean>
   identityCard: Ref<string>
   referenceCards: Ref<ReferenceCard[]>
@@ -49,6 +51,8 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
     aspectRatio: aspectRatio.value,
     quality: quality.value,
     steps: steps.value,
+    nativeH3Steps: deps.nativeH3Steps.value,
+    h3LightVae: deps.h3LightVae.value,
     linkLastFrame: linkLastFrame.value,
     identityCard: identityCard.value,
     cards: referenceCards.value.map(card => ({
@@ -128,7 +132,7 @@ const releaseMaintenance = registerMaintenanceParticipant(async () => {
 })
 
 watch(
-  [shots, identityCard, aspectRatio, quality, steps, linkLastFrame, referenceCards],
+  [shots, identityCard, aspectRatio, quality, steps, deps.nativeH3Steps, deps.h3LightVae, linkLastFrame, referenceCards],
   () => {
     window.clearTimeout(shotsDraftTimer)
     shotsDraftTimer = window.setTimeout(persistShotsDraft, 350)
@@ -141,12 +145,14 @@ async function restoreShotsDraft() {
   const draft = videoStore.shotsDraft
   scenarioImportReceipts = Array.isArray(draft?.scenarioImportReceipts)
     ? draft.scenarioImportReceipts.filter(id => typeof id === 'string' && id) : []
-  if (!draft || (!draft.shots.length && !draft.identityCard && !draft.cards.length)) return
+  if (!draft) return
   restoringDraft = true
   try {
     if (draft.aspectRatio === 'landscape' || draft.aspectRatio === 'portrait' || draft.aspectRatio === 'square') aspectRatio.value = draft.aspectRatio
     if (draft.quality === 'fast' || draft.quality === 'standard' || draft.quality === 'fine') quality.value = draft.quality
     if (draft.steps === 4 || draft.steps === 8) steps.value = draft.steps
+    deps.nativeH3Steps.value = draft.nativeH3Steps ?? steps.value
+    deps.h3LightVae.value = draft.h3LightVae !== false
     linkLastFrame.value = draft.linkLastFrame !== false
     identityCard.value = draft.identityCard
     if (draft.cards.length) {

@@ -10,6 +10,20 @@ impl ExecutionHooks for ShotHooks {
             hooks.observation_changed();
         }
     }
+    fn ready_to_queue(&self) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
+            if let Some(hooks) = &self.batch.hooks {
+                hooks.ready_to_queue().await?;
+            }
+            Ok(())
+        })
+    }
+    fn execution_metadata(&self, value: Value) -> BoxFuture<'_, Result<()>> {
+        Box::pin(async move {
+            self.batch.state.lock().await.shots[self.index].native_runtime = value.get("nativeRuntime").cloned();
+            self.batch.save().await
+        })
+    }
     fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             if let Some(id) = value["gatewayJobId"].as_str() {
@@ -18,10 +32,10 @@ impl ExecutionHooks for ShotHooks {
             self.batch.save().await
         })
     }
-    fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {
+    fn submitting(&self, provider: String) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
             if let Some(h) = &self.batch.hooks {
-                h.submitting("comfy".into()).await?;
+                h.submitting(provider).await?;
             }
             let mut state = self.batch.state.lock().await;
             if state.cancel.is_cancelled() {

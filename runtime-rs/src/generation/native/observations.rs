@@ -281,12 +281,21 @@ pub(super) fn capture(value: &Value) -> Value {
             if id.starts_with("krea2-") && let Some(execution) = krea_execution(&value["kreaExecution"]) {
                 result["kreaExecution"] = execution;
             }
+            let dwd = value["h3Decoder"] == "dwd" && value["h3Sampler"] == "pi-flow-v2"
+                && value["h3Steps"] == 2 && value["h3VideoShift"] == 12 && value["h3AudioShift"] == 3
+                && value["h3DwdDecodeMs"].as_f64().is_some_and(|n| n.is_finite() && n >= 0.);
             if id == "minimax-h3" && value["nativeModelFormat"] == "h3-comfy-packed-v1"
-                && matches!(value["turboSteps"].as_u64(), Some(4 | 8)) {
+                && (dwd || matches!(value["turboSteps"].as_u64(), Some(4 | 8))) {
                 result["nativeModelFormat"] = value["nativeModelFormat"].clone();
-                result["turboSteps"] = value["turboSteps"].clone();
-                if matches!(value["h3Decoder"].as_str(), Some("original" | "lightvae-lite-fp16")) {
-                    result["h3Decoder"] = value["h3Decoder"].clone();
+                if dwd {
+                    for key in ["h3Decoder", "h3Sampler", "h3Steps", "h3DwdDecodeMs"] {
+                        result[key] = value[key].clone();
+                    }
+                } else {
+                    result["turboSteps"] = value["turboSteps"].clone();
+                    if matches!(value["h3Decoder"].as_str(), Some("original" | "lightvae-lite-fp16")) {
+                        result["h3Decoder"] = value["h3Decoder"].clone();
+                    }
                 }
                 if matches!(value["h3VideoShift"].as_u64(), Some(6 | 12)) && value["h3AudioShift"] == 3 {
                     result["h3VideoShift"] = value["h3VideoShift"].clone();

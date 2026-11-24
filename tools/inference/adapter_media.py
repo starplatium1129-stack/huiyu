@@ -22,7 +22,11 @@ def input_image(path, error):
 def pixels(value, data, channels, error, *, truncate=False):
     import numpy as np
     value = np.asarray(value)
-    if value.ndim != 3 or value.shape[:2] != (data["height"], data["width"]) or value.shape[2] not in channels or not np.isfinite(value).all():
+    if value.ndim != 3 or value.shape[:2] != (data["height"], data["width"]) or value.shape[2] not in channels:
+        raise error("INVALID_MODEL_OUTPUT", "Model returned invalid dimensions/channels")
+    if data.get("h3Decoder") == "dwd" and value.dtype == np.uint8:
+        return np.ascontiguousarray(value)
+    if not np.isfinite(value).all():
         raise error("INVALID_MODEL_OUTPUT", "Model returned invalid dimensions/channels/non-finite pixels")
     scaled = value.clip(0, 1) * 255
     return np.ascontiguousarray((scaled if truncate else scaled.round()).astype(np.uint8))

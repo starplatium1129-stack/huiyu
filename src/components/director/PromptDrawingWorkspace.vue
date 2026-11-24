@@ -193,6 +193,8 @@
           :apply-interrogate-result="handleInterrogateResult"
           :interrogate-mode="interrogateMode"
           :interrogate-assist="interrogateAssist"
+          :interrogate-subject-mode="interrogateSubjectMode"
+          :interrogate-layout="interrogateLayout"
           @interrogateError="handleInterrogateError"
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
@@ -454,15 +456,18 @@ const drawingSetupRoute = computed(() => {
   return { path: '/control', hash, query: model ? { model } : {} }
 })
 const interrogateMode = computed(() => drawEngine.value === 'krea2' || drawEngine.value === 'moss' && pb.isUnbound ? 'caption' : 'tag')
+const interrogateSubjectMode = computed<'free' | 'bound'>(() => pb.isUnbound ? 'free' : 'bound')
 const interrogateAssistKey = 'aics_interrogate_assist_v1'
 const interrogateAssist = ref(false)
 try { interrogateAssist.value = localStorage.getItem(interrogateAssistKey) === '1' } catch { /* Storage can be unavailable. */ }
+const interrogateLayout = computed(() => interrogateAssist.value && drawEngine.value === 'moss')
 function setInterrogateAssist(value: boolean) {
   interrogateAssist.value = value
   try { localStorage.setItem(interrogateAssistKey, value ? '1' : '0') } catch { /* Keep the current session usable. */ }
 }
 const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
-  || drawEngine.value === 'moss' && pb.isUnbound && !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
+  || !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
+  || drawEngine.value === 'moss' && pb.referenceInput?.layout
   || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value || native.usingMossTaskPrompt.value))
 const canFillExample = computed(() => workspace.draftReady.value && engineOnline.value && !generationBusy.value
   && !workspace.preparedModelPending.value && !drawingHasContent.value)

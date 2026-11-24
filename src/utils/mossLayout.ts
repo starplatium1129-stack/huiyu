@@ -1,5 +1,6 @@
 export interface MossCanvasSize { width: number; height: number }
 export type MossLayoutSide = 'left' | 'right'
+export type MossLayoutCanvas = 'single' | 'multi_panel' | 'collage'
 type Box = [number, number, number, number]
 
 export interface MossLayoutItem {
@@ -120,9 +121,36 @@ export function mossTextBox(size: MossCanvasSize, placement: string): Box {
   return box
 }
 
-export function mossLayoutJson(caption: string, items: MossLayoutItem[], multiPanel: boolean) {
+function clampInt(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, Math.round(value)))
+}
+
+/** Convert a normalized [y1, x1, y2, x2] (0..1) box to valid centered integer yxyx bounds. */
+export function mossNormalizedBox({ width, height }: MossCanvasSize, [y1, x1, y2, x2]: Box): Box {
+  const halfH = height / 2, halfW = width / 2
+  const minY = Math.ceil(-halfH), maxY = Math.floor(halfH)
+  const minX = Math.ceil(-halfW), maxX = Math.floor(halfW)
+  const clamp01 = (n: number) => Math.min(1, Math.max(0, Number.isFinite(n) ? n : 0))
+  const ny1 = clamp01(y1), nx1 = clamp01(x1), ny2 = clamp01(y2), nx2 = clamp01(x2)
+  let top = clampInt(ny1 * height - halfH, minY, maxY - 1)
+  let bottom = clampInt(ny2 * height - halfH, minY + 1, maxY)
+  if (bottom <= top) {
+    if (top < maxY) bottom = top + 1
+    else top = bottom - 1
+  }
+  let left = clampInt(nx1 * width - halfW, minX, maxX - 1)
+  let right = clampInt(nx2 * width - halfW, minX + 1, maxX)
+  if (right <= left) {
+    if (left < maxX) right = left + 1
+    else left = right - 1
+  }
+  return [top, left, bottom, right]
+}
+
+export function mossLayoutJson(caption: string, items: MossLayoutItem[], canvas: boolean | MossLayoutCanvas) {
+  const resolved: MossLayoutCanvas = typeof canvas === 'string' ? canvas : canvas ? 'multi_panel' : 'single'
   return JSON.stringify({
-    summary: { canvas: multiPanel ? 'multi_panel' : 'single', caption },
+    summary: { canvas: resolved, caption },
     items,
     bbox_coord_space: centered,
     bbox_format: modelOrder,

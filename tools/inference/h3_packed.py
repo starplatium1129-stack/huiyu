@@ -58,9 +58,10 @@ def refine_context(transformer, counts):
 
 
 class _Weights:
-    def __init__(self, reader, contract, *, fused=False):
+    def __init__(self, reader, contract, *, fused=False, overlay=None):
         self.reader, self.contract = reader, contract
         self.fused = fused
+        self.overlay = overlay
         self.remaining = set(reader.keys())
 
     def take(self, key, shape, dtype):
@@ -69,6 +70,14 @@ class _Weights:
                 or info.get("dtype") != dtype):
             raise self.contract.AdapterError("MODEL_INVALID", f"H3 权重不匹配：{key}, 预期 {dtype} {tuple(shape)}")
         self.remaining.remove(key)
+        if self.overlay is not None and key in self.overlay.remaining:
+            # pi-H3 supplies complete replacements in the Comfy namespace. Its
+            # floating output heads and RMS norm are stored at half precision.
+            stored = "F16" if key.startswith("final_layer.") else dtype
+            value = self.overlay.take(key, shape, stored)
+            if stored != dtype:
+                value = value.to({"F32": torch.float32, "BF16": torch.bfloat16}[dtype])
+            return value
         return self.reader.get_tensor(key)
 
     def quantization(self, path):
@@ -113,8 +122,15 @@ class _Projection(nn.Linear):
         if backend:
             weights.quantization(path)
             self.register_buffer("weight_scale", weights.take(path + ".weight_scale", (outputs, 1), "F32"))
-        if lora is None:
+        if lora is None or (steps == 2 and path + ".lora_A.weight" not in lora.remaining):
             self.register_buffer("up", None)
+            return
+        if steps == 2:
+            # Only out_proj and the MLPs in blocks 0..45 have rank-64
+            # residuals. No alpha is stored (the published strength is 1).
+            self.register_buffer("down", lora.take(path + ".lora_A.weight", (64, inputs), "F16").bfloat16())
+            self.register_buffer("up", lora.take(path + ".lora_B.weight", (outputs, 64), "F16").bfloat16())
+            self.multiplier = 1.0
             return
         key = "diffusion_model." + path
         self.register_buffer("down", lora.take(key + ".lora_A.weight", (rank, inputs), "BF16"))
@@ -233,10 +249,13 @@ def _adapt_block(block, path, config, weights, lora, steps, backend):
         block.adaln_proj = _Modulation(linear, hidden)
 
 
-def load_transformer(root, steps, control, contract, *, sla_path=None, fused_path=None):
-    """Load FL2VA Turbo, the trained SLA adapter, or the separate four-step fusion."""
-    if steps not in (4, 8):
-        raise contract.AdapterError("INVALID_PARAMETER", "本地 H3 Turbo 需要 4 或 8 步")
+def load_transformer(root, steps, control, contract, *, sla_path=None, fused_path=None, dwd_path=None):
+    """Load exactly one recipe on the packed FL2VA backbone."""
+    dwd = dwd_path is not None
+    if dwd and (steps != 2 or sla_path is not None or fused_path is not None):
+        raise contract.AdapterError("UNSUPPORTED_ACCELERATION", "pi-H3 DWD 需要独立的 2 步配方")
+    if not dwd and steps not in (4, 8):
+        raise contract.AdapterError("INVALID_PARAMETER", "本地 H3 Turbo 需要 4 或 8 步，2 步需要 pi-H3 DWD 权重")
     if sla_path is not None and steps != 4:
         raise contract.AdapterError("UNSUPPORTED_ACCELERATION", "H3 SLA 权重仅支持 4 步")
     fused = fused_path is not None
@@ -257,14 +276,19 @@ def load_transformer(root, steps, control, contract, *, sla_path=None, fused_pat
         rows = load_sibling("import_h3").prepared_accelerators(root).get("fused", [])
         if len(rows) != 1 or checkpoint.resolve() != (root / rows[0]["path"]).resolve():
             raise contract.AdapterError("MODEL_CHANGED", "H3 融合版权重与已验证的安装记录不符")
+    elif dwd:
+        rows = load_sibling("import_h3").prepared_accelerators(root).get("dwd", [])
+        adapter = contract.safe_file(root, root / dwd_path)
+        if len(rows) != 1 or adapter.resolve() != (root / rows[0]["path"]).resolve():
+            raise contract.AdapterError("MODEL_CHANGED", "pi-H3 DWD 权重与已验证的安装记录不符")
     else:
         # The trained SLA adapter replaces regular Turbo in this branch.
         adapter_name = sla_path if sla_path is not None else f"loras/turbo-{steps}.safetensors"
         adapter = contract.safe_file(root, root / adapter_name)
     backend = quant.require_backend(contract)
     with reader(checkpoint) as base, (reader(adapter) if adapter is not None else nullcontext()) as delta:
-        weights = _Weights(base, contract, fused=fused)
         lora = _Weights(delta, contract) if delta is not None else None
+        weights = _Weights(base, contract, fused=fused, overlay=lora if dwd else None)
         table = weights.take("adaln_t_table", (1025, 8), "F32")
         if fused:
             # Exported for projecting additional 2688-wide AdaLN adapters.
@@ -294,6 +318,10 @@ def load_transformer(root, steps, control, contract, *, sla_path=None, fused_pat
                               2 * config["hidden_size"], weights)
         model.norm_out = _OutputNorm(model.norm_out.norm, final)
         weights.complete()
+        if dwd:
+            # Keep the CPU pixel head outside the DiT's module tree. Its
+            # weights become active only after the sampler releases the DiT.
+            model._huiyu_dwd = load_sibling("h3_dwd").Decoder(lora, backend, control, config["final_norm_eps"])
         if lora is not None:
             lora.complete()
     diagonal_bytes = [layer.up.numel() * layer.up.element_size() for layer in model.modules()

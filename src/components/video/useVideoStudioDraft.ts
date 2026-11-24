@@ -1,6 +1,6 @@
 import { onScopeDispose, watch, type Ref } from 'vue'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
-import { type VideoAttention, type VideoDefaults, type VideoDriver, type VideoMode } from '@/api/videoApi'
+import { type H3StepChoice, type VideoAttention, type VideoDefaults, type VideoDriver, type VideoMode } from '@/api/videoApi'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
@@ -17,7 +17,7 @@ export interface VideoStudioDraftDeps {
   aspectRatio: Ref<VideoDefaults['aspectRatio']>
   quality: Ref<VideoDefaults['quality']>
   steps: Ref<4 | 8>
-  nativeH3Steps: Ref<4 | 8>
+  nativeH3Steps: Ref<H3StepChoice>
   videoAttention: Ref<VideoAttention>
   h3LightVae: Ref<boolean>
   driver: Ref<VideoDriver | null>
@@ -149,7 +149,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         deps.quality.value = draft.quality as VideoDefaults['quality']
       }
       if (draft.steps === 4 || draft.steps === 8) deps.steps.value = draft.steps
-      deps.nativeH3Steps.value = draft.nativeH3Steps === 8 ? 8 : 4
+      deps.nativeH3Steps.value = draft.nativeH3Steps ?? 4
       deps.videoAttention.value = draft.videoAttention ?? 'auto'
       deps.h3LightVae.value = draft.h3LightVae !== false
       deps.driver.value = draft.driver ?? null

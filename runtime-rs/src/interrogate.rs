@@ -110,13 +110,29 @@ impl InterrogateService {
             .await
             .run(input.image, threshold, cancel.clone(), upload_admission)
             .await?;
-        let evidence = assistance.map(|_| assist::Evidence::from_pixai(&result));
+        let assist_options = assist::Options {
+            subject_mode: input.subject_mode,
+            layout: input.layout,
+        };
+        let evidence = assistance.map(|_| assist::Evidence::from_pixai(&result, assist_options));
         if threshold < input.threshold {
             results::retain_threshold(&mut result, input.threshold);
         }
         let mut result = results::finish(result, "pixai", &input.mode, input.threshold);
-        if let (Some((app, headers)), Some(original), Some(evidence)) = (assistance, original, evidence) {
-            assist::enrich(app, headers, self.validation.clone(), original, evidence, &cancel, &mut result).await;
+        if let (Some((app, headers)), Some(original), Some(evidence)) =
+            (assistance, original, evidence)
+        {
+            assist::enrich(
+                app,
+                headers,
+                self.validation.clone(),
+                original,
+                evidence,
+                assist_options,
+                &cancel,
+                &mut result,
+            )
+            .await;
         }
         Ok(result)
     }
@@ -127,6 +143,8 @@ fn closed() -> ApiError {
 struct Input {
     mode: String,
     threshold: f64,
+    subject_mode: assist::SubjectMode,
+    layout: bool,
     image: Bytes,
 }
 fn validate(input: Value, bytes: Bytes) -> Result<Input> {
@@ -153,6 +171,21 @@ fn validate(input: Value, bytes: Bytes) -> Result<Input> {
     }
     .filter(|n| n.is_finite() && (0.05..=0.95).contains(n))
     .ok_or_else(|| ApiError::new(400, "INVALID_PARAMETER", "threshold 需在 0.05-0.95"))?;
+    let subject_mode = match input.get("subjectMode") {
+        None => assist::SubjectMode::Free,
+        Some(value) => match value.as_str().map(|s| s.to_lowercase()).as_deref() {
+            Some("") | Some("free") => assist::SubjectMode::Free,
+            Some("bound") => assist::SubjectMode::Bound,
+            _ => {
+                return Err(ApiError::new(
+                    400,
+                    "INVALID_PARAMETER",
+                    "subjectMode 仅支持 free/bound",
+                ));
+            }
+        },
+    };
+    let layout = input["layout"].as_str().is_some_and(|value| value == "1");
     if bytes.len() < 1024 {
         return Err(ApiError::new(400, "INVALID_IMAGE", "图片过小"));
     }
@@ -162,6 +195,8 @@ fn validate(input: Value, bytes: Bytes) -> Result<Input> {
     Ok(Input {
         mode,
         threshold,
+        subject_mode,
+        layout,
         image: bytes,
     })
 }

@@ -54,30 +54,30 @@ impl Queue {
 pub(super) async fn tail(
     service: &Service,
     result: &Output,
+    native: bool,
     cancel: CancellationToken,
 ) -> Result<String> {
     let Output::File { path, .. } = result else {
         return Err(error(500, "VIDEO_RESULT_INVALID", "视频结果缺少文件"));
     };
-    let name = format!("aics_video_input_{}.png", uuid::Uuid::new_v4().simple());
+    let prefix = if native { "huiyu_video_frame" } else { "aics_video_input" };
+    let name = format!("{prefix}_{}.png", uuid::Uuid::new_v4().simple());
     let target = inputs::path(&service.config, &name)?;
     tokio::fs::create_dir_all(target.parent().unwrap()).await?;
-    let args = [
+    let mut args = [
         "-y",
         "-sseof",
         "-0.1",
         "-i",
         path.to_str()
             .ok_or_else(|| error(500, "VIDEO_RESULT_INVALID", "视频路径无效"))?,
-        "-frames:v",
-        "1",
-        "-update",
-        "1",
-        target.to_str().unwrap(),
     ]
     .into_iter()
     .map(str::to_owned)
-    .collect();
+    .collect::<Vec<_>>();
+    if !native { args.extend(["-frames:v", "1"].map(str::to_owned)); }
+    // Native H3 links the actual last frame; the image muxer overwrites it until EOF.
+    args.extend(["-update", "1", target.to_str().unwrap()].map(str::to_owned));
     if let Err(e) = service.transcode.run(args, cancel).await {
         let _ = tokio::fs::remove_file(target).await;
         return Err(e);
@@ -95,6 +95,7 @@ pub(super) async fn concat(
     id: &str,
     outputs: &[Output],
     canvas: &Value,
+    require_audio: bool,
     cancel: CancellationToken,
 ) -> Result<Output> {
     let root = service.config.runtime_root.join("outputs/video");
@@ -108,10 +109,12 @@ pub(super) async fn concat(
         let mut lines=String::new();for output in outputs{let Output::File{path,..}=output else{return Err(error(500,"VIDEO_RESULT_INVALID","视频结果缺少文件"))};let canonical=tokio::fs::canonicalize(path).await?;if !canonical.starts_with(&canonical_root){return Err(error(403,"VIDEO_RESULT_INVALID","视频结果超出授权目录"))}lines.push_str(&format!("file '{}'\n",path.to_string_lossy().replace('\'',"'\\''")));}tokio::fs::write(&list,lines).await?;
         let filter=format!("scale={}:{}:force_original_aspect_ratio=decrease,pad={}:{}:(ow-iw)/2:(oh-ih)/2,setsar=1",canvas["width"],canvas["height"],canvas["width"],canvas["height"]);
         let mut common=vec!["-y".into(),"-f".into(),"concat".into(),"-safe".into(),"0".into(),"-i".into(),list.to_string_lossy().into_owned(),"-vf".into(),filter];common.extend(["-c:v","libx264","-preset","medium","-crf","19","-pix_fmt","yuv420p"].map(str::to_owned));
-        let mut audio=common.clone();audio.extend(["-c:a","aac","-b:a","192k"].map(str::to_owned));audio.push(pending.to_string_lossy().into_owned());
+        let mut audio=common.clone();
+        if require_audio { audio.extend(["-map","0:v:0","-map","0:a:0"].map(str::to_owned)); }
+        audio.extend(["-c:a","aac","-b:a","192k"].map(str::to_owned));audio.push(pending.to_string_lossy().into_owned());
         // Only a completed ffmpeg failure can benefit from dropping audio.
         // Timeouts, queue rejection and unconfirmed termination must propagate.
-        if let Err(e)=service.transcode.run(audio,cancel.clone()).await{if cancel.is_cancelled()||e.code!="FFMPEG_FAILED"{return Err(e)}let _=tokio::fs::remove_file(&pending).await;common.push("-an".into());common.push(pending.to_string_lossy().into_owned());service.transcode.run(common,cancel.clone()).await?;}
+        if let Err(e)=service.transcode.run(audio,cancel.clone()).await{if require_audio||cancel.is_cancelled()||e.code!="FFMPEG_FAILED"{return Err(e)}let _=tokio::fs::remove_file(&pending).await;common.push("-an".into());common.push(pending.to_string_lossy().into_owned());service.transcode.run(common,cancel.clone()).await?;}
         if cancel.is_cancelled(){return Err(error(499,"VIDEO_BATCH_CANCELLED","视频拼接已取消"))}let bytes=tokio::fs::metadata(&pending).await?.len();if bytes==0{return Err(error(500,"BATCH_CONCAT_FAILED","视频拼接失败"))}tokio::fs::rename(&pending,&target).await?;Ok(Output::File{path:target.clone(),mime:"video/mp4".into(),bytes})
     }.await;
     let _ = tokio::fs::remove_file(list).await;

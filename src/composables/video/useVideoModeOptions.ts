@@ -23,7 +23,8 @@ export function useVideoModeOptions(
 
   // H3 readiness controls generation, never access to draft editing or recovery.
   const shotsModeReady = computed(() =>
-    status.value?.provider !== 'native' && status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
+    status.value?.models.some(model => model.id === 'minimax-h3' && model.available
+      && (status.value?.provider !== 'native' || model.h3Dwd !== undefined)) === true)
 
   const unsupportedMode = computed(() => {
     const mode = selectedMode.value
@@ -35,7 +36,6 @@ export function useVideoModeOptions(
     if (statusLoading.value) return '检测中 · 可编辑'
     if (statusReadError.value) return '待重新检测 · 可编辑'
     if (!status.value) return '待检测'
-    if (mode === 'shots' && status.value.provider === 'native') return 'ComfyUI 分镜 · 可编辑'
     if (unsupportedMode.value) return '当前引擎暂不支持 · 可编辑'
     const modelReady = mode === 'shots' ? shotsModeReady.value
       : status.value.models.some(model => model.executable && model.available && model.modes.includes(mode))

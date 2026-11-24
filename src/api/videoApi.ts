@@ -15,6 +15,9 @@ export type VideoMode = VideoInputMode
 export type VideoJobStatus = 'queued' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 export type VideoQuality = 'fast' | 'standard' | 'fine'
 export type VideoAttention = 'auto' | 'sdpa' | 'sage' | 'flash2' | 'h3-sol' | 'h3-sla' | 'h3-fused'
+export type H3Steps = 2 | 4 | 8
+export type H3StepChoice = 'auto' | H3Steps
+export type H3Decoder = 'dwd' | 'lightvae' | 'original'
 
 export interface VideoQualityOption {
   id: VideoQuality
@@ -41,6 +44,7 @@ export interface VideoModelStatus {
   attentionModes?: VideoAttention[]
   turboSteps?: (4 | 8)[]
   h3LightVae?: boolean
+  h3Dwd?: boolean
   canvases?: Record<string, [number, number]> | null
   requirements: string[]
   missing: string[]
@@ -95,7 +99,7 @@ export interface VideoJob {
   createdAt: number
   resultAvailable: boolean
   resultUrl: string | null
-  execution?: { device: string; attention: string[]; encoder: string; decoder?: string }
+  execution?: { device: string; attention: string[]; encoder: string; decoder?: string; dwdDecodeMs?: number }
   error: string | null
   code: string | null
 }
@@ -207,6 +211,7 @@ export type VideoShotSize = 'wide' | 'medium' | 'closeup'
 export interface VideoBatchShot {
   index: number
   status: VideoShotStatus
+  execution?: VideoJob['execution']
   prompt: string
   dialogue: string | null
   shotSize: VideoShotSize | null
@@ -232,7 +237,7 @@ export interface VideoBatch {
   modelId: string
   aspectRatio: 'landscape' | 'portrait' | 'square'
   quality: VideoQuality
-  steps: 4 | 8
+  steps: H3Steps
   linkLastFrame: boolean
   progress: { total: number; succeeded: number; failed: number }
   createdAt: number
@@ -252,6 +257,7 @@ export interface CreateVideoBatchShotInput {
   seed?: number
   /** 首帧图：POST /api/video/images/raw 返回的受控文件名。 */
   image?: string
+  lastFrame?: string
   /** 参考图（Ref2VA 角色卡）：受控文件名数组，≤9 张，仅 H3；prompt 用 <Picture N> 引用。 */
   references?: string[]
 }
@@ -261,8 +267,9 @@ export interface CreateVideoBatchInput {
   /** 整批统一画幅：拼接成片要求分辨率一致。 */
   aspectRatio: 'landscape' | 'portrait' | 'square'
   quality?: VideoQuality
-  /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
-  steps?: 4 | 8
+  steps?: H3Steps
+  h3Decoder?: H3Decoder
+  videoAttention?: VideoAttention
   /** 自动用上一镜尾帧衔接下一镜（FL2VA / I2VA 续接），默认开启。 */
   linkLastFrame?: boolean
   shots: CreateVideoBatchShotInput[]

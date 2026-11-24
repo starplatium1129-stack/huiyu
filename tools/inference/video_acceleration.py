@@ -88,7 +88,7 @@ def _rocm_rows(query, key, value, mask):
 
 
 @contextmanager
-def attention(pipeline, control, report):
+def attention(pipeline, control, report, *, dwd=False):
     # All four pinned transformer implementations import dispatch_attention_fn
     # into their defining module. Both Wan experts use that same module. Limit
     # the override to this worker's active denoiser, keeping encoders/VAEs and
@@ -99,12 +99,14 @@ def attention(pipeline, control, report):
     backend = report["device"]
     calls = report["calls"]
     requested = report["requested"]
+    if dwd and requested in ("h3-sla", "h3-fused"):
+        raise Error("UNSUPPORTED_ACCELERATION", "pi-H3 DWD 无法叠加 SLA 或融合 Turbo 权重。")
     if (requested == "h3-sla") != (getattr(pipeline.transformer, "_huiyu_h3_sla", False) is True):
         raise Error("MODEL_INVALID", "H3 SLA 需要已校验的专用 4 步 Turbo 权重。")
     if (requested == "h3-fused") != (getattr(pipeline.transformer, "_huiyu_h3_fused", False) is True):
         raise Error("MODEL_INVALID", "Fused Turbo 需要已校验的社区融合权重。")
     sparse_mode = requested in ("h3-sol", "h3-sla", "h3-fused")
-    scope = load_sibling("h3_sparse").routing(pipeline.transformer, report) if sparse_mode else nullcontext()
+    scope = load_sibling("h3_sparse").routing(pipeline.transformer, report, dwd=dwd) if sparse_mode else nullcontext()
 
     def dispatch(query, key, value, attn_mask=None, **options):
         nonlocal selected

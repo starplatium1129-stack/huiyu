@@ -9,7 +9,7 @@ import { tagKey } from './animaPromptOrder.ts'
 import { isGarmentToken } from './popularIdentity.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 import {
-  compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, mossTextBox, mossTriptychBox,
+  compileMossLayout, isMossLayoutInput, mossLayoutJson, mossNormalizedBox, mossSubjectBox, mossTextBox, mossTriptychBox,
   type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
 } from './mossLayout.ts'
 
@@ -72,9 +72,9 @@ function describedScreenSide(caption: string): MossLayoutSide | undefined {
   const sides = new Set<MossLayoutSide>()
   for (const sentence of caption.split(/[.!?。！？\r\n]/)) {
     if (/\b(?:no|not|without|avoid|omit|don't|empty|blank)\b|不要|不放|空白|留白/i.test(sentence)) continue
-    const english = /\b(?:on|in|at|to) (?:the )?(?:far )?(left|right)(?:[- ]hand)?(?: (?:side|third|half|edge))? of (?:the )?(?:image|frame|canvas|composition)\b/gi
+    const english = /\b(?:on|in|at|to) (?:the )?(?:far )?(left|right)(?:[- ]hand)?(?: (?:side|third|half|edge))? of (?:the )?(?:image|frame|canvas|composition|shot)\b/gi
     // A location alone can describe light, a hand, or empty space. Require a subject or placement cue.
-    const staging = /\b(?:subject|figure|character|person|woman|man|girl|boy|stand(?:s|ing)?|sit(?:s|ting)?|kneel(?:s|ing)?|pose[ds]?|posing|rest(?:s|ing)?|place[ds]?|position(?:ed|s)?|put)\b/i
+    const staging = /\b(?:subject|figure|character|person|woman|man|girl|boy|she|he|stand(?:s|ing)?|sit(?:s|ting)?|kneel(?:s|ing)?|lean(?:s|ing)?|pose[ds]?|posing|rest(?:s|ing)?|place[ds]?|position(?:ed|s)?|framed|put)\b/i
     if (staging.test(sentence)) {
       for (const [, side] of sentence.matchAll(english)) sides.add(side.toLowerCase() === 'left' ? 'left' : 'right')
     }
@@ -158,8 +158,13 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     groups[group].push(token)
   }
   const ordered = groups.flat()
-  const captionWithTags = (facts: string[]) => [...new Set([authored, ...appearance, cleanProse(scene), facts.join(', ')].filter(Boolean))].join('\n')
+  const cleanScene = cleanProse(scene)
+  const refLayout = plan?.mossLayout?.referenceLayout
+  const captionWithTags = (facts: string[]) => [...new Set([authored, ...appearance, cleanScene, facts.join(', ')].filter(Boolean))].join('\n')
   let caption = captionWithTags(ordered)
+  if (!caption && refLayout?.layout.items.length) {
+    caption = refLayout.layout.items.map(item => cleanProse(item.caption)).filter(Boolean).join('\n')
+  }
   if (!caption) return { raw: '', prompt: '', negative: mergeNegative(negative) }
   if (size) {
     const intent = plan?.mossLayout?.compositionIntent || plan?.scene?.compositionIntent
@@ -172,22 +177,33 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
       && people.length <= 1 && !people.some(count => Number(count) > 1)
       && !ordered.some(tag => /^(?:group|multiple girls|multiple boys)$/i.test(tag))
     const mainCharacter = singleSubject && Boolean(subjectProse || people[0] === '1')
-    const authoredSide = singleSubject && intent !== 'triptych' && panels === undefined ? describedScreenSide(authored) : undefined
+    const explicitSide = singleSubject && intent !== 'triptych' && panels === undefined ? describedScreenSide(authored) : undefined
+    const manualPlacement = singleSubject && intent !== 'triptych' && panels === undefined
+      ? [...(plan?.manual ?? []), ...(plan?.composition ?? [])].map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
+      : undefined
+    const sceneSide = singleSubject && intent !== 'triptych' && panels === undefined && !explicitSide && !manualPlacement
+      ? describedScreenSide(cleanScene) : undefined
+    const authoredSide = explicitSide ?? sceneSide
     if (authoredSide) caption = captionWithTags(ordered.filter(tag => {
       const side = compositionPlacement.get(normalizeKey(tag))
       return !side || side === authoredSide
     }))
     const placement = singleSubject && intent !== 'triptych' && panels === undefined
-      ? authoredSide ?? [...(plan?.manual ?? []), ...(plan?.composition ?? []), ...ordered].map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
+      ? explicitSide ?? manualPlacement ?? sceneSide ?? ordered.map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
       : undefined
     // A single positioned person can own adopted clothes and poses. Untargeted
     // facts stay global in group scenes instead of dressing both people alike.
     const expression = new Set(plan?.emotion.flatMap(tokenize).map(tagKey))
-    const subjectFacts = mainCharacter ? ordered.filter(tag => (!subjectProse && (names.has(tagKey(tag)) || / (?:hair|eyes)$/.test(tag)))
+    const characterFacts = ordered.filter(tag => (!subjectProse && (names.has(tagKey(tag)) || / (?:hair|eyes)$/.test(tag)))
       || expression.has(tagKey(tag)) || isGarmentToken(normalizeKey(tag)) || mutualGroupWithCategory(tag)?.category === 'pose'
-      || /^(?:holding|carrying|looking|sitting|standing|lying|leaning) |^on (?:bed|desk)$/.test(tag)) : []
+      || /^(?:holding|carrying|looking|sitting|standing|lying|leaning) |^on (?:bed|desk)$/.test(tag))
+    const subjectFacts = mainCharacter ? characterFacts : []
     const subjectAppearance = [...appearance, subjectFacts.join(', ')].filter(Boolean).join('\n')
-    const subjectCaption = mainCharacter ? [subjectAppearance, authored || cleanProse(scene)].filter(Boolean).join('\n') || caption : caption
+    const subjectCaption = mainCharacter ? [subjectAppearance, authored || cleanScene].filter(Boolean).join('\n') || caption : caption
+    const useReferenceLayout = Boolean(refLayout?.layout.items.length && panels === undefined && !explicitlySplit && !explicitSide)
+    const refCharIndices = useReferenceLayout
+      ? refLayout!.layout.items.flatMap((item, index) => item.label === 'character' ? [index] : [])
+      : []
     const items: MossLayoutItem[] = panels
       ? panels.map((action, index) => ({
           label: mainCharacter ? 'character' : 'object',
@@ -196,9 +212,53 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
         }))
       : explicitlySplit && panels === undefined
         ? subjects.map(subject => ({ label: 'character', caption: subject.caption, bbox: mossSubjectBox(size, subject.side) }))
-        : placement ? [{ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size, placement) }] : []
+        : useReferenceLayout
+          ? (() => {
+              const bound = Boolean(refLayout!.boundSubject)
+              const multiChar = refCharIndices.length > 1
+              let primaryCharIndex = refCharIndices[0] ?? -1
+              if (multiChar) {
+                let bestArea = -1
+                for (const idx of refCharIndices) {
+                  const [y1, x1, y2, x2] = refLayout!.layout.items[idx].bbox
+                  const area = (y2 - y1) * (x2 - x1)
+                  if (area > bestArea) { bestArea = area; primaryCharIndex = idx }
+                }
+              }
+              const targetAppearance = (multiChar
+                ? appearance.map(line => line.replace(/\bis the only prominent character,\s*/i, 'is '))
+                : appearance).filter(Boolean)
+              const targetFallback = targetAppearance.length
+                ? targetAppearance : ordered.filter(tag => names.has(tagKey(tag)))
+              return refLayout!.layout.items.map((item, index): MossLayoutItem => {
+                const bbox = mossNormalizedBox(size, item.bbox)
+                const localCaption = cleanProse(item.caption)
+                if (item.label === 'text') {
+                  return { label: 'text', caption: localCaption, text: item.text!.trim(), bbox }
+                }
+                if (item.label === 'object') {
+                  return { label: 'object', caption: localCaption, bbox }
+                }
+                const localLower = localCaption.toLowerCase()
+                const extraFacts = !multiChar
+                  ? characterFacts.filter(tag => !localLower.includes(tag.toLowerCase())).join(', ')
+                  : ''
+                if (bound) {
+                  if (index === primaryCharIndex) {
+                    const combined = [...targetFallback, localCaption, extraFacts].filter(Boolean).join('\n')
+                    return { label: 'character', caption: combined || localCaption, bbox }
+                  }
+                  return { label: 'character', caption: localCaption, bbox }
+                }
+                const combined = [localCaption, extraFacts].filter(Boolean).join('\n')
+                return { label: 'character', caption: combined || localCaption, bbox }
+              })
+            })()
+          : placement ? [{ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size, placement) }] : []
+    const existingTexts = new Set(items.filter(item => item.label === 'text' && item.text).map(item => item.text!.trim().toLowerCase()))
     const letterings = mossLettering(caption)
     for (const lettering of letterings) {
+      if (existingTexts.has(lettering.text.trim().toLowerCase())) continue
       items.push({ label: 'text', caption: lettering.caption, text: lettering.text, bbox: mossTextBox(size, lettering.placement) })
     }
     if (options?.forceLayout && !items.length) {
@@ -206,9 +266,13 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     }
     if (items.length) {
       // Outer quotes delimit the instruction. The model can otherwise paint them as extra glyphs.
-      const summary = letterings.reduceRight((value, item) =>
+      let summary = letterings.reduceRight((value, item) =>
         value.slice(0, item.quoteStart) + item.text + value.slice(item.quoteEnd), caption)
-      const raw = mossLayoutJson(summary, items, Boolean(panels))
+      if (useReferenceLayout && refLayout?.boundSubject && refCharIndices.length > 1) {
+        summary = summary.replace(/\bis the only prominent character,\s*/i, 'is ')
+      }
+      const layoutCanvas = panels ? 'multi_panel' : useReferenceLayout ? refLayout!.layout.canvas : 'single'
+      const raw = mossLayoutJson(summary, items, layoutCanvas)
       const compiled = compileMossPrompt(raw, negative, size)
       return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
     }

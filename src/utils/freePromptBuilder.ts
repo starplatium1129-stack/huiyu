@@ -5,6 +5,7 @@ import { escapeKnownLiteralTags } from './promptLiteralTags.ts'
 import { isManualR18Tags, mergeTokenText, normalizeKey, tokenize, type ModelProfile } from './promptPolicy.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import { tagKey } from './animaPromptOrder.ts'
+import type { InterrogateAssistLayout } from '../api/interrogateResult.ts'
 
 export interface FreePromptOptions {
   engine: 'anima' | 'krea2' | 'moss'
@@ -20,6 +21,7 @@ export interface FreePromptOptions {
   artistProse?: string
   visualDescription?: string
   backgroundProse?: string
+  referenceLayout?: InterrogateAssistLayout | null
   /** Classification candidates only; unentered characters and works are never injected. */
   characterTokens?: readonly string[]
   copyrightTokens?: readonly string[]
@@ -51,7 +53,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
 
   // A profile's quality defaults and a negative prompt do not make an empty draft drawable.
   const artistContent = input.engine === 'krea2' ? input.artistProse?.trim() : artistTags.join(', ').trim()
-  if (!tags.trim() && !description && !input.backgroundProse?.trim() && !artistContent) {
+  if (!tags.trim() && !description && !input.backgroundProse?.trim() && !artistContent && !(input.engine === 'moss' && input.referenceLayout)) {
     return { plan: createPromptPlan({ freeSubject: true }), prompt: '', negative, adult }
   }
 
@@ -63,6 +65,9 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
       characterTokens: (input.characterTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
       copyrightTokens: (input.copyrightTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
     })
+    if (input.referenceLayout) {
+      plan.mossLayout = { referenceLayout: { layout: input.referenceLayout, boundSubject: false } }
+    }
     const rendered = renderMossDrawingPrompt(plan, description, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
   }

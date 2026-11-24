@@ -30,6 +30,9 @@ export const WD14_FILES: readonly ModelFile[] = [
 
 const H3_REPO = 'Comfy-Org/MiniMax-H3'
 const H3_REVISION = 'e5eb578a89295337b8ff433a035929ce0279e0b6'
+export const H3_DWD_FILE = file('Lakonik/pi-H3', '4a864589b0fac3d14768f932c930c4dcf1a17b56',
+  'loras/pi_h3_2step_dwd_adapter_int8_convrot.safetensors', 2192176240,
+  'ef98527409eee4eaec8183265f4ee22d265680524237fae7149dbc203e11e739', 'pi_h3_2step_dwd_adapter_int8_convrot.safetensors')
 export const H3_FILES: readonly ModelFile[] = [
   file(H3_REPO, H3_REVISION, 'diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors', 20970379616,
     'e889202c41dafb67b10d67b97f0d8541508036a6090af23425a5c2615d03c47a'),
@@ -90,7 +93,7 @@ const KREA_STYLE_FILES: readonly ModelFile[] = imageResources.files
 const WAI_FILE: ModelFile = { ...file('', '2883731', 'checkpoints/waiIllustriousSDXL_v170.safetensors', 6938040682,
   'f116b0c78ff441467b0cdc8f1936e1ed18ea31e9997c7b132b1b8db533f0bd04'), sourceUrl: 'https://civitai.com/api/download/models/2883731?fileId=2763986' }
 
-export const COMFY_KNOWN_FILES = [...ANIMA_FILES, ...COMMUNITY_ANIMA_FILES, ...KREA_FILES, ...KREA_STYLE_FILES, ...WAN_FILES, ...H3_FILES, WAI_FILE]
+export const COMFY_KNOWN_FILES = [...ANIMA_FILES, ...COMMUNITY_ANIMA_FILES, ...KREA_FILES, ...KREA_STYLE_FILES, ...WAN_FILES, ...H3_FILES, H3_DWD_FILE, WAI_FILE]
 export function officialUrl(entry: ModelFile): string {
   if (entry.sourceUrl) return entry.sourceUrl
   return `https://huggingface.co/${entry.repo}/resolve/${entry.revision}/${entry.remotePath}`

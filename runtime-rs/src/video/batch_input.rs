@@ -1,10 +1,10 @@
 use super::*;
-pub fn validate_batch(body: &Value) -> Result<Value> {
+pub(super) fn validate_batch(body: &Value, pack: Option<&native::PackedH3>) -> Result<Value> {
     let object = body
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
     for key in object.keys() {
-        if ![
+        if !(pack.is_some() && matches!(key.as_str(), "h3Decoder" | "videoAttention")) && ![
             "modelId",
             "aspectRatio",
             "quality",
@@ -60,10 +60,8 @@ pub fn validate_batch(body: &Value) -> Result<Value> {
     };
     let steps = if validation::present(&body["steps"]) {
         validation::integer(&body["steps"]).unwrap_or(0)
-    } else {
-        8
-    };
-    if ![4, 8].contains(&steps) {
+    } else { 8 };
+    if pack.is_none() && ![4, 8].contains(&steps) {
         return Err(error(
             400,
             "INVALID_PARAMETER",
@@ -87,6 +85,7 @@ pub fn validate_batch(body: &Value) -> Result<Value> {
             )
         })?;
         for key in values.keys() {
+            if key == "lastFrame" && pack.is_some() { continue; }
             if ![
                 "prompt",
                 "dialogue",
@@ -110,17 +109,37 @@ pub fn validate_batch(body: &Value) -> Result<Value> {
         }
         let mut raw = json!({"camera":"still","motion":"subtle","duration":5});
         raw.as_object_mut().unwrap().extend(values.clone());
+        if pack.is_some() && linked && index > 0 && validation::present(&raw["lastFrame"]) {
+            return Err(error(400, "MODEL_INPUT_MODE", "分镜已指定首尾帧，请关闭自动尾帧衔接。"));
+        }
         raw["modelId"] = model["id"].clone();
         raw["aspectRatio"] = json!(aspect);
         raw["quality"] = json!(quality);
-        if model["family"] == "minimax-h3" {
+        if pack.is_some() {
+            for key in ["steps", "h3Decoder", "videoAttention"] {
+                if let Some(value) = body.get(key) {
+                    raw[key] = value.clone();
+                }
+            }
+        } else if model["family"] == "minimax-h3" {
             raw["steps"] = json!(steps);
         }
         let mut shot = json!({"input":null});
-        shot["input"] = validation::validate(&raw, None)?;
+        shot["input"] = if pack.is_some() {
+            native::validate(&raw, None, pack)?
+        } else {
+            validation::validate(&raw, None)?
+        };
         normalized.push(shot);
     }
     let mut result = json!({"modelId":model["id"],"aspectRatio":aspect,"quality":quality,"linkLastFrame":linked,"steps":steps,"shots":null});
+    if pack.is_some() {
+        let first = &normalized[0]["input"];
+        result["steps"] = first["steps"].clone();
+        result["inferenceEngine"] = json!("native");
+        result["h3Decoder"] = first["h3Decoder"].clone();
+        result["videoAttention"] = json!(first["videoAttention"].as_str().unwrap_or("auto"));
+    }
     result["shots"] = Value::Array(normalized);
     Ok(result)
 }

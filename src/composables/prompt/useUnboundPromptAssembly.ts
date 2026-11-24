@@ -14,11 +14,12 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
   const artists = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
-    const caption = target === 'moss' ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription) : ''
+    const caption = target === 'moss' || target === 'krea2' ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription) : ''
     return compilePromptRecipe({
       kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
       randomSetting: !caption && pb.randomVariation?.source === '',
       backgroundProse: caption,
+      referenceLayout: target === 'moss' ? pb.referenceInput?.layout ?? null : null,
       manual: [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],

@@ -1,5 +1,6 @@
 import { normalizeKey } from './promptPrimitives.ts'
 import { sanitizeOutfitOverride } from './wardrobeContent.ts'
+import { parseAssistLayout, type InterrogateAssistLayout } from '../api/interrogateResult.ts'
 import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
@@ -64,6 +65,8 @@ export interface DraftReferenceInput {
   caption?: string
   /** Earlier engine workflows place the source caption directly in the editable description. */
   captionInEditor?: boolean
+  /** Normalized visual layout regions extracted by vision assist for MOSS. */
+  layout?: InterrogateAssistLayout
   /** Model categories retained for ordering, including names absent from the local catalogue. */
   characterTokens?: string[]
   copyrightTokens?: string[]
@@ -72,11 +75,13 @@ export interface DraftReferenceInput {
 /** Clone the reference layer and retire classification for removed source tags. */
 export function cloneReferenceInput(input: DraftReferenceInput | null | undefined, tags = input?.tags ?? []): DraftReferenceInput | null {
   const caption = input?.caption?.trim()
-  if (!input || (!tags.length && !caption)) return null
+  const layout = parseAssistLayout(input?.layout)
+  if (!input || (!tags.length && !caption && !layout)) return null
   const keys = new Set(tags.map(normalizeKey))
   const characterTokens = input.characterTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
   const copyrightTokens = input.copyrightTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
   return { tags: [...tags], ...(caption ? { caption, ...(input.captionInEditor ? { captionInEditor: true } : {}) } : {}),
+    ...(layout ? { layout } : {}),
     ...(characterTokens.length ? { characterTokens } : {}), ...(copyrightTokens.length ? { copyrightTokens } : {}) }
 }
 
