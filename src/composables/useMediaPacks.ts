@@ -1,5 +1,6 @@
 import { computed, ref } from 'vue'
 import { mediaPacksApi, type MediaPackId, type MediaPacksStatus } from '@/api/mediaPacksApi'
+import { setDownloadedPortraitIdentity } from '@/platform/mediaPackPortraits'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const status = ref<MediaPacksStatus | null>(null)
@@ -27,7 +28,7 @@ export function formatPackSpeed(bps: number): string {
 
 function schedulePoll() {
   clearTimeout(pollTimer)
-  if (consumers <= 0 || !isLocalStudioHost()) return
+  if (!isLocalStudioHost()) return
   const busy = status.value?.busy === true
   if (!busy) return
   pollTimer = setTimeout(() => void refreshMediaPacks(false), 700)
@@ -42,6 +43,9 @@ export async function refreshMediaPacks(refreshRemote = false): Promise<MediaPac
   try {
     const next = await mediaPacksApi.status(refreshRemote, controller.signal)
     if (activeRequest !== controller) return status.value
+    const portraits = next.packs.find(pack => pack.id === 'portraits' && pack.canUninstall)
+    const completed = next.task?.state === 'completed' && next.task.completedPacks.includes('portraits')
+    setDownloadedPortraitIdentity(portraits ? `${portraits.installedVersion}:${completed ? next.task?.id : ''}` : '')
     status.value = next
     error.value = ''
     return next
@@ -61,8 +65,8 @@ export async function refreshMediaPacks(refreshRemote = false): Promise<MediaPac
 
 export async function checkMediaPacksOnboarding(): Promise<void> {
   if (initialChecked || !isLocalStudioHost()) return
-  initialChecked = true
   const current = await refreshMediaPacks(false)
+  if (current) initialChecked = true
   if (current?.onboarding.shouldPrompt) {
     onboardingVisible.value = true
   }
@@ -89,13 +93,13 @@ export function useMediaPacks() {
 
   function retain() {
     consumers++
-    if (isLocal && !status.value) void refreshMediaPacks(false)
+    if (isLocal && consumers === 1) void refreshMediaPacks(false)
     else schedulePoll()
   }
 
   function release() {
     consumers = Math.max(0, consumers - 1)
-    if (consumers === 0) clearTimeout(pollTimer)
+    if (consumers === 0 && !status.value?.busy) clearTimeout(pollTimer)
   }
 
   async function startInstall(packs: MediaPackId[]) {

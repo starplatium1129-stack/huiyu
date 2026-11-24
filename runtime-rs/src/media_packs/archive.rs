@@ -1,8 +1,10 @@
 use flate2::read::DeflateDecoder;
 use std::{
+    collections::HashSet,
     fs::{self, File},
     io::{self, Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
+    sync::LazyLock,
 };
 use tokio_util::sync::CancellationToken;
 
@@ -27,6 +29,15 @@ const ZIP64_LOCATOR_SIG: u32 = 0x0706_4b50;
 const ZIP64_EOCD_SIG: u32 = 0x0606_4b50;
 const CD_SIG: u32 = 0x0201_4b50;
 const LFH_SIG: u32 = 0x0403_4b50;
+pub(super) const MAX_FILES: usize = 100_000;
+pub(super) const MAX_PACK_BYTES: u64 = 32 * 1024 * 1024 * 1024;
+const MAX_FILE_BYTES: u64 = 512 * 1024 * 1024;
+static PORTRAIT_NAME: LazyLock<regex::Regex> = LazyLock::new(|| {
+    regex::Regex::new(r"(?i)^popular-[a-z0-9_-]+\.(?:png|jpe?g|webp)$").unwrap()
+});
+static SHOWCASE_NAME: LazyLock<regex::Regex> = LazyLock::new(|| {
+    regex::Regex::new(r"(?i)^(?:sc[0-9]{3,}|artist_[a-z0-9_-]+|pc_[a-z0-9_-]+|lora_[a-z0-9_-]+)\.(?:jpg|png|webp)$").unwrap()
+});
 
 fn read_u16(b: &[u8], off: usize) -> u16 {
     u16::from_le_bytes([b[off], b[off + 1]])
@@ -125,7 +136,7 @@ fn read_entries(file: &mut File) -> Result<Vec<ZipEntry>, String> {
         }
     }
 
-    if entry_count > 100_000 || cd_size > 128 * 1024 * 1024 || cd_offset.saturating_add(cd_size) > len {
+    if entry_count > MAX_FILES as u64 || cd_size > 128 * 1024 * 1024 || cd_offset.saturating_add(cd_size) > eocd_file_offset {
         return Err("ZIP 中央目录超出安全限制或已损坏".into());
     }
     file.seek(SeekFrom::Start(cd_offset))
@@ -202,15 +213,15 @@ fn read_entries(file: &mut File) -> Result<Vec<ZipEntry>, String> {
 }
 
 fn sanitize_target(kind: PackKind, raw_name: &str) -> Result<Option<PathBuf>, String> {
-    if raw_name.ends_with('/') {
-        return Ok(None);
-    }
     if raw_name.contains(['\\', '\0', ':']) || raw_name.starts_with('/') {
         return Err(format!("压缩包内含非法路径：{raw_name}"));
     }
-    let parts: Vec<&str> = raw_name.split('/').collect();
-    if parts.iter().any(|p| p.is_empty() || *p == "." || *p == ".." || p.starts_with('.')) {
+    let parts = raw_name.strip_suffix('/').unwrap_or(raw_name).split('/');
+    if parts.clone().any(|p| p.is_empty() || p.starts_with('.')) {
         return Err(format!("压缩包内含越界或隐藏路径：{raw_name}"));
+    }
+    if raw_name.ends_with('/') {
+        return Ok(None);
     }
     match kind {
         PackKind::Portraits => {
@@ -226,12 +237,7 @@ fn sanitize_target(kind: PackKind, raw_name: &str) -> Result<Option<PathBuf>, St
             } else {
                 return Ok(None);
             };
-            let lower = file_name.to_ascii_lowercase();
-            let valid_ext = lower.ends_with(".png")
-                || lower.ends_with(".jpg")
-                || lower.ends_with(".jpeg")
-                || lower.ends_with(".webp");
-            if !file_name.contains('/') && lower.starts_with("popular-") && valid_ext {
+            if PORTRAIT_NAME.is_match(file_name) {
                 Ok(Some(PathBuf::from("assets").join("characters").join(file_name)))
             } else {
                 Ok(None)
@@ -246,12 +252,9 @@ fn sanitize_target(kind: PackKind, raw_name: &str) -> Result<Option<PathBuf>, St
             }
             if let Some((dir, file_name)) = normalized.split_once('/')
                 && matches!(dir, "images" | "thumbs")
-                && !file_name.contains('/')
+                && SHOWCASE_NAME.is_match(file_name)
             {
-                let lower = file_name.to_ascii_lowercase();
-                if lower.ends_with(".jpg") || lower.ends_with(".png") || lower.ends_with(".webp") {
-                    return Ok(Some(PathBuf::from(dir).join(file_name)));
-                }
+                return Ok(Some(PathBuf::from(dir).join(file_name)));
             }
             Ok(None)
         }
@@ -262,6 +265,7 @@ pub(super) fn extract_pack<F>(
     archive_path: &Path,
     dest_dir: &Path,
     kind: PackKind,
+    expected: (usize, u64),
     cancel: &CancellationToken,
     mut on_progress: F,
 ) -> Result<(usize, u64), String>
@@ -269,20 +273,39 @@ where
     F: FnMut(usize, usize),
 {
     let mut file = File::open(archive_path).map_err(|e| format!("打开资源压缩包失败：{e}"))?;
+    let archive_bytes = file.metadata().map_err(|e| format!("读取压缩包大小失败：{e}"))?.len();
     let entries = read_entries(&mut file)?;
     let mut targets = Vec::new();
+    let mut paths = HashSet::new();
+    let mut declared_bytes = 0_u64;
     for entry in entries {
+        if cancel.is_cancelled() {
+            return Err("CANCELLED".into());
+        }
         // Reject Unix symlinks stored in ZIP external attributes.
         let unix_mode = (entry.external_attrs >> 16) & 0o170000;
         if unix_mode == 0o120000 {
             return Err(format!("拒绝解压符号链接：{}", entry.name));
         }
         if let Some(rel) = sanitize_target(kind, &entry.name)? {
+            if !paths.insert(rel.to_string_lossy().to_ascii_lowercase()) {
+                return Err(format!("压缩包包含重复目标：{}", entry.name));
+            }
+            declared_bytes = declared_bytes.saturating_add(entry.uncompressed_size);
+            if entry.uncompressed_size > MAX_FILE_BYTES || declared_bytes > expected.1 {
+                return Err(format!("ZIP 解压大小超过资源索引或单文件限制：{}", entry.name));
+            }
             targets.push((entry, rel));
         }
     }
-    if targets.is_empty() {
-        return Err("资源压缩包内未找到有效内容文件".into());
+    if targets.is_empty() || (targets.len(), declared_bytes) != expected {
+        return Err("资源压缩包的文件数或解压大小与索引不匹配".into());
+    }
+    if kind == PackKind::Showcase
+        && (!paths.contains("manifest.json")
+            || !paths.iter().any(|path| path.starts_with("images")))
+    {
+        return Err("样张资源包缺少 manifest.json 或原图".into());
     }
     fs::create_dir_all(dest_dir).map_err(|e| format!("创建解压目录失败：{e}"))?;
     let table = crc32_table();
@@ -309,6 +332,11 @@ where
             .local_header_offset
             .checked_add(30 + lfh_name_len + lfh_extra_len)
             .ok_or_else(|| "ZIP 偏移溢出".to_string())?;
+        if data_offset.checked_add(entry.compressed_size).is_none_or(|end| end > archive_bytes)
+            || (entry.method == 0 && entry.compressed_size != entry.uncompressed_size)
+        {
+            return Err(format!("ZIP 条目数据范围无效：{}", entry.name));
+        }
         file.seek(SeekFrom::Start(data_offset))
             .map_err(|e| format!("定位压缩数据失败：{e}"))?;
 
@@ -316,46 +344,30 @@ where
         if let Some(parent) = out_path.parent() {
             fs::create_dir_all(parent).map_err(|e| format!("创建目录失败：{e}"))?;
         }
-        let mut out = File::create(&out_path).map_err(|e| format!("写入文件失败：{e}"))?;
-        let mut limited = (&mut file).take(entry.compressed_size);
+        let mut out = File::create_new(&out_path).map_err(|e| format!("写入文件失败：{e}"))?;
+        let limited = (&mut file).take(entry.compressed_size);
         let mut crc = 0xffff_ffffu32;
         let mut written = 0u64;
 
-        match entry.method {
-            0 => loop {
-                if cancel.is_cancelled() {
-                    return Err("CANCELLED".into());
-                }
-                let n = limited
-                    .read(&mut buf)
-                    .map_err(|e| format!("解压读取失败：{e}"))?;
-                if n == 0 {
-                    break;
-                }
-                crc = crc32_update(&table, crc, &buf[..n]);
-                out.write_all(&buf[..n])
-                    .map_err(|e| format!("写入磁盘失败：{e}"))?;
-                written += n as u64;
-            },
-            8 => {
-                let mut decoder = DeflateDecoder::new(limited);
-                loop {
-                    if cancel.is_cancelled() {
-                        return Err("CANCELLED".into());
-                    }
-                    let n = decoder
-                        .read(&mut buf)
-                        .map_err(|e| format!("DEFLATE 解压失败：{e}"))?;
-                    if n == 0 {
-                        break;
-                    }
-                    crc = crc32_update(&table, crc, &buf[..n]);
-                    out.write_all(&buf[..n])
-                        .map_err(|e| format!("写入磁盘失败：{e}"))?;
-                    written += n as u64;
-                }
-            }
+        let mut reader: Box<dyn Read + '_> = match entry.method {
+            0 => Box::new(limited),
+            8 => Box::new(DeflateDecoder::new(limited)),
             other => return Err(format!("不支持的 ZIP 压缩方式：{other}")),
+        };
+        loop {
+            if cancel.is_cancelled() {
+                return Err("CANCELLED".into());
+            }
+            let n = reader.read(&mut buf).map_err(|e| format!("解压读取失败：{e}"))?;
+            if n == 0 {
+                break;
+            }
+            written += n as u64;
+            if written > entry.uncompressed_size {
+                return Err(format!("ZIP 条目解压超出声明大小：{}", entry.name));
+            }
+            crc = crc32_update(&table, crc, &buf[..n]);
+            out.write_all(&buf[..n]).map_err(|e| format!("写入磁盘失败：{e}"))?;
         }
         out.flush().map_err(|e: io::Error| format!("刷盘失败：{e}"))?;
         if written != entry.uncompressed_size || (crc ^ 0xffff_ffff) != entry.crc32 {
@@ -368,8 +380,5 @@ where
         }
     }
 
-    if kind == PackKind::Showcase && !dest_dir.join("manifest.json").is_file() {
-        return Err("样张资源包缺少 manifest.json".into());
-    }
     Ok((extracted_files, extracted_bytes))
 }

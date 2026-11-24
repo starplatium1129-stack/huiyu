@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import '@/assets/css/control-feedback.css'
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
-import { getDesktopWindowRole } from '@/platform/desktop/runtime'
+import { getDesktopWindowRole, onDesktopRuntime } from '@/platform/desktop/runtime'
 
 import { computed, defineAsyncComponent, onErrorCaptured, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -47,9 +47,10 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 const route = useRoute()
 const desktop = Boolean(getDesktopCapabilities())
+const desktopWindowRole = desktop ? getDesktopWindowRole() : undefined
 const localStudioHost = isLocalStudioHost()
 const mediaOnboardingMounted = ref(false)
-const atelierWindow = desktop && getDesktopWindowRole() === 'atelier'
+const atelierWindow = desktopWindowRole === 'atelier'
 const confirmation = useConfirmState()
 const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDialog.vue').catch(error => {
   resolveConfirm(confirmation.value.requestId, false)
@@ -72,22 +73,34 @@ onErrorCaptured((error, instance, info) => {
 })
 const layoutMotion = useRouteTransition()
 let detachDesktopNavigation: (() => void) | undefined
-const onOpenMediaOnboarding = () => { mediaOnboardingMounted.value = true }
+let detachMediaBootstrap: (() => void) | undefined
+const onOpenMediaOnboarding = () => {
+  if (localStudioHost && !isCompanion.value) mediaOnboardingMounted.value = true
+}
 onMounted(() => {
   if (getDesktopCapabilities()) detachDesktopNavigation = onDesktopNavigate(path => { void router.push(path) })
   if (localStudioHost && !isCompanion.value) {
     window.addEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
-    void import('@/composables/useMediaPacks').then(async mod => {
+    const check = async () => {
+      const mod = await import('@/composables/useMediaPacks')
+      if (isCompanion.value) return
       await mod.checkMediaPacksOnboarding()
-      if (mod.onboardingVisibleState.value) mediaOnboardingMounted.value = true
-    })
+      if (mod.onboardingVisibleState.value) onOpenMediaOnboarding()
+    }
+    if (desktop) {
+      detachMediaBootstrap = onDesktopRuntime(state => {
+        if (state.connection === 'ready') void check()
+      })
+    } else void check()
   }
 })
 onUnmounted(() => {
   detachDesktopNavigation?.()
+  detachMediaBootstrap?.()
   window.removeEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
 })
-const isCompanion = computed(() => route.path === '/companion' || route.path === '/companion-chat')
+const isCompanion = computed(() => desktopWindowRole === 'companion' || desktopWindowRole === 'companion-chat'
+  || ['/companion', '/companion-chat', '/companion.html'].includes(route.path.replace(/\/+$/, '')))
 
 let stopThumbnailWarmup: (() => void) | undefined
 

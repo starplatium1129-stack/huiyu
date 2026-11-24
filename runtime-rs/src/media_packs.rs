@@ -4,13 +4,14 @@ mod http;
 use crate::{config::Config, download_transport};
 use archive::PackKind;
 use futures_util::StreamExt;
-use reqwest::header::{HeaderMap, RANGE};
+use reqwest::{StatusCode, header::{CONTENT_RANGE, HeaderMap, RANGE}};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
     collections::HashMap,
     fs,
+    io::Write,
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
@@ -103,6 +104,7 @@ struct TaskState {
 
 #[derive(Default)]
 struct Inner {
+    closed: bool,
     task: Option<TaskState>,
     cancel: Option<CancellationToken>,
     remote_index: Option<RemoteIndex>,
@@ -116,6 +118,8 @@ pub struct MediaPacksService {
     client: reqwest::Client,
     shutdown: CancellationToken,
     workers: TaskTracker,
+    mutation: Arc<tokio::sync::Mutex<()>>,
+    settings_write: Mutex<()>,
     inner: Mutex<Inner>,
 }
 
@@ -155,17 +159,31 @@ fn read_json_file<T: for<'de> Deserialize<'de>>(path: &Path) -> Option<T> {
 }
 
 fn write_json_atomic<T: Serialize>(path: &Path, value: &T) -> Result<(), String> {
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent).map_err(|e| format!("创建目录失败：{e}"))?;
-    }
-    let tmp = path.with_extension(format!("tmp-{}", uuid::Uuid::new_v4()));
+    let parent = path.parent().ok_or_else(|| "缺少保存目录".to_owned())?;
+    fs::create_dir_all(parent).map_err(|e| format!("创建目录失败：{e}"))?;
+    let mut tmp = tempfile::NamedTempFile::new_in(parent).map_err(|e| format!("创建保存文件失败：{e}"))?;
     let bytes = serde_json::to_vec_pretty(value).map_err(|e| format!("序列化失败：{e}"))?;
-    fs::write(&tmp, bytes).map_err(|e| format!("写入文件失败：{e}"))?;
-    let _ = fs::remove_file(path);
-    fs::rename(&tmp, path).map_err(|e| {
-        let _ = fs::remove_file(&tmp);
-        format!("保存文件失败：{e}")
-    })
+    tmp.write_all(&bytes).map_err(|e| format!("写入文件失败：{e}"))?;
+    tmp.as_file().sync_all().map_err(|e| format!("刷盘失败：{e}"))?;
+    tmp.persist(path).map_err(|e| format!("保存文件失败：{e}"))?;
+    Ok(())
+}
+
+fn download_offset(response: &reqwest::Response, offset: u64, total: u64) -> Option<u64> {
+    match response.status() {
+        StatusCode::OK if response.content_length().is_none_or(|size| size == total) => Some(0),
+        StatusCode::PARTIAL_CONTENT if offset < total => {
+            let header = response.headers().get(CONTENT_RANGE)?.to_str().ok()?;
+            let (range, size) = header.strip_prefix("bytes ")?.split_once('/')?;
+            let (start, end) = range.split_once('-')?;
+            (start.parse::<u64>().ok()? == offset
+                && end.parse::<u64>().ok()? == total - 1
+                && size.parse::<u64>().ok()? == total
+                && response.content_length().is_none_or(|length| length == total - offset))
+                .then_some(offset)
+        }
+        _ => None,
+    }
 }
 
 fn build_candidates(raw_url: &str, custom_mirror: &str) -> Vec<(String, String)> {
@@ -186,7 +204,8 @@ fn build_candidates(raw_url: &str, custom_mirror: &str) -> Vec<(String, String)>
             .unwrap_or_else(|| "镜像加速".into());
         push(m, label);
     }
-    push(raw_url.to_owned(), "GitHub 直连".into());
+    let direct = if raw_url.starts_with("https://github.com/") { "GitHub 直连" } else { "下载源直连" };
+    push(raw_url.to_owned(), direct.into());
     out
 }
 
@@ -233,6 +252,8 @@ impl MediaPacksService {
             client,
             shutdown,
             workers: TaskTracker::new(),
+            mutation: Arc::new(tokio::sync::Mutex::new(())),
+            settings_write: Mutex::new(()),
             inner: Mutex::new(Inner {
                 remote_index: cached,
                 ..Default::default()
@@ -241,10 +262,14 @@ impl MediaPacksService {
     }
 
     pub async fn close(&self) {
-        if let Some(cancel) = self.inner.lock().unwrap().cancel.as_ref() {
-            cancel.cancel();
+        {
+            let mut inner = self.inner.lock().unwrap();
+            inner.closed = true;
+            if let Some(cancel) = &inner.cancel {
+                cancel.cancel();
+            }
+            self.workers.close();
         }
-        self.workers.close();
         self.workers.wait().await;
     }
 
@@ -279,6 +304,7 @@ impl MediaPacksService {
         manifest_url: Option<String>,
         onboarding_dismissed: Option<bool>,
     ) -> Result<PackSettings, String> {
+        let _guard = self.settings_write.lock().unwrap();
         let mut current = self.settings();
         if let Some(mirror) = mirror_origin {
             let trimmed = mirror.trim().trim_end_matches('/').to_owned();
@@ -402,11 +428,14 @@ impl MediaPacksService {
             None
         };
         let (showcase_installed, showcase_source, showcase_ver, showcase_files, showcase_bytes) =
-            if let Some(rec) = &downloaded_showcase {
+            if external_showcase.is_some() {
+                let has_local_override = read_json_file::<Value>(&self.config.runtime_root.join("config.json"))
+                    .is_some_and(|config| config["localShowcaseDir"].as_str().is_some_and(|value| !value.trim().is_empty()));
+                let src = if offline_mounted && !has_local_override { "offline" } else { "local" };
+                let (files, bytes) = downloaded_showcase.as_ref().map_or((0, 0), |rec| (rec.file_count, rec.bytes));
+                (true, src, Some(src.to_owned()), files, bytes)
+            } else if let Some(rec) = &downloaded_showcase {
                 (true, "downloaded", Some(rec.version.clone()), rec.file_count, rec.bytes)
-            } else if external_showcase.is_some() {
-                let src = if offline_mounted { "offline" } else { "local" };
-                (true, src, Some(src.to_owned()), 0, 0)
             } else {
                 (false, "none", None, 0, 0)
             };
@@ -446,7 +475,7 @@ impl MediaPacksService {
         );
         let showcase_remote = remote_pack(
             "showcase",
-            showcase_ver.as_deref(),
+            downloaded_showcase.as_ref().map(|rec| rec.version.as_str()).or(showcase_ver.as_deref()),
             DEFAULT_SHOWCASE_ESTIMATE,
             "场景样张资源库",
             "画册与场景浏览的高清成品样张与缩略图，离线秒看所有推荐场景成图。",
@@ -519,6 +548,8 @@ impl MediaPacksService {
             return Err(("INVALID_PACK", "请至少选择一个资源包".into()));
         }
 
+        let mutation = self.mutation.clone().try_lock_owned()
+            .map_err(|_| ("BUSY", "请等待当前资源包操作完成".to_owned()))?;
         let cancel = self.shutdown.child_token();
         let initial = TaskState {
             id: uuid::Uuid::new_v4().to_string(),
@@ -540,6 +571,9 @@ impl MediaPacksService {
         };
         {
             let mut inner = self.inner.lock().unwrap();
+            if inner.closed || cancel.is_cancelled() {
+                return Err(("CLOSED", "资源包服务正在关闭".into()));
+            }
             if inner
                 .task
                 .as_ref()
@@ -549,12 +583,12 @@ impl MediaPacksService {
             }
             inner.task = Some(initial.clone());
             inner.cancel = Some(cancel.clone());
+            let service = Arc::clone(self);
+            self.workers.spawn(async move {
+                let _mutation = mutation;
+                service.run_install_queue(queue, cancel).await;
+            });
         }
-
-        let service = Arc::clone(self);
-        self.workers.spawn(async move {
-            service.run_install_queue(queue, cancel).await;
-        });
         Ok(serde_json::to_value(initial).unwrap_or(Value::Null))
     }
 
@@ -576,20 +610,19 @@ impl MediaPacksService {
         if !matches!(pack_id, "portraits" | "showcase") {
             return Err(("INVALID_PACK", format!("未知的资源包：{pack_id}")));
         }
+        let mutation = self.mutation.clone().try_lock_owned()
+            .map_err(|_| ("BUSY", "请先等待或取消当前下载任务后再卸载资源包".to_owned()))?;
         {
             let inner = self.inner.lock().unwrap();
-            if inner
-                .task
-                .as_ref()
-                .is_some_and(|t| matches!(t.state.as_str(), "running" | "cancelling"))
-            {
-                return Err(("BUSY", "请先等待或取消当前下载任务后再卸载资源包".into()));
+            if inner.closed || self.shutdown.is_cancelled() {
+                return Err(("CLOSED", "资源包服务正在关闭".into()));
             }
         }
         let pack_dir = self.root.join(pack_id);
         let part_file = self.root.join("downloads").join(format!("{pack_id}.zip.part"));
         let meta_file = self.root.join("downloads").join(format!("{pack_id}.zip.meta.json"));
         tokio::task::spawn_blocking(move || {
+            let _mutation = mutation;
             if pack_dir.exists() {
                 fs::remove_dir_all(&pack_dir).map_err(|e| format!("清理资源目录失败：{e}"))?;
             }
@@ -610,7 +643,11 @@ impl MediaPacksService {
     }
 
     async fn run_install_queue(self: Arc<Self>, queue: Vec<String>, cancel: CancellationToken) {
-        let (index, fetch_err) = self.fetch_remote_index(true).await;
+        let (index, fetch_err) = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => (None, None),
+            result = self.fetch_remote_index(true) => result,
+        };
         if cancel.is_cancelled() {
             self.finish_task("cancelled", "已暂停下载，已下载部分已保留可续传", None);
             return;
@@ -641,11 +678,15 @@ impl MediaPacksService {
             if !valid_http_url(&remote.archive.url)
                 || remote.archive.url.is_empty()
                 || !is_sha256(&remote.archive.sha256)
+                || remote.id != pack_id
+                || !(1..=archive::MAX_PACK_BYTES).contains(&remote.archive.bytes)
+                || !(1..=archive::MAX_PACK_BYTES).contains(&remote.bytes)
+                || !(1..=archive::MAX_FILES).contains(&remote.file_count)
             {
                 self.finish_task(
                     "failed",
                     "资源包校验信息无效",
-                    Some(format!("{pack_id} 资源包的下载地址或 SHA-256 校验值格式无效")),
+                    Some(format!("{pack_id} 资源包的下载地址、校验值或大小无效")),
                 );
                 return;
             }
@@ -729,7 +770,7 @@ impl MediaPacksService {
         });
 
         // Step 1: Download with resumable HTTP Range + mirror fallback.
-        if offset < remote.archive.bytes || remote.archive.bytes == 0 {
+        if offset < remote.archive.bytes {
             let settings = self.settings();
             let candidates = build_candidates(&remote.archive.url, &settings.mirror_origin);
             let mut downloaded = false;
@@ -769,15 +810,13 @@ impl MediaPacksService {
                     last_error = format!("{mirror_label}返回 HTTP {}", status.as_u16());
                     continue;
                 }
-                let append = status.as_u16() == 206 && offset > 0;
-                if !append {
-                    offset = 0;
-                }
-                let total = if remote.archive.bytes > 0 {
-                    remote.archive.bytes
-                } else {
-                    response.content_length().map(|l| l + offset).unwrap_or(0)
+                let total = remote.archive.bytes;
+                let Some(start) = download_offset(&response, offset, total) else {
+                    last_error = format!("{mirror_label} 返回的下载范围或长度与索引不匹配");
+                    continue;
                 };
+                offset = start;
+                let append = offset > 0;
                 let std_file = fs::OpenOptions::new()
                     .write(true)
                     .create(true)
@@ -797,17 +836,22 @@ impl MediaPacksService {
                         biased;
                         _ = cancel.cancelled() => {
                             let _ = writer.flush().await;
+                            self.update_task(|t| t.bytes = received);
                             return Err("CANCELLED".into());
                         }
                         item = tokio::time::timeout(Duration::from_secs(30), stream.next()) => item,
                     };
                     match next_chunk {
                         Ok(Some(Ok(chunk))) => {
+                            let n = chunk.len() as u64;
+                            if received.saturating_add(n) > total {
+                                stream_err = Some(format!("{mirror_label} 返回的下载数据超过索引大小"));
+                                break;
+                            }
                             if let Err(e) = writer.write_all(&chunk).await {
                                 stream_err = Some(format!("写入磁盘失败：{e}"));
                                 break;
                             }
-                            let n = chunk.len() as u64;
                             received += n;
                             window_bytes += n;
                             let elapsed = last_tick.elapsed();
@@ -845,7 +889,7 @@ impl MediaPacksService {
                     last_error = err;
                     continue;
                 }
-                if remote.archive.bytes > 0 && received != remote.archive.bytes {
+                if received != remote.archive.bytes {
                     last_error = format!("{mirror_label}下载不完整（{received}/{} 字节）", remote.archive.bytes);
                     continue;
                 }
@@ -912,8 +956,9 @@ impl MediaPacksService {
         let extract_dest = staging_dir.clone();
         let extract_cancel = cancel.clone();
         let progress_service = Arc::clone(self);
+        let expected = (remote.file_count, remote.bytes);
         let (file_count, extracted_bytes) = tokio::task::spawn_blocking(move || {
-            archive::extract_pack(&extract_archive, &extract_dest, kind, &extract_cancel, |done, total| {
+            archive::extract_pack(&extract_archive, &extract_dest, kind, expected, &extract_cancel, |done, total| {
                 progress_service.update_task(|t| {
                     t.files_done = done;
                     t.files_total = total;
@@ -925,6 +970,10 @@ impl MediaPacksService {
         .inspect_err(|_| {
             let _ = fs::remove_dir_all(&staging_dir);
         })?;
+        if cancel.is_cancelled() {
+            let _ = fs::remove_dir_all(&staging_dir);
+            return Err("CANCELLED".into());
+        }
 
         self.update_task(|t| {
             t.phase = "switching".into();
@@ -941,7 +990,7 @@ impl MediaPacksService {
                 }
                 return Err(format!("启用新资源目录失败：{e}"));
             }
-            write_json_atomic(
+            if let Err(error) = write_json_atomic(
                 &pack_root.join("installed.json"),
                 &InstalledRecord {
                     version: remote.version.clone(),
@@ -950,7 +999,15 @@ impl MediaPacksService {
                     file_count,
                     installed_at: now_ms(),
                 },
-            )?;
+            ) {
+                fs::rename(&current_dir, &staging_dir)
+                    .map_err(|e| format!("{error}；撤回新资源目录失败：{e}"))?;
+                if had_current {
+                    fs::rename(&previous_dir, &current_dir)
+                        .map_err(|e| format!("{error}；恢复旧资源目录失败：{e}"))?;
+                }
+                return Err(error);
+            }
             if had_current {
                 let _ = fs::remove_dir_all(&previous_dir);
             }

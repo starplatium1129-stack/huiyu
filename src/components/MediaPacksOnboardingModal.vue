@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useId, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 import { formatPackBytes, formatPackSpeed, useMediaPacks } from '@/composables/useMediaPacks'
@@ -8,6 +8,7 @@ import { hasResourceAssistant, openResourceAssistant } from '@/platform/desktop/
 const titleId = useId()
 const progressId = useId()
 const dialogRef = ref<HTMLDialogElement | null>(null)
+const backgroundButton = ref<HTMLButtonElement | null>(null)
 const fluid = useFluidDialog(dialogRef)
 const desktopAssistant = hasResourceAssistant()
 const selectedMode = ref<'full' | 'lite'>('full')
@@ -56,7 +57,6 @@ const activePackLabel = computed(() => {
   return '资源包'
 })
 
-const isFinished = computed(() => task.value?.state === 'completed')
 const isRunning = computed(() => task.value?.state === 'running' || task.value?.state === 'cancelling')
 
 function syncDialog(visible: boolean) {
@@ -70,6 +70,21 @@ function syncDialog(visible: boolean) {
 }
 
 watch(onboardingVisible, visible => syncDialog(visible))
+watch(() => task.value?.state, state => {
+  if (state === 'completed' && onboardingVisible.value) closeOnboarding()
+})
+watch(isRunning, async running => {
+  if (!running || !dialogRef.value?.contains(document.activeElement)) return
+  await nextTick()
+  if (dialogRef.value?.open && document.activeElement === document.body) {
+    backgroundButton.value?.focus({ preventScroll: true })
+  }
+})
+
+function dismissOrBackground() {
+  if (isRunning.value) closeOnboarding()
+  else void dismissOnboarding()
+}
 
 function onDialogClose() {
   if (dialogRef.value) dialogRef.value.returnValue = ''
@@ -78,8 +93,7 @@ function onDialogClose() {
 
 function onDialogClick(event: MouseEvent) {
   if (isBackdropClick(event, dialogRef.value)) {
-    if (isRunning.value) closeOnboarding()
-    else void dismissOnboarding()
+    dismissOrBackground()
   }
 }
 
@@ -104,6 +118,7 @@ onUnmounted(() => release())
     ref="dialogRef"
     class="media-onboarding-dialog"
     :aria-labelledby="titleId"
+    @cancel.prevent="dismissOrBackground"
     @close="onDialogClose"
     @click="onDialogClick"
   >
@@ -120,23 +135,22 @@ onUnmounted(() => release())
           class="media-onboarding-close"
           type="button"
           aria-label="关闭窗口"
-          @click="isRunning ? closeOnboarding() : dismissOnboarding()"
+          @click="dismissOrBackground"
         >
           <ArchiveIcon name="close" />
         </button>
       </header>
 
-      <div v-if="isRunning || isFinished" class="media-onboarding-progress">
+      <div v-if="isRunning" class="media-onboarding-progress">
         <div class="media-progress-head">
           <div role="status" aria-live="polite" aria-atomic="true">
-            <strong>{{ isFinished ? '资源下载并启用完成' : `${activePackLabel} · ${task?.message || '处理中…'}` }}</strong>
-            <span v-if="!isFinished && task?.mirrorLabel">{{ task.mirrorLabel }}</span>
+            <strong>{{ `${activePackLabel} · ${task?.message || '处理中…'}` }}</strong>
+            <span v-if="task?.mirrorLabel">{{ task.mirrorLabel }}</span>
           </div>
-          <span v-if="progressValue !== undefined && !isFinished" class="media-progress-pct">{{ progressValue }}%</span>
+          <span v-if="progressValue !== undefined" class="media-progress-pct">{{ progressValue }}%</span>
         </div>
 
         <progress
-          v-if="!isFinished"
           :id="progressId"
           class="media-native-progress"
           max="100"
@@ -144,7 +158,7 @@ onUnmounted(() => release())
           :aria-label="`${activePackLabel}下载与安装进度`"
         />
 
-        <div v-if="!isFinished && task" class="media-progress-meta">
+        <div v-if="task" class="media-progress-meta">
           <span v-if="task.phase === 'extracting' && task.filesTotal > 0">
             正在解压：{{ task.filesDone }} / {{ task.filesTotal }} 个文件
           </span>
@@ -155,64 +169,43 @@ onUnmounted(() => release())
           <span v-if="task.speedBps > 0" class="media-progress-speed">{{ formatPackSpeed(task.speedBps) }}</span>
         </div>
 
-        <p v-if="isFinished" class="media-progress-done" role="status">
-          <ArchiveIcon name="success" />
-          高清立绘与样张已自动热挂载生效，无需重启软件。
-        </p>
-
         <div class="media-progress-actions">
-          <template v-if="isRunning">
-            <button class="btn btn-primary" type="button" @click="closeOnboarding">后台下载，先进入绘遇</button>
-            <button class="btn btn-ghost" type="button" :disabled="task?.state === 'cancelling'" @click="cancel">
-              <ArchiveIcon name="stop" />{{ task?.state === 'cancelling' ? '正在暂停…' : '暂停下载（保留进度）' }}
-            </button>
-          </template>
-          <template v-else>
-            <button class="btn btn-primary" type="button" autofocus @click="dismissOnboarding">开始使用绘遇</button>
-          </template>
+          <button ref="backgroundButton" class="btn btn-primary" type="button" @click="closeOnboarding">后台下载，先进入绘遇</button>
+          <button class="btn btn-ghost" type="button" :disabled="task?.state === 'cancelling'" @click="cancel">
+            <ArchiveIcon name="stop" />{{ task?.state === 'cancelling' ? '正在暂停…' : '暂停下载（保留进度）' }}
+          </button>
         </div>
       </div>
 
       <template v-else>
-        <div class="media-preset-grid" role="radiogroup" aria-label="资源下载模式">
-          <button
-            type="button"
-            class="media-preset-card"
-            :class="{ selected: selectedMode === 'full' }"
-            role="radio"
-            :aria-checked="selectedMode === 'full'"
-            @click="selectedMode = 'full'"
-          >
-            <div class="media-preset-top">
-              <strong>全量资源包</strong>
+        <fieldset class="media-preset-grid">
+          <legend class="media-visually-hidden">资源下载模式</legend>
+          <label class="media-preset-card" :class="{ selected: selectedMode === 'full' }" :for="`${titleId}-full`">
+            <input :id="`${titleId}-full`" v-model="selectedMode" class="media-visually-hidden" :name="titleId" type="radio" value="full" :aria-labelledby="`${titleId}-full-label`">
+            <span class="media-preset-top">
+              <strong :id="`${titleId}-full-label`">全量资源包</strong>
               <span class="media-preset-badge">推荐</span>
-            </div>
-            <p>自动下载「人物高清立绘包 + 场景样张资源库」，角色原画欣赏、聊天室立绘与画册样张一步到位。</p>
-            <div class="media-preset-meta">
+            </span>
+            <span class="media-preset-description">自动下载「人物高清立绘包 + 场景样张资源库」，角色原画欣赏、聊天室立绘与画册样张一步到位。</span>
+            <span class="media-preset-meta">
               <span>预计下载 {{ formatPackBytes(fullBytes) }}</span>
               <span>含立绘 + 样张</span>
-            </div>
-          </button>
+            </span>
+          </label>
 
-          <button
-            type="button"
-            class="media-preset-card"
-            :class="{ selected: selectedMode === 'lite' }"
-            role="radio"
-            :aria-checked="selectedMode === 'lite'"
-            @click="selectedMode = 'lite'"
-          >
-            <div class="media-preset-top">
-              <strong>精简模式（仅立绘）</strong>
+          <label class="media-preset-card" :class="{ selected: selectedMode === 'lite' }" :for="`${titleId}-lite`">
+            <input :id="`${titleId}-lite`" v-model="selectedMode" class="media-visually-hidden" :name="titleId" type="radio" value="lite" :aria-labelledby="`${titleId}-lite-label`">
+            <span class="media-preset-top">
+              <strong :id="`${titleId}-lite-label`">精简模式（仅立绘）</strong>
               <span class="media-preset-badge subtle">省空间</span>
-            </div>
-            <p>默认只下载「人物高清立绘包」，节省约 {{ formatPackBytes(showcaseBytes) }} 空间；安装后随时可在控制室补下样张库。</p>
-            <div class="media-preset-meta">
+            </span>
+            <span class="media-preset-description">默认只下载「人物高清立绘包」，节省约 {{ formatPackBytes(showcaseBytes) }} 空间；安装后随时可在控制室补下样张库。</span>
+            <span class="media-preset-meta">
               <span>预计下载 {{ formatPackBytes(liteBytes) }}</span>
               <span>{{ portraitsPack?.installed ? '立绘已就绪' : '仅人物立绘' }}</span>
-            </div>
-          </button>
-        </div>
+            </span>
+          </label>
+        </fieldset>
 
         <p v-if="error || task?.error" class="media-onboarding-error" role="alert">
           <ArchiveIcon name="warning" />
@@ -317,8 +310,21 @@ onUnmounted(() => release())
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--s-4);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+}
+.media-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 .media-preset-card {
+  position: relative;
   display: grid;
   gap: var(--s-3);
   align-content: start;
@@ -338,7 +344,7 @@ onUnmounted(() => release())
   border-color: var(--accent);
   background: var(--bg-elevated, var(--bg-deep));
 }
-.media-preset-card:focus-visible {
+.media-preset-card:has(input:focus-visible) {
   outline: none;
   box-shadow: var(--focus-shadow);
 }
@@ -362,7 +368,7 @@ onUnmounted(() => release())
   color: var(--text-secondary);
   border-color: var(--border-strong);
 }
-.media-preset-card p {
+.media-preset-description {
   margin: 0;
   color: var(--text-secondary);
   font-size: var(--fs-label-sm);
@@ -467,14 +473,6 @@ onUnmounted(() => release())
 }
 .media-progress-speed {
   color: var(--text-primary);
-}
-.media-progress-done {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  margin: 0;
-  color: var(--success-text);
-  font-size: var(--fs-label);
 }
 .media-progress-actions {
   display: flex;

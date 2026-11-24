@@ -57,8 +57,8 @@ $deploymentLogPath = Join-Path $root $logRelative
 function Write-DeploymentLog([string]$Message) {
   try { Add-Content -LiteralPath $deploymentLogPath -Value $Message -Encoding UTF8 } catch { }
 }
-function Fail-DesktopDeployment([string]$Message, [int]$ExitCode = 1, [string[]]$Hints = @()) {
-  Write-DeploymentLog "[desktop:failed] $Message"
+function Fail-DesktopDeployment([string]$Message, [int]$ExitCode = 1, [string[]]$Hints = @(), [switch]$AlreadyLogged) {
+  if (-not $AlreadyLogged) { Write-DeploymentLog "[desktop:failed] $Message" }
   if ($DeferRestart) {
     Write-Host "[desktop:failed] $Message" -ForegroundColor Red
   } else {
@@ -321,7 +321,29 @@ function Complete-CurrentDeployment {
   return 0
 }
 
+function Test-DirectDeploymentCurrent($Plan) {
+  return $Plan.mode -eq 'current' -and
+    (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json') -PathType Leaf) -and
+    -not ($SyncLocalModels -or $AdoptProjectCatalog -or $referenceIdList.Count)
+}
+
 try {
+$lockPath = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy.lock'
+if (Test-Path -LiteralPath $lockPath -PathType Leaf) {
+  try {
+    [IO.File]::Open($lockPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite).Dispose()
+  } catch [IO.IOException] {
+    $win32Code = $_.Exception.GetBaseException().HResult -band 0xffff
+    if ($win32Code -in @(32,33)) {
+      Write-DeploymentLog 'DESKTOP_DEPLOY_BUSY: 当前工作区已有部署。'
+      if (-not $DeferRestart) {
+        Write-DesktopSummary -Kind 'busy' -Title '当前工作区已有另一个部署任务正在执行' -Details @('请等待上一个部署窗口完成后再重试。')
+      }
+      exit 73
+    }
+    if ($win32Code -notin @(2,3)) { throw }
+  }
+}
 $productVersion = Get-DesktopProductVersion
 $installHost = Join-Path $installDir 'ai-cg-studio-desktop.exe'
 $installationState = if (Test-Path -LiteralPath $installHost -PathType Leaf) { 'installed' } elseif ($installRegistered) { 'repair' } else { 'fresh' }
@@ -373,8 +395,7 @@ if ($DirectInstall -and -not ($DirectPlanId -or $DeploymentPlanApplied)) {
     } else {
       $DirectPlanId = $plan.id
       $DirectPlanSha256 = $plan.sha256
-      $missingLedger = -not (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json') -PathType Leaf)
-      if ($plan.mode -eq 'current' -and -not ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog -or $referenceIdList.Count)) {
+      if (Test-DirectDeploymentCurrent $plan) {
         Write-DesktopDecision -Mode '已是最新（免提权、免构建）' -Reason "已安装的全部 $($plan.files) 项文件与当前源码和构建完全一致"
         try { $null = Complete-CurrentDeployment; exit 0 } finally { Remove-DirectDeploymentPlan; Publish-DeploymentLog }
       }
@@ -403,8 +424,7 @@ if ($DirectInstall -and -not ($DirectPlanId -or $DeploymentPlanApplied)) {
       if ($plan.mode -eq 'build') { throw "本机候选核验失败：$($plan.reason)" }
       $DirectPlanId = $plan.id
       $DirectPlanSha256 = $plan.sha256
-      $missingLedger = -not (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json') -PathType Leaf)
-      if ($plan.mode -eq 'current' -and -not ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog -or $referenceIdList.Count)) {
+      if (Test-DirectDeploymentCurrent $plan) {
         Write-Host '  ✓ 构建完成后与已安装文件完全一致，无需提权写入。' -ForegroundColor Green
         try { $null = Complete-CurrentDeployment; exit 0 } finally { Remove-DirectDeploymentPlan; Publish-DeploymentLog }
       }
@@ -570,7 +590,6 @@ if (-not $isElevated) {
   # keep this wrapper alive. Wait only for the elevated deployment process.
   $logReader = $null
   $elevatedProcess = $null
-  $lastFailureLine = ''
   try {
     $logPath = $deploymentLogPath
     if (Test-Path -LiteralPath $logPath) {
@@ -584,6 +603,7 @@ if (-not $isElevated) {
       $canceled = $_.Exception.Message -match 'cancel|canceled|cancelled|取消' -or
         ($_.Exception.PSObject.Properties.Name -contains 'NativeErrorCode' -and $_.Exception.NativeErrorCode -eq 1223)
       if ($canceled) {
+        Write-DeploymentLog '[desktop:warn] 已取消 UAC 授权（1223），未对安装目录做任何修改。'
         Write-DesktopSummary -Kind 'cancelled' -Title '已取消 UAC 授权，未对安装目录做任何修改' -Details @(
           $(if ($DirectPlanId) { '本次构建已保留，下次双击 deploy-desktop.bat 可直接复用，无需重新编译。' } else { '如需继续部署，请重新运行 deploy-desktop.bat 并允许 UAC 授权。' })
         )
@@ -612,10 +632,10 @@ if (-not $isElevated) {
     $script:lastElevatedError = ''
     do {
       $finished = $elevatedProcess.WaitForExit(500)
-      & $drainLog
+      . $drainLog
     } while (-not $finished)
     Start-Sleep -Milliseconds 100
-    & $drainLog
+    . $drainLog
     $deploymentExitCode = $elevatedProcess.ExitCode
     if ($null -eq $deploymentExitCode) { throw 'DESKTOP_DEPLOY_EXITCODE: 无法读取提权部署进程的退出码。' }
   } finally { if ($logReader) { $logReader.Dispose() }; if ($elevatedProcess) { $elevatedProcess.Dispose() } }
@@ -637,7 +657,7 @@ if (-not $isElevated) {
     elseif ($NoRestart) { $summaryDetails += '已按 -NoRestart 保持桌面端关闭' }
     Write-DesktopSummary -Kind 'success' -Title "绘遇桌面端部署完成（总耗时 $elapsedTotal）" -Details $summaryDetails
   } elseif ($deploymentExitCode -eq 73) {
-    Write-DesktopSummary -Kind 'busy' -Title '当前工作区已有另一个部署任务正在执行' -Details @('请等待上一个部署窗口完成后再重试。')
+    Write-DesktopSummary -Kind 'busy' -Title '另一个部署任务占用了工作区或安装目录' -Details @('请等待上一个部署窗口完成后再重试。')
   } else {
     $errLines = @()
     if ($script:lastElevatedError) { $errLines += "原因：$($script:lastElevatedError)" }
@@ -651,7 +671,6 @@ if (-not $isElevated) {
 
 $deploymentLock = $null
 try {
-  $lockPath = Resolve-DesktopChildPath -Root $root -Relative 'runtime\desktop-deploy.lock'
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $lockPath) | Out-Null
   $deploymentLock = [IO.File]::Open($lockPath, [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None)
 } catch [IO.IOException] {
@@ -661,6 +680,7 @@ try {
   exit 73
 }
 $transcriptStarted = $false
+$installBusy = $false
 $installMutex = $null
 $installMutexHeld = $false
 try {
@@ -699,6 +719,10 @@ if ($DirectInstall) {
     if ($plan.mode -eq 'build') { throw "本机候选核验失败：$($plan.reason)" }
     $DirectPlanId = $plan.id
     $DirectPlanSha256 = $plan.sha256
+    if (Test-DirectDeploymentCurrent $plan) {
+      Write-Host '  ✓ 构建完成后与已安装文件完全一致，无需写入。' -ForegroundColor Green
+      try { $null = Complete-CurrentDeployment; exit 0 } finally { Remove-DirectDeploymentPlan }
+    }
   }
 } elseif ($buildUpgrade) {
   Write-Host '[1/6] 准备本机快速构建与轻量升级包 ...' -ForegroundColor Cyan
@@ -746,7 +770,12 @@ if ($DirectInstall) {
   finally { $hasher.Dispose() }
   $installMutex = New-Object Threading.Mutex($false, "Global\HuiyuDesktopLocalDeploy_$installKey")
   try { $installMutexHeld = $installMutex.WaitOne(0) } catch [Threading.AbandonedMutexException] { $installMutexHeld = $true }
-  if (-not $installMutexHeld) { throw 'DESKTOP_DEPLOY_BUSY: 该安装目录已有直写部署。' }
+  if (-not $installMutexHeld) {
+    $installBusy = $true
+    if ($DeferRestart) { Write-Host 'DESKTOP_DEPLOY_BUSY: 该安装目录已有直写部署。' -ForegroundColor Yellow }
+    else { Write-DesktopSummary -Kind 'busy' -Title '该安装目录已有直写部署' -Details @('请等待上一个部署窗口完成后再重试。') }
+    exit 73
+  }
 }
 Assert-CurrentBuildBinding
 if (-not ($installWithPackage -or $DirectInstall)) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
@@ -911,7 +940,12 @@ if (-not $DeferRestart) {
   }
   throw
 } finally {
-  try { if ($transcriptStarted) { Stop-Transcript | Out-Null; Publish-DeploymentLog } }
+  try {
+    if ($transcriptStarted) {
+      Stop-Transcript | Out-Null
+      if (-not $installBusy) { Publish-DeploymentLog }
+    }
+  }
   finally {
     if ($installMutex) { if ($installMutexHeld) { $installMutex.ReleaseMutex() }; $installMutex.Dispose() }
     if ($deploymentLock) { $deploymentLock.Dispose() }
@@ -923,5 +957,5 @@ if (-not $DeferRestart) {
   if ($installWithPackage -and $InstallerManifestSha256) {
     $hints += "可复用已固定安装包：deploy-desktop.bat -UseInstaller -InstallerPath `"$InstallerPath`""
   }
-  Fail-DesktopDeployment -Message $_.Exception.Message -ExitCode 1 -Hints $hints
+  Fail-DesktopDeployment -Message $_.Exception.Message -ExitCode 1 -Hints $hints -AlreadyLogged:$script:elevatedFailureLogged
 }

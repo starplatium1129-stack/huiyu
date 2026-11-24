@@ -243,10 +243,14 @@ function collectShowcase(showcaseRoot: string): PackEntry[] {
   const seen = new Set<string>();
   const out: PackEntry[] = [{ source: manifestPath, archivePath: 'manifest.json', bytes: fs.lstatSync(manifestPath).size }];
   for (const item of manifest.entries) {
-    if (!item || typeof item.id !== 'string') continue;
+    if (!item || typeof item.id !== 'string' || !item.id) {
+      throw new Error('样张 manifest.json 含缺少 ID 的条目');
+    }
     for (const [field, folder] of [['image', 'images'], ['thumb', 'thumbs']] as const) {
-      const rel = String(item[field] || `${folder}/${item.id}.jpg`).replace(/\\/g, '/');
-      if (!SHOWCASE_SAMPLE.test(rel) || !rel.startsWith(`${folder}/`)) continue;
+      const rel = String(item[field] || `${folder}/${item.id}.jpg`);
+      if (!SHOWCASE_SAMPLE.test(rel) || !rel.startsWith(`${folder}/`)) {
+        throw new Error(`样张 ${item.id} 的 ${field} 路径无效：${rel}`);
+      }
       const key = rel.toLowerCase();
       if (seen.has(key)) continue;
       seen.add(key);

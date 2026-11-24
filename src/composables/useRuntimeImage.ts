@@ -1,5 +1,6 @@
 import { computed, onScopeDispose, readonly, ref, toValue, watch, type MaybeRefOrGetter } from 'vue'
 import { resolveRuntimeUrl, runtimeResourceCors, runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { refreshablePackPortrait } from '@/platform/mediaPackPortraits'
 
 function popularThumbFallback(resolvedUrl: string): string {
   const match = resolvedUrl.match(/^(.*\/assets\/characters\/)popular-([\w-]+)\.(?:png|jpe?g|webp)(?:[?#].*)?$/i)
@@ -8,7 +9,7 @@ function popularThumbFallback(resolvedUrl: string): string {
 
 /** Native img loading only: no preload, Blob ownership, canvas or automatic retry loop. */
 export function useRuntimeImage(source: MaybeRefOrGetter<string | null | undefined>) {
-  const baseSrc = computed(() => resolveRuntimeUrl(toValue(source)))
+  const baseSrc = computed(() => refreshablePackPortrait(resolveRuntimeUrl(toValue(source))))
   const fallbackThumb = ref('')
   const src = computed(() => fallbackThumb.value || baseSrc.value)
   const loaded = ref(false), failed = ref(false), attempt = ref(0)

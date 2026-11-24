@@ -6,7 +6,7 @@ const path: typeof import('node:path') = require('node:path');
 const sharp: typeof import('sharp') = require('sharp');
 const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
-const isPortrait = (relative: string) => /^characters\/popular-[a-zA-Z0-9_-]+\.(png|jpe?g|webp)$/.test(relative);
+const isPortrait = (relative: string) => /^characters\/popular-[a-z0-9_-]+\.(png|jpe?g|webp)$/i.test(relative);
 /** Brand masters produce the shipped SVG/ICO/tray assets; they are not runtime URLs.
  * Slim installers omit full-res popular portraits (downloaded on demand via media packs)
  * while retaining thumbnails, core hero art, Live2D and particle clouds. */

@@ -1,5 +1,6 @@
 import onboarding from '../../data/popular-onboarding.json' with { type: 'json' }
 import { characterArtEntry } from '../platform/characterArtState.ts'
+import { refreshablePackPortrait } from '../platform/mediaPackPortraits.ts'
 import { shallowRef } from 'vue'
 
 const onboardingCharacters = onboarding.characters as Array<{
@@ -46,5 +47,6 @@ export function popularPortraitSrc(id: string, version?: string | number): strin
 }
 
 export function popularPortraitFullSrc(id: string): string {
-  return characterArtEntry(id)?.portraitUrl || (isPopularPortraitPending(id) ? pendingPortraitSrc(id, true) : `/assets/characters/popular-${encodeURIComponent(id)}.png`)
+  return characterArtEntry(id)?.portraitUrl || (isPopularPortraitPending(id) ? pendingPortraitSrc(id, true)
+    : refreshablePackPortrait(`/assets/characters/popular-${encodeURIComponent(id)}.png`))
 }

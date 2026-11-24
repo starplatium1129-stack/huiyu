@@ -188,7 +188,7 @@ function Invoke-DesktopNpm {
         if (Get-Command Write-DeploymentLog -ErrorAction SilentlyContinue) { Write-DeploymentLog "[desktop:detail] $_" }
       }
     } else {
-      Write-Host '[desktop:failed] 构建输出末尾：' -ForegroundColor Red
+      Write-Host '[desktop:detail] 构建输出末尾：' -ForegroundColor Red
       Get-Content -LiteralPath $detailPath -Tail 20 -Encoding UTF8 | ForEach-Object { Write-Host "[desktop:detail] $_" }
     }
     throw "桌面构建/封装失败（退出码 $buildExitCode）；未关闭应用。完整输出：$detailPath"
