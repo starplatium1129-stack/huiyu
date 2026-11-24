@@ -236,8 +236,8 @@ async fn follow(
                     resume.bot_id.as_deref(),
                     inboxes,
                     api,
-                    |scope, code| {
-                        app.channels.pair_code(storage, bot_id, scope).0.as_deref() == Some(code)
+                    |kind, code| {
+                        app.channels.pair_code(storage, bot_id, kind).0.as_deref() == Some(code)
                     },
                 )?;
                 if let Some(session) = &mut resume.session
@@ -273,7 +273,7 @@ fn queue_message(
     bot_id: Option<&str>,
     inboxes: &Inboxes,
     api: &Api,
-    can_pair: impl FnOnce(QqScope, &str) -> bool,
+    can_pair: impl FnOnce(QqPairKind, &str) -> bool,
 ) -> GatewayResult<()> {
     let log = |stage: &str, detail: &str| {
         if kind.starts_with("GROUP_") {
@@ -303,15 +303,16 @@ fn queue_message(
             return Ok(());
         }
     };
-    if let Some((scope, code)) = message.pairing_request() {
-        if scope != message.scope || !can_pair(scope, code) {
+    if let Some((kind, code)) = message.pairing_request() {
+        let already_owner = kind == QqPairKind::Friend
+            && inboxes.bindings.borrow().owner.as_deref() == Some(message.target.as_str());
+        if kind.scope() != message.scope || (!already_owner && !can_pair(kind, code)) {
             log("filtered", "invalid-pairing");
             return Ok(());
         }
     } else if !inboxes
         .bindings
-        .read()
-        .unwrap()
+        .borrow()
         .allows(message.destination())
     {
         log("filtered", "unbound");

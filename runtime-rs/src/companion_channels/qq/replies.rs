@@ -28,6 +28,10 @@ pub(super) async fn reply(
         .reply_window_ms()
         .saturating_sub(crate::host::now_ms().saturating_sub(message.received_at));
     if available < 10_000 {
+        eprintln!(
+            "QQ 回复窗口不足，跳过处理：scope={} msg={tag} available_ms={available}",
+            target.scope.conversation_channel()
+        );
         return;
     }
     let action = tokio::time::timeout(
@@ -152,7 +156,7 @@ pub(super) async fn notify(
     api: &Api,
     active: &mut Conversation,
     target: Destination<'_>,
-    settings: &Settings,
+    group: Option<&QqGroup>,
 ) {
     let Some(ticket) = active.batch().filter(|batch| !batch.notified).cloned() else {
         return;
@@ -175,12 +179,9 @@ pub(super) async fn notify(
                 .requested_by
                 .as_deref()
                 .or_else(|| (target.scope == QqScope::Group).then_some("")),
-            is_owner: target.scope == QqScope::Private
-                || settings.groups.iter().any(|group| {
-                    group.id == target.id
-                        && ticket.requested_by.is_some()
-                        && group.owner_member_id == ticket.requested_by
-                }),
+            is_owner: group.map_or(ctx.is_owner, |group| {
+                ticket.requested_by.is_some() && group.owner_member_id == ticket.requested_by
+            }),
             ..*ctx
         };
         if let Err(error) =

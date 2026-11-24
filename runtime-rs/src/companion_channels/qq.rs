@@ -23,9 +23,9 @@ use reqwest::Client;
 use std::{
     borrow::Cow,
     collections::HashMap,
-    sync::{Arc, RwLock},
+    sync::Arc,
 };
-use tokio::sync::{Mutex as AsyncMutex, mpsc};
+use tokio::sync::{Mutex as AsyncMutex, mpsc, watch};
 use tokio::time::Instant;
 
 const API: &str = "https://api.bot.qq.com";
@@ -66,20 +66,39 @@ struct Inboxes {
     group_muse: bool,
     group_muse_all: bool,
     ambient: Option<Arc<ambient::GroupChat>>,
-    bindings: Arc<RwLock<Bindings>>,
+    bindings: Arc<BindingUpdates>,
     direct: mpsc::Sender<Message>,
     groups: mpsc::Sender<Message>,
     muse: mpsc::Sender<Message>,
 }
 
-struct Bindings {
+pub(super) type BindingUpdates = watch::Sender<Bindings>;
+
+pub(super) struct Bindings {
     owner: Option<String>,
+    friends: Vec<QqFriend>,
     groups: Vec<QqGroup>,
 }
 
 impl Bindings {
+    pub(super) fn from_settings(settings: &Settings) -> Self {
+        Self {
+            owner: settings.owner.clone(),
+            friends: settings.friends.clone(),
+            groups: settings.groups.clone(),
+        }
+    }
+
+    fn private_role(&self, id: &str) -> Option<bool> {
+        if self.owner.as_deref() == Some(id) {
+            Some(true)
+        } else {
+            self.friends.iter().any(|friend| friend.id == id).then_some(false)
+        }
+    }
+
     fn allows(&self, target: Destination<'_>) -> bool {
-        is_bound(self.owner.as_deref(), &self.groups, target)
+        is_bound(self.owner.as_deref(), &self.friends, &self.groups, target)
     }
 }
 
@@ -197,42 +216,41 @@ pub(super) async fn run(
     let (direct_sender, direct) = mpsc::channel(16);
     let (group_sender, groups) = mpsc::channel(16);
     let (muse_sender, muse_inbox) = mpsc::channel(16);
+    let bindings = {
+        // Register the live projection under the same lock used by pairing and
+        // removal, so startup cannot publish an older allowlist.
+        let _lock = app.channels.write.lock().await;
+        let Ok(Some(saved)) = read_bot(&app, &storage, &principal, &settings.id).await else {
+            return;
+        };
+        if !saved.same_connection(&settings) || !is_current(&app, &storage) || cancel.is_cancelled() {
+            return;
+        }
+        let bindings = Arc::new(watch::Sender::new(Bindings::from_settings(&saved)));
+        app.channels.qq_bindings.lock().unwrap().insert(settings.id.clone(), Arc::downgrade(&bindings));
+        if settings.uses_muse() {
+            let mailbox =
+                muse::Mailbox::open(&app, &storage, &principal, &saved, api.clone(), &cancel).await;
+            *app.channels.muse_qq.lock().unwrap() = Some(Arc::new(mailbox));
+        }
+        bindings
+    };
     let inboxes = Inboxes {
         private_muse: settings.private_muse,
         group_muse: settings.group_muse,
         group_muse_all: settings.group_muse_all,
         ambient: ambient.clone(),
-        bindings: Arc::new(RwLock::new(Bindings {
-            owner: settings.owner.clone(),
-            groups: settings.groups.clone(),
-        })),
+        bindings: bindings.clone(),
         direct: direct_sender,
         groups: group_sender,
         muse: muse_sender.clone(),
     };
-    if settings.uses_muse() {
-        let _lock = app.channels.write.lock().await;
-        if read_bot(&app, &storage, &principal, &settings.id)
-            .await
-            .ok()
-            .flatten()
-            .is_none_or(|saved| !saved.same_connection(&settings))
-            || !is_current(&app, &storage)
-            || cancel.is_cancelled()
-        {
-            return;
-        }
-        let mailbox =
-            muse::Mailbox::open(&app, &storage, &principal, &settings, api.clone(), &cancel).await;
-        *app.channels.muse_qq.lock().unwrap() = Some(Arc::new(mailbox));
-    }
     let bot_id = settings.id.clone();
     let uses_muse = settings.uses_muse();
     let worker_cancel = cancel.clone();
     let worker_app = app.clone();
     let worker_storage = storage.clone();
     let worker_api = api.clone();
-    let bindings = inboxes.bindings.clone();
     let worker = tokio::spawn(async move {
         let handle = async {
             tokio::join!(
@@ -250,15 +268,14 @@ pub(super) async fn run(
                         ).await;
                     }
                 },
-                process(
+                inbox::process_private(
                     &worker_app,
                     &worker_storage,
                     &principal,
-                    settings.clone(),
+                    &settings,
                     &voice_profile,
                     &worker_api,
                     &worker_cancel,
-                    QqScope::Private,
                     &bindings,
                     &muse_sender,
                     direct
@@ -271,9 +288,7 @@ pub(super) async fn run(
                     &voice_profile,
                     &worker_api,
                     &worker_cancel,
-                    QqScope::Group,
                     &bindings,
-                    &muse_sender,
                     groups
                 ),
             );
@@ -310,18 +325,19 @@ pub(super) async fn run(
     gateway_processes.close().await;
     cancel.cancel();
     let _ = worker.await;
+    app.channels.qq_bindings.lock().unwrap().remove(&bot_id);
     if uses_muse {
         app.channels.close_muse_qq();
     }
 }
 
 fn allows(settings: &Settings, target: Destination<'_>) -> bool {
-    is_bound(settings.owner.as_deref(), &settings.groups, target)
+    is_bound(settings.owner.as_deref(), &settings.friends, &settings.groups, target)
 }
 
-fn is_bound(owner: Option<&str>, groups: &[QqGroup], target: Destination<'_>) -> bool {
+fn is_bound(owner: Option<&str>, friends: &[QqFriend], groups: &[QqGroup], target: Destination<'_>) -> bool {
     match target.scope {
-        QqScope::Private => owner == Some(target.id),
+        QqScope::Private => owner == Some(target.id) || friends.iter().any(|friend| friend.id == target.id),
         QqScope::Group => groups.iter().any(|group| group.id == target.id),
     }
 }

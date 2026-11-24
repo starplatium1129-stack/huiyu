@@ -11,7 +11,7 @@ impl Message {
     fn muse_question(text: &str, enabled: bool) -> Option<&str> {
         let (command, question) = text.split_once(char::is_whitespace).unwrap_or((text, ""));
         match command {
-            "/帮助" | "/help" | "/取图" | "/开始绘图" | "/取消" | "/绑定" | "/绑定群" => {
+            "/帮助" | "/help" | "/取图" | "/开始绘图" | "/取消" | "/绑定" | "/绑定好友" | "/绑定群" => {
                 None
             }
             command if command.eq_ignore_ascii_case("/muse") => Some(question.trim()),
@@ -50,8 +50,10 @@ impl Message {
             _ => return Err("unsupported-event"),
         };
         let id = event_message_id(data).ok_or("invalid-message-id")?;
+        let private_owner = scope == QqScope::Private
+            && inboxes.bindings.borrow().owner.as_deref() == Some(target);
         let enabled = match scope {
-            QqScope::Private => inboxes.private_muse,
+            QqScope::Private => inboxes.private_muse && private_owner,
             QqScope::Group => inboxes.group_muse,
         };
         let text = data["content"].as_str().unwrap_or("").trim();
@@ -107,7 +109,8 @@ impl Message {
             "" if images.is_empty() => return Err("empty-or-unsupported-content"),
             text => text,
         };
-        let question = Self::muse_question(text, enabled);
+        let question = (scope == QqScope::Group || private_owner)
+            .then(|| Self::muse_question(text, enabled)).flatten();
         let unaddressed_command = if enabled {
             question.is_none()
         } else {
@@ -164,14 +167,15 @@ impl Message {
         }
     }
 
-    pub(super) fn pairing_request(&self) -> Option<(QqScope, &str)> {
-        let (verb, code) = self.text.split_once(char::is_whitespace)?;
-        let scope = match verb {
-            "/绑定" => QqScope::Private,
-            "/绑定群" => QqScope::Group,
+    pub(super) fn pairing_request(&self) -> Option<(QqPairKind, &str)> {
+        let (verb, code) = self.text.split_once(char::is_whitespace).unwrap_or((&self.text, ""));
+        let kind = match verb {
+            "/绑定" => QqPairKind::Owner,
+            "/绑定好友" => QqPairKind::Friend,
+            "/绑定群" => QqPairKind::Group,
             _ => return None,
         };
-        Some((scope, code.trim()))
+        Some((kind, code.trim()))
     }
 }
 

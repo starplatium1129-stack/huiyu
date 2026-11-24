@@ -29,7 +29,7 @@ pub(super) async fn search(
         None
     } else {
         let entry = mailbox.entry(&body.request_key)?;
-        if !settings.muse_for(entry.scope) || !allows(&settings, entry.destination()) {
+        if !settings.muse_for(entry.scope, entry.destination().id) || !allows(&settings, entry.destination()) {
             return Err(expired());
         }
         Some(entry)

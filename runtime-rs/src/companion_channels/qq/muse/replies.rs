@@ -19,7 +19,7 @@ pub(super) async fn submit_reply(
 ) -> Result<Json<Value>> {
     let entry = mailbox.entry(&body.request_key)?;
     let settings = mailbox.settings(app).await?;
-    if !settings.muse_for(entry.scope) || !allows(&settings, entry.destination()) {
+    if !settings.muse_for(entry.scope, entry.destination().id) || !allows(&settings, entry.destination()) {
         return Err(expired());
     }
     if entry.expires_at <= crate::host::now_ms() {

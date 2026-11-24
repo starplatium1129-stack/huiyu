@@ -42,7 +42,8 @@ pub(crate) struct Channels {
     updates: Notify,
     write: tokio::sync::Mutex<()>,
     connections: Mutex<HashMap<String, Connection>>,
-    pairs: Mutex<HashMap<(String, QqScope), Pairing>>,
+    pairs: Mutex<HashMap<(String, QqPairKind), Pairing>>,
+    qq_bindings: Mutex<HashMap<String, std::sync::Weak<qq::BindingUpdates>>>,
     muse_qq: Mutex<Option<std::sync::Arc<qq::muse::Mailbox>>>,
     wechat_turn: tokio::sync::Mutex<()>,
     wechat_cancel: Mutex<CancellationToken>,
@@ -66,6 +67,22 @@ struct Pairing {
 enum QqScope {
     Private,
     Group,
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+enum QqPairKind {
+    Owner,
+    Friend,
+    Group,
+}
+
+impl QqPairKind {
+    fn scope(self) -> QqScope {
+        match self {
+            Self::Owner | Self::Friend => QqScope::Private,
+            Self::Group => QqScope::Group,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -105,6 +122,12 @@ struct QqGroup {
 }
 
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
+struct QqFriend {
+    id: String,
+    label: String,
+}
+
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct Settings {
     #[serde(default = "default_bot_id")]
@@ -131,6 +154,8 @@ struct Settings {
     enabled: bool,
     drawing: bool,
     owner: Option<String>,
+    #[serde(default)]
+    friends: Vec<QqFriend>,
     #[serde(default)]
     group_drawing: bool,
     #[serde(default)]
@@ -165,16 +190,16 @@ fn default_muse_context_limit() -> usize {
 }
 
 impl Settings {
-    // Context depth is read at intake. It does not change the active QQ connection.
     fn same_connection(&self, other: &Self) -> bool {
         let mut comparable = self.clone();
         comparable.muse_context_limit = other.muse_context_limit;
+        comparable.friends.clone_from(&other.friends);
         comparable == *other
     }
 
-    fn muse_for(&self, scope: QqScope) -> bool {
+    fn muse_for(&self, scope: QqScope, target: &str) -> bool {
         match scope {
-            QqScope::Private => self.private_muse,
+            QqScope::Private => self.private_muse && self.owner.as_deref() == Some(target),
             QqScope::Group => self.group_muse,
         }
     }
@@ -216,11 +241,11 @@ impl Channels {
         }
     }
 
-    fn set_pair(&self, bot_id: &str, scope: QqScope, pairing: Pairing) {
+    fn set_pair(&self, bot_id: &str, kind: QqPairKind, pairing: Pairing) {
         self.pairs
             .lock()
             .unwrap()
-            .insert((bot_id.to_owned(), scope), pairing);
+            .insert((bot_id.to_owned(), kind), pairing);
     }
 
     fn clear_pairs(&self, bot_id: &str) {
@@ -231,11 +256,11 @@ impl Channels {
         &self,
         storage: &Storage,
         bot_id: &str,
-        scope: QqScope,
+        kind: QqPairKind,
     ) -> (Option<String>, Option<u64>) {
         let pairs = self.pairs.lock().unwrap();
         let pair = pairs
-            .get(&(bot_id.to_owned(), scope))
+            .get(&(bot_id.to_owned(), kind))
             .filter(|pair| pair.is_current(storage));
         (
             pair.map(|pair| pair.code.clone()),
@@ -262,6 +287,19 @@ impl Channels {
 
     fn remove_connection(&self, bot_id: &str) {
         self.connections.lock().unwrap().remove(bot_id);
+        self.qq_bindings.lock().unwrap().remove(bot_id);
+    }
+
+    fn update_qq_bindings(&self, settings: &Settings) {
+        let bindings = self
+            .qq_bindings
+            .lock()
+            .unwrap()
+            .get(&settings.id)
+            .and_then(std::sync::Weak::upgrade);
+        if let Some(bindings) = bindings {
+            bindings.send_replace(qq::Bindings::from_settings(settings));
+        }
     }
 }
 
@@ -379,16 +417,23 @@ async fn pair(
     principal: &str,
     bot_id: &str,
     app_id: &str,
-    scope: QqScope,
+    kind: QqPairKind,
     target: &str,
     member_id: &str,
     code: &str,
-) -> Result<Option<Settings>> {
+) -> Result<Option<&'static str>> {
     let _lock = app.channels.write.lock().await;
     if !is_current(app, storage) {
         return Ok(None);
     }
-    let key = (bot_id.to_owned(), scope);
+    let mut bots = read_bots(app, storage, principal).await?;
+    let Some(bot) = bots.iter_mut().find(|bot| bot.id == bot_id && bot.enabled && bot.app_id == app_id) else {
+        return Ok(None);
+    };
+    if kind == QqPairKind::Friend && bot.owner.as_deref() == Some(target) {
+        return Ok(Some("你已经是我的主人，无需再绑定好友。"));
+    }
+    let key = (bot_id.to_owned(), kind);
     let label = app
         .channels
         .pairs
@@ -398,24 +443,34 @@ async fn pair(
         .filter(|pair| pair.is_current(storage) && pair.code == code)
         .map(|pair| pair.label.clone());
     let Some(label) = label else { return Ok(None) };
-    let mut bots = read_bots(app, storage, principal).await?;
-    let Some(index) = bots
-        .iter()
-        .position(|bot| bot.id == bot_id && bot.enabled && bot.app_id == app_id)
-    else {
-        return Ok(None);
-    };
-    let replaced_owner = scope == QqScope::Private
-        && bots[index].private_muse
-        && bots[index]
+    let replaced_owner = kind == QqPairKind::Owner
+        && bot.private_muse
+        && bot
             .owner
             .as_deref()
             .is_some_and(|old| old != target);
-    match scope {
-        QqScope::Private => bots[index].owner = Some(target.into()),
-        QqScope::Group => {
-            if let Some(group) = bots[index]
-                .groups
+    let confirmation = match kind {
+        QqPairKind::Owner => {
+            bot.owner = Some(target.into());
+            bot.friends.retain(|friend| friend.id != target);
+            "已绑定绘遇。现在可以直接发消息，或发送 /帮助 查看用法。"
+        }
+        QqPairKind::Friend => {
+            let label = if label.is_empty() {
+                let tail = &target[target.len().saturating_sub(6)..];
+                format!("好友 · {tail}")
+            } else {
+                label
+            };
+            if let Some(friend) = bot.friends.iter_mut().find(|friend| friend.id == target) {
+                friend.label = label;
+            } else {
+                bot.friends.push(QqFriend { id: target.into(), label });
+            }
+            "已通过好友绑定，现在可以直接和我聊天啦。"
+        }
+        QqPairKind::Group => {
+            if let Some(group) = bot.groups
                 .iter_mut()
                 .find(|group| group.id == target)
             {
@@ -425,7 +480,7 @@ async fn pair(
                 group.owner_member_id = Some(member_id.into());
             } else {
                 let tail = &target[target.len().saturating_sub(6)..];
-                bots[index].groups.push(QqGroup {
+                bot.groups.push(QqGroup {
                     id: target.into(),
                     label: if label.is_empty() {
                         format!("QQ群 · {tail}")
@@ -435,16 +490,19 @@ async fn pair(
                     owner_member_id: Some(member_id.into()),
                 });
             }
+            "本群已绑定绘遇，已记住你的主人身份。@ 我就能聊天，也可以 @ 我发 /帮助。"
         }
-    }
+    };
+    let binding = bot.clone();
     let _admission = app.host.admit()?;
     write_bots(app, storage, principal, &bots).await?;
+    app.channels.update_qq_bindings(&binding);
     if replaced_owner {
         app.channels.close_muse_qq();
         app.channels.updates.notify_one();
     }
     app.channels.pairs.lock().unwrap().remove(&key);
-    Ok(bots.into_iter().nth(index))
+    Ok(Some(confirmation))
 }
 
 fn is_current(app: &AppState, storage: &Storage) -> bool {

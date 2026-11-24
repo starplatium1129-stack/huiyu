@@ -14,6 +14,7 @@ export type QqVoiceProfile = string
 export const qqMuseContextLimits = [6, 16, 32, 64] as const
 
 export interface QqGroup { id: string; label: string; ownerBound?: boolean }
+export interface QqFriend { id: string; label: string }
 
 export interface QqChannelStatus {
   id: string
@@ -39,6 +40,7 @@ export interface QqChannelStatus {
   museProactive?: boolean
   groupMuseStatus?: 'remoteDisabled' | 'waiting' | 'receiving' | 'vmConfigured' | 'vmUnavailable' | 'vmConfigError' | null
   groups: QqGroup[]
+  friends?: QqFriend[]
   paired: boolean
   phase: ChannelPhase
   detail: string | null
@@ -46,6 +48,8 @@ export interface QqChannelStatus {
   pairExpiresAt: number | null
   groupPairCode: string | null
   groupPairExpiresAt: number | null
+  friendPairCode?: string | null
+  friendPairExpiresAt?: number | null
 }
 
 export interface QqBotsResponse {
@@ -121,10 +125,15 @@ function validateBot(value: unknown): boolean {
     && Array.isArray(value.groups) && value.groups.every(group => isObject(group)
       && typeof group.id === 'string' && typeof group.label === 'string'
       && (group.ownerBound === undefined || typeof group.ownerBound === 'boolean'))
+    && (value.friends === undefined || (Array.isArray(value.friends) && value.friends.every(friend => isObject(friend)
+      && typeof friend.id === 'string' && /^[a-zA-Z0-9_-]{1,128}$/.test(friend.id)
+      && typeof friend.label === 'string')))
     && isQqCharacter(value.character)
     && ['disabled', 'connecting', 'online', 'error'].includes(String(value.phase))
     && [value.appId, value.detail, value.pairCode, value.groupPairCode].every(item => item === null || typeof item === 'string')
     && [value.pairExpiresAt, value.groupPairExpiresAt].every(item => item === null || typeof item === 'number' && Number.isFinite(item))
+    && (value.friendPairCode == null || typeof value.friendPairCode === 'string' && /^[a-f0-9]{12}$/.test(value.friendPairCode))
+    && (value.friendPairExpiresAt == null || typeof value.friendPairExpiresAt === 'number' && Number.isFinite(value.friendPairExpiresAt))
 }
 
 function validateBots(value: ApiResponseObject): boolean {
@@ -160,6 +169,8 @@ export const companionQqApi = {
   pair: (botId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/pair`, { method: 'POST', signal, timeoutMs: 8000, validate: validateBots }),
   pairGroup: (botId: string, label: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/pair-group`, { method: 'POST', body: { label }, signal, timeoutMs: 8000, validate: validateBots }),
   removeGroup: (botId: string, groupId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/groups/${encodeURIComponent(groupId)}`, { method: 'DELETE', signal, timeoutMs: 8000, validate: validateBots }),
+  pairFriend: (botId: string, label: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/pair-friend`, { method: 'POST', body: { label }, signal, timeoutMs: 8000, validate: validateBots }),
+  removeFriend: (botId: string, friendId: string, signal: AbortSignal) => apiClient.request<QqBotsResponse>(`${qqBotsPath}/${encodeURIComponent(botId)}/friends/${encodeURIComponent(friendId)}`, { method: 'DELETE', signal, timeoutMs: 8000, validate: validateBots }),
   cards: (signal: AbortSignal) => apiClient.request<{ cards: QqChatCardOption[] }>('/api/chat/cards', { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 10_000, validate: validateCards }),
   voiceStatus: (signal: AbortSignal) => apiClient.request<QqVoiceServiceStatus>('/api/tts-status', { signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, validate: validateVoiceStatus }),
 }

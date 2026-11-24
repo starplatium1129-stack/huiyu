@@ -43,6 +43,7 @@ export function useQqBotSettings(isActive: () => boolean) {
   const groupDrawing = ref(false)
   const groupNaturalReplies = ref(false)
   const groupLabel = ref('')
+  const friendLabel = ref('')
   const groupMuse = ref(false)
   const privateMuse = ref(false)
   const groupMuseAll = ref(false)
@@ -54,6 +55,7 @@ export function useQqBotSettings(isActive: () => boolean) {
   const feedback = ref('')
 
   const groupHeading = shallowRef<HTMLElement | null>(null)
+  const friendHeading = shallowRef<HTMLElement | null>(null)
   const idField = shallowRef<HTMLInputElement | null>(null)
   const secretField = shallowRef<HTMLInputElement | null>(null)
 
@@ -66,6 +68,7 @@ export function useQqBotSettings(isActive: () => boolean) {
   const secretError = computed(() => attempted.value && (!savedSecret.value || secret.value) && !/^[\x21-\x7E]{8,512}$/.test(secret.value) ? '请检查 AppSecret 是否复制完整。' : '')
   const pairCommand = computed(() => activeBot.value?.pairCode ? `/绑定 ${activeBot.value.pairCode}` : '')
   const groupPairCommand = computed(() => activeBot.value?.groupPairCode ? `/绑定群 ${activeBot.value.groupPairCode}` : '')
+  const friendPairCommand = computed(() => activeBot.value?.friendPairCode ? `/绑定好友 ${activeBot.value.friendPairCode}` : '')
   const showMuseDisclosure = computed(() => Boolean(activeBot.value && (activeBot.value.groupMuse || activeBot.value.privateMuse || !bots.value.some(bot => bot.id !== activeBot.value?.id && (bot.groupMuse || bot.privateMuse)))))
 
   const summaryLabel = computed(() => {
@@ -110,6 +113,7 @@ export function useQqBotSettings(isActive: () => boolean) {
     museContextLimit.value = bot.museContextLimit ?? 32
     museProactive.value = bot.museProactive ?? false
     groupLabel.value = ''
+    friendLabel.value = ''
     attempted.value = false
     confirmDelete.value = false
   }
@@ -136,6 +140,7 @@ export function useQqBotSettings(isActive: () => boolean) {
     museContextLimit.value = 32
     museProactive.value = false
     groupLabel.value = ''
+    friendLabel.value = ''
     attempted.value = false
     confirmDelete.value = false
   }
@@ -337,6 +342,24 @@ export function useQqBotSettings(isActive: () => boolean) {
     void change(signal => companionQqApi.pairGroup(targetId, groupLabel.value, signal))
   }
 
+  function pairFriend() {
+    const bot = activeBot.value
+    if (!bot?.enabled) return
+    void change(signal => companionQqApi.pairFriend(bot.id, friendLabel.value, signal))
+  }
+
+  async function removeFriend(friendId: string) {
+    const bot = activeBot.value
+    if (!bot) return
+    const previous = document.activeElement
+    await change(signal => companionQqApi.removeFriend(bot.id, friendId, signal))
+    if (activeBot.value?.id !== bot.id || activeBot.value.friends?.some(friend => friend.id === friendId)) return
+    await nextTick()
+    if (isActive() && (document.activeElement === document.body || document.activeElement === previous)) {
+      friendHeading.value?.focus({ preventScroll: true })
+    }
+  }
+
   async function removeGroup(groupId: string) {
     if (!activeBot.value) return
     const targetId = activeBot.value.id
@@ -404,7 +427,8 @@ export function useQqBotSettings(isActive: () => boolean) {
     botName, appId, secret, character, ownerBond, ownerCallName, ownerNote, chatProvider,
     voiceMode, groupVoice, voiceProfile, voiceProfileOptions, enabled, drawing, groupDrawing, groupNaturalReplies, groupLabel,
     groupMuse, privateMuse, groupMuseAll, museContextLimit, museProactive, showMuseDisclosure,
-    groupHeading, idField, secretField, savedSecret, idError, secretError, pairCommand, groupPairCommand,
-    selectBot, startCreate, cancelCreate, refresh, save, removeBot, pair, pairGroup, removeGroup,
+    groupHeading, friendHeading, idField, secretField, savedSecret, idError, secretError, pairCommand, groupPairCommand,
+    friendLabel, friendPairCommand,
+    selectBot, startCreate, cancelCreate, refresh, save, removeBot, pair, pairGroup, removeGroup, pairFriend, removeFriend,
   }
 }

@@ -183,7 +183,7 @@ impl GroupChat {
         app: &AppState,
         storage: &Storage,
         settings: &Settings,
-        bindings: &RwLock<Bindings>,
+        bindings: &BindingUpdates,
         api: &Api,
         cancel: &CancellationToken,
     ) {
@@ -197,7 +197,7 @@ impl GroupChat {
                 _ = cancel.cancelled() => return,
                 _ = tick.tick() => {}
             }
-            let candidate = self.take_candidate(&bindings.read().unwrap());
+            let candidate = self.take_candidate(&bindings.borrow());
             let Some(candidate) = candidate else { continue };
             let target = Destination {
                 scope: QqScope::Group,
@@ -260,7 +260,7 @@ impl GroupChat {
                     continue;
                 }
             };
-            if !bindings.read().unwrap().allows(target) || !self.still_relevant(&candidate) {
+            if !bindings.borrow().allows(target) || !self.still_relevant(&candidate) {
                 eprintln!("QQ 群聊接话时机已过：msg={tag} follow_up={follow_up}");
                 continue;
             }

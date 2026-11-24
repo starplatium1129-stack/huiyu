@@ -23,7 +23,7 @@ async fn image_reply(
     let _admission = app.host.admit_owned()?;
     let entry = mailbox.entry(&key)?;
     let settings = mailbox.settings(&app).await?;
-    if !settings.muse_for(entry.scope) || !allows(&settings, entry.destination()) {
+    if !settings.muse_for(entry.scope, entry.destination().id) || !allows(&settings, entry.destination()) {
         return Err(expired());
     }
     let mime = headers

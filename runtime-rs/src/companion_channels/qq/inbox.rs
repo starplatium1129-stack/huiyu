@@ -1,6 +1,9 @@
 use super::replies::{notify, reply};
 use super::*;
 
+mod private;
+pub(super) use private::process_private;
+
 const MESSAGE_BURST: Duration = Duration::from_millis(1400);
 const MAX_BURST_MESSAGES: usize = 4;
 
@@ -9,15 +12,14 @@ pub(super) async fn process(
     app: &AppState,
     storage: &Storage,
     principal: &str,
-    mut settings: Settings,
+    settings: Settings,
     voice_profile: &str,
     api: &Api,
     cancel: &CancellationToken,
-    scope: QqScope,
-    bindings: &RwLock<Bindings>,
-    muse: &mpsc::Sender<Message>,
+    bindings: &BindingUpdates,
     mut inbox: mpsc::Receiver<Message>,
 ) {
+    let scope = QqScope::Group;
     let (voice, voice_auto) = settings.voice_for(scope);
     let ctx = Context {
         app,
@@ -25,15 +27,11 @@ pub(super) async fn process(
         principal,
         character: &settings.character,
         chat_provider: settings.chat_provider_for(scope),
-        is_owner: scope == QqScope::Private,
+        is_owner: false,
         owner_bond: settings.owner_bond_kind(),
         owner_call_name: &settings.owner_call_name,
         owner_note: &settings.owner_note,
-        drawing: if scope == QqScope::Group {
-            settings.group_drawing
-        } else {
-            settings.drawing
-        },
+        drawing: settings.group_drawing,
         voice,
         voice_auto,
         voice_profile,
@@ -41,14 +39,12 @@ pub(super) async fn process(
         cancel,
     };
     let mut conversations = HashMap::<String, Conversation>::new();
-    if scope == QqScope::Group {
-        for group in &settings.groups {
-            let target = Destination { scope, id: &group.id };
-            if let Ok(active) = conversation(&mut conversations, &ctx, &settings.app_id, target).await {
-                let recent: Vec<_> = active.recent_replies().collect();
-                for text in recent.into_iter().rev() {
-                    api.quotes.restore_text(target.id, text);
-                }
+    for group in &settings.groups {
+        let target = Destination { scope, id: &group.id };
+        if let Ok(active) = conversation(&mut conversations, &ctx, &settings.app_id, target).await {
+            let recent: Vec<_> = active.recent_replies().collect();
+            for text in recent.into_iter().rev() {
+                api.quotes.restore_text(target.id, text);
             }
         }
     }
@@ -66,63 +62,35 @@ pub(super) async fn process(
             } => {
                 let Some(message) = message else { return };
                 let target = message.destination();
-                if !message.to_muse && let Some((requested_scope, code)) = message.pairing_request() {
-                    if requested_scope == scope
-                        && let Ok(Some(binding)) = pair(app, storage, principal, &settings.id, &settings.app_id, scope, target.id, &message.member, code).await
+                if let Some((kind, code)) = message.pairing_request() {
+                    if kind == QqPairKind::Group
+                        && let Ok(Some(confirmation)) = pair(app, storage, principal, &settings.id, &settings.app_id, kind, target.id, &message.member, code).await
                     {
-                        let reply = {
-                            let mut bindings = bindings.write().unwrap();
-                            match scope {
-                                QqScope::Private => {
-                                    settings.owner = binding.owner;
-                                    bindings.owner.clone_from(&settings.owner);
-                                    conversations.clear();
-                                    "已绑定绘遇。现在可以直接发消息，或发送 /帮助 查看用法。"
-                                }
-                                QqScope::Group => {
-                                    settings.groups = binding.groups;
-                                    bindings.groups.clone_from(&settings.groups);
-                                    "本群已绑定绘遇，已记住你的主人身份。@ 我就能聊天，也可以 @ 我发 /帮助。"
-                                }
-                            }
-                        };
-                        let _ = api.text(target, &message.id, reply).await;
+                        let _ = api.text(target, &message.id, confirmation).await;
                     }
                     continue;
                 }
-                if !allows(&settings, target) { continue; }
-                if message.to_muse {
-                    if muse.send(message).await.is_err() { return; }
-                    continue;
-                }
+                if !bindings.borrow().allows(target) { continue; }
                 let group = collect_burst(message, &mut inbox, &mut pending, cancel).await;
                 let message = &group[0];
                 let target = message.destination();
-                let is_owner = match scope {
-                    QqScope::Private => true,
-                    QqScope::Group => settings
-                        .groups
-                        .iter()
-                        .find(|group| group.id == target.id)
-                        .is_some_and(|group| group.owner_member_id.as_deref() == Some(message.member.as_str())),
-                };
+                let is_owner = bindings.borrow().groups
+                    .iter().find(|group| group.id == target.id)
+                    .is_some_and(|group| group.owner_member_id.as_deref() == Some(message.member.as_str()));
                 let turn = Context {
                     is_owner,
-                    group_member: (scope == QqScope::Group).then_some(message.member.as_str()),
+                    group_member: Some(message.member.as_str()),
                     ..ctx
                 };
                 let Ok(active) = conversation(&mut conversations, &turn, &settings.app_id, target).await else { continue };
                 reply(&turn, api, active, &group).await;
             }
             _ = tick.tick() => {
-                let ids = match scope {
-                    QqScope::Private => settings.owner.iter().map(String::as_str).collect::<Vec<_>>(),
-                    QqScope::Group => settings.groups.iter().map(|group| group.id.as_str()).collect(),
-                };
-                for id in ids {
-                    let target = Destination { scope, id };
+                let groups = bindings.borrow().groups.clone();
+                for group in &groups {
+                    let target = Destination { scope, id: &group.id };
                     if let Ok(active) = conversation(&mut conversations, &ctx, &settings.app_id, target).await {
-                        notify(&ctx, api, active, target, &settings).await;
+                        notify(&ctx, api, active, target, Some(group)).await;
                     }
                 }
             }
@@ -155,24 +123,23 @@ async fn collect_burst(
         };
         let Some(next) = next else { break };
         let first = &messages[0];
-        let sent_together = first
-            .sent_at
-            .zip(next.sent_at)
-            .is_none_or(|(a, b)| a.abs_diff(b) <= 2000);
-        if next.arrived_at > deadline
-            || !sent_together
-            || next.to_muse
-            || next.text.starts_with('/')
-            || next.scope != first.scope
-            || next.target != first.target
-            || next.member != first.member
-        {
+        if !same_burst(first, &next, deadline) {
             *pending = Some(next);
             break;
         }
         messages.push(next);
     }
     messages
+}
+
+fn same_burst(first: &Message, next: &Message, deadline: Instant) -> bool {
+    next.arrived_at <= deadline
+        && first.sent_at.zip(next.sent_at).is_none_or(|(a, b)| a.abs_diff(b) <= 2000)
+        && !next.to_muse
+        && !next.text.starts_with('/')
+        && next.scope == first.scope
+        && next.target == first.target
+        && next.member == first.member
 }
 
 async fn conversation<'a>(

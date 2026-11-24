@@ -29,8 +29,8 @@ struct Change {
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
-struct GroupPairRequest {
-    label: String,
+struct PairLabel {
+    label: Option<String>,
 }
 
 async fn validate_change(
@@ -167,6 +167,7 @@ async fn validate_change(
         enabled: change.enabled,
         drawing: change.drawing,
         owner: same.and_then(|old| old.owner.clone()),
+        friends: same.map(|old| old.friends.clone()).unwrap_or_default(),
         group_drawing: change
             .group_drawing
             .unwrap_or_else(|| same.is_some_and(|old| old.group_drawing)),
@@ -308,7 +309,7 @@ pub(crate) async fn configure(
         ("POST", [channel, resource, bot_id, action])
             if channel == "qq"
                 && resource == "bots"
-                && matches!(action.as_str(), "pair" | "pair-group") =>
+                && matches!(action.as_str(), "pair" | "pair-group" | "pair-friend") =>
         {
             let bot = bots
                 .iter()
@@ -316,20 +317,29 @@ pub(crate) async fn configure(
                 .filter(|value| value.enabled)
                 .ok_or_else(|| ApiError::invalid("请先保存并启用这个 QQ 机器人"))?;
             let _admission = app.host.admit()?;
-            let (scope, label) = if action == "pair-group" {
-                let request: GroupPairRequest = serde_json::from_slice(&body)?;
-                let label = request.label.trim();
+            let kind = match action.as_str() {
+                "pair-friend" => QqPairKind::Friend,
+                "pair-group" => QqPairKind::Group,
+                _ => QqPairKind::Owner,
+            };
+            let label = if kind != QqPairKind::Owner && !body.is_empty() {
+                let request: PairLabel = serde_json::from_slice(&body)?;
+                let label = request.label.as_deref().unwrap_or_default().trim();
                 if label.chars().count() > 40 || label.chars().any(char::is_control) {
-                    return Err(ApiError::invalid("群备注最多 40 字，请使用普通文字"));
+                    return Err(ApiError::invalid(if kind == QqPairKind::Friend {
+                        "好友备注最多 40 字，请使用普通文字"
+                    } else {
+                        "群备注最多 40 字，请使用普通文字"
+                    }));
                 }
-                (QqScope::Group, label.to_owned())
+                label.to_owned()
             } else {
-                (QqScope::Private, String::new())
+                String::new()
             };
             let code = uuid::Uuid::new_v4().simple().to_string()[..12].to_owned();
             app.channels.set_pair(
                 &bot.id,
-                scope,
+                kind,
                 Pairing {
                     epoch: storage.runtime_epoch().into(),
                     code,
@@ -338,6 +348,22 @@ pub(crate) async fn configure(
                 },
             );
             Ok(bots_response(app, storage, &bots, Some(bot)))
+        }
+        ("DELETE", [channel, resource, bot_id, sub, friend_id])
+            if channel == "qq" && resource == "bots" && sub == "friends" =>
+        {
+            let index = bots
+                .iter()
+                .position(|bot| bot.id == *bot_id)
+                .ok_or_else(|| ApiError::new(404, "BOT_NOT_FOUND", "找不到这个 QQ 机器人"))?;
+            let previous = bots[index].friends.len();
+            bots[index].friends.retain(|friend| friend.id != *friend_id);
+            if bots[index].friends.len() != previous {
+                let _admission = app.host.admit()?;
+                write_bots(app, storage, &principal, &bots).await?;
+                app.channels.update_qq_bindings(&bots[index]);
+            }
+            Ok(bots_response(app, storage, &bots, bots.get(index)))
         }
         ("DELETE", [channel, resource, bot_id, sub, group_id])
             if channel == "qq" && resource == "bots" && sub == "groups" =>
@@ -390,8 +416,9 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
     let detail = connection.and_then(|item| item.detail);
     drop(connections);
     let enabled = settings.is_some_and(|value| value.enabled);
-    let (pair_code, pair_expires) = app.channels.pair_code(storage, bot_id, QqScope::Private);
-    let (group_code, group_expires) = app.channels.pair_code(storage, bot_id, QqScope::Group);
+    let (pair_code, pair_expires) = app.channels.pair_code(storage, bot_id, QqPairKind::Owner);
+    let (group_code, group_expires) = app.channels.pair_code(storage, bot_id, QqPairKind::Group);
+    let (friend_code, friend_expires) = app.channels.pair_code(storage, bot_id, QqPairKind::Friend);
     let muse_status = if !enabled || !settings.is_some_and(Settings::uses_muse) {
         None
     } else {
@@ -433,8 +460,10 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
         "museContextLimit":settings.map_or_else(default_muse_context_limit, |value| value.muse_context_limit),
         "museProactive":settings.is_some_and(|value| value.muse_proactive),
         "groupMuseStatus":muse_status,"groups":groups,
+        "friends":settings.map_or(&[][..], |value| value.friends.as_slice()),
         "phase":if !enabled { "disabled" } else if current { phase } else { "connecting" },
         "detail":if enabled && current { detail } else { None },
         "pairCode":pair_code,"pairExpiresAt":pair_expires,
-        "groupPairCode":group_code,"groupPairExpiresAt":group_expires})
+        "groupPairCode":group_code,"groupPairExpiresAt":group_expires,
+        "friendPairCode":friend_code,"friendPairExpiresAt":friend_expires})
 }

@@ -248,7 +248,7 @@
           <StudioDisclosureSummary>Muse 协作</StudioDisclosureSummary>
           <div class="qq-disclosure-body" data-disclosure-content>
             <div class="qq-actions">
-              <ToggleSwitch v-model="privateMuse">已绑定的私聊</ToggleSwitch>
+              <ToggleSwitch v-model="privateMuse">主人私聊</ToggleSwitch>
               <ToggleSwitch v-model="groupMuse" aria-describedby="qq-muse-help">已绑定的群聊</ToggleSwitch>
             </div>
             <p id="qq-muse-help" class="field-help">对应会话交由 Muse 回复。</p>
@@ -273,7 +273,7 @@
             :disabled="busy || !activeBot.enabled"
             @click="pair"
           >
-            {{ activeBot.paired ? '重新绑定私聊' : '生成私聊口令' }}
+            {{ activeBot.paired ? '重新绑定主人' : '生成主人口令' }}
           </button>
           <template v-if="activeBot">
             <button
@@ -297,10 +297,35 @@
       <p v-else-if="!feedback" class="field-help" role="status">正在读取 QQ 设置…</p>
 
       <div v-if="pairCommand" class="qq-pair">
-        <p class="field-help">将命令发给机器人的 QQ 私聊。口令 5 分钟内有效。</p>
+        <p class="field-help">请由主人在 QQ 私聊中发送命令。口令 5 分钟内有效。</p>
         <code>{{ pairCommand }}</code>
         <StudioCopyButton class="btn btn-ghost btn-sm" label="复制绑定命令" :content-key="pairCommand" :action="() => copyWithFeedback(pairCommand)" />
       </div>
+
+      <section v-if="activeBot?.friends" class="qq-groups" aria-labelledby="qq-friends-title">
+        <header class="qq-heading">
+          <h3 id="qq-friends-title" ref="friendHeading" tabindex="-1">私聊好友白名单</h3>
+          <span class="qq-status" role="status">{{ activeBot.friends.length ? `已绑定 ${activeBot.friends.length} 位好友` : '未绑定好友' }}</span>
+        </header>
+        <form class="qq-group-form" aria-labelledby="qq-friends-title" @submit.prevent="pairFriend">
+          <div class="qq-field">
+            <label class="field-label" for="qq-friend-name">好友备注（可选）</label>
+            <input id="qq-friend-name" v-model.trim="friendLabel" name="label" class="input" maxlength="40" autocomplete="off" />
+          </div>
+          <button class="btn btn-ghost btn-sm" type="submit" :disabled="busy || !activeBot.enabled">生成好友口令</button>
+        </form>
+        <div v-if="friendPairCommand" class="qq-pair">
+          <p class="field-help">请好友在 QQ 私聊中发送命令。口令 5 分钟内有效，可使用一次。</p>
+          <code>{{ friendPairCommand }}</code>
+          <StudioCopyButton class="btn btn-ghost btn-sm" label="复制好友绑定命令" :content-key="friendPairCommand" :action="() => copyWithFeedback(friendPairCommand)" />
+        </div>
+        <ul v-if="activeBot.friends.length" class="qq-group-list" aria-label="已绑定的私聊好友">
+          <li v-for="friend in activeBot.friends" :key="friend.id">
+            <span>{{ friend.label }}</span>
+            <button class="btn btn-ghost btn-sm" type="button" :aria-label="`移除好友 ${friend.label}`" :disabled="busy" @click="removeFriend(friend.id)">移除好友</button>
+          </li>
+        </ul>
+      </section>
 
       <section v-if="activeBot" class="qq-groups" aria-labelledby="qq-groups-title">
         <header class="qq-heading">
@@ -359,10 +384,11 @@ const {
   botName, appId, secret, character, ownerBond, ownerCallName, ownerNote, chatProvider,
   voiceMode, groupVoice, voiceProfile, voiceProfileOptions, enabled, drawing, groupDrawing, groupNaturalReplies, groupLabel,
   groupMuse, privateMuse, groupMuseAll, museContextLimit, museProactive, showMuseDisclosure,
-  groupHeading, idField, secretField, savedSecret, idError, secretError, pairCommand, groupPairCommand,
+  groupHeading, friendHeading, idField, secretField, savedSecret, idError, secretError, pairCommand, groupPairCommand,
+  friendLabel, friendPairCommand,
   botTitle, characterGroups, selectedCharacterName,
   usesChatGpt, chatProviderHelp, chatGptNeedsAttention, chatGptNotice, drawingHelp, voiceNeedsAttention, voiceNotice,
-  selectBot, startCreate, cancelCreate, refresh, save, removeBot, pair, pairGroup, removeGroup,
+  selectBot, startCreate, cancelCreate, refresh, save, removeBot, pair, pairGroup, removeGroup, pairFriend, removeFriend,
 } = useQqBotSettings(() => props.active)
 </script>
 

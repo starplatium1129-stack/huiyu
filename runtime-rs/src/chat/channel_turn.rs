@@ -227,7 +227,8 @@ impl ChatService {
             }
             let built_messages = prompt.messages(messages.to_vec());
             let make_input = |selected_api: Option<validation::ApiSource>,
-                              msgs: Vec<Value>| validation::Input {
+                              msgs: Vec<Value>,
+                              reasoning: &str| validation::Input {
                 model: String::new(),
                 session_id: session_id.into(),
                 api: selected_api,
@@ -238,13 +239,13 @@ impl ChatService {
                 japanese_voice: false,
                 card_tools: false,
                 web_search: false,
-                reasoning: "off".into(),
+                reasoning: reasoning.into(),
                 messages: msgs,
             };
 
             let run_chatgpt = |msgs: Vec<Value>| async {
                 let prepared =
-                    responses::prepare(self, settings, make_input(None, msgs), None, None, cancel)
+                    responses::prepare(self, settings, make_input(None, msgs, "low"), None, None, cancel)
                         .await?;
                 stream::collect_channel(prepared, cancel.clone()).await
             };
@@ -252,7 +253,7 @@ impl ChatService {
                 let prepared = compatible::prepare(
                     &self.transport,
                     settings,
-                    make_input(Some(selected_api), msgs),
+                    make_input(Some(selected_api), msgs, "off"),
                     false,
                     managed.as_ref(),
                     None,
@@ -291,7 +292,7 @@ impl ChatService {
                     .prepare(
                         &self.transport,
                         settings,
-                        make_input(None, built_messages.clone()),
+                        make_input(None, built_messages.clone(), "off"),
                         None,
                         cancel,
                     )

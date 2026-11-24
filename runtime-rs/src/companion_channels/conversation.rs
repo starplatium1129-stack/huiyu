@@ -128,7 +128,7 @@ impl Conversation {
             &json!([channel, account, peer, ctx.character]),
         );
         let session = file.file_stem().unwrap().to_string_lossy().into_owned();
-        let qq = matches!(channel, "qq" | "qq-group");
+        let qq = matches!(channel, "qq" | "qq-friend" | "qq-group");
         let mut record: Record = read(&file).await?.unwrap_or_default();
         if qq
             && record.photos.is_empty()

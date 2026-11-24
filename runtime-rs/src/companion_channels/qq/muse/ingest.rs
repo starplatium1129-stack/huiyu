@@ -200,7 +200,7 @@ pub(in crate::companion_channels::qq) async fn process(
                 message.muse_filtered("ambient_disabled");
                 continue;
             }
-            if !settings.muse_for(message.scope) {
+            if !settings.muse_for(message.scope, &message.target) {
                 message.muse_filtered("muse_disabled");
                 Some("这个对话还没有启用 Muse。可以请机主在绘遇的 QQ 连接设置里开启。")
             } else if message.text.is_empty() {
