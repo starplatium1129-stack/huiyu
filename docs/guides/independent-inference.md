@@ -98,7 +98,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 - `anima-yume2b-rope-v041`：28 层 Yume 1.0（额外校验静态 RoPE 缓冲）
 
 > [!TIP]
-> 新增同架构模型维护入口：Anima 单文件配置见 [绘图目录](../../runtime-rs/src/images/catalog.json) 与 [下载来源](../../runtime-rs/src/control/setup-models.json)（`nativeConversionProfile` / `requiresLocalCheckpoint`）；Diffusers 变体配置见 [适配清单](../../tools/inference/adapter-models.json) 与 [受管下载清单](../../tools/inference/managed-adapter-models.json)。
+> 新增同架构模型维护入口：Anima 单文件配置见 [绘图目录](../../runtime-rs/src/images/catalog.json) 与 [下载来源](../../runtime-rs/src/control/setup-models.json)（`nativeConversionProfile` / `requiresLocalCheckpoint`）；Diffusers 变体配置见 [适配清单](../../tools/inference/adapter-models.json) 与 [受管下载清单](../../tools/inference/managed-adapter-models.json)。完整分流决策与接入流程见 [新模型原生接入工作流](engineering/model-onboarding-workflow.md)。
 
 ---
 

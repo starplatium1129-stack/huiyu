@@ -45,6 +45,7 @@
 - [页面标题 · 绫季绘境](engineering/page-template.html)
 - [随机灵感（Random Prompt Assembler）设计文档](engineering/random-prompt-assembler-design.md)
 - [工程维护边界](engineering/maintainability-boundaries.md)
+- [新模型原生接入工作流](engineering/model-onboarding-workflow.md)：通道分流、生态借用边界、原生推理接入与验收清单。
 - [TypeScript 开发与生成物边界](engineering/typescript-development.md)
 - [Tailwind 样式维护](engineering/tailwind-styling.md)
 - [Apple HIG / WCAG 评审速查](design/apple-hig-web-guidelines.md)
