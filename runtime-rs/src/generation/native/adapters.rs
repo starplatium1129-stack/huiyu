@@ -4,6 +4,8 @@ use super::*;
 use std::{path::Path, sync::LazyLock};
 const FILES: &[&str] = &[
     "adapter_worker.py",
+    "adapter_identity.py",
+    "adapter_loading.py",
     "adapter_contract.py",
     "adapter_media.py",
     "adapter_video.py",
