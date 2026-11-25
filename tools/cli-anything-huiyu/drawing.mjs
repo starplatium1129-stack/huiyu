@@ -201,21 +201,23 @@ export function buildFromInterrogate(data, modelId, hasCast = false) {
   const prompt = isNatural ? (captionPrompt ?? tagsPrompt) : (tagsPrompt ?? captionPrompt)
   const result = {}
   const hasAssistLayout = Boolean(data.assistLayout && typeof data.assistLayout === 'object')
-  if (hasAssistLayout && model.startsWith('moss')) {
+  if (hasAssistLayout && (model.startsWith('moss') || hasCast && (!model || model.startsWith('anima')))) {
     const baseLayout = data.assistLayout
     const hasLayoutCaption = (typeof baseLayout.caption === 'string' && baseLayout.caption.trim())
       || (typeof baseLayout.summary?.caption === 'string' && baseLayout.summary.caption.trim())
-    result.layout = !hasLayoutCaption && captionPrompt
+    const layout = !hasLayoutCaption && captionPrompt
       ? { ...baseLayout, caption: captionPrompt }
       : baseLayout
+    if (model.startsWith('moss')) result.layout = layout
+    else result.referenceLayout = layout
   }
-  if (hasCast && (prompt || result.layout)) {
+  if (hasCast && (prompt || result.layout || result.referenceLayout)) {
     if (referenceTags.length) result.referenceTags = referenceTags
     if (captionPrompt) result.referenceCaption = captionPrompt
     const names = [...new Set([...strings(data.characterTags), ...strings(data.copyrightTags)])]
     if (names.length) result.referenceIdentityTerms = names
   } else if (prompt) result.prompt = prompt
-  if (!result.prompt && !result.layout && !result.referenceCaption && !result.referenceTags) {
+  if (!result.prompt && !result.layout && !result.referenceLayout && !result.referenceCaption && !result.referenceTags) {
     throw new Error('反推 JSON 中未找到可用的 tags、caption 或 assistLayout。')
   }
   return result

@@ -1,4 +1,5 @@
 mod clean;
+pub(crate) use clean::fusion_scene_is_wardrobe_free;
 mod compile;
 mod custom_actor;
 mod input;
@@ -11,15 +12,23 @@ mod studio;
 use super::*;
 use clean::{
     CastFormation, clean_cast_prose, clean_moss_reference_prose, count_tags_by_gender,
-    is_wardrobe_token, normalize_key, unique_tags,
+    is_cast_count_tag, is_wardrobe_token, normalize_key, unique_tags,
 };
 use compile::{CompileContext, compile_family_prompt};
 use input::{MAX_ACTION_CHARS, MAX_CAST_MEMBERS, MAX_OUTFIT_PROMPT_CHARS, validate_member_bbox};
-use ref_layout::parse_reference_layout;
+use layout_bind::reference_performance;
+use ref_layout::{parse_reference_layout, reference_people};
 use resolve::{resolve_popular_actor, resolve_scene_context};
 use std::collections::HashSet;
 
 pub(super) use input::{CastMemberInput, InteractionInput};
+
+pub(super) fn fusion_cast_members(members: &[CastMemberInput]) -> Vec<crate::interrogate::fuse::FuseCastMember> {
+    members.iter().map(|member| crate::interrogate::fuse::FuseCastMember {
+        action: member.action.clone().unwrap_or_default(),
+        ..Default::default()
+    }).collect()
+}
 
 pub(super) struct ResolvedActor {
     pub(super) key: String,
@@ -153,31 +162,60 @@ pub(super) fn prepare(
             .ok_or_else(|| ApiError::invalid("此模型需要显式指定 width 和 height"))?,
     };
 
-    let parsed_ref_layout = match input.layout.as_ref() {
+    let parsed_ref_layout = match input.layout.as_ref().or(input.reference_layout.as_ref()) {
         Some(layout_value) => Some(parse_reference_layout(layout_value, width, height)?),
         None => None,
     };
-    let ref_char_count = parsed_ref_layout
-        .as_ref()
-        .map(|layout| {
-            layout
-                .items
-                .iter()
-                .filter(|item| item.label == "character")
-                .count()
-        })
-        .unwrap_or(0);
+    let ref_people = reference_people(parsed_ref_layout.as_ref());
+    let ref_char_count = ref_people.len();
     let inherit_ref_outfit = family == "moss-image" && ref_char_count >= raw_cast.len();
+    let source_identity = input.reference_identity_terms.as_deref().unwrap_or_default();
+    let raw_reference_tags = input.reference_tags.as_deref().unwrap_or_default();
+    let count_tags: HashSet<String> = raw_reference_tags.iter()
+        .filter(|tag| is_cast_count_tag(tag)).map(|tag| normalize_key(tag)).collect();
+    let single_count = count_tags.iter().filter(|tag| tag.as_str() != "solo").count() <= 1
+        && count_tags.iter().all(|tag| tag == "solo" || matches!(
+            tag.replace(' ', "").as_str(), "1girl" | "1boy" | "1person" | "1woman" | "1man"
+        ));
+    let mut single_outfit = String::new();
+    if raw_cast.len() > 1 && ref_char_count < 2
+        && parsed_ref_layout.as_ref().is_none_or(|layout| layout.canvas == "single")
+    {
+        if let Some(person) = ref_people.first() {
+            single_outfit = reference_performance(person, source_identity).0;
+        }
+        if single_outfit.is_empty() && single_count && (ref_char_count == 1 || !count_tags.is_empty()) {
+            single_outfit = unique_tags(raw_reference_tags.iter()
+                .filter(|tag| is_wardrobe_token(tag)).map(|tag| normalize_key(tag))).join(", ");
+        }
+    }
 
     let mut seen_keys = HashSet::new();
     let mut actors = Vec::with_capacity(raw_cast.len());
-    for (index, member) in raw_cast.iter().enumerate() {
+    for (index, supplied_member) in raw_cast.iter().enumerate() {
+        let mut effective = supplied_member.clone();
+        let (mapped_clothing, mapped_pose) = if raw_cast.len() > 1 && ref_char_count > 1 {
+            ref_people.get(index).map(|item| reference_performance(item, source_identity)).unwrap_or_default()
+        } else if supplied_member.outfit_id.as_deref().is_some_and(|id| id.trim().eq_ignore_ascii_case("custom"))
+            || supplied_member.outfit_prompt.as_deref().is_some_and(|value| !value.trim().is_empty())
+        {
+            (single_outfit.clone(), String::new())
+        } else {
+            (String::new(), String::new())
+        };
+        if !mapped_clothing.is_empty() {
+            let text = mapped_clothing.strip_prefix("wearing ").unwrap_or(&mapped_clothing);
+            effective.outfit_prompt = Some(text.chars().take(MAX_OUTFIT_PROMPT_CHARS).collect::<String>().trim_end_matches([',', ' ']).to_owned());
+            effective.outfit_id = None;
+            effective.outfit_explicit = Some(true);
+        }
+        let member = &effective;
         let raw_id = member.character_id.as_deref().unwrap_or("custom").trim();
         if raw_id.is_empty() || raw_id.chars().count() > 160 || raw_id.chars().any(char::is_control)
         {
             return Err(ApiError::invalid("cast 成员的 characterId 须为 1–160 个有效字符"));
         }
-        if let Some(custom_outfit) = member.outfit_prompt.as_deref()
+        if let Some(custom_outfit) = supplied_member.outfit_prompt.as_deref()
             && custom_outfit.chars().count() > MAX_OUTFIT_PROMPT_CHARS
         {
             return Err(ApiError::invalid(format!(
@@ -188,7 +226,7 @@ pub(super) fn prepare(
             Some(box4) => Some(validate_member_bbox(box4, raw_id)?),
             None => None,
         };
-        let action = member
+        let mut action = member
             .action
             .as_deref()
             .map(|text| {
@@ -202,6 +240,9 @@ pub(super) fn prepare(
                 )
             })
             .unwrap_or_default();
+        if family == "anima" && action.is_empty() {
+            action = mapped_pose;
+        }
         let actor = if member.is_custom() {
             custom_actor::resolve_custom_actor(member, index, action, bbox)?
         } else if let Some(studio_id) = studio::studio_character_id(raw_id) {
@@ -278,7 +319,11 @@ pub(super) fn prepare(
         .as_ref()
         .map(|layout| {
             if let Some(scene) = layout.scene.as_deref() {
-                clean_cast_prose(&clean_moss_reference_prose(scene, &identity_terms, true))
+                if actors.len() > 1 {
+                    scene_reference::caption(scene, &identity_terms)
+                } else {
+                    clean_cast_prose(&clean_moss_reference_prose(scene, &identity_terms, true))
+                }
             } else if let Some(text) = layout.summary_caption.as_deref() {
                 if actors.len() > 1 {
                     scene_reference::caption(text, &identity_terms)

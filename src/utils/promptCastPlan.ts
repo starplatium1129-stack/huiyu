@@ -4,7 +4,7 @@ import type { CastFormation, CastMember, PromptPlan } from '../types/prompt'
 import { tagKey } from './animaPromptOrder.ts'
 import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
 import { isReferenceWardrobeTag, isStableIdentityToken, splitReferenceTags } from './interrogateReference.ts'
-import { cleanCastReferenceSceneProse, cleanMossReferenceProse, formatCastOutfitClause, isPerCharacterReferenceTag } from './mossCast.ts'
+import { cleanCastReferenceSceneProse, cleanMossReferenceProse, formatCastOutfitClause, isPerCharacterReferenceTag, mossReferencePerformance, referenceCastPeople } from './mossCast.ts'
 import { defaultOutfit, findOutfit } from './popularContent.ts'
 import { isOutfitToken, standaloneIdentityProse, standaloneIdentityTokens } from './popularIdentity.ts'
 import type { DraftOutfitOverride, DraftReferenceInput } from './promptBuilderPersistence'
@@ -60,8 +60,11 @@ export function resolveBoundReference(
   const caption = cleanMossReferenceProse(reference.caption ?? '', known, hasMultipleBoxes)
   const layout = reference.layout && {
     ...reference.layout,
-    items: reference.layout.items.map(item => item.label !== 'character' ? item : {
-      ...item, caption: cleanMossReferenceProse(item.caption, known) || 'A figure in this position.',
+    items: reference.layout.items.map(item => {
+      if (item.label !== 'character') return item
+      const { outfit, pose } = mossReferencePerformance(item, known)
+      return { ...item, caption: cleanMossReferenceProse(item.caption, known) || 'A figure in this position.',
+        clothing: outfit || undefined, pose: pose || undefined }
     }),
   }
   return {
@@ -131,8 +134,17 @@ export function buildCastPlan(
   const layout = reference?.layout
   const boxes = referenceCharacterCount(layout)
   const lead = parseLeadPosition(leadPosition, cast.length - 1)
-  const actors = cast.map((member, index) => resolveActor(member, characters,
-    index === lead && outfitOverride?.presetId ? outfitOverride : null, engine === 'moss' && boxes >= cast.length))
+  const referencePeople = referenceCastPeople(layout)
+  const actors = cast.map((member, index) => {
+    const actor = resolveActor(member, characters,
+      index === lead && outfitOverride?.presetId ? outfitOverride : null, engine === 'moss' && boxes >= cast.length)
+    const person = referencePeople[index]
+    if (engine === 'anima' && actor && !actor.action && person && boxes > 1) {
+      const { pose } = mossReferencePerformance(person, reference?.sourceIdentityTerms, true)
+      return { ...actor, action: pose }
+    }
+    return actor
+  })
     .filter(actor => actor !== null)
   if (!actors.length) return base
   const interaction = actors.length > 1 ? cleanCastProse(castInteraction) : ''
@@ -158,7 +170,7 @@ export function buildCastPlan(
   const prose = (text: string) => isMulti
     ? cleanCastReferenceSceneProse(text, namesAndTraits)
     : cleanMossReferenceProse(cleanCastProse(text), namesAndTraits, true)
-  const structuredScene = layout?.scene ? cleanCastProse(cleanMossReferenceProse(layout.scene, namesAndTraits, true)) : ''
+  const structuredScene = layout?.scene ? prose(layout.scene) : ''
   const referenceProse = structuredScene || prose(reference?.caption ?? '')
   const sourceSceneProse = base.sceneProse || base.scene?.animaCaption || base.scene?.promptProse || ''
   const sceneProse = structuredScene

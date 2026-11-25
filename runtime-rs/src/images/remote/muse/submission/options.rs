@@ -201,6 +201,7 @@ impl SceneSelection {
             || self.interaction.is_some()
             || self.reference_caption.is_some()
             || self.reference_tags.is_some()
+            || self.reference_layout.is_some()
             || self.reference_identity_terms.is_some()
     }
 

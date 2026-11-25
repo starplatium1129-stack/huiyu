@@ -60,7 +60,7 @@ pub(super) fn cache_key(input: &CacheKeyInput<'_>) -> String {
             hasher.update(format!(
                 "assist:{identity}\0{}\0{}",
                 input.subject_mode,
-                if input.layout { "layout:1" } else { "layout:0" }
+                if input.layout { "layout:wardrobe:v2" } else { "layout:0" }
             ));
         }
         None => {

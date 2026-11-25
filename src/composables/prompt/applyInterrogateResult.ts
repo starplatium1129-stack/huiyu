@@ -8,6 +8,7 @@ import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 import { parseAssistLayout, type InterrogateResult } from '@/api/interrogateResult'
 import { referenceCharacterCount } from '@/utils/promptCast'
+import { mossReferencePerformance, referenceCastPeople, referenceOutfitText, singleReferenceCastOutfit } from '@/utils/mossCast'
 import { CHAR_PROMPT } from '@/config/promptConstants'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true, usingMoss = false) {
@@ -84,6 +85,11 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
   const assistLayout = payload.assistUsed ? parseAssistLayout(payload.assistLayout) : null
   const characterBoxes = referenceCharacterCount(assistLayout)
+  const referenceOutfits = pb.cast.length > 1 ? referenceCastPeople(assistLayout ?? undefined) : []
+  const singleOutfit = pb.cast.length > 1 ? singleReferenceCastOutfit({
+    tags: reference.tags, rawTags, sourceIdentityTerms, layout: assistLayout ?? undefined,
+  }) : ''
+  const wardrobePreset = pb.outfitOverride?.presetId ? pb.outfitOverride : null
   // A free caption can mix identity with clothes and scenery. Only structured tags
   // and bound-mode de-identified assist prose/layout enter the transferable layer;
   // never overwrite the user's own prose.
@@ -93,6 +99,9 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   }
   const subject = pb.subject
   const popularChar = subject.kind === 'popular' ? findCharacter(pb.popularCharacters, subject.characterId) : null
+  const legacyOutfit = subject.kind === 'popular' && popularChar && subject.outfitId !== defaultOutfit(popularChar)?.id
+  const keepLeadOutfit = Boolean((pb.castLead?.outfitExplicit ?? legacyOutfit) || wardrobePreset)
+  const useFlatOutfit = pb.cast.length <= 1 && characterBoxes < 2 && !keepLeadOutfit
   const blueprint = subject.kind === 'popular' && subject.blueprintId ? findBlueprint(pb.sceneBlueprints, subject.blueprintId) : null
   const studioScene = subject.kind === 'studio' ? pb.activeScene : null
   const context = collectInterrogateContext(subject.kind === 'popular'
@@ -121,7 +130,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     ...tokenize(!inheritedLighting ? LIGHTING.find(option => option.id === pb.selections.lighting)?.prompt ?? '' : ''),
   ])
   const merged = mergeInterrogatedTags({
-    tags: characterBoxes >= 2 ? reference.tags.filter(tag => !isReferenceWardrobeTag(tag) && !isOutfitToken(tag)) : reference.tags,
+    tags: useFlatOutfit ? reference.tags : reference.tags.filter(tag => !isReferenceWardrobeTag(tag) && !isOutfitToken(tag)),
     manualTags: protectedTags,
     protectedManualTags: protectedTags,
     identityTokens: subject.kind === 'popular' ? identityOnly : castIdentity,
@@ -134,13 +143,13 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const rejected = new Set([...merged.conflicts.map(item => item.tag), ...merged.filtered])
   // Capture even clothing duplicated by the current role. Otherwise switching
   // to a different role would lose same-family clothes, shirts or coats.
-  const referenceOutfit = subject.kind === 'popular' && characterBoxes < 2 ? reference.tags.filter(tag => {
+  const referenceOutfit = subject.kind === 'popular' && useFlatOutfit ? reference.tags.filter(tag => {
     const key = normalizeKey(tag)
     return !rejected.has(key) && isOutfitToken(key)
   }).map(normalizeKey) : []
   for (const tag of accepted) if (!referenceOutfit.includes(tag)) next.add(tag)
   for (const tag of referenceArtists) next.add(tag)
-  if (!accepted.size && !referenceOutfit.length && !referenceArtists.length && !assistCaption && !assistLayout) {
+  if (!accepted.size && !referenceOutfit.length && !referenceArtists.length && !assistCaption && !assistLayout && !singleOutfit) {
     flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
     return
   }
@@ -151,6 +160,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     const style = pb.snapshotStyleLayers(), description = pb.visualDescription
     pb.clearScene({ keepStory: pb.story !== pb.sceneBaseStory })
     pb.restoreStyleLayers({ ...style, randomVariation: null, referenceInput: null })
+    pb.outfitOverride = wardrobePreset
     pb.visualDescription = description
   }
   if (blueprint) pb.setPopularBlueprint(null)
@@ -158,17 +168,6 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   if (subject.kind === 'popular') {
     if (referenceOutfit.length) pb.setOutfitOverride(referenceOutfit, merged.replacedOutfitGroup)
     else if (!pb.outfitOverride?.presetId) pb.clearOutfitOverride()
-  }
-  // A newly interrogated reference supplies each mapped slot's clothing by default;
-  // clear prior explicit outfit overrides so reference outfits take effect immediately.
-  if (assistLayout && characterBoxes >= pb.cast.length && pb.cast.length > 0) {
-    pb.cast.forEach((member, index) => {
-      if (member.source !== 'custom' && (member.outfitExplicit || member.outfitId === 'custom' || member.outfitId === 'none')) {
-        pb.updateCastMember(index, { outfitId: '', outfitExplicit: false, outfitPrompt: undefined })
-      }
-    })
-  } else if (pb.cast.length === 1 && pb.cast[0]?.source !== 'custom' && pb.cast[0]?.outfitExplicit) {
-    pb.updateCastMember(0, { outfitId: '', outfitExplicit: false, outfitPrompt: undefined })
   }
   pb.manualTags = next
   const userKeys = new Set([...userTags].map(tag => normalizeKey(pb.tagDictionary.canonicalize(tag))))
@@ -178,6 +177,16 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     characterTokens: characterTags, copyrightTokens: copyrightTags,
     ...(assistCaption ? { caption: assistCaption, captionInEditor: false } : {}),
     ...(assistLayout ? { layout: assistLayout } : {}),
+  })
+  let dressedActors = 0
+  if (pb.cast.length > 1) pb.cast.forEach((member, index) => {
+    const person = referenceOutfits[index]
+    const outfitPrompt = referenceOutfits.length > 1 && person
+      ? referenceOutfitText(mossReferencePerformance(person, sourceIdentityTerms).outfit)
+      : referenceOutfits.length < 2 && member.outfitId === 'custom' ? singleOutfit : ''
+    if (!outfitPrompt) return
+    pb.updateCastMember(index, { outfitId: 'custom', outfitExplicit: true, outfitPrompt })
+    dressedActors++
   })
   const note = characterConflictNote(characterTags, castIdentity, [...context.aliases, ...castAliases,
     ...castCharacters.flatMap(character => character.aliases)])
@@ -192,6 +201,9 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   } else if (castSize > 1 && characterBoxes < castSize) {
     parts.push(usingMoss ? '将保留参考图氛围并为演员表重新站位' : '保留参考图氛围，各角色使用自己的服装')
   }
+  if (dressedActors) parts.push(referenceOutfits.length > 1
+    ? '已按参考图从左到右替换 ' + dressedActors + ' 位角色的服装'
+    : '已给 ' + dressedActors + ' 位自定义服装角色套用同一套参考服装')
   if (referenceOutfit.length) parts.push('参考服装已独立保留')
   if (referenceArtists.length) parts.push('反推画师已放入画师段')
   if (reference.excludedIdentity.length) parts.push(`已排除参考人物特征 ${reference.excludedIdentity.length} 项`)

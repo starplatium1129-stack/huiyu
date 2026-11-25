@@ -12,6 +12,7 @@ use tokio::sync::{Mutex, Notify};
 
 mod batches;
 mod cast;
+pub(crate) use cast::fusion_scene_is_wardrobe_free;
 pub(crate) mod companion;
 mod details;
 mod history;

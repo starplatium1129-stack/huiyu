@@ -129,6 +129,10 @@ const GARMENT_MODIFIERS: &str = concat!(
 );
 static RE_WARDROBE_WORD: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(&format!(r"(?i)\b(?:{GARMENT_NOUNS}|maid|sailor)\b")).unwrap());
+static RE_FUSION_TRAIT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(?i)\b(?:hair colou?r|hairstyle|heterochromia|irises|complexion|body type|skin tone|ahoge|eyebrows?)\b|发色|发型|瞳色|肤色|制服|外套|裙子|睡衣|斗篷")
+        .unwrap()
+});
 static RE_REFERENCE_TRAIT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
         r"(?i)(?:\b(?:hair|bangs|eyebrows?|eyes?|pupils?|skin|complexion|breasts?|chest|cleavage|waist|hips?|stomach|navel|collarbone|thighs?|ass|butt|legs?|feet|toes|face|",
@@ -139,6 +143,15 @@ static RE_REFERENCE_TRAIT: LazyLock<Regex> = LazyLock::new(|| {
     ))
     .unwrap()
 });
+
+pub(crate) fn fusion_scene_is_wardrobe_free(value: &str) -> bool {
+    !RE_WARDROBE_WORD.is_match(value)
+        && !RE_CLOTHING_STATES.is_match(value)
+        && !RE_COMPOUND_WRAP.is_match(value)
+        && !RE_WEARING_FALLBACK.is_match(value)
+        && !RE_APPEARANCE.is_match(value)
+        && !RE_FUSION_TRAIT.is_match(value)
+}
 
 pub(super) fn normalize_key(token: &str) -> String {
     token

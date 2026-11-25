@@ -9,7 +9,7 @@ import { tagKey } from './animaPromptOrder.ts'
 import { isGarmentToken } from './popularIdentity.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 import { cleanCastNegative, cleanCastProse } from './promptCast.ts'
-import { buildMossCastLayout, cleanMossCastText, cleanMossReferenceProse, extractReferenceOutfitAndPose, formatCastOutfitClause } from './mossCast.ts'
+import { buildMossCastLayout, cleanMossCastText, formatCastOutfitClause, mossReferencePerformance } from './mossCast.ts'
 import {
   compileMossLayout, isMossLayoutInput, mossLayoutJson, mossNormalizedBox, mossSubjectBox, mossTextBox, mossTriptychBox,
   type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
@@ -293,20 +293,15 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
                     const explicitOutfit = Boolean(refLayout!.explicitOutfit)
                     if (!multiChar) {
                       const identity = (subjectProse || targetFallback[0] || '').replace(/[.!?]+$/, '').trim()
-                      const structuredClothing = item.clothing ? formatCastOutfitClause(cleanMossReferenceProse(item.clothing, [], false)) : ''
-                      const structuredPose = item.pose ? cleanProse(item.pose) : ''
+                      const { outfit: refOutfit, pose: refPose } = mossReferencePerformance(item, [], explicitOutfit)
                       if (explicitOutfit && plan?.outfitProse) {
                         const chosen = formatCastOutfitClause(plan.outfitProse)
-                        const poseOnly = structuredPose || extractReferenceOutfitAndPose(cleanMossReferenceProse(localCaption, [], true)).pose
                         const head = [identity, chosen].filter(Boolean).join(', ')
                         const headSentence = head ? `${head}${/[.!?]$/.test(head) ? '' : '.'}` : ''
-                        const poseSentence = poseOnly ? `${poseOnly.charAt(0).toUpperCase()}${poseOnly.slice(1)}${/[.!?]$/.test(poseOnly) ? '' : '.'}` : ''
-                        const combined = [headSentence, poseSentence, extraFacts].filter(Boolean).join(' ')
+                        const poseSentence = refPose ? `${refPose.charAt(0).toUpperCase()}${refPose.slice(1)}${/[.!?]$/.test(refPose) ? '' : '.'}` : ''
+                        const combined = [headSentence, poseSentence].filter(Boolean).join(' ')
                         return { label: 'character', caption: combined || localCaption, bbox }
                       }
-                      const fallbackParsed = (!structuredClothing && !structuredPose) ? extractReferenceOutfitAndPose(localCaption) : null
-                      const refOutfit = structuredClothing || fallbackParsed?.outfit || ''
-                      const refPose = structuredPose || fallbackParsed?.pose || ''
                       if (refOutfit) {
                         primaryRefOutfit = refOutfit
                         const head = identity ? `${identity}, ${refOutfit}.` : `${refOutfit.charAt(0).toUpperCase()}${refOutfit.slice(1)}.`

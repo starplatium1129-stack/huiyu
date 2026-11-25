@@ -1,6 +1,9 @@
+mod reference_outfit;
+
 use super::clean::{CastFormation, clean_cast_prose, clean_moss_reference_prose, ensure_sentence};
-use super::ref_layout::{NormalizedRefItem, ParsedReferenceLayout};
+use super::ref_layout::{ParsedReferenceLayout, reference_people};
 use super::super::*;
+use reference_outfit::{format_outfit_clause, reference_clothing_and_pose};
 use regex::Regex;
 use std::collections::HashSet;
 use std::sync::LazyLock;
@@ -8,43 +11,12 @@ use std::sync::LazyLock;
 const MAX_LAYOUT_ITEMS: usize = 16;
 const MAX_PROMPT_UTF16: usize = 12_000;
 
-static RE_LEAD_WRAP: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^(?:the |a |an )?(?:(?:foreground|background|left|right|central|center|front|rear|far|near) )*([a-z]+)-(wrapped|clad)\s+(?:character|subject|person|figure|woman|man|girl|boy)\b[,]?\s*")
-        .unwrap()
-});
-static RE_LEAD_SUBJ: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^(?:the |a |an )?(?:(?:foreground|background|left|right|central|center|front|rear|far|near|seated|standing|leaning|smiling|grinning|laughing) )*(?:character|subject|person|figure|woman|man|girl|boy)\b(?:(?:\s*,\s*)|\s+(?:is|are)\s+|\s+)?")
-        .unwrap()
-});
-static RE_MID_SUBJ: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)([.!?]\s+)(?:the |a |an )?(?:(?:left|right|central|center|foreground|background) )?(?:character|subject|person|figure)\s+")
-        .unwrap()
-});
-static RE_REF_VERB_OUTFIT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)(?:^|[,;.]\s*|\s+)(?:(?:is|are)\s+)?((?:wears?|wearing|dressed in|clad in|outfitted in|wrapped in|draped in)\s+[^.!?;]+)")
-        .unwrap()
-});
-static RE_REF_AFTER_CLOTHES: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(concat!(
-        r"(?i)(?:\s+(?:while|beside|near|next to|in front of|at (?:a|an|the))\s+|",
-        r"\s*,\s*(?:holding|standing|sitting|seated|leaning|walking|looking|smiling|laughing|glancing|resting|bracing|raising|reaching|kneeling|lying|turning|turned|wading)\b)",
-    ))
-    .unwrap()
-});
-static RE_REF_IN_OUTFIT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^in\s+((?:a|an|the)\s+[^,.;!?]+?)(?:\s*,\s*|\s+(?:standing|stands?|sitting|sits?|seated|leaning|leans?|lying|lies|kneeling|holding|smiling|laughing|looking|glancing|turning|turned|walking|running|wading|facing|posing|tilting|tilts?)\b|[.!?;]|$)")
-        .unwrap()
-});
-static RE_REF_STATE_OUTFIT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b((?:(?:fully|completely|entirely|totally)\s+)?(?:nude|naked|unclothed|topless|bottomless|shirtless)|without (?:any )?clothes)\b")
-        .unwrap()
-});
-static RE_OUTFIT_VERB: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^(?:wears?|wearing|dressed|clad|wrapped|draped|in\s+(?:a|an|the)\b|nude|naked|topless|bottomless|unclothed)\b")
-        .unwrap()
-});
 static RE_TRAITS: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?i)\bwith\s+([^.;]+)").unwrap());
+
+pub(super) fn reference_performance(item: &super::ref_layout::NormalizedRefItem, identity_terms: &[String]) -> (String, String) {
+    reference_clothing_and_pose(item, identity_terms)
+}
 
 pub(super) struct MossCastSubject {
     pub(super) name: String,
@@ -120,80 +92,6 @@ fn upper_first(text: &str) -> String {
     }
 }
 
-fn format_outfit_clause(raw: &str) -> String {
-    let cleaned = clean_cast_prose(raw).trim_end_matches(['.', '!', '?']).trim().to_owned();
-    if cleaned.is_empty() {
-        return String::new();
-    }
-    if RE_OUTFIT_VERB.is_match(&cleaned) {
-        return lower_first(&cleaned);
-    }
-    let body = if cleaned.starts_with("A ") || cleaned.starts_with("An ") || cleaned.starts_with("The ") {
-        lower_first(&cleaned)
-    } else {
-        cleaned
-    };
-    format!("wearing {body}")
-}
-
-fn strip_leading_reference_subject(raw: &str) -> String {
-    let trimmed = raw.trim();
-    if trimmed.is_empty() {
-        return String::new();
-    }
-    let replaced = RE_LEAD_WRAP.replace(trimmed, |cap: &regex::Captures<'_>| {
-        if cap[2].eq_ignore_ascii_case("wrapped") {
-            format!("wrapped in a {}, ", &cap[1])
-        } else {
-            format!("in a {}, ", &cap[1])
-        }
-    });
-    let stripped = RE_LEAD_SUBJ.replace(&replaced, "");
-    let mid_clean = RE_MID_SUBJ.replace_all(&stripped, "$1");
-    mid_clean.trim_start_matches(|c: char| c.is_whitespace() || matches!(c, ',' | ';')).trim().to_owned()
-}
-
-fn extract_reference_outfit_and_pose(raw: &str) -> (String, String) {
-    let text = strip_leading_reference_subject(&clean_cast_prose(raw));
-    if text.is_empty() {
-        return (String::new(), String::new());
-    }
-    if let Some(cap) = RE_REF_VERB_OUTFIT.captures(&text)
-        && let (Some(full), Some(inner)) = (cap.get(0), cap.get(1))
-    {
-        let mut clause = inner.as_str().trim().to_owned();
-        let mut tail = String::new();
-        if let Some(rest) = RE_REF_AFTER_CLOTHES.find(&clause)
-            && rest.start() > 0
-        {
-            tail = clause[rest.start()..].to_owned();
-            clause = clause[..rest.start()].trim().to_owned();
-        }
-        let sep = full.as_str().chars().next().filter(|c| matches!(c, '.' | '!' | '?' | ';')).map(|c| c.to_string()).unwrap_or_default();
-        let pose = clean_cast_prose(&format!("{}{sep} {tail} {}", &text[..full.start()], &text[full.end()..]));
-        return (format_outfit_clause(&clause), pose);
-    }
-    if let Some(cap) = RE_REF_IN_OUTFIT.captures(&text)
-        && let (Some(full), Some(inner)) = (cap.get(0), cap.get(1))
-    {
-        let outfit = format_outfit_clause(&format!("wearing {}", inner.as_str().trim()));
-        let end = if full.as_str().ends_with(|c: char| c.is_ascii_alphabetic()) {
-            inner.end()
-        } else {
-            full.end()
-        };
-        let pose = clean_cast_prose(&text[end..]);
-        return (outfit, pose);
-    }
-    if let Some(cap) = RE_REF_STATE_OUTFIT.captures(&text)
-        && let (Some(full), Some(inner)) = (cap.get(0), cap.get(1))
-    {
-        let pose = clean_cast_prose(&format!("{} {}", &text[..full.start()], &text[full.end()..]));
-        return (inner.as_str().trim().to_ascii_lowercase(), pose);
-    }
-    (String::new(), text)
-}
-
 fn box_area(b: [f64; 4]) -> f64 {
     (b[2] - b[0]).max(0.0) * (b[3] - b[1]).max(0.0)
 }
@@ -236,7 +134,7 @@ fn spatial_slot_label(index: usize, count: usize, box4: [f64; 4], all: &[[f64; 4
     base.to_owned()
 }
 
-fn concise_actor_summary(subject: &MossCastSubject, slot: &str, local_ref: &str) -> String {
+fn concise_actor_summary(subject: &MossCastSubject, slot: &str, outfit: &str) -> String {
     let identity = clean_cast_prose(if subject.identity_caption.is_empty() { &subject.caption } else { &subject.identity_caption });
     let identity = identity.trim_end_matches(['.', '!', '?']).trim();
     let name = if subject.name.trim().is_empty() { "character" } else { subject.name.trim() };
@@ -246,52 +144,21 @@ fn concise_actor_summary(subject: &MossCastSubject, slot: &str, local_ref: &str)
         .map(|m| m.as_str().split(',').map(str::trim).filter(|s| !s.is_empty()).take(2).collect::<Vec<_>>().join(", "))
         .unwrap_or_default();
     let who = if short_trait.is_empty() { name.to_owned() } else { format!("{name} ({short_trait})") };
-    let outfit = if subject.outfit_explicit {
-        format_outfit_clause(&subject.outfit_caption)
-    } else if !local_ref.is_empty() {
-        let (ref_outfit, ref_pose) = extract_reference_outfit_and_pose(local_ref);
-        if !ref_outfit.is_empty() {
-            ref_outfit
-        } else {
-            ref_pose.split(['.', ';']).next().unwrap_or("").trim().to_owned()
-        }
-    } else {
-        format_outfit_clause(&subject.outfit_caption)
-    };
     let prefix = if slot.is_empty() { String::new() } else { format!("{}, ", lower_first(slot)) };
     if outfit.is_empty() { format!("{prefix}{who}") } else { format!("{prefix}{who} {outfit}") }
 }
 
-fn build_actor_item_caption(subject: &MossCastSubject, slot: &str, local_caption: &str, use_reference: bool) -> String {
-    let (ref_outfit, ref_pose) = if use_reference && !local_caption.is_empty() {
-        extract_reference_outfit_and_pose(local_caption)
-    } else {
-        (String::new(), String::new())
-    };
-    let pose = if use_reference {
-        if subject.outfit_explicit { strip_leading_reference_subject(&clean_cast_prose(local_caption)) } else { ref_pose }
-    } else {
-        String::new()
-    };
-    build_actor_item_caption_structured(subject, slot, &ref_outfit, &pose, use_reference)
-}
-
-fn build_actor_item_caption_structured(subject: &MossCastSubject, slot: &str, ref_outfit: &str, ref_pose: &str, use_reference: bool) -> String {
+fn build_actor_item_caption(subject: &MossCastSubject, slot: &str, outfit: &str, pose: &str) -> String {
     let identity = clean_cast_prose(if subject.identity_caption.is_empty() { &subject.caption } else { &subject.identity_caption });
     let identity = identity.trim_end_matches(['.', '!', '?']).trim();
-    let outfit = if !use_reference || subject.outfit_explicit {
-        format_outfit_clause(&subject.outfit_caption)
-    } else {
-        ref_outfit.to_owned()
-    };
     let action = clean_cast_prose(&subject.action).trim_end_matches(['.', '!', '?']).trim().to_owned();
-    let head = [identity, outfit.as_str()].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(", ");
+    let head = [identity, outfit].into_iter().filter(|s| !s.is_empty()).collect::<Vec<_>>().join(", ");
     let mut sentences = Vec::new();
     if !head.is_empty() {
         let prefixed = if slot.is_empty() { head } else { format!("{slot}: {head}") };
         sentences.push(ensure_sentence(&prefixed));
     }
-    if !ref_pose.is_empty() { sentences.push(ensure_sentence(&upper_first(ref_pose))); }
+    if !pose.is_empty() { sentences.push(ensure_sentence(&upper_first(pose))); }
     if !action.is_empty() { sentences.push(ensure_sentence(&upper_first(&action))); }
     if sentences.is_empty() { "Character in this position.".to_owned() } else { sentences.join(" ") }
 }
@@ -305,17 +172,10 @@ pub(super) fn build_moss_cast_layout(
     identity_terms: &[String],
     common_caption_parts: Vec<String>,
 ) -> Result<String> {
-    let ref_chars: Vec<(usize, &NormalizedRefItem)> = reference
-        .into_iter()
-        .flat_map(|layout| layout.items.iter().enumerate())
-        .filter(|(_, item)| item.label == "character")
-        .collect();
+    let ref_chars = reference_people(reference);
     let has_custom_bbox = subjects.iter().any(|subject| subject.custom_bbox.is_some());
     let use_reference = !has_custom_bbox && ref_chars.len() >= subjects.len();
 
-    let to_local = |item: &NormalizedRefItem, replace_outfit: bool| {
-        clean_cast_prose(&clean_moss_reference_prose(&item.caption, identity_terms, replace_outfit))
-    };
     let make_item = |label: &str, caption: String, bbox: [i64; 4], text: Option<&str>| {
         let mut map = serde_json::Map::new();
         map.insert("label".into(), json!(label));
@@ -329,7 +189,7 @@ pub(super) fn build_moss_cast_layout(
     if let Some(layout) = reference {
         for item in &layout.items {
             if item.label == "text" {
-                let caption = to_local(item, false);
+                let caption = clean_cast_prose(&clean_moss_reference_prose(&item.caption, identity_terms, false));
                 supplemental.push(make_item(
                     "text",
                     if caption.is_empty() { "Visible lettering.".to_owned() } else { caption },
@@ -337,7 +197,7 @@ pub(super) fn build_moss_cast_layout(
                     item.text.as_deref(),
                 ));
             } else if use_reference && item.label == "object" {
-                let caption = to_local(item, false);
+                let caption = clean_cast_prose(&clean_moss_reference_prose(&item.caption, identity_terms, false));
                 supplemental.push(make_item(
                     "object",
                     if caption.is_empty() { "Reference prop.".to_owned() } else { caption },
@@ -350,36 +210,37 @@ pub(super) fn build_moss_cast_layout(
 
     let mut summary_entries = Vec::new();
     let (items, canvas, extra_people) = if use_reference {
-        let mut by_area = ref_chars.clone();
-        by_area.sort_by(|(_, a), (_, b)| box_area(b.bbox).total_cmp(&box_area(a.bbox)));
-        let target_indices: HashSet<usize> = by_area.into_iter().take(subjects.len()).map(|(i, _)| i).collect();
-
-        let mut by_x = ref_chars.clone();
-        by_x.sort_by(|(_, a), (_, b)| ((a.bbox[1] + a.bbox[3]) / 2.0).total_cmp(&((b.bbox[1] + b.bbox[3]) / 2.0)));
-        let target_boxes: Vec<[f64; 4]> = by_x.iter().filter(|(i, _)| target_indices.contains(i)).map(|(_, it)| it.bbox).collect();
+        let first_target = if subjects.len() == 1 {
+            ref_chars.iter().enumerate().max_by(|(_, a), (_, b)| box_area(a.bbox).total_cmp(&box_area(b.bbox)))
+                .map_or(0, |(index, _)| index)
+        } else {
+            0
+        };
+        let targets = first_target..first_target + subjects.len();
+        let target_boxes: Vec<[f64; 4]> = ref_chars[targets.clone()].iter().map(|item| item.bbox).collect();
 
         let mut actor_idx = 0;
         let mut out_items = Vec::new();
-        for (index, item) in by_x {
-            let caption = if target_indices.contains(&index) {
+        for (index, item) in ref_chars.iter().enumerate() {
+            let (reference_outfit, pose) = reference_clothing_and_pose(item, identity_terms);
+            let caption = if targets.contains(&index) {
                 let subject = &subjects[actor_idx];
                 let slot = spatial_slot_label(actor_idx, subjects.len(), item.bbox, &target_boxes, formation, true);
                 actor_idx += 1;
-                let structured_clothing = item.clothing.as_deref().map(|c| format_outfit_clause(&clean_moss_reference_prose(c, identity_terms, false))).unwrap_or_default();
-                let structured_pose = item.pose.as_deref().map(|p| strip_leading_reference_subject(&clean_moss_reference_prose(p, identity_terms, true))).unwrap_or_default();
-                let has_structured = !structured_clothing.is_empty() || !structured_pose.is_empty();
-                if has_structured {
-                    let ref_outfit = if subject.outfit_explicit { String::new() } else { structured_clothing };
-                    summary_entries.push(concise_actor_summary(subject, &slot, &ref_outfit));
-                    build_actor_item_caption_structured(subject, &slot, &ref_outfit, &structured_pose, true)
+                let outfit = if subject.outfit_explicit || reference_outfit.is_empty() {
+                    format_outfit_clause(&subject.outfit_caption)
                 } else {
-                    let local = to_local(item, subject.outfit_explicit);
-                    summary_entries.push(concise_actor_summary(subject, &slot, if subject.outfit_explicit { "" } else { &local }));
-                    build_actor_item_caption(subject, &slot, &local, true)
-                }
+                    reference_outfit
+                };
+                summary_entries.push(concise_actor_summary(subject, &slot, &outfit));
+                build_actor_item_caption(subject, &slot, &outfit, if subject.action.is_empty() { &pose } else { "" })
             } else {
-                let local = to_local(item, false);
-                if local.is_empty() { "Supporting character in this position.".to_owned() } else { local }
+                let intro = if reference_outfit.is_empty() {
+                    "Supporting character in this position.".to_owned()
+                } else {
+                    format!("Supporting character, {reference_outfit}.")
+                };
+                if pose.is_empty() { intro } else { format!("{intro} {}", ensure_sentence(&upper_first(&pose))) }
             };
             out_items.push(make_item("character", caption, moss_normalized_box(width, height, item.bbox), None));
         }
@@ -394,10 +255,16 @@ pub(super) fn build_moss_cast_layout(
             .enumerate()
             .map(|(idx, subject)| {
                 let slot = spatial_slot_label(idx, subjects.len(), unit_boxes[idx], &unit_boxes, formation, false);
-                summary_entries.push(concise_actor_summary(subject, &slot, ""));
+                let outfit = format_outfit_clause(&subject.outfit_caption);
+                let pose = if ref_chars.len() > 1 && subject.action.is_empty() {
+                    ref_chars.get(idx).map(|item| reference_clothing_and_pose(item, identity_terms).1).unwrap_or_default()
+                } else {
+                    String::new()
+                };
+                summary_entries.push(concise_actor_summary(subject, &slot, &outfit));
                 make_item(
                     "character",
-                    build_actor_item_caption(subject, &slot, "", false),
+                    build_actor_item_caption(subject, &slot, &outfit, &pose),
                     moss_normalized_box(width, height, unit_boxes[idx]),
                     None,
                 )
@@ -413,7 +280,7 @@ pub(super) fn build_moss_cast_layout(
     let total_count = subjects.len() + extra_people;
     if subjects.len() >= 2 {
         let anchor = format!(
-            "Exactly {total_count} distinct characters appear in the scene, each keeping their own distinct hair, eyes, and outfit: {}.",
+            "Exactly {total_count} distinct characters appear in the scene, each keeping their assigned hair, eyes, and outfit: {}.",
             summary_entries.join("; ")
         );
         seen_lines.insert(anchor.clone());

@@ -16,7 +16,8 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
   let scope: EffectScope | undefined
-  let preparingSubmission = false
+  const preparingSubmission = shallowRef<AbortController | null>(null)
+  const coordinatingCast = ref(false)
   const pb = workspace.pb
   const castLayoutContext = computed(() => Boolean(pb.coStars.length || pb.castLead?.source === 'custom'
     || isCustomCastOutfit(pb.castLead?.outfitId ?? '')))
@@ -71,7 +72,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     }
     catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
   })
-  const busy = computed(() => !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
+  const busy = computed(() => !!preparingSubmission.value || !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
   function mossLayoutDraft() {
     const description = usingMossTaskPrompt.value ? session.value?.form.prompt ?? '' : mossDescription.value
@@ -115,13 +116,24 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   const presentation = computed<GenerationPresentation>(() => {
     const state = session.value, task = state?.task.value
     const phase = state?.cancelling.value || task?.status === 'cancelling' ? 'cancelling'
-      : state?.busy.value ? 'submitting' : state?.unresolved.value ? 'running' : task?.status === 'succeeded' ? 'succeeded'
+      : preparingSubmission.value || state?.busy.value ? 'submitting' : state?.unresolved.value ? 'running' : task?.status === 'succeeded' ? 'succeeded'
         : task?.status === 'cancelled' ? 'cancelled' : state?.error.value ? 'failed' : 'idle'
-    return { phase, message: state?.taskText.value || state?.notice.value || '', progress: state?.progress.value === null || state?.progress.value === undefined ? null : state.progress.value / 100,
+    return { phase, message: coordinatingCast.value ? '正在协调角色动作与构图…' : state?.taskText.value || state?.notice.value || '', progress: state?.progress.value === null || state?.progress.value === undefined ? null : state.progress.value / 100,
       needsReview: !!state?.unresolved.value && !state.observing.value && !state.busy.value,
       completed: phase === 'succeeded' && !!state?.resultUrl.value, canRetryCancellation: !!state?.error.value, review: () => { void state?.observe() } }
   })
-  function dispose() { scope?.stop(); scope = undefined; session.value = null }
+  function cancel() {
+    if (preparingSubmission.value) preparingSubmission.value.abort()
+    else return session.value?.cancel()
+  }
+  function dispose() {
+    preparingSubmission.value?.abort()
+    preparingSubmission.value = null
+    coordinatingCast.value = false
+    scope?.stop()
+    scope = undefined
+    session.value = null
+  }
   async function initialize() {
     dispose()
     if (!active.value || !mode.value) return
@@ -183,19 +195,21 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     const dimensions = value.split('x').map(Number).map(value => Math.max(512, Math.min(state.maxSize, Math.round(value / state.alignment) * state.alignment)))
     size.value = dimensions.join('x')
   })
-  async function generate() {
+  async function generate(assist = false) {
     const state = session.value
-    if (!state || locked.value || blocked.value || preparingSubmission) return
+    if (!state || locked.value || blocked.value || preparingSubmission.value) return
     let finalMossPrompt = recipe.value.prompt
     if (mode.value === 'moss') {
-      preparingSubmission = true
+      const preparation = new AbortController()
+      preparingSubmission.value = preparation
       const draftKey = () => JSON.stringify({ ...pb.snapshotDraft(), updatedAt: undefined })
       const before = draftKey()
       try {
         await nextTick()
         await pb.persistDraft()
-        if (session.value !== state || locked.value || blocked.value || draftKey() !== before) return
-        if (!usingMossTaskPrompt.value && !mossLayout.value && pb.cast.length >= 2 && isMossLayoutInput(finalMossPrompt)) {
+        if (preparation.signal.aborted || session.value !== state || locked.value || blocked.value || draftKey() !== before) return
+        if (assist && !usingMossTaskPrompt.value && !mossLayout.value && pb.cast.length >= 2 && isMossLayoutInput(finalMossPrompt)) {
+          coordinatingCast.value = true
           const fused = await fuseMossCastPrompt({
             draftPrompt: finalMossPrompt,
             plan: workspace.mossPlan.value,
@@ -203,14 +217,20 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
             interaction: pb.castInteraction,
             userDescription: pb.visualDescription,
             reference: pb.referenceInput,
+            signal: preparation.signal,
           })
           finalMossPrompt = fused.prompt
         }
       } catch {
         // The draft store reports why its durable write could not be confirmed.
         return
-      } finally { preparingSubmission = false }
-      if (session.value !== state || locked.value || blocked.value || draftKey() !== before) return
+      } finally {
+        if (preparingSubmission.value === preparation) {
+          preparingSubmission.value = null
+          coordinatingCast.value = false
+        }
+      }
+      if (preparation.signal.aborted || session.value !== state || locked.value || blocked.value || draftKey() !== before) return
     }
     const subject = pb.subject
     const director = mode.value === 'moss' ? captureResultContext(pb) : null
@@ -234,6 +254,6 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })
   onScopeDispose(dispose)
-  return { mode, session, recipe, mossLayout, usingMossTaskPrompt, mossLayoutDraft, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
+  return { mode, session, recipe, mossLayout, usingMossTaskPrompt, mossLayoutDraft, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, cancel, initialize, saveBeforeSwitch }
 }
 export type NativeDrawing = ReturnType<typeof useNativeDrawing>

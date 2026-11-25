@@ -57,9 +57,11 @@ export async function fuseMossCastPrompt(params: {
   interaction: string
   userDescription: string
   reference: DraftReferenceInput | null
+  signal?: AbortSignal
 }): Promise<FuseCastResult> {
   const { draftPrompt, plan, cast, interaction, userDescription, reference } = params
-  const signal = AbortSignal.timeout(15_000)
+  const timeout = AbortSignal.timeout(18_000)
+  const signal = params.signal ? AbortSignal.any([params.signal, timeout]) : timeout
   try {
     const { interrogateChatHeaders } = await import('./interrogateChatSettings')
     const personal = await interrogateChatHeaders(signal, true).catch(() => ({}))

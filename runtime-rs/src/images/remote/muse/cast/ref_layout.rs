@@ -19,6 +19,16 @@ pub(super) struct ParsedReferenceLayout {
     pub(super) items: Vec<NormalizedRefItem>,
 }
 
+pub(super) fn reference_people(layout: Option<&ParsedReferenceLayout>) -> Vec<&NormalizedRefItem> {
+    let mut people: Vec<_> = layout
+        .into_iter()
+        .flat_map(|layout| &layout.items)
+        .filter(|item| item.label == "character")
+        .collect();
+    people.sort_by(|a, b| (a.bbox[1] + a.bbox[3]).total_cmp(&(b.bbox[1] + b.bbox[3])));
+    people
+}
+
 pub(super) fn parse_reference_layout(
     value: &Value,
     target_width: u64,

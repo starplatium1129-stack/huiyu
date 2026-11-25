@@ -68,6 +68,8 @@ pub(super) struct SceneSelection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) reference_tags: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) reference_layout: Option<Value>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) reference_identity_terms: Option<Vec<String>>,
     // Image-to-image / inpaint / reference / composition parameters
     #[serde(skip_serializing_if = "Option::is_none", alias = "imageId")]

@@ -147,6 +147,9 @@ pub(in super::super) async fn enqueue(
 
     let config = config.clone();
     let loras_root = settings.loras_root.clone();
+    let fusion_casts = scenes.iter()
+        .map(|scene| cast::fusion_cast_members(scene.cast.as_deref().unwrap_or_default()))
+        .collect::<Vec<_>>();
     let mut prepared = tokio::task::spawn_blocking(move || {
         submission::prepare_batch(&config, loras_root, scenes, model.as_deref())
     })
@@ -158,7 +161,7 @@ pub(in super::super) async fn enqueue(
     if state.chat.is_some() {
         let empty_headers = HeaderMap::new();
         let cancel = muse.images.shutdown.child_token();
-        for scene in &mut prepared {
+        for (scene, members) in prepared.iter_mut().zip(fusion_casts) {
             if scene.kind != "cast" || scene.family != "moss-image" {
                 continue;
             }
@@ -179,7 +182,7 @@ pub(in super::super) async fn enqueue(
                 &empty_headers,
                 crate::interrogate::fuse::FuseCastInput {
                     draft_prompt: draft,
-                    cast: Vec::new(),
+                    cast: members,
                     interaction: None,
                     user_description: None,
                     reference_scene: None,

@@ -37,6 +37,10 @@
             <StudioSelect :id="`${rosterId}-${index}-outfit`" :model-value="actor.outfitId"
               :options="actor.outfits" :label="`${actor.name}的服装`" size="sm"
               @update:model-value="setOutfit(index, $event)" />
+            <button v-if="referenceOutfit" class="btn btn-quiet btn-sm cast-reference-outfit" type="button"
+              :aria-label="`采用参考图服装（${actor.name}）`" @click="applyReferenceOutfit(index)">
+              <ArchiveIcon name="image" />采用参考图服装
+            </button>
           </div>
           <div v-if="actor.outfitId === 'custom'" class="cast-stacked-field">
             <label :for="`${rosterId}-${index}-outfit-prompt`">自定义服装</label>
@@ -100,6 +104,7 @@ import { characterArtEntry } from '@/platform/characterArtState'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { CastMember } from '@/types/prompt'
 import { CANONICAL_OUTFITS } from '@/utils/canonicalOutfits'
+import { singleReferenceCastOutfit } from '@/utils/mossCast'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { castMemberKey, isCustomCastOutfit, parseCastFormation, referenceCharacterCount } from '@/utils/promptCast'
 
@@ -169,7 +174,7 @@ const availableCharacters = computed(() => {
   const occupied = new Set(pb.cast.map(item => actorKey(item.source, item.characterId)))
   return catalog.value.filter(item => !occupied.has(item.id))
 })
-const actors = computed(() => pb.cast.map(item => {
+const actors = computed(() => pb.cast.map((item, index) => {
   const key = actorKey(item.source, item.characterId)
   const person = catalog.value.find(entry => entry.id === key)
   const options = item.source === 'studio'
@@ -183,17 +188,20 @@ const actors = computed(() => pb.cast.map(item => {
     image: resolveRuntimeUrl(person?.image),
     outfitId: isCustomCastOutfit(item.outfitId) || item.outfitExplicit && options.some(option => option.value === item.outfitId) ? item.outfitId : '',
     action: item.action ?? '',
-    outfits: [{ value: '', label: referenceMapping.value ? '跟随参考图服装' : '角色默认服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
+    outfits: [{ value: '', label: props.engine === 'moss' && referenceCount.value >= 2 && index < referenceCount.value ? '跟随参考图服装' : '角色默认服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
   }
 }))
 const referenceCount = computed(() => referenceCharacterCount(pb.referenceInput?.layout))
 const referenceMapping = computed(() => referenceCount.value >= 2 && referenceCount.value >= pb.cast.length)
+const referenceOutfit = computed(() => {
+  if (props.engine !== 'anima' && (props.engine !== 'moss' || props.customMossLayout)) return ''
+  return singleReferenceCastOutfit(pb.referenceInput)
+})
 const canChooseFormation = computed(() => props.engine === 'moss' && pb.cast.length >= 2 && !referenceMapping.value && !props.customMossLayout)
 const staggered = computed(() => canChooseFormation.value && displayedFormation.value === 'staggered')
 const placementLabel = computed(() => {
   const people = pb.cast.length
-  if (props.engine === 'anima') return pb.referenceInput
-    ? '按演员表从左到右排列，参考图提供环境与氛围。' : '按演员表从左到右排列。'
+  if (props.engine === 'anima') return '按演员表从左到右排列。'
   if (props.engine !== 'moss') return '当前引擎沿用主角设置。同框构图可使用 MOSS 或 Anima。'
   if (props.customMossLayout) return '正在使用已编辑的 MOSS 布局。'
   if (referenceMapping.value) {
@@ -201,6 +209,7 @@ const placementLabel = computed(() => {
     return `已映射参考图 ${people} 个角色框${remaining ? `，另保留 ${remaining} 位参考配角` : ''}。`
   }
   const formation = formations[displayedFormation.value]
+  if (referenceCount.value >= 2) return '参考服装按演员顺序分配，自动站位为' + formation + '。'
   return pb.referenceInput ? `参考图用于环境与氛围，自动站位为${formation}。` : `自动站位为${formation}。`
 })
 const singleReferenceLabel = computed(() => props.engine === 'moss' && !props.customMossLayout && referenceCount.value >= 2
@@ -243,7 +252,19 @@ function setFormation(value: string | number) {
 
 function setOutfit(index: number, value: string | number) {
   const outfitId = String(value)
+  if (outfitId === 'custom' && referenceOutfit.value) {
+    applyReferenceOutfit(index)
+    return
+  }
   pb.updateCastMember(index, { outfitId, outfitExplicit: Boolean(outfitId) })
+}
+
+function applyReferenceOutfit(index: number) {
+  const actor = actors.value[index]
+  const outfitPrompt = referenceOutfit.value
+  if (!actor || !outfitPrompt) return
+  pb.updateCastMember(index, { outfitId: 'custom', outfitExplicit: true, outfitPrompt })
+  announcement.value = `${actor.name}已采用参考图服装。`
 }
 
 function updateText(index: number, field: 'outfitPrompt' | 'action', event: Event) {
@@ -337,6 +358,7 @@ async function removeActor(index: number) {
 .cast-actor-actions [aria-disabled='true'], .cast-add[aria-disabled='true'] { color: var(--text-disabled); cursor: default; }
 .director-cast .btn[aria-disabled='true']:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 2px; }
 .cast-field { grid-template-columns: 4em minmax(0, 1fr); align-items: center; }
+.cast-reference-outfit { grid-column: 2; justify-self: start; }
 .cast-actor-footer, .cast-add-actions { flex-wrap: wrap; }
 .cast-actor-footer { justify-content: end; }
 .cast-stacked-field textarea { min-block-size: calc(2 * var(--control-height-sm)); }

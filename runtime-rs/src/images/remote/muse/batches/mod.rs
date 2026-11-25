@@ -43,6 +43,7 @@ pub(super) struct Batch {
     interaction: Option<cast::InteractionInput>,
     reference_caption: Option<String>,
     reference_tags: Option<Vec<String>>,
+    reference_layout: Option<Value>,
     reference_identity_terms: Option<Vec<String>>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
@@ -119,6 +120,9 @@ impl Batch {
             }
             if scene.reference_tags.is_none() {
                 scene.reference_tags.clone_from(&self.reference_tags);
+            }
+            if scene.reference_layout.is_none() {
+                scene.reference_layout.clone_from(&self.reference_layout);
             }
             if scene.reference_identity_terms.is_none() {
                 scene.reference_identity_terms.clone_from(&self.reference_identity_terms);

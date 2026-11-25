@@ -1,7 +1,9 @@
 import type { PromptPlan } from '../types/prompt'
-import { isReferenceWardrobeTag, isStableIdentityToken } from './interrogateReference.ts'
+import { tagKey } from './animaPromptOrder.ts'
+import { isReferenceWardrobeTag, isStableIdentityToken, splitReferenceTags } from './interrogateReference.ts'
 import { isOutfitToken } from './popularIdentity.ts'
-import { cleanCastProse } from './promptCast.ts'
+import type { DraftReferenceInput } from './promptBuilderPersistence'
+import { cleanCastProse, isCastCountTag } from './promptCast.ts'
 import { normalizeKey } from './promptPrimitives.ts'
 import { mossCastBoxes, mossNormalizedBox, type MossCanvasSize, type MossLayoutItem } from './mossLayout.ts'
 
@@ -12,9 +14,9 @@ type UnitBox = [number, number, number, number]
 
 const adjective = 'very|extremely|light|dark|bright|pale|deep|long|short|medium|shoulder.length|waist.length|wavy|straight|curly|braided|flowing|silky|fluffy|spiky|tousled|twin|jet|platinum|golden|blond[e]?|black|white|brown|red|pink|blue|silver|purple|orange|green|grey|gray|auburn|violet|lavender|teal|cyan|aqua|turquoise|multicolored|amber|hazel|tan|tanned|fair|olive'
 const appearance = new RegExp(
-  '\\b(?:(?:' + adjective + ')(?:[, _-]+)){1,6}(?:hair|eyes|skin|braids?|ponytails?|pigtails?|bangs)\\b'
+  '\\b(?:(?:' + adjective + ')(?:[, _-]+)){1,6}(?:hair|eyes|skin|braids?|ponytails?|pigtails?|bangs)\\b(?![ _-]+(?:ribbon|clip|band|flower|ornament|tie)\\b)'
   + '|\\b(?:blond[e]?|brunette|redheaded|fair.skinned|dark.skinned|(?:' + adjective + ')[ _-](?:haired|eyed))\\b'
-  + '|\\b(?:hime.cut|bob.cut|pigtails?|ponytails?|twintails?|freckles|horns?|halos?|(?:fox|cat|wolf|elf|rabbit|animal|pointed) ears|(?:fluffy|cat|fox|devil) tail|(?:angel|feathered|bat|demon) wings)\\b',
+  + '|\\b(?:hime.cut|bob.cut|pigtails?|ponytails?|twintails?|freckles|heterochromia|ahoge|horns?|halos?|(?:fox|cat|wolf|elf|rabbit|animal|pointed) ears|(?:fluffy|cat|fox|devil) tail|(?:angel|feathered|bat|demon) wings)\\b',
   'gi',
 )
 const bareSubject = /^(?:(?:the |a |an |another )?(?:(?:left|right|central|center|rear|front|foreground|background|distant|near|far) )*(?:character|subject|person|figure|woman|man|girl|boy)s?|she|he|they|both|each)(?:[.!?;]+|$)/i
@@ -37,8 +39,9 @@ export function cleanMossCastText(value: string): string {
 
 export function formatCastOutfitClause(outfitCaption: string): string {
   const cleaned = cleanCastProse(cleanMossCastText(outfitCaption)).replace(/[.!?]+$/, '').trim()
-  if (!cleaned) return ''
-  if (/^(?:wears?|wearing|dressed|clad|wrapped|draped|in\s+(?:a|an|the)\b|nude|naked|topless|bottomless|unclothed)\b/i.test(cleaned)) {
+  if (!cleaned || /^(?:none|n\/?a|unknown|unclear|unavailable|unspecified|out of frame|no visible clothing|(?:clothing (?:is )?)?not (?:clearly )?(?:visible|specified|shown|discernible))$/i.test(cleaned)) return ''
+  if (/^(?:wears?|is wearing)\s+/i.test(cleaned)) return cleaned.replace(/^(?:wears?|is wearing)\s+/i, 'wearing ')
+  if (/^(?:wearing|dressed|clad|wrapped|draped|in\s+(?:a|an|the)|without (?:any )?clothes|(?:(?:fully|completely|entirely|totally) )?(?:nude|naked|topless|bottomless|unclothed|shirtless))\b/i.test(cleaned)) {
     return cleaned.charAt(0).toLowerCase() + cleaned.slice(1)
   }
   const lowered = /^(?:A|An|The)\s+/.test(cleaned) ? cleaned.charAt(0).toLowerCase() + cleaned.slice(1) : cleaned
@@ -144,7 +147,7 @@ function stripLeadingReferenceSubject(caption: string): string {
   return text.replace(/^[,;\s]+/, '').trim()
 }
 
-export function extractReferenceOutfitAndPose(raw: string): { outfit: string; pose: string } {
+function extractReferenceOutfitAndPose(raw: string): { outfit: string; pose: string } {
   const text = stripLeadingReferenceSubject(cleanCastProse(cleanMossCastText(raw)))
   if (!text) return { outfit: '', pose: '' }
   const cleanPose = (value: string) => value
@@ -171,7 +174,7 @@ export function extractReferenceOutfitAndPose(raw: string): { outfit: string; po
 
   const inRe = /^in\s+((?:a|an|the)\s+[^,.;!?]+?)(?=\s*,\s*|\s+(?:standing|stands?|sitting|sits?|seated|leaning|leans?|lying|lies|kneeling|holding|smiling|laughing|looking|glancing|turning|turned|walking|running|wading|facing|posing|tilting|tilts?)\b|[.!?;]|$)/i
   const inMatch = text.match(inRe)
-  if (inMatch) {
+  if (inMatch && isLegacyWardrobeClause(inMatch[1])) {
     const outfit = formatCastOutfitClause(`wearing ${inMatch[1].trim()}`)
     const pose = cleanPose(text.slice(inMatch[0].length))
     return { outfit, pose }
@@ -187,12 +190,76 @@ export function extractReferenceOutfitAndPose(raw: string): { outfit: string; po
   return { outfit: '', pose: text }
 }
 
+function isLegacyWardrobeClause(clause: string): boolean {
+  if (referenceActionClause.test(clause)) return false
+  const wardrobe = normalizeKey(clause.replace(/[.!?]+$/, ''))
+  return isOutfitToken(wardrobe) || isReferenceWardrobeTag(wardrobe)
+    || (clause.toLowerCase().match(/[a-z]+/g) ?? []).some(word => isOutfitToken(word) || clothingDetail.test(word))
+}
+
+function splitLegacyClothing(text: string, outfit = '') {
+  const clothing = outfit ? [outfit] : []
+  const remaining: string[] = []
+  for (const fragment of text.split(/[,;]|(?<=[.!?])\s+/u)) {
+    const clause = fragment.trim()
+    if (!clause) continue
+    if (isLegacyWardrobeClause(clause)) clothing.push(clause.replace(/^(?:and|with)\s+/i, '').replace(/[.!?]+$/, ''))
+    else remaining.push(clause)
+  }
+  return { outfit: formatCastOutfitClause(clothing.join(', ')), pose: remaining.join(', ') }
+}
+
+/** Structured clothing and pose can each be absent in saved or newly recognized references. */
+export function mossReferencePerformance(item: ReferenceItem, identityTerms: readonly string[] = [], replaceOutfit = false) {
+  const extracted = extractReferenceOutfitAndPose(item.caption)
+  const legacy = splitLegacyClothing(extracted.pose, extracted.outfit)
+  const clothingOnly = (value: string) => formatCastOutfitClause(stripLeadingReferenceSubject(cleanMossReferenceProse(value, identityTerms))
+    .split(/[,;]|(?<=[.!?])\s+/u).map(fragment => fragment.trim())
+    .filter(fragment => fragment && !referenceActionClause.test(fragment) && !referenceSubjectClause.test(fragment)
+      && (isLegacyWardrobeClause(fragment) || !referenceBodyOrTraitRe.test(fragment)))
+    .join(', ').replace(/\s+(?:with|and|or)\s*[.!?]?$/i, ''))
+  const outfit = replaceOutfit ? '' : clothingOnly(item.clothing ?? '') || clothingOnly(legacy.outfit)
+  const structuredPose = splitLegacyClothing(extractReferenceOutfitAndPose(item.pose ?? '').pose).pose
+  const pose = cleanMossReferenceProse(structuredPose, identityTerms, true)
+    || cleanMossReferenceProse(legacy.pose, identityTerms, true)
+  return { outfit, pose: stripLeadingReferenceSubject(pose) }
+}
+
+function actorOutfit(subject: CastSubject, inherited = '') {
+  return (!subject.outfitExplicit && inherited) || formatCastOutfitClause(subject.outfitCaption ?? '')
+}
+
 function area({ bbox: [top, left, bottom, right] }: { bbox: UnitBox }) {
   return Math.max(0, bottom - top) * Math.max(0, right - left)
 }
 
 function centerX({ bbox: [, left, , right] }: { bbox: UnitBox }) {
   return (left + right) / 2
+}
+
+export function referenceCastPeople(layout: DraftReferenceInput['layout']) {
+  return layout?.items.filter(item => item.label === 'character').toSorted((a, b) => centerX(a) - centerX(b)) ?? []
+}
+
+export function referenceOutfitText(clothing: string) {
+  return clothing.replace(/^wearing\s+/i, '').slice(0, 400).replace(/[,;\s]+$/, '')
+}
+
+export function singleReferenceCastOutfit(reference: DraftReferenceInput | null | undefined) {
+  if (!reference || (reference.layout && reference.layout.canvas !== 'single')) return ''
+  const people = referenceCastPeople(reference.layout)
+  if (people.length > 1) return ''
+  const person = people[0]
+  const clothing = person ? mossReferencePerformance(person, reference.sourceIdentityTerms).outfit : ''
+  if (clothing) return referenceOutfitText(clothing)
+
+  const tags = reference.rawTags ?? reference.tags
+  const counts = new Set(tags.filter(isCastCountTag).map(tagKey))
+  const quantities = [...counts].filter(tag => tag !== 'solo')
+  if ((!person && !counts.size) || quantities.length > 1
+    || quantities.some(tag => !/^1\s*(?:girl|boy|person|woman|man)$/.test(tag))) return ''
+  const garments = splitReferenceTags(tags).tags.filter(isReferenceWardrobeTag).map(tag => tag.replace(/_/g, ' '))
+  return referenceOutfitText(garments.join(', '))
 }
 
 function spatialSlotLabel(index: number, count: number, box: UnitBox, allBoxes: readonly UnitBox[], formation?: CastLayout['formation'], useReference = false): string {
@@ -221,32 +288,19 @@ function spatialSlotLabel(index: number, count: number, box: UnitBox, allBoxes: 
   return base
 }
 
-function conciseActorSummary(subject: CastSubject, slot: string, localReference = ''): string {
+function conciseActorSummary(subject: CastSubject, slot: string, outfit: string): string {
   const identity = cleanCastProse(cleanMossCastText(subject.identityCaption || subject.caption || ''))
     .replace(/[.!?]+$/, '').trim()
   const name = subject.name?.trim() || identity.split(/\s+from\s+|,/i)[0]?.trim() || 'character'
   const traitMatch = identity.match(/\bwith\s+([^.;]+)/i)?.[1]?.trim()
   const shortTrait = traitMatch ? traitMatch.split(/,\s*/).slice(0, 2).join(', ') : ''
   const who = shortTrait ? `${name} (${shortTrait})` : name
-  const refParts = !subject.outfitExplicit && localReference ? extractReferenceOutfitAndPose(localReference) : null
-  const outfit = subject.outfitExplicit
-    ? formatCastOutfitClause(subject.outfitCaption ?? '')
-    : refParts
-      ? (refParts.outfit || refParts.pose.split(/[.;]/)[0]?.trim() || '')
-      : formatCastOutfitClause(subject.outfitCaption ?? '')
   const slotLower = slot ? `${slot.charAt(0).toLowerCase()}${slot.slice(1)}, ` : ''
   return `${slotLower}${who}${outfit ? ` ${outfit}` : ''}`.trim()
 }
 
-function buildActorItemCaption(subject: CastSubject, slot: string, localCaption = '', useReference = false): string {
+function buildActorItemCaption(subject: CastSubject, slot: string, outfit: string, pose = ''): string {
   const identity = cleanCastProse(cleanMossCastText(subject.identityCaption || subject.caption || '')).replace(/[.!?]+$/, '').trim()
-  const refParts = useReference && localCaption ? extractReferenceOutfitAndPose(localCaption) : null
-  const outfit = (!useReference || subject.outfitExplicit)
-    ? formatCastOutfitClause(subject.outfitCaption ?? '')
-    : (refParts?.outfit ?? '')
-  const pose = useReference
-    ? (subject.outfitExplicit ? stripLeadingReferenceSubject(cleanCastProse(cleanMossCastText(localCaption))) : (refParts?.pose ?? ''))
-    : ''
   const action = cleanCastProse(cleanMossCastText(subject.action ?? '')).replace(/[.!?]+$/, '').trim()
   const head = [identity, outfit].filter(Boolean).join(', ')
   const sentences: string[] = []
@@ -267,10 +321,9 @@ function buildActorItemCaption(subject: CastSubject, slot: string, localCaption 
 
 export function buildMossCastLayout(layout: CastLayout, subjects: readonly CastSubject[], size: MossCanvasSize) {
   const reference = layout.referenceLayout?.layout
-  const characters = reference?.items.filter(item => item.label === 'character') ?? []
+  const characters = referenceCastPeople(reference)
   const useReference = characters.length >= subjects.length
-  const toLocal = (item: ReferenceItem, replaceOutfit = false) =>
-    cleanCastProse(cleanMossReferenceProse(item.caption, layout.referenceIdentityTerms, replaceOutfit))
+  const toLocal = (item: ReferenceItem) => cleanCastProse(cleanMossReferenceProse(item.caption, layout.referenceIdentityTerms))
   const toItem = (item: ReferenceItem, caption: string): MossLayoutItem => ({
     label: item.label, caption, bbox: mossNormalizedBox(size, item.bbox),
     ...(item.label === 'text' ? { text: item.text } : {}),
@@ -281,51 +334,29 @@ export function buildMossCastLayout(layout: CastLayout, subjects: readonly CastS
     return []
   }) ?? []
   if (useReference) {
-    // Sorting is stable. In a tie, the original reference order remains the tie-breaker.
-    const targets = new Set([...characters].sort((a, b) => area(b) - area(a)).slice(0, subjects.length))
-    const orderedRefs = [...characters].sort((a, b) => centerX(a) - centerX(b))
-    const targetBoxes = orderedRefs.filter(item => targets.has(item)).map(item => item.bbox)
+    const targets = new Set(subjects.length === 1
+      ? characters.toSorted((a, b) => area(b) - area(a)).slice(0, 1)
+      : characters.slice(0, subjects.length))
+    const targetBoxes = characters.filter(item => targets.has(item)).map(item => item.bbox)
     let actor = 0
     const summaryEntries: string[] = []
-    const items = orderedRefs.map(item => {
+    const items = characters.map(item => {
       if (targets.has(item)) {
         const idx = actor++
         const subject = subjects[idx]
         const slot = spatialSlotLabel(idx, subjects.length, item.bbox, targetBoxes, layout.formation, true)
-        const structuredClothing = item.clothing ? formatCastOutfitClause(cleanMossReferenceProse(item.clothing, layout.referenceIdentityTerms, false)) : ''
-        const structuredPose = item.pose ? stripLeadingReferenceSubject(cleanCastProse(cleanMossReferenceProse(item.pose, layout.referenceIdentityTerms, true))) : ''
-        if (structuredClothing || structuredPose) {
-          const refOutfit = subject.outfitExplicit ? '' : structuredClothing
-          summaryEntries.push(conciseActorSummary(subject, slot, refOutfit))
-          const identity = cleanCastProse(cleanMossCastText(subject.identityCaption || subject.caption || '')).replace(/[.!?]+$/, '').trim()
-          const chosenOutfit = subject.outfitExplicit ? formatCastOutfitClause(subject.outfitCaption ?? '') : refOutfit
-          const action = cleanCastProse(cleanMossCastText(subject.action ?? '')).replace(/[.!?]+$/, '').trim()
-          const head = [identity, chosenOutfit].filter(Boolean).join(', ')
-          const sentences: string[] = []
-          if (head) {
-            const prefixed = slot ? `${slot}: ${head}` : head
-            sentences.push(/[.!?]$/.test(prefixed) ? prefixed : `${prefixed}.`)
-          }
-          if (structuredPose) {
-            const normalized = structuredPose.charAt(0).toUpperCase() + structuredPose.slice(1)
-            sentences.push(/[.!?]$/.test(normalized) ? normalized : `${normalized}.`)
-          }
-          if (action) {
-            const normalized = action.charAt(0).toUpperCase() + action.slice(1)
-            sentences.push(/[.!?]$/.test(normalized) ? normalized : `${normalized}.`)
-          }
-          return toItem(item, sentences.join(' ') || 'Character in this position.')
-        }
-        const local = toLocal(item, subject.outfitExplicit)
-        summaryEntries.push(conciseActorSummary(subject, slot, subject.outfitExplicit ? '' : local))
-        return toItem(item, buildActorItemCaption(subject, slot, local, true))
+        const performance = mossReferencePerformance(item, layout.referenceIdentityTerms, subject.outfitExplicit)
+        const outfit = actorOutfit(subject, performance.outfit)
+        summaryEntries.push(conciseActorSummary(subject, slot, outfit))
+        return toItem(item, buildActorItemCaption(subject, slot, outfit, subject.action ? '' : performance.pose))
       }
-      return toItem(item, toLocal(item) || 'Supporting character in this position.')
+      const { outfit, pose } = mossReferencePerformance(item, layout.referenceIdentityTerms)
+      return toItem(item, [outfit, pose].filter(Boolean).join('. ') || 'Supporting character in this position.')
     })
     const extraPeople = characters.length - subjects.length
     const totalCount = subjects.length + extraPeople
     const castSummary = subjects.length > 1
-      ? `Exactly ${totalCount} distinct characters appear in the scene, each keeping their own distinct hair, eyes, and outfit: ${summaryEntries.join('; ')}.`
+      ? `Exactly ${totalCount} distinct characters appear in the scene, each keeping their assigned hair, eyes, and outfit: ${summaryEntries.join('; ')}.`
       : ''
     return { items: [...items, ...supplemental], canvas: reference?.canvas ?? 'single', extraPeople, castSummary }
   }
@@ -338,15 +369,18 @@ export function buildMossCastLayout(layout: CastLayout, subjects: readonly CastS
   const summaryEntries: string[] = []
   const items = subjects.map((subject, index): MossLayoutItem => {
     const slot = spatialSlotLabel(index, subjects.length, unitBoxes[index], unitBoxes, layout.formation, false)
-    summaryEntries.push(conciseActorSummary(subject, slot))
+    const item = characters.length > 1 ? characters[index] : undefined
+    const performance = item ? mossReferencePerformance(item, layout.referenceIdentityTerms, subject.outfitExplicit) : undefined
+    const outfit = actorOutfit(subject, performance?.outfit)
+    summaryEntries.push(conciseActorSummary(subject, slot, outfit))
     return {
       label: 'character',
-      caption: buildActorItemCaption(subject, slot, '', false),
+      caption: buildActorItemCaption(subject, slot, outfit, subject.action ? '' : performance?.pose),
       bbox: boxes[index],
     }
   })
   const castSummary = subjects.length > 1
-    ? `Exactly ${subjects.length} distinct characters appear in the scene, each keeping their own distinct hair, eyes, and outfit: ${summaryEntries.join('; ')}.`
+    ? `Exactly ${subjects.length} distinct characters appear in the scene, each keeping their assigned hair, eyes, and outfit: ${summaryEntries.join('; ')}.`
     : ''
   return { items: [...items, ...supplemental.slice(0, 16 - items.length)], canvas: 'single' as const, extraPeople: 0, castSummary }
 }

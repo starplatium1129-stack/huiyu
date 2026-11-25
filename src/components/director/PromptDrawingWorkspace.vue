@@ -151,7 +151,7 @@
           :stopped="generationStopped"
           @update:size="setCanvasSize"
           @resize="actionBarHeight = $event"
-          @generate="callGenerate()"
+          @generate="callGenerate(interrogateAssist)"
           @cancel="cancelGeneration"
         />
       </Teleport>
@@ -181,7 +181,7 @@
           :can-save-scene="!native.mode.value"
           :result-temporary="resultTemporary"
           :has-stashed-result="hasStashedResult"
-          @generate="callGenerate()"
+          @generate="callGenerate(interrogateAssist)"
           @openRecovery="openRecovery"
           @exploreScenes="openMaterials('scenes')"
           @editDescription="editDescription"
