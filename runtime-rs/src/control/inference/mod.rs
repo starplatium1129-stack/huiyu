@@ -1,0 +1,247 @@
+mod diagnostics;
+mod muse_relay;
+mod tailscale;
+
+use super::*;
+use crate::generation::native::Settings;
+use axum::{
+    Extension, Json, Router,
+    routing::{get, post},
+};
+use serde::Deserialize;
+
+pub(super) fn routes() -> Router<crate::AppState> {
+    Router::new()
+        .route("/api/inference/settings", get(settings).post(save))
+        .route("/api/inference/status", get(status))
+        .route("/api/inference/muse-token", post(muse_relay::muse_token))
+        .route(
+            "/api/control/muse-relay/status",
+            get(muse_relay::muse_relay_status),
+        )
+        .route("/api/inference/diagnostics", post(diagnostics::diagnose))
+}
+
+impl ControlService {
+    pub(crate) fn bind_images(&self, images: &Arc<crate::images::ImageService>) {
+        *self.images.write().unwrap() = Arc::downgrade(images);
+    }
+
+    pub(crate) async fn native_chat_handoff(
+        &self,
+    ) -> Result<Option<tokio::sync::OwnedSemaphorePermit>> {
+        self.check_llama_release()?;
+        let images = self.images.read().unwrap().upgrade();
+        if let Some(images) = images {
+            return images.native_chat_handoff().await;
+        }
+        let settings = self.active_inference()?;
+        if settings.engine == "native" || settings.video_engine() == "native" {
+            return Err(ApiError::new(
+                503,
+                "NATIVE_RUNTIME_UNAVAILABLE",
+                "独立绘图服务未接入，无法确认显存释放",
+            ));
+        }
+        Ok(None)
+    }
+
+    pub(crate) async fn native_voice_handoff(
+        self: &Arc<Self>,
+    ) -> Result<(
+        Option<tokio::sync::OwnedSemaphorePermit>,
+        tokio::sync::OwnedMutexGuard<()>,
+    )> {
+        let drawing = self.native_chat_handoff().await?;
+        let comfy = self.comfy_action.clone().lock_owned().await;
+        self.confirm_comfy_stopped_for_voice().await?;
+        Ok((drawing, comfy))
+    }
+
+    pub(crate) async fn ensure_native_drawing(
+        &self,
+        cancel: &tokio_util::sync::CancellationToken,
+        native_only: bool,
+    ) -> Result<()> {
+        if cancel.is_cancelled() || self.shutdown.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
+        }
+        self.voice.retire_native().await?;
+        self.stop_llama().await?;
+        if !native_only || self.comfy_owned().await {
+            self.stop_comfy_for_native().await?;
+        }
+        if cancel.is_cancelled() || self.shutdown.is_cancelled() {
+            return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
+        }
+        Ok(())
+    }
+
+    pub(super) fn active_inference(&self) -> Result<&Settings> {
+        self.inference
+            .as_ref()
+            .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
+    }
+
+    pub(super) fn configured_inference(&self) -> Result<Settings> {
+        let active = self.active_inference()?;
+        let saved = self.saved.read().unwrap();
+        let Some(value) = saved.get("inference") else {
+            return Ok(active.clone());
+        };
+        if saved["inferenceWorkspacePath"]
+            .as_str()
+            .is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root)
+        {
+            // Saved paths belong to the previous workspace. Keep those user files
+            // and saved data, but do not advertise them as resources of this one.
+            let selected = Settings::deserialize(value)
+                .map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
+            drop(saved);
+            let mut current = Settings::discovered(&self.config.ai_workspace_root).0;
+            current.video_engine = Some(selected.video_engine().to_owned());
+            current.engine = selected.engine;
+            current.remote_url = selected.remote_url;
+            current.remote_key = selected.remote_key;
+            current.remote_serve = selected.remote_serve;
+            current.remote_port = selected.remote_port;
+            current.environment_overrides = active.environment_overrides.clone();
+            return Ok(current);
+        }
+        let mut configured =
+            Settings::deserialize(value).map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
+        drop(saved);
+        if !active.environment_overrides.is_empty() {
+            let active_json = serde_json::to_value(active)?;
+            let mut target = serde_json::to_value(&configured)?;
+            for key in &active.environment_overrides {
+                target[key] = active_json[key].clone();
+            }
+            configured = serde_json::from_value(target)?;
+        }
+        configured.validate()?;
+        Ok(configured)
+    }
+
+    pub(super) fn inference_view(&self) -> Result<Value> {
+        self.inference_snapshot().map(|(value, _)| value)
+    }
+
+    fn inference_snapshot(&self) -> Result<(Value, Settings)> {
+        let active = self.active_inference()?;
+        let configured = self.configured_inference()?;
+        let mut current = serde_json::to_value(active)?;
+        let mut target = serde_json::to_value(&configured)?;
+        // Older saved configurations derive the video provider from the image provider.
+        current["videoEngine"] = json!(active.video_engine());
+        target["videoEngine"] = json!(configured.video_engine());
+        let value = json!({"ok":true,"restartRequired":!active.equivalent(&configured),"active":current,
+            "configured":target,"environmentOverrides":active.environment_overrides,
+            "remoteListening":crate::images::remote::listening()});
+        Ok((value, configured))
+    }
+
+    async fn save_inference(&self, configured: Settings) -> Result<Value> {
+        configured.validate()?;
+        let active = self.active_inference()?;
+        let target = serde_json::to_value(&configured)?;
+        let current = serde_json::to_value(active)?;
+        for key in &active.environment_overrides {
+            if target[key] != current[key] {
+                return Err(ApiError::new(
+                    409,
+                    "CONFIG_ENV_OVERRIDE",
+                    format!("{key} 由启动环境覆盖，请修改启动环境后重启"),
+                ));
+            }
+        }
+        self.patch(
+            json!({"inference":target,"inferenceWorkspacePath":self.config.ai_workspace_root}),
+        )
+        .await?;
+        self.inference_view()
+    }
+}
+
+async fn settings(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
+    Ok(Json(s.inference_view()?))
+}
+
+async fn save(
+    Extension(s): Extension<Arc<ControlService>>,
+    Json(mut body): Json<Value>,
+) -> Result<Json<Value>> {
+    // Older clients must preserve separately configured adapter settings.
+    if let Some(object) = body.as_object_mut() {
+        let configured = s.configured_inference()?;
+        if !object.contains_key("videoEngine") {
+            object.insert("videoEngine".into(), json!(configured.video_engine()));
+        }
+        if !object.contains_key("adapterMemoryPolicy") {
+            object.insert(
+                "adapterMemoryPolicy".into(),
+                json!(configured.adapter_memory_policy),
+            );
+        }
+        if !object.contains_key("adapterPython") {
+            if let Some(python) = &configured.adapter_python {
+                object.insert("adapterPython".into(), json!(python));
+            }
+        }
+        let previous = serde_json::to_value(&configured)?;
+        for key in ["remoteUrl", "remoteKey", "remoteServe", "remotePort"] {
+            if !object.contains_key(key) {
+                object.insert(key.into(), previous[key].clone());
+            }
+        }
+    }
+    let settings: Settings =
+        serde_json::from_value(body).map_err(|_| ApiError::invalid("推理配置字段无效"))?;
+    Ok(Json(s.save_inference(settings).await?))
+}
+
+async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
+    let service = s.clone();
+    let mut value = tokio::task::spawn_blocking(move || -> Result<Value> {
+        let (mut value, configured) = service.inference_snapshot()?;
+        let mut files = json!({});
+        for (key, path, directory) in [
+            ("python", &configured.python, false),
+            ("worker", &configured.worker, false),
+            ("modelsRoot", &configured.models_root, true),
+            ("lorasRoot", &configured.loras_root, true),
+        ] {
+            files[key] = json!(std::fs::metadata(path).is_ok_and(|m| if directory {
+                m.is_dir()
+            } else {
+                m.is_file()
+            }));
+        }
+        value["diagnostics"] = json!({"basis":"configured","configuration":"valid","files":null,
+            "dependencies":"unchecked","runtime":"unverified",
+            "message":"文件检查不代表依赖、CUDA 或模型推理可用；依赖检查需手动执行，真实出图尚未验证"});
+        value["diagnostics"]["files"] = files;
+        Ok(value)
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "INFERENCE_STATUS_FAILED", "推理文件状态读取未完成"))??;
+    let listening_port = s
+        .active_inference()
+        .ok()
+        .filter(|settings| settings.remote_serve && value["remoteListening"] == true)
+        .map(|settings| settings.remote_port);
+    let (discovery, address) = tokio::join!(s.inference_discovery(), async {
+        match listening_port {
+            Some(port) => tailscale::tailscale_drawing_address(port).await,
+            None => None,
+        }
+    });
+    value["discovery"] = discovery?;
+    value["remoteAddress"] = json!(address);
+    value["museRelayUrl"] = json!(
+        crate::images::remote::muse_relay_address(&s.config.runtime_root)
+            .await
+            .map(|url| url.origin().ascii_serialization())
+    );
+    Ok(Json(value))
+}
