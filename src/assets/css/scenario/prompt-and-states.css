@@ -1,0 +1,194 @@
+@reference "../tailwind.css";
+/* ── 五层语义提示词配色（对齐绘图工作台 PromptPreviewContent 五层规范） ── */
+.prompt-code,
+.neg-output {
+  padding: var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font: 400 var(--fs-label-xs)/var(--lh-body) var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.prompt-code {
+  display: grid;
+  gap: var(--s-2);
+  margin-bottom: var(--s-3);
+}
+
+:deep(.mod) {
+  --mod-color: var(--text-secondary);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: var(--s-1) var(--s-2);
+  border-inline-start: 2px solid color-mix(in srgb, var(--mod-color) 58%, var(--border-soft));
+  border-radius: 0 var(--r-xs) var(--r-xs) 0;
+  background: color-mix(in srgb, var(--mod-color) 6%, var(--bg-surface));
+  color: var(--mod-color);
+}
+
+/* 层 1：质量与画幅基调（暖金） */
+:deep(.mod.m-q) { --mod-color: var(--mood-joy-text); }
+/* 层 2：角色与衣装身份（角色强调色，浅色下转可读墨色） */
+:deep(.mod.m-c),
+:deep(.mod.m-cl) { --mod-color: var(--character-ink, var(--character-accent, var(--accent))); }
+/* 层 3：画师风格与引擎 LoRA（薰衣草紫） */
+:deep(.mod.m-lora) { --mod-color: var(--mood-tension-text); }
+/* 层 4：画面场景、神态情绪、镜头景别、构图与光影（视觉蓝 / 情绪暖珀） */
+:deep(.mod.m-s),
+:deep(.mod.m-sh),
+:deep(.mod.m-co),
+:deep(.mod.m-l) { --mod-color: var(--info-text); }
+:deep(.mod.m-e) { --mod-color: var(--mood-warmth-text); }
+/* 层 5：细节与自然氛围描述（青绿） */
+:deep(.mod.m-d) { --mod-color: var(--mood-calm-text); }
+
+.mod-layer-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid color-mix(in srgb, var(--mod-color) 32%, var(--border-soft));
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--mod-color) 10%, var(--bg-base));
+  color: var(--mod-color);
+  font: 600 var(--fs-mono-xs)/var(--lh-label) var(--font-sans);
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.mod-tokens {
+  min-width: 0;
+}
+
+:deep(.violate) {
+  padding: 0 var(--s-1);
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--danger) 16%, transparent);
+  color: var(--danger-text);
+  text-decoration: underline wavy;
+}
+
+.neg-layer {
+  @apply tw:mb-s-3;
+}
+
+.neg-layer-label {
+  @apply tw:text-secondary tw:text-body-sm tw:mb-s-1;
+}
+
+.art-warn {
+  @apply tw:mb-s-3 tw:text-warning-text tw:text-body-sm;
+}
+
+.act-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  margin-block: var(--s-3) var(--s-1);
+}
+
+.act-actions .btn {
+  min-width: 0;
+  min-height: 40px;
+  padding-inline: var(--s-2);
+  font-size: var(--fs-label);
+}
+
+.scenario-handoff {
+  @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap tw:gap-s-3 tw:mt-s-5 tw:pt-s-4;
+  border-top: 1px solid var(--border-soft);
+  @apply tw:text-secondary tw:text-body-sm;
+}
+
+.scenario-card:focus-visible,
+.scenario-cover-retry:focus-visible,
+.char-btn:focus-visible,
+.act-details > summary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scenario-card:hover:not(:focus-visible) {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+  }
+  .scenario-card:hover:not(:focus-visible) .scenario-cover img {
+    transform: scale(var(--scenario-art-zoom));
+  }
+  .act-details > summary:hover {
+    color: var(--text-primary);
+  }
+}
+
+.scenario-card:active:not(:focus-visible) .scenario-cover img {
+  transform: scale(var(--scenario-art-press));
+  transition-duration: var(--motion-press);
+}
+
+.scenario-card:focus-visible .scenario-cover img {
+  transform: none;
+  transition: none;
+}
+
+@media (max-width: 900px) {
+  .scenario-list {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x pan-y;
+    padding: var(--s-1) var(--s-1) var(--s-3);
+    scroll-snap-type: x proximity;
+  }
+  .scenario-book {
+    flex: 0 0 min(82vw, 340px);
+    scroll-snap-align: start;
+  }
+  .scenario-library-heading {
+    @apply tw:flex-wrap;
+  }
+  .viewer {
+    @apply tw:mt-s-4;
+  }
+}
+
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .scenario-page {
+  --scenario-art-duration: 0s;
+  --scenario-cover-duration: 0s;
+  --scenario-art-zoom: 1;
+  --scenario-art-press: 1;
+}
+
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .scenario-card:hover {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .scenario-page {
+    --scenario-art-duration: 0s;
+    --scenario-cover-duration: 0s;
+    --scenario-art-zoom: 1;
+    --scenario-art-press: 1;
+  }
+  :root:not([data-motion='full']) .scenario-card:hover {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .scenario-card.active {
+    outline: 2px solid Highlight;
+  }
+  .scenario-card:focus-visible,
+  .scenario-cover-retry:focus-visible,
+  .act-details > summary:focus-visible {
+    outline: 2px solid Highlight;
+  }
+  :deep(.mod) {
+    --mod-color: CanvasText;
+    border-color: CanvasText;
+  }
+}

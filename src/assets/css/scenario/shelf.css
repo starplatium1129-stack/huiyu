@@ -1,0 +1,143 @@
+@reference "../tailwind.css";
+.scenario-page {
+  @apply tw:pt-s-5;
+  container: story-page / inline-size;
+  --scenario-art-duration: var(--motion-art-hover);
+  --scenario-art-zoom: 1.04;
+  --scenario-art-press: .98;
+}
+:root[data-theme="light"] .scenario-page {
+  --character-ink: color-mix(in srgb, var(--character-accent, var(--accent)) 42%, var(--ink-base));
+}
+
+.scenario-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+}
+
+.scenario-shelf {
+  min-width: 0;
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.scenario-library-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-4);
+  margin: 0 0 var(--s-3);
+}
+
+.scenario-library-title-group {
+  min-width: 0;
+}
+
+.scenario-library-heading h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-1);
+  font: 600 var(--fs-title-sm)/var(--lh-label) var(--font-serif);
+}
+
+.scenario-library-heading p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+/* ── 卡司与衣装紧凑胶囊栏 ── */
+.scenario-cast-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.char-btn {
+  @apply tw:inline-flex tw:items-center tw:gap-s-2;
+  font: inherit;
+}
+
+.scenario-cast-capsules {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+}
+
+.scenario-cast-select :deep(.studio-select-trigger),
+.scenario-outfit-select :deep(.studio-select-trigger) {
+  border-radius: var(--r-pill);
+  padding-inline: var(--s-3);
+  background: var(--bg-surface);
+}
+
+.cast-capsule-value,
+.cast-option-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.cast-capsule-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 11rem;
+}
+
+.cast-mini-avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--character-accent, var(--accent)) 36%, var(--border-soft));
+  border-radius: 50%;
+  background: var(--bg-elevated);
+}
+
+.cast-mini-avatar :deep(img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.cast-mini-avatar :deep(.archive-icon) {
+  width: 13px;
+  height: 13px;
+  color: var(--character-ink, var(--character-accent, var(--accent)));
+}
+
+.scenario-cast-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  margin: 0 0 var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+.scenario-reference-retry[aria-disabled='true'] {
+  color: var(--text-disabled);
+  cursor: wait;
+  pointer-events: auto;
+}
+
+.scenario-reference-retry:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}

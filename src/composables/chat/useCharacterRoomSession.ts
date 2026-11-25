@@ -1,8 +1,7 @@
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
-  getCompanionCharacter,
   getCompanionCharacterConfig,
   renderChatGreeting,
 } from '@/utils/companionRegistry'
@@ -10,39 +9,16 @@ import { useChatConversation } from '@/composables/chat/useChatConversation'
 import { useCompanionToolPermissions } from '@/composables/chat/useCompanionToolPermissions'
 import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useChatProvider } from '@/composables/chat/useChatProvider'
-import { useVoice } from '@/composables/useVoice'
 import { settingsRepository, CHAT_THINKING_SETTING, type ReasoningLevel } from '@/storage/settingsRepository'
-import { clearStoredChatContent } from '@/utils/chatReset'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { confirmAction } from '@/composables/useConfirm'
-import { withChatTurn } from '@/utils/chatTurnOwnership'
-import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useRoomSetup } from '@/composables/chat/useRoomSetup'
 import { useChatStoryActions } from '@/composables/chat/useChatStoryActions'
 import { useChatConversationClear } from '@/composables/chat/useChatConversationClear'
-import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
-import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 import { screenWatchConnection } from '@/api/companionScreenWatchApi'
 import { readChatPreferences } from '@/storage/chatPreferences'
-
-interface CharacterStageHandle {
-  presentationReady?: import('@/types/desktop').CompanionReadyKind
-  petControls?: CharacterPetControls
-  playPetMotion?: (id: string) => void
-  setPetExpression?: (id: string) => Promise<boolean>
-  openSettings?: () => void
-  setSpeaking: (value: boolean) => void
-  setMouth: (value: number) => void
-  setAudioLevel: (level: number, peak?: number) => void
-  setEmotion: (emotion: string) => void
-  setUserMessage: () => void
-  setDesktopVisible?: (visible: boolean) => void
-  setDesktopWindowBounds?: (bounds: { x: number; y: number; width: number; height: number }) => void
-  setDesktopPerformanceMode?: (onBatteryPower: boolean) => void
-  setGlobalPointer?: (screenX: number, screenY: number, bounds: { x: number; y: number; width: number; height: number }) => void
-  releasePointerFocus?: () => void
-}
+import { useCharacterStageSync } from '@/composables/chat/useCharacterStageSync'
+import { useCharacterRoomLifecycle } from '@/composables/chat/useCharacterRoomLifecycle'
 
 export function useCharacterRoomSession(
   reading?: { latest: () => void; nearBottom: () => boolean },
@@ -51,25 +27,16 @@ export function useCharacterRoomSession(
   const route = useRoute()
   const router = useRouter()
   const chatListRef = ref<HTMLElement>()
-  const characterStageRef = ref<CharacterStageHandle>()
 
   const activeChar = ref(DEFAULT_COMPANION_CHARACTER_ID)
   const busy = ref(false)
   const resettingChat = ref(false)
-  const voiceActive = ref(false)
   const chatError = ref('')
   const chatErrorKind = ref('')
   const chatErrorCode = ref('')
-  const voiceStatusText = ref('')
-  const playingMid = ref('')
-  const isSpeaking = ref(false)
-  const autoVoice = ref(false)
-  const volume = ref(80)
 
-  let statusTimer = 0
   let errorTimer = 0
   let disposed = false
-  const confirmationController = new AbortController()
 
   function setError(message: string, kind = 'error', timeout = 7000, code = '') {
     clearTimeout(errorTimer)
@@ -98,7 +65,6 @@ export function useCharacterRoomSession(
     await storage.load()
     if (!disposed) conversationStarted.value = true
   }) : storage.load()
-  let selectionChanged = false
 
   const {
     ollamaOnline, localStatusText, checkingChatStatus,
@@ -153,8 +119,6 @@ export function useCharacterRoomSession(
     setError(cleared ? '站主配置已清除' : '站主配置清除尚未确认，请检查连接后重试；请勿视为已停止托管。', cleared ? 'info' : 'error', 4000)
   }
 
-  autoVoice.value = storage.state.settings.autoVoice
-  volume.value = storage.state.settings.volume != null ? storage.state.settings.volume : 80
   activeChar.value = storage.state.active
   const requestedCharacter = typeof route.query.character === 'string' ? route.query.character : ''
   if (getCompanionCharacterConfig(requestedCharacter)) {
@@ -162,57 +126,18 @@ export function useCharacterRoomSession(
     storage.setActive(requestedCharacter)
   }
 
-  const currentCharacter = computed(() => {
-    const config = getCompanionCharacterConfig(activeChar.value)
-      || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
-    if (!config) throw new Error('No companion character presentation is registered')
-    const catalogId = getCompanionCharacter(activeChar.value)?.catalogId
-    const availability = voice.availability.value
-    let resolvedVoice = config.voice
-    if (catalogId) {
-      const mapped = availability.voiceCatalogMap?.[catalogId]
-      if (mapped) {
-        resolvedVoice = mapped
-      } else if (availability.voices) {
-        if (Object.hasOwn(availability.voices, catalogId)) {
-          resolvedVoice = catalogId
-        } else {
-          const prefixMatches = Object.keys(availability.voices).filter(id => catalogId.startsWith(`${id}_`))
-          if (prefixMatches.length === 1) resolvedVoice = prefixMatches[0]
-        }
-      }
-    }
-    return resolvedVoice === config.voice ? config : { ...config, voice: resolvedVoice }
-  })
-  watch(() => route.query.character, (id, _previous, cleanup) => {
-    if (typeof id !== 'string') return
-    if (getCompanionCharacterConfig(id)) { switchCharacter(id); return }
-    let current = true
-    cleanup(() => { current = false })
-    void import('@/router/companionResources').then(({ loadActiveCompanion }) => loadActiveCompanion(id)).then(() => {
-      if (current && !disposed) switchCharacter(id)
-    }).catch(() => {})
-  })
-
-  const voice = useVoice({
-    enabled: () => autoVoice.value,
-    onStatus: (text) => { voiceStatusText.value = text },
-    onError: (message) => setError(message, 'warning'),
-    onSpeaking: (speaking, mid) => {
-      isSpeaking.value = speaking
-      playingMid.value = speaking && mid ? mid : ''
-      characterStageRef.value?.setSpeaking(speaking)
-    },
-    onMouth: (value) => characterStageRef.value?.setMouth(value),
-    onAudioLevel: (level, peak) => characterStageRef.value?.setAudioLevel(level, peak),
-    onExpression: (emotion) => characterStageRef.value?.setEmotion(emotion),
-    onActivity: (active) => { voiceActive.value = active },
-  })
-
-  function onVolumeChange() {
-    voice.setVolume(volume.value / 100)
-    storage.setVolume(volume.value)
-  }
+  const {
+    characterStageRef,
+    voiceActive,
+    voiceStatusText,
+    playingMid,
+    isSpeaking,
+    autoVoice,
+    volume,
+    voice,
+    currentCharacter,
+    onVolumeChange,
+  } = useCharacterStageSync({ activeChar, storage, setError })
 
   const currentMessages = computed(() => storage.messages(activeChar.value))
   const companionMessages = computed(() => currentMessages.value.slice(-3))
@@ -285,7 +210,7 @@ export function useCharacterRoomSession(
     storage,
     activeChar,
     setError,
-    stopEverything,
+    stopEverything: () => stopEverything(),
     voice,
     clearDraftInput: () => clearDraftInput(),
   })
@@ -343,9 +268,6 @@ export function useCharacterRoomSession(
     scrollBottom,
   })
 
-  let inputRevision = 0
-  watch(inputText, () => { inputRevision++ }, { flush: 'sync' })
-
   const { branchId, storyBranches, storyBusy, handleStoryAction, cancelStoryAction, canRegenerateMessage } = useChatStoryActions({
     storage, activeChar, busy: computed(() => busy.value || clearBusy.value || resettingChat.value), chatReady, regenerateMessage,
     stopVoice: () => voice.stop({ preserveMessageAudio: true, silent: true }), notice: setError, scrollBottom,
@@ -358,81 +280,19 @@ export function useCharacterRoomSession(
 
   const chatMutationBusy = computed(() => clearBusy.value || resettingChat.value)
 
-  function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void, sendOptions: CompanionChatSendOptions = {}) {
-    if (disposed || chatMutationBusy.value || storyBusy.value || !storage.canWrite()) { accepted?.(false); return }
-    characterStageRef.value?.setUserMessage()
-    const text = typeof customText === 'string' ? customText : undefined
-    const character = activeChar.value
-    let acknowledged = false
-    const acknowledge = (value: boolean) => { acknowledged = true; return accepted?.(value) }
-    void withChatTurn(async () => {
-      if (disposed || chatMutationBusy.value || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
-      if (chatProvider.value === 'muse' && (imageUrl || sendOptions.image) && sendOptions.action !== 'generate-from-image') {
-        acknowledge(false)
-        setError('Muse 目前只接收文字，请用文字描述图片。', 'info')
-        return
-      }
-      if (acknowledge(true) === false) { setError('未能接收，请检查连接。'); return }
-      try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
-      await sendMessage(text, imageUrl, sendOptions)
-    }, () => { acknowledge(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
-      .catch(() => { if (!acknowledged) acknowledge(false); if (!disposed) setError('本次对话未能完成，请保留当前内容并重试。') })
-  }
-
-  function stopEverything() {
-    cancelStoryAction()
-    if (stopConversation()) voiceStatusText.value = ''
-  }
-
-  function switchCharacter(char: string) {
-    const nextCharacter = getCompanionCharacterConfig(char)
-    if (!nextCharacter || char === activeChar.value) return
-    selectionChanged = true
-    cancelStoryAction()
-    if (busy.value) abortCurrentRequest(true, false)
-    storage.setDraft(activeChar.value, inputText.value)
-    voice.stop({ preserveMessageAudio: true, silent: true })
-    storage.setActive(char)
-    activeChar.value = char
-    if (typeof route.query.character === 'string' && route.query.character !== char)
-      void router.replace({ query: { ...route.query, character: char } })
-    document.documentElement.style.setProperty('--character-accent', nextCharacter.accent)
-    inputText.value = storage.draft(char)
-    updateVoiceCapability()
-    if (nextCharacter.voice || getCompanionCharacter(char)?.catalogId) void refreshVoiceStatus()
-    setError('')
-  }
-
-  async function clearAllMemory() {
-    if (disposed || chatMutationBusy.value || !storage.canWrite()) return
-    const confirmed = await confirmAction({
-      title: '清空本机聊天内容与个人档案？',
-      message: '清除所有当前及退休角色的对话、归档、事实记忆、草稿、个人称呼与备注和本会话语音缓存。保留 API 连接、凭据、外观、音量及行为偏好。已导出的文件和第三方记录不受影响。此操作无法撤销。',
-      confirmLabel: '清空聊天内容',
-      danger: true,
-      signal: confirmationController.signal,
-    })
-    if (!confirmed || disposed || chatMutationBusy.value) return
-    resettingChat.value = true
-    cancelStoryAction()
-    const inputOwner = { character: activeChar.value, revision: inputRevision }
-    if (busy.value) abortCurrentRequest(true)
-    voice.stop({ preserveMessageAudio: false, silent: true })
-    try {
-      const result = await clearStoredChatContent()
-      if (disposed) return
-      if (activeChar.value === inputOwner.character && inputRevision === inputOwner.revision) clearDraftInput()
-      storage.canWrite()
-      await storage.load()
-      if (disposed) return
-      resetMemoryState()
-      forgetSuperseded()
-      if (result.failed.length) setError(`部分聊天内容未清除（${result.failed.length} 项），请重试清空；已删除内容不会恢复。`, 'warning', 0)
-      else setError('本机聊天内容与个人档案已清空；连接和偏好已保留。', 'info', 5000)
-    } catch {
-      if (!disposed) setError('清空未完成，存储不可写或数据版本不兼容；请排除问题后重试。', 'warning', 0)
-    } finally { resettingChat.value = false }
-  }
+  const { handleSend, stopEverything, switchCharacter, clearAllMemory } = useCharacterRoomLifecycle({
+    route, router, storage, voice, characterStageRef, activeChar, currentCharacter,
+    busy, resettingChat, chatMutationBusy, storyBusy, chatReady, chatProvider, currentModel,
+    useHostConfig, hostApiModel, apiConfigured, apiModel, volume, inputText, voiceStatusText,
+    initialStorage,
+    isDisposed: () => disposed,
+    markDisposed: () => { disposed = true },
+    clearErrorTimer: () => clearTimeout(errorTimer),
+    setError, setChatStatus, sendMessage, abortCurrentRequest, stopConversation,
+    cancelStoryAction, clearDraftInput, resetMemoryState, forgetSuperseded,
+    updateVoiceCapability, refreshVoiceStatus, refreshChatStatus, onChatAuxStorage,
+    destroyRoomSetup, destroyConversation,
+  })
 
   function onAutoVoiceChange() {
     storage.setAutoVoice(autoVoice.value)
@@ -442,51 +302,6 @@ export function useCharacterRoomSession(
       updateVoiceCapability()
     }
   }
-
-  watch(currentModel, (value) => { if (value) storage.setModel(value) })
-
-  onMounted(async () => {
-    window.addEventListener('storage', onChatAuxStorage)
-    await initialStorage
-    if (disposed) return
-    if (!selectionChanged && !busy.value && !inputText.value) {
-      const selected = typeof route.query.character === 'string' ? route.query.character : storage.state.active
-      if (getCompanionCharacterConfig(selected)) {
-        activeChar.value = selected
-        if (storage.state.active !== selected) storage.setActive(selected)
-      }
-      inputText.value = storage.draft(activeChar.value)
-    }
-    document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
-    if (chatProvider.value === 'api') {
-      if (useHostConfig.value) {
-        setChatStatus(`站主配置 · ${hostApiModel.value || 'API'}`, 'online')
-      } else {
-        setChatStatus(
-          apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API',
-          apiConfigured.value ? 'online' : '',
-        )
-      }
-    }
-    voice.setVolume(volume.value / 100)
-    void Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-    statusTimer = window.setInterval(() => {
-      if (document.hidden) return
-      if (!busy.value) void refreshChatStatus()
-      void refreshVoiceStatus()
-    }, 30000) as unknown as number
-  })
-
-  onUnmounted(() => {
-    disposed = true
-    confirmationController.abort()
-    window.removeEventListener('storage', onChatAuxStorage)
-    clearInterval(statusTimer)
-    destroyRoomSetup()
-    clearTimeout(errorTimer)
-    destroyConversation()
-    voice.destroy()
-  })
 
   return {
     chatListRef,

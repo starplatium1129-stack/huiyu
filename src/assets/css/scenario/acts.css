@@ -1,0 +1,243 @@
+@reference "../tailwind.css";
+/* ── 分幕手帖阅读区 ── */
+.viewer {
+  min-width: 0;
+  container: scenario-reader / inline-size;
+  scroll-margin-top: calc(var(--desktop-chrome-height, 0px) + var(--app-navigation-height, 80px) + var(--s-4));
+}
+
+.viewer-header-row {
+  @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-5 tw:mb-s-5;
+}
+
+.scenario-kicker {
+  color: var(--character-ink, var(--character-accent, var(--accent)));
+  font-size: var(--fs-label-sm);
+  font-weight: 600;
+  letter-spacing: .06em;
+}
+
+.viewer-h2 {
+  @apply tw:inline-flex tw:items-center tw:gap-s-2;
+  margin: var(--s-1) 0 var(--s-2);
+  font: 600 var(--fs-title)/var(--lh-label) var(--font-serif);
+}
+
+.viewer-desc {
+  @apply tw:m-0 tw:text-body tw:leading-loose tw:text-secondary;
+}
+
+.scenario-to-video {
+  @apply tw:shrink-0;
+}
+
+.acts {
+  @apply tw:grid;
+  grid-template-columns: minmax(0, 1fr);
+  @apply tw:gap-s-4;
+  align-items: start;
+}
+
+@container scenario-reader (min-width: 35rem) {
+  .acts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container scenario-reader (min-width: 53rem) {
+  .acts[data-act-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container scenario-reader (min-width: 71rem) {
+  .acts[data-act-count='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ── 分幕卡：氛围色带 + 情绪色 (--mood-*-text) + 参考裁切框 ── */
+.act {
+  --act-mood-color: var(--mood-warmth-text);
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--s-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+}
+
+.act[data-mood='joy']     { --act-mood-color: var(--mood-joy-text); }
+.act[data-mood='love']    { --act-mood-color: var(--mood-love-text); }
+.act[data-mood='calm']    { --act-mood-color: var(--mood-calm-text); }
+.act[data-mood='sad']     { --act-mood-color: var(--mood-sad-text); }
+.act[data-mood='tension'] { --act-mood-color: var(--mood-tension-text); }
+.act[data-mood='warmth']  { --act-mood-color: var(--mood-warmth-text); }
+
+/* 顶部情绪氛围色带 */
+.act::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--act-mood-color),
+    color-mix(in srgb, var(--character-accent, var(--accent)) 65%, var(--act-mood-color)) 58%,
+    transparent 96%
+  );
+  pointer-events: none;
+}
+
+.act-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.act-heading-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.act-num {
+  color: var(--act-mood-color);
+  font: 600 var(--fs-title)/1 var(--font-serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.act-title {
+  margin: 0 0 2px;
+  font: 600 var(--fs-body-lg)/var(--lh-tight) var(--font-serif);
+}
+
+.act-en {
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+}
+
+.act-emotion {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  flex: none;
+  padding: 2px var(--s-2);
+  border: 1px solid color-mix(in srgb, var(--act-mood-color) 38%, var(--border-soft));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--act-mood-color) 10%, var(--bg-base));
+  color: var(--act-mood-color);
+  font: 600 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+}
+
+.act-emotion > i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.act-intent {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 98px;
+  margin-block: var(--s-3);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--act-mood-color) 5%, var(--bg-base));
+}
+
+/* 镜头参考裁切框 */
+.act-framing {
+  position: relative;
+  aspect-ratio: var(--act-ratio);
+  width: 68px;
+  max-height: 104px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: var(--s-1);
+  border: 1px dashed color-mix(in srgb, var(--act-mood-color) 48%, var(--border-strong));
+  border-radius: var(--r-xs);
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--act-mood-color) 14%, transparent), transparent 72%),
+    var(--bg-surface);
+}
+
+.act-framing-corners::before,
+.act-framing-corners::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: var(--act-mood-color);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.act-framing-corners::before {
+  top: 3px;
+  left: 3px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.act-framing-corners::after {
+  right: 3px;
+  bottom: 3px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+.act-framing .archive-icon {
+  width: 62%;
+  height: 62%;
+  color: var(--act-mood-color);
+}
+
+.act-framing-label {
+  position: absolute;
+  bottom: 2px;
+  left: 4px;
+  right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--text-muted);
+  font: 600 var(--fs-mono-xs)/1 var(--font-mono);
+}
+
+.act-intent-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.act-desc {
+  margin: 0;
+  color: var(--text-primary);
+  font: 400 var(--fs-body-sm)/var(--lh-loose) var(--font-serif);
+}
+
+.act-format {
+  @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:justify-between tw:text-secondary tw:text-label-xs tw:pb-s-3;
+  border-bottom: 1px solid var(--border-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.act-details > summary {
+  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:cursor-pointer tw:rounded-sm tw:min-h-[40px];
+  padding: var(--s-2);
+  margin-inline: calc(-1 * var(--s-2));
+  color: var(--text-secondary);
+  font-size: var(--fs-label-sm);
+}
+
+.act-details-body {
+  @apply tw:pb-s-2;
+}
+
+.act-settings,
+.res-rec {
+  @apply tw:mb-s-2 tw:text-secondary tw:text-label-xs tw:leading-body;
+}
+
+.prompt-label {
+  margin-bottom: var(--s-2);
+  color: var(--character-ink, var(--character-accent, var(--accent)));
+  font: 600 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+}
