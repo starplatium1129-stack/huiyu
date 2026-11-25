@@ -33,108 +33,26 @@
           </template>
         </ShotBatchSettings>
       </section>
-      <section class="video-panel shot-reference-panel" aria-labelledby="shotReferencesTitle">
-        <div class="shot-reference-section">
-          <div class="shot-reference-header-row">
-            <div class="shot-reference-title-group">
-              <h2 id="shotReferencesTitle">角色参考卡</h2>
-              <span class="field-hint">角色与服装设定 · 参考图片按需上传</span>
-              <span v-if="loadingRefCardIndex !== null" class="shot-ref-loading">
-                <ArchiveIcon name="spark" /> 正在为角色 {{ (loadingRefCardIndex ?? 0) + 1 }} 读取角色资料或上传参考图片…
-              </span>
-            </div>
-            <button
-              v-if="referenceCards.length < 4"
-              class="btn btn-ghost btn-xs"
-              type="button"
-              :disabled="batchActive || submitting"
-              @click="addReferenceCard"
-            ><ArchiveIcon name="gallery" />添加角色</button>
-          </div>
-          <div class="shot-reference-grid">
-            <div v-for="(card, cardIndex) in referenceCards" :key="cardIndex" class="shot-reference-card">
-              <div class="shot-reference-head">
-                <strong>角色 {{ cardIndex + 1 }}</strong>
-                <input
-                  v-model="card.label"
-                  :disabled="batchActive || submitting"
-                  :aria-label="`角色 ${cardIndex + 1} 名称`"
-                  class="input input-tight"
-                  maxlength="20"
-                  placeholder="角色名（如 宁宁 / 夏目）"
-                />
-                <StudioSelect class="shot-card-quick-select" size="sm" label="选择角色资料" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => onCardCharacterSelected(cardIndex, String(value))" />
-                <StudioTooltip v-if="referenceCards.length > 1" anchor content="移除此角色卡">
-                  <button
-                    class="btn btn-ghost btn-xs shot-card-remove-btn"
-                    type="button"
-                    :disabled="batchActive || submitting"
-                    :aria-label="`移除角色 ${cardIndex + 1} 参考卡`"
-                    @click="removeReferenceCard(cardIndex)"
-                  ><ArchiveIcon name="close" /></button>
-                </StudioTooltip>
-              </div>
-
-              <p v-if="profileFailed(card)" class="shot-reference-hint" role="status">
-                角色资料尚未读取。
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="batchActive || submitting || loadingRefAssets" @click="retryCardProfile(cardIndex)">重试角色资料</button>
-              </p>
-              <!-- 服装形态药丸选择器 (Outfit Pills) -->
-              <div v-if="getCharOutfits(card.characterId).length > 1" class="shot-card-outfit-pills">
-                <button
-                  v-for="outfit in getCharOutfits(card.characterId)"
-                  :key="outfit.id"
-                  type="button"
-                  class="shot-card-outfit-pill"
-                  :class="{ active: (card.outfitId || 'default') === outfit.id || (!card.outfitId && outfit.default) }"
-                  :aria-pressed="(card.outfitId || 'default') === outfit.id || (!card.outfitId && outfit.default)"
-                  :disabled="batchActive || submitting"
-                  @click="switchCardOutfit(cardIndex, outfit.id)"
-                >
-                  <ArchiveIcon name="wardrobe" />
-                  <span>{{ outfit.name }}</span>
-                </button>
-              </div>
-
-              <div class="shot-reference-images">
-                <StudioTooltip
-                  v-for="(image, imageIndex) in card.images"
-                  :key="image.id"
-                  anchor
-                  content="移除参考图"
-                >
-                  <button
-                    type="button" class="shot-reference-remove" :disabled="batchActive || submitting"
-                    :aria-label="`移除角色 ${cardIndex + 1} 的第 ${imageIndex + 1} 张参考图`"
-                    @click="removeReferenceWithFocus(cardIndex, imageIndex, $event)">
-                    <img v-if="image.url" class="shot-reference-thumb" :src="image.url" :alt="`角色 ${cardIndex + 1} 参考图 ${imageIndex + 1}`" loading="lazy" />
-                  </button>
-                </StudioTooltip>
-                <button
-                  v-if="card.images.length < 4"
-                  class="btn btn-ghost btn-sm"
-                  type="button"
-                  :disabled="batchActive || submitting"
-                  @click="pickReference(cardIndex)"
-                ><ArchiveIcon name="upload" />本地上传</button>
-                <button v-if="card.images.some(image => !image.name)" class="btn btn-ghost btn-sm" type="button"
-                  :disabled="batchActive || submitting || loadingRefAssets" @click="retryReferences(cardIndex)">
-                  重试参考图上传
-                </button>
-              </div>
-              <p class="shot-reference-hint">参考图 {{ card.images.length }} / 4<span v-if="card.images.some(image => !image.name)"> · 有图片待上传</span></p>
-              <p v-if="card.images.length" class="shot-reference-hint">参考图片保留在当前窗口；刷新后需重新选择。</p>
-              <input
-                :ref="(el) => setReferenceInput(el, cardIndex)"
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                class="shot-frame-input"
-                @change="onReferencePicked(cardIndex, $event)"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <ShotReferenceCardsPanel
+        :cards="referenceCards"
+        :disabled="batchActive || submitting"
+        :loading-assets="loadingRefAssets"
+        :loading-card-index="loadingRefCardIndex"
+        :character-groups="cardCharacterGroups"
+        :profile-failed="profileFailed"
+        :get-char-outfits="getCharOutfits"
+        :set-reference-input="setReferenceInput"
+        @add-card="addReferenceCard"
+        @remove-card="removeReferenceCard"
+        @update-label="(cardIndex, label) => { if (referenceCards[cardIndex]) referenceCards[cardIndex].label = label }"
+        @select-character="onCardCharacterSelected"
+        @retry-profile="retryCardProfile"
+        @switch-outfit="switchCardOutfit"
+        @remove-reference="removeReference"
+        @pick-reference="pickReference"
+        @retry-references="retryReferences"
+        @reference-picked="onReferencePicked"
+      />
 
       <section class="video-panel">
         <div class="video-panel-heading">
@@ -444,6 +362,7 @@
 
 <script setup lang="ts">
 import ShotBatchSettings from './ShotBatchSettings.vue'
+import ShotReferenceCardsPanel from './ShotReferenceCardsPanel.vue'
 import { DropdownMenuItem } from 'reka-ui'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
@@ -549,14 +468,6 @@ function shotCastCharacter(cast: string): string {
   if (id === 'nene' || label.includes('宁宁') || label.includes('nene')) return 'nene'
   if (id === 'natsume' || label.includes('夏目') || label.includes('natsume')) return 'natsume'
   return ''
-}
-
-async function removeReferenceWithFocus(cardIndex: number, imageIndex: number, event: MouseEvent) {
-  const group = (event.currentTarget as HTMLElement).closest('.shot-reference-images')
-  removeReference(cardIndex, imageIndex)
-  await nextTick()
-  const buttons = group?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)')
-  buttons?.[Math.min(imageIndex, buttons.length - 1)]?.focus({ preventScroll: true })
 }
 </script>
 

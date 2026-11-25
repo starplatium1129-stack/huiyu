@@ -30,78 +30,19 @@
       </div>
     </header>
 
-    <details
-      id="video-environment"
+    <VideoEnvironmentDrawer
       ref="environmentPanel"
-      class="video-panel video-env-drawer"
-      :open="envDrawerOpen"
-      tabindex="-1"
-      @toggle="envDrawerOpen = ($event.currentTarget as HTMLDetailsElement).open"
-    >
-      <StudioDisclosureSummary class="video-disclosure-heading video-env-summary">
-        <span class="video-env-summary-title">
-          <span class="video-step">本机环境与模型目录</span>
-          <strong>{{ activeModel?.label || '等待环境检测' }}</strong>
-          <small v-if="activeModel?.tier">{{ activeModel.tier }} · {{ activeModel.summary }}</small>
-        </span>
-        <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
-      </StudioDisclosureSummary>
-      <div class="video-env-drawer-grid" data-disclosure-content>
-        <div v-if="envDrawerOpen" class="video-environment-panel">
-          <div v-if="statusError" class="video-inline-message error" role="alert">{{ statusError }}</div>
-          <template v-else-if="activeModel">
-            <div class="video-model-summary">
-              <span>{{ activeModel.tier }}</span>
-              <strong>{{ activeModel.label }}</strong>
-              <p>{{ activeModel.summary }}</p>
-            </div>
-            <p v-if="nativeVideo && !activeModel.available && activeModel.reason" class="video-install-note">当前原因：{{ activeModel.reason }}</p>
-            <template v-if="nativeVideo && !activeModel.available && activeModel.requirements.length">
-              <p class="video-install-note">准备 {{ activeModel.label }} 需要：</p>
-              <ul class="video-missing-list"><li v-for="requirement in activeModel.requirements" :key="requirement">{{ requirement }}</li></ul>
-            </template>
-            <details v-if="!nativeVideo && activeModel.missing.length" class="video-advanced">
-              <StudioDisclosureSummary class="video-disclosure-heading">需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</StudioDisclosureSummary>
-              <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
-            </details>
-            <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : '请将所列资源放入 ComfyUI/models 的对应目录，然后重新检测。' }}
-            </p>
-            <p v-else-if="activeModel.missing.length" class="video-install-note">
-              此模型暂不支持生成，可选择其他模型。
-            </p>
-          </template>
-          <div class="video-env-links">
-            <RouterLink v-if="status && !nativeVideo && !status.online" class="btn btn-ghost btn-sm" :to="comfyControlTarget">打开服务与连接</RouterLink>
-            <RouterLink class="btn btn-ghost btn-sm" :to="videoControlTarget">
-              {{ nativeVideo && !activeModel?.available ? '准备视频运行环境' : '视频引擎设置' }}
-            </RouterLink>
-          </div>
-        </div>
-        <div v-if="envDrawerOpen" class="video-model-catalog">
-          <div class="video-env-catalog-head">更换生成模型</div>
-          <div class="video-model-options">
-            <button
-              v-for="model in status?.models || []"
-              :key="model.id"
-              class="video-model-row"
-              type="button"
-              :class="{ active: selectedModelId === model.id }"
-              :aria-pressed="selectedModelId === model.id"
-              @click="chooseModel(model.id)"
-            >
-              <span>
-                <strong><ArchiveIcon v-if="selectedModelId === model.id" name="success" />{{ model.label }}</strong>
-                <small>{{ model.summary }}</small>
-              </span>
-              <em :data-state="model.available ? 'ready' : (model.executable ? 'missing' : 'planned')">
-                {{ model.available ? '已就绪' : (model.executable ? '待安装' : '待适配') }}
-              </em>
-            </button>
-          </div>
-        </div>
-      </div>
-    </details>
+      v-model:open="envDrawerOpen"
+      :status="status"
+      :active-model="activeModel"
+      :selected-model-id="selectedModelId"
+      :selected-mode="selectedMode"
+      :native-video="nativeVideo"
+      :environment-state="environmentState"
+      :environment-label="environmentLabel"
+      :status-error="statusError"
+      @choose-model="chooseModel"
+    />
 
     <VideoDraftNotice />
 
@@ -394,7 +335,6 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -403,6 +343,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const loadShotListEditor = () => import('@/components/video/ShotListEditor.vue')
 import VideoDraftNotice from '@/components/video/VideoDraftNotice.vue'
+import VideoEnvironmentDrawer from '@/components/video/VideoEnvironmentDrawer.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import VideoPromptWorkbench from '@/components/video/VideoPromptWorkbench.vue'
 import VideoPromptPreview from '@/components/video/VideoPromptPreview.vue'
@@ -416,14 +357,12 @@ import { useTaskCenter } from '@/composables/useTaskCenter'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
 function openTaskCenter() { useTaskCenter().opened.value = true }
 const queuePanel = ref<HTMLElement | null>(null)
-const route = useRoute()
-const environmentPanel = ref<HTMLElement | null>(null)
+const environmentPanel = ref<InstanceType<typeof VideoEnvironmentDrawer> | null>(null)
 const envDrawerOpen = ref(false)
 async function showEnvironment() {
   envDrawerOpen.value = true
   await nextTick()
-  environmentPanel.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
-  environmentPanel.value?.focus({ preventScroll: true })
+  environmentPanel.value?.focusPanel()
 }
 function retrySelectedTask() { queuePanel.value?.focus({ preventScroll: true }); void retrySelectedJob() }
 const firstFrameInput = ref<HTMLInputElement | null>(null), lastFrameInput = ref<HTMLInputElement | null>(null)
@@ -517,17 +456,6 @@ const attentionOptions = computed(() => [
 ].filter(option => option.value === videoAttention.value ||
   (activeModel.value?.attentionModes?.some(mode => mode === option.value) ?? !option.value.startsWith('h3-')))
   .map(option => ({ ...option, disabled: ['h3-sla', 'h3-fused'].includes(option.value) && h3Steps.value !== 4 })))
-const videoReturnQuery = computed(() => ({
-  ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
-  ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),
-}))
-const videoControlTarget = computed(() => ({
-  path: '/control', hash: '#control-inference',
-  query: { ...videoReturnQuery.value, videoSetup: '1', model: selectedModelId.value },
-}))
-const comfyControlTarget = computed(() => ({
-  path: '/control', hash: '#control-services', query: { ...videoReturnQuery.value, engine: 'video' },
-}))
 const motionSelectOptions = motionOptions.map(item => ({ value: item.id, label: item.label }))
 </script>
 
