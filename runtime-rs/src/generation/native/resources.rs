@@ -7,6 +7,7 @@ pub(crate) const ULTRASHARP_FILE: &str = "4x-UltraSharp.pth";
 // worker.py dependencies()/--serve, plus the supported RES sampler's sibling.
 // Conversion, calibration and benchmark tools are separate maintenance entries.
 pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
+    "anima_validation.py",
     "masked_anima.py",
     "clipseg_mask.py",
     "teacache_anima.py",
