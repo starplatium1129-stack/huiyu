@@ -6,5 +6,5 @@
   "license": "MIT",
   "engines": { "node": ">=22.18" },
   "bin": { "cli-anything-huiyu": "cli.mjs" },
-  "files": ["cli.mjs", "drawing.mjs", "format.mjs", "muse.mjs", "diagnostics.mjs", "download.mjs", "wait.mjs", "voice.mjs", "channels.mjs", "upload.mjs", "interrogate.mjs", "video.mjs", "gallery.mjs", "tool.json", "SKILL.md"]
+  "files": ["cli.mjs", "drawing.mjs", "format.mjs", "muse.mjs", "diagnostics.mjs", "download.mjs", "download-media.mjs", "wait.mjs", "voice.mjs", "channels.mjs", "upload.mjs", "interrogate.mjs", "video.mjs", "video-ops.mjs", "gallery.mjs", "tool.json", "SKILL.md"]
 }
