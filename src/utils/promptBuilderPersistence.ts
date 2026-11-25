@@ -3,7 +3,7 @@ import { sanitizeOutfitOverride } from './wardrobeContent.ts'
 import { parseAssistLayout, type InterrogateAssistLayout, type InterrogateSubjectMode } from '../api/interrogateResult.ts'
 import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
 import type { CastFormation, CastMember } from '../types/prompt'
-import { parseCastFormation, parseCastMember, parseCastMembers, parseLeadPosition } from './promptCast'
+import { parseCastFormation, parseCastMember, parseCastMembers, parseLeadPosition } from './promptCast.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
