@@ -32,44 +32,179 @@
   --generation-fill:var(--bg-elevated);
   --generation-edge:var(--border-strong);
   --generation-ink:var(--text-primary);
+  --generation-glow:color-mix(in srgb,var(--text-primary) 10%,transparent);
+  --generation-track-fill:var(--accent);
   position:relative; isolation:isolate; width:100%; min-width:0; min-height:44px;
   padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md);
   background:transparent; color:var(--generation-ink); box-shadow:none; font-size:var(--fs-label); line-height:1.2;
+  transition:color var(--motion-surface) var(--ease-out);
 }
-.pb .gen-bar .generation-action[data-state="idle"] { --generation-fill:var(--generation-ready-fill); --generation-edge:transparent; --generation-ink:var(--generation-ready-ink); }
-.pb .gen-bar .generation-action[data-state="success"] { --generation-ink:var(--success-text); --generation-edge:currentColor; }
-.pb .gen-bar .generation-action[data-state="error"] { --generation-ink:var(--danger-text); --generation-edge:currentColor; }
+.pb .gen-bar .generation-action[data-state="idle"] {
+  --generation-fill:var(--generation-ready-fill);
+  --generation-edge:transparent;
+  --generation-ink:var(--generation-ready-ink);
+  --generation-glow:color-mix(in srgb,var(--on-art-primary) 30%,transparent);
+}
+.pb .gen-bar .generation-action.is-drawing {
+  --generation-glow:color-mix(in srgb,var(--danger) 14%,transparent);
+}
+.pb .gen-bar .generation-action[data-state="success"] {
+  --generation-ink:var(--success-text);
+  --generation-edge:color-mix(in srgb,var(--success-text) 62%,var(--border-strong));
+  --generation-glow:color-mix(in srgb,var(--success-text) 14%,transparent);
+}
+.pb .gen-bar .generation-action[data-state="error"] {
+  --generation-ink:var(--danger-text);
+  --generation-edge:color-mix(in srgb,var(--danger-text) 62%,var(--border-strong));
+  --generation-glow:color-mix(in srgb,var(--danger) 14%,transparent);
+}
 .pb .generation-action::before { display:none; }
-/* The outer surface owns the task-state morph. Only its inset face compresses under the pointer. */
-.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border-radius:inherit; transform-origin:top left; }
-.pb .generation-action-face { display:block; height:100%; border:1px solid var(--generation-edge); border-radius:inherit; background:linear-gradient(var(--generation-fill),var(--generation-fill)),var(--text-primary); }
-.pb .generation-action-content { width:100%; display:flex; align-items:center; justify-content:center; gap:var(--s-2); }
-.pb .generation-action-label { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
-.pb .generation-action-face,.pb .generation-action-label { transition:scale var(--motion-control) var(--spring-soft); }
+/* The outer surface owns the task-state morph. Only its inset face breathes and compresses under the pointer. */
+.pb .generation-action-surface {
+  position:absolute; inset:0; z-index:var(--z-below);
+  border-radius:inherit; overflow:hidden; transform-origin:top left;
+}
+.pb .generation-action-face {
+  position:relative; display:block; height:100%; overflow:hidden;
+  border:1px solid var(--generation-edge); border-radius:inherit;
+  background-color:var(--generation-fill);
+  transition:
+    scale var(--spring-press-duration) var(--spring-press-ease),
+    translate var(--motion-hover) var(--ease-out),
+    background-color var(--motion-surface) var(--ease-out),
+    border-color var(--motion-surface) var(--ease-out);
+}
+/* 呼吸感内光层：纯 opacity 淡入淡出，零 box-shadow 补间。 */
+:where(:root:not([data-theme-style="terraria"])) .pb .generation-action-face::before {
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(125% 110% at 50% 0%,var(--generation-glow),transparent 74%);
+  opacity:0;
+  transition:opacity var(--motion-hover) var(--ease-out);
+}
+/* 待机主按钮悬停时的单次赛璐珞轻扫光，纯 transform/opacity。 */
+:where(:root:not([data-theme-style="terraria"])) .pb .gen-bar .generation-action[data-state="idle"]:not(:disabled):not([aria-disabled="true"]) .generation-action-face::after {
+  content:""; position:absolute; inset:-20% 0; width:46%; pointer-events:none;
+  background:linear-gradient(108deg,transparent 15%,color-mix(in srgb,var(--on-art-primary) 32%,transparent) 50%,transparent 85%);
+  transform:translateX(-160%) skewX(-18deg);
+  opacity:0;
+}
+.pb .generation-action-content {
+  width:100%; display:flex; align-items:center; justify-content:center; gap:var(--s-2);
+  transition:translate var(--motion-hover) var(--ease-out);
+}
+.pb .generation-action-label {
+  display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap;
+  transition:scale var(--spring-press-duration) var(--spring-press-ease);
+}
+.pb .generation-action-icon-slot {
+  position:relative; display:inline-grid; place-items:center; width:16px; height:16px; flex-shrink:0;
+}
+.pb .generation-action-icon-slot>* { grid-area:1/1; }
+.pb .generation-action-text-slot {
+  position:relative; display:inline-grid; align-items:center; justify-items:start;
+  overflow:hidden; padding-block:1px;
+}
+.pb .generation-action-text-slot>* { grid-area:1/1; }
+.pb .generation-action-text { display:inline-block; }
+
+/* 状态切换细腻过渡：图标轻旋交叉淡入，文字纵移淡入，进度平滑显隐。 */
+.pb .gen-icon-swap-enter-active,
+.pb .gen-icon-swap-leave-active {
+  transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-hover) var(--ease-out);
+}
+.pb .gen-icon-swap-enter-from { opacity:0; transform:scale(.62) rotate(-24deg); }
+.pb .gen-icon-swap-leave-to { opacity:0; transform:scale(.62) rotate(24deg); }
+
+.pb .gen-label-swap-enter-active,
+.pb .gen-label-swap-leave-active {
+  transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-hover) var(--ease-out);
+}
+.pb .gen-label-swap-enter-from { opacity:0; transform:translateY(7px); }
+.pb .gen-label-swap-leave-to { opacity:0; transform:translateY(-7px); }
+
+.pb .gen-progress-fade-enter-active,
+.pb .gen-progress-fade-leave-active {
+  transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-hover) var(--ease-out);
+}
+.pb .gen-progress-fade-enter-from,
+.pb .gen-progress-fade-leave-to { opacity:0; transform:translateY(4px); }
+
 .pb .generation-action:active:not(:disabled):not([aria-disabled="true"]) { transform:none; }
-.pb .generation-action:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) :is(.generation-action-face,.generation-action-label) { scale:var(--generation-press-scale,.98); transition-duration:0s; }
+/* 软弹下压（120ms）与松手丝滑回弹（--spring-press-duration）。 */
+.pb .generation-action:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) :is(.generation-action-face,.generation-action-label) {
+  scale:var(--generation-press-scale,.968);
+  transition-duration:var(--motion-press);
+  transition-timing-function:var(--ease-out);
+}
+:where(:root:not([data-theme-style="terraria"])) .pb .generation-action:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) .generation-action-face::before {
+  opacity:.42;
+}
 .pb .is-drawing .generation-action-content { justify-content:space-between; padding-bottom:5px; }
 .pb .is-drawing .generation-action-label { justify-content:flex-start; }
+.pb .is-cancelling .generation-action-icon-slot { animation:generation-cancel-breathe 1.4s ease-in-out infinite; }
 /* Progress lives inside the same 44px action; starting/stopping does not grow it. */
-.pb .generation-track { position:absolute; inset:auto 12px 5px; display:block; height:3px; overflow:hidden; border-radius:var(--r-pill); background:var(--border-strong); }
-.pb .generation-track i { display:block; width:100%; height:100%; transform-origin:left; background:currentColor; border-radius:inherit; transition:transform var(--motion-surface) var(--ease-out); }
+.pb .generation-track { position:absolute; inset:auto 12px 5px; display:block; height:3px; overflow:hidden; border-radius:var(--r-pill); background:var(--border-soft); }
+.pb .generation-track i {
+  display:block; width:100%; height:100%; transform-origin:left;
+  background-color:var(--generation-track-fill); border-radius:inherit;
+  transition:transform var(--motion-surface) var(--ease-out),background-color var(--motion-surface) var(--ease-out);
+}
 .pb .generation-track.is-indeterminate i { width:28%; animation:generation-traverse 1100ms linear infinite; }
-.pb .generation-percent { min-inline-size:4ch; text-align:end; white-space:nowrap; font:600 var(--fs-label-xs)/1.2 var(--font-mono); font-variant-numeric:tabular-nums; }
-.pb .gen-bar .generation-action:is(:disabled,[aria-disabled="true"]) { --generation-ink:var(--text-disabled); --generation-edge:var(--border-soft); --generation-fill:var(--bg-elevated); }
+.pb .generation-percent { min-inline-size:4ch; text-align:end; white-space:nowrap; font:600 var(--fs-label-xs)/1.2 var(--font-sans); font-variant-numeric:tabular-nums; }
+.pb .gen-bar .generation-action:is(:disabled,[aria-disabled="true"]) {
+  --generation-ink:var(--text-disabled);
+  --generation-edge:var(--border-soft);
+  --generation-fill:var(--bg-elevated);
+  --generation-track-fill:var(--text-disabled);
+}
 .pb .generation-action[aria-disabled="true"] { cursor:wait; }
 .pb .gen-bar-recovery:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .gen-bar .generation-action:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
 .pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
 @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
-@media (hover:hover) and (pointer:fine) {
-  .pb .gen-bar .generation-action:hover:not(:disabled):not([aria-disabled="true"]) .generation-action-face { box-shadow:inset 0 0 0 1px currentColor; }
+@keyframes generation-action-sheen {
+  0% { transform:translateX(-160%) skewX(-18deg); opacity:0; }
+  24% { opacity:1; }
+  78% { opacity:.86; }
+  100% { transform:translateX(340%) skewX(-18deg); opacity:0; }
 }
-.pb .gen-bar .generation-action:active:not(:disabled):not([aria-disabled="true"]) .generation-action-face { box-shadow:inset 0 0 0 2px currentColor; }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .generation-action { --generation-press-scale:1; } }
+@keyframes generation-cancel-breathe {
+  0%,100% { opacity:1; }
+  50% { opacity:.42; }
+}
+@media (hover:hover) and (pointer:fine) {
+  :where(:root:not([data-theme-style="terraria"])) .pb .gen-bar .generation-action:hover:not(:disabled):not([aria-disabled="true"]) .generation-action-face::before {
+    opacity:1;
+  }
+  :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .pb .gen-bar .generation-action[data-state="idle"]:hover:not(:disabled):not([aria-disabled="true"]) .generation-action-face::after {
+    animation:generation-action-sheen 640ms var(--ease-out) 1 both;
+  }
+  :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .pb .gen-bar .generation-action:hover:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) :is(.generation-action-face,.generation-action-content) {
+    translate:0 -1px;
+  }
+  /* 生成中悬停柔和过渡到暖红停止提示，不刺眼、不跳框。 */
+  .pb .gen-bar .generation-action.is-drawing:hover:not(:disabled):not([aria-disabled="true"]) {
+    --generation-ink:var(--danger-text);
+    --generation-edge:color-mix(in srgb,var(--danger-text) 56%,var(--border-strong));
+    --generation-track-fill:var(--danger-text);
+  }
+  .pb .gen-bar .generation-action[data-state="idle"]:hover:not(:disabled):not([aria-disabled="true"]) {
+    --generation-fill:color-mix(in srgb,var(--generation-ready-fill) 88%,var(--on-art-primary));
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .generation-action { --generation-press-scale:1; }
+  :root:not([data-motion='full']) .pb .generation-track i,
+  :root:not([data-motion='full']) .pb .is-cancelling .generation-action-icon-slot { animation:none; transition:none; }
+  :root:not([data-motion='full']) .pb :is(.gen-icon-swap-enter-from,.gen-icon-swap-leave-to,.gen-label-swap-enter-from,.gen-label-swap-leave-to,.gen-progress-fade-enter-from,.gen-progress-fade-leave-to) { transform:none; }
+  :root:not([data-motion='full']) .pb .gen-bar .generation-action:hover :is(.generation-action-face,.generation-action-content) { translate:none; }
+  :root:not([data-motion='full']) .pb .gen-bar .generation-action[data-state="idle"]:hover .generation-action-face::after { animation:none; opacity:0; }
+}
 :root:is([data-motion='reduce'],[data-motion='reduced']) .generation-action { --generation-press-scale:1; }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb .generation-track i { animation:none; transition:none; } }
-:root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
+:root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i,
+:root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .is-cancelling .generation-action-icon-slot { animation:none; transition:none; }
+:root:is([data-motion="reduce"],[data-motion="reduced"]) .pb :is(.gen-icon-swap-enter-from,.gen-icon-swap-leave-to,.gen-label-swap-enter-from,.gen-label-swap-leave-to,.gen-progress-fade-enter-from,.gen-progress-fade-leave-to) { transform:none; }
 @media (max-width:600px) {
   .pb .gen-bar { padding:var(--s-3); }
   .pb .gen-bar-size { flex-basis:100%; }
@@ -78,5 +213,7 @@
 @media (forced-colors:active) {
   .pb .gen-bar { background:Canvas; color:CanvasText; }
   .pb .generation-action-face { background:ButtonFace; border-color:ButtonText; }
+  .pb .generation-action-face::before,
+  .pb .generation-action-face::after { display:none; }
   .pb .generation-action:disabled .generation-action-face { border-color:GrayText; }
 }

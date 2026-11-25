@@ -41,37 +41,38 @@ void waitingPose(vec4 rect,float dust,out vec2 position,out vec2 dimensions,out 
  float id=float(gl_InstanceID),seed=hash(id),lane=mod(id,3.0);
  vec2 cell=vec2(mod(id,grid.x),floor(id/grid.x));
  vec2 source=rect.xy+(cell+.5)/grid*rect.zw;
- // Same geometry as generationOrbitPoint: the visible fine lines own the wait.
- float formed=orbitShape.y,finishing=orbitShape.z;
- float angle=floor(id/3.0)/(132.0*192.0/3.0)*6.2831853+orbitRotation*(lane==1.0?-1.6:1.85)+lane*1.64;
- float tilt=(-.64+lane*.61)*(1.0-finishing*.75)+sin(orbitShape.w*.17+lane)*.075*(1.0-finishing);
- float radius=orbitShape.x*(.86+lane*.08);
- float flatten=.31+lane*.035+formed*.1-finishing*.2;
- vec2 orbit=vec2(cos(angle)*radius,sin(angle)*radius*flatten+sin(angle*2.0+orbitShape.w*.12)*2.5*(1.0-finishing));
- orbit=vec2(orbit.x*cos(tilt)-orbit.y*sin(tilt),orbit.x*sin(tilt)+orbit.y*cos(tilt));
- vec2 destination=orbitCenter.xy+orbit;
+ // Same soft stardust gathering cloud as GenerationParticles: departing and arriving dust meet seamlessly.
+ float finishing=orbitShape.z;
+ float seed2=hash(id+31.7),seed3=hash(id+73.1);
+ float baseAngle=id*2.39996323+lane*2.0943951;
+ float radial=pow(seed2,.72);
+ float swirl=orbitRotation*(1.15-radial*.45)*(lane==1.0?-.72:.92);
+ float angle=baseAngle+swirl+radial*1.15;
+ float r=orbitShape.x*(.14+radial*.92);
+ float aspectX=1.14-finishing*.12,aspectY=.84+finishing*.10;
+ float flutter=(3.2+radial*5.2)*(1.0-finishing*.45);
+ vec2 cloud=vec2(cos(angle)*r*aspectX,sin(angle)*r*aspectY);
+ cloud+=vec2(sin(orbitShape.w*.75+seed3*6.2831853+radial*3.0),cos(orbitShape.w*.58+seed*6.2831853-radial*2.4))*flutter;
+ vec2 destination=orbitCenter.xy+cloud;
  position=destination;
- // Adjacent image cells meet edge-to-edge as a continuous one-pixel thread,
- // matching the waiting canvas instead of fading into an invisible dust ring.
- vec2 tangent=vec2(-sin(angle)*radius,cos(angle)*radius*flatten+cos(angle*2.0+orbitShape.w*.12)*5.0*(1.0-finishing));
- float threadAngle=atan(tangent.y,tangent.x)+tilt;
- vec2 ringSize=vec2(length(tangent)*6.2831853/(132.0*192.0/3.0)*1.08,1.0);
- float ringAlpha=(.32+finishing*.08)*orbitOpacity;
- dimensions=ringSize; opacity=ringAlpha; pigment=1.0; rounded=0.0; orientation=threadAngle;
+ float hero=step(.93,seed3);
+ vec2 cloudSize=vec2(.95+seed*1.05+hero*.85);
+ float cloudAlpha=(mix(.14,.038,radial)*(.86+finishing*.24)+hero*.28)*orbitOpacity;
+ dimensions=cloudSize; opacity=cloudAlpha; pigment=1.0; rounded=1.0; orientation=0.0;
  if(dust>=0.0){
   float delay=(cell.x/grid.x)*.30+(cell.y/grid.y)*.07+seed*.11;
   float age=max(0.0,dust-delay), grain=smoothstep(.015,.42,age);
   float flight=max(0.0,age-.025), drift=flight*(1.0-exp(-flight*6.0));
   vec2 wind=vec2(34.0+seed*49.0,-8.0-hash(id+7.0)*17.0);
-  vec2 flutter=vec2(sin(seed*21.0+flight*3.0),cos(seed*17.0+flight*2.2)*.5)*flight*flight*8.0;
-  vec2 blown=source+wind*drift+flutter;
+  vec2 flutterDrift=vec2(sin(seed*21.0+flight*3.0),cos(seed*17.0+flight*2.2)*.5)*flight*flight*8.0;
+  vec2 blown=source+wind*drift+flutterDrift;
   vec2 dustSize=mix(rect.zw/grid*1.003,vec2(.65+seed*.7),grain);
   float dustAlpha=1.0-smoothstep(.60+seed*.16,1.75+seed*.16,age);
   float join=clearing>.5?0.0:smoothstep(.55,2.0,dust);
   vec2 offset=blown-orbitCenter.xy;
   position=mix(blown,destination,join)+vec2(-offset.y,offset.x)*sin(join*3.14159)*.20;
-  dimensions=mix(dustSize,ringSize,join);opacity=mix(dustAlpha,ringAlpha,join);
-  pigment=join*join;rounded=grain*(1.0-join);orientation=threadAngle*join;
+  dimensions=mix(dustSize,cloudSize,join);opacity=mix(dustAlpha,cloudAlpha,join);
+  pigment=join*join;rounded=mix(grain,1.0,join);orientation=0.0;
  }
 }
 void main(){

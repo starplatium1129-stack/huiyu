@@ -20,7 +20,7 @@
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
           class="btn generation-action studio-press-ripple"
-          :class="{ 'is-drawing': busy }"
+          :class="{ 'is-drawing': busy, 'is-cancelling': cancellationPending }"
           :data-state="status"
           type="button"
           :aria-label="actionLabel"
@@ -32,9 +32,24 @@
         >
           <span class="generation-action-surface" aria-hidden="true"><span class="generation-action-face" /></span>
           <span class="generation-action-content">
-            <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="actionText">{{ actionText }}</span></span>
-            <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
-            <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" aria-hidden="true"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
+            <span class="generation-action-label">
+              <span class="generation-action-icon-slot" aria-hidden="true">
+                <Transition name="gen-icon-swap">
+                  <ArchiveIcon :key="actionIcon" :name="actionIcon" />
+                </Transition>
+              </span>
+              <span class="generation-action-text-slot">
+                <Transition name="gen-label-swap">
+                  <span :key="actionText" class="generation-action-text">{{ actionText }}</span>
+                </Transition>
+              </span>
+            </span>
+            <Transition name="gen-progress-fade">
+              <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
+            </Transition>
+            <Transition name="gen-progress-fade">
+              <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" aria-hidden="true"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
+            </Transition>
           </span>
         </button>
       </StudioTooltip>
@@ -47,7 +62,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import { useResizeObserver, useEventListener } from '@vueuse/core'
-import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import { usePressRipple } from '@/composables/usePressRipple'
 import type { AnimaSizeLimits } from '@/types/anima'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -108,7 +122,7 @@ const generationAction = ref<HTMLButtonElement | null>(null)
 let captureMorph: typeof import('@/utils/generationControlMorph')['captureGenerationMorph'] | undefined
 let cancelMorph: typeof import('@/utils/generationControlMorph')['cancelGenerationMorph'] | undefined
 void import('@/utils/generationControlMorph').then(module => { captureMorph = module.captureGenerationMorph; cancelMorph = module.cancelGenerationMorph })
-watch(actionText, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
+watch([actionText, () => props.busy], () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
 const settleMorph = () => cancelMorph?.(generationAction.value)
 useEventListener(document, 'visibilitychange', () => { if (document.hidden) settleMorph() })
 useEventListener(window, 'atelier:motion-preference', settleMorph)

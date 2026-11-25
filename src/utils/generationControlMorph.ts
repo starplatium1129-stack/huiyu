@@ -21,7 +21,7 @@ export function captureGenerationMorph(control: HTMLElement | null) {
   const previous = surface.getBoundingClientRect()
   const radius = getComputedStyle(surface).borderRadius
   const label = control.querySelector<HTMLElement>('.generation-action-label')
-  const previousIcon = label?.querySelector<HTMLElement>('.archive-icon')?.getBoundingClientRect()
+  const previousIcon = label?.querySelector<HTMLElement>('.generation-action-icon-slot, .archive-icon')?.getBoundingClientRect()
   cancelGenerationMorph(control)
   const state = motions.get(control) ?? { revision:0, animations:[] }
   motions.set(control, state)
@@ -40,12 +40,9 @@ export function captureGenerationMorph(control: HTMLElement | null) {
       { transform:'none', borderRadius:getComputedStyle(surface).borderRadius },
     ], options)
     state.animations = [animation]
-    const icon = label?.querySelector<HTMLElement>('.archive-icon')?.getBoundingClientRect()
+    const icon = label?.querySelector<HTMLElement>('.generation-action-icon-slot, .archive-icon')?.getBoundingClientRect()
     if (label && previousIcon && icon) state.animations.push(label.animate([
       { transform:`translate(${previousIcon.x-icon.x}px,${previousIcon.y-icon.y}px)` }, { transform:'none' },
-    ], options))
-    for (const part of control.querySelectorAll<HTMLElement>('.generation-track,.generation-percent')) state.animations.push(part.animate([
-      { opacity:0, transform:'translateY(-4px)' }, { opacity:1, transform:'none' },
     ], options))
     animation.onfinish = () => {
       if (state.revision !== revision || !state.animations.includes(animation)) return

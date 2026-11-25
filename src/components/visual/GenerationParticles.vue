@@ -1,16 +1,14 @@
 <template>
   <div ref="surface" class="generation-particles" aria-hidden="true">
     <div ref="host" class="generation-particle-surface">
-    <GenerationBloomShader v-if="loadShader && !shaderFailed && !lowEffects" :progress="progress" :colors="colors"
-      :present="canPresent" :animate="canAnimate" @unavailable="shaderFailed = true" />
-    <canvas ref="canvas"></canvas>
-    <span class="generation-particle-palette"><i class="tone-pink"></i><i class="tone-cyan"></i><i class="tone-violet"></i><i class="tone-highlight"></i></span>
+      <canvas ref="canvas"></canvas>
+      <span class="generation-particle-palette"><i class="tone-pink"></i><i class="tone-cyan"></i><i class="tone-violet"></i><i class="tone-highlight"></i></span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import { registerParticleFrame } from '@/utils/particleScheduler'
@@ -22,48 +20,90 @@ const host = ref<HTMLElement | null>(null)
 const surface = ref<HTMLElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, lowEffects, appearanceRevision } = useVisualActivity(host)
-const loadShader = ref(false), shaderFailed = ref(false)
-const GenerationBloomShader = defineAsyncComponent({
-  loader: () => import('./GenerationBloomShader.vue'),
-  onError: (_error, _retry, fail) => { shaderFailed.value = true; fail() },
-})
-interface Point { phase: number; tone: number; angle: number; x: number; y: number; depth: number }
-let points: Point[] = []
+
+interface DustMote {
+  baseAngle: number
+  radial: number
+  tone: number
+  phase: number
+  size: number
+  driftSpeed: number
+  gathering: boolean
+  sparkle: boolean
+  shimmerSpeed: number
+}
+
+let motes: DustMote[] = []
 const colors = ref<string[]>([])
-let sprites: HTMLCanvasElement[] = []
+let moteSprites: HTMLCanvasElement[] = []
+let glowSprites: HTMLCanvasElement[] = []
+let isLightTheme = false
 let context: CanvasRenderingContext2D | null = null
 let width = 0, height = 0, ratio = 1
 let clock = 1500
+let driftClock = 1.5
 let rotation = .27
 let concentration = props.progress ?? 0
 let stopFrames: (() => void) | null = null
+
+function hash(n: number) {
+  const s = Math.sin(n * 127.13 + 19.7) * 43758.5453
+  return s - Math.floor(s)
+}
 
 function stop() {
   stopFrames?.()
   stopFrames = null
 }
 
+function releaseSprites() {
+  for (const sprite of moteSprites) sprite.width = sprite.height = 0
+  for (const sprite of glowSprites) sprite.width = sprite.height = 0
+  moteSprites = []
+  glowSprites = []
+}
+
+function createSoftDotSprite(color: string) {
+  const sprite = document.createElement('canvas')
+  sprite.width = sprite.height = 16
+  const paint = sprite.getContext('2d')
+  if (paint) {
+    // Matches the feathered circular edge of the WebGL2 clear-image dust motes.
+    const dot = paint.createRadialGradient(8, 8, 0, 8, 8, 7.2)
+    dot.addColorStop(0, color)
+    dot.addColorStop(.56, color)
+    dot.addColorStop(1, 'transparent')
+    paint.fillStyle = dot
+    paint.fillRect(0, 0, 16, 16)
+  }
+  return sprite
+}
+
+function createGlowSprite(color: string) {
+  const sprite = document.createElement('canvas')
+  sprite.width = sprite.height = 48
+  const paint = sprite.getContext('2d')
+  if (paint) {
+    const glow = paint.createRadialGradient(24, 24, 0, 24, 24, 24)
+    glow.addColorStop(0, color)
+    glow.addColorStop(.42, color)
+    glow.addColorStop(1, 'transparent')
+    paint.fillStyle = glow
+    paint.fillRect(0, 0, 48, 48)
+  }
+  return sprite
+}
+
 function preparePalette() {
   if (!canPresent.value || !host.value) return
+  isLightTheme = host.value.closest('[data-theme]')?.getAttribute('data-theme') === 'light'
   colors.value = [...host.value.querySelectorAll<HTMLElement>('.generation-particle-palette i')].map(item => getComputedStyle(item).color)
   if (props.palette?.length === 3) {
-    const light = host.value.closest('[data-theme]')?.getAttribute('data-theme') === 'light'
-    colors.value.splice(0, 3, ...props.palette.map(color => `rgb(${visibleGenerationPigment(color, light)})`))
+    colors.value.splice(0, 3, ...props.palette.map(color => `rgb(${visibleGenerationPigment(color, isLightTheme)})`))
   }
-  for (const sprite of sprites) sprite.width = sprite.height = 0
-  sprites = colors.value.slice(0, 3).map(color => {
-    const sprite = document.createElement('canvas')
-    sprite.width = sprite.height = 40
-    const paint = sprite.getContext('2d')
-    if (paint) {
-      const glow = paint.createRadialGradient(20, 20, 0, 20, 20, 20)
-      glow.addColorStop(0, color)
-      glow.addColorStop(1, 'transparent')
-      paint.fillStyle = glow
-      paint.fillRect(0, 0, 40, 40)
-    }
-    return sprite
-  })
+  releaseSprites()
+  moteSprites = colors.value.slice(0, 4).map(createSoftDotSprite)
+  glowSprites = colors.value.slice(0, 3).map(createGlowSprite)
 }
 
 function resize([entry]: ResizeObserverEntry[]) {
@@ -82,70 +122,97 @@ function resize([entry]: ResizeObserverEntry[]) {
   reconcile()
 }
 
-function preparePoints() {
-  const count = lowEffects.value ? 3 : 6
-  if (points.length === count) return
-  points = Array.from({ length: count }, (_, index) => ({
-    phase: Math.floor(index/3)*Math.PI,
-    tone: index % 3, angle: 0, x: 0, y: 0, depth: 0,
-  }))
+function prepareMotes() {
+  const count = lowEffects.value ? 56 : 168
+  if (motes.length === count) return
+  motes = Array.from({ length: count }, (_, index) => {
+    const s1 = hash(index + 1.3)
+    const s2 = hash(index + 31.7)
+    const s3 = hash(index + 73.1)
+    const gathering = index % 5 < 2
+    return {
+      baseAngle: index * 2.39996323 + (index % 3) * 2.0943951,
+      radial: Math.pow(s2, .72),
+      tone: index % 3,
+      phase: s3 * Math.PI * 2,
+      size: gathering ? 1.15 + s1 * 1.45 : 1.05 + s1 * 1.65,
+      driftSpeed: .11 + s1 * .09,
+      gathering,
+      sparkle: !gathering && s3 > .84,
+      shimmerSpeed: .7 + s2 * 1.05,
+    }
+  })
 }
 
 function draw() {
-  if (!context || !width || !height || !colors.value.length) return
-  const ctx = context, time = clock / 1000, pigments = colors.value
+  if (!context || !width || !height || moteSprites.length < 4) return
+  const ctx = context, time = clock / 1000
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
   ctx.clearRect(0, 0, width, height)
   const centerX = width / 2, centerY = height / 2
-  const pose = snapshot(), { finishing } = pose
-  const orbit = (angle: number, band: number) => {
-    const point = generationOrbitPoint(angle, band, pose)
-    return { x: centerX + point.x, y: centerY + point.y }
-  }
-  for (let band=0; band<3; band++) {
-    ctx.strokeStyle=pigments[band]; ctx.globalAlpha=.32+finishing*.08; ctx.lineWidth=1
-    ctx.beginPath()
-    for (let segment=0; segment<=128; segment++) {
-      const p=orbit(segment/128*Math.PI*2,band)
-      if (!segment) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y)
-    }
-    ctx.stroke()
-  }
-  for (const point of points) {
-    const angle = point.phase + rotation*(point.tone === 1 ? -1.6 : 1.85)+point.tone*1.64
-    const p=orbit(angle,point.tone)
-    point.angle=angle; point.x=p.x; point.y=p.y; point.depth=Math.sin(angle)*.5+.5
-  }
-  points.sort((a, b) => a.depth - b.depth)
-  // Taper each trail toward its tail. Near-side pigment stays brighter as the orbit turns.
-  if (!lowEffects.value) for (const point of points) {
-    const direction = point.tone === 1 ? -1 : 1
-    ctx.strokeStyle=pigments[point.tone]
-    for (let part=0; part<3; part++) {
-      ctx.globalAlpha=(.22 + part*.20) * (.65 + point.depth*.35)
-      ctx.lineWidth=.7 + part*.35 + point.depth*.45
-      ctx.beginPath()
-      for (let step=0; step<=8; step++) {
-        const p = orbit(point.angle-direction*(24-part*8-step)*(.024+finishing*.012), point.tone)
-        if (!step) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y)
-      }
-      ctx.stroke()
+  const pose = snapshot()
+  const { radius, formed, finishing } = pose
+
+  // Soft atmospheric core breath built from cached glow sprites (no per-frame blur).
+  if (!lowEffects.value && glowSprites.length === 3) {
+    const breath = .88 + Math.sin(time * .65) * .12
+    const mistRadius = radius * (.92 - finishing * .18) * breath
+    const mistAlpha = (isLightTheme ? .042 : .082) * (.85 + formed * .25 + finishing * .18)
+    for (let band = 0; band < 3; band++) {
+      const driftAngle = time * .22 + band * 2.0943951
+      const offsetX = Math.cos(driftAngle) * radius * .14
+      const offsetY = Math.sin(driftAngle) * radius * .1
+      ctx.globalAlpha = mistAlpha
+      ctx.drawImage(
+        glowSprites[band],
+        centerX + offsetX - mistRadius,
+        centerY + offsetY - mistRadius * .86,
+        mistRadius * 2,
+        mistRadius * 1.72,
+      )
     }
   }
-  for (const point of points) {
-    const size = 1.1 + point.depth * 1.3
-    const shimmer = .68 + point.depth * .25 + Math.sin(time * .8 + point.phase) * .07
-    ctx.fillStyle = pigments[point.tone]
-    if (!lowEffects.value) {
-      const spread = size * 2.4+1.5
-      ctx.globalAlpha = .08
-      ctx.drawImage(sprites[point.tone], point.x - spread, point.y - spread, spread * 2, spread * 2)
+
+  for (const mote of motes) {
+    let x = centerX, y = centerY, alpha = 1, drawSize = mote.size
+    if (mote.gathering) {
+      // Mirror of the clear-image breeze: soft dust wisps drift inward from the rim into the cloud.
+      const cycle = (driftClock * mote.driftSpeed + mote.phase / (Math.PI * 2)) % 1
+      const inward = 1 - Math.pow(1 - cycle, 1.72)
+      const distance = radius * (1.46 - inward * 1.2)
+      const arcAngle = mote.baseAngle + rotation * .55 + inward * .82
+      const flutter = (1 - inward * .65) * 6.5
+      x = centerX + Math.cos(arcAngle) * distance * 1.12 + Math.sin(time * .9 + mote.phase) * flutter
+      y = centerY + Math.sin(arcAngle) * distance * .86 + Math.cos(time * .72 + mote.phase * 1.2) * flutter
+      const fadeIn = Math.min(1, cycle / .22)
+      const fadeOut = Math.min(1, (1 - cycle) / .24)
+      alpha = fadeIn * fadeOut * (.48 + inward * .38)
+      drawSize = mote.size * (.72 + Math.sin(cycle * Math.PI) * .45)
+    } else {
+      const swirl = rotation * (1.15 - mote.radial * .45) * (mote.tone === 1 ? -.72 : .92)
+      const point = generationOrbitPoint(mote.baseAngle + swirl, mote.tone, pose, mote.radial, mote.phase)
+      x = centerX + point.x
+      y = centerY + point.y
+      const shimmer = .56 + .34 * Math.sin(time * mote.shimmerSpeed + mote.phase) + finishing * .14
+      const radialFade = 1 - mote.radial * .44
+      alpha = Math.min(1, shimmer * radialFade * (.88 + formed * .16))
+      drawSize = mote.size * (.86 + shimmer * .24)
     }
-    ctx.globalAlpha = .95 * shimmer
-    ctx.beginPath(); ctx.arc(point.x, point.y, size, 0, Math.PI * 2); ctx.fill()
-    ctx.globalAlpha = 0.7
-    ctx.fillStyle = pigments[3]
-    ctx.beginPath(); ctx.arc(point.x, point.y, 0.6, 0, Math.PI * 2); ctx.fill()
+
+    if (alpha <= .01) continue
+    if (!lowEffects.value && mote.sparkle) {
+      const halo = drawSize * 3.4 + 2.2
+      ctx.globalAlpha = alpha * (isLightTheme ? .11 : .18)
+      ctx.drawImage(glowSprites[mote.tone], x - halo, y - halo, halo * 2, halo * 2)
+    }
+    const spread = drawSize * 1.35
+    ctx.globalAlpha = alpha * (isLightTheme ? .86 : .94)
+    ctx.drawImage(moteSprites[mote.tone], x - spread, y - spread, spread * 2, spread * 2)
+    if (mote.sparkle) {
+      const core = Math.max(.9, drawSize * .62)
+      ctx.globalAlpha = alpha * (isLightTheme ? .55 : .78)
+      ctx.drawImage(moteSprites[3], x - core, y - core, core * 2, core * 2)
+    }
   }
   ctx.globalAlpha = 1
 }
@@ -158,14 +225,15 @@ defineExpose({ snapshot, setOpacity })
 
 function reconcile() {
   stop()
-  if (canAnimate.value && !lowEffects.value && 'WebGL2RenderingContext' in window) loadShader.value = true
   if (!canPresent.value || !context) return
-  preparePoints()
+  prepareMotes()
   draw()
   if (canAnimate.value) stopFrames = registerParticleFrame((_now, delta = 0) => {
     clock += delta
     if (props.progress !== null) concentration += (props.progress - concentration) * (1 - Math.exp(-delta / 420))
-    rotation += delta / 1000 * (.18 + concentration * .34)
+    const step = delta / 1000
+    driftClock += step * (1 + concentration * .65)
+    rotation += step * (.14 + concentration * .24)
     draw()
   }, lowEffects.value ? 30 : 0)
 }
@@ -181,8 +249,8 @@ watch(() => props.progress, progress => {
 onMounted(preparePalette)
 onBeforeUnmount(() => {
   stop()
-  for (const sprite of sprites) sprite.width = sprite.height = 0
-  sprites = []; points = []; context = null
+  releaseSprites()
+  motes = []; context = null
   // Vue retains this DOM during the parent's leave transition. Keep its last
   // bitmap for the collapse/fade; the DOM releases it when that transition ends.
 })
@@ -190,12 +258,12 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .generation-particles { position:relative; isolation:isolate; width:100%; height:100%; pointer-events:none; }
-.generation-particle-surface { position:relative; width:100%; height:100%; animation:generation-line-arrival 420ms ease-out both; }
-@keyframes generation-line-arrival { from { opacity:0; } to { opacity:1; } }
+.generation-particle-surface { position:relative; width:100%; height:100%; animation:generation-dust-arrival 420ms var(--ease-out) both; }
+@keyframes generation-dust-arrival { from { opacity:0; } to { opacity:1; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .generation-particle-surface { animation:none; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .generation-particle-surface { animation:none; } }
-/* compositor-exempt: A bounded Canvas renders particle depth; cached glow sprites avoid per-frame blur. */
-.generation-particle-surface > canvas:not(.generation-bloom) { position:relative; display:block; width:100%; height:100%; }
+/* compositor-exempt: A bounded Canvas renders stardust depth; cached radial sprites avoid per-frame blur. */
+.generation-particle-surface > canvas { position:relative; display:block; width:100%; height:100%; }
 .generation-particle-palette { position:absolute; width:0; height:0; overflow:hidden; visibility:hidden; }
 .tone-pink { color:var(--accent); }
 .tone-cyan { color:var(--archive-cyan); }

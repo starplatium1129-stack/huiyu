@@ -1,4 +1,4 @@
-/** The waiting canvas and image particles meet on this same continuous orbit. */
+/** The waiting stardust cloud and image texture particles share this continuous gathering field. */
 export interface GenerationOrbitPose {
   radius: number
   formed: number
@@ -11,19 +11,23 @@ export interface GenerationOrbitSurface {
   setOpacity: (opacity: number) => void
 }
 export function generationOrbitPose(width: number, height: number, progress: number, time: number, rotation: number): GenerationOrbitPose {
-  const formed = smoothGenerationPhase(.08, .66, progress), finishing = smoothGenerationPhase(.65, .98, progress)
-  const radius = Math.min(width * .29, height * .3, 116) * (1 - formed * .1 - finishing * .28)
+  const formed = smoothGenerationPhase(.06, .72, progress), finishing = smoothGenerationPhase(.68, .99, progress)
+  const radius = Math.min(width * .34, height * .38, 136) * (1 - formed * .14 - finishing * .28)
   return { radius, formed, finishing, time, rotation }
 }
 export function smoothGenerationPhase(start: number, end: number, value: number) {
   const t = Math.max(0, Math.min(1, (value - start) / (end - start)))
   return t * t * (3 - 2 * t)
 }
-export function generationOrbitPoint(angle: number, band: number, pose: GenerationOrbitPose) {
-  const { radius, formed, finishing, time } = pose
-  const tilt = (-.64 + band * .61) * (1 - finishing * .75) + Math.sin(time * .17 + band) * .075 * (1 - finishing)
-  const x = Math.cos(angle) * radius * (.86 + band * .08)
-  const y = Math.sin(angle) * radius * (.86 + band * .08) * (.31 + band * .035 + formed * .1 - finishing * .2)
-    + Math.sin(angle * 2 + time * .12) * 2.5 * (1 - finishing)
-  return { x: x * Math.cos(tilt) - y * Math.sin(tilt), y: x * Math.sin(tilt) + y * Math.cos(tilt) }
+export function generationOrbitPoint(angle: number, _band: number, pose: GenerationOrbitPose, radial = .65, phase = 0) {
+  const { radius, finishing, time } = pose
+  const r = radius * (.14 + radial * .92)
+  const aspectX = 1.14 - finishing * .12
+  const aspectY = .84 + finishing * .1
+  const flutter = (3.2 + radial * 5.2) * (1 - finishing * .45)
+  const swirl = angle + radial * 1.15
+  return {
+    x: Math.cos(swirl) * r * aspectX + Math.sin(time * .75 + phase + radial * 3) * flutter,
+    y: Math.sin(swirl) * r * aspectY + Math.cos(time * .58 + phase * 1.3 - radial * 2.4) * flutter,
+  }
 }
