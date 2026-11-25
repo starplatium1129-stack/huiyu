@@ -38,6 +38,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         || path == crate::interrogate::muse::STATUS_PATH
         || path == crate::interrogate::muse::INTERROGATE_PATH
         || path == super::muse::upscale::UPSCALE_PATH
+        || path == super::muse::PREVIEW_PATH
         || path == "/api/muse/health"
         || path == "/api/muse/gallery"
         || path.starts_with("/api/muse/gallery/");
@@ -63,7 +64,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         || (request.method() == axum::http::Method::GET
             && path == super::muse::companion::OPTIONS_PATH)
         || (request.method() == axum::http::Method::POST
-            && path == super::muse::upscale::UPSCALE_PATH
+            && matches!(path, super::muse::upscale::UPSCALE_PATH | super::muse::PREVIEW_PATH)
             && !has_query)
         || matches!(
             path,

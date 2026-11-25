@@ -7,6 +7,7 @@ import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { nativeDrawingPrompt } from '@/utils/nativeDrawingPrompt'
 import { renderMossDrawingPrompt } from '@/utils/mossPrompt'
 import { compileMossLayout, isMossLayoutInput } from '@/utils/mossLayout'
+import { isCustomCastOutfit } from '@/utils/promptCast'
 import { captureResultContext } from '@/utils/resultContext'
 import { mossModels } from '@/config/directImageModels'
 
@@ -16,12 +17,15 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   let scope: EffectScope | undefined
   let preparingSubmission = false
   const pb = workspace.pb
+  const castLayoutContext = computed(() => Boolean(pb.coStars.length || pb.castLead?.source === 'custom'
+    || isCustomCastOutfit(pb.castLead?.outfitId ?? '')))
   const layoutContext = computed(() => {
-    if (!pb.coStars.length && !pb.referenceInput) return ''
+    if (!castLayoutContext.value && !pb.referenceInput) return ''
     // Custom boxes are editable only against the cast and source they were authored for.
     const input = JSON.stringify([
-      pb.cast.map(({ source, characterId, outfitId, outfitExplicit, action }) => [source, characterId, outfitId, outfitExplicit, action]),
-      pb.castFormation, pb.referenceInput,
+      pb.cast.map(({ source, characterId, outfitId, outfitExplicit, action, outfitPrompt, name, appearance, gender }) =>
+        [source, characterId, outfitId, outfitExplicit, action, ...(outfitPrompt || source === 'custom' ? [outfitPrompt, name, appearance, gender] : [])]),
+      pb.effectiveCastFormation, pb.referenceInput, ...(pb.castInteraction.trim() && pb.cast.length > 1 ? [pb.castInteraction.trim()] : []),
     ])
     let hash = 2166136261
     for (let index = 0; index < input.length; index++) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619)
@@ -31,7 +35,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     const form = session.value?.form
     if (!form?.mossLayout) return ''
     const context = form.mossLayoutContext
-    if (context === undefined) return pb.coStars.length ? '' : form.mossLayout
+    if (context === undefined) return castLayoutContext.value ? '' : form.mossLayout
     return context === layoutContext.value ? form.mossLayout : ''
   })
   const usingMossTaskPrompt = computed(() => session.value?.form.mossUseTaskPrompt === true)
@@ -200,7 +204,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     await state.run({ negative: state.turbo.value ? '' : recipe.value.negative, context: {
       ...(director ? { subject: subject.kind, sceneId: pb.sceneId,
         history: { ...director.history, negativeCustom: state.form.negative, mossLayout: mossLayout.value || undefined } } : {}),
-      character: pb.char, characterId: pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char,
+      character: pb.char, characterId: pb.castLead?.characterId ?? pb.char,
       ...(pb.subject.kind === 'popular' ? { outfitId: pb.subject.outfitId, blueprintId: pb.subject.blueprintId } : {}),
       sceneTitle: (subject.kind === 'popular' ? pb.sceneBlueprints.find(scene => scene.id === subject.blueprintId)?.title : pb.activeScene?.title) || '', story: pb.story, visualDescription: pb.visualDescription,
     } })

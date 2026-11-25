@@ -127,7 +127,9 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   const castSubjects = layout?.castLayout && layout.subjects?.length ? layout.subjects : null
   const mergeNegative = (base: string) => {
     const merged = mergeSceneNegative(base, plan?.negative ?? [])
-    return castSubjects ? cleanCastNegative(merged) : merged
+    if (!castSubjects) return merged
+    const castNegative = cleanCastNegative(merged)
+    return castSubjects.length > 1 ? mergeSceneNegative(castNegative, ['duplicate character', 'clone']) : castNegative
   }
   if (isMossLayoutInput(authored)) {
     const layout = compileMossPrompt(authored, negative, size)
@@ -181,6 +183,7 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   const cleanScene = cleanProse(scene)
   if (layout && castSubjects) {
     const common = [
+      layout.interaction,
       cleanCastProse(cleanMossCastText(authored)),
       cleanCastProse(cleanMossCastText(cleanScene)),
       cleanMossCastText(ordered.join(', ')),
@@ -189,7 +192,9 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
       const { items, canvas, extraPeople } = buildMossCastLayout(layout, castSubjects, size)
       const people = extraPeople === 1 ? 'One additional supporting character appears in the frame.'
         : extraPeople > 1 ? extraPeople + ' additional supporting characters appear in the frame.' : ''
-      const caption = [...new Set([people, ...common].filter(Boolean))].join('\n') || 'Group portrait.'
+      const count = castSubjects.length + extraPeople
+      const exactCount = count > 1 ? `Exactly ${count} characters appear in distinct positions, with no duplicate figures.` : ''
+      const caption = [...new Set([exactCount, people, ...common].filter(Boolean))].join('\n') || 'Character portrait.'
       const summary = addMossLettering(caption, items, size, 16)
       const raw = mossLayoutJson(summary, items, canvas)
       const compiled = compileMossPrompt(raw, negative, size)

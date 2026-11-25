@@ -7,7 +7,7 @@ description: 为 Muse 和其他智能体操作同一台绘遇桌面主机。支�
 
 Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiyu\cli-anything-huiyu.exe`。将该目录加入当前终端的 PATH 后，可以直接使用下列命令。源码入口是 `node tools/cli-anything-huiyu/cli.mjs`，需要从任意目录调用时也可以在仓库根目录运行 `npm install --global ./tools/cli-anything-huiyu`。
 
-在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.6.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
+在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.8.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
 
 ## 接到聊天模型（`invoke`）
 
@@ -17,8 +17,8 @@ Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiy
 '{"action":"status"}' | cli-anything-huiyu --json invoke
 ```
 
-- `invoke` 除既有绘图操作（`status`、`key`、`catalog`、`detail`、`models`、`draw`、`batch`、`queue`、`recent`、`job`、`errors`、`cancel`、`save`）外，还支持 `health`、`upscale`、`interrogate_status`、`interrogate`、`voice_status`、`voice_say`、`video_status`、`video_preview`、`video_create`、`video_job`、`video_cancel`、`video_batch`、`video_concat`、`gallery_list`、`gallery_show`。
-- **群聊安全隔离**：设置 `HUIYU_CLI_SCOPE` 时仅允许操作本群当前发起人前缀（`<scope>_`）名下的绘图与独立放大任务（`status`、`key`、`catalog`、`detail`、`models`、`draw`、`batch`、`upscale`、`job`、`errors <batchKey>`、`cancel`）；全机队列、历史、归档、`health`、`gallery_*`、`interrogate*`、`voice_*`、`video_*` 均默认拒绝（`DRAWING_SCOPE_DENIED`）。
+- `invoke` 除既有绘图操作（`status`、`key`、`catalog`、`detail`、`models`、`draw`、`draw_preview`、`batch`、`queue`、`recent`、`job`、`errors`、`cancel`、`save`）外，还支持 `health`、`upscale`、`interrogate_status`、`interrogate`、`voice_status`、`voice_say`、`video_status`、`video_preview`、`video_create`、`video_job`、`video_cancel`、`video_batch`、`video_concat`、`gallery_list`、`gallery_show`。
+- **群聊安全隔离**：设置 `HUIYU_CLI_SCOPE` 时保留 `draw_preview` 等只读配方功能。任务操作仍限本群当前发起人前缀（`<scope>_`）名下的绘图与独立放大任务。全机队列、历史、归档、`health`、`gallery_*`、`interrogate*`、`voice_*`、`video_*` 均默认拒绝（`DRAWING_SCOPE_DENIED`）。
 - 要交给另一位助手接手，先用 `{"action":"key"}` 获取编号，提交时在 `batchKey` 中原样传入。内置工具的 `save` 将 PNG 存入桌面运行目录的 `agent-drawings`；外部工具进程可用 `HUIYU_CLI_OUTPUT_DIR` 指定归档目录，默认使用当前目录。聊天中的大回执会标记 `truncated`，可缩小分页或用对应的只读子命令查看全量。
 
 ## 连接配置
@@ -52,12 +52,18 @@ cli-anything-huiyu --json save <batchKey> .\成图 --all
 - `doctor` 检查连接、凭据格式、协议版本、中转存储及全部新能力开关（兼容老版本出图机与中转）；`health` 返回只读主机模块在线状态、模型数量和推理引擎摘要。
 - `models` 返回所有已安装图像模型（含 `anima`、`moss-image`、`qwen-image`、`krea2`、`keyframe`、`manga-screen`）及其 `img2img`/`mask`/`maxReferenceImages`/`mossLayout`/`multiCast` 与 `standaloneUpscale` 能力。
 - 目录出图支持 `--kind scene|blueprint|outfit|prompt|manga`、同角色 `--outfit` 换装、Krea 2 目录动态编译及 `--style-lora`。Anima 加速用 `--tea-cache on|off` 与 `--tea-cache-thresh 0–1`；MOSS 加速用 `--moss-sampler euler|er-sde`、`--moss-acceleration off|spectrum|spectrum-adaptive`、`--moss-spectrum-flex-window 0–2`。
-- **1–5 人多角色混搭同框**：重复传 `--cast 角色ID[:服装ID][:动作]`（或 `--cast-file JSON`，JSON/`invoke` 的 `cast` 数组元素同时接受字符串简写与对象），可选 `--formation row|staggered`（4–5 人支持前后排错落），支持画室角色（`nene`/`natsume`）与目录任意热门角色混搭；可搭配共享 `--prompt`、目录 `--id`（场景/蓝图）或 MOSS `--from-interrogate`/`--layout-file`（参考图人物框数 ≥ 角色数时按面积与从左到右自动绑定，未显式指定服装时默认沿用参考图穿搭）。Anima 自动按无角色 LoRA + `BREAK` 分段与从左到右站位编译。
+- **1–5 人多角色混搭同框**：重复传 `--cast 角色ID[:服装ID|=自定义服装|none][:动作]`，也可用 `--cast-file JSON`。目录角色可用 ID、名称或唯一别名。原创成员用对象表示，例如 `{"characterId":"oc","name":"Mira","appearance":"short copper hair, green eyes","gender":"girl"}`。可省略 `characterId` 或写 `custom`、`original`、`oc`，称呼（最多 80 字）和外貌（最多 400 字）至少填一项，`gender` 可用 `girl`、`boy`、`other`，默认 `girl`。
+  - **自定义服装 / 睡衣 / 剧情装**：在对象中传 `outfitPrompt`（或在 CLI 简写用 `=自定义服装` 如 `--cast "nene:=cream knit pajamas, fluffy socks:curled up smiling"`），或传 `outfitId: "none"` 清空官方默认服，完全不会被默认校服/制服覆盖。
+  - **角色间细致互动 & 亲密站位**：用 `--interaction`（JSON 中 `interaction`，支持字符串或数组，≤1000 字）描述对视、牵手、共用一把伞/杯子等关系；每个成员 `action` 支持最多 600 字细节；`--formation` 支持 `row|close|staggered`（2–3 人带 `interaction` 时自动默认 `close` 亲密重叠构图；MOSS 还支持在成员对象传 0..1 归一化 `bbox: [y1, x1, y2, x2]` 自由叠框）。
+  - **防多画人原则**：所有角色穿搭和个人细节放进各自 `cast` 成员，互动关系放 `interaction`，顶层 `--prompt` 只写共同场景、背景、光影和镜头，不要在 `--prompt` 里按左右位置把人物重新写一遍。
 ```powershell
-cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --cast nene:studio/nene-school --cast natsume:studio/natsume-cafe --prompt "sunny cafe window" --out .\duo.png
+cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --cast "nene:=cream knit pajamas, fluffy socks:leaning right and smiling softly" --cast "natsume:=oversized navy hoodie:holding a warm mug" --interaction "Nene leans close to Natsume on the sofa, both sharing one mug and looking warmly at each other" --prompt "cozy living room at night, warm lamp light" --out .\duo.png
 cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --cast nene --cast frieren --from-interrogate .\layout.json --out .\ref-duo.png
-cli-anything-huiyu --json draw --model anima-miaomiao-v1.6 --id sc093 --cast nene::smiling --cast natsume::holding_teacup --out .\scene-duo.png
+cli-anything-huiyu --json draw --model anima-miaomiao-v1.6 --id sc093 --cast "nene:none:wearing summer yukata, smiling" --cast "natsume:=pale blue yukata:holding a paper fan" --interaction "both girls walking shoulder to shoulder smiling at each other" --out .\scene-duo.png
+cli-anything-huiyu --json draw --model anima-miaomiao-v1.6 --cast-file .\cast.json --from-interrogate .\reference.json --dry-run
 ```
+- `draw --dry-run` 或 `invoke` 的 `{"action":"draw_preview","params":{...}}` 只编译单图配方并返回模型、画幅、正向和负向提示词。也可用 `{"action":"draw","params":{"dryRun":true,...}}`。预览省略任务编号、等待和输出选项，图片参数使用已上传的文件名。
+- `--from-interrogate` 搭配 `--cast` 会单独传递参考词条和描述，由服务器过滤参考原人物的身份、外貌与服装。MOSS 还可用参考布局和对应框的局部服装。手写的 `--prompt` 可与参考层一起使用。
 - `queue` 查队列，`recent --agent muse --status failed` 查历史，`errors <batchKey>` 或 `errors --agent muse` 排错，`cancel <batchKey> [--item 序号]` 取消任务。加 `--compact` 可精简 JSON 回执。
 
 ## 参考图上传、图生图、反推与独立放大

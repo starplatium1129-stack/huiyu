@@ -87,7 +87,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
 
   /** 自由画面或热门角色在支持 noLora 的底模上不加载角色 LoRA。 */
   const animaNoLoraMode = computed(() => {
-    if (drawEngine.value === 'anima' && pb.cast.length > 1) return true
+    if (drawEngine.value === 'anima' && pb.castRequiresNoLora) return true
     if (!pb.isPopular && !pb.isUnbound) return false
     if (!currentCapabilities.value.noLora) return false
     const selected = animaState.value.models.find(model => model.id === animaState.value.modelId)
@@ -160,7 +160,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const engineOnline = computed(() => {
     const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
-      if (pb.cast.length > 1) return ready && currentCapabilities.value.noLora
+      if (pb.castRequiresNoLora) return ready && currentCapabilities.value.noLora
       if (pb.isPopular || pb.isUnbound) return ready && animaState.value.models.some(m => m.id === animaState.value.modelId && m.available !== false && (!pb.isUnbound || m.capabilities?.noLora === true))
       return ready
     }
@@ -224,7 +224,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   function buildAnimaRequest(preview = false): AnimaRequest | null {
     try {
       const request = buildBoundAnimaRequest({ subject: pb.subject, char: pb.char, state: animaState.value,
-        multiCast: pb.cast.length > 1,
+        multiCast: pb.castRequiresNoLora,
         profile: pb.isPopular ? popularProfile.value : modelProfile.value,
         prompt: livePrompt.value, negative: effectiveNegative.value })
       if (!preview) updateAnimaPromptState()

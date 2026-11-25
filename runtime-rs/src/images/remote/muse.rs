@@ -19,10 +19,14 @@ mod krea;
 mod layout;
 mod legacy;
 mod library;
+mod preview;
 mod submission;
 pub(crate) mod upscale;
 use library::{PreparedScene, RecipeLibrary, recipe_missing, studio_wardrobe, unavailable};
 use submission::SceneSelection;
+
+pub(super) const PREVIEW_PATH: &str = "/api/muse/jobs/preview";
+const DRAW_BODY_BYTES: usize = 64 * 1024;
 
 pub(crate) const ANIMA: &str = "anima-miaomiao-v1.6";
 const MAX_SEED: u64 = 9_007_199_254_740_991;
@@ -115,7 +119,11 @@ pub(super) fn router(
             "/api/muse/jobs",
             get(history::recent)
                 .post(draw)
-                .layer(DefaultBodyLimit::max(64 * 1024)),
+                .layer(DefaultBodyLimit::max(DRAW_BODY_BYTES)),
+        )
+        .route(
+            PREVIEW_PATH,
+            post(preview::draw_preview).layer(DefaultBodyLimit::max(DRAW_BODY_BYTES)),
         )
         .route("/api/muse/queue", get(history::queue))
         .route(

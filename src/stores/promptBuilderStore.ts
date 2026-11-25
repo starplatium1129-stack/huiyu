@@ -52,7 +52,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** 热门角色无 LoRA 创作模式与工作室角色互斥；studio 路径继续用 char。 */
   const subject = ref<DrawSubject>({ kind: 'studio' })
   const isPopular = computed(() => subject.value.kind === 'popular')
-  const isUnbound = computed(() => !isPopular.value && char.value === 'none')
   const colorMood = ref<string | null>(null)
   const concise = ref(false)
   const sceneId = ref<string | null>(null)
@@ -63,9 +62,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const referenceInput = ref<DraftReferenceInput | null>(null)
   const coStars = ref<CastMember[]>([])
-  const castFormation = ref<CastFormation>('row')
+  const castFormation = ref<CastFormation>()
+  const castInteraction = ref('')
+  const effectiveCastFormation = computed(() => castFormation.value ?? (castInteraction.value.trim() ? 'close' : 'row'))
   const leadCast = ref<CastMember | null>(null)
   const leadPosition = ref(0)
+  const isUnbound = computed(() => !isPopular.value && char.value === 'none' && leadCast.value?.source !== 'custom')
   const randomVariation = ref<DraftRandomVariation | null>(null)
   watch([char, sceneId, subject, outfitOverride], ([nextChar, nextScene, next, override], [oldChar, oldScene, old, oldOverride]) => {
     if (!randomVariation.value) return
@@ -274,13 +276,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   const {
     popularBlueprintReady, popularBlueprintLoading, popularBlueprintError, loadPopularCharacter,
-    castLead, cast,
+    castLead, cast, castRequiresNoLora,
     setChar, setStudioSubject, setUnboundSubject, setPopularSubject, setPopularBlueprint,
     addCoStar, updateCastMember, moveCastMember, selectCastLead, removeCastMember,
   } = usePromptCastAndSubject({
     char, subject, isPopular, isUnbound, storyOrigin, story, sceneId, sceneBaseStory,
     selections, colorMood, directorSources, outfitOverride, referenceInput,
-    coStars, castFormation, leadCast, leadPosition, artistStyleIds, manualTags,
+    coStars, castFormation, castInteraction, leadCast, leadPosition, artistStyleIds, manualTags,
     popularCharacters, sceneBlueprints, activeScene, sceneStore, loadPopularCatalog,
     clearRandomVariation, clearReferenceInput, clearInheritedDirectorValues,
   })
@@ -314,13 +316,13 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, persistDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, loadPopularCatalog, manualTags, outfitOverride, referenceInput, coStars, castFormation, leadCast, leadPosition, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, persistDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, loadPopularCatalog, manualTags, outfitOverride, referenceInput, coStars, castFormation, castInteraction, leadCast, leadPosition, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   return {
     storyOrigin, story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, directorSources, inheritedDirectorValues, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
-    cast, castLead, coStars, castFormation, leadCast, leadPosition, addCoStar, updateCastMember, moveCastMember, selectCastLead, removeCastMember,
+    cast, castLead, castRequiresNoLora, coStars, castFormation, castInteraction, effectiveCastFormation, leadCast, leadPosition, addCoStar, updateCastMember, moveCastMember, selectCastLead, removeCastMember,
     scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
     loadPopularCatalog,

@@ -44,7 +44,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
       character: typeof context.characterId === 'string' && context.characterId.trim()
         ? context.characterId : String(context.char || input.character || history.character || ''),
       characterId: typeof context.characterId === 'string' && context.characterId ? context.characterId
-        : cast.coStars?.length && typeof context.char === 'string' ? context.char : typeof context.characterId === 'string' ? context.characterId : undefined,
+        : cast.leadCast?.source === 'custom' ? cast.leadCast.characterId : cast.coStars?.length && typeof context.char === 'string' ? context.char : typeof context.characterId === 'string' ? context.characterId : undefined,
       ...cast,
       referenceInput: history.referenceInput === undefined ? undefined : parseReferenceInput(history.referenceInput),
       outfitId: typeof context.outfitId === 'string' ? context.outfitId : undefined,

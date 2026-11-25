@@ -51,11 +51,11 @@ export function usePromptRenderControls({ pb, sdSize, drawEngine, animaState, li
             return '当前仅查看旧 SD 成片；新生成请切到 Anima 或 Krea 2';
         if (!livePrompt.value)
             return '先选择场景或填写故事';
-        if (drawEngine.value === 'anima' && pb.cast.length > 1 && !currentCapabilities.value.noLora)
+        if (drawEngine.value === 'anima' && pb.castRequiresNoLora && !currentCapabilities.value.noLora)
             return '同框创作需要支持无角色 LoRA 的 Anima 底模';
         if (!engineOnline.value)
             return engineStatusText.value;
-        if (drawEngine.value === 'anima' && pb.cast.length < 2 && !pb.isPopular && !pb.isUnbound) {
+        if (drawEngine.value === 'anima' && !pb.castRequiresNoLora && !pb.isPopular && !pb.isUnbound) {
             if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) return '当前模型不支持双角色，请选择单个角色';
             if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && (animaState.value.characterLoraEnabled === false ? !currentCapabilities.value.noLora : !animaState.value.loraId)) return animaState.value.characterLoraEnabled === false ? '当前底模不支持无角色 LoRA，请更换底模或启用角色 LoRA' : '缺少角色 LoRA，请准备角色包，或关闭角色 LoRA';
         }

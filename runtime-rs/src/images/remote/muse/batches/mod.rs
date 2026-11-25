@@ -39,6 +39,11 @@ pub(super) struct Batch {
     cast: Option<Vec<cast::CastMemberInput>>,
     #[serde(alias = "castFormation")]
     formation: Option<String>,
+    #[serde(alias = "sceneInteraction", alias = "relations", alias = "relation")]
+    interaction: Option<cast::InteractionInput>,
+    reference_caption: Option<String>,
+    reference_tags: Option<Vec<String>>,
+    reference_identity_terms: Option<Vec<String>>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -105,6 +110,18 @@ impl Batch {
             }
             if scene.formation.is_none() {
                 scene.formation.clone_from(&self.formation);
+            }
+            if scene.interaction.is_none() {
+                scene.interaction.clone_from(&self.interaction);
+            }
+            if scene.reference_caption.is_none() {
+                scene.reference_caption.clone_from(&self.reference_caption);
+            }
+            if scene.reference_tags.is_none() {
+                scene.reference_tags.clone_from(&self.reference_tags);
+            }
+            if scene.reference_identity_terms.is_none() {
+                scene.reference_identity_terms.clone_from(&self.reference_identity_terms);
             }
             if scene.width.is_none()
                 && scene.height.is_none()

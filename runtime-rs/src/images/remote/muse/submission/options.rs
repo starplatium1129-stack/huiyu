@@ -196,7 +196,12 @@ impl SceneSelection {
     }
 
     pub(in super::super) fn has_cast(&self) -> bool {
-        self.cast.is_some() || self.formation.is_some()
+        self.cast.is_some()
+            || self.formation.is_some()
+            || self.interaction.is_some()
+            || self.reference_caption.is_some()
+            || self.reference_tags.is_some()
+            || self.reference_identity_terms.is_some()
     }
 
     pub(in super::super) fn is_custom(&self) -> bool {

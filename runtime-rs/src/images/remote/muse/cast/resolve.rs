@@ -1,6 +1,7 @@
 use super::clean::{
     clean_cast_prose, identity_without_outfit, is_wardrobe_token, normalize_key, public_tags,
 };
+use super::input::{format_custom_outfit_caption, is_clear_outfit_sentinel};
 use super::{ResolvedActor, SceneContext, parse_size};
 use super::super::*;
 
@@ -20,38 +21,60 @@ pub(super) fn resolve_popular_actor(
     catalog: &crate::catalog::Catalog,
     raw_character: &str,
     outfit_id: Option<&str>,
+    outfit_prompt: Option<&str>,
     outfit_explicit: Option<bool>,
     action: String,
+    bbox: Option<[f64; 4]>,
     inherit_reference_outfit: bool,
 ) -> Result<ResolvedActor> {
     let resolved_id = catalog.remote_character_id(raw_character)?;
-    let record = catalog.get("character", &resolved_id).map_err(|_| {
-        ApiError::new(
-            404,
-            "CAST_CHARACTER_NOT_FOUND",
-            format!("未找到角色 {raw_character}，请先用 catalog --kind character 确认角色 ID"),
-        )
-    })?;
+    let record = match catalog.get("character", &resolved_id) {
+        Ok(record) => record,
+        Err(error) if error.code == "CATALOG_NOT_FOUND"
+            || (resolved_id == raw_character && error.code == "INVALID_REQUEST") => {
+            let Some(id) = catalog.cast_character_alias_id(raw_character)? else {
+                return Err(ApiError::new(
+                    404,
+                    "CAST_CHARACTER_NOT_FOUND",
+                    format!("未找到角色 {raw_character}，请先用 catalog --kind character 确认角色 ID"),
+                ));
+            };
+            catalog.get("character", &id)?
+        }
+        Err(error) => return Err(error),
+    };
+    let resolved_id = record.id.clone();
     let popular = &record.data["popular"];
     let profile = &record.data["profile"];
 
-    let explicit = outfit_explicit.unwrap_or_else(|| {
-        outfit_id
-            .map(str::trim)
-            .is_some_and(|value| !value.is_empty())
-    });
+    let trimmed_id = outfit_id.map(str::trim).filter(|s| !s.is_empty());
+    let trimmed_prompt = outfit_prompt.map(str::trim).filter(|s| !s.is_empty());
+    if let (Some(id), Some(_)) = (trimmed_id, trimmed_prompt)
+        && !is_clear_outfit_sentinel(id)
+    {
+        return Err(ApiError::invalid(
+            "同一角色请只传 outfitId 或 outfitPrompt 中的一项（自定义服装时省略 outfitId 或设为 none）",
+        ));
+    }
+    let cleared_outfit = trimmed_prompt.is_some()
+        || trimmed_id.is_some_and(is_clear_outfit_sentinel);
+    let explicit = cleared_outfit || outfit_explicit.unwrap_or(trimmed_id.is_some());
 
-    let chosen_outfit_id = match outfit_id.map(str::trim).filter(|s| !s.is_empty()) {
-        Some(requested) => {
-            if requested.contains('/') {
-                requested.to_owned()
-            } else {
-                format!("{resolved_id}/{requested}")
+    let chosen_outfit_id = if cleared_outfit {
+        String::new()
+    } else {
+        match trimmed_id {
+            Some(requested) => {
+                if requested.contains('/') {
+                    requested.to_owned()
+                } else {
+                    format!("{resolved_id}/{requested}")
+                }
             }
+            None => catalog
+                .default_outfit_id(&resolved_id)?
+                .unwrap_or_default(),
         }
-        None => catalog
-            .default_outfit_id(&resolved_id)?
-            .unwrap_or_default(),
     };
 
     let outfit_record = if !chosen_outfit_id.is_empty() {
@@ -180,28 +203,43 @@ pub(super) fn resolve_popular_actor(
         "other"
     };
 
-    let outfit_tokens = outfit_data
-        .map(|o| public_tags(&string_list(&o["tokens"])))
-        .unwrap_or_default();
-    let outfit_caption = outfit_data
-        .and_then(|o| o["prose"].as_str())
-        .map(str::trim)
-        .filter(|s| !s.is_empty())
-        .map(str::to_owned)
-        .unwrap_or_else(|| {
-            if outfit_tokens.is_empty() {
-                String::new()
-            } else {
-                format!(
-                    "Wearing {}.",
-                    outfit_tokens
-                        .iter()
-                        .map(|t| t.replace('_', " "))
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                )
-            }
-        });
+    let (outfit_tokens, outfit_caption) = if let Some(custom) = trimmed_prompt {
+        let cleaned = clean_cast_prose(custom);
+        (
+            public_tags(&[&cleaned]),
+            format_custom_outfit_caption(&cleaned),
+        )
+    } else if trimmed_id.is_some_and(is_clear_outfit_sentinel) {
+        if trimmed_id.is_some_and(|s| matches!(s.to_ascii_lowercase().as_str(), "nude" | "naked")) {
+            (vec!["nude".into()], "Nude.".into())
+        } else {
+            (Vec::new(), String::new())
+        }
+    } else {
+        let tokens = outfit_data
+            .map(|o| public_tags(&string_list(&o["tokens"])))
+            .unwrap_or_default();
+        let caption = outfit_data
+            .and_then(|o| o["prose"].as_str())
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(str::to_owned)
+            .unwrap_or_else(|| {
+                if tokens.is_empty() {
+                    String::new()
+                } else {
+                    format!(
+                        "Wearing {}.",
+                        tokens
+                            .iter()
+                            .map(|t| t.replace('_', " "))
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    )
+                }
+            });
+        (tokens, caption)
+    };
 
     let mut aliases = Vec::new();
     for field in [
@@ -232,6 +270,7 @@ pub(super) fn resolve_popular_actor(
         outfit_caption,
         outfit_explicit: explicit,
         action,
+        bbox,
         gender,
     })
 }

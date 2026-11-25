@@ -4,7 +4,7 @@
     <div class="char-source studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="角色来源">
       <AnimatedSelection />
       <button type="button" class="char-source-btn"
-        :aria-pressed="!pb.isPopular && !pb.isUnbound" @click="$emit('selectSource', 'studio')">
+        :aria-pressed="!pb.isPopular && !pb.isUnbound && pb.castLead?.source !== 'custom'" @click="selectStudio">
         <ArchiveIcon name="character" class="char-source-icon" />
         <span class="char-source-label studio-control-label">工作室角色</span>
       </button>
@@ -23,7 +23,7 @@
     <div v-if="pb.isUnbound" class="character-source-content">
       <p class="tw:text-secondary tw:text-body-sm">自由创作，不绑定角色。</p>
     </div>
-    <div v-else-if="!pb.isPopular && pb.cast.length <= 1" v-content-motion:right="!pb.isPopular" class="character-source-content">
+    <div v-else-if="!pb.isPopular && pb.cast.length <= 1 && pb.castLead?.source !== 'custom'" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
         <button v-for="c in charOptions" :key="c.id"
           class="char-btn studio-character-choice" type="button"
@@ -90,7 +90,7 @@ defineProps<{
   currentTraits: Array<{ tag: string; label: string }>
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   selectSource: [source: 'studio' | 'popular' | 'none']
   selectCharacter: [character: PopularCharacter]
   selectOutfit: [outfitId: string]
@@ -104,4 +104,9 @@ function selectStudioCharacter(id: typeof charOptions[number]['id']) {
 }
 const charOptions=historicalCharacterOptions.filter(character=>character.id!=='triad')
 const popularSearch = ref('')
+
+function selectStudio() {
+  if (pb.castLead?.source === 'custom') pb.setChar('nene')
+  else emit('selectSource', 'studio')
+}
 </script>

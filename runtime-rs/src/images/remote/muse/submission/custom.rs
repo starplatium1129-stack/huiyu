@@ -44,6 +44,7 @@ fn prepare_manga(input: SceneSelection) -> Result<PreparedScene> {
         || input.regions.is_some()
         || input.cast.is_some()
         || input.formation.is_some()
+        || input.interaction.is_some()
     {
         return Err(ApiError::invalid(
             "manga-screen 仅接受 initImage、operation、penLines、penLinesPolarity、penLinesFit、autoLines、levels、finish、panel 和 rewrite",

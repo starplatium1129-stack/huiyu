@@ -1,11 +1,16 @@
 <template>
-  <section v-if="pb.cast.length && !pb.isUnbound" class="director-cast" :aria-label="pb.cast.length > 1 ? '同框演员表' : '同框角色'">
-    <div v-if="pb.cast.length > 1" v-content-motion:up="true" class="cast-roster">
+  <section v-if="pb.cast.length || pb.isUnbound" class="director-cast" :aria-label="pb.cast.length > 1 ? '同框演员表' : '同框角色'">
+    <div v-if="showRoster" v-content-motion:up="true" class="cast-roster">
       <h3>同框演员表 <span>{{ pb.cast.length }} / 5</span></h3>
-      <p class="cast-status" role="status">{{ placementLabel }}</p>
+      <p v-if="pb.cast.length > 1" class="cast-status" role="status">{{ placementLabel }}</p>
+      <div v-if="pb.cast.length > 1" class="cast-stacked-field">
+        <label :for="interactionId">角色互动关系</label>
+        <textarea :id="interactionId" v-model="pb.castInteraction" class="textarea input-sm" rows="2" maxlength="1000"
+          placeholder="例如两人对视，共用一把伞" />
+      </div>
       <div v-if="canChooseFormation" class="cast-field">
         <label :for="formationId">自动排布</label>
-        <StudioSelect :id="formationId" :model-value="pb.castFormation" :options="formationOptions" label="自动排布" size="sm"
+        <StudioSelect :id="formationId" :model-value="displayedFormation" :options="formationOptions" label="自动排布" size="sm"
           @update:model-value="setFormation" />
       </div>
       <ol ref="roster" class="cast-list" role="list">
@@ -33,23 +38,40 @@
               :options="actor.outfits" :label="`${actor.name}的服装`" size="sm"
               @update:model-value="setOutfit(index, $event)" />
           </div>
+          <div v-if="actor.outfitId === 'custom'" class="cast-stacked-field">
+            <label :for="`${rosterId}-${index}-outfit-prompt`">自定义服装</label>
+            <textarea :id="`${rosterId}-${index}-outfit-prompt`" class="textarea input-sm" rows="2" maxlength="400"
+              :value="actor.member.outfitPrompt ?? ''" :aria-label="`${actor.name}的自定义服装`" placeholder="例如蓝色睡衣"
+              @input="updateText(index, 'outfitPrompt', $event)" @compositionend="updateText(index, 'outfitPrompt', $event)" />
+          </div>
           <div class="cast-field">
             <label :for="`${rosterId}-${index}-action`">个人动作</label>
             <input :id="`${rosterId}-${index}-action`" class="input input-sm" type="text" :value="actor.action"
-              :aria-label="`${actor.name}的个人动作`" placeholder="选填，例如微笑挥手" maxlength="240"
-              @input="updateAction(index, $event)" @compositionend="updateAction(index, $event)" />
+              :aria-label="`${actor.name}的个人动作`" placeholder="选填，例如微笑挥手" maxlength="600"
+              @input="updateText(index, 'action', $event)" @compositionend="updateText(index, 'action', $event)" />
           </div>
-          <button class="btn btn-quiet btn-sm cast-remove" type="button" :aria-label="`移除${actor.name}`"
-            @click="removeActor(index)"><ArchiveIcon name="trash" />移除</button>
+          <div class="cast-actor-footer">
+            <button v-if="actor.member.source === 'custom'" class="btn btn-quiet btn-sm" type="button" :aria-label="`编辑${actor.name}`"
+              @click="openOriginal($event, actor.member)">编辑角色</button>
+            <button v-if="!actor.isLead" class="btn btn-quiet btn-sm" type="button" :aria-label="`将${actor.name}设为主角`"
+              @click="setLead(index)">设为主角</button>
+            <button v-if="pb.cast.length > 1 || actor.member.source === 'custom'" class="btn btn-quiet btn-sm cast-remove" type="button" :aria-label="`移除${actor.name}`"
+              @click="removeActor(index)"><ArchiveIcon name="trash" />移除</button>
+          </div>
         </li>
       </ol>
     </div>
     <p v-else-if="singleReferenceLabel" class="cast-status" role="status">{{ singleReferenceLabel }}</p>
     <p class="sr-only" role="status">{{ announcement }}</p>
-    <button ref="addButton" class="btn btn-quiet btn-sm cast-add" type="button" aria-haspopup="dialog"
-      :aria-disabled="pb.cast.length >= 5" @click="openDirectory">
-      <ArchiveIcon name="plus" />{{ pb.cast.length >= 5 ? '已满 5 位同框角色' : '添加同框角色' }}
-    </button>
+    <div class="cast-add-actions">
+      <button v-if="pb.cast.length" ref="addButton" class="btn btn-quiet btn-sm cast-add" type="button" aria-haspopup="dialog"
+        :aria-disabled="pb.cast.length >= 5" @click="openDirectory">
+        <ArchiveIcon name="plus" />{{ pb.cast.length >= 5 ? '已满 5 位同框角色' : '添加同框角色' }}
+      </button>
+      <button v-if="pb.cast.length < 5" ref="originalButton" class="btn btn-quiet btn-sm" type="button" aria-haspopup="dialog"
+        @click="openOriginal($event)"><ArchiveIcon name="plus" />添加原创角色</button>
+    </div>
+    <DirectorOriginalActorDialog ref="original" @save="saveOriginal" />
     <CharacterDirectoryDialog ref="directory" title="添加同框角色"
       description="可混搭工作室角色与热门角色。点击肖像即可加入演员表。"
       :items="availableCharacters" selected-id="" @select="addActor">
@@ -66,6 +88,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, useId } from 'vue'
+import DirectorOriginalActorDialog from '@/components/director/DirectorOriginalActorDialog.vue'
 import CharacterDirectoryDialog from '@/components/library/CharacterDirectoryDialog.vue'
 import type { DirectoryCharacter } from '@/components/library/CharacterDirectory.vue'
 import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
@@ -78,12 +101,15 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { CastMember } from '@/types/prompt'
 import { CANONICAL_OUTFITS } from '@/utils/canonicalOutfits'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { castMemberKey, referenceCharacterCount } from '@/utils/promptCast'
+import { castMemberKey, isCustomCastOutfit, parseCastFormation, referenceCharacterCount } from '@/utils/promptCast'
 
 const props = defineProps<{ engine: string; canvasSize: string; sizeManuallySet: boolean; customMossLayout: boolean }>()
 const pb = usePromptBuilderStore()
 const rosterId = useId()
 const formationId = useId()
+const interactionId = useId()
+const original = ref<InstanceType<typeof DirectorOriginalActorDialog> | null>(null)
+const originalButton = ref<HTMLButtonElement | null>(null)
 const directory = ref<InstanceType<typeof CharacterDirectoryDialog> | null>(null)
 const roster = ref<HTMLOListElement | null>(null)
 const addButton = ref<HTMLButtonElement | null>(null)
@@ -91,7 +117,11 @@ const loadingCatalog = ref(false)
 const catalogError = ref(false)
 const announcement = ref('')
 
-const formationOptions = [{ value: 'row', label: '横排一列' }, { value: 'staggered', label: '前后错落合影' }]
+const formations = { row: '横排一列', close: '亲密贴近', staggered: '前后错落合影' } as const
+const formationOptions = computed(() => Object.entries(formations)
+  .filter(([value]) => value !== 'staggered' || pb.cast.length >= 4).map(([value, label]) => ({ value, label })))
+const displayedFormation = computed(() => pb.effectiveCastFormation === 'staggered' && pb.cast.length < 4 ? 'row' : pb.effectiveCastFormation)
+const showRoster = computed(() => pb.cast.length > 1 || pb.cast.some(member => member.source === 'custom' || isCustomCastOutfit(member.outfitId)))
 const studioCharacters = [
   { id: 'nene', name: '绫地宁宁', aliases: ['宁宁', 'Ayachi Nene', '綾地寧々'] },
   { id: 'natsume', name: '四季夏目', aliases: ['夏目', 'Shiki Natsume', '四季ナツメ'] },
@@ -148,17 +178,18 @@ const actors = computed(() => pb.cast.map(item => {
   return {
     key,
     isLead: pb.castLead !== null && castMemberKey(pb.castLead) === key,
-    name: person?.name || item.characterId,
+    member: item,
+    name: item.source === 'custom' ? item.name || '原创角色' : person?.name || item.characterId,
     image: resolveRuntimeUrl(person?.image),
-    outfitId: item.outfitExplicit && options.some(option => option.value === item.outfitId) ? item.outfitId : '',
+    outfitId: isCustomCastOutfit(item.outfitId) || item.outfitExplicit && options.some(option => option.value === item.outfitId) ? item.outfitId : '',
     action: item.action ?? '',
-    outfits: [{ value: '', label: '自动服装' }, ...options],
+    outfits: [{ value: '', label: '自动服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
   }
 }))
 const referenceCount = computed(() => referenceCharacterCount(pb.referenceInput?.layout))
 const referenceMapping = computed(() => referenceCount.value >= 2 && referenceCount.value >= pb.cast.length)
-const canChooseFormation = computed(() => props.engine === 'moss' && pb.cast.length >= 4 && !referenceMapping.value && !props.customMossLayout)
-const staggered = computed(() => canChooseFormation.value && pb.castFormation === 'staggered')
+const canChooseFormation = computed(() => props.engine === 'moss' && pb.cast.length >= 2 && !referenceMapping.value && !props.customMossLayout)
+const staggered = computed(() => canChooseFormation.value && displayedFormation.value === 'staggered')
 const placementLabel = computed(() => {
   const people = pb.cast.length
   if (props.engine === 'anima') return pb.referenceInput
@@ -169,7 +200,7 @@ const placementLabel = computed(() => {
     const remaining = referenceCount.value - people
     return `已映射参考图 ${people} 个角色框${remaining ? `，另保留 ${remaining} 位参考配角` : ''}。`
   }
-  const formation = people >= 4 && pb.castFormation === 'staggered' ? '前后错落合影' : '横排一列'
+  const formation = formations[displayedFormation.value]
   return pb.referenceInput ? `参考图用于环境与氛围，自动站位为${formation}。` : `自动站位为${formation}。`
 })
 const singleReferenceLabel = computed(() => props.engine === 'moss' && !props.customMossLayout && referenceCount.value >= 2
@@ -196,13 +227,18 @@ function addActor(id: string) {
   if (!selected || !pb.cast.length || pb.cast.length >= 5) return
   const firstPartner = pb.cast.length === 1
   pb.addCoStar({ source: selected.kind, characterId: selected.characterId, outfitId: '', outfitExplicit: false })
+  recommendWideCanvas(firstPartner)
+}
+
+function recommendWideCanvas(firstPartner: boolean) {
   if (!firstPartner || pb.cast.length !== 2 || props.sizeManuallySet || pb.sdParamsTouched.has('size')) return
   const [width, height] = props.canvasSize.split(/[x×:]/).map(Number)
   if (width < height) pb.flash('当前是竖屏。想给两位角色留出更多空间，可以在画幅中选择横屏。', 4200)
 }
 
 function setFormation(value: string | number) {
-  if (value === 'row' || value === 'staggered') pb.castFormation = value
+  const formation = parseCastFormation(value)
+  if (formation) pb.castFormation = formation
 }
 
 function setOutfit(index: number, value: string | number) {
@@ -210,9 +246,35 @@ function setOutfit(index: number, value: string | number) {
   pb.updateCastMember(index, { outfitId, outfitExplicit: Boolean(outfitId) })
 }
 
-function updateAction(index: number, event: Event) {
+function updateText(index: number, field: 'outfitPrompt' | 'action', event: Event) {
   if (event instanceof InputEvent && event.isComposing) return
-  if (event.target instanceof HTMLInputElement) pb.updateCastMember(index, { action: event.target.value })
+  const input = event.target
+  if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) pb.updateCastMember(index, { [field]: input.value })
+}
+
+function openOriginal(event: MouseEvent, member?: CastMember) {
+  if (event.currentTarget instanceof HTMLElement && (member || pb.cast.length < 5)) original.value?.open(event.currentTarget, member)
+}
+
+async function saveOriginal(id: string | null, identity: Pick<CastMember, 'name' | 'appearance' | 'gender'>) {
+  if (id) {
+    pb.updateCastMember(pb.cast.findIndex(member => member.source === 'custom' && member.characterId === id), identity)
+    return
+  }
+  const firstPartner = pb.cast.length === 1
+  const characterId = globalThis.crypto?.randomUUID?.() ?? `oc-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  pb.addCoStar({ source: 'custom', characterId, outfitId: '', ...identity })
+  recommendWideCanvas(firstPartner)
+  await nextTick()
+  if (document.activeElement === document.body) addButton.value?.focus({ preventScroll: true })
+}
+
+async function setLead(index: number) {
+  const actor = actors.value[index]
+  pb.selectCastLead(index)
+  announcement.value = `${actor.name}已设为主角。`
+  await nextTick()
+  if (document.activeElement === document.body) roster.value?.children[index]?.querySelector<HTMLElement>('.cast-remove')?.focus({ preventScroll: true })
 }
 
 async function moveActor(index: number, step: number, event: MouseEvent) {
@@ -235,7 +297,7 @@ async function removeActor(index: number) {
   await nextTick()
   if (document.activeElement === document.body) {
     const next = roster.value?.children[Math.min(index, actors.value.length - 1)]?.querySelector<HTMLElement>('.cast-remove')
-    ;(next ?? addButton.value)?.focus({ preventScroll: true })
+    ;(next ?? addButton.value ?? originalButton.value)?.focus({ preventScroll: true })
   }
 }
 </script>
@@ -253,7 +315,7 @@ async function removeActor(index: number) {
   color: var(--text-primary);
   font: 650 var(--fs-title-xs)/var(--lh-body) var(--font-sans);
 }
-.cast-roster h3 span, .cast-status, .cast-actor-name small, .cast-field label {
+.cast-roster h3 span, .cast-status, .cast-actor-name small, .cast-field label, .cast-stacked-field label {
   color: var(--text-secondary);
   font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
@@ -265,9 +327,9 @@ async function removeActor(index: number) {
   border-radius: var(--r-lg);
   background: var(--bg-surface);
 }
-.cast-actor-header, .cast-actor-actions, .cast-catalog-error { display: flex; align-items: center; gap: var(--s-2); min-inline-size: 0; }
+.cast-actor-header, .cast-actor-actions, .cast-catalog-error, .cast-actor-footer, .cast-add-actions { display: flex; align-items: center; gap: var(--s-2); min-inline-size: 0; }
 .cast-actor-header :deep(.character-portrait) { inline-size: 2rem; block-size: 2.5rem; }
-.cast-actor-name, .cast-field { display: grid; gap: var(--s-1); min-inline-size: 0; }
+.cast-actor-name, .cast-field, .cast-stacked-field { display: grid; gap: var(--s-1); min-inline-size: 0; }
 .cast-actor-name strong { color: var(--text-primary); overflow-wrap: anywhere; }
 .cast-actor-actions { margin-inline-start: auto; gap: 0; }
 .cast-actor-actions .btn { min-inline-size: var(--control-height-sm); padding-inline: var(--s-1); }
@@ -275,6 +337,7 @@ async function removeActor(index: number) {
 .cast-actor-actions [aria-disabled='true'], .cast-add[aria-disabled='true'] { color: var(--text-disabled); cursor: default; }
 .director-cast .btn[aria-disabled='true']:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 2px; }
 .cast-field { grid-template-columns: 4em minmax(0, 1fr); align-items: center; }
-.cast-add, .cast-remove { justify-self: start; }
-.cast-remove { justify-self: end; }
+.cast-actor-footer, .cast-add-actions { flex-wrap: wrap; }
+.cast-actor-footer { justify-content: end; }
+.cast-stacked-field textarea { min-block-size: calc(2 * var(--control-height-sm)); }
 </style>

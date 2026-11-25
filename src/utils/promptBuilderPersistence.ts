@@ -3,7 +3,7 @@ import { sanitizeOutfitOverride } from './wardrobeContent.ts'
 import { parseAssistLayout, type InterrogateAssistLayout, type InterrogateSubjectMode } from '../api/interrogateResult.ts'
 import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
 import type { CastFormation, CastMember } from '../types/prompt'
-import { parseCastFormation, parseCastMember, parseCastMembers, parseLeadPosition } from './promptCast.ts'
+import { parseCastFormation, parseCastInteraction, parseCastMember, parseCastMembers, parseLeadPosition } from './promptCast.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
@@ -118,6 +118,7 @@ export function parseReferenceInput(value: unknown): DraftReferenceInput | null 
 export type PromptCastSnapshot = {
   coStars?: CastMember[]
   castFormation?: CastFormation
+  castInteraction?: string
   leadCast?: CastMember
   leadPosition?: number
 }
@@ -126,9 +127,10 @@ export function readPromptCastSnapshot(value: unknown): PromptCastSnapshot {
   if (!isRecord(value) || Array.isArray(value)) return {}
   const coStars = parseCastMembers(value.coStars)
   const castFormation = parseCastFormation(value.castFormation)
+  const castInteraction = parseCastInteraction(value.castInteraction)
   const leadCast = parseCastMember(value.leadCast)
   const leadPosition = parseLeadPosition(value.leadPosition, coStars.length)
-  return { ...(coStars.length ? { coStars } : {}), ...(castFormation ? { castFormation } : {}),
+  return { ...(coStars.length ? { coStars } : {}), ...(castFormation ? { castFormation } : {}), ...(castInteraction ? { castInteraction } : {}),
     ...(leadCast ? { leadCast } : {}), ...(leadPosition ? { leadPosition } : {}) }
 }
 
@@ -138,7 +140,8 @@ export type ArtworkCastSnapshot = PromptCastSnapshot & {
 
 export function readArtworkCastSnapshot(value: unknown): ArtworkCastSnapshot {
   const cast = readPromptCastSnapshot(value)
-  return { ...cast, ...(cast.coStars?.length ? { coStarIds: cast.coStars.map(member => member.characterId) } : {}) }
+  const coStarIds = cast.coStars?.filter(member => member.source !== 'custom').map(member => member.characterId)
+  return { ...cast, ...(coStarIds?.length ? { coStarIds } : {}) }
 }
 
 export function supplementalReferenceCaption(input: DraftReferenceInput | null, description: string): string {

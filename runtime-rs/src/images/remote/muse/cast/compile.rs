@@ -28,8 +28,10 @@ pub(super) struct CompileContext<'a> {
     pub(super) parsed_ref_layout: Option<&'a ParsedReferenceLayout>,
     pub(super) identity_terms: &'a [String],
     pub(super) shared_scene_tags: &'a [String],
+    pub(super) reference_scene_tags: &'a [String],
     pub(super) count_tags: &'a [String],
     pub(super) user_prompt_clean: &'a str,
+    pub(super) interaction_clean: &'a str,
     pub(super) scene_prose_clean: &'a str,
     pub(super) ref_caption_clean: &'a str,
     pub(super) user_negative: Option<&'a str>,
@@ -58,16 +60,21 @@ fn compile_moss(ctx: &CompileContext<'_>) -> Result<(String, Option<String>)> {
             .collect::<Vec<_>>()
             .join(" ");
             MossCastSubject {
+                name: actor.name.clone(),
                 caption: full_caption,
                 identity_caption: actor.identity_caption.clone(),
                 outfit_caption: actor.outfit_caption.clone(),
                 outfit_explicit: actor.outfit_explicit,
                 action: actor.action.clone(),
+                custom_bbox: actor.bbox,
             }
         })
         .collect();
 
     let mut common_parts = Vec::new();
+    if !ctx.interaction_clean.is_empty() {
+        common_parts.push(ensure_sentence(ctx.interaction_clean));
+    }
     if !ctx.user_prompt_clean.is_empty() {
         common_parts.push(ctx.user_prompt_clean.to_owned());
     }
@@ -92,10 +99,16 @@ fn compile_moss(ctx: &CompileContext<'_>) -> Result<(String, Option<String>)> {
         ctx.identity_terms,
         common_parts,
     )?;
-    let neg = match ctx.user_negative {
+    let mut neg = match ctx.user_negative {
         Some(custom_neg) => clean_cast_negative(custom_neg),
         None => clean_cast_negative(MOSS_DEFAULT_NEGATIVE),
     };
+    if ctx.actors.len() >= 2 && !neg.to_ascii_lowercase().contains("duplicate character") {
+        if !neg.is_empty() {
+            neg.push_str(", ");
+        }
+        neg.push_str("duplicate character, clone");
+    }
     Ok((prompt_json, Some(neg)))
 }
 
@@ -129,11 +142,20 @@ fn compile_anima(ctx: &CompileContext<'_>) -> (String, Option<String>) {
             head.push((*q).to_owned());
         }
     }
+    let identity_name_keys: HashSet<String> = ctx
+        .identity_terms
+        .iter()
+        .map(|term| normalize_key(term))
+        .collect();
     head.extend(ctx.count_tags.iter().cloned());
     head.extend(character_tokens.iter().cloned());
     head.extend(copyright_tokens.iter().cloned());
     head.extend(ctx.shared_scene_tags.iter().cloned());
-    head.extend(public_tags(&[ctx.user_prompt_clean]));
+    head.extend(
+        public_tags(&[ctx.user_prompt_clean])
+            .into_iter()
+            .filter(|token| !identity_name_keys.contains(&normalize_key(token))),
+    );
     let shared_head = unique_tags(head).join(", ");
 
     let mut sections = vec![shared_head];
@@ -153,29 +175,44 @@ fn compile_anima(ctx: &CompileContext<'_>) -> (String, Option<String>) {
             sections.push(joined);
         }
     }
-    let tags_line = sections.join(" BREAK ");
-    let direction_list = ctx
-        .actors
-        .iter()
-        .map(|actor| {
-            if actor.action.is_empty() {
-                actor.name.clone()
-            } else {
-                format!("{} — {}", actor.name, actor.action)
-            }
-        })
-        .collect::<Vec<_>>()
-        .join("; ");
-    let direction = format!(
-        "From left to right: {}.",
-        direction_list.trim_end_matches(['.', '!', '?'])
-    );
-    let mut lines = vec![tags_line];
+    let mut lines = vec![sections.join(" BREAK ")];
     if !ctx.scene_prose_clean.is_empty() {
         lines.push(ensure_sentence(ctx.scene_prose_clean));
     }
-    lines.push(direction);
-    let neg = ctx.user_negative.map(clean_cast_negative);
+    if !ctx.ref_caption_clean.is_empty() && ctx.ref_caption_clean != ctx.scene_prose_clean {
+        lines.push(ensure_sentence(ctx.ref_caption_clean));
+    }
+    if ctx.actors.len() > 1 {
+        let direction_list = ctx
+            .actors
+            .iter()
+            .map(|actor| {
+                if actor.action.is_empty() {
+                    actor.name.clone()
+                } else {
+                    format!("{} — {}", actor.name, actor.action)
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("; ");
+        lines.push(format!(
+            "From left to right: {}.",
+            direction_list.trim_end_matches(['.', '!', '?'])
+        ));
+    }
+    if !ctx.interaction_clean.is_empty() {
+        lines.push(ensure_sentence(ctx.interaction_clean));
+    }
+    let neg = ctx.user_negative.map(|raw| {
+        let mut cleaned = clean_cast_negative(raw);
+        if ctx.actors.len() >= 2 && !cleaned.to_ascii_lowercase().contains("duplicate character") {
+            if !cleaned.is_empty() {
+                cleaned.push_str(", ");
+            }
+            cleaned.push_str("duplicate character, clone");
+        }
+        cleaned
+    });
     (lines.join("\n"), neg)
 }
 
@@ -190,11 +227,13 @@ fn compile_natural(ctx: &CompileContext<'_>) -> (String, Option<String>) {
             .join(", ");
         let layout_hint = if ctx.actors.len() >= 4 && ctx.formation == CastFormation::Staggered {
             "in a staggered two-row group composition"
+        } else if ctx.formation == CastFormation::Close {
+            "close together in an intimate group composition"
         } else {
             "side by side in the same frame"
         };
         sentences.push(format!(
-            "Group illustration featuring {} characters ({names}) {layout_hint}",
+            "Exactly {} characters appear in the frame ({names}) {layout_hint}, with no extra or duplicate characters",
             ctx.actors.len()
         ));
     }
@@ -208,11 +247,21 @@ fn compile_natural(ctx: &CompileContext<'_>) -> (String, Option<String>) {
         }
         sentences.push(join_sentences(parts));
     }
+    if !ctx.interaction_clean.is_empty() {
+        sentences.push(ctx.interaction_clean.to_owned());
+    }
     if !ctx.user_prompt_clean.is_empty() {
         sentences.push(ctx.user_prompt_clean.to_owned());
     }
     if !ctx.scene_prose_clean.is_empty() {
         sentences.push(ctx.scene_prose_clean.to_owned());
+    }
+    if !ctx.ref_caption_clean.is_empty() && ctx.ref_caption_clean != ctx.scene_prose_clean {
+        sentences.push(ctx.ref_caption_clean.to_owned());
+    }
+    if !ctx.reference_scene_tags.is_empty() {
+        let details = ctx.reference_scene_tags.join(", ").replace('_', " ");
+        sentences.push(format!("Scene details: {details}"));
     }
     if let Some(scene) = ctx.scene_ctx
         && !scene.camera.is_empty()

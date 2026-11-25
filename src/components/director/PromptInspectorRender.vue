@@ -14,7 +14,7 @@
         :disabled="generationBusy" :hint="generationBusy ? BUSY_HINT : undefined"
         :options="animaModelOptions" @update:model-value="onAnimaModelSelected" />
     </div>
-    <div v-if="drawEngine === 'anima' && pb.cast.length <= 1 && !pb.isPopular && (pb.char === 'nene' || pb.char === 'natsume')" class="character-lora-setting">
+    <div v-if="drawEngine === 'anima' && !pb.castRequiresNoLora && !pb.isPopular && (pb.char === 'nene' || pb.char === 'natsume')" class="character-lora-setting">
       <ToggleSwitch :model-value="animaState.characterLoraEnabled !== false"
         :disabled="generationBusy || (!supportsNoLora && animaState.characterLoraEnabled !== false)"
         label="使用角色 LoRA" @update:model-value="setCharacterLoraEnabled">

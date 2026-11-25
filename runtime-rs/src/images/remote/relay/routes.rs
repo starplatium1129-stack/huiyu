@@ -210,6 +210,7 @@ pub(super) fn requires_request_key(method: &Method, route: &str) -> bool {
     !matches!(
         route,
         super::super::upload_index::PATH
+            | super::super::muse::PREVIEW_PATH
             | "/api/muse/video/prompt/preview"
             | "/api/muse/video/inputs"
     ) && !is_video_concat_route(route)
@@ -238,6 +239,9 @@ pub(super) fn allowed(method: &Method, path: &str) -> bool {
         Some((route, query)) => (route, Some(query)),
         None => (path, None),
     };
+    if route == super::super::muse::PREVIEW_PATH {
+        return *method == Method::POST && query.is_none();
+    }
     let parts: Vec<_> = route.split('/').collect();
     match parts.as_slice() {
         ["", "api", "muse", "jobs"] => *method == Method::POST || *method == Method::GET,

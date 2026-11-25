@@ -13,6 +13,7 @@ export const VOICE_STATUS = '/api/muse/voice/status'
 export const INTERROGATE_STATUS = '/api/muse/interrogate/status'
 export const INTERROGATE_RUN = '/api/muse/interrogate'
 export const UPSCALE_PATH = '/api/muse/upscale'
+const DRAW_PREVIEW = '/api/muse/jobs/preview'
 export const INPUTS_LOOKUP_PATH = '/api/muse/inputs/lookup'
 export const HEALTH_PATH = '/api/muse/health'
 export const VIDEO_STATUS = '/api/muse/video/status'
@@ -51,7 +52,7 @@ export const keyframePath = path => path.startsWith('/api/keyframe/')
 export const mangaPath = path => path.startsWith('/api/manga/')
 export const legacyModelReadPath = path => path === '/api/muse/options' || /^\/api\/(anima|moss|qwen|creative)\/status$/.test(path)
 export const modelReadPath = path => path === '/api/muse/options' || /^\/api\/(anima|moss|qwen|creative|keyframe|manga)\/status$/.test(path)
-export const noCacheRpcPath = path => chatPath(path) || voicePath(path) || interrogatePath(path) || videoPath(path) || path === HEALTH_PATH || galleryPath(path)
+export const noCacheRpcPath = path => chatPath(path) || voicePath(path) || interrogatePath(path) || videoPath(path) || path === HEALTH_PATH || path === DRAW_PREVIEW || galleryPath(path)
 export const inboxPath = path => path === DESKTOP_INBOX || path === '/api/muse/qq/inbox'
 export const mediaPartPath = path => videoResultRoute.test(path) || galleryFileRoute.test(path)
 
@@ -110,7 +111,7 @@ export function control(method, path) {
   if (path === VOICE_SYNTHESIZE) return method === 'POST'
   if (path === INTERROGATE_STATUS) return method === 'GET'
   if (path === INTERROGATE_RUN) return method === 'POST'
-  if (path === UPSCALE_PATH || path === INPUTS_LOOKUP_PATH) return method === 'POST'
+  if (path === UPSCALE_PATH || path === DRAW_PREVIEW || path === INPUTS_LOOKUP_PATH) return method === 'POST'
   if (path === HEALTH_PATH || path === '/api/muse/gallery') return method === 'GET'
   if (path === VIDEO_STATUS) return method === 'GET'
   if (path === VIDEO_PREVIEW || path === VIDEO_INPUTS || path === VIDEO_JOBS || path === VIDEO_BATCHES) return method === 'POST'
@@ -145,7 +146,7 @@ export function validateRouteQuery(method, url) {
     }
     return problem(404, 'MUSE_ROUTE_NOT_FOUND', '找不到这个 Muse 接口')
   }
-  if (interrogatePath(path) || path === UPSCALE_PATH || path === HEALTH_PATH || path === INPUTS_LOOKUP_PATH) {
+  if (interrogatePath(path) || path === UPSCALE_PATH || path === DRAW_PREVIEW || path === HEALTH_PATH || path === INPUTS_LOOKUP_PATH) {
     return url.search ? problem(400, 'INVALID_PARAMETER', '经中转调用此接口不支持 query 参数') : null
   }
   if (videoResultRoute.test(path)) {
@@ -204,7 +205,7 @@ export function parseAgentCapabilities(headers) {
 
 export function requiresRequestKey(method, path) {
   if (method !== 'POST') return false
-  return path !== INPUTS_LOOKUP_PATH && path !== VIDEO_PREVIEW && path !== VIDEO_INPUTS && !videoConcatRoute.test(path)
+  return path !== INPUTS_LOOKUP_PATH && path !== DRAW_PREVIEW && path !== VIDEO_PREVIEW && path !== VIDEO_INPUTS && !videoConcatRoute.test(path)
 }
 
 export function largeBodyLimitFor(path) {
@@ -234,7 +235,7 @@ export function validatePostBody(method, path, bytes) {
     if (!body || typeof body !== 'object' || Array.isArray(body) || typeof body.data !== 'string' || typeof body.mimeType !== 'string') {
       return { body: undefined, error: problem(400, 'INVALID_REQUEST', 'JSON 视频素材上传须包含 mimeType 与标准 Base64 data') }
     }
-  } else if (path === VIDEO_PREVIEW || videoConcatRoute.test(path)) {
+  } else if (path === DRAW_PREVIEW || path === VIDEO_PREVIEW || videoConcatRoute.test(path)) {
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
       return { body: undefined, error: problem(400, 'INVALID_REQUEST', '请求体须为 JSON 对象') }
     }

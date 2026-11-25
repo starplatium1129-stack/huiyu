@@ -4,14 +4,28 @@ import { tagKey } from './animaPromptOrder.ts'
 import { isRecord } from './popularParseGuards.ts'
 import { splitBreaks, tokenize } from './promptPrimitives.ts'
 
+function castText(value: unknown, limit: number): string | undefined {
+  return typeof value === 'string' ? value.trim().slice(0, limit) || undefined : undefined
+}
+
+export function parseCastInteraction(value: unknown) { return castText(value, 1000) }
+
+export function isCustomCastOutfit(value: string) { return value === 'custom' || value === 'none' }
+
 export function parseCastMember(value: unknown): CastMember | null {
-  if (!isRecord(value) || (value.source !== 'studio' && value.source !== 'popular')
+  if (!isRecord(value) || (value.source !== 'studio' && value.source !== 'popular' && value.source !== 'custom')
     || typeof value.characterId !== 'string' || !value.characterId.trim()
     || typeof value.outfitId !== 'string') return null
   const characterId = value.characterId.trim()
   if (value.source === 'studio' && characterId !== 'nene' && characterId !== 'natsume') return null
-  const action = typeof value.action === 'string' ? value.action.replace(/[\r\n]+/g, ' ').trim().slice(0, 240) : ''
+  const action = typeof value.action === 'string' ? value.action.replace(/[\r\n]+/g, ' ').trim().slice(0, 600) : ''
+  const outfitPrompt = castText(value.outfitPrompt, 400)
+  const name = castText(value.name, 80), appearance = castText(value.appearance, 400)
+  const gender = value.gender === 'boy' || value.gender === 'other' ? value.gender : 'girl'
+  if (value.source === 'custom' && !name && !appearance) return null
   return {
+    ...(value.source === 'custom' ? { name, appearance, gender } : {}),
+    ...(outfitPrompt ? { outfitPrompt } : {}),
     source: value.source, characterId, outfitId: value.outfitId.trim(),
     ...(typeof value.outfitExplicit === 'boolean' ? { outfitExplicit: value.outfitExplicit } : {}),
     ...(action ? { action } : {}),
@@ -34,7 +48,7 @@ export function parseCastMembers(value: unknown): CastMember[] {
 }
 
 export function parseCastFormation(value: unknown): CastFormation | undefined {
-  return value === 'row' || value === 'staggered' ? value : undefined
+  return value === 'row' || value === 'close' || value === 'staggered' ? value : undefined
 }
 
 export function parseLeadPosition(value: unknown, companions: number): number {

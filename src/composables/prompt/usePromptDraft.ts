@@ -33,7 +33,8 @@ export interface PromptDraftState {
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
   coStars: Ref<CastMember[]>
-  castFormation: Ref<CastFormation>
+  castFormation: Ref<CastFormation | undefined>
+  castInteraction: Ref<string>
   leadCast: Ref<CastMember | null>
   leadPosition: Ref<number>
   randomVariation: Ref<DraftRandomVariation | null>
@@ -151,7 +152,8 @@ export function usePromptDraft(state: PromptDraftState) {
       ...subjectSnapshot,
       ...readPromptCastSnapshot({
         coStars: state.coStars.value,
-        castFormation: state.castFormation.value === 'staggered' ? 'staggered' : undefined,
+        castFormation: state.castFormation.value,
+        castInteraction: state.castInteraction.value,
         leadCast: state.leadCast.value,
         leadPosition: state.leadPosition.value,
       }),
@@ -213,7 +215,7 @@ export function usePromptDraft(state: PromptDraftState) {
 
   // Clearing or editing only the reference outfit does not touch manualTags.
   watch([outfitOverride, referenceInput, state.directorSources, state.storyOrigin,
-    state.coStars, state.castFormation, state.leadCast, state.leadPosition], saveDraft, { deep: true })
+    state.coStars, state.castFormation, state.castInteraction, state.leadCast, state.leadPosition], saveDraft, { deep: true })
 
   onScopeDispose(() => {
     if (draftTimer) void persistDraft().catch(() => {})

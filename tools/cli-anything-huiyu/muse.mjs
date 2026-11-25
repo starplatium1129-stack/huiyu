@@ -149,12 +149,14 @@ export async function apiRaw(method, path, body, contentType, options = {}) {
 
 export async function submit(input, explicitKey, batch, overrides) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('请求文件须包含一个 JSON 对象。')
-  if (explicitKey !== undefined && input.requestKey !== undefined && explicitKey !== input.requestKey) {
+  const { dryRun, ...payload } = input
+  if (dryRun !== undefined && dryRun !== false) throw new Error('单图预览请使用 draw --dry-run 或 draw_preview。')
+  if (explicitKey !== undefined && payload.requestKey !== undefined && explicitKey !== payload.requestKey) {
     throw new Error('--key 须与请求文件里的 requestKey 一致。')
   }
-  const key = requestKey(explicitKey ?? input.requestKey ?? newRequestKey())
+  const key = requestKey(explicitKey ?? payload.requestKey ?? newRequestKey())
   try {
-    const result = await api('POST', batch ? '/api/muse/batches' : '/api/muse/jobs', { ...input, ...overrides, requestKey: key })
+    const result = await api('POST', batch ? '/api/muse/batches' : '/api/muse/jobs', { ...payload, ...overrides, requestKey: key })
     if (result.batchKey !== key) throw new Error('返回的批次编号与提交编号不符。')
     return result
   } catch (error) {

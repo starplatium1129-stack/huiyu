@@ -1,4 +1,5 @@
 use super::clean::{clean_cast_prose, public_tags};
+use super::input::{format_custom_outfit_caption, is_clear_outfit_sentinel};
 use super::ResolvedActor;
 use super::super::*;
 use std::sync::LazyLock;
@@ -19,8 +20,8 @@ static STUDIO_OUTFITS: LazyLock<Vec<StudioOutfitDef>> = LazyLock::new(|| {
 pub(super) fn studio_character_id(raw: &str) -> Option<&'static str> {
     let trimmed = raw.trim();
     match trimmed {
-        "nene" | "宁宁" | "绫地宁宁" => Some("nene"),
-        "natsume" | "夏目" | "四季夏目" => Some("natsume"),
+        "nene" | "宁宁" | "绫地宁宁" | "綾地寧々" => Some("nene"),
+        "natsume" | "夏目" | "四季夏目" | "四季ナツメ" => Some("natsume"),
         _ => match trimmed.to_ascii_lowercase().as_str() {
             "nene" | "ayachi_nene" | "ayachi nene" => Some("nene"),
             "natsume" | "shiki_natsume" | "shiki natsume" => Some("natsume"),
@@ -55,22 +56,43 @@ fn default_studio_outfit(character: &str) -> &'static StudioOutfitDef {
 pub(super) fn resolve_studio_actor(
     character: &'static str,
     outfit_id: Option<&str>,
+    outfit_prompt: Option<&str>,
     outfit_explicit: Option<bool>,
     action: String,
+    bbox: Option<[f64; 4]>,
     wardrobe_db: Option<&Connection>,
 ) -> Result<ResolvedActor> {
-    let (outfit_tags, outfit_caption, explicit) = match outfit_id
-        .map(str::trim)
-        .filter(|s| !s.is_empty())
+    let trimmed_id = outfit_id.map(str::trim).filter(|s| !s.is_empty());
+    let trimmed_prompt = outfit_prompt.map(str::trim).filter(|s| !s.is_empty());
+    if let (Some(id), Some(_)) = (trimmed_id, trimmed_prompt)
+        && !is_clear_outfit_sentinel(id)
     {
-        Some(requested) => {
-            if let Some(def) = find_studio_outfit(character, requested) {
-                (
-                    public_tags(&def.tags),
-                    format!("Wearing {}.", def.prose),
-                    outfit_explicit.unwrap_or(true),
-                )
-            } else if let Some(db) = wardrobe_db {
+        return Err(ApiError::invalid(
+            "同一角色请只传 outfitId 或 outfitPrompt 中的一项（自定义服装时省略 outfitId 或设为 none）",
+        ));
+    }
+
+    let (outfit_tags, outfit_caption, explicit) = if let Some(custom) = trimmed_prompt {
+        let cleaned = clean_cast_prose(custom);
+        (
+            public_tags(&[&cleaned]),
+            format_custom_outfit_caption(&cleaned),
+            true,
+        )
+    } else if let Some(requested) = trimmed_id {
+        if is_clear_outfit_sentinel(requested) {
+            if matches!(requested.to_ascii_lowercase().as_str(), "nude" | "naked") {
+                (vec!["nude".into()], "Nude.".into(), true)
+            } else {
+                (Vec::new(), String::new(), true)
+            }
+        } else if let Some(def) = find_studio_outfit(character, requested) {
+            (
+                public_tags(&def.tags),
+                format!("Wearing {}.", def.prose),
+                outfit_explicit.unwrap_or(true),
+            )
+        } else if let Some(db) = wardrobe_db {
                 let key = if requested.starts_with("studio/") {
                     requested.to_owned()
                 } else {
@@ -111,23 +133,21 @@ pub(super) fn resolve_studio_actor(
                             .join(", ")
                     )
                 };
-                (tags, prose, outfit_explicit.unwrap_or(true))
-            } else {
-                return Err(ApiError::new(
-                    404,
-                    "CAST_OUTFIT_NOT_FOUND",
-                    format!("未找到角色 {character} 的服装 {requested}"),
-                ));
-            }
+            (tags, prose, outfit_explicit.unwrap_or(true))
+        } else {
+            return Err(ApiError::new(
+                404,
+                "CAST_OUTFIT_NOT_FOUND",
+                format!("未找到角色 {character} 的服装 {requested}"),
+            ));
         }
-        None => {
-            let def = default_studio_outfit(character);
-            (
-                public_tags(&def.tags),
-                format!("Wearing {}.", def.prose),
-                outfit_explicit.unwrap_or(false),
-            )
-        }
+    } else {
+        let def = default_studio_outfit(character);
+        (
+            public_tags(&def.tags),
+            format!("Wearing {}.", def.prose),
+            outfit_explicit.unwrap_or(false),
+        )
     };
 
     if character == "nene" {
@@ -154,6 +174,7 @@ pub(super) fn resolve_studio_actor(
             outfit_caption,
             outfit_explicit: explicit,
             action,
+            bbox,
             gender: "girl",
         })
     } else {
@@ -181,6 +202,7 @@ pub(super) fn resolve_studio_actor(
             outfit_caption,
             outfit_explicit: explicit,
             action,
+            bbox,
             gender: "girl",
         })
     }

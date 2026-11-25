@@ -27,7 +27,7 @@
 
 ### 核心 API 速查
 
-Muse 和其他助手可以使用同一份 `cli-anything-huiyu`（v1.5.0+）命令行包统一操作绘遇全部远程创作与通道能力（绘图、图生图/蒙版/参考图/MOSS 布局、图像反推、独立放大、短视频与分镜拼接、日语语音、桌面与 QQ 通道、以及只读健康与作品册查询）。HTTPS 中转使用 `HUIYU_CLI_URL` 和 `MUSE_TOKEN`，任务通过 `batchKey` 在助手之间交接。用 `--json errors <batchKey>` 查询生成与交付错误。只支持 HTTP 的助手可直接使用下表的同一套接口。[多助手操作说明](../../tools/cli-anything-huiyu/SKILL.md)
+Muse 和其他助手可使用 `cli-anything-huiyu` 统一操作远程绘图、图像反推、独立放大、短视频、语音、桌面与 QQ 通道、以及只读健康与作品册查询。原创角色与单图编译预览从 **1.8.0** 起支持。HTTPS 中转使用 `HUIYU_CLI_URL` 和 `MUSE_TOKEN`，任务通过 `batchKey` 交接。用 `--json errors <batchKey>` 查询生成与交付错误。只支持 HTTP 的助手可直接使用下表接口。[多助手操作说明](../../tools/cli-anything-huiyu/SKILL.md)
 
 | 用途 | 路径与方法 | 关键参数与说明 |
 | --- | --- | --- |
@@ -37,6 +37,7 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu`（v1.5.0+）命�
 | 服装详情 | `GET /api/muse/catalog/outfit/{id}` | 如 `/studio/natsume-maid`，返回 `tokens` 与 `compatibleModels` |
 | 参考图查重与上传 | `POST /api/muse/inputs/lookup`<br>`POST /api/{family}/images/raw` | 先传 ≤16 个小写 SHA-256 查复用（直连与中转均支持）；未命中再按 `anima`/`creative`/`moss`/`qwen`/`keyframe`/`manga` 原始二进制上传（≤16 MiB，**仅本机/Tailscale 直连支持**；中转场景下反推/放大/视频素材请用各自 Base64 JSON 通道） |
 | 提交单张任务 | `POST /api/muse/jobs` | 传目录 `id`、自定义 `prompt`、MOSS `layout` 或 `manga-screen` `initImage` + 新 `requestKey`；支持图生图/蒙版/参考图、`styleLoraId`、加速与高清放大参数 |
+| 只读编译预览 | `POST /api/muse/jobs/preview` | 使用单图提交参数，省略 `requestKey`。返回 `modelId`、`family`、`width`、`height`、`prompt`、`negative` 等编译结果。走查询限流，无排队和任务记录 |
 | 提交批量任务 | `POST /api/muse/batches` | 传 `ids` 或 `items` 数组（单项 ≤ 8 张，整批 ≤ 16 张）；顶层通用与进阶参数可由单项覆盖 |
 | 独立图像放大 | `POST /api/muse/upscale` | `202` 异步批次队列；传 `initImage` 或 `imageBase64`（≤8 MiB）及 `upscaler`（`remacri`/`ultrasharp`）、`scale`（1.1–3.0） |
 | 远程图像反推 | `GET /api/muse/interrogate/status`<br>`POST /api/muse/interrogate` | 直连 raw（≤20 MiB）或中转 Base64 JSON（≤8 MiB）；支持 `mode`（`tag`/`caption`）、`threshold`、`assist`、`subjectMode`（`free`/`bound`）、`layout`、`noCache`（默认启用内存+本地 SQLite 14 天结果缓存，仅缓存成功结果，命中返回 `cacheHit: true`） |
@@ -44,7 +45,10 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu`（v1.5.0+）命�
 | 队列与恢复 | `GET /api/muse/queue`<br>`GET /api/muse/jobs` | 查排队；按 `since` / `nextBefore` / `agent` / `status` 找回近期单图或批次 |
 
 - **目录默认配方**：支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0`、`moss-miaomiao-base-v1.1` 及 `krea2-turbo` / `krea2-raw`（动态编译英文自然语言配方并支持 `styleLoraId`，以本机已安装版本为准）。
-- **1–5 人多角色混搭同框（`cast` / `formation`）**：`POST /api/muse/jobs` 与 `POST /api/muse/batches` 支持传 `cast` 数组（1–5 项，每项可传字符串简写 `"角色ID[:服装ID][:动作]"` 或对象 `{characterId, outfitId?, outfitExplicit?, action?}`）及 `formation`（`row` | `staggered`），支持画室角色（`nene`/`natsume`）与目录任意热门角色混搭，并可叠加共享 `prompt`、目录 `id`（场景/蓝图）或 MOSS `layout`（`assistLayout` 自动绑定人物框）。Anima 自动走无角色 LoRA + `BREAK` 分段编译；MOSS 自动编译规范多人布局；Krea 2 / Qwen / Keyframe 编译英文自然语言多人同框。
+- **1–5 人多角色混搭同框（`cast` / `interaction` / `formation`）**：`POST /api/muse/jobs` 、`POST /api/muse/jobs/preview` 和 `POST /api/muse/batches` 支持传 `cast` 数组（1–5 项，每项可传字符串简写 `"角色ID[:服装ID|=自定义服装|none][:动作]"` 或对象 `{characterId?, name?, appearance?, gender?, outfitId?, outfitPrompt?, outfitExplicit?, action?, bbox?}`），其中 `outfitPrompt` 可自由写睡衣/换装/剧情装（替换官方默认服），`outfitId: "none"` 可清空默认服，`action` 支持 ≤600 字，MOSS 支持归一化 `bbox` 自定义叠框；顶层 `interaction`（≤1000 字）描述角色间对视、牵手、共用物品等关系；`formation` 支持 `row` / `close` / `staggered`（2–3 人带 `interaction` 默认 `close` 亲密重叠）。顶层 `prompt` 仅写共享场景/光影/镜头，避免重复描述人物。
+- 原创角色可省略 `characterId`，或写 `custom`、`original`、`oc`。每位原创角色分别填写称呼（`name`，≤80 字）或外貌（`appearance`，≤400 字），至少一项。性别 `gender` 支持 `girl`、`boy`、`other`，默认 `girl`。目录角色支持 ID、显示名、原名和唯一别名。
+- 搭配反推和 `cast` 时，将原始描述和词条放到 `referenceCaption`、`referenceTags`，把原图角色名和作品名放到 `referenceIdentityTerms`，由编译器过滤身份与旧服装。CLI 的 `--from-interrogate` 会代为分离参考层。MOSS 还可接收 `layout` 来逐框绑定。
+- CLI 用 `draw --dry-run`，工具调用用 `draw_preview` 或 `draw` 加 `params.dryRun: true`。预览复用单图编译，图片参数可引用已上传的文件名。通过 HTTPS 中转使用预览需要部署带新路由的 Cloudflare Worker，并更新桌面连接器。
 - **进阶图像控制**：Anima 支持 `initImage`、`denoisingStrength`、`maskImage`/`maskPrompt`、`maskThreshold`、`growMaskBy`、`sketchControl`、`regions`；`qwen-image` 与 `keyframe`（`flux-kontext-dev`/`minimax-h3-image-q4`）支持 `initImage` + ≤3 张 `referenceImages`；`manga-screen` 支持 `initImage` + `operation`/`penLines` 等漫画网点参数；MOSS 支持直接传 `layout` 对象（自动换算 `assistLayout`/归一化 `0..1`/`rel_1000`/`xyxy` 为规范中心像素框）。
 - **Anima 高清放大与独立放大**：生图内联放大传 `"upscale": "ultrasharp" | "remacri" | "off"`；对已有图片放大调用 `POST /api/muse/upscale`（或 `cli-anything-huiyu upscale`），`remacri` 1.5×/2.0× 走原生纯像素通道，`ultrasharp` 走 Anima 放大重绘。
 

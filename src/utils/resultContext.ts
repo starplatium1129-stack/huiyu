@@ -21,6 +21,7 @@ export interface ResultContextInput {
   readonly visualDescription: string
   readonly coStars?: readonly CastMember[]
   readonly castFormation?: CastFormation
+  readonly castInteraction?: string
   readonly leadCast?: CastMember | null
   readonly leadPosition?: number
   readonly referenceInput?: DraftReferenceInput | null
@@ -87,11 +88,11 @@ export function historyFromResultContext(ctx?: AnimaResultContext | null): Parti
   const cast = readArtworkCastSnapshot(history)
   return {
     ...history,
-    coStars: cast.coStars, castFormation: cast.castFormation, leadCast: cast.leadCast, leadPosition: cast.leadPosition, coStarIds: cast.coStarIds,
+    coStars: cast.coStars, castFormation: cast.castFormation, castInteraction: cast.castInteraction, leadCast: cast.leadCast, leadPosition: cast.leadPosition, coStarIds: cast.coStarIds,
     referenceInput: history.referenceInput === undefined ? undefined : parseReferenceInput(history.referenceInput),
     subject: popular ? 'popular' : 'studio', noLora: popular || ctx.noLora === true || ctx.char === 'none',
     character: (popular ? ctx.characterId : ctx.char) as HistoryEntry['character'],
-    characterId: popular ? ctx.characterId : cast.coStars?.length ? ctx.char : undefined,
+    characterId: popular ? ctx.characterId : cast.leadCast?.source === 'custom' ? cast.leadCast.characterId : cast.coStars?.length ? ctx.char : undefined,
     outfitId: popular ? ctx.outfitId ?? undefined : undefined,
     blueprintId: popular ? ctx.blueprintId ?? undefined : undefined,
     scene: popular ? ctx.blueprintId ?? null : ctx.sceneId ?? null,

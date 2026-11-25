@@ -1,4 +1,4 @@
-import { readInput, readStdin, submit } from './muse.mjs'
+import { api, readInput, readStdin, submit } from './muse.mjs'
 import { saveAll, saveOriginal } from './download.mjs'
 import { isTerminalItem, waitForBatch } from './wait.mjs'
 import { uploadImage } from './upload.mjs'
@@ -22,14 +22,14 @@ export const promptTextOptions = {
 }
 export const sharedControlOptions = [
   'init-image', 'ref', 'mask', 'mask-prompt', 'sketch-file', 'regions-file', 'layout-file',
-  'cast', 'cast-file', 'formation',
+  'cast', 'cast-file', 'formation', 'interaction',
 ]
 export const drawingOptions = [
   ...Object.keys(drawingTextOptions), ...drawingIntegerOptions, 'tea-cache', ...Object.keys(drawingNumberOptions),
   ...sharedControlOptions,
 ]
 export const drawingHelp = '通用选项包括 --model 模型ID、--seed 种子、--variants 张数、--width 宽 --height 高、--upscale off|ultrasharp|remacri、--style-lora 风格LoRA。\n'
-  + '    多角色混搭同框（1–5 人）支持重复传 --cast 角色[:服装ID][:动作] 或 --cast-file JSON，配 --formation row|staggered（4–5 人支持前后排错落），可搭 --prompt、目录 --id 或 MOSS --layout-file / --from-interrogate。\n'
+  + '    同框（1–5 人）支持重复传 --cast 角色[:服装ID|=自定义服装|none][:动作] 或 --cast-file JSON（原创角色使用对象 name/appearance/gender；服装可传 outfitPrompt 或 outfitId:"none"，另支持 ≤600 字 action 和 MOSS 归一化 bbox）。--interaction 描述对视或共用物品等互动；--formation 支持 row|close|staggered。--prompt 写共享环境/光影/镜头。\n'
   + '    进阶控制支持 --init-image 底图、--ref 参考图（可多次传）、--mask 蒙版图或 --mask-prompt 蒙版提示词、--mask-threshold 0.05–0.95、--grow-mask-by 0–32、--denoise 0.1–1.0、--sketch-file 线稿JSON、--regions-file 分区JSON、--layout-file MOSS布局JSON。\n'
   + '    底图/参考图/蒙版支持已上传文件名或本地图片路径（自动 SHA-256 复用或上传）。\n'
   + '    Anima 加速用 --tea-cache on|off 和 --tea-cache-thresh 0–1；MOSS 加速用 --moss-sampler euler|er-sde、--moss-acceleration off|spectrum|spectrum-adaptive 和 --moss-spectrum-flex-window 0–2。'
@@ -45,10 +45,11 @@ export function inferUploadFamily(options, input) {
   return 'anima'
 }
 
-export async function resolveImageHandle(value, family) {
+export async function resolveImageHandle(value, family, preview = false) {
   if (typeof value !== 'string' || !value.trim()) throw new Error('图片参数不能为空。')
   const trimmed = value.trim()
   if (UPLOADED_IMAGE_HANDLE.test(trimmed)) return trimmed
+  if (preview) throw new Error('预览请传已上传的图片文件名。')
   return (await uploadImage(trimmed, { family })).name
 }
 
@@ -86,31 +87,31 @@ export function drawingOverrides(options) {
   return payload
 }
 
-export async function resolveControlOverrides(options, input, overrides, batch) {
+export async function resolveControlOverrides(options, input, overrides, batch, preview = false) {
   const family = inferUploadFamily(options, input)
   if (options['init-image'] !== undefined) {
-    overrides.initImage = await resolveImageHandle(options['init-image'], family)
+    overrides.initImage = await resolveImageHandle(options['init-image'], family, preview)
   }
   if (options.mask !== undefined) {
-    overrides.maskImage = await resolveImageHandle(options.mask, family)
+    overrides.maskImage = await resolveImageHandle(options.mask, family, preview)
   }
   if (options.ref !== undefined) {
     const refs = []
     for (const value of options.ref) {
-      refs.push(await resolveImageHandle(value, family))
+      refs.push(await resolveImageHandle(value, family, preview))
     }
     overrides.referenceImages = refs
   }
   if (!batch && options['pen-lines'] !== undefined) {
-    overrides.penLines = await resolveImageHandle(options['pen-lines'], 'manga')
+    overrides.penLines = await resolveImageHandle(options['pen-lines'], 'manga', preview)
   }
   if (options['sketch-file'] !== undefined) {
     const sketch = await readInput(options['sketch-file'], false)
     if (!sketch || typeof sketch !== 'object' || Array.isArray(sketch)) {
       throw new Error('--sketch-file 须包含一个 JSON 对象。')
     }
-    if (typeof sketch.image === 'string' && sketch.image.trim() && !UPLOADED_IMAGE_HANDLE.test(sketch.image.trim())) {
-      sketch.image = (await uploadImage(sketch.image.trim(), { family })).name
+    if (typeof sketch.image === 'string' && sketch.image.trim()) {
+      sketch.image = await resolveImageHandle(sketch.image, family, preview)
     }
     overrides.sketchControl = sketch
   }
@@ -139,14 +140,19 @@ function parseCastSpec(raw) {
   const firstColon = raw.indexOf(':')
   if (firstColon < 0) return { characterId: raw.trim() }
   const characterId = raw.slice(0, firstColon).trim()
-  if (!characterId) throw new Error('--cast 缺少角色 ID，格式为 角色ID[:服装ID][:动作]。')
+  if (!characterId) throw new Error('--cast 缺少角色 ID，格式为 角色ID[:服装ID|=自定义服装|none][:动作]。')
   const rest = raw.slice(firstColon + 1)
   const secondColon = rest.indexOf(':')
-  const outfitId = (secondColon < 0 ? rest : rest.slice(0, secondColon)).trim()
+  const outfitPart = (secondColon < 0 ? rest : rest.slice(0, secondColon)).trim()
   const action = secondColon < 0 ? '' : rest.slice(secondColon + 1).trim()
   const member = { characterId }
-  if (outfitId) {
-    member.outfitId = outfitId
+  if (outfitPart.startsWith('=')) {
+    const customOutfit = outfitPart.slice(1).trim()
+    if (!customOutfit) throw new Error('--cast 中 = 后需要填写自定义服装描述。')
+    member.outfitPrompt = customOutfit
+    member.outfitExplicit = true
+  } else if (outfitPart) {
+    member.outfitId = outfitPart
     member.outfitExplicit = true
   }
   if (action) member.action = action
@@ -169,10 +175,15 @@ async function resolveCastOverrides(options, overrides) {
     overrides.cast = loaded.map(item => typeof item === 'string' ? parseCastSpec(item) : item)
   }
   if (options.formation !== undefined) {
-    if (!['row', 'staggered'].includes(options.formation)) {
-      throw new Error('--formation 仅支持 row 或 staggered。')
+    if (!['row', 'close', 'intimate', 'staggered'].includes(options.formation)) {
+      throw new Error('--formation 仅支持 row、close 或 staggered。')
     }
-    overrides.formation = options.formation
+    overrides.formation = options.formation === 'intimate' ? 'close' : options.formation
+  }
+  if (options.interaction !== undefined) {
+    const items = options.interaction.map(text => text.trim()).filter(Boolean)
+    if (!items.length) throw new Error('--interaction 不能为空。')
+    overrides.interaction = items.length === 1 ? items[0] : items
   }
 }
 
@@ -183,9 +194,9 @@ export function buildFromInterrogate(data, modelId, hasCast = false) {
   const model = (modelId ?? '').toLowerCase()
   const isNatural = model.startsWith('moss') || model.startsWith('krea2') || model.startsWith('qwen')
     || model.startsWith('flux') || model.startsWith('minimax')
-  const tagsPrompt = Array.isArray(data.tags) && data.tags.length
-    ? data.tags.filter(t => typeof t === 'string' && t.trim()).join(', ')
-    : undefined
+  const strings = value => Array.isArray(value) ? value.filter(t => typeof t === 'string' && t.trim()).map(t => t.trim()) : []
+  const referenceTags = strings(data.tags)
+  const tagsPrompt = referenceTags.join(', ') || undefined
   const captionPrompt = typeof data.caption === 'string' && data.caption.trim() ? data.caption.trim() : undefined
   const prompt = isNatural ? (captionPrompt ?? tagsPrompt) : (tagsPrompt ?? captionPrompt)
   const result = {}
@@ -197,11 +208,14 @@ export function buildFromInterrogate(data, modelId, hasCast = false) {
     result.layout = !hasLayoutCaption && captionPrompt
       ? { ...baseLayout, caption: captionPrompt }
       : baseLayout
-    if (!hasCast && prompt) result.prompt = prompt
-  } else if (prompt) {
-    result.prompt = prompt
   }
-  if (!result.prompt && !result.layout) {
+  if (hasCast && (prompt || result.layout)) {
+    if (referenceTags.length) result.referenceTags = referenceTags
+    if (captionPrompt) result.referenceCaption = captionPrompt
+    const names = [...new Set([...strings(data.characterTags), ...strings(data.copyrightTags)])]
+    if (names.length) result.referenceIdentityTerms = names
+  } else if (prompt) result.prompt = prompt
+  if (!result.prompt && !result.layout && !result.referenceCaption && !result.referenceTags) {
     throw new Error('反推 JSON 中未找到可用的 tags、caption 或 assistLayout。')
   }
   return result
@@ -318,7 +332,13 @@ export async function drawOrBatch(options, args, session, batch) {
     Object.assign(overrides, promptOptions(options))
   }
   const input = await drawingInput(options, args, batch)
-  await resolveControlOverrides(options, input, overrides, batch)
+  if (input?.dryRun !== undefined && typeof input.dryRun !== 'boolean') throw new Error('dryRun 须为布尔值。')
+  const preview = options['dry-run'] === true || input?.dryRun === true
+  if (preview && (batch || shouldWait || options.key !== undefined)) {
+    throw new Error('单图预览请使用 draw --dry-run，省略 --wait、--out 和 --key。')
+  }
+  await resolveControlOverrides(options, input, overrides, batch, preview)
+  if (preview) return previewDrawing(input, overrides)
   if (!batch && output !== undefined && (overrides.variants ?? input?.variants ?? 1) !== 1) {
     throw new Error('--out 只能保存一张图。多张图请用 batch --out-dir。')
   }
@@ -336,4 +356,12 @@ export async function drawOrBatch(options, args, session, batch) {
     error.requestKey = submitted.batchKey
     throw error
   }
+}
+
+export async function previewDrawing(input, overrides) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('预览参数须为 JSON 对象。')
+  const payload = { ...input, ...overrides }
+  delete payload.dryRun
+  delete payload.requestKey
+  return api('POST', '/api/muse/jobs/preview', payload)
 }

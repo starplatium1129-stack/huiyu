@@ -1,12 +1,17 @@
 export type PromptFamily = 'sd' | 'anima' | 'krea2'
 
-export type CastFormation = 'row' | 'staggered'
+export type CastFormation = 'row' | 'close' | 'staggered'
+export type CastGender = 'girl' | 'boy' | 'other'
 
 export interface CastMember {
-  source: 'studio' | 'popular'
+  source: 'studio' | 'popular' | 'custom'
   characterId: string
   outfitId: string
   outfitExplicit?: boolean
+  outfitPrompt?: string
+  name?: string
+  appearance?: string
+  gender?: CastGender
   action?: string
 }
 
@@ -51,6 +56,7 @@ export interface PromptPlan {
     subjects?: readonly MossPromptSubject[]
     castLayout?: boolean
     formation?: CastFormation
+    interaction?: string
     referenceIdentityTerms?: string[]
     referenceLayout?: {
       layout: import('./interrogate').InterrogateAssistLayout

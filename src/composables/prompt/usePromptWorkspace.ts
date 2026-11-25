@@ -69,7 +69,7 @@ export function usePromptWorkspace() {
     function captureResultContext(): AnimaResultContext {
         return snapshotResultContext(pb);
     }
-    const animaCastActive = computed(() => drawEngine.value === 'anima' && pb.cast.length > 1);
+    const animaCastActive = computed(() => drawEngine.value === 'anima' && pb.castRequiresNoLora);
     const animaSession = useAnimaSession({
         getCharacter: () => animaCastActive.value ? 'none' : pb.char,
         isPopular: () => !animaCastActive.value && pb.isPopular,
@@ -113,7 +113,7 @@ export function usePromptWorkspace() {
     const popular = unified.popular;
     // ── 反推服装顶替（2026-08-29）────────────────────────────────────────────
     const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length
-        && (pb.cast.length < 2 || pb.outfitOverride.presetId)));
+        && (!pb.castRequiresNoLora || pb.outfitOverride.presetId)));
     // ── 引擎协调层（2026-08-28 编排下沉）──────────────────────────────────────
     const engine = useDirectorEngine({
         pb,

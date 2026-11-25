@@ -8,6 +8,7 @@ pub(super) enum CastFormation {
     #[default]
     Row,
     Staggered,
+    Close,
 }
 
 impl CastFormation {
@@ -15,8 +16,9 @@ impl CastFormation {
         match raw.map(str::trim).filter(|value| !value.is_empty()) {
             None | Some("row") => Ok(Self::Row),
             Some("staggered") => Ok(Self::Staggered),
+            Some("close" | "intimate") => Ok(Self::Close),
             Some(_) => Err(ApiError::invalid(
-                "formation 仅支持 row（并排）或 staggered（前后排错落）",
+                "formation 仅支持 row（并排）、close（贴近互动）或 staggered（前后排错落）",
             )),
         }
     }
@@ -74,9 +76,27 @@ static RE_CLOTHING_STATES: LazyLock<Regex> = LazyLock::new(|| {
         .unwrap()
 });
 static RE_WEARING_CLAUSE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(?:(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in))\s+[^.;!?]+")
+    let garment = format!(
+        r"(?:(?:a|an|the|her|his|their)\s+)?(?:(?:{GARMENT_MODIFIERS})\s+){{0,6}}(?:{GARMENT_NOUNS})\b",
+    );
+    Regex::new(&format!(
+        r"(?i)\b(?:(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in)|in|has|have|with)\s+(?:{garment})(?:(?:\s*,\s*(?:and\s+)?|\s+(?:and|with|over|under)\s+)(?:{garment}))*",
+    ))
+    .unwrap()
+});
+static RE_WEARING_FALLBACK: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(?i)\b(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in)\s+[^.;!?]+")
         .unwrap()
 });
+static RE_AFTER_CLOTHING: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(concat!(
+        r"(?i)(?:\s+(?:while|beside|near|next to|in front of|at (?:a|an|the))\s+|",
+        r"\s*,\s*(?:holding|standing|sitting|seated|leaning|walking|looking|smiling)\b)",
+    ))
+    .unwrap()
+});
+static RE_DANGLING_LINK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?i)\b(?:with|who|has|have|is|are|and|or)\s*(,|$)").unwrap());
 static RE_BARE_SUBJECT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^(?:(?:the |a |an |another )?(?:(?:left|right|central|rear|front) )?(?:character|subject|person|figure|woman|man|girl|boy)s?|she|he|they|both|each)(?:[.!?;]+|$)")
         .unwrap()
@@ -85,9 +105,33 @@ static RE_DARK_SKIN: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)\b(?:dark|tan|tanned|brown|black|olive|bronze|colored|blue|green|purple|red|gray|grey|orange|yellow|pink)\s+skin(?:ned)?\b|^(?:tan|tanned|dark skinned (?:female|male))$")
         .unwrap()
 });
-static RE_WARDROBE_WORD: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(?:uniform|dress|skirt|shirt|blouse|sweater|cardigan|blazer|jacket|coat|hoodie|vest|cape|capelet|cloak|kimono|yukata|qipao|cheongsam|serafuku|sailor|bikini|swimsuit|leotard|bodysuit|bunny suit|maid|apron|pajamas|sleepwear|nightgown|lingerie|bra|panties|underwear|stockings|thighhighs|socks|tights|pantyhose|legwear|garter|boots|shoes|heels|sandals|hat|beret|ribbon|bowtie|necktie|scarf|gloves|belt|suspenders|shorts|pants|trousers|jeans|crop top|tank top|camisole|halter|sleeves|collar|choker)\b")
-        .unwrap()
+const GARMENT_NOUNS: &str = concat!(
+    "uniforms?|(?:sun)?dress(?:es)?|skirts?|shirts?|blouses?|sweaters?|cardigans?|blazers?|jackets?|coats?|hoodies?|vests?|",
+    "capes?|capelets?|cloaks?|kimono|yukata|qipao|cheongsam|serafuku|bikinis?|swimsuits?|leotards?|bodysuits?|bunny suit|",
+    "aprons?|pajamas|pyjamas|sleepwear|nightgowns?|lingerie|bras?|panties|underwear|stockings|thighhighs|socks|tights|",
+    "pantyhose|legwear|garters?|boots?|shoes?|heels?|sandals?|slippers?|hats?|berets?|ribbons?|bowties?|neckties?|",
+    "scar(?:f|fs|ves)|gloves?|belts?|suspenders|shorts|pants|trousers|jeans|crop tops?|tank tops?|camisoles?|halter|",
+    "sleeves?|collars?|cuffs?|chokers?|earrings?|necklaces?|bracelets?|outfits?|costumes?|robes?|suits?|",
+    "clothes|clothing|corsets?|bodices?|overalls|headwear|footwear|barefoot|bare feet",
+);
+const GARMENT_MODIFIERS: &str = concat!(
+    "a|an|the|very|light|dark|bright|deep|pale|warm|soft|white|off-white|black|brown|red|pink|blue|purple|orange|green|",
+    "grey|gray|silver|gold|golden|yellow|cream|ivory|navy|beige|burgundy|lavender|teal|striped|polka-dot|checked|plaid|",
+    "floral|denim|cotton|wool|woven|knit(?:ted)?|leather|satin|silk|silky|velvet|sheer|lace|lacy|frilled|embroidered|",
+    "ruffled|oversized|fitted|tailored|loose|long|short|knee-length|ankle-length|floor-length|sleeveless|long-sleeved|",
+    "short-sleeved|pleated|open|buttoned|collared|casual|traditional|school|sailor|maid|wide|high|low|waisted",
+);
+static RE_WARDROBE_WORD: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(&format!(r"(?i)\b(?:{GARMENT_NOUNS}|maid|sailor)\b")).unwrap());
+static RE_REFERENCE_TRAIT: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(concat!(
+        r"(?i)(?:\b(?:hair|bangs|eyebrows?|eyes?|pupils?|skin|complexion|breasts?|chest|waist|hips?|legs?|face|",
+        r"hands?|arms?|shoulders?|fingers?|cheeks?|mouth|nose|lips?|lap|",
+        r"freckles|mole|body type|heterochromia|ahoge|twintails?|braids?|ponytails?|ears?|tails?|horns?|wings?|halo|",
+        r"slim|petite|muscular|androgynous|male|female|elf|android|kemonomimi|",
+        r"girls?|boys?|women|woman|men|man|persons?|people|characters?|subjects?|figures?)\b)"
+    ))
+    .unwrap()
 });
 
 pub(super) fn normalize_key(token: &str) -> String {
@@ -122,7 +166,11 @@ pub(super) fn is_cast_count_tag(token: &str) -> bool {
 
 pub(super) fn is_wardrobe_token(token: &str) -> bool {
     let key = normalize_key(token);
-    !key.is_empty() && RE_WARDROBE_WORD.is_match(&key)
+    RE_WARDROBE_WORD.is_match(&key) || RE_CLOTHING_STATES.is_match(&key)
+}
+
+pub(super) fn is_reference_appearance_token(token: &str) -> bool {
+    RE_REFERENCE_TRAIT.is_match(&normalize_key(token))
 }
 
 pub(super) fn conflicts_with_fair_skin(token: &str) -> bool {
@@ -223,35 +271,43 @@ pub(super) fn clean_moss_reference_prose(
         .filter(|term| term.chars().count() > 1)
         .collect();
     terms.sort_by(|a, b| b.len().cmp(&a.len()));
-    let mut dedup = HashSet::new();
-    for term in terms {
-        let lower = term.to_ascii_lowercase();
-        if !dedup.insert(lower) {
-            continue;
-        }
-        let pattern: String = term
+    let mut seen = HashSet::new();
+    let patterns = terms
+        .into_iter()
+        .filter(|term| seen.insert(term.to_lowercase()))
+        .map(|term| term
             .split(|c: char| c.is_whitespace() || c == '_' || c == '-')
             .filter(|part| !part.is_empty())
             .map(regex::escape)
             .collect::<Vec<_>>()
-            .join(r"[\s_-]+");
-        if pattern.is_empty() {
-            continue;
-        }
-        if let Ok(re) = Regex::new(&format!(r"(?i)(?:^|\b){pattern}(?:\b|$)")) {
-            text = re.replace_all(&text, "").into_owned();
-        }
+            .join(r"[\s_-]+"))
+        .filter(|pattern| !pattern.is_empty())
+        .collect::<Vec<_>>()
+        .join("|");
+    if !patterns.is_empty()
+        && let Ok(re) = Regex::new(&format!(r"(?i)(?:^|\b)(?:{patterns})(?:\b|$)"))
+    {
+        text = re.replace_all(&text, "").into_owned();
     }
 
     text = RE_APPEARANCE.replace_all(&text, "").into_owned();
     if replace_outfit {
         text = RE_CLOTHING_STATES.replace_all(&text, "").into_owned();
         text = RE_WEARING_CLAUSE.replace_all(&text, "").into_owned();
+        text = RE_WEARING_FALLBACK
+            .replace_all(&text, |capture: &regex::Captures<'_>| {
+                let clause = &capture[0];
+                RE_AFTER_CLOTHING
+                    .find(clause)
+                    .map(|rest| clause[rest.start()..].to_owned())
+                    .unwrap_or_default()
+            })
+            .into_owned();
     }
 
     let mut sentences = Vec::new();
     for raw in text.split(['.', '!', '?', ';']) {
-        let cleaned = collapse_punctuation(raw);
+        let cleaned = collapse_punctuation(&RE_DANGLING_LINK.replace_all(raw, "$1"));
         if cleaned.is_empty()
             || !cleaned.chars().any(char::is_alphabetic)
             || RE_BARE_SUBJECT.is_match(&cleaned)

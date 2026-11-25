@@ -7,11 +7,13 @@ const MAX_LAYOUT_ITEMS: usize = 16;
 const MAX_PROMPT_UTF16: usize = 12_000;
 
 pub(super) struct MossCastSubject {
+    pub(super) name: String,
     pub(super) caption: String,
     pub(super) identity_caption: String,
     pub(super) outfit_caption: String,
     pub(super) outfit_explicit: bool,
     pub(super) action: String,
+    pub(super) custom_bbox: Option<[f64; 4]>,
 }
 
 pub(super) fn moss_normalized_box(width: u64, height: u64, [y1, x1, y2, x2]: [f64; 4]) -> [i64; 4] {
@@ -78,7 +80,8 @@ pub(super) fn moss_cast_boxes(
     count: usize,
     formation: CastFormation,
 ) -> Vec<[i64; 4]> {
-    if count >= 4 && formation == CastFormation::Staggered {
+    if count >= 4 && matches!(formation, CastFormation::Staggered | CastFormation::Close) {
+        let overlap = if formation == CastFormation::Close { 0.26 } else { 0.12 };
         let mut front = row_boxes(
             width,
             height,
@@ -87,7 +90,7 @@ pub(super) fn moss_cast_boxes(
             if count == 4 { 0.01 } else { 0.14 },
             1.0,
             if count == 4 { 0.99 } else { 0.86 },
-            0.12,
+            overlap,
         );
         let rear = row_boxes(
             width,
@@ -97,10 +100,18 @@ pub(super) fn moss_cast_boxes(
             if count == 4 { 0.19 } else { 0.01 },
             0.67,
             if count == 4 { 0.81 } else { 0.99 },
-            0.12,
+            overlap,
         );
         front.extend(rear);
         return front;
+    }
+    if formation == CastFormation::Close && count >= 2 {
+        let (left, right, overlap) = if count == 2 {
+            (0.04, 0.96, 0.36)
+        } else {
+            (0.02, 0.98, 0.28)
+        };
+        return row_boxes(width, height, count, 0.0, left, 1.0, right, overlap);
     }
     row_boxes(width, height, count, 0.0, 0.0, 1.0, 1.0, 0.12)
 }
@@ -147,7 +158,8 @@ pub(super) fn build_moss_cast_layout(
         .flat_map(|layout| layout.items.iter().enumerate())
         .filter(|(_, item)| item.label == "character")
         .collect();
-    let use_reference = ref_chars.len() >= subjects.len();
+    let has_custom_bbox = subjects.iter().any(|subject| subject.custom_bbox.is_some());
+    let use_reference = !has_custom_bbox && ref_chars.len() >= subjects.len();
 
     let to_local = |item: &NormalizedRefItem, replace_outfit: bool| {
         clean_cast_prose(&clean_moss_reference_prose(
@@ -255,7 +267,11 @@ pub(super) fn build_moss_cast_layout(
         let mut out_items: Vec<Value> = subjects
             .iter()
             .zip(boxes)
-            .map(|(subject, bbox)| {
+            .map(|(subject, default_bbox)| {
+                let bbox = subject
+                    .custom_bbox
+                    .map(|unit| moss_normalized_box(width, height, unit))
+                    .unwrap_or(default_bbox);
                 let caption = clean_cast_prose(&subject.caption);
                 make_item(
                     "character",
@@ -276,7 +292,19 @@ pub(super) fn build_moss_cast_layout(
 
     let mut summary_lines = Vec::new();
     let mut seen_lines = HashSet::new();
-    if extra_people == 1 {
+    if extra_people == 0 && subjects.len() >= 2 {
+        let names = subjects
+            .iter()
+            .map(|s| s.name.as_str())
+            .collect::<Vec<_>>()
+            .join(", ");
+        let anchor = format!(
+            "Exactly {} characters appear in the frame (from left to right: {names}), with no extra or duplicate characters.",
+            subjects.len()
+        );
+        seen_lines.insert(anchor.clone());
+        summary_lines.push(anchor);
+    } else if extra_people == 1 {
         let line = "One additional supporting character appears in the frame.".to_owned();
         seen_lines.insert(line.clone());
         summary_lines.push(line);

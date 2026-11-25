@@ -7,6 +7,7 @@ import { analyzeParts, checkArtDirection, mergeTokenText, type PromptEngine, typ
 import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { mossArtistTags } from '@/utils/mossPrompt'
+import { cleanCastProse } from '@/utils/promptCast'
 import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 /** The workspace supplies selections; the shared recipe owns native prompt rendering. */
@@ -15,6 +16,11 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
     const caption = target === 'moss' || target === 'krea2' ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription) : ''
+    const original = pb.castLead?.source === 'custom' && target === 'krea2' ? pb.castLead : null
+    const visualDescription = original
+      ? [pb.visualDescription, original.name, original.appearance, original.outfitId === 'custom' ? original.outfitPrompt : '', original.action]
+        .map(item => cleanCastProse(item ?? '')).filter(Boolean).join('. ')
+      : pb.visualDescription
     return compilePromptRecipe({
       kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
       randomSetting: !caption && pb.randomVariation?.source === '',
@@ -25,7 +31,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
       palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],
       artistTags: target === 'moss' ? mossArtistTags(artists.value) : artistTagsForEngine(artists.value, target),
       artistProse: target === 'moss' ? '' : artistStyleProse(artists.value, target),
-      visualDescription: pb.visualDescription, negativeCustom: pb.sdParams.negativeCustom,
+      visualDescription, negativeCustom: pb.sdParams.negativeCustom,
       characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens || [])],
       copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens || [])],
     })

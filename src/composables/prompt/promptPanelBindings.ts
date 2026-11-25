@@ -38,7 +38,7 @@ export interface PromptRenderBindings extends
   Pick<Engine, 'displayResultUrl' | 'generationBusy' | 'generationPresetSummary' | 'setDrawEngine' | 'supportsDualCharacter' | 'selectAnimaModel' | 'displayResultSeed' | 'animaNoLoraMode' | 'currentCapabilities'>,
   Pick<Popular, 'managedRoute' | 'applyManagedRoute'>,
   Pick<Derived, 'vramHint' | 'vramLevel' | 'baseResolutionRisk' | 'baseResolutionHint' | 'canUseFaceDetailer'> {
-  pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'cast' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
+  pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'castRequiresNoLora' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
   drawEngine: Ref<DrawEngine>
   animaState: Anima['state']
   generationPresentation: Readonly<Ref<GenerationPresentation>>

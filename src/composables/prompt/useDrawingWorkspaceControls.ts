@@ -94,7 +94,7 @@ export function useDrawingWorkspaceControls(params: {
     try { localStorage.setItem(INTERROGATE_ASSIST_KEY, value ? '1' : '0') } catch { /* Keep the current session usable. */ }
   }
 
-  const drawingHasContent = computed(() => !!(pb.cast.length > 1 && (drawEngine.value === 'moss' || drawEngine.value === 'anima')
+  const drawingHasContent = computed(() => !!(pb.castRequiresNoLora && (drawEngine.value === 'moss' || drawEngine.value === 'anima')
     || pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
     || !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
     || drawEngine.value === 'moss' && pb.referenceInput?.layout
@@ -129,6 +129,8 @@ export function useDrawingWorkspaceControls(params: {
       const found = pb.popularCharacters.find(item => item.id === subject.characterId)
       return found?.displayName || '热门角色'
     }
+    if (pb.castLead?.source === 'custom') return pb.castLead.name || '原创角色'
+    if (pb.isUnbound) return '无角色'
     return pb.char === 'natsume' ? '四季夏目' : pb.char === 'triad' ? '宁宁与夏目' : '绫地宁宁'
   })
 

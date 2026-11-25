@@ -1,8 +1,11 @@
 mod clean;
 mod compile;
+mod custom_actor;
+mod input;
 mod layout_bind;
 mod ref_layout;
 mod resolve;
+mod scene_reference;
 mod studio;
 
 use super::*;
@@ -11,93 +14,12 @@ use clean::{
     is_wardrobe_token, normalize_key, unique_tags,
 };
 use compile::{CompileContext, compile_family_prompt};
+use input::{MAX_ACTION_CHARS, MAX_CAST_MEMBERS, MAX_OUTFIT_PROMPT_CHARS, validate_member_bbox};
 use ref_layout::parse_reference_layout;
 use resolve::{resolve_popular_actor, resolve_scene_context};
 use std::collections::HashSet;
 
-const MAX_CAST_MEMBERS: usize = 5;
-const MAX_ACTION_CHARS: usize = 240;
-
-#[derive(Clone, serde::Serialize)]
-#[serde(rename_all = "camelCase")]
-pub(super) struct CastMemberInput {
-    pub(super) character_id: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(super) outfit_id: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(super) outfit_explicit: Option<bool>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(super) action: Option<String>,
-}
-
-#[derive(serde::Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
-struct CastMemberObject {
-    #[serde(alias = "character")]
-    character_id: String,
-    #[serde(default, alias = "outfit")]
-    outfit_id: Option<String>,
-    #[serde(default)]
-    outfit_explicit: Option<bool>,
-    #[serde(default)]
-    action: Option<String>,
-}
-
-#[derive(serde::Deserialize)]
-#[serde(untagged)]
-enum CastMemberRepr {
-    Shorthand(String),
-    Object(CastMemberObject),
-}
-
-impl<'de> serde::Deserialize<'de> for CastMemberInput {
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        match CastMemberRepr::deserialize(deserializer)? {
-            CastMemberRepr::Object(obj) => Ok(Self {
-                character_id: obj.character_id,
-                outfit_id: obj.outfit_id,
-                outfit_explicit: obj.outfit_explicit,
-                action: obj.action,
-            }),
-            CastMemberRepr::Shorthand(raw) => {
-                let trimmed = raw.trim();
-                if trimmed.is_empty() {
-                    return Err(serde::de::Error::custom("cast 成员不能为空字符串"));
-                }
-                let Some((char_part, rest)) = trimmed.split_once(':') else {
-                    return Ok(Self {
-                        character_id: trimmed.to_owned(),
-                        outfit_id: None,
-                        outfit_explicit: None,
-                        action: None,
-                    });
-                };
-                let character_id = char_part.trim();
-                if character_id.is_empty() {
-                    return Err(serde::de::Error::custom(
-                        "cast 简写缺少角色 ID，格式为 角色ID[:服装ID][:动作]",
-                    ));
-                }
-                let (outfit_part, action_part) = match rest.split_once(':') {
-                    Some((o, a)) => (o.trim(), a.trim()),
-                    None => (rest.trim(), ""),
-                };
-                let outfit_id = (!outfit_part.is_empty()).then(|| outfit_part.to_owned());
-                let outfit_explicit = outfit_id.as_ref().map(|_| true);
-                let action = (!action_part.is_empty()).then(|| action_part.to_owned());
-                Ok(Self {
-                    character_id: character_id.to_owned(),
-                    outfit_id,
-                    outfit_explicit,
-                    action,
-                })
-            }
-        }
-    }
-}
+pub(super) use input::{CastMemberInput, InteractionInput};
 
 pub(super) struct ResolvedActor {
     pub(super) key: String,
@@ -111,6 +33,7 @@ pub(super) struct ResolvedActor {
     pub(super) outfit_caption: String,
     pub(super) outfit_explicit: bool,
     pub(super) action: String,
+    pub(super) bbox: Option<[f64; 4]>,
     pub(super) gender: &'static str,
 }
 
@@ -175,11 +98,23 @@ pub(super) fn prepare(
         .cast
         .as_ref()
         .filter(|list| !list.is_empty())
-        .ok_or_else(|| ApiError::invalid("cast 须包含 1–5 名角色；formation 须搭配 cast 使用"))?;
+        .ok_or_else(|| {
+            ApiError::invalid("cast 须包含 1–5 名角色；排布、互动和反推参考字段须搭配 cast 使用")
+        })?;
     if raw_cast.len() > MAX_CAST_MEMBERS {
         return Err(ApiError::invalid("同框阵容最多支持 5 名角色"));
     }
-    let formation = CastFormation::parse(input.formation.as_deref())?;
+    let interaction_clean = match input.interaction.as_ref() {
+        Some(raw) => clean_cast_prose(&raw.normalize()?),
+        None => String::new(),
+    };
+    let formation = match input.formation.as_deref() {
+        Some(raw) => CastFormation::parse(Some(raw))?,
+        None if !interaction_clean.is_empty() && (2..=3).contains(&raw_cast.len()) => {
+            CastFormation::Close
+        }
+        None => CastFormation::Row,
+    };
 
     let adapter = generation::native::adapters::model(model)
         .filter(|spec| spec["media"] == "image" && spec["packedManga"] != true);
@@ -193,6 +128,9 @@ pub(super) fn prepare(
     };
     if input.layout.is_some() && family != "moss-image" {
         return Err(ApiError::invalid("layout 参数仅适用于 MOSS 图像模型"));
+    }
+    if raw_cast.iter().any(|m| m.bbox.is_some()) && family != "moss-image" {
+        return Err(ApiError::invalid("cast 成员的自定义 bbox 仅适用于 MOSS 图像模型"));
     }
     if input.style_lora_id.is_some() && family != "krea2" {
         return Err(ApiError::invalid("styleLoraId 仅适用于 Krea 2"));
@@ -233,12 +171,23 @@ pub(super) fn prepare(
 
     let mut seen_keys = HashSet::new();
     let mut actors = Vec::with_capacity(raw_cast.len());
-    for member in raw_cast {
-        let raw_id = member.character_id.trim();
+    for (index, member) in raw_cast.iter().enumerate() {
+        let raw_id = member.character_id.as_deref().unwrap_or("custom").trim();
         if raw_id.is_empty() || raw_id.chars().count() > 160 || raw_id.chars().any(char::is_control)
         {
             return Err(ApiError::invalid("cast 成员的 characterId 须为 1–160 个有效字符"));
         }
+        if let Some(custom_outfit) = member.outfit_prompt.as_deref()
+            && custom_outfit.chars().count() > MAX_OUTFIT_PROMPT_CHARS
+        {
+            return Err(ApiError::invalid(format!(
+                "cast 成员的 outfitPrompt 不能超过 {MAX_OUTFIT_PROMPT_CHARS} 字"
+            )));
+        }
+        let bbox = match member.bbox {
+            Some(box4) => Some(validate_member_bbox(box4, raw_id)?),
+            None => None,
+        };
         let action = member
             .action
             .as_deref()
@@ -253,12 +202,16 @@ pub(super) fn prepare(
                 )
             })
             .unwrap_or_default();
-        let actor = if let Some(studio_id) = studio::studio_character_id(raw_id) {
+        let actor = if member.is_custom() {
+            custom_actor::resolve_custom_actor(member, index, action, bbox)?
+        } else if let Some(studio_id) = studio::studio_character_id(raw_id) {
             studio::resolve_studio_actor(
                 studio_id,
                 member.outfit_id.as_deref(),
+                member.outfit_prompt.as_deref(),
                 member.outfit_explicit,
                 action,
+                bbox,
                 wardrobe_db.as_ref(),
             )?
         } else {
@@ -266,8 +219,10 @@ pub(super) fn prepare(
                 &catalog,
                 raw_id,
                 member.outfit_id.as_deref(),
+                member.outfit_prompt.as_deref(),
                 member.outfit_explicit,
                 action,
+                bbox,
                 inherit_ref_outfit,
             )?
         };
@@ -287,6 +242,7 @@ pub(super) fn prepare(
     if let Some(ctx) = &scene_ctx {
         identity_terms.extend(ctx.source_identity_terms.iter().cloned());
     }
+    identity_terms.extend(input.reference_identity_terms.iter().flatten().cloned());
     let local_keys: HashSet<String> = identity_terms
         .iter()
         .chain(actors.iter().flat_map(|a| a.identity_tokens.iter()))
@@ -294,7 +250,11 @@ pub(super) fn prepare(
         .map(|t| normalize_key(t))
         .collect();
 
-    let shared_scene_tags: Vec<String> = scene_ctx
+    let reference_scene_tags = scene_reference::tags(
+        input.reference_tags.as_deref().unwrap_or_default(),
+        &local_keys,
+    );
+    let scene_tags = scene_ctx
         .as_ref()
         .map(|ctx| {
             unique_tags(ctx.tags.iter().cloned().filter(|token| {
@@ -303,6 +263,7 @@ pub(super) fn prepare(
             }))
         })
         .unwrap_or_default();
+    let shared_scene_tags = unique_tags(scene_tags.into_iter().chain(reference_scene_tags.iter().cloned()));
 
     let user_prompt_clean = input
         .prompt
@@ -313,11 +274,19 @@ pub(super) fn prepare(
         .as_ref()
         .map(|ctx| clean_cast_prose(&clean_moss_reference_prose(&ctx.prose, &identity_terms, true)))
         .unwrap_or_default();
-    let ref_caption_clean = parsed_ref_layout
+    let ref_from_layout = parsed_ref_layout
         .as_ref()
         .and_then(|layout| layout.summary_caption.as_deref())
         .map(|text| clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true)))
         .unwrap_or_default();
+    let ref_from_caption = input.reference_caption.as_deref().map(|text| {
+        if family == "moss-image" {
+            clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true))
+        } else {
+            scene_reference::caption(text, &identity_terms)
+        }
+    }).unwrap_or_default();
+    let ref_caption_clean = unique_tags([ref_from_caption, ref_from_layout]).join(" ");
 
     let genders: Vec<&str> = actors.iter().map(|a| a.gender).collect();
     let count_tags = count_tags_by_gender(&genders);
@@ -332,8 +301,10 @@ pub(super) fn prepare(
         parsed_ref_layout: parsed_ref_layout.as_ref(),
         identity_terms: &identity_terms,
         shared_scene_tags: &shared_scene_tags,
+        reference_scene_tags: &reference_scene_tags,
         count_tags: &count_tags,
         user_prompt_clean: &user_prompt_clean,
+        interaction_clean: &interaction_clean,
         scene_prose_clean: &scene_prose_clean,
         ref_caption_clean: &ref_caption_clean,
         user_negative: input.negative.as_deref(),

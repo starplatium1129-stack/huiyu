@@ -140,7 +140,7 @@ export function createPromptWorkspaceBindings(deps: PromptWorkspaceBindingsDeps)
       isPopular: toRef(pb, 'isPopular'),
       char: toRef(pb, 'char'),
       visualDescription: toRef(pb, 'visualDescription'),
-      cast: toRef(pb, 'cast'),
+      castRequiresNoLora: toRef(pb, 'castRequiresNoLora'),
       sdModelName: toRef(pb, 'sdModelName'),
       sdParams: toRef(pb, 'sdParams'),
       markParamTouched: pb.markParamTouched,

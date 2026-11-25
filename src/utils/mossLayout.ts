@@ -109,7 +109,7 @@ export function mossTriptychBox({ width, height }: MossCanvasSize, index: number
   return [-height / 2, edge(index), height / 2, edge(index + 1)]
 }
 
-export function mossCastBoxes(size: MossCanvasSize, count: number, formation?: 'row' | 'staggered'): Box[] {
+export function mossCastBoxes(size: MossCanvasSize, count: number, formation?: import('../types/prompt').CastFormation): Box[] {
   function row(length: number, top: number, left: number, bottom: number, right: number, overlap: number): Box[] {
     const span = (right - left) / (length - overlap * (length - 1))
     return Array.from({ length }, (_, index) => {
@@ -121,6 +121,10 @@ export function mossCastBoxes(size: MossCanvasSize, count: number, formation?: '
     const front = row(2, 0.42, count === 4 ? 0.01 : 0.14, 1, count === 4 ? 0.99 : 0.86, 0.12)
     const rear = row(count - 2, 0.02, count === 4 ? 0.19 : 0.01, 0.67, count === 4 ? 0.81 : 0.99, 0.12)
     return [...front, ...rear]
+  }
+  if (formation === 'close' && count >= 2) {
+    const margin = count === 2 ? 0.04 : 0.02
+    return row(count, 0, margin, 1, 1 - margin, count === 2 ? 0.36 : 0.28)
   }
   return row(count, 0, 0, 1, 1, 0.12)
 }

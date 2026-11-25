@@ -53,6 +53,55 @@ impl Catalog {
             ORDER BY (id=?1) DESC,id LIMIT 1", [character], |row| row.get(0)).optional()?
             .unwrap_or_else(|| character.to_owned()))
     }
+
+    pub(crate) fn cast_character_alias_id(&self, character: &str) -> Result<Option<String>> {
+        let mut statement = self.connection.prepare(
+            "SELECT id,json_extract(payload,'$.popular') FROM content_records
+             WHERE kind='character' AND deleted=0 AND json_type(payload,'$.popular')='object'
+             ORDER BY id",
+        )?;
+        let mut rows = statement.query([])?;
+        let folded = character.to_lowercase();
+        let mut best_rank = 0;
+        let mut ids = Vec::new();
+        while let Some(row) = rows.next()? {
+            let raw: String = row.get(1)?;
+            let popular: Value = serde_json::from_str(&raw)?;
+            let rank = ["originalName", "displayName"]
+                .into_iter()
+                .filter_map(|field| popular[field].as_str())
+                .chain(
+                    ["aliases", "characterTokens"]
+                        .into_iter()
+                        .filter_map(|field| popular[field].as_array())
+                        .flatten()
+                        .filter_map(Value::as_str),
+                )
+                .map(str::trim)
+                .map(|name| {
+                    if name == character { 2 } else { u8::from(name.to_lowercase() == folded) }
+                })
+                .max()
+                .unwrap_or(0);
+            if rank == 0 || rank < best_rank {
+                continue;
+            }
+            if rank > best_rank {
+                ids.clear();
+                best_rank = rank;
+            }
+            ids.push(row.get::<_, String>(0)?);
+        }
+        if ids.len() > 1 {
+            return Err(ApiError::new(
+                422,
+                "CAST_CHARACTER_AMBIGUOUS",
+                format!("角色别名 {character} 对应多名角色，请使用角色 ID：{}", ids.join("、")),
+            ));
+        }
+        Ok(ids.pop())
+    }
+
     pub(crate) fn remote_lookup(
         &self,
         query: &Query,

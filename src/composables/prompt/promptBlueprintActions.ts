@@ -159,7 +159,8 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   pb.manualTags = new Set(stringList(draft.manualTags))
   pb.referenceInput = cloneReferenceInput(draft.referenceInput)
   pb.coStars = draft.coStars ?? []
-  pb.castFormation = draft.castFormation ?? 'row'
+  pb.castFormation = draft.castFormation
+  pb.castInteraction = draft.castInteraction ?? ''
   pb.leadCast = draft.leadCast ?? null
   pb.leadPosition = draft.leadPosition ?? 0
   pb.setArtistStyleIds(draft.artistStyleIds || [])
@@ -426,7 +427,8 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
       subject.value = { kind: 'studio' }
     }
     state.coStars.value = d.coStars ?? []
-    state.castFormation.value = d.castFormation ?? 'row'
+    state.castFormation.value = d.castFormation
+    state.castInteraction.value = d.castInteraction ?? ''
     state.leadCast.value = d.leadCast ?? null
     state.leadPosition.value = d.leadPosition ?? 0
     outfitOverride.value = parseOutfitOverride(d.outfitOverride)

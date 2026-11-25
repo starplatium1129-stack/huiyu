@@ -8,13 +8,14 @@ import { STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { normalizeKey, tokenize } from '@/utils/promptPrimitives'
 import type { PromptPreviewContext } from '@/utils/promptPreview'
 import { buildCastPlan, resolveBoundReference } from '@/utils/promptCastPlan'
-import { cleanCastNegative, referenceCharacterCount } from '@/utils/promptCast'
+import { cleanCastNegative, isCustomCastOutfit, referenceCharacterCount } from '@/utils/promptCast'
 import { renderPromptPlan } from '@/utils/promptCompilerCore'
 import { analyzeParts, checkArtDirection } from '@/utils/promptPolicy'
 import type { CastFormation, PromptPlan } from '@/types/prompt'
 export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & {
   readonly isPopular: boolean
-  readonly castFormation: CastFormation
+  readonly effectiveCastFormation: CastFormation
+  readonly castInteraction: string
   readonly leadPosition: number
 }
 
@@ -37,9 +38,12 @@ export function useUnifiedPromptAssembly(
 
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
   function withCast(plan: PromptPlan | null, target: 'anima' | 'moss') {
-    if (!plan || !pb.cast.length || (pb.cast.length === 1 && (target !== 'moss' || referenceCharacterCount(pb.referenceInput?.layout) < 2))) return plan
+    if (!plan || !pb.cast.length) return plan
+    const onlyActor = pb.cast.length === 1 ? pb.cast[0] : null
+    if (onlyActor && onlyActor.source !== 'custom' && !isCustomCastOutfit(onlyActor.outfitId)
+      && (target !== 'moss' || referenceCharacterCount(pb.referenceInput?.layout) < 2)) return plan
     const resolved = resolveBoundReference(pb.referenceInput, pb.visualDescription, [...pb.manualTags], pb.popularCharacters, pb.tags)
-    return buildCastPlan(plan, target, pb.cast, pb.leadPosition, pb.castFormation, pb.popularCharacters, resolved.reference, pb.outfitOverride, resolved.description)
+    return buildCastPlan(plan, target, pb.cast, pb.leadPosition, pb.effectiveCastFormation, pb.popularCharacters, resolved.reference, pb.outfitOverride, resolved.description, pb.castInteraction)
   }
   const structuredPlan = computed(() => engine.value === 'anima'
     ? withCast(active.value.structuredPlan.value, 'anima') : active.value.structuredPlan.value)
@@ -60,7 +64,7 @@ export function useUnifiedPromptAssembly(
   const artViolations = computed(() => animaCastPlan.value ? checkArtDirection(positivePrompt.value, modelProfile.value) : active.value.artViolations.value)
   const previewContext = computed<PromptPreviewContext>(() => {
     const plan = structuredPlan.value
-    const unbound = !pb.isPopular && pb.char === 'none'
+    const unbound = !pb.isPopular && pb.char === 'none' && pb.castLead?.source !== 'custom'
     const subjects = unbound ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
     return {
       format:resolveDrawCapabilities(engine.value, modelProfile.value).promptFormat,

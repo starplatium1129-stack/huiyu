@@ -9,7 +9,7 @@ import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import { defaultOutfit, type DrawSubject } from '@/utils/popularContent'
 import { sceneDirectorSources } from '@/utils/promptDirector'
 import { normalizeKey, sceneSupportsCharacter } from '@/utils/promptPolicy'
-import { castMemberKey, parseCastMember, parseLeadPosition } from '@/utils/promptCast'
+import { castMemberKey, isCustomCastOutfit, parseCastMember, parseLeadPosition } from '@/utils/promptCast'
 import { sanitizeOutfitOverride } from '@/utils/wardrobeContent'
 import type { useSceneStore } from '@/stores/sceneStore'
 
@@ -28,7 +28,8 @@ export function usePromptCastAndSubject(params: {
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
   coStars: Ref<CastMember[]>
-  castFormation: Ref<CastFormation>
+  castFormation: Ref<CastFormation | undefined>
+  castInteraction: Ref<string>
   leadCast: Ref<CastMember | null>
   leadPosition: Ref<number>
   artistStyleIds: Ref<string[]>
@@ -45,7 +46,7 @@ export function usePromptCastAndSubject(params: {
   const {
     char, subject, isPopular, isUnbound, storyOrigin, story, sceneId, sceneBaseStory,
     selections, colorMood, directorSources, outfitOverride, referenceInput,
-    coStars, castFormation, leadCast, leadPosition, artistStyleIds, manualTags,
+    coStars, castFormation, castInteraction, leadCast, leadPosition, artistStyleIds, manualTags,
     popularCharacters, sceneBlueprints, activeScene, sceneStore, loadPopularCatalog,
     clearRandomVariation, clearReferenceInput, clearInheritedDirectorValues,
   } = params
@@ -86,13 +87,11 @@ export function usePromptCastAndSubject(params: {
   const castLead = computed<CastMember | null>(() => {
     const current = subject.value
     const lead = leadCast.value
-    const action = lead?.source === current.kind && lead.characterId === (current.kind === 'popular' ? current.characterId : char.value)
-      ? lead.action : undefined
-    const primary = parseCastMember(current.kind === 'popular'
+    if (current.kind === 'studio' && char.value === 'none' && lead?.source === 'custom') return lead
+    if (lead?.source === current.kind && lead.characterId === (current.kind === 'popular' ? current.characterId : char.value)) return lead
+    return parseCastMember(current.kind === 'popular'
       ? { ...current, source: 'popular' }
-      : lead?.source === 'studio' && lead.characterId === char.value
-        ? lead : { source: 'studio', characterId: char.value, outfitId: '' })
-    return primary ? { ...primary, action } : null
+      : { source: 'studio', characterId: char.value, outfitId: '' })
   })
 
   const cast = computed<CastMember[]>(() => {
@@ -102,6 +101,9 @@ export function usePromptCastAndSubject(params: {
     companions.splice(parseLeadPosition(leadPosition.value, companions.length), 0, primary)
     return companions
   })
+
+  const castRequiresNoLora = computed(() => cast.value.length > 1 || castLead.value?.source === 'custom'
+    || (castLead.value && isCustomCastOutfit(castLead.value.outfitId)) === true)
 
   function clearInheritedStory(nextBlueprintId: string | null = null) {
     const current = subject.value
@@ -146,7 +148,8 @@ export function usePromptCastAndSubject(params: {
     for (const token of override?.tokens ?? []) manualTags.value.add(token)
     subject.value = { kind: 'studio' }
     char.value = 'none'
-    coStars.value = []; leadCast.value = null; leadPosition.value = 0; castFormation.value = 'row'
+    coStars.value = []; leadCast.value = null; leadPosition.value = 0; castFormation.value = undefined
+    castInteraction.value = ''
     sceneId.value = null; sceneBaseStory.value = ''
     outfitOverride.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null; selections.composition = null
@@ -158,6 +161,9 @@ export function usePromptCastAndSubject(params: {
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
     const prior = subject.value
     if (prior.kind !== 'popular' || prior.characterId !== characterId) leadCast.value = null
+    else if (leadCast.value?.source === 'popular') {
+      leadCast.value = { ...leadCast.value, outfitId, outfitExplicit: options.outfitExplicit, outfitPrompt: undefined }
+    }
     clearInheritedStory(blueprintId)
     if (storyOrigin.value) storyOrigin.value = blueprintId ? undefined : { ...storyOrigin.value, characterId, outfitId, outfitProse: undefined }
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId, outfitExplicit: options.outfitExplicit }
@@ -168,9 +174,9 @@ export function usePromptCastAndSubject(params: {
   function addCoStar(member: CastMember) {
     const parsed = parseCastMember(member)
     const lead = castLead.value
-    if (!parsed || !lead || cast.value.length >= 5
-      || cast.value.some(current => castMemberKey(current) === castMemberKey(parsed))) return
-    applyCastOrder([...cast.value, parsed], lead)
+    if (!parsed || cast.value.length >= 5 || cast.value.some(current => castMemberKey(current) === castMemberKey(parsed))) return
+    if (lead) applyCastOrder([...cast.value, parsed], lead)
+    else if (parsed.source === 'custom' && isUnbound.value) applyCastOrder([parsed], parsed)
   }
 
   function applyCastOrder(members: CastMember[], primary: CastMember) {
@@ -190,7 +196,7 @@ export function usePromptCastAndSubject(params: {
     if (primary.source === 'popular') {
       const current = subject.value
       const character = popularCharacters.value.find(item => item.id === primary.characterId)
-      const outfitId = primary.outfitId || (character ? defaultOutfit(character).id : '')
+      const outfitId = primary.outfitId && !isCustomCastOutfit(primary.outfitId) ? primary.outfitId : character ? defaultOutfit(character).id : ''
       if (current.kind !== 'popular' || current.characterId !== primary.characterId
         || current.outfitId !== outfitId || current.outfitExplicit !== primary.outfitExplicit) subject.value = {
         kind: 'popular', characterId: primary.characterId,
@@ -200,7 +206,7 @@ export function usePromptCastAndSubject(params: {
       }
     } else {
       if (subject.value.kind !== 'studio') subject.value = { kind: 'studio' }
-      char.value = primary.characterId as 'nene' | 'natsume'
+      char.value = primary.source === 'custom' ? 'none' : primary.characterId as 'nene' | 'natsume'
     }
     leadCast.value = { ...primary }
     const primaryIndex = members.findIndex(member => castMemberKey(member) === castMemberKey(primary))
@@ -208,12 +214,12 @@ export function usePromptCastAndSubject(params: {
     coStars.value = members.filter(member => castMemberKey(member) !== castMemberKey(primary))
   }
 
-  function updateCastMember(index: number, patch: Partial<Pick<CastMember, 'outfitId' | 'outfitExplicit' | 'action'>>) {
+  function updateCastMember(index: number, patch: Partial<Omit<CastMember, 'source' | 'characterId'>>) {
     const member = cast.value[index]
     const lead = castLead.value
     if (!member || !lead) return
     // Keep the space at the end while the user is typing a multi-word action.
-    const updated = { ...member, ...patch, action: patch.action?.replace(/[\r\n]+/g, ' ').slice(0, 240) ?? member.action }
+    const updated = { ...member, ...patch, action: patch.action?.replace(/[\r\n]+/g, ' ').slice(0, 600) ?? member.action }
     const isLead = castMemberKey(member) === castMemberKey(lead)
     if (isLead && patch.outfitId !== undefined) outfitOverride.value = null
     applyCastOrder(cast.value.map((current, slot) => slot === index ? updated : current), isLead ? updated : lead)
@@ -236,7 +242,14 @@ export function usePromptCastAndSubject(params: {
   function removeCastMember(index: number) {
     const members = cast.value
     const lead = castLead.value
-    if (!lead || members.length < 2 || !members[index]) return
+    if (!lead || !members[index]) return
+    if (members.length === 1) {
+      if (lead.source === 'custom') {
+        leadCast.value = null
+        leadPosition.value = 0
+      }
+      return
+    }
     const next = members.filter((_, slot) => slot !== index)
     applyCastOrder(next, castMemberKey(members[index]) === castMemberKey(lead) ? next[0] : lead)
   }
@@ -255,6 +268,7 @@ export function usePromptCastAndSubject(params: {
     popularBlueprintError,
     loadPopularCharacter,
     castLead,
+    castRequiresNoLora,
     cast,
     setChar,
     setStudioSubject,

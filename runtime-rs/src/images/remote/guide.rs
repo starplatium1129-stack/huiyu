@@ -96,6 +96,10 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "teaCacheThresh": 0.06},
             "usage": "传场景/蓝图 id（可附同角色 outfitId 换装，或仅传 outfitId 出服装图，或传 cast 1–5 人混搭同框）；支持 anima/moss/krea2 目录配方，以及图生图/参考图/蒙版/构图控制参数，单项 ≤8 张。"
         },
+        "drawPreview": {
+            "method": "POST", "path": super::muse::PREVIEW_PATH,
+            "usage": "使用 /api/muse/jobs 同款单项请求体，可省略 requestKey。返回模型、尺寸、编译后的正负向提示词和采样设置。只读，不排队、不载入模型，也不上传或检查图像素材。"
+        },
         "prompt": {
             "method": "POST", "path": "/api/muse/jobs",
             "json": {"prompt":"your image prompt","requestKey":"replace-with-new-uuid"},
@@ -103,13 +107,13 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         },
         "multiCast": {
             "method": "POST", "path": "/api/muse/jobs",
-            "json": {"modelId": "moss-miaomiao-base-v1.1", "cast": [{"characterId": "nene", "outfitId": "studio/nene-school"}, {"characterId": "natsume", "outfitId": "studio/natsume-cafe"}], "formation": "row", "prompt": "sunny cafe window", "requestKey": "replace-with-new-uuid"},
-            "usage": "1–5 人多角色混搭同框构图（支持画室角色 nene/natsume 与目录任意热门角色自由混搭）。每个成员传 characterId、可选 outfitId/outfitExplicit/action；可选 formation（row|staggered，4–5 人支持前后排错落）、共享场景 prompt、目录 scene/blueprint id，以及 MOSS 参考图 layout（assistLayout 人物框数 ≥ 角色数时按面积与从左到右自动绑定）。Anima 自动走无角色 LoRA + BREAK 分段与从左到右站位编译；MOSS 自动编译规范 abs_centralized/yxyx 多人布局；Krea 2/Qwen/Keyframe 编译英文自然语言多人同框。"
+            "json": {"modelId": "moss-miaomiao-base-v1.1", "cast": [{"characterId": "nene", "outfitPrompt": "cream knit pajamas, fluffy socks", "action": "leaning right and smiling"}, {"characterId": "natsume", "outfitPrompt": "oversized navy hoodie", "action": "sharing a warm mug"}], "interaction": "Nene and Natsume sit close on the sofa sharing one mug and looking warmly at each other", "formation": "close", "prompt": "cozy living room at night, warm lamp light", "requestKey": "replace-with-new-uuid"},
+            "usage": "1–5 人多角色混搭同框构图（支持画室角色 nene/natsume 与目录任意热门角色自由混搭）。每个成员可传对象 {characterId?, name?, appearance?, gender?, outfitId?, outfitPrompt?, outfitExplicit?, action?, bbox?} 或字符串简写 角色ID[:服装ID|=自定义服装|none][:动作]：传 outfitPrompt 可自由写睡衣/换装/剧情装（完全替换官方默认服），传 outfitId=none 可清空默认服；action 最多 600 字；MOSS 下可选传归一化 0..1 的 bbox [y1,x1,y2,x2] 精细控制重叠站位。原创角色可省略 characterId 或指定 custom（别名 original/oc），填写 name 或 appearance。目录角色也支持原名、显示名与目录别名。顶层 interaction（字符串或数组，≤1000 字）专门描述角色间对视、牵手、共用物品等互动关系，2–3 人带 interaction 时默认启用 close 亲密重叠构图（也支持 row/close/staggered）。prompt 只写共同场景/背景/光影/镜头，勿在 prompt 重复罗列每个人的站位与服装，避免重复画人。非 MOSS 参考图反推时可用 referenceCaption、referenceTags、referenceIdentityTerms 单独传参考资料，由编译器清理原人物特征。"
         },
         "batch": {
             "method": "POST", "path": "/api/muse/batches",
             "json": {"ids": ["sc041", "sc093"], "requestKey": "replace-with-new-uuid", "upscale": "remacri"},
-            "usage": "传 ids 或逐项 items，整批 ≤16 张；顶层 width/height/upscale、teaCache/teaCacheThresh 可作批量默认并由单项覆盖。"
+            "usage": "传 ids 或逐项 items，整批 ≤16 张；顶层 width/height/upscale、teaCache/teaCacheThresh、cast/formation/interaction 和参考描述可作批量默认并由单项覆盖。"
         },
         "queue": {"method": "GET", "path": "/api/muse/queue", "usage": "查排队位置、进度与预估时间。"},
         "uploadedInputs": {

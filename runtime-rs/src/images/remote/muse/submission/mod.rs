@@ -50,11 +50,25 @@ pub(super) struct SceneSelection {
     pub(super) lora_strength: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) style_lora_id: Option<String>,
-    // Multi-character cast composition (1-5 characters across studio/popular catalog)
+    // Multi-character cast composition (1–5 studio, popular or original characters)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) cast: Option<Vec<cast::CastMemberInput>>,
     #[serde(skip_serializing_if = "Option::is_none", alias = "castFormation")]
     pub(super) formation: Option<String>,
+    #[serde(
+        skip_serializing_if = "Option::is_none",
+        alias = "sceneInteraction",
+        alias = "relations",
+        alias = "relation"
+    )]
+    pub(super) interaction: Option<cast::InteractionInput>,
+    // Keep extracted reference material separate from the author's prompt.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) reference_caption: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) reference_tags: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) reference_identity_terms: Option<Vec<String>>,
     // Image-to-image / inpaint / reference / composition parameters
     #[serde(skip_serializing_if = "Option::is_none", alias = "imageId")]
     pub(super) init_image: Option<String>,

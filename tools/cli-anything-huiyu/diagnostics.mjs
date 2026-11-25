@@ -137,7 +137,7 @@ export async function doctor() {
   const result = { mode: null, endpoint: null, credentials: null, reachable: null, connected: null,
     protocol: null, version: null,
     capabilities: {
-      teaCache: null, upscale: null, standaloneUpscale: null, moss: null, multiCast: null, options: null,
+      teaCache: null, upscale: null, standaloneUpscale: null, moss: null, multiCast: null, drawPreview: null, options: null,
       health: null, video: null, videoH3Dwd: null, videoBatch: null,
       interrogate: null, voice: null, qq: null, desktopChat: null, gallery: null,
       partDownload: null, rangeDownload: null,
@@ -219,6 +219,7 @@ function describeCapabilities(result, description) {
   if (result.version !== null) {
     for (const capability of ['teaCache', 'upscale', 'moss']) result.capabilities[capability] = Boolean(description[capability])
     result.capabilities.options = Boolean(description.operations?.options)
+    result.capabilities.drawPreview = Boolean(description.operations?.drawPreview)
     if (description.operations?.multiCast) result.capabilities.multiCast = true
   }
 }
@@ -271,7 +272,7 @@ export function failure(error, command) {
   else if (code === 'TASK_INPUT_MISSING' || code === 'TASK_INPUT_FORBIDDEN') hint = '请确认参考图已由当前连接身份通过 upload 上传且未过期。'
   else if (code === 'CAST_CHARACTER_NOT_FOUND') hint = '请先用 catalog --kind character 核对角色 ID（画室角色可用 nene / natsume）。'
   else if (code === 'CAST_OUTFIT_NOT_FOUND' || code === 'CAST_OUTFIT_MISMATCH') hint = '请先用 catalog --kind outfit --character <角色ID> 核对同角色的服装 ID，或省略服装改用默认穿搭。'
-  else if (error.httpStatus === 400 && /unknown field [`'"](?:cast|formation|castFormation)[`'"]/i.test(error.message ?? '')) hint = '当前出图机桌面端版本过旧，尚不支持 cast 多角色同框；请先在出图机更新并重启绘遇桌面端。'
+  else if (error.httpStatus === 400 && /unknown field [`'"](?:cast|formation|castFormation|interaction|outfitPrompt|bbox)[`'"]/i.test(error.message ?? '')) hint = '当前出图机桌面端版本过旧，尚不支持最新多角色参数（cast/outfitPrompt/interaction/bbox）；请先在出图机更新并重启绘遇桌面端。'
   else if (code === 'INTERROGATE_UNAVAILABLE') hint = '请确认主力机图像反推模型已就绪，可运行 interrogate status 或 health 检查。'
   else if (code === 'NATIVE_UPSCALER_UNAVAILABLE') hint = '请确认主力机已安装 Remacri/UltraSharp 放大权重，可用 models 检查。'
   else if (command === 'save' && code === 'RESULT_UNAVAILABLE') hint = '用 job 查看是否仍在生成，用 errors 和批次编号检查生成或交付错误。'

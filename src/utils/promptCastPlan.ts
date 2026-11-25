@@ -8,7 +8,7 @@ import { cleanMossReferenceProse } from './mossCast.ts'
 import { defaultOutfit, findOutfit } from './popularContent.ts'
 import { isOutfitToken, standaloneIdentityProse, standaloneIdentityTokens } from './popularIdentity.ts'
 import type { DraftOutfitOverride, DraftReferenceInput } from './promptBuilderPersistence'
-import { cleanCastNegative, cleanCastProse, isCastCountTag, parseLeadPosition, referenceCharacterCount } from './promptCast.ts'
+import { cleanCastNegative, cleanCastProse, isCastCountTag, isCustomCastOutfit, parseLeadPosition, referenceCharacterCount } from './promptCast.ts'
 import { normalizeKey, splitBreaks, tokenize } from './promptPrimitives.ts'
 import { studioSubjectProse } from './studioPromptBuilder.ts'
 import { wardrobeProse } from './wardrobeContent.ts'
@@ -74,6 +74,19 @@ export function resolveBoundReference(
 
 function resolveActor(member: CastMember, characters: readonly PopularCharacter[], override: DraftOutfitOverride | null, inheritReferenceOutfit: boolean) {
   const action = cleanCastProse(member.action ?? '').trim()
+  const specialOutfit = isCustomCastOutfit(member.outfitId)
+  const outfitPrompt = member.outfitId === 'custom' ? cleanCastProse(member.outfitPrompt ?? '') : ''
+  const outfitCaption = outfitPrompt && !/^(?:wears?|wearing|dressed|in)\b/i.test(outfitPrompt) ? `Wearing ${outfitPrompt}` : outfitPrompt
+  if (member.source === 'custom') {
+    const name = cleanCastProse(member.name ?? '') || 'Original character'
+    const appearance = cleanCastProse(member.appearance ?? '')
+    const gender = member.gender ?? 'girl'
+    return {
+      name, characterTokens: [], copyrightTokens: [], aliases: member.name ? [name] : [],
+      identity: publicTags([appearance || (gender === 'other' ? 'person' : gender)]), identityCaption: [name, gender === 'other' ? 'person' : gender, appearance].filter(Boolean).join(', '),
+      outfit: publicTags([outfitPrompt]), outfitCaption, outfitExplicit: specialOutfit, action, gender,
+    }
+  }
   if (member.source === 'studio' && (member.characterId === 'nene' || member.characterId === 'natsume')) {
     const id = member.characterId
     const outfit = studioCastOutfit(member)
@@ -81,16 +94,16 @@ function resolveActor(member: CastMember, characters: readonly PopularCharacter[
     const meta = STUDIO_PROMPT_SUBJECTS[id]
     return {
       name: studioNames[id], ...meta, aliases: [studioNames[id], ...identity], identity,
-      outfit: publicTags(override?.tokens ?? outfit?.tags ?? []), action, gender: 'girl',
+      outfit: publicTags(specialOutfit ? [outfitPrompt] : override?.tokens ?? outfit?.tags ?? []), action, gender: 'girl',
       identityCaption: cleanCastProse(studioSubjectProse(id)),
-      outfitCaption: override ? wardrobeProse(override.prose, override.tokens) : outfit?.prose ?? '',
-      outfitExplicit: Boolean(override) || member.outfitExplicit === true,
+      outfitCaption: specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit?.prose ?? '',
+      outfitExplicit: specialOutfit || Boolean(override) || member.outfitExplicit === true,
     }
   }
   const character = characters.find(item => item.id === member.characterId)
   if (!character) return null
   const outfit = findOutfit(character, member.outfitId) ?? defaultOutfit(character)
-  const identityOutfit = !inheritReferenceOutfit || member.outfitExplicit ? outfit : null
+  const identityOutfit = !specialOutfit && (!inheritReferenceOutfit || member.outfitExplicit) ? outfit : null
   const identityProse = standaloneIdentityProse(character)
   const characterTokens = character.characterTokens?.length ? character.characterTokens : character.exactTokens.slice(0, 1)
   const copyrightTokens = character.copyrightTokens ?? []
@@ -104,16 +117,16 @@ function resolveActor(member: CastMember, characters: readonly PopularCharacter[
     name, characterTokens, copyrightTokens,
     aliases: identityTerms(character), identity, action, gender,
     identityCaption: cleanCastProse(variant ? `${name}, ${variant}` : identityProse),
-    outfit: publicTags(override?.tokens ?? outfit.tokens),
-    outfitCaption: override ? wardrobeProse(override.prose, override.tokens) : outfit.prose,
-    outfitExplicit: Boolean(override) || member.outfitExplicit === true,
+    outfit: publicTags(specialOutfit ? [outfitPrompt] : override?.tokens ?? outfit.tokens),
+    outfitCaption: specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit.prose,
+    outfitExplicit: specialOutfit || Boolean(override) || member.outfitExplicit === true,
   }
 }
 
 export function buildCastPlan(
   base: PromptPlan, engine: 'moss' | 'anima', cast: readonly CastMember[], leadPosition: number, formation: CastFormation,
   characters: readonly PopularCharacter[], reference: DraftReferenceInput | null,
-  outfitOverride: DraftOutfitOverride | null, description: string,
+  outfitOverride: DraftOutfitOverride | null, description: string, castInteraction: string,
 ): PromptPlan {
   const layout = reference?.layout
   const boxes = referenceCharacterCount(layout)
@@ -121,7 +134,8 @@ export function buildCastPlan(
   const actors = cast.map((member, index) => resolveActor(member, characters,
     index === lead && outfitOverride?.presetId ? outfitOverride : null, engine === 'moss' && boxes >= cast.length))
     .filter(actor => actor !== null)
-  if (!actors.length || actors.length === 1 && (engine !== 'moss' || boxes < 2)) return base
+  if (!actors.length) return base
+  const interaction = actors.length > 1 ? cleanCastProse(castInteraction) : ''
   const characterTokens = uniqueTags(actors.flatMap(actor => actor.characterTokens))
   const copyrightTokens = uniqueTags(actors.flatMap(actor => actor.copyrightTokens))
   const namesAndTraits = uniqueTags([...actors.flatMap(actor => actor.aliases), ...characterTokens, ...copyrightTokens,
@@ -142,7 +156,7 @@ export function buildCastPlan(
   const sourceSceneProse = base.sceneProse || base.scene?.animaCaption || base.scene?.promptProse || ''
   const sceneProse = reference?.caption && sourceSceneProse === reference.caption ? referenceProse : prose(sourceSceneProse)
   const common: PromptPlan = {
-    ...base, scene, characterTokens, copyrightTokens,
+    ...base, scene, characterTokens, copyrightTokens, freeSubject: false,
     quality: base.quality.filter(token => tagKey(token) !== 'fair skin' || !actors.some(actor =>
       actor.identity.some(trait => /^(?:dark|tanned|brown|colored) skin/.test(tagKey(trait))))),
     identity: engine === 'anima' ? [...counts, ...characterTokens] : counts,
@@ -157,7 +171,7 @@ export function buildCastPlan(
   if (engine === 'moss') return {
     ...common,
     mossLayout: {
-      compositionIntent: 'group', castLayout: true, formation, referenceIdentityTerms: namesAndTraits,
+      compositionIntent: actors.length > 1 ? 'group' : 'single', castLayout: true, formation, interaction, referenceIdentityTerms: namesAndTraits,
       subjects: actors.map(actor => {
         const { identityCaption, outfitCaption, outfitExplicit, action } = actor
         return {
@@ -175,7 +189,10 @@ export function buildCastPlan(
     animaCast: {
       tags: actors.map(actor => [...actor.identity.filter(token => !characterTokens.some(name => tagKey(name) === tagKey(token))
         && !copyrightTokens.some(work => tagKey(work) === tagKey(token))), ...actor.outfit, ...publicTags([actor.action])]),
-      direction: `From left to right: ${grammar.replace(/[.!?]+$/, '')}.`,
+      direction: [
+        actors.length > 1 ? `From left to right: ${grammar.replace(/[.!?]+$/, '')}.` : cast[0]?.source === 'custom' && cast[0].name ? `The character is ${actors[0].name}.` : '',
+        interaction,
+      ].filter(Boolean).join('\n'),
     },
   }
 }

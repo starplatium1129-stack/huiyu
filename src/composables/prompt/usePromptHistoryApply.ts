@@ -241,7 +241,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     pb.visualDescription = entry.visualDescription || ''
     pb.referenceInput = entry.referenceInput ?? null
     pb.coStars = entry.coStars ?? []
-    pb.castFormation = entry.castFormation ?? 'row'
+    pb.castFormation = entry.castFormation
+    pb.castInteraction = entry.castInteraction ?? ''
     pb.leadCast = entry.leadCast ?? null
     pb.leadPosition = entry.leadPosition ?? 0
     // Saved decisions override today's blueprint defaults for both subject kinds.

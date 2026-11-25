@@ -7,8 +7,7 @@
           <StudioDisclosureSummary class="image-tool-action"><ArchiveIcon name="search" /><span>图片反推</span><small>{{ interrogateMode === 'caption' ? '描述' : '词条' }}</small></StudioDisclosureSummary>
           <div data-disclosure-content class="reference-interrogate-body">
             <div class="image-tool-assist">
-              <ToggleSwitch :model-value="interrogateAssist" :disabled="interrogateBusy" :aria-describedby="assistStatusId" @update:model-value="$emit('update:interrogateAssist', $event)">API 协同反推</ToggleSwitch>
-              <p :id="assistStatusId" class="image-tool-status" role="status">{{ assistStatus }}</p>
+              <ToggleSwitch :model-value="interrogateAssist" :disabled="interrogateBusy" @update:model-value="$emit('update:interrogateAssist', $event)">智能精读</ToggleSwitch>
             </div>
             <div class="image-tool-subactions">
               <StudioTooltip anchor content="上传图片，提取画面词条或描述"><button class="btn btn-ghost btn-sm" type="button" :disabled="interrogateBusy || !readiness.available.value" @click="$emit('interrogateUpload')"><ArchiveIcon name="upload" />上传图片</button></StudioTooltip>
@@ -60,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed } from 'vue'
 import { useInterrogateReadiness } from '@/composables/useInterrogateReadiness'
 import { useDrawingNavigation } from '@/composables/prompt/useDrawingNavigation'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -88,17 +87,6 @@ const props = defineProps<{
   transferBusy: boolean
 }>()
 const readiness = useInterrogateReadiness(true)
-const assistStatusId = useId()
-const assistStatus = computed(() => {
-  const { state, assist } = readiness.status.value
-  if (state === 'idle' || state === 'checking') return '正在检查聊天通道…'
-  if (state === 'unknown') return '暂时无法检查聊天通道，请重新检查'
-  if (!assist?.available) return '未配置可用 API，将仅使用本地 PixAI'
-  const model = assist.label || assist.model
-  return assist.provider === 'chatgpt'
-    ? `优先 ChatGPT · ${model}（露骨词自动回退本地）`
-    : `使用聊天 API · ${model}`
-})
 const drawing = useDrawingNavigation()
 const supportsContinuation = computed(() => props.drawEngine === 'anima' || props.drawEngine === 'sd')
 const loadComposition = () => import('@/components/AnimaCompositionLauncher.vue')

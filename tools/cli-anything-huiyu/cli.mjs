@@ -12,11 +12,11 @@ import { runUpload, uploadCommand } from './upload.mjs'
 import { runVideo, videoCancel, videoCommand, videoConcat, videoJob, videoStatus } from './video.mjs'
 import { galleryCommand, galleryList, galleryShow, healthCommand, runGallery, runHealth } from './gallery.mjs'
 import { interrogateCommand, interrogateJson, interrogateStatus, runInterrogate, runUpscale, submitUpscale, upscaleCommand } from './interrogate.mjs'
-import { drawOrBatch, drawingHelp, drawingOptions, positiveInteger, promptTextOptions, waitTimeout } from './drawing.mjs'
+import { drawOrBatch, drawingHelp, drawingOptions, positiveInteger, previewDrawing, promptTextOptions, waitTimeout } from './drawing.mjs'
 import { chatReceipt, compactReceipt, display, help, report, words } from './format.mjs'
 import tool from './tool.json' with { type: 'json' }
 
-const SCOPED_ALLOWED_ACTIONS = new Set(['status', 'key', 'catalog', 'detail', 'models', 'draw', 'batch', 'upscale', 'job', 'errors', 'cancel'])
+const SCOPED_ALLOWED_ACTIONS = new Set(['status', 'key', 'catalog', 'detail', 'models', 'draw', 'draw_preview', 'batch', 'upscale', 'job', 'errors', 'cancel'])
 const BATCH_KEY_ACTIONS = new Set([
   'job', 'errors', 'cancel', 'save', 'draw', 'batch', 'upscale',
   'interrogate', 'voice_say', 'video_create', 'video_job', 'video_cancel', 'video_batch', 'video_concat',
@@ -36,19 +36,19 @@ const commands = {
   },
   detail: { usage: '类型 ID', args: 2, about: '读取角色、服装或场景配方详情，保留 ID 中的斜杠。' },
   draw: {
-    usage: '(--id 目录ID | --outfit 服装ID | --cast 角色[:服装][:动作] | --cast-file JSON | --prompt 文本或- | --file JSON或- | --from-interrogate 反推JSON | --layout-file 布局JSON | --init-image 底图) [出图选项] [--key 编号] [--wait] [--timeout 秒] [--out PNG]',
-    about: `提交单图或变体。--id 可配合 --outfit 换装或配合 --cast 做多角色同框，--kind 指定 scene、blueprint、outfit、prompt 或 manga；Krea 2 目录配方支持 --style-lora；--from-interrogate 自动读取反推 JSON 的 tags/caption/assistLayout（可搭配 --cast）。--out 等待并保存一张原图。\n    自定义提示词可用 --negative、--steps、--cfg、--character、--lora、--lora-strength；漫画网点（manga-screen）可用 --operation、--pen-lines、--pen-lines-polarity、--pen-lines-fit。保存时可用 --single-connection。\n    ${drawingHelp}`,
-    options: ['id', 'outfit', 'kind', 'prompt', 'file', 'from-interrogate', 'key', 'wait', 'timeout', 'out', 'single-connection', ...drawingOptions,
+    usage: '(--id 目录ID | --outfit 服装ID | --cast 角色[:服装][:动作] | --cast-file JSON | --prompt 文本或- | --file JSON或- | --from-interrogate 反推JSON | --layout-file 布局JSON | --init-image 底图) [出图选项] [--dry-run | [--key 编号] [--wait] [--timeout 秒] [--out PNG]]',
+    about: `提交单图或变体。--dry-run 只返回编译配方，图片参数使用已上传文件名。--id 可配合 --outfit 换装或配合 --cast 做多角色同框，--kind 指定 scene、blueprint、outfit、prompt 或 manga；Krea 2 目录配方支持 --style-lora；--from-interrogate 读取反推标签、描述和布局，搭配 --cast 时会过滤原人物特征。--out 等待并保存一张原图。\n    自定义提示词可用 --negative、--steps、--cfg、--character、--lora、--lora-strength；漫画网点（manga-screen）可用 --operation、--pen-lines、--pen-lines-polarity、--pen-lines-fit。保存时可用 --single-connection。\n    ${drawingHelp}`,
+    options: ['id', 'outfit', 'kind', 'prompt', 'file', 'from-interrogate', 'dry-run', 'key', 'wait', 'timeout', 'out', 'single-connection', ...drawingOptions,
       ...Object.keys(promptTextOptions), 'steps', 'cfg', 'lora-strength', 'pen-lines'],
-    booleans: ['wait', 'single-connection'],
-    multiple: ['ref', 'cast'],
+    booleans: ['dry-run', 'wait', 'single-connection'],
+    multiple: ['ref', 'cast', 'interaction'],
   },
   batch: {
     usage: '(批量.json | - | --ids ID1,ID2) [出图选项] [--key 编号] [--wait] [--timeout 秒] [--out-dir 目录]', args: 1, minArgs: 0,
     about: `批次含变体最多 16 张。可重复传 --ids，也可用 - 从标准输入读 JSON。各项自己的设置优先于整批默认值。保存时可用 --single-connection。\n    ${drawingHelp}`,
     options: ['ids', 'key', 'wait', 'timeout', 'out-dir', 'single-connection', ...drawingOptions],
     booleans: ['wait', 'single-connection'],
-    multiple: ['ids', 'ref', 'cast'],
+    multiple: ['ids', 'ref', 'cast', 'interaction'],
   },
   upload: uploadCommand,
   interrogate: interrogateCommand,
@@ -184,6 +184,11 @@ async function invoke() {
     }
     if (batchKey !== undefined && !BATCH_KEY_ACTIONS.has(action)) throw new Error('该操作不接受 batchKey。')
     if (item !== undefined && (!['save', 'cancel'].includes(action) || !Number.isSafeInteger(item) || item < 1)) throw new Error('item 仅用于取图或取消，序号从 1 开始。')
+    if (params.dryRun !== undefined && typeof params.dryRun !== 'boolean') throw new Error('dryRun 须为布尔值。')
+    if (action === 'draw_preview' || params.dryRun === true) {
+      if (!['draw', 'draw_preview'].includes(action) || batchKey !== undefined) throw new Error('单图预览请用 draw_preview，省略 batchKey。')
+      return await previewDrawing(params)
+    }
     if (action === 'draw' || action === 'batch') return await submit(params, requestKey(batchKey), action === 'batch')
     if (action === 'upscale') return await submitUpscale(params, requestKey(batchKey))
     if (action === 'health') return await runHealth()
