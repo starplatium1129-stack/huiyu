@@ -75,30 +75,34 @@ static RE_CLOTHING_STATES: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)\b(?:(?:(?:fully|completely|entirely|totally)\s+)?(?:nude|naked|unclothed|topless|bottomless|shirtless)|without (?:any )?clothes)\b")
         .unwrap()
 });
+static RE_COMPOUND_WRAP: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"(?i)\b(?:towel|sheet|blanket|robe|cloak|apron|bikini|swimsuit|kimono|silk|lace|leather|lightly|scantily|half|barely)[ -](?:wrapped|clad|draped|dressed)\b")
+        .unwrap()
+});
 static RE_WEARING_CLAUSE: LazyLock<Regex> = LazyLock::new(|| {
     let garment = format!(
         r"(?:(?:a|an|the|her|his|their)\s+)?(?:(?:{GARMENT_MODIFIERS})\s+){{0,6}}(?:{GARMENT_NOUNS})\b",
     );
     Regex::new(&format!(
-        r"(?i)\b(?:(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in)|in|has|have|with)\s+(?:{garment})(?:(?:\s*,\s*(?:and\s+)?|\s+(?:and|with|over|under)\s+)(?:{garment}))*",
+        r"(?i)\b(?:(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in|wrapped in|draped in)|in|has|have|with)\s+(?:{garment})(?:(?:\s*,\s*(?:and\s+)?|\s+(?:and|with|over|under)\s+)(?:{garment}))*",
     ))
     .unwrap()
 });
 static RE_WEARING_FALLBACK: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)\b(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in)\s+[^.;!?]+")
+    Regex::new(r"(?i)\b(?:(?:is|are|was|were)\s+)?(?:wears?|wearing|dressed in|clad in|outfitted in|wrapped in|draped in)\s+[^.;!?]+")
         .unwrap()
 });
 static RE_AFTER_CLOTHING: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
         r"(?i)(?:\s+(?:while|beside|near|next to|in front of|at (?:a|an|the))\s+|",
-        r"\s*,\s*(?:holding|standing|sitting|seated|leaning|walking|looking|smiling)\b)",
+        r"\s*,\s*(?:holding|standing|sitting|seated|leaning|walking|looking|smiling|laughing|glancing|resting|bracing|raising|reaching|kneeling|lying|turning|turned|wading)\b)",
     ))
     .unwrap()
 });
 static RE_DANGLING_LINK: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(r"(?i)\b(?:with|who|has|have|is|are|and|or)\s*(,|$)").unwrap());
 static RE_BARE_SUBJECT: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?i)^(?:(?:the |a |an |another )?(?:(?:left|right|central|rear|front) )?(?:character|subject|person|figure|woman|man|girl|boy)s?|she|he|they|both|each)(?:[.!?;]+|$)")
+    Regex::new(r"(?i)^(?:(?:the |a |an |another )?(?:(?:left|right|central|center|rear|front|foreground|background|distant|near|far) )*(?:character|subject|person|figure|woman|man|girl|boy)s?|she|he|they|both|each)(?:[.!?;]+|$)")
         .unwrap()
 });
 static RE_DARK_SKIN: LazyLock<Regex> = LazyLock::new(|| {
@@ -106,28 +110,30 @@ static RE_DARK_SKIN: LazyLock<Regex> = LazyLock::new(|| {
         .unwrap()
 });
 const GARMENT_NOUNS: &str = concat!(
-    "uniforms?|(?:sun)?dress(?:es)?|skirts?|shirts?|blouses?|sweaters?|cardigans?|blazers?|jackets?|coats?|hoodies?|vests?|",
-    "capes?|capelets?|cloaks?|kimono|yukata|qipao|cheongsam|serafuku|bikinis?|swimsuits?|leotards?|bodysuits?|bunny suit|",
-    "aprons?|pajamas|pyjamas|sleepwear|nightgowns?|lingerie|bras?|panties|underwear|stockings|thighhighs|socks|tights|",
-    "pantyhose|legwear|garters?|boots?|shoes?|heels?|sandals?|slippers?|hats?|berets?|ribbons?|bowties?|neckties?|",
+    "uniforms?|(?:sun)?dress(?:es)?|skirts?|overskirts?|shirts?|blouses?|tunics?|sweaters?|cardigans?|blazers?|jackets?|coats?|hoodies?|vests?|",
+    "capes?|capelets?|cloaks?|shawls?|ponchos?|kimono|yukata|qipao|cheongsam|sash(?:es)?|obi|habits?|veils?|serafuku|",
+    "bikinis?|monokinis?|swimsuits?|swimwear|sarongs?|towels?|leotards?|bodysuits?|bunny suit|",
+    "aprons?|pajamas|pyjamas|sleepwear|nightgowns?|nightdress|babydoll|negligee|chemise|rompers?|jumpsuits?|tracksuits?|",
+    "lingerie|bras?|panties|underwear|stockings|thighhighs|socks|tights|pantyhose|legwear|garters?|",
+    "boots?|shoes?|heels?|sandals?|slippers?|loafers?|hats?|berets?|ribbons?|bowties?|neckties?|",
     "scar(?:f|fs|ves)|gloves?|belts?|suspenders|shorts|pants|trousers|jeans|crop tops?|tank tops?|camisoles?|halter|",
-    "sleeves?|collars?|cuffs?|chokers?|earrings?|necklaces?|bracelets?|outfits?|costumes?|robes?|suits?|",
-    "clothes|clothing|corsets?|bodices?|overalls|headwear|footwear|barefoot|bare feet",
+    "sleeves?|collars?|cuffs?|straps?|piping|frills?|ruffles?|chokers?|earrings?|necklaces?|bracelets?|outfits?|costumes?|robes?|suits?|",
+    "clothes|clothing|corsets?|bodices?|bustiers?|overalls|headwear|footwear|bottoms|tops|barefoot|bare feet",
 );
 const GARMENT_MODIFIERS: &str = concat!(
-    "a|an|the|very|light|dark|bright|deep|pale|warm|soft|white|off-white|black|brown|red|pink|blue|purple|orange|green|",
+    "a|an|the|and|very|light|dark|bright|deep|pale|warm|soft|white|off-white|black|brown|red|pink|blue|purple|orange|green|",
     "grey|gray|silver|gold|golden|yellow|cream|ivory|navy|beige|burgundy|lavender|teal|striped|polka-dot|checked|plaid|",
     "floral|denim|cotton|wool|woven|knit(?:ted)?|leather|satin|silk|silky|velvet|sheer|lace|lacy|frilled|embroidered|",
     "ruffled|oversized|fitted|tailored|loose|long|short|knee-length|ankle-length|floor-length|sleeveless|long-sleeved|",
-    "short-sleeved|pleated|open|buttoned|collared|casual|traditional|school|sailor|maid|wide|high|low|waisted",
+    "short-sleeved|pleated|open|buttoned|collared|casual|traditional|school|sailor|maid|wide|high|low|waisted|light-colored|dark-colored|black-and-white|wet|naked|bath",
 );
 static RE_WARDROBE_WORD: LazyLock<Regex> =
     LazyLock::new(|| Regex::new(&format!(r"(?i)\b(?:{GARMENT_NOUNS}|maid|sailor)\b")).unwrap());
 static RE_REFERENCE_TRAIT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
-        r"(?i)(?:\b(?:hair|bangs|eyebrows?|eyes?|pupils?|skin|complexion|breasts?|chest|waist|hips?|legs?|face|",
-        r"hands?|arms?|shoulders?|fingers?|cheeks?|mouth|nose|lips?|lap|",
-        r"freckles|mole|body type|heterochromia|ahoge|twintails?|braids?|ponytails?|ears?|tails?|horns?|wings?|halo|",
+        r"(?i)(?:\b(?:hair|bangs|eyebrows?|eyes?|pupils?|skin|complexion|breasts?|chest|cleavage|waist|hips?|stomach|navel|collarbone|thighs?|ass|butt|legs?|feet|toes|face|",
+        r"hands?|arms?|shoulders?|armpits?|fingers?|cheeks?|mouth|nose|lips?|lap|nipples?|pussy|penis|nails?|nail polish|fingernails?|blush|sweat|",
+        r"freckles|mole|fang|body type|heterochromia|ahoge|twintails?|braids?|ponytails?|ears?|tails?|horns?|wings?|halo|",
         r"slim|petite|muscular|androgynous|male|female|elf|android|kemonomimi|",
         r"girls?|boys?|women|woman|men|man|persons?|people|characters?|subjects?|figures?)\b)"
     ))
@@ -293,6 +299,7 @@ pub(super) fn clean_moss_reference_prose(
     text = RE_APPEARANCE.replace_all(&text, "").into_owned();
     if replace_outfit {
         text = RE_CLOTHING_STATES.replace_all(&text, "").into_owned();
+        text = RE_COMPOUND_WRAP.replace_all(&text, "").into_owned();
         text = RE_WEARING_CLAUSE.replace_all(&text, "").into_owned();
         text = RE_WEARING_FALLBACK
             .replace_all(&text, |capture: &regex::Captures<'_>| {

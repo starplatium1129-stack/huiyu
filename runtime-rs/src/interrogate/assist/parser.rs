@@ -15,6 +15,8 @@ pub(super) struct ParsedAssist {
 #[derive(Serialize)]
 pub(super) struct AssistLayout {
     canvas: &'static str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    scene: Option<String>,
     items: Vec<AssistLayoutItem>,
 }
 
@@ -23,6 +25,10 @@ struct AssistLayoutItem {
     label: &'static str,
     caption: String,
     bbox: [f64; 4],
+    #[serde(skip_serializing_if = "Option::is_none")]
+    clothing: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pose: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     text: Option<String>,
 }
@@ -95,6 +101,11 @@ fn parse_bbox(value: &Value) -> Option<[f64; 4]> {
     Some([y1, x1, y2, x2])
 }
 
+fn optional_trimmed(value: Option<&Value>, max_chars: usize) -> Option<String> {
+    let text = value?.as_str()?.trim();
+    (!text.is_empty() && text.chars().count() <= max_chars).then(|| text.to_owned())
+}
+
 fn parse_layout_item(value: &Value) -> Option<AssistLayoutItem> {
     let obj = value.as_object()?;
     let label = match obj
@@ -109,10 +120,28 @@ fn parse_layout_item(value: &Value) -> Option<AssistLayoutItem> {
         "text" => "text",
         _ => return None,
     };
-    let caption = obj.get("caption")?.as_str()?.trim();
-    if caption.is_empty() || caption.chars().count() > MAX_ITEM_CAPTION_CHARS {
-        return None;
-    }
+    let clothing = if label == "character" {
+        optional_trimmed(obj.get("clothing"), MAX_ITEM_CAPTION_CHARS)
+    } else {
+        None
+    };
+    let pose = if label == "character" {
+        optional_trimmed(obj.get("pose"), MAX_ITEM_CAPTION_CHARS)
+    } else {
+        None
+    };
+    let raw_caption = optional_trimmed(obj.get("caption"), MAX_ITEM_CAPTION_CHARS);
+    let caption = match raw_caption {
+        Some(text) => text,
+        None if label == "character" && (clothing.is_some() || pose.is_some()) => {
+            [clothing.as_deref(), pose.as_deref()]
+                .into_iter()
+                .flatten()
+                .collect::<Vec<_>>()
+                .join(", ")
+        }
+        None => return None,
+    };
     let bbox = parse_bbox(obj.get("bbox")?)?;
     let text = if label == "text" {
         let raw = obj.get("text")?.as_str()?.trim();
@@ -125,13 +154,15 @@ fn parse_layout_item(value: &Value) -> Option<AssistLayoutItem> {
     };
     Some(AssistLayoutItem {
         label,
-        caption: caption.to_owned(),
+        caption,
         bbox,
+        clothing,
+        pose,
         text,
     })
 }
 
-fn parse_layout(value: &Value) -> Option<AssistLayout> {
+fn parse_layout(value: &Value, top_scene: Option<String>) -> Option<AssistLayout> {
     let obj = value.as_object()?;
     let canvas = match obj
         .get("canvas")?
@@ -145,6 +176,7 @@ fn parse_layout(value: &Value) -> Option<AssistLayout> {
         "collage" => "collage",
         _ => return None,
     };
+    let scene = optional_trimmed(obj.get("scene"), MAX_CAPTION_CHARS).or(top_scene);
     let raw_items = obj.get("items")?.as_array()?;
     let items: Vec<AssistLayoutItem> = raw_items
         .iter()
@@ -154,7 +186,7 @@ fn parse_layout(value: &Value) -> Option<AssistLayout> {
     if items.is_empty() {
         return None;
     }
-    Some(AssistLayout { canvas, items })
+    Some(AssistLayout { canvas, scene, items })
 }
 
 pub(super) fn parse_response(content: &str, options: Options) -> Option<ParsedAssist> {
@@ -180,8 +212,9 @@ pub(super) fn parse_response(content: &str, options: Options) -> Option<ParsedAs
     {
         return None;
     }
+    let top_scene = optional_trimmed(map.get("scene"), MAX_CAPTION_CHARS);
     let layout = if options.layout {
-        map.get("layout").and_then(parse_layout)
+        map.get("layout").and_then(|value| parse_layout(value, top_scene))
     } else {
         None
     };

@@ -2,7 +2,8 @@ import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/stor
 import { ref } from 'vue'
 import { apiClient } from '@/api/client'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
-import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, getRuntimeTaskByKey, cancelRuntimeTaskKey, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
+import { submitRuntimeTask, waitForRuntimeTask, getRuntimeTaskByKey, cancelRuntimeTaskKey, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
+import { hasRuntimeTaskSession, runtimeTaskDraftSlot } from '@/api/runtimeTaskAuthority'
 import { refreshProfileStorage } from '@/platform/web/profileStorage'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -91,10 +92,11 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
 
 /** Chat retains the request until its image message has been durably saved. */
 export async function acknowledgeCompanionImage(taskId: string) {
-  const draft = readImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY)
+  const slot = runtimeTaskDraftSlot(COMPANION_IMAGE_REQUEST_KEY)
+  const draft = readImageRequestDraft(slot)
   if (draft?.resultId !== taskId) return
-  assertRequestOwner(draft, hasRuntimeTasks())
-  await clearRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+  assertRequestOwner(draft, hasRuntimeTaskSession())
+  await clearRequestDraft(slot, draft)
 }
 
 /** Both chat surfaces resume the frozen request before accepting a new drawing intent. */
@@ -103,7 +105,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   signal: AbortSignal; report?: (message: string) => void
 }): Promise<CompanionImageResult> {
   if (!isLocalStudioHost()) throw new Error('桌宠绘图工具仅限本机直连使用')
-  if (!hasRuntimeTasks()) throw new Error('请在桌面客户端启用私人任务工作区后使用桌宠绘图')
+  const slot = runtimeTaskDraftSlot(COMPANION_IMAGE_REQUEST_KEY)
   if (busy) throw new Error('桌宠正在处理上一张图片，请等待完成或先停止')
   options.signal.throwIfAborted()
   busy = true
@@ -112,10 +114,11 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   let preparingOwner: TempResultOwner | undefined, resumed = false
   let labels = [options.character, args.character, args.description]
   const checkOwner = () => {
-    if (draft) assertRequestOwner(draft, hasRuntimeTasks())
-    else if (!preparingOwner || !sameTempResultOwner(preparingOwner) || !hasRuntimeTasks()) throw new Error('绘图准备所属工作区已变化，请回到原连接')
+    if (slot !== runtimeTaskDraftSlot(COMPANION_IMAGE_REQUEST_KEY)) throw new Error('绘图所属工作区已变化，请回到原连接')
+    if (draft) assertRequestOwner(draft, true)
+    else if (!preparingOwner || !sameTempResultOwner(preparingOwner)) throw new Error('绘图准备所属工作区已变化，请回到原连接')
   }
-  const forget = async () => { if (draft) await clearRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft) }
+  const forget = async () => { if (draft) await clearRequestDraft(slot, draft) }
   const requestCancel = () => {
     // Leaving, switching characters and observation timeouts do not cancel execution.
     if (options.signal.reason !== 'user-cancel' || !draft?.submitted || cancellation) return
@@ -129,7 +132,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   signal.addEventListener('abort', requestCancel, { once: true })
   try {
     preparingOwner = tempResultOwner()
-    draft = readImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY)
+    draft = readImageRequestDraft(slot)
     if (draft) {
       resumed = true
       checkOwner()
@@ -148,7 +151,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
       signal.throwIfAborted(); checkOwner()
       draft = newImageRequestDraft(submission, true)
       draft.signature = JSON.stringify(labels)
-      await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+      await writeRequestDraft(slot, draft)
     }
     signal.throwIfAborted(); checkOwner()
     let task: TaskRecord
@@ -158,7 +161,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
       task = existing
     } else {
       draft.submitted = true
-      await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+      await writeRequestDraft(slot, draft)
       signal.throwIfAborted(); checkOwner()
       options.report?.('正在提交绘图任务…')
       try {
@@ -172,12 +175,12 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
     const done = await waitForRuntimeTask(task.taskId, signal, current => options.report?.(taskMessage(current)))
     signal.throwIfAborted(); checkOwner()
     draft.resultId = done.taskId
-    await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+    await writeRequestDraft(slot, draft)
     options.report?.('图片已生成，正在保存到作品册…')
     let imageId = done.resultRefs.find(output => output.index === 0)?.alias
     let artworkId: string | undefined
     try {
-      const artwork = await archiveTaskResult(done.taskId, 0)
+      const artwork = await archiveTaskResult(done.taskId, 0, undefined, signal)
       imageId = artwork.image_id; artworkId = String(artwork.id)
     } catch {
       signal.throwIfAborted(); checkOwner()
@@ -187,7 +190,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
     return { taskId: done.taskId, resultPath: runtimeResultPath(done), imageId, artworkId,
       character: labels[1], description: labels[2],
       output: (resumed ? '已找回上次图片，本次新要求尚未提交。' : '')
-        + (artworkId ? '图片已生成，并保存到作品册。' : '图片已生成，原图已送回对话；作品册保存尚未确认，可在任务中心重试入册。') }
+        + (artworkId ? '图片已生成，并保存到作品册。' : '图片已生成，原图已送回对话。作品册保存尚未确认。') }
   } catch (error) {
     if (signal.aborted) {
       requestCancel()

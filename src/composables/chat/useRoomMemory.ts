@@ -44,7 +44,7 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   function memoryCharacter(value = activeChar.value): ChatMemoryCharacter {
     return getCompanionCharacterConfig(value) ? value : DEFAULT_COMPANION_CHARACTER_ID
   }
-  const catalogCharacter = (id: string) => getCompanionCharacter(id)?.catalogId || (id.startsWith('card-') ? '' : id)
+  const catalogCharacter = (id: string) => getCompanionCharacter(id)?.catalogId || (id === 'nene' || id.startsWith('card-') ? '' : id)
   watch([() => catalogCharacter(activeChar.value), runtimeResourceIdentity], ([id]) => {
     if (id) void loadCharacterSettingCard(id).catch(() => {})
   }, { immediate: true })

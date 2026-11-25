@@ -13,7 +13,7 @@ import { captureCompanionImageSource } from './companionChatImages'
 import { startTurnWatchdog } from './chatTurnWatchdog'
 import { abortableTask } from '@/utils/abortableTask'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
-import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
+import { hasRuntimeTaskSession } from '@/api/runtimeTaskAuthority'
 import {
   MAX_TOOL_ROUNDS,
   executeChatToolRound,
@@ -270,7 +270,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       const toolsEnabled = !turn.restricted && connection.tools && (connection.provider === 'api' || connection.provider === 'chatgpt') && isLocalStudioHost()
       const searchEnabled = !turn.restricted && connection.webSearch && (connection.provider === 'api' || connection.provider === 'chatgpt') && isLocalStudioHost()
       const museDrawing = !turn.restricted && connection.provider === 'muse' && connection.tools
-        && isLocalStudioHost() && hasRuntimeTasks()
+        && isLocalStudioHost() && hasRuntimeTaskSession()
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []

@@ -68,8 +68,8 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-bubble { position:relative; box-sizing:border-box; min-width:0; max-width:calc(100% - 40px); padding:var(--s-2) var(--s-3); border:1px solid transparent; border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--dialogue-surface); }
 .companion-dialogue-bubbles { display:flex; flex-direction:column; align-items:flex-start; gap:var(--s-1); min-width:0; max-width:calc(100% - 40px); }
 .companion-dialogue-bubbles .companion-dialogue-bubble { max-width:100%; }
-.companion-dialogue-bubbles:has(.chat-drawing-batch,.companion-chat-images) { flex:1; }
-.companion-dialogue-bubble:has(.chat-drawing-batch,.companion-chat-images) { align-self:stretch; }
+.companion-dialogue-bubbles:has(.chat-drawing-batch) { flex:1; }
+.companion-dialogue-bubble:has(.chat-drawing-batch) { align-self:stretch; }
 .companion-dialogue-message[data-role='user'] .companion-dialogue-bubbles { align-items:flex-end; max-width:100%; }
 .companion-dialogue-message[data-role='user'] .companion-dialogue-bubble { max-width:100%; border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:var(--dialogue-control-surface); }
 .companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:var(--fs-label-xs); font-weight:600; }
@@ -104,7 +104,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-attachment button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .companion-dialogue-window .companion-dialogue-bubble .companion-chat-images { margin-top:6px; }
 .companion-dialogue-window .companion-dialogue-bubble .companion-chat-images figure { min-width:0; max-width:100%; padding:0; border:0; background:transparent; }
-.companion-dialogue-window .companion-dialogue-bubble .companion-chat-image-open img { max-height:300px; }
+.companion-dialogue-window .companion-dialogue-bubble .companion-chat-image-frame img.is-ready { max-width:min(260px,100%); max-height:280px; }
 .companion-dialogue-window .companion-dialogue-bubble .companion-drawing-draft { margin:8px 0 0; padding:8px; background:transparent; }
 .companion-dialogue-composer,.companion-dialogue-attachment,.companion-dialogue-connection,.companion-dialogue-feedback,.companion-dialogue-presence,.companion-dialogue-latest { flex-shrink:0; }
 .companion-dialogue-feedback { max-height:80px; overflow:auto; }

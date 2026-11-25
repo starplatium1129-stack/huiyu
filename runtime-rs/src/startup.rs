@@ -78,15 +78,25 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     config.bind = listener.local_addr()?;
     config.gateway_origin = format!("http://{}", config.bind);
     let storage = match (&config.workspace_root, &config.workspace_id) {
-        (Some(root), Some(id)) => Some(
-            Storage::open(root.clone(), id.clone(), config.create_workspace)
-                .await?
-                .with_native_images(crate::native_images::library_path(&config)),
-        ),
-        _ => None,
+        (Some(root), Some(id)) => {
+            Some(Storage::open(root.clone(), id.clone(), config.create_workspace).await?)
+        }
+        _ => match config.config_root.as_deref() {
+            Some(root) => match crate::host::open_task_workspace(root).await {
+                Ok((storage, pointer)) => {
+                    config.workspace_candidate = Some(pointer);
+                    Some(storage)
+                }
+                Err(error) => {
+                    eprintln!("Desktop task workspace unavailable ({})", error.code);
+                    None
+                }
+            },
+            None => None,
+        },
     };
     let host = Arc::new(HostAuthority::new(
-        storage,
+        storage.map(|storage| storage.with_native_images(crate::native_images::library_path(&config))),
         config.workspace_pointer.clone(),
         config.workspace_candidate.clone(),
     ));

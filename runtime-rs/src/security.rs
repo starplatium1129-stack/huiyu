@@ -129,7 +129,7 @@ pub async fn guard(
             );
             headers.insert(
                 "access-control-allow-headers",
-                HeaderValue::from_static(if matches!(path.as_str(), "/api/interrogate/raw" | "/api/interrogate/status") {
+                HeaderValue::from_static(if matches!(path.as_str(), "/api/interrogate/raw" | "/api/interrogate/status" | "/api/interrogate/fuse-cast") {
                     "Content-Type, Authorization, x-aics-workspace-session, x-aics-interrogate-api"
                 } else {
                     "Content-Type, Authorization, x-aics-workspace-session"

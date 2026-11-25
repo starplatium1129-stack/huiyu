@@ -118,15 +118,15 @@ export function mossCastBoxes(size: MossCanvasSize, count: number, formation?: i
     })
   }
   if (count >= 4 && formation === 'staggered') {
-    const front = row(2, 0.42, count === 4 ? 0.01 : 0.14, 1, count === 4 ? 0.99 : 0.86, 0.12)
-    const rear = row(count - 2, 0.02, count === 4 ? 0.19 : 0.01, 0.67, count === 4 ? 0.81 : 0.99, 0.12)
+    const front = row(2, 0.46, count === 4 ? 0.02 : 0.14, 1, count === 4 ? 0.98 : 0.86, 0.02)
+    const rear = row(count - 2, 0.02, count === 4 ? 0.18 : 0.01, 0.58, count === 4 ? 0.82 : 0.99, 0.02)
     return [...front, ...rear]
   }
   if (formation === 'close' && count >= 2) {
     const margin = count === 2 ? 0.04 : 0.02
-    return row(count, 0, margin, 1, 1 - margin, count === 2 ? 0.36 : 0.28)
+    return row(count, 0, margin, 1, 1 - margin, count === 2 ? 0.12 : 0.08)
   }
-  return row(count, 0, 0, 1, 1, 0.12)
+  return row(count, 0, 0.01, 1, 0.99, 0)
 }
 
 export function mossTextBox(size: MossCanvasSize, placement: string): Box {

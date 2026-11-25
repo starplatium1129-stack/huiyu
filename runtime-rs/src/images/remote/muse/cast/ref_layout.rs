@@ -5,6 +5,8 @@ const MAX_LAYOUT_ITEMS: usize = 16;
 pub(super) struct NormalizedRefItem {
     pub(super) label: String,
     pub(super) caption: String,
+    pub(super) clothing: Option<String>,
+    pub(super) pose: Option<String>,
     pub(super) text: Option<String>,
     /// Normalized [y1, x1, y2, x2] in 0.0..=1.0
     pub(super) bbox: [f64; 4],
@@ -12,6 +14,7 @@ pub(super) struct NormalizedRefItem {
 
 pub(super) struct ParsedReferenceLayout {
     pub(super) canvas: String,
+    pub(super) scene: Option<String>,
     pub(super) summary_caption: Option<String>,
     pub(super) items: Vec<NormalizedRefItem>,
 }
@@ -50,6 +53,13 @@ pub(super) fn parse_reference_layout(
         .filter(|c| matches!(*c, "single" | "multi_panel" | "collage"))
         .unwrap_or("single")
         .to_owned();
+    let scene = object
+        .get("scene")
+        .or_else(|| root.get("scene"))
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|s| !s.is_empty())
+        .map(str::to_owned);
     let summary_caption = summary_obj
         .and_then(|summary| summary.get("caption"))
         .or_else(|| object.get("caption"))
@@ -86,6 +96,18 @@ pub(super) fn parse_reference_layout(
             .map(str::trim)
             .unwrap_or("")
             .to_owned();
+        let clothing = item_obj
+            .get("clothing")
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(str::to_owned);
+        let pose = item_obj
+            .get("pose")
+            .and_then(Value::as_str)
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+            .map(str::to_owned);
         let text = item_obj
             .get("text")
             .and_then(Value::as_str)
@@ -102,12 +124,15 @@ pub(super) fn parse_reference_layout(
         items.push(NormalizedRefItem {
             label: label.to_owned(),
             caption,
+            clothing,
+            pose,
             text,
             bbox,
         });
     }
     Ok(ParsedReferenceLayout {
         canvas,
+        scene,
         summary_caption,
         items,
     })

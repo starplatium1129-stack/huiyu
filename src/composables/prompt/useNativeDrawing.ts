@@ -10,6 +10,7 @@ import { compileMossLayout, isMossLayoutInput } from '@/utils/mossLayout'
 import { isCustomCastOutfit } from '@/utils/promptCast'
 import { captureResultContext } from '@/utils/resultContext'
 import { mossModels } from '@/config/directImageModels'
+import { fuseMossCastPrompt } from '@/api/fuseCastLayout'
 
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
@@ -185,6 +186,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   async function generate() {
     const state = session.value
     if (!state || locked.value || blocked.value || preparingSubmission) return
+    let finalMossPrompt = recipe.value.prompt
     if (mode.value === 'moss') {
       preparingSubmission = true
       const draftKey = () => JSON.stringify({ ...pb.snapshotDraft(), updatedAt: undefined })
@@ -192,6 +194,18 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
       try {
         await nextTick()
         await pb.persistDraft()
+        if (session.value !== state || locked.value || blocked.value || draftKey() !== before) return
+        if (!usingMossTaskPrompt.value && !mossLayout.value && pb.cast.length >= 2 && isMossLayoutInput(finalMossPrompt)) {
+          const fused = await fuseMossCastPrompt({
+            draftPrompt: finalMossPrompt,
+            plan: workspace.mossPlan.value,
+            cast: pb.cast,
+            interaction: pb.castInteraction,
+            userDescription: pb.visualDescription,
+            reference: pb.referenceInput,
+          })
+          finalMossPrompt = fused.prompt
+        }
       } catch {
         // The draft store reports why its durable write could not be confirmed.
         return
@@ -200,7 +214,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     }
     const subject = pb.subject
     const director = mode.value === 'moss' ? captureResultContext(pb) : null
-    state.form.prompt = mode.value === 'moss' ? recipe.value.prompt : recipe.value.raw
+    state.form.prompt = mode.value === 'moss' ? finalMossPrompt : recipe.value.raw
     await state.run({ negative: state.turbo.value ? '' : recipe.value.negative, context: {
       ...(director ? { subject: subject.kind, sceneId: pb.sceneId,
         history: { ...director.history, negativeCustom: state.form.negative, mossLayout: mossLayout.value || undefined } } : {}),

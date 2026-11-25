@@ -276,16 +276,36 @@ pub(super) fn prepare(
         .unwrap_or_default();
     let ref_from_layout = parsed_ref_layout
         .as_ref()
-        .and_then(|layout| layout.summary_caption.as_deref())
-        .map(|text| clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true)))
+        .map(|layout| {
+            if let Some(scene) = layout.scene.as_deref() {
+                clean_cast_prose(&clean_moss_reference_prose(scene, &identity_terms, true))
+            } else if let Some(text) = layout.summary_caption.as_deref() {
+                if actors.len() > 1 {
+                    scene_reference::caption(text, &identity_terms)
+                } else {
+                    clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true))
+                }
+            } else {
+                String::new()
+            }
+        })
         .unwrap_or_default();
-    let ref_from_caption = input.reference_caption.as_deref().map(|text| {
-        if family == "moss-image" {
-            clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true))
-        } else {
-            scene_reference::caption(text, &identity_terms)
-        }
-    }).unwrap_or_default();
+    let has_structured_scene = parsed_ref_layout.as_ref().and_then(|l| l.scene.as_ref()).is_some();
+    let ref_from_caption = if has_structured_scene {
+        String::new()
+    } else {
+        input
+            .reference_caption
+            .as_deref()
+            .map(|text| {
+                if actors.len() > 1 || family != "moss-image" {
+                    scene_reference::caption(text, &identity_terms)
+                } else {
+                    clean_cast_prose(&clean_moss_reference_prose(text, &identity_terms, true))
+                }
+            })
+            .unwrap_or_default()
+    };
     let ref_caption_clean = unique_tags([ref_from_caption, ref_from_layout]).join(" ");
 
     let genders: Vec<&str> = actors.iter().map(|a| a.gender).collect();

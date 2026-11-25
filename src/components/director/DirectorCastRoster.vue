@@ -183,7 +183,7 @@ const actors = computed(() => pb.cast.map(item => {
     image: resolveRuntimeUrl(person?.image),
     outfitId: isCustomCastOutfit(item.outfitId) || item.outfitExplicit && options.some(option => option.value === item.outfitId) ? item.outfitId : '',
     action: item.action ?? '',
-    outfits: [{ value: '', label: '自动服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
+    outfits: [{ value: '', label: referenceMapping.value ? '跟随参考图服装' : '角色默认服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
   }
 }))
 const referenceCount = computed(() => referenceCharacterCount(pb.referenceInput?.layout))

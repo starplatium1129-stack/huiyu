@@ -4,11 +4,11 @@ import { normalizeProseKey, proseToken } from './promptPhraseTables.ts'
 
 // Garments belong to the selected outfit or reference, not permanent identity.
 const GARMENT_TOKEN_RE =
-  /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|gown|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|negligee|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/
+  /^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|gown|sundress|skirt|miniskirt|overskirt|shirt|blouse|tunic|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bodice|bustier|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|slippers|loafers|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|garters?|uniform|serafuku|suit|robe|cloak|cape|capelet|shawl|poncho|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|sash|obi|habit|veil|swimsuit|swimwear|bikini|monokini|sarong|towel|pajamas|sleepwear|nightgown|nightdress|babydoll|negligee|chemise|romper|jumpsuit|tracksuit|lingerie|choker|gloves|scarf|necktie|bowtie|belt|hat|helmet|armor|footwear|headdress)$/
 
 export function isGarmentToken(token: string): boolean {
   const key = normalizeProseKey(token).replace(/-/g, '_')
-  return ['playboy_bunny', 'kneehighs', 'casual', 'bikini_top'].includes(key) || key.endsWith('_bikini_top') || GARMENT_TOKEN_RE.test(key)
+  return ['playboy_bunny', 'kneehighs', 'casual', 'bikini_top', 'bikini_bottom', 'lingerie_set', 'naked_towel', 'wet_towel', 'bath_towel'].includes(key) || key.endsWith('_bikini_top') || GARMENT_TOKEN_RE.test(key)
 }
 
 /** Explicit undress states replace inherited outfits just as garments do.

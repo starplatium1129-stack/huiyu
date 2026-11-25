@@ -4,7 +4,7 @@ import type { CastFormation, CastMember, PromptPlan } from '../types/prompt'
 import { tagKey } from './animaPromptOrder.ts'
 import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
 import { isReferenceWardrobeTag, isStableIdentityToken, splitReferenceTags } from './interrogateReference.ts'
-import { cleanMossReferenceProse } from './mossCast.ts'
+import { cleanCastReferenceSceneProse, cleanMossReferenceProse, formatCastOutfitClause, isPerCharacterReferenceTag } from './mossCast.ts'
 import { defaultOutfit, findOutfit } from './popularContent.ts'
 import { isOutfitToken, standaloneIdentityProse, standaloneIdentityTokens } from './popularIdentity.ts'
 import type { DraftOutfitOverride, DraftReferenceInput } from './promptBuilderPersistence'
@@ -76,7 +76,7 @@ function resolveActor(member: CastMember, characters: readonly PopularCharacter[
   const action = cleanCastProse(member.action ?? '').trim()
   const specialOutfit = isCustomCastOutfit(member.outfitId)
   const outfitPrompt = member.outfitId === 'custom' ? cleanCastProse(member.outfitPrompt ?? '') : ''
-  const outfitCaption = outfitPrompt && !/^(?:wears?|wearing|dressed|in)\b/i.test(outfitPrompt) ? `Wearing ${outfitPrompt}` : outfitPrompt
+  const outfitCaption = formatCastOutfitClause(outfitPrompt)
   if (member.source === 'custom') {
     const name = cleanCastProse(member.name ?? '') || 'Original character'
     const appearance = cleanCastProse(member.appearance ?? '')
@@ -96,7 +96,7 @@ function resolveActor(member: CastMember, characters: readonly PopularCharacter[
       name: studioNames[id], ...meta, aliases: [studioNames[id], ...identity], identity,
       outfit: publicTags(specialOutfit ? [outfitPrompt] : override?.tokens ?? outfit?.tags ?? []), action, gender: 'girl',
       identityCaption: cleanCastProse(studioSubjectProse(id)),
-      outfitCaption: specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit?.prose ?? '',
+      outfitCaption: formatCastOutfitClause(specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit?.prose ?? ''),
       outfitExplicit: specialOutfit || Boolean(override) || member.outfitExplicit === true,
     }
   }
@@ -118,7 +118,7 @@ function resolveActor(member: CastMember, characters: readonly PopularCharacter[
     aliases: identityTerms(character), identity, action, gender,
     identityCaption: cleanCastProse(variant ? `${name}, ${variant}` : identityProse),
     outfit: publicTags(specialOutfit ? [outfitPrompt] : override?.tokens ?? outfit.tokens),
-    outfitCaption: specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit.prose,
+    outfitCaption: formatCastOutfitClause(specialOutfit ? outfitCaption : override ? wardrobeProse(override.prose, override.tokens) : outfit.prose),
     outfitExplicit: specialOutfit || Boolean(override) || member.outfitExplicit === true,
   }
 }
@@ -141,20 +141,29 @@ export function buildCastPlan(
   const namesAndTraits = uniqueTags([...actors.flatMap(actor => actor.aliases), ...characterTokens, ...copyrightTokens,
     ...(reference?.characterTokens ?? []), ...(reference?.copyrightTokens ?? []), ...(reference?.sourceIdentityTerms ?? [])])
   const localKeys = new Set([...namesAndTraits, ...actors.flatMap(actor => [...actor.identity, ...actor.outfit])].map(tagKey))
+  const referenceTagKeys = new Set((reference?.tags ?? []).map(tagKey))
+  const isMulti = actors.length > 1
   const sharedTags = (tags: readonly string[]) => publicTags(tags)
-    .filter(token => !localKeys.has(tagKey(token)) && !isWardrobe(token) && !isStableIdentityToken(token))
+    .filter(token => {
+      const key = tagKey(token)
+      if (localKeys.has(key) || isWardrobe(token) || isStableIdentityToken(token)) return false
+      if (isMulti && referenceTagKeys.has(key) && isPerCharacterReferenceTag(token)) return false
+      return true
+    })
   const counts = ['girl', 'boy', 'other'].flatMap(gender => {
     const count = actors.filter(actor => actor.gender === gender).length
     return count ? [`${count}${gender}${count > 1 ? 's' : ''}`] : []
   })
   const scene = base.scene && { ...base.scene, compositionIntent: 'group' as const, animaCaption: '', promptProse: '' }
-  const prose = (text: string) => cleanMossReferenceProse(cleanCastProse(text), namesAndTraits, true)
-  const useReferenceAtmosphere = Boolean(reference && actors.length > 1 && boxes < actors.length)
-  const referenceProse = useReferenceAtmosphere
-    ? prose(reference?.caption ?? '').replace(/\b(?:the |a |an )?(?:left |right |front |rear )?(?:subject|character|person|figure|girl|boy|woman|man)s?\s+(?:is |are )?(?:stand(?:s|ing)?|sit(?:s|ting)?|kneel(?:s|ing)?|lie[s]?|lying|lean(?:s|ing)?|poses?|posing)(?:\s+[a-z-]+ly)?\s+(?=(?:in|on|at|by|near|under|beside|against)\b)/gi, 'The scene is ')
-    : prose(reference?.caption ?? '')
+  const prose = (text: string) => isMulti
+    ? cleanCastReferenceSceneProse(text, namesAndTraits)
+    : cleanMossReferenceProse(cleanCastProse(text), namesAndTraits, true)
+  const structuredScene = layout?.scene ? cleanCastProse(cleanMossReferenceProse(layout.scene, namesAndTraits, true)) : ''
+  const referenceProse = structuredScene || prose(reference?.caption ?? '')
   const sourceSceneProse = base.sceneProse || base.scene?.animaCaption || base.scene?.promptProse || ''
-  const sceneProse = reference?.caption && sourceSceneProse === reference.caption ? referenceProse : prose(sourceSceneProse)
+  const sceneProse = structuredScene
+    ? structuredScene
+    : reference?.caption && sourceSceneProse === reference.caption ? referenceProse : prose(sourceSceneProse)
   const common: PromptPlan = {
     ...base, scene, characterTokens, copyrightTokens, freeSubject: false,
     quality: base.quality.filter(token => tagKey(token) !== 'fair skin' || !actors.some(actor =>
@@ -171,10 +180,11 @@ export function buildCastPlan(
   if (engine === 'moss') return {
     ...common,
     mossLayout: {
-      compositionIntent: actors.length > 1 ? 'group' : 'single', castLayout: true, formation, interaction, referenceIdentityTerms: namesAndTraits,
+      compositionIntent: isMulti ? 'group' : 'single', castLayout: true, formation, interaction, referenceIdentityTerms: namesAndTraits,
       subjects: actors.map(actor => {
-        const { identityCaption, outfitCaption, outfitExplicit, action } = actor
+        const { name, identityCaption, outfitCaption, outfitExplicit, action } = actor
         return {
+          name,
           caption: [identityCaption, outfitCaption, action].filter(Boolean).join('. '),
           identityCaption, outfitCaption, outfitExplicit, action,
         }
@@ -182,15 +192,23 @@ export function buildCastPlan(
       ...(layout ? { referenceLayout: { layout, boundSubject: true } } : {}),
     },
   }
-  const grammar = actors.map(actor => [actor.name, actor.action].filter(Boolean).join(' — ')).join('; ')
+  const grammar = actors.map(actor => {
+    const details = [formatCastOutfitClause(actor.outfitCaption), actor.action].filter(Boolean).join(', ')
+    return details ? `${actor.name} (${details})` : actor.name
+  }).join('; ')
   return {
     ...common,
     sceneProse: [...new Set([sceneProse, referenceProse].filter(Boolean))].join(' '),
     animaCast: {
-      tags: actors.map(actor => [...actor.identity.filter(token => !characterTokens.some(name => tagKey(name) === tagKey(token))
-        && !copyrightTokens.some(work => tagKey(work) === tagKey(token))), ...actor.outfit, ...publicTags([actor.action])]),
+      tags: actors.map(actor => [
+        ...actor.characterTokens,
+        ...actor.identity.filter(token => !actor.characterTokens.some(name => tagKey(name) === tagKey(token))
+          && !copyrightTokens.some(work => tagKey(work) === tagKey(token))),
+        ...actor.outfit,
+        ...publicTags([actor.action]),
+      ]),
       direction: [
-        actors.length > 1 ? `From left to right: ${grammar.replace(/[.!?]+$/, '')}.` : cast[0]?.source === 'custom' && cast[0].name ? `The character is ${actors[0].name}.` : '',
+        isMulti ? `From left to right: ${grammar.replace(/[.!?]+$/, '')}.` : cast[0]?.source === 'custom' && cast[0].name ? `The character is ${actors[0].name}.` : '',
         interaction,
       ].filter(Boolean).join('\n'),
     },

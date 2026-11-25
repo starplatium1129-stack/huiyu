@@ -223,7 +223,7 @@ pub(super) fn resolve_popular_actor(
             .and_then(|o| o["prose"].as_str())
             .map(str::trim)
             .filter(|s| !s.is_empty())
-            .map(str::to_owned)
+            .map(|text| format_custom_outfit_caption(&clean_cast_prose(text)))
             .unwrap_or_else(|| {
                 if tokens.is_empty() {
                     String::new()

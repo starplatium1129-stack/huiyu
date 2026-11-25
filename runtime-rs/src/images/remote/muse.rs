@@ -295,7 +295,7 @@ async fn draw(
             .ok_or_else(|| ApiError::invalid("请为出图提交指定 requestKey"))?;
         let input: SceneSelection = serde_json::from_value(input)
             .map_err(|error| ApiError::invalid(format!("出图参数无效：{error}")))?;
-        batches::enqueue(&state.config, &muse, &owner, key, None, vec![input]).await
+        batches::enqueue(&state, &muse, &owner, key, None, vec![input]).await
     }
     .await;
     http::response(result, StatusCode::ACCEPTED)

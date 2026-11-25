@@ -70,16 +70,23 @@ export function parseAssistLayout(value: unknown): InterrogateAssistLayout | nul
     }
     const label = item.label as InterrogateAssistLayoutItem['label']
     if (item.text !== undefined && typeof item.text !== 'string') return null
+    if (item.clothing !== undefined && typeof item.clothing !== 'string') return null
+    if (item.pose !== undefined && typeof item.pose !== 'string') return null
     const text = typeof item.text === 'string' ? item.text.trim() : ''
+    const clothing = label === 'character' && typeof item.clothing === 'string' ? item.clothing.trim() : ''
+    const pose = label === 'character' && typeof item.pose === 'string' ? item.pose.trim() : ''
     if (label === 'text' && !text) return null
     items.push({
       label,
       caption: item.caption.trim(),
       bbox: [y1, x1, y2, x2],
+      ...(clothing ? { clothing } : {}),
+      ...(pose ? { pose } : {}),
       ...(label === 'text' || text ? { text } : {}),
     })
   }
-  return { canvas: data.canvas as InterrogateAssistLayoutCanvas, items }
+  const scene = typeof data.scene === 'string' && data.scene.trim() ? data.scene.trim() : undefined
+  return { canvas: data.canvas as InterrogateAssistLayoutCanvas, ...(scene ? { scene } : {}), items }
 }
 
 /** Keep the model's categories separate; never turn character/style/meta rows into general tags. */

@@ -9,7 +9,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-const CACHE_SCHEMA_VERSION: u32 = 1;
+const CACHE_SCHEMA_VERSION: u32 = 2;
 pub(super) const TTL_SECONDS: i64 = 14 * 24 * 60 * 60;
 const TTL_MS: i64 = TTL_SECONDS * 1000;
 const MAX_MEMORY_ENTRIES: usize = 128;

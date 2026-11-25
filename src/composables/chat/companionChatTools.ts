@@ -19,12 +19,11 @@ export async function readCompanionImage(image: CompanionChatImage, repository: 
     check(signal)
     return source
   }
-  let blob: Blob | null
-  if (image.imageId || !image.path.startsWith('/')) blob = await repository.getImage(image.imageId || image.path, signal)
-  else {
-    const { fetchRuntimeResult } = await import('@/api/runtimeTasks')
+  let blob = image.imageId || !image.path.startsWith('/') ? await repository.getImage(image.imageId || image.path, signal) : null
+  if (!blob && image.path.startsWith('/')) {
+    const { fetchRuntimeResult, isRuntimeResultPath } = await import('@/api/runtimeTasks')
     check(signal)
-    blob = await fetchRuntimeResult(image.path, signal)
+    if (isRuntimeResultPath(image.path)) blob = await fetchRuntimeResult(image.path, signal)
   }
   check(signal)
   if (!blob || !blob.size || !/^image\/(png|jpeg|webp|gif)$/.test(blob.type)) throw new Error('原图暂时无法读取，请重新选择图片。')

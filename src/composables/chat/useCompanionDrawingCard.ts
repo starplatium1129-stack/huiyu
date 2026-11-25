@@ -1,6 +1,7 @@
 import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch } from 'vue'
 import { changeCompanionDrawingItem, companionDrawingBatch, readCompanionDrawingPrompt, type CompanionBatch } from '@/api/companionDrawingApi'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { archiveLegacyCompanionBatch } from './companionDrawingBatch'
 
 export const drawingBatchActive = (batch: CompanionBatch | null) => batch?.state === 'running' || batch?.state === 'cancelling'
 
@@ -38,6 +39,10 @@ export function useCompanionDrawingCard(batchId: string) {
       if (current.signal.aborted) return
       batch.value = latest
       error.value = latest ? '' : '原出图卡暂不可用'
+      if (latest && !drawingBatchActive(latest) && latest.jobs.some(job => job.status === 'succeeded')) {
+        const archived = await archiveLegacyCompanionBatch(latest, current.signal)
+        if (reading === current && !current.signal.aborted) batch.value = archived
+      }
     } catch (reason) {
       if (!current.signal.aborted) error.value = reason instanceof Error ? reason.message : '出图进度暂不可用'
     } finally {

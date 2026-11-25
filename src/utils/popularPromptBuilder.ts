@@ -367,7 +367,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   if (engine === 'moss') {
     plan.mossLayout = {
       compositionIntent: compositionSource?.compositionIntent,
-      ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true } } : {}),
+      ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true, explicitOutfit: Boolean(options.outfitExplicit && !overridden) || Boolean(options.outfitOverrideProse) } } : {}),
     }
     const rendered = renderMossDrawingPrompt(plan, userVisual, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }

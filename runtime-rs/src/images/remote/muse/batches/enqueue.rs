@@ -17,7 +17,7 @@ pub(in super::super) async fn create(
         let owner = generation::request_owner(&headers, peer, &HashMap::new());
         let key = input.request_key.clone();
         let (model, scenes) = input.selections()?;
-        enqueue(&state.config, &muse, &owner, key, model, scenes).await
+        enqueue(&state, &muse, &owner, key, model, scenes).await
     }
     .await;
     http::response(result, StatusCode::ACCEPTED)
@@ -91,13 +91,14 @@ async fn verify_owned_inputs(muse: &Muse, owner: &str, prepared: &[PreparedScene
 }
 
 pub(in super::super) async fn enqueue(
-    config: &crate::config::Config,
+    state: &crate::AppState,
     muse: &Muse,
     owner: &str,
     key: String,
     model: Option<String>,
     scenes: Vec<SceneSelection>,
 ) -> Result<Value> {
+    let config = &state.config;
     let count: usize = scenes
         .iter()
         .map(|s| usize::from(s.variants.unwrap_or(1).max(1)))
@@ -151,6 +152,46 @@ pub(in super::super) async fn enqueue(
     })
     .await
     .map_err(|_| unavailable())??;
+
+    // Best-effort Chat-API semantic fusion for multi-character MOSS cast layouts;
+    // falls back silently to the deterministic Layer-1 layout when offline/unconfigured.
+    if state.chat.is_some() {
+        let empty_headers = HeaderMap::new();
+        let cancel = muse.images.shutdown.child_token();
+        for scene in &mut prepared {
+            if scene.kind != "cast" || scene.family != "moss-image" {
+                continue;
+            }
+            let Some(draft) = scene.payload.get("prompt").and_then(Value::as_str).map(str::to_owned) else {
+                continue;
+            };
+            let char_items = serde_json::from_str::<Value>(&draft)
+                .ok()
+                .and_then(|v| v.get("items").and_then(Value::as_array).map(|items| {
+                    items.iter().filter(|it| it.get("label").and_then(Value::as_str) == Some("character")).count()
+                }))
+                .unwrap_or(0);
+            if char_items < 2 {
+                continue;
+            }
+            let outcome = crate::interrogate::fuse::fuse_moss_cast(
+                state,
+                &empty_headers,
+                crate::interrogate::fuse::FuseCastInput {
+                    draft_prompt: draft,
+                    cast: Vec::new(),
+                    interaction: None,
+                    user_description: None,
+                    reference_scene: None,
+                },
+                &cancel,
+            )
+            .await;
+            if outcome.fused {
+                scene.payload["prompt"] = json!(outcome.prompt);
+            }
+        }
+    }
 
     if let Some(receipt) = legacy::find(muse, &key).await? {
         if !legacy::matches(&receipt, &mut prepared) {

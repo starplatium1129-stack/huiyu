@@ -2,6 +2,7 @@ mod activation;
 mod authority;
 mod portable;
 
+pub(crate) use activation::open_task_workspace;
 pub(crate) use authority::{OwnedWriteGuard, now_ms};
 pub use authority::{HostAuthority, Session};
 

@@ -10,32 +10,33 @@ use super::clean::{
 
 static CAMERA: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
-        r"(?i)\b(?:close[ -]up|face focus|upper body|full body|wide[ -]angle|(?:wide|medium|cowboy|long) shot|",
-        r"camera|framing|portrait|depth of field|(?:high|low|dutch) angle|",
+        r"(?i)\b(?:close[ -]up|face focus|upper body|full body|wide[ -]angle|(?:wide|medium|cowboy|long|water[ -]level) shot|water[ -]level view|",
+        r"camera|framing|portrait|depth of field|(?:high|low|dutch|slightly tilted) angle|slightly tilted|",
         r"from (?:above|below|behind|the side)|point of view|pov)\b",
     ))
     .unwrap()
 });
 static SUBJECT: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(
-        r"(?i)^(?:(?:the|a|an|another|first|second|left|right|central|front|rear|one|two|three|four|five|adult|young|tall|short)\s+)*(?:she|he|they|her|his|their|subject|character|figure|person|people|girl|boy|woman|man|women|men)s?\b",
+        r"(?i)^(?:(?:the|a|an|another|first|second|third|left|right|central|center|front|rear|foreground|background|one|two|three|four|five|adult|young|tall|short)\s+)*(?:she|he|they|her|his|their|subject|character|figure|person|people|girl|boy|woman|man|women|men)s?\b",
     )
     .unwrap()
 });
 static ACTION: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
-        r"(?i)^(?:stand(?:s|ing)?|sit(?:s|ting)?|seated|lying|kneel(?:s|ing)?|crouch(?:es|ing)?|",
-        r"lean(?:s|ing)?|hold(?:s|ing)?|hand holding|carrying|looking|gazing|facing|eye contact|",
-        r"walk(?:s|ing)?|running|smil(?:e|es|ing)|blush(?:es|ing)?|grin(?:s|ning)?|waving|",
-        r"hug(?:s|ging)?|kiss(?:es|ing)?|embrac(?:es?|ing)|hug from behind|reaching|crossed|hands?|arms?)\b",
+        r"(?i)^(?:stand(?:s|ing)?|sit(?:s|ting)?|seated|lying|lies|kneel(?:s|ing)?|crouch(?:es|ing)?|squat(?:s|ting)?|",
+        r"lean(?:s|ing)?|hold(?:s|ing)?|hand holding|carrying|looking|gazing|glancing|facing|eye contact|",
+        r"walk(?:s|ing)?|running|smil(?:e|es|ing)|laugh(?:s|ing)?|blush(?:es|ing)?|grin(?:s|ning)?|waving|frown(?:s|ing)?|pout(?:s|ing)?|crying|tears|",
+        r"hug(?:s|ging)?|kiss(?:es|ing)?|embrac(?:es?|ing)|hug from behind|reaching|crossed|wading|partially submerged|",
+        r"closed eyes|open mouth|parted lips|resting|braced|raised|turned|turning|dangling|hands?|arms?)\b",
     ))
     .unwrap()
 });
 static PLACE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(concat!(
-        r"(?i)\b(?:next to|beside|behind|under|beneath|across|amid|outside|inside|against|at|by|in(?: front of)?|on|near)\s+",
-        r"(?:(?:a|an|the)\s+|(?:(?:soft|warm|cool|dim|bright|neon|morning|afternoon|evening)\s+){0,4}",
-        r"(?:rain|snow|mist|sunlight|moonlight|daylight|dawn|dusk|light|glow)\b)",
+        r"(?i)\b(?:next to|beside|behind|under|beneath|across|through|amid|outside|inside|against|at|by|in(?: front of)?|on|near)\s+",
+        r"(?:(?:a|an|the)\s+|(?:(?:sunlit|soft|warm|cool|dim|bright|neon|morning|afternoon|evening|pale|hazy|clear|turquoise|rippling|wet)\s+){0,4}",
+        r"(?:pool|water|beach|ocean|sea|room|bedroom|kitchen|cafe|classroom|library|street|city|skyline|park|forest|garden|church|window|railing|rain|snow|mist|sunlight|moonlight|daylight|dawn|dusk|light|glow)\b)",
     ))
     .unwrap()
 });

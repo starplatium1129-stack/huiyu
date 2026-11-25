@@ -9,7 +9,7 @@ import { tagKey } from './animaPromptOrder.ts'
 import { isGarmentToken } from './popularIdentity.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 import { cleanCastNegative, cleanCastProse } from './promptCast.ts'
-import { buildMossCastLayout, cleanMossCastText } from './mossCast.ts'
+import { buildMossCastLayout, cleanMossCastText, cleanMossReferenceProse, extractReferenceOutfitAndPose, formatCastOutfitClause } from './mossCast.ts'
 import {
   compileMossLayout, isMossLayoutInput, mossLayoutJson, mossNormalizedBox, mossSubjectBox, mossTextBox, mossTriptychBox,
   type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
@@ -189,12 +189,10 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
       cleanMossCastText(ordered.join(', ')),
     ].filter(Boolean)
     if (size) {
-      const { items, canvas, extraPeople } = buildMossCastLayout(layout, castSubjects, size)
+      const { items, canvas, extraPeople, castSummary } = buildMossCastLayout(layout, castSubjects, size)
       const people = extraPeople === 1 ? 'One additional supporting character appears in the frame.'
         : extraPeople > 1 ? extraPeople + ' additional supporting characters appear in the frame.' : ''
-      const count = castSubjects.length + extraPeople
-      const exactCount = count > 1 ? `Exactly ${count} characters appear in distinct positions, with no duplicate figures.` : ''
-      const caption = [...new Set([exactCount, people, ...common].filter(Boolean))].join('\n') || 'Character portrait.'
+      const caption = [...new Set([castSummary, people, ...common].filter(Boolean))].join('\n') || 'Character portrait.'
       const summary = addMossLettering(caption, items, size, 16)
       const raw = mossLayoutJson(summary, items, canvas)
       const compiled = compileMossPrompt(raw, negative, size)
@@ -250,6 +248,7 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     const refCharIndices = useReferenceLayout
       ? refLayout!.layout.items.flatMap((item, index) => item.label === 'character' ? [index] : [])
       : []
+    let primaryRefOutfit = ''
     const items: MossLayoutItem[] = panels
       ? panels.map((action, index) => ({
           label: mainCharacter ? 'character' : 'object',
@@ -291,6 +290,31 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
                   : ''
                 if (bound) {
                   if (index === primaryCharIndex) {
+                    const explicitOutfit = Boolean(refLayout!.explicitOutfit)
+                    if (!multiChar) {
+                      const identity = (subjectProse || targetFallback[0] || '').replace(/[.!?]+$/, '').trim()
+                      const structuredClothing = item.clothing ? formatCastOutfitClause(cleanMossReferenceProse(item.clothing, [], false)) : ''
+                      const structuredPose = item.pose ? cleanProse(item.pose) : ''
+                      if (explicitOutfit && plan?.outfitProse) {
+                        const chosen = formatCastOutfitClause(plan.outfitProse)
+                        const poseOnly = structuredPose || extractReferenceOutfitAndPose(cleanMossReferenceProse(localCaption, [], true)).pose
+                        const head = [identity, chosen].filter(Boolean).join(', ')
+                        const headSentence = head ? `${head}${/[.!?]$/.test(head) ? '' : '.'}` : ''
+                        const poseSentence = poseOnly ? `${poseOnly.charAt(0).toUpperCase()}${poseOnly.slice(1)}${/[.!?]$/.test(poseOnly) ? '' : '.'}` : ''
+                        const combined = [headSentence, poseSentence, extraFacts].filter(Boolean).join(' ')
+                        return { label: 'character', caption: combined || localCaption, bbox }
+                      }
+                      const fallbackParsed = (!structuredClothing && !structuredPose) ? extractReferenceOutfitAndPose(localCaption) : null
+                      const refOutfit = structuredClothing || fallbackParsed?.outfit || ''
+                      const refPose = structuredPose || fallbackParsed?.pose || ''
+                      if (refOutfit) {
+                        primaryRefOutfit = refOutfit
+                        const head = identity ? `${identity}, ${refOutfit}.` : `${refOutfit.charAt(0).toUpperCase()}${refOutfit.slice(1)}.`
+                        const poseSentence = refPose ? `${refPose.charAt(0).toUpperCase()}${refPose.slice(1)}${/[.!?]$/.test(refPose) ? '' : '.'}` : ''
+                        const combined = [head, poseSentence, extraFacts].filter(Boolean).join(' ')
+                        return { label: 'character', caption: combined || localCaption, bbox }
+                      }
+                    }
                     const combined = [...targetFallback, localCaption, extraFacts].filter(Boolean).join('\n')
                     return { label: 'character', caption: combined || localCaption, bbox }
                   }
@@ -301,6 +325,10 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
               })
             })()
           : placement ? [{ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size, placement) }] : []
+    if (primaryRefOutfit && subjectProse) {
+      const boundSummary = `${subjectProse.replace(/[.!?]+$/, '')}, ${primaryRefOutfit}.`
+      caption = caption.includes(subjectProse) ? caption.replace(subjectProse, boundSummary) : `${boundSummary}\n${caption}`
+    }
     let summary = addMossLettering(caption, items, size)
     if (options?.forceLayout && !items.length) {
       items.push({ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size) })

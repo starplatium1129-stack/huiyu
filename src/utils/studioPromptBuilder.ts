@@ -135,7 +135,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     if (character === 'triad' || options.referenceLayout) {
       plan.mossLayout = {
         ...(character === 'triad' ? { compositionIntent: scene?.compositionIntent || 'group', subjects: subject.subjects } : {}),
-        ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true } } : {}),
+        ...(options.referenceLayout ? { referenceLayout: { layout: options.referenceLayout, boundSubject: true, explicitOutfit: Boolean(override) } } : {}),
       }
     }
     const rendered = renderMossDrawingPrompt(plan, options.visualDescription || '', '')

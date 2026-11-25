@@ -16,6 +16,7 @@ export interface CastMember {
 }
 
 export interface MossPromptSubject {
+  name?: string
   caption: string
   side?: import('../utils/mossLayout').MossLayoutSide
   identityCaption?: string
@@ -61,6 +62,7 @@ export interface PromptPlan {
     referenceLayout?: {
       layout: import('./interrogate').InterrogateAssistLayout
       boundSubject?: boolean
+      explicitOutfit?: boolean
     }
   }
   animaCast?: { tags: string[][]; direction: string }

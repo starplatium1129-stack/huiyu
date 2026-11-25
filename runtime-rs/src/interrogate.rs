@@ -1,5 +1,6 @@
 mod assist;
 mod cache;
+pub(crate) mod fuse;
 pub(crate) mod muse;
 mod pixai;
 mod results;
@@ -283,6 +284,10 @@ pub fn router(service: Arc<InterrogateService>) -> Router<AppState> {
         .route(
             "/api/interrogate/raw",
             post(interrogate_raw).layer(DefaultBodyLimit::max(MAX_BYTES)),
+        )
+        .route(
+            "/api/interrogate/fuse-cast",
+            post(fuse::fuse_cast_http).layer(DefaultBodyLimit::max(128 * 1024)),
         )
         .route("/api/interrogate/status", get(status))
         .layer(Extension(service))

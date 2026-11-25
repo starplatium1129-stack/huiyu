@@ -7,9 +7,9 @@ import { qwenTaskArtwork } from './qwenTaskResult'
 import { taskArtworkId } from './taskResultIdentity'
 import { parseReferenceInput, readArtworkCastSnapshot } from '@/utils/promptBuilderPersistence'
 
-/** Task outputs already live in the workspace; save adds an artwork reference. */
+/** Save an artwork reference, copying the result only for the legacy library. */
 export async function saveTaskResult(task: TaskRecord, index: number, deps: {
-  repository: ArtworkRepository; assertCurrent(): void; markSaved(id: string): Promise<unknown>
+  repository: ArtworkRepository; assertCurrent(): void; markSaved(id: string): Promise<unknown>; copyResult?: () => Promise<Blob>
 }): Promise<ArtworkRecord> {
   const artworkRepository = deps.repository
   const check = deps.assertCurrent
@@ -29,8 +29,11 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
   const history = context.history as Record<string, unknown>
   const cast = readArtworkCastSnapshot(history)
   const id = taskArtworkId(task.taskId, index)
+  const matches = (record: ArtworkRecord) => deps.copyResult
+    ? record.taskId === task.taskId && record.outputIndex === index && Boolean(record.image_id)
+    : record.image_id === output.alias
   const existing = await readArtwork(id)
-  if (existing && existing.image_id !== output.alias) throw new Error('作品编号已对应另一张图片，请核对作品册')
+  if (existing && !matches(existing)) throw new Error('作品编号已对应另一张图片，请核对作品册')
   let saved = existing
   if (!existing) {
     const input = task.input
@@ -56,13 +59,24 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
     }
     // Persist the recorded subset. Required history-view defaults must not turn
     // absent model/Seed/size fields into invented generation facts in the library.
-    saved = record
-    try { check(); await artworkRepository.appendArtwork(saved); check() }
+    const append = async () => {
+      check()
+      if (deps.copyResult) {
+        const blob = await deps.copyResult()
+        check()
+        record.image_id = await artworkRepository.putImage(blob)
+      }
+      check()
+      await artworkRepository.appendArtwork(record)
+      check()
+      return record
+    }
+    try { saved = deps.copyResult ? await artworkRepository.withStaging(append) : await append() }
     catch (error) {
       check()
       const confirmed = await readArtwork(id).catch(() => null)
       check()
-      if (!confirmed || confirmed.image_id !== output.alias) throw error
+      if (!confirmed || !matches(confirmed)) throw error
       saved = confirmed
     }
   }

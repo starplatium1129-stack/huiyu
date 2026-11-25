@@ -22,6 +22,24 @@ fn config_root(state: &AppState) -> Result<&Path> {
     })
 }
 
+fn candidate_pointer(id: &str) -> Value {
+    json!({"formatVersion":1,"workspaceId":id,"generation":1,"domains":[],"activatedRevision":0,"migrationId":null,"backupId":null,"restoreCandidateId":null,"bundledUi":false})
+}
+
+/// A managed desktop can accept local tasks before its existing gallery or
+/// chat data has been migrated. Keep those domains inactive until verified.
+pub(crate) async fn open_task_workspace(root: &Path) -> Result<(Storage, Value)> {
+    let id = Uuid::new_v4().to_string();
+    let path = checked(root, &format!("workspaces/{id}"))?;
+    let storage = Storage::open(path, id.clone(), true).await?;
+    let pointer = candidate_pointer(&id);
+    if let Err(error) = write_pointer(root, &pointer, true) {
+        storage.close().await?;
+        return Err(error);
+    }
+    Ok((storage, pointer))
+}
+
 #[derive(serde::Deserialize)]
 #[serde(
     tag = "mode",
@@ -145,7 +163,7 @@ pub(super) async fn prepare(state: &AppState, input: &Value, origin: &str) -> Re
             return Ok(());
         }
     }
-    let pointer = json!({"formatVersion":1,"workspaceId":id,"generation":1,"domains":[],"activatedRevision":0,"migrationId":null,"backupId":null,"restoreCandidateId":null,"bundledUi":false});
+    let pointer = candidate_pointer(&id);
     if let Err(error) = write_pointer(root, &pointer, true) {
         retire(state, storage).await?;
         return Err(error);

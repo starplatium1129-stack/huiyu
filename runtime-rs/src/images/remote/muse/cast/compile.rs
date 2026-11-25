@@ -123,11 +123,6 @@ fn compile_anima(ctx: &CompileContext<'_>) -> (String, Option<String>) {
             .iter()
             .flat_map(|actor| actor.copyright_tokens.iter().cloned()),
     );
-    let shared_identity_keys: HashSet<String> = character_tokens
-        .iter()
-        .chain(copyright_tokens.iter())
-        .map(|t| normalize_key(t))
-        .collect();
 
     let has_dark_skin = ctx
         .actors
@@ -161,8 +156,16 @@ fn compile_anima(ctx: &CompileContext<'_>) -> (String, Option<String>) {
     let mut sections = vec![shared_head];
     for actor in ctx.actors {
         let mut block = Vec::new();
+        block.extend(actor.character_tokens.iter().cloned());
         for token in &actor.identity_tokens {
-            if !shared_identity_keys.contains(&normalize_key(token)) {
+            if !actor
+                .character_tokens
+                .iter()
+                .any(|name| normalize_key(name) == normalize_key(token))
+                && !copyright_tokens
+                    .iter()
+                    .any(|work| normalize_key(work) == normalize_key(token))
+            {
                 block.push(token.clone());
             }
         }
@@ -187,10 +190,18 @@ fn compile_anima(ctx: &CompileContext<'_>) -> (String, Option<String>) {
             .actors
             .iter()
             .map(|actor| {
-                if actor.action.is_empty() {
+                let mut details = Vec::new();
+                let outfit = actor.outfit_caption.trim().trim_end_matches(['.', '!', '?']);
+                if !outfit.is_empty() {
+                    details.push(outfit.to_owned());
+                }
+                if !actor.action.is_empty() {
+                    details.push(actor.action.clone());
+                }
+                if details.is_empty() {
                     actor.name.clone()
                 } else {
-                    format!("{} — {}", actor.name, actor.action)
+                    format!("{} ({})", actor.name, details.join(", "))
                 }
             })
             .collect::<Vec<_>>()

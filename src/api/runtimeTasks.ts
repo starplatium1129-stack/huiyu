@@ -2,7 +2,7 @@ import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
 import { runtimeTasksEnabled, runtimeTaskError, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
-import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
+import { hasRuntimeTasks, hasRuntimeTaskSession, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
 import { downloadBlob } from '../utils/downloadBlob'
@@ -15,8 +15,8 @@ let activeEpoch = '', activeWorkspace = '', activeRead = 0
 let readEpoch = '', readRevision = 0
 function epoch() { return getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || '' }
 function ensureAuthority() {
-  if (!hasRuntimeTasks()) throw new Error('私人任务工作区尚未启用')
   if (getDesktopRuntime().connection !== 'ready') throw new Error('本地运行时已断开，任务记录已保留，请恢复连接后重试。')
+  if (!hasRuntimeTaskSession()) throw new Error('本机任务队列暂未连接，请重启绘遇后重试。')
 }
 export const runtimeResultPath = (task: Pick<TaskRecord, 'taskId'>, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
 function parseRuntimeResultPath(url: string) {

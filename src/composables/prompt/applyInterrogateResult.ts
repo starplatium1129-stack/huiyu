@@ -159,6 +159,17 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     if (referenceOutfit.length) pb.setOutfitOverride(referenceOutfit, merged.replacedOutfitGroup)
     else if (!pb.outfitOverride?.presetId) pb.clearOutfitOverride()
   }
+  // A newly interrogated reference supplies each mapped slot's clothing by default;
+  // clear prior explicit outfit overrides so reference outfits take effect immediately.
+  if (assistLayout && characterBoxes >= pb.cast.length && pb.cast.length > 0) {
+    pb.cast.forEach((member, index) => {
+      if (member.source !== 'custom' && (member.outfitExplicit || member.outfitId === 'custom' || member.outfitId === 'none')) {
+        pb.updateCastMember(index, { outfitId: '', outfitExplicit: false, outfitPrompt: undefined })
+      }
+    })
+  } else if (pb.cast.length === 1 && pb.cast[0]?.source !== 'custom' && pb.cast[0]?.outfitExplicit) {
+    pb.updateCastMember(0, { outfitId: '', outfitExplicit: false, outfitPrompt: undefined })
+  }
   pb.manualTags = next
   const userKeys = new Set([...userTags].map(tag => normalizeKey(pb.tagDictionary.canonicalize(tag))))
   const sourceTags = [...pb.manualTags].filter(tag => !userKeys.has(normalizeKey(tag)))
