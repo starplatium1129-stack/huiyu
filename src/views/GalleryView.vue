@@ -277,10 +277,10 @@
 
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
+import { defineAsyncComponent } from 'vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
-
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
-import FluidTransition from "@/components/visual/FluidTransition.vue"
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import GalleryRefinement from '@/components/gallery/GalleryRefinement.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
@@ -291,208 +291,59 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import GalleryVirtualRows from '@/components/gallery/GalleryVirtualRows.vue'
-const ArtworkViewerStage = defineAsyncComponent(() => import('@/components/gallery/ArtworkViewerStage.vue'))
-import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, reactive, ref, watch } from 'vue'
-import { useResizeObserver } from '@vueuse/core'
 import GalleryArtworkTags from '@/components/gallery/GalleryArtworkTags.vue'
-const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
-const originalViewer = ref(false)
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
-const loadCandidateCompare = () => import('@/components/gallery/CandidateCompare.vue')
-const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
-const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
-const loadAlbumOverview = () => import('@/components/gallery/GalleryAlbumOverview.vue')
-const loadAlbumEditor = () => import('@/components/gallery/GallerySmartAlbumEditor.vue')
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
-const MangaScreenLauncher = defineAsyncComponent(() => import('@/components/manga/MangaScreenLauncher.vue'))
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery-1408.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
-const galleryEmptyArt = useThemeIllustration(galleryEmptyOriginal, 'collection')
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const ImageCompareSlider = defineAsyncComponent(() => import('@/components/visual/ImageCompareSlider.vue'))
-import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
-import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
-import { artworkCharacterIds } from '@/composables/gallery/galleryAlbumRules'
-import { characterParticleTheme } from '@/utils/characterParticleTheme'
-import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
-const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
-const selectionDockHeight = ref(140)
-useResizeObserver(() => dockActive.value ? selectionDock.value : null, ([entry]) => {
-  if (entry && dockActive.value) selectionDockHeight.value = entry.borderBoxSize[0].blockSize
-}, { box: 'border-box' })
-onActivated(() => { dockActive.value = true })
-onDeactivated(() => { dockActive.value = false })
-import { useGalleryGestureViewer } from '@/composables/gallery/useGalleryGestureViewer'
-const workspace = useGalleryWorkspace()
-const { PhotoSwipeStage, gestureViewer, gestureLoading, gestureError, cancelGesture, failGesture, toggleGesture } = useGalleryGestureViewer(workspace)
-const {
-tagFilter, tagOptions, characterFilter, collectionPreviewItems,
-generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
-closeBtn,viewerEl,infoEl,infoToggleBtn,infoCloseBtn,sentinelEl,shellEl,countLabel,
-searchQuery,
-favoriteOnly, favoriteCount, projectFilter, projects,
-selectMode,
-toggleSelectMode,
-trashMode,
-toggleTrashMode,
-trashItems,
-selectedIds,
-visible, visibleTotal, libraryTotal,
-compareSelected,
-selectAllVisible,
-allVisibleSelected,
-bulkDeleting,
-bulkDelete,
-compareOpen,
-compareItems, closeComparison,
-loadGalleryStorage,
-trashBusy,
-restoreTrashItem,
-clearTrash, trashClearing, trashLoading, trashError, loadTrash,
-galleryLoading,
-galleryIndexLoading,
-galleryError, canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
-history,
-resetGalleryFilters,
-masonryGroups,
-scheduleWallScan, retryCardImage,
-columnCount,
-pendingDeleteId,
-ratioOf,
-deleting,
-confirmDelete,
-sceneTitle,
-toggleFavorite,
-toggleSelect,
-openViewer,
-indexOf,
-thumbUrls,
-measure,
-cardUrls,
-onHdLoad,
-missingImageIds,
-formatDate,
-stamp,
-hasMoreToRender,
-pagedVisible,
-viewerIndex,
-infoOpen,
-infoDrawerHidden,
-toggleInfoDrawer,
-closeInfoDrawer,
-closeViewer,
-onViewerClosed,
-compareMode,
-hasComparableImage,
-viewerUrl, viewerLoadFailed, retryViewerImage,
-neighborPreviews,
-parentImageUrl, parentImageLabel, parentImageStatus, retryParentImage,
-current,
-characterName,
-facts,
-downloadCurrent, downloading,
-copyPrompt
-} = workspace
-function retryComparisonOriginal(event: MouseEvent) {
-  if (event.currentTarget instanceof HTMLElement) event.currentTarget.closest('.viewer-compare-host')?.querySelector<HTMLElement>('[role="slider"]')?.focus({ preventScroll:true })
-  void retryParentImage()
-}
-const activeStudioCharacter = computed(() => characterFilter.value === 'nene' || characterFilter.value === 'natsume' ? characterFilter.value : '')
-function characterAccentOf(item?: typeof displayedCurrent.value): string {
-  if (!item) return 'var(--accent)'
-  const ids = artworkCharacterIds(item)
-  if (ids.includes('nene') && ids.includes('natsume')) return 'var(--accent-violet)'
-  const primary = ids[0] || ''
-  if (primary === 'nene') return 'var(--nene-violet)'
-  if (primary === 'natsume') return 'var(--natsume-amber)'
-  if (primary) return characterParticleTheme(primary).accent
-  return 'var(--accent)'
-}
-const viewerCharacterStyle = computed(() => displayedCurrent.value ? { '--viewer-char-accent': characterAccentOf(displayedCurrent.value) } : undefined)
-const cardLabels = computed(() => new Map(pagedVisible.value.map(item => [item.id, {
-  title: sceneTitle(item.scene, item), character: characterName(item.character, item), date: formatDate(stamp(item)), accent: characterAccentOf(item),
-}])))
-function toggleOriginalViewer() {
-  originalViewer.value = !originalViewer.value; cancelGesture(); compareMode.value = false
-  void nextTick(() => viewerEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll:true }))
-}
-watch(viewerIndex, (index, previous) => { if (index < 0 || previous < 0) cancelGesture(); if (index >= 0 && previous < 0) originalViewer.value = false }, { flush:'sync' })
-const viewerSurface = useArtworkViewerSurface({
-  active: () => viewerIndex.value >= 0, imageKey: () => current.value?.id,
-  mode: () => `${originalViewer.value}/${compareMode.value}/${gestureViewer.value}`,
-  source: id => {
-    const card = shellEl.value?.querySelector<HTMLElement>(`.artwork[data-card-id="${CSS.escape(String(id))}"]`)
-    return card?.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded')
-      ?? card?.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)') ?? null
-  },
-})
-function openFromCard(index: number, event: MouseEvent) {
-  const button = event.currentTarget as HTMLElement, item = visible.value[index]
-  if (!item) return
-  viewerSurface.captureOrigin(button.querySelector<HTMLImageElement>('.artwork-image-hd.is-loaded')
-    ?? button.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)'), item.id)
-  openViewer(index)
-}
-const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects, collectionTitle, currentSmartRule,
-  albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
-  editing, saving, error: albumError, previewCount, previewLoading, previewError, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
-// Keep visited panels alive so closing selection or a dialog retains undo and exit state.
-const visitedPanels = reactive({ albums: false, organization: false, editor: false, comparison: false })
-watch([albumsOpen, selectMode, editorOpen, compareOpen], ([albums, organization, editor, comparison]) => {
-  if (albums) visitedPanels.albums = true
-  if (organization) visitedPanels.organization = true
-  if (editor) visitedPanels.editor = true
-  if (comparison) visitedPanels.comparison = true
-}, { immediate: true, flush: 'sync' })
-watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
-function showAlbumOverview(section: 'characters' | 'albums') {
-  if (selectMode.value) toggleSelectMode()
-  if (trashMode.value) toggleTrashMode()
-  void showOverview(section)
-}
-function startAlbumSelection() {
-  resetGalleryFilters()
-  if (trashMode.value) toggleTrashMode()
-  if (!selectMode.value) toggleSelectMode()
-  void showImages()
-}
-const refinement = ref<InstanceType<typeof GalleryRefinement> | null>(null)
-const selectionToggle = ref<HTMLButtonElement | null>(null)
-async function finishSelection() {
-  toggleSelectMode()
-  await nextTick()
-  ;(selectionToggle.value?.disabled ? imageHeading.value : selectionToggle.value)?.focus({ preventScroll: true })
-}
-async function filterByTag(tag: string) {
-  closeViewer(); tagFilter.value = tag
-  await nextTick(); refinement.value?.focusTag()
-}
+import { useGalleryViewController } from '@/composables/gallery/useGalleryViewController'
 
-const displayedCurrent = ref(current.value)
-const displayedIndex = ref(viewerIndex.value)
-watch(() => current.value?.id, async (id, previous) => {
-  if (id == null || id === previous || viewerIndex.value < 0) return
-  const focused = infoEl.value?.contains(document.activeElement) ? document.activeElement : null
-  await nextTick()
-  if (current.value?.id !== id || viewerIndex.value < 0 || !infoEl.value?.isConnected) return
-  const body = infoEl.value?.querySelector<HTMLElement>('.viewer-info-body')
-  body?.scrollTo(0, 0)
-  if (focused && !focused.isConnected && !infoDrawerHidden.value && viewerIndex.value >= 0)
-    body?.querySelector<HTMLElement>('.viewer-title')?.focus({ preventScroll: true })
-})
-watch([current, viewerIndex], ([value, index]) => {
-  if (value && index >= 0) {
-    displayedCurrent.value = value
-    displayedIndex.value = index
-  }
-}, { flush: 'sync' })
-function finishViewerClose() {
-  onViewerClosed()
-  if (viewerIndex.value < 0) {
-    displayedCurrent.value = null
-    displayedIndex.value = -1
-  }
-}
+const ArtworkViewerStage = defineAsyncComponent(() => import('@/components/gallery/ArtworkViewerStage.vue'))
+const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
+const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
+const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
+const MangaScreenLauncher = defineAsyncComponent(() => import('@/components/manga/MangaScreenLauncher.vue'))
+const ImageCompareSlider = defineAsyncComponent(() => import('@/components/visual/ImageCompareSlider.vue'))
+const loadCandidateCompare = () => import('@/components/gallery/CandidateCompare.vue')
+const loadAlbumOverview = () => import('@/components/gallery/GalleryAlbumOverview.vue')
+const loadAlbumEditor = () => import('@/components/gallery/GallerySmartAlbumEditor.vue')
+const galleryEmptyArt = useThemeIllustration(galleryEmptyOriginal, 'collection')
+
+const {
+  workspace, gesture, collections, originalViewer, selectionDock, selectionDockHeight,
+  retryComparisonOriginal, activeStudioCharacter, viewerCharacterStyle, cardLabels,
+  toggleOriginalViewer, viewerSurface, openFromCard, visitedPanels, showAlbumOverview,
+  startAlbumSelection, refinement, selectionToggle, finishSelection, filterByTag,
+  displayedCurrent, displayedIndex, finishViewerClose,
+} = useGalleryViewController()
+
+const { PhotoSwipeStage, gestureViewer, gestureLoading, gestureError, failGesture, toggleGesture } = gesture
+
+const {
+  tagOptions, characterFilter, generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions,
+  projectUnavailable, closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
+  countLabel, searchQuery, favoriteOnly, favoriteCount, projectFilter, projects, selectMode,
+  toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds, visible, visibleTotal,
+  libraryTotal, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
+  compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy, restoreTrashItem,
+  clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading,
+  galleryError, canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage,
+  comparisonMarksReading, history, resetGalleryFilters, masonryGroups, scheduleWallScan, retryCardImage,
+  columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete, sceneTitle, toggleFavorite,
+  toggleSelect, openViewer, indexOf, thumbUrls, measure, cardUrls, onHdLoad, missingImageIds,
+  formatDate, stamp, hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden,
+  toggleInfoDrawer, closeInfoDrawer, closeViewer, compareMode, hasComparableImage, viewerUrl,
+  viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, parentImageLabel,
+  parentImageStatus, current, characterName, facts, downloadCurrent, downloading, copyPrompt,
+} = workspace
+
+const {
+  albums, characterAlbums, albumSection, visibleAlbumIds, selection, characterOptions, manualProjects,
+  collectionTitle, currentSmartRule, albumsOpen, albumRoot, imageHeading, showAllWorks, openCollection,
+  editorOpen, editorTitle, editorRule, editing, saving, error: albumError, previewCount, previewLoading,
+  previewError, previewCovers, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum,
+} = collections
 </script>
 
 <style scoped src="@/assets/css/gallery-view.css"></style>

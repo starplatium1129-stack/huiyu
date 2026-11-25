@@ -1,10 +1,11 @@
-import { BUSY_HINT, usePromptRenderControls } from './usePromptRenderControls';
+import { usePromptRenderControls } from './usePromptRenderControls';
 import { useGeneratedSceneCapture } from './useGeneratedSceneCapture';
-import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
+import { snapshotResult, type ResultSnapshot } from './promptResultSnapshot';
+import { createPromptWorkspaceBindings } from './promptWorkspaceBindings';
+import { usePromptWorkspaceActions } from './usePromptWorkspaceActions';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
-import type { AnimaCompositionBindings } from '@/composables/generation/useAnimaComposition';
 import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
@@ -23,22 +24,18 @@ import { usePromptHistoryReuse } from './usePromptHistoryReuse';
 import { useDrawingNavigation } from './useDrawingNavigation';
 import type { ArtworkRecord } from '@/types/artwork';
 import { useGenerationPresentation } from './useGenerationPresentation';
-import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
-import type { HiresSource } from './promptGenerationActions';
-import type { AnimaPixelUpscaler } from '@/config/animaHires';
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore';
 import { useSceneStore } from '@/stores/sceneStore';
-import type { AnimaResult,AnimaResultContext } from '@/types/anima';
+import type { AnimaResult, AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
-import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
-import { useRoute,useRouter } from 'vue-router';
-import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING, settingsRepository, type DrawEngine } from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
-import { copyText } from '@/utils/clipboard';
+
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
     const router = useRouter();
@@ -58,15 +55,8 @@ export function usePromptWorkspace() {
     const inpaintPreparing = ref(false);
     const hiresPreparing = ref(false);
     const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
-    let hiresPreparation: AbortController | null = null;
     const restore = useResultRestoreOwner(route);
     const { getRestoreOwner } = restore;
-    function cancelHiresPreparation() {
-        hiresPreparation?.abort();
-        hiresPreparation = null;
-        hiresPreparing.value = false;
-    }
-    onScopeDispose(cancelHiresPreparation, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine === 'krea2' ? 'krea2' : 'anima');
@@ -115,21 +105,16 @@ export function usePromptWorkspace() {
     });
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaCastActive.value
         || !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId));
-    const { currentTraits, modelProfile, loraSpecs, negativePrompt } = unified.studio;
+    const { currentTraits, modelProfile } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
     const previewPromptView = unified.previewPrompt;
     const modelProfileView = unified.modelProfile;
-    const reportView = unified.promptReport;
-    const artViolationsView = unified.artViolations;
     const popular = unified.popular;
     // ── 反推服装顶替（2026-08-29）────────────────────────────────────────────
-    // 热门角色默认会注入 12 个服装 tag 加一整段 "She wears ..." 散文，参考图服装
-    // 追加在末尾会被淹没。故反推出跨族服装时改为整体顶替，并给用户一键恢复的入口。
     const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length
         && (pb.cast.length < 2 || pb.outfitOverride.presetId)));
-    // ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
-    // 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
+    // ── 引擎协调层（2026-08-28 编排下沉）──────────────────────────────────────
     const engine = useDirectorEngine({
         pb,
         sd,
@@ -149,15 +134,14 @@ export function usePromptWorkspace() {
         popularProfile: popular.profile,
         flash: message => pb.flash(message),
     });
-    const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
+    const { setDrawEngine, applyRecommendedSize, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, updateAnimaPromptState } = engine;
     const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value || compositionPreparing.value);
     const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备放大原图…' : compositionPreparing.value ? '正在准备构图…' : '',
         () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
         () => { void animaSession.recover(); });
     const { genBarSize, animaBarSizes, resetSdParams, engineTitle, generateBlockReason } =
         usePromptRenderControls({ pb, sdSize, drawEngine, animaState, livePrompt }, engine, generationBusy);
-    // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
-    // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
+    // ── 热门角色编排层（2026-08-28 编排下沉）──────────────────────────────────
     const materials = usePromptMaterials({
         preparedModelId: starterModel, getAnimaSettingsRevision: animaSession.getSettingsRevision,
         voiceStudioRef,
@@ -174,52 +158,27 @@ export function usePromptWorkspace() {
         sdSize,
         flash: message => pb.flash(message),
     });
-    const { popularCategory, showAllBlueprints, managedRoute, refreshManagedRoute, popularBlueprintPool, filteredPopularBlueprints, blueprintCategories, recommendedBlueprints, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, rotateBlueprintSet, toggleBlueprintList, applyManagedRoute, applyPreparedModel, syncManagedRoute, restorePopularDraft } = materials.popular;
-    const { personaCoreIds, availableScenes, visibleScenes, personaCoreCount, curatedCount, vramLevel, baseResolutionRisk, vramHint, baseResolutionHint, canUseFaceDetailer } = materials.derived;
-    const { sceneLimit, sceneCollection, setDirectorMode, setSceneCollection, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
-    // ── 出图对比：记住上一张结果，生成新图后可并排大图对比 ──────────────
-    // URL 克隆保活/延迟释放/token 防乱序/焦点陷阱等生命周期归
-    // useCompareSnapshots（2026-08-21 拆出）；这里只保留业务元数据组装。
+    const { popularCategory, showAllBlueprints, refreshManagedRoute, popularBlueprintPool, blueprintCategories, resetBlueprintRotation, applyRecommendedEngine, selectPopularSource, selectPopularCharacter, selectPopularOutfit, selectBlueprint, applyManagedRoute, applyPreparedModel, syncManagedRoute, restorePopularDraft } = materials.popular;
+    const { sceneLimit, sceneCollection, setDirectorMode, selectScene, currentBlueprintData, handleLoadBlueprint } = materials;
+    // ── 出图对比（URL 克隆保活归 useCompareSnapshots）────────────────────────
     const compare = useCompareSnapshots<ResultSnapshot>({
         build: (url) => buildResultSnapshot(url),
     });
-    // 模板沿用原名绑定
-    const { prevResult, lastResult, compareOpen, close: closeCompare } = compare;
+    const { prevResult, compareOpen } = compare;
     /** 克隆 URL 前冻结当前成片元数据，异步期间的表单变化不影响快照。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
-    // ── Actions ───────────────────────────────────────────────────────────────
-    async function handleInterrogateResult(result: unknown, requestCurrent: () => boolean) {
-        const current = () => !restore.isDisposed() && restore.isInterrogateActive() && requestCurrent();
-        if (!current()) return;
-        const [{ applyInterrogateResult }] = await Promise.all([
-            import('@/composables/prompt/applyInterrogateResult'), pb.loadPopularCatalog(),
-        ]);
-        if (current()) await applyInterrogateResult(pb, result, current, route.query.engine === 'moss');
-    }
-    function handleInterrogateError(message: string) {
-        pb.flash('反推失败：' + message);
-    }
-    // 新一轮生成开始时结果会被清空，完成后再写入新值；
-    // 因此只在"有值且与上一张不同"时轮转快照（SD 与 Anima 结果共用）。
-    // 快照 blob 克隆保活与 token 防乱序在 useCompareSnapshots 内部处理。
     watch(displayResultUrl, (url, oldUrl) => {
-        if (!url || url === oldUrl)
-            return;
+        if (!url || url === oldUrl) return;
         compare.rotate(url);
     });
-    /**
-     * 舞台当前结果 ↔ 作品册条目锚点（P1-14 inpaint 对比语义）与「未入册成片」
-     * 临时缓冲（F2）已一并下沉 useTempResult；displayedResultHistoryId 来自其返回。
-     */
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
-    // 已接收的 SD 任务由队列与历史批次共用观察路径，不再发起新生成。
     const { sdErrorReport, runJob, sdQueue, restoredCount } = usePromptSdQueue({
         pb,
         sd,
         setResultContext: (ctx) => { resultContext.value = ctx; },
         onGenerated: url => { resultRevealUrl.value = url; },
     });
-    // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
+    // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册 ──────────────────
     const tempResultTools = useTempResult({
         onResultRetained: animaSession.acknowledgeResult,
         onResultDiscarded: animaSession.discardResult,
@@ -246,29 +205,6 @@ export function usePromptWorkspace() {
         engine: drawEngine, url: displayResultUrl, busy: generationBusy, anima: animaState,
         sdContext: resultContext, sdPrompt: sd.resultPrompt, flash: message => pb.flash(message),
     });
-    // ── 多场景批量出图（编排由 BatchSceneDrawPanel 持有，宿主只注入依赖快照）──
-    // 选 N 个场景蓝图 → 逐张串行出图（SD 走 runJob 同路径 / Anima 直接提交
-    // ComfyUI 任务）→ 每张自动入册历史 → 面板内直接预览挑选。
-    // ref/函数引用在 setup 期即稳定，面板内部用这份快照接线 usePromptBatchRunners。
-    const batchPanelDeps = {
-        pb,
-        sd,
-        negativePrompt: effectiveNegative,
-        animaState,
-        runJob,
-        sceneBlueprints: () => sceneStore.sceneBlueprints,
-        scenes: () => pb.scenes,
-        currentPlan: () => unified.structuredPlan.value,
-        popularCharacters: () => sceneStore.popularCharacters,
-        currentLivePrompt: () => livePrompt.value,
-    };
-    /** 分类恢复：对应旧版 runSDRecovery */
-    async function copyPrompt() {
-        const copied = await copyText(previewPromptView.value);
-        pb.flash(copied ? 'Prompt 已复制' : '复制失败，请手动选取');
-        return copied;
-    }
-    /** 手动「保存快照」：实现已下沉 useTempResult.saveCurrentResult（含入册后释放临时缓冲）。 */
     // ── 出视频 / 分镜短片（编排已下沉 usePromptVideoBridge）──────────────────
     const { goToVideo: goVideoBridge, shotsPending, transferBusy, refreshShotsPending, addToShots, goToShots: goShotsNav, handleHistoryToShots, handleHistoryToShotsBatch } = usePromptVideoBridge({
         getRestoreOwner,
@@ -280,7 +216,6 @@ export function usePromptWorkspace() {
         story: () => pb.story,
         sceneId: () => pb.sceneId,
         subject: () => pb.subject,
-        // F3：交接归属以生成时冻结快照为准（Anima 在会话 state，SD 在视图 ref）。
         resultContext: () => drawEngine.value !== 'sd' ? (animaState.value.resultContext ?? null) : resultContext.value,
         flash: message => pb.flash(message),
     });
@@ -288,18 +223,14 @@ export function usePromptWorkspace() {
     async function goToShots() { await goShotsNav(path => router.push(path)); }
     function saveResult() { return saveCurrentResult(); }
     // ── Anima 智能局部换装（编排已下沉 useAnimaInpaint）───────────────────────
-    // 热门角色换装：取出角色 Danbooru 身份标签（exactTokens + identityTokens），
-    // 换装时拼入提示词锁定「衣服穿在谁身上」；studio 桌宠角色为空数组不影响。
     const inpaintPopularTokens = computed(() => {
         const subject = pb.subject;
-        if (subject.kind !== 'popular')
-            return [];
+        if (subject.kind !== 'popular') return [];
         const match = sceneStore.popularCharacters.find(c => c.id === subject.characterId);
-        if (!match)
-            return [];
+        if (!match) return [];
         return [...(match.exactTokens ?? []), ...(match.identityTokens ?? [])];
     });
-    const { inpaintOpen, inpaintOriginalUrl, inpaintCompareActive, inpaintCharacter, handleInpaintSubmit, cancelInpaintPreparation, clearInpaintOriginal } = useAnimaInpaint({
+    const inpaint = useAnimaInpaint({
         pb,
         drawEngine,
         animaState,
@@ -309,72 +240,17 @@ export function usePromptWorkspace() {
         isPopular: computed(() => pb.isPopular),
         popularIdentityTokens: inpaintPopularTokens,
     });
-    const compositionBindings: AnimaCompositionBindings = {
-        state: animaState, busy: generationBusy, preparing: compositionPreparing, cancelPreparation: cancelCompositionPreparation,
-        contextKey: computed(() => JSON.stringify([drawEngine.value, currentCharacterId.value, pb.projectId, animaState.value.modelId, animaState.value.width, animaState.value.height])),
-        capture: animaSession.captureSubmission, generate: generateAnima, flash: message => pb.flash(message),
-    };
-    function cancelGeneration() {
-        if (hiresPreparing.value) { cancelHiresPreparation(); return; }
-        if (compositionPreparing.value) cancelCompositionPreparation.value?.();
-        else if (!cancelInpaintPreparation()) cancelEngineGeneration();
-    }
-    /**
-     * 画师选满后再点（2026-08-30 UX 审计 P1）：面板内已有就地提示，这里补一条
-     * toast——画师网格在折叠面板里，提示有可能被滚出视野。
-     */
-    function onArtistLimitReached(max: number) {
-        pb.flash(`最多同时选 ${max} 位画师，先取消一位再选`);
-    }
-    /**
-     * 队列为什么暂停（2026-08-30 UX 审计 P1）。
-     *
-     * 队列面板原本只写「已暂停」——用户不知道是任务失败了、还是自己按的暂停。
-     * 失败时 sdErrorReport 里已有分类结论（中文标题 + 建议），直接引过来；快照
-     * 恢复导致的暂停单独说明来源。手动暂停不需要解释，返回空串。
-     */
-    const queuePausedReason = computed(() => {
-        if (!sdQueue.paused.value)
-            return '';
-        if (sdErrorReport.value)
-            return `${sdErrorReport.value.title}：${sdErrorReport.value.message}`;
-        if (restoredCount > 0)
-            return '这些任务来自上次离开时的队列，确认参数后点「继续」';
-        return '';
+    const { inpaintOpen, inpaintOriginalUrl, inpaintCompareActive, cancelInpaintPreparation, clearInpaintOriginal } = inpaint;
+    const {
+        handleInterrogateResult, handleInterrogateError, copyPrompt, cancelGeneration,
+        onArtistLimitReached, queuePausedReason, retryAnima, hasStashedResult,
+        onRestoreStashed, onClearResult, reuseLastSeed, callGenerate, upscaleCurrentResult,
+    } = usePromptWorkspaceActions({
+        pb, route, restore, drawEngine, animaSession, engine, livePrompt, previewPromptView,
+        generationBusy, resultRevealUrl, hiresPreparing, compositionPreparing, cancelCompositionPreparation,
+        cancelInpaintPreparation, clearInpaintOriginal, discardTemp, applyManagedRoute,
+        sdQueue, sdErrorReport, restoredCount,
     });
-    /** Unknown requests always recover the frozen attempt, including tool callers. */
-    function retryAnima() {
-        if (generationBusy.value)
-            return;
-        void generateAnima();
-    }
-    // ── F2：上一张未入册成片的找回 / 显式丢弃 ─────────────────────────────
-    /** 失败/取消后画布旁可「找回上一张」（Anima/Krea 暂存；SD 旧图从未离开画布）。 */
-    const hasStashedResult = computed(() => Boolean(animaSession.stashedResult.value));
-    function onRestoreStashed() {
-        if (animaSession.restoreStashedResult()) {
-            resultRevealUrl.value = '';
-            pb.flash('已恢复上一张未入册的成片，可存入作品册或继续新作');
-        }
-    }
-    /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
-    function onClearResult() {
-        clearInpaintOriginal();
-        resultRevealUrl.value = '';
-        discardTemp();
-        animaSession.discardStashedResult();
-        clearDisplayedResult();
-    }
-    function reuseLastSeed() {
-        const seed = displayResultSeed.value ?? pb.lastSeed;
-        if (seed == null || seed < 0) {
-            pb.flash('还没有可复用的 seed');
-            return;
-        }
-        pb.sdParams.seed = seed;
-        pb.sdParams.seedLock = true;
-        pb.flash(`已锁定 seed ${seed}`);
-    }
     const drawingNavigation = useDrawingNavigation();
     const nativeHistoryRecipe = ref<ArtworkRecord | null>(null);
     const historyReuse = usePromptHistoryReuse({ pb, animaState, patchAnimaState: animaSession.restoreSettings,
@@ -405,11 +281,9 @@ export function usePromptWorkspace() {
         applyRecommendedEngine,
         applyHistory,
     });
-    // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：URL 场景参数变化但组件还是旧实例，
-    // 这里按「状态与 URL 不一致」重放深链，让场景与提示词跟随新选择。
+    // 组件复用 / 后退恢复（bfcache）时 onMounted 不重跑：按「状态与 URL 不一致」重放深链。
     watch(() => route.query, async (q) => {
-        if (route.path !== '/prompt-builder' || !deepLinkNeeded(q))
-            return;
+        if (route.path !== '/prompt-builder' || !deepLinkNeeded(q)) return;
         if (await applyDeepLink(q) && !generationBusy.value) {
             if (pb.directorMode === 'basic' && !['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string'))
                 void applyManagedRoute({ silent: true });
@@ -417,87 +291,18 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    async function callGenerate(): Promise<void> {
-        if (animaSession.hasPending.value) { await animaSession.recover(); return; }
-        const engine = drawEngine.value
-        if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 配方仅供查看；请选择 Anima 或 Krea 2 开始新创作'); return }
-        const subject = pb.subject
-        if (pb.isUnbound) {
-            try { await pb.loadPopularCatalog() }
-            catch { pb.flash('角色词条暂时无法读取，请重试。'); return }
-            if (restore.isDisposed() || !pb.isUnbound || pb.subject !== subject || engine !== drawEngine.value) return
-        }
-        const { callGenerateAction } = await import('./promptGenerationActions')
-        await callGenerateAction({ pb, applyManagedRoute, livePrompt, generationBusy, generateAnima })
-    }
-    async function upscaleCurrentResult(method: AnimaPixelUpscaler): Promise<void> {
-        if (generationBusy.value || restore.isDisposed() || drawEngine.value !== 'anima') return;
-        if (animaSession.hasPending.value) { pb.flash('请先恢复或取消上一张任务'); return; }
-        const result = animaState.value.result;
-        if (!result || displayResultUrl.value !== result.url) return;
-        const source: HiresSource = { result, anima: animaSession.resultSubmission(), context: animaState.value.resultContext ?? null };
-        const preparation = new AbortController(), identity = runtimeResourceIdentity();
-        const current = () => !preparation.signal.aborted && !restore.isDisposed() && identity === runtimeResourceIdentity()
-            && drawEngine.value === 'anima' && displayResultUrl.value === result.url;
-        hiresPreparation = preparation;
-        hiresPreparing.value = true;
-        try {
-            const { prepareResultUpscale } = await import('./promptGenerationActions');
-            if (!current()) return;
-            const submission = await prepareResultUpscale(source, method, preparation.signal);
-            if (!current()) return;
-            cancelHiresPreparation();
-            await generateAnima({}, submission);
-        } catch (error) {
-            if (current()) pb.flash(error instanceof Error ? error.message : '成片放大失败');
-        } finally { if (hiresPreparation === preparation) cancelHiresPreparation(); }
-    }
-    // Each lazy panel receives a stable, explicit capability surface. Store fields are
-    // projected with toRef, so writes still reach the single existing state owner.
-    const materialBindings: PromptMaterialBindings = {
-        popularBlueprintPool, blueprintCategories, recommendedBlueprints, filteredPopularBlueprints,
-        popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection,
-        personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint,
-        rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene, retryInitialization: () => retryInitialization(),
-    };
-    const renderBindings: PromptRenderBindings = {
-        pb: reactive({
-            directorMode: toRef(pb, 'directorMode'), history: toRef(pb, 'history'),
-            subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
-            cast: toRef(pb, 'cast'), sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
-        }),
-        displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine,
-        generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
-        engineTitle, setDrawEngine, supportsDualCharacter, currentCapabilities, BUSY_HINT, selectAnimaModel,
-        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, refreshAnimaBackend,
-        retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint,
-        canUseFaceDetailer,
-    };
-    const styleBindings: PromptStyleBindings = {
-        pb: reactive({ directorMode: toRef(pb, 'directorMode'), artistStyleIds: toRef(pb, 'artistStyleIds'),
-            currentCuratedArtistStyles: toRef(pb, 'currentCuratedArtistStyles'), setArtistStyleIds: pb.setArtistStyleIds }),
-        drawEngine, onArtistLimitReached,
-    };
-    const healthBindings: PromptHealthBindings = {
-        pb: reactive({ directorMode: toRef(pb, 'directorMode'), isPopular: toRef(pb, 'isPopular'), manualTags: toRef(pb, 'manualTags') }),
-        structuredPlan: unified.structuredPlan, previewPromptView, previewContext: unified.previewContext, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveDraft: pb.saveDraft,
-    };
-    const deliveryBindings: PromptDeliveryBindings = {
-        pb: reactive({ char: toRef(pb, 'char'), activeScene: toRef(pb, 'activeScene'), story: toRef(pb, 'story') }),
-        voiceStudioRef, legacyProgress: computed(() => sd.progress.value === null ? null : sd.progress.value / 100), animaOnline: computed(() => animaState.value.online),
-        scenes: toRef(sceneStore, 'sceneBlueprints'), generationBusy,
-        sdQueue: { total: sdQueue.total, done: sdQueue.done, paused: sdQueue.paused,
-            activeJob: sdQueue.activeJob, queue: sdQueue.queue,
-            pause: sdQueue.pause, resume: sdQueue.resume, clear: sdQueue.clear, remove: sdQueue.remove },
-        BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen,
-        queuePausedReason, batchPanelDeps,
-    };
-    const dialogBindings: PromptDialogBindings = {
-        inpaintProvider: computed(() => animaState.value.provider), inpaintManagedStartAvailable: computed(() => animaState.value.managedStartAvailable === true), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true), inpaintAutomaticMaskStatus: computed(() => animaState.value.automaticMaskStatus),
-        inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
-        generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
-        lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit,
-    };
+    const {
+        compositionBindings, materialBindings, renderBindings, styleBindings,
+        healthBindings, deliveryBindings, dialogBindings,
+    } = createPromptWorkspaceBindings({
+        pb, sceneStore, sd, drawEngine, currentCharacterId, animaSession, engine,
+        generationBusy, generationPresentation, unified, materials, sdQueue, runJob,
+        inpaint, compare, displayedResultHistoryId, inpaintPreparing, compositionPreparing,
+        cancelCompositionPreparation, voiceStudioRef, autoSaveToGallery, batchRunning, batchOpen,
+        engineTitle, resetSdParams, reuseSuccessfulRecipe, reuseLastSeed, retryAnima,
+        onArtistLimitReached, copyPrompt, queuePausedReason,
+        retryInitialization: () => retryInitialization(),
+    });
     const retryInitialization = usePromptLifecycle({
         draftRecovery, getRestoreOwner,
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
