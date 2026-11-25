@@ -41,7 +41,7 @@ struct Settings {
 
 pub fn router() -> Router<AppState> {
     let service = Arc::new(Service {
-        client: reqwest::Client::builder()
+        client: crate::http_client::tune_proxy(reqwest::Client::builder())
             .redirect(reqwest::redirect::Policy::none())
             .retry(reqwest::retry::never())
             .connect_timeout(Duration::from_secs(10))

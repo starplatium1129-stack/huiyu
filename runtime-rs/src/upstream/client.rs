@@ -83,15 +83,13 @@ impl Default for LocalUpstream {
 
 impl LocalUpstream {
     pub fn new() -> Self {
-        let client = reqwest::Client::builder()
+        let client = crate::http_client::tune_http1(reqwest::Client::builder())
             .no_proxy()
             .redirect(reqwest::redirect::Policy::none())
             .retry(reqwest::retry::never())
             .connect_timeout(CONNECT_TIMEOUT)
             .timeout(GENERATION_TIMEOUT)
-            .pool_idle_timeout(Duration::from_secs(60))
             .pool_max_idle_per_host(32)
-            .tcp_keepalive(Duration::from_secs(15))
             .build()
             .expect("Initialize local HTTP client");
         Self { client }

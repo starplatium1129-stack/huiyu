@@ -35,10 +35,9 @@ pub struct MediaPacksService {
 impl MediaPacksService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Arc<Self> {
         let root = storage_root(config);
-        let client = reqwest::Client::builder()
+        let client = crate::http_client::tune_proxy(reqwest::Client::builder())
             .redirect(reqwest::redirect::Policy::limited(10))
             .connect_timeout(Duration::from_secs(20))
-            .pool_idle_timeout(Duration::from_secs(60))
             .user_agent("HuiyuStudio-MediaPacks/1")
             .build()
             .expect("media packs http client");

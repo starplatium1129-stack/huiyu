@@ -96,7 +96,7 @@ impl Speech {
     ) -> Arc<Self> {
         let queue = Queue::new(settings.engine.id());
         let native = super::native::Native::new(&settings, cancel.child_token(), translation);
-        let http_client = reqwest::Client::builder()
+        let http_client = crate::http_client::tune_proxy(reqwest::Client::builder())
             .connect_timeout(Duration::from_secs(15))
             .build()
             .unwrap_or_else(|_| reqwest::Client::new());

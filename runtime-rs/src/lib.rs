@@ -22,6 +22,7 @@ mod generation;
 mod guest_share;
 mod host;
 mod http_body;
+pub(crate) mod http_client;
 mod http_media;
 mod image_decode;
 mod images;

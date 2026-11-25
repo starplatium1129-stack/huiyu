@@ -32,10 +32,11 @@ impl Client {
         json!({"remote":self.base,"keyHash":hex::encode(Sha256::digest(self.key.as_bytes()))})
     }
     pub fn new(settings: &generation::native::Settings) -> Result<Self> {
-        let http = reqwest::Client::builder()
+        let http = crate::http_client::tune_proxy(reqwest::Client::builder())
             .no_proxy()
             .redirect(reqwest::redirect::Policy::none())
             .connect_timeout(Duration::from_secs(5))
+            .pool_max_idle_per_host(8)
             .build()
             .map_err(|_| unavailable())?;
         Ok(Self {

@@ -156,8 +156,9 @@ pub(super) async fn resolve_files(
     token: Option<&str>,
     cancel: &CancellationToken,
 ) -> Result<Vec<Artifact>> {
-    let client = reqwest::Client::builder()
+    let client = crate::http_client::tune_proxy(reqwest::Client::builder())
         .https_only(true)
+        .connect_timeout(Duration::from_secs(15))
         .timeout(Duration::from_secs(60))
         .default_headers(token_header(token)?)
         .build()

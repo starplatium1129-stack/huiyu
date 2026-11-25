@@ -132,18 +132,35 @@ impl Bridge {
                     .base
                     .join(&format!("_agent/parts/{family}/{id}/{first}"))
                     .map_err(|_| ())?;
-                self.media
-                    .post(endpoint)
-                    .bearer_auth(&self.agent_token)
-                    .header("X-Result-Sha256", digest)
-                    .header("X-Part-Sha256", hex::encode(Sha256::digest(piece)))
-                    .body(piece.to_owned())
-                    .send()
-                    .await
-                    .map_err(|_| ())?
-                    .error_for_status()
-                    .map_err(|_| ())?;
-                Ok::<(), ()>(())
+                let part_digest = hex::encode(Sha256::digest(piece));
+                let payload = piece.to_owned();
+                for attempt in 0..2 {
+                    let result = self
+                        .media
+                        .post(endpoint.clone())
+                        .bearer_auth(&self.agent_token)
+                        .header("X-Result-Sha256", digest)
+                        .header("X-Part-Sha256", &part_digest)
+                        .body(payload.clone())
+                        .send()
+                        .await
+                        .and_then(Response::error_for_status);
+                    match result {
+                        Ok(_) => return Ok::<(), ()>(()),
+                        Err(error) => {
+                            let transient = match error.status() {
+                                Some(status) => matches!(status.as_u16(), 408 | 502 | 503 | 504),
+                                None => !error.is_builder(),
+                            };
+                            if attempt == 0 && transient {
+                                tokio::time::sleep(Duration::from_millis(250)).await;
+                                continue;
+                            }
+                            return Err(());
+                        }
+                    }
+                }
+                Err(())
             },
         ))
         .await?;

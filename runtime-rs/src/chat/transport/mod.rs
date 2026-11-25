@@ -29,17 +29,12 @@ pub(super) struct Request<'a> {
 }
 
 fn builder() -> reqwest::ClientBuilder {
-    reqwest::Client::builder()
+    crate::http_client::tune_proxy(reqwest::Client::builder())
         .user_agent(concat!("Huiyu/", env!("CARGO_PKG_VERSION")))
         .redirect(reqwest::redirect::Policy::none())
         .retry(reqwest::retry::never())
         .connect_timeout(Duration::from_secs(15))
-        .pool_idle_timeout(Duration::from_secs(20))
         .pool_max_idle_per_host(16)
-        .tcp_keepalive(Duration::from_secs(15))
-        .http2_keep_alive_interval(Duration::from_secs(15))
-        .http2_keep_alive_timeout(Duration::from_secs(10))
-        .http2_keep_alive_while_idle(true)
 }
 
 impl Transport {

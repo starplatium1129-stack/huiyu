@@ -107,7 +107,7 @@ impl ControlService {
                     "已有模型下载或校验在进行，请完成或取消后重试",
                 )
             })?;
-        let client = reqwest::Client::builder()
+        let client = crate::http_client::tune_proxy(reqwest::Client::builder())
             .https_only(true)
             .connect_timeout(Duration::from_secs(15))
             .build()

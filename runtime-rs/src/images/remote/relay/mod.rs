@@ -98,9 +98,20 @@ pub(super) async fn run(
             .connect_timeout(Duration::from_secs(6))
     };
     let (Ok(local), Ok(cloud), Ok(media)) = (
-        make().no_proxy().timeout(Duration::from_secs(25)).build(),
-        make().timeout(Duration::from_secs(60)).build(),
-        make().http1_only().timeout(Duration::from_secs(30)).build(),
+        crate::http_client::tune_http1(make())
+            .no_proxy()
+            .pool_max_idle_per_host(16)
+            .timeout(Duration::from_secs(25))
+            .build(),
+        crate::http_client::tune_proxy(make())
+            .pool_max_idle_per_host(8)
+            .timeout(Duration::from_secs(60))
+            .build(),
+        crate::http_client::tune_http1(make())
+            .http1_only()
+            .pool_max_idle_per_host(8)
+            .timeout(Duration::from_secs(30))
+            .build(),
     ) else {
         return;
     };
@@ -152,7 +163,7 @@ pub(super) async fn run(
                 Err(_) => {}
             }
             tokio::select! { _ = shutdown.cancelled() => break, _ = tokio::time::sleep(Duration::from_secs(retry)) => {} }
-            retry = (retry * 2).min(30);
+            retry = (retry * 2).min(15);
         }
     };
     let notify = async {

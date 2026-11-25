@@ -91,7 +91,7 @@ impl ControlService {
         {
             return Err(ApiError::invalid("凭据只能用于固定 Hugging Face 模型来源"));
         }
-        let client = reqwest::Client::builder()
+        let client = crate::http_client::tune_proxy(reqwest::Client::builder())
             .https_only(true)
             .connect_timeout(Duration::from_secs(15))
             .default_headers(image_models::token_header(token)?)
