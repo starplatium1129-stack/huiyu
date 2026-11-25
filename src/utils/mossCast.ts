@@ -238,7 +238,8 @@ function centerX({ bbox: [, left, , right] }: { bbox: UnitBox }) {
 }
 
 export function referenceCastPeople(layout: DraftReferenceInput['layout']) {
-  return layout?.items.filter(item => item.label === 'character').toSorted((a, b) => centerX(a) - centerX(b)) ?? []
+  const people = layout?.items.filter(item => item.label === 'character') ?? []
+  return people.sort((a, b) => centerX(a) - centerX(b))
 }
 
 export function referenceOutfitText(clothing: string) {
@@ -335,7 +336,7 @@ export function buildMossCastLayout(layout: CastLayout, subjects: readonly CastS
   }) ?? []
   if (useReference) {
     const targets = new Set(subjects.length === 1
-      ? characters.toSorted((a, b) => area(b) - area(a)).slice(0, 1)
+      ? characters.slice().sort((a, b) => area(b) - area(a)).slice(0, 1)
       : characters.slice(0, subjects.length))
     const targetBoxes = characters.filter(item => targets.has(item)).map(item => item.bbox)
     let actor = 0
