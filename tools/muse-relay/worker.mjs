@@ -1,150 +1,21 @@
-import { createHash, timingSafeEqual } from 'node:crypto'
 import { DurableObject } from 'cloudflare:workers'
 import { PART, Results, TTL, problem, resultRoute } from './results.mjs'
+import {
+  AGENT_IDLE_POLL_MS, AGENT_ONLINE_MS, AGENT_RECONNECT_GRACE_MS, CONTROL_BODY,
+  DESKTOP_INBOX, INPUTS_LOOKUP_PATH, INTERROGATE_RUN, LEGACY_INBOX_INTERVAL_MS,
+  MAX_INBOX_WAIT_SECONDS, QQ_MESSAGE_BODY, UPSCALE_PATH, VOICE_SYNTHESIZE,
+  batchRoute, bodyLimitFor, control, decode, defaultCapabilities, directRoute,
+  inboxPath, largeBodyLimitFor, mediaPartPath, noCacheRpcPath, parseAgentCapabilities,
+  qqMessagePath, readBody, receiveRoute, rejectedRequestCode, rpcTimeout,
+  uploadRoute, validatePostBody, validateRouteQuery, voicePath,
+} from './routes.mjs'
+import {
+  POLL_SECONDS, RECEIVE_WAIT_SECONDS, applyGuideOverlay, applyInboxUsage,
+  authorized, deliveryErrors, headers, inboxUnavailable, interrogateBusy, json,
+  mediaPartBusy, nextCommandResponse, nextImageRequest, pickMediaPartHeaders,
+  publicGuide, stopped, unavailable, unsupportedCapability, voiceBusy,
+} from './responses.mjs'
 
-const ID = '[A-Za-z0-9_-]{1,160}'
-const CONTROL_BODY = 64 * 1024
-const QQ_MESSAGE_BODY = 4 * 1024 * 1024 + CONTROL_BODY
-const IMAGE_JSON_BODY = 11 * 1024 * 1024 + 256 * 1024
-const VIDEO_INPUT_BODY = 4 * 1024 * 1024 + CONTROL_BODY
-const VIDEO_BATCH_BODY = 1024 * 1024
-const INPUT_LOOKUP_BODY = 2048
-const qqMessagePath = path => path === '/api/muse/qq/reply' || path === '/api/muse/qq/send'
-const chatPath = path => path.startsWith('/api/muse/qq/') || path.startsWith('/api/muse/desktop/')
-const VOICE_SYNTHESIZE = '/api/muse/voice/synthesize'
-const VOICE_STATUS = '/api/muse/voice/status'
-const voicePath = path => path === VOICE_STATUS || path === VOICE_SYNTHESIZE
-const INTERROGATE_STATUS = '/api/muse/interrogate/status'
-const INTERROGATE_RUN = '/api/muse/interrogate'
-const interrogatePath = path => path === INTERROGATE_STATUS || path === INTERROGATE_RUN
-const UPSCALE_PATH = '/api/muse/upscale'
-const INPUTS_LOOKUP_PATH = '/api/muse/inputs/lookup'
-const HEALTH_PATH = '/api/muse/health'
-const VIDEO_STATUS = '/api/muse/video/status'
-const VIDEO_PREVIEW = '/api/muse/video/prompt/preview'
-const VIDEO_INPUTS = '/api/muse/video/inputs'
-const VIDEO_JOBS = '/api/muse/video/jobs'
-const VIDEO_BATCHES = '/api/muse/video/batches'
-const videoPath = path => path.startsWith('/api/muse/video/')
-const galleryPath = path => path === '/api/muse/gallery' || path.startsWith('/api/muse/gallery/')
-const keyframePath = path => path.startsWith('/api/keyframe/')
-const mangaPath = path => path.startsWith('/api/manga/')
-const legacyModelReadPath = path => path === '/api/muse/options' || /^\/api\/(anima|moss|qwen|creative)\/status$/.test(path)
-const modelReadPath = path => path === '/api/muse/options' || /^\/api\/(anima|moss|qwen|creative|keyframe|manga)\/status$/.test(path)
-const noCacheRpcPath = path => chatPath(path) || voicePath(path) || interrogatePath(path) || videoPath(path) || path === HEALTH_PATH || galleryPath(path)
-const DESKTOP_INBOX = '/api/muse/desktop/inbox'
-const inboxPath = path => path === DESKTOP_INBOX || path === '/api/muse/qq/inbox'
-const LEGACY_INBOX_INTERVAL_MS = 3000
-const MAX_INBOX_WAIT_SECONDS = 30
-const AGENT_IDLE_POLL_MS = 15_000
-const AGENT_ONLINE_MS = 45_000
-const AGENT_RECONNECT_GRACE_MS = 6_000
-const batchRoute = new RegExp('^/api/muse/batches/(' + ID + ')(?:/(' + ID + '))?$')
-const receiveRoute = new RegExp('^/api/muse/batches/(' + ID + ')/original/([1-9][0-9]?)$')
-const uploadRoute = /^\/_agent\/parts\/(anima|moss|qwen|creative|keyframe|manga)\/([a-f0-9]{32})\/(\d{1,3})$/
-const directRoute = new RegExp('^/api/(?:anima|moss|qwen|creative|keyframe|manga)/(?:jobs|requests)/' + ID + '$')
-const videoJobRoute = new RegExp('^/api/muse/video/(?:jobs|requests|batches|batch-requests)/' + ID + '$')
-const videoResultRoute = new RegExp('^/api/muse/video/(?:jobs|batches)/' + ID + '/result$')
-const videoConcatRoute = new RegExp('^/api/muse/video/batches/' + ID + '/concat$')
-const videoRetryRoute = new RegExp('^/api/muse/video/batches/' + ID + '/retry$')
-const galleryItemRoute = /^\/api\/muse\/gallery\/([^/?#]+)$/
-const galleryFileRoute = /^\/api\/muse\/gallery\/([^/?#]+)\/file$/
-const mediaPartPath = path => videoResultRoute.test(path) || galleryFileRoute.test(path)
-const headers = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' }
-const json = (value, status = 200, retryAfter) => Response.json(value, {
-  status, headers: retryAfter ? { ...headers, 'Retry-After': String(retryAfter) } : headers,
-})
-const unavailable = () => problem(503, 'MUSE_LAPTOP_UNAVAILABLE', '出图机暂未回应。请重查原路径，提交重试请复用原 requestKey', { 'Retry-After': '3' })
-const inboxUnavailable = () => problem(503, 'MUSE_CONNECTOR_INBOX_NO_REPLY', '出图机连接器近期在线，但这次取信未收到回执。请续接原收信地址', { 'Retry-After': '3' })
-const voiceBusy = () => ({ status: 429, data: { ok: false, code: 'MUSE_VOICE_BUSY', message: '语音合成繁忙，请稍后重试' }, retry: '3' })
-const interrogateBusy = () => ({ status: 429, data: { ok: false, code: 'MUSE_INTERROGATE_BUSY', message: '图像反推繁忙，请稍后重试' }, retry: '3' })
-const mediaPartBusy = () => ({ status: 429, data: { ok: false, code: 'MUSE_MEDIA_BUSY', message: '媒体分片通道繁忙，请稍后重试' }, retry: '2' })
-const outdated = (code, message, status = 503) => ({ status, data: { ok: false, code, message } })
-const voiceUnsupported = () => outdated('MUSE_VOICE_CONNECTOR_OUTDATED', '主力机连接器需要更新才能使用远程语音')
-const modelReadUnsupported = () => outdated('MUSE_OPTIONS_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转查询已装模型', 404)
-const POLL_SECONDS = 2
-const RECEIVE_WAIT_SECONDS = 20
-const PARALLEL_DOWNLOAD_MIN = 1024 * 1024
-const PARALLEL_DOWNLOAD_CONNECTIONS = 4
-const stopped = ['failed', 'cancelled', 'interrupted']
-const deliveryErrors = { expired: 410, storageFull: 507, integrityError: 502, invalidReceipt: 502 }
-const publicGuide = {
-  name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
-  guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', optionsPath: '/api/muse/options', partBytes: PART,
-  agentTools: { cli: 'cli-anything-huiyu --json help', history: 'GET /api/muse/jobs', batch: 'GET /api/muse/batches/{batchKey}',
-    functionCalling: 'cli-anything-huiyu --json help invoke 可读取 huiyu_drawing 函数定义。把参数作为 JSON 写入 --json invoke 的标准输入。',
-    handoff: '共享 batchKey 交接任务；各助手可用 助手名_UUID 作 requestKey。重试沿用原编号和请求体。',
-    errors: '按批次读取 items[].status、code、error、deliveryStatus；历史按 failedCount 或失败状态筛选，nextBefore 传给 before 续页。' },
-  desktopChat: {
-    inbox: '/api/muse/desktop/inbox', reply: '/api/muse/desktop/reply',
-    usage: 'GET inbox?wait=25（HTTP 超时 ≥40s）；空结果立即续接，缺失 inboxWaitSeconds 时等 2s。按 conversationId 与 messages 回答，expiresAt 前凭原 requestKey 与 text 提交，重试沿用完整回复。',
-    drawing: '用户要出图且来信 drawingAllowed=true 时可附 drawing，使用批次的 ids 或 items 参数，省略 requestKey。桌面在原对话显示出图进度和成图。',
-  },
-  qq: {
-    senderIdentity: '同群按 senderId 认人，senderNickname 作称呼；senderRole=owner 为群主，admin 管理员，member 成员，unknown 未核实。',
-    inbox: '/api/muse/qq/inbox', reply: '/api/muse/qq/reply', targets: '/api/muse/qq/targets',
-    send: '/api/muse/qq/send', search: '/api/muse/qq/search',
-    usage: '独立 GET inbox?wait=25（HTTP 超时 ≥40s），空结果立即续接。凭 recentMessages 回答，在 expiresAt 前凭原 requestKey POST reply（支持 text + 可选 image/audio 附件或仅附件，Base64 原文件 ≤3 MiB，status=sent 表已送达）。',
-    context: '私聊附最近 1h ≤6 条；群聊更多前文 GET /api/muse/qq/context/{conversationId}（近 1h ≤64 条）。',
-    skip: '无需插话的普通群消息提交 {requestKey,skip:true}，返回 status=skipped。',
-    proactive: '开启主动发送后，从 GET targets 选 conversationId，POST send（新 requestKey + text/image/audio 三选一）。',
-    webSearch: 'POST search 传原 requestKey + query（主动检索传新 UUID + conversationId + query），返回 title/url/snippet。',
-  },
-  voice: { status: VOICE_STATUS, synthesize: VOICE_SYNTHESIZE, language: 'ja',
-    usage: 'GET status 确认所选声线可用，再 POST synthesize 提交 requestKey 和 1–500 字的日语台词 text。按 mimeType 保存并核对 bytes 与 sha256。' },
-  interrogate: { status: INTERROGATE_STATUS, run: INTERROGATE_RUN, maxJsonImageBytes: 8 * 1024 * 1024,
-    usage: 'POST /api/muse/interrogate 传 JSON {requestKey,imageBase64,mimeType?,mode?,threshold?,assist?,subjectMode?,layout?,noCache?}（原图 ≤8 MiB，HTTP 超时 ≥110s；默认按图片 SHA-256 与参数启用服务端持久化结果缓存，仅缓存成功结果）。' },
-  upscale: { path: UPSCALE_PATH, maxJsonImageBytes: 8 * 1024 * 1024,
-    usage: 'POST /api/muse/upscale 传 requestKey 与 initImage 或 imageBase64（≤8 MiB），返回标准 Muse 批次，经 statusPath/receivePath/resultUrl 校验取图。' },
-  video: { status: VIDEO_STATUS, preview: VIDEO_PREVIEW, inputs: VIDEO_INPUTS, jobs: VIDEO_JOBS, batches: VIDEO_BATCHES,
-    partBytes: PART, maxPartCount: 16, maxJsonInputBytes: 3 * 1024 * 1024,
-    usage: '素材走 POST /api/muse/video/inputs 的 Base64 JSON（原文件 ≤3 MiB）；成片走 GET result?part=N&count=M（1..=16）逐片下载并校验 X-Part-Sha256 与 X-Result-Sha256。' },
-  health: { path: HEALTH_PATH, usage: '严格只读查询出图机在线状态、推理引擎、模型计数与模块能力。' },
-  gallery: { list: '/api/muse/gallery', item: '/api/muse/gallery/{id}', file: '/api/muse/gallery/{id}/file',
-    partBytes: PART, maxPartCount: 16,
-    usage: '严格只读浏览作品册；经中转下载原文件使用 GET /api/muse/gallery/{id}/file?part=N&count=M（数字 ID 附 idType=number），校验 SHA-256。' },
-  followup: '用同 X-Token 跟随每张图的 next：application/json 按 retryAfterSeconds 查批次 statusPath；image/png 下载 resultUrl（有 ranges 可并行）；next=null 查 status、deliveryStatus 与 error。',
-  download: '支持 200 整图或按 next.ranges 并发 206 Range 下载，保存前校验 PNG 文件头、字节数与 SHA-256。receivePath 支持长轮询，202 或 pending=true 按 Retry-After 续查。',
-  resultFlow: {
-    poll: { method: 'GET', pathField: 'statusPath', contentType: 'application/json', intervalSeconds: POLL_SECONDS,
-      stopOnStatus: stopped, stopOnDeliveryStatus: Object.keys(deliveryErrors) },
-    download: { method: 'GET', pathField: 'items[].resultUrl', when: { resultAvailable: true },
-      status: 200, contentType: 'image/png', pngSignatureHex: '89504e470d0a1a0a', lengthHeader: 'Content-Length',
-      bytesHeader: 'X-Result-Bytes', sha256Header: 'X-Result-Sha256' },
-    parallelDownload: { method: 'GET', pathField: 'items[].resultUrl', rangesField: 'items[].next.ranges',
-      header: 'Range', status: 206, contentType: 'image/png', minBytes: PARALLEL_DOWNLOAD_MIN,
-      concurrency: PARALLEL_DOWNLOAD_CONNECTIONS,
-      verify: '核对各段 Content-Range、Content-Length 与 X-Result-Sha256，按偏移拼接后再验整图大小、PNG 头与 SHA-256。',
-      retry: '超时只重取缺失区间；不支持并发时回退 200 整图校验下载。' },
-    receive: { method: 'GET', pathField: 'items[].receivePath', waitSeconds: RECEIVE_WAIT_SECONDS,
-      pending: { status: 202, contentType: 'application/json', body: { pending: true }, retryAfterHeader: 'Retry-After' },
-      legacyPending: { status: 200, contentType: 'application/json', body: { pending: true } } },
-  },
-  retry: '空响应、超时、429 或 503 按 Retry-After 退避重查原路径；提交重试沿用原 requestKey 与请求体。',
-}
-
-function nextImageRequest(item, statusPath) {
-  if (stopped.includes(item.status) || Object.hasOwn(deliveryErrors, item.deliveryStatus)) return null
-  if (item.resultAvailable && item.resultUrl) {
-    const next = { method: 'GET', path: item.resultUrl, accept: 'image/png' }
-    const size = item.resultBytes
-    if (Number.isSafeInteger(size) && size >= PARALLEL_DOWNLOAD_MIN) {
-      const step = Math.ceil(size / PARALLEL_DOWNLOAD_CONNECTIONS)
-      next.ranges = []
-      for (let start = 0; start < size; start += step) {
-        next.ranges.push(`bytes=${start}-${Math.min(start + step, size) - 1}`)
-      }
-    }
-    return next
-  }
-  return { method: 'GET', path: statusPath, accept: 'application/json', retryAfterSeconds: POLL_SECONDS }
-}
-
-function authorized(value, secret) {
-  if (typeof secret !== 'string' || secret.length < 32 || !value || value.length > 256) return false
-  const digest = input => createHash('sha256').update(input).digest()
-  return timingSafeEqual(digest(value), digest(secret))
-}
 export default {
   async fetch(request, env) {
     const url = new URL(request.url)
@@ -154,137 +25,6 @@ export default {
     if (!authorized(supplied, agent ? env.AGENT_TOKEN : env.MUSE_TOKEN)) return problem(401, 'UNAUTHORIZED', '请检查连接密钥')
     return env.RELAY.getByName('laptop').fetch(request)
   },
-}
-
-async function readBody(request, limit) {
-  if (Number(request.headers.get('Content-Length')) > limit) throw new RangeError()
-  const reader = request.body?.getReader()
-  const chunks = []
-  let total = 0
-  if (reader) for (;;) {
-    const { done, value } = await reader.read()
-    if (done) break
-    if ((total += value.byteLength) > limit) { await reader.cancel(); throw new RangeError() }
-    chunks.push(value)
-  }
-  const bytes = new Uint8Array(total)
-  let offset = 0
-  for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.byteLength }
-  return bytes.buffer
-}
-const decode = bytes => JSON.parse(new TextDecoder().decode(bytes))
-
-function validGalleryIdSegment(segment) {
-  if (!segment || segment.length > 512 || segment === '.' || segment === '..' || segment.includes('..')) return false
-  if (!/^(?:[A-Za-z0-9_.!~*'()-]|%[0-9A-Fa-f]{2})+$/.test(segment)) return false
-  let decoded
-  try { decoded = decodeURIComponent(segment) } catch { return false }
-  return Boolean(decoded) && !/[\x00-\x1f\x7f\/\\]/.test(decoded) && !decoded.includes('..')
-}
-
-function validatePartQuery(url, { requirePart, allowIdType }) {
-  if (!url.search) return requirePart ? problem(400, 'MUSE_PART_REQUIRED', '经中转下载媒体文件请使用 ?part=N[&count=M] 分片参数') : null
-  const seen = new Set()
-  for (const [key, value] of url.searchParams.entries()) {
-    if (seen.has(key)) return problem(400, 'INVALID_PARAMETER', '分片查询参数重复')
-    seen.add(key)
-    if (key === 'part') {
-      if (!/^\d{1,9}$/.test(value)) return problem(400, 'INVALID_PARAMETER', 'part 须为非负整数')
-    } else if (key === 'count') {
-      if (!/^\d{1,2}$/.test(value) || Number(value) < 1 || Number(value) > 16) {
-        return problem(400, 'INVALID_PARAMETER', 'count 须为 1 至 16 的整数')
-      }
-    } else if (key === 'idType' && allowIdType) {
-      if (value !== 'string' && value !== 'number') return problem(400, 'INVALID_PARAMETER', 'idType 仅支持 string 或 number')
-    } else {
-      return problem(400, 'INVALID_PARAMETER', '包含不支持的查询参数')
-    }
-  }
-  if (seen.has('count') && !seen.has('part')) return problem(400, 'INVALID_PARAMETER', '使用 count 时必须提供 part')
-  if (requirePart && !seen.has('part')) return problem(400, 'MUSE_PART_REQUIRED', '经中转下载媒体文件请使用 ?part=N[&count=M] 分片参数')
-  return null
-}
-
-function control(method, path) {
-  if (path === VOICE_STATUS) return method === 'GET'
-  if (path === VOICE_SYNTHESIZE) return method === 'POST'
-  if (path === INTERROGATE_STATUS) return method === 'GET'
-  if (path === INTERROGATE_RUN) return method === 'POST'
-  if (path === UPSCALE_PATH || path === INPUTS_LOOKUP_PATH) return method === 'POST'
-  if (path === HEALTH_PATH || path === '/api/muse/gallery') return method === 'GET'
-  if (path === VIDEO_STATUS) return method === 'GET'
-  if (path === VIDEO_PREVIEW || path === VIDEO_INPUTS || path === VIDEO_JOBS || path === VIDEO_BATCHES) return method === 'POST'
-  if (videoJobRoute.test(path)) return method === 'GET' || method === 'DELETE'
-  if (videoResultRoute.test(path)) return method === 'GET' || method === 'HEAD'
-  if (videoConcatRoute.test(path) || videoRetryRoute.test(path)) return method === 'POST'
-  const galleryItem = galleryItemRoute.exec(path)
-  if (galleryItem) return method === 'GET' && validGalleryIdSegment(galleryItem[1])
-  const galleryFile = galleryFileRoute.exec(path)
-  if (galleryFile) return (method === 'GET' || method === 'HEAD') && validGalleryIdSegment(galleryFile[1])
-  if (path === '/api/muse/desktop/inbox') return method === 'GET'
-  if (path === '/api/muse/desktop/reply') return method === 'POST'
-  if (path === '/api/muse/qq/inbox' || path === '/api/muse/qq/targets') return method === 'GET'
-  if (/^\/api\/muse\/qq\/context\/[0-9a-f]{64}$/.test(path)) return method === 'GET'
-  if (qqMessagePath(path) || path === '/api/muse/qq/search') return method === 'POST'
-  if (method === 'POST') return path === '/api/muse/jobs' || path === '/api/muse/batches'
-  if (batchRoute.test(path) || directRoute.test(path)) return method === 'GET' || method === 'DELETE'
-  return method === 'GET' && (modelReadPath(path) || /^\/api\/muse\/(catalog|queue|jobs|guide)$/.test(path)
-    || /^\/api\/muse\/catalog\/(character|scene|blueprint|outfit)(\/[A-Za-z0-9_-]{1,180})+$/.test(path))
-}
-
-function validateRouteQuery(method, url) {
-  const path = url.pathname
-  if (chatPath(path) || voicePath(path)) {
-    if (!url.search) return null
-    if (method === 'GET' && inboxPath(path)) {
-      const value = url.searchParams.get('wait')
-      if (url.searchParams.size !== 1 || value === null || !/^\d+$/.test(value) || Number(value) > 0xffffffff) {
-        return problem(400, 'INVALID_WAIT', 'wait 须为一个非负整数，最多等待 30 秒')
-      }
-      return null
-    }
-    return problem(404, 'MUSE_ROUTE_NOT_FOUND', '找不到这个 Muse 接口')
-  }
-  if (interrogatePath(path) || path === UPSCALE_PATH || path === HEALTH_PATH || path === INPUTS_LOOKUP_PATH) {
-    return url.search ? problem(400, 'INVALID_PARAMETER', '经中转调用此接口不支持 query 参数') : null
-  }
-  if (videoResultRoute.test(path)) {
-    return validatePartQuery(url, { requirePart: method === 'GET', allowIdType: false })
-  }
-  if (galleryFileRoute.test(path)) {
-    return validatePartQuery(url, { requirePart: method === 'GET', allowIdType: true })
-  }
-  if (galleryItemRoute.test(path)) {
-    if (!url.search) return null
-    const idType = url.searchParams.get('idType')
-    if (url.searchParams.size !== 1 || (idType !== 'string' && idType !== 'number')) {
-      return problem(400, 'INVALID_PARAMETER', 'idType 仅支持 string 或 number')
-    }
-    return null
-  }
-  if (videoPath(path) && path !== VIDEO_STATUS && path !== VIDEO_INPUTS && url.search) {
-    return problem(400, 'INVALID_PARAMETER', '此视频接口不支持 query 参数')
-  }
-  return null
-}
-
-function defaultCapabilities() {
-  return {
-    voice: false,
-    modelRead: false,
-    interrogate: false,
-    upscale: false,
-    video: false,
-    gallery: false,
-    health: false,
-    keyframe: false,
-    manga: false,
-  }
-}
-
-function requiresRequestKey(method, path) {
-  if (method !== 'POST') return false
-  return path !== INPUTS_LOOKUP_PATH && path !== VIDEO_PREVIEW && path !== VIDEO_INPUTS && !videoConcatRoute.test(path)
 }
 
 export class MuseRelay extends DurableObject {
@@ -310,18 +50,7 @@ export class MuseRelay extends DurableObject {
     this.receivers = new Set()
   }
   unsupportedCapability(path) {
-    const caps = this.capabilities
-    if (voicePath(path) && !caps.voice) return voiceUnsupported()
-    if (legacyModelReadPath(path) && !caps.modelRead) return modelReadUnsupported()
-    if (interrogatePath(path) && !caps.interrogate) return outdated('MUSE_INTERROGATE_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转使用远程图像反推')
-    if (path === UPSCALE_PATH && !caps.upscale) return outdated('MUSE_UPSCALE_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转使用独立图像放大')
-    if (path === INPUTS_LOOKUP_PATH && !caps.upscale) return outdated('MUSE_INPUTS_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转查询可复用素材', 404)
-    if (videoPath(path) && !caps.video) return outdated('MUSE_VIDEO_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转使用远程短视频生成')
-    if (galleryPath(path) && !caps.gallery) return outdated('MUSE_GALLERY_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转访问作品册')
-    if (path === HEALTH_PATH && !caps.health) return outdated('MUSE_HEALTH_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转查询健康状态')
-    if (keyframePath(path) && !caps.keyframe) return outdated('MUSE_KEYFRAME_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转访问关键帧模型接口')
-    if (mangaPath(path) && !caps.manga) return outdated('MUSE_MANGA_CONNECTOR_OUTDATED', '出图机连接器需要更新才能通过中转访问漫画网点接口')
-    return null
+    return unsupportedCapability(this.capabilities, path)
   }
   async alarm() {
     const now = Date.now()
@@ -373,23 +102,7 @@ export class MuseRelay extends DurableObject {
     try {
       if (url.pathname === '/_agent/next' && request.method === 'POST') {
         if (!request.signal.aborted) {
-          const caps = new Set(
-            (request.headers.get('X-Muse-Capabilities') ?? '')
-              .split(',')
-              .map(item => item.trim())
-              .filter(Boolean),
-          )
-          this.capabilities = {
-            voice: request.headers.get('X-Muse-Voice') === '1' || caps.has('voice'),
-            modelRead: request.headers.get('X-Muse-Options') === '1' || caps.has('modelRead'),
-            interrogate: caps.has('interrogate'),
-            upscale: caps.has('upscale'),
-            video: caps.has('video'),
-            gallery: caps.has('gallery'),
-            health: caps.has('health'),
-            keyframe: caps.has('keyframe'),
-            manga: caps.has('manga'),
-          }
+          this.capabilities = parseAgentCapabilities(request.headers)
         }
         return await this.next(request.signal, request.headers.get('X-Muse-Part-Count') === '16' ? 16 : 1, request.headers.get('X-Muse-Parallel') === '1')
       }
@@ -430,10 +143,7 @@ export class MuseRelay extends DurableObject {
         try { return await this.client(request, url, QQ_MESSAGE_BODY) }
         finally { this.largeQqMessages-- }
       }
-      const largeBodyLimit = (url.pathname === INTERROGATE_RUN || url.pathname === UPSCALE_PATH) ? IMAGE_JSON_BODY
-        : url.pathname === VIDEO_INPUTS ? VIDEO_INPUT_BODY
-        : url.pathname === VIDEO_BATCHES ? VIDEO_BATCH_BODY
-        : null
+      const largeBodyLimit = largeBodyLimitFor(url.pathname)
       if (largeBodyLimit !== null && request.method === 'POST' && (length === null || Number(length) > CONTROL_BODY)) {
         if (Number(length) > largeBodyLimit) throw new RangeError()
         if (this.largePayloads >= 2) return problem(429, 'MUSE_RELAY_BUSY', '大体积请求正在传送，请稍后重试', { 'Retry-After': '2' })
@@ -441,10 +151,7 @@ export class MuseRelay extends DurableObject {
         try { return await this.client(request, url, largeBodyLimit) }
         finally { this.largePayloads-- }
       }
-      const bodyLimit = url.pathname === '/api/muse/batches' ? 256 * 1024
-        : url.pathname === INPUTS_LOOKUP_PATH ? INPUT_LOOKUP_BODY
-        : largeBodyLimit ?? CONTROL_BODY
-      return await this.client(request, url, bodyLimit)
+      return await this.client(request, url, bodyLimitFor(url.pathname, largeBodyLimit))
     } catch (error) {
       if (error instanceof RangeError) return problem(413, 'MUSE_BODY_TOO_LARGE', '数据超过中转单次传输上限')
       if (error instanceof SyntaxError) return problem(400, 'INVALID_JSON', '请求不是完整的 JSON')
@@ -484,29 +191,9 @@ export class MuseRelay extends DurableObject {
     let body
     if (method === 'POST') {
       const bytes = await readBody(request, bodyLimit)
-      if (videoConcatRoute.test(path) && bytes.byteLength === 0) {
-        body = undefined
-      } else {
-        body = decode(bytes)
-        if (qqMessagePath(path) && bytes.byteLength > CONTROL_BODY && typeof body?.image?.data !== 'string' && typeof body?.audio?.data !== 'string') {
-          return problem(413, 'MUSE_BODY_TOO_LARGE', '含图片或语音的消息可以超过 64 KiB')
-        }
-        if (path === INPUTS_LOOKUP_PATH) {
-          if (!Array.isArray(body) || body.length > 16 || body.some(item => typeof item !== 'string' || !/^[0-9a-f]{64}$/.test(item))) {
-            return problem(400, 'INVALID_REQUEST', '请输入最多 16 个小写 SHA-256 哈希数组')
-          }
-        } else if (path === VIDEO_INPUTS) {
-          if (!body || typeof body !== 'object' || Array.isArray(body) || typeof body.data !== 'string' || typeof body.mimeType !== 'string') {
-            return problem(400, 'INVALID_REQUEST', 'JSON 视频素材上传须包含 mimeType 与标准 Base64 data')
-          }
-        } else if (path === VIDEO_PREVIEW || videoConcatRoute.test(path)) {
-          if (!body || typeof body !== 'object' || Array.isArray(body)) {
-            return problem(400, 'INVALID_REQUEST', '请求体须为 JSON 对象')
-          }
-        } else if (requiresRequestKey(method, path) && (typeof body?.requestKey !== 'string' || !new RegExp('^' + ID + '$').test(body.requestKey))) {
-          return problem(400, 'INVALID_REQUEST', '请提供稳定的 requestKey，推荐使用 UUID')
-        }
-      }
+      const parsed = validatePostBody(method, path, bytes)
+      if (parsed.error) return parsed.error
+      body = parsed.body
     }
     const command = { method, path: target, body }
     if (method === 'GET' && inboxPath(path)) {
@@ -527,21 +214,11 @@ export class MuseRelay extends DurableObject {
     }
     const { status, data, retry } = call
     if (noCache) {
-      if (status === 200 && inboxPath(path) && data.operations) {
-        if (path === DESKTOP_INBOX) data.operations.usage = publicGuide.desktopChat.usage
-        else data.operations.inboxUsage = publicGuide.qq.usage
-      }
+      if (status === 200 && inboxPath(path) && data.operations) applyInboxUsage(path, data.operations)
       return json(data, status, retry)
     }
     if (status >= 400) return json(data, status, retry)
-    if (path === '/api/muse/guide') {
-      data.relay = publicGuide
-      if (data.operations?.desktopChat) data.operations.desktopChat.usage = publicGuide.desktopChat.usage
-      if (data.operations?.qqChat) data.operations.qqChat.usage = publicGuide.qq.usage
-      data.download = publicGuide.download
-      data.followup = publicGuide.followup
-      delete data.operations?.uploadedInputs
-    }
+    if (path === '/api/muse/guide') applyGuideOverlay(data)
     if (method === 'GET') {
       if (this.reads.size >= 16) this.reads.delete(this.reads.keys().next().value)
       const text = JSON.stringify(data)
@@ -568,8 +245,7 @@ export class MuseRelay extends DurableObject {
         const remaining = until - Date.now()
         if (data.items.length || remaining <= 0) {
           const operations = { ...data.operations, inboxWaitSeconds: command.inboxWaitSeconds }
-          if (command.path === DESKTOP_INBOX) operations.usage = publicGuide.desktopChat.usage
-          else operations.inboxUsage = publicGuide.qq.usage
+          applyInboxUsage(command.path, operations)
           if (snapshot) Object.assign(operations, { inboxWaitMode: 'relay-poll', inboxPollSeconds: LEGACY_INBOX_INTERVAL_MS / 1000 })
           return json({ ...data, operations })
         }
@@ -614,22 +290,10 @@ export class MuseRelay extends DurableObject {
     const ticket = crypto.randomUUID()
     let finish
     const promise = new Promise(resolve => { finish = resolve })
-    if (qqMessagePath(barePath)) timeout = 105000
-    if (barePath === '/api/muse/qq/search') timeout = 45000
-    if (videoConcatRoute.test(barePath)) timeout = 130000
-    if (barePath === UPSCALE_PATH || barePath === VIDEO_INPUTS) timeout = 75000
-    if (mediaPart) {
-      timeout = 45000
-      this.mediaPartsInFlight++
-    }
-    if (interrogate) {
-      timeout = 115000
-      this.interrogateInFlight++
-    }
-    if (synthesize) {
-      timeout = 95000
-      this.voiceInFlight++
-    }
+    timeout = rpcTimeout(barePath, timeout, { mediaPart, interrogate, synthesize })
+    if (mediaPart) this.mediaPartsInFlight++
+    if (interrogate) this.interrogateInFlight++
+    if (synthesize) this.voiceInFlight++
     const resolve = value => {
       if (!this.calls.delete(ticket)) return
       clearTimeout(timer)
@@ -753,13 +417,7 @@ export class MuseRelay extends DurableObject {
       work = this.dispatch(maxParts, parallel)
     }
     if (!work) return new Response(null, { status: 204 })
-    const response = json(work)
-    const workPath = work.path.split('?')[0]
-    if (work.method === 'POST' && qqMessagePath(workPath)) response.headers.set('X-Muse-QQ-Media', '1')
-    else if (work.method === 'POST' && (workPath === INTERROGATE_RUN || workPath === UPSCALE_PATH)) response.headers.set('X-Muse-Body-Class', 'image-json')
-    else if (work.method === 'POST' && workPath === VIDEO_INPUTS) response.headers.set('X-Muse-Body-Class', 'video-input')
-    else if (work.method === 'POST' && workPath === VIDEO_BATCHES) response.headers.set('X-Muse-Body-Class', 'video-batch')
-    return response
+    return nextCommandResponse(work)
   }
   async reply(request, ticket) {
     this.agentSeen()
@@ -780,27 +438,7 @@ export class MuseRelay extends DurableObject {
       } else this.results.accept(work, status, request.headers, bytes)
       this.notifyReceivers()
     } else if (mediaPart && (call.command.method === 'HEAD' || status === 200)) {
-      const picked = {}
-      for (const [src, dst] of [
-        ['content-type', 'Content-Type'],
-        ['x-upstream-content-length', 'Content-Length'],
-        ['x-result-mime', 'X-Result-Mime'],
-        ['x-result-offset', 'X-Result-Offset'],
-        ['x-result-bytes', 'X-Result-Bytes'],
-        ['x-result-sha256', 'X-Result-Sha256'],
-        ['x-part-sha256', 'X-Part-Sha256'],
-        ['x-part-bytes', 'X-Part-Bytes'],
-        ['etag', 'ETag'],
-        ['accept-ranges', 'Accept-Ranges'],
-        ['retry-after', 'Retry-After'],
-      ]) {
-        const val = request.headers.get(src)
-        if (val !== null) picked[dst] = val
-      }
-      if (call.command.method !== 'HEAD') {
-        picked['Content-Type'] ||= 'application/octet-stream'
-        picked['Content-Length'] = String(bytes.byteLength)
-      }
+      const picked = pickMediaPartHeaders(request.headers, call.command.method, bytes.byteLength)
       call.resolve({ binary: true, status, bytes: call.command.method === 'HEAD' ? new ArrayBuffer(0) : bytes, headers: picked })
     } else {
       let data
@@ -809,14 +447,7 @@ export class MuseRelay extends DurableObject {
         if ((noCache || callBarePath === UPSCALE_PATH) && status >= 400) {
           // Axum extractor rejections can be plain text. Keep the status without reflecting
           // a private message or its base64 attachment in the error body.
-          const code = voicePath(callBarePath) ? 'MUSE_VOICE_REQUEST_REJECTED'
-            : callBarePath.startsWith('/api/muse/qq/') ? 'MUSE_QQ_REQUEST_REJECTED'
-            : callBarePath.startsWith('/api/muse/desktop/') ? 'MUSE_DESKTOP_REQUEST_REJECTED'
-            : interrogatePath(callBarePath) ? 'MUSE_INTERROGATE_REQUEST_REJECTED'
-            : callBarePath === UPSCALE_PATH ? 'MUSE_UPSCALE_REQUEST_REJECTED'
-            : videoPath(callBarePath) ? 'MUSE_VIDEO_REQUEST_REJECTED'
-            : galleryPath(callBarePath) ? 'MUSE_GALLERY_REQUEST_REJECTED'
-            : 'MUSE_REQUEST_REJECTED'
+          const code = rejectedRequestCode(callBarePath)
           call.resolve({ status, data: { ok: false, code, message: '绘遇未接受此请求，请核对请求格式与大小' }, retry: request.headers.get('Retry-After') })
         } else if (call) call.resolve(null)
       } else {

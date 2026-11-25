@@ -6,19 +6,12 @@ installs dependencies, downloads weights, executes repository-provided custom co
 from __future__ import annotations
 
 import argparse
-from collections import deque
-from concurrent.futures import ThreadPoolExecutor
-from functools import lru_cache
 import contextlib
-import hashlib
-import importlib.metadata
 import importlib.util
-import inspect
 import json
 import os
 from pathlib import Path
 import sys
-import threading
 from types import SimpleNamespace
 
 for _key in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE", "HF_HUB_DISABLE_TELEMETRY", "DO_NOT_TRACK"):
@@ -46,418 +39,28 @@ sibling = lifecycle.load_sibling
 contract = sibling("adapter_contract")
 media = sibling("adapter_media")
 video = sibling("adapter_video")
+_identity = sibling("adapter_identity")
+_loading = sibling("adapter_loading")
 Error = contract.AdapterError
+
+MODEL_SUFFIXES = _identity.MODEL_SUFFIXES
+runtime_dependencies = _identity.runtime_dependencies
+pipeline_dependencies = _identity.pipeline_dependencies
+dependencies = _identity.dependencies
+fingerprint = _identity.fingerprint
+converted_identity = _identity.converted_identity
+imported_weight_digest = _identity.imported_weight_digest
+model_identity = _identity.model_identity
+windows_weight_reads = _loading.windows_weight_reads
+resolve_moss_text_precision = _loading.resolve_moss_text_precision
+prepare_moss_start = _loading.prepare_moss_start
+prepare_job = _loading.prepare_job
+load_qwen_pipeline = _loading.load_qwen_pipeline
 
 
 def emit(stream, job_id, event, **values):
     stream.write(json.dumps({"id": job_id, "event": event, **values}, ensure_ascii=False) + "\n")
     stream.flush()
-
-
-@lru_cache(maxsize=2)
-def runtime_dependencies(video_runtime=False):
-    sibling("resident_adapters")
-    sibling("native_memory")
-    sibling("locked_identity")
-    versions = {}
-    expected_versions = {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
-                         "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1",
-                         "huggingface-hub": "1.32.0"}
-    try:
-        current_torch = importlib.metadata.version("torch").split("+")[0]
-    except importlib.metadata.PackageNotFoundError as exc:
-        raise Error("DEPENDENCY_MISSING", "Missing torch; prepare the image runtime") from exc
-    if current_torch == "2.13.0":
-        expected_versions.update(torch="2.13.0", torchvision="0.28.0", transformers="5.14.1",
-                                 Pillow="12.2.0")
-        if not video_runtime:
-            expected_versions["sageattention"] = "2.2.0"
-    elif video_runtime and current_torch == "2.9.1":
-        expected_versions.update(torch="2.9.1", torchvision="0.24.1")
-    for name, expected in expected_versions.items():
-        try:
-            value = importlib.metadata.version(name)
-        except importlib.metadata.PackageNotFoundError as exc:
-            raise Error("DEPENDENCY_MISSING", f"Missing {name}; prepare a separate requirements-adapters.txt environment") from exc
-        if value.split("+")[0] != expected:
-            raise Error("DEPENDENCY_VERSION", f"Adapter environment requires {name}=={expected}, found {value}; keep Anima unchanged")
-        versions[name] = value
-    try:
-        distribution = importlib.metadata.distribution("diffusers")
-        origin = json.loads(distribution.read_text("direct_url.json") or "{}")
-        if origin.get("vcs_info", {}).get("commit_id") != contract.MANIFEST["implementation"]["revision"]:
-            raise Error("DEPENDENCY_VERSION", "Diffusers must use the reviewed source commit in requirements-adapters.txt")
-        import torch
-        import numpy
-        import diffusers
-        from PIL import Image
-        versions["diffusers"] = distribution.version
-    except Error:
-        raise
-    except Exception as exc:
-        raise Error("DEPENDENCY_IMPORT", f"Native adapter imports failed: {exc}") from exc
-    return versions
-
-
-@lru_cache(maxsize=None)
-def pipeline_dependencies(name, layout):
-    try:
-        import diffusers
-        import transformers
-        for component, (library, cls, *_) in contract.MANIFEST["layouts"][layout].items():
-            if library == "transformers" and (component.startswith("text_encoder") or component == "processor"):
-                getattr(transformers, cls)
-        if name == "MOSSImagePipeline":
-            sibling("moss_adapter").pipeline_class()
-            return
-        pipeline = getattr(diffusers, name)
-        if name not in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline", "WanAnimate2DistilledModularPipeline"):
-            if "callback_on_step_end" not in inspect.signature(pipeline.__call__).parameters:
-                raise Error("DEPENDENCY_API", f"{name} lacks the required progress/cancellation callback")
-        if name == "QwenImage21Pipeline":
-            sibling("qwen_prefix_cache")
-            if "sample_sigmas" not in inspect.signature(pipeline.__init__).parameters:
-                raise Error("DEPENDENCY_API", "Qwen 2.1 Turbo requires pipeline-configured sample_sigmas")
-    except Error:
-        raise
-    except Exception as exc:
-        raise Error("DEPENDENCY_IMPORT", f"{name} import failed: {exc}") from exc
-
-
-def dependencies(model_id=None):
-    if model_id and contract.model(model_id).get("runner") == "musetalk-native":
-        return sibling("musetalk_native").dependencies()
-    if model_id and contract.model(model_id).get("runner") == "longcat-avatar":
-        return sibling("longcat_avatar").validate_runtime(contract.model(model_id))
-    if model_id and contract.model(model_id).get("runner") in ("sd-cpp", "wan-a14b-sd"):
-        try:
-            from PIL import __version__ as pillow_version
-        except ImportError as exc:
-            raise Error("DEPENDENCY_MISSING", "关键帧工作进程需要 Pillow 读取参考图。") from exc
-        if contract.model(model_id).get("runner") == "wan-a14b-sd":
-            media.encoder(Error)
-        return {"Pillow": pillow_version, "sd.cppRelease": contract.MANIFEST["keyframeRuntime"]["release"]}
-    versions = runtime_dependencies(model_id is not None and contract.model(model_id)["media"] == "video")
-    models = contract.MANIFEST["models"].values() if model_id is None else (contract.model(model_id),)
-    for model in models:
-        if model.get("runner") in ("longcat-avatar", "sd-cpp", "wan-a14b-sd", "musetalk-native"):
-            continue  # These runners load their own model implementation.
-        pipeline_dependencies(model["pipeline"], model.get("layout", model["pipeline"]))
-    return versions
-
-
-MODEL_SUFFIXES = {".json", ".safetensors", ".model", ".txt", ".jinja"}
-
-
-def fingerprint(root, control):
-    # Still read every byte under the identity lease. Hash independent fixed-size
-    # chunks in parallel, then bind their ordered digests, paths and file lengths.
-    digest = hashlib.sha256(b"huiyu-model-chunk-sha256-v1\0")
-    paths = []
-    for parent, directories, files in os.walk(root, followlinks=False):
-        for directory in directories:
-            path = Path(parent) / directory
-            if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
-                raise Error("MODEL_INVALID", f"Linked model directory: {path}")
-        for name in files:
-            path = Path(parent) / name
-            if path.suffix.lower() in MODEL_SUFFIXES:
-                paths.append(path)
-                if len(paths) > 10000:
-                    raise Error("MODEL_INVALID", "Too many model assets")
-    workers = min(4, os.cpu_count() or 1)
-    with ThreadPoolExecutor(max_workers=workers) as pool:
-        for path in sorted(paths):
-            control.check()
-            contract.safe_file(root, path)
-            digest.update(str(path.relative_to(root)).encode("utf-8") + b"\0")
-            digest.update(path.stat().st_size.to_bytes(8, "little"))
-            pending = deque()
-            with path.open("rb") as source:
-                while chunk := source.read(8 * 1024 * 1024):
-                    control.check()
-                    pending.append(pool.submit(lambda value: hashlib.sha256(value).digest(), chunk))
-                    if len(pending) >= workers:
-                        digest.update(pending.popleft().result())
-            for result in pending:
-                control.check()
-                digest.update(result.result())
-    return digest.hexdigest()
-
-
-def converted_identity(root, receipt, trusted, control, *, read_extra_configs=False, verified_extras=()):
-    """Use a pinned local import record only for its complete, unchanged fileset."""
-    marker = root / "huiyu-model.json"
-    recorded = receipt.get("files")
-    if not isinstance(recorded, list) or len(recorded) != len(trusted):
-        return None
-    expected = {row["path"]: (row["bytes"], row["sha256"]) for row in trusted}
-    if any(not isinstance(row, dict) or not isinstance(row.get("path"), str) for row in recorded) or expected != {
-            row.get("path"): (row.get("bytes"), row.get("sha256")) for row in recorded}:
-        return None
-    stamp = marker.stat().st_mtime_ns
-    for name, (size, _) in expected.items():
-        control.check()
-        path = root / name
-        if not path.exists():
-            return None
-        meta = contract.safe_file(root, path).stat()
-        if meta.st_size != size or meta.st_mtime_ns > stamp:
-            return None
-    for asset in verified_extras:
-        expected[asset["path"]] = (asset["bytes"], asset["sha256"])
-    for path in root.rglob("*"):
-        control.check()
-        if path == marker or path.suffix.lower() not in MODEL_SUFFIXES:
-            continue
-        name = path.relative_to(root).as_posix()
-        if name not in expected:
-            if not read_extra_configs or path.suffix.lower() not in (".json", ".txt", ".jinja"):
-                return None
-            meta = contract.safe_file(root, path).stat()
-            if meta.st_size > 32 << 20:
-                return None
-            with path.open("rb") as stream:
-                expected[name] = (meta.st_size, hashlib.file_digest(stream, "sha256").hexdigest())
-    identity = hashlib.sha256(json.dumps(expected, sort_keys=True, separators=(",", ":")).encode())
-    return {"sha256": identity.hexdigest(), "scope": "prepared-local-weights"}
-
-
-def imported_weight_digest(root, asset, control):
-    path = contract.safe_file(root, root / asset["path"])
-    checksum = sibling("native_hash").file_sha256(path, check=control.check)
-    if checksum != asset["sha256"]:
-        raise Error("MODEL_CHANGED", "MOSS INT8 权重校验不符，请重新导入该文件")
-    return asset["path"].encode() + b"\0" + bytes.fromhex(checksum)
-
-
-def model_identity(root, model_id, control, *, moss_weight_precision="auto", moss_text_precision=None):
-    model = contract.model(model_id)
-    moss = model["family"] == "moss-image"
-    variant = sibling("moss_int8").selected(root, moss_weight_precision, contract, expected_model=model_id) if moss else None
-    marker = root / "huiyu-model.json"
-    if marker.is_file():
-        receipt = contract.config(root, marker)
-        manifest = contract.document(Path(__file__).with_name("managed-adapter-models.json"))
-        spec = next((item for item in manifest["models"] if item["id"] == model_id), None)
-        known_components = model.get("localConversionComponentsSha256")
-        if (known_components and receipt.get("modelId") == model_id and receipt.get("schemaVersion") == 1
-                and receipt.get("scope") == "local-fp8-dequantized-bf16"):
-            # This legacy exporter hashes the weight shards but omits tokenizer
-            # and config files. Read those small files under the same identity lease.
-            components = receipt.get("components")
-            payload = json.dumps(components, sort_keys=True, separators=(",", ":")).encode()
-            if hashlib.sha256(payload).hexdigest() == known_components:
-                files = [dict(path=f"{name}/{path}", **item) for name, row in components.items()
-                         for path, item in row["files"].items()]
-                identity = converted_identity(root, {"files": files}, files, control, read_extra_configs=True)
-                if identity:
-                    return identity
-        if (model_id == "wan2.2-ti2v-5b" and spec and receipt.get("schemaVersion") == 1
-                and receipt.get("modelId") == model_id and receipt.get("revision") == spec["revision"]
-                and receipt.get("scope") == "converted-local-weights-sha256"):
-            recipe = contract.document(Path(__file__).with_name("wan22-import.json"))
-            if receipt.get("sources") == list(recipe["sources"].values()):
-                identity = converted_identity(root, receipt, recipe["convertedFiles"], control)
-                if identity:
-                    return identity
-        if model_id == "minimax-h3" and spec and contract.local_h3(root, model):
-            pack = model["localPack"]
-            assets = [row for row in pack["files"] if not row.get("optional") or (root / row["path"]).exists()]
-            configs = [row for row in spec["files"] if row["path"] in pack["configs"]]
-            extras = sibling("import_h3").prepared_accelerators(root) if (root / "accelerators").is_dir() else {}
-            identity = converted_identity(root, receipt, [*assets, *configs], control,
-                                          verified_extras=[row for rows in extras.values() for row in rows])
-            if identity:
-                return identity
-        if (spec is not None and receipt.get("schemaVersion") == 1
-                and receipt.get("modelId") == model_id and receipt.get("revision") == spec["revision"]
-                and receipt.get("scope") == "downloaded-files-sha256"):
-            # Setup already hashes every downloaded byte before writing this record.
-            # Follow that preparation contract instead of rescanning tens of GB at
-            # every worker start. Changed/unmanaged files keep full-byte validation.
-            prepared_at = marker.stat().st_mtime_ns
-            files = spec["files"]
-            if moss and receipt.get("mossTextPrecision") == "int8":
-                text = model["mossTextInt8"]
-                files = [item for item in files if not item["path"].startswith("text_encoder/model")] + [text]
-            ready = True
-            for item in files:
-                control.check()
-                path = root / item["path"]
-                if not path.exists():
-                    ready = False
-                    break
-                contract.safe_file(root, path)
-                info = path.stat()
-                if info.st_size != item["bytes"] or info.st_mtime_ns > prepared_at:
-                    ready = False
-                    break
-            if ready:
-                digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
-                imports = {}
-                if moss:
-                    digest.update(json.dumps(variant or {"precision": "fp16"}, sort_keys=True).encode())
-                    if variant:
-                        imports[variant["path"]] = variant
-                    if moss_text_precision == "int8":
-                        text = sibling("moss_int8").selected(root, "int8", contract,
-                            component="text_encoder", expected_model=model_id)
-                        imports[text["path"]] = text
-                known = {item["path"] for item in files}
-                extra_weights = []
-                for path in sorted(root.rglob("*")):
-                    control.check()
-                    relative = path.relative_to(root).as_posix()
-                    if path == marker or relative in known or path.suffix.lower() not in MODEL_SUFFIXES or path.is_dir():
-                        continue
-                    # A local tokenizer or weight variant can change what from_pretrained loads.
-                    if path.suffix.lower() == ".json":
-                        contract.config(root, path)
-                        digest.update(relative.encode() + b"\0" + path.read_bytes())
-                    elif relative in imports:
-                        extra_weights.append(imports[relative])
-                    else:
-                        break
-                else:
-                    # Legacy installs can retain the original weights alongside
-                    # a separately imported INT8 file. Under the NTFS lease,
-                    # verify that entire extra file against its registered SHA.
-                    # The download receipt already covers the base components.
-                    for asset in extra_weights:
-                        digest.update(imported_weight_digest(root, asset, control))
-                    return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
-    if model.get("packedManga"):
-        raise Error("MODEL_CHANGED", "QWEN-Manga 模型文件或准备凭据已变化，请在控制室重新准备")
-    return {"sha256": fingerprint(root, control), "scope": "full-byte-chunk-sha256"}
-
-
-@contextlib.contextmanager
-def windows_weight_reads():
-    if sys.platform != "win32":
-        yield
-        return
-    import safetensors
-    import safetensors.torch
-    from transformers import modeling_utils as encoder_loading
-    # Diffusers imports safe_open inside its loading functions; changing the
-    # public entry point covers those imports without inventing module aliases.
-    readers = (safetensors, safetensors.torch, encoder_loading)
-    originals = [(module, module.safe_open) for module in readers]
-    reader_class = sibling("mapped_weights").ReadOnlyWeights
-    async_loading = os.environ.get("HF_DEACTIVATE_ASYNC_LOAD")
-    os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = "1"
-
-    def safe_open(*args, **kwargs):
-        return reader_class(*args, **kwargs)
-
-    # The pinned loader's writable mmap reserves Windows commit for whole files.
-    # Use immutable file views during weight loading, then restore readers.
-    for module, _ in originals:
-        module.safe_open = safe_open
-    try:
-        yield
-    finally:
-        for module, reader in originals:
-            module.safe_open = reader
-        if async_loading is None:
-            os.environ.pop("HF_DEACTIVATE_ASYNC_LOAD", None)
-        else:
-            os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
-
-
-def resolve_moss_text_precision(root, data):
-    if data["mossTextPrecision"] == "auto":
-        variant = sibling("moss_int8").selected(root, "auto", contract, component="text_encoder", expected_model=data["modelId"])
-        data["mossTextPrecision"] = "int8" if variant else "bf16"
-
-
-def prepare_moss_start(root, data, resident, control, ready):
-    # The lease and DLL imports stay on the owner thread. Preload the stdlib
-    # helpers before starting the independent read of the protected bytes.
-    sibling("moss_int8")
-    sibling("native_hash")
-    resolve_moss_text_precision(root, data)
-
-    def import_pipeline():
-        try:
-            dependencies(data["modelId"])
-        finally:
-            ready()
-
-    def protected_identity(path):
-        stop = threading.Event()
-
-        def check():
-            control.check()
-            if stop.is_set():
-                raise InterruptedError("Stopped model verification after an import failure")
-
-        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="moss-verify") as pool:
-            verification = pool.submit(model_identity, path, data["modelId"], SimpleNamespace(check=check),
-                moss_weight_precision=data["mossWeightPrecision"], moss_text_precision=data["mossTextPrecision"])
-            try:
-                import_pipeline()
-                if not verification.done():
-                    control.stage("fingerprint")
-                return verification.result()
-            finally:
-                stop.set()
-
-    # Without NTFS protection, leave both full reads to the normal loader.
-    resident.lease.acquire(root, lambda _: None, prepared_identity=protected_identity)
-    if resident.lease.cached:
-        policy = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
-        resident.scope = resident.weight_scope(root, data, policy, None)
-    else:
-        import_pipeline()
-
-
-def prepare_job(job, *, resident=None, control=None, ready=None):
-    data, spec = contract.validate(job)
-    if "mossUpscaleScale" in data:
-        runtime_dependencies()
-    elif resident is not None and os.name == "nt" and spec["family"] == "moss-image":
-        prepare_moss_start(contract.layout(job["modelDir"], spec), data, resident, control, ready)
-    else:
-        dependencies(data["modelId"])
-    return data, spec
-
-
-def load_qwen_pipeline(root, spec, control):
-    import torch
-    from diffusers import (AutoencoderKLQwenImage21, FlowMatchEulerDiscreteScheduler,
-                           QwenImage21Pipeline, QwenImage21Transformer2DModel)
-    from transformers import Qwen3VLForConditionalGeneration, Qwen3VLProcessor
-
-    # layout() has checked the five fixed component classes and the model's
-    # sigma grid. The processor reads tokenizer/config files only, so it can
-    # overlap the sequential weight loaders without sharing their meta-init.
-    weights = dict(local_files_only=True, use_safetensors=True)
-    manga = sibling("qwen_manga_euler") if spec.get("packedManga") else None
-    processor_cls = manga.MangaProcessor if manga else Qwen3VLProcessor
-    scheduler_cls = manga.MangaEulerScheduler if manga else FlowMatchEulerDiscreteScheduler
-    pipeline_cls = manga.MangaPipeline if manga else QwenImage21Pipeline
-    with ThreadPoolExecutor(max_workers=1) as pool:
-        processor = pool.submit(processor_cls.from_pretrained, str(root / "processor"),
-                                local_files_only=True, trust_remote_code=False)
-        control.check()
-        if manga:
-            encoder, transformer = sibling("qwen_manga_int8").load(root, control)
-        else:
-            encoder = Qwen3VLForConditionalGeneration.from_pretrained(str(root / "text_encoder"),
-                dtype=torch.bfloat16, trust_remote_code=False, **weights)
-            control.check()
-            transformer = QwenImage21Transformer2DModel.from_pretrained(str(root / "transformer"),
-                torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
-        control.check()
-        vae = AutoencoderKLQwenImage21.from_pretrained(str(root / "vae"),
-            torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
-        if manga:
-            sibling("qwen_manga_vae").configure(vae)
-        scheduler = scheduler_cls.from_pretrained(str(root / "scheduler"), local_files_only=True)
-        return pipeline_cls(scheduler=scheduler, vae=vae, text_encoder=encoder, processor=processor.result(),
-                                   transformer=transformer, sample_sigmas=spec.get("sampleSigmas"))
 
 
 def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None, manga_pixels=None):
@@ -513,8 +116,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     if style_path is not None:
         sibling("krea_style").require_dependency()
     import torch
-    import diffusers
     is_video = spec["media"] == "video"
+    video_device = device_backend = None
     if is_video:
         acceleration = sibling("video_acceleration")
         video_device, device_backend = acceleration.device()
@@ -542,64 +145,10 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     images = []
     success = False
     try:
-        kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16,
-                  "low_cpu_mem_usage": True}
-
         def load_pipeline():
-            placement = None
-            try:
-                if spec["family"] == "moss-image":
-                    with windows_weight_reads():
-                        template = sibling("moss_adapter").load(root, control, contract, data["modelId"],
-                            text_precision=data["mossTextPrecision"], weight_precision=data["mossWeightPrecision"])
-                    if policy == "offload":
-                        sibling("native_memory").keep_token_table_on_cpu(template.text_encoder.language_model)
-                    else:
-                        if getattr(template.transformer, "_huiyu_int8_count", 0):
-                            sibling("moss_int8").place_resident(template.transformer)
-                        else:
-                            template.transformer.to(device="cuda:0", dtype=torch.bfloat16)
-                elif is_video:
-                    with windows_weight_reads():
-                        template = video.load(root, spec, data, control, contract)
-                    control.stage("uploading")
-                    placement = video.placement(template.components, policy, data, spec, video_device, device_backend)
-                else:
-                    with windows_weight_reads() if spec["family"] in ("qwen-image", "krea2") else contextlib.nullcontext():
-                        if spec["family"] == "qwen-image":
-                            template = load_qwen_pipeline(root, spec, control)
-                        else:
-                            template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
-                    if spec["family"] == "krea2":
-                        sibling("krea_adapter").configure(template, policy)
-                    if spec["family"] == "qwen-image":
-                        encoder = template.text_encoder
-                        encoder.set_attn_implementation("sdpa")
-                        # This pipeline consumes only the final hidden state. Like
-                        # Comfy's conditioning encoder, skip vocabulary logits,
-                        # unused LM-head weights, KV cache and all intermediate states.
-                        # Its task-local final-norm hook still selects pre-norm output.
-                        encoder.lm_head = torch.nn.Identity()
-                        if policy == "offload":
-                            sibling("native_memory").keep_token_table_on_cpu(encoder.model.language_model)
-                        def hidden_only(*args, **values):
-                            values.update(output_hidden_states=False, use_cache=False)
-                            mask = values.get("attention_mask")
-                            if mask is not None and bool(mask.all()):
-                                values["attention_mask"] = None
-                            output = encoder.model(*args, **values)
-                            return SimpleNamespace(hidden_states=(output.last_hidden_state,))
-                        encoder.forward = hidden_only
-                if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
-                    placement = sibling("mapped_residency").Residency(template.components, policy, memory_pixels,
-                        image_conditioned=conditioned, decode_pixels=render_pixels,
-                        retain_components=spec["family"] == "moss-image", stream_mapped_dit=spec["family"] == "qwen-image")
-                control.check()
-                return template, placement
-            except BaseException:
-                if placement is not None:
-                    placement.close()
-                raise
+            return _loading.load_adapter_pipeline(root, spec, data, policy, control, is_video=is_video,
+                video_device=video_device, device_backend=device_backend, memory_pixels=memory_pixels,
+                conditioned=conditioned, render_pixels=render_pixels)
 
         pipeline, identity, reused = cache.acquire(root, spec, data, policy, control,
             lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},

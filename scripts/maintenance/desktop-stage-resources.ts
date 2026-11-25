@@ -30,7 +30,7 @@ const CATALOG_PROJECTED_DATA=new Set(['characters.json','popular-characters.json
 const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1', 'offline-resource-job.ps1'];
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','voxcpm-server.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
-const ADAPTER_TOOLS=['adapter_worker.py','adapter_contract.py','adapter_video.py','adapter_media.py','keyframe_sd.py','prepare_keyframes.py','adapter-models.json','managed-adapter-runtime.windows-x64.json','managed-adapter-models.json','managed-image-resources.json','managed-auxiliary-models.json','requirements-adapters.txt','resident_adapters.py','qwen_prefix_cache.py','native_memory.py','krea_style.py',
+const ADAPTER_TOOLS=['adapter_worker.py','adapter_identity.py','adapter_loading.py','adapter_contract.py','adapter_video.py','adapter_media.py','keyframe_sd.py','prepare_keyframes.py','adapter-models.json','managed-adapter-runtime.windows-x64.json','managed-adapter-models.json','managed-image-resources.json','managed-auxiliary-models.json','requirements-adapters.txt','resident_adapters.py','qwen_prefix_cache.py','native_memory.py','krea_style.py',
   'krea_adapter.py','krea_transport.py','video_memory.py','wan_pipeline.py','wan_a14b_sd.py','keyframe_server.py','import_wan.py','wan22-import.json','import_h3.py','h3_packed.py','h3_sparse.py','h3_modulation.py','h3_rotary.py','h3_text.py','h3_vae.py','h3_dwd.py','h3_piflow.py',
   'native_attention.py','video_acceleration.py','wan_motion.py','longcat_avatar.py','requirements-longcat-avatar.txt','mapped_weights.py','mapped_residency.py','moss_adapter.py','moss_pipeline.py','moss_preview.py','moss_spectrum.py','moss_execution.py','moss_int8.py','moss_text.py','moss_upscale.py','MOSS-LICENSE','SPECTRUM-LICENSE',
   'manga_worker.py','manga_contract.py','manga_screen.py','manga-screen.json','requirements-manga.txt','MANGASCREEN_LICENSE.txt',
@@ -115,7 +115,7 @@ function stageDesktopCli(root: string, gateway: string, io = directIO, local = f
   const source = safe.resolveSafe(root, 'tools/cli-anything-huiyu');
   const target = path.join(gateway, 'tools/cli-anything-huiyu');
   io.directory(target);
-  for (const name of ['cli.mjs', 'muse.mjs', 'diagnostics.mjs', 'download.mjs', 'wait.mjs', 'voice.mjs', 'channels.mjs', 'upload.mjs', 'interrogate.mjs', 'video.mjs', 'gallery.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
+  for (const name of ['cli.mjs', 'drawing.mjs', 'format.mjs', 'muse.mjs', 'diagnostics.mjs', 'download.mjs', 'wait.mjs', 'voice.mjs', 'channels.mjs', 'upload.mjs', 'interrogate.mjs', 'video.mjs', 'gallery.mjs', 'package.json', 'tool.json', 'SKILL.md', 'LICENSE']) {
     io.copy(safe.resolveSafe(source, name), path.join(target, name));
   }
   const launcher = safe.resolveSafe(source, 'launcher.rs');
