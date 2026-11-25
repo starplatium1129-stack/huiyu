@@ -10,9 +10,8 @@
 
 .page-kicker {
   @apply tw:flex tw:items-center tw:gap-[8px] tw:mb-[6px] tw:text-muted;
-  font: 650 var(--fs-mono-sm) var(--font-mono);
-  letter-spacing: 0.12em;
-  @apply tw:uppercase;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+  letter-spacing: 0.02em;
 }
 
 .page-title {
@@ -85,8 +84,8 @@ p  { @apply tw:text-secondary tw:mb-s-3; }
 
 /* ---- Eyebrow tag（甜系贴纸角标） ---- */
 .eyebrow {
-  @apply tw:inline-block tw:text-label-xs tw:font-semibold; letter-spacing: .12em;
-  @apply tw:uppercase tw:text-accent tw:mb-s-3;
+  @apply tw:inline-block tw:text-label-xs tw:font-semibold; letter-spacing: .02em;
+  @apply tw:text-accent tw:mb-s-3;
 }
 
 /* ---- Quote block ---- */

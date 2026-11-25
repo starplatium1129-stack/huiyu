@@ -107,18 +107,18 @@
      mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
      body-*  阅读正文                       |  title-*  标题
      只用这些档位。新增字号前先确认现有档位不够用。 */
-  --fs-mono-xs:  0.75rem;  /* 装饰编号，不承载操作说明 */
-  --fs-mono-sm:  0.8125rem; /* 单位 / 角标 */
-  --fs-label-xs: 0.8125rem; /* 紧凑元数据 */
-  --fs-label-sm: 0.875rem; /* 常规控件标签 */
-  --fs-label:    0.875rem; /* 参数与工具标签 */
-  --fs-body-sm:  0.9375rem; /* 说明正文 */
-  --fs-body:     1rem;     /* 阅读正文 */
-  --fs-body-lg:  1rem;     /* DESIGN.md typography.body */
-  --fs-title-xs: 1.05rem;  /* 卡片标题 */
-  --fs-title-sm: 1.2rem;   /* h3 */
-  --fs-title:    1.6rem;   /* 24px at the default 15px UI root; DESIGN.md Layout */
-  --fs-display:  2.2rem;   /* h1 / DESIGN.md typography.display */
+  --fs-mono-xs:  0.8667rem; /* 13px 下限，确保首屏与元数据清晰可读 */
+  --fs-mono-sm:  0.8667rem; /* 单位 / 角标（13px） */
+  --fs-label-xs: 0.8667rem; /* 紧凑元数据（13px） */
+  --fs-label-sm: 0.875rem;  /* 常规控件标签 */
+  --fs-label:    0.875rem;  /* 参数与工具标签 */
+  --fs-body-sm:  1rem;      /* 与正文统一基准（15px） */
+  --fs-body:     1rem;      /* 阅读正文 */
+  --fs-body-lg:  1rem;      /* DESIGN.md typography.body */
+  --fs-title-xs: 1.05rem;   /* 卡片标题 */
+  --fs-title-sm: 1.2rem;    /* h3 */
+  --fs-title:    1.6rem;    /* 24px at the default 15px UI root; DESIGN.md Layout */
+  --fs-display:  2.2rem;    /* h1 / DESIGN.md typography.display */
   /* 装饰性字形槽(空状态占位图标、画面回退符),不参与文字层级 */
   --fs-glyph:    2rem;
   --fs-glyph-lg: 3rem;
@@ -183,24 +183,24 @@
      语义 token 按交互目的命名，避免同一个 "fast" 同时承担按压、浮层和路由。
      按用途复用语义 token，消除双轨硬编码数值。 */
   --motion-press: 120ms;
-  --motion-hover: 160ms;
-  --motion-control: 200ms;
-  --motion-surface: 260ms;
-  --motion-route: 320ms;
-  --motion-route-cut: 420ms;
-  --motion-atmosphere: 560ms;
-  --spring-bounce: cubic-bezier(.34, 1.56, .64, 1); /* 果冻微弹 */
-  --spring-soft:   cubic-bezier(.16, 1, .3, 1);    /* 丝滑阻尼 */
-  --ease-out: cubic-bezier(.23, 1, .32, 1);   /* 进入/即时反馈：快速响应，柔和落位 */
-  --ease-in-out: cubic-bezier(.77, 0, .175, 1); /* 屏内移动/形变 */
-  --ease-drawer: cubic-bezier(.32, .72, 0, 1);  /* 抽屉与大面积浮层 */
+  --motion-hover: 240ms;
+  --motion-control: 280ms;
+  --motion-surface: 380ms;
+  --motion-route: 460ms;
+  --motion-route-cut: 520ms;
+  --motion-atmosphere: 620ms;
+  --spring-bounce: cubic-bezier(.34, 1.46, .64, 1); /* 温润有机回弹 */
+  --spring-soft:   cubic-bezier(.18, 1, .32, 1);    /* 丝滑长尾阻尼 */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);         /* 经典 iOS 长尾缓出：即时起手、丝滑落位 */
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);      /* 屏内平滑移动 */
+  --ease-drawer: cubic-bezier(.28, .82, .22, 1);    /* 抽屉与大面积浮层 */
 
   /* Spring-to-linear：transform 专用；linear() 不支持时回退 Bézier。 */
   --spring-bouncy-duration: 650ms;
   --spring-gentle-ease: var(--spring-soft);
-  --spring-gentle-duration: var(--motion-control);
+  --spring-gentle-duration: var(--motion-surface);
   --spring-press-ease: var(--spring-bounce);
-  --spring-press-duration: var(--motion-control);
+  --spring-press-duration: var(--motion-surface);
 
   /* ---- z-index scale(唯一来源,禁止页面内写魔法数字) ---- */
   --z-below: -1;      /* 背景光斑 / 装饰层 */
@@ -245,15 +245,39 @@
   --stage-amber:  linear-gradient(155deg, #4a3525 0%, #2e2018 48%, #1b1210 100%);
 }
 
+/* 可选画室配色「夜樱晴空」：深色为午夜靛墨，浅色覆盖见 light-theme.css。 */
+:root[data-theme-palette="yozakura"] {
+  --ink-base: #0a0d14;
+  --bg-deep: #0a0d14;
+  --bg-base: #10141f;
+  --bg-surface: #171c2a;
+  --bg-elevated: #21283a;
+  --border-soft: rgba(232, 238, 255, 0.09);
+  --border-strong: rgba(232, 238, 255, 0.18);
+  --text-primary: #f5f2ee;
+  --text-secondary: #b7bac8;
+  --text-muted: #989daf;
+  --text-inverse: #18141b;
+  --text-disabled: #9b9fb0;
+  --accent: #f2a7be;
+  --accent-hover: #ffc3d6;
+  --accent-soft: rgba(242, 167, 190, 0.12);
+  --accent-glow: rgba(242, 167, 190, 0.22);
+  --natsume-amber: #ebb764;
+  --glass-highlight: rgba(240, 245, 255, 0.08);
+  --art-mat: #0e131e;
+  --art-stage: #171a24;
+}
+
 /* Spring-to-linear 烘焙结果：只有支持原生 linear() 的浏览器才启用，
    旧 Safari/浏览器继续使用上面的 Bézier 与 motion-control fallback。 */
 @supports (transition-timing-function: linear(0, 1)) {
   :root {
     --spring-gentle-ease: linear(0, 0.0046 1.042%, 0.0173 2.083%, 0.0364 3.125%, 0.0607 4.167%, 0.1204 6.25%, 0.189 8.333%, 0.3696 13.542%, 0.4383 15.625%, 0.5027 17.708%, 0.5898 20.833%, 0.6413 22.917%, 0.6875 25%, 0.7287 27.083%, 0.7652 29.167%, 0.8119 32.292%, 0.8383 34.375%, 0.8812 38.542%, 0.9133 42.708%, 0.9319 45.833%, 0.9547 51.042%, 0.9786 60.417%, 0.9924 72.917%, 1);
-    --spring-gentle-duration: 550ms;
-    /* BUTTON_SPRING (stiffness: 600, damping: 30, mass: 1) — transform/scale release rebound only. */
+    --spring-gentle-duration: 580ms;
+    /* Soft-cushioned release rebound — smooth, unhurried return after tactile press. */
     --spring-press-ease: linear(0, 0.0888 5%, 0.2868 10%, 0.5144 15%, 0.7219 20%, 0.8843 25%, 0.9949 30%, 1.0583 35%, 1.0847 40%, 1.0859 45%, 1.0726 50%, 1.0534 55%, 1.0338 60%, 1.0173 65%, 1.0051 70%, 0.9974 75%, 0.9935 80%, 0.9923 85%, 0.9929 90%, 0.9944 95%, 1);
-    --spring-press-duration: 380ms;
+    --spring-press-duration: 420ms;
   }
 }
 

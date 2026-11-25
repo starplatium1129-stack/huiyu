@@ -1,14 +1,11 @@
 <template>
   <article class="home-page" :style="museThemeStyle">
-    <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
+    <section class="container home-opening tw:pt-s-4" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
         <div class="hero-copy" data-route-arrive>
-          <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<span class="hero-title-accent">画进你的故事。</span></h1>
-          <p class="hero-summary">从角色和场景出发，把想象中的一幕画下来。</p>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <StudioActionLink id="continueCta" :to="continueLink.to" class="btn-primary" :icon="continueIconName" :label="continueLink.label" />
-            <StudioActionLink to="/prompt-builder" class="btn-ghost" icon="image" label="进入绘制台" />
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses studio-segments" data-fluid-glass role="group" aria-label="首页角色视觉">
@@ -136,7 +133,7 @@
         <RouterLink to="/guide" class="link">使用指南 →</RouterLink>
       </div>
       <div class="atelier-entries">
-        <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :label="entry.label" :action="entry.action" :lead="entry.id === 'make'">
+        <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :action="entry.action" :lead="entry.id === 'make'">
           <template #art><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></template>
         </StudioIllustratedCard>
       </div>
@@ -287,11 +284,11 @@ function entrySrcset(source: string) {
   return preview ? `${preview} 768w, ${source} 1536w` : undefined
 }
 const creationEntries = computed(() => [
-  { id: 'make', label: '01 / MAKE', title: '开始绘制', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
-  { id: 'scene', label: '02 / SCENE', title: '灵感场景', action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
-  { id: 'motion', label: '03 / MOTION', title: '故事短片', action: '开始创作', to: '/studio-projects?tool=video', art: motionArt.value },
-  { id: 'room', label: '04 / ROOM', title: '角色房间', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
-  { id: 'archive', label: '05 / ARCHIVE', title: '参考画册', action: '翻开画册', to: '/showcase', art: archiveArt.value },
+  { id: 'make', title: '开始绘制', action: '走进绘制台', to: '/prompt-builder', art: studioArt.value },
+  { id: 'scene', title: '灵感场景', action: '寻找灵感', to: '/scene-explorer', art: sceneArt.value },
+  { id: 'motion', title: '故事短片', action: '开始创作', to: '/studio-projects?tool=video', art: motionArt.value },
+  { id: 'room', title: '角色房间', action: '进入房间', to: `/chat?character=${homeMuse.value}`, art: roomArt.value },
+  { id: 'archive', title: '参考画册', action: '翻开画册', to: '/showcase', art: archiveArt.value },
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')

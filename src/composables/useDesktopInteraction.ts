@@ -6,11 +6,13 @@ import { THEME_SETTING } from '@/storage/settingsRepository'
 
 type ThemeMode = 'system' | 'dark' | 'light'
 export type ThemeStyle = 'atelier' | 'terraria'
+export type ThemePalette = 'default' | 'yozakura'
 type MotionMode = 'system' | 'full' | 'reduce'
 export type GlassMode = 'light' | 'liquid'
 const KEY = 'atelier-desktop-appearance-v1'
 const themeMode = ref<ThemeMode>('system')
 const themeStyle = ref<ThemeStyle>('atelier')
+const themePalette = ref<ThemePalette>('default')
 const motionMode = ref<MotionMode>('system')
 const reducedGlass = ref(false)
 const glassMode = ref<GlassMode>('light')
@@ -21,7 +23,7 @@ let lastAppearance: string | null | undefined
 
 function save() {
   lastAppearance = undefined
-  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, style: themeStyle.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value, glassTint: glassTint.value })) } catch { /* Optional preferences must never block the workspace. */ }
+  try { localStorage.setItem(KEY, JSON.stringify({ theme: themeMode.value, style: themeStyle.value, palette: themePalette.value, motion: motionMode.value, reducedGlass: reducedGlass.value, glass: glassMode.value, glassTint: glassTint.value })) } catch { /* Optional preferences must never block the workspace. */ }
 }
 function normalizedGlassTint(value: unknown) { return typeof value === 'number' && Number.isFinite(value) ? Math.round(Math.max(0, Math.min(100, value))) : 35 }
 
@@ -55,11 +57,12 @@ export function initializeDesktopPreferences() {
       const saved = JSON.parse(raw || 'null')
       themeMode.value = ['system', 'dark', 'light'].includes(saved?.theme) ? saved.theme : legacy === 'dark' || legacy === 'light' ? legacy : 'system'
       themeStyle.value = saved?.style === 'terraria' ? 'terraria' : 'atelier'
+      themePalette.value = saved?.palette === 'yozakura' ? 'yozakura' : 'default'
       motionMode.value = ['system', 'full', 'reduce'].includes(saved?.motion) ? saved.motion : 'system'
       reducedGlass.value = saved?.reducedGlass === true
       glassMode.value = saved?.glass === 'liquid' ? 'liquid' : 'light'
       glassTint.value = normalizedGlassTint(saved?.glassTint)
-    } catch { themeMode.value = theme.value; themeStyle.value = 'atelier'; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light'; glassTint.value = 35 }
+    } catch { themeMode.value = theme.value; themeStyle.value = 'atelier'; themePalette.value = 'default'; motionMode.value = 'system'; reducedGlass.value = false; glassMode.value = 'light'; glassTint.value = 35 }
     finally { reading = false }
     return true
   }
@@ -72,6 +75,11 @@ export function initializeDesktopPreferences() {
     const reduced = String(motionMode.value === 'reduce' || motionMode.value === 'system' && reduce.matches)
     const motionChanged = root.dataset.motion !== motionMode.value || root.dataset.reducedMotion !== reduced
     if (root.dataset.themeStyle !== themeStyle.value) root.dataset.themeStyle = themeStyle.value
+    const nextPalette = themeStyle.value === 'atelier' && themePalette.value === 'yozakura' ? 'yozakura' : ''
+    if ((root.dataset.themePalette || '') !== nextPalette) {
+      if (nextPalette) root.dataset.themePalette = nextPalette
+      else delete root.dataset.themePalette
+    }
     if (motionChanged) {
       root.dataset.motion = motionMode.value
       root.dataset.reducedMotion = reduced
@@ -88,7 +96,7 @@ export function initializeDesktopPreferences() {
   }
   read()
   const appearanceReady = apply()
-  watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
+  watch([themeMode, themeStyle, themePalette, motionMode, reducedGlass, glassMode], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
   // Tint previews only change CSS; avoid resaving the theme and notifying every motion consumer per slider step.
   watch(glassTint, value => {
     if (!reading) { save(); document.documentElement.style.setProperty('--glass-tint', String(value / 100)) }
@@ -104,12 +112,13 @@ export function initializeDesktopPreferences() {
 
 export function useDesktopPreferences() {
   return {
-    themeMode: readonly(themeMode), themeStyle: readonly(themeStyle), motionMode: readonly(motionMode), reducedGlass: readonly(reducedGlass),
+    themeMode: readonly(themeMode), themeStyle: readonly(themeStyle), themePalette: readonly(themePalette), motionMode: readonly(motionMode), reducedGlass: readonly(reducedGlass),
     glassMode: readonly(glassMode), effectiveGlassMode: readonly(effectiveGlassMode), glassTint: readonly(glassTint),
     setGlassMode(value: GlassMode) { glassMode.value = value === 'liquid' ? 'liquid' : 'light' },
     setGlassTint(value: number) { glassTint.value = normalizedGlassTint(value) },
     setThemeMode(value: ThemeMode) { themeMode.value = value },
     setThemeStyle(value: ThemeStyle) { themeStyle.value = value === 'terraria' ? 'terraria' : 'atelier' },
+    setThemePalette(value: ThemePalette) { themePalette.value = value === 'yozakura' ? 'yozakura' : 'default' },
     setMotionMode(value: MotionMode) { motionMode.value = value },
     setReducedGlass(value: boolean) { reducedGlass.value = value },
   }

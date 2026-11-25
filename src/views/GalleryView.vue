@@ -3,7 +3,6 @@
     <header class="gallery-intro" data-route-arrive>
       <div class="gallery-heading-copy">
         <h1 class="gallery-title" data-screentone-furniture>我的作品</h1>
-        <p class="gallery-invitation">收藏每一次落笔的瞬间，把心动画面编成自己的画册。</p>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
           <ArchiveIcon name="chevron-down" />

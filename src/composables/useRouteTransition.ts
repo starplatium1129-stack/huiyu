@@ -6,11 +6,11 @@ import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 
 const MAX_STAGGER_SURFACES = 4
-const STAGGER_DELAY_MS = [0, 30, 60, 85] as const
-const ENTER_OFFSET_X = 14
-const ENTER_OFFSET_Y = 8
-/** Critically-damped route arrival frequency (Hz): readable travel without bouncing large text. */
-const ROUTE_SPRING_FREQUENCY = 3.2
+const STAGGER_DELAY_MS = [0, 38, 76, 110] as const
+const ENTER_OFFSET_X = 22
+const ENTER_OFFSET_Y = 12
+/** Critically-damped route arrival frequency (Hz): unhurried iOS-like glide without bouncing large text. */
+const ROUTE_SPRING_FREQUENCY = 2.1
 
 let cachedRouteCurve: { samples: number[]; duration: number } | undefined
 
@@ -20,14 +20,14 @@ function routeArrivalCurve() {
   // Exact closed-form critically damped spring (damping = 1): x(t) = 1 - (1 + ωt)e^(-ωt).
   const omega = 2 * Math.PI * ROUTE_SPRING_FREQUENCY
   const samples = [0]
-  for (let index = 1; index <= 48; index++) {
+  for (let index = 1; index <= 60; index++) {
     const wt = omega * (index / 60)
     const value = 1 - (1 + wt) * Math.exp(-wt)
     if (value >= 0.998) break
     samples.push(value)
   }
   samples.push(1)
-  cachedRouteCurve = { samples, duration: Math.max(180, (samples.length - 1) * 1000 / 60) }
+  cachedRouteCurve = { samples, duration: Math.max(240, (samples.length - 1) * 1000 / 60) }
   return cachedRouteCurve
 }
 
@@ -115,18 +115,18 @@ export function useRouteTransition() {
     const surfaces = collectArrivalSurfaces(content)
     // Only opacity touches the outer content so fixed tools and sticky chrome keep their viewport context.
     effects.push(content.animate(
-      [{ opacity: surfaces.length ? 0.55 : 0.22 }, { opacity: 1 }],
-      { duration: surfaces.length ? Math.min(duration, 220) : duration, easing },
+      [{ opacity: surfaces.length ? 0.52 : 0.16 }, { opacity: 1 }],
+      { duration: surfaces.length ? Math.min(duration, 320) : duration, easing },
     ))
     if (surfaces.length) {
       const { samples, duration: springDuration } = routeArrivalCurve()
-      const travelDuration = Math.min(springDuration, duration + 60)
+      const travelDuration = Math.min(springDuration, duration + 80)
       for (let index = 0; index < surfaces.length; index++) {
         const surface = surfaces[index]!
         const startX = direction * ENTER_OFFSET_X
-        const startY = ENTER_OFFSET_Y + index * 2
+        const startY = ENTER_OFFSET_Y + index * 3
         const frames = samples.map(progress => ({
-          opacity: Math.min(1, 0.25 + 0.75 * Math.min(1, progress * 1.4)),
+          opacity: Math.min(1, 0.14 + 0.86 * Math.min(1, progress * 1.25)),
           translate: `${((1 - progress) * startX).toFixed(2)}px ${((1 - progress) * startY).toFixed(2)}px`,
         }))
         effects.push(surface.animate(frames, {

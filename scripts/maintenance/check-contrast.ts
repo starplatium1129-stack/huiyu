@@ -56,8 +56,11 @@ function block(selector: string, source = css): Tokens {
 }
 const dark = block(':root');
 const light = { ...dark, ...block(':root[data-theme="light"]', lightCss) };
+const yozakuraDark = { ...dark, ...block(':root[data-theme-palette="yozakura"]') };
+const yozakuraLight = { ...light, ...block(':root[data-theme="light"][data-theme-palette="yozakura"]', lightCss) };
 const pixel = block(":root[data-theme-style='terraria']", terrariaCss);
 const themes: Theme[] = [['dark', dark], ['light', light],
+  ['yozakura-dark', yozakuraDark], ['yozakura-light', yozakuraLight],
   ['terraria-dark', { ...dark, ...pixel }],
   ['terraria-light', { ...light, ...pixel, ...block(":root[data-theme-style='terraria'][data-theme='light']", terrariaCss) }]];
 

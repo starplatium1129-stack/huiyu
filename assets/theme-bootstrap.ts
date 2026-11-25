@@ -17,6 +17,7 @@ try {
   startupThemeMode = appearance?.theme;
   const pixelTheme = appearance?.style === 'terraria';
   document.documentElement.dataset.themeStyle = pixelTheme ? 'terraria' : 'atelier';
+  if (!pixelTheme && appearance?.palette === 'yozakura') document.documentElement.dataset.themePalette = 'yozakura';
   const reduced = pixelTheme || appearance?.reducedGlass === true || ['(forced-colors: active)', '(prefers-contrast: more)', '(prefers-reduced-transparency: reduce)']
     .some(query => matchMedia(query).matches);
   document.documentElement.dataset.reducedGlass = String(reduced);

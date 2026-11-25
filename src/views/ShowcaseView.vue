@@ -3,7 +3,6 @@
     <header class="showcase-heading" data-route-arrive>
       <div class="heading-copy tw:min-w-0">
         <div class="heading-title"><h1 data-screentone-furniture>参考画册</h1><span class="collection-count"><strong>{{ manifestLoading && !entries.length ? '—' : entries.length }}</strong> 幅</span></div>
-        <p class="showcase-invitation">翻阅画室收录的精选样张，寻找光影、构图与画风灵感。</p>
       </div>
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机样张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />场景画廊</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>

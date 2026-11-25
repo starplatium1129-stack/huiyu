@@ -2,7 +2,7 @@
   <div class="pb-compare-overlay" @click.self="$emit('close')">
     <div ref="dialog" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
       <div class="pb-compare-head">
-        <div><div class="pb-compare-kicker">COMPARE</div><h3>画面对比</h3></div>
+        <div><h3>画面对比</h3></div>
         <button ref="closeButton" class="btn btn-ghost btn-sm btn-compare-close" type="button" aria-label="关闭" @click="$emit('close')">
           <ArchiveIcon name="close" /> <span>关闭</span>
         </button>

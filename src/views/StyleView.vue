@@ -5,7 +5,6 @@
     <header class="style-chapter" data-reveal>
       <div>
         <h2>六种心情，六种色调</h2>
-        <p class="style-chapter-sub">按角色视角切换心境色调与画师笔触参考，直接带入绘图画室</p>
       </div>
       <div class="style-perspective-segments studio-segments" role="group" aria-label="切换角色视角">
         <AnimatedSelection stretch />
@@ -38,7 +37,7 @@
           </div>
         </RuntimeImage>
         <div class="style-card-body tw:p-s-4">
-          <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ String(moodIndex + 1).padStart(2, '0') }} / {{ m.en }}</span></div>
+          <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3></div>
           <p class="style-sample-caption">{{ perspectiveCaption(m) }}</p>
           <RouterLink class="style-palette" :to="{ path:'/color-script', query:{ mood:m.id } }" :aria-label="'查看' + m.name + '色板与色号'">
             <span v-for="(color, index) in m.colors" :key="color + index" class="mood-swatch" :style="{ '--swatch': color, '--swatch-index': index }"></span>
@@ -53,8 +52,7 @@
     <section class="style-artist-showcase" data-reveal aria-labelledby="style-artist-title">
       <header class="style-artist-header">
         <div>
-          <p class="style-artist-kicker" data-screentone-furniture>画师笔触精选 · Artist Signature</p>
-          <h2 id="style-artist-title">精选画风配方</h2>
+          <h2 id="style-artist-title" data-screentone-furniture>精选画风配方</h2>
         </div>
         <RouterLink :to="builderLink()" class="btn btn-ghost btn-sm">前往画室自由调配<ArchiveIcon name="wand" /></RouterLink>
       </header>

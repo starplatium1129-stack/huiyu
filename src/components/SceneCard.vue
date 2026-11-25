@@ -29,7 +29,6 @@
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       </ShowcasePreviewSource>
       <span v-if="thumbId" class="sc-id">{{ archiveCode }}</span>
-      <span v-if="mode === 'grid'" class="sc-cat">{{ scene.category || '场景' }}</span>
       <slot name="band" :scene="scene" />
       <button v-if="clickable" class="sc-pick" type="button"
         :aria-label="ariaLabel || '查看场景：' + (scene.title || '未命名')" :aria-expanded="ariaExpanded"
@@ -144,7 +143,7 @@ const tags = computed(() => {
   return list
 })
 const metaText = computed(() =>
-  props.meta ?? [props.scene.season || '', props.scene.weather || ''].filter(Boolean).join(' · ')
+  props.meta ?? [props.mode === 'grid' ? (props.scene.category || '') : '', props.scene.season || '', props.scene.weather || ''].filter(Boolean).join(' · ')
 )
 </script>
 <style src="@/assets/css/scene-card.css"></style>

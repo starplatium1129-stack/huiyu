@@ -32,13 +32,13 @@ const tilt = useArtworkTilt(plane)
 .illustrated-card { --card-color:var(--accent); position:relative; isolation:isolate; display:grid; grid-template-rows:minmax(150px,1fr) auto; min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); text-decoration:none; overflow:hidden; user-select:none; box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .illustrated-card:nth-child(3n+2) { --card-color:var(--nene-violet); }
 .illustrated-card:nth-child(3n) { --card-color:var(--natsume-amber); }
-.illustrated-card::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:linear-gradient(145deg,color-mix(in srgb,var(--card-color) 9%,transparent),transparent 65%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.illustrated-card::before { content:''; position:absolute; inset:0; z-index:var(--z-below); border-radius:inherit; background:linear-gradient(145deg,color-mix(in srgb,var(--card-color) 9%,transparent),transparent 65%); opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
 .illustrated-card-art { position:relative; display:grid; place-items:center; min-width:0; padding:var(--s-2); }
 .illustrated-card-art::before { content:''; position:absolute; width:66%; aspect-ratio:1; max-height:92%; border-radius:50%; background:radial-gradient(ellipse,color-mix(in srgb,var(--card-color) 12%,transparent),transparent 70%); }
-.illustrated-card-orbit { position:absolute; width:66%; aspect-ratio:1.7; border:1px solid color-mix(in srgb,var(--card-color) 22%,var(--border-soft)); border-radius:50%; transform:rotate(-18deg); transition:transform var(--motion-route-cut) var(--spring-soft); }
-.illustrated-card-plane { display:grid; place-items:center; position:relative; width:100%; height:100%; min-height:0; transform:perspective(900px); transition:transform var(--motion-route) var(--spring-soft); }
+.illustrated-card-orbit { position:absolute; width:66%; aspect-ratio:1.7; border:1px solid color-mix(in srgb,var(--card-color) 22%,var(--border-soft)); border-radius:50%; transform:rotate(-18deg); transition:transform var(--motion-surface) var(--spring-soft); }
+.illustrated-card-plane { display:grid; place-items:center; position:relative; width:100%; height:100%; min-height:0; transform:perspective(900px); transition:transform var(--motion-surface) var(--spring-soft); }
 .illustrated-card-plane :deep(img) { display:block; width:100%; height:100%; max-height:200px; object-fit:contain; }
-.illustrated-card-copy { position:relative; display:grid; align-content:start; gap:var(--s-2); padding:var(--s-3) var(--s-2) var(--s-1); padding-right:44px; transition:transform var(--motion-route) var(--spring-soft); }
+.illustrated-card-copy { position:relative; display:grid; align-content:start; gap:var(--s-2); padding:var(--s-3) var(--s-2) var(--s-1); padding-right:44px; transition:transform var(--motion-surface) var(--spring-soft); }
 .illustrated-card-label { color:var(--text-muted); font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.12em; }
 .illustrated-card-title { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); font:500 var(--fs-title-xs)/var(--lh-label) var(--font-serif); }
 .illustrated-card-title .archive-icon { flex:none; width:18px; height:18px; color:var(--accent); }

@@ -30,7 +30,7 @@
   .pb .panel-title { @apply tw:flex tw:items-center tw:gap-s-2; }
   .pb .panel-title {
     @apply tw:mb-s-3 tw:text-secondary tw:text-label-sm tw:font-bold;
-    letter-spacing:.06em; @apply tw:uppercase;
+    letter-spacing: 0.02em;
   }
 
 /* Shell geometry lives here. Panel styles must not redistribute these columns.

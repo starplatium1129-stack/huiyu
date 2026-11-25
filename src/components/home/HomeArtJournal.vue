@@ -1,7 +1,7 @@
 <template>
   <section ref="section" class="art-journal container" aria-labelledby="journal-title" data-reveal @focusin="activateImages">
     <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
-      <div><span class="eyebrow">CG JOURNAL</span><h2 id="journal-title" data-screentone-furniture>画中日常</h2></div>
+      <div><h2 id="journal-title" data-screentone-furniture>画中日常</h2></div>
       <div class="journal-actions">
         <button v-if="canRefresh || loading || error" ref="refreshButton" type="button" class="journal-more journal-refresh" :aria-disabled="loading" :aria-busy="loading" aria-controls="journal-spread" @click="!loading && emit('refresh')"><ArchiveIcon name="refresh" />{{ loading ? (scenes.length ? '切换中…' : '读取中…') : error ? '重试' : '换一组' }}</button>
         <RouterLink to="/showcase" class="journal-more">参考画册 <ArchiveIcon name="image" /></RouterLink>
@@ -83,8 +83,7 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 @reference "../../assets/css/tailwind.css";
 .art-journal { margin-block: var(--s-7); }
 .journal-heading { align-items: end; }
-.journal-heading h2 { font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); margin:var(--s-2) 0 0; }
-.journal-heading .eyebrow { @apply tw:text-label-xs; letter-spacing: .16em; @apply tw:text-muted; }
+.journal-heading h2 { font: 500 var(--fs-title)/var(--lh-tight) var(--font-serif); margin:0; }
 .journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-label tw:text-secondary tw:whitespace-nowrap; }
 .journal-actions { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-x-s-5; }
 .journal-refresh { border: 0; padding: 0; background: transparent; font-family: inherit; cursor: pointer; min-width: 7em; }

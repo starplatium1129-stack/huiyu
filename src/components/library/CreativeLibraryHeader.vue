@@ -3,9 +3,7 @@
     <div class="creative-library-heading" data-route-arrive>
       <img class="creative-library-mark" :src="current.art.value" alt="" width="96" height="96" decoding="async" draggable="false" />
       <div>
-        <p class="creative-library-kicker">创作手帖</p>
-        <h1>{{ current.title }}</h1>
-        <p class="creative-library-description">{{ current.description }}</p>
+        <h1 data-screentone-furniture>{{ current.title }}</h1>
       </div>
     </div>
     <nav class="creative-library-nav studio-segments" role="navigation" data-fluid-glass aria-label="创作资料导航">

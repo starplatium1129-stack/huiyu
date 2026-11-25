@@ -59,6 +59,39 @@
   --particle-surface: #f2eff1;
   --particle-outline: #3c3548;
 }
+
+/* 可选画室配色「夜樱晴空」浅色：微暖雪白美术馆画纸 + 玫瑰绯墨。 */
+:root[data-theme="light"][data-theme-palette="yozakura"] {
+  --ink-base: #1b1a20;
+  --bg-deep: #eeedf1;
+  --bg-base: #f8f7fa;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f1f0f5;
+  --bg-hover: #e7e5ee;
+  --border-soft: rgba(28, 26, 38, .08);
+  --border-strong: rgba(28, 26, 38, .17);
+  --text-primary: #1b1a20;
+  --text-secondary: #575461;
+  --text-muted: #656270;
+  --text-disabled: #656270;
+  --text-inverse: #ffffff;
+  --accent: #a6345b;
+  --accent-hover: #8d294c;
+  --accent-soft: rgba(166, 52, 91, .09);
+  --accent-glow: rgba(166, 52, 91, .16);
+  --accent-violet: #6b41a1;
+  --nene-violet: #6b41a1;
+  --natsume-amber: #8f5614;
+  --glass-highlight: rgba(255, 255, 255, .86);
+  --glass-shadow: 0 16px 44px rgba(34, 30, 52, .10);
+  --shadow-sm: 0 1px 3px rgba(34, 30, 52, .06), 0 3px 10px rgba(34, 30, 52, .04);
+  --shadow-md: 0 2px 6px rgba(34, 30, 52, .06), 0 10px 24px -2px rgba(34, 30, 52, .09);
+  --shadow-lg: 0 4px 10px rgba(34, 30, 52, .06), 0 18px 44px -4px rgba(34, 30, 52, .12);
+  --shadow-card: inset 0 1px 0 rgba(255, 255, 255, .94), 0 6px 20px -10px rgba(34, 30, 52, .10);
+  --stage-violet: linear-gradient(145deg, #efe8fa, #fcfaff);
+  --stage-amber: linear-gradient(145deg, #f6ece0, #fffcf7);
+  --particle-surface: #f3f2f6;
+}
 /* Every registered character keeps its hue. Bright source accents become readable ink. */
 :root[data-theme="light"] .pb {
   --accent: color-mix(in srgb, var(--character-accent) 38%, var(--ink-base));

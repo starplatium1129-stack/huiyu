@@ -2,9 +2,7 @@
   <section class="container home-section home-chibi-section" aria-labelledby="home-chibi-title" data-reveal>
     <div class="chibi-spread">
       <header class="chibi-intro">
-        <span class="chibi-eyebrow">POLAROID NOTES</span>
         <h2 id="home-chibi-title" data-screentone-furniture>画室拍立得</h2>
-        <p class="chibi-lead">深夜研究室与打烊后的咖啡台，定格两枚 Q 版小瞬间。</p>
       </header>
 
       <div class="chibi-strip" role="list" aria-label="角色 Q 版拍立得手帖">
@@ -126,9 +124,9 @@ const entries: readonly ChibiPolaroidEntry[] = [
   {
     id: 'nene',
     name: CHARACTERS.nene?.name || '绫地宁宁',
-    subtitle: 'NO.01 · 深夜星光手帖',
+    subtitle: '深夜星光手帖',
     stamp: 'NENE',
-    noteCode: 'NO.01 · 深夜小记',
+    noteCode: '深夜小记',
     tilt: '-2deg',
     thumb: neneNightThumb,
     full: neneNightFull,
@@ -140,9 +138,9 @@ const entries: readonly ChibiPolaroidEntry[] = [
   {
     id: 'natsume',
     name: CHARACTERS.natsume?.name || '四季夏目',
-    subtitle: 'NO.02 · 打烊吧台手帖',
+    subtitle: '打烊吧台手帖',
     stamp: 'NATSUME',
-    noteCode: 'NO.02 · 吧台小记',
+    noteCode: '吧台小记',
     tilt: '2deg',
     thumb: natsumeCoffeeThumb,
     full: natsumeCoffeeFull,

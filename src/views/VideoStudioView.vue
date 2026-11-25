@@ -2,8 +2,7 @@
   <article class="video-studio page">
     <header class="video-header">
       <div>
-        <div class="page-kicker" data-screentone-furniture>画室 / 影像创作</div>
-        <h1 class="page-title">故事短片</h1>
+        <h1 class="page-title" data-screentone-furniture>故事短片</h1>
         <div class="video-project-entry">
           <RouterLink to="/studio-projects?tool=video" class="btn btn-primary">
             <ArchiveIcon name="clap" />进入分镜首尾帧

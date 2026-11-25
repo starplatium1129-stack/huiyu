@@ -19,7 +19,7 @@ colors:
   info: "#60A5FA"
   # 此元数据表描述画室深色基线；浅色覆盖见 src/assets/css/light-theme.css。
   # 暖墨画廊与中性绘制舞台共用暗底，樱粉与角色专属色承载强调。
-  # 应用支持深浅主题；两种主题都需要视觉验收。
+  # 应用支持深浅主题与可选配色（暖墨和纸 / 夜樱晴空）；均需视觉验收。
   # frontmatter 是语义色板，CSS 实现用另一套名字，映射如下——
   #   primary→--accent, primary-hover→--accent-hover, secondary→--accent-violet,
   #   on-primary→--text-inverse, neutral→--bg-base, surface→--bg-surface,
@@ -178,6 +178,7 @@ Dark uses warm ink for gallery pages and a neutral mat for creation tools. Light
 | Nene / `--nene-violet` | `#C59DF8` | `#6E439C` |
 | Natsume / `--natsume-amber` | `#E8B460` | `#8D5818` |
 
+- **Optional atelier palette (`data-theme-palette="yozakura"`):** 「夜樱晴空」 provides an alternative midnight-ink dark (`#10141F` / `#171C2A`, sakura `#F2A7BE`) and warmed gallery-snow light (`#F8F7FA` / `#FFFFFF`, rose ink `#A6345B`) under the 「绘遇画室」 style, keeping the warm-ink / washi baseline as default.
 - **Theme style (`data-theme-style`):** Independent of dark/light mode. Default is 「绘遇画室」; 「泰拉瑞亚」 uses pixel woodgrain, paper panels, forest scenery, and an `8.5rem` (`136px`) wood sidebar at `>= 1440 CSS px` (supporting Up/Down keys, collapsing `< 1000px`). Pixel mode uses opaque surfaces; theme illustrations switch via `useThemeIllustration` without altering artwork or ratings. Standalone companion remains transparent; system forced-colors take priority.
 - **Accent & contrast rules:**
   - Use Nene violet (`--nene-violet`) / Natsume amber (`--natsume-amber`) as contextual accents (`src/assets/css/director/tokens.css`), neutral pages use sakura pink (`--accent`). Keep resting controls neutral.
@@ -217,7 +218,7 @@ Keep simulated DPR/viewport layout checks separate from real hardware sharpness 
 ## Elevation & Depth
 
 - **Surface & feedback:** Soft `1px` borders and shared surfaces establish grouping. Ordinary buttons, nav items, and filters lift `3px` on hover with readable character-accent ink; framed/filled controls, chips, segments, and disclosures use surface/border feedback without extra underlines (short hover underlines belong strictly to text links and nav). Inner press scales to `~0.98` without shifting hit targets; keyboard focus uses a clear neutral ring.
-- **Glass & motion tokens:** Limit backdrop blur to floating utilities, nav, and director stage chrome (never stack blur layers or blur reading cards; always provide opaque fallbacks). Motion durations: `--motion-press` (`120ms`), `--motion-hover` (`160ms`), `--motion-control` (`200ms`), `--motion-surface` (`260ms`), with longer deliberate phases (`450–700ms`+) for artwork reveals and particle formation.
+- **Glass & motion tokens:** Limit backdrop blur to floating utilities, nav, and director stage chrome (never stack blur layers or blur reading cards; always provide opaque fallbacks). Motion durations: `--motion-press` (`120ms`), `--motion-hover` (`240ms`), `--motion-control` (`280ms`), `--motion-surface` (`380ms`), with longer deliberate phases (`460–700ms`+) for route glides, artwork reveals, and particle formation.
 - **System preferences:** Live-honor `prefers-reduced-motion`, `prefers-reduced-transparency`, increased contrast, and forced colors (including native dialog backdrops) without overwriting saved user preferences.
 
 ## Interaction & motion

@@ -83,7 +83,10 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   color: var(--text-primary);
   box-shadow: inset 0 1px 0 var(--glass-highlight);
   pointer-events: none;
-  transition: transform var(--control-feedback-duration, var(--motion-hover)) var(--spring-soft);
+  transition:
+    transform var(--control-feedback-duration, var(--spring-press-duration)) var(--spring-press-ease),
+    background-color var(--motion-hover) var(--ease-out),
+    border-color var(--motion-hover) var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -94,8 +97,9 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 }
 
 .studio-checkbox:not(.is-disabled):not(:has(:focus-visible)):active .studio-checkbox-box {
-  transform: scale(var(--control-feedback-press, .92));
+  transform: scale(var(--control-feedback-press, .9));
   transition-duration: var(--control-feedback-duration, var(--motion-press));
+  transition-timing-function: var(--ease-out);
 }
 
 .studio-checkbox-input:checked + .studio-checkbox-box,
@@ -118,12 +122,12 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   stroke-width: 2.2;
 }
 
-/* compositor-exempt: A one-shot 160ms stroke redraw in the 15px checkmark only;
+/* compositor-exempt: A one-shot stroke redraw in the 15px checkmark only;
    transform/opacity cannot draw its line. No loop or card-scale animation. */
 .studio-checkbox-box :deep(path) {
   stroke-dasharray: 24;
   stroke-dashoffset: 0;
-  animation: checkbox-draw var(--motion-hover) var(--ease-out);
+  animation: checkbox-draw var(--motion-control) var(--ease-out);
 }
 
 .studio-checkbox-mixed {
@@ -132,7 +136,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   border-radius: var(--r-pill);
   background: currentColor;
   transform-origin: left center;
-  animation: checkbox-mixed var(--motion-hover) var(--ease-out);
+  animation: checkbox-mixed var(--motion-control) var(--ease-out);
 }
 
 .studio-checkbox-label {

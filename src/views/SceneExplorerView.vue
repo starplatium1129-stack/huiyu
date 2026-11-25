@@ -3,7 +3,6 @@
     <section class="scene-atlas" data-route-arrive :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
         <h1 id="sceneAtlasTitle" class="title" data-screentone-furniture>灵感场景</h1>
-        <p class="scene-invitation">挑一幕心动的日常与奇遇，直接带去画布落笔。</p>
       </div>
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
@@ -23,7 +22,6 @@
         </figure>
         <div class="companion-choices">
           <p class="scene-atlas-caption companion-speech" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</p>
-          <span class="companion-label">陪你翻阅</span>
           <div class="companion-switch studio-segments" data-fluid-glass role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
             <button v-for="character in companions" :key="character" type="button" class="companion-pill" :aria-pressed="companionId === character" @click="manualCompanion = character">

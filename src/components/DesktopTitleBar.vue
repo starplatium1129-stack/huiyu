@@ -44,10 +44,12 @@ const pageTitle = computed(() => typeof route.meta.title === 'string' ? route.me
 }
 .titlebar-drag > * { pointer-events: none; }
 .titlebar-drag img, .titlebar-drag strong { flex: none; }
+.titlebar-drag strong { font-weight: 500; color: var(--text-secondary); }
 .titlebar-page {
   padding-inline-start: 10px;
   border-inline-start: 1px solid var(--border-soft);
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
 }

@@ -91,7 +91,11 @@
   border: 1px solid transparent;
   @apply tw:cursor-pointer;
   text-decoration: none;
-  transition: transform var(--motion-press) var(--ease-out);
+  transition:
+    transform var(--spring-press-duration) var(--spring-press-ease),
+    background-color var(--motion-hover) var(--ease-out),
+    border-color var(--motion-hover) var(--ease-out),
+    color var(--motion-hover) var(--ease-out);
 }
 .btn-primary {
   background: var(--accent); @apply tw:text-inverse;
@@ -100,6 +104,18 @@
 }
 :where(:root:not([data-theme-style="terraria"])) .btn-primary {
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--on-art-primary) 42%, transparent), var(--shadow-glass-sm);
+}
+/* 呼吸感内光层：纯合成器 opacity 淡入淡出，避免逐帧重绘 box-shadow。 */
+:where(:root:not([data-theme-style="terraria"])) .btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-below);
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(120% 100% at 50% 0%, color-mix(in srgb, var(--on-art-primary) 34%, transparent), transparent 72%);
+  opacity: 0;
+  transition: opacity var(--motion-hover) var(--ease-out);
 }
 .btn-primary:hover { background: var(--accent-hover); box-shadow: var(--shadow-sm); }
 :where(:root:not([data-theme-style="terraria"])) .btn-primary:hover:not(:focus-visible):not(:disabled):not([aria-disabled="true"]) {
@@ -117,38 +133,57 @@
   opacity: 0;
 }
 @media (hover: hover) and (pointer: fine) {
+  :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .btn-primary:not(:disabled):not([aria-disabled="true"]):not(:focus-visible):hover {
+    transform: translateY(-1.5px);
+  }
+  :where(:root:not([data-theme-style="terraria"])) .btn-primary:not(:disabled):not([aria-disabled="true"]):hover::before {
+    opacity: 1;
+  }
   :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .btn-primary:not([data-loading]):not(:disabled):not([aria-disabled="true"]):hover::after {
-    animation: btn-cel-sheen 520ms var(--ease-out) 1 both;
+    animation: btn-cel-sheen 640ms var(--ease-out) 1 both;
+  }
+  :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .btn-ghost:not(:disabled):not([aria-disabled="true"]):not(:focus-visible):hover {
+    transform: translateY(-1px);
   }
 }
 @keyframes btn-cel-sheen {
   0% { transform: translateX(-160%) skewX(-18deg); opacity: 0; }
-  22% { opacity: 1; }
-  78% { opacity: 0.9; }
+  24% { opacity: 1; }
+  78% { opacity: 0.88; }
   100% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) .btn:hover { transform: none; }
   :where(:root:not([data-motion="full"])) .btn-primary:not([data-loading]):hover::after {
     animation: none;
     opacity: 0;
   }
 }
 @media (forced-colors: active) {
+  .btn-primary::before,
   .btn-primary:not([data-loading])::after { display: none; }
 }
 .btn-ghost {
   background: transparent; @apply tw:text-secondary tw:border-soft;
 }
-.btn-ghost:hover { @apply tw:border-strong tw:text-primary; background: transparent; }
+.btn-ghost:hover {
+  @apply tw:border-strong tw:text-primary;
+  background: color-mix(in srgb, var(--bg-elevated) 72%, transparent);
+}
 .btn-danger { background: transparent; @apply tw:text-danger-text; border-color: color-mix(in srgb, var(--danger) 42%, transparent); }
 .btn-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); @apply tw:border-danger-text; }
 /* Anchor buttons retain contrasting primary/danger ink over the global link hover. */
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
-/* 按压反馈：微触感压缩与平滑回位，接入 --control-press-transform 避免与弹簧按压双重缩放 */
+/* 按压反馈：起手即时软弹下压（120ms），松手走 --spring-press-duration 丝滑回弹。 */
 .btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) {
   box-shadow: none;
-  transform: var(--control-press-transform, scale(0.98));
+  transform: var(--control-press-transform, scale(0.968));
+  transition-duration: var(--motion-press);
+  transition-timing-function: var(--ease-out);
+}
+.btn-primary:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible)::before {
+  opacity: 0.35;
 }
 .btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) > :where(.studio-control-label,.studio-control-icon,.archive-icon:not(.spin),.u008-icons,.u008-label) {
   transform: none;
@@ -158,6 +193,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   box-shadow: var(--focus-shadow);
   transform: none;
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .btn:hover,
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .btn:active {
   transform: none;
 }

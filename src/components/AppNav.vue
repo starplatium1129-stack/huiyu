@@ -6,7 +6,6 @@
            中键新标签页,而 Space 激活链接也不是标准行为 -->
       <RouterLink to="/" class="nav-brand">
         <BrandLogo class="nav-logo" />
-        <span class="nav-brand-note" aria-hidden="true">创作工作室</span>
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen, 'show-secondary': menuOpen && moreOpen }" @keydown="onNavigationKey">
@@ -64,7 +63,7 @@
         @click="toggleMenu"
       ><ArchiveIcon :name="menuOpen ? 'close' : 'menu'" /></button>
     </div>
-    <span ref="readingProgress" class="u212-progress" aria-hidden="true" />
+    <span v-if="showReadingProgress" ref="readingProgress" class="u212-progress" aria-hidden="true" />
   </nav>
 </template>
 
@@ -127,6 +126,8 @@ watch(moreOpen, open => { if (open) moreHandoff = false }, { flush:'sync' })
 watch(() => route.fullPath, closeMenu)
 
 const activeId = computed(() => [...primaryNav, ...secondaryNav].find(item => item.to === route.path)?.id ?? '')
+const UTILITY_PROGRESS_ROUTES = new Set(['/prompt-builder', '/gallery', '/chat', '/control', '/video-studio', '/scene-manager'])
+const showReadingProgress = computed(() => !UTILITY_PROGRESS_ROUTES.has(route.path))
 
 const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.value))
 
@@ -235,9 +236,16 @@ onUnmounted(deactivateNavigation)
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.u212 { top:var(--desktop-chrome-height,0px); transition:transform var(--motion-surface) var(--ease-out); }
+.u212 {
+  top:var(--desktop-chrome-height,0px);
+  transition:transform var(--motion-surface) var(--ease-out), background-color var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out);
+}
+.u212[data-scrolled='true'] {
+  background: var(--bg-surface);
+  border-bottom-color: var(--border-strong);
+}
 .u212[data-scroll-hidden='true'] { transform:translateY(calc(-100% - var(--desktop-chrome-height,0px))); pointer-events:none; }
-.u212-progress { position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; opacity:0; pointer-events:none; transition:opacity .3s; }
+.u212-progress { position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; opacity:0; pointer-events:none; transition:opacity var(--motion-surface) var(--ease-out); }
 .u212[data-scrolled='true'] .u212-progress { opacity:1; }
 .u212[data-reduced-motion='true'], .u212[data-reduced-motion='true'] .u212-progress { transition:none; }
 
@@ -306,7 +314,6 @@ onUnmounted(deactivateNavigation)
 .nav-search-content { display:inline-flex; align-items:center; gap:var(--s-2); min-width:0; }
 .nav-search kbd { display:none; padding:2px var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-xs); background:var(--bg-elevated); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.2 var(--font-mono); white-space:nowrap; }
 @media (min-width:1600px) {
-  .nav-brand-note { display:block; }
   .nav-search kbd { display:inline-block; }
 }
 .nav-utilities :deep(.app-theme-toggle) { width: var(--control-height); padding: 0; }

@@ -84,7 +84,7 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: Presenta
           // Adapted from 04c57ab62b9713872ebbf68988dff1836ed3d764; MIT notice: assets/licenses/inspira-ui.txt.
           const style = getComputedStyle(el)
           effects.push(el.animate([{ opacity: backdropOpacity }, { opacity: spring.target }], {
-            ...timing, duration: cssTimeToMilliseconds(style.getPropertyValue('--motion-control')),
+            ...timing, duration: cssTimeToMilliseconds(style.getPropertyValue('--motion-surface')),
             easing: style.getPropertyValue('--ease-out').trim(), pseudoElement: '::backdrop',
           }))
         }
@@ -144,14 +144,14 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
     // Reduced motion settles per operation; don't permanently freeze a surface
     // created while that preference is enabled when the user turns it off later.
     const stationary = imageTransition || isFullscreenViewer || !options.animatePanel && rect.width >= 640 && rect.height >= 400
-    const spring = options.small ? SURFACE_FREQUENCY : isFullscreenViewer ? 5.2 : 4.8
+    const spring = options.small ? SURFACE_FREQUENCY : isFullscreenViewer ? 3.2 : 2.6
     const damping = options.small ? SURFACE_DAMPING : 1
 
     // Even an identity transform changes the containing block for fixed children.
     const style = getComputedStyle(panel)
     const x = options.small ? parseFloat(style.getPropertyValue('--surface-enter-x')) || 0 : 0
-    const y = options.small ? parseFloat(style.getPropertyValue('--surface-enter-y')) || 0 : 8
-    const scale = options.small ? parseFloat(style.getPropertyValue('--surface-enter-scale')) || .93 : .96
+    const y = options.small ? parseFloat(style.getPropertyValue('--surface-enter-y')) || 0 : 12
+    const scale = options.small ? parseFloat(style.getPropertyValue('--surface-enter-scale')) || .95 : .965
     const transform = stationary ? undefined : (progress: number) => `translate(${(1 - progress) * x}px,${(1 - progress) * y}px) scale(${scale + (1 - scale) * progress})`
     const promote = () => {
       // Promote only while moving. rAF style writes otherwise keep large,

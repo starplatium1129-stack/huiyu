@@ -25,7 +25,7 @@
 .studio-slider-value {
   flex: none;
   color: var(--text-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--fs-label-sm);
   font-weight: 600;
   line-height: var(--lh-label);
@@ -74,9 +74,10 @@
   --slider-thumb-halo: var(--bg-surface);
   --slider-direction: to right;
   --slider-thumb-scale: 1;
-  --slider-thumb-hover: 1.12;
-  --slider-thumb-press: 1.18;
-  --slider-thumb-duration: var(--motion-press);
+  --slider-thumb-hover: 1.14;
+  --slider-thumb-press: 1.22;
+  --slider-thumb-duration: var(--spring-press-duration);
+  --slider-thumb-ease: var(--spring-press-ease);
   --slider-progress: 0%;
 
   -webkit-appearance: none;
@@ -149,7 +150,7 @@
   box-shadow: 0 0 0 2px var(--slider-thumb-halo), var(--shadow-sm);
   cursor: inherit;
   transform: scale(var(--slider-thumb-scale));
-  transition: transform var(--slider-thumb-duration) var(--ease-out);
+  transition: transform var(--slider-thumb-duration) var(--slider-thumb-ease);
 }
 
 /* Firefox track, progress & thumb (separate blocks so no vendor selector invalidation occurs). */
@@ -180,7 +181,7 @@
   box-shadow: 0 0 0 2px var(--slider-thumb-halo), var(--shadow-sm);
   cursor: inherit;
   transform: scale(var(--slider-thumb-scale));
-  transition: transform var(--slider-thumb-duration) var(--ease-out);
+  transition: transform var(--slider-thumb-duration) var(--slider-thumb-ease);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -191,6 +192,8 @@
 
 .studio-slider-input:not(:disabled):active {
   --slider-thumb-scale: var(--slider-thumb-press);
+  --slider-thumb-duration: var(--motion-press);
+  --slider-thumb-ease: var(--ease-out);
 }
 
 .studio-slider-input:focus-visible {

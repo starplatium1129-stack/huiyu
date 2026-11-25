@@ -1,6 +1,6 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="[characterAtmosphereStyle, { '--character-ornament': portraitPalette.accent }]">
-    <header class="library-header" data-route-arrive><div><div class="page-kicker">ARCHIVE</div><h1 data-screentone-furniture>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header" data-route-arrive><div><h1 data-screentone-furniture>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -33,7 +33,7 @@
             <component :is="component" :profiles="relationProfiles" :character-id="current.id" @open-profile="openRelatedProfile" />
           </AsyncPanel>
           <div v-else v-content-motion:up="current?.id">
-      <section v-if="current" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
+      <section v-if="current" :aria-label="current.name + '的角色档案'" class="character-hero">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
           <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="paintedPortrait?.state || portraitView.state" :aria-busy="portraitPending">
             <img v-for="frame in portraitFrames" :key="frame.token" :crossorigin="frame.crossorigin" class="portrait-image"
@@ -62,7 +62,6 @@
         </CharacterParticleStage>
         <div class="character-reading-column">
         <div class="character-profile">
-          <div class="profile-kicker"><ArchiveIcon name="character" />人物档案</div>
           <h2 class="character-name">{{ current.name }}</h2>
           <div v-if="hasIdentity" class="identity-row">
             <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
@@ -81,13 +80,13 @@
             <RouterLink class="btn btn-primary" :to="isPopular
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
               : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />开始绘制</RouterLink>
-            <RouterLink v-if="portraitSources.main && !isPopularPortraitPending(current.id)" class="btn btn-ghost" :to="{ path: '/studio-projects', query: { character: current.id } }"><ArchiveIcon name="folder" />带立绘去创作项目</RouterLink>
             <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">角色房间</RouterLink>
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
               : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '相关场景' : '核心场景' }}</RouterLink>
+            <RouterLink v-if="portraitSources.main && !isPopularPortraitPending(current.id)" class="btn btn-quiet btn-sm" :to="{ path: '/studio-projects', query: { character: current.id } }"><ArchiveIcon name="folder" />创作项目</RouterLink>
             <StudioTooltip v-if="animeResourceUrl" content="在 Anime Garden 搜索该作品">
-              <a class="btn btn-ghost" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
+              <a class="btn btn-quiet btn-sm" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
                 :aria-label="`在 Anime Garden 搜索${animeResourceWork}的动画资源，新窗口打开`"><ArchiveIcon name="search" /><span class="anime-resource-title">{{ animeResourceWork }}</span></a>
             </StudioTooltip>
           </div>
@@ -95,14 +94,14 @@
             <div class="voice-block-inner">
               <figcaption class="voice-label">
                 <ArchiveIcon name="chat" />
-                <span>{{ characterConfig?.officialQuote ? '名台词 · VOICE' : '语气示例' }}</span>
+                <span>{{ characterConfig?.officialQuote ? '名台词' : '语气示例' }}</span>
               </figcaption>
               <p class="voice-line">{{ characterConfig?.officialQuoteCn || current.voice }}</p>
               <blockquote v-if="characterConfig?.officialQuote" class="voice-jp" lang="ja">{{ characterConfig.officialQuote }}</blockquote>
               <p v-if="characterConfig?.officialQuoteCn && current.voice && current.voice !== characterConfig.officialQuoteCn" class="voice-tone">{{ current.voice }}</p>
             </div>
           </figure>
-          <div class="tags-grid">
+          <div v-if="current.tags.length" class="tags-grid">
             <span v-for="t in current.tags" :key="t" class="tag-chip">{{ t }}</span>
           </div>
           <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
@@ -111,8 +110,8 @@
             <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起' : '展开' }}<StudioToggleIcon :active="bgExpanded" /></button>
           </section>
           <div v-if="current.personality.length || current.likes.length" class="detail-grid">
-            <section v-if="current.personality.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
-            <section v-if="current.likes.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="love" />喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div><CardEdgeLight /></section>
+            <section v-if="current.personality.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格特点</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
+            <section v-if="current.likes.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="love" />喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
           </div>
         </div>
 
@@ -131,7 +130,6 @@
       <section v-if="current" ref="recommendationRoot" class="recommend-section" tabindex="-1" :aria-busy="recommendationsLoading" aria-label="人设核心场景" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
-            <div class="page-kicker">CORE SCENES</div>
             <h2 class="recommend-title" data-screentone-furniture>人设核心场景</h2>
           </div>
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">官方依据 ↗</a>
@@ -156,8 +154,8 @@
               <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
               <p class="cg-story">{{ s.story }}</p>
               <footer class="cg-actions">
-                <button v-if="s.story" class="btn btn-ghost btn-sm" type="button" :aria-label="`阅读「${s.title}」完整故事`" @click="openRecommendationStory(s, $event)">阅读故事</button>
-                <RouterLink class="btn btn-primary btn-sm" :to="recommendationDrawUrl(s)">绘制这一幕</RouterLink>
+                <button v-if="s.story" class="btn btn-quiet btn-sm" type="button" :aria-label="`阅读「${s.title}」完整故事`" @click="openRecommendationStory(s, $event)">阅读故事</button>
+                <RouterLink class="btn btn-ghost btn-sm" :to="recommendationDrawUrl(s)">绘制这一幕</RouterLink>
               </footer>
             </div>
           </article>
@@ -173,7 +171,7 @@
       <dialog ref="recommendationDialog" class="recommendation-story-dialog" aria-labelledby="recommendation-story-title"
         @cancel.prevent.stop="recommendationStoryDialog.close()" @keydown.esc.stop @click="closeRecommendationBackdrop">
         <header class="recommendation-story-head">
-          <div><div class="page-kicker">STORY</div><h2 id="recommendation-story-title">{{ activeStory?.title }}</h2></div>
+          <div><h2 id="recommendation-story-title">{{ activeStory?.title }}</h2></div>
           <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" autofocus @click="recommendationStoryDialog.close()"><ArchiveIcon name="close" /></button>
         </header>
         <p ref="recommendationStoryBody" class="recommendation-story-body" tabindex="0">{{ activeStory?.story }}</p>
@@ -219,7 +217,6 @@ import { useCharacterArchiveNavigation } from '@/composables/useCharacterArchive
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'

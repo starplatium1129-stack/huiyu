@@ -112,17 +112,10 @@
 .sc-body { @apply tw:p-s-3 tw:flex tw:flex-col tw:gap-s-1 tw:min-w-0; }
 .sc-title { @apply tw:font-semibold tw:text-body tw:leading-tight tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis; }
 .sc-story { @apply tw:text-label-sm tw:text-muted tw:leading-body; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; @apply tw:overflow-hidden; }
-.sc-tags { @apply tw:flex tw:gap-s-1 tw:flex-wrap; }
-.sc-tag {
-  @apply tw:text-label-xs;
-  padding: 2px 8px;
-  @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--bg-elevated) 86%, transparent);
-  border: 0;
-  @apply tw:text-secondary;
-  letter-spacing: 0.02em;
-}
-.sc-meta { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:text-mono-sm tw:text-muted; }
+.sc-tags { @apply tw:flex tw:gap-s-1 tw:flex-wrap; color: var(--text-muted); font-size: var(--fs-label-xs); }
+.sc-tag { color: var(--text-secondary); }
+.sc-tag:not(:last-child)::after { content: ' ·'; color: var(--text-muted); padding-left: var(--s-1); }
+.sc-meta { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:text-label-xs tw:text-muted; font-variant-numeric: tabular-nums; }
 .sc-meta-r { @apply tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:text-right; }
 
 /* ---- strip 修饰（首页精选胶片） ---- */

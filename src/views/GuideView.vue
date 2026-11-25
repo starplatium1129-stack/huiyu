@@ -76,8 +76,7 @@ const steps = [
     </div>
     <header class="page-header">
       <div>
-        <p class="page-kicker" data-screentone-furniture>使用指南 · Atelier Guide</p>
-        <h1 id="guide-title" class="page-title">创作你的第一张 CG</h1>
+        <h1 id="guide-title" class="page-title" data-screentone-furniture>创作你的第一张 CG</h1>
         <p class="page-subtitle">选场景、定角色、生成入册。</p>
       </div>
       <img class="guide-cover-art" :src="createArt" alt="" width="512" height="512" decoding="async" draggable="false" />

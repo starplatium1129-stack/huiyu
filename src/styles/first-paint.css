@@ -28,6 +28,14 @@
   --first-paint-text: #1b181a;
   color-scheme: light;
 }
+:root[data-theme-palette="yozakura"] {
+  --first-paint-background: #10141f;
+  --first-paint-text: #f5f2ee;
+}
+:root[data-theme-palette="yozakura"][data-theme="light"] {
+  --first-paint-background: #f8f7fa;
+  --first-paint-text: #1b1a20;
+}
 :root[data-theme-style="terraria"] {
   --first-paint-background:#111d2a;
   --first-paint-text:#f6edcf;

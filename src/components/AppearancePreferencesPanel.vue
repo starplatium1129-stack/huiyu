@@ -18,6 +18,14 @@
           :data-value="choice.value" @focus="selectedTheme = choice.value">{{ choice.label }}</RadioGroupItem>
       </RadioGroupRoot>
     </fieldset>
+    <fieldset v-if="themeStyle === 'atelier'" class="appearance-choice-field">
+      <legend>画室配色</legend>
+      <RadioGroupRoot v-model="selectedPalette" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="画室配色">
+        <AnimatedSelection />
+        <RadioGroupItem v-for="choice in paletteChoices" :key="choice.value" :value="choice.value"
+          :data-value="choice.value" @focus="selectedPalette = choice.value">{{ choice.label }}</RadioGroupItem>
+      </RadioGroupRoot>
+    </fieldset>
     <fieldset class="appearance-choice-field">
       <legend>动态效果</legend>
       <RadioGroupRoot v-model="selectedMotion" class="appearance-segments studio-segments" data-segment-keyboard="managed" aria-label="动态效果">
@@ -73,11 +81,12 @@ const loadGlassMaterial = () => import('./GlassMaterialChoice.vue')
 import { useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useDesktopZoom } from '@/composables/useDesktopZoom'
 defineProps<{ section: 'appearance' | 'keyboard' }>()
-const { themeMode, themeStyle, motionMode, reducedGlass, setThemeMode, setThemeStyle, setMotionMode, setReducedGlass } = useDesktopPreferences()
+const { themeMode, themeStyle, themePalette, motionMode, reducedGlass, setThemeMode, setThemeStyle, setThemePalette, setMotionMode, setReducedGlass } = useDesktopPreferences()
 // Select on roving focus so the preference and Tab stop stay aligned even when
 // keyup precedes Reka's deferred click after a short arrow-key press.
 const selectedTheme = computed({ get: () => themeMode.value, set: setThemeMode })
 const selectedStyle = computed({ get: () => themeStyle.value, set: setThemeStyle })
+const selectedPalette = computed({ get: () => themePalette.value, set: setThemePalette })
 const selectedMotion = computed({ get: () => motionMode.value, set: setMotionMode })
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()
 const zoomId = useId()
@@ -85,6 +94,10 @@ const themeChoices = [
   { value: 'system', label: '跟随系统' },
   { value: 'light', label: '浅色' },
   { value: 'dark', label: '深色' },
+] as const
+const paletteChoices = [
+  { value: 'default', label: '暖墨和纸' },
+  { value: 'yozakura', label: '夜樱晴空' },
 ] as const
 const styleChoices = [
   { value: 'atelier', label: '绘遇画室' },

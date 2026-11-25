@@ -270,8 +270,7 @@ onUnmounted(() => release())
   display: inline-block;
   font-size: var(--fs-label-xs);
   color: var(--accent);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 .media-onboarding-head h1 {
   margin: var(--s-1) 0 var(--s-2);

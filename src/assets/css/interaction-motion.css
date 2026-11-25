@@ -1,6 +1,5 @@
-/* Unadorned controls acknowledge a press with a static inner edge. Authored
-   components animate their own presentation without shrinking the hit area. */
-:root { --control-press-transform: none; }
+/* Cushioned tactile press scale; reduced-motion and keyboard focus reset to none. */
+:root { --control-press-transform: scale(0.968); }
 /* Magic UI's click-origin ripple, kept below text and bounded to one short pulse.
    A separate clipped surface preserves the button's focus ring and hit target. */
 .studio-press-ripple { position:relative; isolation:isolate; }
@@ -9,11 +8,11 @@
 /* The shared CSS press surface leaves the native hit target in place. */
 :where(.btn, [data-spring-button]) { position:relative; isolation:isolate; }
 :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
-  transition: transform var(--motion-press) var(--ease-out);
+  transition: transform var(--spring-press-duration) var(--spring-press-ease);
 }
-:where(:is(button, a[href], [role='button'], [role='tab'], [role='option']):active:not(:disabled):not([aria-disabled='true']):not([data-disabled])) {
+:where(:is(button, a[href], [role='button'], [role='tab'], [role='option']):not(.btn):active:not(:disabled):not([aria-disabled='true']):not([data-disabled])) {
   transform: var(--control-press-transform);
-  box-shadow: inset 0 0 0 1px var(--border-strong);
+  transition: transform var(--motion-press) var(--ease-out);
 }
 /* Focus-visible activation is keyboard input: selection responds immediately. */
 :where(:is(button, a[href], summary, [role='button'], [role='tab'], [role='option']):focus-visible) { --control-press-transform: none; transition: none; }

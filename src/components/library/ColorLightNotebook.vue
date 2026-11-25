@@ -1,13 +1,12 @@
 <template>
   <section class="light-notebook" aria-labelledby="light-notebook-title">
     <header class="notebook-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
-      <div><p class="notebook-kicker tw:text-accent tw:text-body-sm tw:mb-s-2">光色观察 / 01—03</p><h2 id="light-notebook-title">先看光，再决定这一幕的心情</h2></div>
-      <p>并排翻看画册，观察光源、冷暖与明暗怎样改变叙事。</p>
+      <div><h2 id="light-notebook-title">先看光，再决定这一幕的心情</h2></div>
     </header>
     <div class="comparison-choices studio-segments tw:flex tw:flex-wrap tw:gap-s-2" data-fluid-glass role="group" aria-label="选择光色对照">
       <AnimatedSelection />
       <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="selectPair(index, $event)">
-        <span>0{{ index + 1 }}</span>{{ pair.name }}
+        {{ pair.name }}
       </button>
     </div>
     <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="active">{{ current.question }}</p>
