@@ -9,6 +9,7 @@ import { ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, type AnimaReques
 export interface BuildAnimaRequestInput {
   subject: DrawSubject; char: CharKey; state: AnimaGenerationState
   profile: ModelProfile | null; prompt: string; negative: string
+  multiCast?: boolean
 }
 
 /** Workbench and companion share model/profile/character admission; chat never supplies these bindings. */
@@ -30,6 +31,10 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     ...(capabilities.teaCache ? {
       teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh,
     } : {}),
+  }
+  if (input.multiCast && state.family === 'anima') {
+    if (!capabilities.noLora) throw new Error('同框创作需要支持无角色 LoRA 的 Anima 底模')
+    return { ...settings, loraId: null, loraStrength: null, character: null }
   }
   if (!popular && char === 'none') {
     if (!capabilities.noLora) throw new Error('当前底模不支持无角色创作，请选择支持无 LoRA 的底模')

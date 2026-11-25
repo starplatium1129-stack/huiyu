@@ -37,11 +37,12 @@ import { mossArtistTags } from '@/utils/mossPrompt'
 import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 import { sanitizeOutfitOverride, wardrobeTokens } from '@/utils/wardrobeContent'
 import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
+import { resolveBoundReference, studioCastOutfit } from '@/utils/promptCastPlan'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
   | 'colorMood' | 'concise' | 'directorMode' | 'emotionPrompt' | 'loraMeta' | 'manualTags' | 'modelProfiles' | 'randomVariation'
-  | 'sdModelName' | 'sdParams' | 'directorSources' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput' | 'outfitOverride'>
+  | 'sdModelName' | 'sdParams' | 'directorSources' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput' | 'outfitOverride' | 'cast' | 'castLead' | 'popularCharacters'>
 
 /**
  * Director prompt composition has no UI or SD lifecycle ownership. Keeping it
@@ -268,10 +269,14 @@ export function usePromptAssembly(
   })
 
   function buildStructuredResult(target: 'anima' | 'krea2' | 'moss') {
+    const { reference, description, manual } = resolveBoundReference(pb.referenceInput, pb.visualDescription, [...pb.manualTags], pb.popularCharacters, pb.tags)
+    const primary = pb.castLead
+    const selectedOutfit = primary?.outfitExplicit ? studioCastOutfit(primary) : null
+    const override = selectedOutfit ? { tokens: [...selectedOutfit.tags].slice(1), prose: selectedOutfit.prose, replaced: null } : pb.outfitOverride
     const refCaption = !pb.sceneId && (target === 'krea2' || target === 'moss')
-      ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription)
+      ? supplementalReferenceCaption(reference, description)
       : ''
-    const referenceLayout = !pb.sceneId && target === 'moss' ? pb.referenceInput?.layout ?? null : null
+    const referenceLayout = !pb.sceneId && target === 'moss' ? reference?.layout ?? null : null
     return compilePromptRecipe({
       kind: 'studio', character: pb.char, scene: effectiveScene.value,
       randomSetting: !refCaption && !pb.sceneId && pb.randomVariation?.source === '',
@@ -284,8 +289,9 @@ export function usePromptAssembly(
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       directorSources: pb.directorSources, palette: colorMoodTokens.value,
-      manual: [...pb.manualTags], visualDescription: pb.visualDescription,
-      outfitOverride: pb.outfitOverride,
+      manual, visualDescription: pb.cast.length === 1 && primary?.action?.trim()
+        ? [description, primary.action.trim()].filter(Boolean).join('\n') : description,
+      outfitOverride: override,
       negativeCustom: pb.sdParams.negativeCustom, matureTokens: matureTokenSet.value,
     })
   }

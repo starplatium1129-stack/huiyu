@@ -84,7 +84,9 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.flash(note,9000,'warning')
       return false
     }
-    const popularEntry = entry.subject === 'popular' || (entry.subject !== 'studio' && entry.noLora && entry.characterId)
+    const moss = entry.engine === 'moss-image'
+    const popularEntry = entry.subject === 'popular'
+      || (entry.subject !== 'studio' && (entry.noLora || moss && entry.outfitId) && entry.characterId)
     if (popularEntry) {
       try {
         if (entry.blueprintId && entry.characterId) await pb.loadPopularCharacter(entry.characterId)
@@ -99,8 +101,13 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         pb.flash(note, 9000, 'warning')
         return false
       }
-    } else if (entry.character && !['nene', 'natsume', 'triad', 'none'].includes(entry.character)
-      || (entry.character || pb.char) === 'triad' && entry.engine) {
+    } else if (entry.coStars?.some(member => member.source === 'popular')) {
+      try { await pb.loadPopularCatalog() }
+      catch { if (isCurrent()) pb.flash('角色资料暂时无法读取，请重试。'); return false }
+      if (!isCurrent()) return false
+    }
+    if (!popularEntry && (entry.character && !['nene', 'natsume', 'triad', 'none'].includes(entry.character)
+      || (entry.character || pb.char) === 'triad' && entry.engine)) {
       const note = '原角色不可用，配方未载入；当前草稿已保留'
       pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
       pb.flash(note, 9000, 'warning')
@@ -157,25 +164,27 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null, { outfitExplicit: entry.outfitExplicit })
         if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced, entry.outfitOverride)
         resetBlueprintRotation()
-        const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
-        clearAnimaResult()
-        setDrawEngine(entry.engine === 'krea2' ? 'krea2' : 'anima')
-        const restoredModelId = animaModelPatch(animaState.value.modelId)
-        const endfield = endfieldAnimaBinding(character.id, entryEngine, restoredModelId)
-        patchAnimaState({
-          phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
-          modelId: restoredModelId,
-           loraId: endfield?.loraId ?? '',
-           loraStrength: entry.loraStrength ?? endfield?.loraStrength ?? animaState.value.loraStrength,
-           ...animaHistoryPatch(),
-           width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,
-          height: Number.isInteger(height) && height > 0 ? height : animaState.value.height,
-          steps: finiteOr(entry.steps, animaState.value.steps),
-          cfg: finiteOr(entry.cfg, animaState.value.cfg),
-          sampler: entry.sampler || animaState.value.sampler,
-          scheduler: entry.scheduler || animaState.value.scheduler,
-          seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
-        })
+        if (!moss) {
+          const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
+          clearAnimaResult()
+          setDrawEngine(entry.engine === 'krea2' ? 'krea2' : 'anima')
+          const restoredModelId = animaModelPatch(animaState.value.modelId)
+          const endfield = endfieldAnimaBinding(character.id, entryEngine, restoredModelId)
+          patchAnimaState({
+            phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
+            modelId: restoredModelId,
+             loraId: endfield?.loraId ?? '',
+             loraStrength: entry.loraStrength ?? endfield?.loraStrength ?? animaState.value.loraStrength,
+             ...animaHistoryPatch(),
+             width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,
+            height: Number.isInteger(height) && height > 0 ? height : animaState.value.height,
+            steps: finiteOr(entry.steps, animaState.value.steps),
+            cfg: finiteOr(entry.cfg, animaState.value.cfg),
+            sampler: entry.sampler || animaState.value.sampler,
+            scheduler: entry.scheduler || animaState.value.scheduler,
+            seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
+          })
+        }
       } else {
         if (entry.characterId) restoreNotes.push('原角色或服装已不在当前角色库，已回落工作室模式')
         pb.setStudioSubject()
@@ -194,7 +203,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
           modelId: animaModelPatch(animaState.value.modelId),
-           ...(entryEngine === 'anima' && character !== 'none' ? { characterLoraEnabled: entry.noLora !== true } : {}),
+           ...(entryEngine === 'anima' && character !== 'none' ? { characterLoraEnabled: entry.coStars?.length ? animaState.value.characterLoraEnabled : entry.noLora !== true } : {}),
            loraId: entryEngine === 'krea2' || character === 'none' || entry.noLora === true ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
            loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
            ...animaHistoryPatch(),
@@ -206,7 +215,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
           scheduler: entry.scheduler || animaState.value.scheduler,
           seed: entry.seed !== undefined && entry.seed >= 0 ? entry.seed : null,
         })
-      } else {
+      } else if (!moss) {
         setDrawEngine('anima')
       }
     }
@@ -230,6 +239,11 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     // visualDescription 两分支都恢复（旧版只有热门分支恢复，工作室路径静默丢失）。
     pb.storyOrigin = readStoryOrigin(entry.storyOrigin)
     pb.visualDescription = entry.visualDescription || ''
+    pb.referenceInput = entry.referenceInput ?? null
+    pb.coStars = entry.coStars ?? []
+    pb.castFormation = entry.castFormation ?? 'row'
+    pb.leadCast = entry.leadCast ?? null
+    pb.leadPosition = entry.leadPosition ?? 0
     // Saved decisions override today's blueprint defaults for both subject kinds.
     pb.selections.emotion = [...(entry.emotion || [])]
     pb.restoreDirectorState(entry, entry.directorSources)
@@ -238,7 +252,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     // New unbound recipes store the custom layer separately; legacy unbound
     // negatives contain only user input. Never restore model defaults as custom.
     pb.sdParams.negativeCustom = entry.negativeCustom ?? (pb.isUnbound ? entry.negative ?? '' : '')
-    if (!popularEntry || pb.isPopular) {
+    if (!moss && (!popularEntry || pb.isPopular)) {
       const before = { ...animaState.value }
       const checked = await refreshAnimaBackend()
       if (!isCurrent() || !checked) return false

@@ -126,7 +126,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     }
     if (source === 'studio' && (pb.isPopular || pb.isUnbound)) {
       patchAnimaState({ online: false, checkMsg: '正在恢复工作室模型与 LoRA…' })
-      pb.clearScene({ keepStory: true })
+      if (!pb.referenceInput) pb.clearScene({ keepStory: true })
       pb.setStudioSubject()
       if (pb.char === 'none') pb.setChar('nene')
       // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
@@ -140,21 +140,21 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       // story，且故事属于 studio 场景/蓝图的上下文——不清的话故事框会残留上一个
       // 宁宁/夏目场景的故事（裸 ?popular= 深链/页内切换均可见）。选中蓝图后故事
       // 由 selectBlueprint 写回蓝图的 description。
-      pb.clearScene()
+      if (!pb.referenceInput) pb.clearScene()
       // 2026-08-29 需求变更：热门角色画师默认不注入——清掉从工作室/上一会话
       // 继承的画师，保持角色原滋原味；画师完全由用户手动选择。
       pb.setArtistStyleIds([])
       resetBlueprintRotation()
       if (pb.popularCharacters.length) {
         const first = pb.popularCharacters[0]
-        pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null)
+        pb.setPopularSubject(first.id, first.outfits.find(o => o.default)?.id ?? first.outfits[0].id, null, { preserveReference: true })
         // 按当前角色恢复专用绑定，避免沿用上一角色的 LoRA。
         const binding = endfieldAnimaBinding(first.id, 'anima', first.recommendedEngine)
         patchAnimaState({ modelId: first.recommendedEngine, loraId: binding?.loraId ?? '',
           ...(binding ? { loraStrength: binding.loraStrength } : {}) })
         applyRecommendedEngine(first)
       } else {
-        pb.setPopularSubject('', '')
+        pb.setPopularSubject('', '', null, { preserveReference: true })
       }
       void refreshAnimaBackend()
       syncManagedRoute()
@@ -164,6 +164,8 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
 
   function selectPopularCharacter(character: PopularCharacter) {
     if (pb.subject.kind !== 'popular' || pb.subject.characterId === character.id) return
+    const slot = pb.cast.findIndex(member => member.source === 'popular' && member.characterId === character.id)
+    if (slot >= 0) { pb.selectCastLead(slot); return }
     pb.clearInheritedDirectorValues()
     const outfitId = character.outfits.find(o => o.default)?.id ?? character.outfits[0].id
     // Changing identity keeps the reference scene and clothing across successive characters.
@@ -324,7 +326,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const savedRecipe = currentGeneratedRecipe()
     // Saved result settings are deliberate; an automatic basic-mode recommendation
     // must not replace their engine after the selection's synchronous restoration.
-    void (pb.directorMode === 'basic' && !savedRecipe ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
+    void (pb.directorMode === 'basic' && !savedRecipe && pb.cast.length < 2 ? applyManagedRoute({ silent: true }) : refreshManagedRoute())
   }
 
   /** 热门角色草稿恢复：同步角色绑定与蓝图尺寸/导演决策，并立即刷新 backend，

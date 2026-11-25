@@ -7,6 +7,8 @@ import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils
 import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 import { parseAssistLayout, type InterrogateResult } from '@/api/interrogateResult'
+import { referenceCharacterCount } from '@/utils/promptCast'
+import { CHAR_PROMPT } from '@/config/promptConstants'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true, usingMoss = false) {
   if (!current() || !result || typeof result !== 'object') return
@@ -26,6 +28,9 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
   const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
   const copyrightTags = strings(payload.copyrightTags)
+  const rawCaption = typeof payload.caption === 'string' ? payload.caption.trim() : ''
+  const sourceIdentityTerms = [...new Set([...characterTags, ...copyrightTags])]
+  const subjectMode = payload.assistSubjectMode ?? (pb.isUnbound ? 'free' : 'bound')
   const tagMetadata = payload.mode === 'tag' || usingMoss
   const artistTags = tagMetadata ? strings(payload.styleTags).map(animaArtistTag) : []
   const { isCensorTag, characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
@@ -55,7 +60,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     if (!usingMoss) pb.sdParams.negativeCustom = ''
     pb.manualTags = new Set(tags)
     pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works,
-      caption, captionInEditor: Boolean(caption && !usingMoss), ...(layout ? { layout } : {}) })
+      rawTags, rawCaption, sourceIdentityTerms, subjectMode, caption,
+      captionInEditor: Boolean(caption && !usingMoss), ...(layout ? { layout } : {}) })
     pb.visualDescription = usingMoss ? handwritten : caption
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
@@ -63,16 +69,21 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     flash(`已采用${adopted}${usingMoss && layout ? `；已识别 ${layout.items.length} 个布局区域` : ''}${handwritten.trim() ? '；已保留手写说明' : ''}${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`, Boolean(caption))
     return
   }
-  const { splitReferenceTags } = await import('@/utils/interrogateReference')
+  const { isReferenceWardrobeTag, splitReferenceTags } = await import('@/utils/interrogateReference')
   if (!current()) return
+  const castCharacters = pb.cast.flatMap(member => member.source === 'studio' ? [] :
+    pb.popularCharacters.filter(character => character.id === member.characterId))
+  const castAliases = [...Object.values(STUDIO_PROMPT_SUBJECTS).flatMap(character => character.characterTokens),
+    ...castCharacters.flatMap(character => [...character.identityTokens, character.displayName, character.originalName])]
   const reference = splitReferenceTags(rawTags, {
-    knownCharacterTags: [...characterTags, ...pb.popularCharacters.flatMap(character => [...character.exactTokens, ...character.aliases])],
+    knownCharacterTags: [...characterTags, ...copyrightTags, ...castAliases,
+      ...pb.popularCharacters.flatMap(character => [...character.exactTokens, ...character.aliases])],
     catalog: pb.tags,
   })
   const assistCaption = payload.assistUsed && payload.assistSubjectMode === 'bound'
     && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
-  const assistLayout = payload.assistUsed && payload.assistSubjectMode === 'bound'
-    ? parseAssistLayout(payload.assistLayout) : null
+  const assistLayout = payload.assistUsed ? parseAssistLayout(payload.assistLayout) : null
+  const characterBoxes = referenceCharacterCount(assistLayout)
   // A free caption can mix identity with clothes and scenery. Only structured tags
   // and bound-mode de-identified assist prose/layout enter the transferable layer;
   // never overwrite the user's own prose.
@@ -92,12 +103,14 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
         outfitTokens: pb.outfitOverride?.tokens ?? (findOutfit(popularChar, subject.outfitId) ?? defaultOutfit(popularChar))?.tokens,
       } : null }
     : { kind: 'studio', charPrompt: pb.charPrompt })
+  const castIdentity = [...context.identityTokens, ...castCharacters.flatMap(character => character.identityTokens),
+    ...pb.cast.filter(member => member.source === 'studio').flatMap(member => tokenize(CHAR_PROMPT[member.characterId]))]
   const priorReference = new Set((pb.referenceInput?.tags ?? []).map(normalizeKey))
   const userTags = new Set([...pb.manualTags].filter(tag => !priorReference.has(normalizeKey(tag))))
   const referenceArtists = pb.artistStyleIds.length || [...userTags].some(tag => normalizeKey(tag).startsWith('@')) ? [] : artistTags
   // The new picture replaces the previous reference layer, never unrelated
   // explicit user edits. The target's identity is supplied only by its own data.
-  const identityOnly = standaloneIdentityTokens(context.identityTokens)
+  const identityOnly = standaloneIdentityTokens(castIdentity)
   const inheritedShot = pb.directorSources.shot === 'scene'
   const inheritedLighting = pb.directorSources.lighting === 'scene'
   // Explicit director choices participate in the same conflict rules as manual
@@ -108,10 +121,10 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     ...tokenize(!inheritedLighting ? LIGHTING.find(option => option.id === pb.selections.lighting)?.prompt ?? '' : ''),
   ])
   const merged = mergeInterrogatedTags({
-    tags: reference.tags,
+    tags: characterBoxes >= 2 ? reference.tags.filter(tag => !isReferenceWardrobeTag(tag) && !isOutfitToken(tag)) : reference.tags,
     manualTags: protectedTags,
     protectedManualTags: protectedTags,
-    identityTokens: subject.kind === 'popular' ? identityOnly : context.identityTokens,
+    identityTokens: subject.kind === 'popular' ? identityOnly : castIdentity,
     sceneTokens: [],
     shot: inheritedShot ? null : pb.selections.shot,
     replaceOutfit: subject.kind === 'popular',
@@ -121,7 +134,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const rejected = new Set([...merged.conflicts.map(item => item.tag), ...merged.filtered])
   // Capture even clothing duplicated by the current role. Otherwise switching
   // to a different role would lose same-family clothes, shirts or coats.
-  const referenceOutfit = subject.kind === 'popular' ? reference.tags.filter(tag => {
+  const referenceOutfit = subject.kind === 'popular' && characterBoxes < 2 ? reference.tags.filter(tag => {
     const key = normalizeKey(tag)
     return !rejected.has(key) && isOutfitToken(key)
   }).map(normalizeKey) : []
@@ -144,22 +157,30 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   pb.clearInheritedDirectorValues()
   if (subject.kind === 'popular') {
     if (referenceOutfit.length) pb.setOutfitOverride(referenceOutfit, merged.replacedOutfitGroup)
-    else pb.clearOutfitOverride()
+    else if (!pb.outfitOverride?.presetId) pb.clearOutfitOverride()
   }
   pb.manualTags = next
   const userKeys = new Set([...userTags].map(tag => normalizeKey(pb.tagDictionary.canonicalize(tag))))
   const sourceTags = [...pb.manualTags].filter(tag => !userKeys.has(normalizeKey(tag)))
   pb.referenceInput = cloneReferenceInput({
-    tags: sourceTags,
+    tags: sourceTags, subjectMode, rawTags, rawCaption, sourceIdentityTerms,
+    characterTokens: characterTags, copyrightTokens: copyrightTags,
     ...(assistCaption ? { caption: assistCaption, captionInEditor: false } : {}),
     ...(assistLayout ? { layout: assistLayout } : {}),
   })
-  const note = characterConflictNote(characterTags, context.identityTokens, context.aliases)
+  const note = characterConflictNote(characterTags, castIdentity, [...context.aliases, ...castAliases,
+    ...castCharacters.flatMap(character => character.aliases)])
   const adoptedTagCount = new Set([...accepted, ...referenceOutfit, ...referenceArtists]).size
   const parts = [adoptedTagCount
     ? `已采用 ${adoptedTagCount} 个参考词条，可连续切换角色；人物身份跟随目标角色`
     : `已采用参考${assistCaption ? '画面描述' : '画面布局'}，可连续切换角色；人物身份跟随目标角色`]
   if (usingMoss && assistLayout) parts.push(`已识别 ${assistLayout.items.length} 个布局区域`)
+  const castSize = pb.cast.length
+  if (usingMoss && characterBoxes > castSize && castSize) {
+    parts.push(`参考图有 ${characterBoxes} 位人物，可添加同框角色替换其余位置`)
+  } else if (castSize > 1 && characterBoxes < castSize) {
+    parts.push(usingMoss ? '将保留参考图氛围并为演员表重新站位' : '保留参考图氛围，各角色使用自己的服装')
+  }
   if (referenceOutfit.length) parts.push('参考服装已独立保留')
   if (referenceArtists.length) parts.push('反推画师已放入画师段')
   if (reference.excludedIdentity.length) parts.push(`已排除参考人物特征 ${reference.excludedIdentity.length} 项`)

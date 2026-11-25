@@ -1,5 +1,5 @@
 import type { ArtworkRecord } from '@/types/artwork'
-import { parseOutfitOverride } from './promptBuilderPersistence'
+import { parseOutfitOverride, parseReferenceInput, readPromptCastSnapshot } from './promptBuilderPersistence'
 import { normalizeDirectorSources } from './promptDirector'
 import { readStoryOrigin } from '@/types/storyOrigin'
 
@@ -38,12 +38,15 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
   }
   const nullableText = (key: string) => record[key] === null ? null : text(key)
   const engine = record.engine
-  if (engine !== undefined && engine !== 'sd' && engine !== 'anima' && engine !== 'krea2') {
+  if (engine !== undefined && engine !== 'sd' && engine !== 'anima' && engine !== 'krea2' && engine !== 'moss-image') {
     return { ok: false as const, error: `未知引擎 ${String(engine)}，当前草稿已保留` }
   }
   if (record.seed === undefined || record.seed === null) notes.push('未记录种子，无法精确复现')
   if (!record.prompt) notes.push('未记录完整提示词，无法精确复现')
   const recipe = {
+    ...readPromptCastSnapshot(record),
+    referenceInput: record.referenceInput === undefined ? undefined : parseReferenceInput(record.referenceInput),
+    ...(engine === 'moss-image' ? { mossLayout: text('mossLayout'), mossSampler: text('mossSampler') } : {}),
     storyOrigin: readStoryOrigin(record.storyOrigin),
     id: record.id, engine,
     subject: text('subject'), character: text('character'), characterId: text('characterId'),

@@ -1,4 +1,7 @@
-export interface ArtworkRecord {
+import type { ArtworkCastSnapshot, DraftReferenceInput } from '@/utils/promptBuilderPersistence'
+
+export interface ArtworkRecord extends ArtworkCastSnapshot {
+  referenceInput?: DraftReferenceInput | null
   storyOrigin?: import('./storyOrigin').StoryOrigin
   id: string | number
   engine?: string

@@ -10,7 +10,7 @@ export interface HistoryReuseState {
 }
 export interface HistoryReuseDeps extends PromptHistoryApplyDeps {
   generationBusy: Ref<boolean>
-  onApplied(): void
+  onApplied(record: ArtworkRecord, selection: HistoryReuseSelection): void
 }
 
 /** Only the pending choice is eager. Reading and applying recipes load on the first explicit action. */

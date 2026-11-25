@@ -55,6 +55,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   }
   if (mature) manual.add('nsfw')
   const draft: CompanionPromptDraft = {
+    cast: [], castLead: null, leadPosition: 0, castFormation: 'row',
     char, charPrompt: CHAR_PROMPT[char], subject: character && outfit
       ? { kind: 'popular', characterId: character.id, outfitId: outfit.id, blueprintId: null, outfitExplicit: requestedOutfit !== 'default' } : { kind: 'studio' },
     isPopular: Boolean(character), sceneId: null, activeScene: null, story: args.description.trim(), visualDescription: visual,

@@ -20,6 +20,8 @@ import { usePromptMaterials } from './usePromptMaterials';
 import { usePromptLifecycle } from './usePromptLifecycle';
 import { usePromptWorkspaceUi } from './usePromptWorkspaceUi';
 import { usePromptHistoryReuse } from './usePromptHistoryReuse';
+import { useDrawingNavigation } from './useDrawingNavigation';
+import type { ArtworkRecord } from '@/types/artwork';
 import { useGenerationPresentation } from './useGenerationPresentation';
 import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
 import type { HiresSource } from './promptGenerationActions';
@@ -77,9 +79,11 @@ export function usePromptWorkspace() {
     function captureResultContext(): AnimaResultContext {
         return snapshotResultContext(pb);
     }
+    const animaCastActive = computed(() => drawEngine.value === 'anima' && pb.cast.length > 1);
     const animaSession = useAnimaSession({
-        getCharacter: () => pb.char, isPopular: () => pb.isPopular,
-        getPopularCharacterId: () => pb.subject.kind === 'popular' ? pb.subject.characterId : null,
+        getCharacter: () => animaCastActive.value ? 'none' : pb.char,
+        isPopular: () => !animaCastActive.value && pb.isPopular,
+        getPopularCharacterId: () => !animaCastActive.value && pb.subject.kind === 'popular' ? pb.subject.characterId : null,
         getFamily: () => drawEngine.value === 'krea2' ? 'krea2' : 'anima',
         getRequest: () => buildAnimaRequest(),
         getSubmitContext: captureResultContext,
@@ -105,7 +109,12 @@ export function usePromptWorkspace() {
         await tempResultTools.handleAnimaResult(result);
     }
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
-    const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId));
+    watch(animaCastActive, () => {
+        syncAnimaCharacter();
+        void refreshAnimaBackend();
+    });
+    const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaCastActive.value
+        || !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId));
     const { currentTraits, modelProfile, loraSpecs, negativePrompt } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
@@ -117,7 +126,8 @@ export function usePromptWorkspace() {
     // ── 反推服装顶替（2026-08-29）────────────────────────────────────────────
     // 热门角色默认会注入 12 个服装 tag 加一整段 "She wears ..." 散文，参考图服装
     // 追加在末尾会被淹没。故反推出跨族服装时改为整体顶替，并给用户一键恢复的入口。
-    const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length));
+    const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length
+        && (pb.cast.length < 2 || pb.outfitOverride.presetId)));
     // ── 引擎协调层（2026-08-28 编排下沉）：引擎切换守卫、能力表、在线/进度/错误
     // 聚合展示、Anima 请求装配与推荐尺寸收敛，照 useAnimaInpaint 的依赖注入样板。
     const engine = useDirectorEngine({
@@ -365,8 +375,20 @@ export function usePromptWorkspace() {
         pb.sdParams.seedLock = true;
         pb.flash(`已锁定 seed ${seed}`);
     }
+    const drawingNavigation = useDrawingNavigation();
+    const nativeHistoryRecipe = ref<ArtworkRecord | null>(null);
     const historyReuse = usePromptHistoryReuse({ pb, animaState, patchAnimaState: animaSession.restoreSettings,
-        clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation, sdSize, drawEngine, generationBusy, onApplied: () => setDirectorMode('pro') });
+        clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation, sdSize, drawEngine, generationBusy,
+        onApplied: (record, selection) => {
+            setDirectorMode('pro');
+            if (selection !== 'full' || record.engine !== 'moss-image') return;
+            nativeHistoryRecipe.value = record;
+            if (drawingNavigation.mode.value === 'moss') return;
+            if (!draftRecovery.initialized && route.query.regen === String(record.id)) {
+                // Cold history links must survive the model switch so initialization can replay the same recipe.
+                void router.replace({ path: route.path, query: { ...route.query, engine: 'moss' }, hash: route.hash });
+            } else void drawingNavigation.selectEngine('moss');
+        } });
     const { applyHistory, resumeHistory, duplicateHistory, deleteHistory, reuseSuccessfulRecipe } = historyReuse;
     watch(() => route.fullPath, () => historyReuse.cancelReuse());
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
@@ -442,7 +464,7 @@ export function usePromptWorkspace() {
         pb: reactive({
             directorMode: toRef(pb, 'directorMode'), history: toRef(pb, 'history'),
             subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
-            sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
+            cast: toRef(pb, 'cast'), sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
         }),
         displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine,
         generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
@@ -499,7 +521,7 @@ export function usePromptWorkspace() {
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
         cancelGeneration, outfitOverridden, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings, compositionBindings, mossPlan: unified.mossPlan,
-        draftReady: computed(() => draftRecovery.initialized),
+        nativeHistoryRecipe, draftReady: computed(() => draftRecovery.initialized),
         recipePreviewContext: { engine: drawEngine, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

@@ -3,7 +3,7 @@ import type { HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
 import type { ArtworkRecord } from '@/types/artwork'
 import { historyFromResultContext } from '@/utils/resultContext'
-import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
+import { parseOutfitOverride, parseReferenceInput, readArtworkCastSnapshot } from '@/utils/promptBuilderPersistence'
 import { normalizeDirectorSources } from '@/utils/promptDirector'
 import type { DirectorControlSources } from '@/types/promptDirector'
 
@@ -78,6 +78,8 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     artistStyleIds: merged.artistStyleIds ? [...merged.artistStyleIds] : merged.artistStyleIds,
     directorSources: merged.directorSources === undefined ? undefined : normalizeDirectorSources(merged.directorSources),
     outfitOverride: merged.outfitOverride === undefined ? undefined : parseOutfitOverride(merged.outfitOverride),
+    ...readArtworkCastSnapshot(merged),
+    referenceInput: merged.referenceInput === undefined ? undefined : parseReferenceInput(merged.referenceInput),
     loras: merged.loras?.map(lora => ({ ...lora })),
     sketchControl: merged.sketchControl ? { ...merged.sketchControl } : undefined,
     sketchControlModel: merged.sketchControlModel ? { ...merged.sketchControlModel } : undefined,

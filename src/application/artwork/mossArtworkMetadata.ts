@@ -1,5 +1,35 @@
 import { isMossAcceleration, validMossSpectrumFlexWindow } from '@/config/directImageModels'
 import type { ArtworkRecord } from '@/types/artwork'
+import { normalizeDirectorSources } from '@/utils/promptDirector'
+import { parseOutfitOverride, parseReferenceInput, readArtworkCastSnapshot } from '@/utils/promptBuilderPersistence'
+import { readStoryOrigin } from '@/types/storyOrigin'
+
+/** Director inputs for rebuilding a prompt. Sampling facts still come from the task. */
+export function mossArtworkRecipe(context: Record<string, unknown> | undefined): Partial<ArtworkRecord> {
+  const value = context?.history
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
+  const history = value as Record<string, unknown>
+  const result: Partial<ArtworkRecord> = {
+    ...readArtworkCastSnapshot(history),
+    mossLayout: typeof history.mossLayout === 'string' && history.mossLayout.length <= 12000 ? history.mossLayout : undefined,
+    referenceInput: parseReferenceInput(history.referenceInput) ?? undefined,
+    outfitOverride: parseOutfitOverride(history.outfitOverride) ?? undefined,
+    outfitExplicit: typeof history.outfitExplicit === 'boolean' ? history.outfitExplicit : undefined,
+    storyOrigin: readStoryOrigin(history.storyOrigin),
+    directorSources: normalizeDirectorSources(history.directorSources),
+    subject: context?.subject === 'popular' ? 'popular' : 'studio',
+    scene: typeof context?.sceneId === 'string' ? context.sceneId : null,
+  }
+  for (const key of ['emotion', 'manual_tags', 'artistStyleIds']) {
+    const items = history[key]
+    if (Array.isArray(items) && items.every(item => typeof item === 'string')) result[key] = [...items]
+  }
+  for (const key of ['shot', 'lighting', 'composition', 'colorMood', 'project', 'negativeCustom']) {
+    const item = history[key]
+    if (typeof item === 'string' || item === null) result[key] = item
+  }
+  return result
+}
 
 function mossExecution(runtime: unknown): Record<string, unknown> | undefined {
   if (!runtime || typeof runtime !== 'object' || !('mossExecution' in runtime)) return

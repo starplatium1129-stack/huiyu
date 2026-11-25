@@ -1,5 +1,5 @@
 import type { AnimaPromptRegion, AnimaSketchControl } from './animaComposition'
-import type { DraftOutfitOverride } from '@/utils/promptBuilderPersistence'
+import type { ArtworkCastSnapshot, DraftOutfitOverride, DraftReferenceInput } from '@/utils/promptBuilderPersistence'
 import type { DirectorControlSources } from './promptDirector'
 
 export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
@@ -9,7 +9,8 @@ export type DrawEngine = 'sd' | 'anima' | 'krea2'
 type SnapshotValue<T> = T extends object ? { readonly [K in keyof T]: SnapshotValue<T[K]> } : T
 export type HistorySnapshot = SnapshotValue<Partial<HistoryEntry>>
 
-export type HistoryEntry = {
+export type HistoryEntry = ArtworkCastSnapshot & {
+  referenceInput?: DraftReferenceInput | null
   storyOrigin?: import('./storyOrigin').StoryOrigin
   id: string | number; timestamp: number; character: string
   scene: string | null; sceneTitle: string | null

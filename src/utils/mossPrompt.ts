@@ -8,6 +8,8 @@ import { proseToken } from './promptPhraseTables.ts'
 import { tagKey } from './animaPromptOrder.ts'
 import { isGarmentToken } from './popularIdentity.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
+import { cleanCastNegative, cleanCastProse } from './promptCast.ts'
+import { buildMossCastLayout, cleanMossCastText } from './mossCast.ts'
 import {
   compileMossLayout, isMossLayoutInput, mossLayoutJson, mossNormalizedBox, mossSubjectBox, mossTextBox, mossTriptychBox,
   type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
@@ -105,19 +107,36 @@ function mossLettering(caption: string) {
   })
 }
 
+function addMossLettering(caption: string, items: MossLayoutItem[], size: MossCanvasSize, itemLimit = Infinity) {
+  const existingTexts = new Set(items.filter(item => item.label === 'text' && item.text).map(item => item.text!.trim().toLowerCase()))
+  const letterings = mossLettering(caption)
+  for (const lettering of letterings) {
+    if (items.length >= itemLimit || existingTexts.has(lettering.text.trim().toLowerCase())) continue
+    items.push({ label: 'text', caption: lettering.caption, text: lettering.text, bbox: mossTextBox(size, lettering.placement) })
+  }
+  // Outer quotes delimit the instruction. The model can otherwise paint them as extra glyphs.
+  return letterings.reduceRight((value, item) =>
+    value.slice(0, item.quoteStart) + item.text + value.slice(item.quoteEnd), caption)
+}
+
 /** Render MOSS visual facts without an Anima/Krea profile or LoRA controls. */
 export function renderMossDrawingPrompt(plan: PromptPlan | null, description: string, negative: string,
   size?: MossCanvasSize, options?: { forceLayout?: boolean }) {
   const authored = description.trim()
-  const mergeNegative = (base: string) => mergeSceneNegative(base, plan?.negative ?? [])
+  const layout = plan?.mossLayout
+  const castSubjects = layout?.castLayout && layout.subjects?.length ? layout.subjects : null
+  const mergeNegative = (base: string) => {
+    const merged = mergeSceneNegative(base, plan?.negative ?? [])
+    return castSubjects ? cleanCastNegative(merged) : merged
+  }
   if (isMossLayoutInput(authored)) {
     const layout = compileMossPrompt(authored, negative, size)
     return { raw: authored, prompt: layout.prompt, negative: mergeNegative(layout.negative) }
   }
 
   const rawTags = plan ? [
-    ...plan.rating, ...(plan.freeSubject ? [] : plan.characterTokens),
-    ...(plan.freeSubject ? [] : plan.copyrightTokens), ...plan.artists,
+    ...plan.rating, ...(plan.freeSubject || castSubjects ? [] : plan.characterTokens),
+    ...(plan.freeSubject || castSubjects ? [] : plan.copyrightTokens), ...plan.artists,
     ...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments,
     ...plan.emotion, ...plan.camera, ...plan.lighting, ...plan.palette, ...plan.composition, ...plan.manual,
   ].flatMap(tokenize) : []
@@ -129,6 +148,7 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     if (!key || key === 'break' || /^score_\d+(?:_up)?$/.test(key)) return []
     if (key === 'safe') { token = 'general'; key = 'general' }
     if (/^(?:nene|natsume)_/.test(key)) {
+      if (castSubjects) return []
       const outfit = Object.values(CANONICAL_OUTFITS).find(item => item.tags[0] === key)
       if (outfit) outfits.add(outfit.prose)
       else {
@@ -159,6 +179,27 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   }
   const ordered = groups.flat()
   const cleanScene = cleanProse(scene)
+  if (layout && castSubjects) {
+    const common = [
+      cleanCastProse(cleanMossCastText(authored)),
+      cleanCastProse(cleanMossCastText(cleanScene)),
+      cleanMossCastText(ordered.join(', ')),
+    ].filter(Boolean)
+    if (size) {
+      const { items, canvas, extraPeople } = buildMossCastLayout(layout, castSubjects, size)
+      const people = extraPeople === 1 ? 'One additional supporting character appears in the frame.'
+        : extraPeople > 1 ? extraPeople + ' additional supporting characters appear in the frame.' : ''
+      const caption = [...new Set([people, ...common].filter(Boolean))].join('\n') || 'Group portrait.'
+      const summary = addMossLettering(caption, items, size, 16)
+      const raw = mossLayoutJson(summary, items, canvas)
+      const compiled = compileMossPrompt(raw, negative, size)
+      return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+    }
+    const castPreview = castSubjects.map(subject => cleanCastProse(cleanMossCastText(subject.caption)))
+    const raw = [...new Set([...common, ...castPreview].filter(Boolean))].join('\n')
+    const compiled = compileMossPrompt(raw, negative)
+    return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+  }
   const refLayout = plan?.mossLayout?.referenceLayout
   const captionWithTags = (facts: string[]) => [...new Set([authored, ...appearance, cleanScene, facts.join(', ')].filter(Boolean))].join('\n')
   let caption = captionWithTags(ordered)
@@ -255,19 +296,11 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
               })
             })()
           : placement ? [{ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size, placement) }] : []
-    const existingTexts = new Set(items.filter(item => item.label === 'text' && item.text).map(item => item.text!.trim().toLowerCase()))
-    const letterings = mossLettering(caption)
-    for (const lettering of letterings) {
-      if (existingTexts.has(lettering.text.trim().toLowerCase())) continue
-      items.push({ label: 'text', caption: lettering.caption, text: lettering.text, bbox: mossTextBox(size, lettering.placement) })
-    }
+    let summary = addMossLettering(caption, items, size)
     if (options?.forceLayout && !items.length) {
       items.push({ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size) })
     }
     if (items.length) {
-      // Outer quotes delimit the instruction. The model can otherwise paint them as extra glyphs.
-      let summary = letterings.reduceRight((value, item) =>
-        value.slice(0, item.quoteStart) + item.text + value.slice(item.quoteEnd), caption)
       if (useReferenceLayout && refLayout?.boundSubject && refCharIndices.length > 1) {
         summary = summary.replace(/\bis the only prominent character,\s*/i, 'is ')
       }

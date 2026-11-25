@@ -1,4 +1,4 @@
-import { computed, effectScope, onActivated, onDeactivated, onScopeDispose, ref, shallowRef, watch, type EffectScope } from 'vue'
+import { computed, effectScope, nextTick, onActivated, onDeactivated, onScopeDispose, ref, shallowRef, watch, type EffectScope } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDrawingNavigation } from './useDrawingNavigation'
 import type { usePromptWorkspace } from './usePromptWorkspace'
@@ -7,12 +7,33 @@ import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { nativeDrawingPrompt } from '@/utils/nativeDrawingPrompt'
 import { renderMossDrawingPrompt } from '@/utils/mossPrompt'
 import { compileMossLayout, isMossLayoutInput } from '@/utils/mossLayout'
+import { captureResultContext } from '@/utils/resultContext'
+import { mossModels } from '@/config/directImageModels'
 
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
   let scope: EffectScope | undefined
-  const mossLayout = computed(() => session.value?.form.mossLayout ?? '')
+  let preparingSubmission = false
+  const pb = workspace.pb
+  const layoutContext = computed(() => {
+    if (!pb.coStars.length && !pb.referenceInput) return ''
+    // Custom boxes are editable only against the cast and source they were authored for.
+    const input = JSON.stringify([
+      pb.cast.map(({ source, characterId, outfitId, outfitExplicit, action }) => [source, characterId, outfitId, outfitExplicit, action]),
+      pb.castFormation, pb.referenceInput,
+    ])
+    let hash = 2166136261
+    for (let index = 0; index < input.length; index++) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619)
+    return (hash >>> 0).toString(16)
+  })
+  const mossLayout = computed(() => {
+    const form = session.value?.form
+    if (!form?.mossLayout) return ''
+    const context = form.mossLayoutContext
+    if (context === undefined) return pb.coStars.length ? '' : form.mossLayout
+    return context === layoutContext.value ? form.mossLayout : ''
+  })
   const usingMossTaskPrompt = computed(() => session.value?.form.mossUseTaskPrompt === true)
   function mossCanvas() {
     const state = session.value
@@ -23,6 +44,13 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     }
     return { width, height }
   }
+  const mossDescription = computed(() => {
+    const plan = workspace.mossPlan.value
+    const lead = pb.leadCast, primary = pb.castLead
+    const projected = plan?.mossLayout?.castLayout || !pb.isUnbound && pb.referenceInput?.subjectMode === 'free'
+      || Boolean(lead?.action && primary && lead.source === primary.source && lead.characterId === primary.characterId)
+    return projected && plan ? plan.visualDescription : pb.visualDescription
+  })
   const recipe = computed(() => {
     const form = session.value?.form
     const description = workspace.pb.visualDescription, negative = form?.negative ?? ''
@@ -34,14 +62,14 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
         const prompt = isMossLayoutInput(raw) ? compileMossLayout(raw, size).prompt : raw
         return { raw, prompt, negative, error: '' }
       }
-      return { ...renderMossDrawingPrompt(workspace.mossPlan.value, mossLayout.value || description, negative, size), error: '' }
+      return { ...renderMossDrawingPrompt(workspace.mossPlan.value, mossLayout.value || mossDescription.value, negative, size), error: '' }
     }
     catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
   })
   const busy = computed(() => !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
   function mossLayoutDraft() {
-    const description = usingMossTaskPrompt.value ? session.value?.form.prompt ?? '' : workspace.pb.visualDescription
+    const description = usingMossTaskPrompt.value ? session.value?.form.prompt ?? '' : mossDescription.value
     if (mossLayout.value || isMossLayoutInput(description)) return mossLayout.value || description
     const plan = usingMossTaskPrompt.value ? null : workspace.mossPlan.value
     return renderMossDrawingPrompt(plan, description, '', mossCanvas(), { forceLayout: true }).raw
@@ -55,12 +83,13 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
       if (source.length > 12000 || prompt.length > 12000) throw new Error('布局提示词超过 12000 字符，请精简描述')
     }
     state.form.mossLayout = source
+    state.form.mossLayoutContext = source ? layoutContext.value : undefined
     state.form.mossUseTaskPrompt = false
   }
   const blocked = computed(() => {
     const state = session.value
     if (!state?.ready.value) return state?.error.value || '正在恢复绘图参数…'
-    if (!workspace.pb.dataReady) return '正在读取创作素材…'
+    if (!pb.dataReady || mode.value === 'moss' && !workspace.draftReady.value) return '正在读取创作素材…'
     if (recipe.value.error) return recipe.value.error
     if (state.saving.value) return '正在保存作品…'
     if (state.observing.value && !state.unresolved.value) return '正在读取原任务与结果…'
@@ -108,6 +137,41 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   watch(() => [mode.value, route.query.editor === 'qwen' ? undefined : route.query.job, route.query.preparedModel], (next, previous) => {
     if (!previous || next[0] !== previous[0] || next.slice(1).some((value, index) => value && value !== previous[index + 1])) void initialize()
   }, { immediate: true })
+  watch(layoutContext, (_, previous) => {
+    const state = session.value
+    if (!workspace.draftReady.value || mode.value !== 'moss' || !state?.ready.value) return
+    state.form.mossUseTaskPrompt = false
+    if (state.form.mossLayout && state.form.mossLayoutContext === undefined) state.form.mossLayoutContext = previous
+  })
+  watch([workspace.nativeHistoryRecipe, mode, locked, workspace.draftReady], ([record, activeMode, isLocked, draftReady]) => {
+    const state = session.value
+    if (!record || activeMode !== 'moss' || !state || isLocked || !draftReady) return
+    workspace.nativeHistoryRecipe.value = null
+    const form = state.form
+    const modelId = record.model || record.checkpoint
+    if (mossModels.some(model => model.value === modelId) && state.models.value.some(model => model.id === modelId && model.available)) {
+      form.modelId = String(modelId)
+    }
+    const [width, height] = (record.size || '').replace(/\s/g, '').split(/[x×]/).map(Number)
+    if ([width, height].every(value => Number.isInteger(value) && value >= 512 && value <= state.maxSize && value % state.alignment === 0)) {
+      form.width = width
+      form.height = height
+    }
+    if (record.mossSampler === 'euler' || record.mossSampler === 'er-sde') state.selectMossSampler(record.mossSampler)
+    if (typeof record.steps === 'number' && Number.isInteger(record.steps) && record.steps >= 1 && record.steps <= 100) form.steps = record.steps
+    if (typeof record.cfg === 'number' && Number.isFinite(record.cfg) && record.cfg >= 0 && record.cfg <= 20) form.cfg = record.cfg
+    if (typeof record.seed === 'number' && Number.isInteger(record.seed) && record.seed >= 0 && record.seed <= 2147483647) {
+      form.seed = record.seed
+      state.randomSeed.value = false
+    } else state.randomSeed.value = true
+    const negative = record.negativeCustom ?? record.negative
+    if (typeof negative === 'string' && negative.length <= 8000) form.negative = negative
+    const layout = record.mossLayout
+    form.mossLayout = typeof layout === 'string' && layout.length <= 12000 && isMossLayoutInput(layout) ? layout : ''
+    form.mossLayoutContext = form.mossLayout ? layoutContext.value : undefined
+    form.mossUseTaskPrompt = record.subject === undefined && typeof record.prompt === 'string' && record.prompt.length <= 12000
+    if (form.mossUseTaskPrompt && typeof record.prompt === 'string') form.prompt = record.prompt
+  }, { flush: 'post' })
   watch(workspace.genBarSize, value => {
     const state = session.value
     if (!state || locked.value) return
@@ -116,10 +180,26 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   })
   async function generate() {
     const state = session.value
-    if (!state || locked.value || blocked.value) return
+    if (!state || locked.value || blocked.value || preparingSubmission) return
+    if (mode.value === 'moss') {
+      preparingSubmission = true
+      const draftKey = () => JSON.stringify({ ...pb.snapshotDraft(), updatedAt: undefined })
+      const before = draftKey()
+      try {
+        await nextTick()
+        await pb.persistDraft()
+      } catch {
+        // The draft store reports why its durable write could not be confirmed.
+        return
+      } finally { preparingSubmission = false }
+      if (session.value !== state || locked.value || blocked.value || draftKey() !== before) return
+    }
+    const subject = pb.subject
+    const director = mode.value === 'moss' ? captureResultContext(pb) : null
     state.form.prompt = mode.value === 'moss' ? recipe.value.prompt : recipe.value.raw
-    const pb = workspace.pb, subject = pb.subject
     await state.run({ negative: state.turbo.value ? '' : recipe.value.negative, context: {
+      ...(director ? { subject: subject.kind, sceneId: pb.sceneId,
+        history: { ...director.history, negativeCustom: state.form.negative, mossLayout: mossLayout.value || undefined } } : {}),
       character: pb.char, characterId: pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char,
       ...(pb.subject.kind === 'popular' ? { outfitId: pb.subject.outfitId, blueprintId: pb.subject.blueprintId } : {}),
       sceneTitle: (subject.kind === 'popular' ? pb.sceneBlueprints.find(scene => scene.id === subject.blueprintId)?.title : pb.activeScene?.title) || '', story: pb.story, visualDescription: pb.visualDescription,

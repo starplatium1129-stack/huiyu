@@ -109,6 +109,22 @@ export function mossTriptychBox({ width, height }: MossCanvasSize, index: number
   return [-height / 2, edge(index), height / 2, edge(index + 1)]
 }
 
+export function mossCastBoxes(size: MossCanvasSize, count: number, formation?: 'row' | 'staggered'): Box[] {
+  function row(length: number, top: number, left: number, bottom: number, right: number, overlap: number): Box[] {
+    const span = (right - left) / (length - overlap * (length - 1))
+    return Array.from({ length }, (_, index) => {
+      const start = left + index * span * (1 - overlap)
+      return mossNormalizedBox(size, [top, start, bottom, start + span])
+    })
+  }
+  if (count >= 4 && formation === 'staggered') {
+    const front = row(2, 0.42, count === 4 ? 0.01 : 0.14, 1, count === 4 ? 0.99 : 0.86, 0.12)
+    const rear = row(count - 2, 0.02, count === 4 ? 0.19 : 0.01, 0.67, count === 4 ? 0.81 : 0.99, 0.12)
+    return [...front, ...rear]
+  }
+  return row(count, 0, 0, 1, 1, 0.12)
+}
+
 export function mossTextBox(size: MossCanvasSize, placement: string): Box {
   const horizontal = placement.match(/\b(?:left|right|center)\b|左|右|居中/i)?.[0].toLowerCase()
   const side = horizontal === 'left' || horizontal === '左' ? 'left'

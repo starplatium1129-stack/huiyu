@@ -1,6 +1,10 @@
 import type { CharKey, HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
-import { parseOutfitOverride, type DraftOutfitOverride } from './promptBuilderPersistence'
+import {
+  parseOutfitOverride, parseReferenceInput, readArtworkCastSnapshot,
+  type DraftOutfitOverride, type DraftReferenceInput,
+} from './promptBuilderPersistence'
+import type { CastFormation, CastMember } from '@/types/prompt'
 import type { DirectorControlSources } from '../types/promptDirector'
 import { normalizeDirectorSources } from './promptDirector'
 import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
@@ -15,6 +19,11 @@ export interface ResultContextInput {
   readonly storyOrigin?: StoryOrigin
   readonly char: CharKey
   readonly visualDescription: string
+  readonly coStars?: readonly CastMember[]
+  readonly castFormation?: CastFormation
+  readonly leadCast?: CastMember | null
+  readonly leadPosition?: number
+  readonly referenceInput?: DraftReferenceInput | null
   readonly outfitOverride?: (Readonly<Omit<DraftOutfitOverride, 'tokens'>> & { readonly tokens: readonly string[] }) | null
   readonly selections: Readonly<{
     emotion: readonly string[]; shot: string | null
@@ -53,6 +62,8 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
     story: String(pb.story || '').trim(),
     char: pb.char,
     history: {
+      ...readArtworkCastSnapshot(pb),
+      referenceInput: parseReferenceInput(pb.referenceInput) ?? undefined,
       storyOrigin,
       sceneTitle,
       visualDescription: pb.visualDescription,
@@ -73,11 +84,14 @@ export function historyFromResultContext(ctx?: AnimaResultContext | null): Parti
   if (!ctx) return {}
   const popular = Boolean(ctx.characterId)
   const history = ctx.history ? JSON.parse(JSON.stringify(ctx.history)) as Partial<HistoryEntry> : {}
+  const cast = readArtworkCastSnapshot(history)
   return {
     ...history,
+    coStars: cast.coStars, castFormation: cast.castFormation, leadCast: cast.leadCast, leadPosition: cast.leadPosition, coStarIds: cast.coStarIds,
+    referenceInput: history.referenceInput === undefined ? undefined : parseReferenceInput(history.referenceInput),
     subject: popular ? 'popular' : 'studio', noLora: popular || ctx.noLora === true || ctx.char === 'none',
     character: (popular ? ctx.characterId : ctx.char) as HistoryEntry['character'],
-    characterId: popular ? ctx.characterId : undefined,
+    characterId: popular ? ctx.characterId : cast.coStars?.length ? ctx.char : undefined,
     outfitId: popular ? ctx.outfitId ?? undefined : undefined,
     blueprintId: popular ? ctx.blueprintId ?? undefined : undefined,
     scene: popular ? ctx.blueprintId ?? null : ctx.sceneId ?? null,

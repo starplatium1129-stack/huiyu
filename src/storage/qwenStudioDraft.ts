@@ -21,6 +21,7 @@ export interface QwenForm {
   mossSampler?: MossSampler
   mossWeightPrecision?: 'auto' | 'fp16' | 'int8'
   mossLayout?: string
+  mossLayoutContext?: string
   mossUseTaskPrompt?: boolean
 }
 export interface QwenDraftState {
@@ -50,6 +51,8 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
     && (form.mossWeightPrecision === 'auto' || form.mossWeightPrecision === 'fp16' || form.mossWeightPrecision === 'int8'))
   && (form.mossLayout === undefined || mossModels.some(model => model.value === form.modelId)
     && typeof form.mossLayout === 'string' && form.mossLayout.length <= 12000)
+  && (form.mossLayoutContext === undefined || mossModels.some(model => model.value === form.modelId)
+    && typeof form.mossLayoutContext === 'string' && /^[\da-f]{0,8}$/.test(form.mossLayoutContext))
   && (form.mossSampler === undefined || mossModels.some(model => model.value === form.modelId) && (form.mossSampler === 'euler' || form.mossSampler === 'er-sde'))
   && (form.mossUseTaskPrompt === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossUseTaskPrompt === 'boolean')
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
@@ -57,7 +60,7 @@ const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt:
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
   ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? MOSS_DEFAULT_ACCELERATION, mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? MOSS_DEFAULT_FLEX_WINDOW,
     mossTextPrecision: form.mossTextPrecision ?? 'auto', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto',
-    mossSampler: form.mossSampler ?? 'euler', mossLayout: form.mossLayout ?? '', mossUseTaskPrompt: form.mossUseTaskPrompt ?? false } : {}) })
+    mossSampler: form.mossSampler ?? 'euler', mossLayout: form.mossLayout ?? '', mossLayoutContext: form.mossLayoutContext, mossUseTaskPrompt: form.mossUseTaskPrompt ?? false } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null

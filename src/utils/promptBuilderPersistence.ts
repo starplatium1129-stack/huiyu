@@ -1,7 +1,9 @@
 import { normalizeKey } from './promptPrimitives.ts'
 import { sanitizeOutfitOverride } from './wardrobeContent.ts'
-import { parseAssistLayout, type InterrogateAssistLayout } from '../api/interrogateResult.ts'
+import { parseAssistLayout, type InterrogateAssistLayout, type InterrogateSubjectMode } from '../api/interrogateResult.ts'
 import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
+import type { CastFormation, CastMember } from '../types/prompt'
+import { parseCastFormation, parseCastMember, parseCastMembers, parseLeadPosition } from './promptCast'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
@@ -61,6 +63,11 @@ export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null 
 /** Content owned by the active reference picture. User-owned tags are excluded. */
 export interface DraftReferenceInput {
   tags: string[]
+  /** Original interrogation data. The adopted tags retain their existing edit ownership. */
+  rawTags?: string[]
+  rawCaption?: string
+  sourceIdentityTerms?: string[]
+  subjectMode?: InterrogateSubjectMode
   /** A real picture caption. Derived PixAI tag summaries never enter this layer. */
   caption?: string
   /** Earlier engine workflows place the source caption directly in the editable description. */
@@ -76,13 +83,62 @@ export interface DraftReferenceInput {
 export function cloneReferenceInput(input: DraftReferenceInput | null | undefined, tags = input?.tags ?? []): DraftReferenceInput | null {
   const caption = input?.caption?.trim()
   const layout = parseAssistLayout(input?.layout)
-  if (!input || (!tags.length && !caption && !layout)) return null
+  if (!input || (!tags.length && !caption && !layout && !input.rawTags?.length && !input.rawCaption)) return null
   const keys = new Set(tags.map(normalizeKey))
   const characterTokens = input.characterTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
   const copyrightTokens = input.copyrightTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
   return { tags: [...tags], ...(caption ? { caption, ...(input.captionInEditor ? { captionInEditor: true } : {}) } : {}),
     ...(layout ? { layout } : {}),
+    ...(input.subjectMode ? { subjectMode: input.subjectMode } : {}),
+    ...(input.rawTags?.length ? { rawTags: [...input.rawTags] } : {}),
+    ...(input.rawCaption ? { rawCaption: input.rawCaption } : {}),
+    ...(input.sourceIdentityTerms?.length ? { sourceIdentityTerms: [...input.sourceIdentityTerms] } : {}),
     ...(characterTokens.length ? { characterTokens } : {}), ...(copyrightTokens.length ? { copyrightTokens } : {}) }
+}
+
+/** Validate stored or imported references before they become editable state. */
+export function parseReferenceInput(value: unknown): DraftReferenceInput | null {
+  if (!isRecord(value) || Array.isArray(value)) return null
+  const strings = (input: unknown) => Array.isArray(input)
+    ? input.filter((item): item is string => typeof item === 'string') : []
+  return cloneReferenceInput({
+    tags: [...new Set(strings(value.tags).map(tag => tag.trim()).filter(Boolean))],
+    rawTags: strings(value.rawTags),
+    rawCaption: stringValue(value.rawCaption),
+    sourceIdentityTerms: strings(value.sourceIdentityTerms),
+    caption: stringValue(value.caption),
+    captionInEditor: value.captionInEditor === true,
+    layout: parseAssistLayout(value.layout) ?? undefined,
+    characterTokens: strings(value.characterTokens),
+    copyrightTokens: strings(value.copyrightTokens),
+    subjectMode: value.subjectMode === 'free' || value.subjectMode === 'bound' ? value.subjectMode : undefined,
+  })
+}
+
+export type PromptCastSnapshot = {
+  coStars?: CastMember[]
+  castFormation?: CastFormation
+  leadCast?: CastMember
+  leadPosition?: number
+}
+
+export function readPromptCastSnapshot(value: unknown): PromptCastSnapshot {
+  if (!isRecord(value) || Array.isArray(value)) return {}
+  const coStars = parseCastMembers(value.coStars)
+  const castFormation = parseCastFormation(value.castFormation)
+  const leadCast = parseCastMember(value.leadCast)
+  const leadPosition = parseLeadPosition(value.leadPosition, coStars.length)
+  return { ...(coStars.length ? { coStars } : {}), ...(castFormation ? { castFormation } : {}),
+    ...(leadCast ? { leadCast } : {}), ...(leadPosition ? { leadPosition } : {}) }
+}
+
+export type ArtworkCastSnapshot = PromptCastSnapshot & {
+  coStarIds?: string[]
+}
+
+export function readArtworkCastSnapshot(value: unknown): ArtworkCastSnapshot {
+  const cast = readPromptCastSnapshot(value)
+  return { ...cast, ...(cast.coStars?.length ? { coStarIds: cast.coStars.map(member => member.characterId) } : {}) }
 }
 
 export function supplementalReferenceCaption(input: DraftReferenceInput | null, description: string): string {
@@ -99,7 +155,7 @@ export interface DraftRandomVariation {
   outfit: string[]
 }
 
-export interface PromptBuilderDraft {
+export interface PromptBuilderDraft extends PromptCastSnapshot {
   storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   randomVariation?: DraftRandomVariation | null
   sceneStyleBaseline?: DirectorControlValues

@@ -27,7 +27,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     mossSampler: 'euler' as MossSampler,
     mossAcceleration: MOSS_DEFAULT_ACCELERATION as MossAcceleration, mossTextPrecision: 'auto' as 'auto' | 'bf16' | 'fp8' | 'int8', mossCompile: false,
     mossSpectrumFlexWindow: MOSS_DEFAULT_FLEX_WINDOW,
-    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '', mossUseTaskPrompt: false } : {}) })
+    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '', mossLayoutContext: undefined as string | undefined, mossUseTaskPrompt: false } : {}) })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
@@ -452,7 +452,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     finally { initializing.value = false }
   }
   onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
-  return { modelOptions, alignment, maxSize, form, selectMossSampler, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
+  return { modelOptions, models, alignment, maxSize, form, selectMossSampler, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, canUpscale, upscaleResult, inputSize, progress, taskText,
     ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft,
     continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, clearResult, initialize }

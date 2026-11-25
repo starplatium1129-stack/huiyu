@@ -149,7 +149,7 @@
           :has-result="Boolean(displayResultUrl)"
           :error="generationError"
           :stopped="generationStopped"
-          @update:size="genBarSize = $event"
+          @update:size="setCanvasSize"
           @resize="actionBarHeight = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
@@ -213,7 +213,11 @@
 
         </template>
         <template #character>
-        <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }"><component :is="component" :current-traits="currentTraits" @selectSource="selectCharacterSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" /></AsyncPanel>
+        <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }">
+          <component :is="component" :current-traits="currentTraits" :engine="drawEngine" :canvas-size="genBarSize"
+            :size-manually-set="canvasSizeManuallySet" :custom-moss-layout="customMossLayout"
+            @selectSource="selectCharacterSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
+        </AsyncPanel>
         <section class="material-current-scene">
           <div><h3>这一幕</h3><button class="btn btn-quiet btn-sm" type="button" @click="openMaterials('scenes')">更换场景<ArchiveIcon name="chevron-down" /></button></div>
           <strong>{{ currentSceneTitle || '当前构想' }}</strong>
@@ -246,11 +250,11 @@
             :anima-disabled="!pb.isPopular && pb.char === 'triad' && !renderBindings.supportsDualCharacter('anima')"
             :krea-disabled="!pb.isPopular && pb.char === 'triad' && !renderBindings.supportsDualCharacter('krea2')"
             :before-switch="native.mode.value ? native.saveBeforeSwitch : undefined" @select-native="renderBindings.setDrawEngine" />
-          <AsyncPanel v-if="native.mode.value" :loader="loadNativeControls" label="绘制参数" v-slot="{ component }"><component :is="component" :drawing="native" :busy="generationBusy">
+          <AsyncPanel v-if="native.mode.value" :loader="loadNativeControls" label="绘制参数" v-slot="{ component }"><component :is="component" :drawing="native" :busy="generationBusy" @size-touched="canvasSizeManuallySet = true">
             <template #style><PromptInspectorStyle :bindings="styleBindings" engine="moss" /></template>
           </component></AsyncPanel>
           <AsyncPanel v-else :loader="loadInspectorRender" label="绘制参数" v-slot="{ component }"><component :is="component" :bindings="renderBindings">
-            <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :custom-size="animaSizeLimits" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
+            <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :custom-size="animaSizeLimits" :busy="generationBusy" @update:size="setCanvasSize" /></template>
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
           </component></AsyncPanel>
           <OutfitOverrideNotice v-if="outfitOverridden && !native.mode.value" />
@@ -351,6 +355,7 @@ import GenerationActionBar from '@/components/director/GenerationActionBar.vue'
 import GenerationSizePicker from '@/components/director/GenerationSizePicker.vue'
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 import { useDrawingCanvas } from '@/composables/prompt/useDrawingCanvas'
+import { isMossLayoutInput } from '@/utils/mossLayout'
 const loadNativeControls = () => import('./NativeDrawingControls.vue')
 const loadNativePrompt = () => import('./NativeDrawingPrompt.vue')
 const workspace = useDrawingCanvas(usePromptWorkspace())
@@ -425,6 +430,13 @@ deliveryBindings,
 dialogBindings
 } = workspace
 
+const canvasSizeManuallySet = ref(false)
+function setCanvasSize(value: string) {
+  canvasSizeManuallySet.value = true
+  genBarSize.value = value
+}
+const customMossLayout = computed(() => Boolean(native.mossLayout.value || native.usingMossTaskPrompt.value
+  || isMossLayoutInput(pb.visualDescription)))
 const animaSizeLimits = computed(() => drawEngine.value === 'anima'
   ? animaState.value.models.find(model => model.id === animaState.value.modelId)?.capabilities?.customSize
   : undefined)
@@ -460,12 +472,14 @@ const interrogateSubjectMode = computed<'free' | 'bound'>(() => pb.isUnbound ? '
 const interrogateAssistKey = 'aics_interrogate_assist_v1'
 const interrogateAssist = ref(false)
 try { interrogateAssist.value = localStorage.getItem(interrogateAssistKey) === '1' } catch { /* Storage can be unavailable. */ }
-const interrogateLayout = computed(() => interrogateAssist.value && drawEngine.value === 'moss')
+const interrogateLayout = computed(() => interrogateAssist.value
+  && (drawEngine.value === 'moss' || drawEngine.value === 'anima' && !pb.isUnbound))
 function setInterrogateAssist(value: boolean) {
   interrogateAssist.value = value
   try { localStorage.setItem(interrogateAssistKey, value ? '1' : '0') } catch { /* Keep the current session usable. */ }
 }
-const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
+const drawingHasContent = computed(() => !!(pb.cast.length > 1 && (drawEngine.value === 'moss' || drawEngine.value === 'anima')
+  || pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
   || !pb.referenceInput?.captionInEditor && pb.referenceInput?.caption
   || drawEngine.value === 'moss' && pb.referenceInput?.layout
   || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value || native.usingMossTaskPrompt.value))

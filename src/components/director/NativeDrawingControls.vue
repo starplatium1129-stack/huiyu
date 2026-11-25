@@ -8,8 +8,13 @@ import type { NativeDrawing } from '@/composables/prompt/useNativeDrawing'
 import { useDrawingNavigation } from '@/composables/prompt/useDrawingNavigation'
 import { useRoute, useRouter } from 'vue-router'
 const props = defineProps<{ drawing: NativeDrawing; busy: boolean }>()
+const emit = defineEmits<{ sizeTouched: [] }>()
 const state = computed(() => props.drawing.session.value)
 const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter()
+function setSize(value: string) {
+  props.drawing.setSize(value)
+  emit('sizeTouched')
+}
 function editOriginal() {
   if (state.value?.task.value) void router.push({ path: '/prompt-builder', query: { ...route.query, editor: 'qwen', job: state.value.task.value.taskId } })
   else void navigation.editImage(state.value?.sourceUrl.value || '')
@@ -21,7 +26,7 @@ function editOriginal() {
     <template v-if="state">
       <div class="native-field"><label for="native-drawing-model">基础模型</label><StudioSelect id="native-drawing-model" v-model="state.form.modelId" label="基础模型" size="sm" :options="state.modelOptions" :disabled="drawing.locked.value" /></div>
       <section class="native-readiness" aria-label="模型准备状态"><p>{{ state.statusError.value || state.selected.value?.unavailableReason || '基于角色、场景及画面描述生成。' }}</p><div class="native-buttons"><button class="btn btn-quiet btn-sm" type="button" :disabled="state.checking.value || busy" @click="state.refresh()">重新检查</button><RouterLink v-if="!state.selected.value?.available" class="btn btn-ghost btn-sm" :to="{ path: '/control', query: { engine: 'native', model: state.form.modelId } }">准备模型</RouterLink></div></section>
-      <GenerationSizePicker :engine="drawing.mode.value || ''" :size="drawing.size.value" :anima-sizes="drawing.sizes.value" :busy="drawing.locked.value" @update:size="drawing.setSize" />
+      <GenerationSizePicker :engine="drawing.mode.value || ''" :size="drawing.size.value" :anima-sizes="drawing.sizes.value" :busy="drawing.locked.value" @update:size="setSize" />
       <slot v-if="drawing.mode.value === 'moss'" name="style" />
       <section v-if="drawing.mode.value === 'moss' && state.result.value" class="native-readiness" aria-label="Remacri 结果放大">
         <p>Remacri · 结果放大</p>
@@ -34,7 +39,7 @@ function editOriginal() {
       </section>
       <div v-if="state.source.value || state.restoredInputMissing.value" class="native-buttons"><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="editOriginal">继续编辑原图</button><button class="btn btn-quiet btn-sm" type="button" :disabled="drawing.locked.value" @click="state.removeSource()">转为文生图</button></div>
       <details class="inspector-route"><StudioDisclosureSummary>高级调整 · {{ state.turbo.value ? '8' : state.form.steps }} 步 · {{ state.randomSeed.value ? '随机种子' : '固定种子' }}</StudioDisclosureSummary><div class="native-advanced">
-        <div class="native-pair"><div class="native-field"><label for="native-width">宽度（px）</label><input id="native-width" v-model.number="state.form.width" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" /></div><div class="native-field"><label for="native-height">高度（px）</label><input id="native-height" v-model.number="state.form.height" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" /></div></div>
+        <div class="native-pair"><div class="native-field"><label for="native-width">宽度（px）</label><input id="native-width" v-model.number="state.form.width" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" @input="emit('sizeTouched')" /></div><div class="native-field"><label for="native-height">高度（px）</label><input id="native-height" v-model.number="state.form.height" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" @input="emit('sizeTouched')" /></div></div>
         <p id="native-size-help">每边 512–{{ state.maxSize }} px，为 {{ state.alignment }} 的倍数。</p>
         <template v-if="!state.turbo.value">
           <div class="native-field"><label for="native-negative">模型负向描述</label><textarea id="native-negative" v-model="state.form.negative" class="textarea" rows="3" maxlength="8000" :disabled="drawing.locked.value" spellcheck="false" autocorrect="off" autocapitalize="off" /></div>

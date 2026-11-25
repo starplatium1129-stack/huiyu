@@ -1,5 +1,24 @@
 export type PromptFamily = 'sd' | 'anima' | 'krea2'
 
+export type CastFormation = 'row' | 'staggered'
+
+export interface CastMember {
+  source: 'studio' | 'popular'
+  characterId: string
+  outfitId: string
+  outfitExplicit?: boolean
+  action?: string
+}
+
+export interface MossPromptSubject {
+  caption: string
+  side?: import('../utils/mossLayout').MossLayoutSide
+  identityCaption?: string
+  outfitCaption?: string
+  outfitExplicit?: boolean
+  action?: string
+}
+
 export interface PromptSceneContext {
   compositionIntent?: import('./sceneBlueprint').BlueprintCompositionIntent
   title?: string
@@ -29,12 +48,16 @@ export interface PromptPlan {
   freeSubject?: boolean
   mossLayout?: {
     compositionIntent?: PromptSceneContext['compositionIntent']
-    subjects?: readonly { caption: string; side?: import('../utils/mossLayout').MossLayoutSide }[]
+    subjects?: readonly MossPromptSubject[]
+    castLayout?: boolean
+    formation?: CastFormation
+    referenceIdentityTerms?: string[]
     referenceLayout?: {
-      layout: import('../api/interrogateResult').InterrogateAssistLayout
+      layout: import('./interrogate').InterrogateAssistLayout
       boundSubject?: boolean
     }
   }
+  animaCast?: { tags: string[][]; direction: string }
   quality: string[]; rating: string[]; identity: string[]; exactControls: string[]
   /** Name/alias classification only; appearance and outfit tokens stay in ordinary tags. */
   characterTokens: string[]

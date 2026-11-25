@@ -3,7 +3,7 @@ import { fetchImageTaskResult, type ImageTask } from '@/api/imageTask'
 import { blobArtworkResult } from '@/composables/manga/mangaResult'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
-import { mossArtworkMetadata } from '@/application/artwork/mossArtworkMetadata'
+import { mossArtworkMetadata, mossArtworkRecipe } from '@/application/artwork/mossArtworkMetadata'
 
 export const imageTaskArtworkId = (task: ImageTask, index = 0) => task.runtimeTask ? taskArtworkId(task.taskId, index) : `image-job-${task.taskId}-${index}`
 export function createImageTaskArchiver(check: () => void, signal: AbortSignal) {
@@ -35,7 +35,7 @@ export function createImageTaskArchiver(check: () => void, signal: AbortSignal) 
       if (!manga) for (const key of ['character', 'characterId', 'outfitId', 'blueprintId', 'story', 'visualDescription']) {
         if (typeof context?.[key] === 'string') record[key] = context[key]
       }
-      if (task.kind === 'moss') Object.assign(record, mossArtworkMetadata(input, record.sceneTitle!))
+      if (task.kind === 'moss') Object.assign(record, mossArtworkRecipe(context), mossArtworkMetadata(input, record.sceneTitle!))
       result = blobArtworkResult(image, record, check); results.set(id, result)
     }
     const saved = await result.save()

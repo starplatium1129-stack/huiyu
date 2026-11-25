@@ -33,6 +33,11 @@ const STABLE_DETAILS_RE = /^(?:freckles|facial_markings|birthmark|(?:facial|face
 const ACCESSORY_RE = /^(?:[a-z0-9]+_)*(?:headband|hairband|earrings?|ear_clips?|hairclips?|hair_clips?|hair_ribbons?|hair_ornaments?|hair_flower|necklace|pendant|brooch|bracelet|ribbon|bow|crown|tiara|glasses|goggles)$/
 const TEMPORARY_BODY_STATE_RE = /^(?:wet_(?:hair|skin)|messy_hair|windblown_hair|red_ears|sweaty_skin|water_droplets|sweat|bare_(?:shoulders|arms|legs|back|streaks)|backless|off_shoulder|collarbone|shoulder_blade)$/
 
+export function isReferenceWardrobeTag(token: string): boolean {
+  const key = normalizeKey(token)
+  return isGarmentToken(key) || ACCESSORY_RE.test(key)
+}
+
 export function isStableIdentityToken(token: string): boolean {
   const key = normalizeKey(token)
   return Boolean(identityDomainOf(key)) || SPECIES.has(key)
@@ -82,7 +87,7 @@ export function splitReferenceTags(
     const atomic = isAtomicTag(raw, key, catalogKeys)
     // Historical exactTokens can include garments. A reliable clothing tag is
     // still transferable when supplied in the caller's character-name inventory.
-    if (atomic && (isGarmentToken(key) || ACCESSORY_RE.test(key))) {
+    if (atomic && isReferenceWardrobeTag(key)) {
       result.tags.push(key)
     } else if (knownCharacters.has(key) || characterKeys.has(key)) {
       result.excludedIdentity.push(key)

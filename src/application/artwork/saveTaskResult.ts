@@ -5,6 +5,7 @@ import { runtimeTaskResultContext, runtimeTaskRecipe } from '@/utils/runtimeTask
 import { mangaTaskArtwork } from './mangaTaskResult'
 import { qwenTaskArtwork } from './qwenTaskResult'
 import { taskArtworkId } from './taskResultIdentity'
+import { parseReferenceInput, readArtworkCastSnapshot } from '@/utils/promptBuilderPersistence'
 
 /** Task outputs already live in the workspace; save adds an artwork reference. */
 export async function saveTaskResult(task: TaskRecord, index: number, deps: {
@@ -26,6 +27,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
   const nativeImage = task.kind === 'qwen' || task.kind === 'moss'
   const context = nativeImage ? {} : runtimeTaskResultContext(task) as Record<string, unknown>
   const history = context.history as Record<string, unknown>
+  const cast = readArtworkCastSnapshot(history)
   const id = taskArtworkId(task.taskId, index)
   const existing = await readArtwork(id)
   if (existing && existing.image_id !== output.alias) throw new Error('作品编号已对应另一张图片，请核对作品册')
@@ -41,7 +43,10 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
       prompt: recipe.prompt ?? '', negative: recipe.negative ?? '',
       character: typeof context.characterId === 'string' && context.characterId.trim()
         ? context.characterId : String(context.char || input.character || history.character || ''),
-      characterId: typeof context.characterId === 'string' ? context.characterId : undefined,
+      characterId: typeof context.characterId === 'string' && context.characterId ? context.characterId
+        : cast.coStars?.length && typeof context.char === 'string' ? context.char : typeof context.characterId === 'string' ? context.characterId : undefined,
+      ...cast,
+      referenceInput: history.referenceInput === undefined ? undefined : parseReferenceInput(history.referenceInput),
       outfitId: typeof context.outfitId === 'string' ? context.outfitId : undefined,
       blueprintId: typeof context.blueprintId === 'string' ? context.blueprintId : undefined,
       scene: context.characterId ? typeof context.blueprintId === 'string' ? context.blueprintId : null : typeof context.sceneId === 'string' ? context.sceneId : null,

@@ -21,11 +21,12 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 import { mossArtistTags } from '@/utils/mossPrompt.ts'
 import { withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
+import { resolveBoundReference } from '@/utils/promptCastPlan'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
   | 'manualTags' | 'modelProfiles' | 'outfitOverride' | 'popularCharacters' | 'randomVariation' | 'sceneBlueprints' | 'selections'
-  | 'directorSources' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId' | 'sdParams' | 'referenceInput'>
+  | 'directorSources' | 'subject' | 'tags' | 'visualDescription' | 'char' | 'sceneId' | 'sdParams' | 'referenceInput' | 'cast'>
 
 /**
  * 热门角色无 LoRA 模式的 Prompt 组装。
@@ -87,10 +88,12 @@ export function usePopularPromptAssembly(
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !character.value || !outfit.value) return null
+    const { reference, description, manual } = resolveBoundReference(pb.referenceInput, pb.visualDescription, [...pb.manualTags], pb.popularCharacters, pb.tags)
+    const action = pb.cast.length === 1 ? pb.cast[0]?.action?.trim() : ''
     const refCaption = !subject.blueprintId && (target === 'krea2' || target === 'moss')
-      ? supplementalReferenceCaption(pb.referenceInput, pb.visualDescription)
+      ? supplementalReferenceCaption(reference, description)
       : ''
-    const referenceLayout = !subject.blueprintId && target === 'moss' ? pb.referenceInput?.layout ?? null : null
+    const referenceLayout = !subject.blueprintId && target === 'moss' ? reference?.layout ?? null : null
     return compilePromptRecipe({
       kind: 'popular',
       randomSetting: !refCaption && !subject.blueprintId && randomVariation.value?.source === '',
@@ -101,7 +104,7 @@ export function usePopularPromptAssembly(
       blueprint: blueprint.value,
       engine: target,
       profile: target === 'moss' ? null : profile.value,
-      manual: withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride),
+      manual: withoutSuppressedOutfitTags(manual, pb.outfitOverride),
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
       directorSources: pb.directorSources,
@@ -109,7 +112,7 @@ export function usePopularPromptAssembly(
       palette: colorMoodTokens.value,
       composition: pb.selections.composition,
       matureTokens: matureTokenSet.value,
-      visualDescription: pb.visualDescription,
+      visualDescription: action ? [description, action].filter(Boolean).join('\n') : description,
       negativeCustom: pb.sdParams.negativeCustom,
       artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTagsForEngine(activeArtistStyleIds.value, target),
       artistProse: target === 'moss' ? '' : artistStyleProse(activeArtistStyleIds.value, target),

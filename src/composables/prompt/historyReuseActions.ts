@@ -24,7 +24,12 @@ export function historyReuseActions(deps: HistoryReuseDeps, state: HistoryReuseS
   }
   async function request(record: ArtworkRecord, variant: boolean, choose: boolean) {
     if (blocked()) return false
-    if (!choose) { state.request.value = null; return restore(record, variant, 'full', state.revision) }
+    if (!choose) {
+      state.request.value = null
+      const applied = await restore(record, variant, 'full', state.revision)
+      if (applied && record.engine === 'moss-image') deps.onApplied(record, 'full')
+      return applied
+    }
     const detached = tools.prepareHistoryReuse(record)
     if (!detached) { state.request.value = null; return false }
     state.request.value = { record: detached, variant }
@@ -35,7 +40,7 @@ export function historyReuseActions(deps: HistoryReuseDeps, state: HistoryReuseS
     if (!pending || blocked()) return false
     const applied = await restore(pending.record, pending.variant, selection, expected)
     if (expected === state.revision) {
-      if (applied) deps.onApplied()
+      if (applied) deps.onApplied(pending.record, selection)
       state.request.value = null
     }
     return applied

@@ -1,17 +1,9 @@
+import type { InterrogateAssistLayout, InterrogateAssistLayoutCanvas, InterrogateAssistLayoutItem } from '../types/interrogate'
+export type { InterrogateAssistLayout, InterrogateAssistLayoutCanvas, InterrogateAssistLayoutItem } from '../types/interrogate'
+
 export type InterrogateMode = 'tag' | 'caption'
 export type InterrogateAssistProvider = 'chatgpt' | 'api'
 export type InterrogateSubjectMode = 'free' | 'bound'
-export type InterrogateAssistLayoutCanvas = 'single' | 'multi_panel' | 'collage'
-export interface InterrogateAssistLayoutItem {
-  label: 'character' | 'object' | 'text'
-  caption: string
-  bbox: [number, number, number, number]
-  text?: string
-}
-export interface InterrogateAssistLayout {
-  canvas: InterrogateAssistLayoutCanvas
-  items: InterrogateAssistLayoutItem[]
-}
 export interface InterrogateResult {
   engine: 'pixai'
   model: 'pixai-tagger-v1.0'

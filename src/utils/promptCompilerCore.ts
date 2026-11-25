@@ -150,15 +150,16 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
   }
   const tags = allTags(plan)
   if (capabilities.promptFormat === 'anima-tags') {
+    const shared = orderedAnimaTags(plan, resolveCameraTags(tags, plan.manual, plan.camera), profile?.strip_quality_tokens === true)
     const formatted = formatPromptForEngine(
-      orderedAnimaTags(plan, resolveCameraTags(tags, plan.manual, plan.camera), profile?.strip_quality_tokens === true),
+      [shared, ...(plan.animaCast?.tags.map(group => group.join(', ')) ?? [])].filter(Boolean).join(' BREAK '),
       'anima',
       plan.preserveTokens.concat(profile?.exact_tokens || []),
       profile?.exact_prefixes || [],
     )
     const direction = buildAnimaVisualDirection(plan)
     // 换行是可审计的标签/散文边界，不参与模型 token 去重或精确 LoRA 控制。
-    return { prompt: [formatted, direction].filter(Boolean).join('\n'), negative: '' }
+    return { prompt: [formatted, direction, plan.animaCast?.direction].filter(Boolean).join('\n'), negative: '' }
   }
   return { prompt: tags.join(', '), negative: plan.negative.join(', ') }
 }

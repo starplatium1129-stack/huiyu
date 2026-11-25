@@ -69,7 +69,7 @@ export function studioPromptProfile(
   }
 }
 
-function studioSubjectProse(character: string): string {
+export function studioSubjectProse(character: string): string {
   if (character === 'nene') return 'Ayachi Nene is the only prominent character, a woman with white hair, purple eyes, an ahoge, and pink hair ribbons'
   if (character === 'natsume') return 'Shiki Natsume is the only prominent character, a woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye'
   return ''

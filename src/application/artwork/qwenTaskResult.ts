@@ -1,7 +1,7 @@
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from './taskResultIdentity'
-import { mossArtworkMetadata } from './mossArtworkMetadata'
+import { mossArtworkMetadata, mossArtworkRecipe } from './mossArtworkMetadata'
 import { mossModels, qwenModels } from '@/config/directImageModels'
 
 export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord {
@@ -28,7 +28,7 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
     if (typeof value === 'string' && value.length <= 12000) record[key] = value
   }
   if (typeof context?.sceneTitle === 'string' && context.sceneTitle.trim() && context.sceneTitle.length <= 500) record.sceneTitle = context.sceneTitle
-  if (moss) Object.assign(record, mossArtworkMetadata(input, record.sceneTitle!))
+  if (moss) Object.assign(record, mossArtworkRecipe(context), mossArtworkMetadata(input, record.sceneTitle!))
   if (record.width && record.height) record.size = `${record.width}x${record.height}`
   return record
 }

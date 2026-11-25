@@ -10,8 +10,7 @@ import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '@/config/prom
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
-import { cloneReferenceInput, parseOutfitOverride, isSDParamKey, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
-import { parseAssistLayout } from '@/api/interrogateResult'
+import { cloneReferenceInput, parseReferenceInput, readPromptCastSnapshot, parseOutfitOverride, isSDParamKey, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit, type SceneBlueprint } from '@/utils/popularContent'
 import type { DrawEngine } from '@/storage/settingsRepository'
 
@@ -111,6 +110,10 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
 
   const warnings: string[] = []
   const subject = draft.subject === 'popular' ? 'popular' : 'studio'
+  if (draft.coStars?.some(member => member.source === 'popular')) {
+    await pb.loadPopularCatalog()
+    if (ctx.isCurrent && !ctx.isCurrent()) return interrupted()
+  }
   if (subject === 'popular') {
     const character = findCharacter(pb.popularCharacters, draft.characterId || '')
     const outfit = character
@@ -155,6 +158,10 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }, draft.directorSources, draft.sceneStyleBaseline ?? pb.inheritedDirectorValues)
   pb.manualTags = new Set(stringList(draft.manualTags))
   pb.referenceInput = cloneReferenceInput(draft.referenceInput)
+  pb.coStars = draft.coStars ?? []
+  pb.castFormation = draft.castFormation ?? 'row'
+  pb.leadCast = draft.leadCast ?? null
+  pb.leadPosition = draft.leadPosition ?? 0
   pb.setArtistStyleIds(draft.artistStyleIds || [])
   if (draft.projectId !== undefined) pb.projectId = draft.projectId
 
@@ -259,15 +266,6 @@ function draftStrings(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
 }
 
-function parseReferenceInput(value: unknown): DraftReferenceInput | null {
-  if (!draftRecord(value)) return null
-  const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
-  const layout = parseAssistLayout(value.layout) ?? undefined
-  return cloneReferenceInput({ tags, caption: draftText(value.caption), captionInEditor: value.captionInEditor === true,
-    ...(layout ? { layout } : {}),
-    characterTokens: draftStrings(value.characterTokens), copyrightTokens: draftStrings(value.copyrightTokens) })
-}
-
 function parseRandomVariation(value: unknown): DraftRandomVariation | null {
   if (!draftRecord(value) || typeof value.prompt !== 'string' || typeof value.prose !== 'string' || typeof value.source !== 'string' || typeof value.context !== 'string') return null
   return { context: value.context, source: value.source, prompt: value.prompt, prose: value.prose, tags: draftStrings(value.tags), outfit: draftStrings(value.outfit) }
@@ -324,6 +322,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     : undefined
 
   return {
+    ...readPromptCastSnapshot(value),
     storyOrigin: readStoryOrigin(value.storyOrigin),
     updatedAt,
     randomVariation: parseRandomVariation(value.randomVariation),
@@ -426,6 +425,10 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
     } else {
       subject.value = { kind: 'studio' }
     }
+    state.coStars.value = d.coStars ?? []
+    state.castFormation.value = d.castFormation ?? 'row'
+    state.leadCast.value = d.leadCast ?? null
+    state.leadPosition.value = d.leadPosition ?? 0
     outfitOverride.value = parseOutfitOverride(d.outfitOverride)
     randomVariation.value = d.randomVariation ? JSON.parse(JSON.stringify(d.randomVariation)) : null
   }

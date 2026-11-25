@@ -5,13 +5,14 @@ import type { SceneBlueprint } from '@/types/sceneBlueprint'
 import { profileLocalStorage as localStorage, writeProfileLocal } from '../../platform/web/profileStorage.ts'
 import type { ProfileWriteReceipt } from '@/platform/web/profileWriteReceipt'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
-import { cloneReferenceInput, parseOutfitOverride, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { cloneReferenceInput, parseOutfitOverride, readPromptCastSnapshot, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { tempResultOwner, sameTempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import type { DrawSubject } from '@/utils/popularContent'
 import type { CharKey, Selections } from '@/types/promptHistory'
 import type { Scene } from '@/types/scene'
+import type { CastFormation, CastMember } from '@/types/prompt'
 
 export interface PromptDraftState {
   storyOrigin: Ref<StoryOrigin | undefined>
@@ -31,6 +32,10 @@ export interface PromptDraftState {
   manualTags: Ref<Set<string>>
   outfitOverride: Ref<DraftOutfitOverride | null>
   referenceInput: Ref<DraftReferenceInput | null>
+  coStars: Ref<CastMember[]>
+  castFormation: Ref<CastFormation>
+  leadCast: Ref<CastMember | null>
+  leadPosition: Ref<number>
   randomVariation: Ref<DraftRandomVariation | null>
   artistStyleIds: Ref<string[]>
   sceneBaseStory: Ref<string>
@@ -144,6 +149,12 @@ export function usePromptDraft(state: PromptDraftState) {
       sdParamsTouched: [...sdParamsTouched.value],
       projectId: projectId.value,
       ...subjectSnapshot,
+      ...readPromptCastSnapshot({
+        coStars: state.coStars.value,
+        castFormation: state.castFormation.value === 'staggered' ? 'staggered' : undefined,
+        leadCast: state.leadCast.value,
+        leadPosition: state.leadPosition.value,
+      }),
     }
   }
 
@@ -180,6 +191,8 @@ export function usePromptDraft(state: PromptDraftState) {
       if (draft?.subject === 'popular' && draft.characterId) {
         if (draft.blueprintId) await state.loadPopularCharacter(draft.characterId)
         else await state.loadPopularCatalog()
+      } else if (draft?.coStars?.some(member => member.source === 'popular')) {
+        await state.loadPopularCatalog()
       }
       if (disposed || revision !== restoreRevision || !isCurrent() || !sameTempResultOwner(owner)
         || localStorage.getItem(DRAFT_KEY) !== raw || fingerprint() !== before) return false
@@ -199,7 +212,8 @@ export function usePromptDraft(state: PromptDraftState) {
   }
 
   // Clearing or editing only the reference outfit does not touch manualTags.
-  watch([outfitOverride, referenceInput, state.directorSources, state.storyOrigin], saveDraft, { deep: true })
+  watch([outfitOverride, referenceInput, state.directorSources, state.storyOrigin,
+    state.coStars, state.castFormation, state.leadCast, state.leadPosition], saveDraft, { deep: true })
 
   onScopeDispose(() => {
     if (draftTimer) void persistDraft().catch(() => {})
@@ -210,5 +224,5 @@ export function usePromptDraft(state: PromptDraftState) {
     window.removeEventListener('beforeunload', beforeUnload)
     window.removeEventListener('huiyu:profile-sync-complete', refreshConfirmedDraft)
   })
-  return { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave }
+  return { snapshotDraft, saveDraft, persistDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave }
 }

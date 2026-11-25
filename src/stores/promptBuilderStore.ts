@@ -31,7 +31,9 @@ import {
   type DraftRandomVariation,
   type SDParams,
 } from '@/utils/promptBuilderPersistence'
-import type { DrawSubject } from '@/utils/popularContent'
+import { defaultOutfit, type DrawSubject } from '@/utils/popularContent'
+import type { CastFormation, CastMember } from '@/types/prompt'
+import { castMemberKey, parseCastMember, parseLeadPosition } from '@/utils/promptCast'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { CHAR_PROMPT, EMOTION } from '@/config/promptConstants'
@@ -62,6 +64,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   /** 参考图或衣橱选择的服装；清空后恢复场景原有衣装。 */
   const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const referenceInput = ref<DraftReferenceInput | null>(null)
+  const coStars = ref<CastMember[]>([])
+  const castFormation = ref<CastFormation>('row')
+  const leadCast = ref<CastMember | null>(null)
+  const leadPosition = ref(0)
   const randomVariation = ref<DraftRandomVariation | null>(null)
   watch([char, sceneId, subject, outfitOverride], ([nextChar, nextScene, next, override], [oldChar, oldScene, old, oldOverride]) => {
     if (!randomVariation.value) return
@@ -215,6 +221,32 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   })
 
   const charPrompt = computed(() => CHAR_PROMPT[char.value] ?? '')
+  const castLead = computed<CastMember | null>(() => {
+    const current = subject.value
+    const lead = leadCast.value
+    const action = lead?.source === current.kind && lead.characterId === (current.kind === 'popular' ? current.characterId : char.value)
+      ? lead.action : undefined
+    const primary = parseCastMember(current.kind === 'popular'
+      ? { ...current, source: 'popular' }
+      : lead?.source === 'studio' && lead.characterId === char.value
+        ? lead : { source: 'studio', characterId: char.value, outfitId: '' })
+    return primary ? { ...primary, action } : null
+  })
+  const cast = computed<CastMember[]>(() => {
+    if (!castLead.value) return []
+    const primary = castLead.value
+    const companions = coStars.value.filter(member => castMemberKey(member) !== castMemberKey(primary)).slice(0, 4)
+    companions.splice(parseLeadPosition(leadPosition.value, companions.length), 0, primary)
+    return companions
+  })
+
+  let warnedFreeReference: DraftReferenceInput | null = null
+  watch(isUnbound, (unbound, wasUnbound) => {
+    if (wasUnbound && !unbound && referenceInput.value?.subjectMode === 'free' && warnedFreeReference !== referenceInput.value) {
+      warnedFreeReference = referenceInput.value
+      flash('参考图含原人物外观。可重新反推，仅提取动作、服装和环境。', 4400)
+    }
+  })
 
   const loraLine = computed(() => {
     if (isUnbound.value || !characters.value.length) return ''
@@ -255,6 +287,9 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (story.value === inherited) story.value = ''
   }
   function setChar(c: CharKey) {
+    if (!isPopular.value && char.value !== c) {
+      leadCast.value = null
+    }
     if (!isPopular.value && char.value !== c) outfitOverride.value = null
     if (storyOrigin.value && !isPopular.value) storyOrigin.value = ['nene','natsume'].includes(c) ? { ...storyOrigin.value, characterId: c, outfitId: undefined } : undefined
     const scene = activeScene.value
@@ -270,7 +305,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     storyOrigin.value = undefined
     clearInheritedStory()
     subject.value = { kind: 'studio' }
-    clearReferenceInput()
+    leadCast.value = null
     outfitOverride.value = null
   }
   function setUnboundSubject() {
@@ -283,6 +318,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     for (const token of override?.tokens ?? []) manualTags.value.add(token)
     subject.value = { kind: 'studio' }
     char.value = 'none'
+    coStars.value = []; leadCast.value = null; leadPosition.value = 0; castFormation.value = 'row'
     sceneId.value = null; sceneBaseStory.value = ''
     outfitOverride.value = null
     selections.emotion = []; selections.shot = null; selections.lighting = null; selections.composition = null
@@ -291,11 +327,84 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
+    const prior = subject.value
+    if (prior.kind !== 'popular' || prior.characterId !== characterId) leadCast.value = null
     clearInheritedStory(blueprintId)
     if (storyOrigin.value) storyOrigin.value = blueprintId ? undefined : { ...storyOrigin.value, characterId, outfitId, outfitProse: undefined }
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId, outfitExplicit: options.outfitExplicit }
-    if (!options.preserveReference) clearReferenceInput()
+    if (!options.preserveReference && (blueprintId || referenceInput.value?.subjectMode !== 'free')) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
+  }
+
+  function addCoStar(member: CastMember) {
+    const parsed = parseCastMember(member)
+    const lead = castLead.value
+    if (!parsed || !lead || cast.value.length >= 5
+      || cast.value.some(current => castMemberKey(current) === castMemberKey(parsed))) return
+    applyCastOrder([...cast.value, parsed], lead)
+  }
+  function applyCastOrder(members: CastMember[], primary: CastMember) {
+    const previous = castLead.value
+    if (previous && castMemberKey(previous) !== castMemberKey(primary)) {
+      storyOrigin.value = undefined
+      outfitOverride.value = null
+      const oldSubject = subject.value
+      if (primary.source !== oldSubject.kind
+        || activeScene.value && !sceneSupportsCharacter(activeScene.value, primary.characterId)
+        || oldSubject.kind === 'popular' && oldSubject.blueprintId) {
+        clearInheritedStory()
+        sceneId.value = null; sceneBaseStory.value = ''
+        clearInheritedDirectorValues()
+      }
+    }
+    if (primary.source === 'popular') {
+      const current = subject.value
+      const character = popularCharacters.value.find(item => item.id === primary.characterId)
+      const outfitId = primary.outfitId || (character ? defaultOutfit(character).id : '')
+      if (current.kind !== 'popular' || current.characterId !== primary.characterId
+        || current.outfitId !== outfitId || current.outfitExplicit !== primary.outfitExplicit) subject.value = {
+        kind: 'popular', characterId: primary.characterId,
+        outfitId,
+        outfitExplicit: primary.outfitExplicit,
+        blueprintId: current.kind === 'popular' && current.characterId === primary.characterId ? current.blueprintId : null,
+      }
+    } else {
+      if (subject.value.kind !== 'studio') subject.value = { kind: 'studio' }
+      char.value = primary.characterId as 'nene' | 'natsume'
+    }
+    leadCast.value = { ...primary }
+    const primaryIndex = members.findIndex(member => castMemberKey(member) === castMemberKey(primary))
+    leadPosition.value = Math.max(0, primaryIndex)
+    coStars.value = members.filter(member => castMemberKey(member) !== castMemberKey(primary))
+  }
+  function updateCastMember(index: number, patch: Partial<Pick<CastMember, 'outfitId' | 'outfitExplicit' | 'action'>>) {
+    const member = cast.value[index]
+    const lead = castLead.value
+    if (!member || !lead) return
+    // Keep the space at the end while the user is typing a multi-word action.
+    const updated = { ...member, ...patch, action: patch.action?.replace(/[\r\n]+/g, ' ').slice(0, 240) ?? member.action }
+    const isLead = castMemberKey(member) === castMemberKey(lead)
+    if (isLead && patch.outfitId !== undefined) outfitOverride.value = null
+    applyCastOrder(cast.value.map((current, slot) => slot === index ? updated : current), isLead ? updated : lead)
+  }
+  function moveCastMember(from: number, to: number) {
+    const members = [...cast.value]
+    if (!castLead.value || !members[from] || !members[to] || from === to) return
+    const moving = members[from]
+    members[from] = members[to]
+    members[to] = moving
+    applyCastOrder(members, castLead.value)
+  }
+  function selectCastLead(index: number) {
+    const member = cast.value[index]
+    if (member && castLead.value && castMemberKey(member) !== castMemberKey(castLead.value)) applyCastOrder(cast.value, member)
+  }
+  function removeCastMember(index: number) {
+    const members = cast.value
+    const lead = castLead.value
+    if (!lead || members.length < 2 || !members[index]) return
+    const next = members.filter((_, slot) => slot !== index)
+    applyCastOrder(next, castMemberKey(members[index]) === castMemberKey(lead) ? next[0] : lead)
   }
   function setPopularBlueprint(blueprintId: string | null) {
     if (blueprintId) storyOrigin.value = undefined
@@ -436,7 +545,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, loadPopularCatalog, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, persistDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, loadPopularCatalog, manualTags, outfitOverride, referenceInput, coStars, castFormation, leadCast, leadPosition, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -470,6 +579,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     storyOrigin, story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, directorSources, inheritedDirectorValues, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
+    cast, castLead, coStars, castFormation, leadCast, leadPosition, addCoStar, updateCastMember, moveCastMember, selectCastLead, removeCastMember,
     scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
     loadPopularCatalog,
@@ -485,7 +595,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     restoreDirectorState, clearInheritedDirectorValues,
     setStudioSubject, setUnboundSubject, setPopularSubject, setPopularBlueprint,
     loadData, loadHistory,
-    saveDraft, restoreDraft, snapshotDraft, draftSaveState, draftSaveError, retryDraftSave,
+    saveDraft, persistDraft, restoreDraft, snapshotDraft, draftSaveState, draftSaveError, retryDraftSave,
     commitHistoryEntry, removeHistoryEntry, restoreHistoryEntry,
     sdParamsTouched, markParamTouched, applyModelProfile, resetParamsToProfile,
   }

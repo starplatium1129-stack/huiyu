@@ -5,9 +5,18 @@ import { useUnboundPromptAssembly } from '@/composables/prompt/useUnboundPromptA
 import type { PromptEngine } from '@/utils/promptPolicy'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
-import { tokenize } from '@/utils/promptPrimitives'
+import { normalizeKey, tokenize } from '@/utils/promptPrimitives'
 import type { PromptPreviewContext } from '@/utils/promptPreview'
-export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & { readonly isPopular: boolean }
+import { buildCastPlan, resolveBoundReference } from '@/utils/promptCastPlan'
+import { cleanCastNegative, referenceCharacterCount } from '@/utils/promptCast'
+import { renderPromptPlan } from '@/utils/promptCompilerCore'
+import { analyzeParts, checkArtDirection } from '@/utils/promptPolicy'
+import type { CastFormation, PromptPlan } from '@/types/prompt'
+export type UnifiedPromptAssemblyState = PromptAssemblyState & PopularPromptAssemblyState & {
+  readonly isPopular: boolean
+  readonly castFormation: CastFormation
+  readonly leadPosition: number
+}
 
 /**
  * 统一 Prompt 组装出口（P1 重构）
@@ -26,24 +35,40 @@ export function useUnifiedPromptAssembly(
   const unbound = useUnboundPromptAssembly(pb, engine, studio.modelProfile)
   const active = computed(() => pb.isPopular ? popular : pb.char === 'none' ? unbound : studio)
 
-  const positivePrompt = computed(() => active.value.positivePrompt.value)
-  const negativePrompt = computed(() => active.value.negativePrompt.value)
-  const previewPrompt = computed(() => active.value.previewPrompt.value)
-  const promptReport = computed(() => active.value.promptReport.value)
-  const artViolations = computed(() => active.value.artViolations.value)
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
-  const structuredPlan = computed(() => active.value.structuredPlan.value)
-  const mossPlan = computed(() => active.value.mossPlan.value)
+  function withCast(plan: PromptPlan | null, target: 'anima' | 'moss') {
+    if (!plan || !pb.cast.length || (pb.cast.length === 1 && (target !== 'moss' || referenceCharacterCount(pb.referenceInput?.layout) < 2))) return plan
+    const resolved = resolveBoundReference(pb.referenceInput, pb.visualDescription, [...pb.manualTags], pb.popularCharacters, pb.tags)
+    return buildCastPlan(plan, target, pb.cast, pb.leadPosition, pb.castFormation, pb.popularCharacters, resolved.reference, pb.outfitOverride, resolved.description)
+  }
+  const structuredPlan = computed(() => engine.value === 'anima'
+    ? withCast(active.value.structuredPlan.value, 'anima') : active.value.structuredPlan.value)
+  const mossPlan = computed(() => withCast(active.value.mossPlan.value, 'moss'))
+  const animaCastPlan = computed(() => structuredPlan.value?.animaCast ? structuredPlan.value : null)
+  const positivePrompt = computed(() => animaCastPlan.value
+    ? renderPromptPlan(animaCastPlan.value, 'anima', modelProfile.value).prompt : active.value.positivePrompt.value)
+  const negativePrompt = computed(() => {
+    if (!animaCastPlan.value) return active.value.negativePrompt.value
+    const shared = cleanCastNegative(active.value.negativePrompt.value)
+    const keys = new Set(tokenize(shared).map(normalizeKey))
+    return [shared, ...animaCastPlan.value.negative.filter(token => !keys.has(normalizeKey(token)))].filter(Boolean).join(', ')
+  })
+  const previewPrompt = computed(() => !animaCastPlan.value ? active.value.previewPrompt.value
+    : [positivePrompt.value, negativePrompt.value ? `[NEG]\n${negativePrompt.value}` : ''].filter(Boolean).join('\n'))
+  const promptReport = computed(() => !animaCastPlan.value ? active.value.promptReport.value
+    : analyzeParts([{ cls: 'q', text: positivePrompt.value }, { cls: 'n', text: negativePrompt.value }], 'anima', modelProfile.value))
+  const artViolations = computed(() => animaCastPlan.value ? checkArtDirection(positivePrompt.value, modelProfile.value) : active.value.artViolations.value)
   const previewContext = computed<PromptPreviewContext>(() => {
     const plan = structuredPlan.value
-    const subjects = pb.char === 'none' ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
+    const unbound = !pb.isPopular && pb.char === 'none'
+    const subjects = unbound ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
     return {
       format:resolveDrawCapabilities(engine.value, modelProfile.value).promptFormat,
       qualityTokens:tokenize(modelProfile.value?.quality_prefix || ''),
       characterTokens:[...(plan?.characterTokens ?? subjects.flatMap(subject => subject.characterTokens || [])),
-        ...(pb.char === 'none' ? pb.referenceInput?.characterTokens || [] : [])],
+        ...(unbound ? pb.referenceInput?.characterTokens || [] : [])],
       copyrightTokens:[...(plan?.copyrightTokens ?? subjects.flatMap(subject => subject.copyrightTokens || [])),
-        ...(pb.char === 'none' ? pb.referenceInput?.copyrightTokens || [] : [])],
+        ...(unbound ? pb.referenceInput?.copyrightTokens || [] : [])],
       artists:[...(plan?.artists || [])],
     }
   })

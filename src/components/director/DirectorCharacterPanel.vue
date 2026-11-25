@@ -23,14 +23,14 @@
     <div v-if="pb.isUnbound" class="character-source-content">
       <p class="tw:text-secondary tw:text-body-sm">自由创作，不绑定角色。</p>
     </div>
-    <div v-else-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
+    <div v-else-if="!pb.isPopular && pb.cast.length <= 1" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">
         <button v-for="c in charOptions" :key="c.id"
           class="char-btn studio-character-choice" type="button"
           :class="{ active: pb.char === c.id, 'studio-character-natsume': c.id === 'natsume' }"
           :aria-label="c.label"
           :aria-pressed="pb.char === c.id"
-          @click="pb.setChar(c.id)">
+          @click="selectStudioCharacter(c.id)">
           <span class="studio-character-art" aria-hidden="true">
             <CharacterPortrait v-if="c.id !== 'natsume'" :src="characterArtEntry('nene')?.thumbnailUrl || '/assets/characters/nene-home-cg-512.webp'" name="宁宁" />
             <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || '/assets/characters/natsume-home-cg-512.webp'" name="夏目" />
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div v-else v-content-motion:right="pb.isPopular" class="character-source-content">
+    <div v-else-if="pb.isPopular && pb.cast.length <= 1" v-content-motion:right="pb.isPopular" class="character-source-content">
       <AsyncPanel :loader="loadPopularCharacterPicker" label="热门角色" v-slot="{ component }">
       <component :is="component"
         v-model:search="popularSearch"
@@ -64,10 +64,12 @@
       />
       </AsyncPanel>
     </div>
+    <DirectorCastRoster v-bind="{ engine, canvasSize, sizeManuallySet, customMossLayout }" />
   </div>
 </template>
 
 <script setup lang="ts">
+import DirectorCastRoster from '@/components/director/DirectorCastRoster.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { ref } from 'vue'
@@ -81,6 +83,10 @@ import type { PopularCharacter } from '@/utils/popularContent'
 import '@/assets/css/director/components/DirectorCharacterPanel.css'
 
 defineProps<{
+  engine: string
+  canvasSize: string
+  sizeManuallySet: boolean
+  customMossLayout: boolean
   currentTraits: Array<{ tag: string; label: string }>
 }>()
 
@@ -91,6 +97,11 @@ defineEmits<{
 }>()
 
 const pb = usePromptBuilderStore()
+function selectStudioCharacter(id: typeof charOptions[number]['id']) {
+  const slot = pb.cast.findIndex(member => member.source === 'studio' && member.characterId === id)
+  if (slot >= 0) pb.selectCastLead(slot)
+  else pb.setChar(id)
+}
 const charOptions=historicalCharacterOptions.filter(character=>character.id!=='triad')
 const popularSearch = ref('')
 </script>

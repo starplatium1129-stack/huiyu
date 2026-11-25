@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
-import { useFluidDialog } from '@/composables/useFluidDialog'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { computed, nextTick, ref, useId } from 'vue'
+import { computed, ref } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import CharacterDirectory from '@/components/library/CharacterDirectory.vue'
+import CharacterDirectoryDialog from '@/components/library/CharacterDirectoryDialog.vue'
 import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
@@ -24,19 +23,16 @@ const emit = defineEmits<{
   'select-outfit': [outfitId: string]
 }>()
 
-const browserDialog = ref<HTMLDialogElement | null>(null)
-const directoryLoaded = ref(false)
-const browserMotion = useFluidDialog(browserDialog)
-const dialogTitle = useId()
+const browser = ref<InstanceType<typeof CharacterDirectoryDialog> | null>(null)
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
 const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
-async function openBrowser(event: MouseEvent) {
-  const source = event.currentTarget as HTMLElement
-  directoryLoaded.value = true
-  await nextTick()
-  if (source.isConnected && source.getClientRects().length) browserMotion.open(source)
+function openBrowser(event: MouseEvent) {
+  if (event.currentTarget instanceof HTMLElement) void browser.value?.open(event.currentTarget)
 }
-function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); browserMotion.close() } }
+function selectFromDirectory(id: string) {
+  const character = props.characters.find(item => item.id === id)
+  if (character) emit('select', character)
+}
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
   props.characters.find(c => c.id === props.selectedCharacterId) ?? null,
@@ -71,12 +67,9 @@ const sourceLabel = computed(() => {
       </span>
       <span class="character-browse-all tw:flex tw:justify-center tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent"><ArchiveIcon name="search" />浏览全部 {{ characters.length }} 位角色</span>
     </button>
-    <Teleport to="body">
-      <dialog ref="browserDialog" class="character-browser-dialog" :aria-labelledby="dialogTitle" @cancel.prevent="browserMotion.close()">
-        <header class="character-browser-heading"><div><h2 :id="dialogTitle">挑选这一幕的主角</h2><p>先按作品缩小范围，再点击肖像即可带回工作台。</p></div><button type="button" aria-label="关闭角色选择" @click="browserMotion.close()"><ArchiveIcon name="close" /></button></header>
-        <CharacterDirectory v-if="directoryLoaded" :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" @dismiss="browserMotion.close()" />
-      </dialog>
-    </Teleport>
+    <CharacterDirectoryDialog ref="browser" v-model:search="searchProxy" title="挑选这一幕的主角"
+      description="先按作品缩小范围，再点击肖像即可带回工作台。" :items="directoryItems" :selected-id="selectedCharacterId"
+      @select="selectFromDirectory" />
     <div v-if="selectedCharacter" v-content-motion:fade="selectedCharacterId" class="popular-outfits tw:grid tw:gap-s-2">
       <div class="popular-outfits-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:text-label-sm">
         <ArchiveIcon name="wardrobe" class="outfits-head-icon" />
@@ -126,15 +119,6 @@ const sourceLabel = computed(() => {
 .character-browse-button:active:not(:focus-visible) .character-browse-all { transform: scale(.98); }
 .character-browse-button:focus-visible .character-browse-all { transition:none; }
 
-.character-browser-dialog { @apply tw:m-auto; inset:var(--desktop-chrome-height,0px) 0 0; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - var(--desktop-chrome-height,0px) - 48px)); max-height: calc(100dvh - var(--desktop-chrome-height,0px) - 32px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-lg); }
-/* 滚动职责下放到筛选栏与结果区，弹窗本体不再套一层滚动。 */
-.character-browser-dialog[open] { @apply tw:flex tw:flex-col tw:gap-s-3 tw:overflow-hidden; }
-.character-browser-dialog::backdrop { background: var(--art-scrim); }
-.character-browser-heading { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3 tw:shrink-0; }
-.character-browser-heading h2 { @apply tw:m-0 tw:text-title-xs tw:leading-body; }
-.character-browser-heading p { margin: var(--s-1) 0; @apply tw:text-label tw:text-muted tw:leading-body; }
-.character-browser-heading button { @apply tw:grid; place-items: center; @apply tw:shrink-0 tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:text-primary tw:cursor-pointer; }
-.character-browser-heading button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .outfits-head-icon {
   @apply tw:w-[14px] tw:h-[14px];
   color: var(--pb-active);
@@ -160,9 +144,7 @@ const sourceLabel = computed(() => {
 }
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) .character-browse-button:active .character-browse-all { transform: none; }
-  :root:not([data-motion='full']) .character-browser-dialog[open] { animation: none; }
 }
-@media (max-width: 540px) { .character-browser-dialog { @apply tw:p-s-3; } }
 .character-browse-trigger :deep(.character-portrait) { @apply tw:w-[86px] tw:h-[116px] tw:rounded-md; border: 1px solid var(--glass-edge); box-shadow: var(--shadow-sm); transform: rotate(-3deg); transition: transform var(--motion-hover) var(--ease-out); }
 .character-current-text .character-current-kicker { @apply tw:text-accent; letter-spacing: .08em; }
 .outfit-chip .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
@@ -171,5 +153,4 @@ const sourceLabel = computed(() => {
 :root:is([data-motion='reduce'],[data-motion='reduced']) .character-browse-all,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .character-browse-button .character-portrait,
 .character-browse-button:focus-visible .character-portrait { transform:none; transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .character-browser-dialog[open] { animation:none; }
 </style>
