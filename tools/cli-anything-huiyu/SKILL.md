@@ -7,7 +7,7 @@ description: 为 Muse 和其他智能体操作同一台绘遇桌面主机。支�
 
 Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiyu\cli-anything-huiyu.exe`。将该目录加入当前终端的 PATH 后，可以直接使用下列命令。源码入口是 `node tools/cli-anything-huiyu/cli.mjs`，需要从任意目录调用时也可以在仓库根目录运行 `npm install --global ./tools/cli-anything-huiyu`。
 
-在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.5.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
+在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.6.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
 
 ## 接到聊天模型（`invoke`）
 
@@ -50,8 +50,14 @@ cli-anything-huiyu --json save <batchKey> .\成图 --all
 ```
 
 - `doctor` 检查连接、凭据格式、协议版本、中转存储及全部新能力开关（兼容老版本出图机与中转）；`health` 返回只读主机模块在线状态、模型数量和推理引擎摘要。
-- `models` 返回所有已安装图像模型（含 `anima`、`moss-image`、`qwen-image`、`krea2`、`keyframe`、`manga-screen`）及其 `img2img`/`mask`/`maxReferenceImages`/`mossLayout` 与 `standaloneUpscale` 能力。
+- `models` 返回所有已安装图像模型（含 `anima`、`moss-image`、`qwen-image`、`krea2`、`keyframe`、`manga-screen`）及其 `img2img`/`mask`/`maxReferenceImages`/`mossLayout`/`multiCast` 与 `standaloneUpscale` 能力。
 - 目录出图支持 `--kind scene|blueprint|outfit|prompt|manga`、同角色 `--outfit` 换装、Krea 2 目录动态编译及 `--style-lora`。Anima 加速用 `--tea-cache on|off` 与 `--tea-cache-thresh 0–1`；MOSS 加速用 `--moss-sampler euler|er-sde`、`--moss-acceleration off|spectrum|spectrum-adaptive`、`--moss-spectrum-flex-window 0–2`。
+- **1–5 人多角色混搭同框**：重复传 `--cast 角色ID[:服装ID][:动作]`（或 `--cast-file JSON`，JSON/`invoke` 的 `cast` 数组元素同时接受字符串简写与对象），可选 `--formation row|staggered`（4–5 人支持前后排错落），支持画室角色（`nene`/`natsume`）与目录任意热门角色混搭；可搭配共享 `--prompt`、目录 `--id`（场景/蓝图）或 MOSS `--from-interrogate`/`--layout-file`（参考图人物框数 ≥ 角色数时按面积与从左到右自动绑定，未显式指定服装时默认沿用参考图穿搭）。Anima 自动按无角色 LoRA + `BREAK` 分段与从左到右站位编译。
+```powershell
+cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --cast nene:studio/nene-school --cast natsume:studio/natsume-cafe --prompt "sunny cafe window" --out .\duo.png
+cli-anything-huiyu --json draw --model moss-miaomiao-base-v1.1 --cast nene --cast frieren --from-interrogate .\layout.json --out .\ref-duo.png
+cli-anything-huiyu --json draw --model anima-miaomiao-v1.6 --id sc093 --cast nene::smiling --cast natsume::holding_teacup --out .\scene-duo.png
+```
 - `queue` 查队列，`recent --agent muse --status failed` 查历史，`errors <batchKey>` 或 `errors --agent muse` 排错，`cancel <batchKey> [--item 序号]` 取消任务。加 `--compact` 可精简 JSON 回执。
 
 ## 参考图上传、图生图、反推与独立放大

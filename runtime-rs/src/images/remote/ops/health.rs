@@ -209,6 +209,7 @@ pub(super) async fn health(
                 },
                 "capabilities": {
                     "image": state.images.is_some(),
+                    "multiCast": state.images.is_some(),
                     "video": state.video.is_some(),
                     "videoH3Dwd": video_h3_dwd,
                     "videoBatch": state.video.is_some(),

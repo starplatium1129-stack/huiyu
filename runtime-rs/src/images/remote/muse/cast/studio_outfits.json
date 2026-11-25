@@ -1,0 +1,134 @@
+[
+  {
+    "character": "nene",
+    "aliases": ["neneSchool", "nene-school", "official_school"],
+    "tags": ["school_uniform", "blazer", "yellow_bowtie", "plaid_skirt", "pleated_skirt", "grey_skirt", "black_thighhighs", "zettai_ryouiki"],
+    "prose": "her navy school uniform with a blazer, yellow bow tie, pleated plaid skirt, and black thigh-highs"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneWitch", "nene-witch", "official_witch"],
+    "tags": ["witch_hat", "black_cape", "criss-cross_halter", "crop_top", "strap_between_breasts", "pink_bow", "pink_ribbon", "black_skirt", "asymmetrical_legwear", "striped_thighhighs", "single_thighhigh", "single_sock", "frilled_socks", "midriff"],
+    "prose": "her canonical black witch costume with a cape, hat, pink accents, and asymmetrical striped legwear"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneSailor", "nene-sailor", "official_sailor"],
+    "tags": ["school_uniform", "grey_sailor_collar", "black_shirt", "sailor_shirt", "serafuku"],
+    "prose": "her dark sailor school uniform with a gray sailor collar"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneRedCardigan", "nene-red-cardigan"],
+    "tags": ["cardigan", "white_shirt", "pleated_skirt", "black_skirt", "white_socks"],
+    "prose": "her school uniform with a burgundy cardigan, white shirt, pleated black skirt, and white socks"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneBluePajamas", "nene-blue-pajamas", "official_blue_pajamas"],
+    "tags": ["pajamas", "animal_print", "cat_print", "long_sleeves"],
+    "prose": "her blue long-sleeved cat-print button-up pajamas"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneGreenSleepwear", "nene-green-sleepwear", "official_green_sleepwear"],
+    "tags": ["sleepwear", "nightgown", "polka_dot", "short_sleeves", "twin_braids"],
+    "prose": "her mint-green short-sleeved polka-dot sleepwear"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneBatDress", "nene-bat-dress"],
+    "tags": ["black_dress", "asymmetrical_clothes", "bat_hair_ornament", "black_thighhighs", "garter_straps"],
+    "prose": "her black bat-themed dress with garter straps and black thigh-highs"
+  },
+  {
+    "character": "nene",
+    "aliases": ["neneBlackDress", "nene-black-dress"],
+    "tags": ["black_dress", "skirt", "garter_straps", "thighhighs"],
+    "prose": "her black dress with garter straps and thigh-highs"
+  },
+  {
+    "character": "nene",
+    "aliases": ["nene-virgin-killer", "special_virgin_killer"],
+    "tags": ["virgin_killer_sweater", "backless_sweater", "turtleneck_sweater", "sleeveless_sweater", "sideboob", "bare_back", "bare_shoulders", "bare_legs", "frilled_socks"],
+    "prose": "her white sleeveless backless turtleneck sweater with frilled socks"
+  },
+  {
+    "character": "nene",
+    "aliases": ["nene-sheer-bunny", "special_sheer_bunny"],
+    "tags": ["sheer_bunny_suit", "bunny_suit", "bunny_ears", "translucent_cloth", "see-through", "cleavage_cutout", "bare_shoulders", "garter_straps", "black_thighhighs", "stiletto_heels"],
+    "prose": "her sheer translucent bunny suit with bunny ears, garter straps, and black thigh-highs"
+  },
+  {
+    "character": "nene",
+    "aliases": ["nene-front-tie-bikini", "special_front_tie_bikini"],
+    "tags": ["front-tie_bikini", "triangle_bikini", "striped_bikini", "side-tie_panties", "cleavage", "bare_shoulders", "bare_midriff", "barefoot"],
+    "prose": "her striped front-tie triangle bikini"
+  },
+  {
+    "character": "nene",
+    "aliases": ["nene-santa", "special_santa"],
+    "tags": ["santa_costume", "red_dress", "white_fur_trim", "santa_hat", "santa_capelet", "off_shoulder", "black_belt", "white_thighhighs", "black_boots"],
+    "prose": "her off-shoulder red Santa dress with white fur trim, Santa hat, and white thigh-highs"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumeCafe", "natsume-cafe", "official_cafe"],
+    "tags": ["white_shirt", "suspenders", "suspender_skirt", "brown_skirt", "long_sleeves", "collared_shirt", "purple_ribbon", "hair_flower"],
+    "prose": "her cafe uniform with a long-sleeved white collared shirt, suspenders, a brown skirt, a purple ribbon, and a hair flower"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumeQipao", "natsume-qipao", "official_qipao"],
+    "tags": ["chinese_clothes", "china_dress", "red_dress", "floral_print", "side_slit", "long_sleeves", "black_thighhighs", "hair_bun", "double_bun", "hair_flower", "red_flower"],
+    "prose": "her official long-sleeved red floral qipao with a side slit and black thigh-highs, with her hair in two buns decorated with red flowers"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumePinkCafe", "natsume-pink-cafe"],
+    "tags": ["pink_shirt", "pink_skirt", "waist_apron", "white_apron", "frills", "striped"],
+    "prose": "her pink cafe uniform with a frilled white waist apron"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumeMaid", "natsume-maid", "official_maid"],
+    "tags": ["maid", "maid_apron", "white_apron", "maid_headdress", "long_sleeves", "frills"],
+    "prose": "her dark long-sleeved cafe maid uniform with a white apron, frills, and a maid headdress"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumeWinter", "natsume-winter"],
+    "tags": ["coat", "fur_trim", "hair_ribbon", "hair_flower"],
+    "prose": "her fur-trimmed winter coat with floral hair ornaments"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsumeSleepwear", "natsume-sleepwear", "official_sleepwear"],
+    "tags": ["shirt", "blue_shirt"],
+    "prose": "her pale blue sleepwear"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsume-virgin-killer"],
+    "tags": ["virgin_killer_sweater", "black_sweater", "backless_sweater", "turtleneck_sweater", "sleeveless_sweater", "sideboob", "bare_back", "bare_shoulders", "bare_legs"],
+    "prose": "her fitted black sleeveless backless turtleneck sweater"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsume-glossy-bunny", "special_glossy_bunny"],
+    "tags": ["bunny_suit", "glossy_latex", "bunny_ears", "bowtie", "cuffs", "bare_shoulders", "cleavage", "fishnet_thighhighs", "high_heels"],
+    "prose": "her glossy black latex bunny suit with bunny ears, cuffs, and fishnet thigh-highs"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsume-criss-cross-bikini", "special_criss_cross_bikini"],
+    "tags": ["criss-cross_bikini", "black_bikini", "wrap_bikini", "side-tie_panties", "midriff_straps", "cleavage", "bare_midriff", "barefoot"],
+    "prose": "her black criss-cross wrap bikini"
+  },
+  {
+    "character": "natsume",
+    "aliases": ["natsume-velvet-santa", "special_velvet_santa"],
+    "tags": ["santa_costume", "red_dress", "white_fur_trim", "santa_hat", "off_shoulder", "black_belt", "black_thighhighs", "high_heels"],
+    "prose": "her off-shoulder red velvet Santa dress with white fur trim and black thigh-highs"
+  }
+]

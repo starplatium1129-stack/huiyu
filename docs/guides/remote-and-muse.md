@@ -44,6 +44,7 @@ Muse 和其他助手可以使用同一份 `cli-anything-huiyu`（v1.5.0+）命�
 | 队列与恢复 | `GET /api/muse/queue`<br>`GET /api/muse/jobs` | 查排队；按 `since` / `nextBefore` / `agent` / `status` 找回近期单图或批次 |
 
 - **目录默认配方**：支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0`、`moss-miaomiao-base-v1.1` 及 `krea2-turbo` / `krea2-raw`（动态编译英文自然语言配方并支持 `styleLoraId`，以本机已安装版本为准）。
+- **1–5 人多角色混搭同框（`cast` / `formation`）**：`POST /api/muse/jobs` 与 `POST /api/muse/batches` 支持传 `cast` 数组（1–5 项，每项可传字符串简写 `"角色ID[:服装ID][:动作]"` 或对象 `{characterId, outfitId?, outfitExplicit?, action?}`）及 `formation`（`row` | `staggered`），支持画室角色（`nene`/`natsume`）与目录任意热门角色混搭，并可叠加共享 `prompt`、目录 `id`（场景/蓝图）或 MOSS `layout`（`assistLayout` 自动绑定人物框）。Anima 自动走无角色 LoRA + `BREAK` 分段编译；MOSS 自动编译规范多人布局；Krea 2 / Qwen / Keyframe 编译英文自然语言多人同框。
 - **进阶图像控制**：Anima 支持 `initImage`、`denoisingStrength`、`maskImage`/`maskPrompt`、`maskThreshold`、`growMaskBy`、`sketchControl`、`regions`；`qwen-image` 与 `keyframe`（`flux-kontext-dev`/`minimax-h3-image-q4`）支持 `initImage` + ≤3 张 `referenceImages`；`manga-screen` 支持 `initImage` + `operation`/`penLines` 等漫画网点参数；MOSS 支持直接传 `layout` 对象（自动换算 `assistLayout`/归一化 `0..1`/`rel_1000`/`xyxy` 为规范中心像素框）。
 - **Anima 高清放大与独立放大**：生图内联放大传 `"upscale": "ultrasharp" | "remacri" | "off"`；对已有图片放大调用 `POST /api/muse/upscale`（或 `cli-anything-huiyu upscale`），`remacri` 1.5×/2.0× 走原生纯像素通道，`ultrasharp` 走 Anima 放大重绘。
 

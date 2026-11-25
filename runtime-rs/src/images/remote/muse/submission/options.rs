@@ -195,6 +195,10 @@ impl SceneSelection {
         Ok(())
     }
 
+    pub(in super::super) fn has_cast(&self) -> bool {
+        self.cast.is_some() || self.formation.is_some()
+    }
+
     pub(in super::super) fn is_custom(&self) -> bool {
         self.prompt.is_some()
             || self.layout.is_some()
@@ -211,6 +215,7 @@ impl SceneSelection {
             || self.lora_strength.is_some()
             || self.layout.is_some()
             || self.reference_images.is_some()
+            || self.has_cast()
             || self.has_manga_fields()
     }
 }

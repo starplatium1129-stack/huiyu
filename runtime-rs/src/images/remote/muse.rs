@@ -11,6 +11,7 @@ use std::{collections::HashMap, net::SocketAddr, time::Duration};
 use tokio::sync::{Mutex, Notify};
 
 mod batches;
+mod cast;
 pub(crate) mod companion;
 mod details;
 mod history;

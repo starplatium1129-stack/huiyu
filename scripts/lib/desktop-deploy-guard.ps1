@@ -1,9 +1,15 @@
 ﻿# Controlled host maintenance plus read-only verification. The host owns flush,
-# drain and child teardown; this script never kills hosts/gateways or removes locks.
+# drain and child teardown when available; during deployment, Stop-DesktopForDeployment
+# falls back to closing and stopping processes inside the verified InstallDir only.
 function Get-DesktopInstallationProcesses {
   param([string]$InstallDir)
-  $executables = @((Join-Path $InstallDir 'ai-cg-studio-desktop.exe'), (Join-Path $InstallDir 'gateway\huiyu-runtime.exe'))
-  @(Get-Process -Name 'ai-cg-studio-desktop','huiyu-runtime' -ErrorAction SilentlyContinue |
+  $installRoot = [IO.Path]::GetFullPath($InstallDir)
+  $executables = @(
+    (Join-Path $installRoot 'ai-cg-studio-desktop.exe'),
+    (Join-Path $installRoot 'gateway\huiyu-runtime.exe'),
+    (Join-Path $installRoot 'gateway\qq-sdk\node.exe')
+  )
+  @(Get-Process -Name 'ai-cg-studio-desktop','huiyu-runtime','node' -ErrorAction SilentlyContinue |
     Where-Object { $_.Path -and $executables -contains $_.Path })
 }
 
@@ -90,13 +96,78 @@ function Assert-DesktopMaintenanceAvailable {
 
 function Stop-DesktopForDeployment {
   param([string]$InstallDir, [string]$ConfigRoot)
-  if (@(Get-DesktopInstallationProcesses -InstallDir $InstallDir).Count -gt 0) {
-    $receipt = Invoke-DesktopMaintenance -InstallDir $InstallDir -ConfigRoot $ConfigRoot -Command shutdown
-    if ($receipt.state -ne 'drained') { throw "DESKTOP_MAINTENANCE_REFUSED: $($receipt.state) / $($receipt.reason)。安装未开始。" }
-    $deadline = [DateTime]::UtcNow.AddSeconds(15)
-    while (@(Get-DesktopInstallationProcesses -InstallDir $InstallDir).Count -gt 0 -and [DateTime]::UtcNow -lt $deadline) { Start-Sleep -Milliseconds 100 }
+  $installRoot = [IO.Path]::GetFullPath($InstallDir).TrimEnd('\', '/')
+  $running = @(Get-DesktopInstallationProcesses -InstallDir $installRoot)
+  if ($running.Count -gt 0) {
+    Write-Host "[desktop:auto] 检测到桌面端正在运行（PID $($running.Id -join ', ')），正在自动关闭 ..." -ForegroundColor Cyan
+    $hosts = @($running | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
+    if ($hosts.Count -eq 1) {
+      try {
+        $receipt = Invoke-DesktopMaintenance -InstallDir $installRoot -ConfigRoot $ConfigRoot -Command shutdown -TimeoutSeconds 12
+        if ($receipt.state -eq 'drained') {
+          $deadline = [DateTime]::UtcNow.AddSeconds(12)
+          while (@(Get-DesktopInstallationProcesses -InstallDir $installRoot).Count -gt 0 -and [DateTime]::UtcNow -lt $deadline) {
+            Start-Sleep -Milliseconds 100
+          }
+        } else {
+          Write-Host "[desktop:warn] 维护退出未完成（$($receipt.state)），改为自动关闭桌面端进程 ..." -ForegroundColor Yellow
+        }
+      } catch {
+        Write-Host "[desktop:warn] 受控维护退出不可用，改为自动关闭桌面端进程 ..." -ForegroundColor Yellow
+      }
+    }
+
+    $remainingHosts = @(Get-DesktopInstallationProcesses -InstallDir $installRoot | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
+    if ($remainingHosts.Count -gt 0) {
+      foreach ($proc in $remainingHosts) {
+        try { $null = $proc.CloseMainWindow() } catch { }
+      }
+      $deadline = [DateTime]::UtcNow.AddSeconds(3)
+      while (@(Get-DesktopInstallationProcesses -InstallDir $installRoot).Count -gt 0 -and [DateTime]::UtcNow -lt $deadline) {
+        Start-Sleep -Milliseconds 100
+      }
+    }
+
+    $remaining = @(Get-DesktopInstallationProcesses -InstallDir $installRoot)
+    if ($remaining.Count -gt 0) {
+      Write-Host "[desktop:auto] 正在结束残留桌面端进程（PID $($remaining.Id -join ', ')）..." -ForegroundColor Yellow
+      foreach ($proc in $remaining) {
+        try { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue } catch { }
+      }
+      $deadline = [DateTime]::UtcNow.AddSeconds(8)
+      while (@(Get-DesktopInstallationProcesses -InstallDir $installRoot).Count -gt 0 -and [DateTime]::UtcNow -lt $deadline) {
+        Start-Sleep -Milliseconds 100
+      }
+    }
   }
-  Assert-DesktopDeploymentStopped -InstallDir $InstallDir -ConfigRoot $ConfigRoot
+
+  # Also stop any lingering workspace owner process belonging strictly to this install dir.
+  foreach ($name in @('workspace-active.json', 'workspace-candidate.json')) {
+    $pointerPath = Join-Path $ConfigRoot $name
+    if (-not (Test-Path -LiteralPath $pointerPath)) { continue }
+    try {
+      $pointer = Get-Content -LiteralPath $pointerPath -Raw -Encoding UTF8 | ConvertFrom-Json
+      $workspaceId = $pointer.workspaceId
+      if ($workspaceId -isnot [string] -or $workspaceId -notmatch '^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$') { continue }
+      $owner = Join-Path (Join-Path (Join-Path $ConfigRoot 'workspaces') $workspaceId) '.workspace-owner.json'
+      if (-not (Test-Path -LiteralPath $owner)) { continue }
+      $record = Get-Content -LiteralPath $owner -Raw -Encoding UTF8 | ConvertFrom-Json
+      if ($record.pid -isnot [int] -or $record.pid -le 0) { continue }
+      $ownerProc = Get-CimInstance Win32_Process -Filter "ProcessId=$($record.pid)" -ErrorAction SilentlyContinue | Select-Object -First 1
+      if ($ownerProc -and $ownerProc.ExecutablePath -and $ownerProc.ExecutablePath.StartsWith($installRoot + '\', [StringComparison]::OrdinalIgnoreCase)) {
+        try { Stop-Process -Id $record.pid -Force -ErrorAction SilentlyContinue } catch { }
+        $deadline = [DateTime]::UtcNow.AddSeconds(5)
+        while ((Get-Process -Id $record.pid -ErrorAction SilentlyContinue) -and [DateTime]::UtcNow -lt $deadline) {
+          Start-Sleep -Milliseconds 100
+        }
+      }
+    } catch { }
+  }
+
+  Assert-DesktopDeploymentStopped -InstallDir $installRoot -ConfigRoot $ConfigRoot
+  if ($running.Count -gt 0) {
+    Write-Host '[desktop:ok] 桌面端已自动关闭，继续部署。' -ForegroundColor Green
+  }
 }
 
 function Wait-DesktopDeploymentReady {

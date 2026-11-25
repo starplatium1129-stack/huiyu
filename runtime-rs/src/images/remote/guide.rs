@@ -94,12 +94,17 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         "draw": {
             "method": "POST", "path": "/api/muse/jobs",
             "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "teaCacheThresh": 0.06},
-            "usage": "传场景/蓝图 id（可附同角色 outfitId 换装，或仅传 outfitId 出服装图）；支持 anima/moss/krea2 目录配方，以及图生图/参考图/蒙版/构图控制参数，单项 ≤8 张。"
+            "usage": "传场景/蓝图 id（可附同角色 outfitId 换装，或仅传 outfitId 出服装图，或传 cast 1–5 人混搭同框）；支持 anima/moss/krea2 目录配方，以及图生图/参考图/蒙版/构图控制参数，单项 ≤8 张。"
         },
         "prompt": {
             "method": "POST", "path": "/api/muse/jobs",
             "json": {"prompt":"your image prompt","requestKey":"replace-with-new-uuid"},
-            "usage": "自定义 prompt（不与目录 id 混用）；可选 modelId（含 keyframe/manga-screen）、width/height、seed、variants、图生图/参考图/蒙版/MOSS 布局；Anima 支持 TeaCache、upscale 与 character 自动匹配本机 LoRA。"
+            "usage": "自定义 prompt（不与目录 id 混用；多角色同框请用 cast）；可选 modelId（含 keyframe/manga-screen）、width/height、seed、variants、图生图/参考图/蒙版/MOSS 布局；Anima 支持 TeaCache、upscale 与单角色 character 自动匹配本机 LoRA。"
+        },
+        "multiCast": {
+            "method": "POST", "path": "/api/muse/jobs",
+            "json": {"modelId": "moss-miaomiao-base-v1.1", "cast": [{"characterId": "nene", "outfitId": "studio/nene-school"}, {"characterId": "natsume", "outfitId": "studio/natsume-cafe"}], "formation": "row", "prompt": "sunny cafe window", "requestKey": "replace-with-new-uuid"},
+            "usage": "1–5 人多角色混搭同框构图（支持画室角色 nene/natsume 与目录任意热门角色自由混搭）。每个成员传 characterId、可选 outfitId/outfitExplicit/action；可选 formation（row|staggered，4–5 人支持前后排错落）、共享场景 prompt、目录 scene/blueprint id，以及 MOSS 参考图 layout（assistLayout 人物框数 ≥ 角色数时按面积与从左到右自动绑定）。Anima 自动走无角色 LoRA + BREAK 分段与从左到右站位编译；MOSS 自动编译规范 abs_centralized/yxyx 多人布局；Krea 2/Qwen/Keyframe 编译英文自然语言多人同框。"
         },
         "batch": {
             "method": "POST", "path": "/api/muse/batches",

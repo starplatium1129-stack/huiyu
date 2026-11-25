@@ -50,6 +50,11 @@ pub(super) struct SceneSelection {
     pub(super) lora_strength: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) style_lora_id: Option<String>,
+    // Multi-character cast composition (1-5 characters across studio/popular catalog)
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) cast: Option<Vec<cast::CastMemberInput>>,
+    #[serde(skip_serializing_if = "Option::is_none", alias = "castFormation")]
+    pub(super) formation: Option<String>,
     // Image-to-image / inpaint / reference / composition parameters
     #[serde(skip_serializing_if = "Option::is_none", alias = "imageId")]
     pub(super) init_image: Option<String>,
@@ -119,6 +124,9 @@ pub(super) fn prepare_batch(
     scenes
         .into_iter()
         .map(|scene| {
+            if scene.has_cast() {
+                return cast::prepare(config, scene, model);
+            }
             if scene.is_custom() {
                 return custom::custom(scene, model, &loras);
             }

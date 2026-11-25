@@ -25,7 +25,7 @@ pub(super) fn unavailable() -> ApiError {
     )
 }
 
-fn open_bundled_library(config: &crate::config::Config) -> Result<Connection> {
+pub(super) fn open_bundled_library(config: &crate::config::Config) -> Result<Connection> {
     let db = Connection::open_with_flags(
         config.app_root.join(RECIPE_DATABASE),
         OpenFlags::SQLITE_OPEN_READ_ONLY | OpenFlags::SQLITE_OPEN_NO_MUTEX,

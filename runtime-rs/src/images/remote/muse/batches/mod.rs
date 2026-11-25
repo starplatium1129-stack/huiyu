@@ -36,6 +36,9 @@ pub(super) struct Batch {
     sketch_control: Option<Value>,
     regions: Option<Vec<Value>>,
     layout: Option<Value>,
+    cast: Option<Vec<cast::CastMemberInput>>,
+    #[serde(alias = "castFormation")]
+    formation: Option<String>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -96,6 +99,12 @@ impl Batch {
             }
             if scene.layout.is_none() {
                 scene.layout.clone_from(&self.layout);
+            }
+            if scene.cast.is_none() {
+                scene.cast.clone_from(&self.cast);
+            }
+            if scene.formation.is_none() {
+                scene.formation.clone_from(&self.formation);
             }
             if scene.width.is_none()
                 && scene.height.is_none()

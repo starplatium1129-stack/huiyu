@@ -22,12 +22,14 @@ export const promptTextOptions = {
 }
 export const sharedControlOptions = [
   'init-image', 'ref', 'mask', 'mask-prompt', 'sketch-file', 'regions-file', 'layout-file',
+  'cast', 'cast-file', 'formation',
 ]
 export const drawingOptions = [
   ...Object.keys(drawingTextOptions), ...drawingIntegerOptions, 'tea-cache', ...Object.keys(drawingNumberOptions),
   ...sharedControlOptions,
 ]
 export const drawingHelp = '通用选项包括 --model 模型ID、--seed 种子、--variants 张数、--width 宽 --height 高、--upscale off|ultrasharp|remacri、--style-lora 风格LoRA。\n'
+  + '    多角色混搭同框（1–5 人）支持重复传 --cast 角色[:服装ID][:动作] 或 --cast-file JSON，配 --formation row|staggered（4–5 人支持前后排错落），可搭 --prompt、目录 --id 或 MOSS --layout-file / --from-interrogate。\n'
   + '    进阶控制支持 --init-image 底图、--ref 参考图（可多次传）、--mask 蒙版图或 --mask-prompt 蒙版提示词、--mask-threshold 0.05–0.95、--grow-mask-by 0–32、--denoise 0.1–1.0、--sketch-file 线稿JSON、--regions-file 分区JSON、--layout-file MOSS布局JSON。\n'
   + '    底图/参考图/蒙版支持已上传文件名或本地图片路径（自动 SHA-256 复用或上传）。\n'
   + '    Anima 加速用 --tea-cache on|off 和 --tea-cache-thresh 0–1；MOSS 加速用 --moss-sampler euler|er-sde、--moss-acceleration off|spectrum|spectrum-adaptive 和 --moss-spectrum-flex-window 0–2。'
@@ -129,9 +131,52 @@ export async function resolveControlOverrides(options, input, overrides, batch) 
       ? { ...baseLayout, caption: loaded.caption.trim() }
       : baseLayout
   }
+  await resolveCastOverrides(options, overrides)
 }
 
-export function buildFromInterrogate(data, modelId) {
+function parseCastSpec(raw) {
+  if (typeof raw !== 'string' || !raw.trim()) throw new Error('--cast 成员不能为空。')
+  const firstColon = raw.indexOf(':')
+  if (firstColon < 0) return { characterId: raw.trim() }
+  const characterId = raw.slice(0, firstColon).trim()
+  if (!characterId) throw new Error('--cast 缺少角色 ID，格式为 角色ID[:服装ID][:动作]。')
+  const rest = raw.slice(firstColon + 1)
+  const secondColon = rest.indexOf(':')
+  const outfitId = (secondColon < 0 ? rest : rest.slice(0, secondColon)).trim()
+  const action = secondColon < 0 ? '' : rest.slice(secondColon + 1).trim()
+  const member = { characterId }
+  if (outfitId) {
+    member.outfitId = outfitId
+    member.outfitExplicit = true
+  }
+  if (action) member.action = action
+  return member
+}
+
+async function resolveCastOverrides(options, overrides) {
+  if (options.cast !== undefined && options['cast-file'] !== undefined) {
+    throw new Error('--cast 和 --cast-file 请只选一个。')
+  }
+  if (options.cast !== undefined) {
+    const members = options.cast.map(parseCastSpec)
+    if (!members.length || members.length > 5) throw new Error('--cast 支持 1–5 名角色。')
+    overrides.cast = members
+  } else if (options['cast-file'] !== undefined) {
+    const loaded = await readInput(options['cast-file'], false)
+    if (!Array.isArray(loaded) || !loaded.length || loaded.length > 5) {
+      throw new Error('--cast-file 须包含 1–5 名角色的 JSON 数组。')
+    }
+    overrides.cast = loaded.map(item => typeof item === 'string' ? parseCastSpec(item) : item)
+  }
+  if (options.formation !== undefined) {
+    if (!['row', 'staggered'].includes(options.formation)) {
+      throw new Error('--formation 仅支持 row 或 staggered。')
+    }
+    overrides.formation = options.formation
+  }
+}
+
+export function buildFromInterrogate(data, modelId, hasCast = false) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
     throw new Error('--from-interrogate 须为反推结果 JSON 对象。')
   }
@@ -144,9 +189,17 @@ export function buildFromInterrogate(data, modelId) {
   const captionPrompt = typeof data.caption === 'string' && data.caption.trim() ? data.caption.trim() : undefined
   const prompt = isNatural ? (captionPrompt ?? tagsPrompt) : (tagsPrompt ?? captionPrompt)
   const result = {}
-  if (prompt) result.prompt = prompt
-  if (data.assistLayout && typeof data.assistLayout === 'object' && (!model || model.startsWith('moss'))) {
-    if (model.startsWith('moss')) result.layout = data.assistLayout
+  const hasAssistLayout = Boolean(data.assistLayout && typeof data.assistLayout === 'object')
+  if (hasAssistLayout && model.startsWith('moss')) {
+    const baseLayout = data.assistLayout
+    const hasLayoutCaption = (typeof baseLayout.caption === 'string' && baseLayout.caption.trim())
+      || (typeof baseLayout.summary?.caption === 'string' && baseLayout.summary.caption.trim())
+    result.layout = !hasLayoutCaption && captionPrompt
+      ? { ...baseLayout, caption: captionPrompt }
+      : baseLayout
+    if (!hasCast && prompt) result.prompt = prompt
+  } else if (prompt) {
+    result.prompt = prompt
   }
   if (!result.prompt && !result.layout) {
     throw new Error('反推 JSON 中未找到可用的 tags、caption 或 assistLayout。')
@@ -199,19 +252,28 @@ export async function drawingInput(options, args, batch) {
     return { ids }
   }
   const isManga = options.kind === 'manga' || options.model === 'manga-screen'
+  const hasCast = Boolean(options.cast?.length || options['cast-file'] !== undefined)
   const sources = ['id', 'file'].filter(key => options[key] !== undefined)
-  if (options.prompt !== undefined && options['from-interrogate'] === undefined) sources.push('prompt')
+  if (options.prompt !== undefined && options['from-interrogate'] === undefined && !(hasCast && options.id !== undefined)) {
+    sources.push('prompt')
+  }
   if (options['from-interrogate'] !== undefined) sources.push('from-interrogate')
   const hasStandaloneControl = Boolean(options.outfit) || Boolean(options['layout-file'])
-    || (isManga && options['init-image'] !== undefined)
+    || hasCast || (isManga && options['init-image'] !== undefined)
   if (sources.length > 1 || (!sources.length && !hasStandaloneControl)) {
-    throw new Error('请选 --id、--prompt、--file、--from-interrogate 中的一项，或传 --outfit / --layout-file / 漫画模式 --init-image。')
+    throw new Error('请选 --id、--prompt、--file、--from-interrogate 中的一项，或传 --cast / --outfit / --layout-file / 漫画模式 --init-image。')
   }
   if (options.file !== undefined) return readInput(options.file, false)
-  if (options.id !== undefined) return { id: options.id }
+  if (options.id !== undefined) {
+    const result = { id: options.id }
+    if (hasCast && options.prompt !== undefined) {
+      result.prompt = options.prompt === '-' ? await readStdin(64 * 1024, '提示词') : options.prompt
+    }
+    return result
+  }
   if (options['from-interrogate'] !== undefined) {
     const data = await readInput(options['from-interrogate'], false)
-    const extracted = buildFromInterrogate(data, options.model)
+    const extracted = buildFromInterrogate(data, options.model, hasCast)
     if (options.prompt !== undefined) {
       extracted.prompt = options.prompt === '-' ? await readStdin(64 * 1024, '提示词') : options.prompt
     }

@@ -289,11 +289,11 @@ function Select-CurrentFullInstaller {
 function Complete-CurrentDeployment {
   $allProcesses = @(Get-DesktopInstallationProcesses -InstallDir $installDir)
   $hosts = @($allProcesses | Where-Object { $_.ProcessName -eq 'ai-cg-studio-desktop' })
-  if ($hosts.Count -gt 1) {
-    throw "DESKTOP_DUPLICATE_HOSTS: 同一安装有多个宿主（PID $($hosts.Id -join ', ')）；请从托盘退出全部实例后重试。"
-  }
-  if ($hosts.Count -eq 0 -and $allProcesses.Count -gt 0) {
-    throw "DESKTOP_HOST_MISSING: 检测到网关仍在运行但宿主不存在（PID $($allProcesses.Id -join ', ')）；请先完成退出或重新部署。"
+  if ($hosts.Count -gt 1 -or ($hosts.Count -eq 0 -and $allProcesses.Count -gt 0)) {
+    Write-Host "[desktop:auto] 检测到异常或重复桌面端实例（PID $($allProcesses.Id -join ', ')），正在自动清理 ..." -ForegroundColor Yellow
+    Stop-DesktopForDeployment -InstallDir $installDir -ConfigRoot $configRoot
+    $allProcesses = @()
+    $hosts = @()
   }
   $elapsed = '{0:F1}s' -f $script:overallTimer.Elapsed.TotalSeconds
   if ($NoRestart) {
@@ -410,8 +410,8 @@ if ($DirectInstall -and -not ($DirectPlanId -or $DeploymentPlanApplied)) {
     # build failures or zero-diff results never trigger an unnecessary UAC prompt.
     if (-not $isElevated) {
       if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
-        Assert-DesktopMaintenanceAvailable -InstallDir $installDir -ConfigRoot $configRoot
-      } else { Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot }
+        Write-Host '  · 检测到桌面端正在运行，构建完成进入写入阶段时将自动关闭。' -ForegroundColor DarkGray
+      }
       Write-Host '[1/6] 正在本机编译与暂存最新构建（无需管理员权限）...' -ForegroundColor Cyan
       Write-DeploymentLog '[1/6] 正在本机编译与暂存最新构建 ...'
       Push-Location $root
@@ -553,11 +553,11 @@ if ($UseInstaller) {
   }
   Assert-FixedInstaller
 }
-# Read-only preflight: UAC denial, missing payload or build failure must leave
-# the user's running application untouched. Actual drain occurs before writes.
+# Preflight notice: UAC denial, missing payload or build failure leaves the
+# running app untouched. Actual automatic shutdown runs right before writes.
 if (@(Get-DesktopInstallationProcesses -InstallDir $installDir).Count -gt 0) {
-  Assert-DesktopMaintenanceAvailable -InstallDir $installDir -ConfigRoot $configRoot
-} else { Assert-DesktopDeploymentStopped -InstallDir $installDir -ConfigRoot $configRoot }
+  Write-Host '  · 检测到桌面端正在运行，授权后将在写入前自动关闭并在部署完成后重启。' -ForegroundColor DarkGray
+}
 
 # 提权：注意要把已传入的参数一起带过去，否则 UAC 后的新进程会丢掉它们
 # （旧版这里只传脚本路径，导致 -SkipBuild 静默失效、白白重跑一次 build）。

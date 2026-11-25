@@ -102,6 +102,7 @@ pub(crate) async fn drawing_options(
                 "requiresInitImage":family == "keyframe","modes":model["modes"],
                 "teaCache":model["capabilities"]["teaCache"],"hiresUpscalers":model["capabilities"]["hiresUpscalers"],
                 "mossLayout":family == "moss-image",
+                "multiCast":matches!(family, "anima" | "moss-image" | "krea2" | "qwen-image" | "keyframe"),
                 "mossErSde":model["mossErSde"],"mossAcceleration":model["mossAcceleration"],
                 "mossAdaptiveSpectrum":model["mossAdaptiveSpectrum"],"mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"]})
         })
