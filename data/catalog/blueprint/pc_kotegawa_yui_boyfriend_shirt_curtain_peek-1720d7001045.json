@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kotegawa_yui_boyfriend_shirt_curtain_peek",
+  "revision": 1,
+  "sortOrder": 19044,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_kotegawa_yui_boyfriend_shirt_curtain_peek",
+    "characterId": "kotegawa_yui",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "title": "古手川唯 · 晨光窗边的慌乱掩襟",
+    "description": "刚借穿宽大白衬衫准备去拿换洗衣物，窗外忽然照进清亮晨光，恰好与推门进来的人打了个照面。古手川唯赤脚站在床边，一手急忙攥住敞开的衬衫衣襟遮挡粉色荷叶边胸衣，一手手足无措地示意你转身，羞愤得连耳根都红透了。",
+    "location": "洒满清晨阳光的整洁日式卧室窗边",
+    "action": "赤脚站于床边急忙拉拢敞开的白衬衫衣襟，羞愤脸红",
+    "timeOfDay": "清晨",
+    "lighting": "窗外透入的清新晨光勾勒黑丝与白衬衫边缘",
+    "camera": "平视中景，捕捉慌乱又可爱的风纪委员反差",
+    "mood": "慌乱、羞耻、口嫌体正直的窘迫",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "morning_light",
+      "holding_shirt",
+      "flustered",
+      "blushing",
+      "barefoot",
+      "standing",
+      "embarrassed"
+    ],
+    "promptTokens": [
+      "neat bedroom",
+      "morning sunlight",
+      "holding open shirt closed",
+      "deep blush",
+      "flustered expression",
+      "standing barefoot",
+      "window curtains",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Caught off guard in the bright morning bedroom light, Yui Kotegawa hurriedly clutches the edges of her unbuttoned white dress shirt with one hand to shield her pastel-pink frilled bra while gesturing frantically with the other. Standing barefoot in sheer black pantyhose, her face and ears burn bright crimson.",
+    "animaCaption": "Flustered in the sunlit bedroom, she hastily pulls her open white shirt together while blushing deeply.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "unbuttoned shirt",
+      "frilled pink bra",
+      "sheer black pantyhose",
+      "embarrassed blush"
+    ],
+    "nsfwProse": "The unbuttoned white shirt parts to reveal pastel-pink lace frills above glossy sheer black pantyhose.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

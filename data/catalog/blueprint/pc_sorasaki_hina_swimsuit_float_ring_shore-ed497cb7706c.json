@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_swimsuit_float_ring_shore",
+  "revision": 1,
+  "sortOrder": 19075,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_swimsuit_float_ring_shore",
+    "characterId": "sorasaki_hina",
+    "outfitId": "swimsuit",
+    "title": "空崎日奈 · 浅水浪畔的游泳圈试水",
+    "description": "海风温柔的午后浅滩边，日奈抱着一只淡紫色半透明游泳圈踩进清凉的没踝海水里，低头认真试探着水温。藏青荷叶边挂颈泳装衬得娇小身姿格外清丽，抬头撞见你举着镜头时，她略显不自在地攥紧游泳圈边缘，耳尖悄悄染上浅红。",
+    "location": "波光澄净的夏日海湾浅水沙滩",
+    "action": "赤脚踩在浅浪中手抱游泳圈试水温，略显羞怯地抬眼相望",
+    "timeOfDay": "晴朗午后",
+    "lighting": "清透晴空下的明亮海滨阳光与细碎波光",
+    "camera": "全身略俯，收进透明浅浪、游泳圈与娇小灵动身姿",
+    "mood": "清新、羞怯、罕见展露的少女一面",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach",
+      "swim_ring",
+      "shallow_water",
+      "barefoot",
+      "slight_blush",
+      "summer",
+      "sunlight",
+      "full_body"
+    ],
+    "promptTokens": [
+      "bright sandy beach",
+      "ankle-deep clear water",
+      "holding translucent lilac swim ring",
+      "barefoot",
+      "faint shy blush",
+      "looking at viewer",
+      "summer sunlight",
+      "gentle waves",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Stepping into the clear ankle-deep surf holding a translucent lilac swim ring against her side, Hina tests the cool summer water while waves shimmer around her feet. Wearing her navy ruffled halterneck bikini, she glances up with a rare, faintly shy blush.",
+    "animaCaption": "Standing in clear shallow waves with a translucent lilac swim ring, she glances up with a faint shy blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_shiiba_tsumugi_sleepwear_bedroom_ribbon_box",
+  "revision": 1,
+  "sortOrder": 19063,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_shiiba_tsumugi_sleepwear_bedroom_ribbon_box",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "azure_lace_lingerie",
+    "title": "椎叶紬 · 灯下绒垫的发带挑选",
+    "description": "晚间房门轻掩的卧室内飘着柔和暖光，椎叶紬换上松软亲肤的浅杏色泡泡袖棉纱睡裙，赤脚跪坐在床边地毯上，面前摊开一只珍藏的丝带与发夹木盒。她拿起一条淡粉缎带在耳边轻轻比划，转头问你「戴这个会不会太像小孩子」时，脸颊透着害羞却满心雀跃的红润。",
+    "location": "摆着手工木盒与暖光台灯的温馨少女卧室床边",
+    "action": "跪坐床边地毯举起发带在耳畔比划，羞涩期待地抬头询问",
+    "timeOfDay": "夜晚",
+    "lighting": "柔和暖黄台灯照亮浅杏棉纱碎褶与细腻神态",
+    "camera": "平视中景，木盒发带与少女娇柔睡姿自然融合",
+    "mood": "纯真、娇羞、卸下伪装后的小小幸福",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "ribbon_box",
+      "holding_ribbon",
+      "kneeling",
+      "blushing",
+      "shy_smile",
+      "warm_lighting",
+      "night"
+    ],
+    "promptTokens": [
+      "cozy bedroom",
+      "kneeling on rug",
+      "open wooden ribbon box",
+      "holding pastel ribbon near hair",
+      "shy happy blush",
+      "looking at viewer",
+      "warm lamp light",
+      "night",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Kneeling on the soft rug beside her bed in front of an open wooden keepsake box, Tsumugi Shiiba holds a pastel ribbon beside her cheek to test how it looks. The soft apricot double-gauze sleep dress with puff sleeves and delicate ruffles brings out her unguarded femininity as she asks for an opinion with a shy blush.",
+    "animaCaption": "Kneeling by an open ribbon box in her warm bedroom, she holds a ribbon near her hair with a shy blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer cotton gauze sleepwear",
+      "puff sleeves",
+      "bare legs",
+      "shy"
+    ],
+    "nsfwProse": "The soft translucent apricot cotton-gauze nightdress drapes lightly around her shoulders and upper thighs in the warm lamp glow.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

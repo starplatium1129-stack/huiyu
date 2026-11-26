@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ikaros_school_swimsuit_pool_ladder",
+  "revision": 1,
+  "sortOrder": 19035,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ikaros_school_swimsuit_pool_ladder",
+    "characterId": "ikaros",
+    "outfitId": "school_swimsuit",
+    "title": "伊卡洛斯 · 泳池扶梯上的入水确认",
+    "description": "盛夏正午的校园露天泳池泛起耀眼碎金，伊卡洛斯双手握紧不锈钢扶梯横杆站在浅水台阶上，水波轻轻漫过膝盖。她小心翼翼收拢背后的淡粉双翼避免沾湿太多，偏头以一贯认真的无口目光向岸边的主人确认下一步指令。",
+    "location": "晴空与白砖环绕的空美中学露天泳池",
+    "action": "握着泳池金属扶梯立于浅水台阶，回望主人静候指示",
+    "timeOfDay": "晴朗正午",
+    "lighting": "明亮夏日阳光与池面细碎水光反射",
+    "camera": "平视中景，展现泳池扶梯、水波折射与展开的双翼",
+    "mood": "呆萌、专注、温顺忠诚",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "school_pool",
+      "pool_ladder",
+      "wading",
+      "standing",
+      "looking_at_viewer",
+      "sunlight",
+      "summer",
+      "water_ripples"
+    ],
+    "promptTokens": [
+      "outdoor school swimming pool",
+      "metal pool ladder",
+      "standing in shallow water",
+      "holding ladder rail",
+      "calm expression",
+      "looking at viewer",
+      "bright summer sunlight",
+      "water ripples",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Standing on the submerged steps of the sunlit school pool, Ikaros grips the stainless steel ladder rails while clear turquoise water laps around her knees. Her pale wings stay lifted neatly clear of the surface as she looks back toward the poolside with earnest, quiet attentiveness.",
+    "animaCaption": "Holding the pool ladder in knee-deep sunlit water, she keeps her wings lifted and looks calmly toward the poolside.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

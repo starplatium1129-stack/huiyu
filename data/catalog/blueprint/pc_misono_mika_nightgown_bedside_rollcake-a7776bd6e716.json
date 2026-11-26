@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "pc_misono_mika_nightgown_bedside_rollcake",
+  "revision": 1,
+  "sortOrder": 19049,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_misono_mika_nightgown_bedside_rollcake",
+    "characterId": "misono_mika",
+    "outfitId": "white_lace_nightgown",
+    "title": "圣园未花 · 宵夜草莓卷的小秘密",
+    "description": "寝室台灯调到最柔和的一档，未花穿着象牙白蕾丝吊带睡裙盘腿坐在松软大床上，面前小托盘里偷藏着一盘切成两半的草莓瑞士卷。她用银叉叉起带草莓的一块凑过来，俏皮地眨眨眼说这是今晚两个人的秘密加餐。",
+    "location": "柔暖台灯下的纯白蕾丝寝室大床",
+    "action": "盘腿坐于大床上举起叉着草莓瑞士卷的银叉，俏皮喂食",
+    "timeOfDay": "深夜",
+    "lighting": "暖白床头灯照亮甜点与象牙白真丝柔光",
+    "camera": "平视中近景，拉近互动距离感",
+    "mood": "甜美、调皮、充满亲密分享欲",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bed",
+      "strawberry_roll_cake",
+      "holding_fork",
+      "offering_food",
+      "playful_wink",
+      "sitting",
+      "warm_lighting",
+      "night"
+    ],
+    "promptTokens": [
+      "cozy white bed",
+      "sitting",
+      "holding fork with strawberry roll cake",
+      "offering to viewer",
+      "playful smile",
+      "warm bedside lamp",
+      "night",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Sitting cross-legged on her plush white bed under warm lamplight, Mika holds out a forkful of strawberry roll cake from a small bedside plate. Her ivory silk nightgown with slender straps and scalloped lace border looks soft and effortless as she smiles playfully.",
+    "animaCaption": "Sitting on her lamplit bed, she playfully offers a forkful of strawberry roll cake toward the viewer.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "ivory silk nightgown",
+      "spaghetti straps",
+      "soft intimacy"
+    ],
+    "nsfwProse": "The ivory silk nightgown with its delicate chest bow and floral lace trim clings lightly as she leans forward.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_futaba_rio_boudoir_desk_lamp_reading",
+  "revision": 1,
+  "sortOrder": 19025,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_futaba_rio_boudoir_desk_lamp_reading",
+    "characterId": "futaba_rio",
+    "outfitId": "nsfw_boudoir",
+    "title": "双叶理央 · 暖灯书桌旁的深夜静思",
+    "description": "深夜房间的书桌台灯投下一圈柔和暖光，理央卸下白大褂与发夹，披散长发侧坐在床尾矮凳上，手里仍捏着一本翻开的天体物理笔记。几何黑蕾丝束腰勾勒出克制而惊艳的轮廓，她推了推眼镜冷静地吐出一句玩笑，耳垂却悄悄透着红。",
+    "location": "亮着黄铜护眼台灯的深夜少女卧室",
+    "action": "侧坐床尾矮凳翻阅笔记，轻推眼镜抬眼淡然注视",
+    "timeOfDay": "深夜",
+    "lighting": "书桌暖黄台灯侧打，形成细腻明暗层次",
+    "camera": "四分之三中景，书桌笔记与床角柔光入画",
+    "mood": "理智外表下的反差诱惑、静谧亲密",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "desk_lamp",
+      "holding_notebook",
+      "sitting",
+      "adjusting_glasses",
+      "crossed_legs",
+      "night",
+      "warm_lighting"
+    ],
+    "promptTokens": [
+      "bedroom",
+      "warm desk lamp",
+      "sitting on stool",
+      "crossed legs",
+      "holding open notebook",
+      "adjusting glasses",
+      "subtle blush",
+      "night",
+      "chiaroscuro lighting",
+      "medium shot"
+    ],
+    "promptProse": "Under the focused warm cone of a brass desk lamp late at night, Rio Futaba sits with crossed legs on a low bedroom stool, an open physics notebook resting on one knee. She nudges her glasses up with one finger and meets the viewer's gaze calmly, though a faint blush warms her ears against the structured black lace corset and sheer stockings.",
+    "animaCaption": "Lit by a warm desk lamp, she sits cross-legged with an open notebook and adjusts her glasses while faintly blushing.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "black lace corset",
+      "garter belt",
+      "sheer black stockings",
+      "cleavage"
+    ],
+    "nsfwProse": "Geometric black lace straps and a fitted corset emphasize her curves above sheer black stockings and bare feet.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_misono_mika_starlight_babydoll_window_moon",
+  "revision": 1,
+  "sortOrder": 19047,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_misono_mika_starlight_babydoll_window_moon",
+    "characterId": "misono_mika",
+    "outfitId": "starlight_chiffon_babydoll",
+    "title": "圣园未花 · 星纱窗台的月下许愿",
+    "description": "圣三一寝室的拱形高窗正对着清澈夜空，未花赤足轻坐在铺着天鹅绒垫的宽窗台上，双臂环抱膝盖微微侧首望月。缀着银色星点的粉紫双层薄纱睡裙在月色下宛如一片晚霞，听见你唤她名字时，她回过头露出灿烂又带着一点撒娇的甜笑。",
+    "location": "可望见星河的圣三一寝室拱形高窗台",
+    "action": "抱膝坐于拱窗软垫上侧首望月，回头展露灿烂甜笑",
+    "timeOfDay": "清澈星夜",
+    "lighting": "窗外银白月辉与室内柔暖粉金台灯勾勒星纱光点",
+    "camera": "侧面中景，拱窗星夜与羽饰薄纱构成梦幻画面",
+    "mood": "梦幻、甜美、卸下心防后的依恋",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "arched_window",
+      "window_seat",
+      "starry_sky",
+      "hugging_knees",
+      "barefoot",
+      "sweet_smile",
+      "moonlight",
+      "night"
+    ],
+    "promptTokens": [
+      "arched bedroom window",
+      "cushioned window seat",
+      "hugging knees",
+      "barefoot",
+      "looking at viewer",
+      "sweet bright smile",
+      "starry night sky",
+      "moonlight",
+      "soft warm lamp",
+      "medium shot"
+    ],
+    "promptProse": "Perched barefoot on the velvet-cushioned sill of her tall arched window beneath a glittering night sky, Mika hugs her knees and turns toward the viewer with a radiant, affectionate smile. Moonlight sparkles across the tiny silver stars scattered over her sheer pastel pink and lilac chiffon babydoll.",
+    "animaCaption": "Sitting barefoot on the arched window seat beneath the stars, she hugs her knees and smiles warmly.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer chiffon babydoll",
+      "bare legs",
+      "delicate shoulder straps"
+    ],
+    "nsfwProse": "Translucent pastel chiffon layers and feather-trimmed straps drape airily over her shoulders and thighs in the moonlight.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

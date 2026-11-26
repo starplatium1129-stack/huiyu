@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_golden_darkness_overalls_bookstore_step",
+  "revision": 1,
+  "sortOrder": 19029,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_golden_darkness_overalls_bookstore_step",
+    "characterId": "golden_darkness",
+    "outfitId": "casual_overalls",
+    "title": "金色暗影 · 旧书店木梯上的踮脚取书",
+    "description": "午后安静的街角旧书店里弥漫着纸页与木头香气，金色暗影穿着清爽的浅蓝牛仔背带短裤踩在低矮木踏凳上，踮起帆布鞋尖伸手去够高处书架的地球图鉴。阳光从高窗斜洒下来，在她的金发与明黄条纹衫上缀满轻尘微光。",
+    "location": "满墙木书架与高窗阳光的街角旧书店",
+    "action": "站在木踏凳上踮脚伸手取高处书架的厚书",
+    "timeOfDay": "午后",
+    "lighting": "高窗斜射的暖金光线与书架间的静谧柔影",
+    "camera": "略低侧后四分之三全身，捕捉踮脚取书的轻盈动态",
+    "mood": "专注、纯朴、充满假日生活感",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bookstore",
+      "bookshelves",
+      "reaching_up",
+      "step_stool",
+      "sunbeams",
+      "indoors",
+      "afternoon",
+      "full_body"
+    ],
+    "promptTokens": [
+      "used bookstore",
+      "tall wooden bookshelves",
+      "standing on wooden step stool",
+      "reaching up for book",
+      "tiptoe",
+      "afternoon sunbeams",
+      "floating dust motes",
+      "full body",
+      "from side",
+      "indoors"
+    ],
+    "promptProse": "Inside a quiet secondhand bookstore filled with tall timber shelves, Golden Darkness balances on a small wooden step stool and reaches up to pull a thick encyclopedia from an upper shelf. Warm afternoon sunbeams from a high window catch her golden hair and the brass clasps of her light-blue denim short overalls.",
+    "animaCaption": "Balanced on a wooden step stool in the sunlit bookstore, she reaches up to draw a book from the high shelf.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

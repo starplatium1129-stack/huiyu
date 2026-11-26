@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_rena_liechtenauer_racerback_morning_veranda",
+  "revision": 1,
+  "sortOrder": 19062,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_rena_liechtenauer_racerback_morning_veranda",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "sky_mesh_racerback",
+    "title": "蕾娜·莉希特娜瓦 · 山间晨风的舒展深呼吸",
+    "description": "清晨的穗织山谷还笼着一层薄雾，推开拉门便涌进清甜的松木与露水气息。蕾娜赤脚踩在微凉的木廊上，双臂向两侧大大张开做了个痛快的深呼吸，晴空蓝白边网眼背心衬得她朝气蓬勃，转身便笑着喊你快趁早去逛早市。",
+    "location": "面向薄雾青山的旅馆二楼木质回廊",
+    "action": "赤足立于木廊张开双臂迎风深呼吸，朝气满满回头微笑",
+    "timeOfDay": "山间清晨",
+    "lighting": "穿透山谷薄雾的清澄朝日光晕洒满发梢与木廊",
+    "camera": "侧面四分之三全身，山景晨雾与利落身姿相映",
+    "mood": "清爽、朝气、自由舒展",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "wooden_veranda",
+      "mountain_mist",
+      "stretching",
+      "arms_wide",
+      "barefoot",
+      "morning_light",
+      "energetic_smile",
+      "full_body"
+    ],
+    "promptTokens": [
+      "wooden inn veranda",
+      "misty green mountains",
+      "standing barefoot",
+      "stretching arms wide",
+      "morning breeze",
+      "bright energetic smile",
+      "fresh morning sunlight",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Stepping barefoot onto the second-floor timber veranda overlooking misty green hills, Lena throws her arms wide to breathe in the crisp morning air. Cool sunrise light outlines her sky-blue mesh racerback camisole and sleep boyshorts as she turns back with boundless morning energy.",
+    "animaCaption": "Barefoot on the veranda facing misty morning mountains, she stretches her arms wide with an energetic smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "pc_shiiba_tsumugi_sleepwear_window_plush_hug",
+  "revision": 1,
+  "sortOrder": 19064,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_shiiba_tsumugi_sleepwear_window_plush_hug",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "azure_lace_lingerie",
+    "title": "椎叶紬 · 枕边暖夜的浅杏心事",
+    "description": "夜深人静的卧室里，浅杏棉纱睡裙的泡泡袖垂落在手肘间，椎叶紬赤脚蜷坐在松软的床角，怀里紧紧抱住一只奶白色小兔玩偶挡住半张微红的脸。她悄悄把眼眸从玩偶耳朵上方露出来望向你，小声坦白其实一直很喜欢这样能安心做女孩子的夜晚。",
+    "location": "柔光低垂的深夜卧室床角棉被间",
+    "action": "赤脚蜷坐床角怀抱小兔玩偶半遮脸庞，眼含柔意偷望",
+    "timeOfDay": "深夜",
+    "lighting": "床头暖光小夜灯柔和勾勒领口碎褶与发丝绒光",
+    "camera": "平视中近景，凸显娇怯可爱的依赖神情",
+    "mood": "柔软、害羞、被珍视的安心感",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bed",
+      "hugging_plushie",
+      "curled_up",
+      "blushing",
+      "peeking",
+      "warm_nightlight",
+      "night",
+      "indoors"
+    ],
+    "promptTokens": [
+      "cozy bed",
+      "curled up",
+      "hugging cream rabbit plushie",
+      "peeking over plushie",
+      "soft blush",
+      "warm nightlight",
+      "night",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Curled barefoot into the soft corner of her bed under a low amber nightlight, Tsumugi hugs a cream plush rabbit close against her chest and peeks shyly over its ears. The ruffled apricot double-gauze sleep dress softens every line of her posture as she shares a quiet, heartfelt glance.",
+    "animaCaption": "Curled on her softly lit bed hugging a cream rabbit plushie, she peeks shyly over it with flushed cheeks.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "translucent apricot nightdress",
+      "bare legs",
+      "soft vulnerability"
+    ],
+    "nsfwProse": "Soft ruffled double-gauze fabric rests gently over her collarbones and tucked knees in the warm dim light.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

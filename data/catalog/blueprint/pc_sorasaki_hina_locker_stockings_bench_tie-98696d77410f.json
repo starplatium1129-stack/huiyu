@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_locker_stockings_bench_tie",
+  "revision": 1,
+  "sortOrder": 19070,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_locker_stockings_bench_tie",
+    "characterId": "sorasaki_hina",
+    "outfitId": "locker_stockings",
+    "title": "空崎日奈 · 更衣室长凳的静谧整袜",
+    "description": "深夜空无一人的风纪委私人休息更衣室里，暖色小吸顶灯静静亮着。日奈赤脚坐在木质长凳边缘，微微低头整理着暗紫蕾丝吊袜带与薄黑过膝袜的贴合弧度。听见熟悉的敲门声时她手指微顿，抬头望向来人，眼底藏着既害羞又无比信赖的柔和。",
+    "location": "暖光安静的风纪委私人更衣室木长凳",
+    "action": "坐于木长凳低头整理黑丝袜扣，听见来人后微红双颊抬头",
+    "timeOfDay": "深夜",
+    "lighting": "室内柔暖顶灯勾勒暗紫蕾丝边与缎面光泽",
+    "camera": "平视中景，木长凳与半掩更衣柜构成私密空间感",
+    "mood": "安静、害羞、毫无戒备的依赖",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "locker_room",
+      "wooden_bench",
+      "adjusting_stockings",
+      "sitting",
+      "barefoot",
+      "soft_blush",
+      "warm_lighting",
+      "indoors"
+    ],
+    "promptTokens": [
+      "private dressing room",
+      "wooden bench",
+      "sitting barefoot",
+      "adjusting gartered black thighhighs",
+      "looking up with soft blush",
+      "warm ceiling light",
+      "quiet room",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Seated barefoot on the wooden bench of her quiet private dressing room after hours, Hina pauses with her fingertips at the clasp of her sheer black thigh-high stockings. Warm indoor light traces the deep-purple lace trim of her black satin camisole as she looks up with a soft, trusting blush.",
+    "animaCaption": "Sitting barefoot on the dressing-room bench, she pauses while adjusting her black thigh-highs and looks up with a soft blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "black satin camisole",
+      "deep purple lace",
+      "garter belt",
+      "sheer black thighhighs"
+    ],
+    "nsfwProse": "Delicate purple lace edging and tiny satin bows frame her camisole above the matching garter belt and sheer black stockings.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

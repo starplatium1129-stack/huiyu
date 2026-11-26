@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_yarai_miu_bikini_twilight_parasol_pier",
+  "revision": 1,
+  "sortOrder": 19080,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_yarai_miu_bikini_twilight_parasol_pier",
+    "characterId": "yarai_miu",
+    "outfitId": "black_summer_bikini",
+    "title": "矢来美羽 · 暮色栈道的黑纱遮阳伞",
+    "description": "太阳刚沉入海平线的蓝调黄昏里，海风褪去了正午燥热，正合怕晒的吸血鬼少女出来散步。矢来美羽撑着半透黑纱蕾丝遮阳伞缓步走过海滨木栈道，酒红丝绒高叉连身泳装与复古蝙蝠翼颈链在暮色霞光下格外夺目，她偏头轻笑说现在才是最舒服的时光。",
+    "location": "晚霞初褪、海风凉爽的黄昏海滨木栈道",
+    "action": "肩扛半透黑纱遮阳伞漫步木栈道，侧眸优雅轻笑",
+    "timeOfDay": "蓝调黄昏",
+    "lighting": "天际玫瑰紫与橘粉余晖柔和勾勒丝绒质感与海面微光",
+    "camera": "四分之三全身，兼顾木栈道纵深、蕾丝遮阳伞与修长剪影",
+    "mood": "神秘、优雅、黄昏漫步的惬意浪漫",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "seaside_pier",
+      "parasol",
+      "twilight",
+      "walking",
+      "looking_at_viewer",
+      "ocean",
+      "elegant_smile",
+      "full_body"
+    ],
+    "promptTokens": [
+      "wooden seaside pier",
+      "holding sheer black parasol",
+      "walking barefoot",
+      "twilight ocean horizon",
+      "violet and rose sunset sky",
+      "graceful smile",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Strolling barefoot along the wooden seaside pier once the harsh sun drops below the horizon, Miu rests her sheer gossamer parasol against one shoulder. The twilight rose-violet sky highlights the deep blood-wine velvet of her high-cut monokini, side crisscross cords, and antique bat-wing choker.",
+    "animaCaption": "Walking barefoot along the twilight pier with her sheer parasol, she turns with a graceful evening smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "high-leg velvet monokini",
+      "side crisscross cords",
+      "alluring silhouette"
+    ],
+    "nsfwProse": "High-leg cuts and crisscrossed black satin side cords define her figure cleanly in the deep wine velvet swimsuit.",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

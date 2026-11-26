@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_komine_sachi_workbench_apron_blueprint_check",
+  "revision": 1,
+  "sortOrder": 19043,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_komine_sachi_workbench_apron_blueprint_check",
+    "characterId": "komine_sachi",
+    "outfitId": "workbench_utility_apron",
+    "title": "小岭幸 · 工作台前的零件检校",
+    "description": "地下工坊的金属工作灯稳稳打在橡木台面上，小岭幸戴着厚实皮手套、系着深蓝帆布工装围裙，手握精密游标卡尺核对一枚铜制定时构件。架子上码放着按尺寸排好的工具与图纸，她专注的侧脸里满是对工艺与安全的执着。",
+    "location": "井然有序的地下工坊橡木工作台前",
+    "action": "立于工作台前手持游标卡尺核对金属构件与图纸",
+    "timeOfDay": "夜晚",
+    "lighting": "悬臂金属台灯聚光照亮工作台与深蓝帆布围裙纹理",
+    "camera": "侧前方中景，工具墙与蓝图纸铺展作背景",
+    "mood": "硬核、专注、反差十足的可靠感",
+    "category": "工坊日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "workshop",
+      "workbench",
+      "measuring_tool",
+      "blueprints",
+      "focused",
+      "lamp_light",
+      "indoors",
+      "from_side"
+    ],
+    "promptTokens": [
+      "basement workshop",
+      "wooden workbench",
+      "metal task lamp",
+      "holding brass caliper",
+      "technical schematics on table",
+      "pegged tool wall",
+      "focused expression",
+      "warm task lighting",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Beneath a focused metal task lamp in her tidy basement workshop, Sachi Komine checks the tolerances of a small brass mechanism with calipers over an unrolled schematic. Her heavy navy canvas work apron and thick leather gloves look thoroughly practical against the neatly organized wall of tools behind her.",
+    "animaCaption": "Under the workshop task lamp, she measures a small brass component with calipers over a technical schematic.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

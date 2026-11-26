@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_patrol_shirt_sofa_nap",
+  "revision": 1,
+  "sortOrder": 19072,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_patrol_shirt_sofa_nap",
+    "characterId": "sorasaki_hina",
+    "outfitId": "patrol_shirt_stockings",
+    "title": "空崎日奈 · 归队沙发上的倦怠小憩",
+    "description": "结束通宵巡查回到办公室休息间，日奈脱掉厚重外套，松开黑领带任由宽大白制服衬衫自然敞开领口，踩着软拖鞋陷进宽大皮沙发里。她手里虚握着一杯还冒着微热气的可可，眼尾带着几分困倦却还是撑着精神等你把最后两份文件念完。",
+    "location": "深夜微亮的办公室休息间深色皮沙发",
+    "action": "倦怠陷坐皮沙发轻捧热可可杯，松弛微眯紫眸轻倚靠背",
+    "timeOfDay": "凌晨",
+    "lighting": "角落落地灯低暖光影柔和包裹疲惫身姿",
+    "camera": "平视中景，展现松垮白衬衫与吊袜黑丝的私密慵懒",
+    "mood": "疲惫、柔软、卸下重担后的安心依赖",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "leather_sofa",
+      "tired_relaxed",
+      "holding_mug",
+      "loosened_tie",
+      "night",
+      "warm_lamp",
+      "indoors",
+      "intimate"
+    ],
+    "promptTokens": [
+      "dim office lounge",
+      "sinking into leather sofa",
+      "holding warm mug",
+      "sleepy gentle expression",
+      "warm floor lamp",
+      "late night",
+      "relaxed posture",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Sinking back into the dark leather lounge sofa after an exhausting patrol, Hina cradles a warm mug between both hands while her oversized white uniform shirt hangs unbuttoned with a slack black tie. Dim floor-lamp glow softens her tired violet eyes and traces the gartered sheer black thigh-highs beneath the long shirttail.",
+    "animaCaption": "Relaxed into the lamplit lounge sofa with a warm mug, she rests her head back in her unbuttoned shirt and loose tie.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "unbuttoned oversized shirt",
+      "gartered black thighhighs",
+      "bare collarbones"
+    ],
+    "nsfwProse": "The crisp white shirt parts loosely at the collar and falls past her hips above gartered sheer black stockings.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

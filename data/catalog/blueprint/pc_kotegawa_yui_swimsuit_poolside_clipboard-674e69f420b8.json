@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kotegawa_yui_swimsuit_poolside_clipboard",
+  "revision": 1,
+  "sortOrder": 19046,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_kotegawa_yui_swimsuit_poolside_clipboard",
+    "characterId": "kotegawa_yui",
+    "outfitId": "school_swimsuit",
+    "title": "古手川唯 · 泳池点名的严肃整队",
+    "description": "彩南高中的游泳课热身前，古手川唯赤脚站在湛蓝泳池边的阳光下，一手夹着防水点名板、一手扶起吹散的长发，一丝不苟地叮嘱大家下水前做好热身、严禁在池边追逐。尽管穿着深蓝死库水，她浑身上下依旧透着铁面风纪委员的认真劲儿。",
+    "location": "蓝天白云映衬的彩南高中露天泳池边",
+    "action": "赤脚站于池边手持点名板认真整队叮嘱，另一手轻抚额发",
+    "timeOfDay": "晴朗上午",
+    "lighting": "清朗夏日日光与水面明快波光",
+    "camera": "平视中全身，展现笔直站姿与清澈蓝天泳池",
+    "mood": "严肃、认真、一丝不苟",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "school_pool",
+      "holding_clipboard",
+      "standing",
+      "barefoot",
+      "serious",
+      "bright_sunlight",
+      "summer",
+      "full_body"
+    ],
+    "promptTokens": [
+      "school outdoor pool",
+      "poolside",
+      "holding clipboard",
+      "tucking hair behind ear",
+      "standing barefoot",
+      "serious expression",
+      "bright blue sky",
+      "summer sunlight",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Standing straight and barefoot beside the sparkling blue lanes of the Sainan High School pool, Yui holds a waterproof attendance clipboard to her side while tucking windblown black hair behind her ear. Even in a navy school swimsuit, her expression stays strictly focused as she calls the class to order.",
+    "animaCaption": "Barefoot by the sunny school pool, she holds a clipboard and tucks back her hair while giving serious instructions.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

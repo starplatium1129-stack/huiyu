@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_shiiba_tsumugi_swimwear_pool_bench_towel",
+  "revision": 1,
+  "sortOrder": 19065,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_shiiba_tsumugi_swimwear_pool_bench_towel",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "azure_summer_bikini",
+    "title": "椎叶紬 · 树荫木椅的擦发午休",
+    "description": "刚游完一轮泳后的树荫长椅边，微风吹来阵阵清凉。椎叶紬身着利落可爱的橄榄绿运动分体水着坐在长椅上，双手举起柔软白毛巾轻轻擦拭沾水的发梢。见你递来冰镇柑橘果汁，她有些不好意思地微微低头道谢，嘴角却藏不住明朗的欢喜。",
+    "location": "树影轻晃的夏日泳池旁木质长椅",
+    "action": "坐于长椅举毛巾擦拭湿发，接过冷饮时微红脸颊浅笑",
+    "timeOfDay": "晴朗午后",
+    "lighting": "树荫下斑驳清亮的夏日午后阳光与水面碎影",
+    "camera": "平视中景，突出运动分体水着的清爽率真气质",
+    "mood": "清爽、害羞、自然真诚的夏日惬意",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "poolside",
+      "drying_hair",
+      "holding_towel",
+      "sitting",
+      "wet_hair",
+      "shy_smile",
+      "dappled_sunlight",
+      "summer"
+    ],
+    "promptTokens": [
+      "poolside wooden bench",
+      "sitting",
+      "drying wet hair with white towel",
+      "shy happy smile",
+      "dappled tree sunlight",
+      "sparkling pool background",
+      "summer afternoon",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Sitting on a wooden bench beneath leafy shade beside the sunlit pool, Tsumugi pats her damp hair with a fluffy white towel. Wearing her dark olive-green and charcoal athletic tankini, she looks up with a shy, genuinely happy smile as dappled sunlight flickers over her shoulders.",
+    "animaCaption": "Seated on a shaded poolside bench, she dries her damp hair with a white towel and smiles shyly.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

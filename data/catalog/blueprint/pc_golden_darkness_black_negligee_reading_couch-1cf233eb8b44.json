@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_golden_darkness_black_negligee_reading_couch",
+  "revision": 1,
+  "sortOrder": 19027,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_golden_darkness_black_negligee_reading_couch",
+    "characterId": "golden_darkness",
+    "outfitId": "black_lace_negligee",
+    "title": "金色暗影 · 夜灯沙发角的薄纱读夜",
+    "description": "深夜客厅只亮着一盏落地暖灯，金色暗影赤脚蜷缩在宽大布艺沙发一角，膝上摊着刚借来的地球文学精装书。黑色花卉蕾丝睡裙轻薄地垂落腰际，发梢散开在抱枕间，听见脚步声后她轻轻合拢书页，安静却戒备全消地望过来。",
+    "location": "暖光落地灯相伴的深夜起居室沙发角落",
+    "action": "赤脚蜷坐沙发抱膝翻书，抬头静静凝望",
+    "timeOfDay": "深夜",
+    "lighting": "落地灯暖黄侧光穿透薄黑蕾丝边缘",
+    "camera": "侧前方中景，捕捉静谧柔和的夜读氛围",
+    "mood": "安静、信任、柔美而微带撩人反差",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "sofa",
+      "curled_up",
+      "reading_book",
+      "barefoot",
+      "floor_lamp",
+      "night",
+      "looking_at_viewer",
+      "indoors"
+    ],
+    "promptTokens": [
+      "living room sofa",
+      "curled up",
+      "holding open book",
+      "barefoot",
+      "floor lamp",
+      "warm side lighting",
+      "looking at viewer",
+      "night",
+      "quiet intimacy",
+      "medium shot"
+    ],
+    "promptProse": "Curled barefoot into the corner of a soft living-room sofa beside a warm floor lamp, Golden Darkness rests an open hardcover book across her knees. The sheer black floral-lace negligee drapes delicately over her slight frame as she looks up calmly toward the approaching footsteps.",
+    "animaCaption": "Curled barefoot in the lamplit sofa corner with a hardcover book on her knees, she looks up calmly.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer black lace",
+      "negligee",
+      "bare thighs",
+      "delicate"
+    ],
+    "nsfwProse": "Soft lamplight catches the translucent scalloped edges of her black floral-lace negligee and satin waist ribbon.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

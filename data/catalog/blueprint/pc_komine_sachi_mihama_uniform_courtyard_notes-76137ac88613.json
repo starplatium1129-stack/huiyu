@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_komine_sachi_mihama_uniform_courtyard_notes",
+  "revision": 1,
+  "sortOrder": 19040,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_komine_sachi_mihama_uniform_courtyard_notes",
+    "characterId": "komine_sachi",
+    "outfitId": "mihama_uniform",
+    "title": "小岭幸 · 学院长廊的认真备忘录",
+    "description": "放学前的微风穿过美浜学园的欧式拱廊，小岭幸抱着一本贴满彩色索引签的记事本快步走来，又在红砖柱前礼貌地停步立正。她微微前倾递上刚整理好的值日与采购清单，眼神一如既往地清澈执着，只待一句「没问题」。",
+    "location": "阳光斜映的美浜学园红砖拱廊",
+    "action": "立正站姿双手递出贴满标签的记事本，眼神清澈专注",
+    "timeOfDay": "放学前午后",
+    "lighting": "穿过拱廊的金色斜阳与长廊暖色砖影",
+    "camera": "平视中景，突出美浜制服整洁仪态与欧式校园氛围",
+    "mood": "认真、礼貌、一板一眼的可爱",
+    "category": "校园日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "school_corridor",
+      "brick_archway",
+      "holding_notebook",
+      "standing",
+      "earnest",
+      "afternoon_light",
+      "outdoors",
+      "school"
+    ],
+    "promptTokens": [
+      "academy brick colonnade",
+      "holding tabbed notebook",
+      "standing straight",
+      "earnest attentive expression",
+      "golden afternoon sunlight",
+      "school courtyard background",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Stopping neatly beside a sunlit red-brick archway along the Mihama Academy colonnade, Sachi Komine holds out a tidy notebook bristling with color-coded tabs. Afternoon light touches her lavender school blouse and blue plaid tie as she awaits approval with wide, earnest eyes.",
+    "animaCaption": "Standing straight beneath the sunlit brick archway, she presents her color-tabbed notebook attentively.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

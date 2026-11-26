@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kafka_spider_lingerie_penthouse_wine",
+  "revision": 1,
+  "sortOrder": 19032,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_kafka_spider_lingerie_penthouse_wine",
+    "characterId": "kafka",
+    "outfitId": "seductive_spider_lingerie",
+    "title": "卡芙卡 · 霓虹套房的红酒与丝带",
+    "description": "云端酒店套房的弧形落地窗外是流动的星港灯海，卡芙卡慵懒地斜靠在暗红天鹅绒贵妃榻上，指尖轻摇着一只高脚红酒杯。绯黑丝绒束腰与吊袜带在昏暖壁灯下泛着危险而华丽的光泽，她垂眼轻笑，仿佛早已算定你会在这一刻推门而入。",
+    "location": "俯瞰星港灯海的高空奢华套房贵妃榻",
+    "action": "斜倚丝绒贵妃榻轻摇红酒杯，双腿交叠含笑凝视来人",
+    "timeOfDay": "深夜",
+    "lighting": "套房暖金壁灯侧映与窗外紫蓝星港夜景冷暖交错",
+    "camera": "微俯四分之三身，凸显高贵优雅与致命压迫感",
+    "mood": "慵懒、掌控、危险而醉人的诱惑",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "chaise_lounge",
+      "wine_glass",
+      "reclining",
+      "crossed_legs",
+      "city_lights",
+      "seductive_smile",
+      "night",
+      "luxury_suite"
+    ],
+    "promptTokens": [
+      "luxury penthouse suite",
+      "velvet chaise lounge",
+      "reclining",
+      "crossed legs",
+      "holding wine glass",
+      "seductive smile",
+      "night skyline window",
+      "warm wall sconces",
+      "three-quarter view",
+      "indoors"
+    ],
+    "promptProse": "Reclining effortlessly on a deep velvet chaise lounge overlooking a glittering night skyline, Kafka swirls a stemmed glass of red wine between slender fingers. Warm golden sconces gleam across her crimson velvet bustier corset, suspender straps, and sheer mesh thigh-highs as she watches the viewer with an unhurried, knowing smile.",
+    "animaCaption": "Reclining on a velvet chaise overlooking the night skyline, she swirls a wine glass with a knowing smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "velvet corset",
+      "garter belt",
+      "sheer thighhighs",
+      "cleavage",
+      "seductive"
+    ],
+    "nsfwProse": "Ribbon-laced crimson velvet, matching silk briefs, and sculpted suspender straps accentuate her curves across the dark sofa.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

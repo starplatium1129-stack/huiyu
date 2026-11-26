@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_hermes_citadel_watch",
+  "revision": 1,
+  "sortOrder": 19012,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_hermes_citadel_watch",
+    "characterId": "albedo_overlord",
+    "outfitId": "hermes_black_armor",
+    "title": "雅儿贝德 · 断壁城头的不破守势",
+    "description": "风暴压境前的黑石城垣上，乌云低垂，雷光在远天隐隐翻涌。雅儿贝德单手按在立于身前的战斧长柄上，黑铠缝隙透出冷冽的紫光，沉稳如铁壁般守住身后的王座通途，眼神冷肃却透着绝对的忠贞。",
+    "location": "乌云压顶的纳萨力克外围黑石城垣",
+    "action": "立于城垛前扶柄驻足，昂首审视远方天际",
+    "timeOfDay": "雷雨前黄昏",
+    "lighting": "风暴铅灰天光与铠甲紫芒、远处闪电微光冷暖对冲",
+    "camera": "略低仰角全身，凸显重铠体量与压迫气场",
+    "mood": "冷肃、威严、寸步不让",
+    "category": "巡游战影",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "castle_wall",
+      "storm_clouds",
+      "battle_axe",
+      "standing",
+      "from_below",
+      "wind",
+      "serious",
+      "full_body"
+    ],
+    "promptTokens": [
+      "castle rampart",
+      "storm clouds",
+      "holding battle axe",
+      "standing",
+      "from below",
+      "full body",
+      "wind",
+      "hair blowing",
+      "serious expression",
+      "dramatic lighting"
+    ],
+    "promptProse": "Albedo stands immovable along a dark stone rampart beneath gathering storm clouds, one gauntleted hand resting on the upright haft of her battle axe. Gusts whip her black hair past her retracted helm as luminous purple seams pulse along her heavy plate armor against the slate-grey sky.",
+    "animaCaption": "Seen from a low angle on the stone rampart, she rests her hand on her battle axe as storm winds sweep her hair.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "action"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_nightgown_balcony_moonlight",
+  "revision": 1,
+  "sortOrder": 19010,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_nightgown_balcony_moonlight",
+    "characterId": "albedo_overlord",
+    "outfitId": "cozy_nightwear_lingerie",
+    "title": "雅儿贝德 · 露台栏杆的夜羽轻倚",
+    "description": "第九层寝宫外的高挑石栏沐在银白月辉里，雅儿贝德赤足站在凉润的地砖上，反手搭着雕花栏杆微微回头。低沉的夜风拂开她腰后的漆黑羽翼，肩带在锁骨边缘松滑半分，金瞳深处藏着只对一人敞开的缱绻与占有欲。",
+    "location": "纳萨力克第九层寝宫的月下石雕露台",
+    "action": "单手扶住石栏侧身回望，黑翼轻舒，另一手顺着肩带滑落颈侧",
+    "timeOfDay": "深夜",
+    "lighting": "清冷满月银辉与室内透出的暖琥珀烛火交界",
+    "camera": "侧面四分之三身，露台石栏与展开的黑翼共同构图",
+    "mood": "妩媚、静谧、隐隐炽烈的依恋",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "balcony",
+      "looking_back",
+      "moonlight",
+      "barefoot",
+      "stone_railing",
+      "night",
+      "leaning_back",
+      "seductive_smile"
+    ],
+    "promptTokens": [
+      "balcony",
+      "stone railing",
+      "looking back",
+      "leaning back",
+      "seductive smile",
+      "barefoot",
+      "moonlight",
+      "candlelight",
+      "night",
+      "three-quarter view"
+    ],
+    "promptProse": "Albedo stands barefoot on the carved stone balcony outside her ninth-floor chamber, resting one hand on the balustrade as she glances back over her shoulder. Moonlight catches the dark sheen of her wings while warm amber candlelight spills from the open glass doors behind her, and her free fingertips brush the lace strap resting against her collarbone.",
+    "animaCaption": "She leans back against the moonlit stone balustrade and glances over her shoulder while warm candlelight spills from the doorway.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "strap slip",
+      "bare back",
+      "cleavage",
+      "seductive"
+    ],
+    "nsfwProse": "The thin lace strap slips slightly off one shoulder, tracing the pale curve of her open back and deep neckline in the soft moonlight.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

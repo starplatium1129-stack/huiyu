@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sparkle_hsr_tube_dress_red_lantern_screen",
+  "revision": 1,
+  "sortOrder": 19077,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sparkle_hsr_tube_dress_red_lantern_screen",
+    "characterId": "sparkle_hsr",
+    "outfitId": "elation_cutout_tube_dress",
+    "title": "花火 · 朱漆屏风后的愚者密戏",
+    "description": "匹诺康尼隐秘雅间的绘金朱漆屏风前挂着几盏微晃的红纸灯笼，花火赤足斜倚在铺着绯红锦缎的矮榻上，指尖漫不经心地勾着腰侧金铃细绳轻晃出清脆声响。绯红漆金镂空抹胸睡裙在暖红灯影里显得妖冶又危险，她眯起红眸坏笑着邀你猜猜下一幕是谁的回合。",
+    "location": "绘金屏风与红纸灯笼掩映的幽暗和风雅间",
+    "action": "斜倚锦缎矮榻轻晃腰间金铃细绳，眯眼狡黠坏笑",
+    "timeOfDay": "深夜",
+    "lighting": "绯红灯笼暖光与屏风金箔反光交错，营造戏剧舞台感",
+    "camera": "微俯四分之三中景，狐面、金铃与高开衩薄纱构图张力十足",
+    "mood": "戏谑、魅惑、危险而令人目眩的欢愉气息",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "folding_screen",
+      "red_lanterns",
+      "reclining",
+      "mischievous_smile",
+      "barefoot",
+      "gold_bells",
+      "night",
+      "dramatic_lighting"
+    ],
+    "promptTokens": [
+      "ornate gold folding screen",
+      "glowing red paper lanterns",
+      "reclining on crimson silk daybed",
+      "playing with gold cord",
+      "mischievous alluring smile",
+      "barefoot",
+      "warm crimson dramatic lighting",
+      "three-quarter view",
+      "indoors"
+    ],
+    "promptProse": "Reclining barefoot on a crimson silk daybed in front of a gilded folding screen and glowing red lanterns, Sparkle toys lazily with the gold side-lacing cords of her scarlet cutout tube dress. Miniature gold bells glint in the warm theatrical light as she narrows her eyes in an unmistakable, teasing grin.",
+    "animaCaption": "Reclining before a gilded screen and red lanterns, she toys with her gold side cords and grins mischievously.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "strapless cutout tube dress",
+      "high-slit sheer hem",
+      "bare thighs",
+      "teasing allure"
+    ],
+    "nsfwProse": "Laced gold cords trace the geometric side cutouts of her scarlet-and-gold tube dress above the asymmetrical high-slit sheer hem.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

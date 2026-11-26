@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_chen_arknights_lingerie_rainy_balcony_door",
+  "revision": 1,
+  "sortOrder": 19023,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_chen_arknights_lingerie_rainy_balcony_door",
+    "characterId": "chen_arknights",
+    "outfitId": "light_lingerie",
+    "title": "陈 · 雨夜霓虹窗前的卸甲片刻",
+    "description": "龙门深夜飘着细密冷雨，远处高楼的青红霓虹隔着玻璃在地板上拉出朦胧倒影。陈卸去全部警备与配剑，身着炭黑青边真丝内衣靠在半掩的落地窗框边，手里握着半杯温水静静听雨，难得褪去紧绷，只留沉静清冷的亲近感。",
+    "location": "龙门高层公寓能望见雨幕霓虹的落地窗边",
+    "action": "斜倚落地窗框手持水杯望向雨夜，回眸神色柔和",
+    "timeOfDay": "深夜雨天",
+    "lighting": "窗外冷冽青红城市霓虹与室内低暖落地灯勾勒身姿",
+    "camera": "中景略侧，玻璃雨滴与霓虹光斑化作虚焦前景",
+    "mood": "冷清、松弛、褪去防备后的温柔",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "rainy_window",
+      "city_neon",
+      "leaning_against_wall",
+      "holding_glass",
+      "night",
+      "barefoot",
+      "calm_expression",
+      "indoors"
+    ],
+    "promptTokens": [
+      "apartment window",
+      "rain on glass",
+      "city neon bokeh",
+      "leaning against window frame",
+      "holding glass of water",
+      "looking at viewer",
+      "calm expression",
+      "night",
+      "soft rim light",
+      "medium shot"
+    ],
+    "promptProse": "Leaning quietly against the rain-streaked floor-to-ceiling window of her Lungmen apartment, Ch'en holds a glass of warm water with her guard finally lowered. Soft teal and crimson city neon reflects across her charcoal silk satin bralette while dim indoor lamplight warms her bare shoulders.",
+    "animaCaption": "She leans against the rain-streaked high-rise window holding a glass of water as neon bokeh glows behind her.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "satin lingerie",
+      "bare midriff",
+      "high-leg briefs",
+      "intimate"
+    ],
+    "nsfwProse": "The charcoal satin bralette with deep-teal ribbons and high-leg briefs catch the dim indoor lamp and cool window reflections.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

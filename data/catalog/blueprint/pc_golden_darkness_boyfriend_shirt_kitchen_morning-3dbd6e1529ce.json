@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_golden_darkness_boyfriend_shirt_kitchen_morning",
+  "revision": 1,
+  "sortOrder": 19028,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_golden_darkness_boyfriend_shirt_kitchen_morning",
+    "characterId": "golden_darkness",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "title": "金色暗影 · 晨间餐桌边的热牛奶",
+    "description": "清晨的厨房透进清爽的淡金日光，金色暗影赤脚站在原木餐桌旁，宽大的白衬衫衣袖盖过半截手背，衣襟松松拢在肩头隐约露出淡粉蕾丝边。她正认真用小勺搅动冒着热气的牛奶杯，抬头时脸颊染上一抹浅粉，低声说「只是借穿一下而已」。",
+    "location": "晨光清透的居家厨房与原木餐桌旁",
+    "action": "赤脚站在餐桌旁搅拌热牛奶，松挽衬衫衣襟羞涩抬头",
+    "timeOfDay": "清晨",
+    "lighting": "窗外透入的清亮淡金晨光与杯口袅袅白雾",
+    "camera": "平视中景，展现宽大白衬衫与晨间烟火气",
+    "mood": "纯真、微羞、温馨日常",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "kitchen",
+      "wooden_table",
+      "warm_milk",
+      "standing",
+      "barefoot",
+      "morning_light",
+      "blushing",
+      "oversized_sleeves"
+    ],
+    "promptTokens": [
+      "sunlit kitchen",
+      "wooden dining table",
+      "stirring mug of milk",
+      "steam",
+      "standing barefoot",
+      "slight blush",
+      "looking at viewer",
+      "morning sunlight",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Standing barefoot beside the sunlit wooden kitchen table, Golden Darkness stirs a steaming mug of warm milk with one hand while her oversized white collared shirt hangs loosely off her shoulders. Crisp morning daylight highlights her subtle blush and the hint of pastel-pink lace beneath the open collar.",
+    "animaCaption": "Barefoot by the sunlit kitchen table, she stirs a steaming mug while the oversized white shirt drapes loosely off her shoulders.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "off shoulder shirt",
+      "pastel pink bra peek",
+      "bare legs",
+      "shy"
+    ],
+    "nsfwProse": "The unbuttoned crisp white shirt slips loosely over her bare shoulders and upper thighs, revealing a glimpse of pastel-pink lace trim.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

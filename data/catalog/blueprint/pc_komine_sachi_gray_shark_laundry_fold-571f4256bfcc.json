@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_komine_sachi_gray_shark_laundry_fold",
+  "revision": 1,
+  "sortOrder": 19039,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_komine_sachi_gray_shark_laundry_fold",
+    "characterId": "komine_sachi",
+    "outfitId": "gray_shark_loungewear",
+    "title": "小岭幸 · 宿舍晴窗边的折衣收纳",
+    "description": "周末午后的美浜宿舍洒满暖阳，小岭幸换上松软的灰鲨拉链居家服，跪坐在铺着薄垫的地板上，把刚从阳台收进来的白毛巾叠得棱角分明。她听见夸赞后郑重地点点头，双颊透出认真的愉悦，活像一只收到奖励的乖巧小鲨鱼。",
+    "location": "铺着阳光的周末宿舍木地板与藤编洗衣篮旁",
+    "action": "跪坐地板认真折叠晒干的毛巾，抬头等待夸奖",
+    "timeOfDay": "晴朗午后",
+    "lighting": "窗边通透温暖的日光与淡淡织物柔影",
+    "camera": "微俯中景，洗衣篮与整齐毛巾堆自然入画",
+    "mood": "乖巧、认真、软萌居家",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "dorm_room",
+      "folding_laundry",
+      "kneeling",
+      "laundry_basket",
+      "sunlight",
+      "earnest_smile",
+      "indoors",
+      "afternoon"
+    ],
+    "promptTokens": [
+      "sunny dorm room",
+      "kneeling on floor mat",
+      "folding white towels",
+      "wicker laundry basket",
+      "earnest happy smile",
+      "warm afternoon sunlight",
+      "window light",
+      "slightly from above",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Kneeling on a woven mat in her sunlit dormitory room beside a wicker basket of fresh laundry, Sachi Komine folds warm white towels into crisp, symmetrical squares. Wearing her soft grey fleece shark hoodie and shorts, she looks up with earnest pride at a word of praise.",
+    "animaCaption": "Kneeling in the sunlit dorm room beside a laundry basket, she folds white towels with earnest pride.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

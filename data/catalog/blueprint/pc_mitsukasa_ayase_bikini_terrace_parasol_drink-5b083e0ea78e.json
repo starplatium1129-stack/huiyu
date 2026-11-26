@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mitsukasa_ayase_bikini_terrace_parasol_drink",
+  "revision": 1,
+  "sortOrder": 19052,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_mitsukasa_ayase_bikini_terrace_parasol_drink",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "crimson_summer_bikini",
+    "title": "三司绫濑 · 海景露台的冰饮偷闲",
+    "description": "午后白色太阳伞在海景度假露台上撑出一片清凉，绫濑斜靠在藤编躺椅里，手里轻摇插着吸管的冰镇桃子苏打。珊瑚粉褶皱抹胸泳装与轻盈网纱泳裙衬得她明艳灵动，她趁四下无人悄悄舒了口气，笑言这才是真正属于自己的假期。",
+    "location": "面向湛蓝海面的白色太阳伞度假露台",
+    "action": "斜靠藤编躺椅手持冷饮吸管，放松轻笑望向海面",
+    "timeOfDay": "晴朗午后",
+    "lighting": "伞下清凉柔光与栏杆外耀眼碧海日光交相辉映",
+    "camera": "四分之三中景，展现度假露台与轻快色彩",
+    "mood": "轻松、明媚、卸下包袱的惬意",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "resort_terrace",
+      "sun_parasol",
+      "lounge_chair",
+      "iced_drink",
+      "ocean_view",
+      "relaxed_smile",
+      "summer",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "seaside resort terrace",
+      "white parasol",
+      "rattan lounge chair",
+      "holding iced peach soda with straw",
+      "relaxed bright smile",
+      "blue ocean background",
+      "summer sunlight",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Relaxing in a rattan lounge chair beneath a white sun parasol on an oceanfront terrace, Ayase holds a frosted glass of peach soda with a striped straw. Sunlight sparkles off the turquoise water behind her coral-pink ruffled bandeau bikini and mesh swim skirt as she shares an unguarded summer smile.",
+    "animaCaption": "Relaxed in a shaded terrace lounge chair overlooking the ocean, she holds an iced peach soda with an easy smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

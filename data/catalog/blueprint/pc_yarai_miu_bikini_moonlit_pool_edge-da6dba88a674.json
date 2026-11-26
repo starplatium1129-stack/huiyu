@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_yarai_miu_bikini_moonlit_pool_edge",
+  "revision": 1,
+  "sortOrder": 19081,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_yarai_miu_bikini_moonlit_pool_edge",
+    "characterId": "yarai_miu",
+    "outfitId": "black_summer_bikini",
+    "title": "矢来美羽 · 夜间泳池的绯绒波影",
+    "description": "入夜后的度假酒店露天泳池亮起幽蓝水底灯，池面荡漾着碎银般的月色。矢来美羽把遮阳伞收在池畔躺椅旁，双臂搭在清凉的石质池沿上，半身浸在微漾池水里回头望来。沾水的酒红丝绒连身泳装泛着深邃光泽，夜色让她的笑意更添几分迷人蛊惑。",
+    "location": "亮着幽蓝水底灯的月夜露天泳池池沿",
+    "action": "半身入水双臂搭于池边石沿，沾水发丝垂肩回眸浅笑",
+    "timeOfDay": "夏夜",
+    "lighting": "幽蓝水底灯漫射光与月色冷辉在湿润肌肤上折射波纹",
+    "camera": "微俯中景，水底冷蓝反光与酒红丝绒形成迷人对比",
+    "mood": "迷离、优雅、夜色下的亲密诱惑",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "night_pool",
+      "pool_edge",
+      "in_water",
+      "wet_hair",
+      "underwater_lights",
+      "looking_at_viewer",
+      "alluring_smile",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "resort outdoor pool at night",
+      "glowing blue pool lights",
+      "arms resting on pool edge",
+      "half submerged in water",
+      "wet hair",
+      "alluring gentle smile",
+      "moonlight",
+      "water caustics",
+      "slightly from above",
+      "outdoors"
+    ],
+    "promptProse": "Resting her forearms along the cool stone rim of an outdoor resort pool illuminated by glowing blue underwater lights, Miu looks back over her damp shoulder. Wet blood-wine velvet and black crisscross cords gleam beneath moonlight and shimmering water caustics.",
+    "animaCaption": "Resting her arms on the edge of the illuminated night pool, she looks back with wet hair and shimmering water ripples.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "wet velvet monokini",
+      "wet skin",
+      "night pool allure"
+    ],
+    "nsfwProse": "Pool water beads across her bare shoulders and collarbone while blue underwater light traces the velvet contours.",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

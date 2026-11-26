@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_yarai_miu_lingerie_moonlit_drapes",
+  "revision": 1,
+  "sortOrder": 19078,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_yarai_miu_lingerie_moonlit_drapes",
+    "characterId": "yarai_miu",
+    "outfitId": "black_lace_lingerie",
+    "title": "矢来美羽 · 暗红帷幔间的银月诱惑",
+    "description": "深夜房间的落地长窗泄入清冷银月，矢来美羽赤足立于半掩的暗红丝绒帷幔旁，一手轻抚垂落胸前的墨黑深V蕾丝边缘，一手微微抬起将长发拨向肩后。暗红蔷薇蕾丝与腰际镂空系带在冷月下泛着神秘魅色，她唇角微勾，眼神炽热又带着一点克制的渴望。",
+    "location": "垂着暗红丝绒帷幔的月夜静谧卧室落地窗前",
+    "action": "轻倚暗红帷幔拨开颈侧长发，含笑直视吐露克制渴望",
+    "timeOfDay": "满月深夜",
+    "lighting": "清冷银白月光勾勒深V曲线与暗红蔷薇蕾丝微光",
+    "camera": "平视中景，丝绒帷幔与冷银月色形成哥特张力",
+    "mood": "魅惑、炽热、吸血鬼少女特有的危险温柔",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R18",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "velvet_curtains",
+      "moonlight",
+      "hand_in_hair",
+      "standing",
+      "seductive_gaze",
+      "night",
+      "bedroom",
+      "gothic"
+    ],
+    "promptTokens": [
+      "dark crimson velvet curtains",
+      "moonlit bedroom window",
+      "sweeping hair back from neck",
+      "intense alluring gaze",
+      "slight blush",
+      "cool silver moonlight",
+      "night",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Standing barefoot beside heavy crimson velvet drapes bathed in silver moonlight, Miu Yarai sweeps her hair back to bare the line of her throat. Moonbeams catch the gothic black silk plunge bra, crimson rose lace details, and crisscross waist straps as she watches the viewer with heated, restrained longing.",
+    "animaCaption": "Beside the moonlit crimson velvet drapes, she sweeps hair back from her neck with an intense, alluring gaze.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "gothic black lace lingerie",
+      "deep cleavage",
+      "waist cutout straps",
+      "seductive"
+    ],
+    "nsfwProse": "Deep-V black silk lingerie detailed with dark crimson rose lace and waist-wrapping cutout straps accentuates her voluptuous figure.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

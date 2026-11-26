@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_golden_darkness_white_camisole_window_breeze",
+  "revision": 1,
+  "sortOrder": 19030,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_golden_darkness_white_camisole_window_breeze",
+    "characterId": "golden_darkness",
+    "outfitId": "white_silk_camisole",
+    "title": "金色暗影 · 夏夜凉风中的纯白窗畔",
+    "description": "闷热褪去的夏夜，推开的木窗送来带着虫鸣的清凉微风。金色暗影赤脚跪坐在铺着薄席的窗边软垫上，双手交叠搭在窗台边托腮远眺夜空，纯白真丝吊带睡裙的细带随风微动，柔和月色将她勾勒得仿佛透明一般宁静。",
+    "location": "推开木窗、微风轻拂的夏夜卧室窗边",
+    "action": "跪坐窗边软垫托腮望向夏夜星空，细发随风飘动",
+    "timeOfDay": "夏夜",
+    "lighting": "窗外柔和银白月光与室内极浅的暖夜灯",
+    "camera": "侧面中景，夜风吹起的轻纱与柔和轮廓入镜",
+    "mood": "澄澈、静谧、略带柔弱依恋",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "open_window",
+      "summer_night",
+      "kneeling",
+      "resting_chin_on_hand",
+      "moonlight",
+      "breeze",
+      "barefoot",
+      "from_side"
+    ],
+    "promptTokens": [
+      "open wooden window",
+      "summer night",
+      "kneeling on cushion",
+      "resting chin on hands",
+      "moonlight",
+      "night breeze",
+      "hair flowing",
+      "barefoot",
+      "from side",
+      "medium shot"
+    ],
+    "promptProse": "Kneeling barefoot on a soft cushion beside the open bedroom window on a breezy summer night, Golden Darkness rests her chin on folded hands along the sill and gazes into the starry sky. Pale moonlight filters through the swaying curtain onto her lightweight white silk camisole and slender shoulders.",
+    "animaCaption": "Kneeling barefoot by the open summer window, she rests her chin on the sill as moonlight and night breeze drift in.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer white silk",
+      "spaghetti straps",
+      "delicate lingerie"
+    ],
+    "nsfwProse": "The thin satin straps and sheer white silk fabric drape softly over her shoulders and waist under the silver moonlight.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

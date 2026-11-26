@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_arihara_nanami_bikini_boardwalk_icecream",
+  "revision": 1,
+  "sortOrder": 19020,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_arihara_nanami_bikini_boardwalk_icecream",
+    "characterId": "arihara_nanami",
+    "outfitId": "silver_summer_bikini",
+    "title": "在原七海 · 海滨木栈道的双球甜筒",
+    "description": "午后海风吹得木栈道上的彩旗轻轻作响，七海一手按住被海风掀起的宽檐草帽，另一手护着快要融化的薄荷香草双球甜筒快步走来。藏青配明黄的运动比基尼在阳光下格外利落，她笑着催促你快点咬上一口免得滴到地上。",
+    "location": "晴空与白浪相伴的海滨木栈道",
+    "action": "一手扶住草帽帽檐，另一手举着冰激凌甜筒迎面走来",
+    "timeOfDay": "晴朗午后",
+    "lighting": "明亮通透的海滨日光与草帽下的柔和面颊投影",
+    "camera": "平视中景，碧海白浪与木栈道栏杆自然延伸",
+    "mood": "元气、明快、带着俏皮关怀",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "boardwalk",
+      "holding_ice_cream",
+      "holding_hat",
+      "walking",
+      "ocean",
+      "bright_sunlight",
+      "smile",
+      "summer"
+    ],
+    "promptTokens": [
+      "wooden boardwalk",
+      "ocean background",
+      "holding ice cream cone",
+      "holding straw hat",
+      "walking toward viewer",
+      "cheerful smile",
+      "summer sunlight",
+      "sea breeze",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Walking along a sunlit seaside boardwalk with turquoise waves behind her, Nanami steadies her wide-brim straw hat with one hand while holding out a melting double-scoop ice cream cone with the other. Bright summer sunlight highlights her sporty navy-and-yellow bikini and lively smile.",
+    "animaCaption": "She steadies her straw hat in the sea breeze while offering a melting ice cream cone along the sunlit boardwalk.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

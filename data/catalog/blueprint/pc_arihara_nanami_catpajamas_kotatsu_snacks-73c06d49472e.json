@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_arihara_nanami_catpajamas_kotatsu_snacks",
+  "revision": 1,
+  "sortOrder": 19018,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_arihara_nanami_catpajamas_kotatsu_snacks",
+    "characterId": "arihara_nanami",
+    "outfitId": "silver_lace_lingerie",
+    "title": "在原七海 · 被炉旁的橘子与夜谈",
+    "description": "冬夜客厅里开着暖融融的被炉，七海把猫耳兜帽松松垂在背后，双肘支在矮桌边缘慢条斯理地剥着一只金黄蜜橘。珊瑚绒袖口软绵绵地裹到手腕，她递过半瓣橘子时眼角弯起，全然卸下了平日特工般的机警。",
+    "location": "暖光点亮的冬夜起居室被炉桌旁",
+    "action": "趴在被炉桌边剥蜜橘，含笑递向对面",
+    "timeOfDay": "冬夜",
+    "lighting": "客厅暖黄吸顶灯与窗外静谧深蓝夜色呼应",
+    "camera": "斜对角中近景，蜜橘篮与热茶杯入镜",
+    "mood": "软糯、居家、充满兄妹般的依赖感",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "kotatsu",
+      "peeling_orange",
+      "sitting",
+      "leaning_forward",
+      "warm_lighting",
+      "indoors",
+      "night",
+      "gentle_smile"
+    ],
+    "promptTokens": [
+      "kotatsu",
+      "living room",
+      "peeling tangerine",
+      "offering fruit",
+      "leaning on table",
+      "gentle smile",
+      "warm indoor lighting",
+      "night",
+      "medium close-up",
+      "cozy"
+    ],
+    "promptProse": "Leaning her elbows on the warm kotatsu table in the softly lit living room, Nanami peels a bright tangerine while her plush pastel-pink fleece sleeves cuff comfortably around her wrists. She holds out a fresh slice across the low table with a relaxed, affectionate smile.",
+    "animaCaption": "Resting her elbows on the kotatsu table, she peels a tangerine and offers a segment with a warm smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ciel_tsukihime_lingerie_window_linen",
+  "revision": 1,
+  "sortOrder": 19024,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ciel_tsukihime_lingerie_window_linen",
+    "characterId": "ciel_tsukihime",
+    "outfitId": "holy_white_lace_lingerie",
+    "title": "希耶尔 · 晨光白幔间的静谧羞赧",
+    "description": "清晨的柔和天光穿透教堂宿舍的亚麻白帘，希耶尔摘下眼镜放在床头木柜上，坐在铺着素色床单的床沿轻理着白色过膝袜缘。察觉到视线落在纯白花纹蕾丝上时，她轻轻咬住下唇，耳根泛起淡淡红晕，却没有躲闪。",
+    "location": "晨光微透的简约欧式寝室床边",
+    "action": "坐在床沿整理白丝袜口，摘下眼镜羞赧抬头相望",
+    "timeOfDay": "柔亮清晨",
+    "lighting": "穿透白窗帘的清澈漫射晨光，凸显蕾丝织纹与细腻肤色",
+    "camera": "平视中景，床头眼镜与素白床幔入画",
+    "mood": "圣洁、羞怯、温柔坦诚",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "sitting_on_bed",
+      "adjusting_stockings",
+      "blushing",
+      "morning_light",
+      "sheer_curtains",
+      "glasses_on_table",
+      "intimate"
+    ],
+    "promptTokens": [
+      "bedroom",
+      "sitting on bed",
+      "adjusting thighhighs",
+      "blushing",
+      "looking at viewer",
+      "morning sunlight",
+      "white curtains",
+      "glasses on nightstand",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "With her glasses set neatly on the wooden nightstand, Ciel sits at the edge of the sun-dappled bed smoothing the top of her white thigh-high stockings. Soft morning light filtering through white linen curtains illuminates the floral embroidery of her white lace lingerie as she meets the viewer's eyes with a gentle blush.",
+    "animaCaption": "Seated on the sunlit bed with her glasses on the nightstand, she adjusts her white thigh-high stockings while blushing softly.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "white lace lingerie",
+      "garter belt",
+      "white thighhighs",
+      "shy blush"
+    ],
+    "nsfwProse": "Delicate white floral lace and matching garter straps frame her figure cleanly in the translucent morning light.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

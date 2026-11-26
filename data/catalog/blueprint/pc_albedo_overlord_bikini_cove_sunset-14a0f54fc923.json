@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_bikini_cove_sunset",
+  "revision": 1,
+  "sortOrder": 19014,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_bikini_cove_sunset",
+    "characterId": "albedo_overlord",
+    "outfitId": "pure_white_bikini",
+    "title": "雅儿贝德 · 礁湾晚潮的湿发回眸",
+    "description": "落日将平静的海湾染成橘金与玫瑰紫，雅儿贝德刚从齐膝浅浪中涉水上岸，抬手将沾水的长发拢向一侧肩头。水珠顺着锁骨与腰际滑落，她听见身后脚步声便停在湿润沙滩上微微回首，眼中荡着比晚霞更浓的暖意。",
+    "location": "暮色渐沉的静谧海湾浅滩与湿沙",
+    "action": "涉水回岸抬手拢起湿发，在浅浪边缘侧身回眸",
+    "timeOfDay": "日落黄昏",
+    "lighting": "低角度橘金夕照勾勒发丝与身姿的金色轮廓光",
+    "camera": "膝上中景，海平线与退潮水痕作背景",
+    "mood": "浪漫、微醺、柔和深情",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach",
+      "sunset",
+      "wet_hair",
+      "wading",
+      "looking_back",
+      "hand_in_hair",
+      "golden_hour",
+      "ocean"
+    ],
+    "promptTokens": [
+      "beach",
+      "shallow water",
+      "sunset",
+      "golden hour",
+      "wet hair",
+      "gathering hair",
+      "looking back",
+      "rim lighting",
+      "warm glow",
+      "three-quarter view"
+    ],
+    "promptProse": "Walking out of the knee-deep evening tide onto wet sand, Albedo gathers her damp black hair over one shoulder and turns back toward the viewer. Low golden sunset light rims her dark wings and glistens across her wet skin while rose-tinted waves curl quietly around her ankles.",
+    "animaCaption": "Standing at the edge of the sunset tide, she sweeps her wet hair over one shoulder and looks back.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "wet skin",
+      "cleavage",
+      "alluring"
+    ],
+    "nsfwProse": "Water droplets trail down her damp collarbone and waist in the warm sunset rim light.",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_rena_liechtenauer_bikini_cabana_melon",
+  "revision": 1,
+  "sortOrder": 19060,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_rena_liechtenauer_bikini_cabana_melon",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "royal_filigree_bikini",
+    "title": "蕾娜·莉希特娜瓦 · 海滨木屋的蜜瓜分享",
+    "description": "午后热浪里，海滨木棚下挂着轻晃的风铃。蕾娜赤脚盘腿坐在铺着彩条毛巾的木质长榻上，兴致勃勃地托着一盘冰镇切块青蜜瓜，举起竹签叉起最甜的一块凑过来，用带着清脆异国韵律的口音笑着催你快尝尝看。",
+    "location": "挂着风铃的海滨木质凉亭与彩条沙滩巾长榻",
+    "action": "坐于凉亭木榻举起叉着蜜瓜的竹签，热情爽朗地喂向对面",
+    "timeOfDay": "晴朗午后",
+    "lighting": "木棚阴影下清凉漫射光与海滩明亮金沙反光",
+    "camera": "平视中景，突显热情亲近的互动感与鲜活夏日色彩",
+    "mood": "爽朗、热情、真诚而充满生活欢愉",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach_cabana",
+      "holding_fruit",
+      "offering_food",
+      "sitting",
+      "cheerful_smile",
+      "summer",
+      "shade",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "wooden beach cabana",
+      "sitting on striped beach towel",
+      "offering chilled melon slice on skewer",
+      "cheerful radiant smile",
+      "sunlit sandy beach behind",
+      "summer afternoon",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Sitting comfortably on a striped beach towel inside a shaded seaside cabana, Lena leans forward to offer a chilled slice of green melon on a wooden skewer. Warm reflected light from the sunny beach behind her gleams off the gold trim of her ivory bikini and brightens her lively smile.",
+    "animaCaption": "Seated in the shaded beach cabana, she leans forward with a bright smile to offer a slice of chilled melon.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

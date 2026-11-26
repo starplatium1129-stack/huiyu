@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_arihara_nanami_bikini_pier_foot_splash",
+  "revision": 1,
+  "sortOrder": 19021,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_arihara_nanami_bikini_pier_foot_splash",
+    "characterId": "arihara_nanami",
+    "outfitId": "silver_summer_bikini",
+    "title": "在原七海 · 防波堤阶梯的戏水小歇",
+    "description": "退潮后的海滨石阶浸着凉爽的浅浪，七海把草帽反扣在身旁石阶上，双脚轻晃踢起一串晶莹水花。她歪过头望向身侧的同伴，发梢沾着细碎海风，眼里闪着难得毫无顾忌的假日雀跃。",
+    "location": "海风轻拂的石砌防波堤下水阶梯",
+    "action": "坐在石阶上晃动双脚激起水花，偏头俏皮微笑",
+    "timeOfDay": "清爽上午",
+    "lighting": "清亮海面反光与微风拂面的通透自然光",
+    "camera": "斜侧全身，收进石阶、溅起的水花与远帆",
+    "mood": "轻快、清爽、自在舒展",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "seaside_steps",
+      "splashing_water",
+      "sitting",
+      "barefoot",
+      "ocean",
+      "playful_smile",
+      "summer",
+      "full_body"
+    ],
+    "promptTokens": [
+      "stone seawall steps",
+      "sitting",
+      "splashing water with feet",
+      "barefoot",
+      "ocean",
+      "straw hat beside her",
+      "playful smile",
+      "morning sunlight",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Seated on the sun-warmed stone steps leading down to clear shallow seawater, Nanami kicks her bare feet playfully to send bright droplets arcing across the surface. Her woven straw hat rests on the step beside her while crisp morning sunlight sparkles over the bay.",
+    "animaCaption": "Seated on the seawall steps with her straw hat nearby, she kicks bright splashes across the shallow water.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

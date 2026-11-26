@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_nightgown_vanity_comb",
+  "revision": 1,
+  "sortOrder": 19011,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_nightgown_vanity_comb",
+    "characterId": "albedo_overlord",
+    "outfitId": "cozy_nightwear_lingerie",
+    "title": "雅儿贝德 · 梳妆镜前的漆羽理发",
+    "description": "熄去大半吊灯的寝室里，只留梳妆台两盏水晶壁灯泛着昏黄光晕。雅儿贝德跪坐在丝绒圆凳上，执起骨雕长梳慢慢理顺垂过腰际的黑发，借着镜面望向刚推门进来的身影，唇边浮起一抹明知故问的娇嗔笑意。",
+    "location": "点着水晶壁灯的寝宫古典梳妆台前",
+    "action": "坐在丝绒圆凳上梳理长发，透过梳妆镜含情凝视来人",
+    "timeOfDay": "深夜",
+    "lighting": "水晶壁灯的柔暖琥珀光映亮镜面与肩背线条",
+    "camera": "借镜面反射的中近景，兼顾正面神情与露背曲线",
+    "mood": "慵懒、亲昵、带着克制的挑逗",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "vanity_table",
+      "mirror",
+      "brushing_hair",
+      "sitting",
+      "bedroom",
+      "candlelight",
+      "looking_at_viewer",
+      "reflection"
+    ],
+    "promptTokens": [
+      "vanity table",
+      "mirror",
+      "reflection",
+      "brushing hair",
+      "hairbrush",
+      "sitting",
+      "looking at viewer",
+      "bedroom",
+      "warm lighting",
+      "medium shot"
+    ],
+    "promptProse": "Seated on a velvet stool before her gilded vanity mirror, Albedo draws an ivory comb slowly through the cascade of her dark hair. Two warm crystal sconces frame her reflection as she catches the viewer's gaze in the glass, her bare shoulders and open back angled gently toward the room.",
+    "animaCaption": "She combs her long black hair at the warmly lit vanity while watching the viewer through the mirror.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "bare back",
+      "sheer lace",
+      "parted lips",
+      "intimate"
+    ],
+    "nsfwProse": "Fine web-patterned lace clings across her bust while the open back of her silk nightgown reveals her pale spine down to the base of her wings.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

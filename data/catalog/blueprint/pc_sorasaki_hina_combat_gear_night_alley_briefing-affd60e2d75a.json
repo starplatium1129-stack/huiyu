@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_combat_gear_night_alley_briefing",
+  "revision": 1,
+  "sortOrder": 19068,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_combat_gear_night_alley_briefing",
+    "characterId": "sorasaki_hina",
+    "outfitId": "combat_gear",
+    "title": "空崎日奈 · 夜间突击前的无线电确认",
+    "description": "格黑娜外围街区的路灯在微湿柏油路上拉出冷光，日奈身着黑紫短夹克战术装半倚在砖墙掩体边缘，一手轻按耳际无线电听筒低声确认小队站位，另一手稳稳垂在腿侧枪套旁。虽身形娇小，冷静凌厉的决断气息却令整条夜巷瞬间沉寂。",
+    "location": "路灯微亮的格黑娜外围夜间砖墙街巷",
+    "action": "背倚砖墙掩体轻按耳麦联络，目光冷峻地扫视前方",
+    "timeOfDay": "深夜",
+    "lighting": "冷白路灯顶光与远处暗紫街景霓虹勾出硬朗轮廓",
+    "camera": "略低四分之三中景，展现战术织带、护具与沉稳威慑感",
+    "mood": "冷峻、果决、可靠的风纪核心",
+    "category": "巡游战影",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "night_alley",
+      "brick_wall",
+      "earpiece",
+      "tactical",
+      "serious",
+      "streetlight",
+      "standing",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "dim night street corner",
+      "leaning near brick cover",
+      "touching radio earpiece",
+      "focused calm expression",
+      "cold streetlight",
+      "wet asphalt reflection",
+      "tactical readiness",
+      "three-quarter view",
+      "outdoors"
+    ],
+    "promptProse": "Paused beside a brick corner along a damp night street in Gehenna, Hina presses two fingers to her radio earpiece to confirm squad positions while her other hand rests near her thigh holster. Cold streetlight catches the harness webbing and cropped silhouette of her black-and-violet tactical jacket.",
+    "animaCaption": "Positioned by a brick street corner at night, she touches her radio earpiece with calm tactical focus.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "action"
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_alisa_mikhailovna_kujou_slip_evening_curtain",
+  "revision": 1,
+  "sortOrder": 19016,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_alisa_mikhailovna_kujou_slip_evening_curtain",
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfitId": "silver_lace_lingerie",
+    "title": "艾莉莎 · 蓝调窗纱前的俄语低吟",
+    "description": "入夜后的卧室还没开大灯，只有床头小灯映着淡蓝色窗帘的柔波。艾莉莎赤脚立在落地窗纱旁，手指无意识地攥着雪白蕾丝裙摆一角，察觉到身后灼热目光后耳尖瞬间染红，用极轻的俄语小声嘀咕着「别一直盯着看呀」。",
+    "location": "微风拂动轻纱的深夜卧室落地窗边",
+    "action": "背靠窗纱微微侧身，指尖轻捻裙边，耳尖绯红地别开视线",
+    "timeOfDay": "初夜",
+    "lighting": "窗外冷冽靛蓝夜色与床头柔暖微光的柔和交融",
+    "camera": "中近景平视，聚焦锁骨银结与羞怯神态",
+    "mood": "矜持、娇羞、藏不住的少女心动",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "sheer_curtains",
+      "blushing",
+      "looking_away",
+      "standing",
+      "barefoot",
+      "night",
+      "soft_lighting"
+    ],
+    "promptTokens": [
+      "bedroom",
+      "sheer curtains",
+      "standing by window",
+      "blushing",
+      "looking away",
+      "holding hem",
+      "barefoot",
+      "night",
+      "soft bedside lamp",
+      "medium shot"
+    ],
+    "promptProse": "Standing barefoot beside the sheer bedroom curtains after dusk, Alya pinches the scalloped lace hem of her pale ice-blue silk slip dress and glances sideways with a vivid blush. Cool blue twilight from the window meets the warm glow of a bedside lamp across her silver hair and bare shoulders.",
+    "animaCaption": "She stands barefoot by the sheer window curtains, fingers nervously holding her lace hem while looking away with flushed cheeks.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer slip",
+      "bare shoulders",
+      "shy blush",
+      "lingerie"
+    ],
+    "nsfwProse": "The frosted white lace neckline frames her collarbone and slender shoulders while the soft silk slip follows her waist in the dim lamp light.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

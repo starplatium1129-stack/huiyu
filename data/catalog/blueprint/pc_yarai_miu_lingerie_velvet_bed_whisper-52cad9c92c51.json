@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_yarai_miu_lingerie_velvet_bed_whisper",
+  "revision": 1,
+  "sortOrder": 19079,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_yarai_miu_lingerie_velvet_bed_whisper",
+    "characterId": "yarai_miu",
+    "outfitId": "black_lace_lingerie",
+    "title": "矢来美羽 · 暖灯卧榻的靠近邀约",
+    "description": "夜灯柔和的卧室床榻上铺着深灰亚麻被单，矢来美羽单膝微曲侧坐在床沿，身体微微前倾，指尖轻点身旁空出的床位。褪去白天干练的守望者外壳，墨黑真丝钢圈内衣衬得她白皙肌肤格外耀眼，微红眼角流露出难得直白的撒娇与依恋。",
+    "location": "暖暗夜灯笼罩的深夜卧房深灰大床",
+    "action": "侧坐床沿微微前倾，轻拍身旁床榻发出柔声邀约",
+    "timeOfDay": "深夜",
+    "lighting": "床头暖琥珀柔光聚焦肩颈锁骨与蕾丝纹路",
+    "camera": "微俯中近景，拉近眼神交流与私密呼吸感",
+    "mood": "亲昵、热烈、卸防后的坦率邀约",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R18",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bed",
+      "leaning_forward",
+      "sitting_on_bed",
+      "warm_lighting",
+      "blushing",
+      "inviting_smile",
+      "night",
+      "indoors"
+    ],
+    "promptTokens": [
+      "dim bedroom",
+      "dark grey linen bed",
+      "sitting on edge leaning forward",
+      "inviting gentle smile",
+      "soft blush",
+      "warm amber bedside lamp",
+      "slightly from above",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Seated on the edge of the dark linen bed beneath a warm amber lamp, Miu leans gently forward with one palm resting on the sheets beside her as a quiet invitation. Warm light plays over her fair skin, the crimson rose lace accents of her black silk bra, and the sleek waist straps.",
+    "animaCaption": "Leaning forward on the lamplit dark linen bed, she rests one hand on the sheets in a soft invitation.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "black silk underwire lingerie",
+      "crimson rose lace",
+      "cleavage",
+      "intimate invitation"
+    ],
+    "nsfwProse": "Leaning forward in the warm bedside glow accentuates the deep-V black silk lace cups and crisscross waist straps.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

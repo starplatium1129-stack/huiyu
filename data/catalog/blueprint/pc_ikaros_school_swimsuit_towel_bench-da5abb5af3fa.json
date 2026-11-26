@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ikaros_school_swimsuit_towel_bench",
+  "revision": 1,
+  "sortOrder": 19036,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ikaros_school_swimsuit_towel_bench",
+    "characterId": "ikaros",
+    "outfitId": "school_swimsuit",
+    "title": "伊卡洛斯 · 池畔长椅的晒翼小憩",
+    "description": "游完几圈后的午后，泳池边的木长椅被太阳晒得微暖。伊卡洛斯把白毛巾工工整整叠在膝头，赤脚并拢端坐在树荫边缘，微微张开带着水珠的双翼让暖风吹干，怀边还乖巧地放着一瓶冰凉的麦茶。",
+    "location": "树影婆娑的校园泳池边木长椅",
+    "action": "端坐木长椅膝放白毛巾，轻展微湿双翼吹风休息",
+    "timeOfDay": "晴朗午后",
+    "lighting": "树叶间筛落的斑驳晴光与池水柔和反光",
+    "camera": "四分之三全身，兼顾泳池背景与舒展羽翼",
+    "mood": "宁静、乖巧、夏日微风的安适",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "poolside",
+      "wooden_bench",
+      "sitting",
+      "folded_towel",
+      "barefoot",
+      "dappled_sunlight",
+      "gentle_expression",
+      "full_body"
+    ],
+    "promptTokens": [
+      "poolside wooden bench",
+      "sitting neatly",
+      "folded white towel on lap",
+      "barefoot",
+      "chilled tea bottle beside her",
+      "dappled tree shade",
+      "summer afternoon",
+      "gentle calm expression",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Seated neatly on a wooden bench along the shaded edge of the school pool, Ikaros rests a neatly folded white towel on her lap beside a chilled bottle of barley tea. She spreads her damp wings slightly to dry in the warm afternoon breeze while dappled sunlight flickers across the tiles.",
+    "animaCaption": "Seated neatly on the shaded poolside bench with a folded towel on her lap, she airs her wings in the breeze.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

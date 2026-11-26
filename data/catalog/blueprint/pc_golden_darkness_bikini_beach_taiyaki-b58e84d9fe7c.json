@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_golden_darkness_bikini_beach_taiyaki",
+  "revision": 1,
+  "sortOrder": 19026,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_golden_darkness_bikini_beach_taiyaki",
+    "characterId": "golden_darkness",
+    "outfitId": "bikini_swimsuit",
+    "title": "金色暗影 · 遮阳伞下的海风鲷鱼烧",
+    "description": "海滨木棚的遮阳阴影下，金色暗影端正地坐在沙滩折叠椅上，双手小心捧着一只热腾腾的鲷鱼烧细口咬下。哑光黑系带泳装衬得金发与雪肤愈发耀眼，发现你在偷看时她微微鼓起脸颊，低声抛出一句「我讨厌色情」，手里的点心却没舍得放下。",
+    "location": "海滨木质遮阳棚下的清凉沙滩椅",
+    "action": "端坐折叠椅双手捧着鲷鱼烧轻咬，微嗔斜睨镜头",
+    "timeOfDay": "晴朗午后",
+    "lighting": "棚下柔和散射光与背后明亮海滩日光形成清爽层次",
+    "camera": "平视中景，展现海面蓝天与俏皮反差神情",
+    "mood": "呆萌、娇嗔、夏日悠闲",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach_shade",
+      "eating_taiyaki",
+      "sitting",
+      "beach_chair",
+      "pout",
+      "ocean",
+      "summer",
+      "barefoot"
+    ],
+    "promptTokens": [
+      "beach cabana",
+      "sitting on beach chair",
+      "eating taiyaki",
+      "holding taiyaki",
+      "slight pout",
+      "barefoot",
+      "bright ocean background",
+      "summer",
+      "dappled shade",
+      "medium shot"
+    ],
+    "promptProse": "Seated neatly in a folding chair beneath a shaded seaside cabana, Golden Darkness holds a warm taiyaki with both hands and takes a careful bite. Her matte-black string bikini contrasts vividly with her golden hair and pale skin as she shoots a mildly guarded side glance at the viewer.",
+    "animaCaption": "Sitting in the cabana shade with bright ocean behind her, she nibbles a taiyaki while glancing sideways with a slight pout.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

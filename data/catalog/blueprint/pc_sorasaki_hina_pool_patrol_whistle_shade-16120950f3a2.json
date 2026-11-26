@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_pool_patrol_whistle_shade",
+  "revision": 1,
+  "sortOrder": 19074,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_pool_patrol_whistle_shade",
+    "characterId": "sorasaki_hina",
+    "outfitId": "summer_pool_patrol",
+    "title": "空崎日奈 · 泳池遮阳棚下的巡查小歇",
+    "description": "烈日炎炎的格黑娜夏日泳池正热闹非凡，日奈套着轻盈透气的白纱防晒开衫立在遮阳棚边缘，一手轻扶搭在帽檐旁的太阳镜、一手提着一瓶冰矿泉水仔细巡视泳道秩序。见泳池里暂时风平浪静，她才微微松开眉头，朝走来的你轻声道一句辛苦了。",
+    "location": "盛夏晴朗泳池旁的白色遮阳棚阴凉处",
+    "action": "立于遮阳棚边手持冰水巡视泳池，转头露出浅淡温柔笑意",
+    "timeOfDay": "晴朗午后",
+    "lighting": "棚下清爽阴影与背后湛蓝泳池耀眼日光形成鲜明层次",
+    "camera": "平视中景，白纱开衫随夏日微风轻扬",
+    "mood": "尽责、清爽、劳逸结合的难得温和",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "poolside",
+      "sun_shade",
+      "holding_bottle",
+      "breeze",
+      "gentle_smile",
+      "summer",
+      "standing",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "outdoor swimming pool",
+      "white shade canopy",
+      "standing",
+      "holding chilled water bottle",
+      "sheer cardigan fluttering in breeze",
+      "gentle relieved smile",
+      "sparkling pool background",
+      "summer afternoon",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Standing under the cool edge of a white poolside canopy while summer breeze ripples her sheer white knit cardigan, Hina holds a chilled bottle of water and watches over the quiet swimming lanes. Seeing everything in order, her brow relaxes into a gentle greeting smile.",
+    "animaCaption": "Under the poolside shade canopy, she holds a chilled water bottle as breeze lifts her sheer white cardigan.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

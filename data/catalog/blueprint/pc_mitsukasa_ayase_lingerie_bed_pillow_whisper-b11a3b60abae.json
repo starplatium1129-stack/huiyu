@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mitsukasa_ayase_lingerie_bed_pillow_whisper",
+  "revision": 1,
+  "sortOrder": 19051,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_mitsukasa_ayase_lingerie_bed_pillow_whisper",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "crimson_lace_lingerie",
+    "title": "三司绫濑 · 卸下伪装的枕边轻靠",
+    "description": "关掉顶灯的卧室里只余床头一盏柔光小灯，绫濑抱着软枕侧靠在床头，幽蓝蕾丝波浪边与米白被单映出沉静反差。没有客套的营业微笑，她只是轻轻拉住你的袖口，垂着眼睫小声说「今晚就这样多陪我聊一会儿吧」。",
+    "location": "柔暗温暖的深夜卧室床头软枕间",
+    "action": "侧靠床头抱枕轻拉身侧衣角，垂眸带着真实柔意",
+    "timeOfDay": "深夜",
+    "lighting": "床头小灯低饱和暖光洒在肩头与深蓝蕾丝上",
+    "camera": "近景略俯，突出眼神真诚与亲密氛围",
+    "mood": "卸防、依赖、真挚而微颤的心动",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bed",
+      "pillows",
+      "leaning_back",
+      "blushing",
+      "gentle_gaze",
+      "warm_lamp",
+      "night",
+      "intimate"
+    ],
+    "promptTokens": [
+      "bedroom bed",
+      "leaning against pillows",
+      "soft bedside lamp",
+      "gentle trusting gaze",
+      "faint blush",
+      "night",
+      "slightly from above",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Resting back against soft cream pillows in the dim glow of her bedside lamp, Ayase lets her polished public smile fade into genuine warmth. Her deep-blue sheer lace camisole contrasts softly against the pale bedding as she gazes up with quiet trust and a faint flush.",
+    "animaCaption": "Leaning against cream pillows by a dim bedside lamp, she looks up with quiet trust and a faint blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer blue lace",
+      "camisole and shorts",
+      "bare shoulders",
+      "intimate"
+    ],
+    "nsfwProse": "Delicate scalloped deep-blue lace rests lightly against her collarbone and waist amid the rumpled pale sheets.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

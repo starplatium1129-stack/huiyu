@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_komine_sachi_shark_pajamas_cocoa_hallway",
+  "revision": 1,
+  "sortOrder": 19042,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_komine_sachi_shark_pajamas_cocoa_hallway",
+    "characterId": "komine_sachi",
+    "outfitId": "shark_pajamas",
+    "title": "小岭幸 · 睡前走廊的热可可送达",
+    "description": "熄灯前的宿舍走廊静悄悄的，小岭幸套着软乎乎的浅蓝鲨鱼连体睡衣，踩着毛绒拖鞋轻手轻脚停在门前。她双手稳稳托着一盘两杯热可可与小饼干，认真汇报「睡前补给已送达」，柔软的毛绒袖口让整个人显得格外软糯。",
+    "location": "点着壁灯的深夜美浜宿舍木走廊",
+    "action": "穿着鲨鱼连体睡衣双手稳托热可可托盘停步微笑",
+    "timeOfDay": "睡前深夜",
+    "lighting": "走廊复古壁灯投下的温馨暖黄光晕",
+    "camera": "平视中全身，凸显宽大鲨鱼连体服与毛绒拖鞋的可爱轮廓",
+    "mood": "软萌、贴心、令人会心一笑",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "dorm_hallway",
+      "holding_tray",
+      "hot_cocoa",
+      "standing",
+      "night",
+      "warm_lighting",
+      "cute_smile",
+      "full_body"
+    ],
+    "promptTokens": [
+      "wooden dorm hallway",
+      "warm wall sconces",
+      "carrying wooden tray",
+      "two mugs of hot cocoa",
+      "standing in plush slippers",
+      "gentle polite smile",
+      "night",
+      "full body",
+      "indoors"
+    ],
+    "promptProse": "Pausing outside a bedroom door in the softly lit wooden dormitory hallway, Sachi Komine balances a small tray holding two steaming mugs of cocoa and biscuits. Her oversized pastel-blue plush shark onesie and slippers soften her dutiful posture into an irresistibly cozy late-night visit.",
+    "animaCaption": "Standing in the dimly lit dorm hallway in her plush shark onesie, she carefully presents a tray of hot cocoa.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

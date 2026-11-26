@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_shiiba_tsumugi_swimwear_shallow_beach_wave",
+  "revision": 1,
+  "sortOrder": 19066,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_shiiba_tsumugi_swimwear_shallow_beach_wave",
+    "characterId": "shiiba_tsumugi",
+    "outfitId": "azure_summer_bikini",
+    "title": "椎叶紬 · 浅滩微浪的涉水回眸",
+    "description": "午后退潮的海滩铺开一层透亮浅水，椎叶紬赤脚踩进没过脚踝的清凉海水里，下意识微微张开双臂保持平衡，却被一阵俏皮的小浪花打湿了裤脚。她先是惊呼一声，紧接着回头望向岸上的你笑出声来，率真又明媚。",
+    "location": "清澈透明的盛夏海湾浅水沙滩",
+    "action": "赤脚涉入浅浪微张双臂平衡身形，回头展露率真笑颜",
+    "timeOfDay": "晴朗午后",
+    "lighting": "清透晴空下的明亮海滨阳光与细碎水花高光",
+    "camera": "四分之三全身，捕捉浪花飞溅与灵动转身瞬间",
+    "mood": "活泼、爽朗、卸下拘谨后的开怀",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach",
+      "shallow_water",
+      "splashing",
+      "barefoot",
+      "turning_around",
+      "happy_laugh",
+      "summer",
+      "full_body"
+    ],
+    "promptTokens": [
+      "clear shallow beach water",
+      "wading barefoot",
+      "arms out slightly for balance",
+      "small sea splash",
+      "turning back with bright smile",
+      "blue sky and sea",
+      "summer sunlight",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Wading barefoot through ankle-deep crystal-clear surf, Tsumugi holds her arms out slightly to keep balance as a playful wave splashes around her calves. Turning back toward the shore in her dark olive-green athletic tankini, she breaks into a bright, unguarded laugh beneath the summer sky.",
+    "animaCaption": "Wading barefoot through bright shallow surf, she balances with arms out and looks back laughing.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

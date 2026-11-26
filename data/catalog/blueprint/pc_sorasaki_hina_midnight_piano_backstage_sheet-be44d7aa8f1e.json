@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_midnight_piano_backstage_sheet",
+  "revision": 1,
+  "sortOrder": 19071,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_midnight_piano_backstage_sheet",
+    "characterId": "sorasaki_hina",
+    "outfitId": "midnight_piano_gown",
+    "title": "空崎日奈 · 幕后候场区的乐谱温习",
+    "description": "音乐厅厚重天鹅绒帷幕后的候场区一片沉静，只有走廊壁灯投下柔和暖光。日奈换上深紫垂缎露背独奏礼服，背对半掩的舞台光隙轻轻展开手写标注的钢琴乐谱，指尖在纸页边缘无声模拟着开场和弦。银质腰饰微闪，她侧首朝身旁的你露出沉静笃定的微笑。",
+    "location": "音乐厅天鹅绒幕布后的安静后台候场走廊",
+    "action": "立于后台手持钢琴乐谱轻点指节温习和弦，侧首沉静微笑",
+    "timeOfDay": "演出前夜",
+    "lighting": "后台柔暖壁灯与幕缝透出的冷白舞台光交界",
+    "camera": "侧后四分之三中景，既呈现露背垂缎线条又收进专注侧颜",
+    "mood": "专注、优雅、静水深流般的自信",
+    "category": "礼服华章",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "backstage",
+      "sheet_music",
+      "velvet_curtain",
+      "looking_back",
+      "bare_back",
+      "calm_smile",
+      "concert_hall",
+      "indoors"
+    ],
+    "promptTokens": [
+      "concert hall backstage",
+      "heavy velvet curtains",
+      "holding sheet music",
+      "glancing back over shoulder",
+      "calm confident smile",
+      "warm backstage sconce",
+      "cool stage light rim",
+      "three-quarter view",
+      "indoors"
+    ],
+    "promptProse": "Waiting in the hushed corridor behind the heavy velvet stage curtains, Hina holds her annotated piano score and softly taps the opening chord against the paper edge. Warm sconce light glides down the open draped back of her deep-violet satin recital gown as she glances over her shoulder with serene poise.",
+    "animaCaption": "Standing backstage by the velvet curtain with sheet music in hand, she glances over her shoulder with serene poise.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "formal"
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ogiso_setsuna_lingerie_snow_window_tea",
+  "revision": 1,
+  "sortOrder": 19034,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ogiso_setsuna_lingerie_snow_window_tea",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "silver_lace_lingerie",
+    "title": "小木曾雪菜 · 落雪窗畔的暖茶守候",
+    "description": "窗外正悄无声息地飘着初冬细雪，温暖的卧室里放着舒缓的旧唱片。雪菜身着纯白细针织吊带长睡裙坐在飘窗软垫上，双手捧着热可可杯轻贴面颊，胸前的绒球缎带随呼吸起伏。她朝你露出一抹既温柔又隐隐怕冷的微笑，轻声留你多坐一会儿。",
+    "location": "窗外飘雪、室内暖意融融的卧室飘窗",
+    "action": "屈膝坐于飘窗软垫，双手捧热杯轻贴脸侧温柔相望",
+    "timeOfDay": "初雪深夜",
+    "lighting": "室内柔和暖黄灯光与窗外清冷飞雪蓝调形成温柔对照",
+    "camera": "平视中近景，窗上微雾与杯口热气增加层次",
+    "mood": "柔弱、深情、令人不忍离去的温暖",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "window_seat",
+      "snowing",
+      "holding_mug",
+      "sitting",
+      "barefoot",
+      "gentle_smile",
+      "warm_lighting",
+      "winter_night"
+    ],
+    "promptTokens": [
+      "bedroom window seat",
+      "snow falling outside",
+      "sitting with knees tucked",
+      "holding warm mug",
+      "steam",
+      "gentle wistful smile",
+      "warm indoor light",
+      "winter night",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Seated with her knees tucked on the cushioned bedroom window seat while silent snow drifts past the glass, Setsuna Ogiso cradles a steaming mug against her cheek. Warm lamplight softens the ivory knit straps and ribbon bow of her pure white slip nightgown as she offers a tender, lingering smile.",
+    "animaCaption": "Sitting on the cushioned window seat with snow falling outside, she holds a steaming mug and smiles tenderly.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "knit slip nightgown",
+      "bare shoulders",
+      "intimate warmth"
+    ],
+    "nsfwProse": "The soft ivory cashmere-knit slip drapes smoothly across her shoulders and collarbone in the warm bedroom glow.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

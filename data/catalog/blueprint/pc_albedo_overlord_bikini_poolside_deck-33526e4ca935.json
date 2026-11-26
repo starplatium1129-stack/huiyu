@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_bikini_poolside_deck",
+  "revision": 1,
+  "sortOrder": 19013,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_bikini_poolside_deck",
+    "characterId": "albedo_overlord",
+    "outfitId": "pure_white_bikini",
+    "title": "雅儿贝德 · 碧水池畔的骄阳小憩",
+    "description": "第六层模拟晴空下的石质泳池边，清澈水面折射出细碎波光。雅儿贝德双腿浸在池沿浅水中，双手撑在微温的大理石池边微微后仰，任由日光落在缀着金环的纯白泳装与黑羽之上，朝递来冰饮的人展露罕见的明快笑颜。",
+    "location": "第六层人工晴空下的大理石泳池畔",
+    "action": "坐在池边双腿入水，双手撑地微仰抬头含笑",
+    "timeOfDay": "晴朗午后",
+    "lighting": "通透烈日直射与水面漫反射的湛蓝波纹光影",
+    "camera": "微俯中景，收进池水倒影与舒展的腿部线条",
+    "mood": "明媚、放松、带着隐秘的炫耀",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "poolside",
+      "feet_in_water",
+      "sitting",
+      "leaning_back",
+      "sunlight",
+      "water_reflection",
+      "smile",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "poolside",
+      "marble edge",
+      "sitting",
+      "feet in water",
+      "leaning back",
+      "bright sunlight",
+      "water reflection",
+      "smile",
+      "slightly from above",
+      "outdoors"
+    ],
+    "promptProse": "Sitting on the sunlit marble rim of the sixth-floor pool, Albedo dangles her legs into the sparkling turquoise water and leans back on both palms. Bright afternoon light catches the gold rings of her white bikini and paints dancing water ripples across her pale skin as she looks up with a radiant smile.",
+    "animaCaption": "She sits on the sunlit marble pool edge with her legs dipped in the water, leaning back on both hands.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "cleavage",
+      "wet skin",
+      "sensual"
+    ],
+    "nsfwProse": "Beads of pool water glisten across her collarbone and thighs beneath the direct summer sun.",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

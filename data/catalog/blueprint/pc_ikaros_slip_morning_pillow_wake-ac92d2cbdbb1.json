@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ikaros_slip_morning_pillow_wake",
+  "revision": 1,
+  "sortOrder": 19038,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ikaros_slip_morning_pillow_wake",
+    "characterId": "ikaros",
+    "outfitId": "silver_lace_lingerie",
+    "title": "伊卡洛斯 · 晨窗柔光里的羽翼轻靠",
+    "description": "柔和的朝霞刚刚爬上榻榻米被褥，伊卡洛斯屈膝侧坐在柔软的棉被间，怀里抱住一只圆润的素白枕头。轻纱抹胸裙在晨光下如云絮般柔软，双翼乖巧地半拢在身后，她微微歪头，用轻柔低缓的声音道出一句早安。",
+    "location": "朝霞微暖的和式卧房棉被间",
+    "action": "屈膝坐在棉被间轻抱白枕，歪头柔声道早安",
+    "timeOfDay": "初晴清晨",
+    "lighting": "淡金朝霞穿过白帘洒满棉被与羽梢",
+    "camera": "平视中近景，柔焦前景突出亲近感与清晨温度",
+    "mood": "纯真、温柔、毫无保留的信赖",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "futon",
+      "hugging_pillow",
+      "sitting",
+      "head_tilt",
+      "morning_light",
+      "bedroom",
+      "gentle_smile",
+      "indoors"
+    ],
+    "promptTokens": [
+      "japanese bedroom",
+      "soft futon",
+      "sitting with knees tucked",
+      "hugging white pillow",
+      "head tilt",
+      "soft gentle smile",
+      "golden morning light",
+      "feathered wings",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Seated among soft morning-lit blankets on the futon, Ikaros hugs a white pillow lightly against her chest and tilts her head with a quiet good-morning gaze. Warm sunrise light traces the delicate feathered micro-trim of her strapless white silk dress and softens the pale pink sheen of her folded wings.",
+    "animaCaption": "Seated on the sunlit futon hugging a white pillow, she tilts her head softly toward the viewer.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "strapless nightdress",
+      "bare shoulders",
+      "soft cleavage"
+    ],
+    "nsfwProse": "The sheer white silk georgette bodice fits closely over her chest while the pillow presses gently against the soft fabric.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

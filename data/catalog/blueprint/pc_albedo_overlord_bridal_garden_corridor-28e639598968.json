@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_albedo_overlord_bridal_garden_corridor",
+  "revision": 1,
+  "sortOrder": 19015,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_albedo_overlord_bridal_garden_corridor",
+    "characterId": "albedo_overlord",
+    "outfitId": "sfw_white_bridal_veil",
+    "title": "雅儿贝德 · 白玫瑰花廊的垂眸执捧",
+    "description": "晨雾刚散的庭园拱廊两侧垂满盛放的白玫瑰，雅儿贝德双手捧着一束系有金丝缎带的苍白蔷薇花束，在落满花瓣的石径上停下脚步。长长的蕾丝头纱随清风轻扬，她微微低垂金眸露出罕见的纯粹羞赧，静静等待前方伸来的手。",
+    "location": "攀满白玫瑰的晨间石柱花廊",
+    "action": "捧着白蔷薇花束轻提裙摆停步，垂眸浅笑",
+    "timeOfDay": "柔和清晨",
+    "lighting": "穿透花藤间隙的斜射晨光与细碎花瓣阴影",
+    "camera": "正面略偏全身，展现拖尾白缎裙摆与长头纱动势",
+    "mood": "圣洁、欣喜、难掩心动的温柔",
+    "category": "誓约花嫁",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "flower_arch",
+      "white_roses",
+      "holding_bouquet",
+      "standing",
+      "gentle_smile",
+      "morning_light",
+      "petals",
+      "full_body"
+    ],
+    "promptTokens": [
+      "rose garden",
+      "stone colonnade",
+      "white roses",
+      "holding bouquet",
+      "gentle smile",
+      "blushing",
+      "morning light",
+      "falling petals",
+      "full body",
+      "soft breeze"
+    ],
+    "promptProse": "Albedo pauses along a sunlit stone walkway arched with blooming white roses, cradling a bridal bouquet tied with gold ribbon against her waist. Morning breeze lifts the long lace veil draped over her horns as soft dappled sunlight filters through the vines onto her satin train.",
+    "animaCaption": "She holds a white rose bouquet beneath a flowering stone arch as morning breeze lifts her long veil.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "bridal"
+    ]
+  }
+}

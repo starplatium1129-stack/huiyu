@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_casual_black_cafe_patisserie",
+  "revision": 1,
+  "sortOrder": 19067,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_casual_black_cafe_patisserie",
+    "characterId": "sorasaki_hina",
+    "outfitId": "casual_black",
+    "title": "空崎日奈 · 休日洋果子店的窗边红茶",
+    "description": "难得没有紧急风纪报告的周末午后，日奈换上墨黑方领复古短礼裙坐在街角洋果子店的临窗位。她用银勺轻轻搅动温热的红茶，面前摆着一小块覆盆子慕斯，窗外斜照的暖阳拂过银白长发，让她疲惫的眉眼彻底松弛下来。",
+    "location": "午后阳光洒入的安静街角洋果子店临窗卡座",
+    "action": "坐于窗边餐桌轻搅红茶，神色安然地望向对面",
+    "timeOfDay": "周末午后",
+    "lighting": "临街木格窗斜射的暖金午后光线与柔暖店内吊灯",
+    "camera": "平视中景，红茶杯、覆盆子蛋糕与复古红缎带细节入画",
+    "mood": "难得的安宁、温柔松弛、小巧优雅",
+    "category": "休日日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "cafe",
+      "window_seat",
+      "tea_cup",
+      "cake",
+      "sitting",
+      "soft_smile",
+      "afternoon_sunlight",
+      "indoors"
+    ],
+    "promptTokens": [
+      "quiet patisserie cafe",
+      "window table",
+      "sitting",
+      "stirring teacup with spoon",
+      "berry mousse cake on plate",
+      "soft relaxed smile",
+      "warm afternoon window light",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Taking a rare quiet weekend afternoon at a sunlit window table inside a corner patisserie, Hina gently stirs her cup of black tea beside a small berry mousse cake. Warm sunlight highlights the white lace trim and crimson velvet ribbon of her dark gothic short dress while her usual guarded expression softens into peaceful ease.",
+    "animaCaption": "Seated at a sunlit patisserie window table with tea and cake, she relaxes into a soft, unhurried smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_violet_babydoll_bed_moonlight",
+  "revision": 1,
+  "sortOrder": 19076,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_violet_babydoll_bed_moonlight",
+    "characterId": "sorasaki_hina",
+    "outfitId": "violet_chiffon_babydoll",
+    "title": "空崎日奈 · 幽紫薄纱的静夜依偎",
+    "description": "忙碌到深夜的房间终于彻底安静下来，月光穿过薄纱窗帘在床单上铺开一层银辉。日奈穿着幽紫双层薄纱露背睡裙侧坐在柔软被褥边，轻轻垂下纤细的双肩，抬起小手轻拉你的袖口，柔声说「今晚能不能先别走，再多陪我五分钟就好」。",
+    "location": "月色轻洒的安静深夜卧房大床边",
+    "action": "侧坐柔软床沿轻拉来人衣角，微仰脸庞柔声挽留",
+    "timeOfDay": "深夜",
+    "lighting": "清雅银白月光与床头低暖柔光交汇，薄纱隐透轻盈层次",
+    "camera": "平视中近景，柔焦前景放大静谧依恋与脆弱感",
+    "mood": "脆弱、依赖、只对一人流露的撒娇与深情",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "sitting_on_bed",
+      "moonlight",
+      "soft_blush",
+      "tender_gaze",
+      "night",
+      "intimate",
+      "indoors"
+    ],
+    "promptTokens": [
+      "quiet moonlit bedroom",
+      "sitting on soft bed",
+      "reaching out gently",
+      "tender vulnerable gaze",
+      "faint blush",
+      "silver moonlight through curtains",
+      "dim warm lamp",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Sitting softly at the edge of her moonlit bed after a long day, Hina reaches out lightly and looks up with quiet vulnerability. Moonlight and dim bedside glow pass through the gossamer layers of her deep-violet chiffon babydoll nightdress, accentuating its tiny black satin bow and delicate open back.",
+    "animaCaption": "Seated on her moonlit bed, she reaches out softly and looks up with tender vulnerability.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer violet chiffon babydoll",
+      "open back",
+      "black satin bow",
+      "intimate"
+    ],
+    "nsfwProse": "Double-layer translucent violet chiffon drifts lightly across her shoulders and thighs under the pale bedroom moonlight.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

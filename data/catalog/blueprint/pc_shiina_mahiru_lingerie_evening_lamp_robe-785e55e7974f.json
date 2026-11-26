@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_shiina_mahiru_lingerie_evening_lamp_robe",
+  "revision": 1,
+  "sortOrder": 19057,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_shiina_mahiru_lingerie_evening_lamp_robe",
+    "characterId": "shiina_mahiru",
+    "outfitId": "sensual_lace_lingerie",
+    "title": "椎名真昼 · 暖灯卧房的香槟蕾丝告白",
+    "description": "雨声渐歇的安静夜晚，房间里只亮着一盏柔和的米白床头灯。真昼披着象牙白真丝晨袍坐在床沿，袍襟轻敞，香槟金边纯白睫毛蕾丝内衣与白色过膝丝袜在暖光下显得格外圣洁又动人。她双颊泛着清浅绯红，指尖轻攥晨袍衣带，鼓起勇气直视着你的眼睛。",
+    "location": "点着柔和米白床头灯的整洁温馨卧室",
+    "action": "坐于床沿指尖轻捻象牙白晨袍系带，双颊微红温柔直视",
+    "timeOfDay": "静谧深夜",
+    "lighting": "床头灯柔暖鹅黄光晕，细腻呈现睫毛蕾丝与真丝光泽",
+    "camera": "平视中景，前景留出柔和空间感凸显诚挚与羞怯",
+    "mood": "纯洁、羞涩、鼓足勇气的深情交付",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "sitting_on_bed",
+      "open_robe",
+      "blushing",
+      "gentle_gaze",
+      "warm_lighting",
+      "night",
+      "intimate"
+    ],
+    "promptTokens": [
+      "tidy warm bedroom",
+      "sitting on bed edge",
+      "holding robe sash",
+      "blushing",
+      "sincere tender gaze",
+      "warm bedside lamp",
+      "night",
+      "soft shadows",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Sitting gracefully on the edge of the bed in the soft glow of a cream bedside lamp, Mahiru Shiina lightly fingers the sash of her open ivory silk robe. Her champagne-trimmed white scalloped lace lingerie and white thigh-high stockings look delicate and pure as she meets the viewer's gaze with a heartfelt blush.",
+    "animaCaption": "Seated on the lamplit bed, she lightly holds the sash of her open ivory robe while meeting the viewer's eyes with a shy blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "white lace lingerie",
+      "champagne trim",
+      "garter belt",
+      "white thighhighs"
+    ],
+    "nsfwProse": "The parted ivory silk robe reveals white eyelash lace trimmed in champagne gold alongside a matching garter belt and white thigh-high stockings.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

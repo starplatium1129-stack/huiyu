@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_hitachi_mako_sarashi_dojo_stretch",
+  "revision": 1,
+  "sortOrder": 19031,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_hitachi_mako_sarashi_dojo_stretch",
+    "characterId": "hitachi_mako",
+    "outfitId": "kunoichi_sarashi_shorts",
+    "title": "常陆茉子 · 晨雾道场的缠布拉筋",
+    "description": "天刚蒙蒙亮的木造练功道场里飘着淡淡桧木香，茉子赤足踩在清凉的地板上，双手绕到脑后收紧发尾，正做完早课前的压腿拉伸。墨黑缠胸布与高叉短裤利落紧实，被推门声打断后她先是一愣，随即撇撇嘴调侃你起得倒挺早。",
+    "location": "晨雾微敞拉门的木造和风练功道场",
+    "action": "赤足立于木地板上整理发束与拉伸热身，回头俏皮挑眉",
+    "timeOfDay": "微亮清晨",
+    "lighting": "庭院晨雾透进敞开木拉门的清冷柔白天光",
+    "camera": "全身略侧，展现道场纵深与女忍干练身姿",
+    "mood": "利落、飒爽、略带被撞见的小得意",
+    "category": "修行日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "dojo",
+      "wooden_floor",
+      "tying_hair",
+      "barefoot",
+      "morning_mist",
+      "looking_back",
+      "smirk",
+      "full_body"
+    ],
+    "promptTokens": [
+      "japanese dojo",
+      "polished wooden floor",
+      "open sliding doors",
+      "morning mist",
+      "tying hair",
+      "barefoot",
+      "playful smirk",
+      "looking back",
+      "natural morning light",
+      "full body"
+    ],
+    "promptProse": "Inside a quiet timber dojo with its sliding doors pushed open to the pale morning mist, Mako Hitachi stands barefoot on the cool floorboards lifting both hands to tighten her hair tie after warming up. Her black cotton sarashi wrap and high-slit kunoichi shorts look crisp and athletic as she glances back with a teasing smirk.",
+    "animaCaption": "Barefoot in the mist-lit wooden dojo, she tightens her hair tie after stretching and glances back with a playful smirk.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sarashi",
+      "bare midriff",
+      "high-slit shorts"
+    ],
+    "nsfwProse": "The taut black cotton sarashi binding and high-slit shorts frame her toned waist and athletic thighs cleanly.",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

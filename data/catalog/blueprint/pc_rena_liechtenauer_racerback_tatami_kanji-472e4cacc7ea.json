@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_rena_liechtenauer_racerback_tatami_kanji",
+  "revision": 1,
+  "sortOrder": 19061,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_rena_liechtenauer_racerback_tatami_kanji",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "sky_mesh_racerback",
+    "title": "蕾娜·莉希特娜瓦 · 和室矮桌的夜间练字",
+    "description": "洗完温泉澡后的夏夜和室里，蕾娜换上轻爽透气的晴空蓝网眼吊带短裤套，赤脚趴在榻榻米矮桌边，一手托腮、一手认真抄写着新学的日语词汇与穗织俗语。额前金发随着微风轻垂，她写完一行便得意地举起本子请你打分。",
+    "location": "亮着纸罩台灯的温泉旅馆夏夜和室",
+    "action": "趴在榻榻米矮桌边手持圆珠笔练字，得意举起笔记本展示",
+    "timeOfDay": "夏夜",
+    "lighting": "和纸台灯温润暖光照亮榻榻米与晴空蓝轻爽睡衣",
+    "camera": "斜俯中景，摊开的日语笔记本与凉麦茶入画",
+    "mood": "认真、活泼、清新居家",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "tatami_room",
+      "low_table",
+      "writing_notebook",
+      "lying_on_stomach",
+      "barefoot",
+      "happy_smile",
+      "night",
+      "warm_lighting"
+    ],
+    "promptTokens": [
+      "japanese tatami room",
+      "low wooden table",
+      "lying on stomach",
+      "holding notebook and pen",
+      "barefoot",
+      "proud cheerful smile",
+      "warm paper lamp",
+      "night",
+      "slightly from above",
+      "indoors"
+    ],
+    "promptProse": "Stretched out comfortably on the tatami beside a low wooden table under a warm paper lamp, Lena props herself on one elbow and lifts her study notebook to show off newly written Japanese words. Her sky-blue mesh racerback camisole and side-striped sleep boyshorts look breezy and athletic in the summer evening calm.",
+    "animaCaption": "Lying on the tatami by a low lamplit table, she proudly holds up her language notebook with a cheerful smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

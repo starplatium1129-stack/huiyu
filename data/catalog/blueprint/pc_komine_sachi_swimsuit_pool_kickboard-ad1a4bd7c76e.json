@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_komine_sachi_swimsuit_pool_kickboard",
+  "revision": 1,
+  "sortOrder": 19041,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_komine_sachi_swimsuit_pool_kickboard",
+    "characterId": "komine_sachi",
+    "outfitId": "school_swimsuit",
+    "title": "小岭幸 · 泳道起点的一丝不苟",
+    "description": "清早的室内恒温泳池还泛着安静的水汽，小岭幸双手抱紧一块天蓝色浮板立在泳道起跳台边，赤脚踩在防滑瓷砖上认真听取划水要领。深蓝竞技死库水一丝不苟地贴合身形，她点头记下每一个细节，神情就像准备执行重要任务。",
+    "location": "水波澄净的美浜室内恒温泳池畔",
+    "action": "赤脚站于泳道边双手抱紧浮板，认真倾听点头",
+    "timeOfDay": "清晨",
+    "lighting": "泳池高窗透入的清透天光与湛蓝池水漫反射",
+    "camera": "全身略侧，泳道分界线拉出清晰纵深",
+    "mood": "专注、清纯、认真可爱",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "indoor_pool",
+      "holding_kickboard",
+      "standing",
+      "barefoot",
+      "earnest",
+      "morning_light",
+      "full_body",
+      "swim"
+    ],
+    "promptTokens": [
+      "indoor swimming pool",
+      "poolside tiles",
+      "holding blue kickboard",
+      "standing barefoot",
+      "earnest focused expression",
+      "bright skylight",
+      "blue water reflection",
+      "full body",
+      "indoors"
+    ],
+    "promptProse": "Standing barefoot on the pale poolside tiles beside a lane marker, Sachi Komine hugs a light-blue kickboard squarely against her chest while listening closely to instructions. Bright skylight from the high windows sparkles across the calm indoor pool behind her navy school swimsuit.",
+    "animaCaption": "Standing barefoot by the indoor pool lane, she hugs a blue kickboard neatly against her chest.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

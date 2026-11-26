@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mitsukasa_ayase_bikini_shore_shell_pickup",
+  "revision": 1,
+  "sortOrder": 19053,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_mitsukasa_ayase_bikini_shore_shell_pickup",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "crimson_summer_bikini",
+    "title": "三司绫濑 · 浅浪沙滩的贝壳拾趣",
+    "description": "傍晚微凉的海风卷来一层层白色细浪，绫濑赤脚蹲在湿润的浅滩边，惊喜地拾起一枚带着珠光的淡粉小贝壳举到眼前细看。珊瑚粉褶皱泳裙边被海风轻拂，她扬起笑脸喊你快看这枚像极了珍珠胸针的小贝壳。",
+    "location": "白浪轻拍的黄昏细沙滩边缘",
+    "action": "赤脚蹲在浅浪边高举拾到的贝壳，回头展露惊喜笑容",
+    "timeOfDay": "晴朗傍晚",
+    "lighting": "柔和暖金斜阳洒满湿沙与浅浪反光",
+    "camera": "微俯中全身，捕捉蹲姿与浅浪泡沫动感",
+    "mood": "纯真、欣喜、毫无伪装的明朗",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach",
+      "crouching",
+      "holding_seashell",
+      "shallow_waves",
+      "barefoot",
+      "happy_smile",
+      "late_afternoon",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "sandy shoreline",
+      "crouching",
+      "holding small seashell",
+      "shallow white waves",
+      "barefoot",
+      "delighted smile",
+      "warm late afternoon sunlight",
+      "sea breeze",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Crouching barefoot where gentle white foam washes over wet sand, Ayase holds up a pearlescent pink seashell she just discovered and beams toward the viewer. Warm late-afternoon sun illuminates the delicate pearl center accent and ruffled mesh skirt of her coral-pink bandeau bikini.",
+    "animaCaption": "Crouching barefoot at the edge of gentle waves, she holds up a pearlescent seashell with a delighted smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

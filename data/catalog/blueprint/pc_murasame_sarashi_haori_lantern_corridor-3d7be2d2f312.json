@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_murasame_sarashi_haori_lantern_corridor",
+  "revision": 1,
+  "sortOrder": 19033,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_murasame_sarashi_haori_lantern_corridor",
+    "characterId": "murasame",
+    "outfitId": "spirit_sarashi_haori",
+    "title": "丛雨 · 廊下纸灯的微风小坐",
+    "description": "夏夜神社长廊外萤火点点，丛雨披着绯红金纹短羽织坐在温润的木廊边，两条白皙小腿在廊檐外轻轻晃荡。她怀里抱起一盏微亮的纸提灯凑近脸颊，红穗流苏随夜风轻摆，鼓着小脸催你快坐过来一起纳凉讲故事。",
+    "location": "萤火微闪的夏夜神社木质回廊",
+    "action": "坐于木廊边缘轻晃双脚，怀抱纸灯偏头催促招手",
+    "timeOfDay": "夏夜",
+    "lighting": "手里暖橘纸提灯照亮面容与短羽织金纹，背景是幽蓝夏夜",
+    "camera": "平视中景，回廊木柱与点点萤光营造纵深",
+    "mood": "灵动、亲昵、微带刀灵小傲娇",
+    "category": "古风夜话",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "wooden_veranda",
+      "paper_lantern",
+      "sitting",
+      "dangling_legs",
+      "barefoot",
+      "fireflies",
+      "summer_night",
+      "smile"
+    ],
+    "promptTokens": [
+      "shrine wooden veranda",
+      "sitting on edge",
+      "barefoot",
+      "holding glowing paper lantern",
+      "fireflies",
+      "summer night",
+      "warm lantern light",
+      "playful smile",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Sitting along the wooden veranda of the quiet shrine on a summer night, Murasame swings her bare feet over the edge while cradling a warm paper lantern near her chest. Fireflies drift through the dark garden behind her as lantern glow illuminates the gold embroidery on her crimson short haori and white sarashi wrap.",
+    "animaCaption": "Seated barefoot on the shrine veranda with fireflies behind her, she holds a glowing paper lantern and smiles playfully.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

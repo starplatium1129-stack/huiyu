@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kotegawa_yui_pink_camisole_mirror_brushing",
+  "revision": 1,
+  "sortOrder": 19045,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_kotegawa_yui_pink_camisole_mirror_brushing",
+    "characterId": "kotegawa_yui",
+    "outfitId": "pink_silk_camisole",
+    "title": "古手川唯 · 睡前镜台的柔发梳理",
+    "description": "洗完澡后的卧室飘着淡淡皂香，古手川唯换上浅粉真丝吊带睡裙坐在木质矮镜台前，轻柔地梳理垂落腰间的漆黑长发。听见轻敲门声时她停下梳子微微回首，平日严厉的眉眼在暖黄台灯下化开，只余几分羞怯与柔软。",
+    "location": "弥漫浴后暖意的少女卧室矮镜台前",
+    "action": "坐于镜台前停下梳发动作，略带羞涩地回眸相望",
+    "timeOfDay": "睡前夜晚",
+    "lighting": "暖黄床头台灯映出真丝柔和光泽与温润肤色",
+    "camera": "四分之三中近景，镜台与木梳入画",
+    "mood": "柔和、卸下防备后的少女娇羞",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "vanity_mirror",
+      "hairbrush",
+      "sitting",
+      "looking_back",
+      "blushing",
+      "warm_lighting",
+      "night"
+    ],
+    "promptTokens": [
+      "cozy bedroom",
+      "low wooden vanity",
+      "holding hairbrush",
+      "sitting on cushion",
+      "looking back",
+      "soft blush",
+      "warm bedside lamp",
+      "night",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Seated on a floor cushion before her low wooden mirror after a bath, Yui pauses mid-stroke with her wooden hairbrush as she glances back toward the door. Soft amber lamplight shines across her pale-pink sheer silk camisole and smooth dark hair, catching a shy flush across her cheeks.",
+    "animaCaption": "Pausing with her hairbrush before the low vanity mirror, she turns back with a shy blush in the warm lamplight.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "sheer pink camisole",
+      "white lace trim",
+      "bare shoulders"
+    ],
+    "nsfwProse": "Slender shoulder straps and white lace neckline trim trace her collarbone over the translucent pale-pink silk.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

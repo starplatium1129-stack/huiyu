@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mitsukasa_ayase_lingerie_bedroom_vanity_blush",
+  "revision": 1,
+  "sortOrder": 19050,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_mitsukasa_ayase_lingerie_bedroom_vanity_blush",
+    "characterId": "mitsukasa_ayase",
+    "outfitId": "crimson_lace_lingerie",
+    "title": "三司绫濑 · 暖灯试镜前的悄悄确认",
+    "description": "深夜房门反锁后的卧室里，三司绫濑站在半身镜前轻轻整理着深邃幽蓝的微透蕾丝吊带，指尖略带忐忑地抚过精致托高的波浪边罩杯。卸下镜头前完美偶像般从容的她，此刻对着镜中微微泛红的脸颊轻呼一口气，透着难得一见的青涩认真。",
+    "location": "暖光温柔的深夜个人卧室穿衣镜前",
+    "action": "立于穿衣镜前轻抚幽蓝蕾丝肩带，带着略显紧张的认真神情",
+    "timeOfDay": "深夜",
+    "lighting": "卧室暖黄落地灯与镜面柔光映出幽蓝蕾丝层次",
+    "camera": "侧面微斜中景，保留镜中映影与害羞神态",
+    "mood": "忐忑、害羞、藏着自尊心的可爱",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "mirror",
+      "adjusting_strap",
+      "blushing",
+      "standing",
+      "warm_lighting",
+      "night",
+      "shy"
+    ],
+    "promptTokens": [
+      "bedroom",
+      "standing mirror",
+      "adjusting camisole strap",
+      "blushing",
+      "shy self-conscious expression",
+      "warm room lamp",
+      "night",
+      "reflection",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Standing before the mirror in her softly lit bedroom late at night, Ayase Mitsukasa lightly adjusts the slender strap of her deep-blue translucent lace camisole set. Away from any public gaze, a delicate flush colors her cheeks as she checks her reflection with quiet, earnest vulnerability.",
+    "animaCaption": "Before her lamplit bedroom mirror, she adjusts the strap of her deep-blue lace camisole with a shy blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "translucent blue lace camisole",
+      "matching sleep shorts",
+      "shy blush"
+    ],
+    "nsfwProse": "Sheer deep-blue floral lace with scalloped edging highlights her slender silhouette and fair skin under the warm bedroom lamp.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

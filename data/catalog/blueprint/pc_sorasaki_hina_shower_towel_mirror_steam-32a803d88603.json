@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_shower_towel_mirror_steam",
+  "revision": 1,
+  "sortOrder": 19073,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_shower_towel_mirror_steam",
+    "characterId": "sorasaki_hina",
+    "outfitId": "shower_towel",
+    "title": "空崎日奈 · 氤氲镜前的浴后吹发",
+    "description": "刚洗完热水澡的洗漱间里还浮着薄薄一层温润水雾，镜面边缘凝着细小水珠。日奈裹着紫滚边纯白华夫格浴巾赤足站在台盆前，一手抬起将湿润的银白长发拢向肩侧准备吹干，察觉镜中映出的身影后耳尖泛起浅红，轻声问你毛巾是不是拿过来了。",
+    "location": "薄雾未散的暖光洗漱间台盆镜前",
+    "action": "赤足立于雾气镜前抬手轻拢湿发，透过镜面微羞回望",
+    "timeOfDay": "夜晚浴后",
+    "lighting": "镜柜暖白柔光穿透轻薄水雾，映出润泽肩颈与发梢水光",
+    "camera": "平视中近景，水汽镜面营造柔和私密氛围",
+    "mood": "温润、微羞、松弛安心的日常亲近",
+    "category": "浴后微光",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bathroom_mirror",
+      "steam",
+      "wet_hair",
+      "bare_shoulders",
+      "blushing",
+      "standing",
+      "warm_lighting",
+      "indoors"
+    ],
+    "promptTokens": [
+      "steamy bathroom mirror",
+      "soft condensation",
+      "standing by vanity sink",
+      "gathering damp hair over shoulder",
+      "flushed cheeks",
+      "bare shoulders",
+      "warm vanity light",
+      "medium close-up",
+      "indoors"
+    ],
+    "promptProse": "Standing barefoot before the softly misted bathroom mirror after a hot shower, Hina gathers her damp silver hair over one bare shoulder while beads of warm moisture linger along her collarbones. Her white waffle-weave towel piped in soft purple stays knotted neatly across her chest as she meets the viewer's reflection with a faint flush.",
+    "animaCaption": "Before the misted bathroom mirror, she sweeps her damp hair over one bare shoulder with a faint blush.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "bath towel wrap",
+      "bare shoulders",
+      "damp skin",
+      "steamy intimacy"
+    ],
+    "nsfwProse": "Warm bath steam softens her damp bare shoulders and collarbones above the securely knotted white waffle-weave towel.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

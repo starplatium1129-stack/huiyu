@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_rena_liechtenauer_bikini_cliff_breeze",
+  "revision": 1,
+  "sortOrder": 19059,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_rena_liechtenauer_bikini_cliff_breeze",
+    "characterId": "rena_liechtenauer",
+    "outfitId": "royal_filigree_bikini",
+    "title": "蕾娜·莉希特娜瓦 · 晴海礁崖的流金披纱",
+    "description": "碧海环绕的岛屿白岩观景台沐浴在通透日光里，蕾娜赤足立于海风轻拂的石台边缘，单手轻拢随风扬起的半透金丝沙龙披纱。象牙白配金线花纹的抹胸泳装在她明媚爽朗的笑颜下宛如异国公主般耀眼，她扬起手臂指向远方划过海平线的白帆。",
+    "location": "俯瞰湛蓝岛屿海湾的阳光白岩海岬",
+    "action": "赤足立于海风石台轻扶金纱披巾，爽朗指向远处海面",
+    "timeOfDay": "晴朗上午",
+    "lighting": "通透清亮的海滨直射日光与海面耀眼碎金反光",
+    "camera": "微仰全身，碧海蓝天与飘扬半透金纱撑开画面张力",
+    "mood": "明朗、热情、充满异邦阳光活力",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "seaside_cliff",
+      "ocean_view",
+      "pointing",
+      "flowing_sarong",
+      "barefoot",
+      "bright_smile",
+      "summer",
+      "full_body"
+    ],
+    "promptTokens": [
+      "sunlit coastal cliff",
+      "turquoise ocean",
+      "pointing toward horizon",
+      "sheer sarong blowing in wind",
+      "barefoot",
+      "bright radiant smile",
+      "clear blue sky",
+      "summer sunlight",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Standing barefoot on a bright coastal rock overlook above a sparkling turquoise bay, Lena points cheerfully toward a distant sail while sea breeze sweeps her semi-sheer gold sarong outward. Crisp morning light catches the ivory-and-gold filigree borders of her bandeau bikini and her pearl upper-arm cuff.",
+    "animaCaption": "Barefoot on the sunlit coastal overlook, she points toward the horizon as sea breeze billows her sheer gold sarong.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

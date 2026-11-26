@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_momo_velia_deviluke_boyfriend_shirt_kitchen_coffee",
+  "revision": 1,
+  "sortOrder": 19055,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_momo_velia_deviluke_boyfriend_shirt_kitchen_coffee",
+    "characterId": "momo_velia_deviluke",
+    "outfitId": "boyfriend_shirt_lingerie",
+    "title": "梦梦 · 晨曦吧台的滑肩早安咖啡",
+    "description": "清晨的开放式厨房流淌着现磨咖啡香气，梦梦赤足倚在吧台边，宽大的白衬衫衣领自然滑落双肩，露出精致的浅粉蕾丝胸衣与黑丝长腿。她手捧刚冲好的热咖啡轻抿一口，顺势把杯沿递到你唇边，笑容温柔得让人毫无防备。",
+    "location": "晨光微亮的居家开放式厨房吧台旁",
+    "action": "倚靠厨房吧台手持热咖啡杯，含笑轻倾递向镜头",
+    "timeOfDay": "清晨",
+    "lighting": "窗外柔和朝霞与吧台暖光映亮白衬衫质感",
+    "camera": "平视中景，展现慵懒滑肩线条与晨间甜度",
+    "mood": "宠溺、狡黠、甜蜜亲昵",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "kitchen_counter",
+      "holding_coffee_mug",
+      "leaning",
+      "morning_light",
+      "barefoot",
+      "teasing_smile",
+      "indoors",
+      "intimate"
+    ],
+    "promptTokens": [
+      "sunlit kitchen counter",
+      "leaning against counter",
+      "holding coffee mug",
+      "steam",
+      "barefoot",
+      "sweet teasing smile",
+      "morning sunlight",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Leaning barefoot against the sunlit kitchen island while fresh coffee steams in her ceramic mug, Momo lets her oversized unbuttoned white shirt slip effortlessly off both shoulders. Morning light catches the pale-pink lace bra and sheer black pantyhose beneath as she offers the cup with an affectionate, mischievous smile.",
+    "animaCaption": "Leaning barefoot by the sunlit kitchen counter, she offers a steaming coffee mug while her oversized shirt slips off both shoulders.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "off shoulder white shirt",
+      "pink lace bra",
+      "sheer black pantyhose",
+      "alluring"
+    ],
+    "nsfwProse": "The loose white shirt hangs open over her pale-pink lace lingerie and glossy sheer black pantyhose in the morning glow.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

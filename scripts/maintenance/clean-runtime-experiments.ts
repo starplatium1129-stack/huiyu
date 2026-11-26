@@ -12,11 +12,15 @@ const ARCHIVE = path.join(ROOT, 'scripts', 'archive');
 
 const PROTECTED_DIR = /^(?:\.git|\.cache|ai|catalog-backups|checkpoints|content|content-sync-backups|delivery-evidence|desktop-build-cache|desktop-build-sdk|desktop-deploy-logs|desktop-deploy-packages|desktop-updates|downloads|git-backups|history|inference|jobs|keys|live2d-imports|logs|maintenance-backups|models|node_modules|outputs|pose-openpose-full|projects|render-batch|review|scene-repair|state|translation|user-data|user-workspace|workspace)$/i;
 const PROTECTED_FILE = /^(?:ai-workspace\.json|desktop-deploy-last\.log|desktop-deploy-build\.log|offline-install-pending\.json|desktop-deploy-timing\.json|desktop-deploy\.lock|\.env(?:\..*)?)$|\.(?:sqlite3?|db)(?:[-.].*)?$|\.(?:safetensors|ckpt|gguf|onnx|bin|pt|pth|keras|h5|pb|npz|pkl|joblib|weights|tflite)$|\.model3\.json$/i;
-const EXPERIMENT = /^(?:tmp-|anima-|adult-blueprint-|functional-|frontend-|moss-|natsume-|nene-|roxy-|gpu-|native-|character-|recipe-|showcase-|catalog-|upstream-|h3-|wan-|adult-|qq-|release-|python-|manga-|ui-|global-|voice-|reart-|muse-|priority-|perf(?:$|[-_.])|phase\d*(?:$|[-_.])|desktop-(?:png-cache|reference-sync)$)/i;
+const EXPERIMENT = /^(?:tmp-|anima-|adult-blueprint-|functional-|frontend-|moss-|natsume-|nene-|roxy-|gpu-|native-|character-|recipe-|showcase-|catalog-|upstream-|h3-|wan-|adult-|qq-|release-|python-|manga-|ui-|global-|voice-|reart-|muse-|priority-|perf(?:$|[-_.])|phase\d*(?:$|[-_.])|desktop-(?:png-cache|reference-sync|ui-)$|desktop-ui-|video-studio-|navbar-browser-|pixai-cold-load-|artist-reference-|karin-hair-|polish-|scratch-|cold-load-|page-browse-|blue-archive-tag-|asada-cafe-|comfy-native-parity-|companion-|duo-scene-|model-cold-|png-lossless-|rating-adjustment-|bookshelf-canvas-|canvas-docked-|surtr-colorful-|offline-session-|resources\.previous-)/i;
 const TEMP_FILE = /\.(?:log|jsonl?|png|jpe?g|webp|py|m?js|cjs|patch|txt|headers|md|html|zip)$/i;
 const EXPERIMENTS = new Set([
   'short-film', 'arknights-flowingpoints-ref', 'krea150w_vs_500w', 'ling_ab_test',
   'hires-compare', 'krea2_ab', 'design-sheet-test', 'showcase-temp', 'tmp-perf-test',
+  'agent-mail-pycache', 'arknights-intake', 'card-batches', 'chat-card-handoff',
+  'chrome-perf-traces', 'drive-card-intake', 'home-hero-candidates', 'japanese-voice-ui',
+  'krea2-conversion-inputs', 'outfit-expansion', 'pi-h3-native', 'pr85-published-portraits',
+  'r15-reclassification', 'remodels', 'rust-evidence', 'wardrobe-legwear', '__pycache__',
 ]);
 const ARCHIVES = new Set(['huiyu-v4-final-bundle.zip', 'local-studio-audit-code.zip']);
 const CATALOG_STAGE = /^\.catalog-export-(backup-)?[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/i;
@@ -33,6 +37,7 @@ interface Entry {
 interface ScannedPath {
   target: string;
   stat: fs.Stats;
+  isLink?: boolean;
 }
 
 function pathKey(target: string): string {
@@ -83,6 +88,10 @@ function protectedLocations(): string[] {
     typeof workspace.root === 'string' ? workspace.root : undefined;
   const configuredRuntime = process.env.AICS_RUNTIME_ROOT && path.resolve(process.env.AICS_RUNTIME_ROOT);
   const targets = [
+    path.join(RUNTIME, 'content'),
+    path.join(RUNTIME, 'models'),
+    path.join(RUNTIME, 'user-workspace'),
+    path.join(RUNTIME, 'user-data'),
     desktopConfig, desktopWorkspace, process.env.AI_WORKSPACE_ROOT,
     process.env.COMFYUI_MODELS_ROOT, process.env.AICS_PIXAI_MODEL_DIR,
     process.env.AICS_ASSETS_ROOT, process.env.AICS_CHARACTER_REF_ROOT,
@@ -164,20 +173,32 @@ function inspect(entry: Entry, tracked: Set<string>, protectedPaths: string[]): 
       fs.closeSync(fs.openSync(lock, 'r'));
     }
   }
+  const roots = new Set(entry.locations.map(pathKey));
   const scanned: ScannedPath[] = [];
   const pending = [...entry.locations];
   while (pending.length) {
     const target = pending.pop()!;
     const rel = relative(target);
     const name = path.basename(target);
+    const isRoot = roots.has(pathKey(target));
+    const allowNestedArtifacts = entry.kind === 'experiment' && !isRoot;
     if (!rel || rel.startsWith('../') || path.isAbsolute(rel) ||
-        tracked.has(pathKey(rel)) || PROTECTED_DIR.test(name) || PROTECTED_FILE.test(name) ||
-        protectedPaths.some(dir => overlaps(pathKey(target), dir)) ||
-        pathKey(fs.realpathSync(target)) !== pathKey(target)) {
+        tracked.has(pathKey(rel)) ||
+        (!allowNestedArtifacts && (PROTECTED_DIR.test(name) || PROTECTED_FILE.test(name))) ||
+        protectedPaths.some(dir => overlaps(pathKey(target), dir))) {
       throw Error('包含受保护、受版本管理或经过链接的路径');
     }
     const stat = fs.lstatSync(target);
-    if (stat.isSymbolicLink() || (!stat.isFile() && !stat.isDirectory()) ||
+    if (stat.isSymbolicLink()) {
+      if (!allowNestedArtifacts) throw Error('包含受保护、受版本管理或经过链接的路径');
+      // Never recurse into symlinks or NTFS junctions inside experiment sandboxes; unlink only the link node itself.
+      scanned.push({ target, stat, isLink: true });
+      continue;
+    }
+    if (pathKey(fs.realpathSync(target)) !== pathKey(target)) {
+      throw Error('包含受保护、受版本管理或经过链接的路径');
+    }
+    if ((!stat.isFile() && !stat.isDirectory()) ||
         (stat.isDirectory() && ['installer', 'catalog-lock'].includes(entry.kind)) ||
         (stat.isFile() && entry.kind === 'catalog' && !/\.json(?:\.(?:br|gz))?$/i.test(name)) ||
         (entry.kind === 'catalog-lock' && stat.size !== 0)) {
@@ -206,9 +227,17 @@ function newestActivity(entry: Entry, scanned: ScannedPath[]): number {
 function removeInspected(scanned: ScannedPath[]): void {
   // Remove only the previously inspected nodes, bottom-up. An unexpected new
   // child prevents rmdir instead of being swept up by a recursive deletion.
-  for (const { target, stat } of scanned.reverse()) {
-    if (pathKey(fs.realpathSync(target)) !== pathKey(target)) throw Error('清理期间路径变为链接');
+  for (const { target, stat, isLink } of scanned.reverse()) {
     const current = fs.lstatSync(target);
+    if (isLink) {
+      if (!current.isSymbolicLink() || stat.dev !== current.dev || stat.ino !== current.ino) {
+        throw Error('清理期间链接已变化');
+      }
+      try { fs.unlinkSync(target); }
+      catch { fs.rmdirSync(target); }
+      continue;
+    }
+    if (pathKey(fs.realpathSync(target)) !== pathKey(target)) throw Error('清理期间路径变为链接');
     if (stat.dev !== current.dev || stat.ino !== current.ino || current.isSymbolicLink() ||
         current.isDirectory() !== stat.isDirectory() || (!stat.isDirectory() &&
           (stat.mtimeMs !== current.mtimeMs || stat.size !== current.size))) throw Error('清理期间文件已变化');

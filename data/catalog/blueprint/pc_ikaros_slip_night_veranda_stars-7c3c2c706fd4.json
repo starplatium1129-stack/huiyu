@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ikaros_slip_night_veranda_stars",
+  "revision": 1,
+  "sortOrder": 19037,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_ikaros_slip_night_veranda_stars",
+    "characterId": "ikaros",
+    "outfitId": "silver_lace_lingerie",
+    "title": "伊卡洛斯 · 星夜缘侧的轻纱守望",
+    "description": "樱井家的老木缘侧在夏夜里格外安静，虫鸣声顺着院子里的瓜藤漫过来。伊卡洛斯穿着轻柔飘逸的纯白抹胸纱裙赤足站在廊下，一手轻轻按在心口倾听逐渐熟悉的心跳节律，抬眼望向满天繁星，身周羽翼泛起微弱柔光。",
+    "location": "繁星满天的樱井家和风木廊缘侧",
+    "action": "赤足立于木廊仰望星空，单手轻覆胸口感受微弱心跳",
+    "timeOfDay": "繁星深夜",
+    "lighting": "清透星月银光与身后纸门透出的淡暖室内光",
+    "camera": "侧前方中景，捕捉纯白轻纱随夜风扬起的轻盈感",
+    "mood": "空灵、纯粹、安静深沉的守候",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "wooden_veranda",
+      "starry_sky",
+      "hand_on_chest",
+      "standing",
+      "barefoot",
+      "moonlight",
+      "wind",
+      "serene"
+    ],
+    "promptTokens": [
+      "japanese wooden veranda",
+      "starry night sky",
+      "standing barefoot",
+      "hand over heart",
+      "gentle wind",
+      "moonlight",
+      "warm shoji glow behind",
+      "serene expression",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Standing barefoot on the quiet wooden veranda beneath a clear starry sky, Ikaros places one hand lightly over her chest as if listening to her own heartbeat. Cool moonlight and warm light from the shoji door behind her illuminate the liquid-soft white silk georgette dress billowing softly around her wings.",
+    "animaCaption": "Barefoot on the starlit veranda, she rests one hand over her chest as soft breeze lifts her white silk dress.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "strapless silk slip",
+      "bare shoulders",
+      "ethereal allure"
+    ],
+    "nsfwProse": "The feather-trimmed strapless white silk georgette bodice hugs her figure softly, leaving her shoulders and open back bare around her wings.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

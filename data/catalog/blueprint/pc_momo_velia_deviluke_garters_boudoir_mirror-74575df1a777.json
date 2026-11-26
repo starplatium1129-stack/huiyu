@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_momo_velia_deviluke_garters_boudoir_mirror",
+  "revision": 1,
+  "sortOrder": 19054,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_momo_velia_deviluke_garters_boudoir_mirror",
+    "characterId": "momo_velia_deviluke",
+    "outfitId": "black_lace_garters",
+    "title": "梦梦 · 烛光闺房的吊袜带巧思",
+    "description": "点着柑橘香薰蜡烛的卧室里，梦梦赤足坐在床沿，纤指轻巧地扣好黑色花卉蕾丝吊袜带上的银色小扣，身后的粉色细尾欢快地晃出一道弧度。她抬眸投来一个兼具优雅王女与小恶魔神采的笑意，轻声问你对今晚的特别安排是否满意。",
+    "location": "暖金烛光摇曳的私密卧室床沿",
+    "action": "赤足坐于床沿轻扣黑蕾丝吊袜带银扣，抬眼含笑凝视",
+    "timeOfDay": "深夜",
+    "lighting": "香薰蜡烛暖橘微光与床幔柔影勾勒身段",
+    "camera": "四分之三中景，突出黑蕾丝吊袜带细节与狡黠目光",
+    "mood": "娇媚、笃定、充满小恶魔式主动",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R18",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "sitting_on_bed",
+      "adjusting_garter",
+      "candlelight",
+      "teasing_smile",
+      "barefoot",
+      "devil_tail",
+      "night"
+    ],
+    "promptTokens": [
+      "dim bedroom",
+      "sitting on bed edge",
+      "fastening garter clasp",
+      "barefoot",
+      "teasing smile",
+      "candlelight",
+      "warm shadows",
+      "looking at viewer",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Seated barefoot on the edge of the candlelit bed, Momo deftly fastens the small silver clasp of her black floral-lace garter straps while her slender devil tail curls playfully behind her. She looks up beneath her lashes with a poised, mischievous smile bathed in warm amber glow.",
+    "animaCaption": "Sitting barefoot on the candlelit bed, she fastens her black lace garter clasp and looks up with a teasing smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "black lace garter straps",
+      "bare skin",
+      "sensual pose",
+      "seductive"
+    ],
+    "nsfwProse": "Black floral-lace garter bands, satin bows, and silver clasps contrast vividly against her warm candlelit thighs.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

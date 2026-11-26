@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_arihara_nanami_catpajamas_morning_stretch",
+  "revision": 1,
+  "sortOrder": 19019,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_arihara_nanami_catpajamas_morning_stretch",
+    "characterId": "arihara_nanami",
+    "outfitId": "silver_lace_lingerie",
+    "title": "在原七海 · 刚醒时的软绒伸懒腰",
+    "description": "假日清晨的阳光斜斜越过窗台，在凌乱的棉被上摊出一块暖斑。七海坐在床沿睡眼惺忪地高举双臂伸了个大大的懒腰，粉白猫耳连帽睡衣的帽檐滑在一旁，小巧的猫爪口袋轻轻鼓起，打完哈欠后才不好意思地抿唇一笑。",
+    "location": "晨光洒落的温馨个人卧室床边",
+    "action": "坐在床沿高举双手伸懒腰，带着刚睡醒的朦胧笑意",
+    "timeOfDay": "假日清晨",
+    "lighting": "斜照进窗的柔和金色晨光与白色纱帘漫射光",
+    "camera": "正面略侧中景，展现床铺柔光与舒展姿态",
+    "mood": "慵懒、软萌、轻松惬意",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "stretching",
+      "arms_up",
+      "sleepy",
+      "morning_light",
+      "sitting",
+      "window"
+    ],
+    "promptTokens": [
+      "bedroom",
+      "sitting on bed",
+      "stretching",
+      "arms raised",
+      "sleepy smile",
+      "messy bedsheets",
+      "morning sunlight",
+      "sheer curtains",
+      "medium shot",
+      "cozy"
+    ],
+    "promptProse": "Sitting at the edge of her sunlit bed on a quiet morning, Nanami lifts both arms overhead in a slow stretch, blinking sleepily as golden light streams through the window curtains. Her plush cat-hooded fleece pajamas look soft and slightly rumpled from sleep.",
+    "animaCaption": "Seated on the edge of the morning-lit bed, she raises both arms in a sleepy stretch.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

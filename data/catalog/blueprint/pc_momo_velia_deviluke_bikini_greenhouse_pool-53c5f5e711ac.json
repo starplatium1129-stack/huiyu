@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_momo_velia_deviluke_bikini_greenhouse_pool",
+  "revision": 1,
+  "sortOrder": 19056,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_momo_velia_deviluke_bikini_greenhouse_pool",
+    "characterId": "momo_velia_deviluke",
+    "outfitId": "summer_bikini",
+    "title": "梦梦 · 玻璃花房水池的盛夏午后",
+    "description": "透亮玻璃穹顶下的热带植物花房中央有一汪清浅水池，彩花与蕨叶倒映在水面。梦梦赤脚踏在温润白石池沿上，手里轻提着一壶花洒给池边异星兰花浇水，浅紫荷叶边比基尼与细金腰链在阳光下熠熠生辉，她回头邀你一起在花香里消暑。",
+    "location": "阳光洒满的热带玻璃花房中央水池边",
+    "action": "赤脚立于白石池沿手提花洒照料花草，回头优雅浅笑",
+    "timeOfDay": "晴朗午后",
+    "lighting": "玻璃穹顶倾泻的明亮日光与花叶通透光斑",
+    "camera": "全身略侧，热带花草与碧水倒影环绕四周",
+    "mood": "明艳、优雅、带着王女独有的浪漫情调",
+    "category": "盛夏水色",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "greenhouse",
+      "watering_can",
+      "tropical_flowers",
+      "poolside",
+      "barefoot",
+      "looking_back",
+      "sunlight",
+      "full_body"
+    ],
+    "promptTokens": [
+      "glass greenhouse",
+      "tropical flowers",
+      "stone reflection pool",
+      "holding watering can",
+      "barefoot",
+      "looking back",
+      "gentle charming smile",
+      "bright sunlight",
+      "full body",
+      "indoors"
+    ],
+    "promptProse": "Standing barefoot beside the clear stone pool inside a sunlit glass conservatory, Momo tilts a small watering can toward blooming exotic orchids. Bright daylight filters through the glass dome onto her lilac ruffled bikini and slender gold waist chain as she glances back with a radiant smile.",
+    "animaCaption": "Barefoot beside the sunlit greenhouse pool, she waters exotic orchids and glances back with a charming smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "gold waist chain",
+      "ruffled bikini",
+      "alluring"
+    ],
+    "nsfwProse": "A delicate gold waist chain gleams against her bare midriff beneath the sunlit lilac ruffled halter bikini.",
+    "coverageTags": [
+      "beach"
+    ]
+  }
+}

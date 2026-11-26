@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "pc_yukinoshita_haruno_lingerie_bedroom_wine_window",
+  "revision": 1,
+  "sortOrder": 19082,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_yukinoshita_haruno_lingerie_bedroom_wine_window",
+    "characterId": "yukinoshita_haruno",
+    "outfitId": "sensual_black_lace_lingerie",
+    "title": "雪之下阳乃 · 暮夜窗畔的黑蕾丝试探",
+    "description": "都市高层公寓的落地窗外华灯流转，室内只亮着角落一盏暖暗壁灯。阳乃披着敞开的真丝晨袍斜倚在高背天鹅绒扶手椅扶手上，黑丝长腿优雅交叠，法式黑蕾丝套装与吊袜带在光影间若隐若现。她歪着头用指尖轻点唇边，带着一贯洞悉一切的戏谑浅笑反问「怎么，这就看呆了？」",
+    "location": "俯瞰都市夜色的高层公寓天鹅绒扶手椅旁",
+    "action": "斜倚高背扶手椅交叠黑丝长腿，指尖轻触唇角戏谑凝视",
+    "timeOfDay": "深夜",
+    "lighting": "室内暖暗壁灯与窗外柔和都市灯火交织出电影感明暗",
+    "camera": "四分之三中景，捕捉从容掌控感与成熟风韵",
+    "mood": "成熟、戏谑、游刃有余的成人魅力",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "high_rise_apartment",
+      "armchair",
+      "crossed_legs",
+      "finger_to_lips",
+      "teasing_smile",
+      "city_lights",
+      "night",
+      "indoors"
+    ],
+    "promptTokens": [
+      "high-rise apartment night",
+      "velvet armchair",
+      "leaning on armrest",
+      "crossed legs",
+      "finger touching lip",
+      "knowing teasing smile",
+      "city skyline bokeh",
+      "dim warm lamp",
+      "three-quarter view",
+      "indoors"
+    ],
+    "promptProse": "Perched gracefully against the arm of a dark velvet chair overlooking the glittering city skyline, Haruno Yukinoshita crosses her long legs in sheer black thigh-high stockings and touches one fingertip lightly to her lip. Her open silk dressing gown parts over the black floral lace balconette bra and garter belt as she offers a poised, teasing smile.",
+    "animaCaption": "Leaning on a velvet armchair overlooking city lights, she crosses her legs and touches a finger to her lip with a teasing smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "black lace balconette bra",
+      "garter belt",
+      "sheer black thighhighs",
+      "open silk robe",
+      "mature allure"
+    ],
+    "nsfwProse": "The parted silk dressing gown reveals black French floral lace lingerie, garter straps, and sheer black thigh-high stockings in dim warm light.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

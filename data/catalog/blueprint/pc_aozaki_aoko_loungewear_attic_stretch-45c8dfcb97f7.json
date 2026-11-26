@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_aozaki_aoko_loungewear_attic_stretch",
+  "revision": 1,
+  "sortOrder": 19017,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_aozaki_aoko_loungewear_attic_stretch",
+    "characterId": "aozaki_aoko",
+    "outfitId": "silver_lace_lingerie",
+    "title": "苍崎青子 · 练功后阳台的清爽晚风",
+    "description": "刚在木地板上结束一轮魔术体术热身，青子把毛巾搭在肩头，赤足推开洋馆二楼的窄阳台门透气。微汗沾湿了她额角的碎发，藏青工字背心利落地勾出紧实腰线，她一手叉腰、一手轻晃着冰矿泉水瓶，神态洒脱又充满锐气。",
+    "location": "久远寺洋馆二楼面向树林的窄木阳台",
+    "action": "肩搭白毛巾一手叉腰，另一手提着矿泉水瓶吹风休息",
+    "timeOfDay": "傍晚余晖",
+    "lighting": "斜照树梢的温暖橙红余晖打亮微汗肌肤",
+    "camera": "平视中景，林间暮色与洋馆栏杆作为背景",
+    "mood": "爽朗、飒爽、舒畅放松",
+    "category": "居家日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "balcony",
+      "towel_around_neck",
+      "holding_bottle",
+      "sweat",
+      "hand_on_hip",
+      "sunset",
+      "confident_smile",
+      "barefoot"
+    ],
+    "promptTokens": [
+      "wooden balcony",
+      "towel on shoulder",
+      "holding water bottle",
+      "hand on hip",
+      "light sweat",
+      "confident smile",
+      "sunset",
+      "warm light",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "Stepping onto the narrow wooden balcony of the Kuonji mansion after a workout, Aoko drapes a white towel across one shoulder and rests a hand on her hip while holding a chilled water bottle. Warm late-afternoon light catches the light sheen of sweat on her collarbone and midriff as breeze lifts her bangs.",
+    "animaCaption": "With a towel over her shoulder and a water bottle in hand, she rests on the sunlit balcony after training.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

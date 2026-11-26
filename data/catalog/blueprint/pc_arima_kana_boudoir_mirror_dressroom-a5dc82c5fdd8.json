@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_arima_kana_boudoir_mirror_dressroom",
+  "revision": 1,
+  "sortOrder": 19022,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_arima_kana_boudoir_mirror_dressroom",
+    "characterId": "arima_kana",
+    "outfitId": "nsfw_boudoir",
+    "title": "有马加奈 · 化妆镜灯下的绯绒独白",
+    "description": "收工后的私人试衣间里，一圈暖白灯泡将全身镜映得明亮。加奈换上深绯丝绒与黑蕾丝交叉绑带内衣，抬手整理着略显拘谨的吊袜带扣，瞥见镜里推门进来的人时顿时双颊飞红，嘴硬地偏开头却没有把门推上。",
+    "location": "暖白灯泡环绕的私人化妆镜与丝绒试衣间",
+    "action": "站在全身镜前轻触腰间吊袜带扣，猝不及防被撞见后脸红偏头",
+    "timeOfDay": "深夜收工后",
+    "lighting": "化妆镜环灯的柔和正面光与背后暖暗天鹅绒帘反差",
+    "camera": "中近景平视，突出深绯丝绒质感与傲娇窘迫神情",
+    "mood": "羞窘、强撑镇定、暗暗期待被夸奖",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "dressing_room",
+      "vanity_mirror",
+      "blushing",
+      "adjusting_garter",
+      "looking_away",
+      "tsundere",
+      "warm_lighting",
+      "indoors"
+    ],
+    "promptTokens": [
+      "dressing room",
+      "vanity mirror",
+      "warm mirror bulbs",
+      "adjusting garter belt",
+      "blushing",
+      "embarrassed",
+      "looking sideways",
+      "velvet curtain",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "In a quiet private dressing room illuminated by warm vanity mirror bulbs, Kana Arima pauses mid-motion with her fingers resting on the clasp of her wine-red velvet suspender belt. Caught off guard, her cheeks flush bright crimson as she glances sideways with flustered pride rather than stepping behind the velvet curtain.",
+    "animaCaption": "She freezes while adjusting her garter clasp before the lit vanity mirror, blushing deeply and glancing aside.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "velvet lingerie",
+      "garter belt",
+      "black lace",
+      "shy blush"
+    ],
+    "nsfwProse": "Crossed black floral lace straps trace across her chest above the structured wine-red velvet lingerie and matching garter straps.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

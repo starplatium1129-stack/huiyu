@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "pc_takarada_rikka_boudoir_bed_headphones",
+  "revision": 1,
+  "sortOrder": 19058,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_takarada_rikka_boudoir_bed_headphones",
+    "characterId": "takarada_rikka",
+    "outfitId": "nsfw_boudoir",
+    "title": "宝多六花 · 空调房午后的蓝灰发呆",
+    "description": "盛夏午后拉起半截遮光帘的二楼小卧室里，空调送出清凉微风。六花穿着克制又精致的蓝灰黑边蕾丝内衣，赤脚半靠在松软床垫与懒人抱枕间，颈边挂着常戴的耳机，手里漫不经心地划着手机屏幕，被你轻唤时才抬起眼尾嘟囔着让你把门关好。",
+    "location": "半掩遮光帘的盛夏午后二楼少女卧室",
+    "action": "半靠床边抱枕轻握手机，抬眼带着慵懒又微窘的神情",
+    "timeOfDay": "盛夏午后",
+    "lighting": "窗帘缝隙漏进的一束清亮夏日光斑与室内凉爽阴影",
+    "camera": "略俯四分之三中景，呈现随意自然的日常私密感",
+    "mood": "慵懒、真实、毫不做作的少女微羞",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bedroom",
+      "bed",
+      "holding_phone",
+      "headphones_around_neck",
+      "curtain_light",
+      "relaxed",
+      "slight_blush",
+      "afternoon"
+    ],
+    "promptTokens": [
+      "cozy upstairs bedroom",
+      "lounging on bed pillows",
+      "holding smartphone",
+      "headphones around neck",
+      "curtain sunlight slit",
+      "lazy slight blush",
+      "looking at viewer",
+      "summer afternoon",
+      "medium shot",
+      "indoors"
+    ],
+    "promptProse": "Lounging against soft pillows in her dim, air-conditioned upstairs bedroom with the curtains half drawn against the summer heat, Rikka Takarada pauses while scrolling on her phone. A narrow strip of daylight crosses her restrained slate-blue lace lingerie as she glances up with a lazy, mildly flustered expression.",
+    "animaCaption": "Lounging on her shaded bedroom bed with a phone in hand, she glances up lazily through a slit of afternoon sunlight.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "slate-blue lace lingerie",
+      "black lace trim",
+      "bare midriff",
+      "intimate"
+    ],
+    "nsfwProse": "The understated slate-blue lingerie with fine black lace edging and a small ribbon rests naturally against her relaxed posture.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

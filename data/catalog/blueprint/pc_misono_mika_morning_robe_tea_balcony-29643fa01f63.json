@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "pc_misono_mika_morning_robe_tea_balcony",
+  "revision": 1,
+  "sortOrder": 19048,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_misono_mika_morning_robe_tea_balcony",
+    "characterId": "misono_mika",
+    "outfitId": "white_lace_morning_robe",
+    "title": "圣园未花 · 白蔷薇露台的早茶时光",
+    "description": "微凉的晴朗清晨，未花披着飘逸的白蔷薇蕾丝晨袍赤足推开露台玻璃门，在白色铁艺小圆桌旁斟好两杯红茶。晨风拂动宽大的真丝蕾丝袖口，她双手托起茶托朝刚醒来的老师弯眼一笑，满身都是明媚柔和的晨光。",
+    "location": "摆着白色铁艺茶桌的圣三一寝室清晨露台",
+    "action": "立于铁艺茶桌旁端起红茶杯，在晨风中温柔浅笑",
+    "timeOfDay": "晴朗清晨",
+    "lighting": "清亮柔金的清晨斜阳穿透半透白纱袖口",
+    "camera": "平视中景，白蔷薇花盆与精巧瓷茶具作点缀",
+    "mood": "明媚、优雅、带着公主般的娇俏温柔",
+    "category": "私密内衣",
+    "compositionIntent": "single",
+    "adult": true,
+    "sampleRating": "R15",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "balcony",
+      "tea_cup",
+      "white_roses",
+      "morning_light",
+      "standing",
+      "gentle_smile",
+      "breeze",
+      "outdoors"
+    ],
+    "promptTokens": [
+      "morning balcony",
+      "wrought iron tea table",
+      "holding porcelain teacup",
+      "white roses",
+      "gentle bright smile",
+      "golden morning sunlight",
+      "sheer sleeve flowing",
+      "medium shot",
+      "outdoors"
+    ],
+    "promptProse": "On the sunlit balcony beside a white wrought-iron table set with porcelain teaware, Mika lifts a steaming cup of morning tea as gentle breeze lifts the wide rose-lace sleeves of her translucent white silk morning robe. Soft golden daylight glows through the fabric and brightens her warm smile.",
+    "animaCaption": "Standing by the sunlit balcony tea table, she lifts a porcelain cup as morning breeze lifts her sheer lace sleeves.",
+    "negativeTokens": [],
+    "nsfwTokens": [
+      "translucent silk robe",
+      "loosely belted",
+      "soft allure"
+    ],
+    "nsfwProse": "Morning sunlight shines gently through the translucent white silk robe loosely tied at her waist with a satin sash.",
+    "coverageTags": [
+      "boudoir"
+    ]
+  }
+}

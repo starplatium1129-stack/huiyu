@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "pc_sorasaki_hina_evening_dress_terrace_champagne",
+  "revision": 1,
+  "sortOrder": 19069,
+  "createdAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "data": {
+    "id": "pc_sorasaki_hina_evening_dress_terrace_champagne",
+    "characterId": "sorasaki_hina",
+    "outfitId": "evening_dress",
+    "title": "空崎日奈 · 晚宴露台的片刻透气",
+    "description": "喧闹的礼堂舞会隔着玻璃门退作模糊金光，日奈提着高开衩墨夜天鹅绒晚礼裙的裙角走到微风轻拂的石露台边。戴着长缎手套的手轻握一杯无酒精气泡水，珍珠项链在夜色下泛着柔白微光，见你跟出来陪她，她轻轻舒了口气露出只有你才见过的安心浅笑。",
+    "location": "宴会厅外微风宁静的石栏夜景露台",
+    "action": "轻倚露台石栏手持高脚气泡水杯，转身展露松弛浅笑",
+    "timeOfDay": "华灯夜晚",
+    "lighting": "宴会厅暖金玻璃透光与清冽星夜蓝光交织",
+    "camera": "四分之三全身，展现天鹅绒长裙垂坠感与修长开衩线条",
+    "mood": "典雅、沉静、只愿与一人独处的卸防",
+    "category": "礼服华章",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "ballroom_terrace",
+      "stone_railing",
+      "glass_in_hand",
+      "night",
+      "warm_glow",
+      "gentle_smile",
+      "elegant",
+      "full_body"
+    ],
+    "promptTokens": [
+      "grand stone terrace",
+      "warm ballroom windows behind",
+      "holding tall glass",
+      "leaning lightly on railing",
+      "gentle relieved smile",
+      "night breeze",
+      "pearl highlights",
+      "full body",
+      "outdoors"
+    ],
+    "promptProse": "Stepping outside the warm glow of the ballroom onto a quiet stone terrace, Hina rests one satin-gloved hand on the balustrade while holding a flute of sparkling water. The obsidian velvet gown, soaring side slit, and strand of pearls gleam softly under starlight as she turns with a relieved, private smile.",
+    "animaCaption": "On the quiet terrace outside the lit ballroom, she holds a sparkling glass by the railing with a relieved smile.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "formal"
+    ]
+  }
+}
