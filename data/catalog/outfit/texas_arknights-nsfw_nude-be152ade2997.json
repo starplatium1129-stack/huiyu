@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/nsfw_nude",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 386,
   "createdAt": null,
-  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "default": false,
       "id": "nsfw_nude",
       "isDefault": false,
-      "name": "纯净圣洁胴体",
+      "name": "无衣装",
       "prose": "Completely unclothed natural form with bare shoulders and bare feet.",
       "styleHint": "tender romantic candlelight",
       "tokens": [

@@ -62,13 +62,25 @@ function fail(message: any) {
 }
 
 const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
+const PACKAGE_PATH = path.join(ROOT, 'package.json');
 
-/** 递增 package.json 与 tauri.conf.json 版本号（客户端当前版本编译自 tauri.conf.json，必须同步）。 */
-function bumpVersion(kind: any) {
+function readPackage() {
+  return JSON.parse(fs.readFileSync(PACKAGE_PATH, 'utf8'));
+}
+
+function replaceCargoVersion(file: string, pattern: RegExp, next: string): string {
+  const source = fs.readFileSync(file, 'utf8');
+  if (Array.from(source.matchAll(pattern)).length !== 1) {
+    throw new Error(`无法唯一定位 ${path.basename(file)} 中的桌面包版本，请修正后再递增版本。`);
+  }
+  return source.replace(pattern, (_match, prefix: string, suffix: string) => `${prefix}${next}${suffix}`);
+}
+
+/** 在写入任何文件前核对 Tauri、npm 和 Cargo 的版本声明。 */
+function bumpVersion(kind: string) {
   if (!['patch', 'minor', 'major'].includes(kind)) fail(`未知 bump 档位: ${kind}（patch|minor|major）`);
-  const pkgPath = path.join(ROOT, 'package.json');
   const tauriPath = path.join(ROOT, 'desktop-tauri', 'src-tauri', 'tauri.conf.json');
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+  const pkg = readPackage();
   const conf = JSON.parse(fs.readFileSync(tauriPath, 'utf8'));
   const match: any = SEMVER.exec(String(pkg.version || ''));
   if (!match) fail(`无法解析 package.json version: ${pkg.version}`);
@@ -82,19 +94,21 @@ function bumpVersion(kind: any) {
   if (String(conf.version || '') !== String(pkg.version || '')) {
     console.warn(`[release-desktop-update] 警告：tauri.conf.json version=${conf.version} 与 package.json ${pkg.version} 不一致，将两者都设为 ${next}`);
   }
-  pkg.version = next;
-  conf.version = next;
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
-  fs.writeFileSync(tauriPath, JSON.stringify(conf, null, 2) + '\n', 'utf8');
   const lockPath = path.join(ROOT, 'package-lock.json');
   const lock = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+  const cargoPath = path.join(ROOT, 'desktop-tauri/src-tauri/Cargo.toml');
+  const cargoLock = path.join(ROOT, 'desktop-tauri/src-tauri/Cargo.lock');
+  const cargoSource = replaceCargoVersion(cargoPath, /(^\[package\][ \t]*\r?\n(?:(?![ \t]*\[)[^\r\n]*\r?\n)*?^version[ \t]*=[ \t]*")[^"\r\n]+(")/gm, next);
+  const cargoLockSource = replaceCargoVersion(cargoLock, /(^\[\[package\]\]\r?\nname = "ai-cg-studio-desktop"\r?\nversion = ")[^"\r\n]+(")/gm, next);
+  pkg.version = next;
+  conf.version = next;
   lock.version = next;
   if (lock.packages?.['']) lock.packages[''].version = next;
+  fs.writeFileSync(PACKAGE_PATH, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(tauriPath, JSON.stringify(conf, null, 2) + '\n', 'utf8');
   fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n', 'utf8');
-  const cargoPath = path.join(ROOT, 'desktop-tauri/src-tauri/Cargo.toml');
-  fs.writeFileSync(cargoPath, fs.readFileSync(cargoPath, 'utf8').replace(/(\[package\][\s\S]*?\nversion = ")[^"]+("\r?\n)/, `$1${next}$2`));
-  const cargoLock = path.join(ROOT, 'desktop-tauri/src-tauri/Cargo.lock');
-  fs.writeFileSync(cargoLock, fs.readFileSync(cargoLock, 'utf8').replace(/(name = "ai-cg-studio-desktop"\r?\nversion = ")[^"]+(")/, `$1${next}$2`));
+  fs.writeFileSync(cargoPath, cargoSource, 'utf8');
+  fs.writeFileSync(cargoLock, cargoLockSource, 'utf8');
   console.log(`[release-desktop-update] 版本 ${match[0]} → ${next}`);
   return next;
 }
@@ -139,7 +153,7 @@ function assertPublishReady(version: any) {
   }
   const remoteHead = execFileSync('git', ['ls-remote', 'origin', 'refs/heads/main'], { cwd: ROOT, encoding: 'utf8' }).trim().split(/\s+/)[0];
   if (branch === 'main' && head !== remoteHead) fail(`main 尚未与远端同步：HEAD=${head.slice(0, 8)} remote=${remoteHead.slice(0, 8)}`);
-  if (version !== require(path.join(ROOT, 'package.json')).version) fail('发布版本读取漂移');
+  if (version !== readPackage().version) fail('发布版本读取漂移');
   return head;
 }
 
@@ -193,7 +207,14 @@ function publishRelease(version: any, head: any, files: any) {
 
 async function main() {
   if (process.argv.includes('--help')) {
-    console.log('Usage: node scripts/maintenance/release-desktop-update.js [--full-only] [--manual] [--skip-build | --bundle-only] [--bump patch|minor|major] [--publish]\nLocal development: --manual --upgrade-only --install-dir <existing installation> [--skip-build] (builds only an uncompressed upgrade; no full package, install or publish)');
+    console.log([
+      'Usage: npm run release:desktop -- [--full-only] [--manual] [--skip-build | --bundle-only]',
+      '       [--resource-profile=slim|base|full | --full-resources] [--bump patch|minor|major] [--publish]',
+      'Local upgrade: --manual --upgrade-only --install-dir <existing installation> [--skip-build]',
+      'Sign a previously published manual release: --complete-manual --publish [--skip-build | --bundle-only]',
+      '--bump updates version files locally. Commit and push before running --publish.',
+      'The default slim profile installs optional portraits/showcase resources on demand.',
+    ].join('\n'));
     return;
   }
   if (MANUAL && COMPLETE_MANUAL) fail('--manual 与 --complete-manual 不能同时使用');
@@ -211,7 +232,7 @@ async function main() {
     }
     const upgrade = await (require('../lib/desktop-upgrade-installer') as typeof import('../lib/desktop-upgrade-installer'))
       .buildUpgradeInstaller(ROOT, { installDir: INSTALL_DIR, local: true, prepareInstallerAssets: SKIP_BUILD });
-    const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
+    const version = readPackage().version;
     const executable = path.join(OUT_DIR, `AI-CG-Studio_${version}_x64-local-upgrade-setup.exe`);
     const modern = require('./build-modern-installer') as typeof import('./build-modern-installer');
     const wrapper = await timeDesktopBuild('local upgrade wrapper', () => modern.buildModernInstaller({ payload: upgrade.payload, output: executable,
@@ -224,7 +245,7 @@ async function main() {
     fail(`缺少原更新签名私钥 ${KEY_FILE}。请在持有原私钥的主机签名；手动安装版必须显式使用 --manual，不能生成替代私钥。`);
   }
   if (BUMP_KIND) bumpVersion(BUMP_KIND);
-  const version = require(path.join(ROOT, 'package.json')).version;
+  const version = readPackage().version;
   const previousBuild = SKIP_BUILD || BUNDLE_ONLY ? binding.verifyBuild(ROOT, undefined, 'release') : null;
 
   if (!SKIP_BUILD) {
@@ -243,7 +264,9 @@ async function main() {
     if (MANUAL) {
       delete buildEnv.TAURI_SIGNING_PRIVATE_KEY; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PATH; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
     } else {
-      Object.assign(buildEnv, { TAURI_SIGNING_PRIVATE_KEY: fs.readFileSync(KEY_FILE, 'utf8').trim(), TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' });
+      buildEnv.TAURI_SIGNING_PRIVATE_KEY = fs.readFileSync(KEY_FILE, 'utf8').trim();
+      buildEnv.TAURI_SIGNING_PRIVATE_KEY_PATH = KEY_FILE;
+      buildEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD ??= '';
     }
     if (MANUAL && BUNDLE_ONLY) fail('手动版请使用完整构建，或对已构建的同版本安装包使用 --skip-build');
     console.log(`[release-desktop-update] ${MANUAL ? '构建手动安装版（不生成自动更新清单）' : '构建签名自动更新版'}（资源档位：${RESOURCE_PROFILE}）`);
@@ -281,7 +304,8 @@ async function main() {
   ];
   const files: string[] = [];
   let upgradeSignature = '', upgradeName = '';
-  const signerEnv: NodeJS.ProcessEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE, TAURI_SIGNING_PRIVATE_KEY_PASSWORD: '' };
+  const signerEnv: NodeJS.ProcessEnv = { ...process.env, TAURI_SIGNING_PRIVATE_KEY_PATH: KEY_FILE };
+  signerEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD ??= '';
   delete signerEnv.TAURI_SIGNING_PRIVATE_KEY;
   const updater = JSON.parse(fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8')).plugins.updater;
   const modern = require('./build-modern-installer') as typeof import('./build-modern-installer');

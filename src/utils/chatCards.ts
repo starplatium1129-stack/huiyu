@@ -99,6 +99,7 @@ let pending: Promise<void> | undefined
 let directoryOwner = ''
 let listening = false
 const changeKey = 'huiyu_chat_card_import'
+const changeEvent = 'huiyu:chat-cards-changed'
 export async function loadChatCard(id: string): Promise<void> {
   if (!isLocalStudioHost() || !/^card-[a-f0-9]{64}$/.test(id)) return
   const owner = runtimeResourceIdentity()
@@ -148,5 +149,13 @@ export async function importChatCard(file: File, signal: AbortSignal) {
 }
 
 export function announceChatCardsChanged() {
+  window.dispatchEvent(new Event(changeEvent))
   try { localStorage.setItem(changeKey, String(Date.now())) } catch { /* Next room load reads the directory. */ }
+}
+
+export function onChatCardsChanged(callback: () => void, signal: AbortSignal) {
+  window.addEventListener(changeEvent, callback, { signal })
+  window.addEventListener('storage', event => {
+    if (event.key === changeKey) callback()
+  }, { signal })
 }

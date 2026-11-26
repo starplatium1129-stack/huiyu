@@ -273,10 +273,7 @@ pub fn restart_for_setup(app: AppHandle, state: State<AppState>) -> Result<(), S
         return Err(format!("无法保存重启位置，应用尚未退出：{error}"));
     }
     state.info("Restart requested after setup; the next host will reopen configuration");
-    // This synchronous command runs on the main thread. restart() skips
-    // ExitRequested there, leaving our gateway alive; queue the normal exit
-    // events so the existing cleanup releases the port before relaunch.
-    app.request_restart();
+    crate::desktop_shutdown::request(&app, 0, true);
     Ok(())
 }
 

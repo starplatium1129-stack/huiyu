@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kasumigaoka_utaha_last_proof_at_bookseller",
+  "revision": 1,
+  "sortOrder": 3925,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_kasumigaoka_utaha_last_proof_at_bookseller",
+    "characterId": "kasumigaoka_utaha",
+    "outfitId": "sfw_black_wool_coat",
+    "title": "霞之丘诗羽 · 书店打烊前的终校",
+    "category": "现代日常",
+    "description": "店员已经开始收邻桌的空杯，霞之丘诗羽把校样翻回折角那页，给最后一句补了一道墨线。炭灰羊绒外套未脱，腰带压住象牙针织裙的褶皱。冬日侧光从金色表壳上滑到桌边，咖啡只剩一小口。",
+    "location": "独立书店橱窗旁的木桌",
+    "action": "把校样翻回折角的一页，用钢笔划掉多余的句子。",
+    "timeOfDay": "冬日下午",
+    "lighting": "winter window light and lamp light",
+    "camera": "cowboy shot, from side",
+    "mood": "沉着",
+    "promptTokens": [
+      "bookstore",
+      "cafe",
+      "table",
+      "paper",
+      "pen",
+      "writing",
+      "looking down",
+      "window",
+      "coffee",
+      "sitting",
+      "sunlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "Before the bookshop closes, she turns back to the folded page in her proofs and strikes one line with her pen. Winter sun from the shop window reaches the margin of the page.",
+    "animaCaption": "The last sip of coffee stays untouched while she finishes the correction.",
+    "sceneTags": [
+      "bookstore",
+      "cafe",
+      "table",
+      "paper",
+      "pen",
+      "writing",
+      "looking_down",
+      "window",
+      "coffee",
+      "sitting",
+      "sunlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

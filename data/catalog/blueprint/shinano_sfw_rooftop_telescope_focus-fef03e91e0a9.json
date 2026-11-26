@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_sfw_rooftop_telescope_focus",
+  "revision": 1,
+  "sortOrder": 3448,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "shinano_sfw_rooftop_telescope_focus",
+    "characterId": "shinano",
+    "outfitId": "wisteria_constellation_open_robe",
+    "title": "信浓 · 拨正旧观星镜的旋钮",
+    "category": "天台观星",
+    "description": "屋顶观星台的旧铜镜筒转得很慢。信浓扶稳镜架，轻拧旋钮，等视野里最亮的一点不再抖动。足踝附近的墨紫袍尾被风掀起，紫藤和银线星群随着衣褶展开，白绸内搭与同色长裙依然完整。",
+    "location": "圆顶观星台外侧的旧铜望远镜旁",
+    "action": "扶稳望远镜支架，慢慢拨动镜筒焦距旋钮",
+    "timeOfDay": "晴朗夜晚",
+    "lighting": "远处星光冷淡，观星台低位灯微亮衣袍上的银线",
+    "camera": "平视斜侧中全景，望远镜与袍尾分占两侧",
+    "mood": "放缓动作的凝神",
+    "sceneTags": [
+      "robe",
+      "white_skirt",
+      "standing",
+      "holding",
+      "telescope",
+      "rooftop",
+      "night",
+      "starry_sky",
+      "from_side",
+      "full_body"
+    ],
+    "promptProse": "Shinano steadies an old brass telescope and turns its focus knob slowly on the rooftop observatory. Wisteria and silver constellations are stitched into her midnight-purple open chiffon robe, worn over a fully opaque white silk top and matching ankle-length skirt. A low lamp picks out the silver threads as the hem lifts in the breeze.",
+    "animaCaption": "One hand steadies the telescope while the other turns the brass focus knob, the embroidered train of her robe drifting behind.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "robe",
+      "white skirt",
+      "standing",
+      "holding",
+      "telescope",
+      "rooftop",
+      "night",
+      "starry sky",
+      "from side",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

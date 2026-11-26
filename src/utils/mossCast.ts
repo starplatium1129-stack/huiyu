@@ -265,7 +265,7 @@ export function singleReferenceCastOutfit(reference: DraftReferenceInput | null 
 
 function spatialSlotLabel(index: number, count: number, box: UnitBox, allBoxes: readonly UnitBox[], formation?: CastLayout['formation'], useReference = false): string {
   if (count <= 1) return ''
-  if (!useReference && count >= 4 && formation === 'staggered') {
+  if (!useReference && count >= 4 && (formation === 'staggered' || formation === 'close')) {
     if (index === 0) return 'In the front left'
     if (index === 1) return 'In the front right'
     if (count === 4) return index === 2 ? 'In the back left' : 'In the back right'

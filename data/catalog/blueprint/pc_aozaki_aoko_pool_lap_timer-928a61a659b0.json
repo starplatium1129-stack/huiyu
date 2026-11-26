@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_aozaki_aoko_pool_lap_timer",
+  "revision": 1,
+  "sortOrder": 19005,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_aozaki_aoko_pool_lap_timer",
+    "characterId": "aozaki_aoko",
+    "outfitId": "silver_summer_bikini",
+    "title": "苍崎青子 · 泳道边的计时器",
+    "description": "训练馆里只剩一条泳道还有水纹。青子把计时器按停，抬手甩开睫毛上的水珠。运动巾垂在肩上，水珠沿着泳衣的红边一路滑到瓷砖。",
+    "location": "室内游泳馆的泳道尽头",
+    "action": "站在岸边按停计时器，肩上搭着运动巾",
+    "timeOfDay": "上午",
+    "lighting": "高窗的白光印在泳道和泳池瓷砖上",
+    "camera": "与人物平视的中景，泳道在背后",
+    "mood": "认真回看这一趟的成绩",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "swimming_pool",
+      "indoors",
+      "stopwatch",
+      "holding",
+      "towel",
+      "water_drops",
+      "window",
+      "standing",
+      "upper_body"
+    ],
+    "promptTokens": [
+      "swimming pool",
+      "indoors",
+      "stopwatch",
+      "holding",
+      "towel",
+      "water drops",
+      "window",
+      "standing",
+      "upper body"
+    ],
+    "promptProse": "Aoko stops a handheld timer at the end of an indoor lap pool, a quick-dry towel looped around her neck. A row of drops runs along the cobalt-and-crimson racing suit and its white contour piping. Pool lanes recede toward the high windows.",
+    "animaCaption": "Her wet thumb presses the timer while the empty lane is still rippling behind her.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

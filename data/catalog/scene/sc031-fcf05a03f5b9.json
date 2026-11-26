@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T14:00:23.919403700+00:00",
   "data": {
     "animaCaption": "A full-body wide shot shows both faces beneath the luminous dome. On the left, Ayachi Nene has silver-white twin tails, pink hair ribbons and tearful violet eyes. She wears a white chiffon gown with a pale pink bow at the waist. On the right, Shiki Natsume has long black hair, two red hairclips, gold eyes and a small beauty mark under her right eye. She wears a black satin gown with a burgundy sash. They each clasp a hand reaching in from the lower foreground as three glowing heartbeat curves arc overhead.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, formal dresses, holding hands, ritual hall, dome, heart rate curves, halo, wide shot, standing, white chiffon gown, pink waist ribbon, black satin gown, burgundy sash, tears of joy, glowing halo, soft_lighting, cinematic_lighting, depth_of_field, detailed_background, radiant_light, volumetric_lighting",
+    "prompt": "2girls, ritual hall, luminous dome, glowing heartbeat curves, rotating halo, wide shot, full body, soft_lighting, cinematic_lighting, depth_of_field, detailed_background, radiant_light, volumetric_lighting, (ayachi_nene, standing on the left, silver white hair, twintails, pink hair ribbons, violet eyes, white chiffon gown, pale pink bow at waist, tears of joy, holding foreground hand) BREAK (shiki_natsume, standing on the right, long black hair, two red hairclips, gold eyes, mole under eye, black satin gown, burgundy sash, holding foreground hand)",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

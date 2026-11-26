@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T14:00:23.919403700+00:00",
   "data": {
     "animaCaption": "Ayachi Nene sits on the left, her silver-white twin tails tied with pink ribbons above an ivory chiffon wedding gown with a pink sash. She holds the folded agreement and the near foreground hand. To her right, Shiki Natsume has long black hair pinned with two red clips, golden eyes and a small mole beneath her right eye. In a straight-necked pearl satin gown, Natsume leans across to straighten Nene's bridal hair ornament in the candlelight.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, shiki_natsume, wedding dresses, sitting, canopy bed, marriage contract, holding hands, hair ornament, candlelight, medium shot, ivory chiffon, pink waist ribbon, pearl white satin, boat neckline, reaching, warm_lighting, cinematic_lighting, depth_of_field",
+    "prompt": "2girls, canopy bed, marriage contract, candlelight, medium shot, warm_lighting, cinematic_lighting, depth_of_field, (ayachi_nene, sitting on the left, silver white hair, twintails, pink ribbons, ivory chiffon wedding gown, pink waist ribbon, holding folded agreement, holding hands) BREAK (shiki_natsume, sitting on the right, long black hair, red hairclips, golden eyes, mole under eye, pearl white satin wedding gown, straight neckline, reaching to adjust hair ornament)",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

@@ -190,7 +190,7 @@ const actors = computed(() => pb.cast.map((item, index) => {
     image: resolveRuntimeUrl(person?.image),
     outfitId: isCustomCastOutfit(item.outfitId) || item.outfitExplicit && options.some(option => option.value === item.outfitId) ? item.outfitId : '',
     action: item.action ?? '',
-    outfits: [{ value: '', label: props.engine === 'moss' && referenceCount.value >= 2 && index < referenceCount.value ? '跟随参考图服装' : '角色默认服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
+    outfits: [{ value: '', label: referenceCount.value >= 2 && index < referenceCount.value ? '跟随参考图服装' : '角色默认服装' }, ...options, { value: 'custom', label: '自定义服装' }, { value: 'none', label: '不穿默认服（清空）' }],
   }
 }))
 const referenceCount = computed(() => referenceCharacterCount(pb.referenceInput?.layout))
@@ -254,10 +254,6 @@ function setFormation(value: string | number) {
 
 function setOutfit(index: number, value: string | number) {
   const outfitId = String(value)
-  if (outfitId === 'custom' && referenceOutfit.value) {
-    applyReferenceOutfit(index)
-    return
-  }
   pb.updateCastMember(index, { outfitId, outfitExplicit: Boolean(outfitId) })
 }
 

@@ -80,8 +80,10 @@ function navigate(offset: -1 | 1) {
 function onMouseHistory(event: MouseEvent) {
   if (event.defaultPrevented || (event.button !== 3 && event.button !== 4)) return
   event.preventDefault()
-  navigate(event.button === 3 ? -1 : 1)
+  if (event.type === 'mouseup') navigate(event.button === 3 ? -1 : 1)
 }
+
+const historyMouseEvents = ['mousedown', 'mouseup', 'auxclick'] as const
 
 async function readCompanion() {
   const revision = companionRevision
@@ -104,14 +106,14 @@ onMounted(() => {
   removeCompanion = desktopShell.onCompanion(value => { companionRevision++; companionVisible.value = value })
   void readCompanion()
   window.addEventListener('focus', readCompanion)
-  window.addEventListener('auxclick', onMouseHistory)
+  for (const event of historyMouseEvents) window.addEventListener(event, onMouseHistory, true)
 })
 onUnmounted(() => {
   companionRevision++
   removeRuntime?.()
   removeCompanion?.()
   window.removeEventListener('focus', readCompanion)
-  window.removeEventListener('auxclick', onMouseHistory)
+  for (const event of historyMouseEvents) window.removeEventListener(event, onMouseHistory, true)
 })
 </script>
 

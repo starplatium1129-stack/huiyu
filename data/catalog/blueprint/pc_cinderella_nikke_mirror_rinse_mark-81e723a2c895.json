@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_cinderella_nikke_mirror_rinse_mark",
+  "revision": 1,
+  "sortOrder": 3935,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_cinderella_nikke_mirror_rinse_mark",
+    "characterId": "cinderella_nikke",
+    "outfitId": "mirror_boudoir_negligee",
+    "title": "灰姑娘 · 擦掉最后一圈水痕",
+    "category": "相伴日常",
+    "description": "水晶镜廊的清晨还很安静。灰姑娘坐在窗旁，把缎面外袍的腰带系好，抬起一面小手镜。她捏着软布顺玻璃边缘慢慢擦过，最后才把手镜轻轻转向窗光检查水痕。",
+    "location": "镜廊靠窗的小桌",
+    "action": "一手握住小手镜，另一手沿玻璃边缘用布擦掉水痕。",
+    "timeOfDay": "清晨",
+    "lighting": "diffused morning window light",
+    "camera": "medium shot, eye level",
+    "mood": "专注从容",
+    "promptTokens": [
+      "hand mirror",
+      "cloth",
+      "holding",
+      "table",
+      "window",
+      "indoors",
+      "sitting",
+      "looking down",
+      "morning",
+      "medium shot"
+    ],
+    "promptProse": "In the quiet mirror gallery she sits at a small table with her matching satin robe wrapped and tied over the mist-blue nightdress. She wipes a water mark from the edge of a small hand mirror, then tilts the glass toward the window to check her work. The frame follows her hands and face from across the table.",
+    "animaCaption": "Her outer robe is wrapped and tied as she tips the polished mirror toward the window.",
+    "sceneTags": [
+      "hand_mirror",
+      "cloth",
+      "holding",
+      "table",
+      "window",
+      "indoors",
+      "sitting",
+      "looking_down",
+      "morning",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

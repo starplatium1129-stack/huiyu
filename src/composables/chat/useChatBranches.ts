@@ -15,7 +15,7 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
   function snapshot(char: string) {
     return {
       conversation: captureChatConversations(state, [char])[char],
-      history: state.histories[char],
+      history: cloneChatMessages(state.histories[char] || []),
       historiesRevision: state.historiesRevision,
       charRevision: state.historiesRevisions[char] ?? state.historiesRevision,
     }
@@ -119,21 +119,22 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     if (save(false, char)) return true
     rollback(char, before); return false
   }
-  function attachMessageImage(char: string, mid: string, image: CompanionChatImage): boolean {
+  function attachMessageImage(char: string, branch: string, mid: string, image: CompanionChatImage): boolean {
     if (!canWrite() || !Object.hasOwn(state.histories, char) || !refresh()) return false
-    const history = state.histories[char] || []
-    const target = history.find(message => message.mid === mid || chatMessageKey(message) === mid)
+    const current = conversation(char)
+    const isActive = current.activeId === branch
+    const history = isActive ? state.histories[char] : current.branches.find(item => item.id === branch)?.messages
+    const target = history?.find(message => message.mid === mid || message.variants?.some(variant => variant.mid === mid))
     if (!target) return false
+    const variant = target.variants?.find(item => item.mid === mid)
+    const existing = (target.mid === mid ? target.images : variant?.images) || []
+    if (existing.some(item => item.path === image.path || (image.imageId && item.imageId === image.imageId))) return true
     const before = snapshot(char)
-    state.conversations[char] = JSON.parse(JSON.stringify(before.conversation))
-    const existing = target.images || []
-    if (!existing.some(item => item.path === image.path || (image.imageId && item.imageId === image.imageId))) {
-      target.images = [...existing, { ...image }].slice(-MAX_CHAT_DRAWINGS)
-      const activeVariant = target.variants?.find(variant => variant.mid === target.mid)
-      if (activeVariant) activeVariant.images = [...target.images]
-      syncActiveBranch(char)
-      bumpRevision(char)
-    }
+    const images = [...existing, { ...image }].slice(-MAX_CHAT_DRAWINGS)
+    if (target.mid === mid) target.images = images
+    if (variant) variant.images = [...images]
+    if (isActive) syncActiveBranch(char)
+    bumpRevision(char)
     if (save(false, char)) return true
     rollback(char, before); return false
   }

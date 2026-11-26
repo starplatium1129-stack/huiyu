@@ -89,6 +89,7 @@ fn prepare_manga(input: SceneSelection) -> Result<PreparedScene> {
     }
     manga::validate(&payload)?;
     Ok(PreparedScene {
+        cast_fusion: None,
         kind: "manga".into(),
         id: input.operation.unwrap_or_else(|| "lite".into()),
         family: "manga-screen",
@@ -237,6 +238,7 @@ pub(super) fn custom(
     // options and known model/LoRA combinations.
     prepare_payload(&mut payload, family)?;
     Ok(PreparedScene {
+        cast_fusion: None,
         kind: "prompt".into(),
         id: "prompt".into(),
         family,

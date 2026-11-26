@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_anis_nikke_checkpoint_inventory",
+  "revision": 1,
+  "sortOrder": 3913,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_anis_nikke_checkpoint_inventory",
+    "characterId": "anis_nikke",
+    "outfitId": "surface_supply_jacket",
+    "title": "阿尼斯 · 风口的最后一箱",
+    "category": "前线日常",
+    "description": "风从倾倒的路障中间钻过来，差点揭走最后一只补给箱上的清单。阿尼斯用手套压住纸张，拇指按住肩带的通话键报数。浅灰防风夹克上的黄色救援标带让接应的人能从扬尘里认出她。",
+    "location": "地表旧公路补给点",
+    "action": "用手套按住货箱清单，另一手按下肩带上的通话键。",
+    "timeOfDay": "午后",
+    "lighting": "overcast daylight",
+    "camera": "cowboy shot",
+    "mood": "警觉",
+    "promptTokens": [
+      "outdoors",
+      "road",
+      "crate",
+      "paper",
+      "gloves",
+      "wind",
+      "standing",
+      "radio",
+      "cowboy shot",
+      "cloudy sky"
+    ],
+    "promptProse": "Beside the last supply crate at an abandoned road checkpoint, she pins a paper manifest under one gloved palm and presses the radio on her harness with the other. Dust crosses the concrete barriers behind her.",
+    "animaCaption": "Her palm keeps the manifest flat while she radios the final count.",
+    "sceneTags": [
+      "outdoors",
+      "road",
+      "crate",
+      "paper",
+      "gloves",
+      "wind",
+      "standing",
+      "radio",
+      "cowboy_shot",
+      "cloudy_sky"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

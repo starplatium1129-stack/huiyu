@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_elaina_bread_at_ferry_landing",
+  "revision": 1,
+  "sortOrder": 3916,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_elaina_bread_at_ferry_landing",
+    "characterId": "elaina",
+    "outfitId": "travel_clothes",
+    "title": "伊雷娜 · 渡口早餐先掰半块",
+    "category": "旅行纪事",
+    "description": "伊雷娜坐在渡船长椅上等靠岸，把刚买的硬面包掰成两半。河面晃出的光照着白衬衫领口和深灰马甲，带开衩的裙摆搭在长靴旁。她嚼着一小口面包，望向岸边指向下一站的木路标。",
+    "location": "河口渡船长椅",
+    "action": "把纸包里的面包掰成两半，目光越过船舷确认岸边的路标。",
+    "timeOfDay": "清晨",
+    "lighting": "reflected morning sunlight",
+    "camera": "cowboy shot, from side",
+    "mood": "悠闲",
+    "promptTokens": [
+      "boat",
+      "river",
+      "bench",
+      "sitting",
+      "bread",
+      "holding food",
+      "railing",
+      "morning",
+      "from side",
+      "sunlight",
+      "cowboy shot"
+    ],
+    "promptProse": "Seated on a ferry bench, she breaks a roll over its paper wrapping and looks across the rail to a wooden sign on shore. Reflected river light shimmers across the bench.",
+    "animaCaption": "She is already checking which path to take before the boat has docked.",
+    "sceneTags": [
+      "boat",
+      "river",
+      "bench",
+      "sitting",
+      "bread",
+      "holding_food",
+      "railing",
+      "morning",
+      "from_side",
+      "sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

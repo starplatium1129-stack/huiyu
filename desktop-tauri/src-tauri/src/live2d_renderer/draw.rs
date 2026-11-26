@@ -106,14 +106,14 @@ impl RenderContext {
         let renderer = self.renderer.as_mut().ok_or("no renderer")?;
         let capture = self.alpha_readback.get_or_insert_with(|| alpha_mask::MaskReadback::new(&self.device));
         if let Some(mask) = capture.collect(rect, framing) {
-            *state.alpha_mask.write().unwrap() = Some(mask);
+            *state.alpha_mask.recover_write() = Some(mask);
         }
         let interval = if self.active_motion.as_ref().is_some_and(|motion| motion.phase != MotionPhase::Idle) {
             Duration::from_millis(100)
         } else {
             Duration::from_millis(250)
         };
-        let needs_mask = state.alpha_mask.read().unwrap().is_none();
+        let needs_mask = state.alpha_mask.recover_read().is_none();
         let captured = capture.capture_target(renderer, rect, self.surface_format, framing, interval, needs_mask, cursor_near);
         let mut encoder = renderer.draw_frame(
             model,
@@ -146,7 +146,7 @@ impl RenderContext {
         let framing = *state.framing.recover_lock();
         let (width, height) = (rect.width as f32, rect.height as f32);
         let (x, y) = (nx * width, ny * height);
-        if !state.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| mask.hit(rect, framing, x as i32, y as i32)) {
+        if !state.alpha_mask.recover_read().as_ref().is_some_and(|mask| mask.hit(rect, framing, x as i32, y as i32)) {
             return vec![];
         }
         let (Some(model), Some(bounds)) = (self.model.as_ref(), self.fit_bounds) else { return vec![]; };

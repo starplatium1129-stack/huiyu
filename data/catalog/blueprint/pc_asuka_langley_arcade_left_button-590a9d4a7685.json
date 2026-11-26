@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_asuka_langley_arcade_left_button",
+  "revision": 1,
+  "sortOrder": 3934,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_asuka_langley_arcade_left_button",
+    "characterId": "asuka_langley",
+    "outfitId": "gothic_punk_jacket_q",
+    "title": "惣流·明日香 · 左键卡在第三关",
+    "category": "现代日常",
+    "description": "靠窗的游戏厅座位终于空了出来。明日香把卡键的掌机平放在桌上，左手扶住机身，右手拇指把按钮拨回原位。阳光照着红黑飞行夹克的袖口，旁边那杯热可可已经放凉了。",
+    "location": "游戏厅靠窗桌前",
+    "action": "坐在桌边扶稳掌机，用拇指把卡住的方向键拨回原位。",
+    "timeOfDay": "下午",
+    "lighting": "soft window light",
+    "camera": "medium shot, eye level",
+    "mood": "专注又不服输",
+    "promptTokens": [
+      "arcade",
+      "indoors",
+      "sitting",
+      "table",
+      "handheld game console",
+      "holding",
+      "mug",
+      "looking down",
+      "window",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Asuka sits at a table by the arcade window. She steadies a handheld console with one hand and nudges the stuck direction button with her thumb; a forgotten cup of cocoa sits beside the console. Frame her face, the sleeves of her flight jacket and both hands together at eye level.",
+    "animaCaption": "From across the table, her face and both hands share the frame as she nudges the stuck button.",
+    "sceneTags": [
+      "arcade",
+      "indoors",
+      "sitting",
+      "table",
+      "handheld_game_console",
+      "holding",
+      "mug",
+      "looking_down",
+      "window",
+      "sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

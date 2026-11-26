@@ -72,5 +72,4 @@ function checkUpdates() { window.dispatchEvent(new Event('aics:check-desktop-upd
 .desktop-recovery-preferences { display: grid; gap: var(--s-2); padding-block-start: var(--s-3); border-block-start: 1px solid var(--border-soft); }
 .desktop-recovery-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2); }
 .desktop-recovery-preferences :is(p, span) { margin: 0; color: var(--text-secondary); font-size: var(--fs-label); }
-.desktop-recovery-preferences .btn:disabled { color: var(--text-disabled); opacity: 1; }
 </style>

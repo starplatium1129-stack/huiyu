@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mash_kyrielight_shield_drill_target_reset",
+  "revision": 1,
+  "sortOrder": 3929,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_mash_kyrielight_shield_drill_target_reset",
+    "characterId": "mash_kyrielight",
+    "outfitId": "combat_armor",
+    "title": "玛修 · 练习场的盾尖和粉笔线",
+    "category": "战斗训练",
+    "description": "训练暂停后，玛修把大盾的底尖靠在粉笔线上，弯身把滚到脚边的训练标靶捡起来。顶灯压出黑曜胸甲的紫边和钢靴每一片活动甲。她重新摆正标靶，准备从同一个位置练下一组防守。",
+    "location": "迦勒底室内防护训练区",
+    "action": "把大盾底尖停在粉笔线上，一手扶盾，另一手收回掉落的训练标靶。",
+    "timeOfDay": "日间",
+    "lighting": "overhead light",
+    "camera": "full body, from below",
+    "mood": "坚定",
+    "promptTokens": [
+      "shield",
+      "holding shield",
+      "armor",
+      "indoors",
+      "training",
+      "full body",
+      "from below",
+      "reaching"
+    ],
+    "promptProse": "Between repetitions, she sets the point of her large shield on a chalk line and stoops to pick up the practice target at her foot. Overhead light keeps both the chalk mark and the target in view.",
+    "animaCaption": "The shield stays exactly on her starting line while she resets the target.",
+    "sceneTags": [
+      "shield",
+      "holding_shield",
+      "armor",
+      "indoors",
+      "training",
+      "full_body",
+      "from_below",
+      "reaching"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

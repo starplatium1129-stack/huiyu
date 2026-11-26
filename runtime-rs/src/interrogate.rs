@@ -28,6 +28,10 @@ use serde_json::{Value, json};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
+// Relay budgets in tools/muse-relay and the CLI allow additional transport time.
+pub(crate) const RELAY_LOCAL_TIMEOUT: std::time::Duration = pixai::REQUEST_TIMEOUT.saturating_add(
+    std::time::Duration::from_secs(assist::LAYOUT_TIMEOUT_SECS + 15),
+);
 pub(super) const MAX_BYTES: usize = 20 * 1024 * 1024;
 pub struct InterrogateService {
     client: tokio::sync::RwLock<pixai::Client>,
@@ -39,7 +43,11 @@ pub struct InterrogateService {
 }
 impl InterrogateService {
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
-        Self::with_settings(settings::load(config), cache::InterrogateCache::new(config), shutdown)
+        Self::with_settings(
+            settings::load(config),
+            cache::InterrogateCache::new(config),
+            shutdown,
+        )
     }
     fn with_settings(
         settings: pixai::Settings,
@@ -58,14 +66,21 @@ impl InterrogateService {
     pub async fn close(&self) {
         self.shutdown.cancel();
         {
-            let mut closed = self.media_closed.lock().unwrap();
+            let mut closed = self
+                .media_closed
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             *closed = true;
             self.media_jobs.close();
         }
         self.media_jobs.wait().await;
         // Detached validation retains its slot until its bounded CPU work ends.
         let client = self.client.write().await;
-        let _drained = tokio::join!(client.close(), self.validation.acquire());
+        let _drained = tokio::join!(
+            client.close(),
+            self.validation.acquire(),
+            self.cache.close()
+        );
     }
     pub(crate) async fn reload(&self, config: &Config) -> Result<Value> {
         let mut client = self.client.write().await;
@@ -115,16 +130,16 @@ impl InterrogateService {
         .await
         .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "图片校验未完成"))??;
 
-        let assist_identity = match assistance {
+        let vision_route = match assistance {
             Some((app, headers)) => match &app.chat {
-                Some(chat) => chat
-                    .vision_route(app, headers)
-                    .await
-                    .map(|route| route.cache_identity()),
+                Some(chat) => chat.vision_route(app, headers).await,
                 None => None,
             },
             None => None,
         };
+        let assist_identity = vision_route
+            .as_ref()
+            .map(crate::chat::VisionRoute::cache_identity);
         let cache_key = if assistance.is_none() || assist_identity.is_some() {
             Some(cache::cache_key(&cache::CacheKeyInput {
                 image_sha256: &image_sha256,
@@ -170,12 +185,10 @@ impl InterrogateService {
             results::retain_threshold(&mut result, input.threshold);
         }
         let mut result = results::finish(result, "pixai", &input.mode, input.threshold);
-        if let (Some((app, headers)), Some(original), Some(evidence)) =
-            (assistance, original, evidence)
-        {
+        if let (Some((app, _)), Some(original), Some(evidence)) = (assistance, original, evidence) {
             assist::enrich(
                 app,
-                headers,
+                vision_route,
                 self.validation.clone(),
                 original,
                 evidence,
@@ -208,7 +221,9 @@ struct Input {
 fn parse_flag(value: Option<&Value>) -> bool {
     match value {
         Some(Value::Bool(flag)) => *flag,
-        Some(Value::String(text)) => matches!(text.trim().to_ascii_lowercase().as_str(), "1" | "true"),
+        Some(Value::String(text)) => {
+            matches!(text.trim().to_ascii_lowercase().as_str(), "1" | "true")
+        }
         _ => false,
     }
 }
@@ -312,7 +327,12 @@ async fn interrogate_raw(
 ) -> Result<Json<Value>> {
     let assist = parameters.get("assist").is_some_and(|value| value == "1");
     service
-        .interrogate(json!(parameters), image, admission, assist.then_some((&app, &headers)))
+        .interrogate(
+            json!(parameters),
+            image,
+            admission,
+            assist.then_some((&app, &headers)),
+        )
         .await
         .map(Json)
 }

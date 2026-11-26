@@ -153,7 +153,7 @@ pub(crate) fn overlay_window_thread(
 
     state.fps_limit.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::Relaxed);
 
-    let mut ctx = if environment.prewarm {
+    let mut ctx = if environment.prewarm && !state.shutdown.load(Ordering::Acquire) {
         RenderContext::new().and_then(|mut ctx| {
             ctx.ensure_surface(hwnd)?;
             Ok(ctx)
@@ -190,7 +190,7 @@ pub(crate) fn overlay_window_thread(
                 DispatchMessageW(&msg);
             }
         }
-        loop {
+        while running && !state.shutdown.load(Ordering::Acquire) {
             match rx.try_recv() {
                 Ok(cmd) => handle_command(&state, &mut ctx, &environment, hwnd, cmd),
                 Err(TryRecvError::Empty) => break,
@@ -200,6 +200,9 @@ pub(crate) fn overlay_window_thread(
                     break;
                 }
             }
+        }
+        if !running || state.shutdown.load(Ordering::Acquire) {
+            break;
         }
         // apply_frame runs on the IPC thread; close the narrow race where it read
         // model_ready just before Destroy and made the now-empty window visible.
@@ -335,7 +338,7 @@ pub(crate) fn overlay_window_thread(
                             next_frame = iteration_started + period.mul_f32(0.75);
                         }
                         if state.visible.load(Ordering::Acquire) && !state.first_frame_ready.load(Ordering::Acquire)
-                            && state.alpha_mask.read().unwrap().is_some()
+                            && state.alpha_mask.recover_read().is_some()
                             && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
                             if state.revealed.load(Ordering::Acquire) {
                                 let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
@@ -412,8 +415,8 @@ fn update_pointer_feedback(
     }) {
         return;
     }
-    let sample = state.alpha_mask.read().ok()
-        .and_then(|mask| mask.as_ref()?.pointer_sample(rect, framing, x, y));
+    let sample = state.alpha_mask.recover_read().as_ref()
+        .and_then(|mask| mask.pointer_sample(rect, framing, x, y));
     if let Some(sample) = sample {
         publish(Some(sample.clone()));
         *last = Some((sample, framing, Instant::now()));

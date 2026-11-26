@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "pc_anis_nikke_pep_rally_rehearsal",
+  "revision": 1,
+  "sortOrder": 3911,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_anis_nikke_pep_rally_rehearsal",
+    "characterId": "anis_nikke",
+    "outfitId": "cheerleader_pep_rally",
+    "title": "阿尼斯 · 体育馆只剩最后一拍",
+    "category": "校园日常",
+    "description": "队员还没进场，阿尼斯先把应援的末拍走了一遍。她踩在线内高举一个金色绒球，用另一只绒球指向节拍器。顶窗亮光扫过橙黄队服和百褶裙边，落在球鞋旁的白线。",
+    "location": "前哨体育馆边线",
+    "action": "一手把金色绒球举过头顶，另一手用绒球指向边线的节拍器。",
+    "timeOfDay": "傍晚",
+    "lighting": "angled sunlight",
+    "camera": "full body, from below",
+    "mood": "兴奋",
+    "promptTokens": [
+      "gym",
+      "indoors",
+      "standing",
+      "arm up",
+      "pom pom \\(cheerleading\\)",
+      "full body",
+      "sunlight",
+      "from below"
+    ],
+    "promptProse": "At the edge of the empty gym court, she raises one pom-pom above her head and points the other toward a metronome by the sideline. Late light from the high windows reaches the white line under her leading foot.",
+    "animaCaption": "One pom-pom is high above her head while the other points across the boundary line.",
+    "sceneTags": [
+      "gym",
+      "indoors",
+      "standing",
+      "arm_up",
+      "pom_pom_(cheerleading)",
+      "full_body",
+      "sunlight",
+      "from_below"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

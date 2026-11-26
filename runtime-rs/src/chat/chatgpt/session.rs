@@ -106,7 +106,7 @@ impl ChatGptService {
         let session_cancel = self
             .accounts
             .lock()
-            .unwrap()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
             .entry(active_id.clone())
             .or_default()
             .cancel

@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mouri_ran_grocers_mandarin_balance",
+  "revision": 1,
+  "sortOrder": 3932,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_mouri_ran_grocers_mandarin_balance",
+    "characterId": "mouri_ran",
+    "outfitId": "sfw_casual",
+    "title": "毛利兰 · 橘子要轻一点放",
+    "category": "都市日常",
+    "description": "商店街的果蔬摊快收摊了，小兰替家里选了两颗橘子。她浅俯着身，把橘子轻轻放进蔬菜纸袋的空隙，米白粗花呢的短外套松松搭在冰蓝衣领外。放到最上面那颗橘子还连着一片硬挺的叶子。",
+    "location": "商店街果蔬摊前",
+    "action": "用手托住两颗橘子，俯身把它们放入装好菜的纸袋。",
+    "timeOfDay": "下午",
+    "lighting": "filtered daylight",
+    "camera": "cowboy shot, from side",
+    "mood": "亲切",
+    "promptTokens": [
+      "market",
+      "market stall",
+      "orange \\(fruit\\)",
+      "fruit",
+      "paper bag",
+      "holding fruit",
+      "leaning forward",
+      "looking down",
+      "day",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "At a produce stall, she leans over the counter and lowers two mandarins into a gap in the paper grocery bag. Filtered daylight falls on the fruit between her hand and the mouth of the bag.",
+    "animaCaption": "She steadies the produce with one hand so the fruit settles without bruising it.",
+    "sceneTags": [
+      "market",
+      "market_stall",
+      "orange_(fruit)",
+      "fruit",
+      "paper_bag",
+      "holding_fruit",
+      "leaning_forward",
+      "looking_down",
+      "day",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

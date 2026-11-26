@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_sfw_safehouse_rain_tea",
+  "revision": 1,
+  "sortOrder": 3516,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "zeta_shadow_sfw_safehouse_rain_tea",
+    "characterId": "zeta_shadow",
+    "outfitId": "safehouse_bath_towel",
+    "title": "泽塔 · 雨里的一杯热茶",
+    "category": "据点休整",
+    "description": "据点屋檐滴着雨。泽塔在窗边坐下，双手捧起刚倒的热茶，等蒸汽散开才小口啜饮。头发用木簪拢好，干净的白棉浴巾从胸口上沿包牢，布带打结固定。窗上的雨滴借着屋里的灯光一颗一颗亮起来。",
+    "location": "据点的窗边木椅",
+    "action": "平坐在窗边，双手捧杯等热气散开",
+    "timeOfDay": "夜雨",
+    "lighting": "暖灯照亮杯沿和茶汽，窗玻璃留着夜色和雨滴",
+    "camera": "平视侧面半身，以脸和茶杯为主",
+    "mood": "放松安稳",
+    "sceneTags": [
+      "bath_towel",
+      "sitting",
+      "holding_cup",
+      "steam",
+      "chair",
+      "window",
+      "rain",
+      "night",
+      "from_side",
+      "upper_body"
+    ],
+    "promptProse": "At the rain-streaked safehouse window, Zeta settles into a wooden chair with both hands around a cup of tea. A wooden hairpin keeps her hair up. The white cotton bath towel is wrapped high across her upper chest and secured with a knotted cloth tie. Warm light catches the steam as she waits for the tea to cool.",
+    "animaCaption": "In a calm eye-level profile, she watches the tea steam while the towel stays firmly tied high across her chest.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bath towel",
+      "sitting",
+      "holding cup",
+      "steam",
+      "chair",
+      "window",
+      "rain",
+      "night",
+      "from side",
+      "upper body"
+    ],
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

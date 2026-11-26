@@ -1,0 +1,45 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_battle_dress_kite_retrieval",
+  "revision": 1,
+  "sortOrder": 3944,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_battle_dress_kite_retrieval",
+    "characterId": "ikaros",
+    "outfitId": "white_pink_battle_dress",
+    "title": "伊卡洛斯 · 把断线的风筝放低一点",
+    "category": "奇幻日常",
+    "description": "伊卡洛斯捡到一只断线的风筝。线还勾在墙顶，她先托住木骨架，再够上去把打结的地方解开。阳光越过石墙，刚好照亮白粉战斗裙胸甲上扣合的锁扣。",
+    "location": "晒着午后太阳的旧石墙",
+    "action": "一手托住风筝骨架，另一手小心解下挂住的线",
+    "timeOfDay": "午后",
+    "lighting": "石墙边缘的暖色斜光",
+    "camera": "侧前方中景，胸甲、手和风筝同框",
+    "mood": "耐心",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "arm up",
+      "holding",
+      "kite",
+      "stone wall",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Ikaros stands by a stone wall in her white-and-pink combat dress with its metal breastplate fastened. She supports the frame of a caught kite in one hand and lifts its tangled line off the top of the wall with her other hand. Afternoon sun catches the front clasp and the thin string.",
+    "animaCaption": "One hand supports the kite’s frame and the other lifts the last loop of string clear of the wall.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

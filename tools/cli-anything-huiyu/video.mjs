@@ -44,9 +44,9 @@ export const videoCommand = {
     },
     create: {
       usage: '(--file JSON|- | --model 模型ID [参数]) [--key 编号] [--wait] [--timeout 秒] [--out 视频文件] [--single-connection]',
-      about: '提交单个视频生成任务。支持已上传素材 ID（--image/--last-frame/--ref/--driving-audio/--driving-video）或直接指定本地文件自动上传（--image-file 等）。',
+      about: '提交单个视频生成任务。支持已上传素材 ID（--image/--last-frame/--ref/--driving-audio/--driving-video）或直接指定本地文件自动上传（--image-file 等）。原生视频可用 --steps、--video-attention；H3 支持 --h3-decoder，Wan A14B 支持 --wan-resolution 480|720。',
       options: [
-        'file', 'prompt', 'duration', 'steps', 'seed', 'ref',
+        'file', 'prompt', 'duration', 'steps', 'seed', 'ref', 'wan-resolution',
         'image-file', 'last-frame-file', 'ref-file', 'driving-audio-file', 'driving-video-file',
         'key', 'wait', 'timeout', 'out', 'single-connection',
         ...Object.keys(VIDEO_CREATE_TEXT_OPTIONS),
@@ -131,6 +131,11 @@ export async function videoCreate(options) {
   }
   if (options.duration !== undefined) body.duration = parseDuration(options.duration)
   if (options.steps !== undefined) body.steps = parsePositiveInt(options.steps, '--steps')
+  if (options['wan-resolution'] !== undefined) {
+    const resolution = parsePositiveInt(options['wan-resolution'], '--wan-resolution')
+    if (![480, 720].includes(resolution)) throw new Error('--wan-resolution 支持 480 或 720。')
+    body.wanResolution = resolution
+  }
   if (options.seed !== undefined) body.seed = parseNonNegativeInt(options.seed, '--seed')
   if (options.ref !== undefined) {
     const refs = options.ref.flatMap(value => value.split(',').map(v => v.trim())).filter(Boolean)

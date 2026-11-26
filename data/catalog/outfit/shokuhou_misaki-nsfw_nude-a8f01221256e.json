@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "纯净圣洁胴体",
+      "name": "无衣装",
       "prose": "Completely unclothed with bare shoulders, bare torso, and bare feet, free of gloves, stockings, or Tokiwadai garments.",
       "tokens": [
         "nude",

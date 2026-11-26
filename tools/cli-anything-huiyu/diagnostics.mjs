@@ -1,8 +1,8 @@
 import { api, connection, credentialStatus } from './muse.mjs'
 
 const optionsPath = '/api/muse/options'
-const statusPaths = ['anima', 'moss', 'qwen', 'creative'].map(family => `/api/${family}/status`)
-const drawingFamilies = ['anima', 'moss-image', 'qwen-image', 'krea2']
+const statusPaths = ['anima', 'moss', 'qwen', 'creative', 'keyframe', 'manga'].map(family => `/api/${family}/status`)
+const drawingFamilies = ['anima', 'moss-image', 'qwen-image', 'krea2', 'keyframe', 'manga-screen']
 
 export async function guide() {
   const value = await api('GET', '/api/muse/guide')

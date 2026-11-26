@@ -246,7 +246,7 @@ pub fn resource_assistant_finish(app: AppHandle) -> Result<(), String> {
         crate::maintenance_protocol::write_json(&state.paths.config_root.join("resource-restart.json"), &true)?;
         state.quitting.store(true, std::sync::atomic::Ordering::SeqCst);
         drop(job);
-        app.request_restart();
+        crate::desktop_shutdown::request(&app, 0, true);
     } else { drop(job); if let Some(window) = app.get_webview_window("resource-assistant") { let _ = window.close(); } }
     Ok(())
 }

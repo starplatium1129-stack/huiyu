@@ -12,6 +12,12 @@ import { captureResultContext } from '@/utils/resultContext'
 import { mossModels } from '@/config/directImageModels'
 import { fuseMossCastPrompt } from '@/api/fuseCastLayout'
 
+function layoutHash(input: string) {
+  let hash = 2166136261
+  for (let index = 0; index < input.length; index++) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619)
+  return (hash >>> 0).toString(16)
+}
+
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
@@ -19,27 +25,28 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   const preparingSubmission = shallowRef<AbortController | null>(null)
   const coordinatingCast = ref(false)
   const pb = workspace.pb
-  const castLayoutContext = computed(() => Boolean(pb.coStars.length || pb.castLead?.source === 'custom'
+  const castLayoutContext = computed(() => Boolean(pb.cast.length > 1 || pb.castLead?.source === 'custom'
     || isCustomCastOutfit(pb.castLead?.outfitId ?? '')))
-  const layoutContext = computed(() => {
+  const legacyLayoutContext = computed(() => {
     if (!castLayoutContext.value && !pb.referenceInput) return ''
-    // Custom boxes are editable only against the cast and source they were authored for.
-    const input = JSON.stringify([
+    return layoutHash(JSON.stringify([
       pb.cast.map(({ source, characterId, outfitId, outfitExplicit, action, outfitPrompt, name, appearance, gender }) =>
         [source, characterId, outfitId, outfitExplicit, action, ...(outfitPrompt || source === 'custom' ? [outfitPrompt, name, appearance, gender] : [])]),
       pb.effectiveCastFormation, pb.referenceInput, ...(pb.castInteraction.trim() && pb.cast.length > 1 ? [pb.castInteraction.trim()] : []),
-    ])
-    let hash = 2166136261
-    for (let index = 0; index < input.length; index++) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619)
-    return (hash >>> 0).toString(16)
+    ]))
   })
-  const mossLayout = computed(() => {
+  const layoutContext = computed(() => `v2-${layoutHash(JSON.stringify([
+    pb.cast.map(({ source, characterId }) => [source, characterId]),
+    pb.effectiveCastFormation, session.value?.form.width, session.value?.form.height,
+  ]))}`)
+  const staleMossLayout = computed(() => {
     const form = session.value?.form
-    if (!form?.mossLayout) return ''
+    if (!form?.mossLayout) return false
     const context = form.mossLayoutContext
-    if (context === undefined) return castLayoutContext.value ? '' : form.mossLayout
-    return context === layoutContext.value ? form.mossLayout : ''
+    if (context === undefined) return castLayoutContext.value
+    return context.startsWith('v2-') ? context !== layoutContext.value : context !== legacyLayoutContext.value
   })
+  const mossLayout = computed(() => staleMossLayout.value ? '' : session.value?.form.mossLayout || '')
   const usingMossTaskPrompt = computed(() => session.value?.form.mossUseTaskPrompt === true)
   function mossCanvas() {
     const state = session.value
@@ -74,9 +81,9 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   })
   const busy = computed(() => !!preparingSubmission.value || !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
-  function mossLayoutDraft() {
+  function mossLayoutDraft(automatic = false) {
     const description = usingMossTaskPrompt.value ? session.value?.form.prompt ?? '' : mossDescription.value
-    if (mossLayout.value || isMossLayoutInput(description)) return mossLayout.value || description
+    if (!automatic && (mossLayout.value || isMossLayoutInput(description))) return mossLayout.value || description
     const plan = usingMossTaskPrompt.value ? null : workspace.mossPlan.value
     return renderMossDrawingPrompt(plan, description, '', mossCanvas(), { forceLayout: true }).raw
   }
@@ -96,6 +103,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     const state = session.value
     if (!state?.ready.value) return state?.error.value || '正在恢复绘图参数…'
     if (!pb.dataReady || mode.value === 'moss' && !workspace.draftReady.value) return '正在读取创作素材…'
+    if (mode.value === 'moss' && staleMossLayout.value) return '手工布局需要重排或清除'
     if (recipe.value.error) return recipe.value.error
     if (state.saving.value) return '正在保存作品…'
     if (state.observing.value && !state.unresolved.value) return '正在读取原任务与结果…'
@@ -154,12 +162,17 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   watch(() => [mode.value, route.query.editor === 'qwen' ? undefined : route.query.job, route.query.preparedModel], (next, previous) => {
     if (!previous || next[0] !== previous[0] || next.slice(1).some((value, index) => value && value !== previous[index + 1])) void initialize()
   }, { immediate: true })
-  watch(layoutContext, (_, previous) => {
+  watch(legacyLayoutContext, () => {
     const state = session.value
     if (!workspace.draftReady.value || mode.value !== 'moss' || !state?.ready.value) return
     state.form.mossUseTaskPrompt = false
-    if (state.form.mossLayout && state.form.mossLayoutContext === undefined) state.form.mossLayoutContext = previous
   })
+  watch([() => session.value?.ready.value, workspace.draftReady], ([ready, draftReady]) => {
+    const form = session.value?.form
+    if (ready && draftReady && form?.mossLayout && !staleMossLayout.value && !form.mossLayoutContext?.startsWith('v2-')) {
+      form.mossLayoutContext = layoutContext.value
+    }
+  }, { flush: 'post' })
   watch([workspace.nativeHistoryRecipe, mode, locked, workspace.draftReady], ([record, activeMode, isLocked, draftReady]) => {
     const state = session.value
     if (!record || activeMode !== 'moss' || !state || isLocked || !draftReady) return
@@ -220,6 +233,9 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
             signal: preparation.signal,
           })
           finalMossPrompt = fused.prompt
+          if (fused.warning && !preparation.signal.aborted && session.value === state && draftKey() === before) {
+            pb.flash(fused.warning, 4200, 'warning')
+          }
         }
       } catch {
         // The draft store reports why its durable write could not be confirmed.
@@ -254,6 +270,6 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })
   onScopeDispose(dispose)
-  return { mode, session, recipe, mossLayout, usingMossTaskPrompt, mossLayoutDraft, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, cancel, initialize, saveBeforeSwitch }
+  return { mode, session, recipe, mossLayout, staleMossLayout, usingMossTaskPrompt, mossLayoutDraft, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, cancel, initialize, saveBeforeSwitch }
 }
 export type NativeDrawing = ReturnType<typeof useNativeDrawing>

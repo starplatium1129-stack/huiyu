@@ -1,6 +1,11 @@
 use super::super::*;
 use super::{Batch, MAX_BATCH, MAX_WAITING, lifecycle};
+use futures_util::{StreamExt, stream};
 use rusqlite::params;
+use std::time::Duration;
+
+const FUSION_CONCURRENCY: usize = 4;
+const FUSION_BUDGET: Duration = Duration::from_secs(25);
 
 pub(in super::super) async fn create(
     State(state): State<crate::AppState>,
@@ -147,9 +152,6 @@ pub(in super::super) async fn enqueue(
 
     let config = config.clone();
     let loras_root = settings.loras_root.clone();
-    let fusion_casts = scenes.iter()
-        .map(|scene| cast::fusion_cast_members(scene.cast.as_deref().unwrap_or_default()))
-        .collect::<Vec<_>>();
     let mut prepared = tokio::task::spawn_blocking(move || {
         submission::prepare_batch(&config, loras_root, scenes, model.as_deref())
     })
@@ -161,39 +163,27 @@ pub(in super::super) async fn enqueue(
     if state.chat.is_some() {
         let empty_headers = HeaderMap::new();
         let cancel = muse.images.shutdown.child_token();
-        for (scene, members) in prepared.iter_mut().zip(fusion_casts) {
-            if scene.kind != "cast" || scene.family != "moss-image" {
-                continue;
-            }
-            let Some(draft) = scene.payload.get("prompt").and_then(Value::as_str).map(str::to_owned) else {
-                continue;
-            };
-            let char_items = serde_json::from_str::<Value>(&draft)
-                .ok()
-                .and_then(|v| v.get("items").and_then(Value::as_array).map(|items| {
-                    items.iter().filter(|it| it.get("label").and_then(Value::as_str) == Some("character")).count()
-                }))
-                .unwrap_or(0);
-            if char_items < 2 {
-                continue;
-            }
-            let outcome = crate::interrogate::fuse::fuse_moss_cast(
-                state,
-                &empty_headers,
-                crate::interrogate::fuse::FuseCastInput {
-                    draft_prompt: draft,
-                    cast: members,
-                    interaction: None,
-                    user_description: None,
-                    reference_scene: None,
-                },
-                &cancel,
-            )
-            .await;
-            if outcome.fused {
-                scene.payload["prompt"] = json!(outcome.prompt);
-            }
-        }
+        let _guard = cancel.clone().drop_guard();
+        let candidates = prepared.iter_mut().filter_map(|scene| {
+            scene
+                .cast_fusion
+                .take()
+                .map(|input| (&mut scene.payload, input))
+        });
+        let work =
+            stream::iter(candidates).for_each_concurrent(FUSION_CONCURRENCY, |(payload, input)| {
+                let cancel = &cancel;
+                let headers = &empty_headers;
+                async move {
+                    let outcome =
+                        crate::interrogate::fuse::fuse_moss_cast(state, headers, input, cancel)
+                            .await;
+                    if outcome.fused {
+                        payload["prompt"] = json!(outcome.prompt);
+                    }
+                }
+            });
+        let _ = tokio::time::timeout(FUSION_BUDGET, work).await;
     }
 
     if let Some(receipt) = legacy::find(muse, &key).await? {

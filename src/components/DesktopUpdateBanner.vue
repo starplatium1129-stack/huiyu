@@ -24,6 +24,8 @@ const {
   checking,
   reminderPending,
   errorText,
+  latestNotice,
+  dismissLatest,
   supported,
   check: checkForUpdate,
   install: installUpdate,
@@ -47,11 +49,12 @@ onScopeDispose(() => {
 </script>
 
 <template>
-  <section v-if="supported && (availableVersion || installing || checking || statusText || errorText)" class="desktop-update-banner tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:rounded-md tw:text-primary tw:text-body-sm tw:leading-body" aria-label="桌面更新">
+  <section v-if="supported && (availableVersion || installing || checking || statusText || errorText || latestNotice)" class="desktop-update-banner tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:rounded-md tw:text-primary tw:text-body-sm tw:leading-body" aria-label="桌面更新">
     <div class="desktop-update-text">
       <p role="status">
         <strong v-if="availableVersion">{{ installing ? '正在更新到' : '可更新至' }} {{ availableVersion }}</strong>
         <strong v-else-if="checking">正在检查更新…</strong>
+        <strong v-else-if="latestNotice">已是最新版本</strong>
         <strong v-else>{{ statusText || '桌面更新' }}</strong>
         <span v-if="currentVersion"> · 当前 {{ currentVersion }}</span>
       </p>
@@ -74,6 +77,7 @@ onScopeDispose(() => {
         <button class="btn btn-ghost btn-sm" type="button" :disabled="reminderPending || starting" @click="remind('skip')">跳过此版本</button>
       </template>
       <button v-if="errorText || availableVersion && !installing" class="btn btn-ghost btn-sm" type="button" @click="openReleasePage">在浏览器打开下载页</button>
+      <button v-if="latestNotice && !availableVersion && !installing" class="btn btn-quiet btn-sm" type="button" @click="dismissLatest">关闭</button>
     </div>
   </section>
 </template>
@@ -96,5 +100,4 @@ onScopeDispose(() => {
 .desktop-update-actions { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .desktop-update-meter { display: block; width: min(100%, 24rem); margin-block-start: var(--s-2); accent-color: var(--accent); }
 .desktop-update-notes { white-space: pre-wrap; max-block-size: 10rem; overflow: auto; }
-.desktop-update-banner .btn:disabled { color: var(--text-disabled); opacity: 1; }
 </style>

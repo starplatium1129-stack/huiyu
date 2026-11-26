@@ -26,7 +26,7 @@ POLL_SECONDS = 2
 TRANSIENT_HTTP = (408, 429, 500, 502, 503, 504)
 PNG_SIGNATURE = bytes.fromhex("89504e470d0a1a0a")
 RECEIVE_PATH = re.compile(r"(/api/muse/batches/[A-Za-z0-9_-]{1,160})/original/([1-9][0-9]?)")
-RESULT_PATH = re.compile(r"/api/(?:anima|moss|creative|qwen)/jobs/[a-f0-9]{32}/result")
+RESULT_PATH = re.compile(r"/api/(?:anima|moss|creative|qwen|keyframe|manga)/jobs/[a-f0-9]{32}/result")
 REQUEST_KEY = re.compile(r"[A-Za-z0-9_-]{1,160}")
 
 

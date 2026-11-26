@@ -268,6 +268,7 @@ impl RecipeLibrary {
             submission::prepare_payload(&mut payload, family)?;
         }
         Ok(PreparedScene {
+            cast_fusion: None,
             kind,
             id: id.to_owned(),
             family,
@@ -281,6 +282,7 @@ impl RecipeLibrary {
 }
 
 pub(super) struct PreparedScene {
+    pub(super) cast_fusion: Option<crate::interrogate::fuse::FuseCastInput>,
     pub(super) kind: String,
     pub(super) id: String,
     pub(super) family: &'static str,

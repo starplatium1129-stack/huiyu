@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "纯净圣洁胴体",
+      "name": "无衣装",
       "prose": "No clothing.",
       "tokens": [
         "nude"

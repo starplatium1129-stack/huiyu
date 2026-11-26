@@ -63,7 +63,11 @@ export function useChatRoomBackground(activeChar: Ref<string>) {
     }
   }
 
-  watch([activeChar, entry], () => { void resolveCurrentUrl() }, { immediate: true, deep: true })
+  watch(
+    [activeChar, () => entry.value?.enabled, () => entry.value?.image?.imageId, () => entry.value?.image?.path],
+    () => { void resolveCurrentUrl() },
+    { immediate: true },
+  )
 
   function onStorage(event: StorageEvent) {
     if (event.key === null || event.key === CHAT_ROOM_BG_KEY) {

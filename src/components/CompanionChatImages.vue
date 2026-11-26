@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch } from 'vue'
+import { computed, inject, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, useId, watch } from 'vue'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { companionImageKey as identity, useCompanionImageMedia } from '@/composables/chat/useCompanionImageMedia'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -109,8 +109,7 @@ import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useDraggableDialog } from '@/composables/useDraggableDialog'
 
-let nextDialogId = 0
-const dialogTitleId = `companion-chat-image-title-${++nextDialogId}`
+const dialogTitleId = useId()
 
 const props = defineProps<{ images?: CompanionChatImage[] }>()
 const setRoomBackground = inject<((image: CompanionChatImage) => void) | null>('huiyu-set-room-bg', null)

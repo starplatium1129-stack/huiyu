@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc151",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T14:00:23.919403700+00:00",
   "data": {
     "animaCaption": "Ayachi Nene lies on the left in pink silk pajamas with white piping, clasping the viewer's sleeve. A heart-shaped forelock rises from her silver-white twin tails. On the right, Shiki Natsume has long jet-black hair, simple red clips and a small mole below her right eye. Wearing slate-blue silk with burgundy piping, Natsume props her head on one elbow and watches Nene with sleepy gold eyes. The blanket rests low enough for both faces to catch the dawn.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "",
-    "prompt": "2girls, ayachi_nene, silk pajamas, shiki_natsume, blanket, sleeve grab, on elbow, sleepy smile, bedroom, morning light, close up, lying, pink silk pajamas, white piping, blue silk pajamas, burgundy piping, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
+    "prompt": "2girls, bedroom, shared blanket, morning_sunlight, soft_lighting, cinematic_lighting, close up, depth_of_field, (ayachi_nene, lying on the left, silver white hair, twintails, heart shaped ahoge, pink silk pajamas, white piping, shy blush, grabbing viewer sleeve) BREAK (shiki_natsume, lying on the right, long black hair, red hairclips, mole under eye, gold eyes, slate blue silk pajamas, burgundy piping, propped on one elbow, sleepy smile, looking at nene)",
     "rating": "All",
     "recommendedSize": "1344×896",
     "season": "不限",

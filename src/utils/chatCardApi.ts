@@ -186,8 +186,10 @@ export async function deleteChatCard(
   return { restoredCatalog: Boolean(data.restoredCatalog) }
 }
 
-export function chatCardExportUrl(id: string, format: 'json' | 'png'): string {
-  return `/api/chat/cards/${encodeURIComponent(id)}/export?format=${format}`
+export async function fetchChatCardExport(id: string, format: 'json' | 'png', signal?: AbortSignal): Promise<Blob> {
+  const response = await runtimeFetch(`/api/chat/cards/${encodeURIComponent(id)}/export?format=${format}`, { signal })
+  if (!response.ok) throw new Error(await readApiError(response, '导出角色卡失败'))
+  return response.blob()
 }
 
 export async function fetchVoiceOptions(signal?: AbortSignal): Promise<VoiceOption[]> {

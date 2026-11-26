@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_exusiai_arknights_bakery_name_on_box",
+  "revision": 1,
+  "sortOrder": 3919,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_exusiai_arknights_bakery_name_on_box",
+    "characterId": "exusiai_arknights",
+    "outfitId": "red_hooded_tee",
+    "title": "能天使 · 把名字留在派盒上",
+    "category": "泰拉日常",
+    "description": "街角窗台刚摆出新一炉苹果派，能天使抱起自己买下的纸盒。她的绯红连帽衫松松垂到短裤边，袖口腾出指尖去拉紧棉线。她留着盒盖上的空白角，准备补上分享人的名字。",
+    "location": "龙门街角的苹果派窗口",
+    "action": "用一只手托住纸盒，另一只手绕着盒角拉紧棉线。",
+    "timeOfDay": "上午",
+    "lighting": "soft daylight",
+    "camera": "cowboy shot",
+    "mood": "轻快",
+    "promptTokens": [
+      "shop",
+      "window",
+      "box",
+      "holding box",
+      "string",
+      "hoodie",
+      "standing",
+      "day",
+      "outdoors",
+      "sunlight",
+      "cowboy shot"
+    ],
+    "promptProse": "At a street bakery window, she supports a pie box from below and pulls a cotton string snug around one corner. Morning light falls across the blank space left for a name.",
+    "animaCaption": "She leaves one corner of the lid clear for a name.",
+    "sceneTags": [
+      "shop",
+      "window",
+      "box",
+      "holding_box",
+      "string",
+      "hoodie",
+      "standing",
+      "day",
+      "outdoors",
+      "sunlight",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

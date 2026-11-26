@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_makima_cinema_house_lights",
+  "revision": 1,
+  "sortOrder": 3928,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_makima_cinema_house_lights",
+    "characterId": "makima",
+    "outfitId": "overcoat",
+    "title": "玛奇玛 · 字幕落完才起身",
+    "category": "都市夜话",
+    "description": "长长的字幕终于走完，玛奇玛才扶住前排的椅背起身。椅边灯只照亮窄窄的过道，在黑丝绒高衩礼裙的下摆和细跟鞋旁留下一点暖色。她把小披肩往肩上收拢，仍回头看着空白的幕布。",
+    "location": "旧电影院过道",
+    "action": "扶着前排椅背缓缓起身，回头看向刚暗下去的幕布。",
+    "timeOfDay": "夜间",
+    "lighting": "dim warm aisle lighting",
+    "camera": "full body, from side",
+    "mood": "沉静",
+    "promptTokens": [
+      "movie theater",
+      "theater",
+      "chair",
+      "standing",
+      "looking back",
+      "evening gown",
+      "indoors",
+      "night",
+      "full body",
+      "dark",
+      "from side"
+    ],
+    "promptProse": "She rises slowly in an old cinema after the last credit, her palm resting on the back of the seat ahead. Aisle lights mark a path to the door as she looks back at the blank screen.",
+    "animaCaption": "She is the last to leave her row after the credits finish.",
+    "sceneTags": [
+      "movie_theater",
+      "theater",
+      "chair",
+      "standing",
+      "looking_back",
+      "evening_gown",
+      "indoors",
+      "night",
+      "full_body",
+      "dark",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

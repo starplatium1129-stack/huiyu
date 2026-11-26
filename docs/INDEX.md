@@ -2,7 +2,7 @@
 
 ## 使用绘遇
 
-[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md) · [远程与试玩](guides/remote-and-muse.md)
+[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [安装与素材](guides/offline-resources.md) · [深度酒馆工作台](guides/tavern-workbench.md) · [远程与试玩](guides/remote-and-muse.md)
 
 ## 日常入口
 
@@ -22,7 +22,7 @@
 
 ## 发行说明
 
-[2.3.0](releases/v2.3.0.md) · [2.2.0](releases/v2.2.0.md) · [2.1.4](releases/v2.1.4.md) · [2.1.2](releases/v2.1.2.md) · [2.1.1](releases/v2.1.1.md) · [2.1.0](releases/v2.1.0.md) · [2.0.0](releases/v2.0.0.md) · [1.9.2](releases/v1.9.2.md)
+[2.3.0](releases/v2.3.0.md) · [2.2.0](releases/v2.2.0.md) · [2.1.4](releases/v2.1.4.md) · [2.1.3](releases/v2.1.3.md) · [2.1.2](releases/v2.1.2.md) · [2.1.1](releases/v2.1.1.md) · [2.1.0](releases/v2.1.0.md) · [2.0.0](releases/v2.0.0.md) · [1.9.2](releases/v1.9.2.md)
 
 ## 架构与验收
 

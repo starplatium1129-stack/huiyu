@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_maid_book_stool_library",
+  "revision": 1,
+  "sortOrder": 3943,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_maid_book_stool_library",
+    "characterId": "ikaros",
+    "outfitId": "maid_uniform",
+    "title": "伊卡洛斯 · 最上层书架空出来一格",
+    "category": "居家日常",
+    "description": "书柜最上面缺了本书。伊卡洛斯站上矮凳，一手扶住层板，另一手把归还的书推回空位。书背对齐了，她才放下踮着的脚跟。",
+    "location": "空美町家中的书柜",
+    "action": "站上矮凳，把合起的书推回最高一层",
+    "timeOfDay": "上午",
+    "lighting": "晴日窗光从书柜左侧照入",
+    "camera": "低机位全身，矮凳与书架顶留白",
+    "mood": "认真",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "arm up",
+      "holding book",
+      "bookshelf",
+      "maid",
+      "apron",
+      "indoors",
+      "sunlight",
+      "from below",
+      "full body"
+    ],
+    "promptProse": "Still in her black maid dress and white bib apron, Ikaros stands on a low stool in front of the bookcase. One hand braces against the shelf while she slides the returned book into the gap with the other. Clear morning light from the left follows the edge of the shelf.",
+    "animaCaption": "Her heels lift slightly as she reaches the top shelf to slide the book back between its neighbors.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

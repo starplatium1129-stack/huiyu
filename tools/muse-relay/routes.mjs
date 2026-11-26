@@ -252,7 +252,8 @@ export function rpcTimeout(barePath, defaultTimeout, { mediaPart, interrogate, s
   if (videoConcatRoute.test(barePath)) timeout = 130000
   if (barePath === UPSCALE_PATH || barePath === VIDEO_INPUTS) timeout = 75000
   if (mediaPart) timeout = 45000
-  if (interrogate) timeout = 115000
+  if (barePath === '/api/muse/batches') timeout = 50000
+  if (interrogate) timeout = 170000
   if (synthesize) timeout = 95000
   return timeout
 }

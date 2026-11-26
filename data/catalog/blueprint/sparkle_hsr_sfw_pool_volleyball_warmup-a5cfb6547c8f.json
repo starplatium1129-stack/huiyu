@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "sparkle_hsr_sfw_pool_volleyball_warmup",
+  "revision": 1,
+  "sortOrder": 3526,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "sparkle_hsr_sfw_pool_volleyball_warmup",
+    "characterId": "sparkle_hsr",
+    "outfitId": "masked_fool_ruffle_bikini",
+    "title": "花火 · 浅水区的小球回传",
+    "category": "泳池热身",
+    "description": "泳池的浅水比赛还没开场，花火站稳后把彩色沙滩球向上托起，球离开指尖时，她盯着它往比赛线另一侧飞。绯黑荷叶边泳装的金铃随手臂抬起晃了一下，侧戴的狐面还牢牢别在头发上。",
+    "location": "露天泳池的浅水运动区",
+    "action": "用双手把彩色球往球网另一侧轻托",
+    "timeOfDay": "上午",
+    "lighting": "开阔日光映出水面波纹和泳道浮线",
+    "camera": "远一点的平视全身运动视角，为球的轨迹留空间",
+    "mood": "跃跃欲试",
+    "sceneTags": [
+      "bikini",
+      "frills",
+      "fox_mask",
+      "standing",
+      "ball",
+      "looking_up",
+      "pool",
+      "water",
+      "sunlight",
+      "outdoors",
+      "full_body"
+    ],
+    "promptProse": "Sparkle stands in the shallow end of an outdoor pool and tips a bright beach ball up with both hands. Sunlight scatters on the water near the floating court line. Her red and black ruffled bikini is opaque, its little gold charms and ribbon ends moving as she follows the ball; a fox mask is clipped to one side of her hair.",
+    "animaCaption": "She looks up and tracks the ball after it leaves her fingertips, standing steady in the water.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bikini",
+      "frills",
+      "fox mask",
+      "standing",
+      "ball",
+      "looking up",
+      "pool",
+      "water",
+      "sunlight",
+      "outdoors",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "recommendedSize": "1344x896",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

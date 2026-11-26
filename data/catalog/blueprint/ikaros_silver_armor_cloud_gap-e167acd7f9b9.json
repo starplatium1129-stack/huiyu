@@ -1,0 +1,45 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_silver_armor_cloud_gap",
+  "revision": 1,
+  "sortOrder": 3941,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_silver_armor_cloud_gap",
+    "characterId": "ikaros",
+    "outfitId": "apollon_battle",
+    "title": "伊卡洛斯 · 云层打开的片刻",
+    "category": "天空巡行",
+    "description": "伊卡洛斯在云层断口上空停住，双翼展开，把身体稳在风里。她低头辨认云下露出的水面，晨光沿着银色胸甲和翼尖滑过。画面从她身后略侧拍，翼下能看见远处一小块蓝。",
+    "location": "高空云层的断口",
+    "action": "悬停后张开双翼，低头确认云缝下的水面",
+    "timeOfDay": "清晨",
+    "lighting": "云边逆光与银甲反射",
+    "camera": "背侧全身远景，翼尖与云缝同框",
+    "mood": "空旷",
+    "promptTokens": [
+      "solo",
+      "flying",
+      "feathered wings",
+      "armor",
+      "looking down",
+      "morning light",
+      "full body",
+      "from behind"
+    ],
+    "promptProse": "High above a break in the morning clouds, Ikaros hovers on outstretched feathered wings. Silver armor and the edge of her left-eye visor catch the sunlight as she lowers her head toward a glimpse of water. Viewed slightly from behind, the whole figure is held against the opening in the cloud layer.",
+    "animaCaption": "She holds a steady hover with her wings spread above the patch of water visible through the clouds.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1536x1024"
+  }
+}

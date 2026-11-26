@@ -228,7 +228,11 @@ async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
     if let Err(error) = gateway.maintenance_stop().await { complete(app, id, "blocked", &error); return Err(error); }
     // Stop admission stays closed until exit. A late stopped-event retry cannot
     // resurrect Live2D while the runtime drains or the OS tears down windows.
-    crate::live2d_process::shutdown();
+    let renderer_app = app.clone();
+    if tauri::async_runtime::spawn_blocking(move || crate::desktop_shutdown::close_renderers(&renderer_app)).await.is_err() {
+        complete(app, id, "blocked", "MAINTENANCE_RENDERER_SHUTDOWN");
+        return Err("MAINTENANCE_RENDERER_SHUTDOWN".into());
+    }
     Ok(())
 }
 

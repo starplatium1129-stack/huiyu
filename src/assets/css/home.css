@@ -57,6 +57,23 @@
     mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.1) 16%, rgb(0 0 0 / 0.56) 32%, #000 52%);
   }
 }
+@media (min-width: 769px) and (max-width: 1100px) {
+  .home-hero {
+    grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+    block-size: auto;
+    min-block-size: 440px;
+  }
+  .hero-copy { max-inline-size: none; padding-inline: clamp(var(--s-4), 3cqi, var(--s-7)); }
+  .hero-orbit {
+    grid-area: 1 / 2;
+    inline-size: 100%;
+    aspect-ratio: auto;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 26%);
+    mask-image: linear-gradient(90deg, transparent, #000 26%);
+  }
+  .hero-orbit::after { background: linear-gradient(90deg, var(--bg-deep), transparent 24%); }
+  .hero-fallback.over-art, .hero-loading.over-art { max-inline-size: calc(100% - var(--s-4) * 2); }
+}
 .hero-orbit[data-portrait-dir="prev"] { --portrait-shift: -18px; }
 .hero-orbit::after {
   content: '';
@@ -142,8 +159,6 @@
   .recent-card:hover .recent-cover :deep(img) { transform:scale(1.03); }
 }
 @media (max-width: 1000px) {
-  .hero-copy { @apply tw:pl-s-5; }
-
   .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 768px) {

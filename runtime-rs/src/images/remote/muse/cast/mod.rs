@@ -23,11 +23,16 @@ use std::collections::HashSet;
 
 pub(super) use input::{CastMemberInput, InteractionInput};
 
-pub(super) fn fusion_cast_members(members: &[CastMemberInput]) -> Vec<crate::interrogate::fuse::FuseCastMember> {
-    members.iter().map(|member| crate::interrogate::fuse::FuseCastMember {
-        action: member.action.clone().unwrap_or_default(),
-        ..Default::default()
-    }).collect()
+fn fusion_cast_members(
+    members: &[CastMemberInput],
+) -> Vec<crate::interrogate::fuse::FuseCastMember> {
+    members
+        .iter()
+        .map(|member| crate::interrogate::fuse::FuseCastMember {
+            action: member.action.clone().unwrap_or_default(),
+            ..Default::default()
+        })
+        .collect()
 }
 
 pub(super) struct ResolvedActor {
@@ -407,7 +412,21 @@ pub(super) fn prepare(
     }
     submission::prepare_payload(&mut payload, family)?;
 
+    let cast_fusion = if family == "moss-image" && actors.len() > 1 {
+        payload["prompt"]
+            .as_str()
+            .map(|draft| crate::interrogate::fuse::FuseCastInput {
+                draft_prompt: draft.to_owned(),
+                cast: fusion_cast_members(raw_cast),
+                interaction: Some(interaction_clean).filter(|text| !text.is_empty()),
+                user_description: Some(user_prompt_clean).filter(|text| !text.is_empty()),
+                reference_scene: Some(ref_caption_clean).filter(|text| !text.is_empty()),
+            })
+    } else {
+        None
+    };
     Ok(PreparedScene {
+        cast_fusion,
         kind: "cast".into(),
         id: input.id.unwrap_or_else(|| "cast".into()),
         family,

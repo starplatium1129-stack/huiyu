@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ogiso_setsuna_beach_tape_repair",
+  "revision": 1,
+  "sortOrder": 19009,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_ogiso_setsuna_beach_tape_repair",
+    "characterId": "ogiso_setsuna",
+    "outfitId": "silver_summer_bikini",
+    "title": "小木曾雪菜 · 胶带粘住了海风",
+    "description": "临时表演摊的节目纸被风掀起一角。雪菜把胶带扯出一段，抬手压住高处的纸边。背后的木台还没人站，只有试音箱外亮着一盏绿灯。",
+    "location": "海滨夏日活动的木舞台旁",
+    "action": "踮脚将纸节目单用胶带贴在木板上",
+    "timeOfDay": "傍晚",
+    "lighting": "海面反光照亮木板，试音箱亮着小绿灯",
+    "camera": "从侧面平视的全身",
+    "mood": "专心，在上台前做最后一件小事",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "beach",
+      "stage",
+      "paper",
+      "arm_up",
+      "standing",
+      "outdoors",
+      "sea",
+      "sunset",
+      "full_body",
+      "from_side"
+    ],
+    "promptTokens": [
+      "beach",
+      "stage",
+      "paper",
+      "arm up",
+      "standing",
+      "outdoors",
+      "sea",
+      "sunset",
+      "full body",
+      "from side"
+    ],
+    "promptProse": "Setsuna stretches up to tape a fluttering program to a notice board beside the beach stage. The navy neckerchief and sailor-collared swimsuit are paired with the pleated skirt from the outfit. A small speaker sits at the edge of the platform while late light grazes her raised hand.",
+    "animaCaption": "She pins the paper with her palm long enough for a strip of tape to hold its corner down.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

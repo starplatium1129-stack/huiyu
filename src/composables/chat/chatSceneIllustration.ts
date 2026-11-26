@@ -18,37 +18,34 @@ const EMOTION_VISUAL: Record<string, string> = {
 }
 
 function buildVisualPrompt(args: {
-  characterName: string
   appearanceTags?: string
   emotion: string
   sceneState?: ChatSceneState
   contextHint?: string
 }): string {
-  const parts: string[] = ['1girl, solo, cinematic anime cg illustration, expressive lighting, detailed background']
+  const parts: string[] = ['cinematic anime cg illustration, expressive lighting, detailed background']
   if (args.appearanceTags?.trim()) parts.push(args.appearanceTags.trim())
   parts.push(EMOTION_VISUAL[args.emotion] || EMOTION_VISUAL.neutral)
   if (args.sceneState?.mood) parts.push(`atmosphere matching ${args.sceneState.mood}`)
-  if (args.contextHint) {
-    const asciiHint = args.contextHint.match(/[a-zA-Z0-9 ,_-]{4,}/g)?.join(', ')
-    if (asciiHint) parts.push(asciiHint.slice(0, 180))
-  }
+  if (args.contextHint) parts.push(args.contextHint.slice(0, 180))
   return parts.join(', ')
 }
 
 export async function illustrateChatMessage(options: {
   characterId: string
+  branchId: string
   characterName: string
-  targetMessage: ChatMessage
-  recentMessages: readonly ChatMessage[]
+  targetMessage: Pick<ChatMessage, 'mid' | 'content'>
+  recentMessages: readonly Pick<ChatMessage, 'content'>[]
   sceneState?: ChatSceneState
   storage: {
     save(): boolean | undefined
-    attachMessageImage(char: string, mid: string, image: CompanionChatImage): boolean
+    attachMessageImage(char: string, branch: string, mid: string, image: CompanionChatImage): boolean
   }
   signal: AbortSignal
   report?: (message: string) => void
 }): Promise<CompanionChatImage> {
-  const { characterId, characterName, targetMessage, recentMessages, sceneState, storage, signal, report } = options
+  const { characterId, branchId, characterName, targetMessage, recentMessages, sceneState, storage, signal, report } = options
   const companion = getCompanionCharacter(characterId)
   const catalogId = companion?.catalogId
   const isStudio = characterId === 'nene' || characterId === 'natsume'
@@ -76,7 +73,6 @@ export async function illustrateChatMessage(options: {
   ].filter(Boolean)
 
   const visualDescription = buildVisualPrompt({
-    characterName,
     appearanceTags: spriteRecord?.appearanceTags,
     emotion,
     sceneState,
@@ -106,7 +102,8 @@ export async function illustrateChatMessage(options: {
     ...(result.artworkId ? { artworkId: result.artworkId } : {}),
   }
 
-  if (!storage.attachMessageImage(characterId, targetMessage.mid, image)) {
+  signal.throwIfAborted()
+  if (!storage.attachMessageImage(characterId, branchId, targetMessage.mid, image)) {
     throw new Error('插画已生成，但未能写入该条消息记录，请到作品册查看。')
   }
   await retainCompanionImageMessage(storage, result.taskId)

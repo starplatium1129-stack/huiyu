@@ -1,10 +1,7 @@
 <template>
   <div class="shell-preferences">
-    <div class="shell-autostart">
-      <label for="desktop-autostart">开机启动</label>
-      <input id="desktop-autostart" type="checkbox" :checked="autostart === true"
-        :disabled="autostart === null || autostartBusy" @change="changeAutostart" />
-    </div>
+    <ToggleSwitch class="shell-autostart" :model-value="autostart === true"
+      :disabled="autostart === null || autostartBusy" @update:model-value="changeAutostart">开机启动</ToggleSwitch>
     <p v-if="autostartFeedback" role="status">{{ autostartFeedback }}</p>
     <label for="desktop-close-behavior">关闭主窗口时</label>
     <StudioSelect id="desktop-close-behavior" label="关闭主窗口时" :model-value="preferences?.closeBehavior"
@@ -12,11 +9,10 @@
     <fieldset v-if="preferences" class="shell-shortcuts">
       <legend>系统快捷键</legend>
       <div v-for="(shortcut, index) in preferences.shortcuts" :key="shortcutNames[index]" class="shell-shortcut" @focusout="leaveShortcut(index, $event)">
-        <label class="shell-shortcut-enable">
-          <input type="checkbox" :checked="shortcut.enabled" :disabled="busy"
-            @change="setEnabled(index, $event)" />
+        <ToggleSwitch class="shell-shortcut-enable" :model-value="shortcut.enabled" :disabled="busy"
+          @update:model-value="setEnabled(index, $event)">
           {{ shortcutNames[index] }}
-        </label>
+        </ToggleSwitch>
         <button class="btn btn-ghost btn-sm shell-record" type="button" :disabled="busy"
           :aria-label="`${recording === index ? '按下组合键…' : displayShortcut(shortcut.accelerator)}，录制${shortcutNames[index]}快捷键`"
           :aria-pressed="recording === index"
@@ -46,6 +42,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { desktopShell, type DesktopShellPreferences } from '@/platform/desktop/shell'
 
 const closeModes = [
@@ -92,12 +89,9 @@ async function savePreferences(next: DesktopShellPreferences) {
   finally { busy.value = false }
 }
 
-function setEnabled(index: number, event: Event) {
+function setEnabled(index: number, enabled: boolean) {
   const current = preferences.value
   if (!current) return
-  const input = event.target as HTMLInputElement
-  const enabled = input.checked
-  input.checked = current.shortcuts[index].enabled
   void savePreferences({ ...current, shortcuts: current.shortcuts.map((item, slot) => slot === index ? { ...item, enabled } : item) })
 }
 
@@ -145,10 +139,7 @@ function recordKey(index: number, event: KeyboardEvent) {
   saveShortcut(index, accelerator)
 }
 
-async function changeAutostart(event: Event) {
-  const input = event.target as HTMLInputElement
-  const desired = input.checked
-  input.checked = autostart.value === true
+async function changeAutostart(desired: boolean) {
   if (autostartBusy.value) return
   autostartBusy.value = true
   try { autostart.value = await desktopShell.saveAutostart(desired); autostartFeedback.value = '' }
@@ -167,11 +158,10 @@ onUnmounted(() => offAutostart?.())
 
 <style scoped>
 .shell-preferences { display: grid; gap: var(--s-3); min-inline-size: 0; }
-.shell-autostart { display: flex; gap: var(--s-4); align-items: center; }
+.shell-autostart, .shell-shortcut-enable { justify-self: start; }
 .shell-shortcuts { min-inline-size: 0; margin: 0; padding: var(--s-3); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
 .shell-shortcuts legend { padding-inline: var(--s-2); color: var(--text-primary); }
 .shell-shortcut { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-2) var(--s-3); margin-block-end: var(--s-2); }
-.shell-shortcut-enable { display: flex; align-items: center; gap: var(--s-2); }
 .shell-record { min-inline-size: 8rem; font-variant-numeric: tabular-nums; }
 .shell-shortcut-error { grid-column: 1 / -1; }
 .shell-shortcut-manual { grid-column: 1 / -1; display: grid; gap: var(--s-1); }

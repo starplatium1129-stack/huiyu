@@ -63,7 +63,7 @@
                 </div>
                 <p v-if="text" class="companion-dialogue-line"
                   :class="{ 'is-streaming': index === bubbles.length - 1 && liveState.busy && msg.mid === latestReply?.mid }">
-                  <ChatMessageText :text="text" />
+                  <ChatMessageText :text="text" :regex-rules="messageRegexRules" />
                 </p>
                 <template v-if="index === bubbles.length - 1">
                   <ChatMessageAttachments :message="msg" />
@@ -159,6 +159,7 @@ import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindo
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
 import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
 import { useChatMessageArrival } from '@/composables/chat/useChatMessageArrival'
+import { useChatRpSettings } from '@/composables/chat/useChatRpSettings'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { companionChatAvatars as chibiAvatars } from '@/config/companionChatAvatars'
@@ -184,8 +185,10 @@ const historyOpen = ref(false)
 const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel = ref<HTMLElement | null>(null)
 useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
+const rpSettings = useChatRpSettings()
+const messageRegexRules = computed(() => rpSettings.rpState.value.regexRules)
 const displayedMessages = computed(() => (historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
-  .map(message => ({ message, bubbles: chatMessageBubbles(message) })))
+  .map(message => ({ message, bubbles: chatMessageBubbles(message, rpSettings.activePreset.value.disableBubbleSplit) })))
 const arrivingMessages = useChatMessageArrival(() => visibleMessages.value, () => `${activeChar.value}:${branchId.value}`, () => replyPending.value)
 const interruptible = computed(() => replyPending.value || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value)
 const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)

@@ -102,6 +102,10 @@ cli-anything-huiyu --json video status
 cli-anything-huiyu --json video preview --model minimax-h3 --duration 5 --prompt "girl smiling by the window"
 cli-anything-huiyu --json video upload .\first.png --kind image
 cli-anything-huiyu --json video create --model minimax-h3 --image-file .\first.png --duration 5 --prompt "gentle breeze" --out .\clip.mp4
+# 已配置原生 H3 并导入 pi-H3 DWD 加速包
+cli-anything-huiyu --json video create --model minimax-h3 --duration 5 --steps 2 --h3-decoder dwd --video-attention auto --prompt "gentle breeze" --out .\dwd.mp4
+# 原生 Wan A14B 图生视频，使用 720p 和本机已准备的四步配方
+cli-anything-huiyu --json video create --model wan2.2-i2v-a14b-gguf --image-file .\first.png --duration 5 --wan-resolution 720 --steps 4 --prompt "gentle breeze" --out .\wan.mp4
 cli-anything-huiyu --json video job <id或requestKey>
 cli-anything-huiyu --json video wait <id或requestKey> --timeout 1800
 cli-anything-huiyu --json video save <id或requestKey> .\clip.mp4
@@ -112,6 +116,10 @@ cli-anything-huiyu --json video cancel <id或requestKey> [--batch]
 ```
 
 - `video upload` 支持 `image` / `first-frame` / `last-frame` / `studio-frame` / `reference`（PNG/JPEG/WebP）、`driving-video`（MP4）、`driving-audio` / `studio-audio`（PCM WAV）。直连走 raw（≤20 MiB），HTTPS 中转自动切 Base64 JSON（≤3 MiB）。
+- `video create --steps` 接收正整数，取值由当前模型和已安装权重决定。MiniMax H3 Turbo 支持已安装的 4 或 8 步配方。
+- `--h3-decoder dwd|lightvae|original` 选择原生 H3 解码器。pi-H3 两步使用 `--steps 2 --h3-decoder dwd`，并要求出图机已导入通过校验的 DWD 权重。LightVAE 也需要安装相应的解码器。
+- `--video-attention auto|sdpa|sage|flash2` 由原生模型及本机内核决定兼容性。H3 另提供 `h3-sol`、`h3-sla` 与 `h3-fused`。两步 DWD 支持 `auto` 和兼容的普通注意力或 Sol。SLA 与 Fused 各需四步及对应权重。
+- `--wan-resolution 480|720` 用于原生 `wan2.2-i2v-a14b-gguf` 图生视频，默认 480p，须提供首帧。通过 `--file` 或分镜 JSON 传入对应字段时，`steps`、`wanResolution` 使用数字，`h3Decoder`、`videoAttention` 使用字符串。
 - `video save` / `video create --out` / `video concat --out` 在直连下使用 Range 校验下载，在中转下自动切 `?part=N&count=M` 分片校验下载，全程核对 SHA-256。
 
 ## 远程日语语音（`voice`）

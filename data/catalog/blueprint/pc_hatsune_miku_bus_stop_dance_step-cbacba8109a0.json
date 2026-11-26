@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_hatsune_miku_bus_stop_dance_step",
+  "revision": 1,
+  "sortOrder": 3922,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_hatsune_miku_bus_stop_dance_step",
+    "characterId": "hatsune_miku",
+    "outfitId": "street",
+    "title": "初音未来 · 公交站等到了副歌",
+    "category": "现代日常",
+    "description": "初音未来把一边耳机拨离耳朵，听见公交尚未到站。她脚尖点进地砖的亮格，把副歌的最后一步悄悄走完。站台玻璃把青绿短外套拉链上的洋红色反到路面。",
+    "location": "街角的玻璃公交站",
+    "action": "摘下一边耳机，脚尖踏上站牌旁的亮格练习副歌舞步。",
+    "timeOfDay": "傍晚",
+    "lighting": "sunset backlighting",
+    "camera": "full body",
+    "mood": "轻松欢快",
+    "promptTokens": [
+      "bus stop",
+      "city",
+      "headphones",
+      "dancing",
+      "full body",
+      "standing",
+      "sunset",
+      "sneakers",
+      "backlighting"
+    ],
+    "promptProse": "At a glass bus shelter, she lifts one side of her headphones and steps into a sunlit square of pavement to finish a dance count. The shelter glass reflects the last sunlight onto the pavement.",
+    "animaCaption": "She keeps one side of her headphones lifted so she can hear the bus arrive.",
+    "sceneTags": [
+      "bus_stop",
+      "city",
+      "headphones",
+      "dancing",
+      "full_body",
+      "standing",
+      "sunset",
+      "sneakers",
+      "backlighting"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

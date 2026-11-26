@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "yarai_miu_first_record_at_home",
+  "revision": 1,
+  "sortOrder": 3939,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "yarai_miu_first_record_at_home",
+    "characterId": "yarai_miu",
+    "outfitId": "green_loungewear",
+    "title": "矢来美羽 · 唱针落下之前",
+    "category": "居家日常",
+    "description": "窗边的矮柜上刚摆好旧唱机。美羽俯身捏住唱片两侧，等孔眼对准短轴才松手。唱片还没开始转，百叶窗的亮纹已经横过哑光的黑色唱盘。",
+    "location": "矮柜旁的客厅",
+    "action": "捏住唱片边缘，把唱片垂直放到唱机轴上",
+    "timeOfDay": "午后",
+    "lighting": "百叶窗透进的阳光",
+    "camera": "前侧方中景，唱机与两手同框",
+    "mood": "闲适",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "leaning forward",
+      "looking down",
+      "holding record",
+      "vinyl record",
+      "turntable",
+      "living room",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Miu bends over a turntable in her pale green lounge clothes, holding an old vinyl record by its edges with both hands. She aligns its center hole over the spindle before lowering it. Narrow stripes of afternoon sun catch the record and the sleeves of her top.",
+    "animaCaption": "Both hands hold the record by its rim as the center hole reaches the spindle.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

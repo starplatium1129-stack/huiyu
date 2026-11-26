@@ -126,7 +126,7 @@ impl Drop for Turn {
         self.inbox
             .state
             .lock()
-            .unwrap()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
             .pending
             .retain(|p| p.key != self.key);
     }
@@ -134,7 +134,10 @@ impl Drop for Turn {
 
 impl Inbox {
     fn items(&self, record_poll: bool) -> Vec<Value> {
-        let mut state = self.state.lock().unwrap();
+        let mut state = self
+            .state
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         let now = Instant::now();
         if record_poll {
             state.last_poll = Some(now);
@@ -161,7 +164,7 @@ impl Inbox {
     fn receiving(&self) -> bool {
         self.state
             .lock()
-            .unwrap()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
             .last_poll
             .is_some_and(|poll| poll.elapsed() < RECENT_POLL)
     }
@@ -171,7 +174,7 @@ impl Connections {
     fn active(&self) -> Option<Arc<Inbox>> {
         self.inboxes
             .lock()
-            .unwrap()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
             .iter()
             .filter_map(Weak::upgrade)
             .filter(|inbox| !inbox.cancel.is_cancelled())
@@ -220,7 +223,10 @@ impl Connections {
         }
         let (answer, receive) = oneshot::channel();
         {
-            let mut state = inbox.state.lock().unwrap();
+            let mut state = inbox
+                .state
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             if state.pending.len() >= MAX_PENDING {
                 return Err(Error::new(
                     429,
@@ -314,7 +320,11 @@ pub(crate) fn routes(
         poll_slots: Semaphore::new(4),
     });
     if let Some(chat) = &app.chat {
-        let mut connections = chat.muse.inboxes.lock().unwrap();
+        let mut connections = chat
+            .muse
+            .inboxes
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         connections.retain(|entry| entry.upgrade().is_some_and(|i| !i.cancel.is_cancelled()));
         connections.push(Arc::downgrade(&inbox));
     }
@@ -399,7 +409,10 @@ async fn accept(
     let expired = || Error::new(410, "MUSE_TURN_EXPIRED", "这条桌面提问已停止或到期");
     let now = Instant::now();
     let digest = crate::storage::json_fingerprint(&json!([text, &reply.drawing]));
-    let mut state = inbox.state.lock().unwrap();
+    let mut state = inbox
+        .state
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
     state.receipts.retain(|r| r.deadline > now);
     if let Some(receipt) = state.receipts.iter().find(|r| r.key == key) {
         if receipt.digest != digest {

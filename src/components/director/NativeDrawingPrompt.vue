@@ -16,10 +16,11 @@ const prompt = computed(() => props.drawing.recipe.value.prompt)
 const isLayout = computed(() => isMoss.value && isMossLayoutInput(prompt.value))
 const title = computed(() => isMoss.value ? (isLayout.value ? 'MOSS 布局' : 'MOSS 提示词') : 'Qwen 提示词')
 const hasOverride = computed(() => !!props.drawing.mossLayout.value || props.drawing.usingMossTaskPrompt.value)
+const staleLayout = computed(() => isMoss.value && props.drawing.staleMossLayout.value)
 const negative = computed(() => props.drawing.session.value?.turbo.value ? '' : props.drawing.recipe.value.negative)
 const readerDialog = ref<HTMLDialogElement | null>(null), readerLoaded = ref(false)
 const editor = ref<HTMLTextAreaElement | null>(null), editing = ref(false)
-const draft = ref(''), editError = ref(''), editorId = useId()
+const draft = ref(''), editError = ref(''), editorId = useId(), readerTitleId = useId()
 const reader = useFluidDialog(readerDialog)
 const copy = () => copyText(prompt.value)
 async function openReader(event: MouseEvent, edit = false) {
@@ -27,7 +28,7 @@ async function openReader(event: MouseEvent, edit = false) {
   editing.value = edit
   if (edit) {
     editError.value = ''
-    try { draft.value = props.drawing.mossLayoutDraft() }
+    try { draft.value = props.drawing.mossLayoutDraft(staleLayout.value) }
     catch (cause) {
       draft.value = ''
       editError.value = cause instanceof Error ? cause.message : '布局草稿无法准备'
@@ -60,8 +61,10 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
     </header>
     <div class="native-prompt-actions">
       <StudioCopyButton class="btn btn-ghost btn-sm" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" />
-      <button v-if="isMoss" class="btn btn-ghost btn-sm" type="button" :disabled="drawing.locked.value" @click="openReader($event, true)">编辑布局</button>
+      <button v-if="isMoss" class="btn btn-ghost btn-sm" type="button" :disabled="drawing.locked.value" @click="openReader($event, true)">{{ staleLayout ? '按当前设置重排' : '编辑布局' }}</button>
+      <button v-if="staleLayout" class="btn btn-quiet btn-sm" type="button" :disabled="drawing.locked.value" @click="drawing.applyMossLayout('')">清除手工布局</button>
     </div>
+    <p v-if="staleLayout" role="status">角色、阵型或画幅已变化。原手工布局仍已保存，请重排或清除后继续绘制。</p>
     <p v-if="drawing.recipe.value.error" role="alert">{{ drawing.recipe.value.error }}</p>
     <p v-else-if="!prompt">选择场景或输入画面描述<span v-if="isMoss">，也可直接编辑布局</span>。</p>
     <template v-else>
@@ -71,8 +74,8 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
     </template>
     <details v-if="negative && (!isMoss || prompt)" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
 
-    <dialog ref="readerDialog" class="prompt-reader" aria-labelledby="native-prompt-reader-heading" @cancel.prevent="reader.close()" @click="onReaderClick">
-      <header class="prompt-reader-heading"><h2 id="native-prompt-reader-heading">{{ editing ? '编辑 MOSS 布局' : title }}</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词窗口" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
+    <dialog ref="readerDialog" class="prompt-reader" :aria-labelledby="readerTitleId" @cancel.prevent="reader.close()" @click="onReaderClick">
+      <header class="prompt-reader-heading"><h2 :id="readerTitleId">{{ editing ? '编辑 MOSS 布局' : title }}</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词窗口" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
       <form v-if="editing" :id="editorId + '-form'" class="prompt-reader-content" novalidate @submit.prevent="applyLayout()">
         <div class="native-layout-editor">
           <label :for="editorId">布局 JSON</label>

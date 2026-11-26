@@ -149,7 +149,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         deps.quality.value = draft.quality as VideoDefaults['quality']
       }
       if (draft.steps === 4 || draft.steps === 8) deps.steps.value = draft.steps
-      deps.nativeH3Steps.value = draft.nativeH3Steps ?? 4
+      deps.nativeH3Steps.value = draft.nativeH3Steps ?? 'auto'
       deps.videoAttention.value = draft.videoAttention ?? 'auto'
       deps.h3LightVae.value = draft.h3LightVae !== false
       deps.driver.value = draft.driver ?? null

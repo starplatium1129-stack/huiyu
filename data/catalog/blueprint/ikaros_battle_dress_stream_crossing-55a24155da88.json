@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_battle_dress_stream_crossing",
+  "revision": 1,
+  "sortOrder": 3945,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_battle_dress_stream_crossing",
+    "characterId": "ikaros",
+    "outfitId": "white_pink_battle_dress",
+    "title": "伊卡洛斯 · 溪水刚漫过第二块石头",
+    "category": "郊外踏查",
+    "description": "溪水没过第二块踏石，只露出浅浅的轮廓。伊卡洛斯把重心留在第一块石头上，张开双臂，伸脚去碰水里的下一块。那一点涟漪还没散开，白粉裙的下摆和胸甲都映在脚边。",
+    "location": "林缘的浅溪",
+    "action": "张开双臂保持平衡，伸脚试探前面的踏石",
+    "timeOfDay": "上午",
+    "lighting": "树间散光与水面反亮",
+    "camera": "侧背方全身，能看清相邻两块踏石",
+    "mood": "专注",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "looking down",
+      "river",
+      "water",
+      "rock",
+      "sunlight",
+      "from behind",
+      "full body"
+    ],
+    "promptProse": "Ikaros, in a white-and-pink combat dress and clasped breastplate, pauses on a stepping stone in a clear shallow stream. She extends both arms for balance and reaches forward with one foot to find the next submerged stone. Soft sunlight between the trees moves across the water below her.",
+    "animaCaption": "Her weight remains on the dry stone while the tip of her other foot tests the submerged one.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1536x1024"
+  }
+}

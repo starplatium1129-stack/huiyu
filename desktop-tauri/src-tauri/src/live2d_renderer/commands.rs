@@ -8,6 +8,9 @@ pub(super) fn handle_command(
     hwnd: HWND,
     cmd: OverlayCommand,
 ) {
+    if state.shutdown.load(Ordering::Acquire) {
+        return;
+    }
     match cmd {
         OverlayCommand::Shutdown => state.shutdown.store(true, Ordering::SeqCst),
         OverlayCommand::SetMaxFps(fps) => state.fps_limit.store(fps.min(1000), Ordering::Relaxed),

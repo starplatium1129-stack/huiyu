@@ -194,11 +194,23 @@ pub(super) fn is_video_concat_route(route: &str) -> bool {
     )
 }
 
+fn valid_image_result_id(id: &str) -> bool {
+    id.len() == 32 && id.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
+
 pub(super) fn is_media_part_route(route: &str) -> bool {
     let parts: Vec<_> = route.split('/').collect();
     match parts.as_slice() {
         ["", "api", "muse", "video", "jobs" | "batches", id, "result"] => valid_key(id),
         ["", "api", "muse", "gallery", id, "file"] => valid_gallery_id(id),
+        [
+            "",
+            "api",
+            "anima" | "moss" | "qwen" | "creative" | "keyframe" | "manga",
+            "jobs",
+            id,
+            "result",
+        ] => valid_image_result_id(id),
         _ => false,
     }
 }
@@ -222,6 +234,7 @@ pub(super) fn is_async_media_command(method: &Method, route: &str) -> bool {
             && (matches!(
                 route,
                 super::super::muse::upscale::UPSCALE_PATH
+                    | "/api/muse/batches"
                     | "/api/muse/video/inputs"
                     | "/api/muse/video/batches"
             ) || is_video_concat_route(route)))
@@ -336,8 +349,7 @@ pub(super) fn allowed(method: &Method, path: &str) -> bool {
             "result",
         ] => {
             *method == Method::GET
-                && id.len() == 32
-                && id.bytes().all(|b| b.is_ascii_hexdigit())
+                && valid_image_result_id(id)
                 && valid_part_query(query, true, false)
         }
         _ => false,

@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "pc_goldenglow_arknights_home_letter_for_family",
+  "revision": 1,
+  "sortOrder": 3936,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_goldenglow_arknights_home_letter_for_family",
+    "characterId": "goldenglow_arknights",
+    "outfitId": "unbuttoned_shirt",
+    "title": "澄闪 · 信封上留一点空白",
+    "category": "泰拉日常",
+    "description": "澄闪把沙龙草稿本翻到末页，给家里写完近况。微敞的白衬衫下叠着一件不透的素白内搭，珠扣在宿舍窗边的日光下泛金。她把信折小一截，好给信封上那朵自己画的花留出位置。",
+    "location": "宿舍窗边的写字桌",
+    "action": "把写好的家书折进信封，再用笔在信封一角画一朵花。",
+    "timeOfDay": "日间",
+    "lighting": "soft afternoon window light",
+    "camera": "medium shot, eye level",
+    "mood": "温柔踏实",
+    "promptTokens": [
+      "indoors",
+      "sitting",
+      "window",
+      "table",
+      "letter",
+      "envelope",
+      "paper",
+      "pen",
+      "writing",
+      "undershirt",
+      "looking down",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "At her desk by the dormitory window, she folds a finished letter into an envelope and draws a small flower in one corner. Her gold-buttoned white shirt is worn over an opaque plain white undershirt, and she keeps her rolled cuffs away from the ink.",
+    "animaCaption": "An opaque white undershirt covers her beneath the loose blouse while she draws the little flower.",
+    "sceneTags": [
+      "indoors",
+      "sitting",
+      "window",
+      "table",
+      "letter",
+      "envelope",
+      "paper",
+      "pen",
+      "writing",
+      "undershirt",
+      "looking_down",
+      "sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

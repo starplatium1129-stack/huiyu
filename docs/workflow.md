@@ -97,14 +97,14 @@ MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线�
 <a id="门禁与构建"></a>
 ## 4. 门禁与构建
 
-项目严禁编写和运行任何自动化测试（详见 [AGENTS.md](../AGENTS.md#验证与止损)），改动通过源码审查、类型检查与真实构建核验：
+项目严禁编写和运行任何自动化测试（详见 [AGENTS.md](../AGENTS.md#实现验证与部署)），改动通过源码审查、类型检查与真实构建核验：
 
 | 入口 | 用途 |
 | --- | --- |
 | `npm run typecheck` | 前端、Node 维护工具与独立脚本类型检查 |
-| `npm run wf -- check` | 手动按改动域快速体检；传 `--all` 跑全套类型、`lint:js`、`lint:literals`、文档链接、工作流清单与 Rust 检查 |
+| `npm run wf -- check` | 手动按改动域快速体检；传 `--all` 跑应用、Node 与浏览器脚本类型检查，`lint:js`、`lint:contrast`、`lint:animations`、`lint:colors`，文档链接与工作流清单，以及网关和桌面 Rust 检查 |
 | `npm run wf -- audit:file-size` | 非阻断统计超过 500 行的前端与 Rust 核心源码（支持 `--limit N`、`--json`） |
-| `npm run wf -- runtime:clean` | 清理 `runtime/` 过期实验与根目录零散日志（白名单保护内容库、SDK 与模型；默认干跑，确认后传 `--prune`，可选 `--include-archive`） |
+| `npm run wf -- runtime:clean` | 逐项预览过期实验、历史安装包和中断导出。默认门槛 14 天，核对后可以相同 `--days` 参数加 `--prune` 执行。当前安装包版本、最新两个版本、发布清单指向的版本、内容库、模型和工作区受到保护 |
 | `npm run build:runtime` | 从 TypeScript 构建运行时维护工具；仅在工具源变化时执行，不手改生成的 `.js` |
 | `npm run build` | 前端网页构建、包体预算核对与预压缩 |
 | `npm run wf -- models:check` | 离线核对模型 ID、文件字节数、SHA-256、镜像与脚本引用，识别固定 Git 对象和 Git LFS 指针 |
@@ -136,7 +136,7 @@ MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线�
 
 ### 本机 Live2D 候选导入
 
-- 解包 LPK：夏目等 LPK 文件使用 `tools/LpkUnpacker.py <包.lpk> <输出目录> -c <同包config.json>`。
+- 准备已解包的 Live2D 模型，保留 `.model3.json` 与它引用的贴图和动作文件。
 - 候选核对：`npm run wf -- live2d:import-candidates --apply`。
 - 本机同步：`npm run wf -- live2d:sync-local --source <导入根> --target <用户模型根> --apply`。日常桌面开发推荐直接使用 `deploy-desktop.bat -SyncLocalModels`。
 

@@ -1,0 +1,44 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_silver_armor_observatory",
+  "revision": 1,
+  "sortOrder": 3940,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_silver_armor_observatory",
+    "characterId": "ikaros",
+    "outfitId": "apollon_battle",
+    "title": "伊卡洛斯 · 屋顶望远镜的第一颗星",
+    "category": "奇幻日常",
+    "description": "薄暮过去，伊卡洛斯才把目镜往下调了一格。她穿着银色战甲，左眼的护目片露在侧光里，右手慢慢转动焦轮。屋顶风很小，她把翅膀拢起，免得擦到脚架。",
+    "location": "屋顶观测台",
+    "action": "低头对准目镜，右手轻转焦轮",
+    "timeOfDay": "夜幕初降",
+    "lighting": "余晖照在银甲边缘，仪表轻光",
+    "camera": "侧前方中近景，左眼护目片可见",
+    "mood": "静谧",
+    "promptTokens": [
+      "solo",
+      "leaning forward",
+      "telescope",
+      "armor",
+      "night",
+      "looking down",
+      "medium shot"
+    ],
+    "promptProse": "On the rooftop at the start of night, Ikaros leans toward the eyepiece of a tripod telescope. In her silver armor and left-eye combat visor, she turns the focus wheel with one hand. Her folded wings hang clear of the tripod, and the last strip of twilight outlines her breastplate.",
+    "animaCaption": "Her visor remains visible beside the eyepiece while one hand turns the telescope’s focus wheel.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

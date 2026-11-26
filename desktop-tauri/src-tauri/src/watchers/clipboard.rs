@@ -1,3 +1,4 @@
+use base64::{engine::general_purpose::STANDARD, Engine as _};
 use std::sync::mpsc::{self, RecvTimeoutError, SyncSender};
 use std::sync::atomic::Ordering;
 use std::thread;
@@ -93,7 +94,7 @@ pub(super) fn start(app: AppHandle) -> SyncSender<()> {
             let event = match content {
                 Content::Image(dib) => {
                     let Some(png) = dib_to_png(&dib) else { continue; };
-                    ClipboardEvent::Image(png)
+                    ClipboardEvent::Image(STANDARD.encode(png))
                 }
                 Content::Text(text) => ClipboardEvent::Text(text),
             };
@@ -219,7 +220,7 @@ fn sensitive_text(value: &str) -> bool {
 }
 
 enum Content { Image(Vec<u8>), Text(String) }
-enum ClipboardEvent { Image(Vec<u8>), Text(String) }
+enum ClipboardEvent { Image(String), Text(String) }
 impl Content {
     fn signature(&self) -> u64 {
         use std::hash::{Hash, Hasher};

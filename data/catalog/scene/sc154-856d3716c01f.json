@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc154",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T14:00:23.919403700+00:00",
   "data": {
     "animaCaption": "Ayachi Nene sits on the left with silver-white twin tails, pink ribbons, an upright ahoge and violet eyes. Shiki Natsume sits on the right with long jet-black hair, two red clips, golden eyes and a mole beneath her right eye. They sit close together against the high bedstead, covered by the same silk sheet, each holding one hand reaching into the foreground. Two bedside lamps light their different faces.",
     "auditRevision": "careful-batch15-2026-08-27",
@@ -22,7 +22,7 @@
     "lora": "ayachi_nene_v18_wd14:0.52, shiki_natsume_v18_wd14:0.52",
     "mature": false,
     "negative": "tangled extra arms, missing limbs, fused bodies, confused anatomy, deformed hands, dim lighting, pitch black",
-    "prompt": "adult, 2girls, ayachi_nene, shiki_natsume, @rella, sitting together intimately on king size bed, ayachi_nene on left with white hair, ahoge, pink ribbons, smiling blush, nude under silky bedsheet, shiki_natsume on right with long black hair, mole under eye, passionate blush, nude under sheet, embracing viewer from both sides, holding viewer hands, luxurious bedroom headboard, fluffy pillows, crumpled silk sheets, matching warm bedside table lamps illuminating both girls, soft moonbeam filtering through sheer curtains, faces illuminated by warm bedside lamps, clean anatomy, distinct bodies and limbs, medium shot, depth of field",
+    "prompt": "adult, 2girls, @rella, pov, king size bed, luxurious bedroom headboard, fluffy pillows, crumpled silk sheets, matching warm bedside lamps illuminating both faces, moonbeam through sheer curtains, distinct bodies and limbs, medium shot, depth of field, (ayachi_nene, sitting on the left, silver white hair, twintails, pink ribbons, ahoge, violet eyes, smiling blush, nude under silk bedsheet, holding viewer hand) BREAK (shiki_natsume, sitting on the right, long black hair, two red hairclips, golden eyes, mole under eye, blush, nude under silk bedsheet, holding viewer hand)",
     "rating": "R15",
     "recommendedSize": "1344×896",
     "season": "不限",

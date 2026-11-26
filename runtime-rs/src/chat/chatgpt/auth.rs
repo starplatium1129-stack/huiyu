@@ -52,11 +52,19 @@ impl ChatGptService {
         let _guard = self.storage_lock.lock().await;
         self.cancel_pending();
         let store = storage::load(&settings.runtime).await?;
-        Ok(store.public_status(self.flow.lock().unwrap().to_json()))
+        Ok(store.public_status(
+            self.flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .to_json(),
+        ))
     }
 
     pub(super) fn cancel_pending(&self) {
-        let mut guard = self.flow.lock().unwrap();
+        let mut guard = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         if let Some(cancel) = guard.active_cancel.take() {
             cancel.cancel();
             *guard = AuthFlowState::default();
@@ -80,7 +88,12 @@ impl ChatGptService {
         };
 
         let discovery = self.jwks.discovery(&chat.transport).await?;
-        let retry_registration = self.flow.lock().unwrap().retry_registration.clone();
+        let retry_registration = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .retry_registration
+            .clone();
 
         let (host_id, target_client_id, id_token_hint, login_hint, expected_subject) = {
             let _guard = self.storage_lock.lock().await;
@@ -179,7 +192,10 @@ impl ChatGptService {
         let attempt_cancel = Arc::new(shutdown.child_token());
         let started_at = chrono::Utc::now().timestamp_millis();
         {
-            let mut guard = self.flow.lock().unwrap();
+            let mut guard = self
+                .flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             if guard.active_cancel.is_some() {
                 return Err(Error::new(
                     409,
@@ -240,7 +256,7 @@ impl ChatGptService {
                 _ = serve => {}
                 _ = tokio::time::sleep(AUTH_TIMEOUT) => {
                     let _guard = storage_lock.lock().await;
-                    let mut guard = flow_ref.lock().unwrap();
+                    let mut guard = flow_ref.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
                     if guard.owns(&server_cancel) {
                         guard.status = "error";
                         guard.error_code = Some("CHATGPT_AUTH_TIMEOUT".into());
@@ -254,7 +270,10 @@ impl ChatGptService {
 
         if let Err(error) = browser::open_system_browser(authorize_url.as_str()) {
             attempt_cancel.cancel();
-            let mut guard = self.flow.lock().unwrap();
+            let mut guard = self
+                .flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             if guard.owns(&attempt_cancel) {
                 guard.status = "error";
                 guard.error_code = Some(error.code.clone());
@@ -264,7 +283,12 @@ impl ChatGptService {
             return Err(error);
         }
 
-        Ok(store.public_status(self.flow.lock().unwrap().to_json()))
+        Ok(store.public_status(
+            self.flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .to_json(),
+        ))
     }
 }
 

@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_eta_shadow_bench_pressure_reading",
+  "revision": 1,
+  "sortOrder": 3918,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_eta_shadow_bench_pressure_reading",
+    "characterId": "eta_shadow",
+    "outfitId": "experiment_apron",
+    "title": "埃塔 · 第三次读数正好",
+    "category": "实验工坊",
+    "description": "夜深后工坊安静下来，埃塔趴近测量台，隔着黄铜护目镜盯住摆针。棕色皮围裙和厚手套挡住台面溅来的冷凝水，她正把铜阀拧到第三格。装药剂的小玻璃瓶在腰带上轻轻碰响。",
+    "location": "地下工坊测量台",
+    "action": "一手用厚手套稳住仪器，另一手旋紧铜阀并观察刻度盘。",
+    "timeOfDay": "深夜",
+    "lighting": "focused task lighting",
+    "camera": "cowboy shot, from side",
+    "mood": "专注",
+    "promptTokens": [
+      "workshop",
+      "indoors",
+      "table",
+      "goggles",
+      "gloves",
+      "apron",
+      "looking down",
+      "science fiction",
+      "spotlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "She watches a pressure gauge while bracing the instrument with one hand and turning a brass valve with the other. A task lamp throws a circle of light across the needle and its etched scale.",
+    "animaCaption": "The needle settles as she stops turning the valve.",
+    "sceneTags": [
+      "workshop",
+      "indoors",
+      "table",
+      "goggles",
+      "gloves",
+      "apron",
+      "looking_down",
+      "science_fiction",
+      "spotlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

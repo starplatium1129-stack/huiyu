@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_laevatain_arknights_freezer_final_scoop",
+  "revision": 1,
+  "sortOrder": 3926,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_laevatain_arknights_freezer_final_scoop",
+    "characterId": "laevatain_arknights",
+    "outfitId": "cozy_dorm_loungewear",
+    "title": "莱万汀 · 熄灯以后还有冰淇淋",
+    "category": "泰拉日常",
+    "description": "休息区灯已经熄了一排，莱万汀坐在冰柜旁，把最后一盒冰淇淋搁在腿上。她用匙尖不紧不慢地刮过纸盒内壁，炭灰连帽衫的宽袖遮住一点指节。没穿鞋，只穿着那双过膝棉袜，鞋架正好空出一个位置。",
+    "location": "生活舱的公共休息区",
+    "action": "把冰淇淋盒放在膝上，用匙尖沿盒壁刮下一小块。",
+    "timeOfDay": "夜间",
+    "lighting": "cool spill light from freezer",
+    "camera": "cowboy shot",
+    "mood": "闲适",
+    "promptTokens": [
+      "sitting",
+      "spoon",
+      "ice cream",
+      "holding spoon",
+      "hoodie",
+      "refrigerator",
+      "indoors",
+      "night",
+      "looking down",
+      "cowboy shot"
+    ],
+    "promptProse": "By the rec-room freezer, she rests a carton of ice cream on her knee and scrapes one more spoonful from the side. Cold light from the open freezer reaches the seat beside her.",
+    "animaCaption": "She tilts the carton toward the freezer light to find the last scoop.",
+    "sceneTags": [
+      "sitting",
+      "spoon",
+      "ice_cream",
+      "holding_spoon",
+      "hoodie",
+      "refrigerator",
+      "indoors",
+      "night",
+      "looking_down",
+      "cowboy_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -1,5 +1,5 @@
 import type { ChatState } from './chatStorageTypes'
-import { emptyChatConversation, projectChatConversations } from '@/utils/chatConversationStorage'
+import { captureChatConversations, emptyChatConversation, projectChatConversations } from '@/utils/chatConversationStorage'
 import { normalizeChatStorage, type ChatStorageOptions, type PersistedChatState } from '@/utils/chatStorageCore'
 
 /** Legacy preferences are retained for old imports; only the separate preference record advances them. */
@@ -14,4 +14,29 @@ export function chatHistorySnapshot(state: ChatState, legacy: string | null, opt
   Object.assign(conversations, projectChatConversations(state, [...selected]))
   return { version: state.version, historiesRevision: state.historiesRevision, historiesRevisions: { ...state.historiesRevisions },
     histories, conversations, active: metadata.active, settings: metadata.settings }
+}
+
+export function clearActiveChatHistories(
+  state: ChatState, characters: readonly string[], persist: () => boolean,
+) {
+  const previous = {
+    histories: { ...state.histories },
+    conversations: state.conversations,
+    historiesRevision: state.historiesRevision,
+    historiesRevisions: { ...state.historiesRevisions },
+  }
+  state.conversations = { ...state.conversations }
+  const nextRevision = Math.max(state.historiesRevision + 1, Date.now())
+  for (const id of characters) {
+    const conversation = captureChatConversations(state, [id])[id]
+    const active = conversation.branches.find(branch => branch.id === conversation.activeId)
+    if (active) active.messages = []
+    state.histories[id] = []
+    state.conversations[id] = conversation
+    state.historiesRevisions[id] = Math.max((state.historiesRevisions[id] || 0) + 1, nextRevision)
+  }
+  state.historiesRevision = nextRevision
+  if (persist()) return true
+  Object.assign(state, previous)
+  return false
 }

@@ -13,15 +13,24 @@ export function useDesktopUpdater() {
   const starting = ref(false), cancelPending = ref(false), checking = ref(false)
   const reminderPending = ref(false)
   const errorText = ref('')
+  const latestNotice = ref(false)
   const installing = computed(() => ['checking', 'downloading', 'verifying', 'cancelling', 'installing'].includes(phase.value))
   const cancelling = computed(() => cancelPending.value || phase.value === 'cancelling')
   let disposed = false, checkRevision = 0, checkRequest = 0, installCallPending = false
+  let latestTimer: number | undefined
+
+  function dismissLatest() {
+    window.clearTimeout(latestTimer)
+    latestTimer = undefined
+    latestNotice.value = false
+  }
 
   const api = getDesktopUpdater()
   // Browsers lack this optional capability; automatic checks remain silent.
   const supported = api !== null
   const foundSubscription = api?.onFound(version => {
     if (!disposed && !installing.value && !starting.value && !reminderPending.value) {
+      dismissLatest()
       if (version !== availableVersion.value) releaseNotes.value = ''
       availableVersion.value = version
       void check(true)
@@ -51,6 +60,7 @@ export function useDesktopUpdater() {
         || (silent && phase.value !== 'idle' && !(preserveTerminal && !availableVersion.value))) return
       const revision = ++checkRevision
       const request = ++checkRequest
+      if (!silent) dismissLatest()
       checking.value = true
       const current = () => !disposed && !installing.value && !starting.value && revision === checkRevision
       try {
@@ -60,8 +70,12 @@ export function useDesktopUpdater() {
         availableVersion.value = result.available?.version ?? ''
         releaseNotes.value = result.available?.notes ?? ''
         if (!preserveTerminal) {
-          statusText.value = !silent && !result.available ? '已是最新版本' : ''
+          statusText.value = ''
           errorText.value = ''
+          if (!silent && !result.available) {
+            latestNotice.value = true
+            latestTimer = window.setTimeout(dismissLatest, 6500)
+          }
         }
       } catch (error) {
         if (current() && !preserveTerminal) errorText.value = silent ? '' : message(error)
@@ -138,11 +152,12 @@ export function useDesktopUpdater() {
 
   onScopeDispose(() => {
     disposed = true
+    dismissLatest()
     checkRevision++
     observation?.dispose()
     if (foundSubscription !== undefined) api?.off(foundSubscription)
   })
 
   return { availableVersion, currentVersion, releaseNotes, progress, statusText, installing, cancelling, canCancel,
-    starting, checking, reminderPending, errorText, supported, check, install, cancel, remind, openReleasePage }
+    starting, checking, reminderPending, errorText, latestNotice, supported, check, install, cancel, remind, openReleasePage, dismissLatest }
 }

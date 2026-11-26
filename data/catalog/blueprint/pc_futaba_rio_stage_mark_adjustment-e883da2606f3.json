@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_futaba_rio_stage_mark_adjustment",
+  "revision": 1,
+  "sortOrder": 3921,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_futaba_rio_stage_mark_adjustment",
+    "characterId": "futaba_rio",
+    "outfitId": "sfw_bridal",
+    "title": "双叶理央 · 科学顾问改了灯位",
+    "category": "校园日常",
+    "description": "学校剧社找理央帮忙核对灯位，顺便让她试穿缎面演出裙。她站在地板胶带的交叉处，量出灯圈偏移的距离，再把妨碍读数的头纱拨到背后。那套方领白裙意外地适合做这次舞台曝光参考。",
+    "location": "学校剧场的排演台",
+    "action": "捏着量布软尺对准地面的舞台标记，把头纱拨到背后。",
+    "timeOfDay": "下午",
+    "lighting": "hard overhead spotlight",
+    "camera": "full body",
+    "mood": "认真",
+    "promptTokens": [
+      "stage",
+      "tape measure",
+      "spotlight",
+      "standing",
+      "looking down",
+      "full body",
+      "indoors",
+      "veil",
+      "wedding dress",
+      "stage lights"
+    ],
+    "promptProse": "During a school theatre lighting rehearsal, she measures the offset from a tape mark on the floor and brushes the veil away from her view. A sharp circle of stage light shows exactly where the mark has fallen outside the beam.",
+    "animaCaption": "She is checking the spotlight position before the rehearsal continues.",
+    "sceneTags": [
+      "stage",
+      "tape_measure",
+      "spotlight",
+      "standing",
+      "looking_down",
+      "full_body",
+      "indoors",
+      "veil",
+      "wedding_dress",
+      "stage_lights"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

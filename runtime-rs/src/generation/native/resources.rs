@@ -38,6 +38,7 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "locked_identity.py",
     "anima_acceleration.py",
     "anima_fused.py",
+    "anima_rocm_fused.py",
     "native_memory.py",
     "anima_composition.py",
     "anima_lllite.py",

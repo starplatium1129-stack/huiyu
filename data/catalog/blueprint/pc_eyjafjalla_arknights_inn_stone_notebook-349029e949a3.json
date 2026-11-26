@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_eyjafjalla_arknights_inn_stone_notebook",
+  "revision": 1,
+  "sortOrder": 3920,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_eyjafjalla_arknights_inn_stone_notebook",
+    "characterId": "eyjafjalla_arknights",
+    "outfitId": "siesta_hotspring_yukata",
+    "title": "艾雅法拉 · 旅店廊下的火山石",
+    "category": "泰拉日常",
+    "description": "艾雅法拉在温泉旅店外的木廊坐了一会儿，把一块火山石举到翻开的笔记本旁。纸灯笼刚亮，映过雾粉浴衣的樱花纹、织带腰封和木簪，也照出了标本上的细孔。她在决定要把哪个轮廓画进下一页。",
+    "location": "汐斯塔温泉旅店木廊",
+    "action": "把火山石标本托到笔记本上方，对照手绘的气孔剖面。",
+    "timeOfDay": "黄昏",
+    "lighting": "lantern light at dusk",
+    "camera": "cowboy shot, from side",
+    "mood": "安静",
+    "promptTokens": [
+      "veranda",
+      "sitting",
+      "book",
+      "holding",
+      "rock",
+      "lantern",
+      "yukata",
+      "looking down",
+      "evening",
+      "dusk",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "Seated on the wooden veranda of a hot-spring inn, she holds a porous volcanic stone next to an open field notebook. A paper lantern lights the little cavities that she is trying to draw.",
+    "animaCaption": "She compares the stone's tiny cavities with the sketch on the page.",
+    "sceneTags": [
+      "veranda",
+      "sitting",
+      "book",
+      "holding",
+      "rock",
+      "lantern",
+      "yukata",
+      "looking_down",
+      "evening",
+      "dusk",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

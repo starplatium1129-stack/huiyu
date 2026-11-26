@@ -3,7 +3,7 @@
   "version": "2.3.0",
   "private": true,
   "author": "绘遇 HUIYU",
-  "description": "个人使用的 Galgame 风格 AI CG 场景工作台与 SD WebUI / ComfyUI (Anima/Krea/Wan/H3) 网关",
+  "description": "绘遇 AI CG 创作工作台，支持多角色同框、深度酒馆、Live2D、图片与视频生成及多引擎独立推理",
   "engines": {
     "node": ">=22.18"
   },
@@ -13,6 +13,7 @@
     "prestart": "npm run build:runtime",
     "start": "node scripts/maintenance/run-rust-runtime.js start",
     "start:run": "node scripts/maintenance/run-rust-runtime.js start",
+    "predev": "npm run build:runtime",
     "dev": "vite",
     "prebuild": "npm run build:runtime",
     "build:web:run": "vite build && node scripts/maintenance/check-bundle-budget.js && node scripts/maintenance/precompress.js",

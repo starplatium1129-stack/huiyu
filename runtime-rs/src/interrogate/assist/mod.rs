@@ -2,7 +2,7 @@ mod parser;
 mod prompts;
 
 use crate::AppState;
-use axum::{body::Bytes, http::HeaderMap};
+use axum::body::Bytes;
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use image::{ImageDecoder, ImageReader, codecs::jpeg::JpegEncoder, imageops::FilterType};
 use serde_json::{Value, json};
@@ -12,7 +12,7 @@ use tokio_util::sync::CancellationToken;
 
 pub(super) const GUARD_MIN: f64 = 0.20;
 const CAPTION_TIMEOUT_SECS: u64 = 25;
-const LAYOUT_TIMEOUT_SECS: u64 = 35;
+pub(super) const LAYOUT_TIMEOUT_SECS: u64 = 35;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum SubjectMode {
@@ -53,7 +53,7 @@ type Original = (Bytes, Arc<OwnedSemaphorePermit>);
 
 pub(super) async fn enrich(
     app: &AppState,
-    headers: &HeaderMap,
+    route: Option<crate::chat::VisionRoute>,
     decoder_slots: Arc<Semaphore>,
     original: Original,
     evidence: Evidence,
@@ -65,10 +65,7 @@ pub(super) async fn enrich(
     let _guard = cancel.clone().drop_guard();
     let work = async {
         let chat = app.chat.as_ref().ok_or(Fallback::Unavailable)?;
-        let route = chat
-            .vision_route(app, headers)
-            .await
-            .ok_or(Fallback::Unavailable)?;
+        let route = route.ok_or(Fallback::Unavailable)?;
         let provider = route.provider();
         if provider == "chatgpt" && evidence.minor_nsfw {
             return Err(Fallback::MinorNsfw);

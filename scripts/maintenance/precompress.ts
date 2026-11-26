@@ -34,7 +34,10 @@ function walk(dir: string, skipDir?: string): string[] {
   if (dir === skipDir || !fs.existsSync(dir)) return [];
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) return walk(full, skipDir);
+    if (entry.isDirectory()) {
+      if (dir === path.join(ROOT, 'data') && entry.name.startsWith('.catalog-export-')) return [];
+      return walk(full, skipDir);
+    }
     return entry.isFile() ? [full] : [];
   });
 }

@@ -151,7 +151,7 @@ async function restoreShotsDraft() {
     if (draft.aspectRatio === 'landscape' || draft.aspectRatio === 'portrait' || draft.aspectRatio === 'square') aspectRatio.value = draft.aspectRatio
     if (draft.quality === 'fast' || draft.quality === 'standard' || draft.quality === 'fine') quality.value = draft.quality
     if (draft.steps === 4 || draft.steps === 8) steps.value = draft.steps
-    deps.nativeH3Steps.value = draft.nativeH3Steps ?? steps.value
+    deps.nativeH3Steps.value = draft.nativeH3Steps ?? 'auto'
     deps.h3LightVae.value = draft.h3LightVae !== false
     linkLastFrame.value = draft.linkLastFrame !== false
     identityCard.value = draft.identityCard

@@ -32,14 +32,14 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
     {
         let mut previous = state.rect.recover_lock();
         if (previous.width, previous.height) != (rect.width, rect.height) {
-            *state.alpha_mask.write().unwrap() = None;
+            *state.alpha_mask.recover_write() = None;
         }
         *previous = rect;
     }
     state.visible.store(visible, Ordering::SeqCst);
     if !visible {
         *state.model_bounds.recover_lock() = None;
-        *state.alpha_mask.write().unwrap() = None;
+        *state.alpha_mask.recover_write() = None;
         state.first_frame_ready.store(false, Ordering::Release);
     }
     let alpha = opacity.unwrap_or(255).min(255);
@@ -83,6 +83,9 @@ pub(crate) fn set_revealed(state: &Live2DOverlayState, revealed: bool) {
 pub(crate) fn send_command(state: &Arc<Live2DOverlayState>, cmd: OverlayCommand) -> Result<(), String> {
     let deadline = Instant::now() + Duration::from_secs(2);
     loop {
+        if state.shutdown.load(Ordering::Acquire) {
+            return Err("renderer is shutting down".into());
+        }
         let tx = state.cmd_tx.recover_lock().clone();
         if let Some(tx) = tx {
             tx.send(cmd)

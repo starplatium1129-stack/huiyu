@@ -60,8 +60,8 @@ export class MuseRelay extends DurableObject {
   }
   async scheduleCleanup() {
     const { expires } = this.sql.exec(`SELECT min(expires) AS expires FROM (
-      SELECT min(expires) AS expires FROM batches UNION ALL SELECT min(expires) FROM files
-      UNION ALL SELECT min(expires) FROM discarded_results)`).one()
+      SELECT min(expires) AS expires FROM batches UNION ALL SELECT ?
+      UNION ALL SELECT min(expires) FROM discarded_results)`, this.results.expiry()).one()
     if (expires !== null) await this.ctx.storage.setAlarm(Math.max(Date.now() + 1000, expires))
   }
   watch(key) {
@@ -401,7 +401,10 @@ export class MuseRelay extends DurableObject {
     let work = this.dispatch(maxParts, parallel)
     if (!work) {
       // Keep just one idle poll. A new command wakes it immediately.
-      const due = this.sql.exec("SELECT min(due) AS due FROM (SELECT min(due) AS due FROM batches WHERE due IS NOT NULL AND expires>? UNION ALL SELECT min(due) FROM files WHERE state='transferring' AND expires>?)", Date.now(), Date.now()).one().due
+      const now = Date.now()
+      const batchDue = this.sql.exec('SELECT min(due) AS due FROM batches WHERE expires>?', now).one().due
+      const fileDue = this.results.nextDue(now)
+      const due = Math.min(batchDue ?? Infinity, fileDue ?? Infinity)
       await new Promise(resolve => {
         const wake = () => {
           clearTimeout(timer)
@@ -409,7 +412,7 @@ export class MuseRelay extends DurableObject {
           if (this.wake === wake) this.wake = null
           resolve()
         }
-        const timer = setTimeout(wake, due === null ? AGENT_IDLE_POLL_MS : Math.max(25, Math.min(AGENT_IDLE_POLL_MS, due - Date.now())))
+        const timer = setTimeout(wake, Math.max(25, Math.min(AGENT_IDLE_POLL_MS, due - Date.now())))
         this.wake = wake
         signal.addEventListener('abort', wake, { once: true })
       })
@@ -432,9 +435,9 @@ export class MuseRelay extends DurableObject {
     const bytes = await readBody(request, work?.file ? PART * work.count : 2 * 1024 * 1024)
     if (work?.file) {
       if (work.parallel && status === 204) {
-        this.sql.exec("UPDATE files SET due=?, attempts=0 WHERE path=? AND state='transferring' AND part>=?", Date.now(), work.file.path, work.file.part + work.count)
+        this.sql.exec("UPDATE files SET due=?, attempts=0 WHERE path=? AND started=? AND state='transferring' AND part>=?", Date.now(), work.file.path, work.file.started, work.file.part + work.count)
       } else if (work.parallel && status >= 500) {
-        this.sql.exec("UPDATE files SET due=? WHERE path=? AND state='transferring' AND part<?", Date.now() + 1000, work.file.path, work.file.part + work.count)
+        this.sql.exec("UPDATE files SET due=? WHERE path=? AND started=? AND state='transferring' AND part<?", Date.now() + 1000, work.file.path, work.file.started, work.file.part + work.count)
       } else this.results.accept(work, status, request.headers, bytes)
       this.notifyReceivers()
     } else if (mediaPart && (call.command.method === 'HEAD' || status === 200)) {

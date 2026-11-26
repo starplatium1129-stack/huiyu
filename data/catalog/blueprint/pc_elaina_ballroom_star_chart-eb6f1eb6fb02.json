@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_elaina_ballroom_star_chart",
+  "revision": 1,
+  "sortOrder": 3917,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_elaina_ballroom_star_chart",
+    "characterId": "elaina",
+    "outfitId": "witch_dress",
+    "title": "伊雷娜 · 赴宴前发现一颗新星",
+    "category": "奇幻",
+    "description": "伊雷娜从宴会厅退到阳台，把一张星图摊上石栏。宽腰带的金扣映着门里的烛光，魔女帽檐遮住半边脸。她用掌心压住被风掀起的纸角，伸出另一只手比对新发现的星点。",
+    "location": "山城宴会厅阳台",
+    "action": "用一只手压住摊开的星图，另一只手沿编号寻找对应的星点。",
+    "timeOfDay": "夜间",
+    "lighting": "warm candlelight and starlight",
+    "camera": "full body",
+    "mood": "好奇",
+    "promptTokens": [
+      "balcony",
+      "railing",
+      "map",
+      "paper",
+      "holding",
+      "pointing",
+      "starry sky",
+      "night",
+      "full body",
+      "candlelight"
+    ],
+    "promptProse": "She steps out of the ballroom and spreads a star chart on the stone balcony rail. One hand pins its corner against the wind; the other traces a marked star beside the wavering candlelight.",
+    "animaCaption": "She compares a mark on the chart with a star above the railing.",
+    "sceneTags": [
+      "balcony",
+      "railing",
+      "map",
+      "paper",
+      "holding",
+      "pointing",
+      "starry_sky",
+      "night",
+      "full_body",
+      "candlelight"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

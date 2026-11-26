@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mikasa_ackerman_red_scarf_on_clothesline",
+  "revision": 1,
+  "sortOrder": 3931,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_mikasa_ackerman_red_scarf_on_clothesline",
+    "characterId": "mikasa_ackerman",
+    "outfitId": "casual",
+    "title": "三笠 · 绳上的围巾该收了",
+    "category": "日常生活",
+    "description": "午后院墙挡住了风，晾衣绳上的红围巾已经干透。三笠穿着扣好的长袖白衫和黑短裤，先托住围巾垂下来的一端，再伸手去掰木夹。她收得很轻，免得掸到绳上刚晾好的其他衣物。",
+    "location": "帕拉迪岛民宅小院",
+    "action": "用一只手托住红围巾折起的一端，另一手掰开晾衣夹。",
+    "timeOfDay": "午后",
+    "lighting": "soft daylight",
+    "camera": "cowboy shot, from side",
+    "mood": "宁静",
+    "promptTokens": [
+      "garden",
+      "outdoors",
+      "clothesline",
+      "scarf",
+      "clothes pin",
+      "holding",
+      "long sleeves",
+      "standing",
+      "sunlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "In a quiet yard she supports one end of the red scarf with her palm and opens the wooden clothespin with her other hand. The dry fabric falls onto her arm as the other laundry stays in place.",
+    "animaCaption": "She lets the scarf fall gently onto her forearm before folding it.",
+    "sceneTags": [
+      "garden",
+      "outdoors",
+      "clothesline",
+      "scarf",
+      "clothes_pin",
+      "holding",
+      "long_sleeves",
+      "standing",
+      "sunlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

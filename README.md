@@ -41,7 +41,7 @@ Move seamlessly from browsing series bookshelves and scene inspiration to organi
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> Character Room & Desktop Companion
 
-A dedicated character room pairs a full tavern workbench (character card CRUD, SillyTavern V2 JSON/PNG import & export, upgraded lorebooks, multi-user personas, rolling story summary) with bidirectional affection & status sync, emotion sprite switching, per-message scene illustrations, room backgrounds, Live2D and voice playback. Connect compatible APIs, existing Ollama, managed local llama.cpp (GGUF), or [remote Muse & QQ/WeChat channels](docs/guides/remote-and-muse.md).
+A dedicated character room pairs a full tavern workbench (character card CRUD, SillyTavern V2 JSON/PNG import & export, upgraded lorebooks, multi-user personas, rolling story summary) with bidirectional affection & status sync, emotion sprite switching, per-message scene illustrations, room backgrounds, Live2D and voice playback. Connect compatible APIs, existing Ollama, managed local llama.cpp (GGUF), or [remote Muse & QQ/WeChat channels](docs/guides/remote-and-muse.md). See the [Tavern workbench guide](docs/guides/tavern-workbench.md) for cards and long-running stories.
 
 [![Character room with Ayachi Nene's portrait and a text conversation](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
 
@@ -64,7 +64,7 @@ The control panel brings guided setup, native runtime checks, model downloads an
 [![Control panel overview showing guided drawing setup and modular capability cards](docs/images/software-preview/control-panel.jpg)](docs/images/software-preview/control-panel.jpg)
 
 1. **Install**: Use the **full installer** for initial setup or repair, or the upgrade package for existing installations ([Windows releases](https://github.com/starplatium1129-stack/huiyu/releases/latest)).
-2. **Import resources**: Follow the [offline resource guide](docs/guides/offline-resources.md) to import asset packs once—program upgrades preserve existing packs.
+2. **Add resources.** The standard installer includes character thumbnails. At first launch, download HD portraits (`portraits`) and scene samples (`showcase`), choose portraits only, or continue with thumbnails. Both packs are available later under Control Room → Resources & Assets. For an offline machine, [import the resource ZIP](docs/guides/offline-resources.md).
 3. **Prepare environment**: Open the control panel, set your data and AI directories, download/verify models or link another HUIYU / ComfyUI host.
 4. **Start creating**: Pick a character and scene in the drawing studio or inspiration library and save finished work to My artwork.
 

@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_hitachi_mako_summer_paddle_rinse",
+  "revision": 1,
+  "sortOrder": 19008,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_hitachi_mako_summer_paddle_rinse",
+    "characterId": "hitachi_mako",
+    "outfitId": "summer_bikini",
+    "title": "常陆茉子 · 把桨上的沙冲干净",
+    "description": "茉子在溪边把租来的短桨举起来，顺着桨叶浇下一勺清水。砂粒被冲进石缝，钩在桨柄上的收绳也跟着晃了一下。",
+    "location": "溪畔的浅滩和划艇归还处",
+    "action": "举起短桨，用一勺水冲掉附着的沙粒",
+    "timeOfDay": "午后",
+    "lighting": "碎光透过树叶照亮溪水和桨面",
+    "camera": "岸边平视全身，足部和桨叶入镜",
+    "mood": "俐落，完成后稍显轻松",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "river",
+      "outdoors",
+      "water",
+      "splashing",
+      "paddle",
+      "forest",
+      "barefoot",
+      "standing",
+      "sunlight",
+      "full_body"
+    ],
+    "promptTokens": [
+      "river",
+      "outdoors",
+      "water",
+      "splashing",
+      "paddle",
+      "forest",
+      "barefoot",
+      "standing",
+      "sunlight",
+      "full body"
+    ],
+    "promptProse": "Mako rinses a short paddle at the creekside return rack, tipping a scoop of clear water over the blade. The cropped mesh hoodie lies above her forest-green swimsuit. Both feet are steady on flat pebbles as the paddle strap swings free.",
+    "animaCaption": "Her free hand pours a narrow ribbon of water down the blade while the strap swings beneath the grip.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

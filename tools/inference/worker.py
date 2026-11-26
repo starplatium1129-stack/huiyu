@@ -305,6 +305,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
 
 
 def main(argv=None):
+    for stream in (sys.stdin, sys.stdout, sys.stderr):
+        stream.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--validate", metavar="MODEL_DIR")

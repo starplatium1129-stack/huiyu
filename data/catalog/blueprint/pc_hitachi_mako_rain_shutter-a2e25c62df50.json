@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_hitachi_mako_rain_shutter",
+  "revision": 1,
+  "sortOrder": 19007,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_hitachi_mako_rain_shutter",
+    "characterId": "hitachi_mako",
+    "outfitId": "private_robe",
+    "title": "常陆茉子 · 夜雨压上纸门",
+    "description": "一阵风把廊下的风铃吹到了门框上。茉子穿着系好的象牙色长睡袍出门，双手将木窗推回原位，直到门栓扣响才松开。",
+    "location": "旧屋内廊与面对庭院的木窗",
+    "action": "用双手推合木窗，腰带将长睡袍系紧",
+    "timeOfDay": "夜间",
+    "lighting": "室内纸灯映在门槛，庭院的雨是冷蓝色",
+    "camera": "从内廊平视的背侧全身",
+    "mood": "清醒，仔细听门栓合拢",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "rain",
+      "window",
+      "indoors",
+      "night",
+      "standing",
+      "wood",
+      "paper_lantern",
+      "from_behind",
+      "full_body"
+    ],
+    "promptTokens": [
+      "rain",
+      "window",
+      "indoors",
+      "night",
+      "standing",
+      "wood",
+      "paper lantern",
+      "from behind",
+      "full body"
+    ],
+    "promptProse": "Mako slides the wooden shutter closed from the inside hallway. An ivory ankle-length robe wraps over her and closes with a cotton sash, its broad sleeves hanging as she grips the frame. The warm paper lamp touches the threshold while the rain outside stays blue.",
+    "animaCaption": "Both wide sleeves lift as she guides the shutter home; the cotton sash keeps the robe closed.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

@@ -20,7 +20,7 @@ use tokio::{
 };
 use tokio_util::{sync::CancellationToken, task::TaskTracker};
 
-const REQUEST_TIMEOUT: Duration = Duration::from_secs(110);
+pub(super) const REQUEST_TIMEOUT: Duration = Duration::from_secs(110);
 const IDLE_TIMEOUT: Duration = Duration::from_secs(600);
 const STDERR_LIMIT: usize = 64 * 1024;
 
@@ -113,7 +113,10 @@ impl Client {
         let timeout = self.timeout;
         {
             // Register jobs and close the tracker under the same lock.
-            let guard = self.closed.lock().unwrap();
+            let guard = self
+                .closed
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             if *guard {
                 return Err(closed());
             }
@@ -151,7 +154,9 @@ impl Client {
                             Some(worker) => worker.stop().await,
                             None => Ok(()),
                         };
-                        let mut status = snapshot.lock().unwrap();
+                        let mut status = snapshot
+                            .lock()
+                            .unwrap_or_else(std::sync::PoisonError::into_inner);
                         status.cached = false;
                         status.loading = false;
                         status.reason = result.as_ref().err().map(|e| e.message.clone());
@@ -201,7 +206,9 @@ impl Client {
                 }
                 if let Some(worker) = resident.take() {
                     let stopped = worker.stop().await;
-                    let mut status = snapshot.lock().unwrap();
+                    let mut status = snapshot
+                        .lock()
+                        .unwrap_or_else(std::sync::PoisonError::into_inner);
                     status.cached = false;
                     status.loading = false;
                     if let Err(error) = stopped {
@@ -218,7 +225,10 @@ impl Client {
     }
 
     pub async fn probe(&self) -> Value {
-        let status = self.snapshot.lock().unwrap();
+        let status = self
+            .snapshot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         let cached = status.cached
             && self.worker.try_lock().map_or(true, |worker| {
                 worker
@@ -258,7 +268,10 @@ impl Client {
 
     pub async fn close(&self) -> Result<()> {
         {
-            *self.closed.lock().unwrap() = true;
+            *self
+                .closed
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner) = true;
             self.shutdown.cancel();
             self.jobs.close();
         }
@@ -271,7 +284,10 @@ impl Client {
             self.gate.close();
         }
         self.processes.close().await;
-        let mut status = self.snapshot.lock().unwrap();
+        let mut status = self
+            .snapshot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         status.cached = false;
         status.loading = false;
         // A previous request/idle cleanup with an unconfirmed stop closes this
@@ -308,13 +324,21 @@ async fn infer(
         if let Some(exited) = worker.take() {
             exited.stop().await?;
         }
-        snapshot.lock().unwrap().cached = false;
+        snapshot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .cached = false;
     }
     if worker.is_none() {
-        snapshot.lock().unwrap().loading = true;
+        snapshot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .loading = true;
         *worker = Some(Worker::spawn(settings, processes)?);
         let ready = protocol::ready(protocol::read(&mut worker.as_mut().unwrap().output).await?)?;
-        let mut status = snapshot.lock().unwrap();
+        let mut status = snapshot
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         status.cached = true;
         status.loading = false;
         status.meta = Some(ready);
@@ -328,7 +352,10 @@ async fn infer(
         "requestId":id, "imagePath":image_path, "threshold":threshold
     }))?;
     request.push(b'\n');
-    *worker.current_input.lock().unwrap() = Some(image.clone());
+    *worker
+        .current_input
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner) = Some(image.clone());
     worker
         .input
         .write_all(&request)
@@ -347,7 +374,11 @@ async fn infer(
         .as_ref()
         .is_err_and(|error| matches!(error.code.as_str(), "INVALID_IMAGE" | "IMAGE_TOO_LARGE"));
     if result.is_ok() || *image_rejected {
-        worker.current_input.lock().unwrap().take();
+        worker
+            .current_input
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .take();
     }
     result
 }

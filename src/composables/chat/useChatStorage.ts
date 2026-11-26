@@ -19,10 +19,10 @@ import {
   forkChatArchiveMessages,
   serializeChatArchive,
 } from '@/utils/chatArchive'
-import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations } from '@/utils/chatConversationStorage'
+import { chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations } from '@/utils/chatConversationStorage'
 import { useChatBranches } from './useChatBranches'
 import { createChatPreferences, readChatPreferences, type ChatPreferences } from '@/storage/chatPreferences'
-import { chatHistorySnapshot } from './chatHistorySnapshot'
+import { chatHistorySnapshot, clearActiveChatHistories } from './chatHistorySnapshot'
 import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
 import { createChatPreferenceSetters } from './chatPreferenceSetters'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
@@ -468,31 +468,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     // applying this character's clear. localStorage access is synchronous, so
     // the read and the following write are one uninterrupted mutation.
     if (char && !mergeRemoteIntoState()) return false
-    const previous = {
-      histories: { ...state.histories },
-      conversations: state.conversations,
-      historiesRevision: state.historiesRevision,
-      historiesRevisions: { ...state.historiesRevisions },
-    }
-    state.conversations = { ...state.conversations }
-    for (const id of char ? [char] : characterIds) {
-      const conversation = captureChatConversations(state, [id])[id]
-      conversation.branches.find(branch => branch.id === conversation.activeId)!.messages = []
-      state.histories[id] = []; state.conversations[id] = conversation
-    }
-    // Advance the tombstone before persisting. A delayed save from a tab that
-    // still has the previous revision will then be rejected.
-    const nextRevision = Math.max(state.historiesRevision + 1, Date.now())
-    state.historiesRevision = nextRevision
-    if (char) state.historiesRevisions[char] = Math.max((state.historiesRevisions[char] || 0) + 1, nextRevision)
-    else for (const key of characterIds) state.historiesRevisions[key] = nextRevision
-    if (save(false, true, char ? [char] : undefined)) return true
-    // A failed localStorage write must not make the current tab look cleared.
-    state.conversations = previous.conversations
-    state.histories = previous.histories
-    state.historiesRevision = previous.historiesRevision
-    state.historiesRevisions = previous.historiesRevisions
-    return false
+    return clearActiveChatHistories(state, char ? [char] : characterIds, () => save(false, true, char ? [char] : undefined))
   }
 
   return {

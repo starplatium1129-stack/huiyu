@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "murasame_sfw_garden_herb_labels",
+  "revision": 1,
+  "sortOrder": 3299,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "murasame_sfw_garden_herb_labels",
+    "characterId": "murasame",
+    "outfitId": "white_gauze_wrap",
+    "title": "丛雨 · 风口按住两张草药签",
+    "category": "园圃采记",
+    "description": "晨风把种植架上的两张药草签吹离原处。丛雨站到木桌前，用书角压住一张，再伸手够另一张。白纱披巾松搭在衣肩，晨光透过最薄的边缘，里面仍是遮得严整的白棉日常连衣裙。",
+    "location": "神社园圃的草药桌旁",
+    "action": "用书角压住一张草药签，伸手抓住另一张",
+    "timeOfDay": "清晨",
+    "lighting": "淡晨光透亮披巾边沿，木桌保留柔和阴影",
+    "camera": "平视斜侧中景，带到桌上纸签",
+    "mood": "抓住纸片时的轻快",
+    "sceneTags": [
+      "white_dress",
+      "shawl",
+      "standing",
+      "reaching",
+      "paper",
+      "book",
+      "table",
+      "garden",
+      "sunlight",
+      "morning",
+      "cowboy_shot"
+    ],
+    "promptProse": "A morning gust lifts two labels from the herb table. Murasame pins one label with the corner of a book and reaches out for the other. Her open white silk-gauze wrap lies loosely over the shoulders of a fully opaque white cotton day dress. Only the fine outer hem of the wrap glows in the sunlight.",
+    "animaCaption": "The book holds one label flat while her other hand catches the one lifting off the table.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "white dress",
+      "shawl",
+      "standing",
+      "reaching",
+      "paper",
+      "book",
+      "table",
+      "garden",
+      "sunlight",
+      "morning",
+      "cowboy shot"
+    ],
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

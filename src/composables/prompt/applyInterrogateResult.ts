@@ -7,7 +7,7 @@ import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils
 import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 import { parseAssistLayout, type InterrogateResult } from '@/api/interrogateResult'
-import { referenceCharacterCount } from '@/utils/promptCast'
+import { isCustomCastOutfit, referenceCharacterCount } from '@/utils/promptCast'
 import { mossReferencePerformance, referenceCastPeople, referenceOutfitText, singleReferenceCastOutfit } from '@/utils/mossCast'
 import { CHAR_PROMPT } from '@/config/promptConstants'
 
@@ -180,13 +180,14 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   })
   let dressedActors = 0
   if (pb.cast.length > 1) pb.cast.forEach((member, index) => {
-    const person = referenceOutfits[index]
-    const outfitPrompt = referenceOutfits.length > 1 && person
-      ? referenceOutfitText(mossReferencePerformance(person, sourceIdentityTerms).outfit)
-      : referenceOutfits.length < 2 && member.outfitId === 'custom' ? singleOutfit : ''
-    if (!outfitPrompt) return
-    pb.updateCastMember(index, { outfitId: 'custom', outfitExplicit: true, outfitPrompt })
-    dressedActors++
+    if (referenceOutfits.length > 1) {
+      const person = referenceOutfits[index]
+      if (!member.outfitExplicit && !isCustomCastOutfit(member.outfitId) && !(index === pb.leadPosition && wardrobePreset?.presetId) && person
+        && referenceOutfitText(mossReferencePerformance(person, sourceIdentityTerms).outfit)) dressedActors++
+    } else if (member.outfitId === 'custom' && singleOutfit) {
+      pb.updateCastMember(index, { outfitPrompt: singleOutfit })
+      dressedActors++
+    }
   })
   const note = characterConflictNote(characterTags, castIdentity, [...context.aliases, ...castAliases,
     ...castCharacters.flatMap(character => character.aliases)])

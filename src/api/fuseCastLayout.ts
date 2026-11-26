@@ -18,6 +18,7 @@ export interface FuseCastResult {
   provider?: string | null
   model?: string | null
   cacheHit?: boolean
+  warning?: string
 }
 
 function buildCastSummaryPayload(
@@ -62,6 +63,7 @@ export async function fuseMossCastPrompt(params: {
   const { draftPrompt, plan, cast, interaction, userDescription, reference } = params
   const timeout = AbortSignal.timeout(18_000)
   const signal = params.signal ? AbortSignal.any([params.signal, timeout]) : timeout
+  const fallback: FuseCastResult = { fused: false, prompt: draftPrompt, warning: 'API 协调未完成，已使用工作台的构图与动作。' }
   try {
     const { interrogateChatHeaders } = await import('./interrogateChatSettings')
     const personal = await interrogateChatHeaders(signal, true).catch(() => ({}))
@@ -78,7 +80,7 @@ export async function fuseMossCastPrompt(params: {
         referenceScene: reference?.layout?.scene || undefined,
       }),
     })
-    if (!response.ok) return { fused: false, prompt: draftPrompt }
+    if (!response.ok) return fallback
     const data = await response.json().catch(() => null) as Record<string, unknown> | null
     if (data && data.ok === true && data.fused === true && typeof data.prompt === 'string' && data.prompt.trim()) {
       return {
@@ -90,7 +92,8 @@ export async function fuseMossCastPrompt(params: {
       }
     }
   } catch {
-    // Silent fallback to deterministic Layer-1 compiled layout.
+    if (params.signal?.aborted) return { fused: false, prompt: draftPrompt }
+    if (timeout.aborted) return { ...fallback, warning: 'API 协调超时，已使用工作台的构图与动作。' }
   }
-  return { fused: false, prompt: draftPrompt }
+  return fallback
 }

@@ -12,6 +12,7 @@ use std::time::{Duration, Instant};
 mod identity;
 #[path = "gateway_host.rs"]
 mod host;
+mod lifecycle;
 #[cfg(windows)]
 #[path = "process_job.rs"]
 mod job;
@@ -169,7 +170,7 @@ impl GatewaySupervisor {
     }
 
     pub fn owned_child_exited(&self) -> bool {
-        let mut child = self.child.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+        let mut child = self.child.recover_lock();
         self.owns_gateway() && child.as_mut()
             .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))))
     }
@@ -260,11 +261,14 @@ impl GatewaySupervisor {
         // invitation to launch a second gateway on another port. Reap the old
         // child before deciding whether the configured port is available.
         if self.owns_gateway() {
-            self.reap_child();
+            self.reap_child().await?;
         }
         #[cfg(windows)]
         if let Some((_, config)) = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_CONFIG_ROOT") {
-            if host::recover_exited_owner(std::path::Path::new(config))? {
+            let config = std::path::PathBuf::from(config);
+            let recovered = tauri::async_runtime::spawn_blocking(move || host::recover_exited_owner(&config))
+                .await.map_err(|error| format!("gateway owner recovery worker: {error}"))??;
+            if recovered {
                 (self.on_output)("host", "Recovered workspace ownership after confirmed process exit");
             }
         }
@@ -310,7 +314,7 @@ impl GatewaySupervisor {
 
         // Register ownership before authorizing runtime initialization. Exit
         // takes this same slot, so no startup child can escape reap_child.
-        {
+        let startup = {
             let mut slot = self.child.recover_lock();
             if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
                 return Err("Gateway start cancelled".into());
@@ -327,25 +331,27 @@ impl GatewaySupervisor {
             };
             *slot = Some(GatewayChild { process, #[cfg(windows)] _job: job });
             self.owned.store(true, Ordering::Relaxed);
-            let child = slot.as_mut().unwrap();
+            let child = slot.as_mut().ok_or("gateway child unavailable")?;
             // The runtime cannot initialize or spawn model services until Windows
             // owns its descendants. EOF before this acknowledgement exits startup.
             #[cfg(windows)]
-            if let Err(error) = child.process.stdin.take()
+            let authorized = child.process.stdin.take()
                 .ok_or_else(|| std::io::Error::other("gateway startup pipe unavailable"))
-                .and_then(|mut input| input.write_all(b"owned\n"))
-            {
-                drop(slot);
-                self.reap_child();
-                return Err(format!("authorize gateway startup: {error}"));
-            }
-
-            if let Some(stdout) = child.process.stdout.take() {
-                pipe_output(stdout, "stdout", self.on_output.clone(), Some((self.base_url(), ready_sender)));
-            }
-            if let Some(stderr) = child.process.stderr.take() {
-                pipe_output(stderr, "stderr", self.on_output.clone(), None);
-            }
+                .and_then(|mut input| input.write_all(b"owned\n"));
+            #[cfg(not(windows))]
+            let authorized: std::io::Result<()> = Ok(());
+            authorized.map(|()| {
+                if let Some(stdout) = child.process.stdout.take() {
+                    pipe_output(stdout, "stdout", self.on_output.clone(), Some((self.base_url(), ready_sender)));
+                }
+                if let Some(stderr) = child.process.stderr.take() {
+                    pipe_output(stderr, "stderr", self.on_output.clone(), None);
+                }
+            })
+        };
+        if let Err(error) = startup {
+            let _ = self.reap_child().await;
+            return Err(format!("authorize gateway startup: {error}"));
         }
 
         let started_at = Instant::now();
@@ -359,7 +365,7 @@ impl GatewaySupervisor {
                 tokio::time::sleep(STARTUP_PROBE_INTERVAL).await;
             }
             if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
-                self.reap_child();
+                let _ = self.reap_child().await;
                 return Err("Gateway start cancelled".into());
             }
             let exited = self.child.recover_lock().as_mut()
@@ -373,13 +379,19 @@ impl GatewaySupervisor {
             // Older children still work through periodic, authenticated probes.
             // A ready record never grants authority on its own.
             if self.probe_health(STARTUP_PROBE_INTERVAL).await {
-                let slot = self.child.recover_lock();
-                if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
-                    drop(slot);
-                    self.reap_child();
+                let cancelled = {
+                    let _slot = self.child.recover_lock();
+                    let cancelled = self.stopping.load(Ordering::SeqCst)
+                        || self.stop_generation.load(Ordering::SeqCst) != generation;
+                    if !cancelled {
+                        *self.authenticated_port.recover_lock() = Some(port);
+                    }
+                    cancelled
+                };
+                if cancelled {
+                    let _ = self.reap_child().await;
                     return Err("Gateway start cancelled".into());
                 }
-                *self.authenticated_port.recover_lock() = Some(port);
                 return Ok(self.base_url());
             }
             if started_at.elapsed() > STARTUP_TIMEOUT {
@@ -389,80 +401,6 @@ impl GatewaySupervisor {
         }
     }
 
-    fn reap_child(&self) {
-        self.authenticated.store(false, Ordering::SeqCst);
-        let child = self.child.recover_lock().take();
-        self.owned.store(false, Ordering::Relaxed);
-        if let Some(mut child) = child {
-            let config = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_CONFIG_ROOT")
-                .map(|(_, value)| std::path::PathBuf::from(value));
-            let snapshot = config.as_ref().and_then(|root| host::owner_snapshot(root, child.process.id()));
-            if let (Some(profile), Some(secret)) = (self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID"), self.identity_token.recover_lock().clone()) {
-                let _ = host::request(&self.base_url(), &secret, serde_json::json!({
-                    "action": "shutdown", "windowId": "atelier", "origin": self.base_url(), "sourceProfileId": profile.1,
-                }));
-            }
-            terminate_child(&mut child);
-            // Startup may create the owner after the pre-shutdown snapshot.
-            // Keep the exact Child handle until this final identity read/release.
-            let snapshot = snapshot.or_else(|| config.as_ref().and_then(|root| host::owner_snapshot(root, child.process.id())));
-            host::release_exited_owner(snapshot, &mut child.process);
-        }
-    }
-
-    async fn stop(&self) {
-        self.stop_generation.fetch_add(1, Ordering::SeqCst);
-        self.reap_child();
-    }
-
-    /// Deployment requires a positive authenticated drain receipt. A timeout
-    /// retains the child and its owner for repair; it never authorizes install.
-    /// Interrupted offline import prevents startup. Freeze future starts without
-    /// terminating a possibly live writer; the importer still acquires its lease.
-    pub async fn maintenance_idle(&self) -> Result<(), String> {
-        self.stopping.store(true, Ordering::SeqCst);
-        let _start_guard = self.start_lock.lock().await;
-        self.stop_generation.fetch_add(1, Ordering::SeqCst);
-        let mut slot = self.child.recover_lock();
-        if let Some(child) = slot.as_mut() {
-            if child.process.try_wait().map_err(|_| "MAINTENANCE_CHILD_WAIT")?.is_none() {
-                return Err("MAINTENANCE_CHILD_RUNNING".into());
-            }
-        }
-        slot.take(); self.owned.store(false, Ordering::SeqCst); self.authenticated.store(false, Ordering::SeqCst);
-        Ok(())
-    }
-
-    pub async fn maintenance_stop(&self) -> Result<(), String> {
-        self.stopping.store(true, Ordering::SeqCst);
-        let _start_guard = self.start_lock.lock().await;
-        self.stop_generation.fetch_add(1, Ordering::SeqCst);
-        if !self.owns_gateway() { return Err("MAINTENANCE_REQUIRES_OWNED_GATEWAY".into()); }
-        let secret = self.identity_token.recover_lock().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
-        let profile = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID").ok_or("HOST_PROFILE_UNAVAILABLE")?;
-        if !self.is_healthy_async().await { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
-        let drained = host::request(&self.base_url(), &secret, serde_json::json!({
-            "action":"shutdown", "windowId":"atelier", "origin":self.base_url(), "sourceProfileId":profile.1,
-        }))?;
-        if drained["closed"] != true { return Err("MAINTENANCE_DRAIN_UNCONFIRMED".into()); }
-        let mut slot = self.child.recover_lock();
-        let child = slot.as_mut().ok_or("MAINTENANCE_CHILD_MISSING")?;
-        // The retained Child handle proves ownership. The gateway has finished
-        // durable writes and released its lease before this process is reaped.
-        terminate_child(child);
-        if child.process.try_wait().map_err(|_| "MAINTENANCE_CHILD_WAIT")?.is_none() { return Err("MAINTENANCE_CHILD_RUNNING".into()); }
-        slot.take(); self.owned.store(false, Ordering::SeqCst); self.authenticated.store(false, Ordering::SeqCst);
-        Ok(())
-    }
-
-    /// 应用退出时永久关闭启动入口，并同步停止自有网关及其进程组。
-    /// 实测 app.exit(0) 不触发 managed state 的 Drop（2026-08-15），
-    /// 退出清理必须由调用方在 ExitRequested 放行前显式执行。
-    pub fn stop_sync(&self) {
-        self.stopping.store(true, Ordering::SeqCst);
-        self.stop_generation.fetch_add(1, Ordering::SeqCst);
-        self.reap_child();
-    }
 }
 
 fn authenticated_health(base: &str, token: &str, connect_timeout: Duration) -> bool {
@@ -470,28 +408,6 @@ fn authenticated_health(base: &str, token: &str, connect_timeout: Duration) -> b
     read_health(base, connect_timeout, &challenge)
         .map(|health| is_desktop_gateway_compatible(&health) && identity::verify_proof(token, &challenge, &health.desktop_proof))
         .unwrap_or(false)
-}
-
-/// 应用退出（含托盘 quit → app.exit）时清理自己拥有的网关子进程。
-/// 之前缺失该清理：网关 sidecar 成为孤儿进程继续占用端口（2026-08-15 实机复现）。
-/// attach 模式（owned=false）不触碰外部网关。kill 后 wait 回收句柄。
-impl Drop for GatewaySupervisor {
-    fn drop(&mut self) {
-        self.stop_sync();
-    }
-}
-
-fn terminate_child(child: &mut GatewayChild) {
-    if matches!(child.process.try_wait(), Ok(Some(_))) { return; }
-    #[cfg(windows)]
-    {
-        let _ = Command::new("taskkill")
-            .args(["/PID", &child.process.id().to_string(), "/T", "/F"])
-            .creation_flags(0x0800_0000)
-            .stdout(Stdio::null()).stderr(Stdio::null()).status();
-    }
-    let _ = child.process.kill();
-    let _ = child.process.wait();
 }
 
 fn pipe_output<R: Read + Send + 'static>(

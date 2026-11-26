@@ -41,7 +41,7 @@
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> 角色房间与桌面陪伴
 
-独立角色房间支持完整酒馆工作台能力（角色卡创作管理与 Tavern V2 JSON/PNG 导入导出、增强世界书、多用户人格、滚动剧情摘要），配合好感与 `<status>` 双向同步、6 表情立绘切换、单句场景配图、房间背景及语音合成；桌面陪伴窗可常驻手边支持看屏与陪看。聊天可连接兼容 API、已有 Ollama、受管本地 llama.cpp（GGUF），或接入 [远程 Muse 与 QQ/微信通道](docs/guides/remote-and-muse.md)。
+独立角色房间支持完整酒馆工作台能力（角色卡创作管理与 Tavern V2 JSON/PNG 导入导出、增强世界书、多用户人格、滚动剧情摘要），配合好感与 `<status>` 双向同步、6 表情立绘切换、单句场景配图、房间背景及语音合成；桌面陪伴窗可常驻手边支持看屏与陪看。聊天可连接兼容 API、已有 Ollama、受管本地 llama.cpp（GGUF），或接入 [远程 Muse 与 QQ/微信通道](docs/guides/remote-and-muse.md)。角色卡、世界书与长剧情的操作见[深度酒馆工作台](docs/guides/tavern-workbench.md)。
 
 [![角色房间，左侧展示绫地宁宁的立绘，右侧为文字对话](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
 
@@ -64,7 +64,7 @@
 [![控制面板总览与入门页面，展示绘图环境准备与按需扩展能力入口](docs/images/software-preview/control-panel.jpg)](docs/images/software-preview/control-panel.jpg)
 
 1. **安装程序**：首次安装或修复使用 **full 完整安装包**，已有安装可用升级包（[Windows 下载](https://github.com/starplatium1129-stack/huiyu/releases/latest)）。
-2. **导入素材**：按 [离线素材指南](docs/guides/offline-resources.md) 导入独立资源包，升级程序无需重复下载已有素材。
+2. **添加素材**。默认安装包内置角色缩略图。首次打开可选择下载高清立绘（`portraits`）和场景样张（`showcase`）、只下立绘，或先跳过。之后可在「控制室 → 资源与素材」补充。断网机可以[导入离线素材 ZIP](docs/guides/offline-resources.md)。
 3. **准备环境**：打开控制面板选定数据与 AI 工作目录，一键下载并校验所需模型，或连接另一台绘遇 / ComfyUI。
 4. **开始创作**：进入绘制工作台或角色灵感挑选一幕开画，成片自动留在「我的作品」。
 

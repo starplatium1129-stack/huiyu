@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "pc_anis_nikke_counter_soda_order",
+  "revision": 1,
+  "sortOrder": 3912,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_anis_nikke_counter_soda_order",
+    "characterId": "anis_nikke",
+    "outfitId": "maid_special_service",
+    "title": "阿尼斯 · 托盘上的第一杯汽水",
+    "category": "日常生活",
+    "description": "阿尼斯把今天的第一杯汽水端出了柜台。金黄胸针别在黑色女仆裙前，白荷叶围裙沾了一道斜光。她一边把吸管推正，一边低头盯着快冒出杯沿的气泡。",
+    "location": "前哨咖啡柜台",
+    "action": "左手平托一杯汽水，右手把吸管推到玻璃杯边。",
+    "timeOfDay": "日间",
+    "lighting": "soft window light",
+    "camera": "cowboy shot, from side",
+    "mood": "爽朗",
+    "promptTokens": [
+      "cafe",
+      "counter",
+      "tray",
+      "drinking glass",
+      "drinking straw",
+      "holding tray",
+      "looking down",
+      "window",
+      "sunlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "She balances a glass of soda on a serving tray in her left hand and nudges its straw upright with her right. Her eyes follow the bubbles rising into a collar of foam under the window light.",
+    "animaCaption": "She watches the foam reach the rim while keeping the tray level.",
+    "sceneTags": [
+      "cafe",
+      "counter",
+      "tray",
+      "drinking_glass",
+      "drinking_straw",
+      "holding_tray",
+      "looking_down",
+      "window",
+      "sunlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

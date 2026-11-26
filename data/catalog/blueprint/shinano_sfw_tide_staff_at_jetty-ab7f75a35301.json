@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "shinano_sfw_tide_staff_at_jetty",
+  "revision": 1,
+  "sortOrder": 3446,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "shinano_sfw_tide_staff_at_jetty",
+    "characterId": "shinano",
+    "outfitId": "indigo_starlight_wrap_monokini",
+    "title": "信浓 · 记下清晨第一道潮线",
+    "category": "潮池观测",
+    "description": "潮水刚过石桩的第一道刻度，信浓便俯下身，用手指在水线旁比了一下。靛蓝裹身泳衣外的星纹薄纱被海风吹向身后，水边那一点新升的日光，恰好照亮了月牙别针。",
+    "location": "海边防波堤内侧有潮尺的浅潮池",
+    "action": "站在浅水中，指向石桩上的新潮位",
+    "timeOfDay": "清晨",
+    "lighting": "晨光由海面反射到潮尺和银色刺绣上",
+    "camera": "平视侧面全身，潮尺和水线各有留白",
+    "mood": "安静而专注",
+    "sceneTags": [
+      "swimsuit",
+      "monokini",
+      "standing",
+      "pointing",
+      "water",
+      "beach",
+      "sunlight",
+      "morning",
+      "outdoors",
+      "from_side",
+      "full_body"
+    ],
+    "promptProse": "Shinano stands in a sheltered tide pool and points to the first mark on a stone tide gauge as the new waterline reaches it. The opaque indigo wrap swimsuit is covered by a star-embroidered chiffon drape that lifts behind her in the sea breeze. Early daylight catches the silver stitching and her crescent pin.",
+    "animaCaption": "Her hand stops beside the measuring mark as the next small ripple reaches the stone.",
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "swimsuit",
+      "monokini",
+      "standing",
+      "pointing",
+      "water",
+      "beach",
+      "sunlight",
+      "morning",
+      "outdoors",
+      "from side",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "recommendedSize": "1152x1536",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

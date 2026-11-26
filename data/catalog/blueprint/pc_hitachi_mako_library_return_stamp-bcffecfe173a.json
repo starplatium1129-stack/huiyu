@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_hitachi_mako_library_return_stamp",
+  "revision": 1,
+  "sortOrder": 19006,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_hitachi_mako_library_return_stamp",
+    "characterId": "hitachi_mako",
+    "outfitId": "school_uniform",
+    "title": "常陆茉子 · 盖错格的归还章",
+    "description": "茉子把借书卡往灯下转了半圈，才发现日期章落在上一行。她从桌边拉过便签，认真补写上今天的日期，再把书递还给等在柜台外的同学。",
+    "location": "学校图书室的借阅台",
+    "action": "在借书卡旁用笔补写日期，另一只手扶住书",
+    "timeOfDay": "放学后",
+    "lighting": "近处台灯照亮纸面，窗边还有日光",
+    "camera": "斜侧中景，手和图书入镜",
+    "mood": "专注，有一点不好意思",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "library",
+      "book",
+      "writing",
+      "pen",
+      "desk",
+      "desk_lamp",
+      "indoors",
+      "school_uniform",
+      "medium_shot"
+    ],
+    "promptTokens": [
+      "library",
+      "book",
+      "writing",
+      "pen",
+      "desk",
+      "desk lamp",
+      "indoors",
+      "school uniform",
+      "medium shot"
+    ],
+    "promptProse": "Mako holds a library book open flat against the counter and writes the correct return date on a small slip beside its card. Her green ribbon and navy sailor collar are just above the warm circle on the desktop. The edge of a date stamp is visible beside the book.",
+    "animaCaption": "She steadies the book with one hand while copying the date onto a spare note.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

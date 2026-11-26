@@ -348,7 +348,7 @@ const {
 .rp-regex-meta strong { font:500 var(--fs-label)/var(--lh-tight) var(--font-sans); }
 .rp-regex-meta code { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); overflow-wrap:anywhere; }
 .rp-regex-controls { display:flex; align-items:center; gap:var(--s-2); flex:none; }
-.rp-error { margin:0; color:var(--danger); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.rp-error { margin:0; color:var(--danger-text); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 @media (prefers-reduced-motion:no-preference) {
   .rp-disclosure::details-content { transition:block-size var(--motion-route) var(--ease-out), content-visibility var(--motion-route) allow-discrete; }
 }

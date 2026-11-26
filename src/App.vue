@@ -112,30 +112,29 @@ const isCompanion = computed(() => desktopWindowRole === 'companion' || desktopW
 
 let stopThumbnailWarmup: (() => void) | undefined
 
-onMounted(() => {
-  // Archive preparation belongs to an active gallery, not a cold home visit.
-  watch([() => route.path, atelierIdle], async ([path, idle]) => {
-    if (path !== '/gallery' || idle) { stopThumbnailWarmup?.(); stopThumbnailWarmup = undefined; return }
-    const { startGalleryThumbnailWarmup } = await import('@/utils/galleryThumbnailWarmup')
-    if (route.path === '/gallery' && !atelierIdle.value && !stopThumbnailWarmup) stopThumbnailWarmup = startGalleryThumbnailWarmup()
-  }, { immediate:true })
-  // bfcache（Chromium 后退/前进缓存）恢复时，Vue Router 内部路由可能与地址栏
-  // 不同步：组件不重挂载、onMounted 深链不执行，导致「点击场景/卡片后页面
-  // 还是上一个场景的提示词」。恢复时用地址栏重建路由，触发正确的组件挂载。
-  const onPageShow = (event: PageTransitionEvent) => {
-    if (!event.persisted) return
-    const address = import.meta.env.MODE === 'desktop' ? window.location.hash.slice(1) || '/'
-      : window.location.pathname + window.location.search + window.location.hash
-    if (router.currentRoute.value.fullPath !== address) {
-      void router.replace(address)
-    }
-  }
-  window.addEventListener('pageshow', onPageShow)
-  onUnmounted(() => {
-    window.removeEventListener('pageshow', onPageShow)
+watch([() => route.path, atelierIdle], async ([path, idle], _, onCleanup) => {
+  let cancelled = false
+  onCleanup(() => {
+    cancelled = true
+    stopThumbnailWarmup?.()
+    stopThumbnailWarmup = undefined
   })
-})
-onUnmounted(() => stopThumbnailWarmup?.())
+  if (path !== '/gallery' || idle) return
+  const { startGalleryThumbnailWarmup } = await import('@/utils/galleryThumbnailWarmup')
+  if (!cancelled) stopThumbnailWarmup = startGalleryThumbnailWarmup()
+}, { immediate: true })
+
+// 恢复 Chromium 页面缓存后，按地址栏重新同步 Vue Router。
+function onPageShow(event: PageTransitionEvent) {
+  if (!event.persisted) return
+  const address = import.meta.env.MODE === 'desktop' ? window.location.hash.slice(1) || '/'
+    : window.location.pathname + window.location.search + window.location.hash
+  if (router.currentRoute.value.fullPath !== address) {
+    void router.replace(address)
+  }
+}
+onMounted(() => window.addEventListener('pageshow', onPageShow))
+onUnmounted(() => window.removeEventListener('pageshow', onPageShow))
 </script>
 
 <style>

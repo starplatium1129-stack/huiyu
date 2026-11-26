@@ -35,6 +35,7 @@ mod maintenance;
 mod maintenance_protocol;
 mod resource_assistant;
 mod desktop_shell;
+mod desktop_shutdown;
 
 use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
@@ -87,13 +88,14 @@ fn main() {
             tauri::plugin::Builder::new("isolated-instance").build()
         } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
             if maintenance::handle(app, &argv) || maintenance::active(app) { return; }
+            let Some(state) = app.try_state::<AppState>() else { return; };
+            if state.quitting.load(Ordering::Acquire) { return; }
             if argv.iter().any(|arg| arg == "--resource-assistant") { resource_assistant::open_in_background(app); return; }
-            let state = app.state::<AppState>();
             for arg in argv {
                 if arg.starts_with("aics://") {
                     let target = arg.trim_start_matches("aics://").trim_start_matches('/').to_string();
                     let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
-                    state.info(&format!("deep link: {arg} -> {path}"));
+                    state.info("Opening atelier from a desktop deep link");
                     let url = state.gateway_url.recover_lock().clone();
                     main_shared::open_atelier(app, &url, Some(&path));
                     return;
@@ -236,6 +238,7 @@ fn main() {
                 app.deep_link().on_open_url(move |event: OpenUrlEvent| {
                     let state = handle.state::<AppState>();
                     for url in event.urls() {
+                        if maintenance::active(&handle) || state.quitting.load(Ordering::Acquire) { return; }
                         let url = url.to_string();
                         let target = url
                             .trim_start_matches("aics://")
@@ -243,7 +246,7 @@ fn main() {
                             .trim_end_matches('/')
                             .to_string();
                         let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
-                        state.info(&format!("deep link: {url} -> {path}"));
+                        state.info("Opening atelier from a desktop deep link");
                         let gateway = state.gateway_url.recover_lock().clone();
                         main_shared::open_atelier(&handle, &gateway, Some(&path));
                     }
@@ -355,21 +358,19 @@ fn main() {
     app.run(|app_handle, event| {
         use tauri::RunEvent;
         match event {
-            RunEvent::ExitRequested { api, .. } => {
+            RunEvent::ExitRequested { api, code, .. } => {
                 // 托盘常驻：所有窗口关闭不退出（对应 Electron 版
                 // "keep the tray process alive"）；显式退出（托盘菜单）
                 // 会先置 quitting 标志。
                 let state = app_handle.state::<AppState>();
-                if !state.quitting.load(Ordering::Relaxed) {
+                if code == Some(tauri::RESTART_EXIT_CODE) {
+                    // Tauri treats its restart exit code as non-preventable.
+                    desktop_shutdown::finish_before_restart(app_handle);
+                } else if !state.quitting.load(Ordering::Acquire) {
                     api.prevent_exit();
-                } else {
-                    window_persistence::shutdown(app_handle);
-                    live2d_process::shutdown();
-                    if let Some(supervisor) = app_handle.try_state::<gateway::GatewaySupervisor>() {
-                    // 显式退出：先停掉自有的 sidecar 网关，避免 node 孤儿进程
-                    // 继续占用端口（Drop 不触发，实测见 gateway.rs stop_sync 注释）
-                    supervisor.stop_sync();
-                    }
+                } else if !desktop_shutdown::finished() {
+                    api.prevent_exit();
+                    desktop_shutdown::request(app_handle, code.unwrap_or(0), false);
                 }
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {

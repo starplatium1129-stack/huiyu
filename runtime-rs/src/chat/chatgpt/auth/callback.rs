@@ -23,7 +23,10 @@ pub(super) async fn handle_loopback_callback(
         );
     }
     {
-        let mut consumed = ctx.consumed.lock().unwrap();
+        let mut consumed = ctx
+            .consumed
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         if *consumed {
             return callback_html(
                 StatusCode::CONFLICT,
@@ -55,7 +58,13 @@ pub(super) async fn handle_loopback_callback(
 
     let service = &ctx.chat.chatgpt;
     let _guard = service.storage_lock.lock().await;
-    if ctx.cancel.is_cancelled() || !service.flow.lock().unwrap().owns(&ctx.cancel) {
+    if ctx.cancel.is_cancelled()
+        || !service
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .owns(&ctx.cancel)
+    {
         return cancelled_callback();
     }
     let outcome = match record {
@@ -63,7 +72,10 @@ pub(super) async fn handle_loopback_callback(
         Err(error) => Err(error),
     };
     {
-        let mut flow = service.flow.lock().unwrap();
+        let mut flow = service
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
         flow.active_cancel = None;
         flow.retry_registration = retry_registration;
         match &outcome {

@@ -144,7 +144,7 @@ export function useChatRpPanel(props: ChatRpPanelProps, emit: ChatRpPanelEmit) {
 
   function onNoteInput(event: Event) {
     const text = (event.target as HTMLTextAreaElement).value
-    updateNote({ text, enabled: text.trim() ? noteDraft.value.enabled || true : noteDraft.value.enabled })
+    updateNote({ text })
   }
 
   function onDepthChange(event: Event) {

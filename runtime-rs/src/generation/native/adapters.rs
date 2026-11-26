@@ -46,6 +46,7 @@ const FILES: &[&str] = &[
     "moss_transformer.py",
     "moss_spectrum.py",
     "moss_execution.py",
+    "moss_preview.py",
     "moss_int8.py",
     "moss_text.py",
     "moss_upscale.py",

@@ -127,7 +127,7 @@ export const videoDraftCodec = {
     return { ...dimensions(v), mode: choice(v.mode, ['text', 'image', 'first-last-frame', 'shots'], 'text'),
       prompt: text(v.prompt), negative: text(v.negative), modelId: text(v.modelId),
       ...(v.promptRecipes === undefined ? {} : { promptRecipes: promptRecipes(v.promptRecipes) }),
-      nativeH3Steps: choice(v.nativeH3Steps, ['auto', 2, 4, 8] as const, 4),
+      nativeH3Steps: choice(v.nativeH3Steps, ['auto', 2, 4, 8] as const, 'auto'),
       videoAttention: choice(v.videoAttention, ['auto', 'sdpa', 'sage', 'flash2', 'h3-sol', 'h3-sla', 'h3-fused'] as const, 'auto'),
       h3LightVae: v.h3LightVae !== false,
       ...(driver ? { driver } : {}),
@@ -139,7 +139,7 @@ export const videoDraftCodec = {
     const v = object(value)
     if (v.linkLastFrame !== undefined && typeof v.linkLastFrame !== 'boolean') throw new Error('尾帧衔接选项无效')
     return { ...dimensions(v), linkLastFrame: v.linkLastFrame !== false, identityCard: text(v.identityCard),
-      nativeH3Steps: choice(v.nativeH3Steps, ['auto', 2, 4, 8] as const, choice(v.steps, [4, 8] as const, 8)),
+      nativeH3Steps: choice(v.nativeH3Steps, ['auto', 2, 4, 8] as const, 'auto'),
       h3LightVae: v.h3LightVae !== false,
       cards: list(v.cards).map(value => { const card = object(value); return { label: text(card.label), characterId: text(card.characterId), outfitId: text(card.outfitId),
         ...(card.outfitProseOverride === undefined ? {} : { outfitProseOverride: text(card.outfitProseOverride) }) } }),

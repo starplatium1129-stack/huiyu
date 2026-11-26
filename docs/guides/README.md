@@ -6,19 +6,20 @@
 
 ## 环境、模型与远程
 
-- [离线素材安装与发行](offline-resources.md)：程序、素材与模型分开准备。
+- [安装与素材](offline-resources.md)介绍精简安装、按需下载与离线导入。
 - [本地模型配置与换机指南](setup-and-models.md)：文件位置、下载入口、硬件推荐与房间 API 连接。
 - [独立图像与视频推理](independent-inference.md)：原生运行库、多机绘图、离线导入转换与显存策略。
+- [深度酒馆工作台](tavern-workbench.md)介绍角色卡、世界书、玩家身份和长剧情管理。
 - [远程出图、Muse 助手、手机聊天与好友试玩](remote-and-muse.md)：Cloudflare 中转、Tailscale 虚拟机协议、QQ 收发与好友公网试玩。
 
 <a id="art"></a>
 
 ## 美术与创作
 
-- [CG 美术风格规范 · 绫季绘境](art/art-direction.html)
-- [创作取向 · 绫季绘境](art/philosophy.html)
-- [出图质量检查 · 绫季绘境](art/quality-standard.html)
-- [项目定位 · 绫季绘境](art/worldview.html)
+- [CG 美术风格规范](art/art-direction.html)
+- [创作取向](art/philosophy.html)
+- [出图质量检查](art/quality-standard.html)
+- [项目定位](art/worldview.html)
 
 <a id="characters"></a>
 
@@ -27,7 +28,7 @@
 - [热门角色接入工作流](characters/character-onboarding-workflow.md)
 - [角色点阵粒子管线（操作手册）](characters/particle-portrait-pipeline.md)
 - [视觉资产审核与用户审美意见](characters/quality-audit-standards-charter.md)
-- [Scene 数据与写作规范 · 绫季绘境](characters/scene-spec.html)
+- [Scene 数据与写作规范](characters/scene-spec.html)
 - [Humanizer-zh 角色与故事写作指南](../../.agents/skills/humanizer-zh/SKILL.md)：角色档案与场景故事的中文创作、润色和审阅。
 
 <a id="desktop"></a>
@@ -42,7 +43,6 @@
 
 ## 工程设计
 
-- [页面标题 · 绫季绘境](engineering/page-template.html)
 - [随机灵感（Random Prompt Assembler）设计文档](engineering/random-prompt-assembler-design.md)
 - [工程维护边界与资源所有权](../engineering-contracts.md#1-模块边界与分层)：模块依赖方向、`PhotoSwipeStage` 边界与资源清理清单。
 - [新模型原生接入工作流](engineering/model-onboarding-workflow.md)：通道分流、生态借用边界、原生推理接入与验收清单。
@@ -54,14 +54,21 @@
 
 ## 提示词
 
-现行双引擎编译与交付统一查 [项目 skill](../../.agents/skills/studio-prompt-craft/SKILL.md)。
+同一角色与场景会按所选引擎独立编译。模型准备见[独立推理指南](independent-inference.md)，绘图提示词写法见[项目 skill](../../.agents/skills/studio-prompt-craft/SKILL.md)。
+
+| 引擎 | 使用方式 |
+| --- | --- |
+| Anima | 使用角色、构图和画风标签。可按所选底模配角色 LoRA，适合二次元角色与画面控制。 |
+| Krea 2 | 使用自然语言描述人物、光线与镜头。支持 Raw 和 8 步 Turbo 文生图。 |
+| MOSS | 使用结构化自然语言描述场景和每位角色，支持人物区域布局。 |
+| Qwen Image 2.1 | 使用自然语言进行文生图，或提供最多 4 张参考图并写明编辑要求。 |
 
 - [NSFW 与全分级 CG 提示词规范](prompts/nsfw-cg-prompt-standard.md)：支持各分级自由创作、衣装、模型编译与交付边界。
 - [手机竖屏人物壁纸规范](prompts/mobile-wallpaper-prompt-standard.md)：iPhone 17 Pro 与通用长屏；裁切、锁屏／主屏遮挡及双引擎候选。
 - [单人物立绘与特写壁纸提示词规范](prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 并列；人物表现、4K 横幅留白及裁切验收。
 - [人物与环境融合的叙事 CG 提示词规范](prompts/narrative-cg-prompt-standard.md)：双引擎写法、原创案例和主力机对照验收。
-- [Prompt 规范 · 绫季绘境](prompts/prompt-spec.html)
-- [标签规范 · 绫季绘境](prompts/tag-standard.html)
+- [Prompt 规范](prompts/prompt-spec.html)
+- [标签规范](prompts/tag-standard.html)
 - [词条出图语义参考](prompts/tag-visual-semantics.md)
 
 <a id="video"></a>

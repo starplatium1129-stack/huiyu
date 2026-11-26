@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_mudrock_arknights_apple_for_clay_friend",
+  "revision": 1,
+  "sortOrder": 3933,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_mudrock_arknights_apple_for_clay_friend",
+    "characterId": "mudrock_arknights",
+    "outfitId": "rhodes_oversized_hoodie",
+    "title": "泥岩 · 泥偶的新苹果",
+    "category": "泰拉日常",
+    "description": "长桌边，泥岩把削好的苹果片往小泥偶旁边推了一点，好像真在给它留午茶。水洗炭灰连帽衫落在手腕上，金属绳头碰响杯碟。桌边的泥偶还没干，她挪苹果时特意没有蹭到它。",
+    "location": "罗德岛公共休息长桌",
+    "action": "把手里削好的苹果片递到刚做好的一排小泥偶旁边。",
+    "timeOfDay": "下午",
+    "lighting": "soft window light",
+    "camera": "cowboy shot, from side",
+    "mood": "温和",
+    "promptTokens": [
+      "table",
+      "sitting",
+      "apple",
+      "plate",
+      "hoodie",
+      "window",
+      "looking down",
+      "indoors",
+      "day",
+      "sunlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "At the lounge table she slides a slice of red apple beside a row of freshly shaped clay figures. She leaves the slice by the smallest figure without disturbing the soft clay.",
+    "animaCaption": "She leaves the apple beside the smallest figure without touching the wet clay.",
+    "sceneTags": [
+      "table",
+      "sitting",
+      "apple",
+      "plate",
+      "hoodie",
+      "window",
+      "looking_down",
+      "indoors",
+      "day",
+      "sunlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

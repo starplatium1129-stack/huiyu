@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_alisa_mikhailovna_kujou_festival_lost_bell",
+  "revision": 1,
+  "sortOrder": 19003,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_alisa_mikhailovna_kujou_festival_lost_bell",
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfitId": "summer_yukata",
+    "title": "艾莉莎 · 招领桌上的小铃铛",
+    "description": "散场后有人在路口捡到一只系着靛蓝棉线的铃铛。艾莉莎把铃铛搁到招领桌最外沿，顺手将翘起的纸条压平。挂灯晃过去，铃声短得几乎听不见。",
+    "location": "祭典出口的失物招领桌",
+    "action": "在桌边放好小铃铛，用另一只手压平纸条",
+    "timeOfDay": "入夜",
+    "lighting": "纸灯笼的暖光扫过手和浴衣的白花纹",
+    "camera": "斜侧中景，纸灯在背景",
+    "mood": "留心又耐心",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "bell",
+      "table",
+      "paper_lantern",
+      "festival",
+      "outdoors",
+      "night",
+      "standing",
+      "from_side"
+    ],
+    "promptTokens": [
+      "bell",
+      "table",
+      "paper lantern",
+      "festival",
+      "outdoors",
+      "night",
+      "standing",
+      "from side"
+    ],
+    "promptProse": "After the summer festival, Alya sets a small bell on the edge of the lost-and-found table and flattens the paper beneath it. Warm lantern light picks out sparse white blossoms on her ice-blue cotton yukata and the navy obi. One loose cord trails across the wood.",
+    "animaCaption": "The bell rests by her fingertips while her other hand flattens its lost-and-found slip.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

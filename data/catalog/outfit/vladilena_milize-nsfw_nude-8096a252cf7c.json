@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "vladilena_milize/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 741,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
   "data": {
     "characterId": "vladilena_milize",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "纯净圣洁胴体",
+      "name": "无衣装",
       "prose": "No clothing.",
       "tokens": [
         "nude"

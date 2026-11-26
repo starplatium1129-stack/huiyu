@@ -101,6 +101,12 @@ export function usePromptCastAndSubject(params: {
     companions.splice(parseLeadPosition(leadPosition.value, companions.length), 0, primary)
     return companions
   })
+  // Resolve after a synchronous subject change has set both its kind and character.
+  watch([() => castLead.value && castMemberKey(castLead.value), coStars], ([lead]) => {
+    if (!lead || !coStars.value.some(member => castMemberKey(member) === lead)) return
+    coStars.value = coStars.value.filter(member => castMemberKey(member) !== lead)
+    leadPosition.value = Math.min(leadPosition.value, coStars.value.length)
+  }, { immediate: true })
 
   const castRequiresNoLora = computed(() => cast.value.length > 1 || castLead.value?.source === 'custom'
     || (castLead.value && isCustomCastOutfit(castLead.value.outfitId)) === true)

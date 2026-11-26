@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_dusk_arknights_railway_ink_sketch",
+  "revision": 1,
+  "sortOrder": 3915,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_dusk_arknights_railway_ink_sketch",
+    "characterId": "dusk_arknights",
+    "outfitId": "neo_cyber_ink_techwear",
+    "title": "夕 · 末班车窗上的山影",
+    "category": "泰拉日常",
+    "description": "空车厢里只有夕占了靠窗的位置。她把素描本抵在膝头，等下一盏路灯照过来时再补一道山脊线。青色反光边和墨溅工装裤跟着车窗上的光一明一暗。",
+    "location": "城郊夜班列车车厢",
+    "action": "把素描本斜抵膝上，用铅笔描下车窗反光里的山脊。",
+    "timeOfDay": "夜间",
+    "lighting": "cool fluorescent lighting",
+    "camera": "cowboy shot, from side",
+    "mood": "沉静",
+    "promptTokens": [
+      "train interior",
+      "window",
+      "sitting",
+      "sketchbook",
+      "pencil",
+      "drawing \\(action\\)",
+      "night",
+      "reflection",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "Alone by the train window she props a sketchbook on her knee and draws the ridgeline glimpsed between passing lamps. The rail joints break up the strips of cool light flickering across the paper.",
+    "animaCaption": "She waits for the next passing lamp before adding another line to the sketch.",
+    "sceneTags": [
+      "train_interior",
+      "window",
+      "sitting",
+      "sketchbook",
+      "pencil",
+      "drawing_(action)",
+      "night",
+      "reflection",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

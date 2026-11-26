@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_lemuen_arknights_tower_apple_pie_notes",
+  "revision": 1,
+  "sortOrder": 3937,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_lemuen_arknights_tower_apple_pie_notes",
+    "characterId": "lemuen_arknights",
+    "outfitId": "silk_lace_morning_robe",
+    "title": "蕾缪安 · 苹果派少烤三分钟",
+    "category": "泰拉日常",
+    "description": "蕾缪安在塔楼起居室的窗边翻开菜谱，香槟色晨袍的宽袖搭在珍珠白睡裙外。她把红茶杯推远，腾出地方在苹果派配方旁补上时间。楼下早餐铃刚响，书页里夹着的旧纸条正好滑出来半截。",
+    "location": "拉特兰塔楼起居室的窗边小桌",
+    "action": "推开红茶杯，在摊开的苹果派菜谱旁用笔添上一行时间。",
+    "timeOfDay": "清晨",
+    "lighting": "gentle morning window light",
+    "camera": "medium shot, eye level",
+    "mood": "闲适",
+    "promptTokens": [
+      "indoors",
+      "sitting",
+      "window",
+      "table",
+      "open book",
+      "pen",
+      "writing",
+      "teacup",
+      "looking down",
+      "morning",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "In a sunlit tower sitting room, she pushes her teacup aside and writes a shorter baking time beside the apple pie recipe. The champagne robe rests over her pearl silk nightdress, its wide cuff held away from the ink. An old bookmark slips halfway out of the book as she flattens the page.",
+    "animaCaption": "She holds her wide cuff clear of the fresh ink while she writes.",
+    "sceneTags": [
+      "indoors",
+      "sitting",
+      "window",
+      "table",
+      "open_book",
+      "pen",
+      "writing",
+      "teacup",
+      "looking_down",
+      "morning",
+      "sunlight",
+      "medium_shot"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

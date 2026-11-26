@@ -61,8 +61,12 @@ fn row_unit_boxes(length: usize, top: f64, left: f64, bottom: f64, right: f64, o
         .collect()
 }
 
+fn uses_two_rows(count: usize, formation: CastFormation) -> bool {
+    count >= 4 && matches!(formation, CastFormation::Staggered | CastFormation::Close)
+}
+
 fn moss_cast_unit_boxes(count: usize, formation: CastFormation) -> Vec<[f64; 4]> {
-    if count >= 4 && matches!(formation, CastFormation::Staggered | CastFormation::Close) {
+    if uses_two_rows(count, formation) {
         let overlap = if formation == CastFormation::Close { 0.08 } else { 0.02 };
         let mut front = row_unit_boxes(2, 0.46, if count == 4 { 0.02 } else { 0.14 }, 1.0, if count == 4 { 0.98 } else { 0.86 }, overlap);
         let rear = row_unit_boxes(count - 2, 0.02, if count == 4 { 0.18 } else { 0.01 }, 0.58, if count == 4 { 0.82 } else { 0.99 }, overlap);
@@ -100,7 +104,7 @@ fn spatial_slot_label(index: usize, count: usize, box4: [f64; 4], all: &[[f64; 4
     if count <= 1 {
         return String::new();
     }
-    if !use_reference && count >= 4 && formation == CastFormation::Staggered {
+    if !use_reference && uses_two_rows(count, formation) {
         return match (count, index) {
             (_, 0) => "In the front left",
             (_, 1) => "In the front right",

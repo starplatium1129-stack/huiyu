@@ -188,8 +188,8 @@
                   <small>关闭用 8 步</small>
                 </span>
               </ToggleSwitch>
-              <NativeH3RecipeFields v-if="nativeVideo && activeModel?.id === 'minimax-h3' && (activeModel.turboSteps || nativeH3Steps === 2)"
-                :model="activeModel" :default-steps="h3DefaultSteps" :issue="h3Issue" v-model:choice="nativeH3Steps" v-model:light-vae="h3LightVae" />
+              <NativeH3RecipeFields v-if="nativeVideo && activeModel?.id === 'minimax-h3' && (activeModel.h3Dwd || activeModel.turboSteps?.length || nativeH3Steps === 2)"
+                :model="activeModel" :default-steps="h3DefaultSteps" :issue="h3Issue" :disabled="submitting" v-model:choice="nativeH3Steps" v-model:light-vae="h3LightVae" />
               <div v-if="nativeVideo" class="field">
                 <label for="video-attention" class="field-label">{{ activeModel?.id === 'minimax-h3' ? 'H3 生成加速' : '注意力加速' }}</label>
                 <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '内置 Mystic 动作风格' : videoAttention === 'h3-sla' ? '四步权重 · 保留音轨与首尾帧' : '需兼容显卡与本地内核' }}</small>

@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_lucy_cyberpunk_rooftop_lunar_receiver",
+  "revision": 1,
+  "sortOrder": 3927,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_lucy_cyberpunk_rooftop_lunar_receiver",
+    "characterId": "lucy_cyberpunk",
+    "outfitId": "cyber_streetwear",
+    "title": "露西 · 让月球避开天线尖",
+    "category": "都市夜话",
+    "description": "天台的新广告牌亮得晃眼，露西顺着检修步道多走了几步，直到月球从旧天线的尖端旁探出来。她靠着扶栏，把手里的接收器调到只剩几粒杂声。深色网眼背心和牛仔短裤被远处的蓝光描出边缘。",
+    "location": "沃森区天台检修步道",
+    "action": "一手转小接收器的旋钮，另一手撑住栏杆抬头寻找月球。",
+    "timeOfDay": "深夜",
+    "lighting": "moonlight and neon rim lighting",
+    "camera": "full body, from behind",
+    "mood": "出神",
+    "promptTokens": [
+      "rooftop",
+      "railing",
+      "moon",
+      "night",
+      "cityscape",
+      "looking up",
+      "full body",
+      "neon lights",
+      "moonlight",
+      "from behind"
+    ],
+    "promptProse": "On a Watson rooftop catwalk, she turns the dial of a handheld receiver, braces the rail with her other hand, and looks up as the moon clears an antenna. Blue light from a billboard catches the edge of the rail.",
+    "animaCaption": "She stops adjusting the receiver once the moon is clear of the antenna.",
+    "sceneTags": [
+      "rooftop",
+      "railing",
+      "moon",
+      "night",
+      "cityscape",
+      "looking_up",
+      "full_body",
+      "neon_lights",
+      "moonlight",
+      "from_behind"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

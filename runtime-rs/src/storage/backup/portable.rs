@@ -104,7 +104,9 @@ pub(in crate::storage) fn import(
         source
             .parent()
             .ok_or_else(|| invalid_backup("Invalid backup path"))?,
-        source.file_name().unwrap(),
+        source
+            .file_name()
+            .ok_or_else(|| invalid_backup("Invalid backup path"))?,
     )?;
     let mut input = fs::File::open(source)?;
     let mut magic = vec![0; MAGIC.len()];

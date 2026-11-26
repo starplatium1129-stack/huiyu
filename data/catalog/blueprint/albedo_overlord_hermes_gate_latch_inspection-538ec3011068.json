@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_overlord_hermes_gate_latch_inspection",
+  "revision": 1,
+  "sortOrder": 3946,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "albedo_overlord_hermes_gate_latch_inspection",
+    "characterId": "albedo_overlord",
+    "outfitId": "hermes_black_armor",
+    "title": "雅儿贝德 · 巡查时发现了门闩上的磨痕",
+    "category": "要塞巡查",
+    "description": "北门的门闩推到一半就卡住了。雅儿贝德侧过身，俯看门闩上新露出的一道银亮划痕，再用两指把它提离卡槽。贴墙的灯刚好照见连着肩甲和护手的紫色细缝。",
+    "location": "地下要塞的北门门洞",
+    "action": "俯身辨认门闩的磨痕，用两指将它提离卡槽",
+    "timeOfDay": "夜间",
+    "lighting": "门内壁灯侧光与铠甲细紫光",
+    "camera": "前侧中景，手与门闩和肩甲同框",
+    "mood": "警觉",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "leaning forward",
+      "looking down",
+      "armor",
+      "gate",
+      "stone wall",
+      "indoors",
+      "night",
+      "medium shot"
+    ],
+    "promptProse": "Albedo leans toward the gate latch in her full black plate armor, with her face visible and the helmet retracted. She finds a fresh scrape in the iron and lifts the latch slightly with two gauntleted fingers. Side light from a wall lamp picks out the spiked shoulder plates and the thin glow in their seams.",
+    "animaCaption": "She lifts the iron latch just far enough to expose the fresh scrape where it catches.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

@@ -386,8 +386,10 @@ impl Bridge {
         if is_concat {
             upstream = upstream.timeout(Duration::from_secs(120));
         } else if is_interrogate {
-            // Allow PixAI + remote vision assist + layout generation.
-            upstream = upstream.timeout(Duration::from_secs(105));
+            upstream = upstream.timeout(crate::interrogate::RELAY_LOCAL_TIMEOUT);
+        } else if route == "/api/muse/batches" {
+            // Includes the cast-fusion budget, input validation, and queue persistence.
+            upstream = upstream.timeout(Duration::from_secs(40));
         } else if message || cmd.path == "/api/muse/voice/synthesize" {
             // Allow for QQ uploads or a cold voice model.
             upstream = upstream.timeout(Duration::from_secs(85));

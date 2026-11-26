@@ -52,7 +52,7 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
   && (form.mossLayout === undefined || mossModels.some(model => model.value === form.modelId)
     && typeof form.mossLayout === 'string' && form.mossLayout.length <= 12000)
   && (form.mossLayoutContext === undefined || mossModels.some(model => model.value === form.modelId)
-    && typeof form.mossLayoutContext === 'string' && /^[\da-f]{0,8}$/.test(form.mossLayoutContext))
+    && typeof form.mossLayoutContext === 'string' && /^(?:[\da-f]{0,8}|v2-[\da-f]{1,8})$/.test(form.mossLayoutContext))
   && (form.mossSampler === undefined || mossModels.some(model => model.value === form.modelId) && (form.mossSampler === 'euler' || form.mossSampler === 'er-sde'))
   && (form.mossUseTaskPrompt === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossUseTaskPrompt === 'boolean')
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))

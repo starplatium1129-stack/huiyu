@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_alisa_mikhailovna_kujou_dawn_bookmark",
+  "revision": 1,
+  "sortOrder": 19000,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_alisa_mikhailovna_kujou_dawn_bookmark",
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfitId": "oversized_nightshirt",
+    "title": "艾莉莎 · 书页里的日出",
+    "description": "艾莉莎靠在窗边的椅背上，把读了一半的小说朝窗光挪了挪。书签还搭在手指上，她又向后翻了一页。蓝色丝睡衫的白滚边落到手腕，膝上盖着一条折好的薄毯。",
+    "location": "家中窗边的扶手椅",
+    "action": "坐在椅子上用指尖翻书，膝上覆着薄毯",
+    "timeOfDay": "清晨",
+    "lighting": "窗光从桌边缓慢移到书页内侧",
+    "camera": "侧面中景，书和手腕入镜",
+    "mood": "安静、舍不得合书",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "sitting",
+      "reading_book",
+      "holding_book",
+      "window",
+      "armchair",
+      "blanket",
+      "indoors",
+      "morning",
+      "from_side"
+    ],
+    "promptTokens": [
+      "sitting",
+      "reading book",
+      "holding book",
+      "window",
+      "armchair",
+      "blanket",
+      "indoors",
+      "morning",
+      "from side"
+    ],
+    "promptProse": "Alya sits in an armchair by the window with a folded blanket across her lap. A bookmark rests across the fingers of the hand that holds the paperback steady while her other hand turns a page. The morning light catches the white piping along one sleeve.",
+    "animaCaption": "A folded blanket covers her lap while the light reaches the page her fingertip is turning.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

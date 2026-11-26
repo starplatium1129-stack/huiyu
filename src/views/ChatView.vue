@@ -181,7 +181,8 @@
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
             :can-regenerate="chatReady && canRegenerateMessage(msg.mid)"
             :can-continue="chatReady && msg.role === 'assistant' && Boolean(msg.content.trim()) && msg === lastMessage"
-            :can-edit="Boolean(msg.content)" :can-illustrate="isLocalHost" :illustrating="illustratingMid === msg.mid" :can-delete="true" :can-truncate="true"
+            :can-edit="Boolean(msg.content)" :can-illustrate="isLocalHost && (!illustrateStatus || illustratingMid === msg.mid)"
+            :illustrating="illustratingMid === msg.mid" :can-delete="true" :can-truncate="true"
             :disable-bubble-split="rpSettings.activePreset.value.disableBubbleSplit"
             :regex-rules="rpSettings.rpState.value.regexRules"
             :story-disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
@@ -200,6 +201,7 @@
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" :aria-busy="busy" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText && (immersive || speechSessionActive || !busy || lastAssistantMessage?.content || lastAssistantMessage?.drawingBatchId || !lastAssistantMessage)" class="room-chat-activity">
           <ChatTurnIndicator :label="activityText" :animated="busy" />
+          <button v-if="illustrateStatus" class="btn btn-ghost btn-sm" type="button" @click="cancelIllustration">取消插画</button>
           <button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button>
         </div>
         <div class="chat-composer">

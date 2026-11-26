@@ -175,11 +175,23 @@ function reloadRecord() {
   void loadSlotPreviews()
 }
 
-watch(() => props.character.id, reloadRecord, { immediate: true })
+function stopActiveOperation() {
+  activeController?.abort()
+  activeController = null
+  busy.value = false
+  inferring.value = false
+}
+
+watch(() => props.character.id, () => {
+  stopActiveOperation()
+  previews.value = {}
+  statusText.value = ''
+  reloadRecord()
+}, { immediate: true, flush: 'sync' })
 
 onScopeDispose(() => {
   disposed = true
-  activeController?.abort()
+  stopActiveOperation()
   previewController?.abort()
 })
 
@@ -189,97 +201,107 @@ function persistAppearanceTags() {
 
 async function inferFromAvatar() {
   if (busy.value || inferring.value) return
+  const { id: targetCharId, image } = props.character
   const controller = new AbortController()
   activeController = controller
   inferring.value = true
   statusText.value = '正在识别角色头像特征…'
   try {
     const { inferCardAppearanceTags } = await import('@/composables/chat/cardSpriteGeneration')
-    const tags = await inferCardAppearanceTags(props.character.image, controller.signal)
-    if (disposed || controller.signal.aborted) return
+    if (!isCurrentOperation(controller, targetCharId)) return
+    const tags = await inferCardAppearanceTags(image, controller.signal)
+    if (!isCurrentOperation(controller, targetCharId)) return
     appearanceTags.value = tags
-    persistAppearanceTags()
+    record.value = setCardAppearanceTags(targetCharId, tags)
     statusText.value = '已提取外观特征词条，可按需微调后生成差分。'
   } catch (error) {
-    if (!disposed && !controller.signal.aborted) {
+    if (isCurrentOperation(controller, targetCharId)) {
       const msg = error instanceof Error ? error.message : '外观反推失败'
       statusText.value = msg
       emit('notice', msg, 'warning')
     }
   } finally {
-    if (activeController === controller) activeController = null
-    inferring.value = false
+    if (activeController === controller) stopActiveOperation()
   }
 }
 
+function isCurrentOperation(controller: AbortController, targetCharId: string): boolean {
+  return !disposed && !controller.signal.aborted && activeController === controller && props.character.id === targetCharId
+}
+
 async function generateSingle(emotion: CardSpriteEmotion) {
-  if (busy.value) return
+  if (busy.value || inferring.value) return
+  const { id: targetCharId, name: cardName } = props.character
+  const targetCatalogId = catalogId.value
   persistAppearanceTags()
   const controller = new AbortController()
   activeController = controller
   busy.value = true
   try {
     const { generateCardEmotionSprite } = await import('@/composables/chat/cardSpriteGeneration')
+    if (!isCurrentOperation(controller, targetCharId)) return
     const image = await generateCardEmotionSprite({
-      cardId: props.character.id,
-      cardName: props.character.name,
-      catalogId: catalogId.value,
+      cardId: targetCharId,
+      cardName,
+      catalogId: targetCatalogId,
       appearanceTags: appearanceTags.value,
       emotion,
       signal: controller.signal,
-      onProgress: text => { if (!disposed) statusText.value = text },
+      onProgress: text => { if (isCurrentOperation(controller, targetCharId)) statusText.value = text },
     })
-    if (disposed || controller.signal.aborted) return
-    record.value = saveCardSpriteSlot(props.character.id, emotion, image)
+    if (!isCurrentOperation(controller, targetCharId)) return
+    record.value = saveCardSpriteSlot(targetCharId, emotion, image)
     dispatchChatCardSpritesChanged()
     await loadSlotPreviews()
+    if (!isCurrentOperation(controller, targetCharId)) return
     statusText.value = '立绘已保存。'
     emit('preview-emotion', emotion)
   } catch (error) {
-    if (!disposed && !controller.signal.aborted) {
+    if (isCurrentOperation(controller, targetCharId)) {
       const msg = error instanceof Error ? error.message : '生成失败'
       statusText.value = msg
       emit('notice', msg, 'error')
     }
   } finally {
-    if (activeController === controller) activeController = null
-    busy.value = false
+    if (activeController === controller) stopActiveOperation()
   }
 }
 
 async function generateMissing() {
-  if (busy.value || !missingEmotions.value.length) return
+  if (busy.value || inferring.value || !missingEmotions.value.length) return
+  const { id: targetCharId, name: cardName } = props.character
+  const targetCatalogId = catalogId.value
   persistAppearanceTags()
   const controller = new AbortController()
   activeController = controller
   busy.value = true
   try {
     const { generateCardSpriteSet } = await import('@/composables/chat/cardSpriteGeneration')
+    if (!isCurrentOperation(controller, targetCharId)) return
     const count = await generateCardSpriteSet({
-      cardId: props.character.id,
-      cardName: props.character.name,
-      catalogId: catalogId.value,
+      cardId: targetCharId,
+      cardName,
+      catalogId: targetCatalogId,
       appearanceTags: appearanceTags.value,
       emotions: [...missingEmotions.value],
       signal: controller.signal,
-      onProgress: text => { if (!disposed) statusText.value = text },
+      onProgress: text => { if (isCurrentOperation(controller, targetCharId)) statusText.value = text },
       onSlotReady: (emotion, image) => {
-        if (disposed) return
-        record.value = saveCardSpriteSlot(props.character.id, emotion, image)
+        if (!isCurrentOperation(controller, targetCharId)) return
+        record.value = saveCardSpriteSlot(targetCharId, emotion, image)
         dispatchChatCardSpritesChanged()
         void loadSlotPreviews()
       },
     })
-    if (!disposed) statusText.value = `已完成 ${count} 张情绪差分立绘。`
+    if (isCurrentOperation(controller, targetCharId)) statusText.value = `已完成 ${count} 张情绪差分立绘。`
   } catch (error) {
-    if (!disposed && !controller.signal.aborted) {
+    if (isCurrentOperation(controller, targetCharId)) {
       const msg = error instanceof Error ? error.message : '批量生成未完成'
       statusText.value = msg
       emit('notice', msg, 'warning')
     }
   } finally {
-    if (activeController === controller) activeController = null
-    busy.value = false
+    if (activeController === controller) stopActiveOperation()
   }
 }
 

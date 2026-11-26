@@ -1,8 +1,10 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
-import { loadChatCards, announceChatCardsChanged, type ChatCard } from '@/utils/chatCards'
+import { loadChatCards, announceChatCardsChanged, onChatCardsChanged, type ChatCard } from '@/utils/chatCards'
+import { downloadBlob } from '@/utils/downloadBlob'
+import { useChatRoomDismissGuard } from './useChatRoomDismissGuard'
 import {
-  chatCardExportUrl,
+  fetchChatCardExport,
   createChatCard,
   createEmptyCardDocument,
   deleteChatCard,
@@ -60,7 +62,7 @@ function normalizeDraftDocument(doc: CardV2Document): CardV2Document {
 }
 
 /** Owns SillyTavern Card v2/v3 listing, editing draft state, avatar previews, and CRUD mutations. */
-export function useChatCardManager(emit: ChatCardManagerEmit) {
+export function useChatCardManager(emit: ChatCardManagerEmit, canEdit: () => boolean) {
   const mode = ref<'list' | 'edit'>('list')
   const search = ref('')
   const loading = ref(true)
@@ -74,7 +76,10 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
   const editingId = ref<string | null>(null)
   const draft = ref<CardV2Document>(createEmptyCardDocument())
   const saving = ref(false)
+  const exporting = ref('')
   const saveError = ref('')
+  let originalDraft = ''
+  let refreshVersion = 0
 
   const avatarInputRef = ref<HTMLInputElement>()
   const pendingAvatarFile = ref<File | null>(null)
@@ -157,6 +162,16 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
   })
 
   const cardLoreEntries = computed(() => draft.value.data.character_book?.entries || [])
+  const entryKeys = new WeakMap<CardV2LoreEntry, number>()
+  let nextEntryKey = 0
+  function cardLoreKey(entry: CardV2LoreEntry) {
+    let key = entryKeys.get(entry)
+    if (key === undefined) {
+      key = ++nextEntryKey
+      entryKeys.set(entry, key)
+    }
+    return key
+  }
 
   function catalogNameOf(id: string): string {
     return catalogOptions.value.find(item => item.id === id)?.name || id
@@ -164,10 +179,6 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
 
   function voiceNameOf(id: string): string {
     return voiceOptions.value.find(item => item.id === id)?.label || id
-  }
-
-  function parseKeysInput(raw: string): string[] {
-    return raw.split(',').map(item => item.trim()).filter(Boolean)
   }
 
   function addCardLore() {
@@ -220,6 +231,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
   }
 
   async function refreshAll() {
+    const version = ++refreshVersion
     loading.value = true
     loadError.value = ''
     try {
@@ -228,36 +240,44 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
         fetchCatalogCharacterOptions(controller.signal),
         fetchVoiceOptions(controller.signal),
       ])
+      if (controller.signal.aborted || version !== refreshVersion) return
       cards.value = cardList
       catalogOptions.value = catalogs
       voiceOptions.value = voices
     } catch (error) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && version === refreshVersion) {
         loadError.value = error instanceof Error ? error.message : '读取角色卡列表失败'
       }
     } finally {
-      loading.value = false
+      if (version === refreshVersion) loading.value = false
     }
   }
 
-  onMounted(() => { void refreshAll() })
+  onMounted(() => {
+    onChatCardsChanged(() => { void refreshAll() }, controller.signal)
+    void refreshAll()
+  })
 
   function startCreate() {
+    if (!canEdit() || openingId.value) return
     editingId.value = null
     draft.value = createEmptyCardDocument()
+    originalDraft = JSON.stringify(draft.value)
     saveError.value = ''
     resetAvatarDraft('')
     mode.value = 'edit'
   }
 
   async function startEdit(id: string) {
-    if (openingId.value) return
+    if (!canEdit() || openingId.value) return
     openingId.value = id
     saveError.value = ''
     try {
       const detail = await fetchChatCardDetail(id, controller.signal)
+      if (controller.signal.aborted || !canEdit()) return
       editingId.value = detail.id
       draft.value = normalizeDraftDocument(detail.document)
+      originalDraft = JSON.stringify(draft.value)
       resetAvatarDraft(detail.summary.avatarUrl || '')
       mode.value = 'edit'
     } catch (error) {
@@ -269,11 +289,41 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
     }
   }
 
-  function backToList() {
+  function showList() {
     mode.value = 'list'
     editingId.value = null
     saveError.value = ''
     resetAvatarDraft('')
+  }
+
+  async function canDiscardDraft() {
+    if (saving.value) return false
+    if (mode.value !== 'edit' || (!pendingAvatarFile.value && !removeAvatarFlag.value && originalDraft === JSON.stringify(draft.value))) return true
+    return confirmAction({
+      title: '放弃未保存的角色卡修改？',
+      message: '返回后，这次编辑的内容和头像修改将丢失。',
+      confirmLabel: '放弃修改',
+      danger: true,
+      signal: controller.signal,
+    })
+  }
+  useChatRoomDismissGuard(canDiscardDraft)
+
+  async function backToList() {
+    if (await canDiscardDraft()) showList()
+  }
+
+  async function exportCard(card: ChatCard, format: 'json' | 'png') {
+    if (exporting.value) return
+    exporting.value = `${card.id}:${format}`
+    try {
+      const blob = await fetchChatCardExport(card.id, format, controller.signal)
+      if (!controller.signal.aborted) downloadBlob(blob, `card-${card.id.slice(5, 17)}.${format}`)
+    } catch (error) {
+      if (!controller.signal.aborted) emit('notice', error instanceof Error ? error.message : '导出角色卡失败', 'warning')
+    } finally {
+      exporting.value = ''
+    }
   }
 
   function selectAndClose(id: string) {
@@ -282,7 +332,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
   }
 
   async function saveCard() {
-    if (saving.value || !draft.value.data.name.trim()) return
+    if (!canEdit() || saving.value || !draft.value.data.name.trim()) return
     saving.value = true
     saveError.value = ''
     try {
@@ -302,8 +352,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
       announceChatCardsChanged()
       emit('cards-changed')
       emit('notice', editingId.value ? `已更新角色卡「${saved.name}」` : `已创建角色卡「${saved.name}」`, 'info')
-      backToList()
-      await refreshAll()
+      showList()
     } catch (error) {
       if (!controller.signal.aborted) {
         saveError.value = error instanceof Error ? error.message : '保存角色卡失败'
@@ -314,7 +363,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
   }
 
   async function requestDelete(card: ChatCard) {
-    if (deletingId.value) return
+    if (!canEdit() || deletingId.value) return
     const isCatalog = card.source === 'catalog'
     const confirmed = await confirmAction({
       title: isCatalog ? `恢复「${card.name}」为默认角色卡？` : `删除角色卡「${card.name}」？`,
@@ -324,7 +373,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
       confirmLabel: isCatalog ? '恢复默认' : '删除角色卡',
       danger: true,
     })
-    if (!confirmed) return
+    if (!confirmed || !canEdit() || controller.signal.aborted || deletingId.value) return
     deletingId.value = card.id
     try {
       const res = await deleteChatCard(card.id, controller.signal)
@@ -332,7 +381,6 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
       announceChatCardsChanged()
       emit('cards-changed')
       emit('notice', res.restoredCatalog ? `已恢复「${card.name}」为默认设定` : `已删除角色卡「${card.name}」`, 'info')
-      await refreshAll()
     } catch (error) {
       if (!controller.signal.aborted) {
         emit('notice', error instanceof Error ? error.message : '操作失败', 'warning')
@@ -352,6 +400,7 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
     editingId,
     draft,
     saving,
+    exporting,
     saveError,
     avatarInputRef,
     avatarPreviewUrl,
@@ -365,10 +414,10 @@ export function useChatCardManager(emit: ChatCardManagerEmit) {
     depthPromptText,
     depthPromptDepth,
     cardLoreEntries,
-    chatCardExportUrl,
+    cardLoreKey,
+    exportCard,
     catalogNameOf,
     voiceNameOf,
-    parseKeysInput,
     addCardLore,
     removeCardLore,
     onPickAvatar,

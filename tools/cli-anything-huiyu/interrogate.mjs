@@ -94,7 +94,7 @@ export async function interrogateJson(payload) {
   }
   const key = requestKey(payload.requestKey ?? newRequestKey())
   try {
-    return await api('POST', '/api/muse/interrogate', { ...payload, requestKey: key }, { timeoutMs: 120_000 })
+    return await api('POST', '/api/muse/interrogate', { ...payload, requestKey: key }, { timeoutMs: 180_000 })
   } catch (error) {
     error.requestKey = key
     throw error
@@ -161,7 +161,7 @@ export async function runInterrogate(options, args) {
     if (layout) query.set('layout', 'true')
     if (noCache) query.set('noCache', 'true')
     const path = query.size ? `/api/muse/interrogate?${query}` : '/api/muse/interrogate'
-    result = await apiRaw('POST', path, data, mimeType, { timeoutMs: 120_000 })
+    result = await apiRaw('POST', path, data, mimeType, { timeoutMs: 180_000 })
   }
 
   if (options['out-json'] !== undefined) {

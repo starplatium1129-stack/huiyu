@@ -56,7 +56,7 @@ export function useInterrogate(applyResult: (result: InterrogateResult, current:
     let applying = false
     activeController = controller
     if (appContext) activeRequests.set(appContext, cancel)
-    const timeout = setTimeout(() => controller.abort(), assist ? (layout ? 165_000 : 155_000) : 120_000)
+    const timeout = setTimeout(() => controller.abort(), assist ? 180_000 : 120_000)
     try {
       // Start user-activated clipboard reads before the first await. Consume
       // rejection immediately while readiness is pending; nothing is uploaded

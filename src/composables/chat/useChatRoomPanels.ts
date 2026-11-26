@@ -1,7 +1,8 @@
-import { nextTick, ref, watch, type Ref } from 'vue'
+import { nextTick, provide, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
+import { chatRoomDismissGuardKey, type ChatRoomDismissGuard } from './useChatRoomDismissGuard'
 
 export type RoomPanel = 'archive' | 'memory' | 'profile' | 'rp' | 'sprites' | 'cards' | 'lorebooks' | 'settings'
 
@@ -47,6 +48,12 @@ export function useChatRoomPanels(options: UseChatRoomPanelsOptions) {
   const roomPanel = ref<RoomPanel | null>(null)
   const roomPanelGeneration = ref(0)
   let roomPanelClosing = false
+  let dismissGuard: ChatRoomDismissGuard | undefined
+  let confirmingDismiss = false
+  provide(chatRoomDismissGuardKey, guard => {
+    dismissGuard = guard
+    return () => { if (dismissGuard === guard) dismissGuard = undefined }
+  })
   const roomPanelDialog = ref<HTMLDialogElement | null>(null)
   const roomPanelMotion = useFluidDialog(roomPanelDialog)
 
@@ -90,7 +97,17 @@ export function useChatRoomPanels(options: UseChatRoomPanelsOptions) {
     if (speechOpenRef) speechOpenRef.value = false
   }
 
-  function closeRoomPanel() {
+  async function closeRoomPanel() {
+    if (roomPanelClosing || confirmingDismiss) return
+    if (dismissGuard) {
+      const generation = roomPanelGeneration.value
+      confirmingDismiss = true
+      try {
+        if (!await dismissGuard() || generation !== roomPanelGeneration.value) return
+      } finally {
+        confirmingDismiss = false
+      }
+    }
     roomPanelClosing = true
     if (speechOpenRef) speechOpenRef.value = false
     roomPanelMotion.close(clearRoomPanel)
@@ -101,7 +118,7 @@ export function useChatRoomPanels(options: UseChatRoomPanelsOptions) {
   }
 
   function closeRoomPanelFromBackdrop(event: MouseEvent) {
-    if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
+    if (isBackdropClick(event, roomPanelDialog.value)) void closeRoomPanel()
   }
 
   async function onUserProfileSave(profile: ChatUserProfile): Promise<boolean> {
@@ -110,7 +127,7 @@ export function useChatRoomPanels(options: UseChatRoomPanelsOptions) {
   }
 
   watch(cardImportPending, importing => {
-    if (importing && roomPanel.value === 'settings') closeRoomPanel()
+    if (importing && roomPanel.value === 'settings') void closeRoomPanel()
   })
 
   function bindSpeechSettingsOpen(speechRef: Ref<boolean>) {

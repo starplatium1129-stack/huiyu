@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_ichinose_honami_relay_handoff_rehearsal",
+  "revision": 1,
+  "sortOrder": 3923,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_ichinose_honami_relay_handoff_rehearsal",
+    "characterId": "ichinose_honami",
+    "outfitId": "gym_tracksuit_athletic",
+    "title": "一之濑帆波 · 下一棒从白线起跑",
+    "category": "校园日常",
+    "description": "校运会前，一之濑帆波独自在交接区核对起跑位置。深蓝滚边的白色体操上衣在奔跑中起伏，她踩到白线就回头伸出手，顺势记下交接的一拍。跑道上还留着雨后没有蒸干的几处深红。",
+    "location": "学校操场的接力交接区",
+    "action": "跑到交接白线处回头伸手，辨认下一棒交接的时机。",
+    "timeOfDay": "上午",
+    "lighting": "bright morning sunlight",
+    "camera": "full body, from side",
+    "mood": "专注果断",
+    "promptTokens": [
+      "running track",
+      "running",
+      "outdoors",
+      "outstretched hand",
+      "looking back",
+      "hand up",
+      "sunlight",
+      "full body",
+      "from side"
+    ],
+    "promptProse": "At the school track, she runs through the relay exchange zone, turns her head, and reaches back just as her foot crosses the white line. Patches of damp still darken the red surface after the rain.",
+    "animaCaption": "She is timing the handoff gesture against the line on the track.",
+    "sceneTags": [
+      "running_track",
+      "running",
+      "outdoors",
+      "outstretched_hand",
+      "looking_back",
+      "hand_up",
+      "sunlight",
+      "full_body",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

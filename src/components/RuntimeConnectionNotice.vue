@@ -41,7 +41,10 @@ const gatewayMessage = computed(() => {
 const connection = ref(getDesktopRuntime().connection)
 const saveFailed = ref(Boolean(profileWriteStatus().error) || (profileWriteStatus().blocked && connection.value === 'ready')), retrying = ref(false)
 const recoveryAvailable = ref(hasProfileRecoveryData())
-const stop = desktop ? onDesktopRuntime(state => { connection.value = state.connection }) : () => {}
+const stop = desktop ? onDesktopRuntime(state => {
+  connection.value = state.connection
+  if (state.connection === 'ready') synced()
+}) : () => {}
 const failed = () => { saveFailed.value = true; recoveryAvailable.value = hasProfileRecoveryData() }
 function downloadRecovery() { downloadBlob(exportProfileRecovery(), '绘遇-未保存草稿.json') }
 function synced() {
@@ -79,5 +82,4 @@ onUnmounted(() => {
 @reference "../assets/css/tailwind.css";
 .runtime-notice { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--border-strong); background: var(--bg-surface); }
 .runtime-notice p { @apply tw:m-0 tw:text-label tw:leading-body; }
-.runtime-notice button:disabled { @apply tw:text-disabled; opacity: 1; }
 </style>

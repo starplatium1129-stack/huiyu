@@ -24,7 +24,7 @@
           placeholder="搜索角色卡名称、绑定ID…"
           aria-label="搜索角色卡"
         />
-        <button type="button" class="btn btn-primary btn-sm" @click="startCreate">新建角色卡</button>
+        <button v-if="canEditCards" type="button" class="btn btn-primary btn-sm" :disabled="Boolean(openingId)" @click="startCreate">新建角色卡</button>
         <button v-if="canEditCards" type="button" class="btn btn-ghost btn-sm" @click="emit('import-file')">导入 PNG/JSON</button>
       </div>
 
@@ -61,13 +61,13 @@
           </div>
           <div class="ccm-card-actions">
             <button type="button" class="btn btn-primary btn-sm" @click="selectAndClose(card.id)">对话</button>
-            <button type="button" class="btn btn-ghost btn-sm" :disabled="openingId === card.id" @click="startEdit(card.id)">
+            <button v-if="canEditCards" type="button" class="btn btn-ghost btn-sm" :disabled="Boolean(openingId)" @click="startEdit(card.id)">
               {{ openingId === card.id ? '载入中…' : '编辑/绑定' }}
             </button>
-            <a class="btn btn-quiet btn-sm" :href="chatCardExportUrl(card.id, 'json')" :download="`card-${card.id.slice(5, 17)}.json`">JSON</a>
-            <a class="btn btn-quiet btn-sm" :href="chatCardExportUrl(card.id, 'png')" :download="`card-${card.id.slice(5, 17)}.png`">PNG</a>
+            <button type="button" class="btn btn-quiet btn-sm" :disabled="Boolean(exporting)" @click="exportCard(card, 'json')">导出 JSON</button>
+            <button type="button" class="btn btn-quiet btn-sm" :disabled="Boolean(exporting)" @click="exportCard(card, 'png')">导出 PNG</button>
             <button
-              v-if="card.source !== 'catalog' || card.overridden"
+              v-if="canEditCards && (card.source !== 'catalog' || card.overridden)"
               type="button"
               class="btn btn-quiet btn-sm"
               :disabled="deletingId === card.id"
@@ -83,7 +83,10 @@
     <form v-else class="room-tool-body ccm-body" @submit.prevent="saveCard">
       <div class="ccm-editor-top">
         <div class="ccm-avatar-preview">
-          <img v-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="角色卡头像预览" />
+          <img v-if="avatarPreviewUrl.startsWith('blob:')" :src="avatarPreviewUrl" alt="角色卡头像预览" />
+          <RuntimeImage v-else-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="角色卡头像预览">
+            <template #fallback><ArchiveIcon name="character" /></template>
+          </RuntimeImage>
           <ArchiveIcon v-else name="character" />
         </div>
         <div class="ccm-avatar-controls">
@@ -172,24 +175,23 @@
       <details class="ccm-accordion">
         <summary>卡片内置世界书（{{ cardLoreEntries.length }} 条）</summary>
         <div class="ccm-accordion-body">
-          <div v-for="(entry, index) in cardLoreEntries" :key="index" class="ccm-lore-entry">
+          <div v-for="(entry, index) in cardLoreEntries" :key="cardLoreKey(entry)" class="ccm-lore-entry">
             <div class="ccm-lore-head">
-              <input v-model="entry.comment" class="input" maxlength="48" placeholder="条目标题（可选）" />
-              <select v-model="entry.position" class="input ccm-pos-select" aria-label="注入位置">
-                <option value="before_char">设定前</option>
-                <option value="after_char">设定后</option>
-                <option value="at_depth">指定深度</option>
-              </select>
+              <input v-model="entry.comment" class="input" maxlength="48" aria-label="条目标题" placeholder="条目标题（可选）" />
+              <StudioSelect v-model="entry.position" class="ccm-pos-select" label="注入位置" :options="positionOptions" />
               <ToggleSwitch :model-value="entry.enabled !== false" label="启用条目" @update:model-value="entry.enabled = $event">启用</ToggleSwitch>
+              <ToggleSwitch :model-value="entry.constant === true" label="常驻激活" @update:model-value="entry.constant = $event">常驻激活</ToggleSwitch>
               <button type="button" class="btn btn-quiet btn-sm" @click="removeCardLore(index)">删除</button>
             </div>
-            <input
-              :value="entry.keys.join(', ')"
-              class="input"
-              placeholder="触发关键词（多个用英文逗号分隔）；留空并勾选常驻可始终注入"
-              @input="entry.keys = parseKeysInput(($event.target as HTMLInputElement).value)"
-            />
-            <textarea v-model="entry.content" class="textarea ccm-autosize" rows="2" maxlength="4000" placeholder="命中关键词后注入的设定内容" />
+            <label v-if="entry.position === 'at_depth'" class="ccm-field">
+              <span>插入深度（0–16）</span>
+              <input v-model.number="entry.depth" class="input" type="number" min="0" max="16" />
+            </label>
+            <label class="ccm-field">
+              <span>触发关键词（用逗号分隔）</span>
+              <ChatLoreKeywordsInput v-model="entry.keys" />
+            </label>
+            <textarea v-model="entry.content" class="textarea ccm-autosize" rows="2" maxlength="4000" aria-label="条目内容" placeholder="命中关键词后注入的设定内容" />
           </div>
           <button type="button" class="btn btn-ghost btn-sm" @click="addCardLore">+ 添加内置世界书条目</button>
         </div>
@@ -211,12 +213,19 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import ChatLoreKeywordsInput from '@/components/ChatLoreKeywordsInput.vue'
 import { useChatCardManager } from '@/composables/chat/useChatCardManager'
 
-defineProps<{
+const props = defineProps<{
   activeChar: string
   canEditCards?: boolean
 }>()
+
+const positionOptions = [
+  { value: 'before_char', label: '设定前' },
+  { value: 'after_char', label: '设定后' },
+  { value: 'at_depth', label: '指定深度' },
+]
 
 const emit = defineEmits<{
   close: []
@@ -228,13 +237,13 @@ const emit = defineEmits<{
 
 const {
   mode, search, loading, loadError, openingId, deletingId, editingId, draft,
-  saving, saveError, avatarInputRef, avatarPreviewUrl, filteredCards,
+  saving, exporting, saveError, avatarInputRef, avatarPreviewUrl, filteredCards,
   catalogSelectOptions, voiceSelectOptions, huiyuCatalogId, huiyuVoiceId,
   catalogBindingLabel, voiceBindingLabel, depthPromptText, depthPromptDepth,
-  cardLoreEntries, chatCardExportUrl, catalogNameOf, voiceNameOf, parseKeysInput,
+  cardLoreEntries, cardLoreKey, exportCard, catalogNameOf, voiceNameOf,
   addCardLore, removeCardLore, onPickAvatar, clearAvatar, startCreate, startEdit,
   backToList, selectAndClose, saveCard, requestDelete,
-} = useChatCardManager(emit)
+} = useChatCardManager(emit, () => props.canEditCards === true)
 </script>
 
 <style scoped>
@@ -244,7 +253,7 @@ const {
 .ccm-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
 .ccm-search { flex:1 1 180px; }
 .ccm-status { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
-.ccm-status.is-error { color:var(--danger, #c63d3d); }
+.ccm-status.is-error { color:var(--danger-text); }
 .ccm-empty { padding:var(--s-5); border:1px dashed var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); text-align:center; font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
 .ccm-card-list { display:grid; gap:var(--s-2); }
 .ccm-card-item { display:grid; grid-template-columns:56px minmax(0, 1fr); gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
@@ -254,10 +263,10 @@ const {
 .ccm-card-info { min-width:0; display:grid; gap:4px; }
 .ccm-card-title-row { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1); }
 .ccm-card-title-row strong { font:600 var(--fs-body-sm)/1.3 var(--font-sans); color:var(--text-primary); }
-.ccm-badge { padding:1px 6px; border-radius:999px; background:var(--bg-elevated); color:var(--text-secondary); font:500 11px/1.4 var(--font-sans); }
-.ccm-badge.is-accent { background:color-mix(in srgb, var(--accent) 16%, transparent); color:var(--accent); }
+.ccm-badge { padding:1px 6px; border-radius:999px; background:var(--bg-elevated); color:var(--text-secondary); font:500 var(--fs-label-xs)/1.4 var(--font-sans); }
+.ccm-badge.is-accent { background:var(--bg-elevated); color:var(--text-primary); }
 .ccm-card-desc { margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/1.4 var(--font-sans); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-.ccm-card-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); color:var(--text-secondary); font:400 11px/1.3 var(--font-sans); }
+.ccm-card-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.3 var(--font-sans); }
 .ccm-card-actions { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:var(--s-1); justify-content:flex-end; border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
 
 .ccm-editor-top { display:flex; align-items:center; gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
@@ -271,7 +280,7 @@ const {
 .ccm-two-col { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap:var(--s-3); }
 .ccm-field { display:grid; gap:var(--s-1); align-content:start; }
 .ccm-field > span { color:var(--text-secondary); font:600 var(--fs-label-xs)/1.3 var(--font-sans); }
-.ccm-field small { color:var(--text-secondary); font:400 11px/1.4 var(--font-sans); }
+.ccm-field small { color:var(--text-secondary); font:400 var(--fs-label-xs)/1.4 var(--font-sans); }
 .ccm-accordion { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); padding:var(--s-2) var(--s-3); }
 .ccm-accordion > summary { cursor:pointer; font:600 var(--fs-label)/1.5 var(--font-sans); color:var(--text-primary); }
 .ccm-accordion-body { display:grid; gap:var(--s-2); margin-top:var(--s-2); }

@@ -5,9 +5,12 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::HashMap,
     path::PathBuf,
-    sync::{Arc, Mutex},
+    sync::{Arc, Mutex, PoisonError},
     time::{SystemTime, UNIX_EPOCH},
 };
+
+use tokio::task::JoinHandle;
+use tokio_util::task::TaskTracker;
 
 const CACHE_SCHEMA_VERSION: u32 = 2;
 pub(super) const TTL_SECONDS: i64 = 14 * 24 * 60 * 60;
@@ -15,6 +18,7 @@ const TTL_MS: i64 = TTL_SECONDS * 1000;
 const MAX_MEMORY_ENTRIES: usize = 128;
 const MAX_DISK_ENTRIES: i64 = 1024;
 const MAX_DISK_BYTES: i64 = 32 * 1024 * 1024;
+const TOUCH_INTERVAL_MS: i64 = 60_000;
 const MAX_ENTRY_BYTES: usize = 256 * 1024;
 
 #[derive(Clone)]
@@ -22,12 +26,14 @@ struct MemoryEntry {
     payload: Value,
     created_at: i64,
     last_accessed_at: i64,
+    disk_accessed_at: i64,
     expires_at: i64,
 }
 
 struct Inner {
     memory: Mutex<HashMap<String, MemoryEntry>>,
-    disk: Option<Mutex<Connection>>,
+    disk: Option<Arc<Mutex<Connection>>>,
+    disk_jobs: Mutex<TaskTracker>,
 }
 
 #[derive(Clone)]
@@ -112,7 +118,7 @@ impl InterrogateCache {
     pub(super) fn new(config: &Config) -> Self {
         let path = config.runtime_root.join("cache/interrogate-results.sqlite");
         let disk = match open_disk(path) {
-            Ok(conn) => Some(Mutex::new(conn)),
+            Ok(conn) => Some(Arc::new(Mutex::new(conn))),
             Err(error) => {
                 eprintln!("反推结果磁盘缓存不可用，已降级为纯内存缓存：{error}");
                 None
@@ -122,47 +128,77 @@ impl InterrogateCache {
             inner: Arc::new(Inner {
                 memory: Mutex::new(HashMap::new()),
                 disk,
+                disk_jobs: Mutex::new(TaskTracker::new()),
             }),
         }
+    }
+
+    pub(super) async fn close(&self) {
+        let jobs = {
+            let jobs = self
+                .inner
+                .disk_jobs
+                .lock()
+                .unwrap_or_else(PoisonError::into_inner);
+            jobs.close();
+            jobs.clone()
+        };
+        jobs.wait().await;
+    }
+
+    fn spawn_disk<T: Send + 'static>(
+        &self,
+        work: impl FnOnce(&Mutex<Connection>) -> T + Send + 'static,
+    ) -> Option<JoinHandle<T>> {
+        let disk = self.inner.disk.as_ref()?.clone();
+        let jobs = self
+            .inner
+            .disk_jobs
+            .lock()
+            .unwrap_or_else(PoisonError::into_inner);
+        if jobs.is_closed() {
+            return None;
+        }
+        Some(jobs.spawn_blocking(move || work(&disk)))
     }
 
     pub(super) async fn get(&self, key: &str) -> Option<(Value, i64)> {
         let now = now_ms();
         {
-            let mut memory = self.inner.memory.lock().unwrap();
+            let mut memory = self
+                .inner
+                .memory
+                .lock()
+                .unwrap_or_else(PoisonError::into_inner);
             if let Some(entry) = memory.get_mut(key) {
                 if entry.expires_at > now {
                     entry.last_accessed_at = now;
                     let hit = (entry.payload.clone(), entry.created_at);
-                    let inner = self.inner.clone();
-                    let key_owned = key.to_owned();
-                    tokio::task::spawn_blocking(move || {
-                        if let Some(disk) = &inner.disk
-                            && let Ok(conn) = disk.lock()
-                        {
-                            let _ = conn.execute(
-                                "UPDATE interrogate_cache SET last_accessed_at = ?1 WHERE cache_key = ?2",
-                                params![now, key_owned],
-                            );
-                        }
-                    });
+                    if self.inner.disk.is_some()
+                        && now.saturating_sub(entry.disk_accessed_at) >= TOUCH_INTERVAL_MS
+                    {
+                        entry.disk_accessed_at = now;
+                        let key = key.to_owned();
+                        let created_at = entry.created_at;
+                        let _touch = self.spawn_disk(move |disk| {
+                            if let Ok(conn) = disk.lock() {
+                                touch_disk(&conn, &key, created_at, now);
+                            }
+                        });
+                    }
                     return Some(hit);
                 }
                 memory.remove(key);
             }
         }
-        if self.inner.disk.is_none() {
-            return None;
-        }
-        let inner = self.inner.clone();
         let key_owned = key.to_owned();
-        let disk_hit = tokio::task::spawn_blocking(move || -> Option<MemoryEntry> {
-            let conn = inner.disk.as_ref()?.lock().ok()?;
-            let (raw, created_at, expires_at): (String, i64, i64) = conn
+        let disk_hit = self.spawn_disk(move |disk| -> Option<MemoryEntry> {
+            let conn = disk.lock().ok()?;
+            let (raw, created_at, expires_at, disk_accessed_at): (String, i64, i64, i64) = conn
                 .query_row(
-                    "SELECT payload, created_at, expires_at FROM interrogate_cache WHERE cache_key = ?1",
+                    "SELECT payload, created_at, expires_at, last_accessed_at FROM interrogate_cache WHERE cache_key = ?1",
                     params![&key_owned],
-                    |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+                    |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?)),
                 )
                 .optional()
                 .ok()??;
@@ -183,17 +219,20 @@ impl InterrogateCache {
                     return None;
                 }
             };
-            let _ = conn.execute(
-                "UPDATE interrogate_cache SET last_accessed_at = ?1 WHERE cache_key = ?2",
-                params![now, &key_owned],
-            );
+            let disk_accessed_at = if now.saturating_sub(disk_accessed_at) >= TOUCH_INTERVAL_MS {
+                touch_disk(&conn, &key_owned, created_at, now);
+                now
+            } else {
+                disk_accessed_at
+            };
             Some(MemoryEntry {
                 payload,
                 created_at,
                 last_accessed_at: now,
+                disk_accessed_at,
                 expires_at,
             })
-        })
+        })?
         .await
         .ok()??;
 
@@ -223,18 +262,12 @@ impl InterrogateCache {
                 payload,
                 created_at: now,
                 last_accessed_at: now,
+                disk_accessed_at: now,
                 expires_at,
             },
         );
-        if self.inner.disk.is_none() {
-            return;
-        }
-        let inner = self.inner.clone();
         let bytes = serialized.len() as i64;
-        let _ = tokio::task::spawn_blocking(move || {
-            let Some(disk) = &inner.disk else {
-                return;
-            };
+        let write = self.spawn_disk(move |disk| {
             let Ok(mut conn) = disk.lock() else {
                 return;
             };
@@ -258,38 +291,38 @@ impl InterrogateCache {
             );
             prune_disk(&tx);
             let _ = tx.commit();
-        })
-        .await;
+        });
+        if let Some(write) = write {
+            let _ = write.await;
+        }
     }
 
     pub(super) async fn stats(&self) -> Value {
         let now = now_ms();
         let memory_entries = {
-            let mut memory = self.inner.memory.lock().unwrap();
+            let mut memory = self
+                .inner
+                .memory
+                .lock()
+                .unwrap_or_else(PoisonError::into_inner);
             memory.retain(|_, entry| entry.expires_at > now);
             memory.len()
         };
         let persistent = self.inner.disk.is_some();
-        let (disk_entries, disk_bytes) = if persistent {
-            let inner = self.inner.clone();
-            tokio::task::spawn_blocking(move || -> (i64, i64) {
-                let Some(disk) = &inner.disk else {
-                    return (0, 0);
-                };
-                let Ok(conn) = disk.lock() else {
-                    return (0, 0);
-                };
-                conn.query_row(
-                    "SELECT COUNT(*), COALESCE(SUM(bytes), 0) FROM interrogate_cache WHERE expires_at > ?1",
-                    params![now],
-                    |row| Ok((row.get(0)?, row.get(1)?)),
-                )
-                .unwrap_or((0, 0))
-            })
-            .await
+        let stats = self.spawn_disk(move |disk| {
+            let Ok(conn) = disk.lock() else {
+                return (0, 0);
+            };
+            conn.query_row(
+                "SELECT COUNT(*), COALESCE(SUM(bytes), 0) FROM interrogate_cache WHERE expires_at > ?1",
+                params![now],
+                |row| Ok((row.get(0)?, row.get(1)?)),
+            )
             .unwrap_or((0, 0))
-        } else {
-            (0, 0)
+        });
+        let (disk_entries, disk_bytes) = match stats {
+            Some(stats) => stats.await.unwrap_or_default(),
+            None => (0, 0),
         };
         json!({
             "enabled": true,
@@ -306,7 +339,11 @@ impl InterrogateCache {
 
     fn insert_memory(&self, key: String, entry: MemoryEntry) {
         let now = entry.last_accessed_at;
-        let mut memory = self.inner.memory.lock().unwrap();
+        let mut memory = self
+            .inner
+            .memory
+            .lock()
+            .unwrap_or_else(PoisonError::into_inner);
         memory.retain(|_, value| value.expires_at > now);
         memory.insert(key, entry);
         while memory.len() > MAX_MEMORY_ENTRIES {
@@ -322,6 +359,14 @@ impl InterrogateCache {
             }
         }
     }
+}
+
+fn touch_disk(conn: &Connection, key: &str, created_at: i64, now: i64) {
+    let _ = conn.execute(
+        "UPDATE interrogate_cache SET last_accessed_at = ?1
+         WHERE cache_key = ?2 AND created_at = ?3 AND last_accessed_at <= ?4",
+        params![now, key, created_at, now.saturating_sub(TOUCH_INTERVAL_MS)],
+    );
 }
 
 fn prune_disk(tx: &rusqlite::Transaction<'_>) {

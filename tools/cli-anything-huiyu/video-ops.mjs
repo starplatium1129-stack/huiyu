@@ -35,7 +35,6 @@ export const VIDEO_CREATE_TEXT_OPTIONS = {
   quality: 'quality',
   'h3-decoder': 'h3Decoder',
   'video-attention': 'videoAttention',
-  'wan-resolution': 'wanResolution',
   image: 'image',
   'last-frame': 'lastFrame',
   'driving-audio': 'drivingAudio',

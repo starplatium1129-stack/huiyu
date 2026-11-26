@@ -4,6 +4,10 @@ export const PART = 128 * 1024
 const MAX_FILE = 32 * 1024 * 1024
 const MAX_TOTAL = 512 * 1024 * 1024
 const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
+const INACTIVE_MS = 5 * 60 * 1000
+const activeTransfer = "state='transferring' AND expires>? AND coalesce(last_progress,started)>?"
+const expired = (file, now) => file.expires <= now
+  || (file.state === 'transferring' && (file.last_progress ?? file.started) <= now - INACTIVE_MS)
 export const TTL = 48 * 60 * 60 * 1000
 export const resultRoute = /^\/api\/(?:anima|moss|creative|qwen|keyframe|manga)\/jobs\/[a-f0-9]{32}\/result$/
 const hash = bytes => createHash('sha256').update(new Uint8Array(bytes)).digest('hex')
@@ -22,7 +26,7 @@ export class Results {
     this.sql.exec(`CREATE TABLE IF NOT EXISTS files (
       path TEXT PRIMARY KEY, size INTEGER NOT NULL, digest TEXT NOT NULL, state TEXT NOT NULL,
       part INTEGER NOT NULL DEFAULT 0, attempts INTEGER NOT NULL DEFAULT 0,
-      due INTEGER NOT NULL, started INTEGER NOT NULL, ready INTEGER, expires INTEGER NOT NULL
+      due INTEGER NOT NULL, started INTEGER NOT NULL, ready INTEGER, expires INTEGER NOT NULL, last_progress INTEGER
     );
     CREATE INDEX IF NOT EXISTS file_queue ON files(state, due);
     CREATE TABLE IF NOT EXISTS parts (
@@ -35,6 +39,17 @@ export class Results {
     CREATE TABLE IF NOT EXISTS discarded_results (
       path TEXT PRIMARY KEY, state TEXT NOT NULL, expires INTEGER NOT NULL
     );`)
+    // Old reservations fall back to their dispatch start until another verified part arrives.
+    if (!this.sql.exec('PRAGMA table_info(files)').toArray().some(column => column.name === 'last_progress')) {
+      this.sql.exec('ALTER TABLE files ADD COLUMN last_progress INTEGER')
+    }
+  }
+  expiry() {
+    return this.sql.exec(`SELECT min(CASE WHEN state='transferring'
+      THEN min(expires, coalesce(last_progress,started)+?) ELSE expires END) AS expires FROM files`, INACTIVE_MS).one().expires
+  }
+  nextDue(now) {
+    return this.sql.exec(`SELECT min(due) AS due FROM files WHERE ${activeTransfer}`, now, now - INACTIVE_MS).one().due
   }
   stats(now = Date.now()) {
     const { usedBytes, readyFiles, transferringFiles, oldestExpiresAt } = this.sql.exec(`
@@ -42,7 +57,7 @@ export class Results {
         count(CASE WHEN state='ready' THEN 1 END) AS readyFiles,
         count(CASE WHEN state='transferring' THEN 1 END) AS transferringFiles,
         min(expires) AS oldestExpiresAt
-      FROM files WHERE expires>?`, now).one()
+      FROM files WHERE expires>? AND (state='ready' OR (${activeTransfer}))`, now, now, now - INACTIVE_MS).one()
     return { usedBytes, maxBytes: MAX_TOTAL, readyFiles, transferringFiles, oldestExpiresAt }
   }
   find(path) {
@@ -62,7 +77,9 @@ export class Results {
     this.sql.exec('DELETE FROM files WHERE path=?', file.path)
   }
   reap(now) {
-    const stale = this.sql.exec("SELECT path,state,expires FROM files WHERE expires<=? OR state IN ('expired','integrityError')", now).toArray()
+    const stale = this.sql.exec(`SELECT path,state,expires FROM files
+      WHERE expires<=? OR state IN ('expired','integrityError')
+        OR (state='transferring' AND coalesce(last_progress,started)<=?)`, now, now - INACTIVE_MS).toArray()
     for (const file of stale) this.discard(file, file.state === 'integrityError' ? 'integrityError' : 'expired', now)
     // Also clean any orphans left by older installations.
     this.sql.exec('DELETE FROM parts WHERE NOT EXISTS (SELECT 1 FROM files WHERE files.path=parts.path)')
@@ -140,7 +157,7 @@ export class Results {
         this.sql.exec('INSERT INTO receipts(path,snapshot) SELECT ?,? WHERE NOT EXISTS (SELECT 1 FROM receipts WHERE path=?)',
           path, JSON.stringify(job), path)
       }
-      state = file.expires <= now ? 'expired' : file.state
+      state = expired(file, now) ? 'expired' : file.state
       job.deliveryBytes = Math.min(file.size, file.part * PART)
       job.deliveryMs = file.ready === null ? null : file.ready - file.started
       job.resultExpiresAt = file.expires
@@ -152,7 +169,7 @@ export class Results {
   }
   next(maxParts) {
     const now = Date.now()
-    const file = this.sql.exec("SELECT * FROM files WHERE state='transferring' AND due<=? AND expires>? ORDER BY due LIMIT 1", now, now).toArray()[0]
+    const file = this.sql.exec(`SELECT * FROM files WHERE ${activeTransfer} AND due<=? ORDER BY due LIMIT 1`, now, now - INACTIVE_MS, now).toArray()[0]
     if (!file) return
     // A dropped large upload formerly had to wait for a round trip per 128 KiB.
     // Negotiate the window with this agent; a failed lease retries one small part.
@@ -162,8 +179,9 @@ export class Results {
   }
   accept({ file, count }, status, headers, bytes) {
     const current = this.find(file.path)
-    if (!current || current.part !== file.part || current.state !== 'transferring') return
     const now = Date.now()
+    if (!current || current.started !== file.started || current.part !== file.part
+      || current.state !== 'transferring' || expired(current, now)) return
     const offset = file.part * PART
     const partHash = hash(bytes)
     if (status !== 200 || bytes.byteLength !== Math.min(PART * count, file.size - offset)
@@ -182,21 +200,25 @@ export class Results {
   savePieces(file, first, bytes) {
     const now = Date.now()
     return this.storage.transactionSync(() => {
+      let progressed = false
       for (let start = 0; start < bytes.byteLength; start += PART) {
         const piece = bytes.slice(start, start + PART)
         const n = first + start / PART
         const digest = hash(piece)
         const saved = this.sql.exec('SELECT digest FROM parts WHERE path=? AND n=?', file.path, n).toArray()[0]
         if (saved && saved.digest !== digest) throw new Error('Conflicting result piece')
-        if (!saved) this.sql.exec('INSERT INTO parts(path,n,digest,data) VALUES(?,?,?,?)', file.path, n, digest, piece)
+        if (!saved) {
+          this.sql.exec('INSERT INTO parts(path,n,digest,data) VALUES(?,?,?,?)', file.path, n, digest, piece)
+          progressed = true
+        }
       }
-      if (file.state === 'ready') return
+      if (file.state === 'ready' || !progressed) return
       let next = file.part
       for (const row of this.sql.exec('SELECT n FROM parts WHERE path=? AND n>=? ORDER BY n', file.path, next)) {
         if (row.n !== next) break
         next++
       }
-      this.sql.exec('UPDATE files SET part=? WHERE path=?', next, file.path)
+      this.sql.exec('UPDATE files SET part=?, last_progress=? WHERE path=?', next, now, file.path)
       if (next * PART < file.size) return
       const full = createHash('sha256')
       let isPng = false
@@ -212,7 +234,7 @@ export class Results {
   }
   upload(path, first, bytes, headers) {
     const file = this.find(path)
-    if (!file || file.expires <= Date.now()) return problem(410, 'MUSE_RESULT_EXPIRED', '原图回执已过期')
+    if (!file || expired(file, Date.now())) return problem(410, 'MUSE_RESULT_EXPIRED', '原图回执已过期')
     const length = bytes.byteLength
     const end = first * PART + length
     if (!['ready','transferring'].includes(file.state) || !length || length > 4 * PART || end > file.size
@@ -224,7 +246,7 @@ export class Results {
   serve(request, url) {
     const file = this.find(url.pathname)
     const now = Date.now()
-    const state = file ? (file.expires <= now ? 'expired' : file.state) : this.discarded(url.pathname, now)?.state
+    const state = file ? (expired(file, now) ? 'expired' : file.state) : this.discarded(url.pathname, now)?.state
     if (state === 'expired') return problem(410, 'MUSE_RESULT_EXPIRED', '中转原图已过期或已淘汰')
     if (state === 'integrityError') return problem(502, 'MUSE_RESULT_INTEGRITY', '整图校验失败，请检查出图机归档')
     if (!file) return problem(404, 'MUSE_RESULT_UNKNOWN', '请先查原任务的 statusPath')

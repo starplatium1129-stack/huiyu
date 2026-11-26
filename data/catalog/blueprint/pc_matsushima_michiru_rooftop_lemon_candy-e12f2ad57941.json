@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "pc_matsushima_michiru_rooftop_lemon_candy",
+  "revision": 1,
+  "sortOrder": 3930,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_matsushima_michiru_rooftop_lemon_candy",
+    "characterId": "matsushima_michiru",
+    "outfitId": "casual_summer_denim",
+    "title": "松岛满 · 海风偷走了糖纸角",
+    "category": "校园日常",
+    "description": "松岛满刚拆开一颗柠檬糖，海风就从天台围栏钻进来。她把糖纸按在矮栏上，摊开另一只手确认那颗糖还在。柠檬黄短帽衫、洗水牛仔背带裤和腕带像几块明亮的色纸，被斜阳照得清清楚楚。",
+    "location": "海边学园天台",
+    "action": "一手托着柠檬硬糖，另一手把快被风吹走的糖纸按在矮栏上。",
+    "timeOfDay": "黄昏",
+    "lighting": "warm sunset light",
+    "camera": "cowboy shot, from side",
+    "mood": "俏皮",
+    "promptTokens": [
+      "rooftop",
+      "wind",
+      "candy",
+      "holding candy",
+      "fence",
+      "railing",
+      "sunset",
+      "hoodie",
+      "outdoors",
+      "sunlight",
+      "cowboy shot",
+      "from side"
+    ],
+    "promptProse": "On the seaside school rooftop she traps a candy wrapper against the parapet with one palm and checks that the lemon drop is still in her other hand. Low sun shines through the fence onto the floor.",
+    "animaCaption": "The wind catches the wrapper just as she opens her hand to check the candy.",
+    "sceneTags": [
+      "rooftop",
+      "wind",
+      "candy",
+      "holding_candy",
+      "fence",
+      "railing",
+      "sunset",
+      "hoodie",
+      "outdoors",
+      "sunlight",
+      "cowboy_shot",
+      "from_side"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

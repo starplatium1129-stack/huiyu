@@ -2,6 +2,10 @@
 
 本页介绍换机安装、源码启动及常见问题排查。桌面安装与素材导入见[离线素材指南](docs/guides/offline-resources.md)，模型与硬件见[模型配置指南](docs/guides/setup-and-models.md)。
 
+## 桌面联网安装
+
+从 [Release 发布页](https://github.com/starplatium1129-stack/huiyu/releases) 下载文件名含 `_x64-full-setup.exe` 的完整安装程序。默认包带角色缩略图。首次打开可下载高清立绘 `portraits` 和画册样张 `showcase`，也可以选择只下载立绘或稍后再说。进入「控制室 → 资源与素材」可以随时补齐。权重和运行环境按所选引擎单独配置。
+
 ## 桌面离线安装
 
 1. **准备安装包**：在 [Release 发布页](https://github.com/starplatium1129-stack/huiyu/releases) 下载完整桌面安装包与配套素材包，程序与素材分开安装。
@@ -10,6 +14,8 @@
    - **WebView2**：若系统尚未安装，需提前安装 WebView2 Evergreen Standalone x64。
 3. **导入素材**：安装后打开开始菜单中的“资源安装助手”（或运行安装目录下 `gateway\tools\Install-OfflineResources.cmd`），选择素材包导入。无需 Node.js、Python 或项目源码。
 4. **模型准备**：在控制室选择 AI 工作区，准备所选引擎的运行环境和权重，或接入已有服务。已有权重可按[模型配置指南](docs/guides/setup-and-models.md)导入。
+
+使用角色卡、世界书和长剧情归档时，可参阅[深度酒馆工作台](docs/guides/tavern-workbench.md)。
 
 ## 从源码启动
 

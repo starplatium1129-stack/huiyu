@@ -28,7 +28,7 @@
         <ShotBatchSettings v-model:aspect-ratio="aspectRatio" v-model:quality="quality" v-model:link-last-frame="linkLastFrame"
           v-model:steps="steps" v-model:identity-card="identityCard" :qualities="status?.qualities ?? []" :disabled="batchActive || submitting">
           <template v-if="nativeVideo" #recipe>
-            <NativeH3RecipeFields v-if="h3Model?.turboSteps || (h3Model && nativeH3Steps === 2)" :model="h3Model" :default-steps="h3DefaultSteps" :issue="h3Issue" :disabled="batchActive || submitting"
+            <NativeH3RecipeFields v-if="h3Model && (h3Model.h3Dwd || h3Model.turboSteps?.length || nativeH3Steps === 2)" :model="h3Model" :default-steps="h3DefaultSteps" :issue="h3Issue" :disabled="batchActive || submitting"
               v-model:choice="nativeH3Steps" v-model:light-vae="h3LightVae" />
           </template>
         </ShotBatchSettings>

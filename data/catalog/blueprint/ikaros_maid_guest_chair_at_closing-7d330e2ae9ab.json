@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "ikaros_maid_guest_chair_at_closing",
+  "revision": 1,
+  "sortOrder": 3942,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "ikaros_maid_guest_chair_at_closing",
+    "characterId": "ikaros",
+    "outfitId": "maid_uniform",
+    "title": "伊卡洛斯 · 店打烊后收起最后一把椅子",
+    "category": "打烊时分",
+    "description": "客人离开后，还剩一把木椅留在窗边。伊卡洛斯先收拢翅膀，再抓住椅背和坐板把它翻上桌。椅腿刚抬过桌沿，白围裙上已经落了一缕夕光。",
+    "location": "咖啡店靠窗的餐桌",
+    "action": "双手抓住椅背和坐板，将木椅翻到桌上",
+    "timeOfDay": "傍晚",
+    "lighting": "落日穿过咖啡店窗玻璃",
+    "camera": "全身侧前景，围裙与椅脚可见",
+    "mood": "安静",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "holding",
+      "chair",
+      "maid",
+      "apron",
+      "indoors",
+      "window light",
+      "sunset",
+      "full body"
+    ],
+    "promptProse": "At closing time in a quiet cafe, Ikaros lifts the last wooden chair upside down onto a table. One hand holds the back and the other supports the seat. Her wings are folded well clear of the furniture, and sunset from the window crosses her white ruffled apron.",
+    "animaCaption": "She lifts the chair just above the tabletop with one hand on its back and one under the seat.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

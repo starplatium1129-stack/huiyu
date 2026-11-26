@@ -1,5 +1,5 @@
 //! Capture geometry on the event thread; one debounced worker owns disk writes.
-use crate::mutex::RecoverMutex;
+use crate::mutex::{recover_lock_result, RecoverMutex};
 use std::{
     collections::HashMap,
     path::PathBuf,
@@ -45,12 +45,12 @@ impl WindowStateWriter {
             loop {
                 if pending.windows.is_empty() {
                     if pending.closing { return; }
-                    pending = changed.wait(pending).unwrap();
+                    pending = recover_lock_result(changed.wait(pending));
                     continue;
                 }
                 let delay = pending.deadline.unwrap().saturating_duration_since(Instant::now());
                 if !pending.closing && !delay.is_zero() {
-                    pending = changed.wait_timeout(pending, delay).unwrap().0;
+                    pending = recover_lock_result(changed.wait_timeout(pending, delay)).0;
                     continue;
                 }
                 let windows = std::mem::take(&mut pending.windows);
@@ -83,7 +83,7 @@ impl WindowStateWriter {
         pending.deadline = Some(Instant::now());
         changed.notify_all();
         while pending.writing || !pending.windows.is_empty() {
-            pending = changed.wait(pending).unwrap();
+            pending = recover_lock_result(changed.wait(pending));
         }
     }
     pub fn shutdown(&self) {

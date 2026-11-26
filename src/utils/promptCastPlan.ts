@@ -4,7 +4,7 @@ import type { CastFormation, CastMember, PromptPlan } from '../types/prompt'
 import { tagKey } from './animaPromptOrder.ts'
 import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
 import { isReferenceWardrobeTag, isStableIdentityToken, splitReferenceTags } from './interrogateReference.ts'
-import { cleanCastReferenceSceneProse, cleanMossReferenceProse, formatCastOutfitClause, isPerCharacterReferenceTag, mossReferencePerformance, referenceCastPeople } from './mossCast.ts'
+import { cleanCastReferenceSceneProse, cleanMossReferenceProse, formatCastOutfitClause, isPerCharacterReferenceTag, mossReferencePerformance, referenceCastPeople, referenceOutfitText } from './mossCast.ts'
 import { defaultOutfit, findOutfit } from './popularContent.ts'
 import { isOutfitToken, standaloneIdentityProse, standaloneIdentityTokens } from './popularIdentity.ts'
 import type { DraftOutfitOverride, DraftReferenceInput } from './promptBuilderPersistence'
@@ -136,14 +136,17 @@ export function buildCastPlan(
   const lead = parseLeadPosition(leadPosition, cast.length - 1)
   const referencePeople = referenceCastPeople(layout)
   const actors = cast.map((member, index) => {
-    const actor = resolveActor(member, characters,
-      index === lead && outfitOverride?.presetId ? outfitOverride : null, engine === 'moss' && boxes >= cast.length)
     const person = referencePeople[index]
-    if (engine === 'anima' && actor && !actor.action && person && boxes > 1) {
-      const { pose } = mossReferencePerformance(person, reference?.sourceIdentityTerms, true)
-      return { ...actor, action: pose }
+    const performance = person && boxes > 1 ? mossReferencePerformance(person, reference?.sourceIdentityTerms) : undefined
+    const clothing = referenceOutfitText(performance?.outfit || '')
+    const actor = resolveActor(member, characters,
+      index === lead && outfitOverride?.presetId ? outfitOverride : null, Boolean(clothing) || engine === 'moss' && boxes >= cast.length)
+    if (!actor) return null
+    return {
+      ...actor,
+      ...(!actor.outfitExplicit && clothing ? { outfit: publicTags([clothing]), outfitCaption: formatCastOutfitClause(clothing), outfitExplicit: true } : {}),
+      action: actor.action || (engine === 'anima' ? performance?.pose : '') || '',
     }
-    return actor
   })
     .filter(actor => actor !== null)
   if (!actors.length) return base

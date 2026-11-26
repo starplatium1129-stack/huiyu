@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_artoria_pendragon_chapel_veil_breeze",
+  "revision": 1,
+  "sortOrder": 3914,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_artoria_pendragon_chapel_veil_breeze",
+    "characterId": "artoria_pendragon",
+    "outfitId": "bridal_dress",
+    "title": "阿尔托莉雅 · 礼拜堂门边的白纱",
+    "category": "圣洁花嫁",
+    "description": "礼拜堂的厚门只开了一扇，晨风把长头纱向门外带。阿尔托莉雅停在门槛上，一手扶着石门，一手拢住纱边。象牙色缎面从心形领口垂到石阶，带着穿过门缝的窄窄亮边。",
+    "location": "石砌礼拜堂门槛",
+    "action": "一手托起被风吹起的长头纱，另一手扶住古老石门。",
+    "timeOfDay": "清晨",
+    "lighting": "morning backlighting",
+    "camera": "full body",
+    "mood": "庄重",
+    "promptTokens": [
+      "church",
+      "doorway",
+      "holding",
+      "veil",
+      "full body",
+      "standing",
+      "backlighting",
+      "morning",
+      "wind"
+    ],
+    "promptProse": "At the chapel threshold she gathers the edge of her long veil with one hand and braces the stone doorway with the other. A strip of morning backlight follows her into the stone entrance.",
+    "animaCaption": "The veil streams toward the open doorway until she catches its edge.",
+    "sceneTags": [
+      "church",
+      "doorway",
+      "holding",
+      "veil",
+      "full_body",
+      "standing",
+      "backlighting",
+      "morning",
+      "wind"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "bridal"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

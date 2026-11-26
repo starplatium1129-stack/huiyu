@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_aoyama_nanami_beach_lane_marker",
+  "revision": 1,
+  "sortOrder": 19004,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_aoyama_nanami_beach_lane_marker",
+    "characterId": "aoyama_nanami",
+    "outfitId": "summer_resort_navy_bikini",
+    "title": "青山七海 · 练习道的黄浮标",
+    "description": "七海顺着海滨练习道走到浅水边，把一枚脱离绳子的黄浮标推回原位。她给岸上的同伴比了个手势，确认最后一个标记在一条线上才回头。",
+    "location": "海滨浅水游泳练习道",
+    "action": "在齐膝的海水里扶住黄色浮标，抬手示意",
+    "timeOfDay": "上午",
+    "lighting": "太阳从海面反光，岸边有白色浪线",
+    "camera": "与人物平视的全身，练习道延向画外",
+    "mood": "认真，整理完有些得意",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "ocean",
+      "beach",
+      "water",
+      "yellow",
+      "standing_in_water",
+      "outdoors",
+      "sunlight",
+      "daytime",
+      "full_body"
+    ],
+    "promptTokens": [
+      "ocean",
+      "beach",
+      "water",
+      "yellow",
+      "standing in water",
+      "outdoors",
+      "sunlight",
+      "daytime",
+      "full body"
+    ],
+    "promptProse": "Nanami stands knee-deep on the outside of a marked swimming lane and guides a yellow float back against its rope. Her navy halterneck swimsuit has a clean white edge. She raises her free hand toward a teammate on the beach while shallow sunlit water ripples around her legs.",
+    "animaCaption": "She holds the yellow float against its line and raises her other hand toward the shore.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

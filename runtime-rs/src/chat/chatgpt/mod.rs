@@ -122,7 +122,12 @@ impl ChatGptService {
     }
 
     fn stop_account(&self, client_id: &str) {
-        if let Some(account) = self.accounts.lock().unwrap().remove(client_id) {
+        if let Some(account) = self
+            .accounts
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .remove(client_id)
+        {
             account.cancel.cancel();
         }
     }
@@ -130,7 +135,11 @@ impl ChatGptService {
     async fn status(&self, settings: &Settings) -> Result<Value> {
         let _guard = self.storage_lock.lock().await;
         let store = storage::load(&settings.runtime).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(store.public_status(flow))
     }
 }

@@ -1,4 +1,4 @@
-use crate::mutex::RecoverMutex;
+use crate::mutex::{RecoverMutex, RecoverRwLock};
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
@@ -183,7 +183,7 @@ impl Live2DOverlayState {
         let rect = *self.rect.recover_lock();
         if !rect.contains(screen_x, screen_y) { return false; }
         let framing = *self.framing.recover_lock();
-        self.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| {
+        self.alpha_mask.recover_read().as_ref().is_some_and(|mask| {
             mask.hit(rect, framing, screen_x - rect.x, screen_y - rect.y)
         })
     }
@@ -205,7 +205,7 @@ fn reset_mouth_diagnostics(state: &Live2DOverlayState) {
 fn clear_model_state(state: &Live2DOverlayState) {
     state.model_ready.store(false, Ordering::SeqCst);
     state.first_frame_ready.store(false, Ordering::Release);
-    *state.alpha_mask.write().unwrap() = None;
+    *state.alpha_mask.recover_write() = None;
     *state.character.recover_lock() = None;
     *state.model_bounds.recover_lock() = None;
     reset_mouth_diagnostics(state);

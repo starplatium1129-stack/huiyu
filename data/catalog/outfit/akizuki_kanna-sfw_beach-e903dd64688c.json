@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 636,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T14:00:23.919403700+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -12,14 +12,13 @@
       "id": "sfw_beach",
       "isDefault": false,
       "name": "奶油泳装与玫粉亚麻罩衫",
-      "prose": "a cream one-piece swimsuit with rose-pink piping, an open pale-pink linen shirt and a light cream cafe waist apron",
+      "prose": "a cream one-piece swimsuit with rose-pink piping and an open pale-pink linen shirt",
       "tokens": [
         "cream one-piece swimsuit",
         "pink trim",
         "pink shirt",
         "open shirt",
-        "linen",
-        "cream waist apron"
+        "linen"
       ]
     }
   }

@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_kaltsit_arknights_ruins_archival_plate",
+  "revision": 1,
+  "sortOrder": 3924,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_kaltsit_arknights_ruins_archival_plate",
+    "characterId": "kaltsit_arknights",
+    "outfitId": "remains",
+    "title": "凯尔希 · 遗址灯下的一行旧字",
+    "category": "前线日常",
+    "description": "凯尔希顺着检修道的残墙走到一块翻倒的合金铭牌前。她蹲下打亮铭牌，用软刷沿着还看得见的字槽扫走浮灰。灰黑战术夹克的磨边和沾上尘土的战靴落在同一束冷光里。",
+    "location": "前文明遗址的混凝土检修道",
+    "action": "蹲在铁铭牌前用手电照亮锈痕，另一只手用刷子扫开浮灰。",
+    "timeOfDay": "午后",
+    "lighting": "flashlight and overcast daylight",
+    "camera": "full body, from below",
+    "mood": "严谨",
+    "promptTokens": [
+      "ruins",
+      "squatting",
+      "flashlight",
+      "holding flashlight",
+      "paintbrush",
+      "looking down",
+      "debris",
+      "full body",
+      "spotlight",
+      "from below"
+    ],
+    "promptProse": "Crouching beside a broken wall, she lights a corroded metal plate with a flashlight and brushes dust from its engraved grooves. The beam reveals the first intact line of the inscription.",
+    "animaCaption": "Her flashlight remains fixed on the inscription while she brushes the dust away.",
+    "sceneTags": [
+      "ruins",
+      "squatting",
+      "flashlight",
+      "holding_flashlight",
+      "paintbrush",
+      "looking_down",
+      "debris",
+      "full_body",
+      "spotlight",
+      "from_below"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [
+      "iconic"
+    ],
+    "adult": false,
+    "sampleRating": "SFW",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

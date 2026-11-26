@@ -31,15 +31,14 @@
       </div>
 
       <template v-else>
-        <div class="clb-book-tabs" role="tablist" aria-label="选择世界书">
+        <div class="clb-book-tabs" role="group" aria-label="选择世界书">
           <button
             v-for="book in store.books"
             :key="book.id"
             type="button"
-            role="tab"
             class="clb-book-tab"
             :class="{ 'is-selected': book.id === selectedBookId, 'is-disabled': !book.enabled }"
-            :aria-selected="book.id === selectedBookId"
+            :aria-pressed="book.id === selectedBookId"
             @click="selectedBookId = book.id"
           >
             <strong>{{ book.name }}</strong>
@@ -49,13 +48,13 @@
 
         <section v-if="activeBook" class="clb-book-editor" aria-label="编辑当前世界书">
           <div class="clb-book-head">
-            <input v-model="activeBook.name" class="input" maxlength="64" placeholder="世界书名称" @change="persist" />
+            <input v-model="activeBook.name" class="input" maxlength="64" aria-label="世界书名称" placeholder="世界书名称" @input="scheduleSave" />
             <ToggleSwitch v-model="activeBook.enabled" label="启用此世界书" @update:model-value="persist">启用</ToggleSwitch>
             <button type="button" class="btn btn-ghost btn-sm" @click="exportBook(activeBook)">导出 JSON</button>
             <button type="button" class="btn btn-quiet btn-sm" @click="removeBook(activeBook)">删除</button>
           </div>
 
-          <input v-model="activeBook.description" class="input" maxlength="200" placeholder="世界书简介（可选）" @change="persist" />
+          <input v-model="activeBook.description" class="input" maxlength="200" aria-label="世界书简介" placeholder="世界书简介（可选）" @input="scheduleSave" />
 
           <div class="clb-scope-box">
             <div class="clb-scope-radios">
@@ -101,29 +100,19 @@
               </summary>
               <div class="clb-entry-body">
                 <div class="clb-entry-row">
-                  <input v-model="entry.comment" class="input" maxlength="64" placeholder="条目标题 / 备注" @change="persist" />
+                  <input v-model="entry.comment" class="input" maxlength="64" aria-label="条目标题或备注" placeholder="条目标题 / 备注" @input="scheduleSave" />
                   <ToggleSwitch v-model="entry.enabled" label="启用条目" @update:model-value="persist">启用</ToggleSwitch>
                   <button type="button" class="btn btn-quiet btn-sm" @click="removeEntry(activeBook, idx)">删除</button>
                 </div>
 
                 <label class="clb-field">
-                  <span>主关键词（多个用英文逗号分隔）</span>
-                  <input
-                    :value="entry.keys.join(', ')"
-                    class="input"
-                    placeholder="例如：黑猫, 夜樱, 咖啡馆 或 /^晚安/i"
-                    @change="entry.keys = splitKeys(($event.target as HTMLInputElement).value); persist()"
-                  />
+                  <span>主关键词（用逗号分隔）</span>
+                  <ChatLoreKeywordsInput v-model="entry.keys" placeholder="例如：黑猫，夜樱" @update:model-value="scheduleSave" />
                 </label>
 
                 <label v-if="entry.selective" class="clb-field">
                   <span>次关键词（选择性开启时，主次关键词需同时命中）</span>
-                  <input
-                    :value="entry.secondaryKeys.join(', ')"
-                    class="input"
-                    placeholder="次关键词，英文逗号分隔"
-                    @change="entry.secondaryKeys = splitKeys(($event.target as HTMLInputElement).value); persist()"
-                  />
+                  <ChatLoreKeywordsInput v-model="entry.secondaryKeys" placeholder="次关键词，用逗号分隔" @update:model-value="scheduleSave" />
                 </label>
 
                 <div class="clb-flags-grid">
@@ -135,14 +124,11 @@
                 </div>
 
                 <div class="clb-pos-grid">
-                  <label class="clb-field">
+                  <div class="clb-field">
                     <span>注入位置</span>
-                    <select v-model="entry.position" class="input" @change="persist">
-                      <option value="before_char">角色设定之前</option>
-                      <option value="after_char">角色设定之后</option>
-                      <option value="at_depth">对话历史指定深度</option>
-                    </select>
-                  </label>
+                    <StudioSelect :model-value="entry.position" label="注入位置" :options="positionOptions"
+                      @update:model-value="entry.position = $event as LorebookPosition; persist()" />
+                  </div>
                   <label v-if="entry.position === 'at_depth'" class="clb-field">
                     <span>插入深度（0~16）</span>
                     <input v-model.number="entry.depth" type="number" class="input" min="0" max="16" @change="persist" />
@@ -161,7 +147,7 @@
                     rows="3"
                     maxlength="4000"
                     placeholder="触发时注入给模型参考的世界设定内容（支持 {{user}} / {{char}}）"
-                    @change="persist"
+                    @input="scheduleSave"
                   />
                 </label>
               </div>
@@ -174,11 +160,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import ChatLoreKeywordsInput from '@/components/ChatLoreKeywordsInput.vue'
 import { confirmAction } from '@/composables/useConfirm'
+import { useChatRoomDismissGuard } from '@/composables/chat/useChatRoomDismissGuard'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
+import { downloadBlob } from '@/utils/downloadBlob'
 import {
   createBlankLorebook,
   createBlankLoreEntry,
@@ -203,21 +193,50 @@ const emit = defineEmits<{
 const store = reactive(loadLorebookStore())
 const selectedBookId = ref(store.books[0]?.id || '')
 const importInputRef = ref<HTMLInputElement>()
+const positionOptions = [
+  { value: 'before_char', label: '角色设定之前' },
+  { value: 'after_char', label: '角色设定之后' },
+  { value: 'at_depth', label: '对话历史指定深度' },
+]
 
 const activeBook = computed(() => store.books.find(book => book.id === selectedBookId.value) || store.books[0] || null)
 const availableCharacters = computed(() => listCompanionUiCharacters().map(char => ({ id: char.id, name: char.name })))
 
-function persist() {
-  const saved = saveLorebookStore(store)
-  Object.assign(store, saved)
-  if (!store.books.some(b => b.id === selectedBookId.value)) {
-    selectedBookId.value = store.books[0]?.id || ''
+let saveTimer: number | undefined
+let pendingEdits = false
+
+function save(normalizeDraft: boolean) {
+  window.clearTimeout(saveTimer)
+  saveTimer = undefined
+  try {
+    const saved = saveLorebookStore(store)
+    pendingEdits = false
+    if (normalizeDraft) Object.assign(store, saved)
+    if (!store.books.some(b => b.id === selectedBookId.value)) selectedBookId.value = store.books[0]?.id || ''
+    return true
+  } catch {
+    pendingEdits = true
+    emit('notice', '世界书暂时无法保存，请检查存储空间。', 'warning')
+    return false
   }
 }
 
-function splitKeys(raw: string): string[] {
-  return raw.split(',').map(item => item.trim()).filter(Boolean)
+function persist() {
+  save(true)
 }
+
+function scheduleSave() {
+  pendingEdits = true
+  window.clearTimeout(saveTimer)
+  saveTimer = window.setTimeout(() => { save(false) }, 350)
+}
+
+function flushEdits() {
+  return !pendingEdits || save(false)
+}
+
+useChatRoomDismissGuard(flushEdits)
+onBeforeUnmount(flushEdits)
 
 function positionLabel(pos: LorebookPosition, depth: number): string {
   if (pos === 'before_char') return '设定前'
@@ -292,14 +311,10 @@ async function onImportJson(event: Event) {
 }
 
 function exportBook(book: Lorebook) {
+  flushEdits()
   const json = JSON.stringify(exportTavernLorebookJson(book), null, 2)
   const blob = new Blob([json], { type: 'application/json;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement('a')
-  anchor.href = url
-  anchor.download = `${book.name.replace(/[^\w\u4e00-\u9fa5-]+/g, '_') || 'lorebook'}.json`
-  anchor.click()
-  URL.revokeObjectURL(url)
+  downloadBlob(blob, `${book.name.replace(/[^\w\u4e00-\u9fa5-]+/g, '_') || 'lorebook'}.json`)
 }
 </script>
 
@@ -315,7 +330,7 @@ function exportBook(book: Lorebook) {
 .clb-book-tab.is-selected { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 10%, var(--bg-base)); }
 .clb-book-tab.is-disabled { color:var(--text-disabled); }
 .clb-book-tab strong { font:600 var(--fs-label)/1.3 var(--font-sans); }
-.clb-book-tab span { color:var(--text-secondary); font:400 11px/1.3 var(--font-sans); }
+.clb-book-tab span { color:var(--text-secondary); font:400 var(--fs-label-xs)/1.3 var(--font-sans); }
 .clb-book-editor { display:grid; gap:var(--s-3); }
 .clb-book-head { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
 .clb-book-head .input { flex:1 1 180px; }
@@ -325,12 +340,12 @@ function exportBook(book: Lorebook) {
 .clb-char-bindings { display:grid; gap:var(--s-2); justify-items:start; }
 .clb-char-chips { display:flex; flex-wrap:wrap; gap:var(--s-1); }
 .clb-char-chip { padding:3px 10px; border:1px solid var(--border-soft); border-radius:999px; background:var(--bg-surface); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.4 var(--font-sans); cursor:pointer; }
-.clb-char-chip.is-bound { border-color:var(--accent); color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, transparent); }
+.clb-char-chip.is-bound { border-color:var(--accent); color:var(--text-primary); background:var(--bg-elevated); }
 .clb-entries-bar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); }
 .clb-entries-list { display:grid; gap:var(--s-2); }
 .clb-entry-card { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); padding:var(--s-2) var(--s-3); }
 .clb-entry-summary { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); cursor:pointer; }
-.clb-entry-summary small { margin-left:auto; color:var(--text-secondary); font:400 11px/1.3 var(--font-mono); }
+.clb-entry-summary small { margin-left:auto; color:var(--text-secondary); font:400 var(--fs-label-xs)/1.3 var(--font-mono); }
 .clb-dot { width:8px; height:8px; border-radius:50%; background:var(--text-disabled); flex:none; }
 .clb-dot.is-on { background:var(--accent); }
 .clb-entry-body { display:grid; gap:var(--s-2); margin-top:var(--s-3); padding-top:var(--s-2); border-top:1px solid var(--border-soft); }

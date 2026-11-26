@@ -85,32 +85,31 @@ export function useChatAutoSummary(options: UseChatAutoSummaryOptions) {
   }))
 
   let autoSummarizeAbort: AbortController | null = null
-  let autoSummarizing = false
   function cancelAutoSummary() {
     autoSummarizeAbort?.abort()
     autoSummarizeAbort = null
   }
-  watch(activeChar, cancelAutoSummary)
+  watch([activeChar, branchId], cancelAutoSummary, { flush: 'sync' })
   onBeforeUnmount(cancelAutoSummary)
 
   async function maybeAutoSummarize(charId: string, completedBranchId: string) {
-    if (autoSummarizing || chatProvider.value === 'muse' || activeChar.value !== charId || branchId.value !== completedBranchId) return
-    const msgs = storage.messages(charId)
+    const isCurrent = () => activeChar.value === charId && branchId.value === completedBranchId
+    if (autoSummarizeAbort || chatProvider.value === 'muse' || !isCurrent()) return
     const maxMessages = rpSettings.rpState.value.contextBudget.maxMessages
-    if (msgs.length <= maxMessages) return
-    const { getStorySummary, requestStorySummary, saveStorySummary } = await import('@/utils/chatStorySummary')
-    const entry = getStorySummary(charId, completedBranchId)
-    if (!entry.autoEnabled) return
-    const prevIdx = entry.summarizedThroughMid ? msgs.findIndex(m => m.mid === entry.summarizedThroughMid) : -1
-    const keepRecent = Math.min(8, Math.floor(maxMessages / 2))
-    const summarizeEnd = msgs.length - keepRecent
-    if (summarizeEnd <= prevIdx + 9) return
-    const slice = msgs.slice(Math.max(0, prevIdx + 1), summarizeEnd)
-    if (!slice.length) return
-    autoSummarizing = true
+    if (storage.messages(charId).length <= maxMessages) return
     const controller = new AbortController()
     autoSummarizeAbort = controller
     try {
+      const { getStorySummary, requestStorySummary, saveStorySummary } = await import('@/utils/chatStorySummary')
+      if (controller.signal.aborted || !isCurrent()) return
+      const entry = getStorySummary(charId, completedBranchId)
+      if (!entry.autoEnabled) return
+      const msgs = storage.messages(charId)
+      const prevIdx = entry.summarizedThroughMid ? msgs.findIndex(m => m.mid === entry.summarizedThroughMid) : -1
+      const keepRecent = Math.min(8, Math.floor(maxMessages / 2))
+      const summarizeEnd = msgs.length - keepRecent
+      if (summarizeEnd <= prevIdx + 9) return
+      const slice = msgs.slice(Math.max(0, prevIdx + 1), summarizeEnd)
       const summary = await requestStorySummary({
         ...memorySummaryContext.value,
         characterName: currentCharacter.value.name,
@@ -118,65 +117,72 @@ export function useChatAutoSummary(options: UseChatAutoSummaryOptions) {
         messages: slice.map(m => ({ role: m.role, content: m.content })),
         signal: controller.signal,
       })
-      if (controller.signal.aborted) return
+      if (controller.signal.aborted || !isCurrent()) return
       saveStorySummary(charId, completedBranchId, {
         text: summary,
         summarizedThroughMid: slice.at(-1)?.mid || entry.summarizedThroughMid,
       })
-      if (activeChar.value === charId && branchId.value === completedBranchId) {
-        setError('已自动滚动更新前情提要。', 'info', 2500)
-      }
+      setError('已自动滚动更新前情提要。', 'info', 2500)
     } catch {
       /* Silent background task: failures never disrupt active chatting. */
     } finally {
       if (autoSummarizeAbort === controller) autoSummarizeAbort = null
-      autoSummarizing = false
     }
   }
 
-  const illustratingMid = ref('')
-  const illustrateStatus = ref('')
+  const illustration = ref<{ branch: string; mid: string; status: string }>()
+  const illustratingMid = computed(() => illustration.value?.branch === branchId.value ? illustration.value.mid : '')
+  const illustrateStatus = computed(() => {
+    const task = illustration.value
+    if (!task) return ''
+    return task.branch === branchId.value ? task.status : '正在为另一剧情分支绘制插画…'
+  })
   let illustrateController: AbortController | null = null
   function cancelIllustration() {
     illustrateController?.abort('user-cancel')
     illustrateController = null
-    illustratingMid.value = ''
-    illustrateStatus.value = ''
+    illustration.value = undefined
   }
-  watch(activeChar, cancelIllustration)
+  watch(activeChar, cancelIllustration, { flush: 'sync' })
   onBeforeUnmount(cancelIllustration)
 
   async function illustrateMessage(message: ChatMessage) {
-    if (!isLocalHost.value || illustratingMid.value || busy.value || storyBusy.value || storage.writeBlocked.value) return
+    if (!isLocalHost.value || illustrateController || busy.value || storyBusy.value || storage.writeBlocked.value) return
     const characterId = activeChar.value
+    const originBranch = branchId.value
+    const characterName = currentCharacter.value.name
+    const sceneState = { ...currentSceneState.value }
+    const targetMessage = { mid: message.mid, content: message.content }
+    const index = currentMessages.value.findIndex(item => item.mid === message.mid)
+    const recent = (index >= 0 ? currentMessages.value.slice(Math.max(0, index - 2), index + 1) : [message])
+      .map(({ content }) => ({ content }))
+    const originIsVisible = () => activeChar.value === characterId && branchId.value === originBranch
     const controller = new AbortController()
     illustrateController = controller
-    illustratingMid.value = message.mid
-    illustrateStatus.value = '正在构思并绘制剧情插画…'
+    illustration.value = { branch: originBranch, mid: message.mid, status: '正在构思并绘制剧情插画…' }
     try {
       const { illustrateChatMessage } = await import('@/composables/chat/chatSceneIllustration')
-      const index = currentMessages.value.findIndex(item => item.mid === message.mid)
-      const recent = index >= 0 ? currentMessages.value.slice(Math.max(0, index - 2), index + 1) : [message]
+      if (controller.signal.aborted) return
       await illustrateChatMessage({
         characterId,
-        characterName: currentCharacter.value.name,
-        targetMessage: message,
+        branchId: originBranch,
+        characterName,
+        targetMessage,
         recentMessages: recent,
-        sceneState: currentSceneState.value,
+        sceneState,
         storage,
         signal: controller.signal,
-        report: text => { if (illustrateController === controller) illustrateStatus.value = text },
+        report: text => { if (illustrateController === controller && illustration.value) illustration.value.status = text },
       })
-      if (illustrateController === controller) setError('剧情插画已生成并附在消息下方。', 'info', 3500)
+      if (illustrateController === controller && originIsVisible()) setError('剧情插画已生成并附在消息下方。', 'info', 3500)
     } catch (error) {
-      if (illustrateController === controller && !controller.signal.aborted) {
+      if (illustrateController === controller && !controller.signal.aborted && originIsVisible()) {
         setError(error instanceof Error ? error.message : '剧情插画生成失败，请重试。', 'warning', 6000)
       }
     } finally {
       if (illustrateController === controller) {
         illustrateController = null
-        illustratingMid.value = ''
-        illustrateStatus.value = ''
+        illustration.value = undefined
       }
     }
   }

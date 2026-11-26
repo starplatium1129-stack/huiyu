@@ -92,17 +92,26 @@ fn probe_dimensions(bytes: &[u8]) -> Result<(u64, u64)> {
         .map_err(|_| ApiError::new(400, "INVALID_IMAGE", "放大输入图像损坏或不受支持"))?;
     let (w, h) = decoder.dimensions();
     let orientation = decoder.orientation().unwrap_or(Orientation::NoTransforms);
-    let (width, height) = match orientation {
+    let (src_w, src_h) = match orientation {
         Orientation::Rotate90
         | Orientation::Rotate270
         | Orientation::Rotate90FlipH
         | Orientation::Rotate270FlipH => (u64::from(h), u64::from(w)),
         _ => (u64::from(w), u64::from(h)),
     };
-    if width == 0 || height == 0 {
+    if src_w == 0 || src_h == 0 {
         return Err(ApiError::new(400, "INVALID_IMAGE", "放大输入图像尺寸无效"));
     }
-    Ok((width, height))
+    if !(512..=1536).contains(&src_w)
+        || !(512..=1536).contains(&src_h)
+        || src_w % 16 != 0
+        || src_h % 16 != 0
+    {
+        return Err(ApiError::invalid(format!(
+            "独立放大原图宽高须为 512–1536 且为 16 的倍数（当前 {src_w}×{src_h}）"
+        )));
+    }
+    Ok((src_w, src_h))
 }
 
 async fn resolve_input_image(
@@ -309,16 +318,6 @@ async fn create_inner(
     )
     .await?;
 
-    if !(512..=1536).contains(&src_w)
-        || !(512..=1536).contains(&src_h)
-        || src_w % 16 != 0
-        || src_h % 16 != 0
-    {
-        return Err(ApiError::invalid(format!(
-            "独立放大原图宽高须为 512–1536 且为 16 的倍数（当前 {src_w}×{src_h}）"
-        )));
-    }
-
     let requested_model = input.model_id.as_deref().map(str::trim);
     let use_moss_pixel = upscaler == UpscalerKind::Remacri
         && (scale == 1.5 || scale == 2.0)
@@ -366,6 +365,7 @@ async fn create_inner(
         native_adapters::validate(&payload, "moss-image")?;
         (
             PreparedScene {
+                cast_fusion: None,
                 kind: "upscale".into(),
                 id: upscaler.id().into(),
                 family: "moss-image",
@@ -436,6 +436,7 @@ async fn create_inner(
         let target_h = (((src_h as f64) * scale / 16.0).round() as u64) * 16;
         (
             PreparedScene {
+                cast_fusion: None,
                 kind: "upscale".into(),
                 id: upscaler.id().into(),
                 family: "anima",

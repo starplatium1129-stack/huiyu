@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "albedo_overlord_bridal_veil_rain_arcade",
+  "revision": 1,
+  "sortOrder": 3947,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "albedo_overlord_bridal_veil_rain_arcade",
+    "characterId": "albedo_overlord",
+    "outfitId": "sfw_white_bridal_veil",
+    "title": "雅儿贝德 · 廊檐下等雨停",
+    "category": "仪式纪念",
+    "description": "阵雨把露天石阶打湿了。雅儿贝德在廊檐下停住，一手将白缎后摆拢到身侧，免得拖过积水。雨线从檐角慢慢细下去，她抬头，蕾丝头纱垂在角后。",
+    "location": "回廊与露天石阶交界",
+    "action": "拢住身侧的裙摆，抬头看雨线从檐边变细",
+    "timeOfDay": "雨后傍晚",
+    "lighting": "廊外散射天光与石阶反光",
+    "camera": "回廊侧后方全身，头纱和拖尾同框",
+    "mood": "从容",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "holding",
+      "looking up",
+      "wedding dress",
+      "veil",
+      "rain",
+      "stairs",
+      "evening",
+      "from behind",
+      "full body"
+    ],
+    "promptProse": "Albedo waits beneath a stone arcade in a white satin wedding gown. She gathers the train to one side before stepping onto the wet stairs and looks up as rain thins beyond the eaves. A lace veil falls behind her horns, and the damp stones reflect the dim evening light.",
+    "animaCaption": "She waits at the dry edge of the stairs, holding her satin train clear of the rainwater.",
+    "negativeTokens": [],
+    "coverageTags": [
+      "daily"
+    ],
+    "adult": false,
+    "mature": false,
+    "isNsfw": false,
+    "rating": "All",
+    "sampleRating": "All",
+    "compositionIntent": "single",
+    "recommendedSize": "1152x1536"
+  }
+}

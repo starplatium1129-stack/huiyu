@@ -156,7 +156,8 @@ export async function submit(input, explicitKey, batch, overrides) {
   }
   const key = requestKey(explicitKey ?? payload.requestKey ?? newRequestKey())
   try {
-    const result = await api('POST', batch ? '/api/muse/batches' : '/api/muse/jobs', { ...payload, ...overrides, requestKey: key })
+    const result = await api('POST', batch ? '/api/muse/batches' : '/api/muse/jobs',
+      { ...payload, ...overrides, requestKey: key }, batch ? { timeoutMs: 60_000 } : undefined)
     if (result.batchKey !== key) throw new Error('返回的批次编号与提交编号不符。')
     return result
   } catch (error) {

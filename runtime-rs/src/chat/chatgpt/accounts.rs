@@ -29,7 +29,10 @@ impl ChatGptService {
                     .filter(|account| account.plan_enabled())
                 {
                     let client_id = account.client_id.clone();
-                    let mut runtime = self.accounts.lock().unwrap();
+                    let mut runtime = self
+                        .accounts
+                        .lock()
+                        .unwrap_or_else(std::sync::PoisonError::into_inner);
                     let entry = runtime.entry(client_id.clone()).or_default();
                     let fresh_memory = !entry.models.is_empty()
                         && entry
@@ -213,7 +216,10 @@ impl ChatGptService {
             "selectedModelName": name,
         });
         {
-            let mut runtime = self.accounts.lock().unwrap();
+            let mut runtime = self
+                .accounts
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner);
             let entry = runtime.entry(session.client_id).or_default();
             entry.models = models;
             entry.models_fetched_at = Some(Instant::now());
@@ -244,7 +250,11 @@ impl ChatGptService {
         }
         store.active_client_id = Some(client_id.to_owned());
         storage::save(&settings.runtime, &store).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(store.public_status(flow))
     }
 
@@ -261,7 +271,7 @@ impl ChatGptService {
         let display_name = self
             .accounts
             .lock()
-            .unwrap()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
             .get(client_id)
             .and_then(|state| state.models.iter().find(|entry| entry.slug == model))
             .map(|entry| entry.display_name.clone())
@@ -282,7 +292,11 @@ impl ChatGptService {
         account.selected_model = model.to_owned();
         account.selected_model_name = display_name;
         storage::save(&settings.runtime, &store).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(store.public_status(flow))
     }
 
@@ -294,7 +308,12 @@ impl ChatGptService {
             account.usage_paused = false;
             storage::save(&settings.runtime, &store).await?;
         }
-        Ok(store.public_status(self.flow.lock().unwrap().to_json()))
+        Ok(store.public_status(
+            self.flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .to_json(),
+        ))
     }
 
     pub(super) async fn confirm_welcome(&self, settings: &Settings) -> Result<Value> {
@@ -302,7 +321,11 @@ impl ChatGptService {
         let mut store = storage::load(&settings.runtime).await?;
         store.welcome_confirmed = true;
         storage::save(&settings.runtime, &store).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(store.public_status(flow))
     }
 
@@ -321,7 +344,11 @@ impl ChatGptService {
             .map(str::to_owned)
             .or_else(|| store.active_client_id.clone());
         let Some(client_id) = target_id else {
-            let flow = self.flow.lock().unwrap().to_json();
+            let flow = self
+                .flow
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .to_json();
             return Ok(
                 json!({ "ok": true, "remoteRevoked": true, "status": store.public_status(flow) }),
             );
@@ -334,7 +361,11 @@ impl ChatGptService {
             account.clear_session();
         }
         storage::save(&settings.runtime, &store).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(json!({
             "ok": true,
             "remoteRevoked": remote_revoked,
@@ -371,7 +402,11 @@ impl ChatGptService {
                 .map(|account| account.client_id.clone());
         }
         storage::save(&settings.runtime, &store).await?;
-        let flow = self.flow.lock().unwrap().to_json();
+        let flow = self
+            .flow
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner)
+            .to_json();
         Ok(json!({
             "ok": true,
             "remoteRevoked": remote_revoked,

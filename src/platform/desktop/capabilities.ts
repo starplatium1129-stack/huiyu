@@ -2,6 +2,19 @@ import type { CompanionAlphaMask, CompanionDesktopBridge, CompanionReadyKind, Co
 import { hostApi, invokeHost as invoke, onHostEvent as on, offHostEvent as off } from './hostApi.ts'
 import { getDesktopWindowRole } from './runtime.ts'
 
+function decodeClipboardImage(value: unknown): Uint8Array | undefined {
+  if (typeof value !== 'string' || !value.length || value.length > 4 * 1024 * 1024) return
+  let binary: string
+  try {
+    binary = atob(value)
+  } catch {
+    return
+  }
+  const bytes = new Uint8Array(binary.length)
+  for (let index = 0; index < binary.length; index++) bytes[index] = binary.charCodeAt(index)
+  return bytes
+}
+
 const capabilities: CompanionDesktopBridge = {
   readChatCredential: endpoint => invoke('chat_credential_read', { endpoint }),
   writeChatCredential: (endpoint, secret) => invoke('chat_credential_write', { endpoint, secret }),
@@ -41,7 +54,10 @@ const capabilities: CompanionDesktopBridge = {
   onWindowBoundsChanged: listener => on('aics:window-bounds', listener), offWindowBoundsChanged: off,
   onPowerModeChanged: listener => on('aics:power-mode', listener), offPowerModeChanged: off,
   onInteractionModeChanged: listener => on('aics:interaction-mode', listener), offInteractionModeChanged: off,
-  onClipboardImage: listener => on<number[]>('aics:clipboard-image', bytes => listener(Uint8Array.from(bytes)), 'current-window'), offClipboardImage: off,
+  onClipboardImage: listener => on<unknown>('aics:clipboard-image', value => {
+    const bytes = decodeClipboardImage(value)
+    if (bytes) listener(bytes)
+  }, 'current-window'), offClipboardImage: off,
   onClipboardText: listener => on('aics:clipboard-text', listener, 'current-window'), offClipboardText: off,
   onGlobalMouse: listener => on('aics:global-mouse', listener, 'current-window'), offGlobalMouse: off,
   minimizeWindow: () => invoke('window_minimize'), toggleMaximizeWindow: () => invoke('window_maximize_toggle'),

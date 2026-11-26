@@ -31,6 +31,8 @@ const path = (require('path') as typeof import('path'));
 
 const ROOT = path.resolve(__dirname, '..');
 
+import { NATIVE_WORKFLOWS } from './lib/workflow-native';
+
 const { LEGACY_WORKFLOWS } = require('./lib/workflow-legacy') as typeof import('./lib/workflow-legacy');
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   ...LEGACY_WORKFLOWS,
@@ -164,46 +166,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['preview', 'read-only'], machine: ['python'], switches: { '--preflight': ['read-only', 'guard'], '--check': ['read-only', 'guard'], '--apply': ['writes-product'] }, resume: 'na', evidence: 'scripts/maintenance/prepare-inference.py', unknown: ['需已有Python；平台运行库尚未随安装包提供；真实模型与GPU另验'], notes: ['--apply创建venv前先离线dry-run完整依赖；拒绝URL依赖/源码包；最终复用worker诊断；不覆盖既有venv或修改ComfyUI'] } },
   'models:prepare-pixai': { desc: '准备固定 PixAI v1.0 与独立 timm 依赖；不修改现有 Comfy/Python', cmd: ['node', 'scripts/maintenance/prepare-pixai.js'], opts: '--target-dir <可写runtime根>；--python <已有Python>；--torch-site-packages <已有torch包目录>；--reuse-from <已下载候选根>；--plan零写入；--check本机只读核验', docs: 'docs/workflow.md#pixai-本机反推准备',
     run: { nature: ['network-download', 'writes-product'], machine: ['node', 'network'], switches: { '--plan': ['preview', 'read-only'], '--check': ['read-only', 'guard'] }, resume: 'idempotent', evidence: 'scripts/maintenance/prepare-pixai.ts', unknown: ['准备不执行GPU推理；目标设备显存与真实模型另验'], notes: ['复用已验证权重；仅向独立target/deps安装固定timm；不会启动Comfy或修改既有环境', '--check默认复用目标回执的Python/Torch路径，显式参数和环境变量优先；坏回执拒绝且不改写；--plan不读取目标回执'] } },
-  'desktop:doctor': { desc: '检查 Windows 桌面打包工具链与 Cubism SDK', cmd: ['node', 'scripts/maintenance/desktop-build-environment.js'], docs: 'docs/desktop-deployment.md',
-    run: { nature: ['read-only'], machine: ['windows', 'node'], switches: {}, resume: 'na', evidence: 'scripts/lib/desktop-build-environment.ts:52-73', unknown: [] } },
-  'rust:build': { desc: '构建锁定依赖的 Rust runtime，默认 release，不安装', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'build'], opts: '[--profile release|desktop-local]', docs: 'docs/workflow.md#rust-运行时迁移',
-    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/run-rust-runtime.ts', unknown: ['需要 Rust 工具链；首次可能下载锁定 crate'] } },
-  'rust:build:dev': { desc: '独立缓存构建快速 dev 后端，不生成 release 回执', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'build-dev'], docs: 'docs/workflow.md#rust-快速开发',
-    run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/lib/rust-development.ts', unknown: ['需要 Rust 工具链；首次预热依赖'] } },
-  'rust:start:dev': { desc: '构建并运行快速 dev 后端，服务参数继续转发', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'start-dev'], docs: 'docs/workflow.md#rust-快速开发',
-    run: { nature: ['service', 'writes-product'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/maintenance/run-rust-runtime.ts', unknown: ['工作区须显式私有路径/身份或受控桌面激活'] } },
-  'rust:licenses:collect': { desc: '按固定配方摘要采集原生依赖的公开源码许可材料', cmd: ['pwsh', '-NoProfile', '-File', 'runtime-rs/native-licenses/collect-sources.ps1'], docs: 'docs/workflow.md#rust-运行时迁移',
-    run: { nature: ['network-download', 'writes-product'], machine: ['windows', 'network'], switches: {}, resume: 'idempotent', evidence: 'runtime-rs/native-licenses/collect-sources.ps1', unknown: ['需要 PowerShell 7 和 tar；采集不等于完成发行许可核验'], notes: ['只处理 components.json 列出的公共源码，跳过已核验条目；归档缓存不入 Git；修改材料后必须更新材料清单及根 manifest 摘要'] } },
-  'desktop:release': { desc: '正式 release/LZMA 构建与签名发行，--full-only 仅提供完整安装包',
-    cmd: ['npm', 'run', 'release:desktop', '--'],
-    opts: '[--full-only] [--bump patch|minor|major] [--skip-build --publish]', docs: 'docs/desktop-deployment.md',
-    run: { nature: ['writes-product', 'writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--publish': ['publish-remote', 'writes-release'] }, resume: 'idempotent',
-      evidence: 'scripts/maintenance/release-desktop-update.ts', unknown: ['需要原签名密钥和 GitHub 发布授权；发布前源码须提交并推送'] } },
-  'desktop:package-local': { desc: '以 desktop-local 快速档位构建本机无压缩升级包，不安装',
-    cmd: ['npm', 'run', 'release:desktop', '--', '--manual', '--upgrade-only'],
-    required: ['--install-dir'], opts: '--install-dir <已有安装目录> [--skip-build]', docs: 'docs/desktop-deployment.md',
-    run: { nature: ['writes-product', 'writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--skip-build': ['writes-release'] }, resume: 'idempotent',
-      evidence: 'scripts/maintenance/release-desktop-update.ts; scripts/lib/desktop-upgrade-installer.ts', unknown: [],
-      notes: ['默认以独立 desktop-local 增量缓存构建原生程序和资源，再直接打升级包；正式发行保持 release；缺少已有安装、WebView2 或匹配素材时停止，不回退完整包'] } },
-  'desktop:upgrade-local': { desc: '复用匹配构建，先检查已有安装再仅封装本机轻量升级包',
-    cmd: ['npm', 'run', 'release:desktop', '--', '--manual', '--skip-build', '--upgrade-only'],
-    required: ['--install-dir'], opts: '--install-dir <已有安装目录>', docs: 'docs/desktop-deployment.md',
-    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain', 'build-present'], switches: {}, resume: 'idempotent',
-      evidence: 'scripts/maintenance/release-desktop-update.ts; scripts/lib/desktop-upgrade-installer.ts', unknown: [],
-      notes: ['需要匹配当前源码的原生构建，无需已有 NSIS 完整包；不重编应用、不压缩、不安装或发布；素材不匹配在封装前拒绝'] } },
-  'desktop:content-sync': {
-    desc: '同步仍按文件维护的 data 并可选清 WebView2 缓存；不更新记录式内容库（默认只读预览）',
-    cmd: ['node', 'scripts/maintenance/sync-desktop-content.js'],
-    docs: 'docs/desktop-deployment.md#数据改动如何到达桌面端',
-    opts: '[--apply] [--clear-webview-cache] [--content-root=目录] [--source=目录] [--webview-root=目录]',
-    run: {
-      nature: ['read-only'], machine: ['node', 'windows'],
-      switches: { '--apply': ['writes-product'], '--clear-webview-cache': ['delete'] }, resume: 'idempotent',
-      evidence: 'scripts/maintenance/sync-desktop-content.ts',
-      unknown: ['不重启应用，也不证明应用内画面；安装目录与个人内容目录的差异仍需人工核对'],
-      notes: ['本入口不导入快照、不更新 content/catalog.sqlite；人物/服装/场景/蓝图需在内容维护或 content:catalog 中预览并导入快照。仍按文件维护的数据可在此同步；写入或清缓存前需从托盘退出桌面端并释放维护锁，完成后再重启', '只同步桌面打包白名单数据，不复制 history/projects/prompts 等私有状态；覆盖前备份原始字节到 content-sync-backups/<ID>，逐文件原子写入，目标独有项保留并报告', '尊重 AICS_DESKTOP_CONFIG_ROOT 与 AICS_DESKTOP_WEBVIEW_DATA_DIR；拒绝根目录重叠、写入目标链接、陈旧预压缩副本及已检测到的并发修改；失败可能留下已同步文件与备份，不提供整批事务回滚'],
-    },
-  },
+  ...NATIVE_WORKFLOWS,
   'brand:build': { desc: '从手绘 SVG 生成字标，从角色头像母图生成网站与桌面图标', cmd: ['node', 'scripts/maintenance/build-brand-assets.js'], docs: 'docs/workflow.md',
     run: { nature: ['writes-product'], machine: ['node'], switches: {}, resume: 'idempotent', evidence: 'scripts/maintenance/build-brand-assets.js:17-26', unknown: [] } },
   'docs:check': { desc: '检查文档文件链接与旧地址映射', cmd: ['node', 'scripts/maintenance/check-doc-links.js'], docs: 'docs/workflow.md',
@@ -475,11 +438,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['writes-product', 'delete'], machine: ['node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/git-bundle-backup.js:61-129', unknown: [], notes: ['清理超量旧 bundle；不能替代 push/异地副本'] },
   },
   'runtime:clean': {
-    desc: '过期实验目录与临时文件清理（dry-run 默认、白名单保护、14 天 mtime 门槛）',
+    desc: '逐项预览过期实验产物、历史安装包与中断导出，默认以 14 天最后活动时间为门槛',
     cmd: ['node', 'scripts/maintenance/clean-runtime-experiments.js'],
     docs: 'scripts/maintenance/clean-runtime-experiments.js:1',
     opts: '[--prune] 真删  [--days N] 改门槛  [--include-archive] 含本地归档',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'], '--include-archive': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.ts:1', unknown: [], notes: ['--prune 仅删已收编实验目录/超龄根目录临时文件且超 --days（默认 14）；核心数据与未识别目录永不删'] },
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'], '--include-archive': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.ts:1', unknown: [], notes: ['--prune 只清理逐项列出的过期内容，保留当前、发布清单及最新两个安装包版本、模型与工作区。Windows 上仅清理空闲的导出锁'] },
   },
   'comfy:start': {
     desc: '启动本机 ComfyUI（AI 工作区下的 Windows venv 布局）',

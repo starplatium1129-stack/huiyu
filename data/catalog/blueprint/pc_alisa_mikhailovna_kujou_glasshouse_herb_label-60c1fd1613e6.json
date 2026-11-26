@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pc_alisa_mikhailovna_kujou_glasshouse_herb_label",
+  "revision": 1,
+  "sortOrder": 19002,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_alisa_mikhailovna_kujou_glasshouse_herb_label",
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfitId": "summer_sundress",
+    "title": "艾莉莎 · 给迷迭香留个位置",
+    "description": "温室台边排了三盆几乎一样的幼苗。艾莉莎把写好的木签插进最矮的花盆，指背蹭到一点泥。她将花盆往旁边移开，给后面那盆让出一格日照。",
+    "location": "植物园温室的苗架边",
+    "action": "把木签插到小花盆里，再移动花盆",
+    "timeOfDay": "午后",
+    "lighting": "玻璃顶的漫射光照亮叶尖和冰蓝开衫",
+    "camera": "齐腰中景，花盆和手同框",
+    "mood": "专心、整理完后松了口气",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "flower_pot",
+      "potted_plant",
+      "greenhouse",
+      "window",
+      "sunlight",
+      "standing",
+      "indoors",
+      "upper_body"
+    ],
+    "promptTokens": [
+      "flower pot",
+      "potted plant",
+      "greenhouse",
+      "window",
+      "sunlight",
+      "standing",
+      "indoors",
+      "upper body"
+    ],
+    "promptProse": "Alya pushes a wooden marker into a small herb pot on the greenhouse bench, then slides the pot aside to give the next seedling a square of light. The cropped ice-blue cardigan falls open above her white square-neck dress as she leans over the row.",
+    "animaCaption": "Her muddy knuckle brushes the rim as the wooden marker goes into the soil.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}

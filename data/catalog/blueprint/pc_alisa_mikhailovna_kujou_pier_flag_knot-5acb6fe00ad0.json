@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "pc_alisa_mikhailovna_kujou_pier_flag_knot",
+  "revision": 1,
+  "sortOrder": 19001,
+  "createdAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "data": {
+    "id": "pc_alisa_mikhailovna_kujou_pier_flag_knot",
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfitId": "silver_summer_bikini",
+    "title": "艾莉莎 · 把旗结收紧一点",
+    "description": "岸边的游泳区刚开放，浮标绳却被浪推到警示杆下。艾莉莎蹲下来，接住从杆上落下的蓝旗，把两条旗角重新系紧。白罩衫正好挡住一阵海风，她扭头看了眼浪的方向。",
+    "location": "海滨游泳区的木平台",
+    "action": "在警示杆边半蹲，双手系好旗结",
+    "timeOfDay": "上午",
+    "lighting": "侧面阳光照亮木板和旗面",
+    "camera": "视线高度的侧面全身",
+    "mood": "动作利落，留意海风",
+    "category": "日常",
+    "compositionIntent": "single",
+    "adult": false,
+    "sampleRating": "All",
+    "recommendedSize": "896x1152",
+    "sceneTags": [
+      "squatting",
+      "flag",
+      "outdoors",
+      "ocean",
+      "pier",
+      "daytime",
+      "sunlight",
+      "full_body",
+      "from_side"
+    ],
+    "promptTokens": [
+      "squatting",
+      "flag",
+      "outdoors",
+      "ocean",
+      "pier",
+      "daytime",
+      "sunlight",
+      "full body",
+      "from side"
+    ],
+    "promptProse": "Alya crouches on the wooden swimming pier to tighten the knot on a small blue safety flag. The white linen cover-up shifts in the wind, and the cold blue edging of her swimsuit echoes the water behind the rail. The flag fabric and both hands are visible from the side.",
+    "animaCaption": "Both hands hold the loose corners of the safety flag as the end of the knot lifts in the wind.",
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "coverageTags": [
+      "daily"
+    ]
+  }
+}
