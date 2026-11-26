@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "archetto_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 279,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "archetto_arknights",
     "profile": {
@@ -46,10 +46,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-archetto_arknights.png?v=e40c90892bb8",
+        "image": "../assets/characters/popular-archetto_arknights.png?v=98df8c585d80",
         "alt": "空弦场景样张立绘",
-        "sourceShowcaseId": "pc_archetto_arknights_archetto_arknights_chapel_song",
-        "sourceShowcaseSha256": "38a1b0bf947588939559cf8aa5886d49a7ffb39009e38b4481a666683f9aa82c"
+        "sourceShowcaseId": "pc_archetto_arknights_archetto_arknights_courtyard_flowers",
+        "sourceShowcaseSha256": "92835dce2ef56bcc8c412ec30fe81e9fe81d9301a341c6ec8c6dfa9d58a1d142"
       },
       "tags": [
         "异色瞳",

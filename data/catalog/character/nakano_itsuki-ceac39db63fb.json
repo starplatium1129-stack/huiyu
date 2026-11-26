@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_itsuki",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 188,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nakano_itsuki",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_itsuki.png?v=d38484e9977a",
+        "image": "../assets/characters/popular-nakano_itsuki.png?v=71111714a5bd",
         "alt": "中野五月样张立绘",
         "sourceShowcaseId": "pc_nakano_itsuki_pc_nakano_itsuki_nakano_itsuki_bakery_meatbun_blush",
-        "sourceShowcaseSha256": "5c623cc69fc988579b7b07a007033580142fd70cb0c6d3f368f2664d0e1ddc03"
+        "sourceShowcaseSha256": "866621ca6f280e8f156864f02ce2e355ab45de6198b21a92b8d0c549b61b8246"
       },
       "visual_dna": {
         "hair": "及腰微卷赤红长发 · 两侧黄色五角星发夹 · 头顶大呆毛",

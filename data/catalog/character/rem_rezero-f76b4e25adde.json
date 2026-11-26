@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rem_rezero",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "rem_rezero",
     "profile": {
@@ -17,10 +17,10 @@
       "type": "popular",
       "icon": "🪄",
       "portrait": {
-        "image": "../assets/characters/popular-rem_rezero.png?v=ca3320be3368",
+        "image": "../assets/characters/popular-rem_rezero.png?v=74c3b3d894c8",
         "alt": "雷姆样张立绘",
-        "sourceShowcaseId": "pc_rem_rezero_pc_rem_rezero_rem_rezero_mansion",
-        "sourceShowcaseSha256": "47db2d6b349e8d02ea626b87a7db635deb8b6c1766b414f02344f47414327c10"
+        "sourceShowcaseId": "pc_rem_rezero_pc_rem_rezero_rem_rezero_maid_cafe",
+        "sourceShowcaseSha256": "69a8c64b602d5af88792360af5258116097ac4f4a94a4583bedcc4bc921a8c3e"
       },
       "visual_dna": {
         "hair": "蓝色短发（遮住右眼）",

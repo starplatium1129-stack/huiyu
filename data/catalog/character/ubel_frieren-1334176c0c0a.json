@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ubel_frieren",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ubel_frieren",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-ubel_frieren.png?v=157ee7bb5264",
+        "image": "../assets/characters/popular-ubel_frieren.png?v=50208aad3205",
         "alt": "尤贝尔样张立绘",
         "sourceShowcaseId": "pc_ubel_frieren_pc_ubel_frieren_ubel_frieren_sfw_b6_01",
-        "sourceShowcaseSha256": "c072ae252f5ec4506d1090e9aa64789d18a8631e4b32ff5f01cee435ff4259c1"
+        "sourceShowcaseSha256": "c5f406329d98f1c1a79c94c3585c5a50a4957d8a288ec186a31ed27a685f9754"
       },
       "visual_dna": {
         "signature": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",

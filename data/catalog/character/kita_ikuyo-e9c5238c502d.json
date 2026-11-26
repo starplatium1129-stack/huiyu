@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kita_ikuyo",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 176,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kita_ikuyo",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-kita_ikuyo.png?v=df3bd091d76c",
+        "image": "../assets/characters/popular-kita_ikuyo.png?v=8e9420931cc3",
         "alt": "喜多郁代样张立绘",
-        "sourceShowcaseId": "pc_kita_ikuyo_pc_kita_ikuyo_kita_ikuyo_live_shine",
-        "sourceShowcaseSha256": "62bf1d4a5e5b68eb1654c91dc015f3ff822c737ce2370d32c0023483dd564deb"
+        "sourceShowcaseId": "pc_kita_ikuyo_pc_kita_ikuyo_kita_ikuyo_after_school_cafe",
+        "sourceShowcaseSha256": "85b229ecf17dea1c10dd0035584de7552db691aa8e74276f4e0a7747bce1ebe1"
       },
       "visual_dna": {
         "hair": "红发披肩 · 呆毛",

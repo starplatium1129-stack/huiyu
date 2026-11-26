@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunohara_shun",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 211,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "sunohara_shun",
     "profile": {
@@ -76,8 +76,10 @@
         "blue_halo"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-sunohara_shun.png?v=f1db4c80c32f",
-        "alt": "春原瞬立绘"
+        "image": "../assets/characters/popular-sunohara_shun.png?v=6177d1a0a157",
+        "alt": "春原瞬立绘",
+        "sourceShowcaseId": "pc_sunohara_shun_pc_sunohara_shun_sunohara_shun_plum_garden_tea_nap",
+        "sourceShowcaseSha256": "3a96c3e0e130484cc6938a4a5d4e4386dc574777442d48efa809d9fd737229c5"
       },
       "bg_story": "春原瞬是学园都市基沃托斯山海经高级中学梅花园的首席教官。作为负责全校年幼学生启蒙与生活起居的庇护者，瞬以超凡的包容力、高尚的品德与无私的慈爱深受所有学园的敬仰。在面对外界危机与都市动荡时，看似温婉如水的瞬亦能展现出雷霆手腕护卫家园。在与夏莱老师日复一日的相处中，瞬那颗长年只为他人奉献的心灵终于找到了可以依靠的港湾。褪去教官身份之后，她渴望成为专属于老师一人的温柔港湾。她不仅具备基沃托斯最具杀伤力的成熟风韵，更将灵魂深处最真挚无瑕的爱恋与温存，尽数倾注于老师身侧。",
       "speech": "欢迎来到梅花园，老师。今天也辛苦了……来，请坐到瞬的身边，先喝一杯温热的药膳花茶吧。呵呵，看您这么疲惫，今天就由我来全心全意地照顾您。",

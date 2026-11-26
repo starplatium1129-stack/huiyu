@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayase_yuuka",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hayase_yuuka",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "📱",
       "portrait": {
-        "image": "../assets/characters/popular-hayase_yuuka.png?v=1e5d24929e7b",
+        "image": "../assets/characters/popular-hayase_yuuka.png?v=cfc1f577b2e4",
         "alt": "早濑优香样张立绘",
-        "sourceShowcaseId": "pc_hayase_yuuka_pc_hayase_yuuka_yuuka_schale_office_budget_lecture",
-        "sourceShowcaseSha256": "10aa2a658519057853419b68b13952d774b572e0b600c90e122730b3f6344bbd"
+        "sourceShowcaseId": "pc_hayase_yuuka_pc_hayase_yuuka_yuuka_rainy_day_coffee_shelter",
+        "sourceShowcaseSha256": "1b2f3500247774760c7363ab046bdaf9f9041a308dbc33a7c31d4fba130b20e5"
       },
       "visual_dna": {
         "hair": "深紫蓝及腰长直双马尾",

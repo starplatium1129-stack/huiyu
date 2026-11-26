@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "d_killer_wife",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 221,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "d_killer_wife",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "💍",
       "portrait": {
-        "image": "../assets/characters/popular-d_killer_wife.png?v=058d1f82bf00",
+        "image": "../assets/characters/popular-d_killer_wife.png?v=6587c4ac1376",
         "alt": "D：杀手妻子样张立绘",
-        "sourceShowcaseId": "pc_d_killer_wife_pc_d_killer_wife_d_wife_kitchen_coffee_apron_morning",
-        "sourceShowcaseSha256": "a5f950cca03348520ee24efd9e383889a8f115e74576259b90f136a4eb87c0f1"
+        "sourceShowcaseId": "pc_d_killer_wife_pc_d_killer_wife_d_wife_kitchen_cooking_tasting",
+        "sourceShowcaseSha256": "3fd1955de42e08d02ce390a9364c1b4be2bcc6770c970f5ef868eab20e1765e5"
       },
       "visual_dna": {
         "hair": "及腰墨灰长直发 · 整齐冷艳碎刘海 · 标志性深红金属发夹",

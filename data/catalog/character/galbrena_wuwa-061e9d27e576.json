@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "galbrena_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 311,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "galbrena_wuwa",
     "profile": {
@@ -43,8 +43,10 @@
         "blue eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-galbrena_wuwa.png?v=b8f74ca571ad",
-        "alt": "嘉贝莉娜立绘"
+        "image": "../assets/characters/popular-galbrena_wuwa.png?v=c716bd220ea6",
+        "alt": "嘉贝莉娜立绘",
+        "sourceShowcaseId": "pc_galbrena_wuwa_wuwa_galbrena_sc06",
+        "sourceShowcaseSha256": "f722159bb83e582cf5dcc4a269172b7152abea5b668438b5d7bdb6c1fa34a33a"
       },
       "visual_dna": {
         "signature": "Galbrena from Wuthering Waves. Medium-length gray hair with blue streaks and blue eyes.",

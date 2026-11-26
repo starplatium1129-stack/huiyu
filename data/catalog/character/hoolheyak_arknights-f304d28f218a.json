@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoolheyak_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 277,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hoolheyak_arknights",
     "profile": {
@@ -45,10 +45,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-hoolheyak_arknights.png?v=977fc6378160",
+        "image": "../assets/characters/popular-hoolheyak_arknights.png?v=a00018569443",
         "alt": "霍尔海雅场景样张立绘",
         "sourceShowcaseId": "pc_hoolheyak_arknights_hoolheyak_arknights_tea_tin",
-        "sourceShowcaseSha256": "01242e55b01f9ecfcfcfa55cbae5d68784b916ccfe222a18293c206a5eafcd2a"
+        "sourceShowcaseSha256": "f0fc10ca95b45a4e0bc575a2092a42a4ac01e2bbeccd8ae0f601e96d54f73883"
       },
       "tags": [
         "灰发",

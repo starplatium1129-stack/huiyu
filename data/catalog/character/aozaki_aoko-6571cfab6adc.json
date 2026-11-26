@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aozaki_aoko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 198,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "aozaki_aoko",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-aozaki_aoko.png?v=0bdeb00adc68",
+        "image": "../assets/characters/popular-aozaki_aoko.png?v=ec1d6966114e",
         "alt": "苍崎青子样张立绘",
-        "sourceShowcaseId": "pc_aozaki_aoko_pc_aozaki_aoko_aozaki_aoko_mansion_tea_reunion",
-        "sourceShowcaseSha256": "787807805bfc565abdd5c4bde26174c83711e118c4f2a5953221385c37259150"
+        "sourceShowcaseId": "pc_aozaki_aoko_pc_aozaki_aoko_aozaki_aoko_snowy_station_departure",
+        "sourceShowcaseSha256": "762b1d9a19d3f484e58b2221f4d529aad531cf2a6b51c375024255c6352316c2"
       },
       "visual_dna": {
         "hair": "栗红微卷长发 · 随性披散发梢",

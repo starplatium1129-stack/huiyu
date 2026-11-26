@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "blemishine_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 288,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "blemishine_arknights",
     "profile": {
@@ -52,10 +52,10 @@
       ],
       "voice": "别担心，我们一起想办法。",
       "portrait": {
-        "image": "../assets/characters/popular-blemishine_arknights.png?v=00c5fce25727",
+        "image": "../assets/characters/popular-blemishine_arknights.png?v=305259488c7b",
         "alt": "瑕光场景样张立绘",
-        "sourceShowcaseId": "pc_blemishine_arknights_blemishine_arknights_bakery_share",
-        "sourceShowcaseSha256": "e9b3107e71bcf70bbc15bef20a93120ecaf9137e4f329806fc43f56c5fdf0875"
+        "sourceShowcaseId": "pc_blemishine_arknights_blemishine_arknights_toolbox_sort",
+        "sourceShowcaseSha256": "cb9cc4492ea3c96b9004d486244c10cc81d9f4d6944ce811b2b386a1968d3788"
       },
       "relationshipGraph": {
         "version": 1,

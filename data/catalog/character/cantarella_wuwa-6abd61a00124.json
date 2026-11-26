@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cantarella_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 307,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "cantarella_wuwa",
     "profile": {
@@ -45,8 +45,10 @@
         "large breasts"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-cantarella_wuwa.png?v=3b7d9b309acb",
-        "alt": "坎特蕾拉立绘"
+        "image": "../assets/characters/popular-cantarella_wuwa.png?v=71b845d44519",
+        "alt": "坎特蕾拉立绘",
+        "sourceShowcaseId": "pc_cantarella_wuwa_wuwa_cantarella_sc01",
+        "sourceShowcaseSha256": "88be39a9aa5f73e915dc7b52ae5804c4db4036542c9fc06b5cd1853607ce9cf9"
       },
       "visual_dna": {
         "signature": "Cantarella from Wuthering Waves. Very long, wavy purple hair, purple eyes and a beauty mark beneath one eye.",

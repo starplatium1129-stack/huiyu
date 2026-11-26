@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ushio_noa",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 207,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ushio_noa",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🖋️",
       "portrait": {
-        "image": "../assets/characters/popular-ushio_noa.png?v=2f965bc30778",
-        "alt": "生盐诺亚立绘"
+        "image": "../assets/characters/popular-ushio_noa.png?v=8973b0090d17",
+        "alt": "生盐诺亚立绘",
+        "sourceShowcaseId": "pc_ushio_noa_pc_ushio_noa_ushio_noa_coffee_break_tease",
+        "sourceShowcaseSha256": "f0d8a48803cdabf24d8ea9fa39729fb25db0536fcedd33cd5c3688c14210dab0"
       },
       "visual_dna": {
         "hair": "银白如雪的及腰极长发 · 侧拢低双束柔顺发梢",

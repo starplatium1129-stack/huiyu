@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "karuizawa_kei",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 232,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "karuizawa_kei",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🎀",
       "portrait": {
-        "image": "../assets/characters/popular-karuizawa_kei.png?v=07844c336e33",
+        "image": "../assets/characters/popular-karuizawa_kei.png?v=94095cb3697b",
         "alt": "轻井泽惠样张立绘",
         "sourceShowcaseId": "pc_karuizawa_kei_pc_karuizawa_kei_kei_stairwell_secret_whisper",
-        "sourceShowcaseSha256": "d6a8a93b6ddb8a643edd60262bf795033633d89c693174ea0b37a068879be1bc"
+        "sourceShowcaseSha256": "63f2aa589be3bc22b7501653e8f528f731a274d08d66c774f4593f5357f64fc1"
       },
       "visual_dna": {
         "hair": "亮金高扎柔顺侧马尾 · 标志蝴蝶结发饰 · 娇俏灵动刘海",

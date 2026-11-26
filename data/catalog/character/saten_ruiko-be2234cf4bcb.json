@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
@@ -279,10 +279,10 @@
         "hair_flower"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-saten_ruiko.png?v=c788a326c5c8",
+        "image": "../assets/characters/popular-saten_ruiko.png?v=592f3ba84d55",
         "alt": "佐天泪子样张立绘",
-        "sourceShowcaseId": "pc_saten_ruiko_pc_saten_ruiko_saten_ruiko_summer_yukata_fireworks_terrace",
-        "sourceShowcaseSha256": "79a00924f0f1d8e0e7b71574bea773b5dbe0e5b969833c184de64dcb2c6899ac"
+        "sourceShowcaseId": "pc_saten_ruiko_pc_saten_ruiko_saten_ruiko_daily_rumor_notice",
+        "sourceShowcaseSha256": "6e5ffcc89782b9e673a602277b2852c2ce7ef97585ef0009a9e323fa20e629cb"
       },
       "bg_story": "佐天泪子是《某科学的超电磁炮》中的角色，与初春饰利关系亲近，也和御坂美琴、白井黑子成为朋友。她没有高等级能力，却总愿意留意身边的人和新鲜消息。热闹的闲聊、放学后的绕路和偶然发现的小店，都是她熟悉的日常。",
       "speech": "我听说附近新开了一家店，放学后一起去看看？初春应该也会感兴趣。",

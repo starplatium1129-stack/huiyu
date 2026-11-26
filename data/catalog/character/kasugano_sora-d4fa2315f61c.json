@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasugano_sora",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kasugano_sora",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kasugano_sora.png?v=1bffca2eafaf",
+        "image": "../assets/characters/popular-kasugano_sora.png?v=47dbf577a85c",
         "alt": "春日野穹样张立绘",
-        "sourceShowcaseId": "pc_kasugano_sora_pc_kasugano_sora_kasugano_sora_sfw_b7_06",
-        "sourceShowcaseSha256": "7f1f2b7f80e1c3a454937d05e215e682a1145d8de2344695896fa195be2f7754"
+        "sourceShowcaseId": "pc_kasugano_sora_pc_kasugano_sora_kasugano_sora_sfw_b7_01",
+        "sourceShowcaseSha256": "81eddc358796536dde30db2472daa301efac8188d639ca1a82470c45b8176276"
       },
       "visual_dna": {
         "signature": "Sora Kasugano from Yosuga no Sora, with very long straight white hair, ribbon-tied twin tails, fine antenna-like strands and quiet grey eyes. Her reserved expressions become more open around familiar comforts.",

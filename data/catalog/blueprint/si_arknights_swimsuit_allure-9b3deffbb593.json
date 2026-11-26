@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3373,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "id": "si_arknights_swimsuit_allure",
     "characterId": "si_arknights",
     "title": "祀 · 孤屿石亭的演算片刻",
     "category": "夏日海滩",
-    "action": "盘腿端坐在冰凉的石阶边缘，膝头平摊着防水便携数据板，一头苍发任晨风吹拂，略带思索地用指尖点着唇瓣，神情专注而清冷",
+    "action": "盘腿端坐在冰凉的石阶边缘，膝头平摊着防水便携数据板，青绿长发任晨风吹拂，略带思索地用指尖点着唇瓣，神情专注而清冷",
     "location": "荒野人工环礁石阶上的石砌凉亭",
     "timeOfDay": "清晨",
     "lighting": "晨曦初破的冷灰色微光，海平线泛着一抹淡金",
@@ -20,7 +20,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "description": "人工环礁石亭破晓的寂静时分。祀身穿古韵墨白素绢束带分体泳装，端坐石阶记录潮汐数据。清冷晨风拂乱白发，她指尖轻抚唇角陷入沉思，古雅学者风范在极简剪裁的泳衣衬托下格外清丽脱俗。",
+    "description": "人工环礁石亭破晓的寂静时分。祀身穿丹青泼墨挂脖分体泳装、臂间轻搭半透明素白薄纱披帛，端坐石阶记录潮汐数据。清冷晨风拂乱青绿长发，她指尖轻抚唇角陷入沉思，古雅学者风范在极简建筑感剪裁的泳衣衬托下格外清丽脱俗。",
     "outfitId": "ink_wash_halter_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
@@ -37,11 +37,11 @@
       "intellectual"
     ],
     "promptTokens": [
-      "ink wash bikini",
-      "white hair",
       "stone pavilion",
       "ocean dawn",
       "data tablet",
+      "bare shoulders",
+      "sea breeze",
       "intellectual",
       "serene"
     ],

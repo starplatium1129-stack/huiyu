@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuna_yuuki",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "asuna_yuuki",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🌹",
       "portrait": {
-        "image": "../assets/characters/popular-asuna_yuuki.png?v=0f093af49886",
+        "image": "../assets/characters/popular-asuna_yuuki.png?v=896491b8d8f0",
         "alt": "结城明日奈样张立绘",
-        "sourceShowcaseId": "pc_asuna_yuuki_pc_asuna_yuuki_asuna_after_school_crepe_date",
-        "sourceShowcaseSha256": "d81f846d56289cf015be3e94929e6d53e208d3d78b1e5ac59aec32317f1f1bce"
+        "sourceShowcaseId": "pc_asuna_yuuki_pc_asuna_yuuki_asuna_flashing_rapier_dungeon",
+        "sourceShowcaseSha256": "6dc130d9041c1fa46d9c35fe1748780c0846fdb0a7399c54054e82a809676dfc"
       },
       "visual_dna": {
         "hair": "腰际栗色长发 · 侧编发辫半扎",

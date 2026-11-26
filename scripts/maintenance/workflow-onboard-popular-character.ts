@@ -19,6 +19,10 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { execSync }: typeof import('child_process') = require('child_process');
 const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
+const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts') as {
+  endfieldAnimaBinding: (character: string | null | undefined, family?: string, modelId?: string) =>
+    { character: string; loraId: string; loraStrength: number } | null;
+};
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DATA_DIR = path.join(ROOT, 'data');
@@ -74,7 +78,7 @@ async function pollJob(jobId: any, timeoutMs: any = 120000) {
   throw new Error(`Polling timeout for job ${jobId}`);
 }
 
-async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed }: any) {
+async function renderImage({ prompt, negative, width = 832, height = 1216, steps = 28, cfg = 4.5, seed, character, loraId, loraStrength }: any) {
   const jobId = await submitAnimaJob({
     modelId: MODEL_ID,
     prompt,
@@ -84,8 +88,9 @@ async function renderImage({ prompt, negative, width = 832, height = 1216, steps
     steps,
     cfg,
     teaCache: true,
-    teaCacheThresh: 0.05,
-    seed
+    teaCacheThresh: 0.10,
+    seed,
+    ...(loraId ? { character, loraId, loraStrength } : {}),
   });
   return await pollJob(jobId);
 }
@@ -165,6 +170,7 @@ async function runPipeline(charId: any, opts: any = {}) {
       const prompt = plan.prompt;
 
       const tempPng = path.join(tempDir, `pc_${charId}_${bp.id}.png`);
+      const binding = endfieldAnimaBinding(charId, 'anima', MODEL_ID);
       const imgBuf = await renderImage({
         prompt,
         negative: plan.negative,
@@ -172,7 +178,8 @@ async function runPipeline(charId: any, opts: any = {}) {
         height: 1216,
         steps: 28,
         cfg: bp.adult ? 5.2 : 4.5,
-        seed: 70000000 + i * 12345
+        seed: 70000000 + i * 12345,
+        ...(binding || {}),
       });
       fs.writeFileSync(tempPng, imgBuf);
       convertShowcase(tempPng, dstBig, dstThumb);
@@ -194,6 +201,7 @@ async function runPipeline(charId: any, opts: any = {}) {
           engine: 'anima',
           model: MODEL_ID,
           checkpoint: CHECKPOINT,
+          ...(binding ? { loraId: binding.loraId } : {}),
           seed: 70000000 + i * 12345
         },
         prompt,

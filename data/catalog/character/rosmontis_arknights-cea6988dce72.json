@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rosmontis_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 283,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "rosmontis_arknights",
     "profile": {
@@ -51,10 +51,10 @@
       ],
       "voice": "这件事，我想好好记住。",
       "portrait": {
-        "image": "../assets/characters/popular-rosmontis_arknights.png?v=f5707c3f6bf4",
+        "image": "../assets/characters/popular-rosmontis_arknights.png?v=c8d8ad4ada54",
         "alt": "迷迭香场景样张立绘",
-        "sourceShowcaseId": "pc_rosmontis_arknights_rosmontis_arknights_picture_book",
-        "sourceShowcaseSha256": "64bb985fa739b31fc773ff56a1120bc65524418f5cf07deed921a45a5f052dbf"
+        "sourceShowcaseId": "pc_rosmontis_arknights_rosmontis_arknights_memory_notebook",
+        "sourceShowcaseSha256": "34b14c110432751dd3c54305ca78acb6386c8bc997b2d04f9ca9b963b059e39f"
       },
       "relationshipGraph": {
         "version": 1,

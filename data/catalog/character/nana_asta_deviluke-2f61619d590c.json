@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nana_asta_deviluke",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nana_asta_deviluke",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🐾",
       "portrait": {
-        "image": "../assets/characters/popular-nana_asta_deviluke.png?v=1954232bb94f",
+        "image": "../assets/characters/popular-nana_asta_deviluke.png?v=f788d4988596",
         "alt": "娜娜·阿斯达·戴比路克样张立绘",
         "sourceShowcaseId": "pc_nana_asta_deviluke_pc_nana_asta_deviluke_nana_alien_pet_park_cuddle_play",
-        "sourceShowcaseSha256": "718fa2bea440bcc8b3b7578e7cb894cacdc4f2aefa7cf8ef6d4a2d5affca6c07"
+        "sourceShowcaseSha256": "05a046edd8892cc51b0893e14b91450f14fea73d47bc1155a39e408b10f9e82a"
       },
       "visual_dna": {
         "hair": "粉色长双马尾 · 齐刘海",

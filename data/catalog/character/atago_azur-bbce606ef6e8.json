@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "atago_azur",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 218,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "atago_azur",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🐕",
       "portrait": {
-        "image": "../assets/characters/popular-atago_azur.png?v=74f5568d2c8c",
+        "image": "../assets/characters/popular-atago_azur.png?v=4fb2d4507174",
         "alt": "爱宕样张立绘",
-        "sourceShowcaseId": "pc_atago_azur_pc_atago_azur_atago_veranda_lap_pillow_ear_clean",
-        "sourceShowcaseSha256": "5fd647789c44e39d81ff81e537ed6cda7b0692ff79cb0a8887dce020e23f0530"
+        "sourceShowcaseId": "pc_atago_azur_pc_atago_azur_atago_morning_gentle_wake_up",
+        "sourceShowcaseSha256": "08d44d7f41d0e173a7a9d73b5b700aa9d5f974b90a7975fbe6547223b01ad9d6"
       },
       "visual_dna": {
         "hair": "柔顺及腰纯黑长直发 · 标志性灵动黑色犬耳 · 头顶呆毛",

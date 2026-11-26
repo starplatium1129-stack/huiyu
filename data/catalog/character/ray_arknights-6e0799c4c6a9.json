@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ray_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 278,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ray_arknights",
     "profile": {
@@ -46,10 +46,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-ray_arknights.png?v=bbe0e88f8949",
+        "image": "../assets/characters/popular-ray_arknights.png?v=357fa273a455",
         "alt": "莱伊场景样张立绘",
-        "sourceShowcaseId": "pc_ray_arknights_ray_arknights_sandbeast_treat",
-        "sourceShowcaseSha256": "69c234b1b8532049c4235a32d5c511037ee2344d226d9efc6c7b28e0201983cb"
+        "sourceShowcaseId": "pc_ray_arknights_ray_arknights_bird_guide",
+        "sourceShowcaseSha256": "e46015b81c58d80548394325ff9e3617ac2d568a6b7417c3427b4c44da1748b5"
       },
       "tags": [
         "兔耳",

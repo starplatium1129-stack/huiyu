@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "frieren",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "frieren",
     "profile": {
@@ -17,10 +17,10 @@
       "type": "popular",
       "icon": "🪄",
       "portrait": {
-        "image": "../assets/characters/popular-frieren.png?v=6de542eb7498",
+        "image": "../assets/characters/popular-frieren.png?v=19cb1261beed",
         "alt": "芙莉莲样张立绘",
-        "sourceShowcaseId": "pc_frieren_pc_frieren_frieren_magic_library",
-        "sourceShowcaseSha256": "f99b6f063a7d9fde4485c49a8009ae3e630bf8baf6e0cf390d07c7dfe0306c98"
+        "sourceShowcaseId": "pc_frieren_pc_frieren_frieren_city_cafe",
+        "sourceShowcaseSha256": "243eb8eddc541575283ad010625b89fdf4e7a43a47a8fe935dcffd3e08f4bfa0"
       },
       "visual_dna": {
         "hair": "银白极长发 · 双马尾",

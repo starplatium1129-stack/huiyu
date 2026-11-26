@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vulpisfoglia_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 273,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights",
     "profile": {
@@ -48,10 +48,10 @@
         "classificationSource": "游戏内干员基础档案"
       },
       "portrait": {
-        "image": "../assets/characters/popular-vulpisfoglia_arknights.png?v=eba9356eb517",
+        "image": "../assets/characters/popular-vulpisfoglia_arknights.png?v=130e23f651aa",
         "alt": "忍冬场景样张立绘",
-        "sourceShowcaseId": "pc_vulpisfoglia_arknights_vulpisfoglia_arknights_hotel_window",
-        "sourceShowcaseSha256": "33ed2c4bb17c7f0bda34fe471d8249d5d668bd2494429060f32d8e952ac06244"
+        "sourceShowcaseId": "pc_vulpisfoglia_arknights_vulpisfoglia_arknights_puzzle_piece",
+        "sourceShowcaseSha256": "fb2b66065b397f24dc58021fd036aa94ee5538ca11401db0b4dcb184484b57dd"
       },
       "tags": [
         "狐耳",

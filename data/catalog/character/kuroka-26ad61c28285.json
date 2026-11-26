@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroka",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 226,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kuroka",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🐾",
       "portrait": {
-        "image": "../assets/characters/popular-kuroka.png?v=3342c20c6276",
+        "image": "../assets/characters/popular-kuroka.png?v=77126da9d6a9",
         "alt": "黑歌样张立绘",
-        "sourceShowcaseId": "pc_kuroka_pc_kuroka_kuroka_engawa_sake_fish_feed",
-        "sourceShowcaseSha256": "2d037e72028cdb90f7314d39c77f8ebca90296eeae2056a48ac622b4e84361e0"
+        "sourceShowcaseId": "pc_kuroka_pc_kuroka_kuroka_living_room_tail_wrap_cuddle",
+        "sourceShowcaseSha256": "b19d2d0386e2ac43641d375108b3201e04f06a4f5506bf8321554a221f3f90ca"
       },
       "visual_dna": {
         "hair": "漆黑柔亮及腰长发 · 灵动低双马尾 · 黑色绒毛猫耳",

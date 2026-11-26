@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nymph_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 276,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nymph_arknights",
     "profile": {
@@ -47,10 +47,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-nymph_arknights.png?v=f617c7c939ec",
+        "image": "../assets/characters/popular-nymph_arknights.png?v=9d2587017a1b",
         "alt": "妮芙场景样张立绘",
-        "sourceShowcaseId": "pc_nymph_arknights_nymph_arknights_watering_can",
-        "sourceShowcaseSha256": "aee2b9c7f11e8fabd6e68bbe71a276f253581e7919db1220078de9d6a0c6ae6a"
+        "sourceShowcaseId": "pc_nymph_arknights_nymph_arknights_cake_party",
+        "sourceShowcaseSha256": "abbea7bd5a3c0d05a43e6ab9924f0e28114a5352682b67041cca296765eceb6f"
       },
       "tags": [
         "粉发",

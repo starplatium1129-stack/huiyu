@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elaina",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "elaina",
     "profile": {
@@ -17,10 +17,10 @@
       "type": "popular",
       "icon": "🧹",
       "portrait": {
-        "image": "../assets/characters/popular-elaina.png?v=b6c07d043b62",
+        "image": "../assets/characters/popular-elaina.png?v=f22c43cc1251",
         "alt": "伊雷娜样张立绘",
-        "sourceShowcaseId": "pc_elaina_pc_elaina_elaina_market_town",
-        "sourceShowcaseSha256": "46e15e2fa9111ba2df3be39b7fb83b105a0aa160b46322b360e49239ae4a9e9b"
+        "sourceShowcaseId": "pc_elaina_pc_elaina_elaina_dessert_cafe",
+        "sourceShowcaseSha256": "ad862a0fe6ff180bb9012a500d3f2cc09c467e1043e7bfc2e5df68f80e21f4e9"
       },
       "visual_dna": {
         "hair": "灰银长发",

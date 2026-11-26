@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -72,10 +72,10 @@
         "arknights:_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=41a7263966e3",
+        "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=99224760e562",
         "alt": "庄方宜样张立绘",
-        "sourceShowcaseId": "pc_zhuang_fangyi_arknights_pc_zhuang_fangyi_arknights_zhuang_fangyi_arknights_tactical_briefing",
-        "sourceShowcaseSha256": "6a99c62b69a38f320ff2a56df4dc79e25744a0320c6f7456be211902e8f66ad1"
+        "sourceShowcaseId": "pc_zhuang_fangyi_arknights_pc_zhuang_fangyi_arknights_zhuang_fangyi_arknights_scholar_study",
+        "sourceShowcaseSha256": "d15eb7134c85b3dc72d2764cfab84ed0e5bb22db65c54e3bc70df0e040015d8a"
       },
       "speech": "「我是庄方宜，武陵科学发展区管代。天时人事日相催，塔卫二的裂隙虽险，但在息壤与诸位的同心协作下，定叫大地重归安澜。」",
       "accent_color": "#4ecdc4",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kagari_no_kirie",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 253,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kagari_no_kirie",
     "popular": {
@@ -80,10 +80,10 @@
       "type": "popular",
       "icon": "🥀",
       "portrait": {
-        "image": "../assets/characters/popular-kagari_no_kirie.png?v=6be777025311",
+        "image": "../assets/characters/popular-kagari_no_kirie.png?v=03276b19d3b1",
         "alt": "篝之雾枝样张立绘",
-        "sourceShowcaseId": "pc_kagari_no_kirie_pc_kagari_no_kirie_kirie_misty_rose_labyrinth_dewy_dawn",
-        "sourceShowcaseSha256": "de5d74ca4b6139c57e173e06b08b2121d3c6e2e114d48b8eded51d56714ec606"
+        "sourceShowcaseId": "pc_kagari_no_kirie_pc_kagari_no_kirie_kirie_stormy_rooftop_whipping_hair_backlight",
+        "sourceShowcaseSha256": "d0618d18c8d4adf14c0c477c083180344dd3ede9c39c0f394af5e857bd876a39"
       },
       "visual_dna": {
         "hair": "如夜色般漆黑顺直的极长秀发 · 瀑布般垂曳至地面",

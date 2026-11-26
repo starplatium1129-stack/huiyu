@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "phrolova_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 308,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "phrolova_wuwa",
     "profile": {
@@ -43,8 +43,10 @@
         "eyepatch"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-phrolova_wuwa.png?v=6ff357e888c1",
-        "alt": "弗洛洛立绘"
+        "image": "../assets/characters/popular-phrolova_wuwa.png?v=c6d00922e79a",
+        "alt": "弗洛洛立绘",
+        "sourceShowcaseId": "pc_phrolova_wuwa_wuwa_phrolova_sc02",
+        "sourceShowcaseSha256": "3387896820acb55207cd5bfd554e929e876327dcbc91bbd386e6259223c9214a"
       },
       "visual_dna": {
         "signature": "Phrolova from Wuthering Waves. Long white hair, a red eye and a flowered eyepatch.",

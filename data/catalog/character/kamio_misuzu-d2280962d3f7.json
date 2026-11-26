@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kamio_misuzu",
     "profile": {
@@ -152,10 +152,10 @@
         "Key社三大催泪巅峰神作"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kamio_misuzu.png?v=bc9575155089",
+        "image": "../assets/characters/popular-kamio_misuzu.png?v=c9806359f358",
         "alt": "神尾观铃样张立绘",
-        "sourceShowcaseId": "pc_kamio_misuzu_pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
-        "sourceShowcaseSha256": "58a51a666f15eea5ed4b8122bcac48e0d1ee989792ded39cc36bf5fe0003be87"
+        "sourceShowcaseId": "pc_kamio_misuzu_pc_kamio_misuzu_misuzu_railroad_crossing_dinosaur_plush_summer_gust",
+        "sourceShowcaseSha256": "aff89be9c6d735350440b504dca434698aa8587e8b5087eda7aa4629e576a1c9"
       },
       "bg_story": "生活在海滨小镇的高中少女，与养母晴子相依为命。性格纯真可爱，喜欢恐龙玩偶与蜜桃汽水，感到困扰时会发出“嘎欧”的口癖。因体质特殊，每当试图与他人建立深厚羁绊时都会遭遇剧烈头痛，因此长期独自生活。在与流浪青年相遇后，在夏日长堤与海风的陪伴下度过了充满欢笑的时光，并坦然面对自己的命运。",
       "speech": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",

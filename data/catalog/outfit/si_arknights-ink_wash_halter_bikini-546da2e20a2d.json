@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "si_arknights/ink_wash_halter_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 4073,
   "createdAt": "2026-11-26T12:27:56.823417100+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
       "id": "ink_wash_halter_bikini",
-      "name": "丹青墨白素绢束带分体泳装",
-      "prose": "An ink-wash gradient charcoal-and-white halter bikini featuring crisp white linen wraps, an obsidian-bead waist cord, and minimalist tie-side bottoms, worn with bare legs and barefoot.",
+      "name": "丹青泼墨挂脖系带泳装与薄纱披帛",
+      "prose": "An ink-wash charcoal-and-white crisscross halter bikini draped with a gossamer white silk shawl across the arms, finished with a slender black waist chain accented by a jade bead charm, minimalist side-tie bottoms, and bare feet.",
       "tokens": [
-        "ink-wash gradient bikini",
-        "white linen wrap",
-        "halterneck",
-        "obsidian bead cord",
-        "charcoal tie bottom",
+        "ink wash bikini",
+        "crisscross halterneck",
+        "sheer white shawl",
+        "black waist chain",
+        "jade bead charm",
+        "side-tie bikini bottom",
         "bare legs",
         "barefoot"
       ]

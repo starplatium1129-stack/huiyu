@@ -1,27 +1,28 @@
 {
   "kind": "outfit",
   "id": "si_arknights/nsfw_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1161,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
       "id": "nsfw_lace_lingerie",
-      "name": "月光薄纱翡翠缘蕾丝私密睡衣",
+      "name": "素纱青玉交领刺绣罗衣寝服",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "category": "场景衣装状态",
-      "prose": "A sheer jade-tinted lace babydoll nightie with delicate ribbon straps, lace-trimmed hem, and matching silk panties, worn with bare legs and barefoot.",
+      "prose": "A translucent jade-green silk cross-front negligee trimmed with delicate gold-thread lace and loosely tied with a slender silk ribbon belt over matching sheer panties, accented by a fine jade wrist cord and worn barefoot.",
       "tokens": [
-        "jade lace babydoll",
-        "sheer silk nightie",
-        "thin ribbon straps",
-        "lace trim hem",
-        "matching silk panties",
-        "bare legs",
+        "sheer jade negligee",
+        "cross-front neckline",
+        "gold lace trim",
+        "silk ribbon belt",
+        "off shoulder",
+        "sheer silk panties",
+        "jade wrist cord",
         "barefoot"
       ]
     }

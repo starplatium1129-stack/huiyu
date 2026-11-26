@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fiona_frost",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "fiona_frost",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🕶️",
       "portrait": {
-        "image": "../assets/characters/popular-fiona_frost.png?v=ca218cd04902",
+        "image": "../assets/characters/popular-fiona_frost.png?v=3966d8ff42f1",
         "alt": "菲奥娜·弗罗斯特样张立绘",
-        "sourceShowcaseId": "pc_fiona_frost_pc_fiona_frost_fiona_frost_apartment_secret_album",
-        "sourceShowcaseSha256": "c6758b9e96a4c61f779e6e96ec1196e7b0ca58947e772ccf28c4e804a8b22c52"
+        "sourceShowcaseId": "pc_fiona_frost_pc_fiona_frost_fiona_frost_hospital_corridor_encounter",
+        "sourceShowcaseSha256": "45b680dc590dbd7562381841b90d2bbdd861a9482c451e7f55e013e802bc6889"
       },
       "visual_dna": {
         "hair": "白色齐尾短发（漫画为薰衣草紫）· 右侧长刘海遮住右半脸",

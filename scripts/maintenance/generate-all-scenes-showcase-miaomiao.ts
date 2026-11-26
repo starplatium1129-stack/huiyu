@@ -19,6 +19,10 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 const { sceneRecommendedSize }: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
+const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts') as {
+  endfieldAnimaBinding: (character: string | null | undefined, family?: string, modelId?: string) =>
+    { character: string; loraId: string; loraStrength: number } | null;
+};
 import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
 type Options = CandidateOptions & { character?: string; franchise?: string; limit: number; 'scenes-only'?: boolean; 'popular-only'?: boolean };
 type SceneTask = {
@@ -166,7 +170,7 @@ function buildPayload(task: SceneTask) {
     seed: task.seed
   };
 
-  // 专属女主角绑定官方 v21 训练 LoRA
+  // 专属女主角与终末地 / 祀等自带角色 LoRA 的热门角色统一按目录契约绑定角色 LoRA
   if (task.characterId === 'nene') {
     payload.character = 'nene';
     payload.loraId = 'L_NENE_V21_ANIMA';
@@ -175,6 +179,13 @@ function buildPayload(task: SceneTask) {
     payload.character = 'natsume';
     payload.loraId = 'L_NAT_V21_ANIMA';
     payload.loraStrength = 0.85;
+  } else {
+    const binding = endfieldAnimaBinding(task.characterId, 'anima', MODEL_ID);
+    if (binding) {
+      payload.character = binding.character;
+      payload.loraId = binding.loraId;
+      payload.loraStrength = binding.loraStrength;
+    }
   }
 
   return payload;
@@ -187,19 +198,27 @@ function loadInputs(opts: Options) {
 }
 
 function candidateTasks(tasks: SceneTask[]): CandidateTask[] {
-  return tasks.map(task => ({
-    key: task.type === 'popular' ? `popular:${task.characterId}:${task.id}` : `scene:${task.id}`,
-    metadata: { batch: task.type || 'scene', engine: 'anima', characterId: task.characterId,
-      blueprintId: task.type === 'popular' ? task.id : undefined,
-      blueprintTitle: task.type === 'popular' ? task.title : undefined,
-      sceneId: task.type === 'popular' ? undefined : task.id,
-      outfitId: task.outfitId, adult: task.adult,
-      title: task.title, story: task.story || '',
-      category: task.category || (task.type === 'popular' ? '热门角色' : '日常'),
-      rating: task.rating || 'All', checkpoint: 'miaomiaoHarem_anima16.safetensors',
-      intendedEntryId: task.standardId || task.id },
-    payload: () => buildPayload(task),
-  }));
+  return tasks.map(task => {
+    const binding = task.characterId === 'nene'
+      ? { loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85 }
+      : task.characterId === 'natsume'
+        ? { loraId: 'L_NAT_V21_ANIMA', loraStrength: 0.85 }
+        : endfieldAnimaBinding(task.characterId, 'anima', MODEL_ID);
+    return {
+      key: task.type === 'popular' ? `popular:${task.characterId}:${task.id}` : `scene:${task.id}`,
+      metadata: { batch: task.type || 'scene', engine: 'anima', characterId: task.characterId,
+        blueprintId: task.type === 'popular' ? task.id : undefined,
+        blueprintTitle: task.type === 'popular' ? task.title : undefined,
+        sceneId: task.type === 'popular' ? undefined : task.id,
+        outfitId: task.outfitId, adult: task.adult,
+        title: task.title, story: task.story || '',
+        category: task.category || (task.type === 'popular' ? '热门角色' : '日常'),
+        rating: task.rating || 'All', checkpoint: 'miaomiaoHarem_anima16.safetensors',
+        ...(binding ? { loraId: binding.loraId, loraStrength: binding.loraStrength } : {}),
+        intendedEntryId: task.standardId || task.id },
+      payload: () => buildPayload(task),
+    };
+  });
 }
 
 async function main(args: string[] = process.argv.slice(2), deps: GenerationOptions = {}) {

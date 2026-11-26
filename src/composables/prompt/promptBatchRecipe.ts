@@ -264,13 +264,16 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       ? closestSupportedSize(state.models.find(model => model.id === state.modelId), recommendedSize.replace('×', 'x')) : '')
     const targetState = {
       ...state,
+      loras: state.allLoras?.length ? state.allLoras : state.loras,
       width: dimensions ? Number(dimensions[1]) : state.width,
       height: dimensions ? Number(dimensions[2]) : state.height,
       seed: input.seed >= 0 ? input.seed : null,
       // Cross-character roaming selects the target's installed binding; the source
       // character keeps its captured selection for the shared admission check.
-      loraId: charInfo?.kind === 'studio' && state.characterLoraEnabled === false ? '' : charInfo?.kind === 'studio' && (pb.subject.kind !== 'studio' || targetChar !== pb.char)
-        ? charInfo.charKey === 'triad' ? '' : ANIMA_LORA_BY_CHARACTER[charInfo.charKey] : state.loraId,
+      loraId: isTargetPopular ? (endfield?.loraId ?? '')
+        : charInfo?.kind === 'studio' && state.characterLoraEnabled === false ? ''
+          : charInfo?.kind === 'studio' && (pb.subject.kind !== 'studio' || targetChar !== pb.char)
+            ? charInfo.charKey === 'triad' ? '' : ANIMA_LORA_BY_CHARACTER[charInfo.charKey] : state.loraId,
       // Batch Endfield recipes retain the collection's default strength.
       loraStrength: endfield?.loraStrength ?? state.loraStrength,
     }

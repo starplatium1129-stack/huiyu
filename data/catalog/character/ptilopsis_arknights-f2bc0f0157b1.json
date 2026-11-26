@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ptilopsis_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 292,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ptilopsis_arknights",
     "profile": {
@@ -50,10 +50,10 @@
       ],
       "voice": "记录完成。休息时间开始。",
       "portrait": {
-        "image": "../assets/characters/popular-ptilopsis_arknights.png?v=8ab7197804aa",
+        "image": "../assets/characters/popular-ptilopsis_arknights.png?v=bbd1c3b5f389",
         "alt": "白面鸮场景样张立绘",
-        "sourceShowcaseId": "pc_ptilopsis_arknights_ptilopsis_arknights_note_tabs",
-        "sourceShowcaseSha256": "66cbc8a35b5db8e3339d25964820f097f2c75f0150248ddce13aca5188cd5e02"
+        "sourceShowcaseId": "pc_ptilopsis_arknights_ptilopsis_arknights_tea_timer",
+        "sourceShowcaseSha256": "39ba3ffcae4efe1d8497cf03c7da528f93953cc04c430f3085ab30db41f2f048"
       },
       "relationshipGraph": {
         "version": 1,

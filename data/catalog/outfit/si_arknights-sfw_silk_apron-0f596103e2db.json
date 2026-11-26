@@ -1,27 +1,30 @@
 {
   "kind": "outfit",
   "id": "si_arknights/sfw_silk_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1159,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
       "id": "sfw_silk_apron",
-      "name": "松绿条纹厨房亚麻围裙",
+      "name": "靛蓝扎染织锦云肩围裙套装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "A forest-green striped linen apron worn over a plain cream crewneck sweater with rolled cuffs and navy straight jeans, finished with comfortable white flat shoes.",
+      "prose": "An indigo-dyed linen cross-back apron with subtle gold bamboo embroidery and a jade waist buckle worn over an ivory mandarin-collar linen shirt with rolled sleeves, charcoal cropped trousers, ankle socks, and crisp white loafers.",
       "tokens": [
-        "green striped apron",
-        "cream knit sweater",
-        "rolled cuffs",
-        "navy straight jeans",
-        "waist strap",
-        "white flat shoes"
+        "indigo dyed apron",
+        "cross-back straps",
+        "gold embroidery",
+        "ivory linen shirt",
+        "rolled sleeves",
+        "jade waist buckle",
+        "charcoal cropped pants",
+        "ankle socks",
+        "white loafers"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "power",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 200,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "power",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🩸",
       "portrait": {
-        "image": "../assets/characters/popular-power.png?v=84c492315ecc",
+        "image": "../assets/characters/popular-power.png?v=e600d7599d0c",
         "alt": "帕瓦样张立绘",
-        "sourceShowcaseId": "pc_power_pc_power_power_rooftop_blood_scythe_smirk",
-        "sourceShowcaseSha256": "431158f02af6e992fcede89249a1fe9c121a0c3d01fc731b5c4535f56d8884dd"
+        "sourceShowcaseId": "pc_power_pc_power_power_meat_feast_celebration",
+        "sourceShowcaseSha256": "5393a075578b0af0f680a385e8c6e0ae68d207cf2d9554cf3c34c9822d21f860"
       },
       "visual_dna": {
         "hair": "浅金草莓金及腰长直发 · 微凌乱野性蓬松感",

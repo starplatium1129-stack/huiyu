@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_nino",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 179,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nakano_nino",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🦋",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_nino.png?v=2a0f82e30c0b",
+        "image": "../assets/characters/popular-nakano_nino.png?v=e2503e535677",
         "alt": "中野二乃样张立绘",
         "sourceShowcaseId": "pc_nakano_nino_pc_nakano_nino_nakano_nino_kitchen_cooking_lesson",
-        "sourceShowcaseSha256": "e3323352174c47ab7f71d01b2bd0fed3bc5a3693a65058831a7289526f58a373"
+        "sourceShowcaseSha256": "77f878932961a6b4fd824de52baadabf38f330a593abcfcae29dd0c73095373f"
       },
       "visual_dna": {
         "hair": "粉红长发双马尾 / 齐肩短发 · 双侧蝴蝶发饰",

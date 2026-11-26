@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "renge_mangekyou",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 252,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "renge_mangekyou",
     "profile": {
@@ -146,10 +146,10 @@
         "八宝备仁传世绘卷名作"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-renge_mangekyou.png?v=08a9b9b1689b",
+        "image": "../assets/characters/popular-renge_mangekyou.png?v=c30558d2fd5e",
         "alt": "莲华样张立绘",
-        "sourceShowcaseId": "pc_renge_mangekyou_pc_renge_mangekyou_renge_vermilion_kimono_crimson_glance",
-        "sourceShowcaseSha256": "45efc34feb1d9ddf00b6137158c72fae5d17080691266800e4ef6e3dc3415de3"
+        "sourceShowcaseId": "pc_renge_mangekyou_pc_renge_mangekyou_renge_tatami_kiseru_smoke_kaleidoscope_recline",
+        "sourceShowcaseSha256": "c1595377f5dc98388d29177652fd9d042af7fea93af0c2f35013fa73ebf10b5a"
       },
       "bg_story": "静立于幽深温泉旅馆深处的神秘少女。留着乌黑的姬发式与绯红双眸，手中常年握着一杆纤细的古典烟管。她是万华镜世界的守望者与引路人，见证着过客透过镜筒窥视各异的爱恨与执念。在冷眼旁观漫长岁月流转的背后，她自身也承受着被禁锢在镜中世界的孤独与宿命。",
       "speech": "呵呵……欢迎来到万华镜的世界。今夜你又渴望窥见怎样瑰丽而荒诞的美梦呢？可别陷得太深，连灵魂都被妾身吸走哦。",

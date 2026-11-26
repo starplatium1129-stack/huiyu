@@ -30,6 +30,10 @@ const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') 
 const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { tokenize }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts') as {
+  endfieldAnimaBinding: (character: string | null | undefined, family?: string, modelId?: string) =>
+    { character: string; loraId: string; loraStrength: number } | null;
+};
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -120,6 +124,7 @@ function buildCandidate(character: PopularCharacter, blueprint: SceneBlueprint, 
   const prompt = result.prompt;
   const [width, height] = nearestAnimaSize(blueprint).split('x').map(Number);
   const negative = result.negative;
+  const binding = endfieldAnimaBinding(character.id, 'anima', ANIMA_MODEL_ID);
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,
@@ -128,6 +133,9 @@ function buildCandidate(character: PopularCharacter, blueprint: SceneBlueprint, 
     adult, outfitId: outfit.id,
     engine: 'anima', profileId: profile.id, modelId: ANIMA_MODEL_ID,
     checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
+    character: binding?.character ?? null,
+    loraId: binding?.loraId ?? null,
+    loraStrength: binding?.loraStrength ?? null,
     width, height,
     steps: animaConstants.MODELS[ANIMA_MODEL_ID].steps,
     cfg: animaConstants.MODELS[ANIMA_MODEL_ID].cfg,
@@ -159,17 +167,17 @@ function planAll(attempt: number, seedAttempt = attempt, keys: string[] = []) {
 
 
 function buildSubmissionBody(candidate: Candidate) {
-  // no-LoRA 模式：不传 loraId / loraStrength / character。
   return {
     prompt: candidate.prompt, negative: candidate.negative,
     modelId: candidate.modelId, width: candidate.width, height: candidate.height,
     steps: candidate.steps, cfg: candidate.cfg, seed: candidate.seed,
     teaCache: candidate.teaCache, teaCacheThresh: candidate.teaCacheThresh,
+    ...(candidate.loraId ? { character: candidate.character, loraId: candidate.loraId, loraStrength: candidate.loraStrength } : {}),
   };
 }
 function canReuseCandidate(previous: StoredCandidate | undefined, candidate: Candidate) {
-  const fields = ['modelId', 'profileId', 'checkpoint', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'] as const;
-  return previous?.status === 'succeeded' && fields.every(field => previous[field] === candidate[field]);
+  const fields = ['modelId', 'profileId', 'checkpoint', 'character', 'loraId', 'loraStrength', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'] as const;
+  return previous?.status === 'succeeded' && fields.every(field => (previous[field] ?? null) === (candidate[field] ?? null));
 }
 async function main(signal?: AbortSignal) {
   const keys = splitList(argument('--keys'));

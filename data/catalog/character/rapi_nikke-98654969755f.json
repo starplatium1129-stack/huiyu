@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🎖️",
       "portrait": {
-        "image": "../assets/characters/popular-rapi_nikke.png?v=be5864135b58",
+        "image": "../assets/characters/popular-rapi_nikke.png?v=9fb2f82de2bf",
         "alt": "拉毗样张立绘",
-        "sourceShowcaseId": "pc_rapi_nikke_pc_rapi_nikke_rapi_surface_combat_rear_shooting_stance",
-        "sourceShowcaseSha256": "28d68939efee9f863bfad56c9438de6c91eee79775cdd1b5d7f8948120856ffc"
+        "sourceShowcaseId": "pc_rapi_nikke_pc_rapi_nikke_rapi_outpost_kitchen_apron_bento_prep",
+        "sourceShowcaseSha256": "02b07635cb3d4713a1a3a99635b658d13ab1668f7a6174d6268a4d46d855c20c"
       },
       "visual_dna": {
         "hair": "及腰飘逸深红栗棕发 · 军官大檐帽 · 沉着坚毅",

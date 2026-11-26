@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "modernia",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 214,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "modernia",
     "profile": {
@@ -23,8 +23,10 @@
       "type": "popular",
       "icon": "🤍",
       "portrait": {
-        "image": "../assets/characters/popular-modernia.png?v=7c7875992c7c",
-        "alt": "神罚立绘"
+        "image": "../assets/characters/popular-modernia.png?v=18cc7f28c6e7",
+        "alt": "神罚立绘",
+        "sourceShowcaseId": "pc_modernia_pc_modernia_modernia_morning_apron_breakfast",
+        "sourceShowcaseSha256": "b5b4de1e83ffbcf90a56459f4d508aceefa019b61ff4f5361e9908df4a0db2d7"
       },
       "visual_dna": {
         "hair": "纯净银白短发 · 柔顺短波波头",

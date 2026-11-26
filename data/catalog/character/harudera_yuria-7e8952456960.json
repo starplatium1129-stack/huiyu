@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🕶️",
       "portrait": {
-        "image": "../assets/characters/popular-harudera_yuria.png?v=49e990bad3b2",
+        "image": "../assets/characters/popular-harudera_yuria.png?v=5991cd5b2253",
         "alt": "春寺由梨亚 (JB)样张立绘",
-        "sourceShowcaseId": "pc_harudera_yuria_pc_harudera_yuria_yuria_firing_range_pistol_stance",
-        "sourceShowcaseSha256": "6746bb75b0e68de0fd5b431d994b8aaa6797279f7b3ae63c01ed1075c2b36db7"
+        "sourceShowcaseId": "pc_harudera_yuria_pc_harudera_yuria_yuria_night_apartment_coffee_unbuttoned",
+        "sourceShowcaseSha256": "8f0f7977f59d9f8376722955c8c4663993aaf2d1313d18a29fae523988b70595"
       },
       "visual_dna": {
         "hair": "极长蜂蜜金大波浪卷发 · 成熟偏分",

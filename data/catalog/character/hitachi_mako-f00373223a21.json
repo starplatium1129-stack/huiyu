@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hitachi_mako",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hitachi_mako",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🍃",
       "portrait": {
-        "image": "../assets/characters/popular-hitachi_mako.png?v=c49189531a34",
+        "image": "../assets/characters/popular-hitachi_mako.png?v=8bc8e8ec9d9c",
         "alt": "常陆茉子样张立绘",
-        "sourceShowcaseId": "pc_hitachi_mako_pc_hitachi_mako_mako_school_corridor_cat_mouth_chat",
-        "sourceShowcaseSha256": "c192e0970c7017eeb5f036b7a70d64eae8655c719800889cd6fe29e38251743a"
+        "sourceShowcaseId": "pc_hitachi_mako_pc_hitachi_mako_mako_shrine_kitchen_apron_cooking",
+        "sourceShowcaseSha256": "6c484235d20a24bcc799c291b9df6486a13384c862c99546a5c14218faa14800"
       },
       "visual_dna": {
         "hair": "黑色齐耳短发 · 耳侧垂颊长发束 · 活泼呆毛",

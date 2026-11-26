@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "pramanix_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 272,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "pramanix_arknights",
     "profile": {
@@ -48,10 +48,10 @@
         "classificationSource": "游戏内干员基础档案"
       },
       "portrait": {
-        "image": "../assets/characters/popular-pramanix_arknights.png?v=aeea8c28cfaf",
+        "image": "../assets/characters/popular-pramanix_arknights.png?v=8d3e3e11925c",
         "alt": "初雪场景样张立绘",
-        "sourceShowcaseId": "pc_pramanix_arknights_pramanix_arknights_bell_repair",
-        "sourceShowcaseSha256": "b78a598eb8034464cc11d1e930251a117d24af758f01b185cc967e5ded35affb"
+        "sourceShowcaseId": "pc_pramanix_arknights_pramanix_arknights_snow_letter",
+        "sourceShowcaseSha256": "741f70b7de7e4b31e5e8b824fc05b77a660dff81e2eac5f3f3fb448819dcb457"
       },
       "tags": [
         "白发",

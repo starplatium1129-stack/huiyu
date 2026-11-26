@@ -1,27 +1,30 @@
 {
   "kind": "outfit",
   "id": "si_arknights/sfw_tea_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1157,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
       "id": "sfw_tea_cardigan",
-      "name": "青竹薄荷落肩针织常服",
+      "name": "天青云纹新中式盘扣茶服",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "A soft mint-green knit cardigan with dropped shoulders layered over a white camisole and beige wide-leg pleated trousers, paired with a carved wood clasp and cream house slippers.",
+      "prose": "A celadon silk modern hanfu cardigan with black piping and frog buttons layered over a white mandarin-collar silk blouse and smoky-teal pleated culottes, accented with a carved jade tassel waist pendant and embroidered soft slippers.",
       "tokens": [
-        "mint knit cardigan",
-        "dropped shoulders",
-        "white camisole",
-        "beige wide-leg pants",
-        "carved wood clasp",
-        "cream house slippers"
+        "celadon silk cardigan",
+        "mandarin collar",
+        "frog buttons",
+        "white silk blouse",
+        "black trim",
+        "pleated culottes",
+        "jade tassel pendant",
+        "wide cuffs",
+        "embroidered slippers"
       ]
     }
   }

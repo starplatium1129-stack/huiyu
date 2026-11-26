@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotori_itsuka",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 234,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kotori_itsuka",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🍭",
       "portrait": {
-        "image": "../assets/characters/popular-kotori_itsuka.png?v=e8d3ccddc3dd",
+        "image": "../assets/characters/popular-kotori_itsuka.png?v=0f7cb39f67d7",
         "alt": "五河琴里样张立绘",
-        "sourceShowcaseId": "pc_kotori_itsuka_pc_kotori_itsuka_kotori_shopping_mall_crepe_share",
-        "sourceShowcaseSha256": "32e79236a2ff0c9c3fdacd5dadcc7d32cacc38c4fdbb96bf6b6ea18719c4dfce"
+        "sourceShowcaseId": "pc_kotori_itsuka_pc_kotori_itsuka_kotori_living_room_lollipop_pout",
+        "sourceShowcaseSha256": "1a7a0422e992fc197f29b8a5dec0d8949e41d1727f0cf0d5342f4ceeeeecd39a"
       },
       "visual_dna": {
         "hair": "珊瑚绯红及腰双马尾 · 标志黑白双发带 · 俏皮元气长发",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mizuhara_chizuru",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 181,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "mizuhara_chizuru",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "👠",
       "portrait": {
-        "image": "../assets/characters/popular-mizuhara_chizuru.png?v=6c676e66fe9d",
+        "image": "../assets/characters/popular-mizuhara_chizuru.png?v=5e21630413fd",
         "alt": "水原千鹤样张立绘",
-        "sourceShowcaseId": "pc_mizuhara_chizuru_pc_mizuhara_chizuru_chizuru_cafe_dessert_tease",
-        "sourceShowcaseSha256": "4a4c15cd0e92dcaebce3158aa05b33d796b28428b91172748e9125a3d398df27"
+        "sourceShowcaseId": "pc_mizuhara_chizuru_pc_mizuhara_chizuru_chizuru_park_bench_script_reading",
+        "sourceShowcaseSha256": "0a44fc64179c08c2e6e4d2f986924c133c07cee355e247479832d1ed020c6cb5"
       },
       "visual_dna": {
         "hair": "栗褐长直微卷发 · 侧单编发",

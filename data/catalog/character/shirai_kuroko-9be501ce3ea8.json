@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirai_kuroko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 198,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "shirai_kuroko",
     "profile": {
@@ -278,10 +278,10 @@
         "brown_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-shirai_kuroko.png?v=16de0c77849a",
+        "image": "../assets/characters/popular-shirai_kuroko.png?v=0b6f1a187a70",
         "alt": "白井黑子样张立绘",
-        "sourceShowcaseId": "pc_shirai_kuroko_pc_shirai_kuroko_shirai_kuroko_daily_station_map",
-        "sourceShowcaseSha256": "428e162c365ed6bf22efce13b6b64aed9f39651db3f6986298383b1b362a7aa8"
+        "sourceShowcaseId": "pc_shirai_kuroko_pc_shirai_kuroko_shirai_kuroko_daily_laces_before_run",
+        "sourceShowcaseSha256": "fe4dfd2f4650d48459fdf0b1b91e85873e2cb5770dcb139f1e688b93134862fc"
       },
       "bg_story": "白井黑子是《某科学的超电磁炮》中的风纪委员，拥有空间移动能力，也是御坂美琴的学妹与室友。她在美琴面前常常表现得格外热切，但处理风纪委员的工作时十分认真。与支部伙伴初春饰利配合，是她日常生活中重要的一部分。",
       "speech": "这里的情况由风纪委员处理。请先退到安全的地方，我会查清楚的。",

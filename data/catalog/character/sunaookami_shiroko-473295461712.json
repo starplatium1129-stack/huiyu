@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunaookami_shiroko",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 213,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "sunaookami_shiroko",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🐺",
       "portrait": {
-        "image": "../assets/characters/popular-sunaookami_shiroko.png?v=0ff387c5da2e",
-        "alt": "砂狼白子立绘"
+        "image": "../assets/characters/popular-sunaookami_shiroko.png?v=0729360550ca",
+        "alt": "砂狼白子立绘",
+        "sourceShowcaseId": "pc_sunaookami_shiroko_pc_sunaookami_shiroko_sunaookami_shiroko_convenience_store_break",
+        "sourceShowcaseSha256": "f9a407bd05ab80763477443f836361d33de76a76d2f9f36a00781f1c8f4d8a80"
       },
       "visual_dna": {
         "hair": "清爽柔顺的浅银灰色短发 · 侧边佩戴一枚简约十字发卡",

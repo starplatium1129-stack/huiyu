@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alisa_mikhailovna_kujou",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "❄️",
       "portrait": {
-        "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=5d93fbba2a69",
+        "image": "../assets/characters/popular-alisa_mikhailovna_kujou.png?v=661f6659a2cf",
         "alt": "艾莉莎·米哈伊洛夫娜·九条样张立绘",
-        "sourceShowcaseId": "pc_alisa_mikhailovna_kujou_pc_alisa_mikhailovna_kujou_alya_library_study_glance",
-        "sourceShowcaseSha256": "2e134b037af93a99a288c5a43159da6994c8f5d5ca82e8114293b78971a3ad8e"
+        "sourceShowcaseId": "pc_alisa_mikhailovna_kujou_pc_alisa_mikhailovna_kujou_alya_classroom_window_blush",
+        "sourceShowcaseSha256": "5416a085776105d4af5045e6970a0eaae1c8f8b21a52d2b3f3a0f612eecf3d02"
       },
       "visual_dna": {
         "hair": "银色长发 · 半双马尾",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon_alter",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "artoria_pendragon_alter",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=9eb16c3dc262",
+        "image": "../assets/characters/popular-artoria_pendragon_alter.png?v=b8826d1b3b25",
         "alt": "阿尔托莉雅·Alter样张立绘",
-        "sourceShowcaseId": "pc_artoria_pendragon_alter_pc_artoria_pendragon_alter_saber_alter_shinjuku_motorcycle_cool_date",
-        "sourceShowcaseSha256": "dd8bdfd0a36c8970d63eb7a8feba8fb11d87b3df93be93f62796ffe1a6d490a6"
+        "sourceShowcaseId": "pc_artoria_pendragon_alter_pc_artoria_pendragon_alter_saber_alter_morning_dining_double_burger_cheeks",
+        "sourceShowcaseSha256": "ab0a61c2a156c50709e8a7e00db00865776bf902c804df0bdda58d75060ab3de"
       },
       "visual_dna": {
         "hair": "浅铂金发",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "si_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 167,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "si_arknights",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🐉",
       "portrait": {
-        "image": "../assets/characters/popular-si_arknights.png?v=4aba91305d8d",
+        "image": "../assets/characters/popular-si_arknights.png?v=d2c35833c28f",
         "alt": "祀样张立绘",
-        "sourceShowcaseId": "pc_si_arknights_pc_si_arknights_si_arknights_calligraphy_doodle",
-        "sourceShowcaseSha256": "1fbf7317b19f66ff74647299402d36c34befae9654b972d27518ef3128516395"
+        "sourceShowcaseId": "pc_si_arknights_pc_si_arknights_si_arknights_kitchen_cooking",
+        "sourceShowcaseSha256": "c3456e1fcb517fa229688ee55daa46782520ff7774b04096a562bcac081cb92f"
       },
       "visual_dna": {
         "hair": "青绿色超长发，扎成俏丽的双丸子包包头",

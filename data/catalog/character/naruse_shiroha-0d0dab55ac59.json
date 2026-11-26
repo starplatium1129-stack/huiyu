@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "naruse_shiroha",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 248,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "naruse_shiroha",
     "profile": {
@@ -197,10 +197,10 @@
         "夏日口袋核心女一"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-naruse_shiroha.png?v=6408ad2211fd",
+        "image": "../assets/characters/popular-naruse_shiroha.png?v=b8766c1bbbd2",
         "alt": "鸣濑白羽样张立绘",
-        "sourceShowcaseId": "pc_naruse_shiroha_pc_naruse_shiroha_shiroha_wooden_schoolhouse_rain_eaves_shelter",
-        "sourceShowcaseSha256": "21005a7ea0d5618a256c2d03c21b9739bcfc124da39d3a33c0d5c26e547eb25c"
+        "sourceShowcaseId": "pc_naruse_shiroha_pc_naruse_shiroha_shiroha_seawall_watermelon_summer_clouds",
+        "sourceShowcaseSha256": "ab3ff1c85bfd9838675585bc3aba8113967a2f9d3a11b3fb45e1ac3214ac57ee"
       },
       "bg_story": "鸟白岛的本土少女，鸣濑神社的血脉继承者。因幼年目睹母亲沉海并背负预知灾厄之力的传闻，习惯了离群索居，常独自在海边防波堤静坐。言语冷淡疏离，实则害怕给接近自己的人招致不幸。喜欢吃西瓜，在海岛的夏日日常中逐渐对身边人敞开心扉，但在血脉与轮回的宿命面前，依然面临着沉重的考验。",
       "speech": "……别随便跟我搭话。靠近我的话，是会招来不幸的……真的是个不会看气氛的大笨蛋呢。",

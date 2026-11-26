@@ -250,6 +250,9 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     watch([livePrompt, effectiveNegative], () => updateAnimaPromptState(), { immediate: true });
     watch(() => pb.directorMode, mode => {
         localStorage.setItem(DIRECTOR_MODE_KEY, mode);
+        if (mode === 'pro' && drawEngine.value !== 'sd') {
+            syncAnimaCharacter();
+        }
     });
     // 热门角色不能使用 SD；同角色同蓝图的换装保留用户手选的引擎。
     watch(() => pb.subject, (subject, previous) => {
@@ -257,6 +260,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
             setDrawEngine('anima');
         } else if (subject.kind === 'popular' && previous?.kind === 'popular'
             && subject.characterId === previous.characterId && subject.blueprintId === previous.blueprintId) return;
+        if (drawEngine.value !== 'sd') syncAnimaCharacter();
         syncManagedRoute();
     });
     // 角色变化后，若当前 category 已无合格蓝图（如"成人"），
@@ -271,6 +275,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (pb.isPopular)
             return;
         if (pb.directorMode === 'basic') {
+            if (drawEngine.value !== 'sd') syncAnimaCharacter(char);
             syncManagedRoute();
         }
         else if (drawEngine.value !== 'sd') {

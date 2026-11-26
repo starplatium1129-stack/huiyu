@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "isshiki_iroha",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "isshiki_iroha",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/popular-isshiki_iroha.png?v=411c94f2f4a9",
+        "image": "../assets/characters/popular-isshiki_iroha.png?v=a69617aac93f",
         "alt": "一色彩羽样张立绘",
-        "sourceShowcaseId": "pc_isshiki_iroha_pc_isshiki_iroha_iroha_christmas_backstage_blush",
-        "sourceShowcaseSha256": "6a8be3e2cb7c08c7367d0d612e28e7b35b633bae663b9f5a164569e319269de8"
+        "sourceShowcaseId": "pc_isshiki_iroha_pc_isshiki_iroha_iroha_bleachers_warm_tea",
+        "sourceShowcaseSha256": "1640c80f9a76b2954b8f53feee737d602bc416d0a557ba08c9f8081a0001d332"
       },
       "visual_dna": {
         "hair": "及肩的蜜糖棕微卷发，侧分刘海自然贴在脸侧。",

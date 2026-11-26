@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "changli_wuthering",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 142,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:54:36.446811700+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "changli_wuthering",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-changli_wuthering.png?v=cf163a35f2bc",
+        "image": "../assets/characters/popular-changli_wuthering.png?v=9aeac49c6a50",
         "alt": "长离样张立绘",
         "sourceShowcaseId": "pc_changli_wuthering_pc_changli_wuthering_changli_wuthering_sfw_b7_01",
-        "sourceShowcaseSha256": "f613a06bb9f7bd8f9e6922fdd1f67b80e266a918d1285953a9514ede7810a9d3"
+        "sourceShowcaseSha256": "96e6721d897086bd9effc04d9211b6fc88cb3f983ddfa864cbad93776076c2bf"
       },
       "visual_dna": {
         "signature": "Changli from Wuthering Waves, with long pink hair arranged into distinctive looped sections, an ahoge and warm orange eyes. Her attentive smile and measured hands convey a patient teacher’s confidence.",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amau_ako",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 208,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "amau_ako",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "⛓️",
       "portrait": {
-        "image": "../assets/characters/popular-amau_ako.png?v=e1b60e761371",
-        "alt": "天雨亚子立绘"
+        "image": "../assets/characters/popular-amau_ako.png?v=a389b470bd9c",
+        "alt": "天雨亚子立绘",
+        "sourceShowcaseId": "pc_amau_ako_pc_amau_ako_amau_ako_prefect_office_overtime",
+        "sourceShowcaseSha256": "b1b39fc0f3cc073d271cfb3fda58f90895d540dcad637c7beb793d572f948de5"
       },
       "visual_dna": {
         "hair": "浅灰微泛幽蓝的蓬松波浪长卷发 · 高扎侧双马尾",

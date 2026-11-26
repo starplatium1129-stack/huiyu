@@ -115,6 +115,8 @@ export interface AnimaGenerationState {
   checkMsg: string
   models: AnimaOption[]
   loras: AnimaOption[]
+  /** Unfiltered gateway LoRA availability list used by cross-character batch recipes. */
+  allLoras?: AnimaOption[]
   styleLoras: KreaStyleLoraOption[]
   styleLoraId: string
   prompt: string

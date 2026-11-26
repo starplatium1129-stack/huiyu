@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "anis_nikke",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 175,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "anis_nikke",
     "profile": {
@@ -13,10 +13,10 @@
       "type": "popular",
       "icon": "🥤",
       "portrait": {
-        "image": "../assets/characters/popular-anis_nikke.png?v=255fcda42626",
+        "image": "../assets/characters/popular-anis_nikke.png?v=95bbb10e4328",
         "alt": "阿尼斯样张立绘",
-        "sourceShowcaseId": "pc_anis_nikke_pc_anis_nikke_anis_sunflower_sundress_lemonade_stand",
-        "sourceShowcaseSha256": "6949491bc362e2ea4d9a3580f5fd906679e21d6813dfde0a834680f6b91ab27b"
+        "sourceShowcaseId": "pc_anis_nikke_pc_anis_nikke_anis_convenience_store_ice_cream_walk",
+        "sourceShowcaseSha256": "848f18ee46b423566e7809bb297cc300b7c019f25759126d5f916175e4b07aac"
       },
       "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
       "alias": [

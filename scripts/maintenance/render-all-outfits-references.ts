@@ -13,6 +13,10 @@
  */
 
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts') as {
+  endfieldAnimaBinding: (character: string | null | undefined, family?: string, modelId?: string) =>
+    { character: string; loraId: string; loraStrength: number } | null;
+};
 import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
 import { readReferenceStandards, type ReferenceOutfit as Outfit, type ReferenceCharacter as Character,
   type ReferenceStandards as Standards } from '../lib/reference-standards';
@@ -57,7 +61,7 @@ function buildPrompt(char: Character, outfit: Outfit, persId: string) {
     outfitTokens,
     outfitProse,
     pConfig.suffix,
-    "@rella, masterpiece, best quality, pristine anime aesthetic, clean cinematic lighting"
+    "best quality, score_7, score_9, very aesthetic, ultra detailed, clean studio lighting"
   ].filter(Boolean);
 
   const negParts = [
@@ -102,8 +106,14 @@ function collectTasks(standards: Standards, opts: Options) {
 
 function buildPayload(char: Character, outfit: Outfit, persId: string, seed: number) {
   const { prompt, negative } = buildPrompt(char, outfit, persId);
+  const modelId = 'anima-miaomiao-v1.6';
+  const binding = char.id === 'nene'
+    ? { character: 'nene', loraId: 'L_NENE_V21_ANIMA', loraStrength: 0.85 }
+    : char.id === 'natsume'
+      ? { character: 'natsume', loraId: 'L_NAT_V21_ANIMA', loraStrength: 0.85 }
+      : endfieldAnimaBinding(char.id, 'anima', modelId);
   return {
-    modelId: 'anima-miaomiao-v1.6',
+    modelId,
     prompt,
     negative,
     width: 832,
@@ -112,7 +122,8 @@ function buildPayload(char: Character, outfit: Outfit, persId: string, seed: num
     cfg: 4.5,
     teaCache: true,
     teaCacheThresh: 0.10,
-    seed
+    seed,
+    ...(binding || {}),
   };
 }
 

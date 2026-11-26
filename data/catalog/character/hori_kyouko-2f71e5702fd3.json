@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hori_kyouko",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hori_kyouko",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-hori_kyouko.png?v=f13a6976246f",
+        "image": "../assets/characters/popular-hori_kyouko.png?v=69a3b4f5410a",
         "alt": "堀京子样张立绘",
         "sourceShowcaseId": "pc_hori_kyouko_pc_hori_kyouko_hori_kyouko_sfw_b5_01",
-        "sourceShowcaseSha256": "1dc07935d7596b552750cbc05863c0ef5fa52aabd3b36dd646355af5ce81a37c"
+        "sourceShowcaseSha256": "0071635be6c1596573b59566fe41a2600b466f5a4af708f22bd1fa490b96569a"
       },
       "visual_dna": {
         "signature": "Kyouko Hori from Horimiya, an energetic schoolgirl with chestnut-brown hair, an M-shaped fringe, long sidelocks and warm brown eyes. Her confident expressions carry brisk, practical warmth, with a more relaxed manner at home.",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "reze_chainsaw",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "reze_chainsaw",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "💣",
       "portrait": {
-        "image": "../assets/characters/popular-reze_chainsaw.png?v=1d4f5f55a6fc",
+        "image": "../assets/characters/popular-reze_chainsaw.png?v=87668cca1b8e",
         "alt": "蕾塞样张立绘",
         "sourceShowcaseId": "pc_reze_chainsaw_pc_reze_chainsaw_reze_cafe_crossroad_smile",
-        "sourceShowcaseSha256": "e954041b1bb09d9e4ae446ca8a3e609814ecc6b2415eed9c02a8c923df1d0f55"
+        "sourceShowcaseSha256": "052c5b770dd9d1b1c7fa6e43c7022f1e37a99dbaf098257dac87dcf1d2e889e6"
       },
       "visual_dna": {
         "hair": "粉紫渐变短发 · 齐刘海",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "futaba_rio",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "futaba_rio",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-futaba_rio.png?v=1a10e84dfa66",
+        "image": "../assets/characters/popular-futaba_rio.png?v=d9298fe75a9e",
         "alt": "双叶理央样张立绘",
-        "sourceShowcaseId": "pc_futaba_rio_pc_futaba_rio_futaba_rio_sfw_b8_04",
-        "sourceShowcaseSha256": "67242f4355ee94eb8aa89e73f7a0b4ca5a8bfd81733e608752a21aaa6e23d599"
+        "sourceShowcaseId": "pc_futaba_rio_pc_futaba_rio_futaba_rio_sfw_b8_01",
+        "sourceShowcaseSha256": "342576116339afcd2da0be4a2426f85df5986409d32b1f265d1613921d2428d5"
       },
       "visual_dna": {
         "signature": "Rio Futaba from Rascal Does Not Dream, a thoughtful science-club member with long wavy grey-brown hair and brown eyes. Her practical glasses and reserved movements fit the selected school or study outfit.",

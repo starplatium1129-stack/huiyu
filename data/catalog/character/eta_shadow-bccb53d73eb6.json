@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eta_shadow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 271,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "eta_shadow",
     "popular": {
@@ -84,10 +84,10 @@
       "type": "popular",
       "icon": "🧪",
       "portrait": {
-        "image": "../assets/characters/popular-eta_shadow.png?v=2c84f3bd4042",
+        "image": "../assets/characters/popular-eta_shadow.png?v=7e1f46ffc81c",
         "alt": "埃塔样张立绘",
-        "sourceShowcaseId": "pc_eta_shadow_eta_shadow_slime_fitting_measurement",
-        "sourceShowcaseSha256": "97f65346118d1df53d248f6250a56fbb7e63d424fae1149831e00b42082728a2"
+        "sourceShowcaseId": "pc_eta_shadow_pc_eta_shadow_bench_pressure_reading",
+        "sourceShowcaseSha256": "27dd5f1263d1f6c62bf7f8ef486e5f86585ac062abb5802c32cad69d494098f7"
       },
       "visual_dna": {
         "hair": "蓬松凌乱的紫棕色长发，刘海总像刚睡醒一样翘着",

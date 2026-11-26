@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshino_ai",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hoshino_ai",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-hoshino_ai.png?v=527f456a0d35",
+        "image": "../assets/characters/popular-hoshino_ai.png?v=4fc3f1434792",
         "alt": "星野爱样张立绘",
-        "sourceShowcaseId": "pc_hoshino_ai_pc_hoshino_ai_hoshino_ai_stage_off_shoulder",
-        "sourceShowcaseSha256": "36a7ceafd5fa26a7f41105de59ec43e18c7d95d41055ab188350116e78a2197a"
+        "sourceShowcaseId": "pc_hoshino_ai_pc_hoshino_ai_hoshino_ai_rehearsal_room",
+        "sourceShowcaseSha256": "c23a9c11f01809172d5027da9ebff88ec2d1a1cf60d2fd775859474af8b6bfc2"
       },
       "visual_dna": {
         "hair": "紫色长发（单侧扎起）",

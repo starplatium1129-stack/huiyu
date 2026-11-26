@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "scarlet_nikke",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 215,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "scarlet_nikke",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "🍶",
       "portrait": {
-        "image": "../assets/characters/popular-scarlet_nikke.png?v=9baaceef9f1c",
+        "image": "../assets/characters/popular-scarlet_nikke.png?v=e53be5df6454",
         "alt": "红莲样张立绘",
-        "sourceShowcaseId": "pc_scarlet_nikke_pc_scarlet_nikke_scarlet_nikke_ronin_haori_bamboo_wind",
-        "sourceShowcaseSha256": "dc6075064fc70eb21f2450c4f5ddce98d0ef6786be0458d31eb6e1786aacadb6"
+        "sourceShowcaseId": "pc_scarlet_nikke_pc_scarlet_nikke_scarlet_veranda_sake_sharing",
+        "sourceShowcaseSha256": "adb10c4199d528cbc0a7b8eaa69d16b7fe71092d8ef4a02ab0d646179f666ed6"
       },
       "visual_dna": {
         "hair": "如雪白发 · 标志性高挑帅气马尾 · 灵动不羁呆毛",

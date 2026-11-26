@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "firefly_hsr",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 180,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "firefly_hsr",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-firefly_hsr.png?v=40659e82498d",
-        "alt": "流萤立绘"
+        "image": "../assets/characters/popular-firefly_hsr.png?v=3392c03834e2",
+        "alt": "流萤立绘",
+        "sourceShowcaseId": "pc_firefly_hsr_pc_firefly_hsr_firefly_sweet_oak_cake_share",
+        "sourceShowcaseSha256": "5d960fec68d520d9b6fb66453c9987570d67beed46bb70dedba11ee78a5e1c15"
       },
       "visual_dna": {
         "hair": "银灰长发渐变青绿 · 发箍",

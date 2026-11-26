@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "frenda_seivelun",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 243,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "frenda_seivelun",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🐟",
       "portrait": {
-        "image": "../assets/characters/popular-frenda_seivelun.png?v=0653fcc28a11",
+        "image": "../assets/characters/popular-frenda_seivelun.png?v=457665292fd9",
         "alt": "芙兰达·塞维伦样张立绘",
         "sourceShowcaseId": "pc_frenda_seivelun_pc_frenda_seivelun_frenda_safehouse_sofa_mackerel_feed",
-        "sourceShowcaseSha256": "4e3c47c005de7097adb7349901e76ef3eb5e55234f71015115a1c0ac714978d5"
+        "sourceShowcaseSha256": "564cb70942aa44b0b4098666c549f7444e17526e5ce25f95fb33a0cb5346186b"
       },
       "visual_dna": {
         "hair": "纯金柔亮及腰波浪长发 · 蓬松丰盈金发 · 标志歪戴小贝雷帽",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yvonne_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "yvonne_arknights",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🔧",
       "portrait": {
-        "image": "../assets/characters/popular-yvonne_arknights.png?v=244cf6ae9d06",
+        "image": "../assets/characters/popular-yvonne_arknights.png?v=1c28d86801ab",
         "alt": "伊冯样张立绘",
-        "sourceShowcaseId": "pc_yvonne_arknights_pc_yvonne_arknights_yvonne_arknights_workshop",
-        "sourceShowcaseSha256": "487633f77a5d0aab6e52902f5c96fe7cb8a736316031095823d3f58cd527fcca"
+        "sourceShowcaseId": "pc_yvonne_arknights_yvonne_arknights_sfw_market_contact_sheet",
+        "sourceShowcaseSha256": "439ee4ce2065c5f1073785c5788a3dfcbf23b5407b553075a4a4c90e9c42e497"
       },
       "visual_dna": {
         "hair": "粉色双马尾（发梢渐变挑染）",

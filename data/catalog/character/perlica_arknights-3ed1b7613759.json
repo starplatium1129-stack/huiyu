@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "perlica_arknights",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "perlica_arknights",
     "profile": {
@@ -70,10 +70,10 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-perlica_arknights.png?v=07c99d189441",
+        "image": "../assets/characters/popular-perlica_arknights.png?v=476ea56bb9ad",
         "alt": "佩丽卡样张立绘",
-        "sourceShowcaseId": "pc_perlica_arknights_pc_perlica_arknights_perlica_arknights_endfield_lab",
-        "sourceShowcaseSha256": "8163ec99dd8398f884c98b5350dc78008559790a4d9f60260f9e5d4c48f1cbee"
+        "sourceShowcaseId": "pc_perlica_arknights_pc_perlica_arknights_perlica_arknights_canteen_routine",
+        "sourceShowcaseSha256": "5f07fe444c56c56849e601a421b4a6140b0c8008af06b718e99cf83b74fc61c5"
       },
       "speech": "佩丽卡向你致以问候。",
       "accent_color": "#38bdf8",

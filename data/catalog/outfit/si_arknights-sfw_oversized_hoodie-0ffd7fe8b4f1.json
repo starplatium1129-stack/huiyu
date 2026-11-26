@@ -1,27 +1,30 @@
 {
   "kind": "outfit",
   "id": "si_arknights/sfw_oversized_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1158,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
       "id": "sfw_oversized_hoodie",
-      "name": "基地漫步浅灰连帽卫衣",
+      "name": "墨竹解构新中式机能短外套",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "An oversized heather-grey zip hoodie over a black cropped tank top and dark denim shorts, paired with black thigh-high socks and canvas sneakers.",
+      "prose": "A charcoal and ivory cropped techwear jacket with an asymmetric hem, high collar, and jade-green piped seams layered over a black midriff top and wrap mini skirt with utility belt straps, finished with black thigh-highs and buckled combat boots.",
       "tokens": [
-        "grey zip hoodie",
-        "oversized hood",
-        "black crop tank",
-        "dark denim shorts",
-        "black thigh-high socks",
-        "canvas sneakers"
+        "cropped techwear jacket",
+        "asymmetric hem",
+        "high collar",
+        "jade green trim",
+        "black midriff top",
+        "wrap mini skirt",
+        "utility belt",
+        "black thighhighs",
+        "buckled combat boots"
       ]
     }
   }

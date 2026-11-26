@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ram",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 203,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ram",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "source": "長月達平《Re:从零开始的异世界生活 / Re:Zero》",
       "portrait": {
-        "image": "../assets/characters/popular-ram.png?v=90ee5ad7073f",
+        "image": "../assets/characters/popular-ram.png?v=03cfb6d9810d",
         "alt": "拉姆样张立绘",
-        "sourceShowcaseId": "pc_ram_pc_ram_ram_morning_tea",
-        "sourceShowcaseSha256": "ce7b9965b1213346b34622688e0f13093cd84a05c2e93dd9267890ec2e57b720"
+        "sourceShowcaseId": "pc_ram_pc_ram_ram_market_basket",
+        "sourceShowcaseSha256": "328108e54f9c0ca17620e5aef5f33d2c1500f3005bc3826daf21b71f914f1f30"
       },
       "accent_color": "#dc789a",
       "bg_color": "#211621",

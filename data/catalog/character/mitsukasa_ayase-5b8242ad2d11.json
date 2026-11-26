@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mitsukasa_ayase",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 260,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "mitsukasa_ayase",
     "profile": {
@@ -152,10 +152,10 @@
         "pink eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=f2da4190865b",
+        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=61b106c2dce5",
         "alt": "三司绫濑样张立绘",
-        "sourceShowcaseId": "pc_mitsukasa_ayase_pc_mitsukasa_ayase_mitsukasa_ayase_interview",
-        "sourceShowcaseSha256": "52cb5f39c1c8de4da05c1ab39b738fbb03c443173924dd1b32ec984c11813f4a"
+        "sourceShowcaseId": "pc_mitsukasa_ayase_pc_mitsukasa_ayase_mitsukasa_ayase_floating_key",
+        "sourceShowcaseSha256": "29b9dde11dee06dc5d5a55fa142ca65260461c519362768177e0f4ad0d380cca"
       },
       "bg_story": "绫濑在人前常被当作开朗可靠的焦点，私下却更喜欢一个人待着，也不总有精力维持完美形象。她拥有漂浮能力，平时谨慎地处理能力和旁人的期待。场景区分她在人前与独处时的状态。",
       "speech": "今天不用应付镜头了吧？那我可以先坐一会儿。",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "augusta_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 309,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "augusta_wuwa",
     "profile": {
@@ -43,8 +43,10 @@
         "tall"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-augusta_wuwa.png?v=ab0bdee98319",
-        "alt": "奥古斯塔立绘"
+        "image": "../assets/characters/popular-augusta_wuwa.png?v=65c596bec9a1",
+        "alt": "奥古斯塔立绘",
+        "sourceShowcaseId": "pc_augusta_wuwa_wuwa_augusta_sc05",
+        "sourceShowcaseSha256": "2efb2c07b70fbb6dbe878675fbf4a39e5be7d68abe9e726745b293b6679cd252"
       },
       "visual_dna": {
         "signature": "Augusta from Wuthering Waves. A tall woman with long red hair and golden eyes.",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ikaros",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ikaros",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-ikaros.png?v=d30d06582ae8",
+        "image": "../assets/characters/popular-ikaros.png?v=07eaced645d8",
         "alt": "伊卡洛斯样张立绘",
-        "sourceShowcaseId": "pc_ikaros_pc_ikaros_ikaros_maid_cafe_serving_deadpan",
-        "sourceShowcaseSha256": "741289cec64ebebccc97b9b6b0ce8a29f0acc0bd36544e6ddde0b43a3450a641"
+        "sourceShowcaseId": "pc_ikaros_ikaros_maid_book_stool_library",
+        "sourceShowcaseSha256": "2d7477f4641ba29d5c86cd7ddf40031972697347fa20ead1242651439c2de54a"
       },
       "visual_dna": {
         "hair": "淡粉渐变超长双马尾 · 灵动呆毛 · 机械耳饰",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saint_cecilia",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "saint_cecilia",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🕊️",
       "portrait": {
-        "image": "../assets/characters/popular-saint_cecilia.png?v=23c782207b6d",
+        "image": "../assets/characters/popular-saint_cecilia.png?v=9c92e39d5798",
         "alt": "塞西莉亚样张立绘",
-        "sourceShowcaseId": "pc_saint_cecilia_pc_saint_cecilia_cecilia_garden_watering_flowers",
-        "sourceShowcaseSha256": "1d346a9e9a525c44732bc466bc47255c11937e66cfb2c1d8b27be9f9b7ab6c47"
+        "sourceShowcaseId": "pc_saint_cecilia_pc_saint_cecilia_cecilia_living_room_lazy_scone",
+        "sourceShowcaseSha256": "d3f3243c33fd32dbd6e334a4f89e418dc5318078c2654dcf01a153b018fe199d"
       },
       "visual_dna": {
         "hair": "浅绿长发 · 低盘发",

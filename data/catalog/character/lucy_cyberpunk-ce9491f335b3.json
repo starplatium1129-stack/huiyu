@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lucy_cyberpunk",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "lucy_cyberpunk",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🌙",
       "portrait": {
-        "image": "../assets/characters/popular-lucy_cyberpunk.png?v=e7e9737bf8bf",
+        "image": "../assets/characters/popular-lucy_cyberpunk.png?v=9dadb8485c33",
         "alt": "露西样张立绘",
-        "sourceShowcaseId": "pc_lucy_cyberpunk_pc_lucy_cyberpunk_lucy_deep_dive_tub_cyberspace_interface",
-        "sourceShowcaseSha256": "07bb1be0b928e98a705225517b9ce7dbaf60bff8a6b9b6704c0518eb6ca5062d"
+        "sourceShowcaseId": "pc_lucy_cyberpunk_pc_lucy_cyberpunk_lucy_apartment_morning_cigarette_couch",
+        "sourceShowcaseSha256": "d783f59e84469b44c041aa40d981060e5077983395b5b409bbce284abf95578e"
       },
       "visual_dna": {
         "hair": "不对称渐变短发 · 幻彩白粉紫微蓝",

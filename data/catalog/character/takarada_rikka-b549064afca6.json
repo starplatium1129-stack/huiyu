@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "takarada_rikka",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "takarada_rikka",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-takarada_rikka.png?v=d52b65054e2c",
+        "image": "../assets/characters/popular-takarada_rikka.png?v=dc4398714a91",
         "alt": "宝多六花样张立绘",
-        "sourceShowcaseId": "pc_takarada_rikka_pc_takarada_rikka_takarada_rikka_sfw_b5_03",
-        "sourceShowcaseSha256": "230964a82c92e9beb5f5d0e583049bf1927618a755d8feafbae311af7206c293"
+        "sourceShowcaseId": "pc_takarada_rikka_pc_takarada_rikka_takarada_rikka_sfw_b5_02",
+        "sourceShowcaseSha256": "6ca05fd8ecc24d5b234cd52930da11572ec3362796db3cf0bdf2a214151be688"
       },
       "visual_dna": {
         "signature": "Rikka Takarada from SSSS.GRIDMAN, a thoughtful schoolgirl with long straight black hair, cool blue eyes and a relaxed, half-lidded gaze. Her understated posture and small changes of expression reveal attention beneath an easygoing manner.",

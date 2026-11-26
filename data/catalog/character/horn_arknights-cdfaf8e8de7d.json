@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "horn_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 287,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "horn_arknights",
     "profile": {
@@ -52,10 +52,10 @@
       ],
       "voice": "这段时间，值得好好珍惜。",
       "portrait": {
-        "image": "../assets/characters/popular-horn_arknights.png?v=a7fedeb6f6ab",
+        "image": "../assets/characters/popular-horn_arknights.png?v=40eaf26e28b9",
         "alt": "号角场景样张立绘",
-        "sourceShowcaseId": "pc_horn_arknights_horn_arknights_rain_shelter",
-        "sourceShowcaseSha256": "643fe98e091b29de6d9fa2099e2499102134652492ddc87e8cf7788c82b6bcea"
+        "sourceShowcaseId": "pc_horn_arknights_horn_arknights_afternoon_tea",
+        "sourceShowcaseSha256": "15b8daf4a9ad1473efb207d33426569eec707ab1b8527340d93a37faef39e383"
       },
       "relationshipGraph": {
         "version": 1,

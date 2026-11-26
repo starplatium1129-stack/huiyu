@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lemuen_arknights",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "lemuen_arknights",
     "profile": {
@@ -78,10 +78,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-lemuen_arknights.png?v=50218cf66aaf",
+        "image": "../assets/characters/popular-lemuen_arknights.png?v=3d518c294b52",
         "alt": "蕾缪安样张立绘",
-        "sourceShowcaseId": "pc_lemuen_arknights_pc_lemuen_arknights_lemuen_arknights_halo_street",
-        "sourceShowcaseSha256": "bd7d21da2ef8993b744ee16835eec65eee6d300ee2f7ecb6332bb78a74abaacc"
+        "sourceShowcaseId": "pc_lemuen_arknights_pc_lemuen_arknights_lemuen_arknights_training_range",
+        "sourceShowcaseSha256": "40be6d1779adbba017df596ad96ed36c266f118612103cc9690f00435eba268c"
       },
       "speech": "蕾缪安向你致以问候。",
       "accent_color": "#38bdf8",

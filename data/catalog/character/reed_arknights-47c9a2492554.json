@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "reed_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 296,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "reed_arknights",
     "profile": {
@@ -53,10 +53,10 @@
       ],
       "voice": "这朵花，明天应该就会开了。",
       "portrait": {
-        "image": "../assets/characters/popular-reed_arknights.png?v=7e649fb5bc7a",
+        "image": "../assets/characters/popular-reed_arknights.png?v=920c10bfcfba",
         "alt": "焰影苇草场景样张立绘",
-        "sourceShowcaseId": "pc_reed_arknights_reed_arknights_museum_label",
-        "sourceShowcaseSha256": "02422a9b26a758af5faae0e75ac1554828f07e23e586ff674dc72549b3d266cf"
+        "sourceShowcaseId": "pc_reed_arknights_reed_arknights_tea_leaves",
+        "sourceShowcaseSha256": "70d42f090c830cd6204071b2ede49588c6be176d54bfc22ad4b1fb0418730ffa"
       },
       "relationshipGraph": {
         "version": 1,

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "exusiai_arknights",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "exusiai_arknights",
     "profile": {
@@ -80,10 +80,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-exusiai_arknights.png?v=80b2d96339a2",
+        "image": "../assets/characters/popular-exusiai_arknights.png?v=b19bcc21554b",
         "alt": "能天使样张立绘",
-        "sourceShowcaseId": "pc_exusiai_arknights_pc_exusiai_arknights_exusiai_arknights_wing_rest",
-        "sourceShowcaseSha256": "01526d203887b1fb678f4c9075cbb72a0a89d3bdcde521aefbaa724689343364"
+        "sourceShowcaseId": "pc_exusiai_arknights_pc_exusiai_arknights_exusiai_arknights_skateboard_wheel_check",
+        "sourceShowcaseSha256": "f22866e46a18f156988546494c0f0f13a15e9026851e00fb7a103dab6fade5e0"
       },
       "speech": "能天使向你致以问候。",
       "accent_color": "#38bdf8",

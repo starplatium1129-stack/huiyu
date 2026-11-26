@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "touma_kazusa",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 255,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "touma_kazusa",
     "profile": {
@@ -157,10 +157,10 @@
         "blue_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-touma_kazusa.png?v=b5e2f8332935",
+        "image": "../assets/characters/popular-touma_kazusa.png?v=9d919dddd53d",
         "alt": "冬马和纱样张立绘",
-        "sourceShowcaseId": "pc_touma_kazusa_pc_touma_kazusa_touma_kazusa_metronome",
-        "sourceShowcaseSha256": "e81745de7978d1d17d9df646ba202fae8514e2f713e7d1d158ce4bb87f0ca86b"
+        "sourceShowcaseId": "pc_touma_kazusa_pc_touma_kazusa_touma_kazusa_record",
+        "sourceShowcaseSha256": "11b8b3e1b79c1e00095c57001c1dfd99777010719fb2e52ecaa3a9cde77af51b"
       },
       "bg_story": "和纱是钢琴家，习惯用演奏表达难以说出口的情绪。她外表冷淡，说话常常直接，真正熟悉的人能看见她对音乐和彼此关系的认真。这里采用后续篇章的成年时期，保留她独处时的节奏，不替她决定原作路线的结局。",
       "speech": "先别说话。等这一段弹完，再告诉我哪里不对。",

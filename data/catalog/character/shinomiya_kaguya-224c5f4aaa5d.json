@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinomiya_kaguya",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "shinomiya_kaguya",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🌙",
       "portrait": {
-        "image": "../assets/characters/popular-shinomiya_kaguya.png?v=cf1afe569edc",
+        "image": "../assets/characters/popular-shinomiya_kaguya.png?v=1c195e890e17",
         "alt": "四宫辉夜样张立绘",
-        "sourceShowcaseId": "pc_shinomiya_kaguya_pc_shinomiya_kaguya_kaguya_christmas_gift_snowdate",
-        "sourceShowcaseSha256": "891b755a2b3a2879177d2da46e64d970120b91174c36d1aa432268cc507f9598"
+        "sourceShowcaseId": "pc_shinomiya_kaguya_pc_shinomiya_kaguya_kaguya_student_council_afternoon",
+        "sourceShowcaseSha256": "50392220ab4f586dccd92b8e49a01a4666be52498cc6a95bf84e32459e541b19"
       },
       "visual_dna": {
         "hair": "黑色短发折叠马尾 · 红缎带",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuonji_alice",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kuonji_alice",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kuonji_alice.png?v=4d265dd58bc9",
+        "image": "../assets/characters/popular-kuonji_alice.png?v=f5448b9925a5",
         "alt": "久远寺有珠样张立绘",
-        "sourceShowcaseId": "pc_kuonji_alice_pc_kuonji_alice_kuonji_alice_sfw_b7_04",
-        "sourceShowcaseSha256": "423aa4a1a43d5508d62fa0ad3f80594abde58046aeb00b14b4477eb81aceb96c"
+        "sourceShowcaseId": "pc_kuonji_alice_pc_kuonji_alice_kuonji_alice_sfw_b7_01",
+        "sourceShowcaseSha256": "e02a6019e74ee830a932cc356aede2b739305f8b9390a5290d07318622af9bc5"
       },
       "visual_dna": {
         "signature": "Alice Kuonji from Witch on the Holy Night, a reserved witch with short dark hair, lifted side sections near the temples and deep dark eyes. Her still expression and precise movements suit quiet rooms and careful rituals.",

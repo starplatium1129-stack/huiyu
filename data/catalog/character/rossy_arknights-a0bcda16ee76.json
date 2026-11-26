@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossy_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 164,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "rossy_arknights",
     "profile": {
@@ -64,10 +64,10 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-rossy_arknights.png?v=0b2be56dd38f",
+        "image": "../assets/characters/popular-rossy_arknights.png?v=bec0d76412e5",
         "alt": "洛茜样张立绘",
-        "sourceShowcaseId": "pc_rossy_arknights_pc_rossy_arknights_rossy_arknights_mining_drill_proud",
-        "sourceShowcaseSha256": "05ea81ee89d0803aa6e3eb3087d02fff809c119691848ed8c3192ab135895c5a"
+        "sourceShowcaseId": "pc_rossy_arknights_pc_rossy_arknights_rossy_arknights_workshop_soda_break",
+        "sourceShowcaseSha256": "a3415be7138e38355de4d7e8b60ba6a102582b5cf8f2a80b84dde42ced5dce4e"
       },
       "speech": "「狼群从不抛弃自己的同伴！握紧武器站在我身后，只要这柄剑还在鸣响，就没有任何杂碎能越过我伤害你们！」",
       "accent_color": "#c84242",

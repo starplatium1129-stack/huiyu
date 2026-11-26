@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "artoria_pendragon",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "⚔️",
       "portrait": {
-        "image": "../assets/characters/popular-artoria_pendragon.png?v=68fddfea6cba",
+        "image": "../assets/characters/popular-artoria_pendragon.png?v=38bcce7865c9",
         "alt": "阿尔托莉雅样张立绘",
         "sourceShowcaseId": "pc_artoria_pendragon_pc_artoria_pendragon_artoria_emiya_dining",
-        "sourceShowcaseSha256": "7bcbbe64a26721e3f17314b10140fd240eaf8e4bd3ba7f392fbec5d78dcd9e49"
+        "sourceShowcaseSha256": "4feac0d0bbcec030150262de7e51891e64e1a10a78132ad0e4d181e8d00b96cd"
       },
       "visual_dna": {
         "hair": "金发 · 低盘发",

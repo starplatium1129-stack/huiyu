@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_canopy_bed",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1769,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-26T17:17:07.929422400+00:00",
   "data": {
     "id": "si_arknights_r18_canopy_bed",
     "characterId": "si_arknights",
@@ -18,7 +18,7 @@
     "mood": "含羞动情",
     "adult": true,
     "sampleRating": "R15",
-    "description": "私密卧房的青色罗帐低垂，月光从雕花窗棱间洒落。祀身着翡翠薄纱睡裙半倚在丝绒软垫上，细带自削肩滑落，胸前饱满轮廓若隐若现。她眼角含春、呼吸微乱，玉手轻按在床单褶皱间，龙角微微泛起动情的浅粉——「今夜的笔墨已收……剩下的篇章，只写给你看。」",
+    "description": "私密卧房的青色罗帐低垂，月光从雕花窗棱间洒落。祀身着素纱青玉交领刺绣罗衣半倚在丝绒软垫上，细丝绸带松松系在腰间、领口自削肩轻滑，饱满轮廓若隐若现。她眼角含春、呼吸微乱，玉手轻按在床单褶皱间，龙角微微泛起动情的浅粉——「今夜的笔墨已收……剩下的篇章，只写给你看。」",
     "outfitId": "nsfw_lace_lingerie",
     "recommendedSize": "1152x1536",
     "coverageTags": [],
@@ -49,7 +49,7 @@
       "sensual"
     ],
     "negativeTokens": [],
-    "promptProse": "Reclining across the silk bedsheets in a translucent jade nightie, Si gazes up with heavy-lidded blue eyes and parted lips as one thin strap slips off her delicate shoulder.",
+    "promptProse": "Reclining across the silk bedsheets in a translucent jade-green cross-front silk negligee with gold lace trim, Si gazes up with heavy-lidded blue eyes and parted lips as the loose collar slips off her delicate shoulder.",
     "animaCaption": "She reclines on the silk bedding with a slipping strap, her parted lips and blushing gaze fixed on the viewer.",
     "nsfwTokens": [],
     "nsfwProse": ""

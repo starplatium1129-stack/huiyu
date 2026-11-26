@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "la_folia_rihavein",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 225,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "la_folia_rihavein",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "👑",
       "portrait": {
-        "image": "../assets/characters/popular-la_folia_rihavein.png?v=3cf0fded2ba8",
+        "image": "../assets/characters/popular-la_folia_rihavein.png?v=b98444165cc8",
         "alt": "拉·芙利亚·利哈瓦因样张立绘",
         "sourceShowcaseId": "pc_la_folia_rihavein_pc_la_folia_rihavein_la_folia_royal_garden_promenade",
-        "sourceShowcaseSha256": "bf88e988190ba8d48887d202e0599556da7f6a082eda9d66f4e9044eaadf4e55"
+        "sourceShowcaseSha256": "c9775b5a1d8ab0f092d05ac9b45ed7b53abe59c97e0d3523dd169c99703ade35"
       },
       "visual_dna": {
         "hair": "银河般流泻如瀑及踝超长银发 · 宛若极光丝缕",

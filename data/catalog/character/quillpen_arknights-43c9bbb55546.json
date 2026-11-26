@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "quillpen_arknights",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 32,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "quillpen_arknights",
     "profile": {
@@ -79,10 +79,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-quillpen_arknights.png?v=643be2f11d8f",
+        "image": "../assets/characters/popular-quillpen_arknights.png?v=6cdfdae4a46b",
         "alt": "羽毛笔样张立绘",
-        "sourceShowcaseId": "pc_quillpen_arknights_pc_quillpen_arknights_quillpen_arknights_feather_shop",
-        "sourceShowcaseSha256": "182755e14196a125fb9a3571a5de53e13257252e4da4a72cc69e898960b30e02"
+        "sourceShowcaseId": "pc_quillpen_arknights_pc_quillpen_arknights_quillpen_arknights_rain_delivery",
+        "sourceShowcaseSha256": "b8158e5f064176a5fcca86081ffc5b6ded8cdbc0a75646c3d719c9351ea9f1a2"
       },
       "speech": "羽毛笔向你致以问候。",
       "accent_color": "#38bdf8",

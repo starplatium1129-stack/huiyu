@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sparkle_hsr",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "sparkle_hsr",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🎭",
       "portrait": {
-        "image": "../assets/characters/popular-sparkle_hsr.png?v=188190d73824",
+        "image": "../assets/characters/popular-sparkle_hsr.png?v=7179953f266c",
         "alt": "花火样张立绘",
-        "sourceShowcaseId": "pc_sparkle_hsr_pc_sparkle_hsr_sparkle_dreamscape_carnival_masks",
-        "sourceShowcaseSha256": "a2259b5e7aad8078412f633119625421a57d5b1df7dd162d1dca43af6bf8ab6f"
+        "sourceShowcaseId": "pc_sparkle_hsr_pc_sparkle_hsr_sparkle_morning_chair_straddle_lollipop",
+        "sourceShowcaseSha256": "d5e42408944abb1533410c39efecbba106c88d02558742ffe1cd1facafccb051"
       },
       "visual_dna": {
         "hair": "乌黑如墨双马尾 · 鲜红发带",

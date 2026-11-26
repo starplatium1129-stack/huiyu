@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurokawa_akane",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kurokawa_akane",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🎭",
       "portrait": {
-        "image": "../assets/characters/popular-kurokawa_akane.png?v=66c12415db14",
+        "image": "../assets/characters/popular-kurokawa_akane.png?v=a66cbf0185a5",
         "alt": "黑川茜样张立绘",
-        "sourceShowcaseId": "pc_kurokawa_akane_pc_kurokawa_akane_kurokawa_akane_audition_room",
-        "sourceShowcaseSha256": "776c80be9ff612b86c01d44510e9ab42742c7efb044912fac050d82a047a2427"
+        "sourceShowcaseId": "pc_kurokawa_akane_pc_kurokawa_akane_kurokawa_akane_school_hallway",
+        "sourceShowcaseSha256": "2a9600368fc78b86f73573a31164e233496510880fd9775794d0855ad286ffb5"
       },
       "visual_dna": {
         "hair": "蓝紫色长直发",

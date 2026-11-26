@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "carlotta_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 305,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "carlotta_wuwa",
     "profile": {
@@ -42,8 +42,10 @@
         "pink eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-carlotta_wuwa.png?v=395351f5d06a",
-        "alt": "珂莱塔立绘"
+        "image": "../assets/characters/popular-carlotta_wuwa.png?v=58687e5876cc",
+        "alt": "珂莱塔立绘",
+        "sourceShowcaseId": "pc_carlotta_wuwa_wuwa_carlotta_sc01",
+        "sourceShowcaseSha256": "658fbfef74f40d2d68d9122ace28cfc67c634d02c34b11ad126aaafd024a0846"
       },
       "visual_dna": {
         "signature": "Carlotta from Wuthering Waves. Long white hair and pink eyes.",

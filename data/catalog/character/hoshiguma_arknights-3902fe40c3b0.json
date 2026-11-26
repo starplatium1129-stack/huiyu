@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshiguma_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 286,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hoshiguma_arknights",
     "profile": {
@@ -51,10 +51,10 @@
       ],
       "voice": "这顿我请，下次换你。",
       "portrait": {
-        "image": "../assets/characters/popular-hoshiguma_arknights.png?v=cc4c6ae0f2e9",
+        "image": "../assets/characters/popular-hoshiguma_arknights.png?v=c231f2c99e61",
         "alt": "星熊场景样张立绘",
-        "sourceShowcaseId": "pc_hoshiguma_arknights_hoshiguma_arknights_rain_umbrella",
-        "sourceShowcaseSha256": "a9040c0dc2a3375b9942d3d52f18767c56c8118fc039c4a982e1872401131622"
+        "sourceShowcaseId": "pc_hoshiguma_arknights_hoshiguma_arknights_tea_house",
+        "sourceShowcaseSha256": "2587e3200df6a8a6474ef878fedf8dab60fc4f86b8f984d681dc025822d53cfe"
       },
       "relationshipGraph": {
         "version": 1,

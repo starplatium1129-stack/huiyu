@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kyouyama_kazusa",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kyouyama_kazusa",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🎸",
       "portrait": {
-        "image": "../assets/characters/popular-kyouyama_kazusa.png?v=8284c2a9a22e",
+        "image": "../assets/characters/popular-kyouyama_kazusa.png?v=5fc6c83b7c24",
         "alt": "杏山和纱样张立绘",
-        "sourceShowcaseId": "pc_kyouyama_kazusa_pc_kyouyama_kazusa_kyouyama_kazusa_corridor_instrument",
-        "sourceShowcaseSha256": "1c285e7cbaed6e37a1b7122582670b7b8511b90554681132eeaff9b650a090bf"
+        "sourceShowcaseId": "pc_kyouyama_kazusa_pc_kyouyama_kazusa_kyouyama_kazusa_dessert_cafe",
+        "sourceShowcaseSha256": "8857e6d63417f9d8dcf24194cc0b5fae49bbe546cd24ae0509ef73e87993f14c"
       },
       "visual_dna": {
         "hair": "黑色妹妹头",

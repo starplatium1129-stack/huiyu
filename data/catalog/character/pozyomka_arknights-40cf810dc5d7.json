@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "pozyomka_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 280,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "pozyomka_arknights",
     "profile": {
@@ -47,10 +47,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-pozyomka_arknights.png?v=cc6383fb1a64",
+        "image": "../assets/characters/popular-pozyomka_arknights.png?v=d5971cfa17b8",
         "alt": "鸿雪场景样张立绘",
-        "sourceShowcaseId": "pc_pozyomka_arknights_pozyomka_arknights_pencil_box",
-        "sourceShowcaseSha256": "eab7657b81c05110ef0e0e813ac01303b0266a14be593364df68ad7ecdcb5565"
+        "sourceShowcaseId": "pc_pozyomka_arknights_pozyomka_arknights_bookbinding",
+        "sourceShowcaseSha256": "4600bca3356918d473533e0de919cdc9e8470be800b35c4ccb63ffbfb55c0614"
       },
       "tags": [
         "鲁珀",

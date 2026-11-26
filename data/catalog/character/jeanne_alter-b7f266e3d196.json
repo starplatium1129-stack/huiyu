@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_alter",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "jeanne_alter",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🐉",
       "portrait": {
-        "image": "../assets/characters/popular-jeanne_alter.png?v=588aaab1d9af",
+        "image": "../assets/characters/popular-jeanne_alter.png?v=e2a7cc37fcaa",
         "alt": "贞德[Alter]样张立绘",
-        "sourceShowcaseId": "pc_jeanne_alter_pc_jeanne_alter_jalter_flaming_ruins_flag",
-        "sourceShowcaseSha256": "ea6678da3460204b98649e0126a641baa17b4bff4eb4aa9d1293e2188c802100"
+        "sourceShowcaseId": "pc_jeanne_alter_pc_jeanne_alter_jalter_rainy_rooftop_neon",
+        "sourceShowcaseSha256": "2a36d21d8cca37d604fadb95f040cd612f2bba45c7745a2ab0aa63b0cadafd3a"
       },
       "visual_dna": {
         "hair": "银白短发 · 姬发式微卷",

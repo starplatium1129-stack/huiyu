@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chisa_wuwa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 312,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "chisa_wuwa",
     "profile": {
@@ -45,8 +45,10 @@
         "red eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-chisa_wuwa.png?v=a3fb15ece805",
-        "alt": "千咲立绘"
+        "image": "../assets/characters/popular-chisa_wuwa.png?v=1f844f8bb0ce",
+        "alt": "千咲立绘",
+        "sourceShowcaseId": "pc_chisa_wuwa_wuwa_chisa_sc01",
+        "sourceShowcaseSha256": "da48364105fd7d1b7476b4eebce6c70c3a4d3307a404764cc23e28da2459e09a"
       },
       "visual_dna": {
         "signature": "Chisa from Wuthering Waves. Long black hair with blunt bangs and red eyes.",

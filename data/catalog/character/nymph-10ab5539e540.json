@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nymph",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 237,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nymph",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-nymph.png?v=5db9c5547722",
+        "image": "../assets/characters/popular-nymph.png?v=c92ef4703fb0",
         "alt": "妮姆芙样张立绘",
         "sourceShowcaseId": "pc_nymph_pc_nymph_nymph_living_room_candy_apple_swing",
-        "sourceShowcaseSha256": "939d07f8d0e69f3e77063c6c82dd02ebd97f55326afb8b82615ed01de0afaed8"
+        "sourceShowcaseSha256": "8cc0ade79a6095e153a38deb8d6a3ba3dcfd5eaff5da806bf9dc02bc238ba29f"
       },
       "visual_dna": {
         "hair": "淡水蓝双马尾及踝长发 · 发梢微卷 · 散发梦幻微光",

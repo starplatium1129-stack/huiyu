@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "illyasviel_von_einzbern",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "illyasviel_von_einzbern",
     "profile": {
@@ -17,10 +17,10 @@
       "type": "popular",
       "icon": "🏰",
       "portrait": {
-        "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=119f44edf4a1",
+        "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=f4aa4495419c",
         "alt": "伊莉雅丝菲尔样张立绘",
         "sourceShowcaseId": "pc_illyasviel_von_einzbern_pc_illyasviel_von_einzbern_illyasviel_von_einzbern_ice_cream",
-        "sourceShowcaseSha256": "e266f004a3e42c06b27bdc6f9f560781b5a28d7628c4e6a02f430f0c57c2a8a4"
+        "sourceShowcaseSha256": "2248cdbcf4ded15f536db388a067cbae53313115d3531a525cb952500178fa86"
       },
       "visual_dna": {
         "hair": "银白长直发",

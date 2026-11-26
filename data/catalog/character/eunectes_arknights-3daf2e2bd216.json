@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eunectes_arknights",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "eunectes_arknights",
     "profile": {
@@ -77,10 +77,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-eunectes_arknights.png?v=ef6207f8c2f9",
+        "image": "../assets/characters/popular-eunectes_arknights.png?v=fbbc662dbf72",
         "alt": "森蚺样张立绘",
-        "sourceShowcaseId": "pc_eunectes_arknights_pc_eunectes_arknights_eunectes_arknights_wrench_pose",
-        "sourceShowcaseSha256": "d5aec8d581a23eba08f294be71dac11a5cfdbf31d744088096b38b14e61786b7"
+        "sourceShowcaseId": "pc_eunectes_arknights_pc_eunectes_arknights_eunectes_arknights_mech_garage",
+        "sourceShowcaseSha256": "a8718145aa6cd77caf1ae0cc21f903b59c9a2e705691a66329883e5a0234fa0a"
       },
       "speech": "森蚺向你致以问候。",
       "accent_color": "#38bdf8",

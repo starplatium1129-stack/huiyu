@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "morgan_le_fay_fate",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "morgan_le_fay_fate",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🏰",
       "portrait": {
-        "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=961992e9b44b",
+        "image": "../assets/characters/popular-morgan_le_fay_fate.png?v=23e6ed6dd94b",
         "alt": "摩根样张立绘",
-        "sourceShowcaseId": "pc_morgan_le_fay_fate_pc_morgan_le_fay_fate_morgan_le_fay_fate_throne_hall",
-        "sourceShowcaseSha256": "a0232895f9f27dbc0632f4566790e8827e55736990a111e341cc7d56326ab066"
+        "sourceShowcaseId": "pc_morgan_le_fay_fate_pc_morgan_le_fay_fate_morgan_le_fay_fate_snow_garden",
+        "sourceShowcaseSha256": "53e0558ba5b559dda1161a7ecebfe5f688e66f81fba280f5090b2aa8ecf54ab6"
       },
       "visual_dna": {
         "hair": "银白色长直发",

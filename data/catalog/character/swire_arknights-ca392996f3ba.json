@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "swire_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 298,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "swire_arknights",
     "profile": {
@@ -52,10 +52,10 @@
       ],
       "voice": "看在你这么有诚意的份上，我就答应了。",
       "portrait": {
-        "image": "../assets/characters/popular-swire_arknights.png?v=e6faaf70c46f",
+        "image": "../assets/characters/popular-swire_arknights.png?v=cd4f7e839fd4",
         "alt": "诗怀雅场景样张立绘",
-        "sourceShowcaseId": "pc_swire_arknights_swire_arknights_flower_market",
-        "sourceShowcaseSha256": "e56d262fd4ea67ed54d70c9aa6a63c5b9f06d5a1e13ce07b63cc9c8391dc95e5"
+        "sourceShowcaseId": "pc_swire_arknights_swire_arknights_tea_tasting",
+        "sourceShowcaseSha256": "bd0978922321b7fe5b172b1660aafd6e91bc8facaf38ac4f4eefd0c2534a85ec"
       },
       "relationshipGraph": {
         "version": 1,

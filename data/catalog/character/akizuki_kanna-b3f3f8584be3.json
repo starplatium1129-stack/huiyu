@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akizuki_kanna",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "akizuki_kanna",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-akizuki_kanna.png?v=aa7fb0e6daa3",
+        "image": "../assets/characters/popular-akizuki_kanna.png?v=56bf4e6d102e",
         "alt": "明月栞那样张立绘",
         "sourceShowcaseId": "pc_akizuki_kanna_pc_akizuki_kanna_akizuki_kanna_sfw_b7_01",
-        "sourceShowcaseSha256": "83ad40ae4f27d1d38d8dc83899d4201423b3961ec6ba5f6b7f0e4af22d36c89d"
+        "sourceShowcaseSha256": "7779024dcf7cef193967b0ecbe7829239b203ffa9e3151ec684789f8a3bf5eb4"
       },
       "visual_dna": {
         "signature": "Kanna Akizuki from Cafe Stella and the Reapers’ Butterflies, with very long white hair, a side ponytail, ribbon, ahoge and gentle pink eyes. Her relaxed smile suggests long experience behind a playful manner.",

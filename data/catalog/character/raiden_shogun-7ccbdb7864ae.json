@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raiden_shogun",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "raiden_shogun",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "⚡",
       "portrait": {
-        "image": "../assets/characters/popular-raiden_shogun.png?v=7b59b9157d18",
+        "image": "../assets/characters/popular-raiden_shogun.png?v=fb9a06e1eecc",
         "alt": "雷电将军样张立绘",
-        "sourceShowcaseId": "pc_raiden_shogun_pc_raiden_shogun_raiden_shogun_narukami_shrine",
-        "sourceShowcaseSha256": "a75d4af246ef94f6e5d64f9f8d231b7135cbfe5d6dfd50bd566b0d49269e29c4"
+        "sourceShowcaseId": "pc_raiden_shogun_pc_raiden_shogun_raiden_shogun_cafe",
+        "sourceShowcaseSha256": "e0c51184a4fb9190e628fa84354958e7db54c2b902830e66ebb479266d140041"
       },
       "visual_dna": {
         "hair": "深紫长直发 · 单边长辫",

@@ -73,6 +73,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   let statusRefresh: Promise<boolean> | null = null
   let statusOwner = ''
   let lastStatus: { owner: string; observedAt: number; data: AnimaStatusResponse } | undefined
+  let cachedCatalog: { owner: string; data: AnimaStatusResponse } | undefined
   let statusEpoch = 0, refreshSettingsRevision = 0
   let disposed = false
   const statusPolling = usePolling({ intervalMs: 15_000, immediate: false, paused: () => document.hidden,
@@ -100,21 +101,73 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     state.value = { ...state.value, ...patch }
   }
 
-  function syncCharacter(character: CharKey = options.getCharacter()) {
+  function projectStatus(data: AnimaStatusResponse, character: CharKey = options.getCharacter()) {
+    const popular = options.isPopular()
+    const popularCharacterId = options.getPopularCharacterId?.()
+    const models = Array.isArray(data.models) ? data.models : []
+    const loras = (Array.isArray(data.loras) ? data.loras : [])
+      .filter(lora => popular
+        ? lora.character === popularCharacterId || lora.characters?.includes(popularCharacterId || '')
+        : character !== 'none' && lora.character === character)
+    const family = options.getFamily()
+    const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []
+    const familyModels = models.filter(model => model.family === family)
+    const visibleModels = popular || character === 'none'
+      ? familyModels.filter(model => model.capabilities?.noLora === true
+        && (!popular || !endfieldAnimaBinding(popularCharacterId, family)
+          || endfieldAnimaBinding(popularCharacterId, family, model.id)))
+      : familyModels
+    const provider: 'native' | 'comfy' = data.provider === 'native' ? 'native' : 'comfy'
+    const providerChanged = state.value.provider !== provider
+    const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId && (!providerChanged || model.available))
+      ? state.value.modelId
+      : (visibleModels.find(model => model.available)?.id || visibleModels[0]?.id || '')
+    const endfield = popular ? endfieldAnimaBinding(popularCharacterId, family, modelIdCurrent) : null
+    const familyLoras = family === 'krea2' ? [] : popular
+      ? loras.filter(lora => lora.id === endfield?.loraId) : loras
+    const selectedModel = visibleModels.find(model => model.id === modelIdCurrent)
+    return { popular, family, provider, styleLoras, visibleModels, modelIdCurrent, endfield, familyLoras, selectedModel }
+  }
+
+  function resolveCharacterLora(character: CharKey, loras: AnimaOption[], modelIdCurrent: string) {
     if (options.isPopular()) {
-      const binding = endfieldAnimaBinding(options.getPopularCharacterId?.(), options.getFamily(), state.value.modelId)
-      const available = binding && state.value.loras.some(lora => lora.id === binding.loraId && lora.available !== false)
-      patchState({ loraId: available ? binding.loraId : '',
-        ...(available && state.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
-      return
+      const binding = endfieldAnimaBinding(options.getPopularCharacterId?.(), options.getFamily(), modelIdCurrent)
+      const available = binding && loras.some(lora => lora.id === binding.loraId && lora.available !== false)
+      return {
+        loraId: available ? binding.loraId : '',
+        ...(available && state.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}),
+      }
     }
     if (character === 'triad' || character === 'none' || state.value.characterLoraEnabled === false) {
-      patchState({ loraId: '' })
-      return
+      return { loraId: '' }
     }
     const expected = ANIMA_LORA_BY_CHARACTER[character]
-    const available = state.value.loras.some(lora => lora.id === expected && lora.available !== false)
-    patchState({ loraId: available ? expected : '' })
+    const available = loras.some(lora => lora.id === expected && lora.available !== false)
+    return { loraId: available ? expected : '' }
+  }
+
+  function syncCharacter(character: CharKey = options.getCharacter()) {
+    // Re-project synchronously from the cached full gateway catalog so switching
+    // to a LoRA-backed character (e.g. Si / Endfield / Nene / Natsume) populates
+    // the LoRA dropdown immediately instead of waiting for the next status poll.
+    const cached = cachedCatalog?.owner === runtimeResourceIdentity() ? cachedCatalog.data : undefined
+    if (cached) {
+      const projected = projectStatus(cached, character)
+      const loraPatch = resolveCharacterLora(character, projected.familyLoras, projected.modelIdCurrent)
+      const styleLoraId = projected.styleLoras.some(lora => lora.id === state.value.styleLoraId) ? state.value.styleLoraId : ''
+      patchState({
+        ...backendReadiness(cached, projected.selectedModel, projected.family, projected.visibleModels.length, projected.familyLoras.length),
+        models: projected.visibleModels,
+        loras: projected.familyLoras,
+        allLoras: Array.isArray(cached.loras) ? cached.loras : state.value.allLoras,
+        styleLoras: projected.styleLoras,
+        styleLoraId,
+        modelId: projected.modelIdCurrent,
+        ...loraPatch,
+      })
+      return
+    }
+    patchState(resolveCharacterLora(character, state.value.loras, state.value.modelId))
   }
 
   /**
@@ -206,30 +259,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (statusRequest !== controller || controller.signal.aborted) return latest()
       if (runtimeResourceIdentity() !== owner) return false
       if (checkedStatus || !recent) lastStatus = { owner, observedAt: performance.now(), data }
-      const models = Array.isArray(data.models) ? data.models : []
-      const loras = (Array.isArray(data.loras) ? data.loras : [])
-        .filter(lora => options.isPopular()
-          ? lora.character === options.getPopularCharacterId?.() || lora.characters?.includes(options.getPopularCharacterId?.() || '')
-          : options.getCharacter() !== 'none' && lora.character === options.getCharacter())
-      const family = options.getFamily()
-      const styleLoras = family === 'krea2' ? (data.styleLoras || []) : []
-      const familyModels = models.filter(model => model.family === family)
-      const visibleModels = options.isPopular() || options.getCharacter() === 'none'
-        ? familyModels.filter(model => model.capabilities?.noLora === true
-          && (!options.isPopular() || !endfieldAnimaBinding(options.getPopularCharacterId?.(), family)
-            || endfieldAnimaBinding(options.getPopularCharacterId?.(), family, model.id)))
-        : familyModels
-      const providerChanged = state.value.provider !== (data.provider === 'native' ? 'native' : 'comfy')
-      const modelIdCurrent = visibleModels.some(model => model.id === state.value.modelId && (!providerChanged || model.available))
-        ? state.value.modelId
-        : (visibleModels.find(model => model.available)?.id || visibleModels[0]?.id || '')
-      const endfield = endfieldAnimaBinding(options.getPopularCharacterId?.(), family, modelIdCurrent)
-      const familyLoras = family === 'krea2' ? [] : options.isPopular()
-        ? loras.filter(lora => lora.id === endfield?.loraId) : loras
+      cachedCatalog = { owner, data }
+      const { family, provider, styleLoras, visibleModels, modelIdCurrent, endfield, familyLoras, selectedModel } = projectStatus(data)
       const loraId = !options.isPopular() && state.value.characterLoraEnabled === false ? '' : familyLoras.some(lora => lora.id === state.value.loraId)
         ? state.value.loraId
         : (familyLoras[0]?.id || '')
-      const selectedModel = visibleModels.find(model => model.id === modelIdCurrent)
       // Keep custom sizes across status refreshes while the model accepts them.
       let width = state.value.width
       let height = state.value.height
@@ -246,7 +280,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        * 现在：首次拉取 / 底模真的变了（用户换的，或原底模从后端消失导致的回落）
        * 才套用默认值，其余心跳只更新在线状态与候选列表。
        */
-      const provider = data.provider === 'native' ? 'native' : 'comfy'
       const shouldApplyDefaults = (defaultsAppliedFor !== modelIdCurrent || (state.value.provider && state.value.provider !== provider)) && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
       const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
@@ -256,14 +289,14 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       try {
         patchState({
           ...backendReadiness(data, selectedModel, family, visibleModels.length, familyLoras.length),
-          models: visibleModels, loras: familyLoras, styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
+          models: visibleModels, loras: familyLoras, allLoras: Array.isArray(data.loras) ? data.loras : [], styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
           family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
           ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.
         defaultsAppliedFor = modelIdCurrent
-        syncCharacter(options.getCharacter())
+        patchState(resolveCharacterLora(options.getCharacter(), familyLoras, modelIdCurrent))
       } finally { reconcilingSettings = false }
       persistSettings()
       return true
@@ -371,6 +404,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   /** Leaving releases page observations and URLs; accepted execution belongs to the service. */
   function dispose() {
     disposed = true
+    cachedCatalog = undefined
     stopSettingsWatch()
     stopTeaCacheWatch()
     pauseStatusPolling()

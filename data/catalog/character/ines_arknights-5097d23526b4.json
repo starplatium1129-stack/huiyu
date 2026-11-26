@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ines_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 274,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "ines_arknights",
     "profile": {
@@ -45,10 +45,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/popular-ines_arknights.png?v=26aed5add2bc",
+        "image": "../assets/characters/popular-ines_arknights.png?v=605b24c31510",
         "alt": "伊内丝场景样张立绘",
-        "sourceShowcaseId": "pc_ines_arknights_ines_arknights_dressing_room",
-        "sourceShowcaseSha256": "16bea6ef2b826a14943a66944bf7ee9e5e1c50fe00744309e120236c41015120"
+        "sourceShowcaseId": "pc_ines_arknights_ines_arknights_bookshop_rain",
+        "sourceShowcaseSha256": "c5d342514a3f82e1f1af8be157c15c4ccdd05b64e240bf13d986dcac3c20c990"
       },
       "tags": [
         "黑发",

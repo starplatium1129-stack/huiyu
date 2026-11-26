@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "irisu_makina",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 171,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "irisu_makina",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "🎯",
       "portrait": {
-        "image": "../assets/characters/popular-irisu_makina.png?v=732c49a75759",
+        "image": "../assets/characters/popular-irisu_makina.png?v=f81677c4981b",
         "alt": "入巢莳菜样张立绘",
-        "sourceShowcaseId": "pc_irisu_makina_pc_irisu_makina_makina_backyard_shooting_range_target_bullseye",
-        "sourceShowcaseSha256": "5d97a63866d7b86237672edcc576c04c2f173e810de7b1a7481b27df3b676a0e"
+        "sourceShowcaseId": "pc_irisu_makina_pc_irisu_makina_makina_dorm_bear_kigurumi_snack_raid",
+        "sourceShowcaseSha256": "5026369a05a299f4bb9c5a41c0e6605c3e394f9d432dccdb2e50975d24d73486"
       },
       "visual_dna": {
         "hair": "及膝柔嫩粉色长发 · 侧系低双马尾 · 标志性灵动呆毛 · 红色发带",

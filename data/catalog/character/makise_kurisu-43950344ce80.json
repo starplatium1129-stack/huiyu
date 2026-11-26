@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makise_kurisu",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 246,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "makise_kurisu",
     "profile": {
@@ -202,10 +202,10 @@
         "经典傲娇反差女友"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-makise_kurisu.png?v=0e506c121dee",
+        "image": "../assets/characters/popular-makise_kurisu.png?v=ecb2c883f068",
         "alt": "牧濑红莉栖样张立绘",
-        "sourceShowcaseId": "pc_makise_kurisu_pc_makise_kurisu_kurisu_auditorium_blackboard_chalk_equations",
-        "sourceShowcaseSha256": "31594e1e1fe2127e20a25ba706fcfbf3eade04fe6c590516a0bf58050cdb4f4d"
+        "sourceShowcaseId": "pc_makise_kurisu_pc_makise_kurisu_kurisu_lab_desk_late_night_coffee",
+        "sourceShowcaseSha256": "681939105e950763b0e6fd8c9268c437c81255e3254adcc78eeb5e003b78d7b8"
       },
       "bg_story": "年仅十八岁便在学术期刊发表脑科学论文的青年研究员。因研讨会造访秋叶原时结识冈部伦太郎等人，加入未来道具研究所。她理论功底扎实，言辞敏锐犀利，私下却有浏览匿名论坛的习惯，被识破时会慌乱反驳。在世界线变动与危机中，她以理智和同理心支撑着同伴，并在明知自身悖论命运的情况下，依然坚定支持跨越世界线的抉择。",
       "speech": "别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mash_kyrielight",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "mash_kyrielight",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🛡️",
       "portrait": {
-        "image": "../assets/characters/popular-mash_kyrielight.png?v=d0189a33120f",
+        "image": "../assets/characters/popular-mash_kyrielight.png?v=c235fa88cd47",
         "alt": "玛修样张立绘",
-        "sourceShowcaseId": "pc_mash_kyrielight_pc_mash_kyrielight_mash_kyrielight_simulator",
-        "sourceShowcaseSha256": "ab97205a67f4561c184f043e2cfc962576a57cfe0959c0ae71087203e7dceff7"
+        "sourceShowcaseId": "pc_mash_kyrielight_pc_mash_kyrielight_mash_kyrielight_cafeteria",
+        "sourceShowcaseSha256": "f181ec9c2914813d258c8fc97cbf6f95c0aaea46e6797a54b1d7b8faaf407307"
       },
       "visual_dna": {
         "hair": "粉紫色短发（遮住右眼）",

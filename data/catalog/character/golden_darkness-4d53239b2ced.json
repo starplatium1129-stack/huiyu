@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "golden_darkness",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "golden_darkness",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-golden_darkness.png?v=00493b90d376",
+        "image": "../assets/characters/popular-golden_darkness.png?v=bdf5395ccda7",
         "alt": "金色暗影样张立绘",
-        "sourceShowcaseId": "pc_golden_darkness_pc_golden_darkness_yami_street_taiyaki_bench_eating",
-        "sourceShowcaseSha256": "4bb4fe5c2619ed471e36fbefaa6e614d696f9ff5e520b0b5c940ada8d70617a4"
+        "sourceShowcaseId": "pc_golden_darkness_pc_golden_darkness_overalls_bookstore_step",
+        "sourceShowcaseSha256": "7d6d8972423ba169708621bef6c24fbf50886c99a27dc560865b2aec31976dca"
       },
       "visual_dna": {
         "hair": "及踝纯金如瀑长发 · 发间凸角发缕（hair intakes）",

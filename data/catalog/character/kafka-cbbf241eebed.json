@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kafka",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kafka",
     "profile": {
@@ -18,10 +18,10 @@
       "type": "popular",
       "icon": "🕸️",
       "portrait": {
-        "image": "../assets/characters/popular-kafka.png?v=253060a7a214",
+        "image": "../assets/characters/popular-kafka.png?v=5c859820beb4",
         "alt": "卡芙卡样张立绘",
-        "sourceShowcaseId": "pc_kafka_pc_kafka_kafka_astral_express_violin_prelude",
-        "sourceShowcaseSha256": "809e58620dcb0afb8295ff26948635025abeddcbc997fcb6afb8b9711347dc2b"
+        "sourceShowcaseId": "pc_kafka_pc_kafka_kafka_starlit_express_window_gaze",
+        "sourceShowcaseSha256": "083d94f0c382440fa925decceda497fe57aa37f66760f17d2ba922d3cb746c63"
       },
       "visual_dna": {
         "hair": "酒红微卷长发 · 低马尾",

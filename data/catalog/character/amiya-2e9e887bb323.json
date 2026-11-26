@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amiya",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 193,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "amiya",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-amiya.png?v=8cd23a620bd9",
+        "image": "../assets/characters/popular-amiya.png?v=f6dc69a8b912",
         "alt": "阿米娅样张立绘",
-        "sourceShowcaseId": "pc_amiya_pc_amiya_amiya_greenhouse_mist_barefoot_stretch",
-        "sourceShowcaseSha256": "63ba92d8294e61034fa16b5bb51c3ae496016ee00a9ac122858b79a9a1f427cc"
+        "sourceShowcaseId": "pc_amiya_pc_amiya_amiya_daily_seedling_labels",
+        "sourceShowcaseSha256": "41fd9cbfb870f476e7898a97f23428a1f370b9c75ce33bedc12a770d76303308"
       },
       "visual_dna": {
         "signature": "Long brown hair, upright rabbit ears, and blue eyes",

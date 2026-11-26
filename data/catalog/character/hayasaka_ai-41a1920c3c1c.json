@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayasaka_ai",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "hayasaka_ai",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-hayasaka_ai.png?v=88ef7cda3647",
+        "image": "../assets/characters/popular-hayasaka_ai.png?v=fc15264842ea",
         "alt": "早坂爱样张立绘",
-        "sourceShowcaseId": "pc_hayasaka_ai_pc_hayasaka_ai_hayasaka_ai_sfw_b5_03",
-        "sourceShowcaseSha256": "c7b9b374c5d82628f728a6f5326c4c8273ea7d7f1fc36dda510e837b916d0719"
+        "sourceShowcaseId": "pc_hayasaka_ai_pc_hayasaka_ai_hayasaka_ai_sfw_b5_01",
+        "sourceShowcaseSha256": "39682c1d7c20ff23ab05f2c9716998edd048dcce49478b682e16bd05c396d6ed"
       },
       "visual_dna": {
         "signature": "Ai Hayasaka from Kaguya-sama: Love Is War, a resourceful young attendant with pale blonde hair and perceptive blue eyes. Her controlled expression can shift quickly between professional composure and a practiced sociable smile.",

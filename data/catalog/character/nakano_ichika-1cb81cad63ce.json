@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_ichika",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 186,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "nakano_ichika",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🌻",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_ichika.png?v=74cdb6c670dd",
+        "image": "../assets/characters/popular-nakano_ichika.png?v=d3658f97f92d",
         "alt": "中野一花样张立绘",
         "sourceShowcaseId": "pc_nakano_ichika_pc_nakano_ichika_nakano_ichika_school_corridor_wink",
-        "sourceShowcaseSha256": "b4b15a7f2388041d0722b6e7a953c7510fd6bc4c9fab5c2e4a67197e5834b371"
+        "sourceShowcaseSha256": "eaa87c19995d0aa6b3bd1115a7f0d6387955cd81e88055dc3bdcfd434c99d038"
       },
       "visual_dna": {
         "hair": "浅粉淡紫短发 · 右侧微长斜刘海",

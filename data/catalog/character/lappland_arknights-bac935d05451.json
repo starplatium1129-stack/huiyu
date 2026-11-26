@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lappland_arknights",
-  "revision": 15,
+  "revision": 16,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "lappland_arknights",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "⚔️",
       "portrait": {
-        "image": "../assets/characters/popular-lappland_arknights.png?v=779d6cfc3b51",
+        "image": "../assets/characters/popular-lappland_arknights.png?v=44deab7cf337",
         "alt": "拉普兰德样张立绘",
         "sourceShowcaseId": "pc_lappland_arknights_pc_lappland_arknights_lappland_biker_midnight_highway_drift",
-        "sourceShowcaseSha256": "d24524862aa7c2f7d6ed29c431b059a3224416b6a21999b8071d0bcb089d2fdc"
+        "sourceShowcaseSha256": "24dd745efed91cfeab94ea03af9754014dbda5ee6a4cb8272276ffb005cbe7ec"
       },
       "visual_dna": {
         "hair": "凌乱狂野银白及腰长发",

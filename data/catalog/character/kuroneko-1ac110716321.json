@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroneko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kuroneko",
     "profile": {
@@ -194,10 +194,10 @@
         "殿堂级后宫白月光"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kuroneko.png?v=9a406f6d732c",
+        "image": "../assets/characters/popular-kuroneko.png?v=7d48e64b2649",
         "alt": "五更琉璃样张立绘",
-        "sourceShowcaseId": "pc_kuroneko_pc_kuroneko_kuroneko_night_festival_fireworks_handhold",
-        "sourceShowcaseSha256": "25bd3cb8db66a5082ab220cf140e47bc498916e04c76284871a73f58038755fd"
+        "sourceShowcaseId": "pc_kuroneko_pc_kuroneko_kuroneko_kitchen_clumsy_vegetable_cutting",
+        "sourceShowcaseSha256": "d15828864d8eddfaed14b4ffcce02da7507caca63cf44e165a067329d129c1d6"
       },
       "bg_story": "笔名“黑猫”的少女，经常身着哥特萝莉装，言语间带有浓重的中二设定。在网络社群中结识桐乃与京介，私下里则是承担家务、悉心照料两个年幼妹妹的长姐。与高坂京介相恋期间，亲手写下详尽的恋爱计划笔记，但为了顾及高坂兄妹的羁绊与桐乃的心情，最终主动选择退居幕后，独自承受失恋的苦涩。",
       "speech": "愚蠢的人类啊……居然妄图以这种拙劣的温柔拘束暗夜的狂想……不过，既然是汝的话，就勉为其难允许汝牵着余的手吧！",

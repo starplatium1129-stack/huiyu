@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-marcille_donato.png?v=dcf78d42c325",
+        "image": "../assets/characters/popular-marcille_donato.png?v=fdd1cec7e914",
         "alt": "玛露希尔样张立绘",
         "sourceShowcaseId": "pc_marcille_donato_pc_marcille_donato_marcille_donato_sfw_b9_02",
-        "sourceShowcaseSha256": "30a60fcbc1682d32cc4c82d67d5e1882e16c8343578074b455b0b4c1b2ae8a2a"
+        "sourceShowcaseSha256": "06baff1b4a2aeb5a9483bd6b4be120f595607e20ed182d0471478b5b90ec0274"
       },
       "visual_dna": {
         "signature": "Marcille Donato from Delicious in Dungeon, with long blonde hair, a high forehead, pointed ears and lively green eyes. Her carefully arranged braids and expressive reactions reveal an earnest, studious mage.",

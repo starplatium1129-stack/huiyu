@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "astraea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 227,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "astraea",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-astraea.png?v=abbec806fc5d",
+        "image": "../assets/characters/popular-astraea.png?v=94e64d6dc9c1",
         "alt": "阿斯特蕾亚样张立绘",
-        "sourceShowcaseId": "pc_astraea_pc_astraea_astraea_sunflower_field_summer_wind",
-        "sourceShowcaseSha256": "33d0d136067daf5621fdceb424e55c73534440044bf20d70e4385d5aebbf66bf"
+        "sourceShowcaseId": "pc_astraea_pc_astraea_astraea_kitchen_rice_ball_feast",
+        "sourceShowcaseSha256": "6eae3ad2d6e9cacf8a6c5b1f114f64f71d9502fd4460421dc44adca22e034572"
       },
       "visual_dna": {
         "hair": "耀眼太阳般明黄长发 · 灵动单侧侧马尾",

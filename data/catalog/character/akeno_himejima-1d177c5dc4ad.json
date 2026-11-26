@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akeno_himejima",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "akeno_himejima",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "⚡",
       "portrait": {
-        "image": "../assets/characters/popular-akeno_himejima.png?v=251188914d3d",
+        "image": "../assets/characters/popular-akeno_himejima.png?v=69798aed42b9",
         "alt": "姬岛朱乃样张立绘",
         "sourceShowcaseId": "pc_akeno_himejima_pc_akeno_himejima_akeno_morning_shrine_bento_box",
-        "sourceShowcaseSha256": "c2d121ff26cf661e4efa85d6fae5fa5ab6b4fc276cafad3c9c685ebc6c5244da"
+        "sourceShowcaseSha256": "1756745db8008ba3028df133917af3c8efccaa762befc27619851f133f98d1f2"
       },
       "visual_dna": {
         "hair": "乌黑柔顺长发 · 优雅高马尾",

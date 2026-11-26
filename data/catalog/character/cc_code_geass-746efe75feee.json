@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cc_code_geass",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "cc_code_geass",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🍕",
       "portrait": {
-        "image": "../assets/characters/popular-cc_code_geass.png?v=37c9dabb35d3",
+        "image": "../assets/characters/popular-cc_code_geass.png?v=8a21a5f69b2c",
         "alt": "C.C.样张立绘",
-        "sourceShowcaseId": "pc_cc_code_geass_pc_cc_code_geass_cc_ruins_geass_sigil_moonlight",
-        "sourceShowcaseSha256": "fb0bbcc5c8d1d7a84b53312523499ec9a746be6a85c785de7945431943182b52"
+        "sourceShowcaseId": "pc_cc_code_geass_pc_cc_code_geass_cc_morning_sofa_pizza_cheese_kun",
+        "sourceShowcaseSha256": "727c49f30b87e3737a420445dfd25097d3476a4444f2f19ac5b855563c409493"
       },
       "visual_dna": {
         "hair": "及腰瀑布般翠绿长发 · 柔顺平刘海",

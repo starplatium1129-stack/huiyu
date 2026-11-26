@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maomao",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "maomao",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-maomao.png?v=f32d217248d3",
+        "image": "../assets/characters/popular-maomao.png?v=1a8c701b69d4",
         "alt": "猫猫样张立绘",
-        "sourceShowcaseId": "pc_maomao_pc_maomao_maomao_sfw_b9_08",
-        "sourceShowcaseSha256": "e1f62dfbf59c49b215c7901cb5c7b0aadf3d9c0dfc5276b540d995d42049ecdf"
+        "sourceShowcaseId": "pc_maomao_pc_maomao_maomao_sfw_b9_01",
+        "sourceShowcaseSha256": "5d18ff269fe54b38bf62ed064a6b7c9d5d68db878217cfb6c165355e303931ba"
       },
       "visual_dna": {
         "signature": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, and blue eyes. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",

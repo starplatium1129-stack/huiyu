@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "angelina_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 295,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "angelina_arknights",
     "profile": {
@@ -52,10 +52,10 @@
       ],
       "voice": "路上看到一家新店，等会儿一起去吧！",
       "portrait": {
-        "image": "../assets/characters/popular-angelina_arknights.png?v=14a3e832bdca",
+        "image": "../assets/characters/popular-angelina_arknights.png?v=8d960fdb3a20",
         "alt": "安洁莉娜场景样张立绘",
-        "sourceShowcaseId": "pc_angelina_arknights_angelina_arknights_train_ticket",
-        "sourceShowcaseSha256": "d426b30d10cdb934042cc6db1610dac7b7959b7a9c83ac091d9680da4c832818"
+        "sourceShowcaseId": "pc_angelina_arknights_angelina_arknights_pastry_window",
+        "sourceShowcaseSha256": "edb1bda925a702d37c33e6932d410bd19a0053a3c85bbfed8f5abd5f0c8542ac"
       },
       "relationshipGraph": {
         "version": 1,

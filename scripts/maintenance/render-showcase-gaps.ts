@@ -122,6 +122,7 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
           outfitId: (character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0])?.id,
           title: `${character.displayName} / ${bp.title}`, story: bp.description || '', category: '热门角色',
           displayName: character.displayName, rating: bp.adult ? 'R18' : 'All', adult: !!bp.adult,
+          ...(binding ? { loraId: binding.loraId, loraStrength: binding.loraStrength } : {}),
           intendedEntryId: entryId, sourceManifest: input.manifestFile },
         payload: attempt => ({
           modelId: MODEL_ID, prompt, negative: plan.negative,

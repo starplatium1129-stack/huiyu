@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurodate_haruna",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 212,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "kurodate_haruna",
     "profile": {
@@ -81,8 +81,10 @@
         "red_halo"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kurodate_haruna.png?v=04df781e81ab",
-        "alt": "黑馆晴奈立绘"
+        "image": "../assets/characters/popular-kurodate_haruna.png?v=f3ad4ac2d309",
+        "alt": "黑馆晴奈立绘",
+        "sourceShowcaseId": "pc_kurodate_haruna_pc_kurodate_haruna_kurodate_haruna_street_gourmet_explosion",
+        "sourceShowcaseSha256": "72ea312e2b3360355c30d5afe3287abb0d5ace75ee56c1423f0f92a1c00fe4b0"
       },
       "bg_story": "黑馆晴奈是基沃托斯歌赫娜学园名门黑馆家族的千金小姐，亦是闻名全学园都市的「美食研究会」会长。她拥有无与伦比的天才味蕾与雄厚财力，一生只为追求料理艺术的至高极境。对于晴奈而言，追求美食是一场赌上尊严与美学的崇高圣战，任何亵渎食材与顾客的行为都值得用最华丽的爆炸予以制裁。在与夏莱老师无数次「美食远征」与并肩作战中，晴奈逐渐发现，世间最不可思议的终极调味料，正是身边那位无私包容自己所有任性与狂热的老师。成年后的晴奈不仅名震都市美食界，更将她那高傲骄矜的芳心与至死不渝的浪漫，无怨无悔地献给了她唯一的共餐者。",
       "speech": "向您致以崇高的敬意，老师。我是歌赫娜美食研究会会长，黑馆晴奈。今天我已为您预定了跨越三个学园的终极品尝路线……您会陪伴我直到盘底朝天，对吧？",

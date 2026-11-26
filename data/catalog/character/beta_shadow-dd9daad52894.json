@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "beta_shadow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 262,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "beta_shadow",
     "popular": {
@@ -83,10 +83,10 @@
       "type": "popular",
       "icon": "📖",
       "portrait": {
-        "image": "../assets/characters/popular-beta_shadow.png?v=e747379c1e71",
+        "image": "../assets/characters/popular-beta_shadow.png?v=1a998f678662",
         "alt": "贝塔样张立绘",
-        "sourceShowcaseId": "pc_beta_shadow_pc_beta_shadow_beta_library_bookstack_tease",
-        "sourceShowcaseSha256": "c980b3365186957ec21c67563439bb46d087d8696c56a47c3531e947d12e0c75"
+        "sourceShowcaseId": "pc_beta_shadow_pc_beta_shadow_beta_classroom_spectacles_glance",
+        "sourceShowcaseSha256": "f2002c514fdb362c60d059fb6ff27460094b9591f3dbb5a1863ea59472482136"
       },
       "visual_dna": {
         "hair": "银白如雪的微卷短发 · 两侧垂下轻盈小发辫",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
@@ -378,10 +378,10 @@
         "yellow_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-togakushi_touko.png?v=3cbd65483383",
+        "image": "../assets/characters/popular-togakushi_touko.png?v=49ca3c6a44fb",
         "alt": "户隐憧子样张立绘",
         "sourceShowcaseId": "pc_togakushi_touko_pc_togakushi_touko_togakushi_touko_daily_flower_choice",
-        "sourceShowcaseSha256": "cff7f4dd43f91666a71deddc8712c6c53665a8907624ad321e7eddc7643c7e79"
+        "sourceShowcaseSha256": "da8f80e3ab1428383698248e3af066c99ec43c7316cf1ebe11d7d230201fc9de"
       },
       "bg_story": "户隐憧子是《魔女的夜宴》中的学姐，也是学生会长。她说话温和，处理事务时有自己的节奏，和后辈相处却并不拘谨。比起摆出前辈的架子，她更习惯先听对方把话说完，再带着一点笑意回应。",
       "speech": "先坐一会儿吧。要是有烦心事，我听你慢慢说。",

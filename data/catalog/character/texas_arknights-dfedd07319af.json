@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "texas_arknights",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "texas_arknights",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-texas_arknights.png?v=f21dd638c1a2",
+        "image": "../assets/characters/popular-texas_arknights.png?v=7d7e8458cfb2",
         "alt": "德克萨斯样张立绘",
-        "sourceShowcaseId": "pc_texas_arknights_pc_texas_arknights_texas_omertosa_siracusa_mafia_banquet",
-        "sourceShowcaseSha256": "4564555861d614a0b4a225a62b72ac17a1aeb6877221ab9dfcb8f9d7528e5022"
+        "sourceShowcaseId": "pc_texas_arknights_pc_texas_arknights_texas_rhodes_island_courier_break",
+        "sourceShowcaseSha256": "623b79d3af804718f239474dfb2bb11b03905f2050de8575df701b0fdbec2bda"
       },
       "visual_dna": {
         "hair": "乌黑顺直长发 · 齐刘海",

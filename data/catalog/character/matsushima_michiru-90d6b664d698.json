@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matsushima_michiru",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 170,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "matsushima_michiru",
     "profile": {
@@ -23,10 +23,10 @@
       "type": "popular",
       "icon": "🍋",
       "portrait": {
-        "image": "../assets/characters/popular-matsushima_michiru.png?v=2e655de69c09",
+        "image": "../assets/characters/popular-matsushima_michiru.png?v=6b62662efaa6",
         "alt": "松岛满样张立绘",
-        "sourceShowcaseId": "pc_matsushima_michiru_pc_matsushima_michiru_michiru_gothic_lolita_rooftop_pose",
-        "sourceShowcaseSha256": "6c7461d397db3f8f8fb9e24c4dc5a199e8a2bf1a278431fbdc5447a21466dd6e"
+        "sourceShowcaseId": "pc_matsushima_michiru_pc_matsushima_michiru_rooftop_lemon_candy",
+        "sourceShowcaseSha256": "6ead0818529e758055e7aced26981871cb9a96932afbeb26f8846144dc152df6"
       },
       "visual_dna": {
         "hair": "及腰飘逸漂白金发 · 活力双马尾 · 齐刘海 · 黑色缎带蝴蝶结",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_d_arc",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "jeanne_d_arc",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "⚜️",
       "portrait": {
-        "image": "../assets/characters/popular-jeanne_d_arc.png?v=77c336a3841e",
+        "image": "../assets/characters/popular-jeanne_d_arc.png?v=fa2faeda0dcb",
         "alt": "圣女贞德样张立绘",
-        "sourceShowcaseId": "pc_jeanne_d_arc_pc_jeanne_d_arc_jeanne_ruler_banner_orleans",
-        "sourceShowcaseSha256": "53b0d4ebda01c783f5a361cad1273d5957482d453ec016fe6d0762bedd72b324"
+        "sourceShowcaseId": "pc_jeanne_d_arc_pc_jeanne_d_arc_jeanne_chapel_morning_prayer",
+        "sourceShowcaseSha256": "becf18a28f2f47dad622cdf3ef7999e76c1767e025e4638d6cb61c0f0476e349"
       },
       "visual_dna": {
         "hair": "及腰金色长发 · 圣洁单长辫",

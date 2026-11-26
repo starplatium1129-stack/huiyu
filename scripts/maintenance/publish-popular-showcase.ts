@@ -160,14 +160,37 @@ function verifyTarget(tempDir: string, manifest: ReturnType<typeof buildManifest
 }
 
 
-/** 每角色立绘：数据顺序第一张「通过审核 + 竖构图（高>宽）」的 SFW 候选；
- *  无竖图 SFW 时回退竖图任意，再回退数据顺序第一张。 */
+/** 每角色立绘：优先选择「通过审核 + 竖构图 + 日常生活场景」的 SFW 候选；
+ *  排除战斗/王座/废墟/舞台/泳装等非日常题材，回退顺序：日常竖图 SFW > 非战斗竖图 SFW > 竖图 SFW > 竖图任意 > 数据首张。 */
+const DAILY_CATEGORY_RE = /日常|相伴|居家|校园|休闲|生活|咖啡|午后|散步/i;
+const DAILY_TEXT_RE = /日常|茶|咖啡|甜点|书|窗|街|厨房|午后|清晨|晨光|散步|居家|沙发|便利店|公园|花店|长椅|微风|点心|烘焙|面包|耳机|雨天|打盹|caf[eé]|tea|daily|cozy|morning|reading|kitchen|stroll|library|window|home|bench|park|bakery|snack|bookshop|umbrella/i;
+const NON_DAILY_TEXT_RE = /战斗|决战|作战|王座|废墟|舞台|演唱|演出|泳装|泳衣|泳池|海滩|比基尼|温泉|浴巾|睡衣|蕾丝|私密|battle|combat|duel|throne|ruins|sword|weapon|stage|concert|swimsuit|bikini|pool|beach|onsen|lingerie|nightgown|babydoll/i;
+
+function dailyPortraitScore(bp: Record<string, unknown> | undefined): number {
+  if (!bp) return 0;
+  const coverage = Array.isArray(bp.coverageTags) ? bp.coverageTags.map(String) : [];
+  const tags = Array.isArray(bp.sceneTags) ? bp.sceneTags.map(String).join(' ') : '';
+  const title = String(bp.title || '');
+  const category = String(bp.category || '');
+  const outfitId = String(bp.outfitId || '');
+  const text = `${title} ${category} ${tags} ${outfitId}`;
+  let score = 0;
+  if (coverage.includes('daily')) score += 4;
+  if (DAILY_CATEGORY_RE.test(category)) score += 3;
+  if (DAILY_TEXT_RE.test(text)) score += 2;
+  if (/sfw_|casual|daily|home|tea|cafe|knit|cardigan|street|uniform/i.test(outfitId)) score += 2;
+  if (NON_DAILY_TEXT_RE.test(text)) score -= 6;
+  return score;
+}
+
 function pickPortraits(passed: PopularRecord[], blueprints: unknown) {
   const order = new Map<string, number>();
+  const bpById = new Map<string, Record<string, unknown>>();
   const bpList: unknown[] = Array.isArray(blueprints) ? blueprints : object(blueprints) && Array.isArray(blueprints.blueprints) ? blueprints.blueprints : [];
   bpList.forEach((bp, index) => {
     if (!object(bp) || typeof bp.id !== 'string') throw new Error('Invalid portrait blueprint identity');
     order.set(bp.id, index);
+    bpById.set(bp.id, bp);
   });
   const byCharacter = new Map<string, PopularRecord[]>();
   for (const rec of passed) {
@@ -176,8 +199,12 @@ function pickPortraits(passed: PopularRecord[], blueprints: unknown) {
   }
   const portraits = new Map<string, PopularRecord>();
   for (const [characterId, list] of byCharacter) {
-    const sorter = (a: PopularRecord, b: PopularRecord) => (order.get(a.blueprintId) ?? 999) - (order.get(b.blueprintId) ?? 999);
-    const sorted = list.sort(sorter);
+    const sorter = (a: PopularRecord, b: PopularRecord) => {
+      const scoreDiff = dailyPortraitScore(bpById.get(b.blueprintId)) - dailyPortraitScore(bpById.get(a.blueprintId));
+      if (scoreDiff !== 0) return scoreDiff;
+      return (order.get(a.blueprintId) ?? 999) - (order.get(b.blueprintId) ?? 999);
+    };
+    const sorted = [...list].sort(sorter);
     const vertical = (r: PopularRecord) => Number(r.width) > 0 && Number(r.height) > Number(r.width);
     const sfwVertical = sorted.filter(r => !r.adult && vertical(r));
     const anyVertical = sorted.filter(vertical);

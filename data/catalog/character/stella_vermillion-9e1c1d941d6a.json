@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
@@ -155,10 +155,10 @@
         "red_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-stella_vermillion.png?v=12285de294a4",
+        "image": "../assets/characters/popular-stella_vermillion.png?v=b89a7a2b8d9a",
         "alt": "史黛菈·法米利昂样张立绘",
         "sourceShowcaseId": "pc_stella_vermillion_pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
-        "sourceShowcaseSha256": "256a35d94df17237adbd8409056cbc90bbe08a5b67456df1866d7bfd4579746f"
+        "sourceShowcaseSha256": "b272e2df8424ace95db6a77d1710b3555f606b3a4b7b1ce37249e8cba99af9d8"
       },
       "bg_story": "史黛菈是欧洲小国法米利昂的第二皇女，拥有十年难得一见的巨量魔力。为了摆脱「天才皇女」的花瓶评价，她远渡重洋来到日本破军学园磨砺武艺，却在开学第一天与被判定为F级的「落第骑士」黑铁一辉宿命般相遇。在经历同生共死的选拔战后，史黛菈彻底被一辉坚韧的灵魂所征服。她摒弃了皇女的矜持，全心全意地将身心托付给对方。成年设定下的史黛菈拥有艳压群芳的身材与尊贵气场，唯独在所爱之人面前，她是那个最毫无防备、恨不得时刻融化在对方怀抱中的热烈新娘。",
       "speech": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚哪里都不准去，老老实实抱紧我！",

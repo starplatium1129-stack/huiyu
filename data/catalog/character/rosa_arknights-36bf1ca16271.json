@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rosa_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 282,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
+  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
   "data": {
     "id": "rosa_arknights",
     "profile": {
@@ -52,10 +52,10 @@
       ],
       "voice": "谢谢你，我会好好收下的。",
       "portrait": {
-        "image": "../assets/characters/popular-rosa_arknights.png?v=aef73ddd6b96",
+        "image": "../assets/characters/popular-rosa_arknights.png?v=0ad9839f1a22",
         "alt": "早露场景样张立绘",
         "sourceShowcaseId": "pc_rosa_arknights_rosa_arknights_snow_window",
-        "sourceShowcaseSha256": "ea035b9fc11a71404514082068dd95e1391f3dd3783c90b2db391e2ea5591f4e"
+        "sourceShowcaseSha256": "32de01239718996820d736e04aef1c7dac1530163081f4ed7fb10222ceff2d39"
       },
       "relationshipGraph": {
         "version": 1,
