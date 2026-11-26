@@ -26,8 +26,8 @@
               class="hero-character"
               :class="displayedMuse"
               :alt="displayedMuse === 'nene' ? '绫地宁宁' : '四季夏目'"
-              width="1024"
-              height="1497"
+              width="1600"
+              height="900"
               fetchpriority="high"
               decoding="async"
             />

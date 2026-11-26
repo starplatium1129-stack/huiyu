@@ -4,6 +4,7 @@ import { drawingNavigationKey, type DrawingEngine } from './useDrawingNavigation
 import { useDeferredToolLauncher } from './useDeferredToolLauncher'
 import { readMangaSource } from '@/composables/manga/mangaImage'
 import { imageMediaSession } from '@/platform/imageMediaSession'
+import { pendingDesktopFileAction, takeDesktopFiles } from '@/composables/useDesktopFileDrop'
 
 export function useDrawingWorkspace() {
   const route = useRoute(), router = useRouter()
@@ -29,6 +30,14 @@ export function useDrawingWorkspace() {
     await editor.toggle()
     if (!editor.open.value) sourceImage.value = null
   }
+  watch([pendingDesktopFileAction, () => route.path, importing, editor.loading, editor.open], ([action, path, loadingImage, opening, open]) => {
+    if (action !== 'edit-image' || path !== '/prompt-builder' || loadingImage || opening || open) return
+    const [file] = takeDesktopFiles(action)
+    if (!file) return
+    opener.value = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    sourceImage.value = file
+    void showEditor()
+  }, { immediate: true, flush: 'post' })
   async function selectEngine(engine: DrawingEngine) {
     error.value = ''
     try {

@@ -216,6 +216,7 @@
         <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }">
           <component :is="component" :current-traits="currentTraits" :engine="drawEngine" :canvas-size="genBarSize"
             :size-manually-set="canvasSizeManuallySet" :custom-moss-layout="customMossLayout"
+            :popular-source-loading="popularSourceLoading"
             @selectSource="selectCharacterSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
         </AsyncPanel>
         <section class="material-current-scene">
@@ -392,7 +393,7 @@ const {
 const {
   canvasSizeManuallySet, setCanvasSize, customMossLayout, animaSizeLimits,
   getBlueprint, resizeSides, materialsVisible, inspectorVisible, actionBarDocked,
-  selectCharacterSource, descriptionInHeader, exampleEditButton, drawingSetupRoute,
+  popularSourceLoading, selectCharacterSource, descriptionInHeader, exampleEditButton, drawingSetupRoute,
   interrogateMode, interrogateSubjectMode, interrogateAssist, interrogateLayout,
   setInterrogateAssist, canFillExample, firstDrawingHint, fillExample,
   currentSceneTitle, activeCharacterId, currentCharacterLabel,

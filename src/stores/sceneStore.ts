@@ -13,7 +13,7 @@ import { nextTick, ref, shallowRef, toRaw, watch } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
-  characterDirectoryEntry, parsePopularCharacters,
+  characterDirectoryEntry, parsePopularCharactersAsync,
   type PopularCharacter,
 } from '../utils/popularContent.ts'
 
@@ -123,7 +123,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const directoryCharacters = shallowRef<CharacterDirectoryEntry[]>([])
   const sceneTitles = shallowRef(new Map<string, string>())
   let cachedCuration: CurationData = {}
-  const popularCharacters = ref<PopularCharacter[]>([])
+  const popularCharacters = shallowRef<PopularCharacter[]>([])
   const blueprintCatalog = useBlueprintCatalog(() => fetchJson('scene-blueprints.json', version.value))
   const { sceneBlueprints, loadBlueprintCharacter, hasBlueprintCharacter } = blueprintCatalog
 
@@ -144,7 +144,7 @@ export const useSceneStore = defineStore('scenes', () => {
     /** 必需资源失败必须让整次加载失败并可见；可选资源失败保留上次成功数据。 */
     required: boolean
     read?: (epoch: number, version: number) => Promise<unknown>
-    parse: (raw: unknown) => unknown
+    parse: (raw: unknown) => unknown | Promise<unknown>
     apply: (data: unknown) => void
   }
 
@@ -154,7 +154,7 @@ export const useSceneStore = defineStore('scenes', () => {
     { file: 'loras.json', required: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
-    { file: 'popular-characters.json', required: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[]; adoptCatalogPendingPortraits(d) } },
+    { file: 'popular-characters.json', required: true, parse: (raw) => parsePopularCharactersAsync(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[]; adoptCatalogPendingPortraits(d) } },
   ]
 
   const directorySpec: MetaSpec = {
@@ -253,10 +253,11 @@ export const useSceneStore = defineStore('scenes', () => {
     entry.promise = (async () => {
       try {
         const raw = await (spec.read ? spec.read(epoch, requestVersion) : fetchJson(spec.file, requestVersion))
+        const parsed = await spec.parse(raw)
         // The response may belong to a previous force load. Let that caller
         // finish, but never publish its data into the current store.
         if (epoch === loadEpoch) {
-          spec.apply(spec.parse(raw))
+          spec.apply(parsed)
           metaOk.add(spec.file)
         }
         const result = { file: spec.file, required: spec.required, ok: true }

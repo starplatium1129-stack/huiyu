@@ -109,11 +109,7 @@ function parsePopularList<T>(source: unknown[], parseOne: (item: unknown) => T |
   return list
 }
 
-export function parsePopularCharacters(value: unknown): PopularCharacter[] {
-  const source = isRecord(value) && Array.isArray(value.characters)
-    ? value.characters
-    : Array.isArray(value) ? value : []
-  const list = parsePopularList(source, parsePopularCharacter, '角色')
+function finalizePopularCharacters(list: PopularCharacter[]): PopularCharacter[] {
   const seen = new Set<string>()
   for (const character of list) {
     if (seen.has(character.id)) throw new Error(`popular data: duplicated character id ${character.id}`)
@@ -125,6 +121,44 @@ export function parsePopularCharacters(value: unknown): PopularCharacter[] {
     }
   }
   return list
+}
+
+export function parsePopularCharacters(value: unknown): PopularCharacter[] {
+  const source = isRecord(value) && Array.isArray(value.characters)
+    ? value.characters
+    : Array.isArray(value) ? value : []
+  return finalizePopularCharacters(parsePopularList(source, parsePopularCharacter, '角色'))
+}
+
+async function yieldToMainThread(): Promise<void> {
+  const scheduler = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler
+  if (scheduler && typeof scheduler.yield === 'function') {
+    await scheduler.yield()
+    return
+  }
+  await new Promise<void>(resolve => setTimeout(resolve, 0))
+}
+
+/** 分片解析热门角色目录，每 ~50ms 主动让出主线程以防冷切换卡顿。 */
+export async function parsePopularCharactersAsync(value: unknown): Promise<PopularCharacter[]> {
+  const source = isRecord(value) && Array.isArray(value.characters)
+    ? value.characters
+    : Array.isArray(value) ? value : []
+  const list: PopularCharacter[] = []
+  let deadline = performance.now() + 50
+  for (const item of source) {
+    try {
+      const parsed = parsePopularCharacter(item)
+      if (parsed !== null) list.push(parsed)
+    } catch (error) {
+      console.warn('[popular-data] 跳过无效角色条目：', error instanceof Error ? error.message : String(error))
+    }
+    if (performance.now() >= deadline) {
+      await yieldToMainThread()
+      deadline = performance.now() + 50
+    }
+  }
+  return finalizePopularCharacters(list)
 }
 
 export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {

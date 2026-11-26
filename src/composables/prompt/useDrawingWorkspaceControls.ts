@@ -60,13 +60,21 @@ export function useDrawingWorkspaceControls(params: {
   const inspectorVisible = computed(() => !pb.focusMode && (!directorLayout.desktop.value || !directorLayout.collapsed.value.inspector))
   const actionBarDocked = computed(() => directorLayout.desktop.value && inspectorVisible.value)
 
+  const popularSourceLoading = ref(false)
   let characterSelection = 0
   async function selectCharacterSource(source: 'studio' | 'popular' | 'none') {
     const request = ++characterSelection
     const subject = pb.subject
     if (source === 'popular') {
-      try { await pb.loadPopularCatalog() }
+      popularSourceLoading.value = true
+      try {
+        await Promise.all([
+          pb.loadPopularCatalog(),
+          import('@/components/popular/PopularCharacterPicker.vue').catch(() => undefined),
+        ])
+      }
       catch { if (request === characterSelection) pb.flash('热门角色暂时无法读取，请重试。'); return }
+      finally { if (request === characterSelection) popularSourceLoading.value = false }
       if (request !== characterSelection || route.path !== '/prompt-builder' || pb.subject !== subject) return
     }
     selectPopularSource(source)
@@ -221,6 +229,7 @@ export function useDrawingWorkspaceControls(params: {
     materialsVisible,
     inspectorVisible,
     actionBarDocked,
+    popularSourceLoading,
     selectCharacterSource,
     descriptionInHeader,
     exampleEditButton,

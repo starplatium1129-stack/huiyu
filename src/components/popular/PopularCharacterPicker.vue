@@ -24,9 +24,13 @@ const emit = defineEmits<{
 }>()
 
 const browser = ref<InstanceType<typeof CharacterDirectoryDialog> | null>(null)
+const directoryOpened = ref(false)
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
-const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
+const directoryItems = computed(() => directoryOpened.value
+  ? props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) }))
+  : [])
 function openBrowser(event: MouseEvent) {
+  directoryOpened.value = true
   if (event.currentTarget instanceof HTMLElement) void browser.value?.open(event.currentTarget)
 }
 function selectFromDirectory(id: string) {

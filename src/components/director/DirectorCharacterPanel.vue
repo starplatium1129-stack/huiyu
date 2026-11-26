@@ -9,7 +9,11 @@
         <span class="char-source-label studio-control-label">工作室角色</span>
       </button>
       <button type="button" class="char-source-btn"
-        :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
+        :aria-pressed="pb.isPopular"
+        :aria-busy="popularSourceLoading || undefined"
+        @pointerenter="warmPopularSource"
+        @focus="warmPopularSource"
+        @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
         <span class="studio-control-label"><span class="char-source-label">热门角色</span></span>
       </button>
@@ -32,8 +36,8 @@
           :aria-pressed="pb.char === c.id"
           @click="selectStudioCharacter(c.id)">
           <span class="studio-character-art" aria-hidden="true">
-            <CharacterPortrait v-if="c.id !== 'natsume'" :src="characterArtEntry('nene')?.thumbnailUrl || '/assets/characters/nene-home-cg-512.webp'" name="宁宁" />
-            <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || '/assets/characters/natsume-home-cg-512.webp'" name="夏目" />
+            <CharacterPortrait v-if="c.id !== 'natsume'" :src="characterArtEntry('nene')?.thumbnailUrl || neneShelfPortrait" fallback="/assets/characters/nene-portrait.webp" name="宁宁" />
+            <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || natsumeShelfPortrait" fallback="/assets/characters/natsume-portrait.webp" name="夏目" />
           </span>
           <span class="studio-character-copy"><strong>{{ c.label }}</strong><small>{{ c.id === 'nene' ? '绫地宁宁' : c.id === 'natsume' ? '四季夏目' : '宁宁与夏目' }}</small></span>
           <Transition name="studio-character-check">
@@ -71,8 +75,10 @@
 <script setup lang="ts">
 import DirectorCastRoster from '@/components/director/DirectorCastRoster.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import neneShelfPortrait from '@/assets/illustrations/nene-portrait-384.webp'
+import natsumeShelfPortrait from '@/assets/illustrations/natsume-portrait-384.webp'
 import { characterArtEntry } from '@/platform/characterArtState'
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { charOptions as historicalCharacterOptions } from '@/composables/scene/directorOptions'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -88,6 +94,7 @@ defineProps<{
   sizeManuallySet: boolean
   customMossLayout: boolean
   currentTraits: Array<{ tag: string; label: string }>
+  popularSourceLoading?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -97,6 +104,30 @@ const emit = defineEmits<{
 }>()
 
 const pb = usePromptBuilderStore()
+let popularWarmed = false
+let warmTimer: ReturnType<typeof setTimeout> | undefined
+let warmIdle: number | undefined
+
+function warmPopularSource() {
+  if (popularWarmed) return
+  popularWarmed = true
+  if (!pb.popularCharacters.length) void pb.loadPopularCatalog().catch(() => { popularWarmed = false })
+  void loadPopularCharacterPicker().catch(() => {})
+}
+
+onMounted(() => {
+  if (typeof window.requestIdleCallback === 'function') {
+    warmIdle = window.requestIdleCallback(() => warmPopularSource(), { timeout: 1200 })
+  } else {
+    warmTimer = setTimeout(warmPopularSource, 250)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (warmIdle !== undefined && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(warmIdle)
+  if (warmTimer !== undefined) clearTimeout(warmTimer)
+})
+
 function selectStudioCharacter(id: typeof charOptions[number]['id']) {
   const slot = pb.cast.findIndex(member => member.source === 'studio' && member.characterId === id)
   if (slot >= 0) pb.selectCastLead(slot)

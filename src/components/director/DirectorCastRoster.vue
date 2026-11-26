@@ -99,6 +99,8 @@ import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import neneShelfPortrait from '@/assets/illustrations/nene-portrait-384.webp'
+import natsumeShelfPortrait from '@/assets/illustrations/natsume-portrait-384.webp'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -158,7 +160,7 @@ const catalog = computed<ActorDirectoryEntry[]>(() => [
     name: item.name,
     source: '工作室角色',
     aliases: [...item.aliases],
-    image: characterArtEntry(item.id)?.thumbnailUrl || `/assets/characters/${item.id}-home-cg-512.webp`,
+    image: characterArtEntry(item.id)?.thumbnailUrl || (item.id === 'natsume' ? natsumeShelfPortrait : neneShelfPortrait),
   })),
   ...pb.popularCharacters.map(item => ({
     id: actorKey('popular', item.id),

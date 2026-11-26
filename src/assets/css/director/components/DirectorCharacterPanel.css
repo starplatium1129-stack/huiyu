@@ -37,8 +37,7 @@
 .pb .char-btn.studio-character-choice { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:p-0 tw:gap-0 tw:overflow-hidden tw:whitespace-normal tw:text-left; box-shadow:none; }
 .pb .studio-character-art { @apply tw:flex tw:min-w-0; }
 .pb .studio-character-art .character-portrait { @apply tw:w-full tw:h-auto; max-height:176px; aspect-ratio:1 / 1; border:0; border-radius:0; }
-.pb .studio-character-art .character-portrait img { transform:none; object-position:center 25%; }
-.pb .studio-character-natsume .character-portrait img { transform:scale(1.35); transform-origin:center 45%; object-position:center 45%; }
+.pb .studio-character-art .character-portrait img { transform:none; object-position:center 18%; }
 .pb .studio-character-copy { @apply tw:flex tw:flex-col tw:gap-s-1; padding:var(--s-2) var(--s-3); }
 .pb .studio-character-copy strong { @apply tw:text-primary tw:text-body tw:leading-label; }
 .pb .studio-character-copy small { @apply tw:text-secondary tw:text-body-sm tw:leading-label tw:font-normal; }
