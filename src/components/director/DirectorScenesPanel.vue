@@ -14,6 +14,7 @@
         :loading="pb.popularBlueprintLoading"
         :error="pb.popularBlueprintError"
         :selected-blueprint-id="pb.subject.kind === 'popular' ? pb.subject.blueprintId ?? '' : ''"
+        :outfit-names="popularOutfitNames"
         @update:category="$emit('update:popularCategory', $event)"
         @update:show-all="$emit('update:showAllBlueprints', $event)"
         @select="$emit('selectBlueprint', $event)"
@@ -138,6 +139,13 @@ function isAdultScene(scene: Scene): boolean {
   return scene.rating === 'R18' || entryFor(scene.id)?.rating === 'R18'
 }
 const currentThemeLabel = computed(() => SCENE_THEMES.find(theme => theme.id === pb.sceneTheme)?.label ?? '全部')
+const popularOutfitNames = computed<Record<string, string>>(() => {
+  const subject = pb.subject
+  if (subject.kind !== 'popular') return {}
+  const character = pb.popularCharacters.find(item => item.id === subject.characterId)
+  if (!character) return {}
+  return Object.fromEntries(character.outfits.map(outfit => [outfit.id, outfit.name]))
+})
 function retryBlueprints() {
   if (pb.subject.kind === 'popular') void pb.loadPopularCharacter(pb.subject.characterId).catch(() => {})
 }

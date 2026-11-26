@@ -15,6 +15,7 @@ const props = defineProps<{
   loading: boolean
   error: string
   selectedBlueprintId: string
+  outfitNames?: Record<string, string>
 }>()
 
 const emit = defineEmits<{
@@ -29,6 +30,9 @@ const picker = ref<HTMLElement | null>(null), results = ref<HTMLElement | null>(
 function retry() {
   results.value?.focus({ preventScroll: true })
   emit('retry')
+}
+function outfitLabel(blueprint: SceneBlueprint): string {
+  return blueprint.outfitId ? props.outfitNames?.[blueprint.outfitId] || '' : ''
 }
 watch([() => props.dataReady, () => props.loading, () => props.error, () => props.pool], async () => {
   const region = results.value, origin = document.activeElement
@@ -97,6 +101,7 @@ const categoryChips = computed(() => {
           <span class="blueprint-desc tw:text-label-xs tw:text-secondary tw:leading-label tw:overflow-hidden">{{ blueprint.description }}</span>
           <span class="blueprint-meta tw:flex tw:gap-s-2 tw:flex-wrap tw:text-mono-xs tw:text-muted">
             <span>{{ blueprint.category }}</span>
+            <span v-if="outfitLabel(blueprint)" class="blueprint-outfit"><ArchiveIcon name="wardrobe" class="blueprint-outfit-icon" aria-hidden="true" />{{ outfitLabel(blueprint) }}</span>
             <span v-if="blueprintContext(blueprint).source === 'location'">{{ blueprintContext(blueprint).text }}</span>
             <span>{{ blueprint.recommendedSize.replace('x', '×') }}</span>
           </span>
@@ -174,4 +179,6 @@ const categoryChips = computed(() => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.blueprint-outfit { display:inline-flex; align-items:center; gap:4px; color:var(--text-secondary); }
+.blueprint-outfit .blueprint-outfit-icon { width:12px; height:12px; flex-shrink:0; }
 </style>

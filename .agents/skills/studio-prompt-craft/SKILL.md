@@ -14,6 +14,7 @@ description: 编写或审查 AI-CG-Studio 图像提示词及编译一致性；�
 - **Krea 2（自然语言散文）**：[Krea 散文规范](references/krea.md)
 - **画面构图与光影**：[构图与视觉设计](references/narrative-composition.md)；壁纸专项见 [桌面壁纸](../../../docs/guides/prompts/character-wallpaper-prompt-standard.md) 与 [竖屏壁纸](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)
 - **标签来源与纠错**：[D/G 标签溯源](references/tag-provenance.md) 与 [词条出图语义](../../../docs/guides/prompts/tag-visual-semantics.md)
+- **角色服装设计**：[角色服装设计规范](references/outfit-design.md)（防八股模板、五要素穿搭与词条洁净度）
 - **全分级细则与数据交付**：[NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md) 与 [数据字段与交付](references/delivery.md)
 
 ---

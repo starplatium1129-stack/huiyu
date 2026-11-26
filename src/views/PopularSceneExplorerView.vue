@@ -94,7 +94,7 @@
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="visibleSampleRating(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + visibleSampleRating(blueprint)">{{ visibleSampleRating(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
             <p v-if="blueprint.description" class="pop-card-excerpt">{{ displayBlueprintDescription(blueprint) }}</p>
-            <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
+            <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span><span v-if="outfitLabel(blueprint)">{{ outfitLabel(blueprint) }}</span></div>
             <footer>
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
@@ -103,6 +103,7 @@
               <div v-if="openDetails.has(blueprint.id)" data-disclosure-content>
               <p v-if="blueprint.description" class="pop-full-description">{{ displayBlueprintDescription(blueprint) }}</p>
               <dl class="pop-decision">
+                <div v-if="outfitLabel(blueprint)"><dt>服装</dt><dd>{{ outfitLabel(blueprint) }}</dd></div>
                 <div><dt>镜头</dt><dd>{{ shotLabel(blueprint) }}</dd></div>
                 <div><dt>光线</dt><dd>{{ lightLabel(blueprint) }}</dd></div>
                 <div><dt>色调</dt><dd>{{ moodLabel(blueprint) }}</dd></div>
@@ -127,6 +128,7 @@
         <section class="viewer-section"><h3>场景设定</h3><p class="viewer-story">{{ displayBlueprintDescription(previewBlueprint) }}</p></section>
         <dl class="viewer-record">
           <div v-if="blueprintContext(previewBlueprint).source === 'location'"><dt>地点</dt><dd>{{ blueprintContext(previewBlueprint).text || '未指定' }}</dd></div>
+          <div v-if="outfitLabel(previewBlueprint)"><dt>服装</dt><dd>{{ outfitLabel(previewBlueprint) }}</dd></div>
           <div><dt>镜头</dt><dd>{{ shotLabel(previewBlueprint) }}</dd></div>
           <div><dt>光线</dt><dd>{{ lightLabel(previewBlueprint) }}</dd></div>
           <div><dt>色调</dt><dd>{{ moodLabel(previewBlueprint) }}</dd></div>
@@ -251,6 +253,14 @@ const pool = computed<SceneBlueprint[]>(() =>
     bp.characterId === selectedId.value,
   ),
 )
+const outfitNames = computed<Record<string, string>>(() => {
+  const character = sceneStore.popularCharacters.find(item => item.id === selectedId.value)
+  if (!character) return {}
+  return Object.fromEntries(character.outfits.map(outfit => [outfit.id, outfit.name]))
+})
+function outfitLabel(blueprint: SceneBlueprint | null): string {
+  return blueprint?.outfitId ? outfitNames.value[blueprint.outfitId] || '' : ''
+}
 const HAS_KANA = /[\u3040-\u30ff]/
 const characterJpOrnament = computed(() => {
   const character = selectedCharacter.value
@@ -387,6 +397,9 @@ async function init() {
     await sceneStore.loadCharacterDirectory()
     if (revision !== loadRevision) return
     if (selectedId.value) await sceneStore.loadBlueprintCharacter(selectedId.value)
+    if (revision === loadRevision && !sceneStore.popularCharacters.length) {
+      void sceneStore.loadPopularCharacters().catch(() => {})
+    }
   } catch (error) {
     if (revision === loadRevision) loadError.value = error instanceof Error ? error.message : String(error)
   } finally {

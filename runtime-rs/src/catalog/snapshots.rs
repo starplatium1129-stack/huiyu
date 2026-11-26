@@ -25,18 +25,63 @@ fn write_export(path: &Path, value: &impl Serialize) -> Result<()> {
     file.flush()?;
     Ok(())
 }
+fn export_io_error(from: &Path, to: &Path, error: std::io::Error) -> ApiError {
+    ApiError::new(
+        503,
+        "CATALOG_EXPORT_IO",
+        format!(
+            "快照目录切换失败 {} → {}：{error}",
+            from.display(),
+            to.display()
+        ),
+    )
+}
+fn rename_export_raw(from: &Path, to: &Path) -> std::io::Result<()> {
+    const RETRY_DELAYS_MS: [u64; 6] = [50, 100, 200, 300, 400, 500];
+    for delay_ms in RETRY_DELAYS_MS {
+        match std::fs::rename(from, to) {
+            Err(error) if error.kind() == std::io::ErrorKind::PermissionDenied => {
+                std::thread::sleep(std::time::Duration::from_millis(delay_ms));
+            }
+            result => return result,
+        }
+    }
+    std::fs::rename(from, to)
+}
 fn rename_export(from: &Path, to: &Path) -> Result<()> {
-    std::fs::rename(from, to).map_err(|error| {
-        ApiError::new(
-            503,
-            "CATALOG_EXPORT_IO",
-            format!(
-                "快照目录切换失败 {} → {}：{error}",
-                from.display(),
-                to.display()
-            ),
-        )
-    })
+    rename_export_raw(from, to).map_err(|error| export_io_error(from, to, error))
+}
+#[cfg(windows)]
+fn sync_export_in_place(
+    staging: &Path,
+    directory: &Path,
+    files: &[String],
+    changed: &std::collections::HashSet<String>,
+    before: &SnapshotIdentity,
+) -> Result<()> {
+    let new_files: std::collections::HashSet<&str> = files.iter().map(String::as_str).collect();
+    for name in files {
+        let dst = directory.join(name);
+        if changed.contains(name) || !dst.exists() {
+            if let Some(parent) = dst.parent() {
+                std::fs::create_dir_all(parent)?;
+            }
+            rename_export(&staging.join(name), &dst)?;
+        }
+    }
+    rename_export(
+        &staging.join("manifest.json"),
+        &directory.join("manifest.json"),
+    )?;
+    for (output_name, (original, _)) in &before.files {
+        if !new_files.contains(output_name.as_str()) || original != output_name {
+            match std::fs::remove_file(directory.join(original)) {
+                Err(error) if error.kind() != std::io::ErrorKind::NotFound => return Err(error.into()),
+                _ => {}
+            }
+        }
+    }
+    Ok(())
 }
 struct Staging(PathBuf);
 impl Drop for Staging {
@@ -376,7 +421,7 @@ impl Catalog {
             retired: &retired,
         };
         write_export(&staging.join("manifest.json"), &manifest)?;
-        if let Some(before) = original_fingerprint {
+        if let Some(before) = original_fingerprint.as_ref() {
             if !directory.exists() || !before.matches(directory)? {
                 return Err(export_conflict());
             }
@@ -388,16 +433,34 @@ impl Catalog {
             ));
         }
         let backup = parent.join(format!(".catalog-export-backup-{}", uuid::Uuid::new_v4()));
+        let mut fallback_in_place = false;
         if directory.exists() {
-            rename_export(directory, &backup)?;
+            match rename_export_raw(directory, &backup) {
+                Ok(()) => {}
+                #[cfg(windows)]
+                Err(error)
+                    if error.kind() == std::io::ErrorKind::PermissionDenied
+                        && original_fingerprint.is_some() =>
+                {
+                    sync_export_in_place(
+                        &staging,
+                        directory,
+                        &files,
+                        &changed,
+                        original_fingerprint.as_ref().unwrap(),
+                    )?;
+                    fallback_in_place = true;
+                }
+                Err(error) => return Err(export_io_error(directory, &backup, error)),
+            }
         }
-        if let Err(error) = rename_export(&staging, directory) {
+        if !fallback_in_place && let Err(error) = rename_export(&staging, directory) {
             if backup.exists() {
                 rename_export(&backup, directory)?;
             }
             return Err(error.into());
         }
-        let cleanup_warning = if backup.exists() {
+        let cleanup_warning = if !fallback_in_place && backup.exists() {
             std::fs::remove_dir_all(&backup).err().map(|error| {
                 format!(
                     "快照已导出，旧目录清理失败，备份保留于 {}：{error}",
