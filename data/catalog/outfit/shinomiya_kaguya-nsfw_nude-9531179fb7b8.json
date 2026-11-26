@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 769,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely free of Shuchiin uniforms, silk furisode, lace lingerie, stockings, and loafers, presenting an unadorned natural form.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ],
       "identityTokensOverride": [
         "shinomiya_kaguya",

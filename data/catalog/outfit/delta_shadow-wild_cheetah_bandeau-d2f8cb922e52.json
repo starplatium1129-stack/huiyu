@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "delta_shadow/wild_cheetah_bandeau",
+  "revision": 1,
+  "sortOrder": 4081,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "delta_shadow",
+    "outfit": {
+      "id": "wild_cheetah_bandeau",
+      "name": "野性豹纹弹力抹胸与毛绒热裤",
+      "prose": "Fitted ochre cheetah-print stretch bandeau top paired with black faux-fur trimmed sleep shorts, athletic elastic waistband, a simple leather collar choker, cloth wrist wraps, and bare feet.",
+      "tokens": [
+        "cheetah bandeau",
+        "stretch crop top",
+        "faux-fur shorts",
+        "black shorts",
+        "elastic band",
+        "leather choker",
+        "cloth wraps",
+        "barefoot"
+      ],
+      "characterId": "delta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 运动背心套"
+    }
+  }
+}

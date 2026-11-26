@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/livehouse_staff",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1633,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "livehouse_staff",
-      "name": "Livehouse · 乐队T恤百褶裙",
-      "prose": "A red cropped band T-shirt with a high-waisted black pleated skirt and thigh-high stockings.",
+      "name": "Livehouse乐队T恤百褶裙",
+      "prose": "Cropped crimson band T-shirt paired with a high-waisted black pleated miniskirt, cotton wristband, opaque black thighhighs, and black sneakers.",
       "tokens": [
-        "red_shirt",
-        "crop_top",
-        "short_sleeves",
-        "black_skirt",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "thighhighs",
-        "black_sneakers"
+        "red t-shirt",
+        "cropped shirt",
+        "short sleeves",
+        "black miniskirt",
+        "pleated skirt",
+        "wristband",
+        "black thighhighs",
+        "black sneakers"
       ],
       "default": true,
       "characterId": "ijichi_nijika",

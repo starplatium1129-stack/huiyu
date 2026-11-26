@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_tea",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2407,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_tea",
     "characterId": "bazett_fraga_mcremitz",
-    "outfitId": "casual_coat",
+    "outfitId": "irish_linen_shirt_casual",
     "title": "巴泽特·弗拉加·马克雷米兹 · 雨天的热茶",
     "category": "休息",
     "description": "雨点敲着玻璃，她坐在窗边捧着茶杯，难得没有查看放在一旁的日程。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_prefect_office_overtime",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2094,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "amau_ako_prefect_office_overtime",
     "characterId": "amau_ako",
-    "outfitId": "prefect_duty_vestment",
+    "outfitId": "slate_offduty_blouse_skirt",
     "title": "天雨亚子 · 风纪委办公室的通宵校对",
     "category": "风纪日常",
     "description": "歌赫娜风纪委员会高层办公室，深夜的台灯照亮了堆积如山的通报公文。亚子身着端庄严整的露胸风纪制服，神情专注而微带疲倦，修长玉指按在文件页边缘。她抬头望向进门的老师，湛蓝眼眸中带着严苛与悄然松口气的反差神采。",

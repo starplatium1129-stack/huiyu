@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3405,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "ijichi_nijika_swimsuit_allure",
     "characterId": "ijichi_nijika",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海边的正午热浪滚滚，但只要虹夏在，整个营地就永远充满欢笑。她端着一大盘切好的冰镇西瓜从遮阳伞下跑过来，金色的侧马尾在跳跃间轻轻摆动，头顶的呆毛神气十足地晃悠着。她弯起红宝石般的眼睛，把最大的一块西瓜塞进你手里，笑得像太阳一样耀眼——「大家——！在大海里泡完水，绝对要吃一口冰西瓜才算过夏天啦！波奇酱，快从阴影里出来！这一块中间最甜的特意留给你哦，快来吃！」",
-    "outfitId": "crimson_summer_bikini",
+    "outfitId": "sunburst_colorblock_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

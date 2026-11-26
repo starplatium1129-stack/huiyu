@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kyouyama_kazusa/sweets_tour_cardigan",
+  "revision": 1,
+  "sortOrder": 3923,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kyouyama_kazusa",
+    "outfit": {
+      "id": "sweets_tour_cardigan",
+      "name": "烟粉针织开衫与炭灰百褶便服",
+      "prose": "A slouchy dusty-pink knit cardigan layered over a casual white graphic tee and charcoal pleated skirt with a chained leather belt, crossbody strap, black knee-high socks, and loafers.",
+      "tokens": [
+        "dusty pink cardigan",
+        "white graphic tee",
+        "charcoal pleated skirt",
+        "black leather belt",
+        "silver chain",
+        "crossbody strap",
+        "black knee highs",
+        "black loafers"
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/feline_harness_monokini",
+  "revision": 1,
+  "sortOrder": 4087,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "feline_harness_monokini",
+      "name": "影猫匿踪微透系绳连体衣",
+      "prose": "Sleek sheer-black elastic monokini laced with flexible criss-cross harness cords across the torso and an open back, fitted with a slim waist dagger strap, thigh band, and bare feet.",
+      "tokens": [
+        "black monokini",
+        "sheer mesh",
+        "harness straps",
+        "criss-cross ties",
+        "open back",
+        "dagger belt",
+        "thigh strap",
+        "barefoot"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

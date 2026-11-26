@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "lala_satalin_deviluke/pink_bath_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1321,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "lala_satalin_deviluke",
     "outfit": {
       "id": "pink_bath_camisole",
       "name": "浅粉黄边吊带衫",
       "tokens": [
-        "pink camisole",
-        "yellow piping"
+        "pale pink camisole",
+        "yellow edge piping",
+        "thin satin straps",
+        "sheer chiffon hem",
+        "matching pink shorts",
+        "barefoot"
       ],
-      "prose": "A pale-pink camisole with fine yellow piping.",
+      "prose": "A pale-pink sheer chiffon camisole edged with fine yellow piping and thin satin straps paired with matching shorts, worn barefoot.",
       "default": false,
       "isDefault": false
     }

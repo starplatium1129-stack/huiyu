@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3506,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "alexia_midgar_lingerie_whisper",
     "characterId": "alexia_midgar",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "学园宵禁后的王女起居室。阿蕾克希亚解下束缚身体的剑带，换上绣有米德加王家火漆红纹的象牙白真丝吊带裙。她坐在丝绸大床上，一条修长玉腿随性曲起，银白短发被海风撩动。她轻哼一声扬起下巴，红眸紧盯着你——「谁允许你随随便便把视线挪开的？作为侍从，好好打量本王女选的睡衣也是你的职责之一……还不快评价一下？」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "royal_ivory_silk_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

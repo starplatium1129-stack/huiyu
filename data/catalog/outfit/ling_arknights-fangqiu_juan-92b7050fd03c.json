@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/fangqiu_juan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 379,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
@@ -12,13 +12,16 @@
       "id": "fangqiu_juan",
       "isDefault": false,
       "name": "方遒卷银甲玄袍",
-      "prose": "Silver armor over a dark wide-sleeved robe, with white beast-embroidered lapels and jade-green ornaments.",
+      "prose": "Engraved silver armor plates worn over a dark black wide-sleeved hanfu robe with white beast-embroidered lapels, a dark silk sash, jade belt ornaments, and black cloth boots.",
       "tokens": [
-        "silver armor",
-        "black robe",
+        "silver shoulder armor",
+        "black hanfu robe",
         "wide sleeves",
         "white embroidered lapels",
-        "jade ornaments"
+        "jade belt ornaments",
+        "dark silk sash",
+        "woven bracers",
+        "black cloth boots"
       ]
     }
   }

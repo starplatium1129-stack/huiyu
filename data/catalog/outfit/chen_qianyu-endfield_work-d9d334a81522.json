@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "chen_qianyu/endfield_work",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1629,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfit": {
       "id": "endfield_work",
       "name": "黑白机能夹克与橙色织带",
-      "prose": "A fitted black-and-white technical jacket with orange webbing straps, a white inner shirt, charcoal utility shorts over opaque leggings, and sturdy black boots",
+      "prose": "A fitted black-and-white technical jacket with orange webbing straps over a white inner shirt and charcoal utility shorts layered with opaque black leggings and black combat boots.",
       "tokens": [
-        "black_jacket",
-        "white_panels",
-        "orange_straps",
-        "white_shirt",
-        "utility_shorts",
-        "black_leggings",
-        "boots"
+        "black technical jacket",
+        "white chest panels",
+        "orange webbing straps",
+        "white inner shirt",
+        "charcoal utility shorts",
+        "black leggings",
+        "black combat boots"
       ],
       "default": true
     }

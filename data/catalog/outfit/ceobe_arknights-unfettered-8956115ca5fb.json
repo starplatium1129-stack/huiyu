@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/unfettered",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1985,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "ceobe_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A black jacket and black skirt with red gloves and a white hat.",
+      "prose": "A black utility jacket and black pleated skirt paired with crimson fingerless gloves, a wide white hat, a silver buckle belt, and sturdy black combat boots.",
       "tokens": [
-        "black jacket",
-        "black skirt",
-        "red gloves",
-        "white hat"
+        "black utility jacket",
+        "black pleated skirt",
+        "crimson fingerless gloves",
+        "white sun hat",
+        "silver buckle belt",
+        "black combat boots"
       ],
       "identityTokensOverride": [
         "ceobe (arknights)",

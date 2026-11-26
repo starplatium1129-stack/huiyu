@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3381,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "yamada_ryo_swimsuit_allure",
     "characterId": "yamada_ryo",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "避暑巨岩阴影下。山田凉在深蓝极简运动泳衣外套了一件松垮褪色的复古夏威夷保龄球花衬衫。她盘腿咬着刚从浅滩捞上来的海草，单手把墨镜拉下鼻梁，顶着毫无生气的死鱼眼，极其严肃地提出用岩石阴凉交换你手里炒面的离谱提案。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "vintage_bowling_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

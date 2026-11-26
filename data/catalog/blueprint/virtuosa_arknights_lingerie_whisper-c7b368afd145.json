@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3166,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "virtuosa_arknights_lingerie_whisper",
     "characterId": "virtuosa_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "莱塔尼亚古堡回音大厅，月光透过玫瑰花窗洒在冰冷的大理石地面上。双膝轻夹着漆黑的大提琴侧坐，单手持弓悬在琴弦上方，黑白异色头环在发间微光流转，微侧首闭目聆听琴弦共振，嘴角勾起探究人心深处欲望的从容微笑。 她微微抬眸轻语——“博士……你的灵魂深处，正奏响着怎样不可告人的旋律呢？别压抑它……在我的琴声里彻底释放吧。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "nocturne_silk_gown",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

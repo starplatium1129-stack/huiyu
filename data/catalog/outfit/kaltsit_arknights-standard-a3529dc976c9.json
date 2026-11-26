@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/standard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "standard",
       "name": "罗德岛医疗高定风衣与绝对领域",
-      "prose": "A tailored doctor’s trench coat with pale green accents and stethoscopic piping, layered over a slit skirt and sheer black thigh-high stockings.",
+      "prose": "A tailored white Rhodes Island medical coat traced with pale-green piping over a dark slit pencil skirt, sheer black thigh-high stockings, and ankle boots.",
       "tokens": [
-        "lab_coat",
-        "trench_coat",
-        "white_coat",
-        "green_trim",
-        "pencil_skirt",
-        "slit_skirt",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "ankle_boots"
+        "white trench coat",
+        "green piping",
+        "black pencil skirt",
+        "side slit",
+        "sheer black thighhighs",
+        "leather ankle boots"
       ],
       "characterId": "kaltsit_arknights",
       "default": true,

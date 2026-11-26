@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "talulah_arknights/private_silk_chemise",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1607,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "talulah_arknights",
     "outfit": {
@@ -13,15 +13,15 @@
       "isDefault": false,
       "name": "深夜壁炉深红丝绸吊带睡裙",
       "tokens": [
-        "deep red nightgown",
-        "silk chemise",
-        "lace trim",
+        "crimson silk chemise",
+        "black lace trim",
+        "sweetheart neckline",
         "spaghetti straps",
+        "side slit",
         "bare legs",
-        "cleavage",
-        "bare shoulders"
+        "barefoot"
       ],
-      "prose": "a minimalist deep crimson silk chemise with delicate black lace along the sweetheart neckline and slender straps"
+      "prose": "A minimal deep-crimson silk slip chemise edged with delicate black floral lace along the sweetheart bodice, thin straps, and soft thigh slit."
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3164,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "reed_arknights_lingerie_whisper",
     "characterId": "reed_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "塔拉古堡石砌内室，水盆中漂浮着发光的芦苇花束，壁炉残炭散发暖意。赤足伫立在水盆旁，粗大的火红龙尾静静盘在石板上，指尖跳跃着不伤人的温暖生命微火，深情紫眸如含泪水般注视着博士。 她微微抬眸轻语——“我的火……不再只带来毁灭与灼痛了。请触碰我吧，博士……让这片生命的微火，只温暖你一人。”",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "flame_ombre_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

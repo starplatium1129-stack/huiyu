@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/summer_swimsuit_assassin",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "summer_swimsuit_assassin",
       "name": "幽紫深黑微光环扣比基尼",
-      "prose": "A lethal black-and-amethyst micro string bikini linked with gleaming gold O-rings and a gossamer violet hip sarong.",
+      "prose": "A sleek black-and-amethyst string bikini joined by gleaming gold O-rings and draped with a gossamer violet chiffon hip sarong.",
       "tokens": [
-        "micro_bikini",
-        "string_bikini",
-        "black_bikini",
-        "o-ring",
-        "sarong",
-        "sheer_fabric",
-        "bare_legs",
+        "black micro bikini",
+        "violet trim",
+        "gold o-rings",
+        "string ties",
+        "sheer purple sarong",
+        "bare legs",
         "barefoot"
       ],
       "characterId": "scathach_fate",

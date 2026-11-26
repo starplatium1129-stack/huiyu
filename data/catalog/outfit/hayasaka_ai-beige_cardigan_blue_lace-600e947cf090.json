@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/beige_cardigan_blue_lace",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1377,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "beige_cardigan_blue_lace",
       "name": "燕麦粗针落肩开衫与蔚蓝丝缎胸衣",
-      "prose": "A slouchy oatmeal chunky-knit cardigan slipping off one shoulder over an azure lace bustier and mini shorts.",
+      "prose": "A slouchy oatmeal chunky-knit cardigan slipping off one shoulder over an azure lace bustier and denim mini shorts, paired with bare legs and tan ankle boots.",
       "tokens": [
-        "beige_cardigan",
-        "chunky_knit",
-        "off_shoulder",
-        "blue_bustier",
-        "lace_trim",
-        "denim_shorts",
-        "bare_legs",
-        "ankle_boots"
+        "oatmeal knit cardigan",
+        "chunky cable knit",
+        "off shoulder",
+        "blue lace bustier",
+        "denim mini shorts",
+        "bare legs",
+        "tan ankle boots"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

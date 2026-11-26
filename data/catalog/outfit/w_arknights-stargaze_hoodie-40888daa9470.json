@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "w_arknights/stargaze_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2073,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "w_arknights",
     "outfit": {
       "id": "stargaze_hoodie",
       "name": "红星贴布宽松连帽衫与高帮鞋",
-      "prose": "An oversized charcoal hoodie with a slightly frayed red star patch, black shorts and black high-top sneakers with red laces.",
+      "prose": "An oversized charcoal hoodie with a frayed red star patch and silver grommets over black cargo shorts, paired with black high-top canvas sneakers laced in red.",
       "tokens": [
         "oversized charcoal hoodie",
         "red star patch",
-        "black shorts",
-        "black high-top sneakers",
-        "red laces"
+        "frayed cotton hem",
+        "black cargo shorts",
+        "silver grommets",
+        "red shoelaces",
+        "high-top canvas sneakers"
       ],
       "characterId": "w_arknights",
       "default": false,

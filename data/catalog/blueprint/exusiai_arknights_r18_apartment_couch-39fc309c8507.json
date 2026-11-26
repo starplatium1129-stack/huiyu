@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_apartment_couch",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 632,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "陷坐在舒适布艺沙发上，手托热气腾腾的苹果派，光环光翼泛柔金辉，元气爽朗含笑直视观众",
     "adult": true,
@@ -26,7 +26,7 @@
     ],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "standard",
+    "outfitId": "oversized_white_lounge_shirt",
     "promptProse": "Exusiai relaxes on the apartment sofa facing the viewer, her casual shirt unbuttoned and slipping off one shoulder to reveal her delicate collarbone, subtle cleavage, and bare thighs; her glowing halo and wings shine warmly as she offers a slice of apple pie with a playful wink.",
     "promptTokens": [
       "from front",

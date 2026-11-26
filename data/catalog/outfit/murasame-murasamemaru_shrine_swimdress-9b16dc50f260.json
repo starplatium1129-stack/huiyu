@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "murasame/murasamemaru_shrine_swimdress",
+  "revision": 1,
+  "sortOrder": 4185,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "id": "murasamemaru_shrine_swimdress",
+      "name": "神刀祓夏 · 红白巫女风连体水着",
+      "category": "泳装 / 连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "murasame",
+      "prose": "A crisp snow-white and crimson shrine-maiden swimdress detailed with sheer shoulder frills, miniature shimenawa waist cords, and tiny white paper tassels, worn barefoot.",
+      "tokens": [
+        "white shrine swimdress",
+        "crimson ribbon trim",
+        "sheer shoulder frills",
+        "shimenawa waist cord",
+        "white paper tassels",
+        "barefoot"
+      ]
+    }
+  }
+}

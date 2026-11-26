@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3126,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "hoolheyak_arknights_swimsuit_allure",
     "characterId": "hoolheyak_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "半沉入海水的神殿残柱在碧波中若隐若现。霍尔海雅优雅地侧卧在潮水浸润的石阶上，孔雀蓝的金属光泽泳装如第二层皮肤般贴合，青绿色的羽翼收拢在身后，修长有力的蛇尾在水底荡漾起一圈圈金色的涟漪。她微微抬眸，指尖拂过唇瓣，声音轻缓如羽毛滑过心尖——「看啊，连数千年前的文明，最终也会顺从地沉眠在海浪之下。那么你呢，年轻的学者？站在这么高的台阶上，不准备下来……听我为你解读这片水域沉睡的真正秘密吗？」",
-    "outfitId": "azure_summer_bikini",
+    "outfitId": "kukulkan_plume_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

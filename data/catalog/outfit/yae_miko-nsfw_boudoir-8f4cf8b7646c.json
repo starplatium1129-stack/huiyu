@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "yae_miko/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "八重神子·成人私密造型",
-      "prose": "No clothing.",
+      "name": "八重神子成人私密造型",
+      "prose": "Completely unclothed state with bare shoulders, bare torso, bare legs, and bare feet, unadorned and garment-free.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare torso",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

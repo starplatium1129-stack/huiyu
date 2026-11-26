@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "talulah_arknights/draco_regal_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1604,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "talulah_arknights",
     "outfit": {
@@ -13,15 +13,14 @@
       "isDefault": false,
       "name": "德拉克血统绯红黑金贵族礼裙",
       "tokens": [
-        "black and crimson gown",
+        "crimson velvet gown",
+        "black silk skirt",
         "gold embroidery",
-        "off-shoulder dress",
-        "corset",
-        "slit dress",
-        "high heels",
-        "bare shoulders"
+        "off-shoulder corset",
+        "high side slit",
+        "black stilettos"
       ],
-      "prose": "an off-shoulder black and crimson velvet gown laced with gold draconic embroidery and a high side slit"
+      "prose": "An imperial off-shoulder black-and-crimson velvet evening gown traced with ornate gold draconic embroidery, corset bodice, tall side slit, and stilettos."
     }
   }
 }

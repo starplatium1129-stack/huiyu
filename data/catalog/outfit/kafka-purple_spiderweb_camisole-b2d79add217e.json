@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kafka/purple_spiderweb_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1388,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
@@ -12,12 +12,14 @@
       "name": "深紫蛛网蕾丝吊带",
       "tokens": [
         "purple camisole",
-        "spider web print",
-        "lace",
+        "spiderweb lace",
         "sheer fabric",
-        "black high heels"
+        "spaghetti straps",
+        "black panties",
+        "gold choker",
+        "stiletto heels"
       ],
-      "prose": "A deep-purple spiderweb-lace camisole with narrow straps, paired with black pointed stiletto heels.",
+      "prose": "Deep-purple sheer spiderweb-lace camisole with delicate spaghetti straps paired with matching black lace briefs, a thin gold choker, and black pointed stiletto heels.",
       "default": false,
       "isDefault": false
     }

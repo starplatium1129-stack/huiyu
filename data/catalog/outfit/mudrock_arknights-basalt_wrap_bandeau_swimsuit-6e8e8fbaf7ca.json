@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/basalt_wrap_bandeau_swimsuit",
+  "revision": 1,
+  "sortOrder": 4007,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "id": "basalt_wrap_bandeau_swimsuit",
+      "name": "玄岩灰双层裹胸分体泳装",
+      "prose": "A textured slate-grey wrap-around bandeau bikini with ivory contrast trim and rustic brass ring clasps, paired with a loose slate linen wrap draped at the hips, worn barefoot.",
+      "tokens": [
+        "slate grey bikini",
+        "wrap bandeau top",
+        "ivory contrast trim",
+        "brass ring clasps",
+        "linen sarong wrap",
+        "high-waist briefs",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

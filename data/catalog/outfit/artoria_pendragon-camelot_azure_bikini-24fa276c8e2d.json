@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon/camelot_azure_bikini",
+  "revision": 1,
+  "sortOrder": 3953,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "artoria_pendragon",
+    "outfit": {
+      "id": "camelot_azure_bikini",
+      "name": "石中圣泉蓝白金边挂脖泳装",
+      "prose": "A regal royal-blue and crisp white halterneck bikini accented with fine gold edging, a delicate silver fleur-de-lis brooch, a sheer white silk waist pareo, and flat white sandals.",
+      "tokens": [
+        "royal blue bikini",
+        "white piping",
+        "gold trim",
+        "halterneck",
+        "silver brooch",
+        "sheer white pareo",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

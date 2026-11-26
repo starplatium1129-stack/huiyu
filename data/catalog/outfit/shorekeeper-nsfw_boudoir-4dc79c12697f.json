@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 941,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "幽夜星芒露背高衩流光真丝裙",
-      "prose": "A breathtaking gradient midnight-to-onyx silk slip gown with an open back and daring high thigh slit.",
+      "name": "幽夜星芒露背高衩流光真丝礼裙",
+      "prose": "A midnight-black silk slip gown with a plunging open front, bare back, high leg slit, and luminous cyan chain trim, worn with silver heels.",
       "tokens": [
-        "black_dress",
-        "backless_dress",
-        "deep_v-neck",
-        "silk",
-        "gradient_color",
-        "high_slit",
-        "bare_shoulders",
-        "bare_legs"
+        "black silk gown",
+        "deep neckline",
+        "open back",
+        "high leg slit",
+        "cyan chain trim",
+        "bare shoulders",
+        "bare legs",
+        "silver heels"
       ],
       "default": false,
       "isDefault": false,

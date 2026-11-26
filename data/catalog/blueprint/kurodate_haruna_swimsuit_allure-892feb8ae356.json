@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3437,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "kurodate_haruna_swimsuit_allure",
     "characterId": "kurodate_haruna",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "悬崖餐厅下浪花拍岸，餐盘里的深海扇贝散发着清新的海洋香气。晴奈一身丝绒黑泳装尽显名媛风范，优雅地用银叉切下最鲜嫩的贝肉送入口中，长长的银发在暮风中微卷，暗红眼眸因味蕾的愉悦而微微迷离。她用餐巾轻沾唇角，侧过脸看向身旁的老师，语气充满优雅与危险——「火候掌握在两分三十秒，海盐的咸度恰好激发了贝肉深沉的甘甜……合格的美味。但是，如果后厨下一道主菜敢有半点敷衍……我不介意用C4炸药替他们重新清理厨房哦，老师♪」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "obsidian_velvet_plunge_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

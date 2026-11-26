@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/ivory_black",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2191,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "ivory_black",
-      "name": "象牙褶襟与黑色燕尾长马甲",
-      "prose": "A crisp ivory blouse with fine pleats at the front beneath a black longline tailcoat vest and a flowing dark skirt, fastened by a pewter rose clasp.",
+      "name": "象牙褶襟与黑燕尾长马甲",
+      "prose": "An ivory pleated blouse with lace-ruffled cuffs under a longline black tailcoat vest and flowing charcoal skirt fastened by a pewter rose clasp, paired with sheer tights and black Mary Janes.",
       "tokens": [
         "ivory pleated blouse",
-        "black longline tailcoat vest",
-        "dark flowing skirt",
-        "pewter rose clasp"
+        "black tailcoat vest",
+        "charcoal flowing skirt",
+        "pewter rose clasp",
+        "sheer black tights",
+        "black mary janes"
       ],
       "characterId": "virtuosa_arknights",
       "default": false,

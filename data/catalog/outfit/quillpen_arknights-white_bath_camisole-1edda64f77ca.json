@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/white_bath_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1419,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "id": "white_bath_camisole",
-      "name": "纯白细带浴间上衣",
+      "name": "微透纯白细带浴间吊带衫",
       "tokens": [
-        "white camisole",
-        "thin straps"
+        "sheer white camisole",
+        "thin shoulder straps",
+        "cotton voile",
+        "pearl buttons",
+        "bare shoulders",
+        "barefoot"
       ],
-      "prose": "A plain white camisole with thin shoulder straps.",
+      "prose": "A lightweight sheer white cotton-voile bath camisole with slender shoulder straps and tiny pearl buttons, leaving shoulders and legs bare.",
       "default": false,
       "isDefault": false
     }

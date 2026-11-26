@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/serenity",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1983,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "ptilopsis_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A purple cardigan over a yellow sweater, a black skirt and a black beret.",
+      "prose": "A soft purple knit cardigan layered over a mustard-yellow sweater and black pleated skirt, paired with a black wool beret, round wire glasses, and black oxford shoes.",
       "tokens": [
-        "purple cardigan",
-        "yellow sweater",
-        "black skirt",
-        "black beret"
+        "purple knit cardigan",
+        "mustard yellow sweater",
+        "black pleated skirt",
+        "black wool beret",
+        "round wire glasses",
+        "black oxford shoes"
       ],
       "identityTokensOverride": [
         "ptilopsis (arknights)",

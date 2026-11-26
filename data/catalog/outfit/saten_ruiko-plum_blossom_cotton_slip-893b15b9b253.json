@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "saten_ruiko/plum_blossom_cotton_slip",
+  "revision": 1,
+  "sortOrder": 4118,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "saten_ruiko",
+    "outfit": {
+      "id": "plum_blossom_cotton_slip",
+      "name": "白梅夜风·纯白棉麻梅花细吊带睡裙",
+      "prose": "A breezy pure-white cotton spaghetti-strap slip dress embroidered with tiny plum blossoms along a gathered ruffled hem, worn barefoot.",
+      "tokens": [
+        "white cotton slip",
+        "plum blossom embroidery",
+        "ruffled airy hem",
+        "thin shoulder straps",
+        "gathered bust seam",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

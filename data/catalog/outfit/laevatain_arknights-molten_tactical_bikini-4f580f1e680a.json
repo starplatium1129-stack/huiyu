@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/molten_tactical_bikini",
+  "revision": 1,
+  "sortOrder": 4065,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "id": "molten_tactical_bikini",
+      "name": "熔核黑金战术镂空分体泳装",
+      "prose": "A matte-black compression two-piece tactical bikini detailed with molten-gold piping, quick-release alloy buckles, high-cut bottoms, and detached black cooling arm sleeves, bare legs, and barefoot.",
+      "tokens": [
+        "black tactical bikini",
+        "gold piping",
+        "alloy buckles",
+        "detached cooling sleeves",
+        "high-cut bottom",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3524,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "sparkle_hsr_lingerie_whisper",
     "characterId": "sparkle_hsr",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "匹诺康尼黄金时刻的梦境戏院包厢露台，天空落着永恒的金色礼花与香槟喷泉。反坐在红色雕花栏杆上，手里把玩着狐狸假面在指间飞转，赤足在半空晃荡，粉黑渐变双马尾如蝶翼飞舞，狡黠绯瞳闪烁着颠倒乾坤的恶作剧狂欢。 她微微抬眸轻语——“猜猜看~今晚站在你面前的，是真正的小花火，还是某只小灰毛的梦境幻觉？答错的话……可是要被我玩坏的哦~”",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "elation_cutout_tube_dress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

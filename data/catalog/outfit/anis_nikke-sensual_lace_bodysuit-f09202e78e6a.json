@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "anis_nikke/sensual_lace_bodysuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1554,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "anis_nikke",
     "outfit": {
       "id": "sensual_lace_bodysuit",
       "name": "随性慵懒黄白撞色舒适棉质背心与居家热裤",
-      "prose": "A relaxed, curve-hugging yellow and white ribbed cotton racerback tank top paired with stretchy heather-grey athletic sleep shorts and unmatched cozy house socks.",
+      "prose": "A curve-hugging yellow and white ribbed cotton racerback tank top paired with heather-grey elastic-waist sleep shorts and cozy crew socks or bare feet.",
       "tokens": [
-        "ribbed tank top",
-        "yellow and white",
-        "cotton sleep shorts",
-        "stretchy homewear",
-        "curvy casual",
-        "lounging clothes"
+        "yellow ribbed tank",
+        "white piping",
+        "racerback top",
+        "grey sleep shorts",
+        "elastic waistband",
+        "mismatched crew socks",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

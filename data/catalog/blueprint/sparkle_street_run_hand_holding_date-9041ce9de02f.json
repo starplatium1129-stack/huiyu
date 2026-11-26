@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_street_run_hand_holding_date",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1044,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "sparkle_street_run_hand_holding_date",
     "title": "花火 · 霓虹街角的回眸疾走约会",
@@ -43,7 +43,7 @@
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "official_kimono_dress",
+    "outfitId": "casual_street_hoodie",
     "coverageTags": [
       "date",
       "fun",

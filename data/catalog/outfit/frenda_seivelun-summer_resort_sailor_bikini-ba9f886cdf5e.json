@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "frenda_seivelun/summer_resort_sailor_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1811,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "frenda_seivelun",
     "outfit": {
       "characterId": "frenda_seivelun",
       "id": "summer_resort_sailor_bikini",
-      "name": "盛夏海滨·蓝白水手条纹荷叶边比基尼",
-      "prose": "A playful navy-and-white sailor striped triangle bikini with fluttery white ruffles and side-tie strings, showing her toned slender waist.",
+      "name": "水手条纹·蓝白荷叶边比基尼",
+      "prose": "A navy-and-white sailor-striped triangle halter bikini trimmed with fluttering white ruffles and side-tie bottoms, worn barefoot.",
       "tokens": [
-        "bikini",
-        "striped_bikini",
-        "blue_and_white_stripes",
-        "frilled_bikini",
-        "halterneck",
-        "side-tie_bikini_bottom",
-        "slender_waist"
+        "striped sailor bikini",
+        "navy white stripes",
+        "fluttering white ruffles",
+        "triangle halter top",
+        "side-tie swim bottoms",
+        "bare shoulders",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

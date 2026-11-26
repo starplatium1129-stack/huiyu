@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/sumi_bamboo_shoulder_swimsuit",
+  "revision": 1,
+  "sortOrder": 3992,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "id": "sumi_bamboo_shoulder_swimsuit",
+      "name": "水墨竹青单肩系带泳装与墨纱",
+      "prose": "A poetic ink-wash gradient monokini shifting from mist-white through bamboo green to deep sumi-black with an asymmetric single shoulder strap and sheer painted sarong.",
+      "tokens": [
+        "one-shoulder swimsuit",
+        "ink-wash gradient",
+        "bamboo green trim",
+        "sheer black sarong",
+        "bamboo print",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

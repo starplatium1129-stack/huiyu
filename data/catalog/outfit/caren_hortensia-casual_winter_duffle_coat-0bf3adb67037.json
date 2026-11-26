@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/casual_winter_duffle_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "casual_winter_duffle_coat",
       "name": "红呢牛角扣冬日私服",
-      "prose": "a red wool duffle coat with horn toggles, a white rib-knit beanie, black tights and brown lace-up boots",
+      "prose": "A classic crimson wool duffle coat fastened with horn toggles, styled with a ribbed white knit beanie, cozy scarf, black tights, and brown lace-up boots.",
       "tokens": [
-        "red wool duffle coat",
-        "toggle buttons",
+        "red duffle coat",
+        "horn toggles",
         "white knit beanie",
+        "cream scarf",
         "black tights",
-        "brown boots"
+        "brown lace-up boots"
       ],
       "isDefault": true,
       "default": true

@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 950,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_beach",
-      "name": "浅蓝金边裙式泳装",
-      "prose": "A pale-blue swim dress with braided gold edging at the neckline and a light cream cardigan.",
+      "name": "浅蓝金边裙式泳衣与米白轻衫",
+      "prose": "A sky-blue skirted swim dress edged with braided gold trim at the neckline and paired with a light cream cardigan and wrist ribbon, worn barefoot.",
       "tokens": [
-        "light blue swim dress",
+        "blue swim dress",
+        "skirted swimsuit",
         "gold trim",
-        "cream cardigan"
+        "cream cardigan",
+        "pleated hem",
+        "wrist ribbon",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

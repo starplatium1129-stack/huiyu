@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kakudate_karin/tactical_matte_monokini",
+  "revision": 1,
+  "sortOrder": 3937,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kakudate_karin",
+    "outfit": {
+      "id": "tactical_matte_monokini",
+      "name": "哑光黑交叉绑带高叉战术泳装",
+      "prose": "A matte-black athletic high-leg monokini engineered with crossed compression back straps, a sleek waterproof belt and thigh holster, paired with black rabbit-ear headwear.",
+      "tokens": [
+        "black monokini",
+        "high leg swimsuit",
+        "cross-back straps",
+        "rabbit ear hairband",
+        "thigh holster",
+        "waterproof belt",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

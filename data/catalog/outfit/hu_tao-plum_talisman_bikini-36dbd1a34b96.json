@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "hu_tao/plum_talisman_bikini",
+  "revision": 1,
+  "sortOrder": 4161,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "hu_tao",
+    "outfit": {
+      "id": "plum_talisman_bikini",
+      "name": "幽蝶戏水梅花系带比基尼",
+      "prose": "Ink-black and crimson halter bikini embroidered with plum blossoms and gold coin tassel pendants, layered under a sheer black mesh bolero jacket with a plum-branch ribbon and bare feet.",
+      "tokens": [
+        "black bikini",
+        "plum print",
+        "red ties",
+        "mesh bolero",
+        "sheer jacket",
+        "coin tassel",
+        "crimson ribbon",
+        "barefoot"
+      ],
+      "characterId": "hu_tao",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
+    }
+  }
+}

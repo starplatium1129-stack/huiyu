@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/home_shirt_cotton_socks",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1375,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
       "id": "home_shirt_cotton_socks",
       "name": "白衬衫与及膝棉袜",
       "tokens": [
-        "oversized white shirt",
-        "white knee socks"
+        "loose oxford shirt",
+        "dropped shoulder seam",
+        "cream cotton panties",
+        "white knee socks",
+        "ribbed sock cuffs",
+        "barefoot"
       ],
-      "prose": "A soft oversized white cotton shirt and plain knee-high cotton socks, worn without glasses.",
+      "prose": "A loose white oxford cotton shirt with dropped shoulders paired with cream cotton briefs and white ribbed knee-high socks.",
       "default": false,
       "isDefault": false
     }

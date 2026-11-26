@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3133,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "w_arknights_swimsuit_allure",
     "characterId": "w_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "退潮浅滩废弃金属浮标周围。W身穿狂热佣兵红黑涂鸦防晒拉链潜水短衣，毫无淑女包袱地骑坐在浮标顶端。她将改装水枪重重扛在肩上，赤红的双眼弯成狡黠的弧度，咧开嘴露出标志性的恶作剧狂笑，准备随时用带着薄荷冲击的水炮将你淋个透心凉。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "graffiti_rashguard_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

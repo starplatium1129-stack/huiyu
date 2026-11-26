@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/golden_chiffon_fleur_slip",
+  "revision": 1,
+  "sortOrder": 4018,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "golden_chiffon_fleur_slip",
+      "name": "微芒烛光·浅金雪纺百合刺绣长睡裙",
+      "prose": "A floor-length pale-golden double-layer chiffon slip gown embroidered with a knightly fleur-de-lis crest along the bodice and suspended by slender gold cord straps, worn barefoot.",
+      "tokens": [
+        "pale gold gown",
+        "double-layer chiffon",
+        "fleur-de-lis embroidery",
+        "gold cord straps",
+        "floor-length hem",
+        "sheer side drape",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

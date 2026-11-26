@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_cafe_apron_morning_baking",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2648,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "id": "sumizome_nozomi_cafe_apron_morning_baking",
     "characterId": "sumizome_nozomi",
-    "outfitId": "stella_yellow_apron",
+    "outfitId": "stella_yellow",
     "title": "墨染希 · 晨光烘焙坊的围裙甜点",
     "category": "私享时刻",
     "description": "晨光柔和的咖啡馆操作间内飘溢着刚出炉烤饼的奶油香气。希系着浅黄色围裙，袖口挽至臂弯，露出如白玉般细腻的小臂。她捧着刚出炉的精美点心转过身，黑瞳中盛满了晨曦暖意与毫无保留的宠溺微笑，脸颊上还可爱地带着一小抹面粉。",

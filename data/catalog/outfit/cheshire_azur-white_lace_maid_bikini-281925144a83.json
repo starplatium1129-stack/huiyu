@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/white_lace_maid_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1364,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "white_lace_maid_bikini",
-      "name": "白蕾丝女仆比基尼",
+      "name": "白蕾丝女仆比基尼与白手套",
       "tokens": [
-        "white bikini",
-        "lace trim",
-        "white gloves"
+        "white lace bikini",
+        "scalloped frill trim",
+        "white maid gloves",
+        "ribbon wrist cuffs",
+        "ruffled bikini ties",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "A white bikini edged in fine lace, paired with white maid gloves.",
+      "prose": "A white bikini edged in scalloped floral lace with ribbon wrist cuffs and white maid gloves, worn barefoot.",
       "default": false,
       "isDefault": false
     }

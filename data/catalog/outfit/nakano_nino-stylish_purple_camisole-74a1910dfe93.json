@@ -1,29 +1,25 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/stylish_purple_camisole",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1580,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "stylish_purple_camisole",
-      "name": "辣妹风镂空蕾丝吊带微阔短裙",
+      "name": "辣妹风镂空蕾丝吊带与牛仔短裤",
       "tokens": [
-        "camisole",
-        "purple_shirt",
-        "lace_trim",
-        "cardigan",
-        "white_cardigan",
-        "off-shoulder_shirt",
-        "denim_shorts",
-        "short_shorts",
-        "belt",
-        "ankle_boots",
-        "bare_legs"
+        "purple lace camisole",
+        "sheer white cardigan",
+        "off shoulder",
+        "black denim shorts",
+        "silver chain belt",
+        "bare legs",
+        "heeled ankle boots"
       ],
-      "prose": "A deep-purple lace camisole under an off-shoulder sheer white knit cardigan with distressed black denim shorts.",
+      "prose": "A deep-purple lace camisole under an off-shoulder sheer white knit cardigan and black denim shorts with a silver chain belt, paired with heeled ankle boots.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_nino"

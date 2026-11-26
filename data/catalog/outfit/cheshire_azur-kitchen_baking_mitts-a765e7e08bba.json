@@ -1,28 +1,27 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/kitchen_baking_mitts",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1157,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "kitchen_baking_mitts",
-      "name": "皇家海军蓝烘焙女仆装",
+      "name": "皇家甜点厨房·烘焙围裙与隔热手套",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
-      "prose": "A navy maid dress and white ruffled apron with a small gold anchor pendant, oven mitts, white thighhighs and black Mary Janes.",
+      "prose": "A navy pinafore uniform layered under a cream ruffled cotton baking apron with quilted oven mitts, striped bow tie, brass bell pin, white knee socks, and buckle flats.",
       "tokens": [
-        "maid",
-        "navy dress",
-        "white apron",
-        "frills",
-        "anchor pendant",
-        "oven mitts",
-        "white thighhighs",
-        "mary janes"
+        "navy pinafore uniform",
+        "cream cotton apron",
+        "quilted oven mitts",
+        "striped bow tie",
+        "brass bell pin",
+        "white knee socks",
+        "buckle flat shoes"
       ]
     }
   }

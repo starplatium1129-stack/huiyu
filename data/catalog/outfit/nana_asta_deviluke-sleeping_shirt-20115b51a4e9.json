@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/sleeping_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1223,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
       "id": "sleeping_shirt",
       "name": "宽松开襟睡衫",
       "tokens": [
-        "sleep shirt",
-        "button-up shirt"
+        "oversized sleep shirt",
+        "button front placket",
+        "soft cotton weave",
+        "chest patch pocket",
+        "striped sleep shorts",
+        "barefoot"
       ],
-      "prose": "a loose button-front sleeping shirt",
+      "prose": "A loose button-front soft cotton sleeping shirt with a chest patch pocket over light striped sleep shorts, worn barefoot.",
       "default": false,
       "isDefault": false
     }

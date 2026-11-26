@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hyoudou_michiru/racerback_denim_loungewear",
+  "revision": 1,
+  "sortOrder": 4207,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "hyoudou_michiru",
+    "outfit": {
+      "id": "racerback_denim_loungewear",
+      "name": "摇滚贝斯手·炭黑工字背心与磨边牛仔短裤",
+      "prose": "A washed-black racerback tank top with raw-edge armholes paired with frayed stretch denim cutoff shorts, worn barefoot.",
+      "tokens": [
+        "distressed black tank",
+        "racerback cut",
+        "raw edge armholes",
+        "frayed denim cutoffs",
+        "cotton waistband",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

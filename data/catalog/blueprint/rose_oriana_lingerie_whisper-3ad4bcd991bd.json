@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3509,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "rose_oriana_lingerie_whisper",
     "characterId": "rose_oriana",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "暗影庭园古代遗迹神殿露台，月光如银河倒泻在清澈的水池中，长剑立于一侧。伫立在月华石阶前，一手按在胸口，金发在夜风中披散如锦缎，眼神坚定而饱含深情地注视着阴影中的暗影大人。 她微微抬眸轻语——“暗影大人……我所做的一切，皆是为了追随您的背影。即便褪去这身战袍，我的身心也永属于您。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "grecian_wing_chiffon_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

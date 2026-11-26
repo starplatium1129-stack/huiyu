@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/silk_nightgown",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 433,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
       "default": false,
       "id": "silk_nightgown",
       "isDefault": false,
-      "name": "终末地科研特供碳灰极简无缝吊带睡裙",
-      "prose": "A minimalist charcoal-grey seamless slip dress engineered from ultra-soft cooling modal fabric, featuring clean ergonomic shoulder cords and subtle matte alloy clasps.",
+      "name": "终末地碳灰极简无缝吊带睡裙",
+      "prose": "A charcoal-grey seamless modal slip dress with fine shoulder straps, subtle matte alloy clasps, and a smooth short hem, worn with bare legs and barefoot.",
       "tokens": [
         "charcoal slip dress",
-        "seamless loungewear",
-        "minimalist camisole",
-        "cooling modal",
+        "soft modal fabric",
         "thin shoulder straps",
-        "ergonomic nightdress"
+        "matte alloy clasps",
+        "short straight hem",
+        "bare legs",
+        "barefoot"
       ],
       "category": "睡衣 / 吊带睡裙"
     }

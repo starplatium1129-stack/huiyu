@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sfw_white_mermaid_bridal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1147,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
@@ -14,15 +14,15 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "A strapless French lace wedding dress with an embroidered train and high front slit, worn with white thigh-high stockings.",
+      "prose": "A strapless French lace wedding dress with an embroidered cathedral train, high front slit, and sheer tulle veil, worn with white thigh-high stockings and ivory pumps.",
       "tokens": [
-        "wedding_dress",
-        "strapless_dress",
-        "lace_dress",
-        "long_train",
-        "high_slit",
-        "white_thighhighs",
-        "veil"
+        "white lace gown",
+        "strapless bodice",
+        "long bridal train",
+        "high front slit",
+        "sheer tulle veil",
+        "white thighhighs",
+        "ivory pumps"
       ],
       "characterId": "rias_gremory"
     }

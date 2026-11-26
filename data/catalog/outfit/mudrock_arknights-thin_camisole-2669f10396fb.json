@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/thin_camisole",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 333,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "thin_camisole",
-      "name": "雾灰冰丝透肌细吊带",
-      "prose": "A delicate charcoal-grey silk jersey camisole with micro spaghetti straps and boy shorts.",
+      "name": "炭黑真丝细吊带与棉质短裤",
+      "prose": "A thin charcoal-black silk jersey camisole with slender spaghetti straps and subtle lace edging, paired with soft black cotton shorts, worn barefoot.",
       "tokens": [
-        "camisole",
-        "grey_camisole",
-        "silk_camisole",
-        "spaghetti_straps",
-        "cotton_shorts",
-        "bare_legs"
+        "charcoal silk camisole",
+        "spaghetti straps",
+        "lace edging",
+        "black cotton shorts",
+        "silver clasp",
+        "bare shoulders",
+        "barefoot"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

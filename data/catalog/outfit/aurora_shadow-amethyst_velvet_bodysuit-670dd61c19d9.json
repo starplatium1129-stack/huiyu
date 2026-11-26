@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "aurora_shadow/amethyst_velvet_bodysuit",
+  "revision": 1,
+  "sortOrder": 4084,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "aurora_shadow",
+    "outfit": {
+      "id": "amethyst_velvet_bodysuit",
+      "name": "深紫半透天鹅绒深V连体衣",
+      "prose": "Deep-purple crushed velvet and sheer mesh plunging bodysuit accented with antique obsidian filigree clasps, high-cut hip arches, delicate thigh garters, sheer black thighhighs, and dark heeled mules.",
+      "tokens": [
+        "purple bodysuit",
+        "velvet bodysuit",
+        "plunging neckline",
+        "sheer mesh",
+        "obsidian clasps",
+        "thigh garters",
+        "black thighhighs",
+        "heeled mules"
+      ],
+      "characterId": "aurora_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 连体吊带衣"
+    }
+  }
+}

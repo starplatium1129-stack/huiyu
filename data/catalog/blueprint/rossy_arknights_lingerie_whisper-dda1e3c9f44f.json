@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3368,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "rossy_arknights_lingerie_whisper",
     "characterId": "rossy_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "终末地技术探索部前哨站，观测窗口外是塔卫二苍凉的荧光矿脉。坐在高脚仪器箱上，一手摆弄着战术探测仪天线，一手轻按在膝间睡裙边缘，金铜色发丝微卷，抬眼迎向管理员，神情从容带着一丝探究。 她微微抬眸轻语——“电磁信号侦测完毕，目前读数一切平稳。管理员……今晚就留在观测台，别回去了。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "bronze_mesh_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

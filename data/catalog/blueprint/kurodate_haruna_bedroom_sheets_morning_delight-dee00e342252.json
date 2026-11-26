@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_bedroom_sheets_morning_delight",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2674,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "kurodate_haruna_bedroom_sheets_morning_delight",
     "characterId": "kurodate_haruna",
-    "outfitId": "penthouse_silk_bathrobe",
+    "outfitId": "ivory_gold_morning_robe",
     "title": "黑馆晴奈 · 晨光凌乱床榻的优雅初醒",
     "category": "私密温存",
     "description": "清晨纯净的晨曦穿透落地白纱洒在大床之上。晴奈侧卧在凌乱的羽绒被褥间，宽松的白真丝浴袍半褪，露出如霜雪般细腻白皙的双肩与精致锁骨。单侧黑色蝙蝠形翼松松搭在床单上，她单手托腮，红宝石般的双眸倒映着你的身影，慵懒而满足地轻叹一声，宛如刚刚享用完最无可挑剔的美味晨曲。",

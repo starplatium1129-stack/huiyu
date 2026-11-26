@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yamada_ryo/vintage_bowling_bikini",
+  "revision": 1,
+  "sortOrder": 4174,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "yamada_ryo",
+    "outfit": {
+      "id": "vintage_bowling_bikini",
+      "name": "复古保龄球衫内搭深蓝极简运动泳衣",
+      "prose": "Unbuttoned oversized vintage coral-and-cream bowling shirt layered loosely over a minimalist dark-navy bandeau bikini, styled with a bass-pick cord necklace, lowered dark sunglasses, and flat sandals.",
+      "tokens": [
+        "bowling shirt",
+        "unbuttoned shirt",
+        "floral print",
+        "navy bikini",
+        "bandeau top",
+        "cord necklace",
+        "dark sunglasses",
+        "flat sandals"
+      ],
+      "characterId": "yamada_ryo",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
+    }
+  }
+}

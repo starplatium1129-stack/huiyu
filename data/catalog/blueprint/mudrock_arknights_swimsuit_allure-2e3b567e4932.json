@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3237,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "mudrock_arknights_swimsuit_allure",
     "characterId": "mudrock_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "脱下了沉重的外骨骼装甲，阳光毫无阻碍地洒在白皙无暇的雪肌上。泥岩曲起修长双腿坐在被晒得温热的平坦巨石表面，双手捏着湿润棉巾仔细擦掉脚踝沾上的细沙。恶魔般的双角在阳光下温润如玉，她察觉到你的脚步，抬起赤红双眸，露出极其罕见而温婉的微笑——「阳光很暖，像沃伦姆德难得晴朗的秋天……没有风暴，也没有战斗。博士，这一刻的平静，就是泥岩最想守护的事物。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "basalt_wrap_bandeau_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

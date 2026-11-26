@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1976,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 黑红礼服",
+      "name": "基础服装 · 黑红燕尾礼服",
       "characterId": "entelechia_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A black dress and a black-and-red tailcoat with red gloves.",
+      "prose": "A sharp black tailored tailcoat with crimson satin lining over a fitted black dress, accented by red leather gloves, a gold collar chain, and black heeled boots.",
       "tokens": [
-        "black dress",
-        "black tailcoat",
-        "red lining",
-        "red gloves"
+        "black tailored tailcoat",
+        "crimson satin lining",
+        "black fitted dress",
+        "red leather gloves",
+        "gold collar chain",
+        "black heeled boots"
       ]
     }
   }

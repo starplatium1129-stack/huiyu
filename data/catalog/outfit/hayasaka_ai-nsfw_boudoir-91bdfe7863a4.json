@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 778,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "无衣休息状态",
-      "prose": "No clothing.",
+      "prose": "Completely free of maid uniforms, school dresses, utility jackets, and stockings, resting in an unadorned natural state.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

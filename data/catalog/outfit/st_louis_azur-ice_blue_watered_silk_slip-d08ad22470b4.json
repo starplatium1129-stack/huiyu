@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "st_louis_azur/ice_blue_watered_silk_slip",
+  "revision": 1,
+  "sortOrder": 4134,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "st_louis_azur",
+    "outfit": {
+      "id": "ice_blue_watered_silk_slip",
+      "name": "港区夜潮·冰蓝深V水纹真丝睡裙",
+      "prose": "An ice-blue watered-silk slip gown featuring a deep plunging V-neckline, sheer gossamer mesh side panels, and slender silver straps, worn barefoot.",
+      "tokens": [
+        "ice blue slip",
+        "watered silk satin",
+        "deep plunge v-neck",
+        "sheer mesh panels",
+        "silver thin straps",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

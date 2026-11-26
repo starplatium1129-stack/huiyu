@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/flame_shadow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1990,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
@@ -13,11 +13,14 @@
       "characterId": "reed_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white dress beneath a brown hooded coat, with dark tights.",
+      "prose": "A white pleated dress cinched with a black waist corset beneath a brown hooded cloak fastened by a bronze clasp, paired with black sheer pantyhose and brown heeled boots.",
       "tokens": [
-        "white dress",
-        "brown hooded coat",
-        "black pantyhose"
+        "white pleated dress",
+        "brown hooded cloak",
+        "bronze shoulder clasp",
+        "black waist corset",
+        "black sheer pantyhose",
+        "brown heeled boots"
       ]
     }
   }

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "texas_arknights/charcoal_minimal_silk_set",
+  "revision": 1,
+  "sortOrder": 3989,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "texas_arknights",
+    "outfit": {
+      "id": "charcoal_minimal_silk_set",
+      "name": "炭灰极简细带真丝吊带睡衣",
+      "prose": "A razor-clean dark-charcoal silk camisole and boyleg tap-shorts sleep set suspended on slender spaghetti straps with zero excess ornament.",
+      "tokens": [
+        "charcoal silk camisole",
+        "spaghetti straps",
+        "matte silk trim",
+        "boyleg tap shorts",
+        "open robe",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

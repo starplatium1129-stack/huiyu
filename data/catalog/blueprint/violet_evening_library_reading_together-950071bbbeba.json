@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -25,7 +25,7 @@
     "location": "莱顿大学皇家藏书馆一角",
     "mood": "沉静治愈、心照不宣",
     "negativeTokens": [],
-    "outfitId": "library_casual_no_hat",
+    "outfitId": "casual_white_summer_dress",
     "promptProse": "In the old library, Violet leans her loose blond hair against the shoulder of the man beside her on the wooden bench. He has short brown hair, round reading glasses and a charcoal cardigan, and steadies the poetry book with his bare hand while her silver fingertips flatten the yellowing page. Sunset through the stained glass reaches both readers and the tabletop.",
     "promptTokens": [
       "1girl",

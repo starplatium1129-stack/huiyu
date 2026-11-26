@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "st_louis_azur/cozy_casual_knit_trench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1715,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "st_louis_azur",
     "outfit": {
       "characterId": "st_louis_azur",
       "id": "cozy_casual_knit_trench",
-      "name": "假日都市·米白针织衫配短裙",
-      "prose": "A trendy modern ensemble with a soft cream knit sweater, camel cardigan, high-waisted plaid mini skirt, and sheer black tights.",
+      "name": "假日都市·驼色风衣针织与格纹短裙",
+      "prose": "An open camel trench coat layered over a soft cream knit sweater and high-waisted plaid mini skirt with gold hoops, sheer black tights, and suede ankle boots.",
       "tokens": [
-        "knit_sweater",
-        "beige_cardigan",
-        "plaid_skirt",
-        "black_tights",
-        "ankle_boots"
+        "camel trench coat",
+        "cream knit sweater",
+        "plaid mini skirt",
+        "leather belt buckle",
+        "gold hoop earrings",
+        "sheer black tights",
+        "suede ankle boots"
       ],
       "default": false,
       "isDefault": false

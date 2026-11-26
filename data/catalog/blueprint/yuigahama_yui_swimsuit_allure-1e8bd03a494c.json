@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3253,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "yuigahama_yui_swimsuit_allure",
     "characterId": "yuigahama_yui",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "盛夏海滨浴场澄澈热闹的上午。由比滨结衣穿着元气蜜桃珊瑚粉层叠荷叶边挂脖比基尼，抱着一只憨态可掬的小鸭游泳圈站在浪花中。团子头随她跳跃的动作欢快摇晃，她高高举起手臂朝你拼命挥舞，笑容明媚得如同毫无保留的阳光，大声催促你一起加入夏日的清凉。",
-    "outfitId": "pink_summer_bikini",
+    "outfitId": "coral_frill_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "carlotta_wuwa/villa_sunlit_organza",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3206,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "carlotta_wuwa",
     "outfit": {
       "id": "villa_sunlit_organza",
       "name": "柑橘庄园欧根纱蝴蝶结茶裙",
-      "prose": "A pastel rose organza tea dress with puff sleeves, satin waist ribbon, and a wide-brimmed cream ribbon sunhat.",
+      "prose": "A pastel-rose organza tea dress with puff sleeves and a cream satin waist ribbon, paired with a ribboned sun hat, pearl earrings, white ankle socks, and Mary Janes.",
       "tokens": [
-        "pink dress",
-        "organza",
+        "pastel pink dress",
+        "organza fabric",
         "puff sleeves",
-        "waist ribbon",
-        "sunhat",
-        "ribbon"
+        "cream ribbon",
+        "brimmed sun hat",
+        "pearl earrings",
+        "white ankle socks",
+        "mary janes"
       ],
       "default": false,
       "isDefault": false,

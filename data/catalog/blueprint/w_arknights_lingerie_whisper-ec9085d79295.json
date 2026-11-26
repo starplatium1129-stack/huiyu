@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3134,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "w_arknights_lingerie_whisper",
     "characterId": "w_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "卡兹戴尔荒原废墟掩体，周围整齐堆放着印有骷髅标志的黄色炸药箱。大喇喇地反坐在军用弹药箱上，双臂搭在膝头，单手把玩着一枚红白引信雷管，头顶恶魔角肆意微翘，赤瞳圆睁露出标志性的疯狂狡黠笑容。 她微微抬眸轻语——“哈哈！看你那紧张的表情……放心，只要你乖乖听话，今晚这枚雷管可不会在你怀里炸开哦，博士~！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "hazard_rivet_cutout_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

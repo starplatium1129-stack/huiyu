@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rena_liechtenauer/royal_filigree_bikini",
+  "revision": 1,
+  "sortOrder": 4191,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "rena_liechtenauer",
+    "outfit": {
+      "id": "royal_filigree_bikini",
+      "name": "异邦金辉 · 象牙白金线抹胸泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "rena_liechtenauer",
+      "prose": "An ivory bandeau bikini edged with gold filigree borders, paired with ribbon-tie bottoms, a pearl upper-arm cuff, and a semi-sheer gold sarong wrap, worn barefoot.",
+      "tokens": [
+        "ivory bandeau bikini",
+        "gold filigree trim",
+        "pearl armlet cuff",
+        "sheer gold sarong",
+        "ribbon tie bottoms",
+        "barefoot"
+      ]
+    }
+  }
+}

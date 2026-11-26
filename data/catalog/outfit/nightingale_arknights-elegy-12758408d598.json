@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/elegy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1981,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
       "id": "elegy",
-      "name": "挽歌 · 黑白裙与帽饰",
+      "name": "挽歌 · 黑白礼裙与帽饰",
       "characterId": "nightingale_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A black-and-white long dress with a bonnet and ribbon.",
+      "prose": "A solemn black-and-white long dress with sheer sleeves and a white lace apron overlay, accompanied by a frilled bonnet with black satin ribbons and black buckled shoes.",
       "tokens": [
-        "black and white dress",
-        "bonnet",
-        "ribbon"
+        "black white dress",
+        "frilled lace bonnet",
+        "black satin ribbon",
+        "white apron overlay",
+        "sheer black sleeves",
+        "black buckled shoes"
       ],
       "identityTokensOverride": [
         "nightingale (arknights)",

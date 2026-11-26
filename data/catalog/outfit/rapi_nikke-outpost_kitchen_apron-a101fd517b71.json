@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/outpost_kitchen_apron",
+  "revision": 1,
+  "sortOrder": 4052,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "outpost_kitchen_apron",
+      "name": "前哨基地明黄围裙与白衬衫",
+      "prose": "A crisp white collared shirt with rolled sleeves worn under a cheerful yellow cotton bib apron tied at the waist, paired with dark pleated shorts, white crew socks, and soft house slippers.",
+      "tokens": [
+        "yellow bib apron",
+        "white button shirt",
+        "rolled sleeves",
+        "black pleated shorts",
+        "waist tie",
+        "white crew socks",
+        "house slippers"
+      ]
+    }
+  }
+}

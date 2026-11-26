@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "fiammetta_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1968,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "fiammetta_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 黑外套与红领带",
+      "name": "基础服装 · 黑短西装与绯红领带",
       "characterId": "fiammetta_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A black jacket over a white shirt, a red necktie and a black skirt.",
+      "prose": "A crisp black cropped blazer over a white poplin shirt and crimson silk necktie, paired with a black pleated skirt, silver-buckled belt, sheer black pantyhose, and black combat boots.",
       "tokens": [
-        "black jacket",
-        "white shirt",
-        "red necktie",
-        "black skirt"
+        "black cropped blazer",
+        "white poplin shirt",
+        "crimson silk necktie",
+        "black pleated skirt",
+        "black sheer pantyhose",
+        "black combat boots"
       ]
     }
   }

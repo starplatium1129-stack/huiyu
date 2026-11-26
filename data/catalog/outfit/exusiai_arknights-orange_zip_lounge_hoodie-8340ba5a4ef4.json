@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/orange_zip_lounge_hoodie",
+  "revision": 1,
+  "sortOrder": 3987,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "id": "orange_zip_lounge_hoodie",
+      "name": "白橙撞色拉链短卫衣与运动睡裤",
+      "prose": "An athletic white-and-orange zip-up cropped fleece lounge hoodie worn with relaxed drawstring track sleep shorts and bare feet.",
+      "tokens": [
+        "cropped fleece hoodie",
+        "orange trim",
+        "front zipper",
+        "track sleep shorts",
+        "white drawstring",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nakano_nino/berry_crosswrap_bikini",
+  "revision": 1,
+  "sortOrder": 4210,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "nakano_nino",
+    "outfit": {
+      "id": "berry_crosswrap_bikini",
+      "name": "恶魔双蝶·紫黑绑带露腰比基尼",
+      "prose": "A berry-purple and black designer bikini featuring criss-cross underbust straps, side-tie bottoms, and black butterfly ribbons, worn barefoot.",
+      "tokens": [
+        "berry purple bikini",
+        "black cross straps",
+        "side tie bottoms",
+        "butterfly ribbon",
+        "gold bracelet",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

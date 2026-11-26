@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/sfw_city_red_cardigan",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1118,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "sfw_city_red_cardigan",
       "name": "酒红短款针织开衫与英伦格裙",
-      "prose": "A wine-red cropped knit cardigan over an ivory silk blouse and pleated plaid miniskirt.",
+      "prose": "A cropped wine-red knit cardigan worn open over an ivory silk blouse and belted plaid pleated miniskirt with mid-calf leather lace-up boots.",
       "tokens": [
-        "cardigan",
-        "cropped_cardigan",
-        "red_cardigan",
-        "white_blouse",
-        "plaid_skirt",
-        "pleated_skirt",
-        "miniskirt",
-        "bare_legs",
-        "leather_boots"
+        "burgundy cardigan",
+        "cropped knitwear",
+        "ivory silk blouse",
+        "brown plaid skirt",
+        "thin belt",
+        "bare legs",
+        "lace-up boots"
       ],
       "default": false,
       "isDefault": false,

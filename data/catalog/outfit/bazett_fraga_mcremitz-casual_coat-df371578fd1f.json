@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "bazett_fraga_mcremitz/casual_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1864,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "bazett_fraga_mcremitz",
     "outfit": {
       "id": "casual_coat",
-      "name": "灰色长外套",
-      "prose": "a charcoal long coat over a plain knit sweater and dark trousers",
+      "name": "炭灰羊毛长大衣与暖灰针织裤装",
+      "prose": "A long charcoal wool overcoat worn open over a textured cream knit sweater, tailored dark wool trousers, leather belt, and sturdy brown boots.",
       "tokens": [
-        "grey coat",
-        "knit sweater",
-        "dark trousers"
+        "charcoal wool coat",
+        "cream knit sweater",
+        "wide trousers",
+        "leather belt",
+        "silver watch",
+        "brown boots"
       ],
       "default": false,
       "isDefault": false

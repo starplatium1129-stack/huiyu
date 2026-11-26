@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/official_sobu_uniform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "official_sobu_uniform",
       "name": "总武高校改良修身水手西装与心机开衫",
-      "prose": "The Sobu school blazer is worn open with a cream cropped cardigan, pleated navy skirt and sheer black over-knee stockings.",
+      "prose": "The Sobu High School navy blazer worn open over a cream cropped cardigan, white shirt, red ribbon, and pleated navy mini skirt, paired with sheer black thigh-high stockings and brown loafers.",
       "tokens": [
-        "school_uniform",
-        "navy_blazer",
-        "cropped_cardigan",
-        "cream_cardigan",
-        "white_shirt",
-        "pleated_skirt",
-        "black_thighhighs",
-        "loafers"
+        "open navy blazer",
+        "cream cropped cardigan",
+        "white collared shirt",
+        "red ribbon tie",
+        "pleated navy skirt",
+        "black thighhighs",
+        "brown leather loafers"
       ],
       "default": true,
       "isDefault": true,

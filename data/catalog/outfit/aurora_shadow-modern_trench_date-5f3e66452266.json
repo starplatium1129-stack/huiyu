@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "aurora_shadow/modern_trench_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1908,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "aurora_shadow",
     "outfit": {
       "id": "modern_trench_date",
       "name": "异域夜市呢绒风衣约会便服",
-      "prose": "A tailored camel-hued cashmere trench coat left unbuttoned over a snug black turtleneck knit sweater, leather skinny pants, and sleek Chelsea ankle boots.",
+      "prose": "Tailored camel cashmere trench coat worn unbuttoned over a snug black ribbed turtleneck sweater and sleek leather skinny pants, styled with a slim gold pendant necklace, dark handbag, and Chelsea ankle boots.",
       "tokens": [
-        "trench_coat",
-        "open_coat",
-        "camel_coat",
-        "turtleneck_sweater",
-        "black_sweater",
-        "leather_pants",
-        "ankle_boots",
-        "casual"
+        "camel trench coat",
+        "open coat",
+        "black turtleneck",
+        "knit sweater",
+        "leather pants",
+        "gold pendant",
+        "leather handbag",
+        "ankle boots"
       ],
       "characterId": "aurora_shadow",
       "default": false,

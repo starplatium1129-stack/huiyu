@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "chisa_wuwa/tea_club_bolero_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3905,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "chisa_wuwa",
     "outfit": {
       "id": "tea_club_bolero_dress",
       "name": "茶道社酒红短披肩蕾丝领连衣裙",
-      "prose": "A knee-length ivory pleated dress with a Peter Pan lace collar paired with a cropped burgundy bolero jacket and Mary Jane heels.",
+      "prose": "A knee-length ivory pleated dress with a lace collar paired with a cropped burgundy bolero jacket, pearl pin, white ankle socks, and Mary Jane shoes.",
       "tokens": [
-        "white dress",
+        "ivory pleated dress",
         "lace collar",
-        "red bolero",
-        "pleated dress",
-        "white socks",
+        "burgundy bolero",
+        "cropped jacket",
+        "satin bow",
+        "pearl pin",
+        "white ankle socks",
         "mary janes"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3272,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "eris_greyrat_lingerie_whisper",
     "characterId": "eris_greyrat",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "夜深人静的剑术修行道场。狂犬大小姐艾莉丝完成了三千次全力劈砍，汗水将绯红色的工装短背心彻底浸透。她毫不在意形象，像一只跑脱力的大型红毛犬一样大字型摊在地毯上大口喘着粗气，修长健美的双腿大剌剌地张开。听见鲁迪乌斯靠近的脚步，她浑身一颤，强行把通红的脸扭向另一边，大声嚷嚷着掩饰害羞——「呼……呼……看、看什么看啊鲁迪！我只是挥剑挥累了在这里躺三分钟而已！要是敢趁我动不了偷袭……我绝对会咬死你的！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "dojo_boxing_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

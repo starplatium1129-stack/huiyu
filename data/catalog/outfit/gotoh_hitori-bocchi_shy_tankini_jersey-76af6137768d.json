@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "gotoh_hitori/bocchi_shy_tankini_jersey",
+  "revision": 1,
+  "sortOrder": 4170,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "gotoh_hitori",
+    "outfit": {
+      "id": "bocchi_shy_tankini_jersey",
+      "name": "波奇突变灰粉运动保守平角泳装",
+      "prose": "Modest dusty-pink and dark-grey athletic tankini with boyshort bottoms, covered by a half-zipped oversized pink jersey jacket, a small guitar-pick pendant, and bare feet.",
+      "tokens": [
+        "pink tankini",
+        "grey boyshorts",
+        "track jacket",
+        "half-zipped",
+        "pink jersey",
+        "guitar pick",
+        "anklet",
+        "barefoot"
+      ],
+      "characterId": "gotoh_hitori",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 竞速泳装"
+    }
+  }
+}

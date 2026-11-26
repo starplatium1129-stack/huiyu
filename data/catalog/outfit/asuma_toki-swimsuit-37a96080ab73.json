@@ -1,24 +1,27 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/swimsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "蓝白特工泳装",
-      "prose": "a white bikini with sharp blue piping and a compact blue-trimmed tactical waist belt with a small pouch, paired with a waterproof headset",
+      "name": "冰蓝滚边白特工战术泳装",
+      "prose": "A sharp white athletic bikini traced with cool ice-blue piping, fitted with a low-profile blue utility waist belt and pouch, waterproof headset, and crisp white sandals.",
       "tokens": [
         "white bikini",
-        "blue trim",
-        "waist belt",
+        "blue piping",
+        "halterneck",
+        "utility waist belt",
         "belt pouch",
-        "headset"
+        "waterproof headset",
+        "bare legs",
+        "white sandals"
       ]
     }
   }

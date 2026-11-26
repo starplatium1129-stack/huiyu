@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuuki_mikan/summer_sunflower_onepiece",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1503,
   "createdAt": "2026-10-21T15:20:00+00:00",
-  "updatedAt": "2026-10-21T15:30:22.622953400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "yuuki_mikan",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "summer_sunflower_onepiece",
       "isDefault": false,
       "name": "盛夏向日葵明黄吊带无袖洋装",
-      "prose": "wearing a breezy cheerful yellow sundress with slender shoulder straps and a delicate waist ribbon, white sandals, radiating refreshing summer radiance",
+      "prose": "A cheerful sunny-yellow linen sundress with slender shoulder straps, a white waist ribbon, a flared pleated hem, a woven straw hat, and white flat sandals.",
       "tokens": [
-        "yellow_dress",
-        "sundress",
-        "sleeveless_dress",
-        "ribbon_bow",
-        "sandals",
-        "bare_shoulders",
-        "bare_legs"
+        "yellow linen sundress",
+        "thin shoulder straps",
+        "white waist ribbon",
+        "pleated flared hem",
+        "woven straw hat",
+        "white flat sandals"
       ]
     }
   }

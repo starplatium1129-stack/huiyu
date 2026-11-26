@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hitachi_mako_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3197,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "hitachi_mako_lingerie_whisper",
     "characterId": "hitachi_mako",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "美穗岐深夜的古风木造大宅。担任护卫忍者的常陆茉子，寝室装束依然以极速应对夜袭为准则——仅穿着一套吸汗紧实的墨黑纯棉缠胸布与高叉短衬裤。听见主公房内有异常动静，她如同一只黑色飞燕般从天花板横梁无声落地，单膝点在草席上，双手交叠胸前。月光洒在她因运动而微微起伏的紧致腹肌上，她压低声音敏锐请示——「主公！属下察觉到外围结界有微弱风声……特来护卫！……呃，主、主公，这身衣服只是为了战斗轻便，请千万不要一直盯着看……」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "kunoichi_sarashi_shorts",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

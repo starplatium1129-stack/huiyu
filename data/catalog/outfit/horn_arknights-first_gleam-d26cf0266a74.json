@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "horn_arknights/first_gleam",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1973,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "horn_arknights",
     "outfit": {
@@ -13,13 +13,14 @@
       "characterId": "horn_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A blue double-breasted coat, black skirt, peaked cap and boots.",
+      "prose": "A cobalt-blue double-breasted long coat over a charcoal mini skirt, crowned by a crisp white peaked cap, black leather gloves, and laced combat boots.",
       "tokens": [
-        "blue coat",
-        "double-breasted",
-        "black skirt",
-        "peaked cap",
-        "boots"
+        "cobalt trench coat",
+        "double breasted buttons",
+        "charcoal mini skirt",
+        "white peaked cap",
+        "black leather gloves",
+        "laced combat boots"
       ],
       "identityTokensOverride": [
         "horn (arknights)",

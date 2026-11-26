@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/treat_lounge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2049,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "treat_lounge",
-      "name": "暖沙色口袋罩裙与奶白棉衫",
-      "prose": "A warm sand-colored cotton smock dress with a small animal-shaped pocket over a cream long-sleeved shirt, paired with soft striped socks.",
+      "name": "暖沙色贴袋罩裙与条纹居家袜",
+      "prose": "A warm sand-colored cotton pinafore with an appliquéd critter pocket worn over an ivory knit top, accented by a pastel ribbon bow, striped lounge socks, and soft house slippers.",
       "tokens": [
-        "sand colored cotton smock dress",
-        "animal-shaped pocket",
-        "cream long-sleeved shirt",
-        "striped socks"
+        "sand cotton pinafore",
+        "appliqued critter pocket",
+        "ivory knit top",
+        "pastel ribbon bow",
+        "striped lounge socks",
+        "soft house slippers"
       ],
       "characterId": "ray_arknights",
       "default": false,

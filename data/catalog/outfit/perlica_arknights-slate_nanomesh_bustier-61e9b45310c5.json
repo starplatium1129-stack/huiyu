@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "perlica_arknights/slate_nanomesh_bustier",
+  "revision": 1,
+  "sortOrder": 4068,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "perlica_arknights",
+    "outfit": {
+      "id": "slate_nanomesh_bustier",
+      "name": "烟蓝纳米网格碳带短胸衣套",
+      "prose": "A slate-blue breathable nanomesh deep-V cropped bustier accented with black carbon-fiber straps and matte alloy clasps, paired with matching boyleg shorts, bare legs, and barefoot.",
+      "tokens": [
+        "slate blue bustier",
+        "deep v-neck",
+        "carbon fiber straps",
+        "matching boyleg shorts",
+        "matte alloy clasps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

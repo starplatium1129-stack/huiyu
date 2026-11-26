@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ling_arknights/celadon_inkwash_swimsuit",
+  "revision": 1,
+  "sortOrder": 4015,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "ling_arknights",
+    "outfit": {
+      "id": "celadon_inkwash_swimsuit",
+      "name": "醉卧云涛·天青单肩水墨连体泳衣",
+      "prose": "An ink-wash celadon and misty cyan asymmetrical one-piece swimsuit featuring a single-shoulder drape, silver dragon-scale embroidery, and a tiny celadon wine-cup charm on the hip tie, worn barefoot.",
+      "tokens": [
+        "celadon one-piece swimsuit",
+        "asymmetrical one-shoulder",
+        "ink wash print",
+        "silver dragon embroidery",
+        "cyan hip tie",
+        "wine cup charm",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

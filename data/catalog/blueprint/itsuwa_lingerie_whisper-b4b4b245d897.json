@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3474,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "itsuwa_lingerie_whisper",
     "characterId": "itsuwa",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "天草式宿舍浴室外的走廊。被同伴们怂恿执行‘用温热毛巾让上条当麻产生家庭好感’大作战的五和，刚洗完澡仅裹着一条纯白吸水大浴巾，头上包着干发毛巾。她战战兢兢地端着盛有热毛巾的木盘，还没走到房前，一抬头正好看见当麻光着膀子走出来。五和瞬间整张脸像开了高压锅一样狂冒蒸汽，双手一抖差点把木盘扣在地上，语无伦次地红透了脖子——「上、上条先生？！不、不是的！这是天草式代代相传的……擦汗毛巾！绝对不是什么居心叵测的诱惑！哇啊啊不要看着我啦！」",
-    "outfitId": "pure_white_cotton_nightdress",
+    "outfitId": "amakusa_terrycloth_bath_wrap",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

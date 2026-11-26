@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3159,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "mon3tr_arknights_swimsuit_allure",
     "characterId": "mon3tr_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "潮水轰鸣着灌入玄武岩溶洞，碎沫在黑暗中被幽绿荧光点亮。Mon3tr半蹲在岩石突出部，黑色晶体质感的泳装上流转着源石般的翡翠微光，银白发丝在水汽中轻轻飘动。它转动眼眸，在水滴滴落的寂静间发出低沉的警惕共鸣，唯有在感知到熟悉信物时，冰冷的神情才稍显平息。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "crystalline_emerald_aquatic_suit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

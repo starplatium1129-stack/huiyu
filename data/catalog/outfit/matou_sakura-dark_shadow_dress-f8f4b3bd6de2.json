@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/dark_shadow_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1327,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "dark_shadow_dress",
       "name": "暗夜黑曜真丝开衩长裙与透肤长袜",
-      "prose": "An obsidian silk gown with a high side slit and sheer drape, paired with sheer thigh-highs.",
+      "prose": "An obsidian silk gown veiled in a sheer dark shawl with subtle crimson trim and a soaring side slit, paired with black thigh-high stockings and pointed heels.",
       "tokens": [
-        "black_evening_dress",
-        "high_slit_dress",
-        "silk",
-        "sheer_shawl",
-        "side_slit",
-        "asymmetrical_dress",
-        "black_thighhighs",
-        "high_heels"
+        "black evening gown",
+        "sheer silk shawl",
+        "asymmetrical cut",
+        "high side slit",
+        "crimson trim",
+        "black thighhighs",
+        "black high heels"
       ],
       "characterId": "matou_sakura",
       "default": false,

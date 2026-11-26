@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_night",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 777,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_night",
       "name": "奶油羊绒开衫与墨蓝开叉束带裤",
-      "prose": "A cozy cream ribbed-cashmere cardigan draped over a silk camisole and tailored navy tap shorts.",
+      "prose": "A cream ribbed-cashmere cardigan draped loosely over a white silk camisole and tailored navy tap shorts with a satin tie, worn with bare legs and barefoot.",
       "tokens": [
-        "cream_cardigan",
-        "ribbed_cardigan",
-        "white_camisole",
-        "silk_camisole",
-        "navy_shorts",
-        "bare_legs"
+        "cream cashmere cardigan",
+        "ribbed knitwear",
+        "white silk camisole",
+        "navy tap shorts",
+        "satin waist tie",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

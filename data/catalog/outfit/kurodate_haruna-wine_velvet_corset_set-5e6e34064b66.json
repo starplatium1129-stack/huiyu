@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/wine_velvet_corset_set",
+  "revision": 1,
+  "sortOrder": 3947,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "id": "wine_velvet_corset_set",
+      "name": "酒红天鹅绒黑蕾丝暗金束胸内衣",
+      "prose": "A regal deep wine-red velvet underwire corset bra layered with scalloped black lace and laced up the waist with fine gold cord, paired with matching burgundy silk briefs.",
+      "tokens": [
+        "burgundy velvet corset",
+        "black lace overlay",
+        "gold lace-up trim",
+        "underwire bra",
+        "burgundy silk briefs",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

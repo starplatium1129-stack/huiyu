@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "浅青运动休息装",
-      "prose": "A pale-teal track jacket with white zipper, white T-shirt, charcoal athletic trousers and grey trainers.",
+      "name": "浅青运动夹克休闲装",
+      "prose": "A pale-teal zip-front track jacket over a white cotton tee and charcoal athletic trousers, finished with ankle socks and grey sneakers.",
       "tokens": [
-        "pale teal track jacket",
-        "white t-shirt",
+        "pale teal jacket",
+        "white cotton tee",
+        "zip front",
         "charcoal track pants",
+        "ankle socks",
         "grey sneakers"
       ],
       "isDefault": false,

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_kitchen_flour_hug",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2010,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
-    "outfitId": "stella_yellow_apron",
+    "outfitId": "stella_yellow",
     "id": "sumizome_nozomi_intimate_kitchen_flour_hug",
     "title": "墨染希 · 咖啡馆打烊后的面粉私语",
     "category": "私密温存",

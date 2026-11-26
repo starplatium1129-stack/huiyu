@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/sleepy_oversized_loungewear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 358,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "default": false,
       "id": "sleepy_oversized_loungewear",
       "isDefault": false,
-      "name": "雾粉宽松卫衣与白棉短裤",
-      "prose": "A dusty-pink oversized cotton hoodie with dropped shoulders and ribbed cuffs, and white lounge shorts.",
+      "name": "雾粉落肩卫衣与白棉居家短裤",
+      "prose": "An oversized dusty-pink brushed cotton hoodie with dropped shoulders and ribbed cuffs, paired with soft white lounge shorts, worn barefoot.",
       "tokens": [
         "dusty pink hoodie",
-        "oversized clothes",
-        "drop shoulders",
+        "brushed cotton fleece",
+        "dropped shoulder",
         "ribbed cuffs",
-        "white shorts",
-        "cotton"
+        "white lounge shorts",
+        "silver zipper",
+        "barefoot"
       ]
     }
   }

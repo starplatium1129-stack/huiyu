@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/summer_yukata",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 226,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
@@ -12,16 +12,16 @@
       "id": "summer_yukata",
       "isDefault": false,
       "name": "水蓝波纹改良短款和风浴衣",
-      "prose": "A lightweight aqua-blue short yukata patterned with ripple motifs, secured with a white obi sash.",
+      "prose": "A lightweight aqua-blue short cotton-crepe yukata patterned with white ripple motifs, secured with a crisp white obi sash and wooden geta sandals.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "short_yukata",
-        "light_blue_kimono",
-        "ripple_pattern",
-        "white_obi",
-        "sash",
-        "bare_legs",
-        "geta"
+        "aqua short yukata",
+        "white ripple print",
+        "crisp white obi",
+        "cotton crepe weave",
+        "floral sash cord",
+        "bare legs",
+        "wooden geta sandals"
       ],
       "characterId": "misaka_mikoto"
     }

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ishtar_fate/dawn_temple_silk_robe",
+  "revision": 1,
+  "sortOrder": 3972,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "ishtar_fate",
+    "outfit": {
+      "id": "dawn_temple_silk_robe",
+      "name": "象牙金线流苏神殿晨袍",
+      "prose": "An airy ivory silk morning temple robe trimmed with gold geometric borders and knotted at the waist with a crimson sash over a minimal black bandeau and gold bangles.",
+      "tokens": [
+        "ivory silk robe",
+        "gold geometric trim",
+        "crimson waist sash",
+        "black bandeau top",
+        "gold bangles",
+        "bare legs",
+        "gold flat sandals"
+      ]
+    }
+  }
+}

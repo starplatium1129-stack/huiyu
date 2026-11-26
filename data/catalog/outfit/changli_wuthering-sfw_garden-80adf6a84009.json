@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_garden",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 932,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_garden",
       "name": "桃粉斜襟真丝云袖衫与侧开朱红马面裙",
-      "prose": "A peach silk wrap jacket with translucent sleeves and a high-slit crimson pleated skirt over dark thigh-highs.",
+      "prose": "A rose-pink silk wrap top with translucent cloud sleeves paired with a high-slit crimson pleated skirt, tassel ornament, dark stockings, and embroidered flats.",
       "tokens": [
-        "hanfu",
-        "wrap_top",
-        "pink_shirt",
-        "wide_sleeves",
-        "silk",
-        "slit_skirt",
-        "red_skirt",
-        "long_skirt",
-        "black_thighhighs",
-        "embroidered_shoes"
+        "rose wrap top",
+        "silk blouse",
+        "sheer sleeves",
+        "red pleated skirt",
+        "slit skirt",
+        "tassel",
+        "dark stockings",
+        "embroidered flats"
       ],
       "characterId": "changli_wuthering",
       "default": false,

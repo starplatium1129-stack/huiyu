@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "misono_mika/starlight_chiffon_babydoll",
+  "revision": 1,
+  "sortOrder": 3920,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "misono_mika",
+    "outfit": {
+      "id": "starlight_chiffon_babydoll",
+      "name": "星尘粉紫羽带薄纱睡裙",
+      "prose": "A sheer double-layer pastel pink and lilac chiffon babydoll nightgown dusted with tiny silver star specks, featuring delicate feather-trimmed shoulder straps and an airy high-low hemline.",
+      "tokens": [
+        "pastel pink babydoll",
+        "lilac chiffon",
+        "sheer dress",
+        "star print",
+        "feather trim",
+        "thin straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_bridal",
       "name": "圣洁抹胸银绣拖尾花嫁与白色长袜",
-      "prose": "An ivory strapless bridal gown embroidered with silver filigree over a pale-rose silk underskirt, with white stockings visible beneath the parted front.",
+      "prose": "An ivory strapless bridal gown embroidered with silver filigree over a pale-rose silk underskirt and high-low train, finished with a sheer tulle veil, white thigh-high stockings, and ivory pumps.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "strapless",
-        "pink_underskirt",
-        "embroidery",
-        "pearls",
-        "high-low_skirt",
-        "veil",
-        "white_thighhighs"
+        "white bridal gown",
+        "strapless corset",
+        "pale pink underskirt",
+        "silver embroidery",
+        "sheer veil",
+        "high-low skirt",
+        "white thigh-high stockings",
+        "ivory pumps"
       ],
       "default": false,
       "isDefault": false,

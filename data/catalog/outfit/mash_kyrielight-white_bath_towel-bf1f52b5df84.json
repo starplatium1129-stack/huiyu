@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/white_bath_towel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1214,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "white_bath_towel",
       "name": "纯白折叠华夫格裹胸浴巾",
-      "prose": "A textured white waffle-weave towel wraps above the bust, its high side drape revealing a bare leg; she is barefoot.",
+      "prose": "A crisp white waffle-weave bath towel knotted cleanly above the bust with a natural overlap drape across bare legs and bare feet.",
       "tokens": [
-        "bath_towel",
-        "towel_wrap",
-        "strapless",
-        "high_slit",
-        "bare_shoulders",
-        "bare_legs",
-        "barefoot",
-        "onsen_allure"
+        "white bath towel",
+        "waffle weave",
+        "strapless wrap",
+        "high overlap slit",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

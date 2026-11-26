@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kafka/stellaron_spiderweb_monokini",
+  "revision": 1,
+  "sortOrder": 4163,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "kafka",
+    "outfit": {
+      "id": "stellaron_spiderweb_monokini",
+      "name": "蛛丝魅影深V交叉镂空泳装",
+      "prose": "Wine-red and velvet-black monokini structured with spiderweb-inspired waist straps, a deep plunging neckline, and high-leg cutouts, styled with oversized black sunglasses, a slim gold bracelet, and heeled sandals.",
+      "tokens": [
+        "wine red monokini",
+        "black straps",
+        "spiderweb cutout",
+        "plunging neckline",
+        "high-leg cut",
+        "oversized sunglasses",
+        "gold bracelet",
+        "heeled sandals"
+      ],
+      "characterId": "kafka",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 连体泳装"
+    }
+  }
+}

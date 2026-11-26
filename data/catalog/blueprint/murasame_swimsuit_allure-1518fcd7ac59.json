@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3293,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "murasame_swimsuit_allure",
     "characterId": "murasame",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "远离山下暑气，深山溪水冰爽沁骨。身为神刀之灵的丛雨将小脚丫伸进哗哗流淌的溪水里，激起一串串晶亮的水珠，金黄双髻上的朱红发带欢快摇晃。她兴奋地晃着小腿，回过头向桥头的人大声招手——「吾之主人！快过来快过来！这里的溪水好凉快呀！丛雨的脚丫都要被小鱼啄痒啦，快下来陪丛雨一起踩水嘛！」",
-    "outfitId": "crimson_summer_bikini",
+    "outfitId": "murasamemaru_shrine_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

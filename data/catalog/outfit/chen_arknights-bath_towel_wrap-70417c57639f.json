@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/bath_towel_wrap",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 308,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,15 +12,16 @@
       "id": "bath_towel_wrap",
       "isDefault": false,
       "name": "水汽氤氲深蓝滚边白棉浴巾裹身装",
-      "prose": "A plush white cotton bath towel with navy satin piping wrapped snugly across her chest and ending high on her hips.",
+      "prose": "A plush white cotton bath towel piped in navy satin wrapped snugly across the chest and resting mid-thigh in barefoot privacy.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "towel",
-        "bath_towel",
-        "white_towel",
-        "sarong",
-        "bare_shoulders",
-        "bare_legs"
+        "white bath towel",
+        "navy satin trim",
+        "strapless wrap",
+        "short overlap slit",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "chen_arknights"
     }

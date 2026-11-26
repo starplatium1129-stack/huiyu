@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/navy_racerback_swimsuit",
+  "revision": 1,
+  "sortOrder": 4112,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "id": "navy_racerback_swimsuit",
+      "name": "超电跃动·藏青黄条竞技连体泳衣",
+      "prose": "A sporty navy racerback competition one-piece swimsuit with lemon-yellow side stripes, paired with swim goggles and an emerald frog-themed waterproof watch, worn barefoot.",
+      "tokens": [
+        "navy competition swimsuit",
+        "lemon yellow stripes",
+        "racerback cut",
+        "highleg swim cut",
+        "green frog watch",
+        "swim goggles",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sailor_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1433,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "sailor_uniform",
       "name": "深蓝水手服",
       "tokens": [
-        "navy sailor uniform",
-        "white collar",
-        "pleated skirt",
-        "light blue striped panties"
+        "navy serafuku",
+        "white collar flap",
+        "concealed back zipper",
+        "pleated mini skirt",
+        "striped cotton briefs",
+        "white crew socks",
+        "brown penny loafers"
       ],
-      "prose": "A dark navy sailor uniform has a white collar and concealed back zipper, paired with light-blue striped cotton underwear.",
+      "prose": "A dark navy sailor uniform dress with a white collar flap and concealed back zipper over light-blue striped cotton briefs, paired with white crew socks and brown penny loafers.",
       "default": false,
       "isDefault": false
     }

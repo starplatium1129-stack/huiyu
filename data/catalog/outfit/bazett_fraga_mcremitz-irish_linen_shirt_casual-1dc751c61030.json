@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "bazett_fraga_mcremitz/irish_linen_shirt_casual",
+  "revision": 1,
+  "sortOrder": 3980,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "bazett_fraga_mcremitz",
+    "outfit": {
+      "id": "irish_linen_shirt_casual",
+      "name": "暖灰亚麻卷袖衬衫与深棕灯芯绒长裤",
+      "prose": "A relaxed warm-grey Irish linen button-down shirt with rolled cuffs and an open collar tucked casually into dark-brown corduroy trousers.",
+      "tokens": [
+        "grey linen shirt",
+        "rolled sleeves",
+        "unbuttoned collar",
+        "brown corduroy pants",
+        "leather belt",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "claire_kagenou/baron_daughter_sundress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1902,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "claire_kagenou",
     "outfit": {
       "id": "baron_daughter_sundress",
       "name": "男爵千金紫罗兰收腰轻洋装",
-      "prose": "A charming pastel lavender linen sleeveless sundress featuring a fitted waist sash, paired with a cropped white crochet knit bolero cardigan and simple sandals.",
+      "prose": "Pastel-lavender linen sleeveless sundress cinched with a tied waist sash, layered with a cropped white crochet knit bolero, delicate pearl bracelet, and leather flat sandals.",
       "tokens": [
+        "lavender dress",
         "sundress",
-        "lavender_dress",
-        "sleeveless_dress",
-        "bolero",
-        "knit_cardigan",
-        "waist_ribbon",
-        "sandals",
-        "feminine"
+        "sleeveless dress",
+        "white bolero",
+        "knit cardigan",
+        "waist sash",
+        "pearl bracelet",
+        "flat sandals"
       ],
       "characterId": "claire_kagenou",
       "default": false,

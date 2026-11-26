@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/feather_trench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2167,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "feather_trench",
       "name": "羽灰风衣与焦糖细格围巾",
-      "prose": "A feather-grey belted trench over a cream knit dress, with a narrow caramel checked scarf and low brown boots.",
+      "prose": "A feather-grey belted trench coat with matte brown buttons over a cream ribbed dress, accessorized with a narrow caramel plaid scarf, dark opaque tights, and brown ankle boots.",
       "tokens": [
-        "feather grey belted trench coat",
-        "cream knit dress",
-        "caramel checked scarf",
+        "grey belted trench",
+        "cream ribbed dress",
+        "caramel plaid scarf",
+        "matte brown buttons",
+        "dark opaque tights",
         "brown ankle boots"
       ],
       "characterId": "ptilopsis_arknights",

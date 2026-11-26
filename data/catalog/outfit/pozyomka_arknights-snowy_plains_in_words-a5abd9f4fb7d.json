@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/snowy_plains_in_words",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1958,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "snowy_plains_in_words",
-      "name": "字句中的雪原 · 白披肩与深色长裙",
+      "name": "字句中的雪原 · 白兜帽披肩与黑裙",
       "default": true,
       "isDefault": true,
-      "prose": "A dark dress beneath a white hooded capelet, with white tights and boots.",
+      "prose": "A dark wool dress under a white hooded capelet edged with soft fur trim and pinned by a gold brooch, finished with a crimson waist sash, white opaque tights, and black heeled boots.",
       "tokens": [
-        "black dress",
-        "white capelet",
-        "hooded capelet",
-        "white pantyhose",
-        "boots"
+        "black wool dress",
+        "white hooded capelet",
+        "crimson waist sash",
+        "gold collar brooch",
+        "white opaque tights",
+        "black heeled boots"
       ],
       "identityTokensOverride": [
         "pozyomka (arknights)",

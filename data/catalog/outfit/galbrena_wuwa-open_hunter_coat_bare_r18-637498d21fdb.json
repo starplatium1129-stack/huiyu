@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "galbrena_wuwa/open_hunter_coat_bare_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3809,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "galbrena_wuwa",
     "outfit": {
       "id": "open_hunter_coat_bare_r18",
-      "name": "敞开猎魔风衣与皮质腿环黑丝全裸",
-      "prose": "Completely nude beneath her open dark indigo trench coat, wearing only fingerless leather gloves, a thigh strap, and black thigh-highs.",
+      "name": "敞开猎魔风衣与皮质腿环黑丝",
+      "prose": "Without inner layers beneath her open dark indigo trench coat, wearing only fingerless leather gloves, a leather thigh strap, and black thigh-high stockings, barefoot.",
       "tokens": [
-        "nude",
-        "open coat",
-        "blue trench coat",
-        "fingerless gloves",
-        "black thighhighs",
+        "open indigo coat",
+        "topless",
         "bare breasts",
-        "nipples"
+        "nipples",
+        "fingerless gloves",
+        "thigh strap",
+        "black thighhighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

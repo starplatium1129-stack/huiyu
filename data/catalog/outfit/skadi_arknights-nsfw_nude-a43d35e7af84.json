@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 354,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,10 +12,13 @@
       "id": "nsfw_nude",
       "isDefault": false,
       "name": "私密全裸 / 纯粹形态",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed with bare shoulders, bare back, and bare feet, free of hunter coats, straps, or heavy boots.",
       "styleHint": "tender romantic candlelight",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

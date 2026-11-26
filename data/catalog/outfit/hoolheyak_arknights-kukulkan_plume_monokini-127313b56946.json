@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/kukulkan_plume_monokini",
+  "revision": 1,
+  "sortOrder": 4100,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "kukulkan_plume_monokini",
+      "name": "羽蛇圣典 · 孔雀青金扣镂空泳衣",
+      "category": "泳装 / 连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "hoolheyak_arknights",
+      "prose": "A metallic peacock-blue high-leg cutout monokini accented with slender gold snake clasps and a braided waist cord, draped with a translucent turquoise silk shawl and gold feather earrings, worn barefoot.",
+      "tokens": [
+        "peacock blue monokini",
+        "gold snake clasps",
+        "highleg cutout swimsuit",
+        "sheer turquoise shawl",
+        "gold feather earrings",
+        "barefoot"
+      ]
+    }
+  }
+}

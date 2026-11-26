@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/hoori_wisteria_bikini",
+  "revision": 1,
+  "sortOrder": 4189,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "id": "hoori_wisteria_bikini",
+      "name": "穗织神子 · 紫藤印花和风裹身泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "tomotake_yoshino",
+      "prose": "A wisteria-lavender and white silk wrap bikini patterned with falling blossom motifs, tied with crisp white silk cords and a floral metal hairpin, worn barefoot.",
+      "tokens": [
+        "lavender wrap bikini",
+        "wisteria blossom print",
+        "white silk cords",
+        "floral metal hairpin",
+        "sheer side sash",
+        "barefoot"
+      ]
+    }
+  }
+}

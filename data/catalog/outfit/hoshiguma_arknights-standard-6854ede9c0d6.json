@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1970,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 黑色机能装",
+      "name": "基础服装 · 黑色无袖机能装",
       "characterId": "hoshiguma_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A black sleeveless shirt and black trousers with lace-up boots.",
+      "prose": "A fitted black sleeveless tactical top paired with charcoal cargo pants, an olive waist belt with a silver buckle, fingerless gloves, and black lace-up combat boots.",
       "tokens": [
-        "black sleeveless shirt",
-        "black pants",
-        "lace-up boots"
+        "black sleeveless top",
+        "charcoal cargo pants",
+        "olive tactical belt",
+        "silver buckle",
+        "fingerless gloves",
+        "black combat boots"
       ]
     }
   }

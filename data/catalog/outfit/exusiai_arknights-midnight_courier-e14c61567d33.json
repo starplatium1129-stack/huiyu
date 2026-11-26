@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/midnight_courier",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "midnight_courier",
       "name": "企鹅物流夜行连体衣与腿部枪套",
-      "prose": "A matte black stealth bodysuit traced with dark crimson piping, paired with boots and a secured thigh holster for courier equipment.",
+      "prose": "A matte-black nocturnal compression bodysuit traced with sharp crimson piping, fitted with a buckled thigh holster and tall combat boots.",
       "tokens": [
-        "bodysuit",
-        "stealth_suit",
-        "black_bodysuit",
-        "compression_suit",
-        "thigh_holster",
-        "thigh_strap",
-        "tactical_buckle",
-        "boots"
+        "black stealth bodysuit",
+        "crimson piping",
+        "compression fit",
+        "thigh holster",
+        "tactical belt",
+        "combat boots"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

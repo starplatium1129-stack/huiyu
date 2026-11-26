@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_school",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 773,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_school",
       "name": "秀知院学院水手风羊毛制服",
-      "prose": "A dark navy uniform dress with a white collar and red ribbon, paired with loose socks.",
+      "prose": "A dark navy Shuchiin uniform dress with a white sailor collar and red ribbon necktie worn loosened at the collar, paired with slouchy loose white socks and brown loafers.",
       "tokens": [
-        "school_uniform",
-        "navy_dress",
-        "sailor_collar",
-        "red_necktie",
-        "loose_socks",
-        "bare_legs",
-        "loafers"
+        "navy uniform dress",
+        "white sailor collar",
+        "red ribbon necktie",
+        "open collar",
+        "loose white socks",
+        "brown leather loafers"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

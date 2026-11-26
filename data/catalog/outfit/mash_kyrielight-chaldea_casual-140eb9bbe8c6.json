@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/chaldea_casual",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "chaldea_casual",
       "name": "迦勒底短款工装夹克与黑色长袜",
-      "prose": "A cropped heather-grey jacket over a black collared dress and crimson necktie, paired with sheer black stockings.",
+      "prose": "A tailored heather-grey cropped Chaldea utility jacket layered open over a crisp black collared dress, crimson necktie, sheer black thigh-highs, and brown oxfords.",
       "tokens": [
-        "cropped_jacket",
-        "gray_jacket",
-        "open_jacket",
-        "collared_dress",
-        "black_dress",
-        "red_necktie",
-        "black_thighhighs",
-        "zettai_ryouiki",
-        "oxfords"
+        "grey cropped jacket",
+        "open jacket",
+        "black shirt dress",
+        "red necktie",
+        "black thighhighs",
+        "brown oxfords"
       ],
       "characterId": "mash_kyrielight",
       "default": true,

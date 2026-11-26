@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "vulpisfoglia_arknights/champagne_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2011,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "vulpisfoglia_arknights",
     "outfit": {
       "id": "champagne_dress",
-      "name": "香槟金垂领缎裙与乌梅丝绒腰带",
-      "prose": "A champagne-gold satin evening dress with a softly draped neckline, a plum velvet sash and fine gold drop earrings.",
+      "name": "香槟金垂领缎裙与乌梅丝绒带",
+      "prose": "A champagne-gold satin evening gown with a softly draped cowl neckline and a plum velvet sash, accented with gold drop earrings, sheer stockings, and gold strappy sandals.",
       "tokens": [
-        "champagne gold satin evening dress",
-        "draped neckline",
+        "champagne satin gown",
+        "cowl draped neckline",
         "plum velvet sash",
-        "gold drop earrings"
+        "gold drop earrings",
+        "sheer champagne stockings",
+        "gold strappy sandals"
       ],
       "characterId": "vulpisfoglia_arknights",
       "default": false,

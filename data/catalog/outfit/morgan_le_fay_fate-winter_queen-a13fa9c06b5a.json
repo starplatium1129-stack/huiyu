@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/winter_queen",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "winter_queen",
-      "name": "冬之女王本貌",
-      "prose": "A black-and-blue gothic gown with high ruff collar, detached wing-like sleeves and layered split skirt, with a royal crown.",
+      "name": "妖精女王黑蓝羽袖王冠礼裙",
+      "prose": "Her sovereign black-and-royal-blue gothic queen gown featuring a tall pleated ruff collar, detached wing sleeves, layered slit train, and silver-pointed crown.",
       "tokens": [
-        "crown",
-        "gothic_dress",
-        "black_dress",
-        "blue_dress",
-        "high_collar",
-        "ruff collar",
-        "wing-like detached sleeves",
-        "layered_skirt",
-        "split skirt",
-        "long_dress"
+        "royal crown",
+        "black gothic gown",
+        "royal blue panels",
+        "high ruff collar",
+        "detached wing sleeves",
+        "split long skirt",
+        "silver heels"
       ],
       "default": true,
       "isDefault": true

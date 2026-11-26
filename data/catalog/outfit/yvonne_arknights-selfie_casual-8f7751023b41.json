@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/selfie_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 422,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "selfie_casual",
       "isDefault": false,
       "name": "莓粉连帽外套街拍装",
-      "prose": "a berry-pink zip hoodie over a white cropped T-shirt, a plum cargo miniskirt with a silver buckle and low-top sneakers",
+      "prose": "A berry-pink zip hoodie worn open over a white cropped tee and a plum cargo miniskirt with a silver buckle, paired with white crew socks and low-top sneakers.",
       "tokens": [
         "pink zip hoodie",
-        "white cropped t-shirt",
+        "white crop tee",
         "plum cargo miniskirt",
-        "silver buckle",
-        "sneakers"
+        "silver belt buckle",
+        "white crew socks",
+        "low-top sneakers"
       ]
     }
   }

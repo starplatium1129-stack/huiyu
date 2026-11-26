@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_beach",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_beach",
       "name": "纯白玫瑰高衩高定泳装",
-      "prose": "A couture high-cut white swimsuit sculpted with sculpted pink rose appliques and a gauzy chiffon shoulder wrap.",
+      "prose": "A sculpted high-cut white one-piece swimsuit accented with pink piping, rose appliques, a gauzy chiffon shoulder wrap, and a fine silver anklet, worn with bare legs and barefoot.",
       "tokens": [
-        "swimsuit",
-        "one-piece_swimsuit",
-        "white_swimsuit",
-        "highleg_swimsuit",
-        "pink_trim",
-        "flower_applique",
-        "sheer_shawl",
-        "bare_legs"
+        "white one-piece swimsuit",
+        "high-cut leg",
+        "pink rose applique",
+        "sheer chiffon shawl",
+        "pink piping",
+        "silver anklet",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

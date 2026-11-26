@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kazuki_night_sky_balcony_yuuji_thought",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1169,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "kazuki_night_sky_balcony_yuuji_thought",
     "title": "风见一姬 · 繁星穹顶下的月下凝思",
     "category": "深情思念",
     "characterId": "kazami_kazuki",
-    "outfitId": "white_dress",
+    "outfitId": "moonlight_shawl_dress",
     "coverageTags": [
       "night"
     ],

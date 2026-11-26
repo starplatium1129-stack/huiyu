@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ines_arknights/safehouse_leather_tank",
+  "revision": 1,
+  "sortOrder": 4095,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "ines_arknights",
+    "outfit": {
+      "id": "safehouse_leather_tank",
+      "name": "暗室皮纹 · 哑黑细带背心热裤套",
+      "category": "睡衣 / 运动背心套",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "ines_arknights",
+      "prose": "A form-fitting matte-black faux-leather stretch camisole with reinforced shoulder straps and gunmetal ring hardware, paired with low-rise black micro shorts edged in subtle trim and worn barefoot.",
+      "tokens": [
+        "matte black tank",
+        "faux leather camisole",
+        "reinforced shoulder straps",
+        "black micro shorts",
+        "gunmetal strap rings",
+        "barefoot"
+      ]
+    }
+  }
+}

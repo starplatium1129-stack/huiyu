@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "amiya/rain_walk",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1628,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "amiya",
     "outfit": {
       "id": "rain_walk",
       "name": "藏蓝风衣与格纹围巾",
-      "prose": "A navy belted raincoat over straight charcoal trousers, a pale blue checked scarf, and waterproof ankle boots",
+      "prose": "A tailored navy belted raincoat worn over straight charcoal trousers, a pale-blue plaid scarf, silver buckle, and dark waterproof ankle boots.",
       "tokens": [
-        "navy_coat",
-        "belted_coat",
-        "grey_pants",
-        "blue_scarf",
-        "plaid_scarf",
-        "ankle_boots"
+        "navy raincoat",
+        "belted trench coat",
+        "charcoal straight pants",
+        "blue plaid scarf",
+        "silver buckle",
+        "waterproof boots"
       ],
       "default": false
     }

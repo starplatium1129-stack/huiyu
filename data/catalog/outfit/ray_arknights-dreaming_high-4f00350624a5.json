@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/dreaming_high",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1955,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "dreaming_high",
-      "name": "梦幻高空 · 摇滚舞台装",
+      "name": "梦幻高空 · 露肩黑领带舞台装",
       "default": false,
       "isDefault": false,
-      "prose": "An off-shoulder cropped shirt with a black tie and skirt, blue leggings and fingerless gloves.",
+      "prose": "An off-shoulder white cropped shirt paired with a black silk necktie and pleated black skirt, accessorized with fingerless stage gloves, blue leggings, and black platform boots.",
       "tokens": [
-        "off-shoulder shirt",
-        "cropped shirt",
-        "black necktie",
-        "black skirt",
-        "blue leggings",
-        "fingerless gloves"
+        "white cropped shirt",
+        "off shoulder collar",
+        "black silk necktie",
+        "pleated black skirt",
+        "blue knee leggings",
+        "fingerless stage gloves",
+        "black platform boots"
       ],
       "identityTokensOverride": [
         "ray (arknights)",

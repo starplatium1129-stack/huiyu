@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3447,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "atago_azur_lingerie_whisper",
     "characterId": "atago_azur",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "深夜的重樱风格指挥官套房。爱宕解下厚重的军服佩刀，换上一袭绯红半透的大花真丝和风睡袍。她侧身跪坐在厚实的羽绒被褥旁，睡袍前襟半敞，犬耳惬意地前后抖动，大尾巴在榻榻米上轻抚。她含笑凝望着满身疲惫的你，玉手轻轻拍了拍自己丰腴温热的大腿——「辛苦了呢，指挥官～今晚的工作终于结束了吗？快过来……姐姐的膝枕随时都为你准备着哦。今晚就什么都不要想，在姐姐怀里好好睡一觉吧♡」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sakura_crimson_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

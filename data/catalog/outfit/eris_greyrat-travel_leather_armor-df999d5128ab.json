@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/travel_leather_armor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1367,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "id": "travel_leather_armor",
-      "name": "束胸皮甲与开衩短裙",
+      "name": "束胸皮甲与开衩战斗短裙",
       "tokens": [
-        "leather_armor",
-        "crop_top",
-        "slit_skirt",
-        "miniskirt",
-        "bare_legs",
-        "boots"
+        "brown leather cuirass",
+        "black cropped tee",
+        "slit combat miniskirt",
+        "iron buckle straps",
+        "dark knee socks",
+        "laced leather boots"
       ],
-      "prose": "A brown leather cuirass over a cropped top and side-split combat skirt.",
+      "prose": "A brown leather cuirass buckled with iron straps over a black cropped tee and side-slit combat miniskirt, paired with dark knee socks and laced leather boots.",
       "default": false,
       "isDefault": false,
       "characterId": "eris_greyrat"

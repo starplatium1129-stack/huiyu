@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "hitachi_mako/kunoichi_sarashi_shorts",
+  "revision": 1,
+  "sortOrder": 4187,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "hitachi_mako",
+    "outfit": {
+      "id": "kunoichi_sarashi_shorts",
+      "name": "隐忍女忍 · 墨黑缠胸布与高叉短裤",
+      "category": "睡衣 / 运动背心套",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "hitachi_mako",
+      "prose": "A functional kunoichi set featuring multi-wrap black cotton sarashi chest bindings and high-slit stretch cotton shorts with a slim ankle wrap, worn barefoot.",
+      "tokens": [
+        "black sarashi wrap",
+        "cotton chest binding",
+        "high slit shorts",
+        "stretch cotton trim",
+        "slim ankle wrap",
+        "barefoot"
+      ]
+    }
+  }
+}

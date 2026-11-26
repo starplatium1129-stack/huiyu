@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "acheron/nihility_cutout_monokini",
+  "revision": 1,
+  "sortOrder": 4168,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "acheron",
+    "outfit": {
+      "id": "nihility_cutout_monokini",
+      "name": "幽夜返魂镂空挂脖连体泳装",
+      "prose": "Deep-violet and obsidian cutout monokini detailed with asymmetrical shoulder straps and silver metallic ring hardware, wrapped in a sheer chiffon sarong printed with faint red spider lilies and paired with flat black sandals.",
+      "tokens": [
+        "violet monokini",
+        "cutout swimsuit",
+        "asymmetric straps",
+        "silver rings",
+        "high-leg cut",
+        "sheer sarong",
+        "floral print",
+        "flat sandals"
+      ],
+      "characterId": "acheron",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 连体泳装"
+    }
+  }
+}

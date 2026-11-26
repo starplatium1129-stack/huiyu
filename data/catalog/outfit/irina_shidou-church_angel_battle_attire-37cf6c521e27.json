@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "irina_shidou/church_angel_battle_attire",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1754,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "irina_shidou",
     "outfit": {
       "characterId": "irina_shidou",
       "id": "church_angel_battle_attire",
       "name": "教会圣剑天使战斗服",
-      "prose": "A form-fitting white holy warrior pilot bodysuit accented with gilded embroidery, silver cross charms, and white thigh-high boots.",
+      "prose": "A fitted white holy warrior bodysuit accented with gilded embroidery, silver cross charms, long white gloves, an open back cut, and white thigh-high combat boots.",
       "tokens": [
-        "white_bodysuit",
-        "gold_trim",
-        "bare_shoulders",
-        "thighhighs",
-        "gloves",
-        "holy_cross"
+        "white combat bodysuit",
+        "gold embroidery",
+        "silver cross charm",
+        "white arm gloves",
+        "white thigh-high boots",
+        "open back"
       ],
       "default": false,
       "isDefault": false

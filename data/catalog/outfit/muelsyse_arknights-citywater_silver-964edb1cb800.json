@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/citywater_silver",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2026,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "citywater_silver",
-      "name": "银灰水波长裙与渐蓝薄纱",
-      "prose": "A silver-grey column dress beneath a translucent blue overskirt, with ripple-like pleats and a slim water-drop pendant.",
+      "name": "银灰水波纹长裙与渐蓝薄纱",
+      "prose": "A silver-grey satin column dress layered under a translucent gradient-blue tulle overskirt with rippled pleats, styled with a crystal droplet pendant, sheer stockings, and silver heeled sandals.",
       "tokens": [
-        "silver grey column dress",
-        "translucent blue overskirt",
-        "ripple pleats",
-        "water drop pendant"
+        "silver satin dress",
+        "blue tulle overskirt",
+        "rippled organza pleats",
+        "crystal droplet pendant",
+        "sheer nude stockings",
+        "silver heeled sandals"
       ],
       "characterId": "muelsyse_arknights",
       "default": false,

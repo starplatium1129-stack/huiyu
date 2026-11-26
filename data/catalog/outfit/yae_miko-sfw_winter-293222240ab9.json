@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_winter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_winter",
       "name": "梅紫暗纹羽织与高腰百褶短裙",
-      "prose": "A plum-violet cropped haori over a cream ribbed turtleneck and pleated wool skirt, paired with dark stockings.",
+      "prose": "Plum-violet patterned cropped haori worn over a cream ribbed turtleneck and high-waisted pleated wool miniskirt, accessorized with a soft knit scarf, gold brooch, dark thighhighs, and leather ankle boots.",
       "tokens": [
-        "cropped_jacket",
-        "purple_jacket",
-        "turtleneck",
-        "pleated_skirt",
-        "miniskirt",
-        "dark_thighhighs",
-        "boots"
+        "purple haori",
+        "cropped jacket",
+        "cream turtleneck",
+        "pleated miniskirt",
+        "knit scarf",
+        "gold brooch",
+        "dark thighhighs",
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false,

@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_sports",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_sports",
       "name": "钴蓝运动背心与炭灰骑行短裤",
-      "prose": "A cobalt-blue athletic crop top paired with high-waisted charcoal bike shorts.",
+      "prose": "A cobalt-blue racerback crop top with white trim paired with high-waisted charcoal bike shorts, white crew socks, and white sneakers.",
       "tokens": [
-        "blue_tank_top",
-        "crop_top",
-        "racerback",
-        "sports_bra",
-        "bike_shorts",
-        "bare_legs",
-        "sneakers"
+        "cobalt crop tank",
+        "racerback top",
+        "charcoal bike shorts",
+        "white contrast trim",
+        "white crew socks",
+        "white sneakers"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

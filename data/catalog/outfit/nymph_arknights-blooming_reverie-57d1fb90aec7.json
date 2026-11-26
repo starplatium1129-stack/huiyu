@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/blooming_reverie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1951,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "blooming_reverie",
-      "name": "繁花梦幻谈 · 白色花饰礼裙",
+      "name": "繁花梦幻谈 · 荷叶披肩白礼裙",
       "default": false,
       "isDefault": false,
-      "prose": "A white frilled dress with a light capelet, gloves and a flower hair ornament.",
+      "prose": "A white tiered party dress with a frilled organza capelet and pink satin sash, styled with white lace gloves, a floral hairpin, sheer white stockings, and ivory ribbon flats.",
       "tokens": [
-        "white dress",
-        "frilled dress",
-        "white capelet",
-        "white gloves",
-        "flower hair ornament"
+        "white tiered dress",
+        "frilled organza capelet",
+        "white lace gloves",
+        "floral hairpin",
+        "pink satin sash",
+        "white sheer stockings",
+        "ivory ribbon flats"
       ],
       "identityTokensOverride": [
         "nymph (arknights)",

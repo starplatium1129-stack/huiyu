@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/lupo_harness_mesh",
+  "revision": 1,
+  "sortOrder": 4093,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "lupo_harness_mesh",
+      "name": "叙拉古暗夜 · 橄榄网布束带内衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "vulpisfoglia_arknights",
+      "prose": "A sleek olive-grey mesh bralette paired with crossed black leather harness straps, brass buckle clasps, and matching charcoal boyleg briefs, finished with sheer black thighhighs and worn barefoot.",
+      "tokens": [
+        "olive mesh bralette",
+        "black leather harness",
+        "crossed chest straps",
+        "charcoal boyleg briefs",
+        "brass buckle clasps",
+        "sheer black thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

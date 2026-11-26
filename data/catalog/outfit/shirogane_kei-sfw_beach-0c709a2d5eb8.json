@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 784,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,11 +12,15 @@
       "id": "sfw_beach",
       "isDefault": false,
       "name": "蓝灰泳装与轻薄防风衣",
-      "prose": "A slate-blue swimsuit has clean black binding, beneath a lightweight pale-grey zip windbreaker.",
+      "prose": "A slate-blue one-piece swimsuit with clean black edge binding worn beneath an open lightweight pale-grey zip windbreaker, with bare legs and barefoot.",
       "tokens": [
-        "slate blue one-piece swimsuit",
-        "black binding",
-        "light grey zip windbreaker"
+        "slate blue swimsuit",
+        "black edge binding",
+        "pale grey windbreaker",
+        "open front zipper",
+        "high-cut leg",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

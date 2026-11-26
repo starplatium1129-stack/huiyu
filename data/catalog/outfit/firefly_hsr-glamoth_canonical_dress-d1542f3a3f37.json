@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/glamoth_canonical_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1584,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "glamoth_canonical_dress",
       "name": "格拉默先锋短披风短裙与浅色长袜",
       "tokens": [
-        "cropped_jacket",
-        "white_shirt",
-        "pleated_skirt",
-        "miniskirt",
-        "translucent_thighhighs",
-        "boots"
+        "cropped jacket",
+        "white shirt",
+        "teal ribbon",
+        "pleated miniskirt",
+        "gold trim",
+        "sheer thighhighs",
+        "ankle boots"
       ],
-      "prose": "A military cadet uniform with a cropped bolero jacket, pleated skirt and translucent thigh-high stockings.",
+      "prose": "Glamoth cadet ensemble featuring a tailored cropped bolero jacket over a crisp white shirt with a teal neck ribbon and pleated miniskirt, paired with translucent thighhigh stockings and buckled ankle boots.",
       "isDefault": true,
       "default": true,
       "characterId": "firefly_hsr",

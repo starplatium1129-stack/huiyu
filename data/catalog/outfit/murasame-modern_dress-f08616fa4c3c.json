@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "murasame/modern_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 615,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "default": false,
       "id": "modern_dress",
       "isDefault": false,
-      "name": "薄荷白蕾丝吊带裙",
-      "prose": "A white strappy sundress with mint floral panels and lace neckline, red-ribbon straw hat and brown sandals.",
+      "name": "薄荷白蕾丝吊带洋装",
+      "prose": "A white cotton sundress with thin shoulder straps, mint-green floral panels, and a lace-trimmed neckline, styled with a red-ribbon straw sunhat and brown leather sandals.",
       "tokens": [
-        "white sundress",
-        "mint green floral panels",
-        "lace neckline",
-        "spaghetti straps",
-        "straw hat",
-        "red ribbon",
-        "brown sandals"
+        "white cotton sundress",
+        "mint floral panels",
+        "lace trimmed neckline",
+        "red ribbon sunhat",
+        "thin shoulder straps",
+        "brown leather sandals"
       ]
     }
   }

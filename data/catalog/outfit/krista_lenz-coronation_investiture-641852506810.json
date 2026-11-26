@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/coronation_investiture",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 547,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "default": false,
       "id": "coronation_investiture",
       "isDefault": false,
-      "name": "纯白礼服·受冠瞬间",
+      "name": "纯白露肩女王加冕礼服",
       "prose": "a white off-shoulder coronation gown with a fitted bodice, a ceremonial cloak and restrained gold jewelry",
       "tokens": [
         "white off-shoulder gown",

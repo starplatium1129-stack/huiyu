@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "prinz_eugen/iron_cross_plunge_chemise",
+  "revision": 1,
+  "sortOrder": 4131,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "prinz_eugen",
+    "outfit": {
+      "id": "iron_cross_plunge_chemise",
+      "name": "铁血魅影·墨黑深V镂空铁十字内衣",
+      "prose": "An ink-black deep-plunge strappy lace chemise featuring sheer mesh waist cutouts, crisscrossing waist straps, and a silver iron-cross pendant, worn barefoot.",
+      "tokens": [
+        "black lace chemise",
+        "deep plunge neckline",
+        "sheer mesh cutouts",
+        "silver cross pendant",
+        "criss-cross waist straps",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

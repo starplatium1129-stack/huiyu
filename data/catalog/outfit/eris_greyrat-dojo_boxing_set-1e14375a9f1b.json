@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/dojo_boxing_set",
+  "revision": 1,
+  "sortOrder": 4182,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "id": "dojo_boxing_set",
+      "name": "狂犬大小姐 · 绯红罗纹背心与拳击短裤",
+      "category": "睡衣 / 运动背心套",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "eris_greyrat",
+      "prose": "A sweat-wicking crimson ribbed-cotton crop tank with reinforced shoulder straps paired with loose heather-grey elastic-waist boxing shorts, worn barefoot.",
+      "tokens": [
+        "crimson crop tank",
+        "ribbed cotton knit",
+        "reinforced shoulder straps",
+        "grey boxing shorts",
+        "elastic waist band",
+        "barefoot"
+      ]
+    }
+  }
+}

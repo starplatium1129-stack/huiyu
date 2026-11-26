@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "komine_sachi/maid_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 648,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "komine_sachi",
     "outfit": {
       "id": "maid_uniform",
       "name": "全能忠犬荷叶边女仆装",
-      "prose": "A black short-sleeved maid dress with a white ruffled apron tied in a large back bow, lace headdress, red bow tie, white thighhighs with garters and black patent Mary Janes.",
+      "prose": "A classic black short-sleeved maid dress with a crisp white frilled apron, lace headdress, red bow tie, white thigh-high stockings with garters, and black patent mary janes.",
       "tokens": [
-        "maid",
         "black maid dress",
         "white frilled apron",
-        "maid headdress",
-        "red bowtie",
-        "white thighhighs",
-        "garter straps",
-        "mary janes",
-        "short sleeves",
-        "large back bow"
+        "lace maid headdress",
+        "red neck bowtie",
+        "white garter thighhighs",
+        "black mary janes"
       ],
       "default": true,
       "isDefault": true

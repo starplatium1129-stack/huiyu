@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/live_grunge_black",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1566,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "live_grunge_black",
-      "name": "Live演出暗黑背心、皮短裤与单侧腿带",
+      "name": "Live演出暗黑背心皮短裤与单侧腿带",
       "tokens": [
-        "tank_top",
+        "black tank top",
         "sleeveless",
-        "black_shirt",
-        "bare_shoulders",
-        "collarbone",
-        "chain",
-        "necklace",
-        "black_shorts",
-        "short_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "boots"
+        "chain necklace",
+        "black shorts",
+        "leather belt",
+        "thigh strap",
+        "fingerless gloves",
+        "combat boots"
       ],
-      "prose": "A distressed black sleeveless graphic top with a chain necklace and dark shorts, finished with a single buckled leather thigh band for the grunge stage outfit.",
+      "prose": "Distressed black sleeveless tank top accented with a silver chain necklace over fitted black leather shorts, styled with a buckled thigh strap, fingerless gloves, and heavy combat boots.",
       "isDefault": false,
       "default": false,
       "characterId": "yamada_ryo"

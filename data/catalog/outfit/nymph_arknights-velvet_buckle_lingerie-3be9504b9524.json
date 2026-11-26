@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/velvet_buckle_lingerie",
+  "revision": 1,
+  "sortOrder": 4099,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "velvet_buckle_lingerie",
+      "name": "绯绒迷魅 · 酒红丝绒搭扣网纱内衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "nymph_arknights",
+      "prose": "A deep wine-red velvet strappy bralette and matching panties inset with black fishnet panels and miniature rose-gold buckles, paired with satin garter straps and sheer black thighhighs, worn barefoot.",
+      "tokens": [
+        "wine velvet bralette",
+        "rose gold buckles",
+        "black fishnet panels",
+        "strappy lace panties",
+        "satin garter straps",
+        "sheer black thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "tsukatsuki_rio/coat_fitting_ensemble",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1249,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "tsukatsuki_rio",
     "outfit": {
       "id": "coat_fitting_ensemble",
-      "name": "风衣衬衫高跟试装",
+      "name": "象牙丝衬衫敞襟风衣试装",
       "tokens": [
-        "black coat",
-        "waist belt",
-        "blouse",
+        "black trench coat",
+        "open trench",
+        "ivory silk blouse",
+        "red ribbon tie",
+        "charcoal pencil skirt",
         "black pantyhose",
-        "high heels"
+        "black high heels"
       ],
-      "prose": "a belted black coat over a blouse, with black tights and high heels",
+      "prose": "An unfastened black wool coat layered over a lustrous ivory silk blouse with a dark-red neck tie and tailored charcoal skirt, paired with black pantyhose and heels.",
       "default": false,
       "isDefault": false
     }

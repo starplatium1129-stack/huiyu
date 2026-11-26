@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/purple_lace_negligee",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "purple_lace_negligee",
       "name": "紫罗兰真丝飘袖开衫与黑蕾丝内衣",
-      "prose": "A sheer violet silk dressing gown hangs open over black lace lingerie.",
+      "prose": "A sheer violet silk dressing gown with wide sleeves hanging open over a black lace camisole and matching lace shorts, worn with bare legs and barefoot.",
       "tokens": [
-        "purple_robe",
-        "silk_robe",
-        "open_robe",
-        "black_lace",
-        "lace_camisole",
-        "bare_shoulders",
-        "bare_legs"
+        "violet silk robe",
+        "open dressing gown",
+        "wide sheer sleeves",
+        "black lace camisole",
+        "lace trim shorts",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "akeno_himejima",
       "default": false,

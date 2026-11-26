@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/school_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "school_uniform",
       "name": "暗黑马甲水手百褶制服裙",
-      "prose": "A black sailor blouse beneath a tailored vest and pleated school skirt, with sheer black thigh-highs.",
+      "prose": "A black sailor blouse beneath a tailored vest with silver buttons and a crimson neck tie, paired with a pleated mini skirt, sheer thigh-highs, and leather loafers.",
       "tokens": [
-        "sailor_collar",
-        "black_shirt",
-        "suit_vest",
-        "pleated_skirt",
-        "mini_skirt",
-        "black_thighhighs",
-        "loafers"
+        "black sailor blouse",
+        "tailored vest",
+        "crimson neck tie",
+        "pleated mini skirt",
+        "silver buttons",
+        "sheer thighhighs",
+        "leather loafers"
       ],
       "isDefault": false,
       "default": false,

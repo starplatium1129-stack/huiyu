@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3212,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "artoria_pendragon_lingerie_whisper",
     "characterId": "artoria_pendragon",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "夜风穿过日式木回廊。阿尔托莉雅将圣剑安放完毕，换上一件宝蓝与雅白拼接的和风真丝系带睡袍。长发自然披落，头顶标志性的呆毛在晚风中轻轻晃动。她转过身来，双手端庄拢在睡袍前襟，碧绿的眼眸透出如平静湖水般的安详——「士郎……啊，御主。剑已经收纳妥当。今夜没有圣杯战争的喧嚣，如果可以的话……能陪我在这里吹吹晚风吗？」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "royal_cobalt_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3460,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "izayoi_miku_swimsuit_allure",
     "characterId": "izayoi_miku",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风吹拂着巨大的白色贝壳形露天舞台。美九踩着细沙轻盈地转了一整圈，淡紫色的层叠裙摆像盛开的海百合一样旋转飞扬，柔美的歌喉随着海浪的高低起伏哼唱出动人的和弦。她停下脚步，双手背在身后优雅地微倾上身，紫罗兰色双眸满溢着只属于你的崇拜与炽热——「亲爱的～！看这边！这套专为你量身挑选的夏日舞台泳装，好看吗？在这片属于我们两人的私人海湾里，美九的一切……从歌声到身姿，全都只献给你一个人哦！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "lavender_idol_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/shower_towel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1351,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "id": "shower_towel",
-      "name": "晨浴华夫格裹胸浴巾裙",
+      "name": "紫滚边纯白华夫格浴巾",
       "tokens": [
-        "bathrobe",
-        "towel",
-        "white_towel",
-        "bare_shoulders",
-        "bare_legs",
+        "white bath towel",
+        "purple trim",
+        "wrapped towel",
+        "bare shoulders",
+        "bare legs",
         "barefoot"
       ],
-      "prose": "A plush white bath towel with purple piping knotted securely above the chest.",
+      "prose": "A thick white waffle-weave bath towel piped in soft purple thread and knotted securely across the chest, leaving bare shoulders and bare feet.",
       "default": false,
       "isDefault": false,
       "characterId": "sorasaki_hina"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3289,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "viviana_arknights_swimsuit_allure",
     "characterId": "viviana_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海滨暮色降临，防风烛灯摇曳生姿。薇薇安娜身穿烛骑士金辉薄纱圣洁分体泳裙，端坐在白亚麻扶手椅旁。纤手轻抚烛罩，金色眼眸盛满如诗般静谧的温情。海风轻掠金发与鹿耳，在烛光与暗蓝潮声中，她为你营造了一片如梦似幻的避风港湾。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "pearl_candle_corset_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

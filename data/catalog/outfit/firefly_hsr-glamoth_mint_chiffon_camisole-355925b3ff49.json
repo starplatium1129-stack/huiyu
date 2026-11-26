@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/glamoth_mint_chiffon_camisole",
+  "revision": 1,
+  "sortOrder": 4167,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "glamoth_mint_chiffon_camisole",
+      "name": "格拉默铁骑薄荷青白羽翼蕾丝分体睡衣",
+      "prose": "Featherweight mint-cyan and white layered chiffon camisole edged with delicate scalloped lace, paired with matching ruffled tap shorts, a black ribbon tie, sheer stockings, and bare feet.",
+      "tokens": [
+        "mint camisole",
+        "white chiffon",
+        "lace trim",
+        "ruffled shorts",
+        "tap shorts",
+        "black ribbon",
+        "sheer stockings",
+        "barefoot"
+      ],
+      "characterId": "firefly_hsr",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 吊带分体套"
+    }
+  }
+}

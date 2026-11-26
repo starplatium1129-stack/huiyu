@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/evening_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 294,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "evening_gown",
       "name": "不觅浪尘黑丝绒露背晚礼服与黑色长袜",
-      "prose": "A black velvet evening gown with a plunging back and hip slit, paired with sheer black stockings.",
+      "prose": "A dramatic black velvet evening gown cut with a plunging open back and high hip slit, anchored by a silver clasp and worn with sheer black thigh-highs and heels.",
       "tokens": [
-        "black_dress",
-        "velvet_dress",
-        "evening_gown",
-        "open_back",
-        "high_slit",
-        "sheer_thighhighs",
-        "black_thighhighs",
-        "heels"
+        "black velvet gown",
+        "evening dress",
+        "plunging open back",
+        "high hip slit",
+        "silver brooch",
+        "black thighhighs",
+        "black heels"
       ],
       "characterId": "kaltsit_arknights",
       "default": false,

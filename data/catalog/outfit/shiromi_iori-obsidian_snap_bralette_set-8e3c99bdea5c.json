@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/obsidian_snap_bralette_set",
+  "revision": 1,
+  "sortOrder": 3928,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "id": "obsidian_snap_bralette_set",
+      "name": "墨黑银排扣罗纹战术内衣套",
+      "prose": "A streamlined matte-black ribbed stretch bralette accented with three polished silver front snap buttons, paired with sleek high-waist sporty boyleg briefs.",
+      "tokens": [
+        "black bralette",
+        "ribbed fabric",
+        "silver front snaps",
+        "black boyshorts",
+        "elastic waistband",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

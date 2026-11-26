@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3520,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "mash_kyrielight_lingerie_whisper",
     "characterId": "mash_kyrielight",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "迦勒底个人生活间，天花板模拟出绚烂而深邃的星云宇宙投影。跪在单人床沿，双手抱着白色盾形靠枕挡在胸前，淡粉紫短发掩映着泛红的脸颊，紫色眼眸闪烁着信任与依赖，静静等待着御主靠近。 她微微抬眸轻语——“前辈……今晚迦勒底的巡逻已经交接完毕了。如果可以的话……能再听我说一会儿话吗？”",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "lilac_star_lace_teddy",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

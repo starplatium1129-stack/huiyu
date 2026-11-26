@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "furina/blue_white_chiffon_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1373,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "blue_white_chiffon_gown",
       "name": "蓝白薄纱舞台礼裙",
       "tokens": [
-        "blue dress",
+        "blue chiffon gown",
         "white trim",
-        "chiffon",
-        "sheer fabric",
-        "stockings",
-        "high heels"
+        "sheer layers",
+        "thin straps",
+        "satin ribbon",
+        "pearl bracelet",
+        "white stockings",
+        "stage heels"
       ],
-      "prose": "A blue-and-white chiffon stage gown with translucent outer layers, paired with stockings and stage heels.",
+      "prose": "Airy blue-and-white chiffon stage dress with translucent layered skirting and slender shoulder straps, finished with a satin waist ribbon, pearl bracelet, white stockings, and stage heels.",
       "default": false,
       "isDefault": false
     }

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_honey_tea_cardigan",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1125,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "sfw_honey_tea_cardigan",
       "name": "蜂蜜鹅黄细针开衫与高腰百褶裙",
-      "prose": "A honey-yellow rib cardigan over an ivory silk tank and high-waisted pleated skirt, paired with white lace thigh-highs.",
+      "prose": "A honey-yellow ribbed knit cardigan with pearl buttons over an ivory silk tank and high-waisted navy pleated skirt, paired with sheer white socks and black Mary Janes.",
       "tokens": [
-        "knit_cardigan",
-        "yellow_cardigan",
-        "white_tank_top",
-        "pleated_skirt",
-        "mini_skirt",
-        "lace_gloves",
-        "white_thighhighs",
-        "mary_janes"
+        "honey yellow cardigan",
+        "ribbed knit weave",
+        "ivory silk tank",
+        "navy pleated skirt",
+        "pearl buttons",
+        "sheer white socks",
+        "black mary janes"
       ],
       "default": false,
       "isDefault": false,

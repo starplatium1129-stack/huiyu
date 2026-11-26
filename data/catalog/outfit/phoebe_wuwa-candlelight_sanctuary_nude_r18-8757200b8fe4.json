@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "phoebe_wuwa/candlelight_sanctuary_nude_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3310,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phoebe_wuwa",
     "outfit": {
       "id": "candlelight_sanctuary_nude_r18",
-      "name": "烛光圣堂丝绒床榻全裸羞赧姿态",
-      "prose": "Completely nude on white linen sheets, wearing only a delicate gold cross pendant and white ribbon around her wrist.",
+      "name": "圣堂丝绒床榻全裸态",
+      "prose": "Completely without clothing, wearing only a slender gold cross pendant and a white silk ribbon around one wrist, bare from head to foot.",
       "tokens": [
         "nude",
         "completely nude",
-        "necklace",
-        "bare breasts",
-        "nipples",
-        "heavy blush"
+        "gold pendant",
+        "wrist ribbon",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

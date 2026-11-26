@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "sunohara_shun/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 3945,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunohara_shun",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "私密全裸形态",
+      "prose": "Completely unclothed natural form with bare shoulders and bare feet.",
+      "tokens": [
+        "nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "si_arknights/nsfw_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1161,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
@@ -14,14 +14,15 @@
       "isDefault": false,
       "isNsfw": true,
       "category": "场景衣装状态",
-      "prose": "a sheer jade-tinted lace babydoll nightie with delicate ribbons, translucent across the bust and midriff, revealing waist and slender curves",
+      "prose": "A sheer jade-tinted lace babydoll nightie with delicate ribbon straps, lace-trimmed hem, and matching silk panties, worn with bare legs and barefoot.",
       "tokens": [
-        "sheer babydoll",
-        "jade lace lingerie",
-        "translucent nightie",
-        "thin straps",
-        "cleavage",
-        "panties"
+        "jade lace babydoll",
+        "sheer silk nightie",
+        "thin ribbon straps",
+        "lace trim hem",
+        "matching silk panties",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

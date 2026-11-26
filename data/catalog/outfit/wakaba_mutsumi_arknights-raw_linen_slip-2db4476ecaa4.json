@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/raw_linen_slip",
+  "revision": 1,
+  "sortOrder": 4051,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "raw_linen_slip",
+      "name": "青瓜素简 · 苍绿原麻极简吊带睡裙",
+      "prose": "A straight-cut sage-green raw linen short slip dress with ultra-thin straps, a clean square neckline, and bare feet.",
+      "tokens": [
+        "sage linen slip",
+        "ultra thin straps",
+        "square cut neckline",
+        "straight loose hem",
+        "raw woven fabric",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

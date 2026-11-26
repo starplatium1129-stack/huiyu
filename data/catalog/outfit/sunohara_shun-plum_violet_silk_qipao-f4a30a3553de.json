@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sunohara_shun/plum_violet_silk_qipao",
+  "revision": 1,
+  "sortOrder": 3944,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunohara_shun",
+    "outfit": {
+      "id": "plum_violet_silk_qipao",
+      "name": "紫韵暗纹真丝长袖居家旗袍",
+      "prose": "A graceful plum-violet jacquard silk qipao with three-quarter sleeves, gold frog clasps along a soft mandarin collar, modest side slit, jade hairpin, and embroidered flats.",
+      "tokens": [
+        "purple silk qipao",
+        "floral jacquard",
+        "gold frog buttons",
+        "mandarin collar",
+        "three-quarter sleeves",
+        "side slit",
+        "jade hairpin",
+        "black flat shoes"
+      ]
+    }
+  }
+}

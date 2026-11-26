@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "belfast_azur/royal_corset_peplum_swimdress",
+  "revision": 1,
+  "sortOrder": 4127,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "belfast_azur",
+    "outfit": {
+      "id": "royal_corset_peplum_swimdress",
+      "name": "皇家游艇·藏青白蕾丝束腰泳裙",
+      "prose": "A navy-blue and snow-white corseted lace swimdress featuring a scalloped double-layered peplum skirt, detached white lace wrist cuffs, and a silver bell choker, worn barefoot.",
+      "tokens": [
+        "navy lace swimdress",
+        "white corset bodice",
+        "peplum ruffled skirt",
+        "detached lace cuffs",
+        "silver bell choker",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

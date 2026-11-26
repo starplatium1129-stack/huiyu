@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "suzuran_arknights_lingerie_whisper",
     "characterId": "suzuran_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛医疗部阳光疗养房，窗台上开满了黄色的向日葵与金盏花。端坐在铺着厚厚羊毛垫的单人沙发里，双手整齐地抱在膝前，九条蓬松如蒲公英的金黄小狐尾在身后乖巧收拢，蓝宝石般的大眼睛纯真温顺地望着博士。 她微微抬眸轻语——“博士……！丽萨今天也有好好喝牛奶哦！今天一整天，都可以陪在博士身边吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sunflower_cotton_nightgown",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

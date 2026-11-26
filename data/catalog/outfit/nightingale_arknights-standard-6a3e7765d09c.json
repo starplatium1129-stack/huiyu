@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1980,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
@@ -13,11 +13,14 @@
       "characterId": "nightingale_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white long skirt, white jacket and a white hat.",
+      "prose": "A layered white maxi skirt beneath a cropped white jacket with gold trim buttons, paired with a white nurse hat, a black ribbon tie, and white ankle boots.",
       "tokens": [
-        "white long skirt",
-        "white jacket",
-        "white hat"
+        "white maxi skirt",
+        "cropped white jacket",
+        "gold trim buttons",
+        "white nurse hat",
+        "black ribbon tie",
+        "white ankle boots"
       ]
     }
   }

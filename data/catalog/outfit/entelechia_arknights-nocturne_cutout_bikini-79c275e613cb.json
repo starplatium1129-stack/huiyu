@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/nocturne_cutout_bikini",
+  "revision": 1,
+  "sortOrder": 4033,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "nocturne_cutout_bikini",
+      "name": "幽夜哲思 · 漆黑金环镂空比基尼",
+      "prose": "A matte-black cutout bikini accented with burnished gold ring hardware and crossing torso straps beneath an open sheer obsidian linen duster, paired with strappy black sandals.",
+      "tokens": [
+        "matte black bikini",
+        "gold ring hardware",
+        "crossing waist straps",
+        "sheer black duster",
+        "lightweight linen weave",
+        "strappy black sandals"
+      ],
+      "default": false
+    }
+  }
+}

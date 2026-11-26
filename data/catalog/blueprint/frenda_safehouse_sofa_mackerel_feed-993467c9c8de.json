@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "frenda_safehouse_sofa_mackerel_feed",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2304,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "frenda_safehouse_sofa_mackerel_feed",
     "characterId": "frenda_seivelun",
-    "outfitId": "item_black_turtleneck_beret",
+    "outfitId": "safehouse_striped_lounge_tee",
     "title": "芙兰达 · 安全屋沙发的鲭鱼罐头得意投喂",
     "category": "现代日常",
     "description": "安全屋舒适的皮沙发上，芙兰达歪戴着贝雷帽，踢掉小皮鞋晃动长袜双腿。她用小叉子叉起一块美味的鲭鱼送到你嘴边，得意地眨眼坏笑，嘴角满是邀功的俏皮。",

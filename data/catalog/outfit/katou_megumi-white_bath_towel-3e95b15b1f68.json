@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/white_bath_towel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1314,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "white_bath_towel",
       "name": "温泉雾气束胸白浴巾",
-      "prose": "A plush pure white bath towel wrapped securely across the bust and skimming the upper thighs.",
+      "prose": "A plush pure-white cotton bath towel wrapped neatly above the chest and skimming mid-thigh, worn barefoot.",
       "tokens": [
-        "bath_towel",
-        "white_towel",
-        "bare_shoulders",
-        "bare_legs",
-        "wet_skin",
-        "steam"
+        "white bath towel",
+        "cotton wrap",
+        "folded top edge",
+        "bare shoulders",
+        "bare thighs",
+        "barefoot"
       ],
       "characterId": "katou_megumi",
       "default": false,

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "alice_nikke/wonderland_plush_sleepwear",
+  "revision": 1,
+  "sortOrder": 4064,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "alice_nikke",
+    "outfit": {
+      "id": "wonderland_plush_sleepwear",
+      "name": "奇境兔兔粉白绒球保暖睡衣套",
+      "prose": "A pastel-pink and marshmallow-white thermal fleece pullover hoodie with an oversized hood, pom-pom drawstrings, and soft white knit sleep shorts, paired with striped crew socks and worn barefoot.",
+      "tokens": [
+        "pink fleece hoodie",
+        "marshmallow hood trim",
+        "pom-pom drawstrings",
+        "white knit shorts",
+        "striped crew socks",
+        "barefoot"
+      ]
+    }
+  }
+}

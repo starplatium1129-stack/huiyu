@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shorekeeper/stellar_jellyfish_slip",
+  "revision": 1,
+  "sortOrder": 4076,
+  "createdAt": "2026-11-26T12:28:42.580255300+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
+  "data": {
+    "characterId": "shorekeeper",
+    "outfit": {
+      "id": "stellar_jellyfish_slip",
+      "name": "星海遗珠·晶蓝水母渐变薄纱睡裙",
+      "prose": "A translucent azure-gradient chiffon slip nightdress with flowing tendril-cut ruffled hems, silver filament trim, and spaghetti straps, worn barefoot.",
+      "tokens": [
+        "azure slip dress",
+        "sheer chiffon",
+        "gradient fabric",
+        "ruffled hem",
+        "spaghetti straps",
+        "silver trim",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

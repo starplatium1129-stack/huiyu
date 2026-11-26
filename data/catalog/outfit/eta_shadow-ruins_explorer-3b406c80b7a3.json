@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "eta_shadow/ruins_explorer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1937,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "eta_shadow",
     "outfit": {
       "id": "ruins_explorer",
       "name": "古迹考察探险装",
-      "prose": "Dusty explorer outfit with shorts, sturdy boots and a backpack of rubbing tools, for decoding ancient runes on site.",
+      "prose": "Dusty olive field jacket and tan cargo shorts outfitted with a worn canvas backpack, wide-brimmed explorer hat, leather belt with compass pouch, thick socks, and laced hiking boots.",
       "tokens": [
-        "explorer",
-        "shorts",
-        "boots",
-        "backpack",
-        "hat"
+        "safari jacket",
+        "tan shorts",
+        "canvas backpack",
+        "wide-brim hat",
+        "leather belt",
+        "compass pouch",
+        "crew socks",
+        "hiking boots"
       ],
       "characterId": "eta_shadow",
       "default": false,

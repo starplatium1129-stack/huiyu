@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_beach",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_beach",
       "name": "樱粉白边挂颈泳装与樱花薄羽织",
-      "prose": "A two-piece pink and white high-cut resort bikini beneath a translucent floral haori.",
+      "prose": "Two-piece sakura-pink and white high-cut halter bikini draped beneath a translucent floral-printed chiffon haori, finished with a delicate gold anklet and flat strappy sandals.",
       "tokens": [
-        "bikini",
+        "pink bikini",
+        "white trim",
         "halterneck",
-        "high_leg_bikini",
-        "haori",
-        "sheer_haori",
-        "bare_legs",
-        "sandals"
+        "high-leg bikini",
+        "sheer haori",
+        "floral print",
+        "gold anklet",
+        "flat sandals"
       ],
       "default": false,
       "isDefault": false,

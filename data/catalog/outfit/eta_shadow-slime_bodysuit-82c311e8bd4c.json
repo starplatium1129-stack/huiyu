@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "eta_shadow/slime_bodysuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1932,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "eta_shadow",
     "outfit": {
       "id": "slime_bodysuit",
       "name": "史莱姆百褶研究战服",
-      "prose": "A black slime bodysuit with a pleated skirt and dark cloak, paired with black thigh-high stockings held by slim garter straps with gold clasps.",
+      "prose": "Black slime bodysuit paired with a short pleated skirt and loose dark cloak, finished with gold-clasped garter straps, black thighhigh stockings, and buckled mary janes.",
       "tokens": [
-        "black_bodysuit",
-        "slime_suit",
-        "pleated_skirt",
-        "cloak",
-        "garter_straps",
-        "black_thighhighs",
-        "gold_trim"
+        "black bodysuit",
+        "slime suit",
+        "pleated skirt",
+        "dark cloak",
+        "gold clasps",
+        "garter straps",
+        "black thighhighs",
+        "mary janes"
       ],
       "characterId": "eta_shadow",
       "default": true,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3232,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "exusiai_arknights_swimsuit_allure",
     "characterId": "exusiai_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海面浮动跳台在浪尖上一颠一颤。能天使踩在跳板的最边缘，橘色短发迎着海风飞扬，小巧的天使翅膀欢快地振动着。她低头看着深不见底的湛蓝海水，不仅毫无惧色，反而兴奋地回过头冲你竖起大拇指，大声倒数——「哟！领航员！看到那片超漂亮的深蓝海浪了吗？我要用转体三周半加双枪姿势扎进去！准备好照相机，三、二、一——Rock 'n' Roll！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "sankta_crimson_mesh_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/casual_date",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 508,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "casual_date",
       "isDefault": false,
-      "name": "米驼双排扣短呢外套与藏青格纹高腰短裙",
-      "prose": "A cropped double-breasted camel jacket over a cream turtleneck and tartan pleated skirt, with dark stockings.",
+      "name": "米驼双排扣短外套与藏青A字裙",
+      "prose": "A tailored double-breasted camel wool cropped jacket over a soft ivory blouse and belted navy A-line skirt, finished with sheer black thigh-high stockings and brown leather ankle boots.",
       "tokens": [
-        "beige_jacket",
-        "cropped_jacket",
-        "turtleneck",
-        "plaid_skirt",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "ankle_boots"
+        "camel cropped jacket",
+        "double-breasted",
+        "ivory blouse",
+        "navy a-line skirt",
+        "leather belt",
+        "gold buckle",
+        "black thighhighs",
+        "brown ankle boots"
       ],
       "characterId": "hayase_yuuka"
     }

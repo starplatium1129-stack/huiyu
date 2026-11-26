@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phrolova_wuwa/chamber_rehearsal_blouse",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3504,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phrolova_wuwa",
     "outfit": {
       "id": "chamber_rehearsal_blouse",
       "name": "弦乐排练室高领褶皱丝绸衬衫裙",
-      "prose": "A pleated ivory Victorian blouse with black ribbon neck-tie tucked into a high-waisted crimson brocade pleated skirt.",
+      "prose": "A pleated ivory silk blouse with silver buttons and a black ribbon neck tie tucked into a high-waisted crimson brocade pleated skirt, worn with black stockings and Mary Janes.",
       "tokens": [
-        "white blouse",
-        "victorian",
-        "black ribbon",
-        "red skirt",
+        "ivory pleated blouse",
+        "high collar",
+        "black neck ribbon",
+        "crimson skirt",
         "pleated skirt",
-        "black stockings"
+        "silver buttons",
+        "black stockings",
+        "mary janes"
       ],
       "default": false,
       "isDefault": false,

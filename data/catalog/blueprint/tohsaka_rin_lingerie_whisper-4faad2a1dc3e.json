@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3178,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "tohsaka_rin_lingerie_whisper",
     "characterId": "tohsaka_rin",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "远坂邸古典魔术起居室，壁炉火光照亮了书桌上的各色未切割宝石。坐在欧式单人扶手椅上，一条腿交叠翘起，单手扯了扯过膝黑丝袜的蕾丝上边缘，双马尾随着转头轻摆，泛红的脸颊配上倔强傲娇的眼神，让人移不开目光。 她微微抬眸轻语——“看、看什么看！就算是在自己家里，我也随时保持着万全的魔术礼仪！还有……不准一直盯着我的腿看，笨蛋！”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "scarlet_eyelash_lace_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

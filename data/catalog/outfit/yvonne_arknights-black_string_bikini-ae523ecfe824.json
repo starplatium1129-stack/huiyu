@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/black_string_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1266,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
       "id": "black_string_bikini",
-      "name": "黑色细带泳装",
+      "name": "黑色细带泳装与太阳镜",
       "tokens": [
         "black string bikini",
-        "sunglasses"
+        "side-tie bottom",
+        "triangle halter top",
+        "dark sunglasses",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "a black string bikini with sunglasses",
+      "prose": "A sleek black string bikini with a triangle halter top and side-tie bottoms, paired with dark sunglasses, bare legs, and barefoot.",
       "default": false,
       "isDefault": false
     }

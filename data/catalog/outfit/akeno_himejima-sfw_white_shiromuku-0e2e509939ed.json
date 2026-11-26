@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/sfw_white_shiromuku",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 704,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "sfw_white_shiromuku",
       "name": "鹤纹绢丝高衩白无垢礼服",
-      "prose": "A white silk bridal shiromuku gown with a high slit and subtle crane motifs.",
+      "prose": "A white silk bridal shiromuku kimono woven with crane brocade motifs, a white obi sash, and a high side slit, worn with bare legs and white heeled pumps.",
       "tokens": [
-        "shiromuku",
-        "white_kimono",
-        "silk_kimono",
-        "high_slit",
-        "white_obi",
-        "bare_legs",
-        "heels"
+        "white silk shiromuku",
+        "crane brocade motif",
+        "high side slit",
+        "white brocade obi",
+        "wide kimono sleeves",
+        "bare legs",
+        "white heeled pumps"
       ],
       "default": false,
       "isDefault": false,

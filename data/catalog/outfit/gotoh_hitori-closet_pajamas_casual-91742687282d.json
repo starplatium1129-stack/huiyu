@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/closet_pajamas_casual",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "closet_pajamas_casual",
       "name": "慵懒浅粉落肩软卫衣与棉质短裤",
       "tokens": [
-        "off-shoulder_sweater",
-        "pink_sweater",
-        "loose_sweater",
-        "gray_shorts",
-        "short_shorts",
-        "bare_shoulders",
-        "collarbone",
-        "bare_legs"
+        "pink sweater",
+        "off-shoulder",
+        "loose knit",
+        "grey shorts",
+        "cotton shorts",
+        "ribbed cuffs",
+        "ankle socks",
+        "plush slippers"
       ],
-      "prose": "A soft pastel-pink off-shoulder loungewear sweater worn over gray cotton shorts.",
+      "prose": "Soft pastel-pink off-shoulder knit lounge sweater with relaxed ribbed cuffs worn over heather-grey cotton shorts, paired with soft ankle socks and plush house slippers.",
       "styleHint": "",
       "isDefault": false,
       "default": false,

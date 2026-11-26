@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "vulpisfoglia_arknights/synesthesia_black_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1945,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "vulpisfoglia_arknights",
     "outfit": {
       "id": "synesthesia_black_dress",
-      "name": "音律联觉 · 不对称黑色礼裙",
+      "name": "音律联觉 · 单袖金绣黑礼裙",
       "default": false,
       "isDefault": false,
-      "prose": "An asymmetrical black dress with one wide sleeve, black gloves and high-heeled boots.",
+      "prose": "An asymmetric black evening dress featuring a single wide sleeve with gold-embroidered trim, styled with elbow-length black gloves, onyx drop earrings, sheer dark stockings, and pointed knee boots.",
       "tokens": [
-        "black dress",
-        "asymmetrical clothes",
+        "black asymmetric dress",
         "single wide sleeve",
-        "black gloves",
-        "high heel boots"
+        "gold embroidered trim",
+        "elbow black gloves",
+        "onyx drop earrings",
+        "sheer dark stockings",
+        "pointed knee boots"
       ],
       "characterId": "vulpisfoglia_arknights"
     }

@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "白色银扣简裁婚纱",
-      "prose": "A fitted-waist white satin gown with short veil and silver clasp.",
+      "name": "纯白银扣简裁婚纱",
+      "prose": "A structured white satin bridal gown with a fitted waist, short sheer veil, and silver clasp, paired with white stockings and white pumps.",
       "tokens": [
-        "white satin wedding dress",
+        "white satin gown",
         "fitted waist",
-        "short veil",
-        "silver clasp"
+        "short bridal veil",
+        "silver clasp",
+        "satin straps",
+        "white stockings",
+        "white pumps"
       ],
       "default": false,
       "isDefault": false

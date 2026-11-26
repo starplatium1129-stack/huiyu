@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/volunteer_blouse_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1485,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "volunteer_blouse_skirt",
       "name": "珊瑚衬衫与志愿工作窄裙",
       "tokens": [
-        "coral blouse",
+        "coral collared blouse",
         "rounded collar",
         "cream buttons",
-        "navy fitted skirt"
+        "navy fitted skirt",
+        "sheer black stockings",
+        "black loafers"
       ],
-      "prose": "a coral blouse with a rounded collar and cream buttons, paired with a navy fitted skirt",
+      "prose": "A coral-pink blouse with a rounded collar and cream buttons tucked into a navy fitted skirt, paired with sheer black stockings and black loafers.",
       "default": false,
       "isDefault": false
     }

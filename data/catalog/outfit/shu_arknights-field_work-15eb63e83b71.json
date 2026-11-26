@@ -1,26 +1,27 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/field_work",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "field_work",
-      "name": "鼠尾草亚麻衬衫与米白直筒裤",
+      "name": "鼠尾草绿亚麻衬衫与米白直筒裤",
       "default": false,
       "isDefault": false,
       "tokens": [
-        "sage green linen shirt",
+        "sage linen shirt",
         "stand collar",
-        "sleeves rolled up",
-        "cream straight-leg pants",
+        "rolled cuffs",
+        "cream straight pants",
         "braided brown belt",
-        "dark brown lace-up boots"
+        "jade wrist beads",
+        "brown leather boots"
       ],
-      "prose": "a sage-green linen stand-collar shirt with rolled cuffs, cream straight trousers, braided brown belt and dark brown lace-up boots",
+      "prose": "A sage-green linen stand-collar shirt with rolled cuffs, cream straight-leg trousers, a braided brown leather belt, jade wrist beads, and dark-brown lace-up boots.",
       "category": "日常衣装（创作）"
     }
   }

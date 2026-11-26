@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/obsidian_velvet_plunge_monokini",
+  "revision": 1,
+  "sortOrder": 3946,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "id": "obsidian_velvet_plunge_monokini",
+      "name": "墨黑天鹅绒深V银扣高衩泳装",
+      "prose": "A midnight-black velvet plunging one-piece monokini detailed with ornate silver filigree clasps and ultra-high leg cuts, draped with a sheer white silk shawl and black heeled sandals.",
+      "tokens": [
+        "black velvet monokini",
+        "plunging neckline",
+        "silver clasp",
+        "high leg swimsuit",
+        "white silk shawl",
+        "bare legs",
+        "black heeled sandals"
+      ]
+    }
+  }
+}

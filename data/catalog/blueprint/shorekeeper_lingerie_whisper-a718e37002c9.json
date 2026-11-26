@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3349,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "id": "shorekeeper_lingerie_whisper",
     "characterId": "shorekeeper",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "黑海岸核心星核水镜大厅，四周垂落着发光的数据水母与无垠的深海星云。漂浮伫立在如镜面般的黑水池中央，透明水母般的轻纱羽衣在空中无重力飘动，淡蓝眼眸中流淌着古老数据星芒，双手捧着一颗发光的水晶星核。 她微微抬眸轻语——“无论文明的浪潮如何冲刷这片黑石海滩……只要漂泊者回眸，我始终在此处静候。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "stellar_jellyfish_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

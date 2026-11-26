@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matou_sakura_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3257,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "matou_sakura_lingerie_whisper",
     "characterId": "matou_sakura",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "卫宫邸传统和室，月光透过日式障子木格窗在草席上投下清晰方格影。规矩端坐在和室榻榻米上，低垂着眼眸，纤细手指绞着睡衣带子，紫发长辫搭在胸前，神情温婉却带着一丝隐秘情愫，默默凝视着推门而入的学长。 她微微抬眸轻语——“学长……今晚的饭菜合您的口味吗？如果不介意的话……请让我一直服侍在您身边。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sakura_yukata_silk_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

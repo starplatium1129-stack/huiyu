@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "d_killer_wife/safehouse_housewife_cardigan",
+  "revision": 1,
+  "sortOrder": 4060,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "d_killer_wife",
+    "outfit": {
+      "id": "safehouse_housewife_cardigan",
+      "name": "安全屋烟紫开衫与炭灰百褶裙",
+      "prose": "A muted lavender wrap knit cardigan over an ivory silk blouse tucked into a charcoal pleated midi skirt, finished with a small pearl brooch, sheer black stockings, and black leather flats.",
+      "tokens": [
+        "lavender knit cardigan",
+        "ivory silk blouse",
+        "charcoal pleated skirt",
+        "pearl brooch",
+        "sheer black stockings",
+        "black leather flats"
+      ]
+    }
+  }
+}

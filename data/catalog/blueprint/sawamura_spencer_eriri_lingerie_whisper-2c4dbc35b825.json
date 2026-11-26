@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3409,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_lingerie_whisper",
     "characterId": "sawamura_spencer_eriri",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "洋房二楼画室，桌上数位屏还亮着未画完的同人本线稿，散落着彩色马克笔。跨坐在电脑椅上，双手抱着数位板挡在胸前，露出一颗小虎牙气呼呼地瞪着来人，金色双马尾在肩侧炸起，耳根红透得像熟透的苹果。 她微微抬眸轻语——“伦也你这个大笨蛋！没敲门就进同人画师的房间……你绝对、绝对看到了对吧？！杀了你哦！”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "emerald_gilt_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

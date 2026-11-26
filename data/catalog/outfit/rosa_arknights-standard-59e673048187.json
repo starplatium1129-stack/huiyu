@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "rosa_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1962,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "rosa_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 白色外套与百褶裙",
+      "name": "基础服装 · 白短外套与蓝边百褶裙",
       "characterId": "rosa_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white jacket over a white pleated skirt, with dark tights and dark shoes.",
+      "prose": "A structured white cropped jacket with navy trim and a gold crest brooch over a crisp shirt, black ribbon tie, and white pleated skirt, paired with black opaque pantyhose and black oxford shoes.",
       "tokens": [
-        "white jacket",
+        "white cropped jacket",
+        "navy lapel trim",
         "white pleated skirt",
-        "black pantyhose",
-        "black shoes"
+        "gold crest brooch",
+        "black opaque pantyhose",
+        "black oxford shoes"
       ]
     }
   }

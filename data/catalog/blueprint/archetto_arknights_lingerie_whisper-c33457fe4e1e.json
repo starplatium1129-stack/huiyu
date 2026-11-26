@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3130,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "archetto_arknights_lingerie_whisper",
     "characterId": "archetto_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛静谧的祷告室。空弦换上一袭兰赛尔修道院天青圣洁亚麻长款睡袍，羽翼般纤秀的鸟耳在烛火下轻轻摇曳。她刚刚完成每日例行的祈祷，手掌尚未松开，蓝灰色的瞳眸却忍不住偷偷溜向旁边摆着的“兰赛尔特酿麦芽啤酒改良方案”。她察觉到门口的视线，立刻正襟危坐，脸颊微红——「咳！博士……修道院的复兴也是神圣事业的一部分！这、这绝对不是在祈祷时分心哦！」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "monastic_linen_nightrobe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

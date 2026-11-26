@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_winter_park_bench_thermos_tea_care",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2610,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "itsuwa_winter_park_bench_thermos_tea_care",
     "title": "五和 · 冬日公园长椅上的热茶斟注",
     "category": "现代日常",
-    "outfitId": "amakusa_combat_casual_attire",
+    "outfitId": "camel_park_coat_muffler",
     "description": "学园都市被初雪覆盖的街心公园长椅旁，五和双手握着保温壶，小心翼翼地把刚泡好的热红茶倾入杯盖递向身边的你，白雾轻拂脸颊，目光满是纯澈的依恋。",
     "location": "snowy city park bench beside bare winter trees under gentle overcast afternoon light",
     "action": "双手握着保温壶，小心翼翼地把刚泡好的热红茶倾入杯盖递向身边的你，白雾轻拂脸颊",

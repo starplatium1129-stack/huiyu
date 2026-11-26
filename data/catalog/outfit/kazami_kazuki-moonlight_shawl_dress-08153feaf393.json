@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/moonlight_shawl_dress",
+  "revision": 1,
+  "sortOrder": 4137,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "moonlight_shawl_dress",
+      "name": "月夜观星 · 素白披肩雪纺长裙",
+      "prose": "A flowing white chiffon maxi dress layered with a sheer silver-grey shoulder shawl, an empire waist ribbon, a pearl drop brooch, and silver flat sandals.",
+      "tokens": [
+        "white chiffon gown",
+        "sheer silver shawl",
+        "empire waist ribbon",
+        "pleated long hem",
+        "pearl drop brooch",
+        "silver flat sandals"
+      ],
+      "default": false
+    }
+  }
+}

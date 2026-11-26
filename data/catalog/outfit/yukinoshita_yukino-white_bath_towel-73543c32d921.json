@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/white_bath_towel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1457,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "white_bath_towel",
       "name": "晨雾私语缎面深V系带晨袍",
-      "prose": "A pearl-white silk dressing robe loosely tied with a wide sash and slipped off one shoulder, its parted hem revealing bare legs; she is barefoot.",
+      "prose": "A pearl-white silk dressing robe tied loosely with a wide satin sash and slipped off one shoulder, worn with bare legs and barefoot.",
       "tokens": [
-        "dressing_gown",
-        "silk_robe",
-        "white_robe",
-        "plunging_neckline",
-        "off_shoulder",
-        "sash",
-        "bare_shoulders",
-        "barefoot",
-        "sensual"
+        "white silk robe",
+        "wide satin sash",
+        "off shoulder",
+        "plunging front wrap",
+        "parted long hem",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "yukinoshita_yukino",
       "default": false,

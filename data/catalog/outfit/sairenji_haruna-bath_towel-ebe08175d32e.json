@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sairenji_haruna/bath_towel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "sairenji_haruna",
     "outfit": {
@@ -12,15 +12,13 @@
       "id": "bath_towel",
       "isDefault": false,
       "name": "沐浴后纯白浴巾裹身",
-      "prose": "wrapped securely in a fluffy pure-white bath towel tucked across her chest, leaving her smooth shoulders and legs bare, with slight dampness on her short purple hair and flushed cheeks",
+      "prose": "A fluffy pure white terry-cloth bath towel wrapped securely across the chest, leaving bare shoulders and bare feet.",
       "tokens": [
-        "towel",
-        "bath_towel",
-        "white_towel",
-        "covering_breasts",
-        "bare_shoulders",
-        "wet_hair",
-        "blush",
+        "white bath towel",
+        "fluffy terry wrap",
+        "chest tucked edge",
+        "cotton wrist band",
+        "bare shoulders",
         "barefoot"
       ]
     }

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asuma_toki/graphite_compression_bodysuit",
+  "revision": 1,
+  "sortOrder": 3924,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "asuma_toki",
+    "outfit": {
+      "id": "graphite_compression_bodysuit",
+      "name": "石墨黑无缝弹力特工睡衣",
+      "prose": "A seamless graphite-black stretch compression sleep bodysuit with breathable ergonomic panel seams, short sleeves, and a concealed front zipper.",
+      "tokens": [
+        "black bodysuit",
+        "compression wear",
+        "short sleeves",
+        "front zipper",
+        "ergonomic seams",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

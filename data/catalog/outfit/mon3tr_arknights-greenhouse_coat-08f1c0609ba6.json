@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/greenhouse_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2148,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "greenhouse_coat",
-      "name": "晶绿滚边短实验外套与灰色工装裤",
-      "prose": "A soft grey cropped lab jacket with dark-green piping over a white high-neck shirt, straight utility trousers and a small translucent crystal-shaped pin.",
+      "name": "晶绿滚边短实验外套与工装裤",
+      "prose": "A soft grey cropped lab jacket with dark-green piping and a translucent crystal pin over a white turtleneck shirt, paired with straight utility pants, a nylon belt, and flat lace shoes.",
       "tokens": [
-        "grey cropped lab jacket",
+        "grey cropped jacket",
         "dark green piping",
-        "white high-neck shirt",
-        "straight utility trousers",
-        "crystal pin"
+        "white turtleneck shirt",
+        "straight utility pants",
+        "translucent crystal pin",
+        "matte nylon belt",
+        "flat lace shoes"
       ],
       "characterId": "mon3tr_arknights",
       "default": false,

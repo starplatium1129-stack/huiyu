@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3416,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "saten_ruiko_swimsuit_allure",
     "characterId": "saten_ruiko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风带起细碎的金色砂砾。佐天泪子一身亮黄色扶桑花比基尼，长黑发上别着的纯白花朵在夏风里格外鲜活。她单手抱住沙滩排球，另一手抬起抹掉额角的汗珠，朝着场边遮阳伞下的初春和御坂学姐大声欢呼——「初春！御坂学姐！快来快来，接下来的双人排球赛就要开始了！输的人要请大家吃超大份宇治金时刨冰哦！本大爷可是绝对不会手下留情的！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "hibiscus_yellow_bandeau",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

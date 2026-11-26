@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/bakery_tweed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2164,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "bakery_tweed",
       "name": "燕麦色短呢外套与琥珀格裙",
-      "prose": "An oatmeal cropped tweed jacket over a cream turtleneck and an amber-and-charcoal checked skirt, with a silver feather pin.",
+      "prose": "A cropped oatmeal wool tweed jacket over a cream turtleneck knit and an amber-and-charcoal plaid skirt, finished with a silver feather lapel pin and brown suede loafers.",
       "tokens": [
-        "oatmeal cropped tweed jacket",
-        "cream turtleneck",
-        "amber and charcoal checked skirt",
-        "silver feather pin"
+        "oatmeal tweed jacket",
+        "cropped tailored cut",
+        "cream turtleneck knit",
+        "amber plaid skirt",
+        "silver feather pin",
+        "brown suede loafers"
       ],
       "characterId": "ptilopsis_arknights",
       "default": false,

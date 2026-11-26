@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "cartethyia/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1278,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "无衣装",
+      "name": "卡提希娅·圣泉洗礼纯白全裸态",
       "tokens": [
-        "nude"
+        "nude",
+        "completely nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely without garments, armor, or footwear, resting with bare shoulders and legs.",
       "default": false,
       "isDefault": false
     }

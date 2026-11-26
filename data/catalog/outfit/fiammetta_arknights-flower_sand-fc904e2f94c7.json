@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "fiammetta_arknights/flower_sand",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2095,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "fiammetta_arknights",
     "outfit": {
       "id": "flower_sand",
-      "name": "沙色修身西装与金色羽饰胸针",
-      "prose": "A sand-colored tailored blazer over a white blouse and deep-red skirt, finished with a brushed-gold feather lapel pin and dark boots.",
+      "name": "沙色修身西装与金羽饰胸针",
+      "prose": "A sand-colored tailored blazer over an ecru silk blouse and deep-crimson midi skirt, accented by a brushed-gold feather lapel pin, brown leather belt, sheer stockings, and chestnut ankle boots.",
       "tokens": [
-        "sand colored tailored blazer",
-        "white blouse",
-        "deep red skirt",
-        "gold feather lapel pin",
-        "dark boots"
+        "sand tailored blazer",
+        "ecru silk blouse",
+        "crimson midi skirt",
+        "gold feather pin",
+        "sheer nude stockings",
+        "chestnut ankle boots"
       ],
       "characterId": "fiammetta_arknights",
       "default": false,

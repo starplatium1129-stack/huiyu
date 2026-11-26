@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/white_garden_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 373,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
@@ -12,12 +12,16 @@
       "id": "white_garden_dress",
       "isDefault": false,
       "name": "白棉铃兰刺绣花园裙",
-      "prose": "A gathered white cotton dress with short sleeves and green lily-stem embroidery beside the waist seam.",
+      "prose": "A gathered white cotton garden dress with short puff sleeves and green lily-of-the-valley stem embroidery along the waist seam, paired with a straw sun hat, white knee socks, and Mary Jane shoes.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "gathered white cotton dress",
-        "short sleeves",
-        "green lily-stem embroidery at waist"
+        "white cotton sundress",
+        "short puff sleeves",
+        "green lily embroidery",
+        "gathered waist seam",
+        "straw sun hat",
+        "white knee socks",
+        "mary jane shoes"
       ]
     }
   }

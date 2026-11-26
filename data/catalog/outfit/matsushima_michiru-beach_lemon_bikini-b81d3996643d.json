@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "matsushima_michiru/beach_lemon_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1515,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "matsushima_michiru",
     "outfit": {
       "id": "beach_lemon_bikini",
       "name": "盛夏日光亮黄分体比基尼",
-      "prose": "A bright lemon-yellow triangle string bikini with crisp white contrast trim, halterneck ties, and side-tie bottoms. Matching yellow scrunchies secure her twin tails.",
+      "prose": "A bright lemon-yellow triangle string bikini edged in crisp white contrast trim with halterneck straps, side-tie bottoms, and bare feet.",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "yellow_bikini",
-        "string_bikini",
-        "halterneck",
-        "side-tie_bikini_bottom",
-        "bare_shoulders",
-        "bare_arms",
-        "navel",
-        "bare_legs"
+        "yellow string bikini",
+        "white contrast trim",
+        "halter neck straps",
+        "side tie bottoms",
+        "yellow ribbon scrunchies",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

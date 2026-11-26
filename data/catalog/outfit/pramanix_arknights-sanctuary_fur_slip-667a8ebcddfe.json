@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/sanctuary_fur_slip",
+  "revision": 1,
+  "sortOrder": 4091,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "sanctuary_fur_slip",
+      "name": "圣坛绒边 · 银白薄纱吊带睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "pramanix_arknights",
+      "prose": "A translucent silver-white silk slip nightgown with delicate spaghetti straps, soft white fur trim along the neckline and lace-bordered hem, and a slender silver bell ribbon anklet, worn barefoot.",
+      "tokens": [
+        "white silk slip",
+        "sheer chiffon skirt",
+        "white fur trim",
+        "thin spaghetti straps",
+        "lace hem border",
+        "silver bell anklet",
+        "barefoot"
+      ]
+    }
+  }
+}

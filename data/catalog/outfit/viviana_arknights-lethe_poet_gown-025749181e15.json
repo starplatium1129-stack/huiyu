@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/lethe_poet_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 393,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "default": false,
       "id": "lethe_poet_gown",
       "isDefault": false,
-      "name": "莱塔尼亚幽蓝丝绒露背高衩咏诗礼裙",
-      "prose": "A deep sapphire-blue velvet ballgown boasting sheer black lace lantern sleeves, an open back, and an alluring thigh-high slit.",
+      "name": "莱塔尼亚幽蓝丝绒露背咏诗礼裙",
+      "prose": "A deep sapphire-blue velvet evening gown featuring sheer black lace lantern sleeves, an open back, a gold choker, and a thigh-high slit, worn with pointed high heels.",
       "tokens": [
-        "blue_dress",
-        "velvet_dress",
-        "backless_dress",
-        "lace_sleeves",
-        "high_slit",
-        "gold_choker",
-        "bare_legs",
-        "high_heels"
+        "sapphire velvet gown",
+        "open back cut",
+        "sheer black lace",
+        "lantern sleeves",
+        "high thigh slit",
+        "gold choker",
+        "bare legs",
+        "pointed high heels"
       ],
       "characterId": "viviana_arknights"
     }

@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "horn_arknights/terrace_pearl",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2115,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "horn_arknights",
     "outfit": {
       "id": "terrace_pearl",
       "name": "珍珠灰长裙与深蓝丝绒腰饰",
-      "prose": "A pearl-grey column dress with a dark-blue velvet waist ribbon and a fine shoulder cape, finished with a silver clasp.",
+      "prose": "A pearl-grey column dress accented with a deep navy velvet waist ribbon and sheer shoulder capelet held by a silver filigree clasp, paired with a pearl bracelet and silver low heels.",
       "tokens": [
-        "pearl grey column dress",
-        "dark blue velvet waist ribbon",
-        "fine shoulder cape",
-        "silver clasp"
+        "pearl column dress",
+        "navy velvet ribbon",
+        "sheer grey capelet",
+        "silver filigree clasp",
+        "pearl bead bracelet",
+        "silver low heels"
       ],
       "characterId": "horn_arknights",
       "default": false,

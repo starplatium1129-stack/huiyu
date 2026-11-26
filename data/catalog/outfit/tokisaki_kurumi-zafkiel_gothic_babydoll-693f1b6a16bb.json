@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/zafkiel_gothic_babydoll",
+  "revision": 1,
+  "sortOrder": 4194,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "zafkiel_gothic_babydoll",
+      "name": "时之梦魇·绯黑玫瑰蕾丝透视睡裙",
+      "prose": "A crimson and black chiffon babydoll slip layered with black rose lace, an underbust waist cincher, velvet ribbons, and sheer trailing hems, worn barefoot.",
+      "tokens": [
+        "crimson babydoll slip",
+        "black rose lace",
+        "underbust cincher",
+        "sheer chiffon hem",
+        "velvet ribbons",
+        "satin straps",
+        "bare thighs",
+        "barefoot"
+      ]
+    }
+  }
+}

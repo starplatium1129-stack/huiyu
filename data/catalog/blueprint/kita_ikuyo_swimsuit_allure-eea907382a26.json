@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3379,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "kita_ikuyo_swimsuit_allure",
     "characterId": "kita_ikuyo",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海边的浪花像开啤酒一样轰然翻涌。喜多踩着浪尖高高跃起，红色的荷叶边比基尼在水光里明媚得像一朵盛开的太阳花。她单脚落地踢碎浪沫，两手在脸颊旁比起可爱的剪刀手，自带的强大现充光芒几乎要把海浪都照亮了——「一、二、茄子！波奇酱，快看镜头！抓拍到了超级棒的合影哦！今天我们要把沙滩排球、冲浪、还有海边烧烤全部玩一遍！青春就是要毫无保留地大闹一场才行！」",
-    "outfitId": "crimson_summer_bikini",
+    "outfitId": "kita_sunflower_ruffle_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

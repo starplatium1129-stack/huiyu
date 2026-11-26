@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/black_gold_gown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1449,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "id": "black_gold_gown",
       "name": "黑金巴洛克刺绣高衩丝绒抹胸礼裙",
       "tokens": [
-        "strapless_dress",
-        "black_dress",
-        "velvet_dress",
-        "gold_embroidery",
-        "high_slit",
-        "bare_shoulders",
-        "bare_legs",
-        "high_heels"
+        "black velvet gown",
+        "strapless corset bodice",
+        "gold baroque embroidery",
+        "soaring side slit",
+        "silk ribbon sash",
+        "bare shoulders",
+        "bare legs",
+        "stiletto heels"
       ],
-      "prose": "A strapless midnight-black velvet evening gown embellished with opulent golden baroque embroidery and a soaring side slit.",
+      "prose": "A strapless midnight-black velvet evening gown adorned with opulent gold baroque embroidery, a silk ribbon sash, and a soaring side slit, paired with stiletto heels.",
       "default": false,
       "isDefault": false,
       "characterId": "viviana_arknights"

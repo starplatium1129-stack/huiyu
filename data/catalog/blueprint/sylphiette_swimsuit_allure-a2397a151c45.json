@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3251,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.200Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "sylphiette_swimsuit_allure",
     "characterId": "sylphiette",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "无人的高山林海湖湾清凉怡人。希露菲叶特穿着森之妖精薄荷绿叶脉系带连身泳裙，赤足踩在清澈见底的鹅卵石上。精灵长耳羞怯地微微下垂泛红，她攥着裙角微红着脸看向你，眼神里满是不安而又无比依恋的纯真爱意。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "forest_leaf_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "modernia_morning_apron_breakfast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2130,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "modernia_morning_apron_breakfast",
     "characterId": "modernia",
-    "outfitId": "first_affection_knit",
+    "outfitId": "marian_kitchen_apron",
     "title": "神罚 · 清晨厨房的爱心煎蛋",
     "category": "日常约会",
     "description": "温馨的现代公寓厨房内，阳光穿过透明纱帘。神罚身穿浅灰针织裙外系棉麻围裙，端着刚出锅的爱心煎蛋转头对你甜甜微笑，嘴角沾着一点面粉，满心欢喜。",

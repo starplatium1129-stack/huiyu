@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/peach_ruffled_camisole",
+  "revision": 1,
+  "sortOrder": 4148,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "peach_ruffled_camisole",
+      "name": "蜜桃木耳边纯棉吊带睡衣套",
+      "prose": "A double-layered peach-pink cotton camisole with lettuce-edge frills and thin ribbon straps paired with gathered elastic sleep shorts, worn with bare legs and barefoot.",
+      "tokens": [
+        "peach cotton camisole",
+        "lettuce edge frills",
+        "double-layer cotton",
+        "elastic sleep shorts",
+        "thin ribbon straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

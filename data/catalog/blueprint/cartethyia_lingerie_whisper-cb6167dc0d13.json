@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3358,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.406Z",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "id": "cartethyia_lingerie_whisper",
     "characterId": "cartethyia",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "夜色吞没浮岛的静谧时分。卡提希娅换上一件水蓝半透真丝吊带裙，裙摆点缀着极细微的潮汐波纹刺绣。她侧卧在露台木榻上，一只手轻触耳垂，闭目捕捉着来自深海频率的呢喃。海风将她轻盈的发丝吹向夜空，她缓缓睁开澄澈的双眼，望向踏月而来的你——「浪潮的脉动今夜格外柔和……靠近些吧，我听到了属于你的频率。」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "tidal_silk_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

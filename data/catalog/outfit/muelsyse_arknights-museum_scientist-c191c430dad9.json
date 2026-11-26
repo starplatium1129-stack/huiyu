@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/museum_scientist",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2021,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "museum_scientist",
-      "name": "白色实验外套与黑色长裙",
-      "prose": "A white lab coat over a brown shirt and a long black skirt, with dark boots.",
+      "name": "白色实验外套与摩卡针织长裙",
+      "prose": "A crisp white laboratory coat worn open over a mocha knit shirt and a black maxi skirt, accented with an enamel lapel badge, dark ribbed tights, and dark leather Chelsea boots.",
       "tokens": [
         "white lab coat",
-        "brown shirt",
-        "long black skirt",
-        "dark boots"
+        "mocha knit shirt",
+        "black maxi skirt",
+        "enamel lapel badge",
+        "dark ribbed tights",
+        "dark chelsea boots"
       ],
       "characterId": "muelsyse_arknights",
       "default": false,

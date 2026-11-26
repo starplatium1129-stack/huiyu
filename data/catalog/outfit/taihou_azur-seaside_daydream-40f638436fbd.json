@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "taihou_azur/seaside_daydream",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 599,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "taihou_azur",
     "outfit": {
       "id": "seaside_daydream",
-      "name": "海风潮韵细带比基尼",
-      "prose": "a red string bikini, a delicate gold belly chain and a sheer black sarong tied around her hips",
+      "name": "海风潮韵·绯红细带比基尼",
+      "prose": "A crimson string bikini accented with a delicate gold belly chain, crimson flower pin, and a sheer black sarong knotted at the hip, worn barefoot.",
       "tokens": [
         "red string bikini",
         "gold belly chain",
-        "sheer black sarong tied at hips",
+        "sheer black sarong",
+        "hip tie knot",
+        "crimson flower pin",
+        "bare shoulders",
         "barefoot"
       ],
       "default": false,

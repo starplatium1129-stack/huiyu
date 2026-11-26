@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "fujiwara_chika/weekend_parka",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1640,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfit": {
       "id": "weekend_parka",
       "name": "甜酷玫粉短款连帽风衣与丹宁包臀超短裙",
-      "prose": "A cropped rose-pink hooded parka over a fitted white t-shirt and washed denim miniskirt.",
+      "prose": "A cropped rose-pink hooded parka over a fitted white T-shirt and washed denim miniskirt, worn with bare legs and white sneakers.",
       "tokens": [
-        "pink_jacket",
-        "cropped_jacket",
-        "hoodie",
-        "white_t-shirt",
-        "denim_skirt",
-        "miniskirt",
-        "bare_legs",
-        "white_sneakers"
+        "pink cropped parka",
+        "hooded jacket",
+        "white fitted t-shirt",
+        "washed denim miniskirt",
+        "silver zipper",
+        "bare legs",
+        "white sneakers"
       ],
       "default": false,
       "characterId": "fujiwara_chika",

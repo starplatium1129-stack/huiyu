@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sfw_verdant_bridal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sfw_verdant_bridal",
       "name": "白花谷银环垂褶高开衩真丝婚纱",
-      "prose": "An ivory silk gown with a draped cowl neckline, open back and high slit over sheer stockings.",
+      "prose": "A fluid ivory silk wedding gown sculpted with a draped cowl neckline, bare back, tall side slit, delicate floral-crown veil, sheer stockings, and silver heels.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "cowl_neck",
-        "backless_dress",
-        "high_slit",
-        "silk_dress",
-        "sheer_thighhighs",
-        "bridal_veil",
-        "heels"
+        "white silk gown",
+        "draped cowl neck",
+        "open back",
+        "high side slit",
+        "floral bridal veil",
+        "sheer stockings",
+        "silver heels"
       ],
       "isDefault": false,
       "default": false,

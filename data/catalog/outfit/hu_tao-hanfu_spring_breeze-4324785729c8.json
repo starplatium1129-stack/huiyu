@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "hu_tao/hanfu_spring_breeze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "hanfu_spring_breeze",
       "name": "朱黑金蝶广袖汉服",
-      "prose": "A crimson silk hanfu with black borders, flowing sheer sleeves and restrained gold butterfly embroidery along the hem, finished with a fluttering sash and jade hairpin.",
+      "prose": "Crimson silk hanfu bordered in black with flowing sheer wide sleeves and gold butterfly embroidery along the hem, cinched with a fluttering waist sash and paired with a jade hairpin and embroidered slippers.",
       "tokens": [
-        "red hanfu",
+        "crimson hanfu",
         "black trim",
-        "silk",
+        "silk robe",
         "wide sleeves",
-        "sheer sleeves",
         "gold embroidery",
-        "jade hairpin"
+        "waist sash",
+        "jade hairpin",
+        "embroidered shoes"
       ],
       "default": false,
       "isDefault": false

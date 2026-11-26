@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chloe_von_einzbern/fuchsia_harness_babydoll",
+  "revision": 1,
+  "sortOrder": 3975,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "chloe_von_einzbern",
+    "outfit": {
+      "id": "fuchsia_harness_babydoll",
+      "name": "深粉交叉绑带透视蕾丝吊带",
+      "prose": "A playful fuchsia sheer floral-lace babydoll accented with crisscrossing elastic harness straps, dainty satin bows, and scalloped lace edging.",
+      "tokens": [
+        "fuchsia lace babydoll",
+        "sheer floral lace",
+        "criss-cross harness",
+        "satin ribbon bows",
+        "scalloped trim",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

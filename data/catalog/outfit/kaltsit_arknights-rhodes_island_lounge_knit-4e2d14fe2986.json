@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/rhodes_island_lounge_knit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 297,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "rhodes_island_lounge_knit",
       "name": "燕麦高领双面羊绒衫与墨绿开衩阔腿裤",
-      "prose": "An oatmeal cashmere turtleneck draped over fluid dark-green trousers with thigh-high side slits.",
+      "prose": "An oatmeal double-faced cashmere turtleneck paired with fluid forest-green wide trousers featuring tall thigh slits and indoor house slippers.",
       "tokens": [
+        "oatmeal cashmere sweater",
         "turtleneck",
-        "cashmere_sweater",
-        "green_pants",
-        "slit_pants",
-        "bare_legs"
+        "dark green pants",
+        "slit wide trousers",
+        "leather belt",
+        "indoor slippers"
       ],
       "characterId": "kaltsit_arknights",
       "default": false,

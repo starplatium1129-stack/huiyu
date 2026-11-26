@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "st_louis_azur/cobalt_convertible_halter_jumpsuit",
+  "revision": 1,
+  "sortOrder": 4135,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "st_louis_azur",
+    "outfit": {
+      "id": "cobalt_convertible_halter_jumpsuit",
+      "name": "海岸兜风·钴蓝丝绸挂脖连体裤与短夹克",
+      "prose": "A cobalt-blue silk halter jumpsuit with wide-leg trousers worn under a white cropped moto jacket, styled with tinted driving sunglasses, gold hoops, and stiletto sandals.",
+      "tokens": [
+        "cobalt halter jumpsuit",
+        "white cropped jacket",
+        "wide silk trousers",
+        "gold hoop earrings",
+        "tinted driving sunglasses",
+        "slim silver belt",
+        "stiletto sandals"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3156,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "ptilopsis_arknights_lingerie_whisper",
     "characterId": "ptilopsis_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛中央主机机房辅室，幽蓝色的机柜呼吸灯有节奏地明灭。规整地坐在服务器终端边，双手自然置于膝上，头顶鸮羽微立，机械音调平缓但耳尖悄然泛红，直视着博士。 她微微抬眸轻语——“报告博士：体温传感器显示升高0.8摄氏度，心率波动异常。经分析判定为……羞涩反应。请指示应对方案。”",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "honeycomb_mesh_teddy",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

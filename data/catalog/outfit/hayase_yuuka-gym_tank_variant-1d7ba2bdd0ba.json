@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/gym_tank_variant",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1299,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "id": "gym_tank_variant",
-      "name": "赛后修身挂颈运动背心与侧开衩运动短裤",
+      "name": "赛后深蓝挂颈运动背心短裤",
       "tokens": [
-        "tank_top",
-        "cropped_top",
-        "athletic_shorts",
-        "gym_shorts",
-        "side_slit",
-        "bare_legs",
-        "sneakers"
+        "navy tank top",
+        "halterneck",
+        "cropped top",
+        "split athletic shorts",
+        "white trim",
+        "bare legs",
+        "white sneakers"
       ],
-      "prose": "A fitted navy workout tank top paired with split-hem athletic shorts.",
+      "prose": "A fitted navy athletic halter tank top paired with white-piped split-hem running shorts and crisp white trainers.",
       "default": false,
       "isDefault": false,
       "characterId": "hayase_yuuka"

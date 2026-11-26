@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/dojo_indigo_hakama_gi",
+  "revision": 1,
+  "sortOrder": 4124,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "id": "dojo_indigo_hakama_gi",
+      "name": "天草剑道·素白道服与深靛剑道袴",
+      "prose": "A traditional white cotton keikogi jacket tucked into wide pleated deep-indigo hakama trousers secured with a crimson waist cord and wrapped wrist bracers, worn barefoot.",
+      "tokens": [
+        "white cotton keikogi",
+        "deep indigo hakama",
+        "wide pleated trousers",
+        "crimson waist cord",
+        "wrapped cloth bracers",
+        "barefoot"
+      ]
+    }
+  }
+}

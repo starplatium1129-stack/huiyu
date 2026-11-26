@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "cantarella_wuwa/gossamer_jellyfish_negligee_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3407,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cantarella_wuwa",
     "outfit": {
       "id": "gossamer_jellyfish_negligee_r15",
       "name": "海月幻彩半透薄纱深V寝衣",
-      "prose": "An iridescent sheer violet chiffon negligee with a plunging neckline, cascading ruffled cuffs, and bare thighs visible through the fabric.",
+      "prose": "An iridescent sheer violet chiffon negligee with a deep plunging neckline, cascading ruffled cuffs, and a delicate pearl anklet, worn barefoot.",
       "tokens": [
-        "purple negligee",
-        "sheer",
+        "violet negligee",
+        "iridescent chiffon",
         "plunging neckline",
-        "deep cleavage",
-        "ruffles",
-        "bare thighs"
+        "ruffled cuffs",
+        "sheer fabric",
+        "pearl anklet",
+        "bare thighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

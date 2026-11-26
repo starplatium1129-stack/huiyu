@@ -1,24 +1,28 @@
 {
   "kind": "outfit",
   "id": "tsukatsuki_rio/sfw_private_pool_onepiece",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1137,
   "createdAt": "2026-10-06T13:54:56.677548700+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "tsukatsuki_rio",
     "outfit": {
       "id": "sfw_private_pool_onepiece",
-      "name": "红镶边黑色连体泳装",
+      "name": "红镶边黑建筑感连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a sleek black one-piece swimsuit with narrow red piping and a light sheer black cover-up",
+      "prose": "A sculpted high-cut black one-piece swimsuit accented with crimson structural piping and an open back, wrapped lightly with a sheer black chiffon sarong.",
       "tokens": [
         "black one-piece swimsuit",
         "red piping",
-        "sheer black cover-up"
+        "open back",
+        "high leg swimsuit",
+        "sheer black sarong",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

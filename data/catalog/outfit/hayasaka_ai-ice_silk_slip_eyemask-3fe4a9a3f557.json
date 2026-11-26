@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/ice_silk_slip_eyemask",
+  "revision": 1,
+  "sortOrder": 4153,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "id": "ice_silk_slip_eyemask",
+      "name": "冰蓝真丝吊带衬裙与真丝眼罩",
+      "prose": "A sleek ice-blue mulberry silk slip dress with thin spaghetti straps and tailored bodice darts, accompanied by a matching silk sleep mask, bare legs, and barefoot.",
+      "tokens": [
+        "ice blue slip",
+        "mulberry silk satin",
+        "spaghetti straps",
+        "tailored dart bodice",
+        "silk sleep mask",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "ushio_noa/silk_slip_nightdress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1673,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "ushio_noa",
     "outfit": {
       "characterId": "ushio_noa",
       "id": "silk_slip_nightdress",
-      "name": "无暇录忆 · 纯白透视细褶雪纺吊带睡裙",
-      "prose": "一袭纯净得如白纸般的纯白双层雪纺吊带睡裙，胸前以极细密的垂直百褶修饰，轻薄透明的裙幅在双腿间飘逸，圣洁高贵而又充满隐秘的挑逗情愫。",
+      "name": "淡紫罗兰真丝细带睡裙",
+      "prose": "A lustrous pale-lavender silk slip nightdress held by slender spaghetti straps and edged with delicate ivory lace at the bust and side-slit hem.",
       "tokens": [
-        "pure white translucent pleated chiffon slip dress",
-        "delicate micro-pleated bodice",
-        "double gossamer layer",
-        "thin spaghetti straps",
-        "pristine secretary boudoir attire"
+        "lavender silk slip",
+        "nightgown",
+        "spaghetti straps",
+        "ivory lace trim",
+        "side slit",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

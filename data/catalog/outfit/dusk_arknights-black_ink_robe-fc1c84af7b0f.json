@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/black_ink_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1170,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
       "id": "black_ink_robe",
       "name": "画斋黑色薄袍",
       "tokens": [
-        "black robe",
-        "wide sleeves"
+        "black silk robe",
+        "sheer wide sleeves",
+        "slanted wrap front",
+        "waist tie",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "a light black robe with loose wide sleeves",
+      "prose": "A lightweight translucent black studio robe crafted with sweeping wide sleeves and a loosely tied wrap waist.",
       "default": false,
       "isDefault": false
     }

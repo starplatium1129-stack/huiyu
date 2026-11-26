@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3228,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "dusk_arknights_swimsuit_allure",
     "characterId": "dusk_arknights",
@@ -13,7 +13,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "sumi_bamboo_shoulder_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

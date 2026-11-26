@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "hu_tao/casual_liyue_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "casual_liyue_street",
       "name": "墨褐盘扣毛衣与朱红百褶裙",
-      "prose": "A cozy dark-walnut knit sweater with a small asymmetrical frog-button closure, a vermilion pleated miniskirt, black knee socks and dark ankle boots.",
+      "prose": "Cozy dark-walnut knit sweater fastened with asymmetrical Chinese frog buttons over a vermilion pleated miniskirt, accented with silver rings, black knee-high socks, and dark leather ankle boots.",
       "tokens": [
-        "dark brown sweater",
-        "oversized clothes",
+        "brown sweater",
+        "oversized knit",
         "frog buttons",
-        "red pleated miniskirt",
+        "red miniskirt",
+        "pleated skirt",
+        "silver rings",
         "black kneehighs",
-        "dark ankle boots"
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_white_bridal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_white_bridal",
       "name": "方领重缎建筑感拖尾花嫁",
-      "prose": "A silk-satin bridal gown with a square neckline and deep front slit over delicate sheer stockings.",
+      "prose": "A structured ivory silk-satin wedding gown with an architectural square neckline, deep front slit, trailing cathedral train, lace veil, sheer stockings, and heels.",
       "tokens": [
-        "white_wedding_dress",
-        "square_neckline",
-        "silk_satin",
-        "high_slit",
-        "long_train",
-        "bridal_veil",
-        "white_thighhighs",
-        "high_heels"
+        "white wedding gown",
+        "square neckline",
+        "deep front slit",
+        "long cathedral train",
+        "bridal veil",
+        "sheer white stockings",
+        "ivory heels"
       ],
       "characterId": "jeanne_d_arc",
       "default": false,

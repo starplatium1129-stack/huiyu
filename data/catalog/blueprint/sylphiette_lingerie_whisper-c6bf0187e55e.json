@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3252,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "sylphiette_lingerie_whisper",
     "characterId": "sylphiette",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "夏隆王国阿斯拉风格新婚洋房卧室，木质窗外是葱茏林木与清澈溪流。坐在床头整理着浅绿色的窗帘，双手收在胸前，白发（已渐转白）短发下精灵尖耳微微抖动，红着脸转头看向鲁迪，眼眸盈满了小鸟依人般的柔顺与幸福。 她微微抬眸轻语——“鲁迪……新家的床很舒服哦。今晚……我也换上了新买的睡衣……你会喜欢吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "asura_clover_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

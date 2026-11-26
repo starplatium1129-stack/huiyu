@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/aesc_rain_witch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "aesc_rain_witch",
-      "name": "雨之魔女梣蓝袍",
-      "prose": "A silver-edged blue robe with a wide-brim witch hat.",
+      "name": "雨之魔女宽檐帽银边蓝袍",
+      "prose": "A sweeping dark-blue witch robe trimmed with silver braid and paired with her signature wide-brimmed pointed hat, leather waist belt, and tall boots.",
       "tokens": [
-        "aesc (fate)",
-        "blue robe",
-        "wide-brimmed witch hat",
-        "silver edging"
+        "witch hat",
+        "wide brim",
+        "navy witch robe",
+        "silver trim",
+        "leather belt",
+        "brown leather boots"
       ],
       "default": false,
       "isDefault": false

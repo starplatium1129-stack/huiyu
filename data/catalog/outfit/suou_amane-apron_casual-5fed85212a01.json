@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "suou_amane/apron_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 645,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
       "id": "apron_casual",
       "name": "粉色荷叶围裙与奶油针织裙",
-      "prose": "a pastel-pink frilled apron over a cream off-shoulder knitted dress, with sheer tights and soft house slippers",
+      "prose": "A pastel-pink frilled apron tied with a satin waist bow over an off-shoulder cream sweater dress, sheer black pantyhose, and soft house slippers.",
       "tokens": [
-        "pink apron",
-        "frills",
+        "pink frilled apron",
         "cream sweater dress",
-        "off shoulder",
-        "pantyhose",
-        "slippers"
+        "off shoulder knit",
+        "sheer black pantyhose",
+        "satin waist bow",
+        "soft house slippers"
       ],
       "default": false,
       "isDefault": false

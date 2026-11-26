@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shirai_kuroko/crimson_garter_lace_set",
+  "revision": 1,
+  "sortOrder": 4116,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "shirai_kuroko",
+    "outfit": {
+      "id": "crimson_garter_lace_set",
+      "name": "风纪暗夜·绯红透视蕾丝吊袜内衣",
+      "prose": "A crimson sheer lace underwire bra set with satin ribbon bows, intricate black garter belt straps, matching lace panties, and lace-topped thigh-high stockings, worn barefoot.",
+      "tokens": [
+        "crimson lace bra",
+        "sheer mesh cups",
+        "black garter belt",
+        "matching lace panties",
+        "lace-topped thighhighs",
+        "satin ribbon bows",
+        "barefoot"
+      ]
+    }
+  }
+}

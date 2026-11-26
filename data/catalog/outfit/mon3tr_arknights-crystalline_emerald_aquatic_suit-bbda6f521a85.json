@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/crystalline_emerald_aquatic_suit",
+  "revision": 1,
+  "sortOrder": 4021,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "crystalline_emerald_aquatic_suit",
+      "name": "源石结晶·黑曜翠线高叉连体水着",
+      "prose": "A form-fitting matte-black textured high-leg aquatic one-piece swimsuit traced with luminescent emerald lines, geometric cutouts, polymer harness straps, and a hexagonal clasp, worn barefoot.",
+      "tokens": [
+        "black aquatic swimsuit",
+        "highleg one-piece",
+        "emerald glow lines",
+        "geometric cutouts",
+        "polymer harness straps",
+        "hexagonal metal clasp",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

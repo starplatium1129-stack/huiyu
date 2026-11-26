@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3131,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "pozyomka_arknights_swimsuit_allure",
     "characterId": "pozyomka_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风将凉亭垂挂的纯白纱幔吹得如烟似雾。鸿雪优雅地斜倚在堆满丝绒靠枕的藤榻上，蓬松的鲁珀长尾在裙边惬意地微微扫动。她放下手中的特制羽毛笔，在写满娟秀文字的羊皮纸旁合上书页，唇角泛起温柔如蜜的笑意——「大海与杜林的孩子们一样纯真，让人忍不住写下新的诗句。不过……在完成这篇故事之前，博士，能请你坐到我身边，为我的下一段乐章提供一些灵感吗？」",
-    "outfitId": "pink_summer_bikini",
+    "outfitId": "durin_embroidery_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_white_bridal_gown",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 233,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,16 +12,15 @@
       "id": "sfw_white_bridal_gown",
       "isDefault": false,
       "name": "蛛网蕾丝抹胸开衩婚纱与白色长袜",
-      "prose": "A white silk-faille wedding gown with a sweetheart bodice, sheer web-lace sleeves and a high slit over white lace stockings.",
+      "prose": "A white silk-faille wedding gown with sheer web-lace sleeves, a high thigh slit, and a flowing tulle veil over white lace thigh-highs and ivory satin heels.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "sweetheart_neckline",
-        "high_slit",
-        "lace_sleeves",
-        "veil",
-        "white_thighhighs",
-        "white_heels"
+        "white bridal gown",
+        "silk faille bodice",
+        "sheer lace sleeves",
+        "high thigh slit",
+        "tulle chapel veil",
+        "white lace thighhighs",
+        "ivory satin heels"
       ],
       "characterId": "shokuhou_misaki"
     }

@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "kotegawa_yui/cat_costume",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kotegawa_yui",
     "outfit": {
       "default": false,
       "id": "cat_costume",
       "isDefault": false,
-      "name": "羞耻猫娘变身毛绒装",
-      "prose": "a strapless black leather leotard with a black cat-ear headband, plush paw mittens, a costume tail and black thigh-high stockings",
+      "name": "黑色抹胸猫娘变身装",
+      "prose": "A strapless front-zip black leather leotard costume paired with plush paw mittens, a black velvet ribbon choker, sheer black thigh-high stockings, and black heeled boots.",
       "tokens": [
-        "cat costume",
-        "animal ear headband",
-        "fake tail",
         "black leather leotard",
-        "strapless",
-        "paw gloves",
-        "black thighhighs"
+        "strapless front zip",
+        "plush paw mittens",
+        "black ribbon choker",
+        "black sheer thighhighs",
+        "black heeled boots"
       ]
     }
   }

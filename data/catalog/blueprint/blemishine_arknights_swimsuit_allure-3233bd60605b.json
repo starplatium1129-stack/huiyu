@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3147,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "blemishine_arknights_swimsuit_allure",
     "characterId": "blemishine_arknights",
@@ -13,7 +13,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "radiant_halter_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,31 +1,26 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/cultural_festival_butler",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1571,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "cultural_festival_butler",
       "name": "秀华文化祭冷峻修身短款燕尾服与短裤",
       "tokens": [
-        "butler",
-        "suit",
-        "black_suit",
-        "tuxedo",
-        "white_shirt",
-        "collared_shirt",
-        "bowtie",
-        "vest",
-        "suit_vest",
-        "shorts",
-        "black_thighhighs",
-        "thighhighs",
-        "loafers"
+        "black tuxedo",
+        "cropped tailcoat",
+        "suit vest",
+        "white shirt",
+        "white bowtie",
+        "dress shorts",
+        "black thighhighs",
+        "leather loafers"
       ],
-      "prose": "A black tuxedo vest and short jacket over a white shirt, paired with dress shorts and black thigh-highs.",
+      "prose": "Immaculate cropped black tuxedo tailcoat and tailored vest over a crisp white shirt and white bowtie, paired with structured dress shorts, black thighhigh stockings, and polished loafers.",
       "isDefault": false,
       "default": false,
       "characterId": "yamada_ryo"

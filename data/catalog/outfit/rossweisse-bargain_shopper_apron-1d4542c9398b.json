@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "rossweisse/bargain_shopper_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1758,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rossweisse",
     "outfit": {
       "characterId": "rossweisse",
       "id": "bargain_shopper_apron",
       "name": "勤俭持家·特卖超市日系主妇围裙",
-      "prose": "A charming pastel-pink floral apron over a neat white collared blouse and knee-length navy skirt, embodying a devoted, budget-conscious housewife.",
+      "prose": "A pastel-pink floral apron with a front pocket worn over a neat white long-sleeved collared blouse and navy knee-length skirt, paired with white socks and house slippers.",
       "tokens": [
-        "apron",
-        "floral_apron",
-        "pink_apron",
-        "white_blouse",
-        "collared_shirt",
-        "long_sleeves",
-        "navy_skirt"
+        "pink floral apron",
+        "white collared blouse",
+        "long sleeves",
+        "navy midi skirt",
+        "waist pocket",
+        "white socks",
+        "house slippers"
       ],
       "default": false,
       "isDefault": false

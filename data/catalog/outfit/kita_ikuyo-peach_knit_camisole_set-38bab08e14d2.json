@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "kita_ikuyo/peach_knit_camisole_set",
+  "revision": 1,
+  "sortOrder": 4173,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "kita_ikuyo",
+    "outfit": {
+      "id": "peach_knit_camisole_set",
+      "name": "蜜桃微甜樱粉荷叶滚边针织吊带套裙",
+      "prose": "Peach-pink fine-ribbed knit camisole trimmed with delicate scalloped ruffles along the neckline and hem, paired with matching bow-accented boyshorts, light ankle socks, and bare feet.",
+      "tokens": [
+        "peach camisole",
+        "knit slip",
+        "scalloped ruffles",
+        "ribbed cotton",
+        "boyshorts",
+        "ribbon bow",
+        "ankle socks",
+        "barefoot"
+      ],
+      "characterId": "kita_ikuyo",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

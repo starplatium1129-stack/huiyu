@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kotori_itsuka/strawberry_linen_babydoll",
+  "revision": 1,
+  "sortOrder": 4200,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "kotori_itsuka",
+    "outfit": {
+      "id": "strawberry_linen_babydoll",
+      "name": "草莓初熟·绯红印花棉麻系带娃娃裙",
+      "prose": "A crimson strawberry-print linen-cotton babydoll nightdress laced at the front with crisp white satin ribbons and an empire ruffled hem, worn barefoot.",
+      "tokens": [
+        "crimson babydoll dress",
+        "strawberry print",
+        "linen cotton",
+        "white cross ribbons",
+        "ruffled hem",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

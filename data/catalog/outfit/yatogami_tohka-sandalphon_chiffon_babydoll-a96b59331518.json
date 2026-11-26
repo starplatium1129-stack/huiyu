@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/sandalphon_chiffon_babydoll",
+  "revision": 1,
+  "sortOrder": 4195,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "sandalphon_chiffon_babydoll",
+      "name": "紫皇纯愿·紫罗兰双层雪纺娃娃裙",
+      "prose": "A double-layered violet chiffon babydoll slip fastened at the bust with a silver starburst clasp, featuring flutter hems and thin satin straps, worn barefoot.",
+      "tokens": [
+        "violet chiffon slip",
+        "layered babydoll",
+        "silver star clasp",
+        "flutter hem",
+        "thin straps",
+        "satin ribbon",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

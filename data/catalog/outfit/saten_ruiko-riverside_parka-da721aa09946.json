@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "saten_ruiko/riverside_parka",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1651,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfit": {
       "id": "riverside_parka",
       "name": "柠檬黄风衣与深蓝短裤",
-      "prose": "A lemon-yellow lightweight hooded windbreaker over a white striped T-shirt, navy walking shorts, white crew socks, and green sneakers",
+      "prose": "A lightweight lemon-yellow hooded windbreaker over a navy striped tee and navy walking shorts, paired with a woven cord bracelet, white crew socks, and green sneakers.",
       "tokens": [
-        "yellow_windbreaker",
-        "hood_down",
-        "striped_t-shirt",
-        "navy_shorts",
-        "crew_socks",
-        "green_sneakers"
+        "lemon yellow windbreaker",
+        "navy striped tee",
+        "navy walking shorts",
+        "rolled sleeve cuffs",
+        "woven cord bracelet",
+        "white crew socks",
+        "green canvas sneakers"
       ],
       "default": false
     }

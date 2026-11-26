@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/gekota_coral_camisole_set",
+  "revision": 1,
+  "sortOrder": 4113,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "id": "gekota_coral_camisole_set",
+      "name": "电磁呱步·珊瑚橘呱太刺绣棉质睡衣",
+      "prose": "A coral-orange soft cotton camisole with white piped edges and a green frog mascot embroidered on the chest pocket, paired with track-cut sleep shorts, worn barefoot.",
+      "tokens": [
+        "coral cotton camisole",
+        "frog pocket embroidery",
+        "white piped edges",
+        "track sleep shorts",
+        "ribbed cotton trim",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

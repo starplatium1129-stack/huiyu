@@ -1,26 +1,27 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/candc_maid",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 497,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
       "default": true,
       "id": "candc_maid",
       "isDefault": true,
-      "name": "C&C黑白装甲女仆制服",
-      "prose": "a black-and-white C&C combat maid dress with a short lace-edged skirt, fitted white apron, headset, thigh-high boots and compact armor plates",
+      "name": "C&C黑白装甲战斗女仆装",
+      "prose": "A precision-tailored black-and-white C&C combat maid dress with lace-trimmed skirt, fitted white apron, compact forearm armor plates, communication headset, white garters, and black thigh-high boots.",
       "tokens": [
-        "black and white maid dress",
-        "short skirt",
+        "black maid dress",
         "white apron",
         "lace trim",
-        "headset",
-        "thigh boots",
-        "compact armor plates"
+        "black headset",
+        "compact armor plates",
+        "white cuffs",
+        "white garters",
+        "black thigh boots"
       ]
     }
   }

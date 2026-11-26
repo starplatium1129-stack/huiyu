@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_cafe_talk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2060,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-11-07T11:45:00.000Z",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "archetto_arknights_cafe_talk",
     "title": "空弦 · 咖啡馆的座位",
     "category": "银河旅途",
-    "outfitId": "standard",
+    "outfitId": "cafe_honey",
     "description": "空弦正坐在咖啡馆，带着笑容看向你。",
     "location": "咖啡馆",
     "action": "微笑交谈",

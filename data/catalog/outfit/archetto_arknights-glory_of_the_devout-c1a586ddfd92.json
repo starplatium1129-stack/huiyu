@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "archetto_arknights/glory_of_the_devout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1957,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "archetto_arknights",
     "outfit": {
       "id": "glory_of_the_devout",
-      "name": "至虔者荣光 · 经典修士服",
+      "name": "至虔者荣光 · 经典修士黑袍礼服",
       "default": false,
       "isDefault": false,
-      "prose": "A black dress with a dark and red shawl, traditional nun headwear and brown loafers.",
+      "prose": "A solemn black monastic gown layered with a dark-and-crimson draped shawl, traditional white wimple and pleated veil, accented by a gold cross rosary, opaque tights, and brown leather loafers.",
       "tokens": [
-        "black dress",
-        "black shawl",
-        "red shawl",
-        "nun headdress",
-        "brown loafers"
+        "black monastic gown",
+        "crimson draped shawl",
+        "white nun wimple",
+        "gold cross rosary",
+        "opaque black tights",
+        "brown leather loafers"
       ],
       "identityTokensOverride": [
         "archetto (arknights)",

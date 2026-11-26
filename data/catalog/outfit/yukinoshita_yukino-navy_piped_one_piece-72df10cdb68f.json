@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/navy_piped_one_piece",
+  "revision": 1,
+  "sortOrder": 4145,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "navy_piped_one_piece",
+      "name": "雪境深蓝白边高领连体泳装",
+      "prose": "A midnight-navy high-neck one-piece swimsuit trimmed with crisp white piping and a keyhole back cutout, worn with bare legs and barefoot.",
+      "tokens": [
+        "navy one-piece swimsuit",
+        "white contrast piping",
+        "high-neck collar",
+        "keyhole back cutout",
+        "high-cut leg",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

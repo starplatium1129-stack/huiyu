@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/sage_layered_tankini",
+  "revision": 1,
+  "sortOrder": 4050,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "sage_layered_tankini",
+      "name": "静默松风 · 鼠尾草灰绿双层分体泳衣",
+      "prose": "A sage-green and slate-grey two-piece tankini crafted in linen-stretch fabric, featuring a high-neck layered crop top, boy-cut swim shorts, and bare feet.",
+      "tokens": [
+        "sage green tankini",
+        "high neck crop",
+        "slate grey trim",
+        "linen stretch fabric",
+        "boy cut shorts",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

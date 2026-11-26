@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_guide",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 995,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_guide",
       "name": "伊甸圣者白金刺绣礼服与白色长袜",
-      "prose": "An ivory off-shoulder ceremonial dress with gold embroidery and a split skirt, paired with textured white stockings.",
+      "prose": "An ivory off-shoulder ceremonial dress with structured capelets, gold embroidery, delicate lace trim, and a parted split skirt, paired with textured white thigh-high stockings and ivory high heels.",
       "tokens": [
-        "white_dress",
-        "off_shoulder",
-        "gold_embroidery",
-        "capelet",
-        "split_skirt",
-        "lace_trim",
-        "white_thighhighs",
-        "high_heels"
+        "ivory ceremonial dress",
+        "off shoulder",
+        "gold embroidery",
+        "shoulder capelets",
+        "split skirt",
+        "lace trim",
+        "white thigh-high stockings",
+        "ivory high heels"
       ],
       "default": true,
       "isDefault": true,

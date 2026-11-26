@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3276,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "morgan_le_fay_fate_lingerie_whisper",
     "characterId": "morgan_le_fay_fate",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "不列颠卡美洛王宫寝殿，高耸哥特花窗外飘散着终年不息的白垩冷雾。倚在黑曜石雕花床柱旁，修长双腿在薄纱高衩下展露无遗，银白长发被蓝缎带系起，冷艳高傲的紫瞳凝视着御主。 她微微抬眸轻语——“我的妻子……或者说我的丈夫。在女王的床榻前，你应当清楚现在谁才是支配者。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "glacial_peignoir_bandeau",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

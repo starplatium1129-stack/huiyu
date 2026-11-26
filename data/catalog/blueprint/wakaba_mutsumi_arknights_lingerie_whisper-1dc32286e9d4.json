@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3140,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_lingerie_whisper",
     "characterId": "wakaba_mutsumi_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "高级公寓阳台温室角落，花盆里整齐攀爬着绿意葱茏的黄瓜藤架。蜷坐在阳台小折叠椅上，怀里抱着一只新鲜的小青瓜，墨绿短发被微风吹动，金黄眼眸空洞而深邃地注视着窗外，在看到你的那一瞬泛起微不可察的涟漪。 她微微抬眸轻语——“……给。这个……很好吃。今晚……能陪我坐一会儿吗。”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "raw_linen_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

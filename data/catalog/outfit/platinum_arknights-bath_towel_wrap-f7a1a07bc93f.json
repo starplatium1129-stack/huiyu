@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "platinum_arknights/bath_towel_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 407,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "platinum_arknights",
     "outfit": {
       "id": "bath_towel_wrap",
       "characterId": "platinum_arknights",
       "name": "纯白吸水大浴巾",
-      "prose": "A fluffy white bath towel snugly wrapped above the bust, bare shoulders and neck glinting with moist water droplets, and damp hair.",
+      "prose": "A fluffy pure white terry-cloth bath towel tucked snugly above the bust, paired with a cotton terry headband, bare shoulders, and bare feet.",
       "tokens": [
-        "towel",
-        "towel wrap",
-        "bath towel",
+        "white bath towel",
+        "fluffy terry cloth",
+        "chest wrapped towel",
+        "cotton terry headband",
         "bare shoulders",
-        "wet hair",
-        "damp skin"
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

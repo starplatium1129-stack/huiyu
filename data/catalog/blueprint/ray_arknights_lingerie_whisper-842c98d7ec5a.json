@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3128,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "ray_arknights_lingerie_whisper",
     "characterId": "ray_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "雷姆必拓改装野营房车后舱，圆形舷窗外是荒野落日染红的漫天风沙。趴在房车大床上，双手托着下巴，长长的兔耳在头顶前后轻摇，毛茸茸的白尾巴在背后翘起，狡黠地冲着博士眨眼。 她微微抬眸轻语——“野外生存指南第三条：在舒适的被窝里，猎人和猎物的身份随时都有可能互换哦，博士~！”",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "rim_billiton_linen_cami",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

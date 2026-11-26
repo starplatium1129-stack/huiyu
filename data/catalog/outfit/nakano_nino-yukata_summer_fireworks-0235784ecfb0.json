@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/yukata_summer_fireworks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1582,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "yukata_summer_fireworks",
       "name": "祭典绛紫金鱼露肩短浴衣",
       "tokens": [
-        "yukata",
-        "japanese_clothes",
-        "purple_yukata",
-        "goldfish_print",
-        "obi",
-        "yellow_obi",
-        "mini_skirt",
-        "geta",
-        "bare_legs"
+        "deep purple yukata",
+        "goldfish print",
+        "golden yellow obi",
+        "short slit hem",
+        "butterfly clip",
+        "bare legs",
+        "wooden geta"
       ],
-      "prose": "A deep-purple silk summer yukata with red goldfish prints and a golden obi, styled with a high-slit short hem over bare legs.",
+      "prose": "A deep-purple silk yukata patterned with crimson goldfish and tied with a golden obi, cut with a short slit hem and paired with wooden geta.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_nino"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3229,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "dusk_arknights_lingerie_whisper",
     "characterId": "dusk_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛深处那间从不拉开窗帘的画室。夕穿着一件泼墨渐变斜襟真丝睡袍，毫无拘束地盘坐在铺满整座房间的百米巨幅宣纸上。长长的墨绿发丝与龙角倒映着烛影，脚趾踩在未干的浓淡水墨之中。她单手托腮，另一只手倒提着长毫毛笔，懒洋洋地斜睨着跨过门槛的博士——「吵死了……大半夜不睡跑来本真人的画里做什么？……既然进来了就别踩坏刚画好的山峦。过来坐这儿，替我研墨。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sumi_cloud_silk_wrap_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

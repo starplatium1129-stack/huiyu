@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "beta_shadow/moonlit_satin_chemise",
+  "revision": 1,
+  "sortOrder": 4212,
+  "createdAt": "2026-11-26T12:39:31.217853800+00:00",
+  "updatedAt": "2026-11-26T12:39:31.217853800+00:00",
+  "data": {
+    "characterId": "beta_shadow",
+    "outfit": {
+      "id": "moonlit_satin_chemise",
+      "name": "夏目银灰缎面褶边吊带睡裙",
+      "prose": "Silver-grey stretch satin slip chemise with a plunging neckline framed in pleated micro-ruffles, fine spaghetti straps, high side gathers, a delicate pearl choker, sheer thighhighs, and bare feet.",
+      "tokens": [
+        "silver slip",
+        "satin chemise",
+        "plunging neckline",
+        "pleated ruffles",
+        "spaghetti straps",
+        "pearl choker",
+        "sheer thighhighs",
+        "barefoot"
+      ],
+      "characterId": "beta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 吊带睡裙"
+    }
+  }
+}

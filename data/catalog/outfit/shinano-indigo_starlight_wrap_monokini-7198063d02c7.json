@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shinano/indigo_starlight_wrap_monokini",
+  "revision": 1,
+  "sortOrder": 4129,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "shinano",
+    "outfit": {
+      "id": "indigo_starlight_wrap_monokini",
+      "name": "月华幽夜·靛蓝星纹薄纱裹体泳衣",
+      "prose": "A midnight-indigo silk wrap monokini draped in translucent star-embroidered chiffon with silver cloud motifs, crescent moon pin, and obi-inspired waist sashes, worn barefoot.",
+      "tokens": [
+        "indigo wrap monokini",
+        "sheer chiffon drape",
+        "silver cloud embroidery",
+        "crescent moon pin",
+        "obi waist sash",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

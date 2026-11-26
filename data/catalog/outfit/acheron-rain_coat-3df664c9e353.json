@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "acheron/rain_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1662,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "acheron",
     "outfit": {
       "id": "rain_coat",
       "name": "深紫旅途外套",
-      "prose": "A long dark violet coat over a pale blouse and black trousers.",
+      "prose": "Long dark-violet tailored travel coat layered over a pale buttoned blouse and pressed black trousers, cinched with a silver-buckled leather belt and paired with fingerless gloves and dark ankle boots.",
       "tokens": [
-        "dark purple coat",
+        "violet coat",
+        "long coat",
         "white blouse",
-        "black trousers"
+        "black trousers",
+        "leather belt",
+        "silver buckle",
+        "fingerless gloves",
+        "ankle boots"
       ],
       "characterId": "acheron",
       "default": false,

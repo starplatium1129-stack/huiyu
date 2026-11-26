@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/atelier_slouchy_loungewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 323,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "atelier_slouchy_loungewear",
       "isDefault": false,
       "name": "墨灵印花画斋家居装",
-      "prose": "an oversized ink-gray hoodie with a hand-drawn ink-spirit print and paint-marked sleeves, worn with soft cotton lounge shorts",
+      "prose": "An oversized ink-grey painter hoodie stamped with whimsical ink-beast motifs and smudged sleeves worn with soft black cotton lounge shorts and bare feet.",
       "tokens": [
-        "ink gray hoodie",
-        "oversized clothes",
+        "oversized grey hoodie",
         "ink spirit print",
-        "cotton shorts",
-        "paint stains"
+        "paint-stained cuffs",
+        "black lounge shorts",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

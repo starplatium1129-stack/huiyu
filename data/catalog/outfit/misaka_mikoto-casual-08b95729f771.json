@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/casual",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "default": false,
       "id": "casual",
       "isDefault": false,
-      "name": "蓝白条纹落肩衬衫与高腰毛边牛仔短裤",
-      "prose": "A drop-shoulder striped Oxford shirt untucked over high-waisted frayed denim cutoffs and clean sneakers.",
+      "name": "蓝白条纹落肩衬衫与高腰牛仔短裤",
+      "prose": "A blue-and-white striped drop-shoulder Oxford shirt tucked loosely into frayed high-waisted denim cutoffs with a woven belt and white canvas sneakers.",
       "tokens": [
-        "striped_shirt",
-        "collared_shirt",
-        "loose_shirt",
-        "denim_shorts",
-        "frayed_shorts",
-        "high-waist_shorts",
-        "white_sneakers",
-        "bare_legs"
+        "striped oxford shirt",
+        "dropped shoulder",
+        "frayed denim shorts",
+        "woven tan belt",
+        "frog keychain charm",
+        "bare legs",
+        "white canvas sneakers"
       ],
       "characterId": "misaka_mikoto"
     }

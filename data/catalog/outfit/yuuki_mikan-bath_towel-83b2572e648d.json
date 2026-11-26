@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuuki_mikan/bath_towel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1602,
   "createdAt": "2026-10-24T02:27:30.720583+00:00",
-  "updatedAt": "2026-10-24T02:27:30.720583+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "yuuki_mikan",
     "outfit": {
@@ -13,13 +13,14 @@
       "default": false,
       "isDefault": false,
       "tokens": [
-        "bath_towel",
-        "towel_wrap",
-        "white_towel",
-        "bare_shoulders",
+        "white bath towel",
+        "terry cloth wrap",
+        "tucked chest fold",
+        "orange wrist band",
+        "bare shoulders",
         "barefoot"
       ],
-      "prose": "a large white bath towel wrapped around her torso, with its upper edge held at her chest, bare shoulders, and bare feet"
+      "prose": "A large fluffy white terry-cloth bath towel wrapped snugly around the torso and tucked at the chest, leaving bare shoulders and bare feet."
     }
   }
 }

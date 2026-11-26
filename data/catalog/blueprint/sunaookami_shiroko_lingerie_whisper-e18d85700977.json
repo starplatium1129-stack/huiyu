@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "sunaookami_shiroko_lingerie_whisper",
     "characterId": "sunaookami_shiroko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "阿拜多斯对策委员会活动室，靠墙停放着保养得一尘不染的公路自行车。坐在床边弯腰系着运动短袜的脚踝带，白狼耳朵在银发间机敏地转动，单手拉了拉吊带，回头用毫无波澜却无比专注的浅蓝眼眸看着老师。 她微微抬眸轻语——“老师，起得真早。今天的晨间骑行训练……要和我一起去吗？我会放慢速度等你的。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "cyan_grey_racerback_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

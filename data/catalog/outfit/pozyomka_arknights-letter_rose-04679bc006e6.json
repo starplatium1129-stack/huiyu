@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/letter_rose",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2065,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "letter_rose",
-      "name": "灰玫瑰褶袖长裙与浮雕胸针",
-      "prose": "A dusty-rose high-neck dress with gathered cuffs and a burgundy ribbon belt, finished with an ivory cameo brooch.",
+      "name": "灰玫瑰褶袖长裙与象牙浮雕胸针",
+      "prose": "A dusty-rose mockneck dress with gathered bishop sleeves and lace-trimmed cuffs cinched by a burgundy ribbon belt and ivory cameo brooch, worn with sheer pantyhose and plum kitten heels.",
       "tokens": [
-        "dusty rose high-neck dress",
-        "gathered cuffs",
+        "dusty rose dress",
+        "gathered bishop sleeves",
         "burgundy ribbon belt",
-        "ivory cameo brooch"
+        "ivory cameo brooch",
+        "sheer cream pantyhose",
+        "plum kitten heels"
       ],
       "characterId": "pozyomka_arknights",
       "default": false,

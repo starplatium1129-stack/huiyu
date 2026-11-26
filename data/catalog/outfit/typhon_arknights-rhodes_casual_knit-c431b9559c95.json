@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/rhodes_casual_knit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 399,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
@@ -12,14 +12,13 @@
       "id": "rhodes_casual_knit",
       "isDefault": false,
       "name": "松绿绞花针织约会套装",
-      "prose": "A forest-green cable-knit pullover with an offset zip collar and cream piping, charcoal shorts with a brown belt, black tights, cream boot cuffs and brown lace-up boots.",
+      "prose": "A forest-green cable-knit sweater with an offset zip collar and cream trim paired with dark shorts, brown belt, black tights, shearling boot cuffs, and lace-up boots.",
       "tokens": [
-        "green cable knit sweater",
+        "green cable knit",
         "zip collar",
-        "black shorts",
+        "black wool shorts",
         "brown belt",
         "black pantyhose",
-        "cream boot cuffs",
         "brown lace-up boots"
       ],
       "category": "日常衣装（创作）"

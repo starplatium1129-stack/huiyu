@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/standard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 310,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "standard",
       "name": "罗德岛火山科考大衣与黑色长袜",
-      "prose": "A dark-grey insulated research parka over a pleated skirt and black stockings.",
+      "prose": "A dark-grey insulated hooded parka with pale fur trim worn over a crisp white shirt and dark pleated skirt, paired with insulated gloves, black thigh-high stockings, and sturdy hiking boots.",
       "tokens": [
-        "hooded_coat",
-        "grey_coat",
-        "parka",
-        "fur_trim",
-        "shorts",
-        "black_thighhighs",
-        "hiking_boots"
+        "hooded parka",
+        "dark grey coat",
+        "fur trim",
+        "white shirt",
+        "pleated skirt",
+        "black thighhighs",
+        "insulated gloves",
+        "hiking boots"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": true,

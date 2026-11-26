@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/white_oversized_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1369,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "white_oversized_shirt",
-      "name": "晨光微透宽大白衬衫",
-      "prose": "An oversized white cotton button-down shirt draped casually down to the upper thighs.",
+      "name": "晨光宽大白棉衬衫",
+      "prose": "An oversized white poplin cotton button-down shirt with rolled sleeves, pearl buttons, and a relaxed open collar reaching mid-thigh, worn barefoot.",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "unbuttoned",
-        "collarbone",
-        "bare_legs"
+        "oversized white shirt",
+        "poplin cotton",
+        "open collar",
+        "rolled sleeves",
+        "pearl buttons",
+        "barefoot"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

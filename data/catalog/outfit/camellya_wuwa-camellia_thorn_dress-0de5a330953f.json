@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "camellya_wuwa/camellia_thorn_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3101,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "camellya_wuwa",
     "outfit": {
       "id": "camellia_thorn_dress",
       "name": "执花荆棘双层礼裙",
-      "prose": "An asymmetrical white and crimson halter dress adorned with braided thorn straps, layered chiffon petals, and fingerless lace arm sleeves.",
+      "prose": "An asymmetrical ivory and crimson halter chiffon dress with thorn-braided straps, detached fingerless gloves, a red camellia brooch, and strapped heels.",
       "tokens": [
-        "asymmetrical dress",
-        "white and red dress",
-        "halterneck",
-        "chiffon",
-        "detached sleeves",
+        "white dress",
+        "crimson trim",
+        "asymmetrical skirt",
+        "halter neckline",
+        "chiffon layers",
         "fingerless gloves",
-        "rose ornament"
+        "camellia brooch",
+        "strapped heels"
       ],
       "default": true,
       "isDefault": true,

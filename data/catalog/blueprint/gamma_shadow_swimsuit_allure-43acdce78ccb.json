@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3512,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "gamma_shadow_swimsuit_allure",
     "characterId": "gamma_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "悬崖泳池的防腐木栈道上散发着精油香气。伽玛一身高定墨黑缎面泳装尽显总裁风范，手托鸡尾酒杯优雅巡视，但脚下的细跟凉鞋刚碰到水渍就猛地一滑！高脚杯里的冰块飞向半空，眼镜险险歪在鼻梁上，威严的表情瞬间崩塌成眼角含泪的慌乱——「呀啊啊——！地、地面为什么会涂了蜡？！暗影大人……不，快接住我！酒洒了没关系，绝对不要让我直接栽进水里啊啊！」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "luna_resort_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

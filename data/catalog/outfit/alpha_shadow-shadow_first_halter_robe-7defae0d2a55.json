@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "alpha_shadow/shadow_first_halter_robe",
+  "revision": 1,
+  "sortOrder": 4078,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "alpha_shadow",
+    "outfit": {
+      "id": "shadow_first_halter_robe",
+      "name": "暗影第一席黑金镂空缎面挂脖睡袍",
+      "prose": "Midnight-black silk satin backless halter robe bordered with imperial gold lattice embroidery, sheer mesh collar insets, high side slits, a slim gold choker, and bare feet.",
+      "tokens": [
+        "black halter robe",
+        "satin nightgown",
+        "backless",
+        "gold embroidery",
+        "high slit",
+        "sheer mesh",
+        "gold choker",
+        "barefoot"
+      ],
+      "characterId": "alpha_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 挂脖睡袍"
+    }
+  }
+}

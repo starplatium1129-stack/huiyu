@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/sfw_library_tailored_vest",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1126,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "sfw_library_tailored_vest",
       "name": "拉诺亚魔法学院西装马甲裙与透肌长袜",
-      "prose": "A navy scholastic vest over a pleated ivory silk blouse and ruffled cravat, with a matching pleated skirt and sheer stockings.",
+      "prose": "A navy tailored scholastic vest over an ivory silk blouse and ruffled neck cravat, paired with a navy pleated miniskirt, sheer dark thighhighs, and brown oxford shoes.",
       "tokens": [
-        "tailored_vest",
-        "navy_vest",
-        "ivory_blouse",
-        "cravat",
-        "pleated_skirt",
-        "miniskirt",
-        "sheer_thighhighs",
-        "oxford_shoes"
+        "navy tailored vest",
+        "ivory silk blouse",
+        "ruffled neck cravat",
+        "navy pleated miniskirt",
+        "sheer dark thighhighs",
+        "brown oxford shoes"
       ],
       "characterId": "roxy_migurdia",
       "default": false,

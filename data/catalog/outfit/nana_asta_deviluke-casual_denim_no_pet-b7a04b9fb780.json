@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/casual_denim_no_pet",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 690,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "casual_denim_no_pet",
       "isDefault": false,
       "name": "暗红短背心与侧袋牛仔短裤",
-      "prose": "A rib-bound dark-red crop tank, patch-pocket denim shorts and low sneakers.",
+      "prose": "A rib-bound burgundy crop top paired with indigo patch-pocket shorts fastened by silver snap buttons, a woven canvas belt, striped ankle socks, and black slip sneakers.",
       "tokens": [
-        "dark red crop top",
-        "sleeveless",
-        "denim shorts",
-        "patch pockets",
-        "sneakers"
+        "burgundy crop top",
+        "indigo pocket shorts",
+        "silver snap buttons",
+        "woven canvas belt",
+        "striped ankle socks",
+        "black slip sneakers"
       ]
     }
   }

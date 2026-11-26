@@ -1,18 +1,21 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed natural form with bare shoulders and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "scathach_fate",
       "default": false,

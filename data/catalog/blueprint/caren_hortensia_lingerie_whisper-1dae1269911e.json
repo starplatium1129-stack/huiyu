@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_hortensia_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3277,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "caren_hortensia_lingerie_whisper",
     "characterId": "caren_hortensia",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "破晓微明，冬木教会的大厅空旷冰冷。卡莲·C·奥尔黛西亚褪去平时那件无下装的驱魔制服，换上一件极简的黑白无袖开叉系带亚麻睡袍。她赤足踩在洗礼池冰凉的青石台阶上，双手环抱胸前，银白色的长发随清晨冷风拂过雪白肩膀。看着站在告解室外踌躇不前的你，她微微侧头，金黄眼眸闪过一丝恶作剧般的嘲弄——「哎呀……在破晓之前跑来教会，是心中的罪孽与污秽已经满溢到无法入眠了吗？别害怕，进来吧……作为赎罪的代价值得让我好好期待呢。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "monastic_cowl_linen_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

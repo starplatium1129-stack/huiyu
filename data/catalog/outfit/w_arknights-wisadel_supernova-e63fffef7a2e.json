@@ -1,24 +1,27 @@
 {
   "kind": "outfit",
   "id": "w_arknights/wisadel_supernova",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1961,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "w_arknights",
     "outfit": {
       "id": "wisadel_supernova",
-      "name": "维什戴尔 · 超新星黑白裙装",
+      "name": "维什戴尔·超新星黑白裙装",
       "default": false,
       "isDefault": false,
-      "prose": "A black shirt and shorts beneath a long white overskirt, with a red ribbon and black boots.",
+      "prose": "A black tailored shirt and tactical shorts layered beneath a long asymmetrical white overskirt accented with a bright crimson satin ribbon, black thigh-highs, and platform combat boots.",
       "tokens": [
-        "black shirt",
-        "black shorts",
-        "white overskirt",
-        "red ribbon",
-        "black boots"
+        "fitted black shirt",
+        "black tactical shorts",
+        "white flowing overskirt",
+        "crimson satin ribbon",
+        "silver clasp",
+        "asymmetrical hemline",
+        "black thighhighs",
+        "platform combat boots"
       ],
       "identityTokensOverride": [
         "w (arknights)",

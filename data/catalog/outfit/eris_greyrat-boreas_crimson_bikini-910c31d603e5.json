@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/boreas_crimson_bikini",
+  "revision": 1,
+  "sortOrder": 4181,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "id": "boreas_crimson_bikini",
+      "name": "红莲狂兽 · 烈火真红交叉绑带泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "eris_greyrat",
+      "prose": "A flame-crimson sports bikini with thick crossed underbust bands and gold hip buckles, styled with fingerless swim gloves and a white windbreaker tied at the waist, worn barefoot.",
+      "tokens": [
+        "crimson sports bikini",
+        "crossed underbust bands",
+        "gold hip buckles",
+        "fingerless swim gloves",
+        "tied waist windbreaker",
+        "barefoot"
+      ]
+    }
+  }
+}

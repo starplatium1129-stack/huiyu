@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phoebe_wuwa/order_gilded_vestments",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3301,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phoebe_wuwa",
     "outfit": {
       "id": "order_gilded_vestments",
       "name": "隐海修会白金圣咏礼装",
-      "prose": "A crisp white and navy ceremonial acolyte dress with gold filigree trim, pleated capelet, and her wide-brimmed white-and-gold liturgical hat.",
+      "prose": "A crisp white and navy ceremonial acolyte dress with a pleated capelet, gold filigree trim, a gold brooch, and her wide-brimmed liturgical hat over white thigh-highs and white heels.",
       "tokens": [
         "white dress",
-        "capelet",
-        "gold trim",
+        "pleated capelet",
         "navy ribbon",
-        "wide-brimmed hat",
-        "white thighhighs"
+        "gold filigree",
+        "brimmed hat",
+        "gold brooch",
+        "white thighhighs",
+        "white heels"
       ],
       "default": true,
       "isDefault": true,

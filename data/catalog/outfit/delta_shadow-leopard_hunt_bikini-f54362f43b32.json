@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "delta_shadow/leopard_hunt_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1889,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "delta_shadow",
     "outfit": {
       "id": "leopard_hunt_bikini",
-      "name": "荒野夏日豹纹捕猎泳装",
-      "prose": "A wild ochre and black leopard-spotted micro halter bikini tied with rawhide thongs, accompanied by bone beaded bracelets and an obsidian fang pendant.",
+      "name": "荒野豹纹系带捕猎泳装",
+      "prose": "Ochre-and-black leopard-print micro halter bikini fastened with thin rawhide ties, styled with a carved bone pendant necklace, braided leather wristbands, a cord anklet, and bare feet.",
       "tokens": [
-        "animal_print_bikini",
-        "leopard_print",
-        "micro_bikini",
+        "leopard bikini",
+        "micro bikini",
         "halterneck",
-        "bone_necklace",
-        "wristband",
-        "barefoot",
-        "fur_trim"
+        "rawhide ties",
+        "bone necklace",
+        "leather wristband",
+        "cord anklet",
+        "barefoot"
       ],
       "characterId": "delta_shadow",
       "default": false,

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "izumi_comiket_booth_sales_energetic_greeting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2619,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "izumi_comiket_booth_sales_energetic_greeting",
     "title": "波岛出海 · 东京夏Comi摊位前的战意爆发",
     "category": "现代日常",
-    "outfitId": "otaku_artist_casual_tshirt_skirt",
+    "outfitId": "izumi_comiket_denim_overalls",
     "description": "东京Big Sight漫展西馆人潮汹涌的展厅内，热浪与快门闪光交织。出海双手按在堆满新刊同人志的桌面上，胸前挂着参展牌，双马尾飞舞，元气满满地向读者鞠躬招揽。",
     "location": "bustling Tokyo Big Sight convention hall booth crowded with anime banners and fan book stacks",
     "action": "出海双手按在堆满新刊同人志的桌面上，胸前挂着参展牌，双马尾飞舞，元气满满地向读者鞠躬招揽",

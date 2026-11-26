@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3244,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "skadi_arknights_lingerie_whisper",
     "characterId": "skadi_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "伊比利亚废弃灯塔旁的临海旧木栈桥上，狂风吹散了夜雾。斯卡蒂赤足坐在微凉的木桩上，巨大重剑插在身旁木板之中，双腿轻垂在拍岸的白色浪沫上方。她微微回首，绯红眼眸褪去了白日的杀伐，在冰凉海风与澄澈月色下多了一分只对博士流露的温软。",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "midnight_fishbone_strappy_lingerie",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

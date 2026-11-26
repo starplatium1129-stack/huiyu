@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "alice_nikke/wonderland_puffy_down_jacket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1532,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-14T07:05:43.871415200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "alice_nikke",
     "outfit": {
       "id": "wonderland_puffy_down_jacket",
       "name": "极地探险雪国粉色羽绒服",
-      "prose": "freezing surface wonderland exploration gear: an oversized puffy bubblegum-pink padded winter down parka with white faux-fur trim hood worn open over her signature glossy bodysuit, cute pompom ties, warm thermal leggings, and fur-lined winter boots",
+      "prose": "An oversized bubblegum-pink padded down parka with a white faux-fur hood and pom-pom ties worn open over a white thermal tunic, fitted thermal leggings, padded mittens, and fur-lined boots.",
       "tokens": [
-        "parka",
-        "down_jacket",
-        "puffy_jacket",
-        "pink_jacket",
-        "fur_trim",
-        "hood",
-        "bodysuit",
-        "gloves"
+        "pink puffer parka",
+        "white fur hood",
+        "pom-pom ties",
+        "white inner tunic",
+        "thermal leggings",
+        "padded mittens",
+        "fur-lined boots"
       ],
       "default": false,
       "isDefault": false

@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/chaldea_cafeteria_jacket_off",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "chaldea_cafeteria_jacket_off",
       "name": "迦勒底立领衬衫裙与黑色连裤袜",
-      "prose": "A fitted black collared shirt dress with a crimson silk necktie and sheer black tights.",
+      "prose": "Her fitted black collared Chaldea uniform dress worn without the outer jacket, accented by a neat crimson silk necktie, sheer black tights, and loafers.",
       "tokens": [
-        "shirt_dress",
-        "black_dress",
-        "collared_dress",
-        "red_necktie",
-        "black_tights",
-        "sheer_tights",
-        "loafers",
-        "uniform_chic"
+        "black shirt dress",
+        "white crisp collar",
+        "crimson silk tie",
+        "fitted waist",
+        "sheer black pantyhose",
+        "black loafers"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

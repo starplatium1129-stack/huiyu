@@ -1,19 +1,24 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/white_bath_wrap",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1439,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-06T01:02:18.775Z",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
       "id": "white_bath_wrap",
-      "name": "罗德岛蓬松柔软吸水小浴巾",
+      "name": "罗德岛蓬松纯白吸水浴巾",
       "tokens": [
-        "white towel"
+        "white bath towel",
+        "plush terry cotton",
+        "sage ribbon tie",
+        "wrapped chest fold",
+        "bare shoulders",
+        "barefoot"
       ],
-      "prose": "A fluffy soft absorbent white bath towel wrap suited for a nine-tailed vulpo.",
+      "prose": "An opaque plush white terry-cotton bath towel wrapped securely around the body with a narrow sage ribbon tie, leaving shoulders and feet bare.",
       "default": false,
       "isDefault": false
     }

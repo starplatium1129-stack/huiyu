@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_kaori_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "kanzaki_kaori_lingerie_whisper",
     "characterId": "kanzaki_kaori",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "伦敦清教宿舍幽静的雨夜。世界不到二十位的圣人之一神裂火织，换上一袭根据其战斗服改良的极简无痕莫代尔单肩背心与开叉单腿瑜伽裤。长达两米的‘七天七刀’平稳横陈在并拢的膝前。她刚刚完成保养，双手端庄按于刀鞘两侧，长达及腰的黑发整齐束于脑后。雨水敲打着屋檐，她低头闭目自省，神情严谨而清圣——「圣人的力量……若不能保护同伴，便只是空虚的诅咒。……今夜的雨很冷，上条当麻他……是否还在为了他人而遍体鳞伤呢？我必须变得更强才行。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "saint_one_shoulder_modal_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

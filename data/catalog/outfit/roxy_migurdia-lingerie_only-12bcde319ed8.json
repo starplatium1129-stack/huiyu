@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/lingerie_only",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "lingerie_only",
       "name": "苍蓝咏叹 · 海蓝双层细褶雪纺吊带裙",
-      "prose": "一袭如清泉般澄澈的海蓝色双层雪纺吊带睡裙，裙摆带有细密的风琴褶与荷叶边，娇小合身，衬托出洛琪希独有的神圣与楚楚可怜。",
+      "prose": "A cerulean-blue double-layered sheer chiffon camisole slip with thin shoulder straps, fine accordion pleats, and tiny white ribbon bows along a scalloped hem, worn barefoot.",
       "tokens": [
-        "ocean blue double-layered chiffon camisole slip",
-        "fine accordion pleats",
-        "tiny white ribbon bows",
-        "scalloped lettuce hem",
-        "sweet petite sorceress nightwear"
+        "cerulean blue slip",
+        "sheer chiffon layers",
+        "accordion pleated hem",
+        "white ribbon bows",
+        "thin shoulder straps",
+        "barefoot"
       ],
       "characterId": "roxy_migurdia",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3407,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "fujiwara_chika_swimsuit_allure",
     "characterId": "fujiwara_chika",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "浅水区里浪花翻滚，充气大黄鸭随着浪涛高高翘起。千花书记整个人跨骑在鸭背上，粉色长发扎成可爱的双马尾在风里胡乱飞舞，两只白嫩小腿扑腾出漫天的白色水沫。她一边险险维持平衡一边冲你拼命招手大喊——「哇啊啊啊！大鸭子要被海浪冲走啦！救命啊——不对，是全速前进！书记号冲锋！快抓住鸭尾巴一起冲上岸，不然等下会长他们买完西瓜回来可就没位子啦！」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "polka_dot_sweetheart_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

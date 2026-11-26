@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "atago_azur/sakura_crimson_silk_robe",
+  "revision": 1,
+  "sortOrder": 4133,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "atago_azur",
+    "outfit": {
+      "id": "sakura_crimson_silk_robe",
+      "name": "重樱绯夜·大花真丝半透和风睡袍",
+      "prose": "A crimson semi-sheer silk kimono lounging robe adorned with blooming sakura watercolor motifs, wide draped sleeves, and a matching black satin waist sash, worn barefoot.",
+      "tokens": [
+        "crimson silk kimono",
+        "sakura floral print",
+        "sheer silk wrap",
+        "wide draped sleeves",
+        "black satin sash",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

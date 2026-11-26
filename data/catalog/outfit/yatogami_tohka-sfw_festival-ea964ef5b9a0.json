@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/sfw_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "sfw_festival",
-      "name": "紫色桔梗花浴衣",
-      "prose": "A violet cotton yukata is scattered with white bellflowers and tied with a pale-pink obi, with wooden geta.",
+      "name": "紫色桔梗花棉布浴衣",
+      "prose": "A violet cotton yukata patterned with white bellflowers and tied with a pale-pink obi and silk cord, worn with white tabi and wooden geta.",
       "tokens": [
-        "violet yukata",
-        "white floral print",
+        "violet cotton yukata",
+        "bellflower print",
+        "wide sleeves",
         "pale pink obi",
-        "geta"
+        "silk cord",
+        "white tabi",
+        "wooden geta"
       ],
       "default": false,
       "isDefault": false

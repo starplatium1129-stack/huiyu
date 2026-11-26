@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/shimokitazawa_vintage",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1564,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "shimokitazawa_vintage",
       "name": "下北泽古着宽松衬衫与高腰皮革短裤",
       "tokens": [
-        "oversized_shirt",
-        "button_up",
-        "green_shirt",
-        "undershirt",
-        "high-waist_shorts",
-        "shorts",
+        "olive shirt",
+        "oversized shirt",
+        "button-up",
+        "white undershirt",
+        "black shorts",
         "suspenders",
-        "bare_legs",
-        "sneakers"
+        "crew socks",
+        "canvas sneakers"
       ],
-      "prose": "An oversized olive vintage button-up shirt tucked into high-waisted shorts with suspenders.",
+      "prose": "Oversized olive-green vintage button-up shirt layered over a white undershirt and tucked into high-waisted black leather shorts with slim suspenders, paired with crew socks and worn canvas sneakers.",
       "isDefault": true,
       "default": true,
       "characterId": "yamada_ryo"

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/ember_mesh_bralette",
+  "revision": 1,
+  "sortOrder": 4066,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "id": "ember_mesh_bralette",
+      "name": "炽橙黑纱几何镂空内衣套",
+      "prose": "A fiery orange-red geometric cutout bralette with sheer black mesh panels, heat-resistant silicone piping, and matching black boyleg briefs, worn with bare legs and barefoot.",
+      "tokens": [
+        "orange cutout bralette",
+        "sheer black mesh",
+        "geometric chest straps",
+        "black boyleg briefs",
+        "silicone trim",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

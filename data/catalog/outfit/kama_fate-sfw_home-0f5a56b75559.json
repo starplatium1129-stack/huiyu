@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_home",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_home",
       "name": "熟梅落肩羊绒衫与系带私享居家服",
-      "prose": "A slouchy plum cashmere off-shoulder sweater layered over delicate lace lounge shorts.",
+      "prose": "A plush oversized plum cashmere knit sweater slipping off one shoulder over delicate black lace lounge shorts and sheer dark thigh-highs.",
       "tokens": [
-        "oversized_sweater",
-        "knit_sweater",
-        "drop_shoulders",
-        "off-shoulder",
-        "lace_shorts",
-        "black_thighhighs",
-        "bare_thighs"
+        "plum cashmere sweater",
+        "oversized knit",
+        "off shoulder",
+        "black lace shorts",
+        "sheer thighhighs",
+        "barefoot"
       ],
       "characterId": "kama_fate",
       "default": true,

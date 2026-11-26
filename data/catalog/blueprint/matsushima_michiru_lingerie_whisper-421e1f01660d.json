@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matsushima_michiru_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3530,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "matsushima_michiru_lingerie_whisper",
     "characterId": "matsushima_michiru",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "美滨学园女生宿舍，桌上摆着柠檬汽水拉环罐与彩色维生素软糖。双手叉腰站在床铺前，金色双马尾甩动，挺起胸脯却瞬间泄气红了脸，转过身双手捂脸偷瞄，嘴硬地嚷嚷，脚趾在软垫上不自在地抠紧。 她微微抬眸轻语——“哼！这可是本小姐作为完美金发傲娇的终极睡衣装扮！雄二你那是什么眼神啊！给我好好夸我啊！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "lemon_dot_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

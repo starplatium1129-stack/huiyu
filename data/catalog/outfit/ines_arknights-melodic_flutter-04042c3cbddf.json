@@ -1,22 +1,26 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/melodic_flutter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1947,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "melodic_flutter",
-      "name": "蝶舞华章 · 黑色音乐写真礼服",
+      "name": "蝶舞华章 · 黑蕾丝银蝶晚礼服",
       "default": false,
       "isDefault": false,
-      "prose": "An elegant black formal dress with butterfly-inspired detailing.",
+      "prose": "A sculpted black evening dress with a sheer lace bodice and flared skirt, accented by a silver butterfly brooch, velvet choker ribbon, sheer elbow gloves, sheer pantyhose, and pointed black pumps.",
       "tokens": [
-        "black dress",
-        "formal dress",
-        "butterfly ornament"
+        "black evening dress",
+        "sheer lace bodice",
+        "silver butterfly brooch",
+        "velvet choker ribbon",
+        "sheer elbow gloves",
+        "sheer black pantyhose",
+        "pointed black pumps"
       ],
       "identityTokensOverride": [
         "ines (arknights)",

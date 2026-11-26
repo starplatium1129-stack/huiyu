@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/white_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1225,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
       "id": "white_shirt",
-      "name": "白色衬衫",
+      "name": "湿润白衬衫微透造型",
       "tokens": [
-        "white shirt",
-        "button-up shirt"
+        "white button shirt",
+        "damp sheer cotton",
+        "open collar",
+        "rolled sleeves",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "a plain white button-front shirt",
+      "prose": "A damp crisp white cotton button-front shirt with an open collar and rolled sleeves clinging lightly at the hem, worn with bare legs and barefoot.",
       "default": false,
       "isDefault": false
     }

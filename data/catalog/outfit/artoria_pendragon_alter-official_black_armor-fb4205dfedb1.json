@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/official_black_armor",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "official_black_armor",
       "name": "漆黑赤纹哥特重铠与高衩战裙",
-      "prose": "Segmented black gothic plate armor with crimson filigree over a dark combat gown.",
+      "prose": "Heavy blackened gothic steel armor inlaid with glowing crimson runes worn over a dark split combat gown and articulated armored sabatons.",
       "tokens": [
-        "black_armor",
-        "plate_armor",
-        "breastplate",
-        "gauntlets",
-        "dark_dress",
-        "high_slit",
-        "bare_legs",
-        "armored_boots"
+        "black plate armor",
+        "crimson armor trim",
+        "armored gauntlets",
+        "black combat gown",
+        "high side slit",
+        "metal sabatons"
       ],
       "default": true,
       "isDefault": true,

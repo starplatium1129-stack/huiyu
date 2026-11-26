@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "prinz_eugen/iron_blood_crimson_lounge_hoodie",
+  "revision": 1,
+  "sortOrder": 4132,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "prinz_eugen",
+    "outfit": {
+      "id": "iron_blood_crimson_lounge_hoodie",
+      "name": "客厅影夜·黑红拼接连帽休闲卫衣套装",
+      "prose": "A cropped crimson-and-charcoal lounge hoodie layered over a ribbed tank and black knit shorts with a tiny cross charm, striped socks, and plush house slippers.",
+      "tokens": [
+        "crimson lounge hoodie",
+        "charcoal ribbed tank",
+        "black knit shorts",
+        "silver zipper trim",
+        "iron cross charm",
+        "striped crew socks",
+        "plush house slippers"
+      ]
+    }
+  }
+}

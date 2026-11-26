@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 790,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "name": "霞之丘诗羽·全裸态",
+      "prose": "Completely without clothing or hosiery, resting bare from shoulder to foot.",
       "tokens": [
-        "nude"
+        "nude",
+        "completely nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

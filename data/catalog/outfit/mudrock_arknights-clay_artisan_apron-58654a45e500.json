@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/clay_artisan_apron",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 329,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "clay_artisan_apron",
-      "name": "卡其工装亚麻围裙与解构短款衬衫",
-      "prose": "A heavy-wash khaki linen crafting apron worn over an open-collared white cropped shirt and cut-off denim shorts.",
+      "name": "卡其重磅亚麻工装围裙与短衬衫",
+      "prose": "A heavy-wash khaki linen crafting apron with brass rivets worn over an open-collared cropped white shirt and cut-off denim shorts, finished with sturdy work boots.",
       "tokens": [
-        "linen_apron",
-        "work_apron",
-        "cropped_shirt",
-        "white_shirt",
-        "denim_shorts",
-        "bare_legs",
-        "clay_smudges"
+        "khaki linen apron",
+        "heavy canvas straps",
+        "cropped white shirt",
+        "open collar",
+        "denim shorts",
+        "brass rivets",
+        "bare legs",
+        "work boots"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

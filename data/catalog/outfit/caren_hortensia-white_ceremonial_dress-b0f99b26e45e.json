@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/white_ceremonial_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1162,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "white_ceremonial_dress",
-      "name": "白色圣堂礼装",
+      "name": "纯白圣堂礼装与绯红圣骸披带",
       "tokens": [
-        "white dress",
-        "red shroud"
+        "white ceremonial dress",
+        "collared blouse",
+        "unbuttoned collar",
+        "red cloth shroud",
+        "long ribbons",
+        "black stockings",
+        "church pumps"
       ],
-      "prose": "a white ceremonial dress accompanied by the red Shroud of Magdalene",
+      "prose": "A pure white buttoned church ceremonial dress accompanied by scarlet ribbons of the Shroud of Magdalene draped across her arms and waist.",
       "default": false,
       "isDefault": false
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3233,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "exusiai_arknights_lingerie_whisper",
     "characterId": "exusiai_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "企鹅物流安全屋深夜的吧台角。刚刚完成跨城紧急押运的能天使，换上一套亮白配明橙拉链的短款连帽运动卫衣睡衣。她毫无顾忌地盘腿坐在旋转吧凳上，嘴里叼着刚微波热好的苹果派，头顶的萨科塔光环随着嘴巴嚼动的节拍调皮地闪烁着。看见你推开休息室的大门，她空着的单手立刻比出一个酷炫的摇滚手势，橘红短发在灯下神采奕奕——「Yo！老板！辛苦啦！吃宵夜的时间到～德克萨斯烤的苹果派还有最后两块，再不抢可就要进阿能我的肚子里咯！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "orange_zip_lounge_hoodie",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

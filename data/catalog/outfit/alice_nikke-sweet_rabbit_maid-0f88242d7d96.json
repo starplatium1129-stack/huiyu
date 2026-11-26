@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "alice_nikke/sweet_rabbit_maid",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1533,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "alice_nikke",
     "outfit": {
       "id": "sweet_rabbit_maid",
       "name": "奇境梦游甜心粉白女仆装",
-      "prose": "dreamy Wonderland maid ensemble: a ruffled pastel-pink French maid dress with a crisp white heart-apron, sheer white thigh-high stockings with pink ribbon bows, lace wrist cuffs, frilly white maid headband with bunny ear accents, and shiny patent pink Mary Janes",
+      "prose": "A ruffled pastel-pink maid dress with puffed sleeves, a crisp white heart apron, frilly lace headband, pink ribbon bows, lace wrist cuffs, sheer white thigh-high stockings, and shiny pink Mary Janes.",
       "tokens": [
-        "maid",
-        "maid_uniform",
-        "apron",
-        "white_apron",
-        "pink_dress",
-        "ruffles",
-        "thighhighs",
-        "white_thighhighs",
-        "headband",
-        "bow"
+        "pastel pink dress",
+        "white heart apron",
+        "ruffled skirt",
+        "lace headband",
+        "pink ribbon bow",
+        "lace wrist cuffs",
+        "white thigh-high stockings",
+        "pink mary janes"
       ],
       "default": false,
       "isDefault": false

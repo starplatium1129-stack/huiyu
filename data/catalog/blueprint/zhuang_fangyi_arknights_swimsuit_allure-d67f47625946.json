@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3364,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_swimsuit_allure",
     "characterId": "zhuang_fangyi_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "晨光破晓的海岸防浪乱石滩。庄方宜身穿武藏巡卫翠竹墨玉分体战术泳衣，单腿踏在黑色玄武岩上。她利落地将微湿的长发在脑后束成利落的高马尾，锐利清亮的眼眸扫过平稳的防洪堤防。晨曦为她挺拔健美的武官身姿镀上一层金光，沉稳尽职中透露着不让须眉的飒爽英姿。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "wuling_bamboo_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

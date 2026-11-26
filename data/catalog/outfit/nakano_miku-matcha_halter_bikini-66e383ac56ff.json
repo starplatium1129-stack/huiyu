@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nakano_miku/matcha_halter_bikini",
+  "revision": 1,
+  "sortOrder": 4208,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "nakano_miku",
+    "outfit": {
+      "id": "matcha_halter_bikini",
+      "name": "抹茶初色·复古高腰挂脖比基尼",
+      "prose": "A soft matcha-blue retro high-waisted bikini with a halterneck top trimmed in white piping and teal headphones resting around her neck, worn barefoot.",
+      "tokens": [
+        "matcha blue bikini",
+        "high waisted bottoms",
+        "halter top",
+        "white piping",
+        "teal neck headphones",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

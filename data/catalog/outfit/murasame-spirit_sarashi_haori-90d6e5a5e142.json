@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "murasame/spirit_sarashi_haori",
+  "revision": 1,
+  "sortOrder": 4186,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "id": "spirit_sarashi_haori",
+      "name": "神刀灵羽 · 绯红金纹短羽织抹胸寝衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "murasame",
+      "prose": "A crimson gold-embroidered short spirit haori with sheer wide sleeves and red tassel cords layered over a snug white linen sarashi wrap bodice, worn barefoot.",
+      "tokens": [
+        "crimson short haori",
+        "gold crest embroidery",
+        "white sarashi wrap",
+        "sheer wide sleeves",
+        "red tassel cords",
+        "barefoot"
+      ]
+    }
+  }
+}

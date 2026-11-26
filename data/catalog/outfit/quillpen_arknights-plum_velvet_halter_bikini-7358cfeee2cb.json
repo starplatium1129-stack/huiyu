@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/plum_velvet_halter_bikini",
+  "revision": 1,
+  "sortOrder": 4009,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "id": "plum_velvet_halter_bikini",
+      "name": "暗梅丝绒抹胸挂脖比基尼",
+      "prose": "A deep-plum velvet halterneck bandeau bikini edged with black trim and dark metal buckles, worn with a low-tied sheer black chiffon sarong, a feather clip, and strappy sandals.",
+      "tokens": [
+        "deep plum bikini",
+        "black velvet trim",
+        "halter bandeau",
+        "sheer black sarong",
+        "dark metal buckles",
+        "feather clip",
+        "bare legs",
+        "strappy sandals"
+      ]
+    }
+  }
+}

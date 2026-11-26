@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/red_sweater_stockings",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1470,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "red_sweater_stockings",
       "name": "宽松赤红高领毛衣与透肤黑丝",
       "tokens": [
-        "oversized_sweater",
-        "red_sweater",
-        "turtleneck",
-        "cross",
-        "sheer_thighhighs",
-        "black_thighhighs",
+        "oversized sweater",
+        "scarlet knit",
+        "loose turtleneck",
+        "slouchy fit",
+        "sheer black thighhighs",
+        "garter band",
         "barefoot"
       ],
-      "prose": "An oversized scarlet knit turtleneck sweater draping past the hips to frame sheer black thighhighs.",
+      "prose": "An oversized scarlet ribbed turtleneck sweater falling mid-thigh like a loose tunic, worn with sheer black thigh-high stockings and bare feet.",
       "default": false,
       "isDefault": false,
       "characterId": "tohsaka_rin"

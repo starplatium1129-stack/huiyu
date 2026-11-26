@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/ivory_gold_morning_robe",
+  "revision": 1,
+  "sortOrder": 3949,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "id": "ivory_gold_morning_robe",
+      "name": "象牙白金丝滚边真丝晨袍",
+      "prose": "A luminous ivory-white silk morning robe edged with subtle gold piping along the open front and wide cuffs, loosely tied at the waist with a satin sash.",
+      "tokens": [
+        "white silk robe",
+        "gold piping",
+        "wide sleeves",
+        "satin waist sash",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

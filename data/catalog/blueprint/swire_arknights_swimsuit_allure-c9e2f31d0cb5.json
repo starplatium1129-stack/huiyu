@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3167,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "swire_arknights_swimsuit_allure",
     "characterId": "swire_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "晚霞镀金的珊瑚海域豪华游艇。诗怀雅身着维多利亚名媛奢金祖母绿分体泳衣，墨镜推上额头。她靠在真皮软榻上晃动着金黄香槟，虎尾轻快地甩动着，骄傲扬起下巴邀请你入座，周身洋溢着龙门富家千金独有的明媚豪爽与贵气活力。",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "emerald_velvet_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

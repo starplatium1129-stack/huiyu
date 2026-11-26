@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "angelina_arknights/mellow_wish",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2182,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "angelina_arknights",
     "outfit": {
       "id": "mellow_wish",
       "name": "白色飘袖连衣裙与黑色发箍",
-      "prose": "A white dress with detached sleeves, black gloves, a dark hairband and black boots.",
+      "prose": "A luminous white chiffon dress with detached fluttering sleeves, paired with black satin gloves, a black velvet headband, a silver waist chain, and black platform boots.",
       "tokens": [
-        "white dress",
-        "detached sleeves",
-        "black gloves",
-        "dark hairband",
-        "black boots"
+        "white chiffon dress",
+        "detached fluttering sleeves",
+        "black satin gloves",
+        "black velvet headband",
+        "silver waist chain",
+        "black platform boots"
       ],
       "characterId": "angelina_arknights",
       "default": false,

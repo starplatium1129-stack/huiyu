@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "d_killer_wife/honeymoon_pearl_monokini",
+  "revision": 1,
+  "sortOrder": 4061,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "d_killer_wife",
+    "outfit": {
+      "id": "honeymoon_pearl_monokini",
+      "name": "珍珠白缎面深领高衩连体泳衣",
+      "prose": "A pearl-white satin monokini with a deep plunging neckline, gold ring hardware, and side-tie bows, layered beneath a floor-length sheer white floral lace robe, bare legs, and barefoot.",
+      "tokens": [
+        "white satin monokini",
+        "deep v-neck",
+        "gold ring clasps",
+        "side-tie bows",
+        "sheer lace robe",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

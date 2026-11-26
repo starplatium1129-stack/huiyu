@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/sumi_cloud_silk_wrap_robe",
+  "revision": 1,
+  "sortOrder": 3993,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "id": "sumi_cloud_silk_wrap_robe",
+      "name": "墨染泼彩云纹斜襟真丝睡袍",
+      "prose": "A slanted-placket silk painter wrap robe washed in sumi ink gradients and misty cloud patterns with generous sleeves and a knotted ribbon belt.",
+      "tokens": [
+        "sumi silk robe",
+        "slanted lapel",
+        "cloud print",
+        "wide sleeves",
+        "asymmetrical waist belt",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

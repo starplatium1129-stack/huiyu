@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "firefly_hsr/firefly_mint_windbreaker_bikini",
+  "revision": 1,
+  "sortOrder": 4166,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "firefly_hsr",
+    "outfit": {
+      "id": "firefly_mint_windbreaker_bikini",
+      "name": "流光萤火薄荷青瓷挂脖镂空系带泳衣",
+      "prose": "Mint-cyan and charcoal-accented halter bikini featuring side cutouts and holographic ribbon ties, layered beneath an ultra-light translucent windbreaker jacket with a delicate anklet and bare feet.",
+      "tokens": [
+        "mint bikini",
+        "charcoal trim",
+        "halterneck",
+        "side cutouts",
+        "sheer windbreaker",
+        "ribbon ties",
+        "anklet",
+        "barefoot"
+      ],
+      "characterId": "firefly_hsr",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 挂脖泳装"
+    }
+  }
+}

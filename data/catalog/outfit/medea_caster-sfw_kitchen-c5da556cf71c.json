@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_kitchen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_kitchen",
       "name": "藏蓝襻带料理围裙装",
-      "prose": "A closed navy robe with tied sleeves, cream linen apron with blue edging, and indoor shoes.",
+      "prose": "A closed navy temple robe with sleeves tied neatly back beneath a cream linen cooking apron edged with blue stitching and worn with indoor shoes.",
       "tokens": [
-        "navy blue robe",
+        "navy kimono robe",
         "tied sleeves",
         "cream linen apron",
-        "blue stitching",
-        "indoor shoes"
+        "blue embroidery",
+        "wide sash",
+        "indoor house shoes"
       ],
       "default": true,
       "isDefault": true

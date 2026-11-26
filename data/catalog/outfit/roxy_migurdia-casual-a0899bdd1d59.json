@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/casual",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "casual",
-      "name": "天蓝法式立领排扣棉裙与开衩绝对领域",
-      "prose": "A pastel blue cotton dress with gathered sleeves, a white mandarin collar and an asymmetrical slit hem, paired with white thigh-highs.",
+      "name": "天蓝法式立领排扣棉裙与绝对领域",
+      "prose": "A pastel-blue cotton dress with puffed sleeves, a white mandarin collar, and an asymmetrical slit skirt, finished with white lace thighhighs and brown Mary Janes.",
       "tokens": [
-        "blue_dress",
-        "cotton_dress",
-        "high_collar",
-        "puffed_sleeves",
-        "pleated_skirt",
-        "high_slit",
-        "white_thighhighs",
-        "mary_janes"
+        "pastel blue dress",
+        "white mandarin collar",
+        "puffed cotton sleeves",
+        "asymmetrical slit skirt",
+        "white lace thighhighs",
+        "brown mary janes"
       ],
       "characterId": "roxy_migurdia",
       "default": false,

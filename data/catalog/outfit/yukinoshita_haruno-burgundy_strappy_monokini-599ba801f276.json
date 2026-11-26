@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/burgundy_strappy_monokini",
+  "revision": 1,
+  "sortOrder": 4150,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "burgundy_strappy_monokini",
+      "name": "酒红缎面深领交叉高叉连体泳衣",
+      "prose": "A deep burgundy stretch-satin monokini with a plunging neckline, crisscrossing waist cords, and high-cut legs layered beneath a sheer black chiffon robe, bare legs, and barefoot.",
+      "tokens": [
+        "burgundy satin monokini",
+        "deep v-neck",
+        "crisscross waist cords",
+        "high-cut leg",
+        "sheer black robe",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

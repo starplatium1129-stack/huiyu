@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_halo_street",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "操控轮椅穿行街角，膝上放着装满点心的纸袋",
     "camera": "medium tracking shot",
@@ -16,7 +16,7 @@
     "location": "拉特兰街道",
     "mood": "轻盈明亮",
     "negativeTokens": [],
-    "outfitId": "standard",
+    "outfitId": "laterano_pastel_cape_dress",
     "promptProse": "Lemuen guides the wheelchair with one hand on its joystick, steadying the pastry bag on her lap with the other. She smiles toward the viewer beside her as sunlight crosses the stone-paved street.",
     "promptTokens": [
       "1girl",

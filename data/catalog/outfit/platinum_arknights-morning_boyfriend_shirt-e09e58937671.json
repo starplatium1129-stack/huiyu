@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "platinum_arknights/morning_boyfriend_shirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 406,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "platinum_arknights",
     "outfit": {
       "id": "morning_boyfriend_shirt",
       "characterId": "platinum_arknights",
       "name": "晨光宽松男款白衬衫",
-      "prose": "An oversized, unbuttoned crisp white dress shirt with drooping sleeves that leave her collarbones and legs bare.",
+      "prose": "An oversized crisp white poplin dress shirt worn unbuttoned with dropped shoulder sleeves and rolled wrist cuffs, leaving bare legs and bare feet.",
       "tokens": [
-        "oversized shirt",
-        "white shirt",
-        "collared shirt",
-        "open collar",
-        "bare legs"
+        "oversized white shirt",
+        "unbuttoned crisp collar",
+        "dropped shoulder sleeves",
+        "rolled wrist cuffs",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

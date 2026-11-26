@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_beach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_beach",
-      "name": "蓝白训练泳装",
-      "prose": "A navy athletic swimsuit has straight white side panels, with a light-grey windbreaker tied at the waist and waterproof sandals.",
+      "name": "蓝白竞技训练泳装",
+      "prose": "A navy athletic one-piece swimsuit with crisp white side panels, a light-grey windbreaker knotted at the waist, and waterproof sandals.",
       "tokens": [
-        "navy one-piece swimsuit",
-        "straight white side panels",
-        "light grey windbreaker tied at waist",
+        "navy athletic swimsuit",
+        "white side panels",
+        "grey windbreaker",
+        "waist tie",
+        "silver zipper",
+        "bare legs",
         "waterproof sandals"
       ],
       "default": false,

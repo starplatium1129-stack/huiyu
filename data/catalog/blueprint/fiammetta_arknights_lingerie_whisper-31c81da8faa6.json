@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3142,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "fiammetta_arknights_lingerie_whisper",
     "characterId": "fiammetta_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛甲板上强风呼啸的深夜。代号‘苦难陈述者’的菲亚梅塔冲完凉，换上一件烈焰绯红工装吊带背心与黑色运动平角短裤。白色长发与赤红的火羽在甲板夜风中剧烈舞动，她靠在铁栏杆上，手里握着易拉罐冰镇苦味酒猛灌了一口。察觉到你走近，她立刻炸毛般皱起眉头，嘴里却把备用的另一罐冰饮丢到你怀里——「啧……别提莫斯提马和安多恩那个混蛋了，光是想起来就让我浑身冒火！喂，接着！吹吹冷风喝罐苦味酒……今晚别拿那些无聊的代号烦我，叫我菲亚梅塔就行。」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "suffering_tactical_cami",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

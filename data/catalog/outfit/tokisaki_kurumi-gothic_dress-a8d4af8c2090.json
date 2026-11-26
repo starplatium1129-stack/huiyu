@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/gothic_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "gothic_dress",
       "name": "绯红绮梦哥特蕾丝礼裙",
-      "prose": "A scarlet-and-black gothic gown with layered frills, fitted stays and lace trim, paired with dark thigh-highs.",
+      "prose": "A scarlet and black gothic corset gown with layered chiffon frills, black tulle skirt, satin ribbon lacing, and lace trim over black thigh-highs and heeled boots.",
       "tokens": [
-        "gothic_dress",
-        "corset_dress",
-        "black_and_red_dress",
-        "frills",
-        "lace_trim",
-        "black_thighhighs",
-        "boots"
+        "gothic corset dress",
+        "crimson chiffon",
+        "black tulle",
+        "layered frills",
+        "lace trim",
+        "satin ribbon",
+        "black thighhighs",
+        "heeled boots"
       ],
       "default": true,
       "isDefault": true,

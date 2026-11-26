@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/navy_front_zip_gown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1412,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "navy_front_zip_gown",
       "name": "藏青前拉链修身开衩晚礼裙",
       "tokens": [
-        "navy_dress",
-        "sheath_dress",
-        "zipper_pull",
-        "high_slit",
-        "open_collar",
-        "sheer_thighhighs",
-        "black_thighhighs",
-        "high_heels"
+        "navy sheath gown",
+        "front metal zipper",
+        "high leg slit",
+        "crepe satin weave",
+        "silver drop pendant",
+        "black sheer thighhighs",
+        "pointed high heels"
       ],
-      "prose": "A navy crepe sheath dress with a two-way exposed metal zipper and high slit, worn with sheer black stockings.",
+      "prose": "A tailored navy crepe sheath gown with a two-way exposed metal front zipper, high leg slit, and silver pendant, paired with sheer black thigh-highs and pointed heels.",
       "default": false,
       "isDefault": false,
       "characterId": "misaka_mikoto"

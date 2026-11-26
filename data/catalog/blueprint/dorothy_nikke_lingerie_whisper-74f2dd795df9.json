@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3359,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "dorothy_nikke_lingerie_whisper",
     "characterId": "dorothy_nikke",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "伊甸园沉寂的深夜。桃乐丝身着一袭以天鹅绒与真丝薄纱手工订制的圣洁挂脖睡袍，肩头与裙摆缀满轻柔的白羽。她独自端坐在汉白玉喷泉台阶上，纤手托着剔透的水晶红酒杯，长长的粉金色卷发如瀑布般覆在冰凉的台阶上。她微微摇晃着猩红的酒液，清冷的美眸望向地平线外破败的方舟，嘴角泛起凄美而讽刺的微笑——「看着这片虚伪的乐园……您也在为昔日女神部队的牺牲感到悲哀吗？指挥官……请留下来吧，在这场孤独的夜宴结束之前。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "eden_feather_halter_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

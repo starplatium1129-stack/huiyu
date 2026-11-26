@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_records",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 939,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_records",
-      "name": "冰蓝立领改良短旗袍与深色长袜",
-      "prose": "An ice-blue high-collared sleeveless qipao with a keyhole and split hem, paired with dark thigh-highs.",
+      "name": "冰蓝立领无袖短旗袍与深蓝长袜",
+      "prose": "A sleeveless ice-blue satin mini qipao with a stand collar, keyhole neckline, and silver clasp, paired with navy thigh-highs and heeled mules.",
       "tokens": [
-        "qipao",
-        "short_dress",
-        "high_collar",
-        "sleeveless",
-        "keyhole_neckline",
-        "side_slit",
-        "light_blue_dress",
-        "thighhighs"
+        "ice blue qipao",
+        "mini dress",
+        "stand collar",
+        "keyhole front",
+        "side slit",
+        "silver clasp",
+        "navy thighhighs",
+        "heeled mules"
       ],
       "default": false,
       "isDefault": false,

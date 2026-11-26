@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shirai_kuroko/judgement_crimson_bandeau",
+  "revision": 1,
+  "sortOrder": 4115,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "shirai_kuroko",
+    "outfit": {
+      "id": "judgement_crimson_bandeau",
+      "name": "风纪撞色·绯红白边交叉系带抹胸泳衣",
+      "prose": "A crimson and crisp white color-blocked bandeau bikini featuring crisscrossing elastic waist straps, side-tie hip bows, and a green Judgement armband, worn barefoot.",
+      "tokens": [
+        "crimson bandeau bikini",
+        "white contrast trim",
+        "crisscross waist straps",
+        "side-tie hip bows",
+        "green judgement armband",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

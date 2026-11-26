@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "saten_ruiko/summer_yukata",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1652,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfit": {
       "id": "summer_yukata",
       "name": "藤紫小花浴衣与青绿腰带",
-      "prose": "A pale lilac cotton yukata patterned with small white flowers, a teal obi, and simple wooden sandals",
+      "prose": "A pale lilac cotton yukata patterned with small white blossoms, tied with a teal woven obi and silk cord, accented by a white blossom clip and wooden geta sandals.",
       "tokens": [
-        "purple_yukata",
-        "floral_print",
-        "white_flowers",
-        "teal_obi",
-        "cotton",
-        "geta"
+        "lilac cotton yukata",
+        "white floral print",
+        "teal woven obi",
+        "silk obijime cord",
+        "white blossom clip",
+        "bare legs",
+        "wooden geta sandals"
       ],
       "default": false
     }

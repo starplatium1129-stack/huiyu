@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 3505,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:39:31.217853800+00:00",
   "data": {
     "id": "beta_shadow_lingerie_whisper",
     "characterId": "beta_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "暗影庭园副官贝塔的私密闺房。白日里是以才华横溢闻名帝都的小说家‘夏目老师’，到了深夜，她换上一件银灰缎面深V荷叶边吊带睡裙，整个人趴在松软的大床上。手里握着珍藏的鹅毛笔，银色短发微颤，正在秘密笔记本上奋笔疾书《暗影大人今日伟业记》。看到暗影大人推门，她惊得差点把墨水打翻，立刻红着脸把本子藏在身后，水汪汪的蓝眸闪烁着崇拜的小星星——「暗、暗影大人？！贝塔刚才只是……只是在整理庭园的日常记录！绝对没有在写那种奇怪的狂热小说哦！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "moonlit_satin_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

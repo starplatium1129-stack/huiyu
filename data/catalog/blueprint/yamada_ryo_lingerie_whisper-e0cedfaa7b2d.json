@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3382,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "yamada_ryo_lingerie_whisper",
     "characterId": "yamada_ryo",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "下北泽Livehouse后台乐器存放间，四周靠放着音箱、效果器与纠缠的音频线。大喇喇地靠坐在排练室旧皮沙发上，双脚翘在贝斯琴盒上，单手拿着一根野草模样的绿色草本零食在嘴边轻咬，三无冷漠的琥珀眼眸瞥向你，嘴角挑着一丝慵懒。 她微微抬眸轻语——“钱都拿去买中古贝斯了……所以今晚只能穿这件。后藤……要是可怜我的话，借我点钱买拉面吧。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "indigo_tank_bralette_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

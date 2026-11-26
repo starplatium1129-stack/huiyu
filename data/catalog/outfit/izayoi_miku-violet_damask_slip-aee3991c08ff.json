@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "izayoi_miku/violet_damask_slip",
+  "revision": 1,
+  "sortOrder": 4199,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "izayoi_miku",
+    "outfit": {
+      "id": "violet_damask_slip",
+      "name": "歌姬华丽·深紫暗纹真丝高衩吊带袍",
+      "prose": "A deep violet damask silk lounging gown with an empire halter bustier, high side slit, amethyst jewel clasp, and trailing hem, worn barefoot.",
+      "tokens": [
+        "violet damask gown",
+        "silk satin",
+        "halter neckline",
+        "high side slit",
+        "amethyst clasp",
+        "trailing hem",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/metatron_bridal_corset",
+  "revision": 1,
+  "sortOrder": 4196,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "metatron_bridal_corset",
+      "name": "纯白战约·蕾丝系带新娘风内衣套",
+      "prose": "A pure white bridal-inspired lace bralette set with scalloped trim, satin lacing, sheer tulle fingerless gloves, and lace garters over white thigh-highs, worn barefoot.",
+      "tokens": [
+        "white lace bralette",
+        "bridal garters",
+        "sheer tulle gloves",
+        "scalloped lace trim",
+        "satin ribbons",
+        "white thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

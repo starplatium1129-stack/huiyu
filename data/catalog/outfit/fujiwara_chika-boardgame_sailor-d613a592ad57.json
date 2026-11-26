@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "fujiwara_chika/boardgame_sailor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1638,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfit": {
       "id": "boardgame_sailor",
       "name": "法式天蓝条纹圆领衬衫与高腰奶白百褶短裙",
-      "prose": "A sky-blue striped blouse with a rounded collar tucked into a high-waisted ivory pleated miniskirt.",
+      "prose": "A sky-blue striped blouse with a rounded collar, short sleeves, and pearl buttons tucked into a high-waisted ivory pleated mini skirt, worn with bare legs and white canvas shoes.",
       "tokens": [
-        "blue_blouse",
-        "striped_blouse",
-        "round_collar",
-        "short_sleeves",
-        "pearl_buttons",
-        "pleated_skirt",
-        "white_skirt",
-        "miniskirt",
-        "bare_legs",
-        "canvas_shoes"
+        "blue striped blouse",
+        "rounded collar",
+        "short sleeves",
+        "pearl buttons",
+        "ivory pleated skirt",
+        "bare legs",
+        "white canvas shoes"
       ],
       "default": false,
       "characterId": "fujiwara_chika",

@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_morning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 933,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_morning",
       "name": "象牙绉绸深V系带晨袍与绯红滚边",
-      "prose": "A relaxed ivory crepe-silk morning robe with crimson satin piping and an open collar.",
+      "prose": "A relaxed ivory crepe-silk morning robe finished with crimson satin piping, a plunging neckline, and a waist tie, worn over bare legs with silk slippers.",
       "tokens": [
-        "robe",
-        "silk_robe",
-        "white_robe",
-        "v-neck",
-        "plunging_neckline",
-        "red_piping",
-        "sash",
-        "bare_legs",
-        "slippers"
+        "ivory morning robe",
+        "crepe silk",
+        "crimson piping",
+        "plunging neckline",
+        "waist tie",
+        "long sleeves",
+        "bare legs",
+        "silk slippers"
       ],
       "characterId": "changli_wuthering",
       "default": false,

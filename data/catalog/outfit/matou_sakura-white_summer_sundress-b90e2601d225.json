@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/white_summer_sundress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "white_summer_sundress",
       "name": "纯白真丝吊带裙与雪纺长披衫",
-      "prose": "A fluid white mulberry silk slip dress with a side slit and sheer light cover-up.",
+      "prose": "A fluid white mulberry-silk slip sundress cut with a graceful side slit beneath a breezy translucent chiffon cardigan and slim sandals.",
       "tokens": [
-        "white_sundress",
-        "silk_dress",
-        "slip_dress",
-        "side_slit",
-        "sheer_cardigan",
-        "sleeveless",
-        "bare_legs",
-        "sandals"
+        "white sundress",
+        "silk slip dress",
+        "side slit",
+        "sheer chiffon cardigan",
+        "thin straps",
+        "bare legs",
+        "white sandals"
       ],
       "characterId": "matou_sakura",
       "default": false,

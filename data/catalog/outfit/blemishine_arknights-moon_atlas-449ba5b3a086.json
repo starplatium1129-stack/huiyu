@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/moon_atlas",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2123,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "moon_atlas",
       "name": "月相刺绣藏蓝学院套裙",
-      "prose": "A navy wool vest embroidered with tiny moon phases over a high-collared blouse and grey checked skirt, finished with a silver ribbon tie.",
+      "prose": "A navy wool vest with fine silver lunar-phase embroidery over a high-collar shirt and grey plaid skirt, paired with a silver ribbon tie and black oxford shoes.",
       "tokens": [
-        "navy embroidered vest",
-        "moon phase embroidery",
-        "high-collared blouse",
-        "grey checked skirt",
-        "silver ribbon tie"
+        "navy wool vest",
+        "lunar phase embroidery",
+        "high collar shirt",
+        "grey plaid skirt",
+        "silver ribbon tie",
+        "black oxford shoes"
       ],
       "characterId": "blemishine_arknights",
       "default": false,

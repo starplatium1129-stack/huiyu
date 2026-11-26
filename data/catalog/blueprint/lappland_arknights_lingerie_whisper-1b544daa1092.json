@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3192,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "lappland_arknights_lingerie_whisper",
     "characterId": "lappland_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "叙拉古废弃安全屋屋顶露台，雨后湿漉的地面映出远处街道的昏红灯火。懒散地倚在斑驳水泥栏杆上，白狼尾巴在身后轻扫，一手拨弄着湿润银发，苍白脸颊上带着狂野而慵懒的笑意，眼底跳动着危险的狂热火苗。 她微微抬眸轻语——“哈哈……这么快就找过来了？看到我穿成这副样子，你眼里的那点克制……还能撑多久？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "charcoal_asymmetric_silk_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

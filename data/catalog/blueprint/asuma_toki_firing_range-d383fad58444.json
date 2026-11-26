@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_firing_range",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "action": "外骨骼装甲举枪瞄准",
     "adult": false,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "candc_maid",
+    "outfitId": "black_white_combat_suit",
     "promptProse": "In Abi-Eshuh armor, she shoulders the rifle with one hand at the grip and the other supporting the fore-end, aiming down the range. The muzzle flash warms her glove against the cold training lights.",
     "promptTokens": [
       "firing range",

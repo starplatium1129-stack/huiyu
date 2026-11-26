@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_alter_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3521,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "artoria_pendragon_alter_lingerie_whisper",
     "characterId": "artoria_pendragon_alter",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "迦勒底深夜的私人起居室。黑化阿尔托莉雅褪去笨重的漆黑铠甲，穿上一件线条利落的黑曜哥特蕾丝紧身束胸吊带。她随性地陷在真皮沙发中，翘起一条腿，手里握着咬去大半的快餐汉堡。金色的眼眸冷漠扫来，指了指身旁的空位——「看什么看，杂兵。宵夜的汉堡要是冷了就失去了原有的意义。命令你坐到这里……还有，把桌上的红茶端过来。」",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "obsidian_boned_corset_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

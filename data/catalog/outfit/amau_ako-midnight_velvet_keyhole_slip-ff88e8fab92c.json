@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/midnight_velvet_keyhole_slip",
+  "revision": 1,
+  "sortOrder": 3934,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "id": "midnight_velvet_keyhole_slip",
+      "name": "午夜蓝丝绒项圈镂空吊带睡裙",
+      "prose": "A plush midnight-blue velvet boudoir slip cut with a modest bust keyhole opening, paired with a fitted black leather collar choker and silver ring clasp.",
+      "tokens": [
+        "midnight blue slip",
+        "velvet nightgown",
+        "keyhole cutout",
+        "black leather choker",
+        "silver ring",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

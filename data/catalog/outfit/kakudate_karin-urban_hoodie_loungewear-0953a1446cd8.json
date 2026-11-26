@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kakudate_karin/urban_hoodie_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1679,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "kakudate_karin",
     "outfit": {
       "characterId": "kakudate_karin",
       "id": "urban_hoodie_loungewear",
-      "name": "都会周末无袖连帽衫便装",
-      "prose": "A relaxed dark-grey sleeveless cropped hoodie worn over black crop top, distressed denim shorts, and athletic sneakers, showing her toned midriff and legs.",
+      "name": "炭灰无袖连帽短卫衣牛仔装",
+      "prose": "A relaxed charcoal sleeveless cropped hoodie layered over a black athletic crop top and belted distressed denim shorts, finished with crisp white sneakers.",
       "tokens": [
-        "hoodie",
-        "sleeveless hoodie",
-        "grey hoodie",
-        "denim shorts",
+        "grey sleeveless hoodie",
+        "black crop top",
+        "distressed denim shorts",
+        "black leather belt",
         "bare legs",
-        "sneakers"
+        "white sneakers"
       ],
       "default": false,
       "isDefault": false

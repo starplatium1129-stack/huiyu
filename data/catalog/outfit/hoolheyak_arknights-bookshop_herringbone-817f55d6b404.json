@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "hoolheyak_arknights/bookshop_herringbone",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2039,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "hoolheyak_arknights",
     "outfit": {
       "id": "bookshop_herringbone",
       "name": "烟灰人字纹大衣与象牙立领衫",
-      "prose": "A smoke-grey herringbone wool coat with a structured shoulder over an ivory stand-collar blouse and dark skirt, paired with low leather boots.",
+      "prose": "A smoke-grey herringbone wool coat with structured shoulders over an ivory stand-collar blouse and charcoal midi skirt, paired with a brass eyeglass chain, opaque tights, and leather ankle boots.",
       "tokens": [
-        "smoke grey herringbone coat",
-        "structured shoulder",
-        "ivory stand-collar blouse",
-        "dark skirt",
+        "grey herringbone coat",
+        "ivory stand blouse",
+        "charcoal midi skirt",
+        "brass eyeglass chain",
+        "opaque black tights",
         "leather ankle boots"
       ],
       "characterId": "hoolheyak_arknights",

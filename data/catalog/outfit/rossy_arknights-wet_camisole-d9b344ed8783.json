@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/wet_camisole",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 438,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "default": false,
       "id": "wet_camisole",
       "isDefault": false,
-      "name": "纯白轻薄吊带背心",
-      "prose": "A thin white camisole with narrow shoulder straps and a simple straight hem.",
+      "name": "纯白轻薄吊带背心与工装短裤",
+      "prose": "A lightweight thin white cotton camisole with narrow shoulder straps and a straight hem worn with dark cotton work briefs, bare legs, and barefoot.",
       "tokens": [
-        "white camisole",
-        "thin straps",
-        "light fabric"
+        "white cotton camisole",
+        "thin shoulder straps",
+        "straight hem",
+        "dark work briefs",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

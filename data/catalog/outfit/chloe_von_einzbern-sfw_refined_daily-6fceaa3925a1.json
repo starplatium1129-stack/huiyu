@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "橙色格纹藏蓝围裙套装",
-      "prose": "an orange checked shirt with tidy cuffs, loose cream full-length trousers and a navy cotton apron with contrasting orange stitching",
+      "prose": "A warm orange plaid button-up shirt with tidy rolled cuffs worn under an indigo kitchen apron with contrast stitching and relaxed cream trousers.",
       "tokens": [
-        "orange checked shirt",
-        "long sleeves",
-        "loose cream trousers",
-        "navy apron"
+        "orange plaid shirt",
+        "navy cotton apron",
+        "contrast stitching",
+        "cream wide pants",
+        "rolled cuffs",
+        "tan loafers"
       ],
       "isDefault": false,
       "isNsfw": false

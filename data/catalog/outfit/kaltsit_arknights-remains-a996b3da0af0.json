@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/remains",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "remains",
       "name": "遗尘灰黑解构战术夹克与机能战服",
-      "prose": "A dark-grey cropped tactical jacket over a charcoal compression bodysuit and shorts.",
+      "prose": "A weathered dark-grey cropped tactical jacket layered over a charcoal compression bodysuit and dark utility shorts with laced combat boots.",
       "tokens": [
-        "tactical_jacket",
-        "cropped_jacket",
-        "black_shorts",
-        "spandex_shorts",
-        "bare_legs",
-        "combat_boots"
+        "grey tactical jacket",
+        "cropped jacket",
+        "charcoal bodysuit",
+        "black shorts",
+        "bare legs",
+        "combat boots"
       ],
       "characterId": "kaltsit_arknights",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3123,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "muelsyse_arknights_lingerie_whisper",
     "characterId": "muelsyse_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "莱茵生命生态水培园区，温润的浅水池中漂浮着发光的转基因睡莲。浸坐在浅水池边的白石台阶上，细白小腿踢起剔透水花，绿发在水汽中微卷，回眸眨着晶亮碧眸俏皮微笑。 她微微抬眸轻语——“水可是会随容器改变形态的哦~那么现在的缪缪……是变成了你最喜欢的模样了吗？”",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "hydroponic_aqua_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_shrine",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_shrine",
       "name": "鸣神大社朱红开衩改良巫女服",
-      "prose": "A scarlet-and-white silk miko robe with detached sleeves and a high side slit.",
+      "prose": "Scarlet-and-white silk ceremonial miko robe with detached wide sleeves, a high side slit along the skirt, gold-accented waist obi, white tabi socks, and tall wooden geta.",
       "tokens": [
-        "miko",
-        "white_kimono",
-        "wide_sleeves",
-        "detached_sleeves",
-        "high_slit",
-        "obi",
-        "bare_legs",
-        "geta"
+        "miko outfit",
+        "white kimono",
+        "detached sleeves",
+        "red hakama",
+        "high slit",
+        "gold obi",
+        "white tabi",
+        "wooden geta"
       ],
       "default": true,
       "isDefault": true,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_hsr_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3386,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "firefly_hsr_swimsuit_allure",
     "characterId": "firefly_hsr",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "夜晚的海浪泛着令人窒息的莹蓝色荧光。流萤倒退着走在浪沫边缘，薄荷色的泳装轻盈飘动，银灰色的长发在夜风中如银河倾泻。她背着双手，侧仰起小脸，碧蓝双眸倒映着整片星空与你的身影，声音轻柔如梦——「开拓者，你看！踩在水里的时候，脚底会亮起蓝色的星星呢。在格拉默的梦醒之后，我最想做的事情……就是像这样，没有任何警报，和你慢慢走到天亮。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "firefly_mint_windbreaker_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

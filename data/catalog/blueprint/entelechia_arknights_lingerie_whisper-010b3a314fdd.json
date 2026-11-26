@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3150,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "entelechia_arknights_lingerie_whisper",
     "characterId": "entelechia_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "音乐室内的黑胶唱针缓缓滑落回原位。深海猎人兼大提琴家隐德来希换上一袭不对称剪裁的灰黑暗纹真丝衬裙，赤足踩在波斯织毯上。她斜倚在老式黄铜留声机前，修长的手指轻托着旋转完毕的唱片边缘，灰紫色的长卷发如深海海藻般舒展。她偏头凝望着陪伴在侧的你，眼眸中流淌着未散的狂想曲余韵——「音乐停下了……但留在心房里的振动，还在继续。博士，你觉得刚才那段华彩，能够触及深海的真正寂静吗？」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "abyssal_jacquard_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

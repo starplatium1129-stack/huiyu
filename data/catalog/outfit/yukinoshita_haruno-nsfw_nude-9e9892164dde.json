@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely free of trench coats, velvet evening gowns, lace lingerie, stockings, and stilettos, revealing an unadorned natural form.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

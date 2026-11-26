@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shu_arknights/jade_vine_crossover_monokini",
+  "revision": 1,
+  "sortOrder": 4019,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "shu_arknights",
+    "outfit": {
+      "id": "jade_vine_crossover_monokini",
+      "name": "青苗丰岁·翠玉麦金交织连体泳装",
+      "prose": "A jade-green and harvest-gold crossover monokini accented with botanical vine-leaf cutouts, a handwoven bamboo waist tie, and a sheer verdant sarong wrap, worn barefoot.",
+      "tokens": [
+        "jade green monokini",
+        "crossover halter straps",
+        "harvest gold trim",
+        "vine leaf cutouts",
+        "sheer verdant sarong",
+        "woven bamboo tie",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

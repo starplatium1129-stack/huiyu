@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "hoolheyak_arknights/teahouse_jade",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2037,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "hoolheyak_arknights",
     "outfit": {
       "id": "teahouse_jade",
-      "name": "孔雀青垂领丝衫与金羽胸针",
-      "prose": "A deep peacock-teal silk blouse with a fluid draped collar, a black pencil skirt and a sculpted gold feather clasp.",
+      "name": "孔雀青垂领丝衫与金羽铅笔裙",
+      "prose": "A deep peacock-teal silk blouse with a softly draped cowl collar tucked into a black pencil skirt, pinned with a gold feather clasp and worn with jade jewelry, sheer tights, and emerald suede heels.",
       "tokens": [
-        "peacock teal silk blouse",
-        "draped collar",
+        "peacock silk blouse",
+        "cowl draped collar",
         "black pencil skirt",
-        "gold feather clasp"
+        "gold feather clasp",
+        "nude sheer tights",
+        "emerald suede heels"
       ],
       "characterId": "hoolheyak_arknights",
       "default": false,

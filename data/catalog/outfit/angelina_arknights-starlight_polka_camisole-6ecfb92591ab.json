@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/starlight_polka_camisole",
+  "revision": 1,
+  "sortOrder": 4044,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "starlight_polka_camisole",
+      "name": "星夜信使 · 珊瑚粉波点丝绸睡衣",
+      "prose": "A lightweight coral-pink silk camisole scattered with miniature white polka dots, thin satin straps, elastic frilled tap shorts, and bare feet.",
+      "tokens": [
+        "coral silk camisole",
+        "white polka dots",
+        "thin satin straps",
+        "frilled tap shorts",
+        "elastic waist ruffle",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

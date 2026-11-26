@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/black_leather_bodysuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1410,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "black_leather_bodysuit",
       "name": "黑色皮革战术连体衣",
       "tokens": [
-        "black leather bodysuit",
-        "highleg",
-        "zipper",
-        "blindfold"
+        "matte leather bodysuit",
+        "silver buckles",
+        "detached sleeves",
+        "thigh straps",
+        "mystic-eye blindfold",
+        "bare legs",
+        "heeled boots"
       ],
-      "prose": "A black leather high-cut bodysuit with a zipper, paired with her removable blindfold.",
+      "prose": "A matte black leather Rider battle bodysuit secured with silver buckles and thigh straps, paired with detached arm sleeves, heeled boots, and her removable blindfold.",
       "default": false,
       "isDefault": false
     }

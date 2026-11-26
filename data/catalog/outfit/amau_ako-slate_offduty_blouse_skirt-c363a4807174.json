@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/slate_offduty_blouse_skirt",
+  "revision": 1,
+  "sortOrder": 3935,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "id": "slate_offduty_blouse_skirt",
+      "name": "雾蓝真丝领结衬衫与黑高腰铅笔裙",
+      "prose": "A tailored slate-blue silk blouse tied with a narrow black neck ribbon and tucked into a high-waisted black pencil skirt, styled with a slim choker, wristwatch, sheer black pantyhose, and pumps.",
+      "tokens": [
+        "blue silk blouse",
+        "black ribbon tie",
+        "black pencil skirt",
+        "silver belt buckle",
+        "black choker",
+        "wristwatch",
+        "sheer black pantyhose",
+        "black pumps"
+      ]
+    }
+  }
+}

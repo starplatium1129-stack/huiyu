@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3367,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "rossy_arknights_swimsuit_allure",
     "characterId": "rossy_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "刚刚征服了高达三米的异星巨浪。洛茜浑身湿淋淋地拖着冲浪板走上黑沙滩，拉链半开的潜水服衬托出充满活力的健美体魄，护目镜推在棕色短发上笑得肆无忌惮。她踩着冲浪板朝管理员用力挥动手臂，阳光晒得她健康的皮肤泛起麦色光晕——「哈！管理员，看见刚才那一波漂亮的浪头了吗！塔卫二的巨浪比模拟舱刺激一万倍！再休息十分钟，下一趟冲浪比赛，你可千万别落后啊！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "pioneer_surf_wetsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

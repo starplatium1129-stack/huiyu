@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/saint_one_shoulder_modal_set",
+  "revision": 1,
+  "sortOrder": 4122,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "id": "saint_one_shoulder_modal_set",
+      "name": "唯闪剑圣·极简无痕单肩背心与长裤",
+      "prose": "A minimalist martial loungewear set featuring a seamless pure-white one-shoulder modal tank and asymmetrical single-legged stretch lounge pants with a crimson cord tie, worn barefoot.",
+      "tokens": [
+        "white modal tank",
+        "one-shoulder strap",
+        "asymmetric lounge pants",
+        "single-legged cut",
+        "matte stretch knit",
+        "crimson cord tie",
+        "barefoot"
+      ]
+    }
+  }
+}

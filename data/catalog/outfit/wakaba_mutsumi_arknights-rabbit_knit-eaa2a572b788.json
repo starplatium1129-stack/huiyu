@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "wakaba_mutsumi_arknights/rabbit_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2201,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "wakaba_mutsumi_arknights",
     "outfit": {
       "id": "rabbit_knit",
       "name": "兔耳刺绣米白针织衫与鼠尾草裙",
-      "prose": "An ivory knit sweater with a small rabbit-ear embroidery at the cuff, paired with a soft sage skirt and a pale blue hair clip.",
+      "prose": "An ivory knit sweater with tiny rabbit embroidery at the cuff paired with a sage pleated skirt, a pale blue side clip, cream ankle socks, and beige suede flats.",
       "tokens": [
         "ivory knit sweater",
-        "rabbit embroidery",
-        "sage skirt",
-        "pale blue hair clip"
+        "rabbit cuff embroidery",
+        "sage pleated skirt",
+        "pale blue clip",
+        "cream ankle socks",
+        "beige suede flats"
       ],
       "characterId": "wakaba_mutsumi_arknights",
       "default": false,

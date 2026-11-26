@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "zeta_shadow/golden_leopard_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1927,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "zeta_shadow",
     "outfit": {
       "id": "golden_leopard_swimsuit",
       "name": "金豹纹潜行泳装",
-      "prose": "Golden leopard-print swimsuit with a pareo, worn during a lakeside intelligence exchange in midsummer.",
+      "prose": "Golden-amber leopard-print halter bikini with thin side-tie bottoms, wrapped with a sheer black chiffon pareo, slim gold armlet, delicate anklet, and flat strappy sandals.",
       "tokens": [
-        "leopard_print",
-        "bikini",
-        "pareo",
-        "cat_ears",
-        "tail"
+        "leopard bikini",
+        "gold bikini",
+        "halterneck",
+        "sheer pareo",
+        "side-tie bottom",
+        "gold anklet",
+        "gold armlet",
+        "strappy sandals"
       ],
       "characterId": "zeta_shadow",
       "default": false,

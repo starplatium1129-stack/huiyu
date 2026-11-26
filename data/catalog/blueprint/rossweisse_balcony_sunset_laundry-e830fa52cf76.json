@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_balcony_sunset_laundry",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2228,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "rossweisse_balcony_sunset_laundry",
     "characterId": "rossweisse",
-    "outfitId": "bargain_shopper_apron",
+    "outfitId": "nordic_casual_cardigan",
     "title": "罗丝薇瑟 · 暮色阳台的晾衣回眸",
     "category": "现代日常",
     "description": "微风轻拂的高楼阳台上，白被单在金色晚霞中翻飞。挂好最后一角被单的罗丝薇瑟抬手将吹乱的银发别在耳后，回眸望向端来红茶的你，眼神中流淌着岁月静好的深情。",

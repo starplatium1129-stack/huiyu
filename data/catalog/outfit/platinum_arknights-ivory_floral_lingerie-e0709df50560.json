@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/ivory_floral_lingerie",
+  "revision": 1,
+  "sortOrder": 4049,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "ivory_floral_lingerie",
+      "name": "纯白法式刺绣蕾丝内衣套组",
+      "prose": "A pure white French floral-embroidered lace bralette and translucent mesh briefs accented with dainty satin ribbon bows, sheer lace thigh-high stockings, and bare feet.",
+      "tokens": [
+        "white lace bralette",
+        "floral thread embroidery",
+        "translucent mesh briefs",
+        "satin ribbon bows",
+        "sheer lace thighhighs",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

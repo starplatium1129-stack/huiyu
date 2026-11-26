@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/archive_vest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2172,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "archive_vest",
       "name": "苔绿背心与植物纹象牙长裙",
-      "prose": "A dark moss tailored waistcoat over an ivory long-sleeved dress, with botanical embroidery at the hem and a bronze leaf clasp.",
+      "prose": "A dark moss-green tailored waistcoat over an ivory long dress with botanical hem embroidery and cream lace cuffs, fastened with a bronze leaf clasp and worn with brown lace boots.",
       "tokens": [
-        "dark moss tailored waistcoat",
-        "ivory long-sleeved dress",
-        "botanical embroidery",
-        "bronze leaf clasp"
+        "moss tailored waistcoat",
+        "ivory long dress",
+        "botanical hem embroidery",
+        "bronze leaf clasp",
+        "cream lace cuffs",
+        "brown lace boots"
       ],
       "characterId": "reed_arknights",
       "default": false,

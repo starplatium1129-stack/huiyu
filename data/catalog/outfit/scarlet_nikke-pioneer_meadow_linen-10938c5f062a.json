@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "scarlet_nikke/pioneer_meadow_linen",
+  "revision": 1,
+  "sortOrder": 4057,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "scarlet_nikke",
+    "outfit": {
+      "id": "pioneer_meadow_linen",
+      "name": "开拓者青麻草帽田园裙装",
+      "prose": "A relaxed cream linen wanderer tunic fastened with an indigo waist sash and braided rope belt over a pleated midi skirt, accompanied by a broad woven straw hat, white tabi socks, and straw sandals.",
+      "tokens": [
+        "cream linen tunic",
+        "indigo waist sash",
+        "pleated midi skirt",
+        "woven straw hat",
+        "braided rope belt",
+        "white tabi socks",
+        "woven straw sandals"
+      ]
+    }
+  }
+}

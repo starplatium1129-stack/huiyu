@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/celadon_studio_hanfu",
+  "revision": 1,
+  "sortOrder": 3994,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "id": "celadon_studio_hanfu",
+      "name": "青瓷素纱画斋交领襦裙",
+      "prose": "A tranquil celadon-tinted sheer cross-collar studio ruqun top worn over an ink-charcoal pleated maxi skirt, accented with a carved jade waist pendant and embroidered cloth shoes.",
+      "tokens": [
+        "celadon silk jacket",
+        "crossed collar hanfu",
+        "charcoal pleated skirt",
+        "jade waist pendant",
+        "wide sleeves",
+        "dark cloth shoes"
+      ]
+    }
+  }
+}

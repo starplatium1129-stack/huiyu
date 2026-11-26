@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1946,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "standard",
-      "name": "干员常装 · 黑色高领与短夹克",
+      "name": "干员常装 · 黑高领与离袖短夹克",
       "default": true,
       "isDefault": true,
-      "prose": "A black turtleneck sweater and short jacket with detached sleeves, a black skirt, belt and tall boots.",
+      "prose": "A fitted black turtleneck sweater under a cropped tactical jacket with detached arm sleeves, paired with a pleated black skirt, utility leather belt with silver clasp, and tall black thigh boots.",
       "tokens": [
-        "black turtleneck",
-        "black sweater",
-        "cropped jacket",
-        "detached sleeves",
-        "black skirt",
-        "belt",
-        "thigh boots"
+        "black turtleneck sweater",
+        "cropped tactical jacket",
+        "detached arm sleeves",
+        "pleated black skirt",
+        "utility leather belt",
+        "black thigh boots"
       ],
       "characterId": "ines_arknights"
     }

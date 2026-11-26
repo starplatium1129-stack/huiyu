@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/railgun_windbreaker_casual",
+  "revision": 1,
+  "sortOrder": 4114,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "id": "railgun_windbreaker_casual",
+      "name": "学园街头·浅灰防风连帽衫与百褶短裤",
+      "prose": "A lightweight pale-grey hooded windbreaker with mint zipper trim over a white tee and khaki culotte shorts, paired with a canvas tote, ankle socks, and navy sneakers.",
+      "tokens": [
+        "light grey windbreaker",
+        "mint zipper trim",
+        "white cotton tee",
+        "khaki culotte shorts",
+        "canvas shoulder tote",
+        "ankle socks",
+        "navy sneakers"
+      ]
+    }
+  }
+}

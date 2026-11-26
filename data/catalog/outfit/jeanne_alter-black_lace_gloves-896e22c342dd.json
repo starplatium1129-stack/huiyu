@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_alter/black_lace_gloves",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1387,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_alter",
     "outfit": {
       "id": "black_lace_gloves",
-      "name": "黑色蕾丝手套",
+      "name": "暗黑圣堂黑蕾丝长手套私密形态",
       "tokens": [
-        "black gloves",
-        "lace"
+        "nude",
+        "black lace gloves",
+        "opera gloves",
+        "sheer lace cuffs",
+        "silver ring",
+        "wrist ribbons"
       ],
-      "prose": "Black lace gloves.",
+      "prose": "Completely unclothed except for intricate elbow-length sheer black floral lace opera gloves.",
       "default": false,
       "isDefault": false
     }

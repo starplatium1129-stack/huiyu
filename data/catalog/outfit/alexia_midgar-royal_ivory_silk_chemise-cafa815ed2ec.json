@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "alexia_midgar/royal_ivory_silk_chemise",
+  "revision": 1,
+  "sortOrder": 4080,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "alexia_midgar",
+    "outfit": {
+      "id": "royal_ivory_silk_chemise",
+      "name": "王女绯红滚边象牙白真丝吊带",
+      "prose": "Royal-tailored ivory mulberry silk slip chemise edged with imperial crimson velvet piping, delicate gold-threaded crest embroidery, sleek side slits, a small ruby pendant, sheer ivory stockings, and bare feet.",
+      "tokens": [
+        "ivory silk slip",
+        "crimson piping",
+        "velvet trim",
+        "gold embroidery",
+        "side slits",
+        "ruby pendant",
+        "sheer stockings",
+        "barefoot"
+      ],
+      "characterId": "alexia_midgar",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 吊带睡裙"
+    }
+  }
+}

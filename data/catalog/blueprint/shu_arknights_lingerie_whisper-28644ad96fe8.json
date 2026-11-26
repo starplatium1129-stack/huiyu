@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3372,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "shu_arknights_lingerie_whisper",
     "characterId": "shu_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "大荒城外的水田木栈道，四周是沉甸甸垂头的金黄稻浪，远山泛着炊烟暮霭。侧坐在田埂边的木回廊上，单手扶着竹编斗笠，脚踝垂在田水上方轻晃，绿意龙角间缠着稻穗，温柔大姐姐的眼眸含笑看着归家的博士。 她微微抬眸轻语——“博士，奔波了一整天，肚子也饿了吧？灶上正焖着今年的新米饭……今晚就好好歇在长姐身边吧。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "wheat_linen_grain_wrap_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

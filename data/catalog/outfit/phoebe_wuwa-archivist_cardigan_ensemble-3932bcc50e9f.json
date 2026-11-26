@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phoebe_wuwa/archivist_cardigan_ensemble",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3304,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phoebe_wuwa",
     "outfit": {
       "id": "archivist_cardigan_ensemble",
       "name": "教典抄写员米白针织披肩长裙",
-      "prose": "A soft oatmeal knit cardigan worn over a high-collar white blouse and navy pleated midi skirt, accessorized with round reading glasses.",
+      "prose": "A soft oatmeal knit cardigan layered over a high-collar white blouse and navy pleated midi skirt with round reading glasses, beige socks, and brown loafers.",
       "tokens": [
-        "beige cardigan",
+        "oatmeal cardigan",
+        "knit sweater",
         "white blouse",
-        "navy skirt",
-        "long skirt",
-        "glasses",
-        "ribbon"
+        "navy midi skirt",
+        "round glasses",
+        "silk ribbon",
+        "beige socks",
+        "brown loafers"
       ],
       "default": false,
       "isDefault": false,

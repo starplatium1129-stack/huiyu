@@ -1,30 +1,25 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/cozy_winter_turtleneck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1575,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "cozy_winter_turtleneck",
-      "name": "落肩粗针高领毛衣、格纹短裙与黑色连裤袜",
+      "name": "落肩粗针高领毛衣与格纹短裙",
       "tokens": [
-        "sweater",
+        "cream cable sweater",
         "turtleneck",
-        "white_sweater",
-        "oversized_sweater",
-        "off-shoulder_shirt",
-        "plaid_skirt",
-        "pleated_skirt",
-        "mini_skirt",
-        "headphones_around_neck",
-        "tights",
-        "black_tights",
-        "ankle_boots"
+        "off shoulder",
+        "plaid pleated skirt",
+        "neck headphones",
+        "black tights",
+        "suede ankle boots"
       ],
-      "prose": "An oversized cream cable-knit turtleneck sweater draped off-shoulder over a pleated plaid mini skirt and black tights with headphones.",
+      "prose": "An oversized cream cable-knit turtleneck sweater draped off one shoulder over a pleated plaid mini skirt, neck headphones, black tights, and suede ankle boots.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_miku"

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sunohara_shun/emerald_cheongsam_monokini",
+  "revision": 1,
+  "sortOrder": 3943,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunohara_shun",
+    "outfit": {
+      "id": "emerald_cheongsam_monokini",
+      "name": "玄黑墨翠盘扣高衩旗袍泳装",
+      "prose": "An emerald-jade and obsidian cheongsam-inspired monokini fastened with gold frog buttons at a standing mandarin collar, cut with high side slits and paired with a gossamer black silk shrug.",
+      "tokens": [
+        "emerald monokini",
+        "black trim",
+        "mandarin collar",
+        "gold frog buttons",
+        "high side slits",
+        "sheer black shrug",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

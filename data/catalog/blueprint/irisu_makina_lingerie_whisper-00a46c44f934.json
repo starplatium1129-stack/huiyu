@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irisu_makina_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3375,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "irisu_makina_lingerie_whisper",
     "characterId": "irisu_makina",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "美滨学园静谧深夜的莳菜房间。有着天才狙击天赋却在常识上彻底白纸化的入巢莳菜，最喜欢的睡衣就是直接套上雄二宽大肥厚的老旧白色牛津纺衬衫。长长的袖口完全垂过了指尖，下摆直接垂到了膝盖。她像一只小松鼠一样光着脚踩在沙发扶手上晃悠，一看到你进门，整个人立刻开心地张开两只晃晃悠悠的长袖子扑了过来——「爸爸！雄二爸爸！你终于回来了～！莳菜今天有乖乖按照手册保养大狙击枪哦！今晚也要抱着爸爸的胳膊才能睡着～！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "oxford_sleep_shirt",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

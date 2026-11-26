@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "w_arknights/fugue",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1960,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "w_arknights",
     "outfit": {
       "id": "fugue",
-      "name": "恍惚 · 黑色短袖与灰色长裤",
+      "name": "恍惚·黑色短袖与烟灰工装裤",
       "default": true,
       "isDefault": true,
-      "prose": "A black short-sleeved shirt, grey trousers and knee-high boots.",
+      "prose": "A fitted black short-sleeved ribbed tee paired with charcoal cargo trousers, a leather utility belt with silver waist chain, red wrist tape, and tall black knee boots.",
       "tokens": [
-        "black shirt",
+        "black ribbed tee",
         "short sleeves",
-        "grey pants",
-        "knee boots"
+        "charcoal cargo pants",
+        "silver waist chain",
+        "leather utility belt",
+        "red cuff tape",
+        "black knee boots"
       ],
       "identityTokensOverride": [
         "w (arknights)",

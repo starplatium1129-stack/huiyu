@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/silk_lace_morning_robe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 319,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
@@ -12,11 +12,15 @@
       "id": "silk_lace_morning_robe",
       "isDefault": false,
       "name": "珍珠白真丝与香槟晨袍",
-      "prose": "a pearl-white silk slip nightdress with fine lace edging beneath a light champagne chiffon morning robe",
+      "prose": "A luminous pearl-white silk slip nightdress edged in fine lace worn beneath an airy sheer champagne chiffon morning robe.",
       "tokens": [
-        "pearl white silk slip",
-        "lace trim",
-        "champagne chiffon robe"
+        "pearl silk slip",
+        "ivory lace trim",
+        "champagne chiffon robe",
+        "wide cuffs",
+        "satin sash",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

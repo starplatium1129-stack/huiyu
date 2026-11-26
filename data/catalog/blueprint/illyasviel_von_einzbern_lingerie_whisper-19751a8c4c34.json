@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3225,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_lingerie_whisper",
     "characterId": "illyasviel_von_einzbern",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "冬木市郊外爱因兹贝伦古堡的奢华卧房。城堡真正的小公主伊莉雅丝菲尔·冯·爱因兹贝伦，换上一件边缘饰满柔软棉花糖绒毛的淡紫色丝绒吊带短裙。她开心地抱着一只比自己体型还庞大的特制白熊玩偶在天鹅绒被褥上打滚，如瀑般的银色长发散落了半张大床。看见大哥哥走进来，她立刻坐起身，把小脸埋在白熊的毛茸茸脑袋旁，红宝石般的双眼闪闪发光——「大哥哥！太慢了啦！伊莉雅已经抱好小熊在被窝里等了十分钟了！快坐过来……今晚要是没有讲完三个英雄骑士的故事，我是绝对不会放你回房间的哦！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "lilac_velvet_fur_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

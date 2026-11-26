@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "cartethyia/tidal_silk_slip",
+  "revision": 1,
+  "sortOrder": 4077,
+  "createdAt": "2026-11-26T12:28:42.580255300+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
+  "data": {
+    "characterId": "cartethyia",
+    "outfit": {
+      "id": "tidal_silk_slip",
+      "name": "潮汐共鸣水蓝蕾丝真丝吊带睡裙",
+      "prose": "A fluid azure mulberry silk slip nightdress trimmed with scalloped ivory lace along the neckline and wave-cut hem, held by thin straps with a pearl pendant and worn barefoot.",
+      "tokens": [
+        "azure silk slip",
+        "mulberry silk",
+        "scalloped lace",
+        "spaghetti straps",
+        "wave hem",
+        "pearl pendant",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

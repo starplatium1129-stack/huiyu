@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/hazard_rivet_cutout_bralette",
+  "revision": 1,
+  "sortOrder": 4026,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "hazard_rivet_cutout_bralette",
+      "name": "引爆狂欢·绯黑警示带铆钉镂空内衣",
+      "prose": "A crimson-and-black industrial cutout bralette detailed with yellow hazard stripes, cross-chest harness straps, and metal stud rivets, paired with black boyleg briefs, worn barefoot.",
+      "tokens": [
+        "crimson cutout bralette",
+        "black mesh trim",
+        "yellow hazard stripes",
+        "metal stud rivets",
+        "black boyleg briefs",
+        "cross-chest harness",
+        "bare midriff",
+        "barefoot"
+      ]
+    }
+  }
+}

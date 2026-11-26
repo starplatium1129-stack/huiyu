@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3199,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "kama_fate_lingerie_whisper",
     "characterId": "kama_fate",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "大奥深渊无尽虚空的深夜。爱之魔王迦摩换上一袭由暗紫琉璃薄纱缠绕而成的虚空吊带衣，布料薄如蝉翼，随着魔力气流若即若离地贴合在雪白的娇躯上。她悬浮在盛开的暗红魔力莲花之上，单手托着下巴，另一只小手勾着虚空中的金色爱之箭矢。红宝石般的双眸闪烁着嘲讽与沉沦的微光，嘴角勾勒出危险至极的玩味弧度——「呵呵呵……真可怜呢，御主。明明满身都是无法承受的沉重重担，却还要在梦里强撑着正义的架子……来吧，投入迦摩的怀抱。只要你点头，我就用无尽的爱与放纵，彻底烧毁你的理性哦♡」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "violet_lotus_veil_bodysuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

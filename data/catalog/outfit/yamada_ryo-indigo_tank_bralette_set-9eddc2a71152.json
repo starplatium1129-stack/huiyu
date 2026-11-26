@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yamada_ryo/indigo_tank_bralette_set",
+  "revision": 1,
+  "sortOrder": 4175,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "yamada_ryo",
+    "outfit": {
+      "id": "indigo_tank_bralette_set",
+      "name": "荒野低音墨青微透工装剪裁吊带背心",
+      "prose": "Minimalist dark indigo-teal seamless tank bralette paired with relaxed raw-hem boyshorts, accented with a thin silver chain, low ankle socks, and bare feet.",
+      "tokens": [
+        "indigo bralette",
+        "tank top",
+        "sheer trim",
+        "boyshorts",
+        "raw hem",
+        "silver chain",
+        "ankle socks",
+        "barefoot"
+      ],
+      "characterId": "yamada_ryo",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

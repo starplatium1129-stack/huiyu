@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3185,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "misono_mika_lingerie_whisper",
     "characterId": "misono_mika",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "圣三一学园大教堂顶层私密露台，汉白玉回廊外是夜空流星划过的星海。坐在汉白玉雕花长椅上，天使羽翼温顺收拢在身后，单手托着腮帮，粉金长发倾泻，淡金十字瞳孔深情凝望老师，带着撒娇般的微嗔浅笑。 她微微抬眸轻语——“哇~老师真的来了呀！你看这件睡衣，像不像童话里的落难小公主？今晚……可以只当未花一人的王子吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "starlight_chiffon_babydoll",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/bronze_mesh_bralette",
+  "revision": 1,
+  "sortOrder": 4072,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "id": "bronze_mesh_bralette",
+      "name": "铜金真丝黑纱微透系带胸衣套",
+      "prose": "A bronze-gold silk strappy bralette trimmed with sheer black mesh panels and miniature alloy buckles, paired with matching low-rise boyleg briefs, bare legs, and barefoot.",
+      "tokens": [
+        "bronze silk bralette",
+        "sheer black mesh",
+        "miniature metal buckles",
+        "low-rise boyleg briefs",
+        "crisscross straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

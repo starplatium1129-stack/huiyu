@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3169,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "goldenglow_arknights_swimsuit_allure",
     "characterId": "goldenglow_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风一吹，干燥的空气让苏茜的粉色长发又噼里啪啦爆起了微小的金色电火花。她坐在遮阳伞下，两手捏着木梳小口抿着吸管里的冰橙汁，耳朵因为害羞一抖一抖的。看到你拿着抗静电喷雾走过来，她像受惊的小猫一样缩了缩脖子，眼眸湿漉漉地看着你——「博士……对不起，一激动源石技艺就有点失控，头发全蓬起来了……那个，如果不介意的话，可以拜托博士……帮我把后脑勺的头发梳顺吗？」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "apricot_spark_halter_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/white_pintuck_nightdress",
+  "revision": 1,
+  "sortOrder": 4159,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "id": "white_pintuck_nightdress",
+      "name": "纯白双层棉布细褶高领长睡衣",
+      "prose": "A double-layered white cotton long nightdress with fine pintuck chest pleats, a high buttoned collar, and frilled wristbands, worn with bare legs and barefoot.",
+      "tokens": [
+        "white cotton nightdress",
+        "pintuck chest pleats",
+        "high buttoned collar",
+        "frilled sleeve cuffs",
+        "double-layer cotton",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

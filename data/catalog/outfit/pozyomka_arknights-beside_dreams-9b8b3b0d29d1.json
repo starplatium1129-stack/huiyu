@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/beside_dreams",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1959,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "beside_dreams",
-      "name": "行梦侧畔 · 蓝色罗衣与白色外衫",
+      "name": "行梦侧畔 · 蔚蓝罗衣与白纱外衫",
       "default": false,
       "isDefault": false,
-      "prose": "A blue dress with a light white outer robe and a magnolia hair ornament.",
+      "prose": "A cerulean silk gown layered beneath a translucent white outer robe with wide sleeves, styled with a magnolia hairpin, jade bead tassel, white silk socks, and embroidered cloth flats.",
       "tokens": [
-        "blue dress",
-        "white haori",
-        "long sleeves",
-        "flower hair ornament",
-        "jewelry"
+        "cerulean silk gown",
+        "white sheer haori",
+        "wide flowing sleeves",
+        "magnolia hairpin",
+        "white silk socks",
+        "embroidered cloth flats"
       ],
       "identityTokensOverride": [
         "pozyomka (arknights)",

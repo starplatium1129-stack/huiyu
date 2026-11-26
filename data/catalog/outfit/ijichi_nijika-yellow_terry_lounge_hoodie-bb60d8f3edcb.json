@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "ijichi_nijika/yellow_terry_lounge_hoodie",
+  "revision": 1,
+  "sortOrder": 4177,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "ijichi_nijika",
+    "outfit": {
+      "id": "yellow_terry_lounge_hoodie",
+      "name": "下北泽亮黄无袖连帽运动棉质家居服",
+      "prose": "Sunny-yellow sleeveless French terry cotton lounge hoodie with a front kangaroo pocket, paired with stretchy heather-grey drawstring athletic shorts, soft crew socks, and bare feet.",
+      "tokens": [
+        "yellow hoodie",
+        "sleeveless hoodie",
+        "french terry",
+        "kangaroo pocket",
+        "grey shorts",
+        "drawstring waist",
+        "crew socks",
+        "barefoot"
+      ],
+      "characterId": "ijichi_nijika",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 连帽运动套"
+    }
+  }
+}

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/terrace_knit_shawl_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3705,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "terrace_knit_shawl_dress",
       "name": "夜风露台冰蓝针织披肩连衣裙",
-      "prose": "A soft ice-blue off-shoulder knit dress draped with a silver-fringed shawl, worn while sipping herbal tea on the observatory balcony.",
+      "prose": "A soft ice-blue off-shoulder ribbed knit dress draped with a silver-fringed shawl and pearl pin, paired with soft knit thigh-highs and worn barefoot.",
       "tokens": [
-        "blue dress",
-        "off-shoulder sweater",
-        "knit dress",
-        "shawl",
-        "thighhighs",
-        "bare feet"
+        "blue knit dress",
+        "off shoulder",
+        "ribbed sweater dress",
+        "silver fringed shawl",
+        "pearl pin",
+        "knit thighhighs",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

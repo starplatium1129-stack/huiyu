@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/white_bath_undershirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1391,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "white_bath_undershirt",
       "name": "微湿薄透纯白棉质内衫",
-      "prose": "A damp semi-sheer white cotton cabin shirt falls to mid-thigh.",
+      "prose": "A damp semi-translucent white cotton cabin undershirt falling mid-thigh with an unbuttoned collar above bare legs and bare feet.",
       "tokens": [
-        "white_shirt",
-        "semi_sheer",
-        "wet_shirt",
-        "bare_legs",
-        "dewy_skin",
-        "steam"
+        "white cotton shirt",
+        "semi-sheer wet fabric",
+        "long cabin shirt",
+        "unbuttoned collar",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "kaltsit_arknights",
       "default": false,

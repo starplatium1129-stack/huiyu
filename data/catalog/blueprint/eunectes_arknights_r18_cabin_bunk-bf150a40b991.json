@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_cabin_bunk",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 594,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "盘腿坐在床上裹着干毛巾擦头发，尾巴轻拍",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "cabin_bath_towel",
     "promptProse": "She sits cross-legged on the bunk, wrapped in a dry towel as she dries her hair; her tail taps the sheet. A warm cabin lamp lights the bedding.",
     "promptTokens": [
       "1girl",

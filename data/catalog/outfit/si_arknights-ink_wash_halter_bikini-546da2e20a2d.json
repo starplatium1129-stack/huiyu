@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "si_arknights/ink_wash_halter_bikini",
+  "revision": 1,
+  "sortOrder": 4073,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "si_arknights",
+    "outfit": {
+      "id": "ink_wash_halter_bikini",
+      "name": "丹青墨白素绢束带分体泳装",
+      "prose": "An ink-wash gradient charcoal-and-white halter bikini featuring crisp white linen wraps, an obsidian-bead waist cord, and minimalist tie-side bottoms, worn with bare legs and barefoot.",
+      "tokens": [
+        "ink-wash gradient bikini",
+        "white linen wrap",
+        "halterneck",
+        "obsidian bead cord",
+        "charcoal tie bottom",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

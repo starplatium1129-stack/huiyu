@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/kindness_strength",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2120,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "kindness_strength",
-      "name": "善良坚强之心·粉蝶结白色洋裙",
-      "prose": "A white dress and white shirt accented with pink ribbons, white gloves and a high ponytail tied with a pink bow.",
+      "name": "善良坚强之心 · 粉蝶结白色洋裙",
+      "prose": "A white tiered dress over a collared blouse accented with pink satin neck ribbons, delicate white lace gloves, a pink bow clip, and pink strapped pumps.",
       "tokens": [
-        "white dress",
-        "white shirt",
-        "pink ribbon",
-        "white gloves",
-        "ponytail",
-        "pink bow"
+        "white tiered dress",
+        "peter pan collar",
+        "pink satin ribbon",
+        "white lace gloves",
+        "pink bow clip",
+        "pink strap pumps"
       ],
       "characterId": "blemishine_arknights",
       "default": false,

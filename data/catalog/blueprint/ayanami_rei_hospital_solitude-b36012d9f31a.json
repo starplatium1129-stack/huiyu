@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_hospital_solitude",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1012,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "action": "赤足坐在白色病床边，双手静静捧着眼镜",
     "camera": "medium shot, eye level",
@@ -19,7 +19,7 @@
     "location": "NERV总医院极简病房",
     "mood": "脆弱孤寂",
     "negativeTokens": [],
-    "outfitId": "hospital_bed_gown",
+    "outfitId": "hospital_bandages_gown",
     "promptProse": "Seated on the bed edge, she cradles the damaged glasses in both hands. Cool morning light reaches her fingers beside the moving white curtain.",
     "promptTokens": [
       "hospital",

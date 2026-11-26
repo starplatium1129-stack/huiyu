@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3224,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_swimsuit_allure",
     "characterId": "illyasviel_von_einzbern",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "白沙滩上矗立着一座精雕细琢的缩小版爱因兹贝伦城堡，贝壳和海星成了城墙上的装饰。伊莉雅跪坐在沙滩上，鼻尖上蹭了点白沙，两只小手自豪地按在城门两边，银色长发如丝绸般散在白紫相间的泳裙周围。她仰起红宝石般明丽的双眸，冲着大步走来的你发出清脆如银铃般的笑声——「大哥哥，快看快看！伊莉雅亲手建造的海滩城堡完成啦！大门留得特别宽，今晚大哥哥当骑士，伊莉雅就是城堡里的海之女王哦！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "snow_crystal_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

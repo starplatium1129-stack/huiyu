@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/nocturne_silk_gown",
+  "revision": 1,
+  "sortOrder": 4111,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "nocturne_silk_gown",
+      "name": "深渊赋格 · 墨紫水波真丝高开叉长袍裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "virtuosa_arknights",
+      "prose": "A deep midnight-purple watered-silk slip gown edged with delicate black lace trim, featuring an open back, a thigh-high side slit, and a flowing train, paired with sheer dark thighhighs and worn barefoot.",
+      "tokens": [
+        "purple silk slip",
+        "black lace trim",
+        "thigh high slit",
+        "open back cut",
+        "sheer dark thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

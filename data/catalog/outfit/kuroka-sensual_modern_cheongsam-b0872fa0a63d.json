@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "kuroka/sensual_modern_cheongsam",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1742,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "kuroka",
     "outfit": {
       "characterId": "kuroka",
       "id": "sensual_modern_cheongsam",
       "name": "魅惑仙术·黑色高开衩无袖旗袍",
-      "prose": "A form-fitting black sleeveless silk cheongsam featuring a daring high side slit, showcasing her shapely legs and cat tails.",
+      "prose": "A fitted sleeveless black silk cheongsam with a mandarin collar, gold piping trim, and high side slit, worn with bare legs and black stiletto heels.",
       "tokens": [
-        "black_cheongsam",
-        "high_slit",
-        "sleeveless_dress",
-        "bare_shoulders",
-        "high_heels"
+        "black silk cheongsam",
+        "sleeveless cut",
+        "high side slit",
+        "gold piping trim",
+        "mandarin collar",
+        "bare legs",
+        "black stiletto heels"
       ],
       "default": false,
       "isDefault": false

@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "rosa_arknights/masterpiece",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1963,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "rosa_arknights",
     "outfit": {
       "id": "masterpiece",
-      "name": "杰作 · 白色长礼裙",
+      "name": "杰作 · 白色礼裙与绯红贝雷帽",
       "characterId": "rosa_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A white long dress with white gloves and a red beret.",
+      "prose": "A sweeping white formal gown with a layered ruffle hem and gold tassel sash, styled with white opera gloves, a crimson wool beret, sheer white stockings, and ivory heeled pumps.",
       "tokens": [
-        "white long dress",
-        "white gloves",
-        "red beret"
+        "white evening gown",
+        "crimson wool beret",
+        "white opera gloves",
+        "gold tassel sash",
+        "sheer white stockings",
+        "ivory heeled pumps"
       ],
       "identityTokensOverride": [
         "rosa (arknights)",

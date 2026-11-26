@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "rossweisse/nordic_casual_cardigan",
+  "revision": 1,
+  "sortOrder": 4144,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "rossweisse",
+    "outfit": {
+      "id": "nordic_casual_cardigan",
+      "name": "居家熏紫针织开衫与炭灰百褶裙",
+      "prose": "A soft lavender knit cardigan worn over an ivory cotton blouse with pearl buttons and a charcoal pleated midi skirt, paired with white ankle socks and soft house slippers.",
+      "tokens": [
+        "lavender knit cardigan",
+        "ivory cotton blouse",
+        "charcoal midi skirt",
+        "pearl shirt buttons",
+        "white ankle socks",
+        "house slippers"
+      ]
+    }
+  }
+}

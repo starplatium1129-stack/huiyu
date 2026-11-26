@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "furina/white_silk_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1374,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
@@ -12,9 +12,14 @@
       "name": "纯白真丝小衣",
       "tokens": [
         "white camisole",
-        "silk"
+        "silk slip",
+        "spaghetti straps",
+        "lace hem",
+        "sheer fabric",
+        "pearl anklet",
+        "barefoot"
       ],
-      "prose": "A simple white silk camisole with a clean neckline.",
+      "prose": "Delicate pure-white silk camisole slip with slender spaghetti straps, subtle scalloped lace hem, lightweight sheer drape, a fine pearl anklet, and bare feet.",
       "default": false,
       "isDefault": false
     }

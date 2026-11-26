@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "casual",
       "name": "绯红衬里针织短衫与皮质短裙",
-      "prose": "A cropped black wool cardigan with crimson lining worn open over an ebony camisole and high-waist leather skirt.",
+      "prose": "A cropped black wool cardigan with crimson lining worn open over an ebony camisole and leather mini skirt, finished with a chain choker, silver pendant, and ankle boots.",
       "tokens": [
-        "black_cardigan",
-        "cropped_cardigan",
-        "red_lining",
-        "black_camisole",
-        "leather_skirt",
-        "choker",
-        "pendant",
-        "bare_legs",
-        "ankle_boots"
+        "cropped black cardigan",
+        "crimson lining",
+        "ebony camisole",
+        "leather mini skirt",
+        "chain choker",
+        "silver pendant",
+        "bare legs",
+        "ankle boots"
       ],
       "isDefault": false,
       "default": false,

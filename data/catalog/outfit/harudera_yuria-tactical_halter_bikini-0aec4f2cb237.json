@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/tactical_halter_bikini",
+  "revision": 1,
+  "sortOrder": 4139,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "tactical_halter_bikini",
+      "name": "特工休假 · 墨黑棕边战术比基尼",
+      "prose": "An obsidian-black and tobacco-brown halterneck bikini with crossed chest straps and gunmetal ring clasps, layered under an unbuttoned olive linen shirt and worn barefoot.",
+      "tokens": [
+        "black halter bikini",
+        "tobacco brown trim",
+        "crossed chest straps",
+        "gunmetal ring clasps",
+        "open olive shirt",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

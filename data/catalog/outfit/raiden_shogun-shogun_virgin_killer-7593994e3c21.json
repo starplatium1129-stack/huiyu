@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/shogun_virgin_killer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:03:46.999171500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "shogun_virgin_killer",
       "name": "纯黑高领大露背针织开衩裙",
-      "prose": "A formfitting black turtleneck sweater dress with an open back cut down to the waist and a high side slit.",
+      "prose": "Formfitting black ribbed-knit turtleneck sweater dress with a sleeveless cut, low waist-length open back, high side slit, slim gold choker, and bare feet.",
       "tokens": [
-        "turtleneck_dress",
-        "backless_dress",
-        "sleeveless_dress",
-        "black_sweater",
-        "side_slit",
-        "bare_legs"
+        "black sweater dress",
+        "turtleneck",
+        "sleeveless",
+        "backless",
+        "side slit",
+        "ribbed knit",
+        "gold choker",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phrolova_wuwa/crimson_ribbon_lingerie_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3508,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phrolova_wuwa",
     "outfit": {
       "id": "crimson_ribbon_lingerie_r15",
       "name": "暗红丝带十字绑带蕾丝内衣",
-      "prose": "A black Chantilly lace bra and garter panties laced with crimson satin ribbons, paired with sheer black stockings.",
+      "prose": "A black Chantilly lace bra and garter panties cross-laced with crimson satin ribbons and a narrow velvet collar, paired with sheer black thigh-highs and strappy heels.",
       "tokens": [
-        "black bra",
-        "lace",
-        "red ribbons",
-        "garter belt",
-        "black thighhighs",
-        "cleavage"
+        "black lace bra",
+        "crimson satin ribbons",
+        "lace garter belt",
+        "laced panties",
+        "velvet collar",
+        "sheer thighhighs",
+        "bare shoulders",
+        "strappy heels"
       ],
       "default": false,
       "isDefault": false,

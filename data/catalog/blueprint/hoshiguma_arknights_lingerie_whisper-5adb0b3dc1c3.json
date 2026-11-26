@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3144,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "hoshiguma_arknights_lingerie_whisper",
     "characterId": "hoshiguma_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "龙门街头警务结束后的深夜。近卫局特别督察组的星熊脱下重装警服，换上一件宽松霸气的墨黑丝麻开襟长睡袍，衣襟前敞展露出紧实强健的腹肌线条。著名的重装巨盾‘般若’静静靠在墙角。星熊单腿踩着矮木凳，手里端着粗陶海碗满饮烈酒，头顶独角在红灯笼下熠熠生辉。看见走近的陈或博士，她发出爽朗豪迈的大笑，大手一把揽过你的肩膀——「哈哈哈！今天龙门下水道的那窝暴徒总算全逮住了！来，别拘束！今晚这坛上好的烈酒管够，不喝到天亮谁都不准回去睡！」",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "lungmen_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

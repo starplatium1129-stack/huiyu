@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "augusta_wuwa/arena_gladiator_tunic",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3602,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "augusta_wuwa",
     "outfit": {
       "id": "arena_gladiator_tunic",
       "name": "角斗训练场赤铜束腰短战裙",
-      "prose": "A sleeveless ivory athletic tunic cinched with a wide embossed bronze-and-leather waist belt, paired with gold greaves and wrist wraps.",
+      "prose": "A sleeveless ivory athletic tunic cinched with a wide embossed bronze-and-leather waist belt, gold trim, leather wrist wraps, and gladiator sandals.",
       "tokens": [
+        "ivory tunic",
         "sleeveless dress",
-        "white tunic",
-        "wide belt",
-        "leather bracers",
+        "bronze leather belt",
         "gold trim",
+        "wrist wraps",
+        "leather bracers",
+        "bare legs",
         "gladiator sandals"
       ],
       "default": false,

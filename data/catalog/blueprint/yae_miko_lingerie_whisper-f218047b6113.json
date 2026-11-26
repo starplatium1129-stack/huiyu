@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3347,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "yae_miko_lingerie_whisper",
     "characterId": "yae_miko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "影向山鸣神大社最高殿宇回廊，古老神樱树在夜空中散落万千发光花瓣。慵懒斜卧在神樱树下的朱红回廊榻榻米上，单手托腮，修长白皙的食指挑逗般绕着粉色狐耳下的垂穗耳坠，紫眸微眯，尽显宫司大人的倾城媚态。 她微微抬眸轻语——“哎呀呀……小家伙，这么晚偷偷溜进大社后院，是想要向本宫司祈求签文呢，还是……祈求本宫司自己呢？”",
-    "outfitId": "pink_lace_lingerie",
+    "outfitId": "shrine_sacred_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

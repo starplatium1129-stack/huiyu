@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/velvet_fern",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2178,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "velvet_fern",
       "name": "蕨纹丝绒短外套与深绿缎裙",
-      "prose": "A black-green velvet cropped jacket with fern embroidery over a cream blouse and a deep green satin skirt, with a small antique-gold chain.",
+      "prose": "A deep forest-green velvet cropped jacket with fern embroidery over a cream satin blouse and emerald satin skirt, accented by an antique gold chain and black suede heels.",
       "tokens": [
-        "black green velvet cropped jacket",
-        "fern embroidery",
-        "cream blouse",
-        "deep green satin skirt",
-        "antique gold chain"
+        "forest velvet jacket",
+        "fern thread embroidery",
+        "cream satin blouse",
+        "emerald satin skirt",
+        "antique gold chain",
+        "black suede heels"
       ],
       "characterId": "reed_arknights",
       "default": false,

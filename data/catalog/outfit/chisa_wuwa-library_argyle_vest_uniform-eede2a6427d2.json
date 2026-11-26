@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "chisa_wuwa/library_argyle_vest_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3902,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "chisa_wuwa",
     "outfit": {
       "id": "library_argyle_vest_uniform",
-      "name": "图书馆红黑菱格针织背心学院装",
-      "prose": "A crisp white button-down blouse with a crimson ribbon tie layered under a black-and-red argyle knit vest and pleated plaid skirt.",
+      "name": "阅览室红黑菱格针织背心学院装",
+      "prose": "A crisp white button-down blouse with a crimson ribbon tie layered under a black-and-red argyle knit vest, pleated plaid skirt, navy socks, and penny loafers.",
       "tokens": [
-        "white shirt",
-        "red ribbon",
-        "knit vest",
-        "argyle",
-        "plaid skirt",
-        "pleated skirt"
+        "white dress shirt",
+        "crimson ribbon tie",
+        "argyle knit vest",
+        "black cardigan",
+        "plaid pleated skirt",
+        "gold brooch",
+        "navy socks",
+        "penny loafers"
       ],
       "default": false,
       "isDefault": false,

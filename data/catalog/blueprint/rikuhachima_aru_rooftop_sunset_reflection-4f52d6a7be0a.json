@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_rooftop_sunset_reflection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2108,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "rikuhachima_aru_rooftop_sunset_reflection",
     "characterId": "rikuhachima_aru",
-    "outfitId": "problem_solver_outlaw_suit",
+    "outfitId": "hardboiled_casual_trench",
     "title": "陆八魔阿露 · 黄昏天台的社长沉思",
     "category": "都市风景",
     "description": "老旧商业楼的高层天台，落日余晖将远处的都市地平线镀上一层壮丽熔金。阿露双手扶在生锈的铁栏杆上，大衣下摆与酒红色波浪发丝在晚风中猎猎翻飞。她微微侧过头望向身旁的老师，收敛了平日的夸张架势，琥珀色的眼眸在夕阳下泛着无比真挚而沉静的光芒。",

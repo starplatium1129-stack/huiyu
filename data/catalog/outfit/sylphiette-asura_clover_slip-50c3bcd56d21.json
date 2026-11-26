@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "sylphiette/asura_clover_slip",
+  "revision": 1,
+  "sortOrder": 4180,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "sylphiette",
+    "outfit": {
+      "id": "asura_clover_slip",
+      "name": "森之新约 · 薄荷三叶草蕾丝雪纺睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "sylphiette",
+      "prose": "A pale mint-green double-chiffon camisole slip with delicate double straps, white clover lace applique at the bust, and a scalloped mini hem, worn barefoot.",
+      "tokens": [
+        "mint chiffon slip",
+        "white clover lace",
+        "double shoulder straps",
+        "scalloped mini hem",
+        "sheer layered skirt",
+        "barefoot"
+      ]
+    }
+  }
+}

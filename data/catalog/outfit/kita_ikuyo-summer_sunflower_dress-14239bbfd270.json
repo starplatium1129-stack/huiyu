@@ -1,28 +1,26 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/summer_sunflower_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1562,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "summer_sunflower_dress",
-      "name": "夏日向阳花挂颈露背夏裙",
+      "name": "向阳花挂颈露背轻洋装",
       "tokens": [
-        "sundress",
+        "yellow sundress",
+        "floral print",
         "halterneck",
-        "yellow_dress",
-        "floral_print",
-        "backless_dress",
-        "bare_shoulders",
-        "bare_back",
-        "collarbone",
-        "bare_legs",
-        "sandals"
+        "backless dress",
+        "straw hat",
+        "red ribbon",
+        "gold bracelet",
+        "flat sandals"
       ],
-      "prose": "A yellow floral halter sundress with an open back and fluttering hem.",
+      "prose": "Bright sunflower-yellow floral halter sundress with an open back and fluttering skirt hem, styled with a woven straw hat, thin red ribbon, gold bracelet, and flat leather sandals.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/ink_waistcoat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2190,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "ink_waistcoat",
-      "name": "墨色提花马甲与银灰衬衫",
-      "prose": "An ink-black jacquard waistcoat with a subtle staff-line pattern over a silver-grey shirt and charcoal straight trousers, finished with a narrow velvet tie.",
+      "name": "墨色五线谱提花马甲与银灰衬衫",
+      "prose": "A black jacquard waistcoat woven with subtle staff-line stripes over a silver-grey shirt and charcoal straight trousers, accessorized with a black velvet tie, pocket watch, and oxblood oxford shoes.",
       "tokens": [
         "black jacquard waistcoat",
-        "staff line pattern",
         "silver grey shirt",
         "charcoal straight trousers",
-        "black velvet tie"
+        "black velvet tie",
+        "dark ribbed socks",
+        "oxblood oxford shoes"
       ],
       "characterId": "virtuosa_arknights",
       "default": false,

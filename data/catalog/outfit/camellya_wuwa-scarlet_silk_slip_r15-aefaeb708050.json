@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "camellya_wuwa/scarlet_silk_slip_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3107,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "camellya_wuwa",
     "outfit": {
       "id": "scarlet_silk_slip_r15",
       "name": "猩红真丝斜裁吊带睡袍",
-      "prose": "A liquid-sheen crimson silk slip dress with delicate black floral lace trim and one shoulder strap slipping down her arm.",
+      "prose": "A crimson bias-cut silk slip dress edged with black floral lace, one thin strap slipping off her shoulder, paired with a narrow velvet choker and worn barefoot.",
       "tokens": [
-        "red slip dress",
-        "silk",
-        "lace trim",
+        "crimson slip dress",
+        "satin silk",
+        "black lace trim",
         "off shoulder",
         "thin straps",
-        "bare thighs"
+        "velvet choker",
+        "bare thighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

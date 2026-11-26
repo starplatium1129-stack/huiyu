@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/curator",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1991,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
@@ -13,13 +13,14 @@
       "characterId": "reed_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A black jacket over a white shirt, a wide-brimmed hat and dark tights, with twin braids.",
+      "prose": "A crisp black tailored jacket over a white collared shirt and gold silk tie, paired with a wide-brimmed hat, black opaque pantyhose, and black oxford boots.",
       "tokens": [
-        "black jacket",
-        "white shirt",
-        "wide-brimmed hat",
-        "black pantyhose",
-        "twin braids"
+        "black tailored jacket",
+        "white collared shirt",
+        "wide brimmed hat",
+        "gold silk tie",
+        "black opaque pantyhose",
+        "black oxford boots"
       ],
       "identityTokensOverride": [
         "reed the flame shadow (arknights)",

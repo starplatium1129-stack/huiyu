@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "momo_velia_deviluke/black_lace_garters",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1415,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "momo_velia_deviluke",
     "outfit": {
@@ -12,9 +12,13 @@
       "name": "黑蕾丝吊袜带",
       "tokens": [
         "black garter straps",
-        "lace"
+        "floral lace trim",
+        "satin ribbon bows",
+        "silver metal clasps",
+        "sheer leg bands",
+        "barefoot"
       ],
-      "prose": "Black lace garter straps.",
+      "prose": "Black floral-lace garter straps accented with satin ribbon bows, silver metal clasps, and sheer leg bands, worn barefoot.",
       "default": false,
       "isDefault": false
     }

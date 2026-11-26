@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3343,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "medea_caster_lingerie_whisper",
     "characterId": "medea_caster",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "柳洞寺后山秘密魔术工坊，一侧案台上整齐摆放着未拼装的城堡手办。优雅倚坐在低矮长榻上，指尖凝结出一只幽紫的魔力蝴蝶，金发挽起露出优美颈项，狭长美眸带着成熟魅惑的浅笑，静静看着步入工坊的丈夫。 她微微抬眸轻语——“宗一郎大人的品味果然最深得我心……不过今晚，这间魔术工房就只属于你我二人哦。”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "royal_purple_velvet_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

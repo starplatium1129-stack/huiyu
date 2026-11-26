@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_sticker_notebook",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3063,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "ceobe_arknights_sticker_notebook",
     "characterId": "ceobe_arknights",
@@ -38,7 +38,7 @@
       "washi tape",
       "sunny windowsill plants",
       "morning sunshine",
-      "cute focused expression",
+      "concentrating",
       "soft daylight",
       "medium close-up"
     ],

@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "w_arknights/protagonist",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2070,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "w_arknights",
     "outfit": {
       "id": "protagonist",
-      "name": "绝对主角·红色短外套与黑短裤",
-      "prose": "A red jacket with black shorts and dark boots, matching Wis’adel’s role-playing outfit.",
+      "name": "绝对主角·绯红短外套与黑热裤",
+      "prose": "A crimson cropped jacket worn open over a white mesh tank and black denim shorts with a studded leather belt, paired with fishnet thigh-highs and dark buckle boots.",
       "tokens": [
-        "red jacket",
-        "black shorts",
-        "dark boots"
+        "crimson cropped jacket",
+        "white mesh tank",
+        "black denim shorts",
+        "studded leather belt",
+        "red wristband",
+        "fishnet thighhighs",
+        "dark buckle boots"
       ],
       "characterId": "w_arknights",
       "default": false,

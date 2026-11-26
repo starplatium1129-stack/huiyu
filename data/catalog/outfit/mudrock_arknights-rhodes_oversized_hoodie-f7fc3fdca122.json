@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/rhodes_oversized_hoodie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "rhodes_oversized_hoodie",
-      "name": "罗德岛炭灰落肩连帽大卫衣（下身失踪）",
-      "prose": "A washed-charcoal oversized hoodie falls to mid-thigh over biker shorts, paired with sheer black stockings.",
+      "name": "炭灰水洗落肩连帽大卫衣",
+      "prose": "A washed-charcoal oversized cotton-fleece hoodie with dropped shoulders falling over black biker shorts, paired with sheer black stockings and canvas sneakers.",
       "tokens": [
-        "oversized_hoodie",
-        "charcoal_hoodie",
-        "drop_shoulder",
-        "booty_shorts",
-        "bare_legs",
-        "black_thighhighs",
-        "sneakers"
+        "charcoal oversized hoodie",
+        "washed cotton fleece",
+        "dropped shoulder",
+        "black biker shorts",
+        "metal aglets",
+        "side pockets",
+        "sheer black stockings",
+        "canvas sneakers"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

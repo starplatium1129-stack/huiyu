@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/luna_executive_wrap_gown",
+  "revision": 1,
+  "sortOrder": 4086,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "luna_executive_wrap_gown",
+      "name": "露娜藏青真丝开叉浴袍睡裙",
+      "prose": "Heavyweight navy-blue silk satin wrap nightgown cinched with an empire satin sash and a sweeping side slit, paired with gold-rimmed reading glasses, sheer stockings, and heeled satin slippers.",
+      "tokens": [
+        "navy wrap gown",
+        "silk satin",
+        "empire waist",
+        "high side slit",
+        "satin sash",
+        "gold-rimmed glasses",
+        "sheer stockings",
+        "heeled slippers"
+      ],
+      "characterId": "gamma_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 和风睡袍"
+    }
+  }
+}

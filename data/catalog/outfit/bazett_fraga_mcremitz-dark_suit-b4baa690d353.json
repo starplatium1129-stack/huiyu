@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "bazett_fraga_mcremitz/dark_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1862,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "bazett_fraga_mcremitz",
     "outfit": {
       "id": "dark_suit",
-      "name": "深色西装与手套",
-      "prose": "a dark tailored suit, white shirt, red necktie and black gloves",
+      "name": "深炭黑剪裁西装红领带与皮手套",
+      "prose": "A sharp charcoal bespoke two-piece suit tailored over a crisp white shirt, deep-red necktie, fitted slacks, polished shoes, and black leather combat gloves.",
       "tokens": [
-        "dark suit",
-        "white shirt",
+        "charcoal tailored suit",
+        "white collared shirt",
         "red necktie",
-        "black gloves"
+        "black leather gloves",
+        "fitted slacks",
+        "black leather shoes"
       ],
       "default": true,
       "isDefault": true

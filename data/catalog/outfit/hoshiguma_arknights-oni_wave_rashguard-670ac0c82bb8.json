@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/oni_wave_rashguard",
+  "revision": 1,
+  "sortOrder": 4027,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "oni_wave_rashguard",
+      "name": "般若镇浪 · 墨绿竞速分体泳衣",
+      "prose": "A forest-green and charcoal athletic two-piece bikini with reinforced elastic straps, a supportive racerback top, a crimson knotted waist cord, a neoprene wrist cuff, and bare feet.",
+      "tokens": [
+        "forest green bikini",
+        "charcoal elastic straps",
+        "racerback swim top",
+        "crimson waist cord",
+        "neoprene wrist cuff",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

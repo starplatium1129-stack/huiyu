@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/shrine_veranda_haori",
+  "revision": 1,
+  "sortOrder": 4188,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "id": "shrine_veranda_haori",
+      "name": "缘侧梅紫棉羽织与深灰百褶袴",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "tomotake_yoshino",
+      "prose": "A plum quilted haori layered over a cream cotton kimono and charcoal pleated skirt fastened by a gold clasp cord, paired with ivory knit socks and warm felt slippers.",
+      "tokens": [
+        "plum quilted haori",
+        "cream cotton kimono",
+        "charcoal pleated skirt",
+        "gold clasp cord",
+        "ivory knit socks",
+        "warm felt slippers"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/lingerie_silk_robe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 427,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
@@ -12,11 +12,15 @@
       "id": "lingerie_silk_robe",
       "isDefault": false,
       "name": "中式薄纱丝绸睡袍",
-      "prose": "a light sheer Chinese-style silk sleeping robe over delicate undergarments",
+      "prose": "A light sheer Chinese-style silk sleeping robe with delicate ivory trim and wide draped sleeves worn open over a matching silk camisole and lace panties, bare legs, and barefoot.",
       "tokens": [
-        "silk robe",
-        "sheer fabric",
-        "underwear"
+        "sheer silk robe",
+        "ivory embroidered trim",
+        "wide draped sleeves",
+        "silk camisole",
+        "matching lace panties",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

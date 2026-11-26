@@ -1,29 +1,25 @@
 {
   "kind": "outfit",
   "id": "yuuki_mikan/boyfriend_shirt_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1506,
   "createdAt": "2026-10-21T15:20:00+00:00",
-  "updatedAt": "2026-10-21T15:30:22.622953400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "yuuki_mikan",
     "outfit": {
       "default": false,
       "id": "boyfriend_shirt_lingerie",
       "isDefault": false,
-      "name": "女友白衬衫与浅淡素雅内衣",
-      "prose": "wearing an oversized white collared dress shirt draped loosely over a delicate pastel lingerie set, holding the shirt edges across her front with bare feet and a bashful flustered blush",
+      "name": "宽大白衬衫与浅淡素雅内衣",
+      "prose": "An oversized white collared dress shirt worn unbuttoned over a delicate pastel cotton bra and matching panties, leaving bare shoulders and bare feet.",
       "tokens": [
-        "white_shirt",
-        "open_shirt",
-        "unbuttoned_shirt",
-        "bra",
-        "panties",
-        "bare_shoulders",
-        "bare_legs",
-        "barefoot",
-        "holding_shirt",
-        "heavy_blush"
+        "oversized white shirt",
+        "unbuttoned front placket",
+        "pastel cotton bra",
+        "matching cotton panties",
+        "bare shoulders",
+        "barefoot"
       ]
     }
   }

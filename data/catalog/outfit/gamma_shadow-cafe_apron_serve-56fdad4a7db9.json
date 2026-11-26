@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "gamma_shadow/cafe_apron_serve",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1923,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "gamma_shadow",
     "outfit": {
       "id": "cafe_apron_serve",
       "name": "四越咖啡馆巡店围裙装",
-      "prose": "Pleasant cafe uniform with a cream apron over a dark dress, worn while inspecting a Mitsugoshi cafe and tasting new drinks.",
+      "prose": "Warm chestnut-brown knee-length apron dress with short puff sleeves and a ruffled cream waist apron, finished with a burgundy neck ribbon, scalloped lace trim, white ankle socks, and leather mary janes.",
       "tokens": [
-        "apron",
-        "cafe_uniform",
-        "dress",
-        "ribbon",
-        "mary_janes"
+        "cream apron",
+        "brown dress",
+        "puff sleeves",
+        "waist apron",
+        "neck ribbon",
+        "lace trim",
+        "white socks",
+        "mary janes"
       ],
       "characterId": "gamma_shadow",
       "default": false,

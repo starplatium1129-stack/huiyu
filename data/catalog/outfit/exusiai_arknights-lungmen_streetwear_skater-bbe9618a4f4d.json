@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/lungmen_streetwear_skater",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "lungmen_streetwear_skater",
       "name": "龙门高街滑板冲锋衣与黑色长袜",
-      "prose": "An oversized red-and-white windbreaker worn open over a black crop top and hotpants, with black thigh-high socks and skate shoes.",
+      "prose": "An oversized open red-and-white street windbreaker over a sleek black crop top, hotpants, striped thigh-high socks, and vulcanized skate shoes.",
       "tokens": [
-        "oversized_jacket",
-        "windbreaker",
-        "red_and_white_jacket",
-        "crop_top",
-        "hotpants",
-        "black_thighhighs",
-        "skate_shoes"
+        "oversized windbreaker",
+        "red trim",
+        "black crop top",
+        "denim hotpants",
+        "striped thighhighs",
+        "skate shoes"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/diversity_oneness",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1993,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "diversity_oneness",
-      "name": "无我唯识 · 黑色礼裙",
+      "name": "无我唯识 · 黑蕾丝袖长礼裙",
       "characterId": "virtuosa_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A black dress with black gloves, a necklace and a hair ornament.",
+      "prose": "A sculpted black evening gown with sheer lace sleeves and a sweeping hem, styled with black opera gloves, a silver pearl necklace, a feather hairpin, sheer stockings, and velvet heels.",
       "tokens": [
-        "black dress",
-        "black gloves",
-        "necklace",
-        "hair ornament"
+        "black evening gown",
+        "sheer lace sleeves",
+        "black opera gloves",
+        "silver pearl necklace",
+        "sheer dark stockings",
+        "pointed velvet heels"
       ],
       "identityTokensOverride": [
         "virtuosa (arknights)",

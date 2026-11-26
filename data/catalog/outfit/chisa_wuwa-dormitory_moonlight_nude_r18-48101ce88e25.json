@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "chisa_wuwa/dormitory_moonlight_nude_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3910,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "chisa_wuwa",
     "outfit": {
       "id": "dormitory_moonlight_nude_r18",
-      "name": "星炬宿舍月光白床单全裸纯情姿态",
-      "prose": "Completely nude on white cotton bedsheets, wearing only her signature crimson hair ribbon and blushing deeply.",
+      "name": "星炬宿舍全裸态",
+      "prose": "Completely without clothing or footwear, wearing only a small crimson ribbon clip.",
       "tokens": [
         "nude",
         "completely nude",
-        "red hair ribbon",
-        "bare breasts",
-        "nipples",
-        "heavy blush"
+        "crimson ribbon clip",
+        "bare shoulders",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

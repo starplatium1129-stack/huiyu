@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_nikke_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3376,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "rapi_nikke_lingerie_whisper",
     "characterId": "rapi_nikke",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "反击部队野战指挥所单间，关闭的战术全息地图终端在黑暗中沉寂。坐在折叠椅上，一手拉开微敞的黑色睡袍前襟，一手紧扣在战术皮带上，绯红眼眸坚定中浮现出一丝难以自持的羞怯。 她微微抬眸轻语——“指挥官……作为反击部队的队长，我必须确保您的绝对安全。但作为拉毗个人……请让我今晚陪伴在您左右。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "counters_carbon_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

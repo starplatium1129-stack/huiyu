@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "fiammetta_arknights/judgment_day",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2094,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "fiammetta_arknights",
     "outfit": {
       "id": "judgment_day",
-      "name": "审判日·黑白拼色短外套",
-      "prose": "A two-tone black and white jacket with fitted shoulder pieces and black boots.",
+      "name": "审判日 · 黑白肩甲短外套",
+      "prose": "A two-tone black-and-white cropped jacket with fitted shoulder armor and crimson tactical harness over a black cargo skirt, worn with fingerless leather gloves, opaque tights, and steel-toe boots.",
       "tokens": [
-        "black and white jacket",
-        "shoulder armor",
-        "black boots"
+        "monochrome cropped jacket",
+        "fitted shoulder armor",
+        "crimson tactical harness",
+        "black cargo skirt",
+        "opaque black tights",
+        "steel toe boots"
       ],
       "characterId": "fiammetta_arknights",
       "default": false,

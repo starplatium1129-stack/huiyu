@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/budget_cozy_no_mug",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 512,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "budget_cozy_no_mug",
       "isDefault": false,
-      "name": "浅天蓝落肩开衫搭丝绸吊带与棉麻短裤",
-      "prose": "A relaxed sky-blue knit cardigan draped open over a silk-trimmed camisole and comfy lounge shorts.",
+      "name": "淡紫针织开衫搭白丝吊带居家装",
+      "prose": "An open-front soft lavender knit cardigan draped comfortably over a lace-edged white silk camisole, light grey cotton shorts, and plush indoor slippers.",
       "tokens": [
-        "blue_cardigan",
-        "open_front",
-        "camisole",
-        "lace_trim",
-        "shorts",
-        "bare_legs",
-        "slippers"
+        "lavender knit cardigan",
+        "open front",
+        "white silk camisole",
+        "lace trim",
+        "grey lounge shorts",
+        "bare legs",
+        "indoor slippers"
       ],
       "characterId": "hayase_yuuka"
     }

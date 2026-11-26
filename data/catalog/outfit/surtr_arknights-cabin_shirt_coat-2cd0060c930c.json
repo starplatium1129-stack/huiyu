@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/cabin_shirt_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1462,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "id": "cabin_shirt_coat",
       "name": "水洗机车皮衣与层叠衬衫短裤",
       "tokens": [
-        "leather_jacket",
-        "cropped_jacket",
-        "black_jacket",
-        "red_lining",
-        "black_shirt",
-        "open_jacket",
-        "black_shorts",
-        "thighhighs"
+        "washed biker jacket",
+        "scarlet silk lining",
+        "unbuttoned black shirt",
+        "high-waist black shorts",
+        "sheer thighhighs",
+        "barefoot"
       ],
-      "prose": "A washed black biker jacket lined in crimson silk over a sheer shirt and high-waisted shorts.",
+      "prose": "A supple washed-black biker jacket lined in scarlet silk layered open over a sheer black button-up shirt, high-waist shorts, and dark thigh-high stockings.",
       "default": false,
       "isDefault": false,
       "characterId": "surtr_arknights"

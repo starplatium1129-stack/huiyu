@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3183,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "lemuen_arknights_swimsuit_allure",
     "characterId": "lemuen_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "木质栈道平缓地穿过沙丘，直达浪花轻抚的岸边。蕾缪安靠在轮椅软垫上，洁白的羽翼随着海风轻轻舒展，微仰着脸让温暖的日光洒在白皙无暇的面容上。听到推着轮椅的你的停步声，她回过头，蓝眸清澈如洗，嘴角浮现出如微风般舒适的从容浅笑——「好舒服的海风……连呼吸里都是阳光和海盐的甘甜呢。不用担心我，只要像这样和你一起停在浪花边，就已经是我梦见过无数次的盛夏了。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "laterano_white_gold_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

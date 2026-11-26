@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/siracusa_olive_monokini",
+  "revision": 1,
+  "sortOrder": 4092,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "siracusa_olive_monokini",
+      "name": "叙拉古橄榄裁缝高叉泳衣",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "vulpisfoglia_arknights",
+      "prose": "A tailored deep olive-green high-cut monokini featuring structured princess seams and brushed brass ring buckles, draped with a sheer charcoal-grey linen sarong knotted at the hip and flat leather sandals.",
+      "tokens": [
+        "olive green monokini",
+        "highleg cutout swimsuit",
+        "brass ring buckles",
+        "charcoal linen sarong",
+        "gold hoop earrings",
+        "flat leather sandals"
+      ]
+    }
+  }
+}

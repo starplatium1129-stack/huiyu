@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/sfw_vintage_bookshop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1112,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "sfw_vintage_bookshop",
       "name": "复古宫廷领衬衫与酒红高衩伞裙",
-      "prose": "A high-collar ruffled Victorian blouse with a high-waisted burgundy slit skirt and sheer stockings.",
+      "prose": "A high-collared ivory ruffled blouse with lace cuffs tucked into a high-waisted burgundy slit skirt, accented with a gold brooch, dark stockings, and laced boots.",
       "tokens": [
-        "vintage_blouse",
-        "high_collar",
-        "cuffs",
-        "burgundy_skirt",
-        "high-waist_skirt",
-        "high_slit",
-        "black_thighhighs",
-        "lace-up_boots"
+        "ivory ruffled blouse",
+        "high collar",
+        "lace cuffs",
+        "burgundy slit skirt",
+        "high waisted skirt",
+        "gold brooch",
+        "dark stockings",
+        "laced boots"
       ],
       "default": false,
       "isDefault": false,

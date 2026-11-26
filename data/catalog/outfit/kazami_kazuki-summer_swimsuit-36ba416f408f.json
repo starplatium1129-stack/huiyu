@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/summer_swimsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 641,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
       "id": "summer_swimsuit",
       "name": "银白交叉背带竞速泳装",
-      "prose": "a streamlined silvery-white one-piece swimsuit with high-cut legs, a low back and thin crossed straps",
+      "prose": "A streamlined silvery-white one-piece racing swimsuit in matte stretch fabric with high-cut legs, a low scoop back, thin crossed straps, and bare feet.",
       "tokens": [
-        "silvery white one-piece swimsuit",
-        "highleg",
-        "low back",
-        "crossed straps"
+        "silver white swimsuit",
+        "high cut leg",
+        "low scoop back",
+        "crossed back straps",
+        "matte stretch fabric",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

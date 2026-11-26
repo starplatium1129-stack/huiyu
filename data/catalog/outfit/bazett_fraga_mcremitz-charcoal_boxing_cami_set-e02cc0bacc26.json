@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "bazett_fraga_mcremitz/charcoal_boxing_cami_set",
+  "revision": 1,
+  "sortOrder": 3979,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "bazett_fraga_mcremitz",
+    "outfit": {
+      "id": "charcoal_boxing_cami_set",
+      "name": "炭黑罗纹系带运动背心短裤",
+      "prose": "A breathable charcoal-grey ribbed athletic tank camisole paired with crisp white-drawstring black satin-trimmed boxing lounge shorts.",
+      "tokens": [
+        "charcoal sports camisole",
+        "ribbed racerback",
+        "black boxing shorts",
+        "white drawstring",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

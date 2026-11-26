@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/waterproof_explorer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 315,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "waterproof_explorer",
-      "name": "苔灰防风冲锋衣与探险织带",
-      "prose": "A moss-green waterproof expedition shell with cargo shorts and a modular fabric thigh harness for field equipment.",
+      "name": "苔绿防水冲锋衣与探险织带",
+      "prose": "A moss-green waterproof expedition jacket paired with khaki cargo shorts, nylon utility webbing, a modular thigh harness, and rugged trail boots.",
       "tokens": [
-        "waterproof_jacket",
-        "techwear_jacket",
-        "green_jacket",
-        "cargo_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "leg_harness",
-        "boots"
+        "waterproof shell",
+        "moss green jacket",
+        "cargo shorts",
+        "utility carabiner",
+        "nylon webbing",
+        "thigh harness",
+        "bare legs",
+        "trail boots"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

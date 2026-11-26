@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sawamura_spencer_eriri/tartan_sailor_bikini",
+  "revision": 1,
+  "sortOrder": 4202,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "sawamura_spencer_eriri",
+    "outfit": {
+      "id": "tartan_sailor_bikini",
+      "name": "金发傲娇·墨绿格纹水手比基尼",
+      "prose": "A forest-green tartan two-piece sailor bikini edged with crisp white piping and bottle-green satin bows at the hips, worn barefoot.",
+      "tokens": [
+        "green tartan bikini",
+        "sailor collar top",
+        "white piping",
+        "plaid bikini bottom",
+        "green satin bows",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

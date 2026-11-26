@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3342,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "chloe_von_einzbern_lingerie_whisper",
     "characterId": "chloe_von_einzbern",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "伊莉雅房间午夜的突袭。小黑（克洛伊）换上一套深粉色镂空绑带透视蕾丝吊带睡衣，毫无顾忌地倒挂在床尾。深红色的长发如瀑布般垂落在地板上，古铜色的肌肤在月光下泛着光泽。她坏笑着伸出舌尖轻舔干渴的唇角，抬起小手轻轻拽住你的睡衣领带，琥珀色的双瞳闪烁着狡黠而热烈的魔力光芒——「哈啊……御主，真是让我好等呢。今天一整天都没有好好补充魔力，身体都开始发烫了哦？现在……准备好接受小黑的‘特别补给’了吗♡」",
-    "outfitId": "pink_lace_lingerie",
+    "outfitId": "fuchsia_harness_babydoll",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

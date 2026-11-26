@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/supervisor_lounge_knitwear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 408,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,12 +12,14 @@
       "id": "supervisor_lounge_knitwear",
       "isDefault": false,
       "name": "奶油色落肩居家针织装",
-      "prose": "A cream drop-shoulder sweater with ribbed cuffs and high-waist lounge trousers.",
+      "prose": "A soft cream drop-shoulder knit sweater with ribbed cuffs paired with high-waisted lounge trousers, white socks, and grey house slippers.",
       "tokens": [
-        "cream sweater",
-        "drop shoulders",
+        "cream knit sweater",
+        "dropped shoulders",
         "ribbed cuffs",
-        "high-waist pants"
+        "high-waisted trousers",
+        "white socks",
+        "grey house slippers"
       ]
     }
   }

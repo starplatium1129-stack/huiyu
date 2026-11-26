@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/casual_street_hoodie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "casual_street_hoodie",
       "name": "红黑错位条纹街头装",
-      "prose": "A roomy red-and-black hoodie has an offset graphic panel, paired with dark denim shorts, mismatched striped stockings and black sneakers.",
+      "prose": "Oversized red-and-black colorblock zip hoodie with offset graphic panels over dark denim shorts, styled with a slim choker, mismatched striped thighhighs, and chunky black sneakers.",
       "tokens": [
-        "red and black hoodie",
-        "oversized clothes",
-        "offset graphic panel",
-        "dark denim shorts",
-        "mismatched legwear",
+        "red hoodie",
+        "black sleeves",
+        "graphic print",
+        "denim shorts",
+        "leather choker",
         "striped thighhighs",
+        "mismatched socks",
         "black sneakers"
       ]
     }

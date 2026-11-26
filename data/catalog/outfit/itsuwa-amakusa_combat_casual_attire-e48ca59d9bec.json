@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "itsuwa/amakusa_combat_casual_attire",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1801,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "itsuwa",
     "outfit": {
       "characterId": "itsuwa",
       "id": "amakusa_combat_casual_attire",
       "name": "天草式教团·修身牛仔夹克短裙便装",
-      "prose": "A tailored cropped denim jacket over a white scoop-neck shirt, blue pleated mini skirt, and practical black ankle boots.",
+      "prose": "A tailored indigo cropped denim jacket worn over a white scoop-neck shirt and blue pleated miniskirt with a silver cross pendant, black tights, and practical black ankle boots.",
       "tokens": [
-        "jacket",
-        "denim_jacket",
-        "white_shirt",
-        "pleated_skirt",
-        "boots",
-        "short_hair",
-        "collarbone"
+        "cropped denim jacket",
+        "white scoop tee",
+        "blue pleated miniskirt",
+        "silver cross pendant",
+        "leather waist belt",
+        "black sheer tights",
+        "black ankle boots"
       ],
       "default": true,
       "isDefault": true

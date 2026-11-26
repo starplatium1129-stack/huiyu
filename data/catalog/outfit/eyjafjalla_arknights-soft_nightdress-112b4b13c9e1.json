@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/soft_nightdress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1370,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "soft_nightdress",
-      "name": "火山学者淡粉暖羊毛针织开衫内搭纯棉衬裙",
-      "prose": "A heart-soothing boudoir set combining an oversized marshmallow-pink angora knit wrap cardigan with a breathable pure-white cotton slip dress and anti-chill foot warmers.",
+      "name": "淡粉安哥拉开衫与纯白棉质衬裙",
+      "prose": "A pastel-pink angora wool wrap cardigan layered loosely over a breathable white cotton slip dress with delicate lace trim at the neckline, paired with soft white knit socks.",
       "tokens": [
-        "pink knit cardigan",
-        "angora wool wrap",
+        "pastel pink cardigan",
+        "angora wool",
         "white cotton slip",
-        "caprinae horn cutout",
-        "soft foot warmers",
-        "gentle scholar style"
+        "lace neckline",
+        "knit wrap",
+        "white socks",
+        "bare legs"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

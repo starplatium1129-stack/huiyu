@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "murasame/white_underkimono",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1221,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "id": "white_underkimono",
       "name": "纯白和服单衣",
       "tokens": [
-        "white kimono",
-        "wide sleeves"
+        "white underkimono",
+        "wide kimono sleeves",
+        "overlapping front collar",
+        "soft cotton lining",
+        "loose waist cord",
+        "barefoot"
       ],
-      "prose": "a plain white underkimono with wide sleeves and a soft overlapping front",
+      "prose": "A plain white cotton underkimono with wide sleeves, a soft overlapping front collar, and a loose waist cord, worn barefoot.",
       "default": false,
       "isDefault": false
     }

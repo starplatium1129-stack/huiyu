@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/sami_pelt_trim_bikini",
+  "revision": 1,
+  "sortOrder": 4001,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "id": "sami_pelt_trim_bikini",
+      "name": "萨米兽骨毛边大地色分体泳装",
+      "prose": "A resilient Sami hunter bikini crafted in earth-brown and pelt-white fabric trimmed with fluffy thermal fur, carved bone toggles, and tactical leather leg straps.",
+      "tokens": [
+        "earth brown bikini",
+        "white fur trim",
+        "bone toggles",
+        "halterneck straps",
+        "thigh leather straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

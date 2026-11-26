@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/masked_fool_ruffle_bikini",
+  "revision": 1,
+  "sortOrder": 4164,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "masked_fool_ruffle_bikini",
+      "name": "假面愚者绯红戏偶层叠比基尼",
+      "prose": "Crimson and onyx-black layered ruffled bikini embellished with miniature golden bell charms, mismatched thigh garters, trailing silk back ribbons, a stylized fox mask, and bare feet.",
+      "tokens": [
+        "crimson bikini",
+        "black ruffles",
+        "layered frills",
+        "fox mask",
+        "gold bells",
+        "thigh garters",
+        "silk ribbons",
+        "barefoot"
+      ],
+      "characterId": "sparkle_hsr",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
+    }
+  }
+}

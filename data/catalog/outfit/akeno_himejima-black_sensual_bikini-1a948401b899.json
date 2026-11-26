@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/black_sensual_bikini",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 702,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "black_sensual_bikini",
       "name": "黑金削肩挂颈高衩泳装",
-      "prose": "A daring black satin halter bikini accented with golden ring hardware and a high-leg cut.",
+      "prose": "A black satin halterneck bikini accented with gold ring hardware and high-cut side-tie bottoms, worn with bare legs and flat strap sandals.",
       "tokens": [
-        "black_bikini",
-        "halterneck",
-        "high_leg_bikini",
-        "gold_trim",
-        "bare_legs",
-        "sandals"
+        "black satin bikini",
+        "halterneck strap",
+        "high-cut leg",
+        "gold ring hardware",
+        "side-tie bottom",
+        "bare legs",
+        "flat strap sandals"
       ],
       "characterId": "akeno_himejima",
       "default": false,

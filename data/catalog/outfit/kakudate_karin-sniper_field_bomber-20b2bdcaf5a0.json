@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kakudate_karin/sniper_field_bomber",
+  "revision": 1,
+  "sortOrder": 3939,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kakudate_karin",
+    "outfit": {
+      "id": "sniper_field_bomber",
+      "name": "炭黑飞行员短夹克与战术工装长裤",
+      "prose": "A heavy matte-black tactical bomber jacket worn over a fitted white ribbed tank top and charcoal utility cargo pants with reinforced knee panels, thigh holster, fingerless gloves, and combat boots.",
+      "tokens": [
+        "black bomber jacket",
+        "white tank top",
+        "charcoal cargo pants",
+        "tactical belt",
+        "thigh holster",
+        "fingerless gloves",
+        "combat boots"
+      ]
+    }
+  }
+}

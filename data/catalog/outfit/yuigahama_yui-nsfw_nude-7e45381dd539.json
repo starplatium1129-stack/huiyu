@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 202,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "nsfw_nude",
       "name": "私密全裸 / 纯粹形态",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely free of school uniforms, knit cardigans, hoodies, stockings, and shoes, revealing an unadorned natural form.",
       "styleHint": "sensual soft room lighting",
       "isDefault": false,
       "default": false

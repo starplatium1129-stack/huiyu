@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "kotegawa_yui/pink_silk_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1401,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kotegawa_yui",
     "outfit": {
       "id": "pink_silk_camisole",
       "name": "浅粉真丝吊带睡裙",
       "tokens": [
-        "pink camisole",
-        "silk",
-        "sheer fabric"
+        "pink silk camisole",
+        "thin shoulder straps",
+        "sheer chiffon overlay",
+        "white lace neckline",
+        "matching silk panties",
+        "barefoot"
       ],
-      "prose": "A pale-pink silk camisole nightdress with fine shoulder straps and a light sheer finish.",
+      "prose": "A pale-pink sheer silk camisole nightdress with slender shoulder straps and white lace neckline trim over matching panties, worn barefoot.",
       "default": false,
       "isDefault": false
     }

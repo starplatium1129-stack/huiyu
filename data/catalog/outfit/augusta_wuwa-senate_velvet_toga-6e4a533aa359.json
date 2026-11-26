@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "augusta_wuwa/senate_velvet_toga",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3603,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "augusta_wuwa",
     "outfit": {
       "id": "senate_velvet_toga",
       "name": "元老院暗红金边单肩托加礼袍",
-      "prose": "A majestic one-shoulder crimson velvet toga fastened with a golden sun fibula over a pleated ivory silk underdress.",
+      "prose": "A one-shoulder crimson velvet toga fastened with a golden sun fibula over a pleated ivory silk underdress and gold bracelet, finished with gilded heeled sandals.",
       "tokens": [
-        "one-shoulder dress",
-        "red toga",
-        "velvet",
-        "gold brooch",
-        "white dress",
-        "gold bracelet"
+        "crimson velvet toga",
+        "one shoulder dress",
+        "ivory underdress",
+        "pleated skirt",
+        "gold sun fibula",
+        "gold bracelet",
+        "bare legs",
+        "heeled sandals"
       ],
       "default": false,
       "isDefault": false,

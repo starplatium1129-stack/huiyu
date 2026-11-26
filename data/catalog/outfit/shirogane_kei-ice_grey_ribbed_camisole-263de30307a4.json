@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/ice_grey_ribbed_camisole",
+  "revision": 1,
+  "sortOrder": 4154,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "id": "ice_grey_ribbed_camisole",
+      "name": "冰灰细罗纹纯棉吊带与花苞短裤",
+      "prose": "An ice-grey fine-ribbed cotton camisole with delicate straps paired with matching gathered paperbag-waist sleep shorts, worn with bare legs and barefoot.",
+      "tokens": [
+        "grey ribbed camisole",
+        "cotton jersey",
+        "thin shoulder straps",
+        "gathered sleep shorts",
+        "elastic paperbag waist",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

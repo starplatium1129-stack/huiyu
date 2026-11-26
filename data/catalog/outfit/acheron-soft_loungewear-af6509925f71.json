@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "acheron/soft_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1663,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "acheron",
     "outfit": {
       "id": "soft_loungewear",
       "name": "紫灰色居家长衫",
-      "prose": "A loose muted violet long-sleeved lounge shirt and dark lounge trousers.",
+      "prose": "Loose muted-violet long-sleeved lounge shirt draped comfortably over dark wide-leg lounge trousers, tied with a soft cloth waist sash and paired with an engraved tortoiseshell comb and indoor slippers.",
       "tokens": [
-        "loose purple shirt",
+        "muted purple shirt",
+        "loose shirt",
         "long sleeves",
-        "dark lounge pants"
+        "dark lounge pants",
+        "cloth sash",
+        "tortoiseshell comb",
+        "indoor slippers"
       ],
       "characterId": "acheron",
       "default": false,

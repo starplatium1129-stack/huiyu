@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "standard",
       "isDefault": true,
       "name": "水墨旗袍",
-      "prose": "her black qipao with dark teal cloud motifs and a high slit, beneath a sheer black-to-white wide-sleeved robe, with bare feet",
+      "prose": "A traditional ink-black qipao patterned with dark teal clouds and a tall side slit, veiled beneath a translucent ink-wash gradient wide-sleeved robe worn barefoot.",
       "tokens": [
-        "china dress",
-        "black dress",
+        "black qipao",
         "teal cloud pattern",
-        "high slit",
+        "high side slit",
+        "sheer ink robe",
         "wide sleeves",
-        "sheer black-and-white robe",
+        "bare legs",
         "barefoot"
       ]
     }

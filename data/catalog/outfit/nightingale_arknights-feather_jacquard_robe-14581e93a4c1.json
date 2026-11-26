@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/feather_jacquard_robe",
+  "revision": 1,
+  "sortOrder": 4038,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "feather_jacquard_robe",
+      "name": "雪羽晨曦 · 象牙白羽纹真丝长袍",
+      "prose": "A gossamer ivory-white double-layer silk slip robe woven with subtle feather jacquard patterns, wide flowing sleeves, slender silver ribbon ties, and bare feet.",
+      "tokens": [
+        "ivory silk robe",
+        "feather jacquard weave",
+        "double sheer layers",
+        "silver ribbon ties",
+        "wide flowing sleeves",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

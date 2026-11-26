@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/casual_shopping_date",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "casual_shopping_date",
       "name": "蜜粉软糯马海毛削肩露锁骨针织与皮裙",
-      "prose": "A blush-pink mohair knit slips off one shoulder, paired with a caramel leather split skirt and sheer stockings.",
+      "prose": "A pale-pink mohair knit sweater slipped off one shoulder and paired with a caramel leather mini skirt with a side slit, sheer black stockings, and heeled ankle boots.",
       "tokens": [
-        "pink_sweater",
-        "off_shoulder",
-        "mohair_sweater",
-        "leather_skirt",
-        "miniskirt",
-        "high_slit",
-        "thighhighs",
-        "ankle_boots"
+        "pink mohair sweater",
+        "off shoulder",
+        "caramel leather skirt",
+        "high side slit",
+        "sheer black thighhighs",
+        "heeled ankle boots"
       ],
       "characterId": "isshiki_iroha",
       "default": false,

@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "kakudate_karin/luxurious_highleg_bunny",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1678,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "kakudate_karin",
     "outfit": {
       "characterId": "kakudate_karin",
       "id": "luxurious_highleg_bunny",
-      "name": "极奢游轮高叉漆皮兔女郎",
-      "prose": "A glossy black strapless high-leg bunny suit with matching rabbit ears, cuffs, bow tie, sheer black pantyhose, and stilettos, accentuating her tanned athletic curves.",
+      "name": "黑漆皮高叉游轮兔女郎装",
+      "prose": "A high-gloss black strapless high-leg bunny bodysuit with crisp white collar and bowtie, rabbit-ear hairband, fluffy tail, sheer black pantyhose, and black stilettos.",
       "tokens": [
-        "bunny suit",
         "black bunny suit",
-        "highleg",
+        "glossy bodysuit",
         "strapless",
-        "fake rabbit ears",
+        "high leg",
+        "white bowtie",
+        "rabbit ear hairband",
         "bunny tail",
-        "bow tie",
-        "black pantyhose",
-        "high heels"
+        "sheer black pantyhose",
+        "black stilettos"
       ],
       "default": false,
       "isDefault": false

@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "zeta_shadow/rooftop_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1930,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "zeta_shadow",
     "outfit": {
       "id": "rooftop_hoodie",
       "name": "屋顶蹲守连帽卫衣",
-      "prose": "Oversized grey hoodie with a cat-ear hood and shorts, worn while staking out a rooftop under the afternoon sun.",
+      "prose": "Oversized heather-grey zip hoodie with a deep hood layered over a fitted black crop top and dark denim shorts, paired with fingerless gloves, ribbed crew socks, and low-top sneakers.",
       "tokens": [
-        "hoodie",
-        "cat_ear_hood",
-        "shorts",
+        "grey hoodie",
+        "oversized hoodie",
+        "hood up",
+        "black crop top",
+        "denim shorts",
+        "fingerless gloves",
+        "crew socks",
         "sneakers"
       ],
       "characterId": "zeta_shadow",

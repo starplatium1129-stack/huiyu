@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/pink_silk_negligee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1363,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "pink_silk_negligee",
-      "name": "粉白真丝吊带睡裙",
+      "name": "粉白真丝薄纱吊带睡裙",
       "tokens": [
-        "pink negligee",
-        "silk",
-        "thin straps",
-        "sheer fabric"
+        "pink silk negligee",
+        "ivory chiffon trim",
+        "thin satin straps",
+        "sheer draped skirt",
+        "pearl ribbon bow",
+        "bare shoulders",
+        "barefoot"
       ],
-      "prose": "A pale pink-and-ivory silk negligee with fine shoulder straps and a light sheer finish.",
+      "prose": "A pale pink-and-ivory sheer silk negligee with fine satin straps, pearl ribbon bow, and a light draped hem, worn barefoot.",
       "default": false,
       "isDefault": false
     }

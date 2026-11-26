@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3333,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "tobiichi_origami_lingerie_whisper",
     "characterId": "tobiichi_origami",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tsunako",
     "description": "士道隔壁卧室，墙上密密麻麻贴着士道的日常生活作息调查表。双手平举托着一件半透明蕾丝头纱，身着纯白婚纱风内衣端坐在床铺正中，面无表情却眼神灼热，用毫无起伏的语调直球发起恋爱强袭。 她微微抬眸轻语——“士道，作战方案已经确立。今夜进行婚前身体契约演练，抗拒无效，请立刻就位。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "metatron_bridal_corset",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

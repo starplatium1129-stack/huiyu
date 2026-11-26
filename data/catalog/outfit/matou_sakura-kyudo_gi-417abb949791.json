@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/kyudo_gi",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "kyudo_gi",
       "name": "素白真丝道服与靛蓝开衩袴褶",
-      "prose": "A pristine white silk archer top and deep-indigo split hakama revealing bare legs.",
+      "prose": "A traditional crisp white kyudo uniform top with black archery chestguard tucked into deep-indigo split hakama trousers, worn with white tabi socks.",
       "tokens": [
-        "white_kimono",
-        "kyudogi",
-        "indigo_hakama",
-        "hakama_skirt",
-        "side_slit",
-        "chest_guard",
-        "bare_legs",
-        "tabi"
+        "white kyudo gi",
+        "archery chestguard",
+        "indigo hakama",
+        "wide-pleat skirt",
+        "side openings",
+        "white tabi socks",
+        "straw sandals"
       ],
       "characterId": "matou_sakura",
       "default": false,

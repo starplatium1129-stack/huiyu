@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3269,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "asuma_toki_lingerie_whisper",
     "characterId": "asuma_toki",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "千年科技学园深处的装备休眠舱。C&C的秘密武器飞鸟马时卸下厚重的阿比凡斯动力外骨骼，穿上一套极简的石墨黑无痕吸汗连体工装睡衣。她笔直端坐在整备床沿，双腿并拢，两手一丝不苟地在脸侧比出标志性的双V手势，一言不发地注视着老师——「……呼呼。Sensei，和平。已经按照生活指南完成睡衣换装。目前进入就寝前待机模式，请下达今晚的晚安摸头许可。」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "graphite_compression_bodysuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

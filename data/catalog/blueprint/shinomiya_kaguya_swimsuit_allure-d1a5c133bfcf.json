@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinomiya_kaguya_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3311,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "shinomiya_kaguya_swimsuit_allure",
     "characterId": "shinomiya_kaguya",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "私家海滩的午后避暑露台。四宫辉夜穿着量身定制的千金格调黑金挂脖高叉比基尼，指尖优雅擎着冰茶。尽管耳根悄悄泛起红晕，她依然扬起下颌，带着‘真是可爱呢’的傲娇气势斜睨着你，试图在这场视线对决中夺取主动权。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "gold_chain_black_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

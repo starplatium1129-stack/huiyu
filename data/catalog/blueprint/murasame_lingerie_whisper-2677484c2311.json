@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3294,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "murasame_lingerie_whisper",
     "characterId": "murasame",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "丛雨神社神圣内殿，古老神刀静静供奉在紫檀木刀架上，御币微颤。飘浮盘坐在半空中，双手抱胸神气活现，娇小脚尖轻点虚空，金瞳微嗔，发带随灵力飘摇，脸颊鼓起可爱的弧度。 她微微抬眸轻语——“呼哈哈！即便吾是寄宿在神剑里的灵体，也是有女孩子的矜持的！不过……看在汝是主人的份上，特许汝再看一眼吧！”",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "spirit_sarashi_haori",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

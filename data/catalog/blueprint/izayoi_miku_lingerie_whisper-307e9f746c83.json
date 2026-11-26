@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3461,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "izayoi_miku_lingerie_whisper",
     "characterId": "izayoi_miku",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tsunako",
     "description": "天宫市私人录音室的午夜。第六精灵‘破军歌姬’诱宵美九，换上一袭带有暗纹织锦的深紫真丝高叉吊带长睡袍，裙摆肆意开叉露出修长无瑕的玉腿。她惬意地侧卧在铺满软垫的卧榻上，戴着镶嵌紫水晶的高级专业监听耳机，闭着双眼伴随耳机里的新曲轻声哼唱，指尖在虚空中优雅地打着拍子。听到门锁转动，她懒洋洋地睁开一只紫眸，声音甜腻中带着歌姬的娇蛮——「达令……或者不管是谁，在美九大人陶醉于自己天籁嗓音的时刻打扰，可是要被罚当一整天女仆的哦～」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "violet_damask_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

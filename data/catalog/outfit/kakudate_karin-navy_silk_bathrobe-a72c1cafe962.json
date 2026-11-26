@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kakudate_karin/navy_silk_bathrobe",
+  "revision": 1,
+  "sortOrder": 3936,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kakudate_karin",
+    "outfit": {
+      "id": "navy_silk_bathrobe",
+      "name": "深蓝丝绸腰带浴后长袍",
+      "prose": "A rich midnight-navy silk lounge bathrobe featuring wide kimono sleeves and a smoothly draped open neckline belted lightly with a satin sash.",
+      "tokens": [
+        "navy silk bathrobe",
+        "wide sleeves",
+        "satin waist sash",
+        "open collar",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

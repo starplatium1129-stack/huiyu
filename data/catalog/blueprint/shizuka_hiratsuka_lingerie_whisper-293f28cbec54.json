@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_hiratsuka_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "shizuka_hiratsuka_lingerie_whisper",
     "characterId": "shizuka_hiratsuka",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "单身公寓客厅矮茶几前，茶几上散落着汽车杂志与几份拉面店打卡攻略。盘腿坐在茶几旁的地毯上，一手拎着喝了一半的罐装拉格啤酒，一手掐着细支女士香烟，黑长发随意披散，美眸带着三分醉意三分怅惘斜睨着你。 她微微抬眸轻语——“呼……又在联谊上失败了啊。比企谷，你说……像我这样的女人，真的就那么难嫁出去吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "wine_silk_slip_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

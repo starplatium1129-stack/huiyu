@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/study_attire",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
@@ -12,13 +12,14 @@
       "name": "森林绿马甲书房套装",
       "isDefault": false,
       "default": false,
-      "prose": "a cream high-neck blouse beneath a fitted forest-green wool vest, with a long charcoal skirt and a narrow leather belt",
+      "prose": "A cream cotton blouse pinned with a brass collar pin beneath a fitted forest-green wool vest, paired with a charcoal maxi skirt, narrow leather belt, and brown leather loafers.",
       "tokens": [
-        "cream blouse",
-        "high collar",
+        "cream cotton blouse",
         "green wool vest",
-        "long charcoal skirt",
-        "leather belt"
+        "charcoal maxi skirt",
+        "narrow leather belt",
+        "brass collar pin",
+        "brown leather loafers"
       ]
     }
   }

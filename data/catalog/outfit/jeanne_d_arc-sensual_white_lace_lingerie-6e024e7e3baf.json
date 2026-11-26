@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sensual_white_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sensual_white_lace_lingerie",
       "name": "法式刺绣白蕾丝束身胸衣与晨袍",
-      "prose": "A white lace corset and garter ensemble under a sheer silk robe, with white thigh-high stockings.",
+      "prose": "An embroidered French white lace corset and garter belt ensemble worn beneath a billowing translucent silk morning robe with sheer white thigh-high stockings.",
       "tokens": [
-        "white_corset",
-        "lace_lingerie",
-        "garter_straps",
-        "white_robe",
-        "sheer_robe",
-        "garter_belt",
-        "white_thighhighs",
-        "bare_thighs"
+        "white lace corset",
+        "garter belt",
+        "sheer silk robe",
+        "wide sleeves",
+        "white thighhighs",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "jeanne_d_arc",
       "default": false,

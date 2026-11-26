@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3435,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "rikuhachima_aru_lingerie_whisper",
     "characterId": "rikuhachima_aru",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "便利屋68事务所后室，红色天鹅绒沙发旁堆着未付的拉面账单与通缉令。靠在皮沙发扶手上，单手试图摆出冷酷无情的恶党黑手党大佬姿态，但一看到老师目光扫过胸口，立刻手忙脚乱涨红了脸。 她微微抬眸轻语——“咳！听好了老师，本事务所的硬汉恶徒可不会因为这点装束动摇……呀！不许直勾勾看那里啦呜呜！”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "crimson_velvet_bustier_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

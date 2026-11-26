@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/bakery_patch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2140,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
       "id": "bakery_patch",
       "name": "面包刺绣口袋与奶油格纹裙",
-      "prose": "A cream checked pinafore dress over a warm brown long-sleeved shirt, with a bread-shaped embroidered pocket and soft lace-up shoes.",
+      "prose": "A cream plaid pinafore dress over a warm brown long-sleeved blouse with wooden buttons, accented by an embroidered bread-shaped pocket, cream ribbed socks, and brown lace shoes.",
       "tokens": [
-        "cream checked pinafore dress",
-        "brown long-sleeved shirt",
-        "bread embroidery",
-        "lace-up shoes"
+        "cream plaid pinafore",
+        "brown long blouse",
+        "bread embroidery pocket",
+        "wooden shirt buttons",
+        "cream ribbed socks",
+        "brown lace shoes"
       ],
       "characterId": "ceobe_arknights",
       "default": false,

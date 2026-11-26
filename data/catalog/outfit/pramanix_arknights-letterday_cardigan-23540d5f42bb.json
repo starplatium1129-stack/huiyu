@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/letterday_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1996,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "letterday_cardigan",
       "name": "雪铃银扣云杉针织套裙",
-      "prose": "A deep spruce cardigan with silver bell-shaped buttons over an ivory blouse; a charcoal knife-pleated wool skirt and embroidered snowflake socks complete the look.",
+      "prose": "A deep spruce-green knit cardigan fastened with silver bell buttons over an ivory poplin shirt and a charcoal pleated skirt, finished with a pearl collar pin, patterned wool socks, and brown Mary Janes.",
       "tokens": [
-        "deep spruce cardigan",
+        "spruce knit cardigan",
         "silver bell buttons",
-        "ivory blouse",
-        "charcoal knife-pleated wool skirt",
-        "snowflake socks"
+        "ivory poplin shirt",
+        "charcoal pleated skirt",
+        "pearl collar pin",
+        "patterned wool socks",
+        "brown mary janes"
       ],
       "characterId": "pramanix_arknights",
       "default": false,

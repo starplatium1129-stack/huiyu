@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3268,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "kyouyama_kazusa_lingerie_whisper",
     "characterId": "kyouyama_kazusa",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "点缀着小彩灯的温馨单间，矮几上放着吃了一半的马卡龙盒与红茶杯。侧身靠着懒人沙发，尾巴在羊毛毯上轻轻晃动，单手把玩着马卡龙缎带，猫耳微微抖动，偏过通红的脸轻哼，余光却悄悄黏在来人身上。 她微微抬眸轻语——“喂……别总是一脸傻样地盯着我看啊。吃完甜点……就快点过来陪我吹头发啦。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "mauve_lace_camisole_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

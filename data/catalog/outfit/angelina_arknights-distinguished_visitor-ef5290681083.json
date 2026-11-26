@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "angelina_arknights/distinguished_visitor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1989,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "angelina_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "angelina_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A red long coat over a dark outfit, with black gloves and boots.",
+      "prose": "A tailored crimson long coat layered over a black belted dress, accessorized with black leather gloves, a gold lapel chain, sheer black tights, and black ankle boots.",
       "tokens": [
-        "red long coat",
-        "dark outfit",
-        "black gloves",
-        "boots"
+        "crimson long coat",
+        "black belted dress",
+        "black leather gloves",
+        "gold lapel chain",
+        "sheer black tights",
+        "black ankle boots"
       ],
       "identityTokensOverride": [
         "angelina (arknights)",

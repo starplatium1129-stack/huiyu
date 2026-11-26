@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_alter_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3255,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "jeanne_alter_lingerie_whisper",
     "characterId": "jeanne_alter",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "迦勒底深夜的魔女巢穴。复仇阶的贞德[Alter]脱下重装铠甲，只穿着一套带有龙焰焦痕暗纹的纯黑紧身吊带与热裤。她本该在策划毁灭人类的计划，此刻却盘腿缩在被窝里，双手死死捧着一本从现代特异点带回来的高甜少女恋爱漫画，嘴角正泛着傻笑。被突然推门而入的御主撞个正着，她整张脸瞬间像炸药桶一样爆红，掌心轰地燃起黑红色的复仇烈焰，咬牙切齿地咆哮——「杂鱼御主——！！你从哪进来的？！谁准你不敲门进我的房间？！……你刚才什么都没看见对吧？！敢说出去半个字，我就用这黑焰把你烤成十成熟的黑炭啊啊啊！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "obsidian_dragon_camisole_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

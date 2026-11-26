@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/wayfarer_wanderer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 306,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "id": "wayfarer_wanderer",
       "name": "荒原墨绿连帽夹克与工装短裤",
-      "prose": "A weather-resistant sage-green hooded jacket with utility webbing, worn over a black tank top and cargo shorts.",
+      "prose": "A weather-resistant sage-green hooded field jacket with chest webbing over a black tank top, olive cargo shorts, and rugged hiking boots.",
       "tokens": [
-        "hooded_jacket",
-        "tactical_jacket",
-        "green_jacket",
-        "black_tank_top",
-        "cargo_shorts",
-        "bare_legs",
-        "hiking_boots"
+        "green hooded jacket",
+        "utility webbing",
+        "black tank top",
+        "cargo shorts",
+        "bare legs",
+        "hiking boots"
       ],
       "characterId": "chen_arknights",
       "default": false,

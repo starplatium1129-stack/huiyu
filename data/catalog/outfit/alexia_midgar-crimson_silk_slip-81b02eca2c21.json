@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "alexia_midgar/crimson_silk_slip",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1888,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "alexia_midgar",
     "outfit": {
       "id": "crimson_silk_slip",
       "name": "王女寝阁酒红真丝睡裙",
-      "prose": "A minimalist wine-red mulberry silk camisole slip dress featuring fine spaghetti straps, an alluring open back, and fine scalloped black lace trim.",
+      "prose": "Minimalist wine-red mulberry silk camisole slip dress with fine spaghetti straps, an open back, scalloped black lace trim, a delicate gold bracelet, satin ribbon tie, and bare feet.",
       "tokens": [
-        "slip_dress",
-        "silk_slip",
-        "red_dress",
-        "spaghetti_straps",
+        "wine red slip",
+        "silk dress",
+        "spaghetti straps",
         "backless",
-        "lace_trim",
-        "barefoot",
-        "nightwear"
+        "black lace trim",
+        "gold bracelet",
+        "velvet ribbon",
+        "barefoot"
       ],
       "characterId": "alexia_midgar",
       "default": false,

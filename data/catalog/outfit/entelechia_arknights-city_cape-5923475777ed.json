@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/city_cape",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2125,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "city_cape",
       "name": "烟灰短斗篷与红铜格纹长裤",
-      "prose": "A smoke-grey cape jacket over an ivory high-neck blouse and copper-brown checked wide-leg trousers, with a slender chain at the collar.",
+      "prose": "A structured smoke-grey cape jacket over an ivory turtleneck blouse and copper-brown plaid wide-leg trousers, accented with a slender silver collar chain and dark suede loafers.",
       "tokens": [
-        "smoke grey cape jacket",
-        "ivory high-neck blouse",
-        "copper brown checked wide-leg trousers",
-        "collar chain"
+        "smoke grey cape",
+        "ivory turtleneck blouse",
+        "copper plaid trousers",
+        "wide leg tailoring",
+        "silver collar chain",
+        "dark suede loafers"
       ],
       "characterId": "entelechia_arknights",
       "default": false,

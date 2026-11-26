@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "岁序华章（黑金旗袍）",
-      "prose": "a long ink-teal qipao with an off-shoulder neckline and high slit, gold-and-aqua dragon motifs, gold ornaments and bare feet",
+      "name": "岁序华章（黑金水青旗袍）",
+      "prose": "A long ink-teal silk qipao with an off-shoulder neckline, high side slit, and gold-and-aqua dragon embroidery, accented with a jade hairpin and gold bangles, worn barefoot.",
       "tokens": [
-        "long teal qipao",
-        "high slit",
+        "teal qipao",
         "off shoulder",
-        "gold trim",
-        "jewelry",
-        "hair ornament",
-        "barefoot",
-        "gold and aqua dragon motifs"
+        "high side slit",
+        "gold dragon embroidery",
+        "aqua silk trim",
+        "jade hairpin",
+        "gold bangles",
+        "barefoot"
       ]
     }
   }

@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/circuit_tech_monokini",
+  "revision": 1,
+  "sortOrder": 4088,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "circuit_tech_monokini",
+      "name": "科研怠惰哑光连体泳装",
+      "prose": "Matte-charcoal compression monokini traced with neon-blue geometric piping, draped under a loose white lab coat with tinted protective goggles pushed onto the crown, a slim wristband, and bare feet.",
+      "tokens": [
+        "charcoal monokini",
+        "matte swimsuit",
+        "blue piping",
+        "lab coat",
+        "slouchy coat",
+        "tinted goggles",
+        "wristband",
+        "barefoot"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 连体泳装"
+    }
+  }
+}

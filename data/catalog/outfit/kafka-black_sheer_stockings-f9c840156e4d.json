@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "kafka/black_sheer_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1389,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "black_sheer_stockings",
-      "name": "黑色薄纱长袜",
+      "name": "黑色丝绸睡裙与薄纱长袜",
       "tokens": [
-        "black stockings",
-        "sheer fabric"
+        "black slip",
+        "silk nightgown",
+        "plunging neckline",
+        "lace trim",
+        "garter straps",
+        "sheer stockings",
+        "barefoot"
       ],
-      "prose": "Plain sheer black stockings.",
+      "prose": "Plunging midnight-black silk satin nightgown trimmed with delicate lace along the hem, paired with slim garter straps, sheer black stockings, and bare feet.",
       "default": false,
       "isDefault": false
     }

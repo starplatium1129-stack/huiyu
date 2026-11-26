@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "asia_argento/modest_pure_white_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1763,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "asia_argento",
     "outfit": {
       "characterId": "asia_argento",
       "id": "modest_pure_white_swimsuit",
-      "name": "清澈盛夏·纯白荷叶边分体泳装",
-      "prose": "A virginal pure white two-piece swimsuit accented with dainty tiered ruffles and sweet modest frills along the neckline and hips.",
+      "name": "清澈纯白荷叶边分体泳装",
+      "prose": "A pure-white two-piece swimsuit accented with dainty tiered ruffles along the halter neckline and high-waisted bottoms, paired with a white ribbon, bare legs, and barefoot.",
       "tokens": [
-        "bikini",
-        "white_bikini",
-        "frilled_bikini",
-        "ruffled_trim",
-        "halterneck",
-        "modest_swimwear",
-        "bare_shoulders"
+        "white ruffled bikini",
+        "tiered frill trim",
+        "halterneck strap",
+        "high-waisted swim bottom",
+        "white ribbon bow",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

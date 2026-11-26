@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/picnic_overalls",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2142,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
       "id": "picnic_overalls",
       "name": "蜜橙围巾与宽松牛仔背带裤",
-      "prose": "Loose blue denim overalls over a white striped long-sleeved shirt, with a honey-orange neckerchief and comfortable canvas shoes.",
+      "prose": "Loose blue denim overalls with copper clasps over a white striped long-sleeved shirt, tied with a honey-orange neck scarf and paired with white ankle socks and cream canvas sneakers.",
       "tokens": [
-        "loose denim overalls",
-        "white striped long-sleeved shirt",
-        "orange neckerchief",
-        "canvas shoes"
+        "blue denim overalls",
+        "white striped shirt",
+        "orange neck scarf",
+        "copper snap clasps",
+        "white ankle socks",
+        "cream canvas sneakers"
       ],
       "characterId": "ceobe_arknights",
       "default": false,

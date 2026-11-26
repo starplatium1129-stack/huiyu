@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/tactical_stealth",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 654,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
       "id": "tactical_stealth",
       "name": "哑黑强化面料潜行装",
-      "prose": "A matte black tactical catsuit with reinforced panels and a clean front zipper, paired with a thigh holster, fingerless gloves, utility belt, communication earpiece and combat boots.",
+      "prose": "A matte-black reinforced tactical catsuit with a front zipper, thigh holster strap, fingerless shooting gloves, utility belt, and black combat boots.",
       "tokens": [
-        "black catsuit",
-        "matte fabric",
-        "reinforced panels",
-        "front zipper",
-        "thigh holster",
-        "fingerless gloves",
-        "utility belt",
-        "earpiece",
-        "combat boots"
+        "black tactical catsuit",
+        "matte nylon panels",
+        "front metal zipper",
+        "thigh holster strap",
+        "fingerless shooting gloves",
+        "black combat boots"
       ],
       "default": false,
       "isDefault": false

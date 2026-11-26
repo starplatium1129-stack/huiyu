@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/casual_black",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 487,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "casual_black",
       "isDefault": false,
-      "name": "哥特复古方领短礼裙与透肤黑丝",
-      "prose": "A black gothic dress with a pintucked square collar and crimson velvet accents, worn with sheer dark stockings.",
+      "name": "墨黑方领复古短礼裙",
+      "prose": "A dark gothic short dress featuring a pintucked square neckline, white lace trim, and crimson velvet ribbon accents, finished with sheer black thigh-high stockings and glossy mary janes.",
       "tokens": [
-        "gothic_dress",
-        "black_dress",
-        "square_neckline",
-        "frills",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "mary_janes"
+        "gothic dress",
+        "black dress",
+        "square neckline",
+        "crimson velvet ribbon",
+        "white lace trim",
+        "sheer black thighhighs",
+        "mary janes"
       ],
       "characterId": "sorasaki_hina"
     }

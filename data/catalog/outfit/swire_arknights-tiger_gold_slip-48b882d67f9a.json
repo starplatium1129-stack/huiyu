@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/tiger_gold_slip",
+  "revision": 1,
+  "sortOrder": 4048,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "tiger_gold_slip",
+      "name": "金迷龙门 · 墨黑金线刺绣吊带裙",
+      "prose": "An ink-black heavy silk slip gown embroidered with metallic gold tiger motifs, featuring delicate gold chain shoulder straps, a thigh-high side slit, and bare feet.",
+      "tokens": [
+        "black silk slip",
+        "gold tiger embroidery",
+        "chain shoulder straps",
+        "high side slit",
+        "satin lace trim",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

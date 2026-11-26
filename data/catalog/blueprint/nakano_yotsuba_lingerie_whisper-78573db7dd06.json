@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3391,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "nakano_yotsuba_lingerie_whisper",
     "characterId": "nakano_yotsuba",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "清晨的阳光露台，木质花架上摆放着几盆绿意盎然的吊兰与多肉。正在阳台上做晨间伸展，双手向上拉伸展示柔韧腰腹，回头看到你时绽开毫无防备的元气灿笑，绿缎带随风飘扬。 她微微抬眸轻语——“早上好上杉同学！今天天气超级棒哦！要不要和四叶一起做一套晨间伸展操呀，诶嘿嘿~”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "clover_athletic_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

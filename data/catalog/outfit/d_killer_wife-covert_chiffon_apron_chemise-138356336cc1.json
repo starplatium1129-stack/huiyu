@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "d_killer_wife/covert_chiffon_apron_chemise",
+  "revision": 1,
+  "sortOrder": 4062,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "d_killer_wife",
+    "outfit": {
+      "id": "covert_chiffon_apron_chemise",
+      "name": "伪装贤妻白褶雪纺围裙吊带裙",
+      "prose": "A pleated pure-white sheer chiffon apron-style chemise with a deep V neckline, ruffled back cross straps, and concealed hip utility loops, worn with sheer white stockings and barefoot.",
+      "tokens": [
+        "white chiffon chemise",
+        "pleated apron front",
+        "ruffled cross straps",
+        "concealed utility loops",
+        "sheer white stockings",
+        "barefoot"
+      ]
+    }
+  }
+}

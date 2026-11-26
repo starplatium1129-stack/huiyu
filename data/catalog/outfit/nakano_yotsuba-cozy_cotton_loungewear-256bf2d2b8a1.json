@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/cozy_cotton_loungewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1522,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "cozy_cotton_loungewear",
       "name": "居家落肩浅绿连帽纯棉短睡裙",
-      "prose": "An oversized mint-green cotton loungewear hoodie worn as a short dress over bare legs.",
+      "prose": "An oversized mint-green cotton loungewear hoodie worn loose over knit shorts with ribbed cuffs and crew socks, worn barefoot.",
       "tokens": [
-        "loungewear",
-        "pajamas",
-        "oversized_hoodie",
-        "light_green_hoodie",
-        "bare_legs",
+        "mint cotton hoodie",
+        "oversized fleece",
+        "wide hood",
+        "knit shorts",
+        "ribbed cuffs",
+        "crew socks",
         "barefoot"
       ],
       "isNsfw": false,

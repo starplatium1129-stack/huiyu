@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/noodle_denim",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2100,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "noodle_denim",
       "name": "深靛水洗牛仔夹克与黑色直筒裤",
-      "prose": "A dark-indigo washed denim jacket with reinforced seams over a white T-shirt and black straight-leg trousers, with sturdy sneakers.",
+      "prose": "A dark indigo washed denim jacket with reinforced seams and brass snap buttons over a crisp white cotton tee, black straight-leg trousers, and white canvas sneakers.",
       "tokens": [
-        "dark indigo washed denim jacket",
-        "reinforced seams",
-        "white t-shirt",
-        "black straight-leg trousers",
-        "sturdy sneakers"
+        "indigo denim jacket",
+        "washed seam trim",
+        "white cotton tee",
+        "black straight trousers",
+        "brass snap buttons",
+        "white canvas sneakers"
       ],
       "characterId": "hoshiguma_arknights",
       "default": false,

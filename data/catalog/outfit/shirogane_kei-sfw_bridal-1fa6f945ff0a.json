@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,12 +12,14 @@
       "id": "sfw_bridal",
       "isDefault": false,
       "name": "银白简约婚纱",
-      "prose": "A silver-white satin A-line dress, short veil and narrow black waist ribbon.",
+      "prose": "A silver-white satin A-line bridal dress accented with a narrow black waist ribbon, short tulle veil, white lace gloves, and white low-heeled pumps.",
       "tokens": [
-        "silver white satin wedding dress",
-        "A-line dress",
-        "short veil",
-        "narrow black waist ribbon"
+        "silver white gown",
+        "satin a-line dress",
+        "short tulle veil",
+        "black waist ribbon",
+        "white lace gloves",
+        "white low pumps"
       ]
     }
   }

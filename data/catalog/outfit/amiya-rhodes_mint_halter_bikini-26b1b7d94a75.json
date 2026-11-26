@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "amiya/rhodes_mint_halter_bikini",
+  "revision": 1,
+  "sortOrder": 3981,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "amiya",
+    "outfit": {
+      "id": "rhodes_mint_halter_bikini",
+      "name": "薄荷绿陶土边交叉挂脖泳装",
+      "prose": "A mint-green and soft terracotta two-tone halter bikini accented with crossed chest straps, dark bronze rings, an open natural linen beach shirt, and flat white sandals.",
+      "tokens": [
+        "mint green bikini",
+        "terracotta trim",
+        "crossed halter straps",
+        "bronze rings",
+        "linen cover-up",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3513,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "gamma_shadow_lingerie_whisper",
     "characterId": "gamma_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "富可敌国的三越商会深夜总部。掌控全大陆商业命脉的‘露娜商会会长’伽玛，身穿一件知性深蓝真丝高开叉睡裙，鼻梁上架着金丝细框眼镜。她正仪态万方地端着商会本季度的千亿利润报表走向暗影大人，脸上满是对主上智慧的崇拜与自信的微笑。然而那双天生缺乏平衡感的双脚，拖鞋边缘正狠狠踩住飘逸的睡裙拖尾，整个人重心前倾即将扑倒——「暗影大人！三越商会本季度的全域分红已经核算完毕……呀啊啊啊？！裙、裙子绊住了！暗影大人救我——！」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "luna_executive_wrap_gown",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

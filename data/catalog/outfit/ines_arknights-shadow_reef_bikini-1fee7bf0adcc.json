@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ines_arknights/shadow_reef_bikini",
+  "revision": 1,
+  "sortOrder": 4094,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "ines_arknights",
+    "outfit": {
+      "id": "shadow_reef_bikini",
+      "name": "暗影礁岩 · 紫边绑带高叉泳衣",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "ines_arknights",
+      "prose": "An obsidian-black high-leg bikini accented with dark violet trim, crossing underbust cord straps, and gunmetal ring clasps, layered under an open sheer black chiffon robe and worn barefoot.",
+      "tokens": [
+        "black highleg bikini",
+        "dark violet trim",
+        "underbust cord straps",
+        "gunmetal ring clasps",
+        "sheer black robe",
+        "barefoot"
+      ]
+    }
+  }
+}

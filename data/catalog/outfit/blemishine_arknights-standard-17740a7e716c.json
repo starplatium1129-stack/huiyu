@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1974,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 白色裙装",
+      "name": "基础服装 · 白色骑士轻铠裙",
       "characterId": "blemishine_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white skirt set with a black ribbon and fitted light armor.",
+      "prose": "A crisp white pleated dress layered under lightweight silver chest armor and a gold shoulder plate, tied with a black neck ribbon, white thigh-high stockings, and white armored boots.",
       "tokens": [
-        "white skirt",
-        "black ribbon",
-        "light armor"
+        "white pleated dress",
+        "cropped silver armor",
+        "black neck ribbon",
+        "gold shoulder plate",
+        "white thighhighs",
+        "white armored boots"
       ]
     }
   }

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "d_killer_wife/cozy_bridal_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1721,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "d_killer_wife",
     "outfit": {
       "characterId": "d_killer_wife",
       "id": "cozy_bridal_apron",
       "name": "新婚娇妻·居家围裙与粉白针织裙",
-      "prose": "A sweet newlywed domestic ensemble with a delicate white frilled apron tied over a snug blush pink knit mini dress and soft house slippers.",
+      "prose": "A snug pale-pink long-sleeved knit mini dress layered beneath a delicate white frilled apron tied at the back waist, paired with bare legs and soft house slippers.",
       "tokens": [
-        "pink_dress",
-        "white_apron",
-        "knit_dress",
-        "long_sleeves",
-        "short_dress",
-        "bare_legs",
-        "slippers"
+        "pink knit dress",
+        "white frilled apron",
+        "long sleeves",
+        "mini dress hem",
+        "waist bow tie",
+        "bare legs",
+        "soft house slippers"
       ],
       "default": true,
       "isDefault": true

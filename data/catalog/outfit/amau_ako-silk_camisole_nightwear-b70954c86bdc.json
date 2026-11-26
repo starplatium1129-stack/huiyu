@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "amau_ako/silk_camisole_nightwear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1676,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "amau_ako",
     "outfit": {
       "characterId": "amau_ako",
       "id": "silk_camisole_nightwear",
-      "name": "居室晨昏黑色蕾丝吊带",
-      "prose": "A black silk camisole with lace trim and a low neckline, paired with matching silk lounge shorts.",
+      "name": "墨黑真丝蕾丝细带睡衣短裤",
+      "prose": "A soft ink-black silk camisole trimmed with eyelash lace along thin spaghetti straps and matched with smooth silk lounge shorts.",
       "tokens": [
-        "black camisole",
-        "silk shorts",
-        "bare shoulders",
-        "collarbone",
-        "bare legs"
+        "black silk camisole",
+        "lace trim",
+        "spaghetti straps",
+        "black silk shorts",
+        "ribbon bow",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

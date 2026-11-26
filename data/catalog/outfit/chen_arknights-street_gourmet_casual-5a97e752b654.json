@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/street_gourmet_casual",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 302,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,17 +12,14 @@
       "id": "street_gourmet_casual",
       "isDefault": false,
       "name": "龙门复古深青暗花短衬衫与毛边牛仔热裤",
-      "prose": "A relaxed vintage teal camp-collar shirt with red botanical motifs worn open over a white ribbed crop top and frayed denim shorts.",
+      "prose": "A relaxed vintage teal camp-collar shirt printed with subtle red botanical motifs worn open over a white ribbed crop top, frayed denim shorts, and sneakers.",
       "tokens": [
-        "floral_shirt",
-        "teal_shirt",
-        "open_shirt",
-        "crop_top",
-        "white_top",
-        "denim_shorts",
-        "frayed_shorts",
-        "bare_legs",
-        "sneakers"
+        "teal floral shirt",
+        "open camp shirt",
+        "white crop top",
+        "frayed denim shorts",
+        "bare legs",
+        "white sneakers"
       ],
       "characterId": "chen_arknights"
     }

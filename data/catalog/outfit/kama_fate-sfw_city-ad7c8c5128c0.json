@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_city",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_city",
       "name": "香芋真丝立领衫与羊绒风衣套裙",
-      "prose": "A lavender silk blouse beneath an ivory cashmere trench and slit skirt, paired with dark stockings.",
+      "prose": "A high-collar lavender silk blouse beneath an ivory cashmere coat and slit midi skirt, accessorized with a wide sunhat, sheer stockings, and cream pumps.",
       "tokens": [
-        "lavender_shirt",
-        "silk_blouse",
-        "gold_buttons",
-        "trench_coat",
-        "cream_coat",
-        "slit_skirt",
-        "black_thighhighs",
-        "sunhat"
+        "lavender silk blouse",
+        "cream trench coat",
+        "gold buttons",
+        "slit midi skirt",
+        "sunhat",
+        "sheer stockings",
+        "cream pumps"
       ],
       "characterId": "kama_fate",
       "default": false,

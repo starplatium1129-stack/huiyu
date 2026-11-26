@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3137,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "rosmontis_arknights_swimsuit_allure",
     "characterId": "rosmontis_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风带过远处孩童吹出的成串泡泡。迷迭香一身素洁白净的纯棉泳裙，小小的猫耳随着泡泡的轨迹一动一动，猫尾在身后水面上轻轻拍出小小的水花。她小心翼翼地屏住呼吸，伸出两只小手去托一枚快要落下的彩虹泡泡，转过头用清澈见底的蓝眼睛望向你——「博士……看，泡泡里装着大海的颜色。我……用神经念力把它托住了，它没有碎哦。你能帮我把它记在终端里吗？」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "snow_paw_bell_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

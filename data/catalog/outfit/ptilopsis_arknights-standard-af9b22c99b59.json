@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1982,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
@@ -13,11 +13,14 @@
       "characterId": "ptilopsis_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white dress with a light coat and boots.",
+      "prose": "A structured white laboratory coat with silver-grey trim layered over a crisp white pleated dress, a black ID lanyard, white thigh-high stockings, and white buckled boots.",
       "tokens": [
-        "white dress",
-        "light coat",
-        "boots"
+        "white lab coat",
+        "silver grey trim",
+        "white pleated dress",
+        "black lanyard badge",
+        "white thighhighs",
+        "white buckled boots"
       ]
     }
   }

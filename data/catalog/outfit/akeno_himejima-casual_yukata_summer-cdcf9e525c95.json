@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/casual_yukata_summer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 700,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "casual_yukata_summer",
       "name": "深紫紫阳花暗纹高衩真丝浴衣",
-      "prose": "A deep-violet silk yukata tied with a pale lilac obi, with a breezy side slit.",
+      "prose": "A deep-violet silk yukata patterned with hydrangea blossoms and tied with a pale lilac obi sash, featuring a high side slit, bare legs, and wooden geta.",
       "tokens": [
-        "purple_yukata",
-        "floral_print",
-        "side_slit",
-        "obi",
-        "bare_legs",
-        "geta"
+        "purple silk yukata",
+        "hydrangea floral print",
+        "high side slit",
+        "lilac obi sash",
+        "wide sleeves",
+        "bare legs",
+        "wooden geta"
       ],
       "characterId": "akeno_himejima",
       "default": false,

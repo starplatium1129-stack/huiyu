@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 194,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "casual",
       "name": "极简青灰双面羊绒长大衣与禁欲黑丝",
-      "prose": "A slate-blue cashmere trench coat over an ivory ribbed turtleneck and black slit pencil skirt, paired with sheer black tights and pointed leather ankle boots.",
+      "prose": "A slate-blue cashmere trench coat over an ivory ribbed turtleneck and black slit pencil skirt with a slim belt, sheer black tights, and pointed leather ankle boots.",
       "tokens": [
-        "trench_coat",
-        "slate_coat",
-        "long_coat",
-        "turtleneck",
-        "pencil_skirt",
-        "slit_skirt",
-        "black_tights",
-        "sheer_tights",
-        "pointed_toe_boots",
-        "quiet_luxury"
+        "slate cashmere trench",
+        "ivory ribbed turtleneck",
+        "black slit skirt",
+        "leather belt",
+        "sheer black tights",
+        "pointed ankle boots"
       ],
       "characterId": "yukinoshita_yukino",
       "default": false,

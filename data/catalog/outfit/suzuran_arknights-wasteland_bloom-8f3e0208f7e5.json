@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/wasteland_bloom",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 371,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
       "default": false,
       "id": "wasteland_bloom",
       "isDefault": false,
-      "name": "苔绿探索外套",
-      "prose": "A moss-green field coat has khaki pocket flaps and a matching bucket hat, with a compact canvas backpack and brown hiking boots.",
+      "name": "苔绿探索外套与帆布背包",
+      "prose": "A moss-green field coat with khaki pocket flaps and brass snap buttons paired with a tan bucket hat, compact canvas backpack, cream knit scarf, ankle socks, and brown hiking boots.",
       "tokens": [
         "moss green coat",
-        "khaki trim",
-        "bucket hat",
-        "backpack",
+        "khaki pocket flaps",
+        "tan bucket hat",
+        "canvas backpack",
+        "brass snap buttons",
+        "cream knit scarf",
+        "ankle socks",
         "brown hiking boots"
       ]
     }

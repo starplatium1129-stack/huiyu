@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3380,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "kita_ikuyo_lingerie_whisper",
     "characterId": "kita_ikuyo",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "温馨明亮的少女卧室，木吉他斜倚在墙角，米白羊毛地毯上散落着乐谱。盘腿坐在毛绒地毯上，双手环抱着一只小熊抱枕掩在胸前，微红着脸颊抬眼，阳光跳跃在红发马尾碎梢间，神情羞怯又透着喜悦。 她微微抬眸轻语——“呜……突然进门也不敲一下！虽然、虽然这套睡衣是精心挑的，但还是会害羞的啦！”",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "peach_knit_camisole_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

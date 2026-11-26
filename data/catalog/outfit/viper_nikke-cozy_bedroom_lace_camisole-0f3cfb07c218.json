@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "viper_nikke/cozy_bedroom_lace_camisole",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1720,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "viper_nikke",
     "outfit": {
       "characterId": "viper_nikke",
       "id": "cozy_bedroom_lace_camisole",
-      "name": "毒吻心弦 · 蕾丝绑带胸衣套装",
-      "prose": "一套火辣到极致的荧光粉红与黑蕾丝拼接绑带内衣，深V聚拢钢圈胸衣搭配多重交叉腰腹绑带，极尽挑逗之能事，是危险坏女人俘获猎物的致命武器。",
+      "name": "毒吻心弦·荧光粉黑蕾丝绑带胸衣套",
+      "prose": "A hot-pink and sheer black lace strappy lingerie set with plunging underwire cups, criss-cross waist harness straps, and matching lace thong briefs, bare legs, and barefoot.",
       "tokens": [
-        "hot pink and sheer black lace strappy lingerie set",
-        "extreme plunge underwire cups",
-        "multi-strap criss-cross waist harness",
-        "cheeky thong briefs",
-        "dangerous siren boudoir"
+        "hot pink bralette",
+        "sheer black lace",
+        "cross waist straps",
+        "plunge underwire cups",
+        "lace thong",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

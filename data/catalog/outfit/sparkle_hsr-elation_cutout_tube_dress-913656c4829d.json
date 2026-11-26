@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "sparkle_hsr/elation_cutout_tube_dress",
+  "revision": 1,
+  "sortOrder": 4165,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "sparkle_hsr",
+    "outfit": {
+      "id": "elation_cutout_tube_dress",
+      "name": "愚者幻戏绯红漆金几何镂空抹胸睡裙",
+      "prose": "Scarlet-red and lacquer-gold strapless cutout tube dress laced along the sides with gold cords and finished with an asymmetrical high-slit sheer hem, miniature gold bells, a fox mask, and bare feet.",
+      "tokens": [
+        "scarlet tube dress",
+        "strapless",
+        "gold lacing",
+        "high slit",
+        "sheer hem",
+        "fox mask",
+        "gold bells",
+        "barefoot"
+      ],
+      "characterId": "sparkle_hsr",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

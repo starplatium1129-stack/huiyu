@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/ignition",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 415,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -12,18 +12,16 @@
       "id": "ignition",
       "isDefault": false,
       "name": "熔火黑裙粉衬战装",
-      "prose": "her short layered black combat dress with ragged edges and pink petticoat lining, a loose jacket, white collar, metal pendant, long black gloves, thigh straps and knee boots",
+      "prose": "A scorched ragged black layered combat dress with magenta petticoat lining, loose cropped jacket, white collar, metal pendant, long black arm sleeves, leg straps, and heeled knee boots.",
       "tokens": [
-        "short black layered dress",
-        "ragged hem",
-        "pink lining",
-        "petticoat",
-        "loose jacket",
-        "long black gloves",
+        "ragged black dress",
+        "magenta petticoat",
+        "loose cropped jacket",
         "white collar",
         "metal pendant",
-        "thigh straps",
-        "knee boots"
+        "black arm sleeves",
+        "leg straps",
+        "heeled knee boots"
       ]
     }
   }

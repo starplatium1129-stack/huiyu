@@ -1,26 +1,27 @@
 {
   "kind": "outfit",
   "id": "shiromi_iori/swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 514,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "shiromi_iori",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "黑白交叉绑带泳装",
-      "prose": "a white halterneck bikini with black crossed straps, a sheer white pareo, sunglasses and flat sandals",
+      "name": "白黑交叉绑带挂颈泳装",
+      "prose": "A crisp white bikini framed with bold black crossed halter straps and side-tie bottoms, worn with a sheer white waist pareo, dark sunglasses, and flat sandals.",
       "tokens": [
         "white bikini",
         "black trim",
-        "halterneck",
-        "crossed straps",
-        "white pareo",
+        "crossed halter straps",
+        "side-tie bikini bottom",
+        "sheer white pareo",
         "sunglasses",
-        "sandals"
+        "bare legs",
+        "black sandals"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/tactical_bodysuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 431,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
@@ -12,15 +12,15 @@
       "id": "tactical_bodysuit",
       "isDefault": false,
       "name": "黑金分区轻量战巡服",
-      "prose": "a black compression bodysuit with charcoal stretch panels, angular gold piping and a front zipper, worn with fingerless combat gloves, a thigh holster and black boots",
+      "prose": "A black compression bodysuit with charcoal stretch panels, angular gold piping, and a front zipper, paired with fingerless combat gloves, a leg holster, and black tactical boots.",
       "tokens": [
-        "black bodysuit",
-        "charcoal panels",
+        "black compression bodysuit",
+        "charcoal stretch panels",
         "gold piping",
         "front zipper",
-        "fingerless gloves",
-        "thigh holster",
-        "black boots"
+        "fingerless combat gloves",
+        "leg holster",
+        "black tactical boots"
       ]
     }
   }

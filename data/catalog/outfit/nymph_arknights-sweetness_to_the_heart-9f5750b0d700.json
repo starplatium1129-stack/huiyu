@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/sweetness_to_the_heart",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1950,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "sweetness_to_the_heart",
-      "name": "甜美配方 · 白色糕点派对裙",
+      "name": "甜美配方 · 白伞裙与粉丝袜",
       "default": true,
       "isDefault": true,
-      "prose": "A comfortable white long-sleeved dress with pink tights and dark ankle boots.",
+      "prose": "A sweet white long-sleeved flared dress with a ruffled collar, pink ribbon bow, and crisp apron bib, paired with pink sheer tights, cream lace-edged socks, and black ankle boots.",
       "tokens": [
-        "white dress",
-        "long sleeves",
-        "pink pantyhose",
+        "white flared dress",
+        "ruffled peter collar",
+        "pink ribbon bow",
+        "pink sheer tights",
+        "cream lace socks",
         "black ankle boots"
       ],
       "identityTokensOverride": [

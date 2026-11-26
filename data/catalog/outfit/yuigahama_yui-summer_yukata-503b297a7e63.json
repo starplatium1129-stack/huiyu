@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/summer_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 199,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "summer_yukata",
       "name": "夏日祭典樱花浴衣",
       "tokens": [
-        "light pink yukata",
+        "pink floral yukata",
         "cherry blossom print",
-        "red obi",
-        "hair ornament",
-        "geta"
+        "crimson obi sash",
+        "silk flower clip",
+        "bare legs",
+        "wooden geta"
       ],
-      "prose": "a light-pink cherry-blossom yukata with a red obi, traditional hair ornament and wooden geta",
+      "prose": "A light-pink cotton yukata printed with cherry blossoms and secured by a crimson obi sash, accented with a silk flower clip, bare legs, and wooden geta.",
       "styleHint": "warm festive lantern glow",
       "isDefault": false,
       "default": false

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/official_lancer_bodysuit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "official_lancer_bodysuit",
       "name": "影之国符文紧身战衣",
-      "prose": "A violet bodysuit with etched silver pauldrons and sheer mesh hip cutouts.",
+      "prose": "Her skintight violet Lancer battle bodysuit trimmed with etched silver shoulder armor, hip mesh cutouts, forearm gauntlets, and high-heeled warrior boots.",
       "tokens": [
-        "bodysuit",
-        "tight_suit",
-        "purple_bodysuit",
-        "cutouts",
-        "silver_pauldrons",
-        "gauntlets",
-        "sheer_thighhighs",
-        "heeled_boots"
+        "purple bodysuit",
+        "skintight suit",
+        "silver pauldrons",
+        "hip cutouts",
+        "elbow gauntlets",
+        "black heels",
+        "armored boots"
       ],
       "default": true,
       "isDefault": true,

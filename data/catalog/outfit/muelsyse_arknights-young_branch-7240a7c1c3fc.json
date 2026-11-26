@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/young_branch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1948,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "young_branch",
-      "name": "新枝 · 轻盈白色长裙",
+      "name": "新枝 · 轻盈多层白纱长裙",
       "default": true,
       "isDefault": true,
-      "prose": "A light white dress with delicate jewelry and a hair ornament.",
+      "prose": "A lightweight white chiffon dress with layered sheer skirts and a pale green waist ribbon, accented with a floral hairpin, pearl necklace, and a slender gold anklet, worn barefoot.",
       "tokens": [
-        "white dress",
-        "long dress",
-        "jewelry",
-        "hair ornament",
+        "white chiffon dress",
+        "sheer layered skirt",
+        "pale green ribbon",
+        "floral hairpin",
+        "gold ankle bracelet",
         "barefoot"
       ],
       "identityTokensOverride": [

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sunaookami_shiroko/abydos_rashguard_monokini",
+  "revision": 1,
+  "sortOrder": 3950,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunaookami_shiroko",
+    "outfit": {
+      "id": "abydos_rashguard_monokini",
+      "name": "板岩灰水蓝拉链防晒竞速泳衣",
+      "prose": "A streamlined slate-grey and cyan athletic rashguard monokini built with a functional front thermal zipper, high-cut leg arches, and crisp cycling utility trim.",
+      "tokens": [
+        "slate grey rashguard",
+        "cyan panels",
+        "one-piece swimsuit",
+        "front zipper",
+        "sporty straps",
+        "high leg swimsuit",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

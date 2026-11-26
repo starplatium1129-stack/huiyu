@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/red_delivery_windbreaker",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "red_delivery_windbreaker",
       "name": "极速派送连帽轻量风衣与工装短裤",
-      "prose": "A lightweight red hooded windbreaker layered over a black tank top and high-rise cargo shorts, finished with sneakers.",
+      "prose": "A featherweight crimson hooded shell windbreaker zipped partway over a dark tank top, khaki cargo shorts, waist belt, and athletic running shoes.",
       "tokens": [
-        "hooded_windbreaker",
-        "red_jacket",
-        "lightweight_jacket",
-        "crop_tank_top",
-        "cargo_shorts",
-        "bare_legs",
-        "sneakers"
+        "red courier windbreaker",
+        "hooded shell",
+        "ribbed tank top",
+        "tan cargo shorts",
+        "utility belt",
+        "running shoes"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3186,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "ling_arknights_swimsuit_allure",
     "characterId": "ling_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "飞瀑落入深潭碎作玉屑，竹排在碧波间随涟漪轻晃。令单肘支在竹席软垫上，任由青玉般的泳衣被水花溅湿，手中酒盏泛着浅浅琥珀光泽。她侧过脸挑眉而笑，龙角在林荫光斑中泛起温润微光——「好一处避暑清凉地。浮生如寄，流水无常，独坐何如对酌？来，且尽此杯，听听这山谷间的风声。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "celadon_inkwash_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

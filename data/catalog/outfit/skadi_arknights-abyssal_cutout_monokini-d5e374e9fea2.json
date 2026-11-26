@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/abyssal_cutout_monokini",
+  "revision": 1,
+  "sortOrder": 4011,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "id": "abyssal_cutout_monokini",
+      "name": "深渊回音·哑光系带镂空连体泳装",
+      "prose": "A matte-black high-leg tactical monokini with asymmetric side cutouts, gunmetal alloy rings, polymer harness straps, and a shark-tooth cord accent, worn barefoot.",
+      "tokens": [
+        "matte black monokini",
+        "asymmetric cutouts",
+        "highleg cut",
+        "gunmetal alloy rings",
+        "shark-tooth cord",
+        "polymer harness straps",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

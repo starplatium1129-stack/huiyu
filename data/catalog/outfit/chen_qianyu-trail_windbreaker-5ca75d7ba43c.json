@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "chen_qianyu/trail_windbreaker",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1632,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfit": {
       "id": "trail_windbreaker",
       "name": "青灰防风衣与深色登山裤",
-      "prose": "A slate-blue hooded windbreaker over a cream knit top, charcoal hiking trousers, ankle gaiters, and trail boots",
+      "prose": "A slate-blue hooded windbreaker with the hood down over a cream knit top, charcoal hiking trousers, protective ankle gaiters, and brown trail boots.",
       "tokens": [
-        "blue_windbreaker",
-        "hood_down",
-        "cream_sweater",
-        "hiking_pants",
-        "gaiters",
-        "hiking_boots"
+        "slate blue windbreaker",
+        "hood down",
+        "cream knit top",
+        "charcoal hiking pants",
+        "ankle gaiters",
+        "brown trail boots"
       ],
       "default": false
     }

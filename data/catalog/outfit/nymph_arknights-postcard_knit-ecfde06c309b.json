@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/postcard_knit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2029,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "postcard_knit",
       "name": "莓粉花扣开衫与酒红细褶裙",
-      "prose": "A soft berry-pink cardigan with tiny flower buttons over a white collared blouse and a berry-red pleated skirt, with brown shoes.",
+      "prose": "A berry-pink knit cardigan with floral enamel buttons over a white collared blouse and burgundy pleated skirt, finished with a ribbon bow, ivory ribbed socks, and brown buckled shoes.",
       "tokens": [
         "berry pink cardigan",
-        "flower buttons",
+        "floral enamel buttons",
         "white collared blouse",
-        "berry red pleated skirt",
-        "brown shoes"
+        "burgundy pleated skirt",
+        "ivory ribbed socks",
+        "brown buckled shoes"
       ],
       "characterId": "nymph_arknights",
       "default": false,

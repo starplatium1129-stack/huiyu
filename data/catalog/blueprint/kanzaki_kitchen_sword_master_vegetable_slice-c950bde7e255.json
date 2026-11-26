@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_kitchen_sword_master_vegetable_slice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2299,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "kanzaki_kitchen_sword_master_vegetable_slice",
     "characterId": "kanzaki_kaori",
-    "outfitId": "saint_asymmetric_jeans_attire",
+    "outfitId": "amakusa_kitchen_cotton_apron",
     "title": "神裂火织 · 厨房灶台前的七天七刀神速切菜",
     "category": "现代日常",
     "description": "厨房案板前，神裂火织全神贯注地展现出神入化的神速刀法将蔬菜切得整整齐齐。被你从身后搂住纤细腰肢时，圣人娇躯一颤，刀光骤停，脸颊通红地回头轻声嗔怪。",

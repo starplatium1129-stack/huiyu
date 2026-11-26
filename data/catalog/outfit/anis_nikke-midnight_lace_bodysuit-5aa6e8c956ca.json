@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "anis_nikke/midnight_lace_bodysuit",
+  "revision": 1,
+  "sortOrder": 4054,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "anis_nikke",
+    "outfit": {
+      "id": "midnight_lace_bodysuit",
+      "name": "午夜透视黑蕾丝连体衣",
+      "prose": "A sheer black floral lace bodysuit with scalloped neckline trim, thin satin shoulder straps, high-cut leg openings, and sheer black thigh-high stockings, worn barefoot.",
+      "tokens": [
+        "black lace bodysuit",
+        "sheer mesh panels",
+        "scalloped trim",
+        "thin satin straps",
+        "high-cut leg",
+        "black thigh-high stockings",
+        "barefoot"
+      ]
+    }
+  }
+}

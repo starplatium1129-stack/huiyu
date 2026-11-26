@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3236,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "kaltsit_arknights_swimsuit_allure",
     "characterId": "kaltsit_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "破晓的海雾还未散去，海水在古老的页岩层下低沉咆哮。凯尔希将及踝的白麻长袍收拢在膝边，冷静地将带有荧光的深海苔藓封入真空采样管。她没有抬头，仅凭足音便准确判定了来者的方位，声音平稳如钟摆——「这处潮间带的沉积物记录了泰拉三次重大的气候骤变。海水的盐度与矿物浓度正在上升，属于地质学上的必然规律。……既然醒得这么早，就拿着冷光灯过来，替我照亮岩缝第三层的生物采样点。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "clinical_slate_racing_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

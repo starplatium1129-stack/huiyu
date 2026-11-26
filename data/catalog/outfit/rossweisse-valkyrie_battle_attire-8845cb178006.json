@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "rossweisse/valkyrie_battle_attire",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1757,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rossweisse",
     "outfit": {
       "characterId": "rossweisse",
       "id": "valkyrie_battle_attire",
       "name": "女武神神圣战铠礼装",
-      "prose": "A graceful Nordic Valkyrie armor with polished silver breastplate, white and silver armored pleated skirt, and pristine white thigh-high boots.",
+      "prose": "Nordic Valkyrie armor combining a polished silver breastplate, white-and-silver armored pleated skirt, deep-blue trim cape, white gauntlets, and white thigh-high boots.",
       "tokens": [
-        "valkyrie_uniform",
-        "white_armor",
-        "breastplate",
-        "armored_skirt",
-        "white_gloves",
-        "thighhighs",
-        "silver_trim"
+        "white valkyrie armor",
+        "silver breastplate",
+        "armored pleated skirt",
+        "blue trim cape",
+        "white gauntlets",
+        "white thigh-high boots"
       ],
       "default": true,
       "isDefault": true

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakaki_yumiko_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3374,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "sakaki_yumiko_lingerie_whisper",
     "characterId": "sakaki_yumiko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "美滨学园豪华宿舍套房，红木书架与昂贵地毯，角落堆放着精装箱套小说。靠坐在高背皮椅中，指间漫不经心地转动着折叠美工刀，黑色长发垂落至腰际，紫眸带着防御性的冷淡睨视，却掩不住微微泛红的耳垂。 她微微抬眸轻语——“大半夜擅自进女孩子的房间……雄二，你真以为我手里的刀片只是用来削铅笔的吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "violet_velvet_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

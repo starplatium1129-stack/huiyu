@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3518,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "misaka_mikoto_lingerie_whisper",
     "characterId": "misaka_mikoto",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "常盘台宿舍高层露台，学园都市万家灯火与远方巨大风力发电风车相伴。靠在阳台栏杆上，手里握着游戏硬币，脸颊烧得通红，茶色短发随晚风拂动，指尖微有几缕无害的静电电火花跳跃，眼神躲闪却掩不住期待。 她微微抬眸轻语——“别、别看啦！虽然呱太很可爱……但这可是正式睡衣！笨蛋，再敢笑话我就用电击枪电焦你哦！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "gekota_coral_camisole_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

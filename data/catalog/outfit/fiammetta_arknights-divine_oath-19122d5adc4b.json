@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "fiammetta_arknights/divine_oath",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1969,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "fiammetta_arknights",
     "outfit": {
       "id": "divine_oath",
-      "name": "至圣誓言 · 红披风舞台装",
+      "name": "至圣誓言 · 红披风黑百褶舞台装",
       "characterId": "fiammetta_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A red cape over a white bodice and a dark skirt, with a feather ornament.",
+      "prose": "A dramatic crimson stage cape draped over a white fitted bodice and black ruffled skirt, styled with a gold feather hairpin, black opera gloves, thigh socks, and red heeled boots.",
       "tokens": [
-        "red cape",
-        "white bodice",
-        "dark skirt",
-        "feather hair ornament"
+        "crimson stage cape",
+        "white fitted bodice",
+        "black ruffled skirt",
+        "gold feather hairpin",
+        "black thigh socks",
+        "red heeled boots"
       ],
       "identityTokensOverride": [
         "fiammetta (arknights)",

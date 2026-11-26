@@ -1,24 +1,27 @@
 {
   "kind": "outfit",
   "id": "tsukatsuki_rio/winter_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 502,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "tsukatsuki_rio",
     "outfit": {
       "default": false,
       "id": "winter_coat",
       "isDefault": false,
-      "name": "修身黑色羊毛长大衣",
-      "prose": "A long black wool coat with sharp lapels, flat waist belt and concealed fastening, black leather boots and gloves.",
+      "name": "黑羊毛收腰双排扣长大衣",
+      "prose": "A tailored black wool trench coat featuring wide sharp lapels, cinched waist belt, deep crimson scarf, fitted black leather gloves, sheer pantyhose, and tall black leather boots.",
       "tokens": [
         "black long coat",
+        "wool coat",
+        "wide lapels",
         "waist belt",
-        "wool",
-        "black boots",
-        "gloves"
+        "crimson scarf",
+        "black leather gloves",
+        "black pantyhose",
+        "black leather boots"
       ]
     }
   }

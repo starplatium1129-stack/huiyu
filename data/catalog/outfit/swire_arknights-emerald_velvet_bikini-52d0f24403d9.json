@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/emerald_velvet_bikini",
+  "revision": 1,
+  "sortOrder": 4047,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "emerald_velvet_bikini",
+      "name": "翠金假日 · 祖母绿丝绒高腰泳衣",
+      "prose": "A jewel emerald-green velvet high-waisted bikini trimmed with spun gold and gold chain clasps, draped with a sheer cream silk sarong and strappy gold sandals.",
+      "tokens": [
+        "emerald velvet bikini",
+        "high waisted bottoms",
+        "spun gold trim",
+        "gold chain clasps",
+        "sheer cream sarong",
+        "strappy gold sandals"
+      ],
+      "default": false
+    }
+  }
+}

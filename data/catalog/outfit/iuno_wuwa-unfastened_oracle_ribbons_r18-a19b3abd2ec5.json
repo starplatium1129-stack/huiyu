@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/unfastened_oracle_ribbons_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3709,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "unfastened_oracle_ribbons_r18",
-      "name": "褪下神装的星月丝带与新月发冠全裸",
-      "prose": "Completely nude except for her silver crescent hair ornament, floating blue silk ribbons draped across her arms, and white thigh-highs.",
+      "name": "褪下神装的星月丝带与白丝",
+      "prose": "Without her oracle dress, wearing only sheer sapphire silk ribbons draped across her arms, silver armlets, and white thigh-high stockings.",
       "tokens": [
-        "nude",
-        "crescent hair ornament",
-        "blue ribbons",
-        "white thighhighs",
+        "topless",
+        "bottomless",
         "bare breasts",
-        "nipples"
+        "nipples",
+        "floating blue ribbons",
+        "silver armlets",
+        "white thighhighs"
       ],
       "default": false,
       "isDefault": false,

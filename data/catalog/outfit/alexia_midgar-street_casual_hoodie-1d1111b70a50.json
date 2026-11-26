@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "alexia_midgar/street_casual_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1886,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "alexia_midgar",
     "outfit": {
       "id": "street_casual_hoodie",
       "name": "微服出逃街头卫衣便服",
-      "prose": "A roomy heather grey zip-up hoodie over a simple black tank top, frayed denim cut-off shorts, opaque black thigh-high socks, and leather sneakers.",
+      "prose": "Roomy heather-grey zip-up hoodie layered over a fitted black tank top and frayed indigo denim cut-off shorts, styled with a small crossbody bag, opaque dark thighhighs, and crisp leather sneakers.",
       "tokens": [
-        "hoodie",
-        "zip_hoodie",
-        "grey_hoodie",
-        "tank_top",
-        "denim_shorts",
-        "black_thighhighs",
-        "sneakers",
-        "casual"
+        "grey hoodie",
+        "zip hoodie",
+        "black tank top",
+        "denim shorts",
+        "frayed hem",
+        "crossbody bag",
+        "dark thighhighs",
+        "leather sneakers"
       ],
       "characterId": "alexia_midgar",
       "default": false,

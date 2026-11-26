@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/barracks_ribbed_set",
+  "revision": 1,
+  "sortOrder": 4030,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "barracks_ribbed_set",
+      "name": "风暴营房 · 罗纹背心与迷彩睡裤",
+      "prose": "A thick ribbed white cotton tank top with reinforced straps paired with desert camouflage sleep shorts, a khaki elastic waistband, a grey wristband, and bare feet.",
+      "tokens": [
+        "white ribbed tank",
+        "thick cotton straps",
+        "camo sleep shorts",
+        "khaki elastic waistband",
+        "grey cotton wristband",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

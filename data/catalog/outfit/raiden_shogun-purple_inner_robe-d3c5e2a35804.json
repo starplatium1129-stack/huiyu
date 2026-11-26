@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/purple_inner_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1424,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:03:46.999171500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "purple_inner_robe",
       "name": "落肩紫绸轻薄和风寝衣",
       "tokens": [
-        "purple_robe",
-        "silk_robe",
-        "off_shoulder",
-        "short_kimono",
-        "silk_shorts",
-        "bare_legs"
+        "purple silk robe",
+        "off-shoulder",
+        "short kimono",
+        "silk shorts",
+        "satin sash",
+        "silk ribbon",
+        "silver anklet",
+        "barefoot"
       ],
-      "prose": "A lustrous violet silk wrap robe draped off one shoulder over featherlight silk lounge shorts.",
+      "prose": "Lustrous violet silk wrap robe draped off one shoulder over featherlight silk shorts, loosely tied with a satin sash and ribbon, accented with a silver anklet and bare feet.",
       "default": false,
       "isDefault": false,
       "characterId": "raiden_shogun"

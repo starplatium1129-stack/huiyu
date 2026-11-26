@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/festive_furisode_kimono",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 766,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "festive_furisode_kimono",
       "name": "红叶金纹真丝高开衩改良振袖礼服",
-      "prose": "A crimson silk furisode with woven gold maple leaf motifs redesigned with a dramatic side slit.",
+      "prose": "A crimson silk furisode woven with gold maple-leaf motifs, wide trailing sleeves, a gold brocade obi, and a high side slit, worn with bare legs and wooden geta.",
       "tokens": [
-        "furisode",
-        "kimono",
-        "crimson_kimono",
-        "wide_sleeves",
-        "high_slit",
-        "obi",
-        "bare_legs",
-        "geta"
+        "crimson silk furisode",
+        "gold maple embroidery",
+        "wide trailing sleeves",
+        "high side slit",
+        "gold brocade obi",
+        "bare legs",
+        "wooden geta"
       ],
       "characterId": "shinomiya_kaguya",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3369,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.271Z",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "typhon_arknights_swimsuit_allure",
     "characterId": "typhon_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "极北冰海消融的清晨浮冰区。提丰穿着萨米猎手兽骨绒边防寒分体泳装，半蹲在晶莹浮冰之上。晨光照亮剔透的冰层，她兽耳敏锐微转，握紧手中的长弓警戒着冰层下方。当确认是你到来后，那双坚毅纯真的眸子里绽开一丝安心的笑意，尾巴在身后欢快摇晃。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "sami_pelt_trim_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

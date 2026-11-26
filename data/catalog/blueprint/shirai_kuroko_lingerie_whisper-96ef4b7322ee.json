@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "shirai_kuroko_lingerie_whisper",
     "characterId": "shirai_kuroko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "常盘台宿舍双人间，床头挂着御坂美琴的海报与呱太抱枕。单手握着一罐可疑的“绝对催情气体”，另一手正摆弄着蕾丝吊袜带，看到推门而入的某人，瞬间脸红如番茄，双马尾直竖，结结巴巴语无伦次。 她微微抬眸轻语——“这、这是给姐姐大人准备的特别惊喜……才不是穿给你看的！给我立刻瞬移消失在房间外啊啊啊！”",
-    "outfitId": "white_lace_lingerie",
+    "outfitId": "crimson_garter_lace_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

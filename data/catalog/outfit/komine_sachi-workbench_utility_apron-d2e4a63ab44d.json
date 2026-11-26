@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/workbench_utility_apron",
+  "revision": 1,
+  "sortOrder": 4138,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "workbench_utility_apron",
+      "name": "地下工坊 · 深蓝防爆围裙与工装",
+      "prose": "A heavy navy-slate canvas work apron with a brass tool buckle layered over an olive utility shirt, charcoal cargo pants, thick leather work gloves, and rubber-soled boots.",
+      "tokens": [
+        "canvas work apron",
+        "olive utility shirt",
+        "charcoal cargo pants",
+        "thick leather gloves",
+        "brass tool buckle",
+        "rubber sole boots"
+      ],
+      "default": false
+    }
+  }
+}

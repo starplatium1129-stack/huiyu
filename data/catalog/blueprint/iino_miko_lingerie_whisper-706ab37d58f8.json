@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "iino_miko_lingerie_whisper",
     "characterId": "iino_miko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "秀知院学生会执纪一整天后的寂静夜晚。严苛恪守校规的伊井野弥子，换上了一件扣子严整地扣到最顶端的规整纯白双层棉布长睡衣。她把自己像只小兔子一样缩在床角最深处的枕头堆里，头上戴着巨大的隔音耳机，里面正播放着大自然海浪与细雨的ASMR白噪音。怀里死死搂着那只破旧的小熊玩偶，睫毛在灯光下轻颤。察觉到有人走近，她怯生生地摘下半边耳机，警惕而又带着依赖——「……石上？不对……是你啊。抱歉……只有听着这个，脑子里的杂音才能停下来……可以坐在旁边，陪我一会儿吗？」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "white_pintuck_nightdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

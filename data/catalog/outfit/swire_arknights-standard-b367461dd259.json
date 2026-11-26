@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "swire_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1994,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "swire_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "swire_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A black coat over a white shirt and black skirt, with a black beret.",
+      "prose": "A tailored black double-breasted coat with gold shoulder epaulettes over a crisp white collared shirt and black pleated skirt, topped with a black wool beret and black leather boots.",
       "tokens": [
-        "black coat",
-        "white shirt",
-        "black skirt",
-        "black beret"
+        "black double coat",
+        "white collared shirt",
+        "black pleated skirt",
+        "black wool beret",
+        "gold shoulder epaulettes",
+        "black leather boots"
       ]
     }
   }

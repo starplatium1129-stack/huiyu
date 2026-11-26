@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "kotori_itsuka/oversized_hoodie_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1776,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kotori_itsuka",
     "outfit": {
       "characterId": "kotori_itsuka",
       "id": "oversized_hoodie_loungewear",
-      "name": "居家温存·长款宽松软棉连帽卫衣睡裙",
-      "prose": "An extra-large pastel pink fleece hoodie slipping over her petite frame, falling mid-thigh over bare legs with loose white ribbons.",
+      "name": "居家温存·长款宽松粉棉连帽卫衣",
+      "prose": "An extra-large pastel-pink plush fleece hoodie with cat-ear hood details and long sleeves falling to mid-thigh, worn with white ribbons and bare feet.",
       "tokens": [
-        "hoodie",
-        "oversized_hoodie",
-        "pink_hoodie",
-        "bare_legs",
-        "barefoot",
-        "white_ribbon",
-        "sleeves_past_fingers"
+        "oversized pink hoodie",
+        "plush fleece",
+        "long sleeves",
+        "animal hood",
+        "white ribbons",
+        "bare thighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

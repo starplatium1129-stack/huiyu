@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "amiya/greenhouse_work",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1626,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "amiya",
     "outfit": {
       "id": "greenhouse_work",
       "name": "浅灰衬衫与鼠尾草绿围裙",
-      "prose": "A light gray rolled-sleeve shirt, a sage-green canvas apron, dark cropped work trousers, and lace-up work shoes",
+      "prose": "A soft light-grey cotton shirt with rolled sleeves protected by a sage-green canvas work apron, dark cropped utility trousers, and sturdy lace-up work shoes.",
       "tokens": [
-        "grey_shirt",
-        "rolled_up_sleeves",
-        "green_apron",
-        "canvas",
-        "cropped_pants",
-        "work_shoes"
+        "grey cotton shirt",
+        "rolled sleeves",
+        "sage green apron",
+        "canvas fabric",
+        "cropped work pants",
+        "lace-up work shoes"
       ],
       "default": false
     }

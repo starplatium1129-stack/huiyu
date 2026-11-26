@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/black_gold_wrap_skirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1345,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "black_gold_wrap_skirt",
       "name": "黑金蕾丝抹胸与高开衩真丝裹裙",
       "tokens": [
-        "bustier",
-        "lace_bra",
-        "black_corset",
-        "gold_trim",
-        "wrap_skirt",
-        "silk_skirt",
-        "high_slit",
-        "bare_legs",
-        "strappy_heels"
+        "black corset bustier",
+        "gold lace piping",
+        "silk wrap skirt",
+        "soaring side slit",
+        "gold waist clasp",
+        "bare legs",
+        "strappy black heels"
       ],
-      "prose": "A structured black lace bustier with gold filigree piping paired with a high-slit black silk wrap skirt.",
+      "prose": "A structured black lace corset bustier with gold piping paired with a high-slit black silk wrap skirt fastened by a gold waist clasp and strappy heels.",
       "default": false,
       "isDefault": false,
       "characterId": "shokuhou_misaki"

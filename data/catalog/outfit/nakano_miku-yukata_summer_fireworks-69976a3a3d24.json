@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/yukata_summer_fireworks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1576,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "yukata_summer_fireworks",
       "name": "祭典天青雏菊开衩短浴衣",
       "tokens": [
-        "yukata",
-        "japanese_clothes",
-        "blue_yukata",
-        "floral_print",
-        "obi",
-        "blue_obi",
-        "side_slit",
-        "geta",
-        "bare_legs"
+        "sky blue yukata",
+        "daisy floral print",
+        "indigo obi sash",
+        "side slit",
+        "white ribbon",
+        "bare legs",
+        "wooden geta"
       ],
-      "prose": "A sky-blue cotton yukata adorned with daisy blossoms and an indigo obi, cut with a high side slit over bare legs.",
+      "prose": "A sky-blue cotton yukata patterned with white daisies and tied with an indigo obi sash, cut with a side slit and paired with wooden geta.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_miku"

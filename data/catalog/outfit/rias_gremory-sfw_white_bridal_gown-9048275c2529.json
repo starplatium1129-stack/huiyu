@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sfw_white_bridal_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 697,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "sfw_white_bridal_gown",
       "name": "一字肩白缎鱼尾婚纱与珍珠织带",
-      "prose": "An off-shoulder white satin bridal gown with a side slit, paired with white stockings and a pearl-trimmed fabric garter.",
+      "prose": "An off-shoulder white satin mermaid bridal gown with a side slit, paired with a pearl-trimmed lace garter, white thigh-high stockings, and white satin heels.",
       "tokens": [
-        "wedding_dress",
-        "mermaid_dress",
-        "satin_gown",
-        "off_shoulder",
-        "high_slit",
-        "white_thighhighs",
-        "thigh_strap",
-        "ribbon",
-        "pearls",
-        "heels"
+        "white satin gown",
+        "mermaid wedding dress",
+        "off shoulder",
+        "high side slit",
+        "pearl lace garter",
+        "white thighhighs",
+        "white satin heels"
       ],
       "default": false,
       "isDefault": false,

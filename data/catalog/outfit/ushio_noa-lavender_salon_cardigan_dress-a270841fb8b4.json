@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/lavender_salon_cardigan_dress",
+  "revision": 1,
+  "sortOrder": 3932,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "id": "lavender_salon_cardigan_dress",
+      "name": "浅丁香短针织开衫与珍珠扣白连衣裙",
+      "prose": "A cropped pale-lavender pearl-button cardigan draped softly over a crisp white A-line midi sundress with a narrow waist tie, silver pendant, sheer white tights, and ivory mary janes.",
+      "tokens": [
+        "lavender knit cardigan",
+        "white midi dress",
+        "pearl buttons",
+        "ribbon waist tie",
+        "silver pendant",
+        "sheer white tights",
+        "ivory mary janes"
+      ]
+    }
+  }
+}

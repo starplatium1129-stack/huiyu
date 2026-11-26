@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/sheer_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1435,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "sheer_nightgown",
-      "name": "米白薄纱寝衣",
+      "name": "米白薄纱绣花寝衣",
       "tokens": [
-        "ivory nightgown",
-        "sheer fabric",
-        "lace panties"
+        "ivory sheer nightgown",
+        "gathered silk bust",
+        "white floral lace",
+        "matching lace panties",
+        "thin satin ribbons",
+        "barefoot"
       ],
-      "prose": "A softly gathered ivory sheer nightgown and matching lace underwear.",
+      "prose": "A softly gathered ivory sheer silk nightgown with delicate white floral lace trim and thin satin ribbons over matching lace panties, worn barefoot.",
       "default": false,
       "isDefault": false
     }

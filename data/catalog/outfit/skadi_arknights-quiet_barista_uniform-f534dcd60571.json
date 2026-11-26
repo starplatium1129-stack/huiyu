@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/quiet_barista_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 352,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,13 +12,15 @@
       "id": "quiet_barista_uniform",
       "isDefault": false,
       "name": "红线黑帆布·咖啡师便装",
-      "prose": "A white collared shirt with rolled sleeves, black canvas waist apron with red stitching and tailored charcoal trousers.",
+      "prose": "A white collared shirt with rolled sleeves under a black canvas waist apron with red contrast stitching and a brass buckle, paired with tailored charcoal trousers and leather shoes.",
       "tokens": [
         "white collared shirt",
         "rolled sleeves",
-        "black canvas waist apron",
-        "red stitching",
-        "tailored charcoal pants"
+        "black canvas apron",
+        "red contrast stitching",
+        "charcoal tailored trousers",
+        "brass apron buckle",
+        "leather shoes"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3122,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "muelsyse_arknights_swimsuit_allure",
     "characterId": "muelsyse_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "澄澈池水在她的掌控下欢快起伏。缪尔赛思精灵般的尖耳微动，金发被水汽浸得微贴在娇艳脸颊上，双手轻巧地一挥，池水立刻化作几只圆滚滚的小水球在半空中滴溜溜打转，猝不及防地朝你溅来几滴清凉的水珠。她歪头眨了眨绿眸，促狭地笑出声来——「哇，全中！被水精灵偷袭的感觉怎么样？莱茵生命的水质测试合格啦，接下来……要不要下来和我比比谁游得更快？」",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "aquatic_dewdrop_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

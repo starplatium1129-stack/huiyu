@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3428,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "ushio_noa_swimsuit_allure",
     "characterId": "ushio_noa",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "千禧度假回廊微风轻抚的午后。生盐诺亚身着千禧书记优雅淡丁香镂空连身泳装，姿态端庄地侧坐在白木长椅上。数码笔抵在唇边，淡紫色的眼眸盈盈含笑，从容不迫地记录着你在她泳装前的心跳与视线，温柔而又带着恰到好处的捉弄情趣。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "lilac_cutout_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

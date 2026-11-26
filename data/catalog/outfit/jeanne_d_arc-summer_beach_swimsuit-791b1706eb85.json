@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/summer_beach_swimsuit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "summer_beach_swimsuit",
       "name": "白蓝拼色深V连体泳装与雪纺长衫",
-      "prose": "A chic white-and-navy monokini styled beneath a billowing sheer cover-up.",
+      "prose": "A sculpted white-and-navy plunging one-piece swimsuit draped beneath an airy floor-sweeping sheer white chiffon beach shirt and flat sandals.",
       "tokens": [
-        "one-piece_swimsuit",
-        "monokini",
-        "plunging_neckline",
-        "sheer_sarong",
-        "cover-up",
-        "bare_legs",
-        "bare_thighs"
+        "two-tone monokini",
+        "plunging neckline",
+        "sheer white cover-up",
+        "silver hairpin",
+        "bare legs",
+        "white flat sandals"
       ],
       "characterId": "jeanne_d_arc",
       "default": false,

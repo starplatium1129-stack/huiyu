@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/wanderer",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,17 +12,15 @@
       "id": "wanderer",
       "isDefault": false,
       "name": "赤刃明霄青红游侠短装与玉饰织带",
-      "prose": "A cropped dark-teal traveller's tunic with crimson silk accents, gold clasps and a short pleated slit skirt, with a narrow woven thigh tie carrying a jade charm.",
+      "prose": "A cropped dark-teal wanderer tunic with crimson silk piping and gold clasps over a split pleated skirt, accented with a jade-charmed thigh strap and boots.",
       "tokens": [
-        "teal_tunic",
-        "mandarin_collar",
-        "crimson_trim",
-        "pleated_skirt",
-        "mini_skirt",
-        "bare_legs",
-        "thigh_strap",
-        "ribbon",
-        "boots"
+        "teal tunic",
+        "mandarin collar",
+        "crimson trim",
+        "pleated slit skirt",
+        "woven thigh strap",
+        "jade pendant",
+        "leather boots"
       ],
       "characterId": "chen_arknights"
     }

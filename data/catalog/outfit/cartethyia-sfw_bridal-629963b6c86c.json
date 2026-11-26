@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "归乡蓝金骑士花嫁",
-      "prose": "A pale-blue bridal gown beneath a short cream mantle, its braided gold edges meeting at a round gold clasp.",
+      "name": "归乡蓝金骑士披肩花嫁",
+      "prose": "A pale-blue bridal gown layered under a short ivory mantle edged with gold braid and joined by a round gold clasp, worn with white stockings and ivory pumps.",
       "tokens": [
-        "light blue wedding dress",
-        "short cream mantle",
-        "braided gold trim",
-        "gold clasp"
+        "pale blue gown",
+        "bridal dress",
+        "ivory mantle",
+        "gold braid trim",
+        "round gold clasp",
+        "silk ribbon",
+        "white stockings",
+        "ivory pumps"
       ],
       "default": false,
       "isDefault": false

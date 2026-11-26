@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3424,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "iino_miko_swimsuit_allure",
     "characterId": "iino_miko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海滩入口处人声鼎沸。弥子穿着挑选了整整三天的保守白色荷叶边泳装，手里死死攥着防水记录板挡在胸前，两条低马尾随着剧烈的呼吸微颤。看到你走过来，她整张脸瞬间像熟透的苹果，却依然强行抬起下巴维持着风纪委员的威严——「先、先生！请留步！虽然这里是海水浴场，但露出度过高的着装也是要登记批评的！……我、我身上的可不是什么可爱比基尼，这是符合道德规范的标准学生活动装！不准笑！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "white_ruffled_tankini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

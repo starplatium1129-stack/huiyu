@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nakano_miku/mist_cable_knit_slip",
+  "revision": 1,
+  "sortOrder": 4209,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "nakano_miku",
+    "outfit": {
+      "id": "mist_cable_knit_slip",
+      "name": "雾蓝心声·浅蓝麻花针织挂脖睡裙",
+      "prose": "A soft mist-blue cable-knit halter camisole slip with open shoulders and a ribbed hem, paired with her neck headphones and worn barefoot.",
+      "tokens": [
+        "blue knit slip",
+        "cable knit texture",
+        "halter neckline",
+        "open shoulders",
+        "ribbed hem",
+        "neck headphones",
+        "barefoot"
+      ]
+    }
+  }
+}

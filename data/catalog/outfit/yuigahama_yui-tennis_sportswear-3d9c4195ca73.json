@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/tennis_sportswear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 201,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "tennis_sportswear",
       "name": "珊瑚白拼接网球套装",
       "tokens": [
-        "white sleeveless tennis top",
+        "white tennis top",
         "coral shoulder panels",
-        "white pleated tennis skirt",
+        "pleated tennis skirt",
         "coral side stripe",
-        "wristband",
-        "white sneakers"
+        "white cotton wristband",
+        "white ankle socks",
+        "white tennis sneakers"
       ],
-      "prose": "a white sleeveless tennis top with coral shoulder panels, a white pleated tennis skirt with a coral side stripe, wristband and white sneakers",
+      "prose": "A white sleeveless tennis top with coral shoulder panels and a matching white pleated tennis skirt with coral side stripes, paired with a wristband, ankle socks, and white tennis sneakers.",
       "styleHint": "bright dynamic daylight",
       "isDefault": false,
       "default": false

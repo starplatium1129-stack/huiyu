@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/sheer_bodice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1473,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "sheer_bodice",
       "name": "透肤鱼骨胸衣与黑丝绒短裤",
       "tokens": [
-        "bustier",
-        "corset",
-        "sheer_clothing",
-        "lace_trim",
-        "black_shorts",
-        "velvet_shorts",
-        "sheer_thighhighs",
-        "black_thighhighs",
-        "high_heels"
+        "sheer tulle bustier",
+        "eyelash lace",
+        "boned bodice",
+        "black velvet shorts",
+        "topless",
+        "bare breasts",
+        "nipples",
+        "sheer stockings",
+        "stiletto heels"
       ],
-      "prose": "A translucent black tulle bustier with eyelash lace accents and velvet shorts, paired with sheer stockings.",
+      "prose": "A translucent black tulle bustier with eyelash lace pushed below her chest, paired with black velvet shorts, sheer stockings, and stiletto heels.",
       "default": false,
       "isDefault": false,
       "characterId": "tokisaki_kurumi"

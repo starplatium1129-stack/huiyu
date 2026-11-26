@@ -1,28 +1,24 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/combat_armor",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "combat_armor",
       "name": "双色菱形重装铠裙与织带腿甲",
-      "prose": "An obsidian-and-violet armored bodice with a diamond waist cutout over a leotard, with armored thigh-highs secured by reinforced webbing.",
+      "prose": "Her classic Shielder obsidian-and-violet heavy battle armor featuring a diamond midriff cutout, forearm gauntlets, layered tassets, and full articulated steel sabaton boots.",
       "tokens": [
-        "armor",
-        "armored_dress",
-        "diamond_cutout",
-        "leotard",
-        "elbow_gloves",
-        "armored_boots",
-        "black_thighhighs",
-        "thigh_strap",
-        "buckle",
-        "leg_harness",
-        "sci-fi_couture"
+        "armored dress",
+        "obsidian breastplate",
+        "diamond waist cutout",
+        "violet trim",
+        "armored gauntlets",
+        "armored sabatons",
+        "steel greaves"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

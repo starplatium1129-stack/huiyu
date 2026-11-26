@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3529,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T04:52:36.109Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "aisha_greyrat_lingerie_whisper",
     "characterId": "aisha_greyrat",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "宅邸的钟摆敲过午夜。爱夏换上一件带小巧围裙荷叶边的蜜桃真丝睡裙，毫无平日女仆总管的矜持，趴在地毯软垫上舒展身体。她合上面前的账本，双手托腮，脚尖在空中轻点，琥珀色的双瞳灵动地眨了眨——「欧尼酱……下个月的预算可是超支了哦？不过要是你肯在这儿陪爱夏多说说话，我就帮你把账目做平～」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "noctoria_apron_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

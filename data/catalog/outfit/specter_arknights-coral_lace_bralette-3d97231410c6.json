@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/coral_lace_bralette",
+  "revision": 1,
+  "sortOrder": 4036,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "coral_lace_bralette",
+      "name": "深海狂想 · 墨黑珊瑚纹蕾丝内衣",
+      "prose": "An ink-black gothic lingerie set featuring sheer coral-vine embroidered lace, an underwire bralette, strappy cutout briefs with mesh trim, and bare feet.",
+      "tokens": [
+        "black lace bralette",
+        "coral vine embroidery",
+        "underwire lace cups",
+        "strappy cutout briefs",
+        "sheer mesh trim",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

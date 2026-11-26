@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/white_silk_robe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1185,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
       "id": "white_silk_robe",
-      "name": "黄金猎犬纯白半透蕾丝挂脖露背长吊带",
+      "name": "纯白睫毛蕾丝挂脖露背长吊带",
       "tokens": [
-        "pure white gossamer chemise",
-        "backless halter nightgown",
-        "eyelash lace bust",
-        "floor-length draping",
-        "golden retriever style",
-        "angelic seduction"
+        "white silk chemise",
+        "sheer chiffon",
+        "halterneck",
+        "backless nightgown",
+        "eyelash lace trim",
+        "floor-length drape",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "A breezy and alluring pure white gossamer chiffon halter chemise featuring a completely open back, scalloped eyelash lace bustier, and floor-brushing flowing side drapes.",
+      "prose": "A luminous sheer white silk chiffon halter chemise cut with an open bare back, scalloped eyelash-lace bustier detail, and fluid floor-sweeping side panels.",
       "default": false,
       "isDefault": false,
       "characterId": "ichinose_asuna",

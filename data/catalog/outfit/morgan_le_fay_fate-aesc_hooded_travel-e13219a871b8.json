@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/aesc_hooded_travel",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "aesc_hooded_travel",
-      "name": "梣雨旅蓝色兜帽袍",
-      "prose": "A closed blue hooded robe with silver clasp, dark inner dress and brown boots.",
+      "name": "梣雨旅深蓝兜帽银扣旅行袍",
+      "prose": "A closed deep-indigo hooded wool travel cloak pinned by an antique silver clasp over a dark inner dress, leather satchel strap, and brown walking boots.",
       "tokens": [
-        "aesc (fate)",
-        "blue hooded robe",
+        "hooded cloak",
+        "deep blue wool",
         "silver clasp",
-        "dark inner dress",
+        "black inner dress",
+        "travel satchel",
         "brown boots"
       ],
       "isDefault": false,

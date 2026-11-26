@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/official_standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2028,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "official_standard",
-      "name": "黑色短外套与白灰泡袖裙",
-      "prose": "A black jacket over a white-and-grey dress, with long puffed sleeves and red shoes.",
+      "name": "黑色短外套与灰褶泡袖套裙",
+      "prose": "A black cropped jacket over a white puffed-sleeve blouse and grey pleated skirt with a brass-buckled belt, accented by a red collar choker, black knee socks, and red leather shoes.",
       "tokens": [
-        "black jacket",
-        "white and grey dress",
-        "puffy long sleeves",
-        "red shoes"
+        "black cropped jacket",
+        "white puffy blouse",
+        "grey pleated skirt",
+        "brass buckle belt",
+        "black knee socks",
+        "red leather shoes"
       ],
       "characterId": "nymph_arknights",
       "default": false,

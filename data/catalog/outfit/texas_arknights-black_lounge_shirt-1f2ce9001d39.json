@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/black_lounge_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1466,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "id": "black_lounge_shirt",
       "name": "舱室暗夜微敞真丝衬衫与丝缎内搭短裤",
       "tokens": [
-        "black_shirt",
-        "silk_shirt",
-        "unbuttoned_shirt",
-        "black_bralette",
-        "lace_trim",
-        "satin_shorts",
-        "bare_legs"
+        "black silk shirt",
+        "unbuttoned front",
+        "tonal pinstripes",
+        "black lace bralette",
+        "satin lounge shorts",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "A relaxed midnight-black silk shirt with tonal pinstripes, left unbuttoned over a lace bralette and satin lounge shorts.",
+      "prose": "A midnight-black tonal-pinstripe silk shirt worn loosely unbuttoned off one shoulder over a black lace bralette and smooth satin lounge shorts.",
       "default": false,
       "isDefault": false,
       "characterId": "texas_arknights"

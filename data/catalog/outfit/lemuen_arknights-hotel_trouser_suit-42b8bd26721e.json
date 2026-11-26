@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/hotel_trouser_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1206,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
       "id": "hotel_trouser_suit",
-      "name": "旅店长裤套装",
+      "name": "深夜酒店丝缎翻领长裤套装",
       "tokens": [
-        "suit",
-        "trousers"
+        "navy trouser suit",
+        "satin lapels",
+        "unbuttoned silk shirt",
+        "gold lapel pin",
+        "tailored slacks",
+        "black leather pumps"
       ],
-      "prose": "a tailored suit with matching trousers",
+      "prose": "A sleek midnight-navy tailored trouser suit with satin lapels opened cleanly at the chest over an unbuttoned white silk shirt and slim dress pumps.",
       "default": false,
       "isDefault": false
     }

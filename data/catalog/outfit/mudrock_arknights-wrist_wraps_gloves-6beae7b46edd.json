@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/wrist_wraps_gloves",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1416,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "wrist_wraps_gloves",
-      "name": "战术绷带护腕与露脐背心工装短裤",
-      "prose": "A cropped black tank top with fabric wrist wraps and tactical utility shorts.",
+      "name": "战术绑带手套与露脐背心短裤",
+      "prose": "A cropped black ribbed-cotton tank top and olive tactical cargo shorts paired with fabric wrist wraps and leather utility gloves, worn barefoot.",
       "tokens": [
-        "tank_top",
-        "black_tank_top",
-        "crop_top",
-        "navel",
-        "wrist_wraps",
-        "tactical_shorts",
-        "bare_legs"
+        "cropped tank top",
+        "black ribbed cotton",
+        "tactical cargo shorts",
+        "fabric wrist wraps",
+        "leather gloves",
+        "brass belt buckle",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

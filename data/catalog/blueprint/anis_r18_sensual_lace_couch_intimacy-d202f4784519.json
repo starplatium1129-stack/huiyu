@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_r18_sensual_lace_couch_intimacy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1901,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "anis_r18_sensual_lace_couch_intimacy",
     "characterId": "anis_nikke",
@@ -17,7 +17,7 @@
     "lighting": "昏暗房间角落的一盏落地复古台灯暖光",
     "timeOfDay": "深夜",
     "camera": "cowboy shot, eye level",
-    "outfitId": "sensual_lace_bodysuit",
+    "outfitId": "midnight_lace_bodysuit",
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "couch",

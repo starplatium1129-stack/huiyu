@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "rose_oriana/grecian_wing_chiffon_slip",
+  "revision": 1,
+  "sortOrder": 4082,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "rose_oriana",
+    "outfit": {
+      "id": "grecian_wing_chiffon_slip",
+      "name": "纯白金线刺绣单肩薄纱睡裙",
+      "prose": "Semi-sheer pure-white chiffon slip tailored in an asymmetrical one-shoulder silhouette, fastened at the shoulder with an antique gold clasp, featuring classical draped waist folds, gold thread embroidery, a delicate gold anklet, and bare feet.",
+      "tokens": [
+        "white chiffon slip",
+        "one-shoulder",
+        "gold clasp",
+        "sheer fabric",
+        "draped waist",
+        "gold thread",
+        "gold anklet",
+        "barefoot"
+      ],
+      "characterId": "rose_oriana",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

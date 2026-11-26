@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kafka/nightclub_evening_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 571,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "nightclub_evening_dress",
       "name": "暗梅紫丝绒露背晚裙",
-      "prose": "A dark-plum velvet gown with a draped neckline, open back and high side slit, paired with black satin opera gloves, a fine gold necklace and stiletto heels.",
+      "prose": "Dark-plum crushed velvet evening gown with a draped neckline, open back, and high side slit, styled with black satin opera gloves, a fine gold necklace, and pointed stiletto heels.",
       "tokens": [
-        "dark purple evening gown",
-        "velvet",
+        "plum evening gown",
+        "velvet dress",
         "backless dress",
-        "side slit",
-        "black opera gloves",
+        "high slit",
+        "opera gloves",
         "gold necklace",
-        "high heels"
+        "stiletto heels"
       ],
       "default": false,
       "isDefault": false

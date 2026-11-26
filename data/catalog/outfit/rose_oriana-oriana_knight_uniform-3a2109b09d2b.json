@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "rose_oriana/oriana_knight_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1815,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "rose_oriana",
     "outfit": {
       "id": "oriana_knight_uniform",
       "name": "奥利安娜王家骑士礼服",
-      "prose": "Regal white fencing uniform with gold braided aiguillettes, scarlet cape draped over shoulder, white breaches and rapier frog.",
+      "prose": "Regal white Oriana fencing jacket trimmed with braided gold aiguillettes and a scarlet shoulder cape, paired with crisp white breeches, buckled rapier belt, dress gloves, and tall leather riding boots.",
       "tokens": [
-        "knight_uniform",
-        "white_jacket",
-        "gold_epaulets",
-        "red_cape",
-        "white_pants",
-        "boots",
-        "rapier"
+        "white jacket",
+        "knight uniform",
+        "gold aiguillette",
+        "crimson cape",
+        "white breeches",
+        "rapier belt",
+        "white gloves",
+        "riding boots"
       ],
       "characterId": "rose_oriana",
       "default": true,

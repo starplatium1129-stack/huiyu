@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3432,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T13:47:04.829381800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "kakudate_karin_swimsuit_allure",
     "characterId": "kakudate_karin",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海边的正午热浪翻滚。花凛站在防浪堤最高处，深蓝色的长发在海风中扬起，紧致的哑光黑色连体泳装将完美无瑕的深色健美曲线展露无遗。她握着望远镜警惕地扫视海滩防线，但头顶的兔耳却因为羞耻而紧紧贴在后脑勺，耳廓泛着熟透般的深红——「报告老师……海滩区域未发现可疑暴徒或危险鱼雷。……但、但是！为什么C&C的特务潜水装备……会是这种高开叉的连体样式啊！老、老师不准一直盯着大腿看！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "tactical_matte_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

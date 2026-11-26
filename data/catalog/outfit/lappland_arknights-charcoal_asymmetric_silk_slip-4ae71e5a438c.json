@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/charcoal_asymmetric_silk_slip",
+  "revision": 1,
+  "sortOrder": 3990,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "id": "charcoal_asymmetric_silk_slip",
+      "name": "炭黑毛边单肩真丝系带睡裙",
+      "prose": "A rebellious charcoal silk slip nightdress cut with an asymmetrical single shoulder strap, subtly distressed raw hem, and a narrow buckled black leather waist belt.",
+      "tokens": [
+        "charcoal silk slip",
+        "one-shoulder strap",
+        "frayed asymmetric hem",
+        "black waist strap",
+        "side slit",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

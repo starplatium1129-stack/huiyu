@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/lavender_fleece_onesie",
+  "revision": 1,
+  "sortOrder": 4089,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "lavender_fleece_onesie",
+      "name": "科学狂人宽松摇粒绒连体睡衣",
+      "prose": "Baggy pastel-lavender polar fleece onesie jumpsuit featuring an oversized plush hood, extra-long drooping sleeves, front kangaroo pocket, full zip closure, ribbed cuffs, and warm fuzzy socks.",
+      "tokens": [
+        "lavender onesie",
+        "fleece jumpsuit",
+        "plush hood",
+        "long sleeves",
+        "kangaroo pocket",
+        "front zipper",
+        "ribbed cuffs",
+        "fuzzy socks"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 连体睡衣"
+    }
+  }
+}

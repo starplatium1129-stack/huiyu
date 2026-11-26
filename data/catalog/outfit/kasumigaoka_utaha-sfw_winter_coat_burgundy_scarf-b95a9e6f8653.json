@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_winter_coat_burgundy_scarf",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1153,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_winter_coat_burgundy_scarf",
       "name": "双排扣墨黑羊绒大衣与绯红围巾",
-      "prose": "A double-breasted black wool coat with leather accents is styled with a burgundy scarf and sheer dark hosiery.",
+      "prose": "A black wool overcoat styled with a crimson cashmere scarf, wool skirt, leather gloves, opaque black tights, and tall knee boots.",
       "tokens": [
-        "black_coat",
-        "wool_coat",
-        "double-breasted",
-        "burgundy_scarf",
-        "skirt",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "leather_boots"
+        "black wool coat",
+        "crimson cashmere scarf",
+        "wool skirt",
+        "leather gloves",
+        "silver clasp",
+        "opaque black tights",
+        "knee boots"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

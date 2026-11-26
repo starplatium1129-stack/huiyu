@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3155,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "ptilopsis_arknights_swimsuit_allure",
     "characterId": "ptilopsis_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "池水漫过脚踝，波纹一丝不苟地荡开。白面鸮以精准的角度坐在浅水台阶上，手指在防水战术屏上快速敲击，猫头鹰羽耳在微风中轻微抖动。她推了推淡绿色的全息护目镜，抬起毫无波动的翡翠色眼眸，用平稳的电子质感语调汇报——「环境温度测定：摄氏三十一点二度。水温适宜。报告博士：白面鸮当前散热效率提升百分之四十一点七。建议执行动作：一同涉水，以维持博士的核心体温平衡。」",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "rhine_ergonomic_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

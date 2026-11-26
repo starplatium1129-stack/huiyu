@@ -1,22 +1,26 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/tavern_coat_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1348,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
       "id": "tavern_coat_dress",
-      "name": "黑裙红衬·酒馆旅装",
+      "name": "黑裙酒红衬·旅途长风衣",
       "tokens": [
-        "black dress",
-        "black coat",
-        "red lining",
-        "red trim"
+        "open travel coat",
+        "dark burgundy lining",
+        "obsidian midi dress",
+        "draped cowl neckline",
+        "silver coat buttons",
+        "woven waist cord",
+        "sheer dark tights",
+        "ankle boots"
       ],
-      "prose": "A soft black dress with narrow red neckline binding under a black traveling coat with dark-red lining.",
+      "prose": "An open black traveling coat with dark burgundy lining and silver buttons layered over an obsidian midi dress with a draped cowl neckline, woven waist cord, sheer dark tights, and ankle boots.",
       "default": false,
       "isDefault": false
     }

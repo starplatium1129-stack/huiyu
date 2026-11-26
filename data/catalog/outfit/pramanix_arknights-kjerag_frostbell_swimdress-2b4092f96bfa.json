@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/kjerag_frostbell_swimdress",
+  "revision": 1,
+  "sortOrder": 4090,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "kjerag_frostbell_swimdress",
+      "name": "雪铃冰绡 · 绒边挂脖连体泳裙",
+      "category": "泳装 / 连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "pramanix_arknights",
+      "prose": "A snow-white and ice-cyan one-piece swimdress featuring a sweetheart neckline edged in soft white fur trim, a sheer frost-lace skirt overlay, silver bells along a ribbon waist tie, worn barefoot.",
+      "tokens": [
+        "snow white swimdress",
+        "ice cyan trim",
+        "sweetheart fur neckline",
+        "frost lace skirt",
+        "silver waist bells",
+        "sheer ribbon tie",
+        "barefoot"
+      ]
+    }
+  }
+}

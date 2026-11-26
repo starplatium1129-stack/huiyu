@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3154,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "nightingale_arknights_lingerie_whisper",
     "characterId": "nightingale_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛特殊疗养温室病房，悬挂的金丝鸟笼在微风中轻晃。虚弱却温柔地侧靠在软垫上，修长指尖托着笼中无形的光雀，苍白发丝如细雪倾泻，碧绿双眸倒映着你的身影。 她微微抬眸轻语——“记忆就像流沙……但唯独博士掌心的温度，无论黑夜多漫长，我都能清晰地回忆起来。”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "feather_jacquard_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

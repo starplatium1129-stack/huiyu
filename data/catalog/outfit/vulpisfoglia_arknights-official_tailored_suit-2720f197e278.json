@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "vulpisfoglia_arknights/official_tailored_suit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2004,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "vulpisfoglia_arknights",
     "outfit": {
       "id": "official_tailored_suit",
-      "name": "深色修身西装与喇叭长裤",
-      "prose": "A tailored dark coat over a vest and collared shirt, with a necktie and flared trousers.",
+      "name": "深灰修身大衣与条纹马甲西装",
+      "prose": "A charcoal tailored long coat layered over a pinstripe waistcoat, crisp white shirt, and black silk necktie, paired with flared wool trousers, leather dress gloves, and polished leather pumps.",
       "tokens": [
-        "dark tailored coat",
-        "tailored vest",
-        "collared shirt",
-        "necktie",
-        "flared trousers"
+        "charcoal tailored coat",
+        "pinstripe waistcoat",
+        "crisp white shirt",
+        "black silk necktie",
+        "flared wool trousers",
+        "leather dress gloves",
+        "polished leather pumps"
       ],
       "characterId": "vulpisfoglia_arknights",
       "default": false,

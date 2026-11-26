@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/white_shirt_black_stockings",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1414,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "white_shirt_black_stockings",
       "name": "宽松白衬衫与半透黑色长袜",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "unbuttoned_shirt",
-        "black_panties",
-        "sheer_thighhighs",
-        "black_thighhighs"
+        "oversized white shirt",
+        "poplin cotton weave",
+        "unbuttoned collar",
+        "black lace briefs",
+        "sheer black thighhighs",
+        "bare shoulders"
       ],
-      "prose": "An oversized white poplin shirt over black lace briefs, paired with semi-sheer black thigh-high stockings.",
+      "prose": "An oversized white poplin cotton shirt worn unbuttoned over black lace briefs and semi-sheer black thigh-high stockings.",
       "default": false,
       "isDefault": false,
       "characterId": "misaka_mikoto"

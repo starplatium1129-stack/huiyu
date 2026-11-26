@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "sairenji_haruna/casual_summer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1490,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "sairenji_haruna",
     "outfit": {
       "default": false,
       "id": "casual_summer",
       "isDefault": false,
-      "name": "夏日温婉粉白衬衫长裙",
-      "prose": "a soft and ladylike weekend summer outfit: a gentle pale-pink short-sleeved blouse with delicate buttons, an airy white pleated A-line skirt, and light leather sandals",
+      "name": "温婉粉白衬衫长裙",
+      "prose": "A soft pale-pink short-sleeved blouse with pearl buttons tucked into a flowing white pleated maxi skirt with a woven waist belt, an ivory ribbon clip, and cream leather sandals.",
       "tokens": [
-        "casual",
-        "short_sleeves",
-        "pale_pink_blouse",
-        "white_long_skirt",
-        "pleated_skirt",
-        "sandals",
-        "hair_clip"
+        "pink pleated blouse",
+        "pearl front buttons",
+        "white maxi skirt",
+        "woven waist belt",
+        "ivory ribbon clip",
+        "cream leather sandals"
       ]
     }
   }

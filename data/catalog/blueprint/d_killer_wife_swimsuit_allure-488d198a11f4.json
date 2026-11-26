@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_killer_wife_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3451,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "d_killer_wife_swimsuit_allure",
     "characterId": "d_killer_wife",
@@ -13,7 +13,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "honeymoon_pearl_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

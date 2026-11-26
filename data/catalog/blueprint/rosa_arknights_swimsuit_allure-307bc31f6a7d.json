@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3135,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "rosa_arknights_swimsuit_allure",
     "characterId": "rosa_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "乌萨斯寒冬的苦痛早已随罗德岛的航程远去。早露一袭深蓝金边泳装，优雅修长的双腿并拢斜放，熊耳在微风吹拂的蕾丝伞影下微微颤动。她轻巧地转动着手中的骨瓷茶杯，琥珀色双眸中荡漾着柔和宁静的微光，温声致意——「真是一段美好的夏日时光。在切尔诺伯格时，贵族们总将夏日聚会视作虚荣的赛场……但在这里，唯有与博士共享的这杯红茶，才是真正宁静的心灵归宿。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "imperial_navy_bandeau",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sylphiette/casual_day_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 258,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
@@ -12,15 +12,15 @@
       "id": "casual_day_dress",
       "isDefault": false,
       "name": "奶油短开衫与鼠尾草色吊带裙",
-      "prose": "A cropped cream cardigan over a sage-green tiered sundress with a side slit.",
+      "prose": "A cropped cream knit cardigan over a sage-green tiered sundress with thin shoulder straps, a side slit skirt, and a tan leather belt, paired with brown Mary Janes.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "cardigan",
-        "cropped_cardigan",
-        "strap_dress",
-        "side_slit",
-        "bare_legs",
-        "mary_janes"
+        "cream cropped cardigan",
+        "sage tiered sundress",
+        "side slit skirt",
+        "thin shoulder straps",
+        "tan leather belt",
+        "brown mary janes"
       ],
       "characterId": "sylphiette"
     }

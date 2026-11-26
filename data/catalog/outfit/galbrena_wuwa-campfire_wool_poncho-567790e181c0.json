@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "galbrena_wuwa/campfire_wool_poncho",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3804,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "galbrena_wuwa",
     "outfit": {
       "id": "campfire_wool_poncho",
       "name": "荒原篝火靛蓝几何纹羊毛斗篷",
-      "prose": "A heavy charcoal-and-indigo woven wool poncho draped over a black ribbed sweater, fitted jeans, and rugged ankle boots.",
+      "prose": "A charcoal-and-indigo woven wool poncho with geometric trim layered over a black ribbed sweater, fitted jeans, leather gloves, and rugged ankle boots.",
       "tokens": [
-        "poncho",
-        "blue and black",
-        "black sweater",
-        "pants",
-        "ankle boots",
-        "gloves"
+        "indigo wool poncho",
+        "geometric pattern",
+        "charcoal knit sweater",
+        "ribbed collar",
+        "fitted jeans",
+        "leather gloves",
+        "woven belt",
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false,

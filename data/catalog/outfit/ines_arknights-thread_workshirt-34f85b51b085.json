@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/thread_workshirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2012,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "thread_workshirt",
-      "name": "炭黑卷袖工装衬衫与皮革细带",
-      "prose": "A charcoal canvas overshirt with rolled sleeves and a concealed seam pocket over a black top, olive trousers and a narrow weathered leather belt.",
+      "name": "炭黑卷袖工装衬衫与橄榄长裤",
+      "prose": "A charcoal canvas overshirt with rolled sleeves and concealed seam pockets worn open over a black jersey top, paired with olive cargo trousers, a weathered leather belt, and dark leather boots.",
       "tokens": [
         "charcoal canvas overshirt",
-        "rolled sleeves",
-        "concealed pocket",
-        "black top",
-        "olive trousers",
-        "weathered leather belt"
+        "rolled shirt sleeves",
+        "black jersey top",
+        "olive cargo trousers",
+        "weathered leather belt",
+        "dark leather boots"
       ],
       "characterId": "ines_arknights",
       "default": false,

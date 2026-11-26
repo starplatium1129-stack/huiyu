@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/obsidian_emerald_mesh_bralette",
+  "revision": 1,
+  "sortOrder": 4022,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "obsidian_emerald_mesh_bralette",
+      "name": "深渊曜影·黑曜皮革翠网镂空内衣",
+      "prose": "A structured obsidian-leather and emerald micro-mesh cutout bralette with an open back and silver rivets, paired with matching black briefs, worn barefoot.",
+      "tokens": [
+        "obsidian leather bralette",
+        "emerald mesh panels",
+        "open back cut",
+        "geometric chest straps",
+        "matching black briefs",
+        "silver crystal rivets",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

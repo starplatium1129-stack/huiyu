@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "taihou_azur/forbidden_banquet",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 598,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "taihou_azur",
     "outfit": {
       "id": "forbidden_banquet",
       "name": "深绯丝绒露背晚礼服",
-      "prose": "a crimson velvet evening gown with an open back and black lace edging, black opera gloves, diamond drop earrings and high heels",
+      "prose": "A crimson velvet evening gown with an open back and black lace trim, styled with black opera gloves, diamond drop earrings, and pointed stiletto heels.",
       "tokens": [
-        "red velvet gown",
-        "backless dress",
+        "crimson velvet gown",
+        "open draped back",
         "black lace trim",
         "black opera gloves",
-        "diamond earrings",
-        "high heels"
+        "diamond drop earrings",
+        "bare shoulders",
+        "pointed stiletto heels"
       ],
       "default": false,
       "isDefault": false

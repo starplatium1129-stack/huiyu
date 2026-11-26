@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_shrine_dojo_bokken_stance_serenity",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2614,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "kanzaki_shrine_dojo_bokken_stance_serenity",
     "title": "神裂火织 · 天草式剑道场的破晓沉思",
     "category": "校园日常",
-    "outfitId": "saint_asymmetric_jeans_attire",
+    "outfitId": "dojo_indigo_hakama_gi",
     "description": "古朴清幽的和式剑道场内，清晨朝阳透过障子纸拉门切入。神裂双手合握修长木刀凝神卓立，闭目感受天地气流，修长健美的体态宛若出鞘神兵。",
     "location": "serene traditional Japanese wooden dojo hall with sliding shoji doors catching morning sun",
     "action": "神裂双手合握修长木刀凝神卓立，闭目感受天地气流，修长健美的体态宛若出鞘神兵",

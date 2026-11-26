@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/graffiti_rashguard_bikini",
+  "revision": 1,
+  "sortOrder": 4025,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "graffiti_rashguard_bikini",
+      "name": "狂热爆破·黑红涂鸦拉链防晒短衣与泳裤",
+      "prose": "A carbon-black cropped zip-up rashguard sprayed with crimson graffiti and worn partly unzipped over red tie-side micro bikini bottoms with a small utility buoy pouch, worn barefoot.",
+      "tokens": [
+        "cropped black rashguard",
+        "crimson graffiti print",
+        "front zipper",
+        "red bikini bottoms",
+        "side-tie cords",
+        "buoy utility pouch",
+        "bare midriff",
+        "barefoot"
+      ]
+    }
+  }
+}

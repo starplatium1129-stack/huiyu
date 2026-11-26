@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/summer_yukata",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "summer_yukata",
       "name": "水蓝涟纹落肩和风浴衣",
-      "prose": "A sky-blue yukata with fine wave patterns, slipped off one shoulder with a parted wrap skirt.",
+      "prose": "A sky-blue cotton yukata patterned with fine wave prints, worn slipped off one shoulder with a navy obi sash, slit wrap skirt, and wooden geta sandals.",
       "tokens": [
-        "modern_yukata",
-        "blue_yukata",
-        "wave_print",
-        "off_shoulder",
-        "loose_yukata",
-        "navy_obi",
-        "high_slit",
-        "bare_legs",
-        "geta"
+        "sky blue yukata",
+        "wave print fabric",
+        "off shoulder collar",
+        "navy obi sash",
+        "slit wrap skirt",
+        "wooden geta sandals"
       ],
       "characterId": "roxy_migurdia",
       "default": false,

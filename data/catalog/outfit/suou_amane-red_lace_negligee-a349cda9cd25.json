@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "suou_amane/red_lace_negligee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1243,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
       "id": "red_lace_negligee",
       "name": "深红黑蕾丝睡袍",
       "tokens": [
-        "red negligee",
-        "black lace",
-        "sheer fabric"
+        "crimson silk negligee",
+        "black floral lace",
+        "sheer chiffon drape",
+        "thin satin ribbons",
+        "matching lace briefs",
+        "barefoot"
       ],
-      "prose": "a deep-red silk-gauze negligee with black lace edging",
+      "prose": "A deep crimson silk-gauze negligee trimmed with black floral lace and thin satin ribbons over matching lace briefs, worn barefoot.",
       "default": false,
       "isDefault": false
     }

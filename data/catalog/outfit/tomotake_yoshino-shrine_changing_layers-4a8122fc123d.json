@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/shrine_changing_layers",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1448,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
       "id": "shrine_changing_layers",
       "name": "白色巫女单衣与黑色裤袜",
       "tokens": [
-        "white kimono",
-        "wide sleeves",
-        "black pantyhose"
+        "white shrine blouse",
+        "wide sleeve cuffs",
+        "open collar front",
+        "crimson waist sash",
+        "black sheer tights",
+        "barefoot"
       ],
-      "prose": "A white wide-sleeved shrine blouse paired with black tights.",
+      "prose": "A white wide-sleeved shrine blouse with an open collar front and crimson waist sash paired with black sheer tights, worn barefoot.",
       "default": false,
       "isDefault": false
     }

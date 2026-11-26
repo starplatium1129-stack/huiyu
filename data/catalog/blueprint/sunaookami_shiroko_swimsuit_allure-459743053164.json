@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3439,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.154Z",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "sunaookami_shiroko_swimsuit_allure",
     "characterId": "sunaookami_shiroko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "沙漠沿海公路晨风猎猎。砂狼白子身穿阿拜多斯骑行风连体防晒拉链泳衣，额头上推着防风镜。四十公里骑行结束后，她靠着公路护栏微微拉下拉链散热，狼耳在海风中警觉微动，面容沉着却认真地递来水壶，眼神透着信赖与坚毅。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "abydos_rashguard_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/nightmare_corset_swimdress",
+  "revision": 1,
+  "sortOrder": 4193,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "nightmare_corset_swimdress",
+      "name": "时间梦魇绯黑蕾丝束腰泳裙",
+      "prose": "A wine-crimson and black lace corset swimdress with a boned bodice, ruffled skirted hem, clockwork garters, and lace choker, worn barefoot.",
+      "tokens": [
+        "corset swimdress",
+        "wine red lace",
+        "black boned bodice",
+        "ruffled swim skirt",
+        "lace choker",
+        "clockwork garters",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

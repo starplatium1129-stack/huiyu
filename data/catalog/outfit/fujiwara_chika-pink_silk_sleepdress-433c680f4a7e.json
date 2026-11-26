@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "fujiwara_chika/pink_silk_sleepdress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1918,
   "createdAt": "2026-10-28T13:58:17.718926100+00:00",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfit": {
       "id": "pink_silk_sleepdress",
       "name": "粉色真丝吊带睡裙",
-      "prose": "A pink silk slip dress with fine shoulder straps, worn barefoot.",
+      "prose": "A soft pink silk slip nightdress with thin spaghetti straps, delicate lace bodice trim, and matching silk panties, worn with bare legs and barefoot.",
       "tokens": [
-        "negligee",
-        "pink_dress",
-        "silk",
-        "spaghetti_straps",
-        "bare_shoulders",
+        "pink silk slip",
+        "spaghetti straps",
+        "lace bodice trim",
+        "short flared hem",
+        "matching silk panties",
+        "bare legs",
         "barefoot"
       ],
       "characterId": "fujiwara_chika",

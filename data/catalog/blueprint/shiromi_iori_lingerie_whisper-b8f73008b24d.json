@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiromi_iori_lingerie_whisper",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 3287,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "shiromi_iori_lingerie_whisper",
     "characterId": "shiromi_iori",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "格黑娜风纪委员会值班休息室，脱下的黑色战术长靴整齐立在墙角。端坐在金属折叠椅上，一手死死拽着睡裙领口，赤裸的修长深色双足踩在冰冷瓷砖上，银发双马尾低垂，紫红眼眸水汽氤氲地瞪着老师。 她微微抬眸轻语——“老师……！你、你往哪里看呢！不准看我的脚……！再敢提出奇怪的舔靴子要求，我现在就开枪击毙你！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "obsidian_snap_bralette_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

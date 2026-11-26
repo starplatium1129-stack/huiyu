@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "st_louis_azur/eagle_union_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1713,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "st_louis_azur",
     "outfit": {
       "characterId": "st_louis_azur",
       "id": "eagle_union_uniform",
-      "name": "白蓝联邦露肩军官制服",
-      "prose": "A chic navy blue and white Eagle Union naval uniform with an off-shoulder cropped jacket, pleated mini skirt, white thigh-highs, and silver emblems.",
+      "name": "白鹰联邦·蓝白露肩军官制服",
+      "prose": "A navy-blue and white Eagle Union uniform with an off-shoulder cropped jacket, silver eagle emblems, white pleated miniskirt, white dress gloves, white thigh-highs, and navy pumps.",
       "tokens": [
-        "blue_jacket",
-        "white_skirt",
-        "military_uniform",
-        "off-shoulder_jacket",
-        "thighhighs",
-        "gloves"
+        "navy cropped jacket",
+        "off-shoulder lapel",
+        "white pleated miniskirt",
+        "silver eagle emblem",
+        "white dress gloves",
+        "white thighhighs",
+        "navy heeled pumps"
       ],
       "default": true,
       "isDefault": true

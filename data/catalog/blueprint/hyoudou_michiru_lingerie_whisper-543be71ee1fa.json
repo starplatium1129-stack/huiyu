@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hyoudou_michiru_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3477,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "hyoudou_michiru_lingerie_whisper",
     "characterId": "hyoudou_michiru",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "安艺家二楼客宿的深夜摇滚风暴。女子乐队Icy Tail的吉他手兼主唱冰堂美智留，换上一件破洞做旧的黑色工字背心和超短牛仔磨边睡裤。她毫无大家闺秀形象，光着修长健康的长腿直接一脚踩在床头软垫上，怀抱电吉他肆意扫弦，琴声在安静的民宅中炸响。看见冲进来抗议扰民的表弟伦也，她哈哈大笑，顺手把一罐冰咖啡扔进他怀里——「伦也！别摆出那副教导主任的臭脸嘛！刚才洗完澡突然来了灵感，新曲的副歌简直棒极了！过来帮我听听这段solo怎么样！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "racerback_denim_loungewear",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "specter_arknights/undercurrent",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1979,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "specter_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "specter_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A black frilled dress, dark hat, scarf and boots.",
+      "prose": "A black frilled dress worn under a heavy black wool cloak with a wide velvet hat, a slate knit scarf, dark leather gloves, and black heeled boots.",
       "tokens": [
         "black frilled dress",
-        "black hat",
-        "scarf",
-        "boots"
+        "black wool cloak",
+        "wide velvet hat",
+        "slate knit scarf",
+        "dark leather gloves",
+        "black heeled boots"
       ],
       "identityTokensOverride": [
         "specter (arknights)",

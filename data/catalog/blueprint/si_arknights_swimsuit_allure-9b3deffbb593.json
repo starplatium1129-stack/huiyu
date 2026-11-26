@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3373,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.100Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "si_arknights_swimsuit_allure",
     "characterId": "si_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "人工环礁石亭破晓的寂静时分。祀身穿古韵墨白素绢束带分体泳装，端坐石阶记录潮汐数据。清冷晨风拂乱白发，她指尖轻抚唇角陷入沉思，古雅学者风范在极简剪裁的泳衣衬托下格外清丽脱俗。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "ink_wash_halter_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

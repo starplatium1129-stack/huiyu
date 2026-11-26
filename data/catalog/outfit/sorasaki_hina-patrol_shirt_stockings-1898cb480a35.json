@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/patrol_shirt_stockings",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1349,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "id": "patrol_shirt_stockings",
-      "name": "巡逻休整白衬衫与透肤黑丝",
+      "name": "巡后微敞白衬衫与黑丝",
       "tokens": [
-        "white_shirt",
-        "unbuttoned_shirt",
-        "collared_shirt",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "slippers"
+        "white collared shirt",
+        "unbuttoned shirt",
+        "black necktie",
+        "sheer black thighhighs",
+        "garter straps",
+        "indoor slippers"
       ],
-      "prose": "A white uniform shirt open at the neck and falling past the hips, paired with sheer black stockings.",
+      "prose": "A crisp oversized white uniform shirt unbuttoned at the collar with a slack black tie falling past the hips, paired with gartered sheer black thigh-high stockings and soft slippers.",
       "default": false,
       "isDefault": false,
       "characterId": "sorasaki_hina"

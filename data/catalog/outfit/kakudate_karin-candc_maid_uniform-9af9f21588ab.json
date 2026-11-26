@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "kakudate_karin/candc_maid_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1677,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T16:23:20.400171800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "kakudate_karin",
     "outfit": {
       "characterId": "kakudate_karin",
       "id": "candc_maid_uniform",
-      "name": "C&C 特勤战术女仆装",
-      "prose": "The iconic C&C maid uniform featuring a fitted black mini maid dress, crisp white apron, lace headdress, collar choker, white gloves, and black thigh-high stockings with a tactical holster.",
+      "name": "C&C特勤黑白战术女仆装",
+      "prose": "A fitted black C&C combat maid minidress with a crisp white apron, lace headdress, collar choker, white gloves, sheer black thigh-high stockings with a tactical thigh holster, and heels.",
       "tokens": [
-        "maid uniform",
-        "maid headdress",
-        "black dress",
+        "black maid dress",
         "white apron",
-        "choker",
+        "maid headdress",
+        "black choker",
         "white gloves",
         "black thighhighs",
         "thigh holster",
-        "heels"
+        "black high heels"
       ],
       "default": true,
       "isDefault": true

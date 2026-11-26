@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/original_saintess",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1999,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "original_saintess",
-      "name": "灰色毛边披肩与铃铛项链",
-      "prose": "A grey hooded fur-trimmed cape with a bell necklace and dark knee-high boots.",
+      "name": "灰色毛边披肩与铜铃项链",
+      "prose": "A slate-grey hooded cape edged in soft white fur over a charcoal tunic dress, worn with a brass bell necklace, knitted arm warmers, grey wool tights, and black knee boots.",
       "tokens": [
-        "grey hooded cape",
-        "fur-trimmed cape",
-        "bell necklace",
+        "slate hooded cape",
+        "white fur trim",
+        "charcoal tunic dress",
+        "brass bell necklace",
+        "knitted arm warmers",
+        "grey wool tights",
         "black knee boots"
       ],
       "characterId": "pramanix_arknights",

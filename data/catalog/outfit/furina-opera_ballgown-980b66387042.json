@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "furina/opera_ballgown",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "opera_ballgown",
       "name": "湛蓝层叠歌剧晚礼服",
-      "prose": "An azure-and-sapphire satin ballgown with a lace-trimmed corset bodice and layered skirt shaped like falling curtains, paired with pale-blue silk opera gloves.",
+      "prose": "Azure-and-sapphire satin opera ballgown structured with a lace-trimmed corset bodice and draped layered skirt, paired with pale-blue silk opera gloves, sapphire drop necklace, and satin heels.",
       "tokens": [
         "blue ballgown",
-        "satin",
+        "sapphire satin",
         "layered skirt",
-        "lace trim",
         "corset bodice",
-        "pale blue silk opera gloves"
+        "lace trim",
+        "opera gloves",
+        "sapphire necklace",
+        "blue heels"
       ],
       "default": false,
       "isDefault": false

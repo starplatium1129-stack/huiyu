@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/casual_home_shirt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 214,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "casual_home_shirt",
       "name": "解构落肩大号纯白男友衬衫",
-      "prose": "An oversized crisp white cotton dress shirt unbuttoned halfway and sliding low off the shoulder over a black lace bra.",
+      "prose": "An oversized crisp white cotton dress shirt worn unbuttoned halfway and slipping off one shoulder over a black lace bra, with rolled cuffs, bare legs, and barefoot.",
       "tokens": [
-        "boyfriend_shirt",
-        "white_shirt",
-        "oversized_shirt",
-        "unbuttoned_shirt",
-        "off_shoulder",
-        "lace_bra",
-        "bare_legs",
-        "barefoot",
-        "alluring"
+        "oversized white shirt",
+        "unbuttoned placket",
+        "off shoulder",
+        "black lace bra",
+        "rolled cuffs",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "alpha_shadow/private_nightwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1879,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "alpha_shadow",
     "outfit": {
       "id": "private_nightwear",
       "name": "午夜寝殿深蓝丝绸睡袍",
-      "prose": "A flowing deep royal blue silk chemise nightgown edged with subtle scalloped lace along the plunging neckline, accompanied by a loose draped satin morning gown.",
+      "prose": "Flowing royal-blue silk chemise edged with scalloped lace along a plunging neckline, paired with a loosely draped satin morning robe, soft waist sash, and matching satin slippers.",
       "tokens": [
-        "nightgown",
-        "silk_nightwear",
-        "chemise",
-        "plunging_neckline",
-        "lace_trim",
-        "dressing_gown",
-        "bare_shoulders",
-        "draped_robe"
+        "royal blue chemise",
+        "silk nightgown",
+        "plunging neckline",
+        "lace trim",
+        "satin robe",
+        "waist sash",
+        "silk ribbon",
+        "satin slippers"
       ],
       "characterId": "alpha_shadow",
       "default": false,

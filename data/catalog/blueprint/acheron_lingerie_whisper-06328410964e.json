@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3204,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "acheron_lingerie_whisper",
     "characterId": "acheron",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "夜色渐深，忘川客舍外的风声渐渐平息。黄泉褪去沉重的黑衣斗篷，换上一袭幽紫暗纹真丝系带晨袍，内衬半透蕾丝随着微风轻颤。她赤足踩在榻榻米上，微解开腰间系带，侧倚在窗边凝望着暗夜里的残月。察觉到你的脚步声，她微微侧过头，深紫眼眸中闪烁着罕见的安宁——「今夜的梦境不会再有血色……坐下来吧，听听这里的风声就好。」",
-    "outfitId": "violet_lace_lingerie",
+    "outfitId": "spider_lily_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

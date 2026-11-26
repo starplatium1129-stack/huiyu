@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/cream_knit_visitor_cardigan",
+  "revision": 1,
+  "sortOrder": 4120,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "id": "cream_knit_visitor_cardigan",
+      "name": "探病柔光·奶油针织开衫与长裙",
+      "prose": "A soft cream knit cardigan with wooden buttons layered over a pastel-blue blouse and beige pleated skirt, paired with cream ankle socks and brown flat shoes.",
+      "tokens": [
+        "cream knit cardigan",
+        "wooden toggle buttons",
+        "pastel blue blouse",
+        "beige pleated skirt",
+        "knitted scarf pin",
+        "cream ankle socks",
+        "brown flat shoes"
+      ]
+    }
+  }
+}

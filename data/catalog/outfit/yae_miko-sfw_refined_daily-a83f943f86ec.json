@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "藤紫落肩改良短和服裙",
-      "prose": "A flowing wisteria-purple short kimono dress tied with an ivory obi and cut high at the thigh.",
+      "prose": "Flowing wisteria-purple short kimono dress with wide draping sleeves and a high thigh slit, tied with a soft ivory obi sash and styled with tassel earrings, slim anklet, and wooden geta.",
       "tokens": [
-        "purple_kimono",
-        "short_kimono",
-        "wide_sleeves",
-        "high_slit",
-        "obi",
-        "bare_legs",
-        "geta"
+        "purple kimono",
+        "short kimono",
+        "wide sleeves",
+        "high slit",
+        "ivory obi",
+        "tassel earrings",
+        "anklet",
+        "wooden geta"
       ],
       "isDefault": false,
       "isNsfw": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3350,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "shirogane_kei_lingerie_whisper",
     "characterId": "shirogane_kei",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "白银家老旧公寓小卧室，门口挂着“闲人免进”的可爱挂牌。坐在床边双臂环抱，银灰短发微晃，鼓着腮帮子偏过脸不看人，脚尖踩在白毛毯上无意识地来回蹭着，耳根通红地小声抗议。 她微微抬眸轻语——“……都说了敲门要等我回答再进来啊！笨蛋老哥……还有你！到底要把人家当小孩子看到什么时候？！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "ice_grey_ribbed_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

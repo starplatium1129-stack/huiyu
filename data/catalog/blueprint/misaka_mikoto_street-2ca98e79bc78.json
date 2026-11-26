@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_street",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 392,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "action": "站在售货机旁将一罐呱太椰奶递向画外，另一罐留在出口",
     "camera": "medium shot",
@@ -16,7 +16,7 @@
     "location": "学园都市第七学区便利店门口",
     "mood": "元气日常",
     "negativeTokens": [],
-    "outfitId": "tokiwadai_uniform",
+    "outfitId": "railgun_windbreaker_casual",
     "promptProse": "Mikoto offers the Gekota coconut-milk can with a faint blush; the second can rests in the vending-machine outlet behind her in sunlight.",
     "promptTokens": [
       "1girl",

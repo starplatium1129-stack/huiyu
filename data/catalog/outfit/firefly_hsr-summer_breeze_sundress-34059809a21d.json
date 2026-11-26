@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/summer_breeze_sundress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1587,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "summer_breeze_sundress",
       "name": "盛夏清风水绿削肩挂颈高衩裙",
       "tokens": [
-        "sundress",
+        "seafoam sundress",
+        "green dress",
         "halterneck",
-        "green_dress",
-        "backless_dress",
-        "high_slit",
-        "bare_legs",
-        "sandals"
+        "backless dress",
+        "high slit",
+        "straw hat",
+        "white ribbon",
+        "flat sandals"
       ],
-      "prose": "An airy seafoam-green halter sundress featuring an open back and high leg slit.",
+      "prose": "Airy seafoam-green halter sundress featuring an open back and high side slit, paired with a wide-brimmed straw hat bound in white ribbon and flat leather sandals.",
       "isDefault": false,
       "default": false,
       "characterId": "firefly_hsr",

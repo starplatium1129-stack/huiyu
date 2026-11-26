@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1992,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 白衬衫与黑裙",
+      "name": "基础服装 · 白衬衫与墨黑百褶裙",
       "characterId": "virtuosa_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A white shirt with a black skirt and black gloves.",
+      "prose": "A crisp white dress shirt with a gold collar pin and black silk ribbon tucked into a black pleated skirt, paired with black leather gloves, sheer black pantyhose, and black heeled pumps.",
       "tokens": [
-        "white shirt",
-        "black skirt",
-        "black gloves"
+        "white dress shirt",
+        "black pleated skirt",
+        "black leather gloves",
+        "gold collar pin",
+        "black sheer pantyhose",
+        "black heeled pumps"
       ]
     }
   }

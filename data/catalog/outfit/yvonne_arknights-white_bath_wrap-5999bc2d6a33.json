@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/white_bath_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1264,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
       "id": "white_bath_wrap",
       "name": "白色浴巾与太阳镜",
       "tokens": [
-        "white wrap",
-        "sunglasses"
+        "white bath wrap",
+        "terrycloth towel",
+        "tucked chest fold",
+        "tinted sunglasses",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "a white bath wrap with sunglasses",
+      "prose": "A soft white terrycloth bath wrap tucked snugly across the chest with tinted sunglasses resting high, leaving bare legs and barefoot.",
       "default": false,
       "isDefault": false
     }

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/lunar_oracle_chiton",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3701,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "lunar_oracle_chiton",
       "name": "月相神官银蓝星纱百褶神装",
-      "prose": "A celestial white and sapphire-blue pleated oracle dress with floating star-patterned silk ribbons, silver crescent tiara, and detached sheer sleeves.",
+      "prose": "A celestial white and sapphire pleated oracle dress with detached sheer sleeves, floating star-patterned blue ribbons, a silver crescent tiara, and white thigh-highs, worn barefoot.",
       "tokens": [
-        "white and blue dress",
-        "pleated dress",
-        "blue ribbons",
-        "detached sleeves",
-        "crescent hair ornament",
-        "white thighhighs"
+        "white pleated dress",
+        "sapphire drapery",
+        "detached sheer sleeves",
+        "blue silk ribbons",
+        "crescent tiara",
+        "silver bracelet",
+        "white thighhighs",
+        "barefoot"
       ],
       "default": true,
       "isDefault": true,

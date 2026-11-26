@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/hymn_to_sunbreak",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1998,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "hymn_to_sunbreak",
-      "name": "曙光祝颂·白色礼裙与铃饰",
-      "prose": "A white ceremonial dress with detached sleeves, a jeweled headpiece and bell ornaments.",
+      "name": "曙光祝颂 · 象牙礼裙与银铃饰",
+      "prose": "An ivory ceremonial gown with detached chiffon sleeves and a pale gold waist sash, accented by a jeweled head circlet, hanging silver bells, white silk stockings, and ivory heeled pumps.",
       "tokens": [
-        "white ceremonial dress",
-        "detached sleeves",
-        "jeweled headpiece",
-        "bell ornaments"
+        "ivory ceremonial gown",
+        "detached chiffon sleeves",
+        "pale gold sash",
+        "jeweled head circlet",
+        "hanging silver bells",
+        "white silk stockings",
+        "ivory heeled pumps"
       ],
       "characterId": "pramanix_arknights",
       "default": false,

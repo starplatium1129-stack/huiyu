@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "viper_nikke/toxic_rabbit_velvet_bunny",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1718,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "viper_nikke",
     "outfit": {
       "characterId": "viper_nikke",
       "id": "toxic_rabbit_velvet_bunny",
       "name": "绝艳兔女郎·深黑漆皮连体衣",
-      "prose": "A show-stopping glossy black bunny suit with rabbit ears headband, white tuxedo collar and bow tie, fishnet stockings, and stiletto heels.",
+      "prose": "A glossy black patent bunny leotard paired with a bunny headband, white tuxedo collar, black bow tie, satin wrist cuffs, sheer fishnet tights, and black stiletto heels.",
       "tokens": [
-        "playboy_bunny",
-        "black_leotard",
-        "bunny_ears",
-        "bowtie",
-        "collar",
-        "fishnet_tights",
-        "high_heels"
+        "black patent leotard",
+        "bunny headband",
+        "white tuxedo collar",
+        "black bow tie",
+        "white wrist cuffs",
+        "black fishnet tights",
+        "stiletto heels"
       ],
       "default": false,
       "isDefault": false

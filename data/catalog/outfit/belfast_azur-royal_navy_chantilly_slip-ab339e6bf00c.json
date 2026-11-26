@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "belfast_azur/royal_navy_chantilly_slip",
+  "revision": 1,
+  "sortOrder": 4128,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "belfast_azur",
+    "outfit": {
+      "id": "royal_navy_chantilly_slip",
+      "name": "完美女仆·皇家深蓝蕾丝高开叉真丝睡裙",
+      "prose": "A deep royal-blue mulberry silk slip gown accented with French white Chantilly lace, a high side slit, maid frill headband, and sheer silk dressing shrug, worn barefoot.",
+      "tokens": [
+        "royal blue slip",
+        "mulberry silk satin",
+        "chantilly white lace",
+        "high side slit",
+        "maid frill headband",
+        "sheer silk shrug",
+        "barefoot"
+      ]
+    }
+  }
+}

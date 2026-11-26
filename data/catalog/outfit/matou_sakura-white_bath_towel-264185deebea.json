@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/white_bath_towel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1325,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "white_bath_towel",
       "name": "绒面高定裹胸浴袍",
-      "prose": "A plush white terrycloth wrap dress folded across the collarbone with a high leg slit.",
+      "prose": "A plush white cotton terrycloth bath wrap tucked above the bust with a high side overlap opening across bare legs and bare feet.",
       "tokens": [
-        "white_bathrobe",
-        "towel_wrap",
-        "cleavage",
-        "high_slit",
-        "off-shoulder",
-        "bare_legs",
-        "bare_thighs"
+        "white bath towel",
+        "terrycloth wrap",
+        "strapless wrap",
+        "high side slit",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "matou_sakura",
       "default": false,

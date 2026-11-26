@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rikuhachima_aru/crimson_velvet_bustier_set",
+  "revision": 1,
+  "sortOrder": 3941,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "rikuhachima_aru",
+    "outfit": {
+      "id": "crimson_velvet_bustier_set",
+      "name": "玫红墨黑天鹅绒荷叶束胸内衣",
+      "prose": "A dramatic magenta and jet-black velvet sweetheart bustier lingerie set trimmed with ruffled lace straps and matching briefs.",
+      "tokens": [
+        "magenta bustier",
+        "black lace trim",
+        "black velvet trim",
+        "sweetheart neckline",
+        "ruffled straps",
+        "matching briefs",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

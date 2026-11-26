@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_meadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 157,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_meadow",
       "name": "月白亚麻长袖裙",
-      "prose": "An opaque white linen maxi dress with loose long sleeves and gathered waist, with flat sandals.",
+      "prose": "An airy moon-white linen maxi dress shaped with soft billowy long sleeves and a gently gathered waist, worn barefoot or with minimalist tan flat sandals.",
       "tokens": [
-        "white maxi dress",
-        "long sleeves",
-        "linen",
-        "flat sandals"
+        "white linen dress",
+        "loose sleeves",
+        "gathered waist",
+        "silver bracelet",
+        "bare legs",
+        "tan leather sandals"
       ],
       "default": false,
       "isDefault": false

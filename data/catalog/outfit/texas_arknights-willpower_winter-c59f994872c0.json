@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/willpower_winter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 384,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "willpower_winter",
       "isDefault": false,
       "name": "寒冬信使墨绿绗缝短夹克与羊绒围巾",
-      "prose": "An olive-green quilted bomber jacket layered over a cream cable-knit sweater and dark shorts, with black over-knee stockings and winter boots.",
+      "prose": "An olive-green quilted bomber jacket layered over a cream cable-knit sweater, warm dark wool shorts, black over-knee stockings, and winter leather boots.",
       "tokens": [
-        "quilted_jacket",
-        "olive_jacket",
-        "bomber_jacket",
-        "cable_knit_sweater",
-        "cream_sweater",
-        "black_shorts",
-        "black_thighhighs",
-        "winter_boots"
+        "olive quilted jacket",
+        "bomber jacket",
+        "cream knit sweater",
+        "black wool shorts",
+        "black thighhighs",
+        "winter leather boots"
       ],
       "characterId": "texas_arknights"
     }

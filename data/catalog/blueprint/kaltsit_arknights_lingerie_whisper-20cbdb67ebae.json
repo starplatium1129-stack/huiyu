@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3519,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "kaltsit_arknights_lingerie_whisper",
     "characterId": "kaltsit_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛核心医疗区寂静无声的深夜。凯尔希刚刚完成了Mon3tr脊柱生物接口的高负荷散热透析，换上一件极简风格的冷灰绿真丝高领收腰长睡袍。她腰杆笔挺地坐在高背椅上，单手按在后颈微微发烫的神经散热端口处，翡翠绿的眼眸在全息档案的冷光下如深潭般不可见底。听到博士的脚步声，那对菲林猞猁耳微微转动，她平静地转过脸，声音如千年来一样波澜不惊——「深夜来访，你的生理监测指标显示缺乏足够的深层睡眠。大地在哭泣，博士……但在这个夜晚，你有权在我的视线之内，获得暂时的安宁。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sage_mandarin_silk_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

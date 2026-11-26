@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/dead_end_adventurer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 261,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "dead_end_adventurer",
       "isDefault": false,
       "name": "赤棕短款机车皮衣与工装短裤",
-      "prose": "A structured cropped chestnut leather jacket over an unbuttoned ivory tunic and high-waist shorts.",
+      "prose": "A structured chestnut leather jacket worn over an unbuttoned ivory tunic and tan cargo shorts with a brass waist belt, fingerless leather gloves, and sturdy combat boots.",
       "tokens": [
-        "leather_jacket",
-        "short_jacket",
-        "white_shirt",
-        "unbuttoned_shirt",
-        "shorts",
-        "cargo_shorts",
-        "bare_legs",
-        "boots"
+        "chestnut leather jacket",
+        "ivory unbuttoned tunic",
+        "tan cargo shorts",
+        "brass waist belt",
+        "fingerless leather gloves",
+        "sturdy combat boots"
       ],
       "characterId": "eris_greyrat"
     }

@@ -1,25 +1,27 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/bunny_suit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 498,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
       "default": false,
       "id": "bunny_suit",
       "isDefault": false,
-      "name": "纯白缎面兔女郎伪装",
-      "prose": "a fitted white satin bunny suit with a small blue bow tie, rabbit-ear hairband, white over-knee stockings and high heels",
+      "name": "纯白缎面冰蓝结兔女郎装",
+      "prose": "A lustrous pure-white satin bunny corset bodysuit accented with an ice-blue bowtie, white collar and cuffs, tall rabbit-ear hairband, white thigh-high stockings, and white heels.",
       "tokens": [
         "white bunny suit",
-        "satin",
+        "satin bodysuit",
         "blue bowtie",
-        "bunny hairband",
+        "white cuffs",
+        "rabbit ear hairband",
+        "bunny tail",
         "white thighhighs",
-        "high heels"
+        "white high heels"
       ]
     }
   }

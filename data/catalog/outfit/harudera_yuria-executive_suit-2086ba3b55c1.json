@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/executive_suit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 653,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
       "id": "executive_suit",
       "name": "CIRS 炭灰精裁职业套裙",
-      "prose": "A tailored charcoal wool jacket and matching pencil skirt over a white collared shirt with loosened top buttons, sheer black tights, patent pumps and red-framed glasses.",
+      "prose": "A tailored charcoal wool blazer and matching pencil skirt over a white collared shirt with loosened top buttons, red-framed glasses, black sheer pantyhose, and black pointed heels.",
       "tokens": [
-        "charcoal suit jacket",
+        "charcoal wool blazer",
         "white collared shirt",
-        "loosened top buttons",
         "charcoal pencil skirt",
-        "black pantyhose",
-        "red-framed glasses",
-        "black high heels"
+        "red framed glasses",
+        "black sheer pantyhose",
+        "black pointed heels"
       ],
       "default": true,
       "isDefault": true

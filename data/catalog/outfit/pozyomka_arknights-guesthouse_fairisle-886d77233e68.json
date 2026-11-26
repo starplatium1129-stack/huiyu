@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/guesthouse_fairisle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2062,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "guesthouse_fairisle",
       "name": "雪灰提花毛衣裙与奶油披肩领",
-      "prose": "A soft grey Fair Isle sweater dress with a cream shawl collar and tiny white snowflake bands, paired with warm tights and slippers.",
+      "prose": "A dove-grey jacquard sweater dress with a cream shawl collar and ribbed cuffs belted with braided wool, paired with cream thermal tights and warm fur-lined indoor slippers.",
       "tokens": [
-        "grey fair isle sweater dress",
+        "grey knit dress",
         "cream shawl collar",
-        "white snowflake pattern",
-        "warm tights",
-        "slippers"
+        "white jacquard band",
+        "braided wool belt",
+        "cream thermal tights",
+        "fur lined slippers"
       ],
       "characterId": "pozyomka_arknights",
       "default": false,

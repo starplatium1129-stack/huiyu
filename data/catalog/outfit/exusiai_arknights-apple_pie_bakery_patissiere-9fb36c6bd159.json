@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/apple_pie_bakery_patissiere",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 365,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "apple_pie_bakery_patissiere",
       "name": "苹果派烘焙奶油罗纹针织与工装围裙",
-      "prose": "A cream rib-knit sweater beneath a brown baking apron, with frayed denim shorts and sneakers.",
+      "prose": "A warm cream rib-knit pullover shielded by a cross-back brown linen bakery apron over cuffed denim shorts, ankle socks, and canvas sneakers.",
       "tokens": [
-        "cream_sweater",
-        "knit_sweater",
-        "linen_apron",
-        "cross_back_apron",
-        "denim_shorts",
-        "bare_legs",
-        "sneakers"
+        "cream rib sweater",
+        "brown linen apron",
+        "cross-back straps",
+        "blue denim shorts",
+        "white socks",
+        "canvas sneakers"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

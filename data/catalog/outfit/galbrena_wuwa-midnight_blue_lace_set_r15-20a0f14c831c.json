@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "galbrena_wuwa/midnight_blue_lace_set_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3808,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "galbrena_wuwa",
     "outfit": {
       "id": "midnight_blue_lace_set_r15",
       "name": "幽蓝焰纹黑蕾丝内衣与皮质腿环",
-      "prose": "A black lace plunge bra embroidered with subtle azure flame motifs, matching panties, a leather thigh strap, and sheer black stockings.",
+      "prose": "A black lace plunge bra and matching panties embroidered with azure flame motifs, paired with a silver choker, leather thigh strap, and sheer black thigh-highs, worn barefoot.",
       "tokens": [
-        "black bra",
-        "lace",
-        "blue embroidery",
-        "black panties",
-        "thigh strap",
-        "black thighhighs"
+        "black lace bra",
+        "azure embroidery",
+        "plunge neckline",
+        "black lace panties",
+        "leather thigh strap",
+        "silver choker",
+        "black thighhighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

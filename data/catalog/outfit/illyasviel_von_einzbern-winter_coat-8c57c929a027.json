@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/winter_coat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
       "id": "winter_coat",
-      "name": "Fate 本篇冬装",
-      "prose": "a purple hooded winter coat with fur trim",
+      "name": "紫绒毛领连帽冬日大衣",
+      "prose": "Her plush deep-violet hooded winter coat edged in fluffy white fur, fastened with ornate clasps over white tights, lavender scarf, and brown snow boots.",
       "tokens": [
         "purple coat",
-        "fur trim",
-        "hood"
+        "fur-trimmed hood",
+        "long coat",
+        "gold frog clasps",
+        "lavender muffler",
+        "white tights",
+        "brown boots"
       ],
       "default": true,
       "isDefault": true

@@ -1,19 +1,24 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/light_bandeau",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1202,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
       "id": "light_bandeau",
       "name": "舱室轻薄抹胸",
       "tokens": [
-        "bandeau"
+        "charcoal ribbed bandeau",
+        "black low-rise briefs",
+        "thin waist cord",
+        "metal ring clasp",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "a lightweight bandeau",
+      "prose": "A lightweight charcoal ribbed bandeau top paired with matching low-rise briefs, a slim waist cord with metal ring clasp, bare legs, and barefoot.",
       "default": false,
       "isDefault": false
     }

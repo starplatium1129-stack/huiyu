@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shizuka_hiratsuka/wine_silk_slip_robe",
+  "revision": 1,
+  "sortOrder": 4151,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "shizuka_hiratsuka",
+    "outfit": {
+      "id": "wine_silk_slip_robe",
+      "name": "酒红重磅真丝深领吊带与系带晨袍",
+      "prose": "A deep wine-red heavyweight silk slip gown with a plunging V neckline worn beneath a matching sheer belted silk robe with wide draped sleeves, bare legs, and barefoot.",
+      "tokens": [
+        "burgundy silk slip",
+        "heavyweight silk satin",
+        "deep v-neck",
+        "sheer belted robe",
+        "wide draped sleeves",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

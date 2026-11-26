@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3246,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "surtr_arknights_lingerie_whisper",
     "characterId": "surtr_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛后勤甲板咖啡角，宽大的观景舷窗外掠过苍茫荒原与翻滚的赤金晚霞。史尔特尔坐在高脚转椅上，一手握着小银勺轻尝高脚杯里的香草冰淇淋，赤红眼眸微微瞥来，冷漠外表下透着难得的松弛——「看什么看。冰淇淋快化了。博士……要是敢抢我的甜点，我就用烈火把你烤熟。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "obsidian_crimson_mesh_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

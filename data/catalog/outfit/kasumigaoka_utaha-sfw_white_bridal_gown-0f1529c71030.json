@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_white_bridal_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 792,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_white_bridal_gown",
       "name": "米卡多缎面高定开衩婚纱",
-      "prose": "A structured white satin bridal gown with a sweetheart bodice and high side slit over sheer white stockings.",
+      "prose": "A structured white satin bridal gown with a sweetheart bodice, high leg slit, sheer veil, and pearl necklace over white thigh-highs and ivory pumps.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "strapless_dress",
-        "sweetheart_neckline",
-        "high_slit",
-        "veil",
-        "white_thighhighs",
-        "high_heels"
+        "white bridal gown",
+        "satin bodice",
+        "high leg slit",
+        "sheer bridal veil",
+        "pearl necklace",
+        "white thighhighs",
+        "ivory pumps"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

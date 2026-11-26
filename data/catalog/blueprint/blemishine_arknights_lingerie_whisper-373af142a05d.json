@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3148,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "blemishine_arknights_lingerie_whisper",
     "characterId": "blemishine_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛工程部深夜的宿舍一角。卡西米尔的年轻骑士玛利亚·临光卸下金色重骑兵甲胄，换上一套暖金色细格纹棉麻宽松连体睡衣。她不顾形象地盘腿坐在地板地毯上，金发随意用一支工程铅笔盘在脑后，手里拿着精密镊子给老旧机械挂钟上油。听到门开的声音，金色的马耳灵动地晃了晃，她回过头挥舞着手里的螺丝刀，笑得格外灿烂——「博士！你还没睡吗？快来看看这个，我把可露希尔丢掉的废旧零件改造成会发光的小闹钟了哦！明天早上就用它叫你起床吧！」",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "artificer_gingham_romper",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

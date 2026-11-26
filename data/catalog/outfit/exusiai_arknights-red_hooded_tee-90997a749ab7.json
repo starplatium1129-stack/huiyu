@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/red_hooded_tee",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 367,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "red_hooded_tee",
       "name": "落肩大号绯红连帽卫衣（下衣失踪）",
-      "prose": "A loose scarlet drop-shoulder hoodie falling to mid-thigh over shorts, paired with sheer black stockings and chunky sneakers.",
+      "prose": "An oversized scarlet fleece drop-shoulder hoodie reaching mid-thigh over short shorts, paired with sheer black thigh-high stockings and chunky trainers.",
       "tokens": [
-        "oversized_hoodie",
-        "red_hoodie",
-        "drop_shoulder",
-        "booty_shorts",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "chunky_sneakers"
+        "oversized red hoodie",
+        "drop shoulder",
+        "drawstring hood",
+        "hidden shorts",
+        "sheer black thighhighs",
+        "chunky sneakers"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

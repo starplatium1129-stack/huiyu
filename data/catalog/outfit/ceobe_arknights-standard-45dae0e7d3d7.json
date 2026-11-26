@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1984,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
@@ -13,11 +13,14 @@
       "characterId": "ceobe_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A brown dress beneath a loose multicolored jacket, with boots.",
+      "prose": "A durable brown sleeveless dress layered beneath a loose cropped jacket with bright orange straps, a leather waist pouch, tan leg warmers, and rugged brown boots.",
       "tokens": [
-        "brown dress",
-        "loose jacket",
-        "boots"
+        "brown sleeveless dress",
+        "loose cropped jacket",
+        "orange strap trim",
+        "leather waist pouch",
+        "tan leg warmers",
+        "rugged brown boots"
       ]
     }
   }

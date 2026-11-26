@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "anis_nikke/counters_tactical_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1541,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-22T04:47:50.049788100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "anis_nikke",
     "outfit": {
       "id": "counters_tactical_uniform",
       "name": "反击小队灰黄战术制服",
-      "prose": "Anis's Counters field uniform: a cropped slate-gray tactical jacket with mustard-yellow panels and a high collar, a fitted dark base layer, utility shorts, a compact ammunition belt, opaque thigh-high stockings, sturdy combat boots, and her gray beret.",
+      "prose": "A cropped slate-grey tactical jacket with mustard-yellow panels and a high collar over a fitted dark bodysuit, utility shorts, compact ammunition belt, grey beret, opaque thigh-high stockings, and combat boots.",
       "tokens": [
-        "tactical_jacket",
-        "gray_jacket",
-        "yellow_panels",
-        "high_collar",
-        "dark_bodysuit",
-        "shorts",
-        "ammunition_belt",
-        "thighhighs",
-        "combat_boots",
-        "beret"
+        "grey tactical jacket",
+        "yellow panels",
+        "high collar",
+        "black inner bodysuit",
+        "utility shorts",
+        "ammunition belt",
+        "grey beret",
+        "black thigh-high stockings",
+        "combat boots"
       ],
       "default": true,
       "isDefault": true

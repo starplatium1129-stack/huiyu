@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/lab_coat_camisole",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1372,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "lab_coat_camisole",
-      "name": "夜班微敞白大褂与蕾丝针织吊带裙",
-      "prose": "A lightweight white research coat slipped off the shoulders over an ivory knit camisole and pleated skirt, with dark stockings.",
+      "name": "夜班敞肩白大褂与针织吊带裙",
+      "prose": "A lightweight white cotton lab coat slipped off the shoulders over an ivory knit camisole with scalloped lace, paired with a mini pleated skirt, ribbon choker, black stockings, and penny loafers.",
       "tokens": [
-        "lab_coat",
-        "white_coat",
-        "open_coat",
-        "camisole",
-        "lace_trim",
-        "miniskirt",
-        "black_thighhighs",
-        "loafers"
+        "open lab coat",
+        "white cotton coat",
+        "ivory camisole",
+        "scalloped lace",
+        "mini pleated skirt",
+        "ribbon choker",
+        "black stockings",
+        "penny loafers"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

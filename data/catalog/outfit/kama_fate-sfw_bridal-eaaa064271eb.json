@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_bridal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_bridal",
       "name": "暗黑玫瑰金绣鱼尾礼裙与薄纱花嫁",
-      "prose": "A dark mermaid bridal gown with gold filigree and a side slit, worn with lace stockings.",
+      "prose": "A striking black mermaid bridal gown lined in dark rose silk and traced with gold filigree, finished with a sheer dark veil and lace-trimmed stockings.",
       "tokens": [
-        "black_wedding_dress",
-        "mermaid_dress",
-        "gold_embroidery",
-        "rose_lining",
-        "high_slit",
-        "black_veil",
-        "lace_thighhighs"
+        "black mermaid dress",
+        "rose lining",
+        "gold filigree",
+        "high slit",
+        "sheer black veil",
+        "lace thighhighs",
+        "black heels"
       ],
       "characterId": "kama_fate",
       "default": false,

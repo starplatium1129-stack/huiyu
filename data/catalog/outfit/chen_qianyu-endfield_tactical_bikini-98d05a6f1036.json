@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chen_qianyu/endfield_tactical_bikini",
+  "revision": 1,
+  "sortOrder": 4074,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "chen_qianyu",
+    "outfit": {
+      "id": "endfield_tactical_bikini",
+      "name": "终末巡航炭黑橙带机能泳装",
+      "prose": "A charcoal-grey and hazard-orange tactical two-piece bikini with criss-cross chest straps, quick-release buckles, high-cut bottoms, and a compact waterproof thigh pouch, bare legs, and barefoot.",
+      "tokens": [
+        "charcoal bikini",
+        "orange webbing straps",
+        "chest buckles",
+        "high-cut bottom",
+        "waterproof leg pouch",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

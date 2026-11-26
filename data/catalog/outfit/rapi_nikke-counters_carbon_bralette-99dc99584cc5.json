@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rapi_nikke/counters_carbon_bralette",
+  "revision": 1,
+  "sortOrder": 4053,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "rapi_nikke",
+    "outfit": {
+      "id": "counters_carbon_bralette",
+      "name": "战备温存·绯红碳纹透视胸衣套",
+      "prose": "A breathable scarlet silk and black carbon-weave sheer bralette with harness straps and high-waisted boyleg briefs worn beneath an open dark sleep robe, with bare legs and barefoot.",
+      "tokens": [
+        "scarlet sheer bralette",
+        "carbon-weave straps",
+        "molded underwire cups",
+        "high-waist boyleg briefs",
+        "open black robe",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

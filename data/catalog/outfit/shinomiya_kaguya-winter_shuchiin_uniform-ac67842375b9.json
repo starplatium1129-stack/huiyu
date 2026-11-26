@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/winter_shuchiin_uniform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
@@ -12,15 +12,15 @@
       "id": "winter_shuchiin_uniform",
       "isDefault": false,
       "name": "雪夜精裁黑呢立领短风衣与高腰百褶短裙",
-      "prose": "A cropped double-breasted black wool jacket over an unbuttoned shirt and pleated skirt, with dark tights.",
+      "prose": "A cropped double-breasted black wool coat over a white shirt, soft white knit scarf, and high-waisted pleated mini skirt, paired with black tights and ankle boots.",
       "tokens": [
-        "cropped_jacket",
-        "wool_coat",
-        "white_shirt",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "boots"
+        "black wool coat",
+        "cropped double-breasted",
+        "white collared shirt",
+        "white knit scarf",
+        "pleated mini skirt",
+        "black thighhighs",
+        "black ankle boots"
       ],
       "characterId": "shinomiya_kaguya",
       "isNsfw": false

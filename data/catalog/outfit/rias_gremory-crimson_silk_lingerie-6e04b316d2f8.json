@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/crimson_silk_lingerie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 694,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "crimson_silk_lingerie",
       "name": "深红重磅真丝吊袜吊带与法式睫毛蕾丝",
-      "prose": "A scarlet silk set bordered with French eyelash lace, coordinated with a garter belt and matching straps.",
+      "prose": "A scarlet silk lingerie set bordered with black French eyelash lace, coordinated with a garter belt, garter straps, and sheer black thigh-high stockings, worn barefoot.",
       "tokens": [
-        "crimson_lingerie",
-        "lace_bra",
-        "black_lace",
-        "garter_belt",
-        "garter_straps",
-        "sheer_thighhighs"
+        "crimson silk bra",
+        "black eyelash lace",
+        "matching silk panties",
+        "black garter belt",
+        "garter straps",
+        "sheer black thighhighs",
+        "barefoot"
       ],
       "characterId": "rias_gremory",
       "default": false,

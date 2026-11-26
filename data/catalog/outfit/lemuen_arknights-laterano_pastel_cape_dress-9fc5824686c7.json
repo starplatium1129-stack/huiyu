@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/laterano_pastel_cape_dress",
+  "revision": 1,
+  "sortOrder": 4000,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "laterano_pastel_cape_dress",
+      "name": "淡粉白披肩拉特兰日常洋装",
+      "prose": "A soft rose-gold clasped white short capelet worn over a pastel-pink pleated midi sundress, sheer white tights, and ivory flat mary janes.",
+      "tokens": [
+        "white short capelet",
+        "gold clasp",
+        "pastel pink dress",
+        "pleated midi skirt",
+        "white tights",
+        "ivory mary janes"
+      ]
+    }
+  }
+}

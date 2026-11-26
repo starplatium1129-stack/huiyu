@@ -1,19 +1,24 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/white_underwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1265,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
       "id": "white_underwear",
-      "name": "白色内裤造型",
+      "name": "纯白棉质贴身内衣",
       "tokens": [
-        "white panties"
+        "white cotton bralette",
+        "white cotton panties",
+        "thin elastic straps",
+        "lace trim",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "plain white underwear",
+      "prose": "A simple white cotton bralette and matching lace-trimmed white cotton panties with thin elastic straps, worn with bare legs and barefoot.",
       "default": false,
       "isDefault": false
     }

@@ -1,29 +1,23 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/cadet_royal_guard",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 305,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "id": "cadet_royal_guard",
       "name": "皇家近卫双排金扣制服短外套与骑行短裤",
-      "prose": "A sharp navy double-breasted military cadet jacket trimmed in gold braid over a high-collared shirt and white riding shorts.",
+      "prose": "A formal navy double-breasted cadet jacket trimmed with gold braid and epaulettes over a high-collar shirt, red cravat, white riding shorts, white gloves, and riding boots.",
       "tokens": [
-        "military_jacket",
-        "navy_jacket",
-        "double-breasted",
-        "gold_trim",
-        "epaulettes",
-        "white_shirt",
-        "red_cravat",
-        "shorts",
-        "white_shorts",
-        "bare_legs",
-        "riding_boots",
-        "white_gloves"
+        "navy military jacket",
+        "gold epaulettes",
+        "red cravat",
+        "white riding shorts",
+        "white gloves",
+        "tall riding boots"
       ],
       "characterId": "chen_arknights",
       "default": false,

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/oversized_white_lounge_shirt",
+  "revision": 1,
+  "sortOrder": 3988,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "id": "oversized_white_lounge_shirt",
+      "name": "落肩微敞白色宽大居家衬衫",
+      "prose": "An oversized crisp white lounge button-down shirt unbuttoned casually off one shoulder over minimal black shorts, barefoot.",
+      "tokens": [
+        "oversized white shirt",
+        "unbuttoned collar",
+        "off shoulder",
+        "rolled cuffs",
+        "black boyshorts",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

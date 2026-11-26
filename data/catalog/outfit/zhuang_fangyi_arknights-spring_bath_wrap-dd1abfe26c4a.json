@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/spring_bath_wrap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-11-06T01:02:18.779Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
@@ -12,10 +12,14 @@
       "id": "spring_bath_wrap",
       "isDefault": false,
       "name": "炎国温泉细织棉麻裹巾",
-      "prose": "A finely woven cotton-linen hot spring wrap towel from Yan.",
+      "prose": "A finely woven white cotton-linen hot-spring wrap towel bordered with a subtle celadon stripe, tucked neatly across the chest, worn with bare legs and barefoot.",
       "tokens": [
-        "white towel",
-        "linen"
+        "white linen towel",
+        "woven cotton wrap",
+        "tucked chest fold",
+        "celadon border hem",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3184,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "lemuen_arknights_lingerie_whisper",
     "characterId": "lemuen_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "拉特兰大教堂后侧的玻璃温室，盛开的白百合与悬挂藤萝环绕。优雅靠在白色藤编轮椅靠背上，双腿覆着薄毯一角微露脚踝，单手支颌，温和眼眸弯成月牙，光环闪烁柔光，带着年长信使独有的从容促狭。 她微微抬眸轻语——“哎呀，偷看信使小姐的午后独处可是会被神罚的哦……开玩笑的，过来陪我坐坐吧。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "white_wing_chiffon_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

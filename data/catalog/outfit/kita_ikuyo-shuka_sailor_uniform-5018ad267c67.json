@@ -1,30 +1,26 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/shuka_sailor_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1559,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "shuka_sailor_uniform",
-      "name": "秀华夏季经典水手服与百褶百变短裙",
+      "name": "秀华夏季经典水手服与百褶短裙",
       "tokens": [
-        "school_uniform",
-        "sailor_uniform",
-        "white_shirt",
-        "short_sleeves",
-        "sailor_collar",
-        "blue_collar",
-        "red_necktie",
-        "pleated_skirt",
-        "black_skirt",
-        "miniskirt",
-        "thighhighs",
-        "loafers"
+        "sailor uniform",
+        "white shirt",
+        "short sleeves",
+        "navy collar",
+        "red necktie",
+        "pleated miniskirt",
+        "black thighhighs",
+        "brown loafers"
       ],
-      "prose": "A white short-sleeved sailor shirt with a navy collar and red necktie, paired with a pleated skirt and dark thigh-highs.",
+      "prose": "White short-sleeved sailor blouse with a navy collar and crisp red necktie, paired with a dark pleated miniskirt, black thighhigh stockings, and polished brown leather loafers.",
       "isDefault": true,
       "default": true,
       "characterId": "kita_ikuyo"

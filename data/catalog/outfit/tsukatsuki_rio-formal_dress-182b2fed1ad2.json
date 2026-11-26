@@ -1,24 +1,27 @@
 {
   "kind": "outfit",
   "id": "tsukatsuki_rio/formal_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 503,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "tsukatsuki_rio",
     "outfit": {
       "default": false,
       "id": "formal_dress",
       "isDefault": false,
-      "name": "红扣黑色高领礼服",
-      "prose": "A long-sleeved black high-collar dress with an asymmetric waist seam and dark-red clasp.",
+      "name": "红扣黑丝绒高领长袖礼裙",
+      "prose": "A long-sleeved matte black high-collar dress with an architectural asymmetric waist seam and crimson metallic clasp, split gracefully over sheer black pantyhose and red-soled pumps.",
       "tokens": [
-        "black dress",
+        "black evening dress",
         "high collar",
         "long sleeves",
-        "asymmetric seam",
-        "red clasp"
+        "asymmetric waist",
+        "red clasp",
+        "side slit",
+        "sheer black pantyhose",
+        "red-soled heels"
       ]
     }
   }

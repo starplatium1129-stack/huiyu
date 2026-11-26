@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "taihou_azur/school_nurse",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 600,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "taihou_azur",
     "outfit": {
       "id": "school_nurse",
-      "name": "粉白医护连衣裙",
-      "prose": "a pink nurse dress with neat white edging, a matching nurse cap, white thigh-high stockings held by garter straps and pink pumps",
+      "name": "粉白医护连衣裙与吊袜带",
+      "prose": "A fitted pink nurse dress with crisp white piping, nurse cap headband, white thigh-high stockings held by garter straps, and pink heeled pumps.",
       "tokens": [
         "pink nurse dress",
-        "nurse cap",
+        "white collar piping",
+        "nurse cap headband",
+        "garter strap belt",
         "white thighhighs",
-        "garter straps",
-        "pink pumps"
+        "gold stethoscope pin",
+        "pink heeled pumps"
       ],
       "default": false,
       "isDefault": false

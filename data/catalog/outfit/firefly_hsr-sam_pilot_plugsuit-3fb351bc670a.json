@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/sam_pilot_plugsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1586,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "sam_pilot_plugsuit",
       "name": "萨姆驾驶员黑绿机能紧身战服",
       "tokens": [
-        "plugsuit",
-        "bodysuit",
-        "latex",
-        "black_bodysuit",
-        "collarbone",
-        "bare_legs",
-        "boots"
+        "black plugsuit",
+        "composite bodysuit",
+        "emerald piping",
+        "high collar",
+        "armored cuffs",
+        "utility belt",
+        "combat boots"
       ],
-      "prose": "A matte black composite pilot suit with glowing emerald lines and boots.",
+      "prose": "Matte-black composite pilot plugsuit traced with luminous emerald geometric seams, structured high collar, armored wrist cuffs, slim utility belt, and sleek combat boots.",
       "isDefault": false,
       "default": false,
       "characterId": "firefly_hsr",

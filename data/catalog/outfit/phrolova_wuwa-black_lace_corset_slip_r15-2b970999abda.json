@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phrolova_wuwa/black_lace_corset_slip_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3507,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phrolova_wuwa",
     "outfit": {
       "id": "black_lace_corset_slip_r15",
       "name": "黑丝绒系带紧身胸衣与半透衬裙",
-      "prose": "A satin-laced black velvet bustier over a sheer crimson chiffon half-slip, paired with seamed black thigh-high stockings.",
+      "prose": "A satin-laced black velvet bustier over a sheer crimson chiffon half-slip with a ribbon choker, paired with seamed black thigh-high stockings and pointed heels.",
       "tokens": [
-        "black bustier",
-        "velvet",
-        "red skirt",
-        "sheer",
-        "seamed legwear",
-        "black thighhighs"
+        "black velvet bustier",
+        "satin lacing",
+        "crimson half slip",
+        "sheer chiffon",
+        "ribbon choker",
+        "seamed stockings",
+        "black thighhighs",
+        "pointed heels"
       ],
       "default": false,
       "isDefault": false,

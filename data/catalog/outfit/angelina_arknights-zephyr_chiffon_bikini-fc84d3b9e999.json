@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/zephyr_chiffon_bikini",
+  "revision": 1,
+  "sortOrder": 4043,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "zephyr_chiffon_bikini",
+      "name": "微风浮空 · 珊瑚橘雪纺袖比基尼",
+      "prose": "A bright coral-orange and apricot strappy bikini with wrap-around waist cords, detached sheer chiffon sleeves, a silver droplet charm, and bare feet.",
+      "tokens": [
+        "coral strap bikini",
+        "apricot ruffle trim",
+        "wrap waist cords",
+        "detached chiffon sleeves",
+        "silver droplet charm",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

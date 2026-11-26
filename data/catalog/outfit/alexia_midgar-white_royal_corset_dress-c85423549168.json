@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "alexia_midgar/white_royal_corset_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1810,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "alexia_midgar",
     "outfit": {
       "id": "white_royal_corset_dress",
       "name": "王家私宴白色抹胸轻裙",
-      "prose": "Strapless white royal cocktail dress with silver trim, fitted corset bodice, and delicate silver earrings.",
+      "prose": "Strapless ivory-white royal cocktail dress structured with a boned corset bodice and silver filigree trim over a flared satin skirt, accessorized with silver drop earrings, a pearl choker, and white pointed heels.",
       "tokens": [
-        "white_dress",
-        "strapless_dress",
-        "royal_attire",
-        "bare_shoulders",
-        "silver_trim"
+        "white dress",
+        "strapless dress",
+        "corset bodice",
+        "silver trim",
+        "satin skirt",
+        "silver earrings",
+        "pearl choker",
+        "white heels"
       ],
       "characterId": "alexia_midgar",
       "default": false,

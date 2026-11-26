@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "伊甸圣咏珍珠束腰真丝礼裙",
-      "prose": "An ivory silk and blush corset dress with hand-stitched pearl drops, lace trim and a dramatic side slit.",
+      "prose": "An ivory silk and pale-pink strapless corset dress adorned with hand-stitched pearl drops, scalloped lace trim, and a high side slit, paired with sheer white stockings and worn barefoot.",
       "tokens": [
-        "corset_dress",
-        "white_dress",
-        "pink_trim",
-        "strapless",
-        "bare_shoulders",
-        "silk",
-        "pearls",
-        "side_slit",
-        "bare_legs"
+        "ivory corset dress",
+        "pale pink trim",
+        "strapless bodice",
+        "silk satin",
+        "pearl drops",
+        "high side slit",
+        "sheer white stockings",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

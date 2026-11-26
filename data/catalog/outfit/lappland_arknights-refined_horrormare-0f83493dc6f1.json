@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/refined_horrormare",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 388,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
@@ -12,17 +12,15 @@
       "id": "refined_horrormare",
       "isDefault": false,
       "name": "典雅噩兆高衩露背黑红丝绒晚礼裙",
-      "prose": "A dramatic gothic crimson-and-black velvet evening gown with an open back, sheer lace panels, and an ultra-high thigh slit.",
+      "prose": "A theatrical crimson-and-black velvet gothic ballgown featuring sheer black lace panels, deep exposed back, ultra-high leg slit, opera gloves, and pointed stilettos.",
       "tokens": [
-        "black_dress",
-        "red_dress",
-        "velvet_dress",
-        "backless_dress",
-        "high_slit",
-        "lace_trim",
-        "opera_gloves",
-        "bare_legs",
-        "high_heels"
+        "crimson velvet gown",
+        "black lace panels",
+        "open back",
+        "high thigh slit",
+        "black opera gloves",
+        "lace half mask",
+        "black stilettos"
       ],
       "characterId": "lappland_arknights"
     }

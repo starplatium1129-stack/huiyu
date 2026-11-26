@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3119,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_lingerie_whisper",
     "characterId": "vulpisfoglia_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "叙拉古老城区阴暗废弃庭院，雨后地砖上映出昏暗的路灯倒影。斜倚在破损的砖墙边，单手转动着战术短刀，狼耳在深灰发丝间机警竖立，修长双腿随意交叠，深黑眼眸冷冽而专注地打量着深夜造访的同盟者。 她微微抬眸轻语——“深夜一个人闯进叙拉古的阴影里……胆子真不小。不过今晚……你用不着防备我的刀锋。”",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "lupo_harness_mesh",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

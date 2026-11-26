@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/coral_frill_bikini",
+  "revision": 1,
+  "sortOrder": 4147,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "coral_frill_bikini",
+      "name": "蜜桃珊瑚粉层叠荷叶边挂脖比基尼",
+      "prose": "A bright coral-pink two-piece halter bikini detailed with tiered ruffled frills, a small silver heart pendant, and ruffled hip-tie bottoms, worn with bare legs and barefoot.",
+      "tokens": [
+        "coral pink bikini",
+        "tiered frill trim",
+        "halterneck strap",
+        "silver heart pendant",
+        "ruffled swim bottom",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

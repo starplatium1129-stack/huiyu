@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "amane_rainy_bus_station_shared_umbrella",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1180,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "id": "amane_rainy_bus_station_shared_umbrella",
     "title": "周防天音 · 雨夜站台的红伞依偎",
     "category": "深情羁绊",
     "characterId": "suou_amane",
-    "outfitId": "sfw_neat_mihama_uniform",
+    "outfitId": "mihama_uniform",
     "coverageTags": [
       "rain"
     ],

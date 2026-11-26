@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "caren_hortensia/crimson_knit_homewear",
+  "revision": 1,
+  "sortOrder": 3967,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "caren_hortensia",
+    "outfit": {
+      "id": "crimson_knit_homewear",
+      "name": "酒红立领针织衫与格纹长裙居家装",
+      "prose": "A fitted wine-red ribbed turtleneck knit sweater accented with a small silver cross pendant, tucked into a charcoal plaid midi skirt with black tights and soft indoor shoes.",
+      "tokens": [
+        "crimson turtleneck",
+        "ribbed sweater",
+        "silver cross necklace",
+        "charcoal plaid skirt",
+        "midi skirt",
+        "black pantyhose",
+        "brown house shoes"
+      ]
+    }
+  }
+}

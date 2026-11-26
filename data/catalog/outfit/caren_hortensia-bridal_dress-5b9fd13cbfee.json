@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/bridal_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "bridal_dress",
-      "name": "金纱白缎圣坛花嫁",
-      "prose": "a floor-length white satin off-shoulder wedding gown with a softly pleated bodice, a golden veil and a trailing train",
+      "name": "金纱白缎一字肩圣坛花嫁",
+      "prose": "A luminous floor-length white satin bridal gown with an off-shoulder pleated bodice, shimmering gold-threaded veil, and sweeping altar train.",
       "tokens": [
         "white wedding dress",
-        "off shoulder",
+        "off-shoulder neckline",
         "pleated bodice",
-        "gold veil",
-        "long train"
+        "gold bridal veil",
+        "long train",
+        "white pumps"
       ],
       "isDefault": false,
       "default": false

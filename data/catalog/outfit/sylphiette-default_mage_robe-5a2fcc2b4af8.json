@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "sylphiette/default_mage_robe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": true,
       "id": "default_mage_robe",
       "isDefault": true,
-      "name": "鼠尾草短斗篷、百褶短裙与白色长袜",
-      "prose": "A hooded sage-green capelet over an ivory shirt and pleated skirt, with white thigh-highs.",
+      "name": "鼠尾草短斗篷、百褶短裙与白长袜",
+      "prose": "A hooded sage-green capelet worn over an ivory cotton shirt, brown waist belt, and charcoal pleated miniskirt, paired with white opaque thighhighs and brown laced boots.",
       "styleHint": "anime adventure style",
       "tokens": [
-        "hooded_cloak",
-        "short_cloak",
-        "white_shirt",
-        "pleated_skirt",
-        "miniskirt",
-        "white_thighhighs",
-        "boots"
+        "sage hooded capelet",
+        "ivory cotton shirt",
+        "charcoal pleated miniskirt",
+        "brown waist belt",
+        "white opaque thighhighs",
+        "brown laced boots"
       ],
       "characterId": "sylphiette"
     }

@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/casual_ponytail_summer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 795,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "casual_ponytail_summer",
-      "name": "法式极简削肩罗纹针织与高腰开衩裙",
-      "prose": "A dusty-pink ribbed halter knit top emphasizing slender shoulders, tucked into a cream high-waisted pleated midi skirt with a high side slit.",
+      "name": "法式削肩罗纹针织与高腰开衩裙",
+      "prose": "A dusty-pink ribbed halter knit top tucked into a cream pleated midi skirt with a high side slit and thin belt, worn with strappy sandals.",
       "tokens": [
-        "halterneck",
-        "sleeveless_knit",
-        "pink_top",
-        "ribbed_knit",
-        "high_waist_skirt",
-        "pleated_skirt",
-        "high_slit",
-        "bare_legs",
-        "strappy_sandals"
+        "pink halter top",
+        "ribbed knit",
+        "cream midi skirt",
+        "pleated slit skirt",
+        "thin leather belt",
+        "bare legs",
+        "strappy sandals"
       ],
       "characterId": "katou_megumi",
       "default": false,

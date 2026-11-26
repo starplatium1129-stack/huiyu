@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "aisha_greyrat/noctoria_apron_slip",
+  "revision": 1,
+  "sortOrder": 4183,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "aisha_greyrat",
+    "outfit": {
+      "id": "noctoria_apron_slip",
+      "name": "诺斯托利亚 · 琥珀蜜桃围裙风真丝吊带",
+      "category": "睡衣 / 吊带睡裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "aisha_greyrat",
+      "prose": "An amber-peach silk camisole slip featuring a frilled apron-inspired bodice, ivory scalloped lace hem, and adjustable satin back ties, worn barefoot.",
+      "tokens": [
+        "peach silk slip",
+        "frilled apron bodice",
+        "ivory scalloped lace",
+        "satin back ties",
+        "pleated mini hem",
+        "barefoot"
+      ]
+    }
+  }
+}

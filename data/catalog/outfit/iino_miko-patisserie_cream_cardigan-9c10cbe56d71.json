@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/patisserie_cream_cardigan",
+  "revision": 1,
+  "sortOrder": 4156,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "id": "patisserie_cream_cardigan",
+      "name": "甜点坊奶白开衫与咖啡百褶长裙",
+      "prose": "A soft cream knit cardigan buttoned over a white Peter-Pan collar blouse and a coffee-brown pleated midi skirt with a slim leather belt, sheer black stockings, and brown Mary Janes.",
+      "tokens": [
+        "cream knit cardigan",
+        "white peter-pan blouse",
+        "coffee pleated skirt",
+        "brown leather belt",
+        "sheer black stockings",
+        "brown mary janes"
+      ]
+    }
+  }
+}

@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/adventurer",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "adventurer",
-      "name": "藏蓝短斗篷旅行风衣与系带皮胸衣",
-      "prose": "A navy hooded travel cape over a cream linen tunic and leather-laced underbust corset, with dark shorts and sturdy boots.",
+      "name": "藏蓝短斗篷旅行装与系带皮胸衣",
+      "prose": "A navy hooded travel cape layered over a cream linen tunic and brown laced underbust corset with a leather utility belt, dark travel shorts, and sturdy leather boots.",
       "tokens": [
-        "navy_cape",
-        "short_cape",
-        "hooded_cape",
-        "cream_tunic",
-        "corset",
-        "leather_belt",
-        "short_shorts",
-        "bare_legs",
-        "travel_boots"
+        "navy hooded cape",
+        "cream linen tunic",
+        "brown laced corset",
+        "dark travel shorts",
+        "leather utility belt",
+        "sturdy leather boots"
       ],
       "characterId": "roxy_migurdia",
       "default": false,

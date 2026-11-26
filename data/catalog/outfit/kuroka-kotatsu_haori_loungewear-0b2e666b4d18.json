@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "kuroka/kotatsu_haori_loungewear",
+  "revision": 1,
+  "sortOrder": 4143,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "kuroka",
+    "outfit": {
+      "id": "kotatsu_haori_loungewear",
+      "name": "暖桌慵懒黑绒半缠与酒红居家短裤",
+      "prose": "A cropped black fleece haori jacket with gold hem trim layered loosely over a burgundy knit tunic and charcoal lounge shorts, paired with wool crew socks and worn barefoot.",
+      "tokens": [
+        "black fleece haori",
+        "burgundy knit tunic",
+        "gold hem trim",
+        "charcoal lounge shorts",
+        "wool crew socks",
+        "barefoot"
+      ]
+    }
+  }
+}

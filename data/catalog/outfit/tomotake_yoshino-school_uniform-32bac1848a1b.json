@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/school_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 627,
   "createdAt": null,
-  "updatedAt": "2026-11-06T01:02:18.781Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
       "default": false,
       "id": "school_uniform",
       "isDefault": false,
-      "name": "穗织学园水手制服（芳乃端正款）",
-      "prose": "The neat and formal Hoori Academy sailor uniform worn gracefully by Yoshino.",
+      "name": "穗织学园水手制服（芳乃款）",
+      "prose": "A crisp white sailor shirt with a navy sailor collar and crimson ribbon tie tucked into a navy pleated skirt, completed with black opaque pantyhose and brown penny loafers.",
       "tokens": [
-        "school uniform",
         "white sailor shirt",
         "navy sailor collar",
-        "red ribbon tie",
+        "crimson ribbon tie",
         "navy pleated skirt",
-        "black pantyhose",
-        "loafers"
+        "black opaque pantyhose",
+        "brown penny loafers"
       ]
     }
   }

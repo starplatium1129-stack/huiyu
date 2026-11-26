@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3160,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "mon3tr_arknights_lingerie_whisper",
     "characterId": "mon3tr_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛医疗下层隔离观测室，绿光监视器有节奏地闪烁着平稳波形。优雅伏在金属长椅上，墨绿结晶在白皙脊背两侧若隐若现，冷傲红眸睨视博士，尖锐而充满危险魔性。 她微微抬眸轻语——“……嘶。别把我和那些软弱的干员相提并论，博士。但若你敢靠得更近，我倒不介意试探你的底线。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "obsidian_emerald_mesh_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

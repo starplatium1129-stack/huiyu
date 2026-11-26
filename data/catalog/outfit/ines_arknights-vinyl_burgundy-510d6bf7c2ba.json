@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/vinyl_burgundy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2015,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "vinyl_burgundy",
-      "name": "勃艮第衬衫与石墨色剪裁马甲",
-      "prose": "A deep burgundy shirt under a sharply tailored black waistcoat, with a graphite long skirt and understated oxidized-silver earrings.",
+      "name": "勃艮第衬衫与墨黑剪裁马甲",
+      "prose": "A deep burgundy silk-blend shirt beneath a sharply tailored black waistcoat and a graphite midi skirt, accessorized with oxidized-silver drop earrings, sheer stockings, and oxblood oxford shoes.",
       "tokens": [
         "deep burgundy shirt",
         "black tailored waistcoat",
-        "graphite long skirt",
-        "oxidized silver earrings"
+        "graphite midi skirt",
+        "oxidized silver earrings",
+        "charcoal sheer stockings",
+        "oxblood oxford shoes"
       ],
       "characterId": "ines_arknights",
       "default": false,

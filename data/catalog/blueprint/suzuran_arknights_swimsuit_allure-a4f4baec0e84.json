@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_swimsuit_allure",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3247,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "suzuran_arknights_swimsuit_allure",
     "characterId": "suzuran_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "金色沙滩上波光闪闪的退潮清晨。铃兰身穿暖阳奶油色雏菊褶边甜美分体泳裙，蹲在水洼边仔细端详海贝。九条蓬松的金色尾巴乖巧收拢在身后，她捧着刚刚找到的彩色贝壳抬起头，金橘色的眼睛里亮晶晶地倒映着你的身影，宛如清晨最温暖的第一缕阳光。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "daisy_cream_ruffled_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,28 +1,25 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/cozy_night_negligee",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1581,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "cozy_night_negligee",
       "name": "私享香芋粉紫深V真丝睡裙",
       "tokens": [
-        "negligee",
-        "nightgown",
-        "purple_dress",
-        "silk",
-        "spaghetti_straps",
-        "low_chest",
-        "lace_trim",
-        "bare_shoulders",
-        "bare_legs",
+        "lilac silk negligee",
+        "eyelash lace",
+        "plunging neckline",
+        "spaghetti straps",
+        "bare shoulders",
+        "bare legs",
         "barefoot"
       ],
-      "prose": "A luxurious lilac silk negligee with eyelash lace along the plunging neckline over bare legs.",
+      "prose": "A lilac silk negligee edged with eyelash lace along its plunging neckline and thin spaghetti straps, worn barefoot.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_nino"

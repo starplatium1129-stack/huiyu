@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/standard",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "standard",
-      "name": "重型外骨骼装甲解构修身战术服",
-      "prose": "Dark industrial powered armor partly open over a fitted undersuit, with reinforced textile supports integrated into the leg armor.",
+      "name": "罗德岛重型外骨骼装甲战术服",
+      "prose": "Dark matte-black powered exoskeleton plates layered over a fitted olive-grey tactical undersuit, secured with thigh straps, metal buckles, and heavy armored boots.",
       "tokens": [
-        "black_armor",
-        "power_armor",
-        "modular_armor",
-        "bodysuit",
-        "thigh_strap",
-        "leg_harness",
-        "armored_boots"
+        "black powered armor",
+        "modular plates",
+        "olive undersuit",
+        "thigh straps",
+        "leg harness",
+        "matte metal buckles",
+        "armored gauntlets",
+        "heavy tactical boots"
       ],
       "characterId": "mudrock_arknights",
       "default": true,

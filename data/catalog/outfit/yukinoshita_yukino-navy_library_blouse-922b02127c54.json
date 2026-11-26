@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/navy_library_blouse",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1459,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:27:31.991642600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "navy_library_blouse",
       "name": "垂褶飘带真丝衬衫与侧开衩黑裙",
-      "prose": "A midnight-navy silk blouse with a pussy-bow tie and a high-waisted black crepe skirt with a side slit, paired with sheer black stockings and Mary Jane pumps.",
+      "prose": "A midnight-navy silk blouse with a front ribbon tie tucked into a high-waisted black crepe skirt with a side slit, paired with sheer black stockings and Mary Jane pumps.",
       "tokens": [
-        "silk_blouse",
-        "navy_blouse",
-        "pussy-bow",
-        "long_skirt",
-        "high_slit",
-        "black_skirt",
-        "black_stockings",
-        "mary_janes",
-        "elegant"
+        "navy silk blouse",
+        "ribbon-tie collar",
+        "black crepe skirt",
+        "high side slit",
+        "sheer black stockings",
+        "black mary janes"
       ],
       "characterId": "yukinoshita_yukino",
       "default": false,

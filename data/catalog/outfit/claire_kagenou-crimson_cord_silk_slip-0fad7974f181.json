@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "claire_kagenou/crimson_cord_silk_slip",
+  "revision": 1,
+  "sortOrder": 4083,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "claire_kagenou",
+    "outfit": {
+      "id": "crimson_cord_silk_slip",
+      "name": "墨黑绯红细带真丝吊带裙",
+      "prose": "Sleek onyx-black silk satin slip dress bordered with crimson silk cording, featuring a structured square neckline, crossed back straps, delicate lace hem, subtle side slit, silk ribbon tie, and bare feet.",
+      "tokens": [
+        "black silk slip",
+        "crimson cording",
+        "square neckline",
+        "crossed straps",
+        "side slit",
+        "lace hem",
+        "silk ribbon",
+        "barefoot"
+      ],
+      "characterId": "claire_kagenou",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 吊带睡裙"
+    }
+  }
+}

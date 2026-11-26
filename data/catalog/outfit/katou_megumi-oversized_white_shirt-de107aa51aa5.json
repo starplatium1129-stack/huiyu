@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/oversized_white_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1316,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "oversized_white_shirt",
       "name": "晨光微敞宽松白衬衫",
-      "prose": "An oversized white cotton dress shirt worn loosely with the top buttons undone, its hem falling to mid-thigh.",
+      "prose": "An oversized white cotton poplin dress shirt worn unbuttoned over a delicate lace camisole with rolled cuffs, worn barefoot.",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "unbuttoned",
-        "collarbone",
-        "bare_legs",
-        "lace_trim"
+        "oversized white shirt",
+        "cotton poplin",
+        "unbuttoned front",
+        "rolled cuffs",
+        "lace camisole",
+        "bare thighs",
+        "barefoot"
       ],
       "characterId": "katou_megumi",
       "default": false,

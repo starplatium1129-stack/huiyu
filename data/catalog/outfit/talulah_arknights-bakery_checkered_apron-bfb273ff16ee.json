@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "talulah_arknights/bakery_checkered_apron",
+  "revision": 1,
+  "sortOrder": 4003,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "talulah_arknights",
+    "outfit": {
+      "id": "bakery_checkered_apron",
+      "name": "格纹烘焙围裙与燕麦针织居家装",
+      "prose": "A soft oatmeal crew-neck knit sweater protected by a warm checkered cotton kitchen apron over a brown corduroy midi skirt, grey socks, and comfortable loafers.",
+      "tokens": [
+        "oatmeal knit pullover",
+        "checkered cotton apron",
+        "brown corduroy skirt",
+        "rolled sleeves",
+        "grey crew socks",
+        "brown loafers"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/evening_hanfu",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -13,15 +13,15 @@
       "default": false,
       "isDefault": false,
       "tokens": [
-        "hanfu",
-        "ivory cross-collar blouse",
-        "ankle-length teal skirt",
-        "golden grain embroidery",
-        "ocher sash",
+        "ivory hanfu blouse",
+        "crossed collar",
+        "teal long skirt",
+        "gold grain embroidery",
+        "ocher silk sash",
         "jade waist pendant",
         "ivory cloth flats"
       ],
-      "prose": "an ivory cross-collar blouse, ankle-length teal skirt with sparse golden grain embroidery, ocher sash, jade waist pendant and ivory cloth flats",
+      "prose": "An ivory crossed-collar hanfu blouse paired with an ankle-length teal skirt with golden grain embroidery, an ocher silk sash, a jade waist pendant, and ivory cloth flats.",
       "category": "日常衣装（创作）"
     }
   }

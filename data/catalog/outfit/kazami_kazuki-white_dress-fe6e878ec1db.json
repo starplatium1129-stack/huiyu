@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/white_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
       "id": "white_dress",
       "name": "纯白无瑕修身连身裙",
-      "prose": "a plain white linen sundress with a square neckline, thin shoulder straps and a lightly fitted waist",
+      "prose": "A crisp white linen sundress with a square neckline, slender shoulder straps, a lightly fitted waist seam, a small silver pin, and white flat shoes.",
       "tokens": [
-        "white sundress",
-        "sleeveless",
-        "square neckline",
-        "linen",
-        "thin shoulder straps"
+        "white linen sundress",
+        "square cut neckline",
+        "thin shoulder straps",
+        "fitted waist seam",
+        "silver collar pin",
+        "white flat shoes"
       ],
       "default": true,
       "isDefault": true

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/oceanic_symphony_gown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 353,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,15 +12,16 @@
       "id": "oceanic_symphony_gown",
       "isDefault": false,
       "name": "海潮绝响·渐层天鹅绒晚礼服",
-      "prose": "A midnight-blue-to-black strapless velvet gown with a high side slit, silver wave embroidery and a sheer crimson chiffon train over one shoulder.",
+      "prose": "A midnight-blue-to-black gradient strapless velvet evening gown with silver wave embroidery, a high side slit, and a sheer crimson chiffon drape across one shoulder, finished with heeled sandals.",
       "tokens": [
-        "midnight blue evening gown",
-        "black gradient",
-        "velvet",
-        "strapless",
+        "midnight blue gown",
+        "black velvet gradient",
+        "strapless bodice",
         "high side slit",
         "silver wave embroidery",
-        "sheer crimson chiffon train over one shoulder"
+        "crimson chiffon drape",
+        "bare shoulders",
+        "heeled sandals"
       ]
     }
   }

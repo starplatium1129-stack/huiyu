@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phrolova_wuwa/crimson_silk_lounging_kimono",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3506,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phrolova_wuwa",
     "outfit": {
       "id": "crimson_silk_lounging_kimono",
-      "name": "墨黑金线彼岸花纹居家丝绸长袍",
-      "prose": "A relaxed jet-black silk lounging robe woven with gold-thread spider lilies, tied loosely with a dark crimson sash.",
+      "name": "墨黑金线彼岸花纹居家丝绸袍",
+      "prose": "A relaxed jet-black silk lounging robe woven with gold spider lilies, tied loosely with a dark crimson sash and silver bracelet, worn barefoot.",
       "tokens": [
-        "black robe",
-        "silk",
-        "gold embroidery",
-        "red sash",
+        "black silk robe",
+        "gold lily print",
+        "crimson sash",
         "wide sleeves",
-        "bare feet"
+        "wrap collar",
+        "silver bracelet",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

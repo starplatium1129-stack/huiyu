@@ -1,19 +1,25 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/white_bath_towel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1167,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-06T01:02:18.772Z",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "white_bath_towel",
-      "name": "小恶魔轻薄裹身白浴巾",
+      "name": "纯白轻薄裹胸浴巾",
       "tokens": [
-        "white bath towel"
+        "white bath towel",
+        "cotton wrap",
+        "tucked bust",
+        "short hem",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "A lightweight white bath towel wrapped loosely around her small frame.",
+      "prose": "A soft lightweight white cotton bath towel tucked snugly above the bust, ending mid-thigh over bare legs and bare feet.",
       "default": false,
       "isDefault": false
     }

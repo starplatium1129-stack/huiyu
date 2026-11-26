@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3145,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "horn_arknights_swimsuit_allure",
     "characterId": "horn_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风在百米崖顶怒吼，浪涛拍打在暗礁上发出擂鼓般的巨响。白狼长官挺立在破损的岸防炮基座上，白金相间的竞速泳装将经受过严酷战火洗礼的挺拔身姿勾勒得如同大理石战神雕像。她没有戴防晒帽，金色短发任由暴烈的海雾吹散，转过坚毅沉着的蓝眸迎向你——「浪峰高度三点五米，水下暗流复杂。但无论何种风暴，只要阵地未失，白狼连队就不会后退半步。……博士，站到我的侧后方来，海风太大，不要被浪沫迷了眼睛。」",
-    "outfitId": "azure_summer_bikini",
+    "outfitId": "tempest_racing_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

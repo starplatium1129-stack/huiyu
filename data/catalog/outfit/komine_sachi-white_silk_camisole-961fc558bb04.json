@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "komine_sachi/white_silk_camisole",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1317,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "komine_sachi",
     "outfit": {
       "id": "white_silk_camisole",
       "name": "纯白侍约 · 女仆风荷叶蕾丝透视胸衣",
       "tokens": [
-        "pure white maid-inspired sheer ruffler bra",
-        "white lace apronette trim",
-        "delicate frilled choker",
-        "sheer high-cut panties",
-        "crisp pleated lace",
-        "innocent yet provocative lingerie"
+        "white lace bralette",
+        "apronette ruffled trim",
+        "frilled satin choker",
+        "sheer mesh briefs",
+        "pleated lace hem",
+        "barefoot"
       ],
-      "prose": "一袭融入女仆围裙元素的纯白半透蕾丝胸衣，精致荷叶边沿着细吊带延展至腰侧，脖颈佩戴一圈薄纱荷叶颈环，既端正神圣又若隐若现。",
+      "prose": "A pure white sheer lace bralette styled with apronette ruffles, a delicate frilled satin choker, matching sheer mesh briefs, and bare feet.",
       "default": false,
       "isDefault": false,
       "category": "情趣 / 蕾丝内衣"

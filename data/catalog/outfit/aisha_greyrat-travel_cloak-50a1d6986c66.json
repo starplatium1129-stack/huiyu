@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/travel_cloak",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
@@ -12,14 +12,14 @@
       "name": "森林绿斜襟旅行斗篷",
       "isDefault": false,
       "default": false,
-      "prose": "a forest-green wool travel cloak fastened with a small brass clasp over a cream shirt and brown trousers, with leather boots and a cross-body satchel",
+      "prose": "A forest-green wool travel cloak fastened with a brass clasp over an ivory linen shirt and brown straight trousers, styled with a leather crossbody satchel and tan leather boots.",
       "tokens": [
-        "green cloak",
-        "brass clasp",
-        "cream shirt",
-        "brown pants",
-        "leather boots",
-        "satchel"
+        "green wool cloak",
+        "brass cloak clasp",
+        "ivory linen shirt",
+        "brown straight trousers",
+        "leather crossbody satchel",
+        "tan leather boots"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 414,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -12,20 +12,17 @@
       "id": "standard",
       "isDefault": true,
       "name": "萨卡兹黑裙粉衬战装",
-      "prose": "her black sleeveless combat dress with a short layered ragged skirt and pink interior, white collar, metal pendant and chest straps, a loose jacket, long black gloves, pink purse, thigh straps and knee boots",
+      "prose": "A black sleeveless combat dress with a short ragged layered skirt and pink lining, white detached collar, metal pendant, chest harness straps, loose cropped jacket, long black gloves, pink pouch, leg straps, and black knee boots.",
       "tokens": [
         "black sleeveless dress",
-        "short layered skirt",
-        "ragged hem",
-        "pink lining",
-        "white collar",
-        "metal pendant",
-        "chest straps",
-        "loose jacket",
+        "pink petticoat lining",
+        "ragged layered skirt",
+        "white detached collar",
+        "chest harness straps",
+        "loose cropped jacket",
         "black long gloves",
-        "pink purse",
-        "thigh straps",
-        "knee boots"
+        "pink waist pouch",
+        "black high boots"
       ]
     }
   }

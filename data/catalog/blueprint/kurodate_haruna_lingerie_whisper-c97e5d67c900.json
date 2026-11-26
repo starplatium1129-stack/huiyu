@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3438,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "kurodate_haruna_lingerie_whisper",
     "characterId": "kurodate_haruna",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "豪华套房观景露台餐桌旁，蜡烛微火映着银制餐具与空甜点盘。优雅侧坐在铺着白绒的餐椅上，单手轻摇高脚杯中的起泡酒，深黑长发如瀑散落，嘴角挑起探究的愉悦弧度，红瞳流转着危险又诱人的笑意。 她微微抬眸轻语——“深夜的美食需要最纯粹的感官相配。老师，今晚的特别主菜……您打算如何品尝呢？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "wine_velvet_corset_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

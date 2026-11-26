@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/grey_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1437,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
       "id": "grey_stockings",
-      "name": "烟灰色长筒丝袜",
+      "name": "烟灰色轻透长筒丝袜",
       "tokens": [
+        "nude",
+        "bare shoulders",
+        "sheer hosiery",
+        "smoke grey",
         "grey thighhighs"
       ],
-      "prose": "Plain smoke-grey thigh-high stockings.",
+      "prose": "Completely unclothed except for sheer smoke-grey thigh-high stockings with narrow knit bands, leaving shoulders and torso bare for a figure study.",
       "default": false,
       "isDefault": false
     }

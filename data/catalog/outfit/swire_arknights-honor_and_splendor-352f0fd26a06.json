@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "swire_arknights/honor_and_splendor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1995,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "swire_arknights",
     "outfit": {
@@ -13,13 +13,14 @@
       "characterId": "swire_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A red Chinese-inspired dress with a dark jacket, gloves and a beret.",
+      "prose": "A rich crimson silk qipao dress paired with a dark cropped jacket with gold frog clasps, black satin gloves, a red wool beret, and black heeled boots.",
       "tokens": [
-        "red dress",
-        "chinese clothes",
-        "dark jacket",
-        "black gloves",
-        "beret"
+        "crimson silk qipao",
+        "dark cropped jacket",
+        "gold frog clasps",
+        "black satin gloves",
+        "red wool beret",
+        "black heeled boots"
       ],
       "identityTokensOverride": [
         "swire (arknights)",

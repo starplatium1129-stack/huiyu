@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lala_satalin_deviluke/summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 672,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "lala_satalin_deviluke",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "summer_bikini",
       "isDefault": false,
       "name": "活力鹅黄分体绑带比基尼",
-      "prose": "a yellow halterneck bikini with white frills, a small bow at the neckline and side-tie bottoms",
+      "prose": "A bright yellow halterneck bikini decorated with white ruffled frills, a small ribbon bow at the neckline, side-tie bottoms, and bare feet.",
       "tokens": [
-        "yellow bikini",
-        "halterneck",
-        "white frills",
-        "ribbon",
-        "side-tie bikini bottom"
+        "yellow halter bikini",
+        "white ruffled frills",
+        "small chest bow",
+        "side tie bottoms",
+        "pastel pink ribbon",
+        "barefoot"
       ]
     }
   }

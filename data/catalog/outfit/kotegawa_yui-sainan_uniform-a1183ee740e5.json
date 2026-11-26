@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kotegawa_yui/sainan_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 680,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kotegawa_yui",
     "outfit": {
@@ -12,17 +12,14 @@
       "id": "sainan_uniform",
       "isDefault": true,
       "name": "彩南风纪委员水手制服",
-      "prose": "the Sainan uniform: a neat white short-sleeved sailor blouse with a teal collar, a red disciplinary armband on the left sleeve, a teal pleated skirt, dark knee socks and brown loafers",
+      "prose": "The Sainan High School sailor uniform featuring a neat short-sleeved white blouse with a teal collar, a red disciplinary armband on the sleeve, teal pleated skirt, dark knee socks, and brown loafers.",
       "tokens": [
-        "sainan high school uniform",
-        "white shirt",
+        "white sailor blouse",
         "teal sailor collar",
-        "red armband",
-        "teal skirt",
-        "pleated skirt",
-        "knee socks",
-        "loafers",
-        "short sleeves"
+        "red sleeve armband",
+        "teal pleated skirt",
+        "dark knee socks",
+        "brown leather loafers"
       ]
     }
   }

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/red_silk_undergarment",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1164,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "red_silk_undergarment",
-      "name": "离火炽羽朱红刺绣真丝高开叉睡袍",
-      "prose": "A majestic vermilion silk lounging robe embellished with hand-stitched golden phoenix feather embroidery along the sleeves and train, fastened with an imperial gold cord belt.",
+      "name": "离火炽羽朱红刺绣真丝交领睡袍",
+      "prose": "A vermilion silk wrap lounging robe stitched with gold phoenix plumage along loose sleeves and a high side slit, cinched with a braided gold cord belt and worn barefoot.",
       "tokens": [
         "vermilion silk robe",
-        "phoenix embroidery",
+        "wrap robe",
+        "gold embroidery",
         "gold cord belt",
         "high side slit",
-        "oriental elegance",
-        "mastermind nightgown"
+        "loose sleeves",
+        "bare thighs",
+        "barefoot"
       ],
       "characterId": "changli_wuthering",
       "default": false,

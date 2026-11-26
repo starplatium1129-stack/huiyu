@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/cozy_dorm_loungewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1588,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "cozy_dorm_loungewear",
       "name": "暖绒落肩浅青华夫格大卫衣与运动短裤",
       "tokens": [
-        "oversized_hoodie",
-        "green_hoodie",
-        "off_shoulder",
-        "lounge_shorts",
-        "bare_legs",
-        "slippers"
+        "mint hoodie",
+        "oversized hoodie",
+        "off-shoulder",
+        "waffle knit",
+        "lounge shorts",
+        "ankle socks",
+        "plush slippers"
       ],
-      "prose": "An oversized mint-green zip hoodie slipping off one shoulder over comfy lounge shorts.",
+      "prose": "Oversized mint-green waffle-knit zip hoodie slipping softly off one shoulder over comfortable lounge shorts, paired with light ankle socks and cushioned slippers.",
       "isDefault": false,
       "default": false,
       "characterId": "firefly_hsr",

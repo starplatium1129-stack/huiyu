@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/swimsuit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "藏青挂颈高衩荷叶边比基尼",
-      "prose": "A ruffled navy halterneck bikini with delicate white edging and high-leg bottoms.",
+      "name": "藏青荷叶边挂颈泳装",
+      "prose": "A deep navy halterneck bikini detailed with crisp white piping, dainty chest frills, and high-cut bottoms, paired with bare legs and minimalist sandals.",
       "tokens": [
-        "navy_bikini",
+        "navy bikini",
         "halterneck",
-        "frilled_bikini",
-        "high_leg_bikini",
-        "bare_legs",
-        "sandals"
+        "frilled bikini",
+        "white trim",
+        "high leg bikini",
+        "bare legs",
+        "strappy sandals"
       ],
       "characterId": "sorasaki_hina"
     }

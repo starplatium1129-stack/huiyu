@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "nakano_nino/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1583,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "nakano_nino",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "私密全裸 / 纯粹形态",
+      "name": "中野二乃·全裸态",
       "tokens": [
-        "nude"
+        "nude",
+        "completely nude",
+        "butterfly ribbons",
+        "bare shoulders",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely without clothing or hosiery, wearing only twin black butterfly ribbons.",
       "isDefault": false,
       "default": false,
       "characterId": "nakano_nino"

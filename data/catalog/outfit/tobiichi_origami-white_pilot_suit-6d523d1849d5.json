@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/white_pilot_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1446,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "white_pilot_suit",
-      "name": "白色 AST 驾驶连体服",
+      "name": "白色 AST 乳胶驾驶连体服",
       "tokens": [
-        "white bodysuit",
+        "white latex bodysuit",
         "front zipper",
-        "latex"
+        "grey panel seams",
+        "high collar",
+        "long sleeves",
+        "bare breasts",
+        "heeled boots"
       ],
-      "prose": "A white fitted AST pilot suit with a long front zipper and restrained grey panel seams.",
+      "prose": "A sleek white latex AST pilot bodysuit with restrained grey panel seams and its long front zipper pulled open, paired with heeled boots.",
       "default": false,
       "isDefault": false
     }

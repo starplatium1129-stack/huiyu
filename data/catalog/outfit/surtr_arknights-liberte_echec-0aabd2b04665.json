@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/liberte_echec",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,17 +12,15 @@
       "id": "liberte_echec",
       "isDefault": false,
       "name": "自由失效·解构挂颈露肩夹克与格纹褶裙",
-      "prose": "A halterneck crop top beneath an open cropped tech jacket, paired with a red-and-black pleated plaid skirt and asymmetric thigh-highs.",
+      "prose": "An open cropped technical jacket worn off the shoulder over a black halter crop top and red-and-black pleated plaid skirt, styled with asymmetrical thigh-highs and sneakers.",
       "tokens": [
-        "black_halterneck",
-        "crop_top",
-        "off_shoulder",
-        "cropped_jacket",
-        "red_plaid_skirt",
-        "pleated_skirt",
-        "belt",
-        "asymmetrical_thighhighs",
-        "sneakers"
+        "off-shoulder tech jacket",
+        "black halterneck",
+        "red plaid skirt",
+        "pleated miniskirt",
+        "studded leather belt",
+        "asymmetrical thighhighs",
+        "platform sneakers"
       ],
       "characterId": "surtr_arknights"
     }

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "platinum_private_boudoir_allure",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3109,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "platinum_private_boudoir_allure",
     "characterId": "platinum_arknights",
-    "outfitId": "white_lace_lingerie",
+    "outfitId": "ivory_floral_lingerie",
     "title": "白金 · 丝绒被褥间的心跳距离",
     "category": "深层欢愉",
     "description": "【私密寝居·夜色正浓】月光如水穿过半掩的窗扉，与床头暖灯交汇。白金轻倚在靠枕上，纯白蕾丝与如雪银发交融，青蓝眼眸中泛着温润的水光。她微微倾身，呼吸温热可触，等待着仅属于两人的漫长夜晚。",

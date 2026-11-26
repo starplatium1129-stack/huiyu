@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "saten_ruiko_lingerie_whisper",
     "characterId": "saten_ruiko",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "学园都市学生宿舍屋顶平台，栏杆外是远近交错的巨大风力发电风车与璀璨灯火。双手压住险些被夜风掀起的睡裙下摆，头上的白梅花发饰轻颤，迎着风回过头来爽朗大笑，眼底闪烁着夏夜特有的清透与活泼。 她微微抬眸轻语——“哇啊！晚上的风好大好舒服！哈哈，初春如果在的话又要说我不知检点了呢！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "plum_blossom_cotton_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

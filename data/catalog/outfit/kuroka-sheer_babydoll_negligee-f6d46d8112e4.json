@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "kuroka/sheer_babydoll_negligee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1744,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "kuroka",
     "outfit": {
       "characterId": "kuroka",
       "id": "sheer_babydoll_negligee",
-      "name": "私密居室·半透真丝猫娘吊带睡裙",
-      "prose": "A semi-translucent black babydoll slip dress trimmed in delicate eyelash lace, tailored to drape loosely around her feline curves.",
+      "name": "私密居室·半透黑纱蕾丝吊带睡裙",
+      "prose": "A semi-translucent black chiffon babydoll slip dress edged in eyelash lace with thin spaghetti straps and matching lace panties, worn with bare legs and barefoot.",
       "tokens": [
-        "sheer_babydoll",
-        "translucent_fabric",
-        "lace_trim",
-        "bare_shoulders",
-        "spaghetti_strap"
+        "black sheer babydoll",
+        "eyelash lace trim",
+        "spaghetti straps",
+        "translucent chiffon hem",
+        "matching lace panties",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

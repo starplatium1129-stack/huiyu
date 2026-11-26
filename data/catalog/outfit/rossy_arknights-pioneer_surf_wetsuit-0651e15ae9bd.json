@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rossy_arknights/pioneer_surf_wetsuit",
+  "revision": 1,
+  "sortOrder": 4071,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "rossy_arknights",
+    "outfit": {
+      "id": "pioneer_surf_wetsuit",
+      "name": "拓荒警戒柠黄碳黑冲浪连体衣",
+      "prose": "A lemon-yellow and carbon-black neoprene surf monokini with stretch side panels, an exposed front zipper, quick-release utility clips, and tinted diving goggles, bare legs, and barefoot.",
+      "tokens": [
+        "lemon yellow wetsuit",
+        "black carbon trim",
+        "front zipper",
+        "neoprene monokini",
+        "diving goggles",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

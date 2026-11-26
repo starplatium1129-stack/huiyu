@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_lingerie_whisper",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 3158,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "ceobe_arknights_lingerie_whisper",
     "characterId": "ceobe_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛深夜空无一人的主厨房。刻俄柏只穿着一件印满小狗爪印的明黄纯棉运动背心和短裤，赤着脚丫蹑手蹑脚地摸进了饼干储藏室。她蹲在木柜角落，嘴里塞满了甜滋滋的刚出炉蜂蜜饼。听到脚步声，两只佩洛兽耳猛然警觉竖起，当看清是博士后，她连忙把剩下的大半块蜜饼背到身后，嘴里鼓鼓囊囊地发出含糊的傻笑——「唔……博、博士！小刻没有偷吃！小刻是在帮厨房……消灭坏掉的甜饼！真的好吃，要分博士一半吗？」",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "paw_print_pajamas",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

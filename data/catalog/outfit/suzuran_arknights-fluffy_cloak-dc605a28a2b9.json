@@ -1,23 +1,27 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/fluffy_cloak",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 374,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
       "default": false,
       "id": "fluffy_cloak",
       "isDefault": false,
-      "name": "冬青白绒斗篷",
-      "prose": "A deep-green wool cloak has a roomy hood, ivory faux-fur edging and a small gold clasp.",
+      "name": "冬青墨绿白绒连帽斗篷",
+      "prose": "A deep-green wool cloak edged with ivory faux-fur trim and fastened by a small gold toggle clasp over a cream wool dress, paired with warm wool tights and ankle boots.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
         "dark green cloak",
-        "hood",
-        "white fur trim"
+        "ivory faux-fur trim",
+        "roomy hood",
+        "gold toggle clasp",
+        "cream wool dress",
+        "warm wool tights",
+        "ankle boots"
       ]
     }
   }

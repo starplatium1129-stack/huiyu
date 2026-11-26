@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/writer_inkvest",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2060,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "writer_inkvest",
-      "name": "墨蓝丝绒马甲与钢笔银色胸针",
-      "prose": "An ink-blue velvet waistcoat with covered buttons over an ivory blouse and charcoal long skirt, accented by a slim silver fountain-pen brooch.",
+      "name": "墨蓝丝绒马甲与银钢笔胸针",
+      "prose": "An ink-blue velvet waistcoat with fabric-covered buttons over an ivory silk blouse and charcoal flared skirt, accented by a silver fountain-pen brooch, sheer stockings, and navy oxford heels.",
       "tokens": [
-        "ink blue velvet waistcoat",
-        "covered buttons",
-        "ivory blouse",
-        "charcoal long skirt",
-        "silver fountain pen brooch"
+        "ink velvet waistcoat",
+        "ivory silk blouse",
+        "charcoal flared skirt",
+        "silver pen brooch",
+        "nude sheer stockings",
+        "navy oxford heels"
       ],
       "characterId": "pozyomka_arknights",
       "default": false,

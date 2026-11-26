@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/festive_goldfish_yukata",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "festive_goldfish_yukata",
       "name": "珊瑚红金鱼浴衣",
-      "prose": "A light coral-red cotton yukata has swimming goldfish motifs and a plain black obi.",
+      "prose": "Coral-red cotton yukata printed with swimming goldfish motifs and wide sleeves, tied with a plain black obi and ribbon bow, styled with a side-worn fox mask, white tabi, and wooden geta.",
       "tokens": [
-        "coral red yukata",
+        "coral yukata",
         "goldfish print",
-        "black obi"
+        "wide sleeves",
+        "black obi",
+        "obi ribbon",
+        "fox mask",
+        "white tabi",
+        "wooden geta"
       ]
     }
   }

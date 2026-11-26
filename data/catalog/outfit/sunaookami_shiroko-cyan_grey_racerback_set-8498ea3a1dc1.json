@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sunaookami_shiroko/cyan_grey_racerback_set",
+  "revision": 1,
+  "sortOrder": 3951,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunaookami_shiroko",
+    "outfit": {
+      "id": "cyan_grey_racerback_set",
+      "name": "浅灰水蓝工字背运动吊带套",
+      "prose": "A breathable slate-grey and cyan stretch racerback sports camisole paired with snug compression boyleg workout shorts.",
+      "tokens": [
+        "grey sports camisole",
+        "cyan trim",
+        "racerback straps",
+        "stretch boyshorts",
+        "elastic waistband",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

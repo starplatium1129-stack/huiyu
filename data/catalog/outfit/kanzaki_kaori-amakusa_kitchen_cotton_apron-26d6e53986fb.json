@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kanzaki_kaori/amakusa_kitchen_cotton_apron",
+  "revision": 1,
+  "sortOrder": 4123,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "kanzaki_kaori",
+    "outfit": {
+      "id": "amakusa_kitchen_cotton_apron",
+      "name": "灶台娴静·靛蓝棉麻袖套与白色围裙",
+      "prose": "A crisp white cotton blouse with rolled cuffs layered beneath an indigo linen kitchen apron and dark navy culottes, paired with white socks and house sandals.",
+      "tokens": [
+        "white cotton blouse",
+        "indigo linen apron",
+        "rolled sleeve cuffs",
+        "dark navy culottes",
+        "woven cotton sash",
+        "white ankle socks",
+        "house sandals"
+      ]
+    }
+  }
+}

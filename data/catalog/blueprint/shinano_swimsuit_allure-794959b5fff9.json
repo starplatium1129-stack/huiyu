@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3444,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "shinano_swimsuit_allure",
     "characterId": "shinano",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "夜半潮平，海月清辉。信浓身着月华幽夜薄纱和风裹体连身泳装，侧卧在微浸潮水的海礁上。九条华美的狐尾在泛着微光的波纹中舒展，她似醒非醒地抬起眼睫，低声呢喃着关于梦境与重逢的絮语，幽邃而温柔。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "indigo_starlight_wrap_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

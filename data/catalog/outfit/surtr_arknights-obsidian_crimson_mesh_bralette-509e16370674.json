@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/obsidian_crimson_mesh_bralette",
+  "revision": 1,
+  "sortOrder": 3991,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "id": "obsidian_crimson_mesh_bralette",
+      "name": "墨黑皮革红纱拉链内衣套",
+      "prose": "A sleek supple black faux-leather and translucent crimson mesh bralette centered with a metallic front zipper and crisscross waist strapping over matching high-cut briefs.",
+      "tokens": [
+        "black leather bralette",
+        "crimson mesh trim",
+        "front zipper",
+        "criss-cross waist straps",
+        "high-cut black briefs",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

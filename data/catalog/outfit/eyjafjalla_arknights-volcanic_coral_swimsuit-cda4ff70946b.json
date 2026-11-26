@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/volcanic_coral_swimsuit",
+  "revision": 1,
+  "sortOrder": 4004,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "id": "volcanic_coral_swimsuit",
+      "name": "珊瑚橘荷叶边泳衣与奶油钩针披肩",
+      "prose": "A coral-peach ruffled two-piece bikini with delicate side-tie ribbons layered under a lightweight cream crochet capelet, carried with a woven straw tote and strappy sandals.",
+      "tokens": [
+        "coral bikini",
+        "ruffled trim",
+        "cream crochet capelet",
+        "side tie ribbons",
+        "woven straw tote",
+        "bare shoulders",
+        "bare legs",
+        "strappy sandals"
+      ]
+    }
+  }
+}

@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "shiromi_iori/tactical_night_ops",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 516,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "shiromi_iori",
     "outfit": {
       "default": false,
       "id": "tactical_night_ops",
       "isDefault": false,
-      "name": "分片黑色夜行战术装",
-      "prose": "a black tactical bodysuit with reinforced panels, a utility belt and low-profile pouches, a single-lens night-vision headset, fingerless gloves and combat boots",
+      "name": "哑光黑夜行战术紧身战衣",
+      "prose": "A matte black tactical stealth bodysuit segmented with reinforced armor panels, low-profile utility belt and pouches, single-lens night-vision headset, fingerless gloves, and heavy combat boots.",
       "tokens": [
-        "black bodysuit",
+        "black tactical bodysuit",
         "reinforced panels",
         "utility belt",
-        "pouches",
-        "single-lens night vision monocle",
+        "belt pouches",
+        "night vision monocle",
         "headset",
         "fingerless gloves",
         "combat boots"

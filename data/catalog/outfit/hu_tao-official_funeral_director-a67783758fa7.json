@@ -1,29 +1,27 @@
 {
   "kind": "outfit",
   "id": "hu_tao/official_funeral_director",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "official_funeral_director",
       "name": "往生堂深褐立领长衣",
-      "prose": "Her tailored dark-brown traditional coat with long tails, a mandarin collar and gold crest buttons over a white shirt and black shorts. Red neck ribbon, black fingerless gloves, silver rings, floral-cuffed white socks, black loafers and the familiar dark hat retain the Director silhouette.",
+      "prose": "Tailored dark-brown long-tailed coat with a mandarin collar and gold crest buttons worn over a white shirt and black shorts, accessorized with a red neck ribbon, fingerless gloves, silver rings, porkpie hat, floral-cuffed white socks, and black loafers.",
       "tokens": [
-        "long dark brown coat",
+        "dark brown coat",
         "mandarin collar",
         "gold buttons",
-        "black shorts",
         "white shirt",
+        "black shorts",
         "red ribbon",
         "fingerless gloves",
-        "silver rings",
-        "white socks",
-        "floral cuffs",
-        "black loafers",
-        "porkpie hat"
+        "floral socks",
+        "porkpie hat",
+        "black loafers"
       ],
       "default": true,
       "isDefault": true

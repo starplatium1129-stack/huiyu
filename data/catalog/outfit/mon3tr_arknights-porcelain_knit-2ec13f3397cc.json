@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/porcelain_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2150,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "porcelain_knit",
       "name": "瓷白立领针织衫与深绿长裙",
-      "prose": "A porcelain-white ribbed turtleneck with dark green cuffs and a softly folded deep-green midi skirt, fastened by a small silver hexagonal brooch.",
+      "prose": "A porcelain-white ribbed turtleneck with dark-green cuffs fastened with a silver hexagonal brooch, paired with a softly folded deep-green midi skirt, sheer black tights, and low leather boots.",
       "tokens": [
         "white ribbed turtleneck",
         "dark green cuffs",
-        "deep green midi skirt",
-        "silver hexagonal brooch"
+        "deep green skirt",
+        "midi flared cut",
+        "silver hexagonal brooch",
+        "sheer black tights",
+        "low leather boots"
       ],
       "characterId": "mon3tr_arknights",
       "default": false,

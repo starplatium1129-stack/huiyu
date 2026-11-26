@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_bridal",
       "name": "深紫银边长纱婚裙",
-      "prose": "A flowing deep-violet satin gown with silver edging, translucent veil and book charm on its waist ribbon.",
+      "prose": "A sweeping deep-violet satin bridal dress bordered with silver thread, knotted with a waist ribbon and book charm beneath a gossamer veil.",
       "tokens": [
-        "violet wedding dress",
-        "satin",
+        "violet satin gown",
         "silver trim",
-        "long veil",
-        "book charm",
-        "waist ribbon"
+        "plum waist ribbon",
+        "translucent veil",
+        "silver brooch",
+        "violet heels"
       ],
       "default": false,
       "isDefault": false

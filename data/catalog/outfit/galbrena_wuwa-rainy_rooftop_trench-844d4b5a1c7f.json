@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "galbrena_wuwa/rainy_rooftop_trench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3802,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "galbrena_wuwa",
     "outfit": {
       "id": "rainy_rooftop_trench",
       "name": "雨夜巡猎深靛防风长风衣",
-      "prose": "A rain-slicked dark indigo trench coat with blue piping worn open over a charcoal knit tank top, tailored trousers, and leather gloves.",
+      "prose": "A dark indigo trench coat with azure piping worn open over a charcoal knit tank top, tailored dark trousers, leather gloves, and combat boots.",
       "tokens": [
-        "blue trench coat",
+        "indigo trench coat",
         "open coat",
-        "tank top",
-        "black pants",
-        "fingerless gloves",
-        "wet clothes"
+        "blue piping",
+        "charcoal tank top",
+        "tailored trousers",
+        "leather gloves",
+        "silver belt",
+        "combat boots"
       ],
       "default": false,
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3116,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "pramanix_arknights_swimsuit_allure",
     "characterId": "pramanix_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "终于不用终日端坐在冰冷的神殿圣座之上。初雪将厚重祭袍换成轻灵飘逸的雪白泳裙，蓬松丰满的雪豹大尾巴环绕在身前，小心翼翼地护着自己不沾沙粒。她双手捧着插着吸管的冰镇青椰递到你面前，雪白双耳微微耷拉着羞红了耳尖——「在谢拉格……从不曾见过这样广阔温热的大海。初雪……暂时不是耶拉冈德的巫女，只是恩雅。这个甜甜的椰子，先请博士尝第一口吧。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "kjerag_frostbell_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

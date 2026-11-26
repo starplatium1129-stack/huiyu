@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hashima_izumi/cobalt_sketch_tshirt_dress",
+  "revision": 1,
+  "sortOrder": 4206,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "hashima_izumi",
+    "outfit": {
+      "id": "cobalt_sketch_tshirt_dress",
+      "name": "涂鸦大版海蓝T恤睡裙",
+      "prose": "An oversized cobalt-blue cotton jersey tee dress printed with anime sketches and a wide boatneck slipping off one shoulder, worn barefoot.",
+      "tokens": [
+        "cobalt graphic tee",
+        "oversized shirt dress",
+        "off shoulder boatneck",
+        "worn cotton",
+        "printed sketches",
+        "bare thighs",
+        "barefoot"
+      ]
+    }
+  }
+}

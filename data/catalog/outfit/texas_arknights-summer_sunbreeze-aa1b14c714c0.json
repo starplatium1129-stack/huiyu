@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/summer_sunbreeze",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 385,
   "createdAt": null,
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
@@ -12,14 +12,15 @@
       "id": "summer_sunbreeze",
       "isDefault": false,
       "name": "企鹅物流极简黑皮带扣哑光分体泳衣",
-      "prose": "A tactical minimalist two-piece swimsuit engineered from matte black water-resistant synthetic fabrics, fitted with subtle leather buckle harnesses, low-waist utility swim shorts, and a chocolate pocket sheath.",
+      "prose": "A minimalist matte-black two-piece tactical swimsuit detailed with slender leather buckle straps, fitted utility swim shorts, a pocket sheath, and black sandals.",
       "tokens": [
-        "tactical bikini",
-        "matte black swimsuit",
+        "matte black bikini",
         "leather buckle straps",
-        "swim shorts",
-        "lupo style",
-        "minimalist cool"
+        "halterneck top",
+        "black swim shorts",
+        "waist sheath",
+        "bare legs",
+        "black sandals"
       ],
       "characterId": "texas_arknights",
       "category": "泳装 / 比基尼"

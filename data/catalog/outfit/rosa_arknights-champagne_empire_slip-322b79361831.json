@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/champagne_empire_slip",
+  "revision": 1,
+  "sortOrder": 4107,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "champagne_empire_slip",
+      "name": "香槟帝国 · 金线刺绣双层真丝睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "rosa_arknights",
+      "prose": "A pale champagne-gold double-layered sheer silk empire-waist slip gown with thin satin straps and gold scrollwork embroidery along the neckline, paired with pearl drop earrings and worn barefoot.",
+      "tokens": [
+        "champagne silk slip",
+        "gold scroll embroidery",
+        "empire waist gown",
+        "sheer double chiffon",
+        "thin satin straps",
+        "barefoot"
+      ]
+    }
+  }
+}

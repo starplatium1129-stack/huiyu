@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/index_waistcoat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2169,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "index_waistcoat",
       "name": "墨灰工整马甲与象牙衬衫",
-      "prose": "A sharply tailored charcoal waistcoat with slim silver buttons over an ivory shirt, paired with a slate-blue A-line skirt.",
+      "prose": "A sharply tailored charcoal wool waistcoat with slim silver buttons over an ivory poplin shirt and slate-blue flared skirt, finished with a black neck ribbon and black penny loafers.",
       "tokens": [
-        "charcoal tailored waistcoat",
-        "silver buttons",
-        "ivory shirt",
-        "slate blue a-line skirt"
+        "charcoal wool waistcoat",
+        "slim silver buttons",
+        "ivory poplin shirt",
+        "slate flared skirt",
+        "black neck ribbon",
+        "black penny loafers"
       ],
       "characterId": "ptilopsis_arknights",
       "default": false,

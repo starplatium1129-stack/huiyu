@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/abyssal_jacquard_chemise",
+  "revision": 1,
+  "sortOrder": 4034,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "abyssal_jacquard_chemise",
+      "name": "深海咏叹 · 炭黑暗纹真丝衬裙",
+      "prose": "A charcoal-grey and black silk jacquard chemise with an asymmetric draped shoulder, split handkerchief hemline, antique brass ring clasps, and bare feet.",
+      "tokens": [
+        "charcoal silk chemise",
+        "asymmetric shoulder drape",
+        "jacquard wave pattern",
+        "handkerchief skirt hem",
+        "brass ring clasps",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

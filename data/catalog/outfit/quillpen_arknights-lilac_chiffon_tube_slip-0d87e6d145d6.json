@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/lilac_chiffon_tube_slip",
+  "revision": 1,
+  "sortOrder": 4010,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "id": "lilac_chiffon_tube_slip",
+      "name": "灰紫绉纱羽毛蕾丝抹胸睡裙",
+      "prose": "A dusty-lilac crinkled chiffon strapless tube slip dress featuring an elasticized shirred bodice, feathery white lace trim, and a narrow satin bow, worn barefoot.",
+      "tokens": [
+        "dusty lilac slip",
+        "crinkled chiffon",
+        "white lace trim",
+        "shirred tube bodice",
+        "satin tie bow",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

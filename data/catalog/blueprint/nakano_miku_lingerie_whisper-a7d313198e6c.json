@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3384,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "nakano_miku_lingerie_whisper",
     "characterId": "nakano_miku",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "榻榻米地板上铺着软垫，四周散落着武田信玄与战国武将的历史图鉴。抱着大抱枕把脸埋进半截，脖子上挂着大耳机，蓝绿发丝垂落在露出的洁白香肩上，暗蓝眼眸偷偷抬起看你。 她微微抬眸轻语——“风太郎……今天我烤的抹茶饼干，有比上次稍微好吃一点点吗？……如果合格的话，就奖励你再多陪我一会儿。”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "mist_cable_knit_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

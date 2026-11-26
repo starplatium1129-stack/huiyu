@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/white_beret_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 794,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "white_beret_dress",
       "name": "春日坡道复古蓬蓬白裙与贝雷帽",
-      "prose": "A nostalgic white flared dress with puffed shoulders and a structured bodice, paired with a tilted white beret and sheer black thigh-highs.",
+      "prose": "A white flared dress with puff sleeves and a sweetheart bodice paired with a tilted white wool beret, sheer black thigh-highs, and Mary Janes.",
       "tokens": [
-        "vintage_dress",
-        "white_dress",
-        "puff_sleeves",
-        "sweetheart_neckline",
-        "flared_skirt",
-        "white_beret",
-        "black_thighhighs",
-        "mary_janes"
+        "white flared dress",
+        "puff sleeves",
+        "sweetheart neckline",
+        "white wool beret",
+        "ribbon bow",
+        "sheer black thighhighs",
+        "mary janes"
       ],
       "characterId": "katou_megumi",
       "default": false,

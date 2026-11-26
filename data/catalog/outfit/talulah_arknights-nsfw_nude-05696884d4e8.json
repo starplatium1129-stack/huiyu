@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "talulah_arknights/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1608,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "talulah_arknights",
     "outfit": {
@@ -14,15 +14,12 @@
       "name": "私密全裸 / 龙裔原生形态",
       "tokens": [
         "nude",
-        "bare skin",
-        "dragon horns",
-        "dragon tail",
-        "blush",
-        "sweat",
-        "collarbone",
-        "bare shoulders"
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "completely unclad with flushed porcelain skin, revealing proud draconic horns and slender tail in quiet private intimacy"
+      "prose": "Completely unclothed natural form with bare shoulders, slender back, bare legs, and bare feet."
     }
   }
 }

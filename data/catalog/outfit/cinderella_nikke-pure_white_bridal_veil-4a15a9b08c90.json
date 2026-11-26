@@ -1,28 +1,24 @@
 {
   "kind": "outfit",
   "id": "cinderella_nikke/pure_white_bridal_veil",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1546,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "cinderella_nikke",
     "outfit": {
       "id": "pure_white_bridal_veil",
       "name": "镜之誓约纯白花嫁婚纱",
-      "prose": "an immaculate bridal gown: an off-shoulder corset wedding dress of luminous white silk, embroidered with delicate crystalline frost patterns, a long translucent cathedral veil flowing over her silver waves, pearl choker, and white lace opera gloves.",
+      "prose": "An ivory off-shoulder corset silk wedding gown embroidered with crystalline frost motifs, paired with a flowing translucent cathedral veil, pearl choker, white lace opera gloves, and white satin pumps.",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "white_dress",
-        "off-shoulder",
-        "corset",
-        "long_veil",
-        "crystal_embroidery",
-        "choker",
-        "opera_gloves",
-        "lace_gloves",
-        "elegant"
+        "white wedding gown",
+        "off-shoulder corset",
+        "cathedral bridal veil",
+        "crystal frost embroidery",
+        "pearl choker",
+        "white lace gloves",
+        "white satin pumps"
       ],
       "default": false,
       "isDefault": false

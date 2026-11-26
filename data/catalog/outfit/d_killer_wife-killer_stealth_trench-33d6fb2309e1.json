@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "d_killer_wife/killer_stealth_trench",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1722,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "d_killer_wife",
     "outfit": {
       "characterId": "d_killer_wife",
       "id": "killer_stealth_trench",
       "name": "潜入任务·利落风衣短制服",
-      "prose": "Her covert operative uniform consisting of a sleek black short trench coat, tailored shirt, dark mini skirt, and leather gloves.",
+      "prose": "A sleek black short trench coat worn over a tailored white collared shirt, slim dark tie, and black mini skirt, paired with black leather gloves, sheer black stockings, and heeled ankle boots.",
       "tokens": [
-        "black_trench_coat",
-        "short_coat",
-        "black_skirt",
-        "collared_shirt",
-        "black_gloves",
-        "thighhighs"
+        "black short trench",
+        "tailored white shirt",
+        "black mini skirt",
+        "slim tie",
+        "black leather gloves",
+        "sheer black stockings",
+        "heeled ankle boots"
       ],
       "default": false,
       "isDefault": false

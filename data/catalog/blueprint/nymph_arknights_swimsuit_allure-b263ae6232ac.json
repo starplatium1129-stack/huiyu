@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3124,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "nymph_arknights_swimsuit_allure",
     "characterId": "nymph_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "人造浪花一波接着一波撞击着浮圈。妮芙伏在甜甜圈浮圈中央，小巧的萨卡兹角在黑发间显得格外灵动，咬着滴水的冰棒冲你坏笑，粉色眼眸中闪烁着恶作剧的光芒——「呜哇！刚才的大浪差点把我掀翻了呢！不过……博士心跳加速的声音，好像比海浪的声音还要吵哦？嘻嘻，是在害怕溺水，还是在看着我心跳过速呢？」",
-    "outfitId": "pink_summer_bikini",
+    "outfitId": "djall_pulse_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

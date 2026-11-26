@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "itsuwa/camel_park_coat_muffler",
+  "revision": 1,
+  "sortOrder": 4121,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "itsuwa",
+    "outfit": {
+      "id": "camel_park_coat_muffler",
+      "name": "雪日暖茶·驼色毛呢大衣与格纹围巾",
+      "prose": "A mid-length camel wool coat worn with a soft plaid knitted muffler over an ivory turtleneck and dark wool skirt, paired with warm black tights and brown ankle boots.",
+      "tokens": [
+        "camel wool coat",
+        "plaid knitted muffler",
+        "ivory turtleneck knit",
+        "dark wool skirt",
+        "leather belt buckle",
+        "warm black tights",
+        "brown ankle boots"
+      ]
+    }
+  }
+}

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "beta_shadow/manuscript_pajamas",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1883,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "beta_shadow",
     "outfit": {
       "id": "manuscript_pajamas",
       "name": "通宵赶稿猫耳条纹长衫",
-      "prose": "An oversized pastel pink and white horizontal striped sleep tunic draping past the hips, matched with plush white cat-paw house slippers and reading wire-rim glasses.",
+      "prose": "Oversized pastel-pink and cream striped cotton sleep tunic over soft knit shorts, styled with thin reading glasses, a collar ribbon tie, ankle socks, and plush house slippers.",
       "tokens": [
-        "striped_clothes",
-        "oversized_shirt",
-        "pajamas",
-        "nightshirt",
-        "glasses",
-        "cat_slippers",
-        "bare_legs",
-        "casual"
+        "striped nightshirt",
+        "oversized shirt",
+        "pink stripes",
+        "cotton shorts",
+        "wire glasses",
+        "ribbon tie",
+        "ankle socks",
+        "plush slippers"
       ],
       "characterId": "beta_shadow",
       "default": false,

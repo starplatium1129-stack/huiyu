@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/white_fitting_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1315,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "white_fitting_dress",
-      "name": "新菜专属试衣隐形拉链露背小白裙",
-      "prose": "A tailored white dress with a long exposed metal back zipper, worn with ultra-sheer black stockings.",
+      "name": "试衣间金属后拉链露背小白裙",
+      "prose": "A tailored sleeveless white dress with an open back and exposed metal zipper, paired with a pearl necklace, sheer pantyhose, and pointed pumps.",
       "tokens": [
-        "white_dress",
-        "bodycon_dress",
-        "open_back",
-        "zipper",
-        "back_zipper",
-        "black_thighhighs",
-        "high_heels"
+        "white bodycon dress",
+        "open back",
+        "exposed metal zipper",
+        "sleeveless cut",
+        "pearl necklace",
+        "sheer pantyhose",
+        "pointed pumps"
       ],
       "characterId": "katou_megumi",
       "default": false,

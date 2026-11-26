@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 579,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed state with bare shoulders, bare torso, bare legs, and bare feet, without clothing or accessories.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare torso",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

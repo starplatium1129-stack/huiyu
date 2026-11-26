@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kyouyama_kazusa/mauve_lace_camisole_set",
+  "revision": 1,
+  "sortOrder": 3922,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kyouyama_kazusa",
+    "outfit": {
+      "id": "mauve_lace_camisole_set",
+      "name": "烟粉灰蕾丝猫耳吊带睡衣",
+      "prose": "A smoky mauve and slate-grey lace-trimmed satin camisole featuring geometric notched bust accents and ribbon ties, paired with matching ruffled tap shorts.",
+      "tokens": [
+        "mauve camisole",
+        "grey lace trim",
+        "satin ribbon bow",
+        "ruffled shorts",
+        "thin straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

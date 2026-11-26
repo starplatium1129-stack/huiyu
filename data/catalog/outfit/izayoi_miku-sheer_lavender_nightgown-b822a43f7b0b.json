@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "izayoi_miku/sheer_lavender_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1752,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "izayoi_miku",
     "outfit": {
       "characterId": "izayoi_miku",
       "id": "sheer_lavender_nightgown",
       "name": "巨星寝室·淡紫半透薄纱睡裙",
-      "prose": "A glamorous semi-sheer lavender chiffon nightgown detailed with scalloped French lace, softly draping around her curves.",
+      "prose": "A semi-sheer lavender chiffon nightgown edged with scalloped French lace and thin straps, accented by a pearl anklet and worn barefoot.",
       "tokens": [
-        "lavender_nightgown",
-        "sheer_fabric",
-        "lace_trim",
-        "bare_shoulders",
+        "lavender nightgown",
+        "sheer chiffon",
+        "french lace trim",
+        "thin straps",
+        "bare shoulders",
+        "pearl anklet",
+        "bare legs",
         "barefoot"
       ],
       "default": false,

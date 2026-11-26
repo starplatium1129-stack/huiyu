@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/rooftop_workwear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2016,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "rooftop_workwear",
       "name": "苔绿帆布工装夹克与炭灰长裤",
-      "prose": "A moss-green canvas work jacket with reinforced cuffs and a slim black belt over a dark shirt and charcoal trousers, with flat leather boots.",
+      "prose": "A moss-green canvas work jacket with reinforced cuffs over a slate henley shirt and charcoal trousers secured by a woven utility belt, paired with ribbed cotton socks and flat leather boots.",
       "tokens": [
-        "moss green canvas work jacket",
-        "reinforced cuffs",
-        "black belt",
-        "dark shirt",
-        "charcoal trousers",
+        "moss green jacket",
+        "reinforced canvas cuffs",
+        "slate henley shirt",
+        "charcoal work trousers",
+        "woven utility belt",
+        "ribbed cotton socks",
         "flat leather boots"
       ],
       "characterId": "ines_arknights",

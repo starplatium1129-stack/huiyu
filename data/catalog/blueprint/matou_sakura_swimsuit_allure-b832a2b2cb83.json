@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matou_sakura_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3256,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "matou_sakura_swimsuit_allure",
     "characterId": "matou_sakura",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "微凉的白浪一遍遍吻过赤裸脚背。樱单手轻扶着系有紫色缎带的宽檐草帽，荷叶边泳装衬得雪白肌肤如初生莲花般娇柔。她看着迎面走来的学长，紫水晶般的眼眸漾起纯粹的欢欣，轻柔的声音随着海风飘送——「学长，海水真的一点都不冷，很舒服呢……那个，防晒霜已经涂好了，等会儿……可以陪我一起去那边捡贝壳吗？」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "wisteria_frilled_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

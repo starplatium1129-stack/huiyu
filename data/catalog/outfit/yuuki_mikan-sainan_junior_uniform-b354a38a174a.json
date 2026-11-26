@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuuki_mikan/sainan_junior_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1502,
   "createdAt": "2026-10-21T15:20:00+00:00",
-  "updatedAt": "2026-10-21T15:30:22.622953400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "yuuki_mikan",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "sainan_junior_uniform",
       "isDefault": false,
       "name": "彩南中学初中部水手制服",
-      "prose": "wearing the neat Sainan junior high school uniform featuring a white sailor blouse with navy trim, vibrant red neckerchief, pleated navy skirt, knee-high black socks and brown loafers",
+      "prose": "The Sainan Junior High sailor uniform with a white blouse, navy collar, bright crimson silk neckerchief, navy pleated skirt, black knee-high socks, and brown leather loafers.",
       "tokens": [
-        "sailor_uniform",
-        "sailor_collar",
-        "pleated_skirt",
-        "red_neckerchief",
-        "black_socks",
-        "loafers"
+        "white sailor blouse",
+        "navy sailor collar",
+        "crimson silk neckerchief",
+        "navy pleated skirt",
+        "black knee socks",
+        "brown leather loafers"
       ]
     }
   }

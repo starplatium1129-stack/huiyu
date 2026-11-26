@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3282,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "furina_swimsuit_allure",
     "characterId": "furina",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "日落的霞光把整座半沉水中的石柱群照耀成天然的露天歌剧院。芙宁娜立于大理石柱顶端，深蓝色的蕾丝泳裙被夕阳染上华丽金芒，异色双瞳在落日下盈盈欲滴。她极其庄重地向唯一的观众提裙躬身谢幕，随后却突然破功、红着脸揉了揉发酸的脚踝——「呼……这出专为你一人演出的《夏日水都狂想曲》，评价如何？别只是鼓掌啊，在石柱上单脚站了这么久……快、快伸手扶我下去啦！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "fontaine_opera_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

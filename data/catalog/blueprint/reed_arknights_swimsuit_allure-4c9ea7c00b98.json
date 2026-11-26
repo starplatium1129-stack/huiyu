@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3163,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "reed_arknights_swimsuit_allure",
     "characterId": "reed_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "晚风将大海的咸涩与晚霞的热度一同送上海崖。苇草的赤红长发在风中如流火飞舞，龙尾上的金环在夕阳下泛起古朴光芒。她双手捧起一朵不伤人的温柔小火苗，将微光递向你，澄净的眼眸中满是释怀与眷恋——「博士，这里的海浪……能洗去生命消逝的灰烬。掌心的火不再带来毁灭，它现在很暖。如果有风吹来，就靠在我身边吧。」",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "ember_cutout_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_private",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 997,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_private",
       "name": "浅粉落肩羊绒衫与白缎短裤",
-      "prose": "A relaxed blush-pink fine cashmere cardigan sliding off one shoulder over a silk-lace camisole and tailored ivory shorts.",
+      "prose": "A relaxed pale-pink fine cashmere cardigan layered over a lace-edged white silk camisole and tailored ivory satin shorts with a small pearl brooch, bare legs, and white house slippers.",
       "tokens": [
-        "pink_cardigan",
-        "knitwear",
-        "off_shoulder",
-        "white_camisole",
-        "silk_shorts",
-        "lace_trim",
-        "bare_legs",
-        "slippers"
+        "pale pink cardigan",
+        "fine cashmere knit",
+        "white silk camisole",
+        "ivory satin shorts",
+        "lace edging",
+        "pearl brooch",
+        "bare legs",
+        "white house slippers"
       ],
       "default": false,
       "isDefault": false,

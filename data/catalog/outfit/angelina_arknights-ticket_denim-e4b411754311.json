@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "angelina_arknights/ticket_denim",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2183,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "angelina_arknights",
     "outfit": {
       "id": "ticket_denim",
       "name": "票根蓝牛仔夹克与赭红百褶裙",
-      "prose": "A soft blue denim jacket with copper buttons over a white ribbed shirt and a rust-red pleated skirt, with a small ticket-shaped enamel pin.",
+      "prose": "A soft blue denim jacket with copper buttons and an enamel ticket pin over a white ribbed shirt and rust-red pleated skirt, finished with cream canvas sneakers.",
       "tokens": [
         "blue denim jacket",
-        "copper buttons",
+        "copper snap buttons",
         "white ribbed shirt",
-        "rust red pleated skirt",
-        "enamel pin"
+        "rust pleated skirt",
+        "enamel ticket pin",
+        "cream canvas sneakers"
       ],
       "characterId": "angelina_arknights",
       "default": false,

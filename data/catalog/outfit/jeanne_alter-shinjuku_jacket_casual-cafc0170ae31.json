@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_alter/shinjuku_jacket_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_alter",
     "outfit": {
       "id": "shinjuku_jacket_casual",
-      "name": "新宿黑皮夹克与修身皮裤",
+      "name": "新宿黑机车皮衣与修身皮裤",
       "tokens": [
-        "black leather jacket",
+        "black biker jacket",
         "black tank top",
-        "black leather pants",
-        "choker",
-        "black boots"
+        "slim leather pants",
+        "silver buckles",
+        "black choker",
+        "black heels"
       ],
-      "prose": "Her fitted black leather biker jacket over a black tank top and slim leather trousers, finished with a choker, silver zippers and black boots.",
+      "prose": "A cropped black leather motorcycle jacket worn over a dark fitted tank top, slim-cut black leather trousers, studded choker, and heeled boots.",
       "styleHint": "stylish urban neon contrast",
       "isDefault": false,
       "default": false

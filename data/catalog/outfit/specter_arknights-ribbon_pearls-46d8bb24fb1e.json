@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "specter_arknights/ribbon_pearls",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2135,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "specter_arknights",
     "outfit": {
       "id": "ribbon_pearls",
       "name": "珍珠灰缎带领与墨黑直身裙",
-      "prose": "A pearl-grey long-sleeved blouse tied with a narrow navy ribbon beneath a black straight-cut dress, with a tiny silver shell button.",
+      "prose": "A pearl-grey long-sleeved blouse tied with a narrow navy neck ribbon beneath a straight black shift dress with white lace cuffs, a silver shell button, and low heeled pumps.",
       "tokens": [
-        "pearl grey long-sleeved blouse",
-        "navy ribbon tie",
-        "black straight dress",
-        "silver shell button"
+        "pearl grey blouse",
+        "navy neck ribbon",
+        "black shift dress",
+        "silver shell button",
+        "white lace cuffs",
+        "low heeled pumps"
       ],
       "characterId": "specter_arknights",
       "default": false,

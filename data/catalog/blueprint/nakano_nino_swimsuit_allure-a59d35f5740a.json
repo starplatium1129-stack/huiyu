@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3385,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "nakano_nino_swimsuit_allure",
     "characterId": "nakano_nino",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海风拂动着条纹遮阳伞的荷叶边。二乃斜倚在软垫躺椅上，修长双腿交叠，交叉绑带的比基尼将优越的身材曲线毫无保留地展现出来。她随手把墨镜卡在比基尼系带间，将防晒乳精准地抛进你手里，扬起精致的下巴发号施令——「发什么呆呢！后背我自己可够不着，赶紧帮我涂均匀。听好了，要是一块地方没涂好害我晒伤，接下来的所有旅行行程你都别想好过！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "berry_crosswrap_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

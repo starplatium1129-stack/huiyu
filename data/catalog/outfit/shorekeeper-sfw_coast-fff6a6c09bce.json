@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_coast",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 938,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_coast",
       "name": "黑海岸星流薄纱开衩裙与透肤长袜",
-      "prose": "A tiered indigo-gradient sheer gown with tide embroidery and a high side slit over translucent stockings.",
+      "prose": "A tiered white-to-indigo sheer tulle gown with tide-pattern blue embroidery, a side slit, arm wraps, and a delicate veil over white thigh-highs, worn barefoot.",
       "tokens": [
-        "white_dress",
-        "translucent_dress",
-        "blue_gradient",
-        "embroidery",
-        "layered_dress",
-        "side_slit",
-        "bare_shoulders",
-        "white_thighhighs"
+        "white tulle dress",
+        "indigo gradient",
+        "blue embroidery",
+        "side slit",
+        "sheer veil",
+        "arm wraps",
+        "white thighhighs",
+        "barefoot"
       ],
       "default": true,
       "isDefault": true,

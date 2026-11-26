@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/birdguide_knit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2044,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "birdguide_knit",
-      "name": "砂粉菱格针织背心与蓝灰短裙",
-      "prose": "A dusty-pink diamond-knit vest over a cream shirt, with a blue-grey pleated skirt and a small feather-shaped enamel pin.",
+      "name": "砂粉菱格背心与蓝灰百褶裙",
+      "prose": "A dusty-pink diamond-knit vest layered over a cream cotton blouse and a slate-blue pleated skirt, pinned with a feather enamel badge and paired with ivory knee socks and brown penny loafers.",
       "tokens": [
-        "dusty pink diamond-knit vest",
-        "cream shirt",
-        "blue grey pleated skirt",
-        "feather enamel pin"
+        "pink argyle vest",
+        "cream cotton blouse",
+        "slate pleated skirt",
+        "feather enamel pin",
+        "ivory knee socks",
+        "brown penny loafers"
       ],
       "characterId": "ray_arknights",
       "default": false,

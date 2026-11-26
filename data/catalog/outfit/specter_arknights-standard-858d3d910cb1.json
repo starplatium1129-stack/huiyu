@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "specter_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1978,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "specter_arknights",
     "outfit": {
       "id": "standard",
-      "name": "基础服装 · 灰披肩与黑裙",
+      "name": "基础服装 · 灰披肩与修女黑裙",
       "characterId": "specter_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A black dress with a grey capelet and dark boots.",
+      "prose": "A gothic black dress layered under a grey shoulder capelet with a crisp white scalloped collar, a silver cross pendant, and tall black buckled boots.",
       "tokens": [
-        "black dress",
-        "grey capelet",
-        "black boots"
+        "black nun dress",
+        "grey shoulder capelet",
+        "white scalloped collar",
+        "black pleated skirt",
+        "silver cross pendant",
+        "black buckled boots"
       ]
     }
   }

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/ice_silk_slip_gown",
+  "revision": 1,
+  "sortOrder": 4146,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "ice_silk_slip_gown",
+      "name": "寒梅冰蓝真丝细带长睡裙",
+      "prose": "An ice-blue bias-cut liquid silk slip gown with ultra-thin shoulder straps, a draped ankle-length hem, and matching silk panties, worn with bare legs and barefoot.",
+      "tokens": [
+        "blue silk slip",
+        "liquid silk satin",
+        "thin shoulder straps",
+        "bias-cut long hem",
+        "matching silk panties",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

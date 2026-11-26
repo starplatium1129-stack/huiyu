@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_ancestral_curse_dog_ears_flustered",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "action": "双手试图捂住头顶突然长出的白色犬耳，眼含泪花，满面通红娇嗔求饶",
     "camera": "medium shot",
@@ -19,7 +19,7 @@
     "location": "神社内室屏风前软垫上",
     "mood": "极度羞怯",
     "negativeTokens": [],
-    "outfitId": "ancestral_dog_ears",
+    "outfitId": "ceremonial_dance",
     "promptProse": "She cups both newly appeared ears with her hands, looking flustered as the paper lamp casts warm side light through their white fur.",
     "promptTokens": [
       "white dog ears",

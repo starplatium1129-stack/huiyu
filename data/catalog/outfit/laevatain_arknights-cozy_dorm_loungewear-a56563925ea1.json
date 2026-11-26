@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/cozy_dorm_loungewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 416,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -12,13 +12,15 @@
       "id": "cozy_dorm_loungewear",
       "isDefault": false,
       "name": "炭灰落肩休息舱家居服",
-      "prose": "an oversized charcoal hoodie with dropped shoulders and a back-hem tail opening, soft cotton lounge shorts and over-knee cotton socks",
+      "prose": "An oversized charcoal-grey hoodie with dropped shoulders and back-hem clearance over soft grey cotton lounge shorts, paired with over-knee cotton socks and worn barefoot.",
       "tokens": [
         "charcoal hoodie",
-        "drop shoulders",
-        "cotton lounge shorts",
-        "over-knee socks",
-        "tail opening at back hem"
+        "dropped shoulders",
+        "ribbed cuffs",
+        "grey lounge shorts",
+        "drawstring waist",
+        "over-knee cotton socks",
+        "barefoot"
       ]
     }
   }

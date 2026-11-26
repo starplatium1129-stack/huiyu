@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/coffee_jacket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2014,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "coffee_jacket",
-      "name": "乌木短皮夹克与象牙高领衫",
-      "prose": "A dark umber cropped leather jacket with an asymmetric zip over an ivory turtleneck, black straight-leg trousers and dark loafers.",
+      "name": "乌木斜拉链皮夹克与象牙高领衫",
+      "prose": "A dark umber cropped leather jacket with an asymmetric zipper worn over an ivory ribbed turtleneck and black straight-leg trousers, finished with a narrow silver chain and dark leather loafers.",
       "tokens": [
-        "umber cropped leather jacket",
-        "asymmetric zipper",
-        "ivory turtleneck",
-        "black straight-leg trousers",
-        "dark loafers"
+        "umber leather jacket",
+        "asymmetric front zipper",
+        "ivory rib turtleneck",
+        "black straight trousers",
+        "narrow silver chain",
+        "dark leather loafers"
       ],
       "characterId": "ines_arknights",
       "default": false,

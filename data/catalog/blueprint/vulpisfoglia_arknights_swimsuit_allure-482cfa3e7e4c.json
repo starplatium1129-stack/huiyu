@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_swimsuit_allure",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3118,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_swimsuit_allure",
     "characterId": "vulpisfoglia_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "地中海峭壁黑松掩映的石质观景台。忍冬身着叙拉古橄榄绿意式剪裁高叉连身泳衣，手执冰咖啡斜靠在石灰岩矮墙旁。海风扬起墨绿薄纱，她灰黑的狼耳敏锐警觉，金棕色眼眸兼具领袖的锐利与私密休假时的松弛，从容地向你举杯示意。",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "siracusa_olive_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

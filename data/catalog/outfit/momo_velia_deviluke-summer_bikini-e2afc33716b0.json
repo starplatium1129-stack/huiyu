@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "momo_velia_deviluke/summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 678,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "momo_velia_deviluke",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "summer_bikini",
       "isDefault": false,
       "name": "娇艳浅紫荷叶边分体比基尼",
-      "prose": "a lilac ruffled halter bikini with side-tie bottoms and a gold waist chain",
+      "prose": "A lilac halterneck bikini trimmed with delicate ruffles and white lace, paired with side-tie bottoms, a slender gold waist chain, and bare feet.",
       "tokens": [
-        "lilac bikini",
-        "frills",
-        "halterneck",
-        "side-tie bikini bottom",
-        "gold belly chain"
+        "lilac ruffled bikini",
+        "halter neck ties",
+        "side tie bottoms",
+        "gold waist chain",
+        "white lace trim",
+        "barefoot"
       ]
     }
   }

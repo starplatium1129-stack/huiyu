@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_bridal",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_bridal",
       "name": "纯白金绳花嫁露背开衩和服礼裙",
-      "prose": "A white silk bridal kimono with crimson facing, an open back and a high side slit.",
+      "prose": "Pure-white silk bridal kimono lined in crimson with an open back and high side slit, cinched with braided gold cords and paired with a translucent floral veil and white heeled sandals.",
       "tokens": [
-        "bridal_kimono",
-        "white_kimono",
-        "high_slit",
-        "gold_trim",
-        "bare_legs",
-        "heels"
+        "bridal kimono",
+        "white kimono",
+        "crimson lining",
+        "backless",
+        "high slit",
+        "gold cord",
+        "white veil",
+        "white heels"
       ],
       "default": false,
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3138,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "rosmontis_arknights_lingerie_whisper",
     "characterId": "rosmontis_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛个人寝室，几块沉重的歼灭战术构件在空气中平静悬浮，散发温和防卫光圈。缩在毛绒大靠枕堆中，猫耳顺从地耷拉着，双手抱着博士送的记事本，清澈浅蓝的眼睛怯生生看着你，满含依恋。 她微微抬眸轻语——“博士……我的终端里记录了许多事情，但我总是会忘掉……今晚，可以牵着我的手，直到我睡着吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "mint_cloud_babydoll_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/leaf_panel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2155,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "leaf_panel",
       "name": "叶脉纹鼠尾草拼接连衣裙",
-      "prose": "A sage-and-ivory long-sleeved dress with a clean panelled cut, leaf-vein embroidery at the cuffs and a narrow charcoal belt.",
+      "prose": "A sage-and-ivory long-sleeved dress with clean panelled seams, leaf-vein embroidery at the cuffs, and a narrow charcoal belt, paired with cream tights and suede ankle boots.",
       "tokens": [
-        "sage and ivory long-sleeved dress",
-        "panelled dress",
+        "sage panelled dress",
+        "ivory sleeve panels",
         "leaf-vein embroidery",
-        "charcoal belt"
+        "narrow charcoal belt",
+        "wooden cuff buttons",
+        "cream ribbed tights",
+        "suede ankle boots"
       ],
       "characterId": "mon3tr_arknights",
       "default": false,

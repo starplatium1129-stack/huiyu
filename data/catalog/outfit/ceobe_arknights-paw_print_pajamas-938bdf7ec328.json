@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/paw_print_pajamas",
+  "revision": 1,
+  "sortOrder": 4042,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "paw_print_pajamas",
+      "name": "蜜饼之夜 · 明黄爪印棉质睡衣",
+      "prose": "A sunny-yellow ribbed cotton tank top printed with playful puppy-paw motifs, paired with soft charcoal-grey drawstring sleep shorts and bare feet.",
+      "tokens": [
+        "yellow tank top",
+        "paw print motif",
+        "ribbed cotton weave",
+        "charcoal drawstring shorts",
+        "grey elastic waistband",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

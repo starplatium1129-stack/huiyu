@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3182,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "laevatain_arknights_lingerie_whisper",
     "characterId": "laevatain_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "终末地重工业前哨站生活舱，全息投影熔炉数据在暗处闪烁橙光。盘腿坐在隔热金属工作台边缘，赤足悬空轻晃，单手撑在台面，热烈赤瞳注视着管理员，胸前轻纱透着灼热体温与若隐若现的源石纹理。 她微微抬眸轻语——“这身衣物的散热效率符合协议要求。管理员……你的心率监测正在飙升，是因为温度过高，还是因为我？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "ember_mesh_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

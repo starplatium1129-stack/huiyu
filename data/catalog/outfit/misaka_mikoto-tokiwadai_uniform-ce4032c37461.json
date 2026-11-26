@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/tokiwadai_uniform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
@@ -12,17 +12,15 @@
       "id": "tokiwadai_uniform",
       "isDefault": true,
       "name": "常盘台学园制服与宽松袜",
-      "prose": "The Tokiwadai uniform pairs a light brown knit vest and white blouse with a beige pleated skirt and loose socks.",
+      "prose": "A light beige knit sweater vest layered over a crisp white collared blouse, beige pleated skirt, safety shorts, loose white socks, and brown leather loafers.",
       "tokens": [
-        "tokiwadai_school_uniform",
-        "sweater_vest",
-        "white_shirt",
-        "collared_shirt",
-        "pleated_skirt",
-        "beige_skirt",
-        "loose_socks",
-        "brown_loafers",
-        "bare_legs"
+        "beige knit vest",
+        "white collared blouse",
+        "cream pleated skirt",
+        "tokiwadai emblem",
+        "loose white socks",
+        "brown leather loafers",
+        "safety shorts"
       ],
       "characterId": "misaka_mikoto"
     }

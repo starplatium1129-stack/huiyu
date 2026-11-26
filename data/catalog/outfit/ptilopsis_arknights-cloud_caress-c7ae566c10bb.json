@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/cloud_caress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2165,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "cloud_caress",
-      "name": "抚云间·白色飘带长裙与羽饰",
-      "prose": "A white flowing dress with a pale grey translucent shawl, feather hair ornaments and long tassels.",
+      "name": "抚云间 · 白色飘带长裙与羽饰",
+      "prose": "A white flowing dress with a translucent pale-grey shawl, delicate feather clasp ornaments, long trailing silk tassels, a silver waist cord, and white strapped heels.",
       "tokens": [
         "white flowing dress",
-        "pale grey shawl",
-        "feather hair ornament",
-        "long tassels"
+        "translucent grey shawl",
+        "feather clasp ornament",
+        "long silk tassels",
+        "silver waist cord",
+        "white strapped heels"
       ],
       "characterId": "ptilopsis_arknights",
       "default": false,

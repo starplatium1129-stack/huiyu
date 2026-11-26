@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/oversized_white_shirt",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 693,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "oversized_white_shirt",
       "name": "晨光微透落肩宽大白衬衫",
-      "prose": "A loose white cotton dress shirt slips off one shoulder, its top buttons undone and its hem falling to mid-thigh.",
+      "prose": "An oversized crisp white cotton dress shirt worn unbuttoned at the collar and slipped off one shoulder with rolled cuffs, worn with bare legs and barefoot.",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "unbuttoned",
-        "off_shoulder",
-        "bare_legs",
+        "oversized white shirt",
+        "unbuttoned placket",
+        "off shoulder",
+        "rolled cuffs",
+        "cotton fabric",
+        "bare legs",
         "barefoot"
       ],
       "characterId": "rias_gremory",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3441,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "modernia_lingerie_whisper",
     "characterId": "modernia",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "前哨基地指挥官卧室，床头摆放着柔软的泰迪熊与机械积木。跪坐在床中央，双手把指挥官的大衣紧紧抱在怀里，红瞳忽闪忽闪，纯真无邪地歪着头甜笑，发丝凌乱散落。 她微微抬眸轻语——“指挥官的大衣，有指挥官的味道……只要在指挥官身边，玛丽安哪里也不去！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "pure_ribbon_slip_dress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

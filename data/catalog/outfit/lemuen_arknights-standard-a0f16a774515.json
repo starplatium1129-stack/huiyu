@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 316,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "standard",
       "isDefault": true,
       "name": "拉特兰深灰顾问正装",
-      "prose": "a long slate-gray tailored overcoat with a small gold Laterano badge, white collared shirt, narrow black tie and dark trousers",
+      "prose": "A sharp long slate-grey Laterano advisor coat pinned with a gold badge over a crisp white shirt, slim black necktie, dark tailored trousers, and leather dress shoes.",
       "tokens": [
-        "long slate overcoat",
-        "tailored coat",
-        "white shirt",
-        "black necktie",
-        "dark trousers",
-        "gold badge"
+        "slate tailored overcoat",
+        "gold badge",
+        "white dress shirt",
+        "narrow black necktie",
+        "dark slacks",
+        "black leather shoes"
       ]
     }
   }

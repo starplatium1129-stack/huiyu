@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3284,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "hu_tao_swimsuit_allure",
     "characterId": "hu_tao",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "浅滩上的水清亮得能看清每一颗海螺。胡桃踩着浪花突然从礁石后跳出来，双手张牙舞爪地扑向你，戴着小草帽的白色小水幽灵也在半空中叽叽喳喳地吐着水泡。她眨着梅花瞳，嘴角挑起标志性的狡黠弧度，大声宣布——「哇呀——！抓到了抓到了！往生堂海滩特别分店开业大酬宾，只要被堂主摸到一下，就能免费获得『清凉水幽灵防晒贴』一张哦！旅行者，还不快乖乖投降～？」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "plum_talisman_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

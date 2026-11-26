@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "sakaki_yumiko/violet_velvet_chemise",
+  "revision": 1,
+  "sortOrder": 4140,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "sakaki_yumiko",
+    "outfit": {
+      "id": "violet_velvet_chemise",
+      "name": "暗刺紫罗兰 · 深紫天鹅绒蕾丝吊带",
+      "prose": "A deep royal-purple velvet camisole slip with a sheer black spiderweb lace chest panel, structured cups, gold ring clasps, and bare feet.",
+      "tokens": [
+        "purple velvet slip",
+        "black spiderweb lace",
+        "structured lace cups",
+        "gold ring clasps",
+        "sheer mesh panel",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

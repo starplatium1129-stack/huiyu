@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "matsushima_michiru/lemon_dot_camisole",
+  "revision": 1,
+  "sortOrder": 4141,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "matsushima_michiru",
+    "outfit": {
+      "id": "lemon_dot_camisole",
+      "name": "柠檬波点 · 明黄荷叶边波点短款睡衣",
+      "prose": "A cheerful lemon-yellow cotton camisole patterned with white polka dots and a ruffled lettuce-edge hem, paired with puffy bloomer shorts and bare feet.",
+      "tokens": [
+        "yellow dot camisole",
+        "ruffled lettuce hem",
+        "puff bloomer shorts",
+        "white polka dots",
+        "soft cotton weave",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

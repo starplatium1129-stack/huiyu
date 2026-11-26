@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "si_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1156,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-25T10:17:38.498307700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "si_arknights",
     "outfit": {
@@ -14,18 +14,16 @@
       "isDefault": true,
       "isNsfw": false,
       "category": "官方衣装",
-      "prose": "a fitted white halter dress with bare shoulders and backless design, detached wide white sleeves, black choker, black gloves, white kneehigh socks and ankle boots",
+      "prose": "A fitted white halter dress with an open-back silhouette, detached wide white sleeves, a narrow black choker, black gloves, a jade comb ornament, white knee-high socks, and black ankle boots.",
       "tokens": [
-        "white dress",
-        "backless dress",
-        "bare shoulders",
-        "detached sleeves",
-        "wide sleeves",
+        "white halter dress",
+        "open back",
+        "detached wide sleeves",
         "black choker",
         "black gloves",
-        "kneehighs",
-        "boots",
-        "hair ornament"
+        "jade comb",
+        "white knee-high socks",
+        "black ankle boots"
       ]
     }
   }

@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "augusta_wuwa/mountain_ridge_cloak_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3604,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "augusta_wuwa",
     "outfit": {
       "id": "mountain_ridge_cloak_suit",
-      "name": "山岳巡行金线刺绣毛领披风装",
-      "prose": "A warm crimson wool travel cloak with gold sun-ray embroidery over a fitted black turtleneck, high-waisted belt, and knee-high boots.",
+      "name": "山岳巡行金线刺绣防风披风装",
+      "prose": "A scarlet wool travel cloak with gold sun-ray embroidery layered over a fitted black turtleneck, corset waist belt, dark trousers, leather gloves, and buckled knee boots.",
       "tokens": [
-        "red cloak",
-        "gold embroidery",
+        "scarlet wool cloak",
+        "gold sun embroidery",
         "black turtleneck",
         "corset belt",
-        "black pants",
+        "black trousers",
+        "leather gloves",
+        "metal buckles",
         "knee boots"
       ],
       "default": false,

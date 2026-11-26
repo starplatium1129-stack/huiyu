@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoolheyak_arknights/sheer_black_lace_babydoll",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2181,
   "createdAt": "2026-11-04T15:22:22.723187200+00:00",
-  "updatedAt": "2026-11-04T15:22:22.723187200+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "hoolheyak_arknights",
     "outfit": {
@@ -15,20 +15,14 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "hoolheyak_arknights",
-      "prose": "A sheer black lace babydoll negligee with plunge neckline, translucent lace cups revealing cleavage, backless cut, bare shoulders and garter straps with sheer black thighhighs.",
+      "prose": "A sheer black lace babydoll negligee with a deep plunge neckline, translucent lace cups, and an open back, paired with satin garter straps and sheer black thighhighs, worn barefoot.",
       "tokens": [
-        "black lace negligee",
-        "sheer babydoll",
-        "translucent lace",
-        "plunge neckline",
-        "deep cleavage",
-        "sideboob",
-        "backless",
-        "collarbone",
-        "bare shoulders",
-        "bare thighs",
-        "garter straps",
-        "sheer black thighhighs"
+        "black lace babydoll",
+        "sheer chiffon skirt",
+        "deep plunge neckline",
+        "satin garter straps",
+        "sheer black thighhighs",
+        "barefoot"
       ]
     }
   }

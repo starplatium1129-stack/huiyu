@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/static_paw_cozy_cat_pajamas",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 344,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "default": false,
       "id": "static_paw_cozy_cat_pajamas",
       "isDefault": false,
-      "name": "软云粉猫耳绒绒卫衣与居家短裤",
-      "prose": "A cloud-pink fleece hoodie with cat ears, paired with white-trimmed lounge shorts.",
+      "name": "软云粉绒绒连帽卫衣套装",
+      "prose": "A cloud-pink plush fleece cropped hoodie with a pointed hood and subtle paw embroidery, paired with white cotton lounge shorts and plush slippers.",
       "tokens": [
-        "pink_hoodie",
-        "cat_ear_hood",
-        "fleece",
-        "crop_top",
-        "white_shorts",
-        "shorts",
-        "bare_legs"
+        "pink fleece hoodie",
+        "pointed hood",
+        "cropped hem",
+        "white cotton shorts",
+        "paw embroidery",
+        "bare legs",
+        "plush slippers"
       ],
       "characterId": "goldenglow_arknights"
     }

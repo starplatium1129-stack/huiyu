@@ -1,28 +1,24 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/casual_shinjuku_jacket_shorts",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "casual_shinjuku_jacket_shorts",
       "name": "新宿机车皮衣、破洞热裤与双层腿带",
-      "prose": "A cropped black biker jacket with asymmetric silver zips over a white ribbed top and frayed black denim shorts, styled with two buckled leather thigh bands.",
+      "prose": "A cropped black asymmetric-zip motorcycle jacket layered over a white ribbed crop top and frayed dark denim shorts cinched with studded thigh belts, black thigh-highs, and heavy boots.",
       "tokens": [
-        "biker_jacket",
-        "leather_jacket",
-        "crop_top",
-        "tank_top",
-        "denim_shorts",
-        "black_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "studded_choker"
+        "black biker jacket",
+        "white crop top",
+        "frayed denim shorts",
+        "studded choker",
+        "twin thigh straps",
+        "black thighhighs",
+        "lace-up boots"
       ],
       "characterId": "artoria_pendragon_alter",
       "default": false,

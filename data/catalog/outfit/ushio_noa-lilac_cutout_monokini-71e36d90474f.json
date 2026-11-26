@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/lilac_cutout_monokini",
+  "revision": 1,
+  "sortOrder": 3930,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "id": "lilac_cutout_monokini",
+      "name": "淡丁香象牙白镂空连体泳装",
+      "prose": "A refined pale lilac and ivory monokini shaped with clean architectural waist cutouts and a silver clasp, paired with a sheer violet organdy beach wrap skirt, sun hat, and white sandals.",
+      "tokens": [
+        "lilac one-piece swimsuit",
+        "ivory trim",
+        "waist cutouts",
+        "silver clasp",
+        "sheer violet sarong",
+        "wide-brim hat",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

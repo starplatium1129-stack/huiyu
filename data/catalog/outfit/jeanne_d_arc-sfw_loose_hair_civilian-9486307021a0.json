@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_loose_hair_civilian",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_loose_hair_civilian",
       "name": "晨曦法式翻领衬衫与海蓝开衩裙",
-      "prose": "A relaxed ivory cotton button-down tucked into a split navy column skirt.",
+      "prose": "A relaxed white cotton button-down shirt with rolled cuffs tucked cleanly into a navy slit column skirt, worn bare-legged with tan leather loafers.",
       "tokens": [
-        "white_shirt",
-        "collared_shirt",
-        "v-neck",
-        "royal_blue_skirt",
-        "pencil_skirt",
-        "side_slit",
-        "bare_legs",
-        "leather_loafers"
+        "white cotton button-down",
+        "v-neck collar",
+        "rolled sleeves",
+        "navy column skirt",
+        "front slit",
+        "bare legs",
+        "tan leather loafers"
       ],
       "characterId": "jeanne_d_arc",
       "default": false,

@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "sylphiette/silent_fitz_uniform_no_sunglasses",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "silent_fitz_uniform_no_sunglasses",
       "isDefault": false,
-      "name": "菲兹学院短燕尾服与黑色长袜",
-      "prose": "A white academic tailcoat with an open ruffled blouse and tailored shorts, paired with dark thigh-highs.",
+      "name": "菲兹学院短燕尾服与黑长袜",
+      "prose": "A white academic tailcoat pinned with a silver lapel brooch over an ivory ruffled blouse and tailored white shorts, finished with black sheer thighhighs and black dress loafers.",
       "styleHint": "sharp noble academy aesthetic",
       "tokens": [
-        "formal_suit",
-        "tailcoat",
-        "white_shirt",
-        "frilled_collar",
-        "shorts",
-        "black_thighhighs",
-        "dress_shoes"
+        "white academic tailcoat",
+        "ivory ruffled blouse",
+        "tailored white shorts",
+        "silver lapel pin",
+        "black sheer thighhighs",
+        "black dress loafers"
       ],
       "characterId": "sylphiette"
     }

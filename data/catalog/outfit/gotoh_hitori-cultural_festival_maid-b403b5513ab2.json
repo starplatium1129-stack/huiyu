@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/cultural_festival_maid",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "cultural_festival_maid",
       "name": "文化祭荷叶边女仆裙与黑色长袜",
       "tokens": [
-        "maid",
-        "maid_dress",
-        "black_dress",
-        "white_apron",
-        "frilled_apron",
-        "frills",
-        "black_thighhighs",
-        "thighhighs",
-        "mary_janes"
+        "black maid dress",
+        "white apron",
+        "frilled apron",
+        "lace trim",
+        "puff sleeves",
+        "maid headdress",
+        "black thighhighs",
+        "mary janes"
       ],
-      "prose": "A ruffled black maid dress with a white apron and lace trim, paired with black thigh-high stockings.",
+      "prose": "Ruffled black maid dress with puff sleeves and a crisp white frilled lace apron, topped with a lace headdress and finished with opaque black thighhighs and buckled mary janes.",
       "styleHint": "",
       "isDefault": false,
       "default": false,

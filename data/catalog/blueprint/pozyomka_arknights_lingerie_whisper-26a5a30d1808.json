@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3132,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "pozyomka_arknights_lingerie_whisper",
     "characterId": "pozyomka_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛私人书房，古旧皮面精装书堆叠至屋顶，打字机上夹着未写完的诗篇。侧身坐在红木书桌前，修长双腿在裙摆开叉下斜倚，狼耳与蓬松尾巴在微光下泛着银粉光泽，钢笔轻点唇瓣，目光深情如诗。 她微微抬眸轻语——“在纯白雪原的深处，我曾以为文字是我唯一的庇护所……直到博士你，读懂了我所有未写完的段落。”",
-    "outfitId": "pink_lace_lingerie",
+    "outfitId": "birch_corset_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

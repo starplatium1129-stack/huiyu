@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kurodate_haruna/bistro_tweed_fur_coat",
+  "revision": 1,
+  "sortOrder": 3948,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "kurodate_haruna",
+    "outfit": {
+      "id": "bistro_tweed_fur_coat",
+      "name": "炭黑粗花呢白毛领大衣与酒红丝绸裙",
+      "prose": "A warm charcoal tweed overcoat crowned with a snowy fur collar draped over a burgundy silk turtleneck dress, styled with pearl earrings, leather gloves, sheer black pantyhose, and black ankle boots.",
+      "tokens": [
+        "charcoal tweed coat",
+        "white fur collar",
+        "draped coat",
+        "burgundy silk dress",
+        "pearl earrings",
+        "black leather gloves",
+        "sheer black pantyhose",
+        "black ankle boots"
+      ]
+    }
+  }
+}

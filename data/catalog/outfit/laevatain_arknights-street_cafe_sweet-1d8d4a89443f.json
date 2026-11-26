@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/street_cafe_sweet",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 417,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
@@ -12,14 +12,15 @@
       "id": "street_cafe_sweet",
       "isDefault": false,
       "name": "黑绯拼衬街头机能装",
-      "prose": "a black halter crop top under a cropped sheer-gray technical jacket, a high-waisted black pleated utility skirt with red lining and metal buckles, and chunky sneakers",
+      "prose": "A black halter crop top beneath a cropped sheer-grey technical jacket, paired with a high-waisted black pleated utility skirt with crimson lining, metal buckles, black over-knee socks, and chunky sneakers.",
       "tokens": [
-        "black halter crop top",
-        "sheer gray cropped jacket",
-        "high-waisted black pleated utility skirt",
-        "red lining",
+        "black halter top",
+        "sheer grey jacket",
+        "high-waisted pleated skirt",
+        "crimson skirt lining",
         "metal buckles",
-        "chunky sneakers"
+        "black over-knee socks",
+        "chunky platform sneakers"
       ]
     }
   }

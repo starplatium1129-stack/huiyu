@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3136,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "rosa_arknights_lingerie_whisper",
     "characterId": "rosa_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛私人文学茶沙龙，精致骨瓷茶具与温暖壁炉，窗外是切尔诺伯格旧雪景画像。优雅侧卧在红丝绒贵妃榻上，白熊短耳微动，修长白皙的手指轻拈着骨瓷茶匙，温和忧郁的眼眸注视着推门进来的博士。 她微微抬眸轻语——“乌萨斯的夜晚总是漫长而冰冷……但只要能与博士坐在这里共享一杯红茶，过去的噩梦仿佛也变得遥远了。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "champagne_empire_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

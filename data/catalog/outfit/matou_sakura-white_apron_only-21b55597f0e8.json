@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/white_apron_only",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1328,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "white_apron_only",
       "name": "白府绸荷叶围裙与蕾丝私语内搭",
-      "prose": "A crisp white backless ruffled apron worn over sheer lace underpinnings.",
+      "prose": "A crisp white poplin kitchen apron bordered with delicate ruffles and tied with a back sash over sheer white lace lingerie.",
       "tokens": [
-        "white_apron",
-        "frilled_apron",
-        "backless",
-        "lace_bustier",
-        "bare_legs",
-        "bare_thighs"
+        "white apron",
+        "ruffled poplin",
+        "open back",
+        "lace bustier",
+        "waist bow",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "matou_sakura",
       "default": false,

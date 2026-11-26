@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/casters_frost",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1942,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "casters_frost",
-      "name": "开斯特之霜 · 蓝色短外套与黑色披肩",
+      "name": "开斯特之霜 · 钴蓝短外套与黑披肩",
       "default": true,
       "isDefault": true,
-      "prose": "A tailored blue jacket with a black capelet, black skirt, gloves, dark hat and boots.",
+      "prose": "A tailored cobalt-blue cropped jacket layered with a black wool capelet and a pleated black skirt, accessorized with black leather gloves, a dark beret, sheer black tights, and heeled ankle boots.",
       "tokens": [
-        "blue jacket",
-        "black capelet",
-        "black skirt",
-        "black gloves",
-        "black headwear",
-        "boots"
+        "cobalt cropped jacket",
+        "black wool capelet",
+        "pleated black skirt",
+        "black leather gloves",
+        "dark wool beret",
+        "sheer black tights",
+        "heeled ankle boots"
       ],
       "identityTokensOverride": [
         "pramanix (arknights)",

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon_alter/obsidian_boned_corset_set",
+  "revision": 1,
+  "sortOrder": 3969,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "artoria_pendragon_alter",
+    "outfit": {
+      "id": "obsidian_boned_corset_set",
+      "name": "黑曜鱼骨蕾丝束胸吊带套",
+      "prose": "A structured gothic black satin boned corset camisole edged with scalloped floral lace, back eyelet lacing, and matching silk tap shorts.",
+      "tokens": [
+        "black satin corset",
+        "boned camisole",
+        "scalloped lace trim",
+        "eyelet lacing",
+        "black tap shorts",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

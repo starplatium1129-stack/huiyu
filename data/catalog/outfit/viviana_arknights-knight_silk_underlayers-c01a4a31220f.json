@@ -1,28 +1,26 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/knight_silk_underlayers",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1450,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "id": "knight_silk_underlayers",
-      "name": "宫廷白绸褶边衬衫与黑金开衩百褶短裙",
+      "name": "宫廷白绸褶边衬衫与黑金百褶短裙",
       "tokens": [
-        "silk_shirt",
-        "white_shirt",
-        "ruffle_collar",
-        "opera_gloves",
-        "white_gloves",
-        "pleated_skirt",
-        "mini_skirt",
-        "gold_trim",
-        "white_thighhighs",
-        "boots"
+        "ivory silk blouse",
+        "ruffled high collar",
+        "white opera gloves",
+        "black pleated skirt",
+        "gold piping trim",
+        "brass crest brooch",
+        "white silk stockings",
+        "laced ankle boots"
       ],
-      "prose": "An ivory silk shirt with a ruffled collar and opera gloves, tucked into a black-and-gold pleated skirt with white silk thigh-highs.",
+      "prose": "An ivory silk blouse with a ruffled collar, brass crest brooch, and white opera gloves tucked into a black-and-gold pleated mini skirt, worn with white silk stockings and laced ankle boots.",
       "default": false,
       "isDefault": false,
       "characterId": "viviana_arknights"

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/abyssal_corset_swimdress",
+  "revision": 1,
+  "sortOrder": 4035,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "abyssal_corset_swimdress",
+      "name": "深渊咏叹 · 黑白束腰蕾丝泳裙",
+      "prose": "A gothic black-and-white boned corset swimdress edged with tiered white lace ruffles, paired with an antique silver cross choker and bare feet.",
+      "tokens": [
+        "black corset swimdress",
+        "white lace ruffles",
+        "boned bodice",
+        "tiered skirt hem",
+        "silver cross choker",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

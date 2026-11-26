@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kama_fate/crimson_spring_veil",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1312,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "crimson_spring_veil",
       "name": "绯红金丝镶边薄纱神袍与系带胸衣",
-      "prose": "Semi-translucent crimson chiffon robes edged in bullion embroidery over a wrap bodice.",
+      "prose": "Semi-translucent crimson chiffon robes edged with bullion gold embroidery flowing open over a crossed wrap crop top and high-slit silk wrap skirt.",
       "tokens": [
-        "crimson_veil",
-        "sheer_clothing",
-        "gold_trim",
-        "cross-wrap_top",
-        "crop_top",
-        "high_slit_skirt",
-        "bare_legs",
-        "bare_thighs"
+        "crimson sheer robe",
+        "gold trim",
+        "wrap crop top",
+        "high-slit silk skirt",
+        "gold bangles",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "kama_fate",
       "default": false,

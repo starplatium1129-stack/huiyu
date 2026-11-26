@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "momo_velia_deviluke/harem_negligee",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 676,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "momo_velia_deviluke",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "harem_negligee",
       "isDefault": false,
       "name": "浅紫真丝花蕾丝睡裙",
-      "prose": "A sheer lavender silk negligee with white floral lace, narrow straps and matching briefs.",
+      "prose": "A sheer lavender silk negligee trimmed with white floral lace along narrow shoulder straps, paired with matching lavender lace panties and bare feet.",
       "tokens": [
-        "lavender negligee",
-        "silk",
-        "sheer fabric",
+        "lavender silk negligee",
+        "sheer chiffon drape",
         "white floral lace",
-        "thin straps",
-        "panties"
+        "thin shoulder straps",
+        "lavender lace panties",
+        "barefoot"
       ]
     }
   }

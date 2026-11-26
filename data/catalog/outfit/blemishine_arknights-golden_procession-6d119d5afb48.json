@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/golden_procession",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2118,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "golden_procession",
       "name": "金线滚边奶油短斗篷",
-      "prose": "A cream wool capelet edged in fine gold braid over a pale amber dress, fastened with a small star-shaped clasp and worn with white boots.",
+      "prose": "A cream wool capelet trimmed in fine gold cord over a pale amber flared dress fastened with a star-shaped metal clasp, paired with ivory knee socks and white leather boots.",
       "tokens": [
         "cream wool capelet",
-        "gold braid trim",
-        "pale amber dress",
-        "star clasp",
-        "white boots"
+        "gold cord trim",
+        "amber flared dress",
+        "star metal clasp",
+        "ivory knee socks",
+        "white leather boots"
       ],
       "characterId": "blemishine_arknights",
       "default": false,

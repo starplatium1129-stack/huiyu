@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_rooftop_winter_watch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2805,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "zeta_shadow_rooftop_winter_watch",
     "characterId": "zeta_shadow",
-    "outfitId": "slime_bodysuit",
+    "outfitId": "spy_trench_coat",
     "title": "泽塔 · 冬夜屋顶的监视",
     "category": "谍报潜行",
     "description": "冬夜，泽塔蹲在学园屋顶的阴影里俯瞰灯火。金色的长尾在寒风中轻轻摆动，她把教团今晚的动向一一记下，一言不发。",

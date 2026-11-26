@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_office_sofa_nap_dusk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2665,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "rikuhachima_aru_office_sofa_nap_dusk",
     "characterId": "rikuhachima_aru",
-    "outfitId": "problem_solver_outlaw_suit",
+    "outfitId": "outlaw_waistcoat_shirt",
     "title": "陆八魔阿露 · 事务所沙发的黄昏浅眠",
     "category": "办公日常",
     "description": "黄昏斜阳洒在便利屋事务所老旧而温馨的皮沙发上。阿露褪去了厚重的羽毛毛领大衣，只穿着修身帅气的深红西装马甲与白衬衫，领带微微松开。她侧卧在沙发上小憩，夕阳将她酒红色的长发染得如晚霞般璀璨。睡梦中嘴角微微翘起，吐露着无防备的安稳与纯粹。",

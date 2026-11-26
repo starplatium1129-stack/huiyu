@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3383,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "nakano_miku_swimsuit_allure",
     "characterId": "nakano_miku",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "蝉鸣在庭院棕榈树间拉长声调。三玖小心翼翼地把脖颈上的防水耳机往上推了推，高腰泳装适度地包裹着姣好的少女身线。她小口吸着抹茶汽水，额前的刘海稍稍遮住一只眼，悄悄用余光打量着身侧走近的身影，声音轻若蚊蚋——「那个……这个颜色，会不会看起来太保守了？但是二乃说……很适合我。你……觉得好看吗？」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "matcha_halter_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

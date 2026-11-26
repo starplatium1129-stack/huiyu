@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/kitchen_apron_homewear",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "kitchen_apron_homewear",
       "name": "樱粉羊绒绞花毛衣与系腰围裙套组",
-      "prose": "A pale-pink cable-knit turtleneck beneath a frilled apron and slit-hem skirt, with stockings.",
+      "prose": "A soft sakura-pink cable-knit turtleneck sweater protected by a crisp white ruffled waist apron over a dark slit skirt, black thigh-highs, and soft house slippers.",
       "tokens": [
-        "pink_sweater",
-        "cable_knit_sweater",
+        "pink sweater",
+        "cable knit",
         "turtleneck",
-        "white_apron",
-        "frilled_apron",
-        "slit_skirt",
-        "black_thighhighs",
-        "slippers"
+        "white frilled apron",
+        "waist ties",
+        "pleated slit skirt",
+        "black thighhighs",
+        "indoor slippers"
       ],
       "characterId": "matou_sakura",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3187,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:43.307622700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "ling_arknights_lingerie_whisper",
     "characterId": "ling_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "江南水乡湖心古亭，池中荷叶微卷，月光倒映在荡漾水面上。侧倚在雕花木栏杆边，单手斜拎着白瓷酒盏，青丝任由夜风拂乱，龙角在月下泛着温润微光，醉眼迷离笑看人间，尽显洒脱不羁的风流意趣。 她微微抬眸轻语——“今朝有酒今朝醉……小家伙，这良辰美景皆在盏中，何不卸下心防，与我同醉一场？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "celadon_silk_open_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "栗色编绳短斗篷旅行装",
-      "prose": "A chestnut hooded short cape with a braided cord clasp over a pale-blue tunic, cream trousers and sturdy brown boots.",
+      "name": "栗棕编绳连帽短斗篷旅行装",
+      "prose": "A chestnut-brown hooded short cape with a braided cord clasp over a sky-blue linen tunic, cream trousers, a belt pouch, ankle socks, and laced boots.",
       "tokens": [
-        "short brown hooded cape",
+        "brown hooded cape",
         "blue tunic",
-        "long sleeves",
-        "cream pants",
-        "brown boots",
-        "braided clasp"
+        "cord clasp",
+        "cream trousers",
+        "linen sleeves",
+        "leather pouch",
+        "ankle socks",
+        "laced boots"
       ],
       "isDefault": false,
       "isNsfw": false

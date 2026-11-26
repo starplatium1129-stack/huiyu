@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/wasteland_traveler",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 426,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
@@ -12,16 +12,16 @@
       "id": "wasteland_traveler",
       "isDefault": false,
       "name": "青橄榄立领短风衣套装",
-      "prose": "a waist-length olive utility jacket with a stand collar and restrained brass buttons, an ivory cotton blouse, cream wide-leg trousers, a dark-teal silk neck scarf, a canvas shoulder bag and low brown lace-up boots",
+      "prose": "A waist-length olive utility jacket with a stand collar and restrained brass buttons over an ivory cotton blouse, cream wide-leg trousers, a dark-teal silk neck scarf, canvas shoulder bag, and low brown lace-up boots.",
       "tokens": [
-        "olive jacket",
+        "olive utility jacket",
         "stand collar",
         "brass buttons",
-        "ivory blouse",
+        "ivory cotton blouse",
         "cream wide-leg pants",
-        "teal scarf",
+        "teal silk scarf",
         "canvas shoulder bag",
-        "brown boots"
+        "brown lace-up boots"
       ],
       "category": "日常衣装（创作）"
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3445,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "shinano_lingerie_whisper",
     "characterId": "shinano",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "重樱神木顶端的幻梦神殿，脚下水面上漂浮着发光的睡莲与紫藤花瓣。慵懒侧卧在铺着深紫织锦的巨大水榻上，九条巨大蓬松的银白狐尾如云海般环绕身侧，修长指尖托腮，半睁的睡眼泛着神秘幽紫星光。 她微微抬眸轻语——“妾身……又在梦境与现世的狭缝中见到了指挥官。若此非幻梦，便请靠近些……温存这片刻虚妄吧。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "wisteria_constellation_open_robe",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

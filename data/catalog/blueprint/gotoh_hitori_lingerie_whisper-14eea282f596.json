@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3522,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "gotoh_hitori_lingerie_whisper",
     "characterId": "gotoh_hitori",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "下北泽Livehouse演出结束后的后藤宅。社恐等级MAX的‘波奇酱’后藤一里，一回到家立刻换上那套洗得褪色的粉红色旧运动服。她直接钻进了壁橱深处的一个印着蜜柑的瓦楞纸箱里，把运动服拉链紧紧拉到嘴巴上方，整个人蜷缩成一个发抖的粉红球球。手机屏幕上是社交媒体的点赞通知，她两只小手死死抱着膝盖，像虫子一样在纸箱底蠕动发抖——「咿、咿咿咿……今天的Live好可怕！台下的观众全部都像长着獠牙的怪兽！……我要一辈子生活在纸箱里……当一个没有名字的阴暗蘑菇……啊，不要打开壁橱门啊啊啊！」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "closet_faded_tracksuit_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

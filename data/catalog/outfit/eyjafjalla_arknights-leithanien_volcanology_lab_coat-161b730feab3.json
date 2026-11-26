@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/leithanien_volcanology_lab_coat",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 314,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "leithanien_volcanology_lab_coat",
-      "name": "莱塔尼亚火山地质学者精裁大衣与开衩裙",
-      "prose": "A white tailored research coat with brass buttons over a brown plaid slit skirt and black stockings.",
+      "name": "莱塔尼亚精裁研究大衣与格纹裙",
+      "prose": "A tailored ivory volcanology coat with high collar and brass buttons layered over a brown plaid slit skirt, paired with sheer dark stockings and leather oxfords.",
       "tokens": [
-        "lab_coat",
-        "tailored_coat",
-        "high_collar",
-        "blouse",
-        "plaid_skirt",
-        "high_slit",
-        "black_thighhighs",
-        "oxfords"
+        "tailored lab coat",
+        "high collar",
+        "brass buttons",
+        "ivory shirt",
+        "brown plaid skirt",
+        "side slit",
+        "sheer dark stockings",
+        "leather oxfords"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 555,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "私密全裸 / 纯粹形态",
+      "name": "私密全裸纯粹形态",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare torso",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely unclothed state with bare shoulders, bare torso, bare legs, and bare feet, free of any garments.",
       "styleHint": "",
       "isDefault": false,
       "default": false,

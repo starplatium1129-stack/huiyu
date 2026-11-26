@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/birch_corset_slip",
+  "revision": 1,
+  "sortOrder": 4105,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "birch_corset_slip",
+      "name": "白桦诗篇 · 覆盆子红丝绒束腰睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "pozyomka_arknights",
+      "prose": "A deep raspberry-burgundy velvet corseted slip gown with satin ribbon lacing, vintage ecru lace trim, and a high side slit, paired with sheer ivory thighhighs and worn barefoot.",
+      "tokens": [
+        "burgundy velvet slip",
+        "boned corset bodice",
+        "ecru lace trim",
+        "high slit skirt",
+        "sheer ivory thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

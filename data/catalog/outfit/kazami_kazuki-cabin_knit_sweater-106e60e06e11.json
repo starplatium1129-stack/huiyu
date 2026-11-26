@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/cabin_knit_sweater",
+  "revision": 1,
+  "sortOrder": 4136,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "cabin_knit_sweater",
+      "name": "避难木屋 · 米白厚针织衫与格纹裙",
+      "prose": "A warm cream cable-knit sweater with a ribbed turtleneck collar paired with a brown wool plaid skirt, a woven shawl, thick wool socks, and suede ankle boots.",
+      "tokens": [
+        "cream cable sweater",
+        "ribbed turtleneck collar",
+        "brown plaid skirt",
+        "woven wool shawl",
+        "thick wool socks",
+        "suede ankle boots"
+      ],
+      "default": false
+    }
+  }
+}

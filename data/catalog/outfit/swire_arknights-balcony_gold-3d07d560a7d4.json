@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "swire_arknights/balcony_gold",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2209,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "swire_arknights",
     "outfit": {
       "id": "balcony_gold",
-      "name": "香槟金缎面礼裙与翡翠耳坠",
-      "prose": "A champagne-gold satin evening dress with an asymmetric draped neckline and a slim black waist belt, finished with jade drop earrings.",
+      "name": "香槟金缎面礼裙与翡翠吊坠",
+      "prose": "A champagne-gold satin evening gown with an asymmetric draped neckline cinched by a slim black leather belt, finished with jade drop jewelry, a gold cuff, and gold strappy heels.",
       "tokens": [
-        "champagne gold satin evening dress",
-        "asymmetric draped neckline",
-        "black waist belt",
-        "jade drop earrings"
+        "champagne satin gown",
+        "asymmetric draped neck",
+        "black leather belt",
+        "jade drop jewelry",
+        "gold cuff bracelet",
+        "gold strappy heels"
       ],
       "characterId": "swire_arknights",
       "default": false,

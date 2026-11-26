@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "belfast_azur/white_bath_wrap",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1667,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-11-06T01:02:18.767Z",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "belfast_azur",
     "outfit": {
       "id": "white_bath_wrap",
-      "name": "皇家女仆白棉浴巾",
-      "prose": "A pristine white royal maid cotton bath towel wrap.",
+      "name": "皇家女仆纯白棉质浴巾",
+      "prose": "A pristine white thick terry-cotton bath towel wrapped securely across the chest with a narrow blue ribbon edge, leaving shoulders and feet bare.",
       "tokens": [
-        "white towel",
-        "towel around body"
+        "white bath towel",
+        "thick terry cotton",
+        "tucked chest wrap",
+        "blue ribbon trim",
+        "bare shoulders",
+        "barefoot"
       ],
       "characterId": "belfast_azur",
       "default": false,

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/charcoal_offshoulder_knit",
+  "revision": 1,
+  "sortOrder": 3926,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "id": "charcoal_offshoulder_knit",
+      "name": "炭黑落肩细织毛衣与铅笔裙",
+      "prose": "A soft fine-ribbed black knit sweater sliding casually off one shoulder above a fitted charcoal high-waist pencil skirt, paired with a silver wristwatch and sheer black pantyhose.",
+      "tokens": [
+        "black knit sweater",
+        "off-shoulder sweater",
+        "ribbed knit",
+        "charcoal pencil skirt",
+        "silver wristwatch",
+        "sheer black pantyhose",
+        "barefoot"
+      ]
+    }
+  }
+}

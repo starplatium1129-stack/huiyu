@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/celestial_harpist_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3706,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "celestial_harpist_gown",
       "name": "星轨竖琴师银丝露背晚礼服",
-      "prose": "A Grecian-draped silver-blue silk gown with star-shaped shoulder clasps, delicate silver armlets, and flowing chiffon ribbons.",
+      "prose": "A draped silver-blue silk evening gown with an open back, star-shaped shoulder clasps, silver armlets, floating chiffon ribbons, and silver heeled sandals.",
       "tokens": [
-        "blue dress",
-        "grecian dress",
-        "backless dress",
-        "silver jewelry",
-        "armlet",
-        "chiffon"
+        "silver blue gown",
+        "silk satin",
+        "open back",
+        "star shoulder clasps",
+        "silver armlets",
+        "chiffon ribbons",
+        "bare legs",
+        "silver sandals"
       ],
       "default": false,
       "isDefault": false,

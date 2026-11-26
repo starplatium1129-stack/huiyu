@@ -1,28 +1,26 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/starry_staff_apron",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1561,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "starry_staff_apron",
-      "name": "STARRY · 吧台衬衫与围裙",
+      "name": "STARRY吧台衬衫与围裙",
       "tokens": [
-        "collared_shirt",
-        "black_shirt",
-        "short_sleeves",
-        "apron",
-        "black_apron",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "thighhighs",
-        "loafers"
+        "black shirt",
+        "collared shirt",
+        "short sleeves",
+        "black apron",
+        "waist apron",
+        "pleated skirt",
+        "black thighhighs",
+        "leather loafers"
       ],
-      "prose": "A dark collared shirt under a tied black café apron and pleated skirt, paired with black thigh-highs.",
+      "prose": "Fitted black short-sleeved collared shirt worn under a tied café waist apron and dark pleated skirt, finished with black thighhigh stockings and polished loafers.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

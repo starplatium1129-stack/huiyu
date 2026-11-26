@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/summer_fa098",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2050,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "summer_fa098",
       "name": "荒漠猎影 · 迷彩速干分体水着",
-      "prose": "A tactical field-ready two-piece swimsuit in desert khaki and muted brush-camo neoprene, featuring reinforced elastic straps, a quick-dry sports top, and an integrated electronic rangefinder wrist strap.",
+      "prose": "A tactical two-piece swimsuit in desert khaki and muted brush-camo neoprene featuring a zippered sports top, crossed back straps, high-waist bottoms, and a wrist rangefinder strap, worn barefoot.",
       "tokens": [
-        "khaki bikini",
-        "camo neoprene",
-        "tactical straps",
-        "sporty top",
-        "rangefinder watch",
-        "cautus ears",
-        "rabbit ears",
-        "athletic",
-        "focused expression"
+        "khaki sports bikini",
+        "camo neoprene trim",
+        "cross back straps",
+        "rangefinder wrist strap",
+        "high waist bottoms",
+        "barefoot"
       ],
       "characterId": "ray_arknights",
       "default": false,

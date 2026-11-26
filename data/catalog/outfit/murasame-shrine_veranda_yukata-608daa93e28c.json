@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "murasame/shrine_veranda_yukata",
+  "revision": 1,
+  "sortOrder": 4184,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "murasame",
+    "outfit": {
+      "id": "shrine_veranda_yukata",
+      "name": "檐廊靛蓝羽织与茶点袴裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "murasame",
+      "prose": "An indigo linen haori worn over an ivory cotton kimono and olive pleated hakama tied with an amber braided cord, paired with cream knit socks and soft felt slippers.",
+      "tokens": [
+        "indigo linen haori",
+        "ivory cotton kimono",
+        "olive pleated hakama",
+        "amber braided cord",
+        "cream knit socks",
+        "soft felt slippers"
+      ]
+    }
+  }
+}

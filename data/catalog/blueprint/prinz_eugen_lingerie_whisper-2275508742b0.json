@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3446,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "prinz_eugen_lingerie_whisper",
     "characterId": "prinz_eugen",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "复古铁血军官豪华起居室，高脚水晶酒瓶中盛着半瓶陈年杜松子酒。慵懒地斜卧在红色天鹅绒躺椅上，手指轻绕着银发发梢，朱唇微启露出下唇下的迷人泪痣，充满挑逗地向指挥官眨了眨眼。 她微微抬眸轻语——“呵呵……怎么站在门口不进来，我的指挥官？脸红成这样……该不会是在期待什么更进一步的事情吧？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "iron_cross_plunge_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

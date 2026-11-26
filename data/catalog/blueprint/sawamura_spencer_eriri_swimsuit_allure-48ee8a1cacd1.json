@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3408,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_swimsuit_allure",
     "characterId": "sawamura_spencer_eriri",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "速写本上画满了某人各种角度的速写草图。英梨梨英伦绿格纹比基尼将娇小匀称的身材勾勒得分外惹人怜爱，叼着铅笔被你突然从背后探头看画的动作吓得直接跳了起来，双马尾像炸毛的小猫一样猛地甩动，小虎牙磨得咯咯作响——「伦、伦也！你这个跟踪狂大色狼！什么时候走到我后面的？！才没有在画你的夏日参考图呢！这、这只是新刊同人志的背景研究！赶紧给我闭上眼睛后退三步啦！」",
-    "outfitId": "azure_summer_bikini",
+    "outfitId": "tartan_sailor_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

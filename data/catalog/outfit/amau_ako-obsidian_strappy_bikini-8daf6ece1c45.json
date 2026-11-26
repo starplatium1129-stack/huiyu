@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "amau_ako/obsidian_strappy_bikini",
+  "revision": 1,
+  "sortOrder": 3933,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "amau_ako",
+    "outfit": {
+      "id": "obsidian_strappy_bikini",
+      "name": "墨黑镂空项圈系带比基尼",
+      "prose": "An ink-black lace-trimmed bikini anchored by geometric halter straps and a studded collar choker, finished with side-tie bottoms, a gossamer black shrug, and flat sandals.",
+      "tokens": [
+        "black bikini",
+        "strappy halterneck",
+        "lace trim",
+        "collar choker",
+        "side-tie bikini bottom",
+        "sheer black bolero",
+        "bare legs",
+        "black sandals"
+      ]
+    }
+  }
+}

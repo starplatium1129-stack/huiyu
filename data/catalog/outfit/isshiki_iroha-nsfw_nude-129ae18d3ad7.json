@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely free of school blazers, knitwear, silk slips, stockings, and loafers, presenting an unadorned natural form.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

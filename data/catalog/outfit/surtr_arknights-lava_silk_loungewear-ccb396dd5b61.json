@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/lava_silk_loungewear",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 290,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "lava_silk_loungewear",
       "isDefault": false,
       "name": "熔夜黑缎真丝高衩睡裙",
-      "prose": "A midnight-black silk slip nightgown with a plunging neckline and high side slit, layered with a sheer chiffon robe.",
+      "prose": "A midnight-black silk slip nightgown with a deep V-neckline and tall side slit veiled lightly beneath a translucent chiffon lounge robe.",
       "tokens": [
-        "nightdress",
-        "black_dress",
-        "silk",
-        "spaghetti_straps",
-        "deep_v-neck",
-        "side_slit",
-        "sheer_robe",
-        "bare_legs",
+        "black silk nightgown",
+        "plunging neckline",
+        "spaghetti straps",
+        "high side slit",
+        "sheer dark robe",
+        "bare legs",
         "barefoot"
       ],
       "characterId": "surtr_arknights"

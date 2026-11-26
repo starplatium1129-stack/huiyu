@@ -1,20 +1,24 @@
 {
   "kind": "outfit",
   "id": "murasame/white_gauze_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1220,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "id": "white_gauze_wrap",
       "name": "白色薄纱披巾",
       "tokens": [
-        "white shawl",
-        "sheer fabric"
+        "white gauze wrap",
+        "sheer silk shawl",
+        "draped shoulder wrap",
+        "lightweight sheer trim",
+        "loose open front",
+        "barefoot"
       ],
-      "prose": "a light white silk-gauze wrap draped over the shoulders",
+      "prose": "A lightweight white silk-gauze wrap draped loosely over the shoulders with an open front and delicate sheer trim, worn barefoot.",
       "default": false,
       "isDefault": false
     }

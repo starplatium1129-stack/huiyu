@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3216,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "yukinoshita_yukino_swimsuit_allure",
     "characterId": "yukinoshita_yukino",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "远离喧嚣的白色遮阳天幕下。雪之下雪乃身着侍奉部雪境深海纯白镶边高领连身泳装，端正地坐在帆布躺椅上阅读文库本。海风轻拂乌黑发丝，她单手轻按鬓角，清冷澄澈的眼眸越过书页平静注视着你。虽然神情依旧严谨自律，但微微泛红的耳尖却泄露了高岭之花心中的微澜。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "navy_piped_one_piece",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

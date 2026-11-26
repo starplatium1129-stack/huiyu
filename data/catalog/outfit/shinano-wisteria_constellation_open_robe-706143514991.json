@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shinano/wisteria_constellation_open_robe",
+  "revision": 1,
+  "sortOrder": 4130,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "shinano",
+    "outfit": {
+      "id": "wisteria_constellation_open_robe",
+      "name": "幽夜幻狐·墨紫紫藤星宿透视长袍",
+      "prose": "A midnight-purple translucent chiffon open robe embroidered with wisteria and silver constellations layered over a white silk tube bandeau, worn barefoot.",
+      "tokens": [
+        "purple open robe",
+        "wisteria sheer chiffon",
+        "white silk bandeau",
+        "silver star embroidery",
+        "flowing gossamer train",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

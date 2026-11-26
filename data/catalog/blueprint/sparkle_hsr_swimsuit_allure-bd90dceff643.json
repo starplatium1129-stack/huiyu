@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3301,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.127Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "sparkle_hsr_swimsuit_allure",
     "characterId": "sparkle_hsr",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "星舰水上乐园霓虹泛滥的深夜。花火身着假面愚者绯红戏偶层叠比基尼，盘坐在巨大的火烈鸟浮筏中央。她歪戴着狐狸面具，吐舌眨眼摇晃着发光饮料，红黑异色的眼眸闪烁着难以捉摸的捉弄笑意，仿佛随时会将眼前的平静掀成狂欢的浪潮。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "masked_fool_ruffle_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

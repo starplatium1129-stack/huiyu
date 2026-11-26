@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_closed_morning_silk_robe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1154,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_closed_morning_silk_robe",
       "name": "象牙白重磅真丝滚边晨袍",
-      "prose": "A luxurious ivory silk wrap robe with charcoal piping cinched by a wide sash.",
+      "prose": "An ivory heavy-silk wrap morning robe edged with charcoal piping and cinched by a wide satin sash over a lace chemise, worn with velvet slippers.",
       "tokens": [
-        "white_robe",
-        "silk_robe",
-        "long_robe",
-        "wrap_dress",
-        "tied_sash",
-        "bare_legs",
-        "slippers"
+        "ivory silk robe",
+        "charcoal piping",
+        "wrap collar",
+        "wide satin sash",
+        "lace chemise",
+        "bare legs",
+        "velvet slippers"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

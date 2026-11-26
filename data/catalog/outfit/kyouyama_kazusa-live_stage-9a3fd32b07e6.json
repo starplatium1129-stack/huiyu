@@ -1,25 +1,27 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/live_stage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 495,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
       "default": false,
       "id": "live_stage",
       "isDefault": false,
-      "name": "黑色短衬衫银链舞台装",
-      "prose": "a black cropped button-front stage shirt and black pleated skirt with a silver waist chain, fingerless gloves and a cat-ear-shaped hood pushed back",
+      "name": "黑短衬银链贝斯舞台装",
+      "prose": "A cropped black button-front stage shirt paired with a pleated black miniskirt, silver waist chain, studded leather belt, fingerless gloves, choker, black thigh-highs, and platform boots.",
       "tokens": [
         "black cropped shirt",
         "black pleated skirt",
-        "silver chain",
+        "silver waist chain",
+        "studded belt",
         "fingerless gloves",
-        "cat-ear hood",
-        "hood down"
+        "black choker",
+        "black thighhighs",
+        "platform boots"
       ]
     }
   }

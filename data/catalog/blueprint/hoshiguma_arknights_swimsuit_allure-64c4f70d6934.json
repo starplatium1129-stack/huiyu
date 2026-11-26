@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3143,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "hoshiguma_arknights_swimsuit_allure",
     "characterId": "hoshiguma_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "三米多高的巨型海浪在远海隆隆卷起，其他游客早已纷纷退避，星熊却单手拎着定制的防暴重型冲浪板，大步踏进了翻滚的白色激浪中。墨绿色的及腰长发被海风刮得肆意翻飞，单只鬼角在阳光下威严挺立。她转过身冲岸边站着的你豪爽地挥了挥巨掌，笑声压过了奔涌的浪鸣——「哈哈！这才叫真正的大浪嘛！老陈那家伙说什么也不肯下水，博士，你就在岸边找个阴凉地看好了！等我把前面那道浪头切个粉碎再回来陪你喝酒！」",
-    "outfitId": "gold_summer_bikini",
+    "outfitId": "oni_wave_rashguard",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

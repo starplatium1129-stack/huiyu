@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_winter_trenchcoat_boots",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_winter_trenchcoat_boots",
       "name": "驼色羊绒立裁束腰战壕风衣与过膝皮靴",
-      "prose": "A camel cashmere double-breasted trench coat cinched with a broad buckled waist belt, worn with sheer black tights and knee-high boots.",
+      "prose": "A camel cashmere double-breasted trench coat cinched by a broad buckled belt, paired with black leather gloves, sheer black tights, and black knee-high boots.",
       "tokens": [
-        "trench_coat",
-        "camel_coat",
-        "belted_coat",
-        "double-breasted",
-        "black_tights",
-        "sheer_tights",
-        "buckle",
-        "knee_boots",
-        "stiletto_boots",
-        "winter_couture"
+        "camel cashmere coat",
+        "belted double-breasted",
+        "silver waist buckle",
+        "sheer black tights",
+        "black knee-high boots",
+        "black leather gloves"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

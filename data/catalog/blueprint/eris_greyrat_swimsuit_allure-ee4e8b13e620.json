@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3271,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "eris_greyrat_swimsuit_allure",
     "characterId": "eris_greyrat",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "刚刚在齐人高的巨浪里徒手击退了扑来的海魔兽，艾莉丝踏着飞溅的白浪大步走上沙滩。火红的长发湿透却依旧蓬松炸起，腰间系着的白外套随狂风翻飞。她单手叉腰，冲着天空用力挥出一记直拳，眼眸里燃烧着胜利的火焰，转头冲你大笑——「哈！看到了没有！就算是海里的魔兽，吃我一拳也得老老实实沉底！这片海滩从现在起归我们了！喂，鲁迪——快把烤肉架架起来，肚子饿扁了！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "boreas_crimson_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

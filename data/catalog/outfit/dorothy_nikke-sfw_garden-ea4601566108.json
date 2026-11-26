@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_garden",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 996,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_garden",
       "name": "庄园泡泡袖衬衫与烟粉背带短裙",
-      "prose": "An ivory vintage puff-sleeved blouse paired with a high-waisted dusty-rose suede suspender mini skirt.",
+      "prose": "An ivory vintage puff-sleeved blouse with a square neckline and pearl buttons tucked into a high-waisted dusty-rose suede suspender mini skirt with lace hem, bare legs, and cream Mary Janes.",
       "tokens": [
-        "white_blouse",
-        "puff_sleeves",
-        "square_neckline",
-        "pink_skirt",
-        "suspender_skirt",
-        "suede",
-        "lace_trim",
-        "bare_legs"
+        "ivory puff blouse",
+        "square neckline",
+        "dusty pink skirt",
+        "suede suspender skirt",
+        "lace hem",
+        "pearl buttons",
+        "bare legs",
+        "cream mary janes"
       ],
       "default": false,
       "isDefault": false,

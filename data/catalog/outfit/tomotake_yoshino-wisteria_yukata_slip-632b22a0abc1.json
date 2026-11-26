@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/wisteria_yukata_slip",
+  "revision": 1,
+  "sortOrder": 4190,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "id": "wisteria_yukata_slip",
+      "name": "藤花幽梦 · 浅紫水云刺绣和风睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "tomotake_yoshino",
+      "prose": "A pale-lavender silk yukata-style camisole slip embroidered with wisteria blossoms, accented by flowing sheer kimono sleeves and a side ribbon bow, worn barefoot.",
+      "tokens": [
+        "lavender silk slip",
+        "wisteria embroidery trim",
+        "sheer kimono sleeves",
+        "side ribbon bow",
+        "double chiffon skirt",
+        "barefoot"
+      ]
+    }
+  }
+}

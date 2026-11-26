@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_swimsuit_allure",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3243,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "skadi_arknights_swimsuit_allure",
     "characterId": "skadi_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "冷冽巨浪翻涌的深海峭壁之下，退潮后的砂砾滩泛着湿漉的水光。斯卡蒂赤足驻足在及膝的潮涌中，单手立起重型冲浪板插入黑砂。暮色渐深，灰紫色的晚霞与她的红瞳相互映衬，海风吹拂着她微湿的银发，她沉默地守在身侧，静听潮汐退去。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "abyssal_cutout_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

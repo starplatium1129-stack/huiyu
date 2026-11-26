@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "w_arknights/w_standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2068,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "w_arknights",
     "outfit": {
       "id": "w_standard",
-      "name": "黑色夹克与灰色上衣",
-      "prose": "A black jacket over a grey shirt, a black skirt, a dark scarf and sneakers.",
+      "name": "佣兵日常·黑红夹克与百褶短裙",
+      "prose": "A cropped black jacket over a heather-grey top and pleated black skirt with a tattered dark scarf and red buckle strap, paired with sheer dark tights and laced street sneakers.",
       "tokens": [
-        "black jacket",
-        "grey shirt",
-        "black skirt",
-        "black scarf",
-        "sneakers"
+        "cropped black jacket",
+        "heather grey top",
+        "pleated black skirt",
+        "tattered black scarf",
+        "red buckle strap",
+        "sheer dark tights",
+        "laced street sneakers"
       ],
       "characterId": "w_arknights",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3161,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "angelina_arknights_swimsuit_allure",
     "characterId": "angelina_arknights",
@@ -13,7 +13,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "outfitId": "crimson_summer_bikini",
+    "outfitId": "zephyr_chiffon_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

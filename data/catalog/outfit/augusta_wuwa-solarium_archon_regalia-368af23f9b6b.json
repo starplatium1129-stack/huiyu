@@ -1,23 +1,26 @@
 {
   "kind": "outfit",
   "id": "augusta_wuwa/solarium_archon_regalia",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3601,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "augusta_wuwa",
     "outfit": {
       "id": "solarium_archon_regalia",
       "name": "七丘烈日执政官红金战袍",
-      "prose": "A regal crimson and ivory pleated chiton layered with hammered gold pauldrons, sun-emblem breastplate trim, and a sweeping scarlet cloak.",
+      "prose": "A crimson and ivory pleated chiton layered with hammered gold pauldrons, sun-emblem breastplate trim, a sweeping scarlet cloak, a gold laurel crown, and gold greaves.",
       "tokens": [
-        "white and red dress",
-        "pleated dress",
-        "gold armor",
-        "pauldrons",
-        "red cape",
-        "gold laurel crown"
+        "ivory pleated chiton",
+        "crimson cloak",
+        "gold pauldrons",
+        "sun breastplate",
+        "gold laurel crown",
+        "arm bracers",
+        "leather straps",
+        "bare legs",
+        "gold greaves"
       ],
       "default": true,
       "isDefault": true,

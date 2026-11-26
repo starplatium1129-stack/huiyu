@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "chisa_wuwa/rooftop_duffle_coat_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3904,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "chisa_wuwa",
     "outfit": {
       "id": "rooftop_duffle_coat_winter",
-      "name": "冬日天台炭黑牛角扣大衣与红围巾",
-      "prose": "A fitted charcoal wool duffle coat over her academy uniform, wrapped with a soft crimson cashmere scarf and black tights.",
+      "name": "天台炭黑牛角扣大衣与红围巾",
+      "prose": "A fitted charcoal wool duffle coat with toggle buttons wrapped with a crimson cashmere scarf over a pleated skirt, black pantyhose, and ankle boots.",
       "tokens": [
-        "black coat",
-        "duffle coat",
-        "red scarf",
+        "charcoal duffle coat",
+        "toggle buttons",
+        "crimson cashmere scarf",
+        "wool fabric",
         "pleated skirt",
+        "leather satchel",
         "black pantyhose",
-        "loafers"
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false,

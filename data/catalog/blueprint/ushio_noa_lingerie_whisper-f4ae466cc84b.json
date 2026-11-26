@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "ushio_noa_lingerie_whisper",
     "characterId": "ushio_noa",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "千禧年研讨会私密休息室，柔和的落地窗外是学园都市平静的夜景。端坐在研讨会沙发扶手上，单手捧着电子记录记事板，银白长发垂至脚踝，淡紫眼眸带着如春水般的温柔浅笑，微微倾身在你耳畔吐露温热气息。 她微微抬眸轻语——“老师今晚的每一个表情、每一次心跳……诺亚都已经毫无遗漏地全部记在脑海里了哦。想听我重播一遍吗？”",
-    "outfitId": "silk_slip_nightdress",
+    "outfitId": "pure_white_pleated_chemise",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

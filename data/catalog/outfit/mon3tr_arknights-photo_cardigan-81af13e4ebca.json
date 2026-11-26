@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/photo_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2152,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "photo_cardigan",
       "name": "银灰开衫与晶面菱格裙",
-      "prose": "A silver-grey cardigan with translucent buttons over a black blouse and a pale green diamond-check skirt, with a narrow geometric hair clip.",
+      "prose": "A silver-grey cardigan with translucent crystal buttons over a black silk blouse and pale-mint diamond-check skirt, finished with an emerald bar clip, sheer grey socks, and patent Mary Janes.",
       "tokens": [
         "silver grey cardigan",
-        "translucent buttons",
-        "black blouse",
-        "pale green diamond-check skirt",
-        "geometric hair clip"
+        "translucent crystal buttons",
+        "black silk blouse",
+        "mint diamond skirt",
+        "emerald bar clip",
+        "sheer grey socks",
+        "patent mary janes"
       ],
       "characterId": "mon3tr_arknights",
       "default": false,

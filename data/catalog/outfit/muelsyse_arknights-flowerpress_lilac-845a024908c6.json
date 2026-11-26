@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/flowerpress_lilac",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2025,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "flowerpress_lilac",
-      "name": "丁香波浪领衬衫与压花胸针",
-      "prose": "A lilac blouse with a scalloped collar and soft cuffs tucked into a cream A-line skirt, accented by a tiny pressed-flower brooch.",
+      "name": "丁香扇贝领衬衫与压花胸针",
+      "prose": "A lilac cotton blouse with a scalloped Peter Pan collar tucked into a cream flared skirt, accented by a pressed-flower brooch, pearl bracelet, sheer ivory stockings, and beige Mary Janes.",
       "tokens": [
-        "lilac blouse",
-        "scalloped collar",
-        "soft cuffs",
-        "cream a-line skirt",
-        "pressed flower brooch"
+        "lilac cotton blouse",
+        "scalloped peter collar",
+        "cream flared skirt",
+        "pressed flower brooch",
+        "sheer ivory stockings",
+        "beige mary janes"
       ],
       "characterId": "muelsyse_arknights",
       "default": false,

@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "vulpisfoglia_arknights/mending_kimono",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2007,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "vulpisfoglia_arknights",
     "outfit": {
       "id": "mending_kimono",
-      "name": "杏金短羽织与深褐交叠裙",
-      "prose": "An apricot haori with a subtle gold woven border over a high-neck ivory blouse and a deep brown wrap skirt, tied by a flat braided cord.",
+      "name": "杏金织边羽织与深褐交叠裙",
+      "prose": "An apricot silk haori edged in gold brocade trim over a cream mockneck blouse and an espresso wrap skirt fastened with a braided obijime cord, finished with white tabi socks and lacquered sandals.",
       "tokens": [
-        "apricot haori",
-        "gold woven border",
-        "ivory high-neck blouse",
-        "deep brown wrap skirt",
-        "braided cord"
+        "apricot silk haori",
+        "gold brocade trim",
+        "cream mockneck blouse",
+        "espresso wrap skirt",
+        "braided obijime cord",
+        "white tabi socks",
+        "lacquered wooden sandals"
       ],
       "characterId": "vulpisfoglia_arknights",
       "default": false,

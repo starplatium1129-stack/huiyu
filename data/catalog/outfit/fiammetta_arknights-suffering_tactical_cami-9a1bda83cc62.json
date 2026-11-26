@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/suffering_tactical_cami",
+  "revision": 1,
+  "sortOrder": 4109,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "suffering_tactical_cami",
+      "name": "炽红扣环 · 绯红战术吊带与平角短裤",
+      "category": "睡衣 / 运动背心套",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "fiammetta_arknights",
+      "prose": "A fiery-crimson moisture-wicking strappy camisole fitted with metal D-ring strap hardware and racerback mesh trim, paired with fitted black compression shorts and worn barefoot.",
+      "tokens": [
+        "crimson strappy camisole",
+        "metal d ring",
+        "black compression shorts",
+        "racerback mesh trim",
+        "elastic waist band",
+        "barefoot"
+      ]
+    }
+  }
+}

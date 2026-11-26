@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/luna_resort_monokini",
+  "revision": 1,
+  "sortOrder": 4085,
+  "createdAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "luna_resort_monokini",
+      "name": "露娜黑金缎面深V连体泳装",
+      "prose": "Midnight-black satin halter monokini with a deep plunging neckline and high-leg cut, layered with a sheer black chiffon caftan, gold chain waist belt, thin wire glasses, gold bangles, and heeled sandals.",
+      "tokens": [
+        "black monokini",
+        "halter monokini",
+        "plunging neckline",
+        "sheer caftan",
+        "gold chain belt",
+        "wire glasses",
+        "gold bangles",
+        "heeled sandals"
+      ],
+      "characterId": "gamma_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 连体泳装"
+    }
+  }
+}

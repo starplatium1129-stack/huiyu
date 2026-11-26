@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "sylphiette/forest_leaf_swimdress",
+  "revision": 1,
+  "sortOrder": 4179,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "sylphiette",
+    "outfit": {
+      "id": "forest_leaf_swimdress",
+      "name": "森之妖精 · 薄荷叶脉系带连身泳裙",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "sylphiette",
+      "prose": "A modest mint-green halter swimdress featuring delicate botanical leaf-vein lace, layered soft tulle skirt panels, and pastel ribbon waist ties, worn barefoot.",
+      "tokens": [
+        "mint green swimdress",
+        "botanical leaf lace",
+        "halter neck ties",
+        "layered tulle skirt",
+        "pastel waist ribbons",
+        "barefoot"
+      ]
+    }
+  }
+}

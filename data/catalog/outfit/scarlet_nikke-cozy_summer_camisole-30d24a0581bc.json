@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "scarlet_nikke/cozy_summer_camisole",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1700,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "scarlet_nikke",
     "outfit": {
       "characterId": "scarlet_nikke",
       "id": "cozy_summer_camisole",
-      "name": "月下绯刃 · 绯白交织和风单肩抹胸睡袍",
-      "prose": "一袭红白两色的不对称改良日式和风抹胸短袍，露出单侧圆润香肩，胸前以朱红绳结系住，下摆微敞露出利落修长的大腿线条，剑气与女人味并存。",
+      "name": "月下绯刃·绯白和风单肩抹胸睡袍",
+      "prose": "An asymmetrical crimson-and-white kimono-style silk tube robe leaving one shoulder bare, secured at the chest with a vermilion cord tassel knot and edged with delicate silk floral trim, bare legs, and barefoot.",
       "tokens": [
-        "scarlet and white asymmetrical kimono-style tube robe",
-        "single bare shoulder",
-        "red cord tassel knot",
+        "crimson tube robe",
+        "white asymmetrical lapel",
+        "single-shoulder wrap",
+        "red tassel cord",
         "silk floral trim",
-        "wandering ronin romantic loungewear"
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

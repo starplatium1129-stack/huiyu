@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3516,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "eta_shadow_lingerie_whisper",
     "characterId": "eta_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "暗影庭园科技研究所的深夜。被公认为组织最强智慧却也是最嗜睡的埃塔，穿着一套松垮得能把整个人装进去的猫耳摇粒绒连体睡衣。手里还死死抓着新魔导兵器的羊皮纸图纸，整个人却已经一头栽倒在特大号懒人豆袋沙发里陷入深度睡眠。猫耳大兜帽歪歪斜斜地盖住眼睛，露出一小撮紫发，嘴角隐隐挂着一丝浅浅的睡口水——「呼……呼……暗影大人的……新式充能装置……呼呼……睡十秒……就起……」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "lavender_fleece_onesie",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

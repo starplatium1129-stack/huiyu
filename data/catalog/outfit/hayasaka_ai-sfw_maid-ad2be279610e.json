@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_maid",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 772,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_maid",
       "name": "黑曜女仆裙与黑色长袜",
-      "prose": "A black gabardine maid dress with a pleated white apron and sheer black thigh-high stockings.",
+      "prose": "A black gabardine maid dress with a white pointed collar, long buttoned sleeves, pleated white apron, lace headband, sheer black thigh-high stockings, and black heels.",
       "tokens": [
-        "maid",
-        "black_dress",
-        "white_apron",
-        "collared_dress",
-        "long_sleeves",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "heels"
+        "black maid dress",
+        "white pleated apron",
+        "white pointed collar",
+        "long buttoned sleeves",
+        "lace headband",
+        "sheer black thighhighs",
+        "black heels"
       ],
       "characterId": "hayasaka_ai",
       "default": true,

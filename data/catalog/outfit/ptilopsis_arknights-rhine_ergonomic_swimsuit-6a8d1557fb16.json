@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/rhine_ergonomic_swimsuit",
+  "revision": 1,
+  "sortOrder": 4039,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "rhine_ergonomic_swimsuit",
+      "name": "逻辑解构 · 象牙鼠尾草几何泳衣",
+      "prose": "An ergonomic ivory-white and sage-green geometric cutout one-piece swimsuit with subtle feather-patterned seam tapes, a translucent green tinted visor, and bare feet.",
+      "tokens": [
+        "ivory cutout swimsuit",
+        "sage green panels",
+        "geometric one piece",
+        "green tinted visor",
+        "feather seam tape",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

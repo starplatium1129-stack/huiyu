@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "kafka/casual_trench_coat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 572,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "casual_trench_coat",
       "name": "漆黑皮风衣与炭灰高领",
-      "prose": "A black leather trench with a belt and wine-colored lining over a charcoal knit turtleneck and tailored black trousers, with leather ankle boots.",
+      "prose": "Belted black leather trench coat with a wine-red lining layered over a charcoal ribbed turtleneck and tailored black trousers, accessorized with dark sunglasses and sleek leather ankle boots.",
       "tokens": [
-        "black leather trench coat",
+        "leather trench coat",
+        "black coat",
         "charcoal turtleneck",
-        "black tailored pants",
-        "black ankle boots"
+        "tailored pants",
+        "burgundy lining",
+        "leather belt",
+        "dark sunglasses",
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false

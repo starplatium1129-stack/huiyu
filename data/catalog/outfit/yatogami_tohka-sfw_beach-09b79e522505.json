@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/sfw_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "sfw_beach",
-      "name": "紫罗兰荷叶泳装",
-      "prose": "A violet swimsuit has a soft ruffled edge and a large bow, paired with a light lavender cover-up skirt.",
+      "name": "紫罗兰荷叶边泳装与轻纱罩裙",
+      "prose": "A violet one-piece swimsuit with ruffled neckline trim and a satin bow, paired with a sheer lavender wrap skirt and strappy sandals.",
       "tokens": [
-        "violet swimsuit",
-        "frills",
-        "large bow",
-        "lavender wrap skirt"
+        "violet one piece",
+        "ruffled trim",
+        "satin waist bow",
+        "lavender wrap skirt",
+        "sheer chiffon",
+        "bare legs",
+        "strappy sandals"
       ],
       "default": false,
       "isDefault": false

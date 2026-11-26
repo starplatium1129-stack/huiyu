@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/standard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 406,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,18 +12,17 @@
       "id": "standard",
       "isDefault": true,
       "name": "黄束带终末地监督制服",
-      "prose": "A wide-sleeved cropped white jacket over a sleeveless high-collar white tunic, necktie, utility belt, black tights with a left yellow thigh strap, heels and gloves.",
+      "prose": "A wide-sleeved cropped white jacket worn over a sleeveless high-collar white tunic, black necktie, utility belt, black gloves, opaque black tights with a left yellow leg strap, and black heels.",
       "tokens": [
         "white cropped jacket",
         "wide sleeves",
         "sleeveless white tunic",
-        "high collar",
-        "necktie",
+        "black necktie",
         "utility belt",
         "black tights",
-        "yellow strap on left thigh",
-        "black heels",
-        "black gloves"
+        "yellow leg strap",
+        "black gloves",
+        "black heels"
       ]
     }
   }

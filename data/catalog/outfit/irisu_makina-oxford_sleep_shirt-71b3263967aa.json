@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "irisu_makina/oxford_sleep_shirt",
+  "revision": 1,
+  "sortOrder": 4142,
+  "createdAt": "2026-11-26T12:31:57.687955200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
+  "data": {
+    "characterId": "irisu_makina",
+    "outfit": {
+      "id": "oxford_sleep_shirt",
+      "name": "宽松牛津白衬衫居家睡衣",
+      "prose": "An oversized heavy white oxford cotton button-down shirt with dropped shoulder seams and long drooping sleeves reaching past the fingertips, worn barefoot.",
+      "tokens": [
+        "mens oxford shirt",
+        "heavy cotton weave",
+        "drooping long sleeves",
+        "dropped shoulder seams",
+        "button down placket",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

@@ -1,19 +1,24 @@
 {
   "kind": "outfit",
   "id": "belfast_azur/silk_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1666,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "belfast_azur",
     "outfit": {
       "id": "silk_robe",
-      "name": "月白缎面居家袍",
-      "prose": "A pale silver-blue satin robe tied at the waist.",
+      "name": "月白冰蓝缎面居家袍",
+      "prose": "A pale silver-blue satin robe trimmed with ivory lace and tied neatly at the waist with a silk sash, paired with satin house slippers.",
       "tokens": [
-        "pale blue satin robe",
-        "robe belt"
+        "silver blue robe",
+        "lustrous silk satin",
+        "belted waist sash",
+        "ivory lace trim",
+        "wide kimono cuffs",
+        "bare legs",
+        "satin house slippers"
       ],
       "characterId": "belfast_azur",
       "default": false,

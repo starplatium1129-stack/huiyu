@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/ember_cutout_monokini",
+  "revision": 1,
+  "sortOrder": 4045,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "ember_cutout_monokini",
+      "name": "死生火华 · 绯金火焰镂空连体泳衣",
+      "prose": "A high-neck cutout monokini in gradient smoldering crimson and gold silk with delicate gold chain trim, a halter neck clasp, a sheer scarlet sarong, and bare feet.",
+      "tokens": [
+        "crimson cutout monokini",
+        "flame gradient silk",
+        "gold chain trim",
+        "halter neck clasp",
+        "sheer scarlet sarong",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

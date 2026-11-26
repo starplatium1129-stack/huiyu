@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_coastal_linen",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_coastal_linen",
       "name": "南法风尚象牙亚麻微敞衬衫与开衩阔腿裤",
-      "prose": "An ivory linen shirt tied loosely at the midriff, paired with camel wide-leg linen trousers with side slits and sandals.",
+      "prose": "An ivory linen shirt unbuttoned and knotted loosely at the hem with camel wide-leg linen trousers with side slits, tinted sunglasses, bare legs, and brown leather sandals.",
       "tokens": [
-        "linen_shirt",
-        "white_shirt",
-        "unbuttoned_shirt",
-        "crop_top",
-        "linen_pants",
-        "wide-leg_pants",
-        "slit_pants",
-        "bare_legs",
-        "leather_sandals",
-        "resort_wear"
+        "ivory linen shirt",
+        "knotted cropped hem",
+        "camel linen trousers",
+        "wide-leg slit pants",
+        "tinted sunglasses",
+        "bare legs",
+        "brown leather sandals"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

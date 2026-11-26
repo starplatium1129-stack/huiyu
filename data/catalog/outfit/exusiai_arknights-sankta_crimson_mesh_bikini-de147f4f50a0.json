@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "exusiai_arknights/sankta_crimson_mesh_bikini",
+  "revision": 1,
+  "sortOrder": 3986,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "exusiai_arknights",
+    "outfit": {
+      "id": "sankta_crimson_mesh_bikini",
+      "name": "绯红枪灰网纱短衫运动泳装",
+      "prose": "A sporty crimson-red and gunmetal-grey cross-back halter bikini layered beneath a cropped white mesh short-sleeve rashguard tee and athletic sandals.",
+      "tokens": [
+        "crimson athletic bikini",
+        "gunmetal trim",
+        "white mesh tee",
+        "short sleeves",
+        "cross-back straps",
+        "bare legs",
+        "red sandals"
+      ]
+    }
+  }
+}

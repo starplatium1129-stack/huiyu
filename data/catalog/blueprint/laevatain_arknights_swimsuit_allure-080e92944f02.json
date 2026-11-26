@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3181,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "laevatain_arknights_swimsuit_allure",
     "characterId": "laevatain_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "地热喷口在冰冷海水里激起大片咕嘟作响的白色蒸汽。莱万汀浸在冷热交织的潮池中，黑金色的战术泳衣紧贴身躯，白发如霜雪般在升腾的白汽与水流中漂浮散开。她缓缓抬起如熔岩般炽烈的红眸，手臂上的冷却装置亮起平稳的绿光，语气淡漠而坚定——「核心炉温度已降至安全阈值。海水的冷凝效率超出了预期。……管理员，坐到上风口的岩石上去，蒸汽里含有微量硫磺，不要吸入过多。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "molten_tactical_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

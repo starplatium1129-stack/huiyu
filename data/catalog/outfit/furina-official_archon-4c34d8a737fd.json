@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "furina/official_archon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "official_archon",
       "name": "枫丹礼服",
-      "prose": "a blue theatrical tailcoat over a white vest and ruffled jabot, dark shorts, black thighhighs, white gloves, detached ruffled sleeves and a small flower-trimmed top hat",
+      "prose": "Theatrical royal-blue tailcoat layered over a crisp white vest and ruffled jabot with dark shorts, detached ruffled sleeves, white gloves, flower-trimmed mini top hat, black thighhighs, and heeled boots.",
       "tokens": [
         "blue tailcoat",
         "white vest",
-        "jabot",
+        "ruffled jabot",
         "dark shorts",
-        "black thighhighs",
+        "detached sleeves",
         "white gloves",
-        "detached ruffled sleeves",
         "mini top hat",
+        "black thighhighs",
         "high heels"
       ],
       "default": true,

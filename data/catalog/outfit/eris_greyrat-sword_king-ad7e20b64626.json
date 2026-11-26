@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/sword_king",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 260,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "sword_king",
       "isDefault": true,
       "name": "剑王露脐战装与织带腿部护具",
-      "prose": "A sleeveless cropped Sword King top and combat shorts, with paired fabric leg straps as practical training gear.",
+      "prose": "A sleeveless crimson-trimmed cropped top over a white shirt and black combat shorts fitted with woven thigh straps, styled with a red cloth headband and brown leather boots.",
       "tokens": [
-        "crop_top",
-        "white_shirt",
-        "shorts",
-        "inner_thigh_cutout",
-        "thigh_strap",
-        "bare_legs",
-        "boots"
+        "crimson cropped top",
+        "white sleeveless shirt",
+        "black combat shorts",
+        "woven thigh straps",
+        "red cloth headband",
+        "brown leather boots"
       ],
       "characterId": "eris_greyrat"
     }

@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/black_camisole",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1463,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "id": "black_camisole",
       "name": "绯红滚边缎面解构吊带",
       "tokens": [
-        "black_camisole",
-        "satin",
-        "spaghetti_straps",
-        "bare_shoulders",
-        "crimson_trim",
-        "bare_legs"
+        "black satin camisole",
+        "crimson piping",
+        "spaghetti straps",
+        "draped bodice",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "A lustrous black satin draped camisole with vivid crimson piping and delicate spaghetti straps.",
+      "prose": "A fluid draped black satin camisole bordered along the bust and narrow straps with vivid crimson satin piping.",
       "default": false,
       "isDefault": false,
       "characterId": "surtr_arknights"

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/snow_crystal_swimdress",
+  "revision": 1,
+  "sortOrder": 3958,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "snow_crystal_swimdress",
+      "name": "雪白紫边雪花荷叶边泳裙",
+      "prose": "A snow-white and violet ruffled swimdress embroidered with fine snowflake motifs, accented with side ribbon bows, a translucent lilac chiffon hooded capelet, and white sandals.",
+      "tokens": [
+        "white swimdress",
+        "violet trim",
+        "snowflake pattern",
+        "ruffled skirt",
+        "lilac hooded capelet",
+        "sheer chiffon",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

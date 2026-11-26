@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/sfw_salon_velvet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3914,
   "createdAt": "2026-11-21T19:19:41.751431800+00:00",
-  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -14,14 +14,15 @@
       "isDefault": false,
       "default": false,
       "tokens": [
-        "blue jacket",
-        "gold trim",
-        "high collar",
-        "white shirt",
-        "brooch",
-        "long skirt"
+        "peacock blue jacket",
+        "plush velvet",
+        "gold cuff piping",
+        "ivory silk blouse",
+        "brass leaf brooch",
+        "dark long skirt",
+        "leather heeled pumps"
       ],
-      "prose": "A fitted peacock-blue velvet jacket with narrow gold piping at the cuffs is worn over an ivory high-necked silk blouse. A flat brass leaf brooch and a dark ankle-length skirt complete the outfit."
+      "prose": "A fitted peacock-blue velvet jacket with narrow gold cuff piping worn over an ivory high-necked silk blouse, fastened with a flat brass leaf brooch and paired with a dark ankle-length skirt and leather pumps."
     }
   }
 }

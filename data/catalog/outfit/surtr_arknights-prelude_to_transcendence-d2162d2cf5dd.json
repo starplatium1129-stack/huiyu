@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/prelude_to_transcendence",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,16 +12,15 @@
       "id": "prelude_to_transcendence",
       "isDefault": false,
       "name": "超然序曲·黑金刺绣马甲礼裙",
-      "prose": "A black velvet vest with gold embroidery over a sheer lace shirt, paired with a leather skirt and knee-high boots.",
+      "prose": "An ornate black velvet waistcoat embroidered with gold thread over a sheer dark lace blouse and sleek leather miniskirt, finished with stockings and tall boots.",
       "tokens": [
-        "black_vest",
-        "embroidered_vest",
-        "gold_trim",
-        "lace_shirt",
-        "black_leather_skirt",
-        "miniskirt",
-        "thighhighs",
-        "boots"
+        "black velvet vest",
+        "gold embroidery",
+        "sheer lace shirt",
+        "black leather miniskirt",
+        "silver chain belt",
+        "sheer stockings",
+        "knee leather boots"
       ],
       "characterId": "surtr_arknights"
     }

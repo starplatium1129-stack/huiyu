@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/standard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,21 +12,15 @@
       "id": "standard",
       "isDefault": true,
       "name": "罗德岛高街机能战术短装与皮质装备带",
-      "prose": "A sleeveless high-collar crop top beneath a black-and-white jacket with scarlet lining, paired with utility shorts, asymmetrical thigh-highs and a black leather utility band.",
+      "prose": "A crisp black-and-white techwear jacket lined in vivid scarlet over a sleeveless black crop top, high-waist utility shorts, asymmetrical thigh-high stockings, thigh belt, and combat boots.",
       "tokens": [
-        "black_turtleneck",
-        "crop_top",
-        "sleeveless",
-        "black_and_white_jacket",
-        "cropped_jacket",
-        "red_lining",
-        "black_shorts",
-        "high-waisted_shorts",
-        "asymmetrical_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "combat_boots"
+        "bicolor cropped jacket",
+        "crimson lining",
+        "black halter crop",
+        "black utility shorts",
+        "mismatched thighhighs",
+        "leather thigh belt",
+        "combat boots"
       ],
       "characterId": "surtr_arknights"
     }

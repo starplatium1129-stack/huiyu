@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sunaookami_shiroko/abydos_desert_windbreaker",
+  "revision": 1,
+  "sortOrder": 3952,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "sunaookami_shiroko",
+    "outfit": {
+      "id": "abydos_desert_windbreaker",
+      "name": "水蓝白拼接防风夹克与黑运动短裤",
+      "prose": "A lightweight cyan-and-white weatherproof zip windbreaker worn over a white tee and black athletic shorts, accessorized with her blue striped scarf, crossbody sling bag, black ankle socks, and running sneakers.",
+      "tokens": [
+        "cyan windbreaker",
+        "zip-up jacket",
+        "white graphic tee",
+        "blue striped scarf",
+        "black athletic shorts",
+        "crossbody sling bag",
+        "black ankle socks",
+        "running sneakers"
+      ]
+    }
+  }
+}

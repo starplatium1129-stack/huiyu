@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_poolside_strawberry_icecream_splash",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1907,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "makina_poolside_strawberry_icecream_splash",
     "characterId": "irisu_makina",
@@ -32,7 +32,6 @@
     ],
     "promptTokens": [
       "poolside",
-      "cute strawberry swimsuit",
       "pink frilled bikini",
       "strawberry pattern",
       "sitting on pool edge",

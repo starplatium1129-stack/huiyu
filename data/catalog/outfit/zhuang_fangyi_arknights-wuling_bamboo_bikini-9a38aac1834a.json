@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "zhuang_fangyi_arknights/wuling_bamboo_bikini",
+  "revision": 1,
+  "sortOrder": 4069,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "zhuang_fangyi_arknights",
+    "outfit": {
+      "id": "wuling_bamboo_bikini",
+      "name": "武陵翠竹墨灰玉环分体泳装",
+      "prose": "A deep bamboo-green and charcoal-grey two-piece tactical bikini reinforced with polished jade-ring connectors, criss-cross chest utility straps, and high-cut athletic bottoms, bare legs, and barefoot.",
+      "tokens": [
+        "bamboo green bikini",
+        "charcoal grey trim",
+        "jade ring clasps",
+        "cross chest straps",
+        "high-cut bottom",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

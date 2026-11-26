@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "acheron/wanderer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1661,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "acheron",
     "outfit": {
       "id": "wanderer",
       "name": "巡游者紫白战装",
-      "prose": "A white and violet kimono-inspired jacket with a red waist cord, dark shorts and black boots.",
+      "prose": "Asymmetrical white-and-violet kimono-inspired jacket cinched with a red braided waist cord over dark combat shorts, finished with a leather thigh strap, single black stocking, and tall combat boots.",
       "tokens": [
-        "white and purple jacket",
-        "red waist cord",
+        "white jacket",
+        "purple trim",
+        "asymmetric coat",
+        "red cord",
         "black shorts",
-        "black boots"
+        "thigh strap",
+        "single stocking",
+        "combat boots"
       ],
       "default": true,
       "characterId": "acheron",

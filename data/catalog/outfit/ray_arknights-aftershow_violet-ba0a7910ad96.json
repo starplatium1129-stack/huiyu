@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/aftershow_violet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2051,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "aftershow_violet",
       "name": "紫灰层叠短裙与音符银扣夹克",
-      "prose": "A violet-grey layered skirt paired with a fitted black cropped jacket, a silver music-note clasp and dark lace-up ankle boots.",
+      "prose": "A fitted black cropped jacket with a silver music-note clasp over a violet-grey tiered miniskirt, finished with a purple velvet choker, sheer grey tights, and laced ankle boots.",
       "tokens": [
-        "violet grey layered skirt",
-        "black fitted cropped jacket",
-        "silver music-note clasp",
-        "dark lace-up ankle boots"
+        "black cropped jacket",
+        "violet tiered miniskirt",
+        "silver note clasp",
+        "purple velvet choker",
+        "sheer grey tights",
+        "laced ankle boots"
       ],
       "characterId": "ray_arknights",
       "default": false,

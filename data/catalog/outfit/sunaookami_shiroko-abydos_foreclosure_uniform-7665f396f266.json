@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "sunaookami_shiroko/abydos_foreclosure_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1690,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sunaookami_shiroko",
     "outfit": {
       "characterId": "sunaookami_shiroko",
       "id": "abydos_foreclosure_uniform",
-      "name": "阿拜多斯对策委深蓝制服与蓝白围巾",
-      "prose": "The official Abydos school uniform consisting of a white collared shirt, black necktie, navy pleated skirt, tactical hip holster, and signature blue-and-white striped scarf.",
+      "name": "阿拜多斯深蓝制服与蓝白条纹围巾",
+      "prose": "The Abydos High School uniform consisting of a crisp white collared shirt, black necktie, navy pleated skirt, tactical hip holster, blue-and-white striped knit scarf, black knee-high socks, and brown loafers.",
       "tokens": [
-        "collared shirt",
-        "necktie",
-        "pleated skirt",
-        "scarf",
-        "striped scarf",
-        "holster",
-        "black socks",
-        "loafers"
+        "school uniform",
+        "white collared shirt",
+        "black necktie",
+        "navy pleated skirt",
+        "blue striped scarf",
+        "hip holster",
+        "black knee highs",
+        "brown loafers"
       ],
       "default": true,
       "isDefault": true

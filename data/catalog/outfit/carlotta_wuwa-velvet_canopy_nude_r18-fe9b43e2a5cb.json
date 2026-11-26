@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "carlotta_wuwa/velvet_canopy_nude_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3210,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "carlotta_wuwa",
     "outfit": {
       "id": "velvet_canopy_nude_r18",
-      "name": "酒红丝绒帷帐全裸倾身姿态",
-      "prose": "Completely nude on burgundy velvet sheets, wearing only her crystal hairpin and pearl choker.",
+      "name": "酒红丝绒帷帐全裸态",
+      "prose": "Completely without garments on the sheets, wearing only a narrow pearl choker and bare from shoulder to foot.",
       "tokens": [
         "nude",
         "completely nude",
-        "choker",
-        "bare breasts",
-        "nipples",
-        "spread legs"
+        "pearl choker",
+        "bare shoulders",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/sfw_gym_track_set",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1130,
   "createdAt": "2026-10-06T09:50:34.027913700+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
       "id": "sfw_gym_track_set",
       "name": "体育课藏蓝拉链运动装",
-      "prose": "A fully zipped navy sports jacket over an opaque gray T-shirt, matching track trousers and white trainers.",
+      "prose": "A zipped navy track jacket with white stripe trim over an ash-grey T-shirt, matching navy track pants, white ankle socks, and white athletic sneakers.",
       "tokens": [
-        "navy sports jacket",
-        "fully zipped jacket",
-        "grey t-shirt",
+        "navy track jacket",
+        "white zip stripe",
+        "ash grey tee",
         "navy track pants",
-        "white sneakers"
+        "white ankle socks",
+        "white athletic sneakers"
       ],
       "default": false,
       "isDefault": false

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3370,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "typhon_arknights_lingerie_whisper",
     "characterId": "typhon_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "萨米极北冰原深处的猎人木屋，中央石火塘里跳动着干燥松木的温暖火焰。盘腿坐在厚厚的驯鹿毛皮上，把巨大的复合猎弓靠在墙角，双手捧着木碗小口喝着热浆果茶，淡金短发微翘，好奇又纯朴地睁大红宝石眼眸看着博士。 她微微抬眸轻语——“萨米的夜晚很冷，但只要钻进这堆毛皮里，就一点都不怕了。博士……坐近一点，我们一起分这碗热茶吧！”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "hunter_green_fur_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

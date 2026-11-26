@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "epsilon_shadow/azure_monokini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1893,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "epsilon_shadow",
     "outfit": {
       "id": "azure_monokini",
       "name": "苍蓝镂空金属银边连体泳装",
-      "prose": "A precision-tailored cerulean-blue monokini featuring alluring side cutouts, reflective metallic silver borders, and a matching sheer silk shawl.",
+      "prose": "Precision-tailored cerulean-blue halter monokini with waist cutouts and metallic silver piping, draped with a sheer pale-blue silk shawl, pearl drop earrings, slim silver anklet, and metallic heeled sandals.",
       "tokens": [
         "cerulean monokini",
-        "silver trim",
         "cutout swimsuit",
+        "silver trim",
+        "halterneck",
         "sheer shawl",
-        "metallic border",
-        "luxury swimwear"
+        "silver anklet",
+        "pearl earrings",
+        "heeled sandals"
       ],
       "characterId": "epsilon_shadow",
       "default": false,

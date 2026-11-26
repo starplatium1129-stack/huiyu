@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/rain_organza",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2192,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "rain_organza",
       "name": "烟紫欧根纱披肩与乌黑针织裙",
-      "prose": "A smoky-violet organza shoulder wrap over a black high-neck fine-knit dress, with an asymmetric silver feather brooch.",
+      "prose": "A smoky-violet organza shoulder wrap draped over a black mockneck fine-knit dress pinned with an asymmetric silver feather brooch, finished with opaque black pantyhose and black suede pumps.",
       "tokens": [
-        "smoky violet organza shoulder wrap",
-        "black high-neck knit dress",
-        "asymmetric silver feather brooch"
+        "violet organza wrap",
+        "black knit dress",
+        "silver feather brooch",
+        "mock turtleneck collar",
+        "opaque black pantyhose",
+        "black suede pumps"
       ],
       "characterId": "virtuosa_arknights",
       "default": false,

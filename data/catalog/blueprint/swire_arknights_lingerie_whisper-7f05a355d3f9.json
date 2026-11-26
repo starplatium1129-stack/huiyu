@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3168,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "swire_arknights_lingerie_whisper",
     "characterId": "swire_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "龙门中心区顶层私人豪华顶楼平层，全景落地窗外是纸醉金迷的龙门繁华夜景。斜躺在龙门天际线景观浴池旁的丝绒躺椅上，单手端着盛有鲜榨石榴汁的高脚杯，虎耳与修长虎尾惬意摇晃，金发大波浪垂在肩头，不可一世又千娇百媚地挑眉。 她微微抬眸轻语——“哼，本小姐的这间顶层套房，可不是随便什么人都能踏进来的。博士……今晚算你走运，过来给我倒酒！”",
-    "outfitId": "gold_lace_lingerie",
+    "outfitId": "tiger_gold_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

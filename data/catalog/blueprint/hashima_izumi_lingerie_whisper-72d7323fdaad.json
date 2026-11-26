@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hashima_izumi_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3476,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "hashima_izumi_lingerie_whisper",
     "characterId": "hashima_izumi",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "夏季Comic Market截稿日前夕的深夜。同人社团画师波岛出海直接套了一件松垮的大号深蓝涂鸦T恤当睡衣，领口歪向一侧，露出雪白的单侧香肩。茶色双马尾因为疯狂抓头发而乱成鸡窝，双眼布满血丝却闪烁着创作者的狂热之火。数位笔在液晶屏上划出残影，看到伦也学长端着宵夜走进来，她像抓到救命稻草一样抬起头大喊——「伦也前辈！还差三张彩页！只要再给我两罐能量饮料和你的鼓励……我今晚绝对能创造奇迹把原稿全部交出去啊啊啊！」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "cobalt_sketch_tshirt_dress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

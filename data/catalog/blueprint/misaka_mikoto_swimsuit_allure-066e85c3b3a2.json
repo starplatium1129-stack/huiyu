@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3174,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "misaka_mikoto_swimsuit_allure",
     "characterId": "misaka_mikoto",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "湛蓝的深水池在跳台下澄澈如洗。美琴踩在跳板前端，竞技泳衣将少女紧致匀称的身材勾勒得英姿飒爽，手腕上的蛙太腕表格外显眼。她推起泳镜，棕色发梢微跃着极淡的电弧，迎着烈阳向下方挥手——「喂！在下面看清楚了！本王牌的跳水姿态可是一流的，等会儿要是溅你一身水，可别找我抱怨啊！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "navy_racerback_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

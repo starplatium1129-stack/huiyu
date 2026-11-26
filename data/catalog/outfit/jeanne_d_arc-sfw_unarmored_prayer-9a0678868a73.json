@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_unarmored_prayer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_unarmored_prayer",
       "name": "素白立领修身羊绒修女长袍",
-      "prose": "An ivory high-neck monastic robe with side vents over silky thigh-high stockings.",
+      "prose": "A pure ivory high-collar cashmere monastic robe with tailored long sleeves, modest side vents, silver cross pin, silky white thigh-highs, and simple flat shoes.",
       "tokens": [
-        "white_dress",
-        "high_neck_dress",
-        "long_dress",
-        "long_sleeves",
-        "side_slit",
-        "minimalist_fashion",
-        "white_thighhighs"
+        "ivory cashmere robe",
+        "high-neck dress",
+        "long sleeves",
+        "side vents",
+        "silver cross clasp",
+        "white thighhighs",
+        "ivory flats"
       ],
       "characterId": "jeanne_d_arc",
       "default": false,

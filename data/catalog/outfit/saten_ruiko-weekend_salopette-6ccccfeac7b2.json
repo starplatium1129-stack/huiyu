@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "saten_ruiko/weekend_salopette",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1650,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfit": {
       "id": "weekend_salopette",
       "name": "奶油衬衫与苔绿背带裙",
-      "prose": "A cream gathered-sleeve blouse under a moss-green button-front pinafore dress, white ankle socks, and tan flat shoes",
+      "prose": "A cream blouse with gathered sleeves beneath a moss-green button-front pinafore dress, styled with a canvas bag, white cotton socks, and tan flat shoes.",
       "tokens": [
-        "cream_blouse",
-        "gathered_sleeves",
-        "green_pinafore",
-        "button-front_dress",
-        "white_socks",
-        "flat_shoes"
+        "cream gathered blouse",
+        "moss green pinafore",
+        "button-front denim",
+        "wooden skirt buttons",
+        "canvas crossbody bag",
+        "white cotton socks",
+        "tan flat shoes"
       ],
       "default": false
     }

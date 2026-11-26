@@ -1,30 +1,23 @@
 {
   "kind": "outfit",
   "id": "sakaki_yumiko/gala_backless_crimson_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1512,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "sakaki_yumiko",
     "outfit": {
       "id": "gala_backless_crimson_gown",
       "name": "名门夜宴露背绯红晚礼服",
-      "prose": "high-society banquet gala gown: an exquisite crimson velvet backless evening gown plunging gracefully along her bare spine, daring thigh-high side slit revealing slender legs, elbow-length black opera gloves, sapphire drop earrings, and sleek black stilettos",
+      "prose": "A crimson velvet backless evening gown with a plunging neckline and thigh-high side slit, paired with elbow-length black opera gloves, sapphire drop jewelry, and black stiletto heels.",
       "tokens": [
-        "evening_gown",
-        "dress",
-        "red_dress",
-        "backless",
-        "open_back",
-        "plunging_neckline",
-        "high_slit",
-        "opera_gloves",
-        "black_gloves",
-        "earrings",
-        "high_heels",
-        "formal",
-        "elegant"
+        "crimson velvet gown",
+        "open backless cut",
+        "high thigh slit",
+        "black opera gloves",
+        "sapphire drop jewelry",
+        "black stiletto heels"
       ],
       "default": false,
       "isDefault": false

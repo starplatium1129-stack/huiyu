@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude, with hair down.",
+      "prose": "Completely unclothed natural form with bare shoulders and bare feet.",
       "tokens": [
         "nude",
-        "hair_down"
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ],
       "identityTokensOverride": [
         "ereshkigal (fate)",

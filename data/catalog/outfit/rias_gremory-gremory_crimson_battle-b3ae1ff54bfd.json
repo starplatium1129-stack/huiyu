@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/gremory_crimson_battle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "gremory_crimson_battle",
       "name": "吉蒙里赤红纹章抹胸战袍与分体衣袖",
-      "prose": "A Gremory family combat dress with a structured bodice, detached trailing sleeves and a high side slit over black stockings.",
+      "prose": "A Gremory crimson corset dress with gold crest embroidery, detached trailing sleeves, a black waist sash, and a high side slit over black thigh-high stockings and heeled boots.",
       "tokens": [
-        "crimson_dress",
-        "corset_dress",
-        "detached_sleeves",
-        "gold_embroidery",
-        "high_slit",
-        "black_thighhighs",
-        "heeled_boots"
+        "crimson corset dress",
+        "detached wide sleeves",
+        "gold crest embroidery",
+        "high side slit",
+        "black waist sash",
+        "black thighhighs",
+        "black heeled boots"
       ],
       "characterId": "rias_gremory",
       "default": false,

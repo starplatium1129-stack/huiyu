@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "angelina_arknights/ribbon_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2186,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "angelina_arknights",
     "outfit": {
       "id": "ribbon_cardigan",
       "name": "珊瑚粉珍珠扣开衫与奶白长裙",
-      "prose": "A coral-pink cardigan with pearl buttons over a cream long dress, finished with a small red ribbon at the collar.",
+      "prose": "A coral-pink knit cardigan with small pearl buttons over a flowing cream maxi dress, accented with a red collar ribbon, a gold locket pendant, and nude ballet flats.",
       "tokens": [
         "coral pink cardigan",
-        "pearl buttons",
-        "cream long dress",
-        "red collar ribbon"
+        "small pearl buttons",
+        "cream maxi dress",
+        "red collar ribbon",
+        "gold locket pendant",
+        "nude ballet flats"
       ],
       "characterId": "angelina_arknights",
       "default": false,

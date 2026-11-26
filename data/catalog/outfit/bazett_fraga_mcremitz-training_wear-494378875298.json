@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "bazett_fraga_mcremitz/training_wear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1863,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "bazett_fraga_mcremitz",
     "outfit": {
       "id": "training_wear",
-      "name": "格斗训练装",
-      "prose": "a dark athletic top and fitted training trousers",
+      "name": "暗灰紧身格斗训练服与缠手带",
+      "prose": "A moisture-wicking dark-grey athletic compression top paired with flexible black track trousers, white linen hand wraps, and lightweight boxing sneakers.",
       "tokens": [
-        "dark athletic shirt",
-        "training pants"
+        "dark grey rashguard",
+        "compression shirt",
+        "white hand wraps",
+        "black training pants",
+        "athletic socks",
+        "boxing shoes"
       ],
       "default": false,
       "isDefault": false

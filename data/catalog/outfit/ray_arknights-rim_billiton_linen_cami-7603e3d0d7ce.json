@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/rim_billiton_linen_cami",
+  "revision": 1,
+  "sortOrder": 4101,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "rim_billiton_linen_cami",
+      "name": "荒原棉麻 · 杏粉露背荷叶边吊带睡衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "ray_arknights",
+      "prose": "An apricot-peach crinkled linen camisole with an open back and delicate white pom-pom string ties, paired with matching flutter-hem sleep shorts and a ribbon ankle tie, worn barefoot.",
+      "tokens": [
+        "apricot linen camisole",
+        "open back cut",
+        "white pompom ties",
+        "crinkled cotton trim",
+        "flutter hem shorts",
+        "barefoot"
+      ]
+    }
+  }
+}

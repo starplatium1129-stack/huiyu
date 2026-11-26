@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "hoolheyak_arknights/carriage_of_winds",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1953,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "hoolheyak_arknights",
     "outfit": {
       "id": "carriage_of_winds",
-      "name": "历世流风 · 黑色礼裙与青色披肩",
+      "name": "历世流风 · 抹胸黑礼裙与青披肩",
       "default": false,
       "isDefault": false,
-      "prose": "A strapless black formal dress with an aqua shawl and gold jewelry.",
+      "prose": "A sleek strapless black formal gown with a high side slit draped with a translucent aqua silk shawl, styled with a gold serpent cuff, layered necklaces, sheer stockings, and gold heeled sandals.",
       "tokens": [
-        "black dress",
-        "strapless dress",
-        "aqua shawl",
-        "gold jewelry"
+        "black strapless gown",
+        "aqua silk shawl",
+        "gold serpent cuff",
+        "high slit skirt",
+        "sheer dark stockings",
+        "gold heeled sandals"
       ],
       "identityTokensOverride": [
         "ho'olheyak (arknights)",

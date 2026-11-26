@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "izayoi_miku/diva_astral_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1749,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "izayoi_miku",
     "outfit": {
       "characterId": "izayoi_miku",
       "id": "diva_astral_dress",
       "name": "破军歌姬灵装·月光银紫礼裙",
-      "prose": "A dazzling spirit astral dress consisting of a shimmering silver-purple ruffled ballgown, bare shoulders, and luminous celestial ribbons.",
+      "prose": "A shimmering silver and purple ruffled astral ballgown with gold trim, bare shoulders, and luminous celestial ribbons over white thigh-highs and silver heels.",
       "tokens": [
-        "purple_dress",
-        "astral_dress",
-        "bare_shoulders",
-        "ruffled_dress",
-        "thighhighs",
-        "glowing_ribbons"
+        "silver purple gown",
+        "ruffled ballgown",
+        "bare shoulders",
+        "gold trim",
+        "glowing ribbons",
+        "white thighhighs",
+        "silver heels"
       ],
       "default": true,
       "isDefault": true

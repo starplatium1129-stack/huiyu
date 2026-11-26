@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3448,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:46.154516500+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "st_louis_azur_lingerie_whisper",
     "characterId": "st_louis_azur",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@atdan",
     "description": "海滨沿海公路观景停车点，远处是繁星点点的港区夜景与平静浪潮。背靠着跑车真皮座椅侧过身，一手搭在车门上，一手拨弄着浅蓝波浪长卷发，紫罗兰眼眸饱含深情与暗示，丰腴饱满的尤物身段在薄衫下一览无余。 她微微抬眸轻语——“指挥官，兜风结束了……但夜晚才刚刚开始呢。把车窗摇上去吧，接下来的时间……只属于我们两个人。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "ice_blue_watered_silk_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

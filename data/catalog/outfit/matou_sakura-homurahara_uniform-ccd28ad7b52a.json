@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/homurahara_uniform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "homurahara_uniform",
       "name": "穗群原燕麦呢制服大衣与百褶裙",
-      "prose": "An oatmeal wool blazer and pleated skirt over a collared shirt, paired with sheer black tights.",
+      "prose": "A tailored oatmeal wool double-breasted Homurahara blazer worn over a crisp white shirt, crimson necktie, pleated skirt, sheer black thigh-highs, and brown leather loafers.",
       "tokens": [
-        "tan_blazer",
-        "double-breasted_jacket",
-        "white_collared_shirt",
-        "red_necktie",
-        "high-waist_skirt",
-        "pleated_skirt",
-        "black_thighhighs",
-        "leather_loafers"
+        "oatmeal blazer",
+        "double-breasted jacket",
+        "white collared shirt",
+        "red necktie",
+        "high-waist skirt",
+        "pleated skirt",
+        "black thighhighs",
+        "leather loafers"
       ],
       "characterId": "matou_sakura",
       "default": true,

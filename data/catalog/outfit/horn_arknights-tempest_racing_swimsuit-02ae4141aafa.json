@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/tempest_racing_swimsuit",
+  "revision": 1,
+  "sortOrder": 4029,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "tempest_racing_swimsuit",
+      "name": "风暴集结 · 白金高领竞技泳衣",
+      "prose": "A platinum-white high-collar competition swimsuit accented with gold side piping, a front brass zipper, a crisp white shoulder capelet, and bare feet.",
+      "tokens": [
+        "white racing swimsuit",
+        "gold side piping",
+        "front brass zipper",
+        "high collar neckline",
+        "white shoulder capelet",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

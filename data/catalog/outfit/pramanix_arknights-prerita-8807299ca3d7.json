@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/prerita",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1943,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "prerita",
-      "name": "初雪异格 · 深色长裙与蓝色披风",
+      "name": "初雪异格 · 炭黑长裙与冰蓝披风",
       "default": false,
       "isDefault": false,
-      "prose": "A long black dress worn beneath a blue cloak, finished with a bell necklace.",
+      "prose": "A charcoal ankle-length dress beneath a flowing glacier-blue cloak edged in gold cord trim, worn with a bell pendant necklace, dark wool tights, and laced leather boots.",
       "tokens": [
-        "black dress",
-        "long dress",
-        "blue cloak",
-        "bell necklace"
+        "charcoal long dress",
+        "glacier blue cloak",
+        "gold cord trim",
+        "bell pendant necklace",
+        "dark wool tights",
+        "laced leather boots"
       ],
       "identityTokensOverride": [
         "pramanix (arknights)",

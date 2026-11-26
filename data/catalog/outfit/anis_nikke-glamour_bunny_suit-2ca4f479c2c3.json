@@ -1,29 +1,24 @@
 {
   "kind": "outfit",
   "id": "anis_nikke/glamour_bunny_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1555,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "anis_nikke",
     "outfit": {
       "id": "glamour_bunny_suit",
       "name": "金耀兔女郎连体礼服",
-      "prose": "a glamorous high-roller casino bunny suit: a glossy amber-gold satin strapless leotard accentuating her immense cleavage and voluptuous hips, white satin cuffs, oversized black bow tie, sheer black fishnet stockings, shiny stiletto pumps, and playful matching golden bunny ears.",
+      "prose": "A glossy amber-gold satin strapless leotard accented with white tuxedo cuffs, an oversized black bow tie, matching golden bunny headband, sheer black fishnet tights, and stiletto pumps.",
       "tokens": [
-        "bunny_suit",
-        "leotard",
-        "gold_leotard",
-        "strapless",
-        "cleavage",
-        "collar",
-        "bow_tie",
-        "cuffs",
-        "fishnets",
-        "high_heels",
-        "bunny_ears",
-        "playful"
+        "gold satin leotard",
+        "strapless corset",
+        "white tuxedo cuffs",
+        "black bow tie",
+        "bunny headband",
+        "black fishnet tights",
+        "black stiletto heels"
       ],
       "default": false,
       "isDefault": false

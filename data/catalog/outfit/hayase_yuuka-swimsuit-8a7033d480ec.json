@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/swimsuit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 509,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "藏青挂颈高衩竞速连体泳装与薄纱披肩",
-      "prose": "A sleek navy blue high-cut one-piece athletic swimsuit with white piping and a sheer mesh sarong.",
+      "name": "藏青白滚边竞速连体泳装",
+      "prose": "A sleek athletic navy high-leg one-piece halter swimsuit with sharp white racing stripes, paired with a translucent white beach sarong, sun visor, and sandals.",
       "tokens": [
-        "navy_swimsuit",
-        "one_piece_swimsuit",
+        "navy one-piece swimsuit",
         "halterneck",
-        "high_leg_swimsuit",
-        "white_trim",
-        "sheer_sarong",
-        "bare_legs",
-        "sandals"
+        "white piping",
+        "high leg swimsuit",
+        "sheer white sarong",
+        "sun visor",
+        "bare legs",
+        "white sandals"
       ],
       "characterId": "hayase_yuuka"
     }

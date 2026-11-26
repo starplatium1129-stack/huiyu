@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/landen_coastal_bikini",
+  "revision": 1,
+  "sortOrder": 4102,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "landen_coastal_bikini",
+      "name": "兰赛尔夏祷 · 白蓝圣徽挂脖泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "archetto_arknights",
+      "prose": "A crisp white halter bikini accented with ultramarine trim, braided side ties, and small gold cross charms, worn with high-waisted bottoms beneath an open sheer navy chiffon shirt and barefoot.",
+      "tokens": [
+        "white halter bikini",
+        "ultramarine trim",
+        "gold cross charms",
+        "high waist bottoms",
+        "sheer navy shirt",
+        "barefoot"
+      ]
+    }
+  }
+}

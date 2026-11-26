@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3295,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.252Z",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "tomotake_yoshino_swimsuit_allure",
     "characterId": "tomotake_yoshino",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "破晓潮平的海上鸟居圣域。朝武芳乃身着穗织神子紫藤印花和风裹身泳装，涉步于镜面般的浅波之中。朝霞如紫雾般笼罩海天，她双手端庄拢于胸前，微红着脸回头看向陪伴在侧的你，神职巫女的高洁端丽与少女初露心扉的娇羞融为一体。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "hoori_wisteria_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/siesta_dock_linen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3911,
   "createdAt": "2026-11-21T19:19:41.751431800+00:00",
-  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "id": "siesta_dock_linen",
       "characterId": "texas_arknights",
       "name": "汐斯塔白麻罩衫与哑黑扣带泳装",
-      "prose": "A matte black swim top with narrow pewter buckles and matching fitted swim shorts, under an open white linen shirt with the sleeves rolled to her elbows.",
+      "prose": "A matte-black bikini top and pewter-buckled swim shorts layered beneath an airy open white linen shirt with sleeves rolled to the elbows.",
       "tokens": [
-        "white shirt",
-        "open shirt",
-        "sleeves rolled up",
-        "black bikini",
-        "black shorts",
-        "belt buckle"
+        "white linen shirt",
+        "open front",
+        "rolled cuffs",
+        "black bikini top",
+        "pewter belt buckle",
+        "black swim shorts",
+        "barefoot"
       ],
       "isDefault": false,
       "default": false,

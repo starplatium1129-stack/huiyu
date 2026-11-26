@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/glowing_flame",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2179,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "glowing_flame",
-      "name": "闪焰之夜·白色毛衣裙与红披风",
-      "prose": "A white sweater dress beneath a red festive cloak, with a red hat, ribbon details and thick boots.",
+      "name": "闪焰之夜 · 白色毛衣裙与红披风",
+      "prose": "A cream-white cable-knit sweater dress layered beneath a warm crimson wool cloak and red beret, trimmed with gold satin ribbons and thick furred leather boots.",
       "tokens": [
         "white sweater dress",
-        "red cloak",
-        "red hat",
-        "ribbon",
-        "thick boots"
+        "crimson wool cloak",
+        "red wool beret",
+        "gold satin ribbon",
+        "cable knit cuffs",
+        "thick furred boots"
       ],
       "characterId": "reed_arknights",
       "default": false,

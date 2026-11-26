@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_off_shoulder_cafe_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2757,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "izayoi_miku_off_shoulder_cafe_smile",
     "characterId": "izayoi_miku",
@@ -31,7 +31,7 @@
       "french boulevard",
       "dappled sunlight",
       "playful head tilt",
-      "charming smile"
+      "sweet smile"
     ],
     "negativeTokens": [],
     "animaCaption": "Cradling a hot cup of latte at an outdoor cafe, Miku tilts her head with an affectionate, private smile.",

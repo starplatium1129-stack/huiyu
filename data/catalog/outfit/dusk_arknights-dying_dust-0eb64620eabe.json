@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/dying_dust",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 322,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "dying_dust",
       "isDefault": false,
       "name": "染尘烟黑金旗袍与毛边披肩",
-      "prose": "a short black qipao with restrained gold embroidery and a high slit, a black fur-trimmed capelet, black tights and heels",
+      "prose": "A short black qipao enriched with subtle gold embroidery and side slit beneath a fur-edged black capelet, paired with sheer black tights and stiletto heels.",
       "tokens": [
-        "short black china dress",
+        "short black qipao",
         "gold embroidery",
         "high slit",
-        "black capelet",
-        "fur trim",
-        "black pantyhose",
-        "black heels"
+        "fur-trimmed capelet",
+        "sheer black pantyhose",
+        "black high heels"
       ]
     }
   }

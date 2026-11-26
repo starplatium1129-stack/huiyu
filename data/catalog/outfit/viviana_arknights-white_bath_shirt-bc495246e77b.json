@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/white_bath_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1451,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "id": "white_bath_shirt",
-      "name": "浴后微曦半透珍珠扣白丝衬衫",
+      "name": "微透珍珠扣白丝衬衫",
       "tokens": [
-        "white_shirt",
-        "sheer_shirt",
-        "silk_shirt",
-        "pearl_buttons",
-        "bare_legs"
+        "sheer white shirt",
+        "lustrous silk weave",
+        "pearl front buttons",
+        "unbuttoned collar",
+        "rolled cuffs",
+        "barefoot"
       ],
-      "prose": "A lightweight white silk shirt with pearl buttons drapes loosely over matching lingerie.",
+      "prose": "A lightweight sheer white silk shirt fastened lightly with pearl buttons and rolled cuffs, worn loose and barefoot.",
       "default": false,
       "isDefault": false,
       "characterId": "viviana_arknights"

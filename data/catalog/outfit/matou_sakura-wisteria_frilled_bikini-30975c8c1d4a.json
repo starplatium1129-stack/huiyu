@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/wisteria_frilled_bikini",
+  "revision": 1,
+  "sortOrder": 3961,
+  "createdAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "wisteria_frilled_bikini",
+      "name": "紫藤荷叶边格纹纱巾泳装",
+      "prose": "A pale wisteria-lavender triangle bikini edged with delicate scalloped frills and white satin tie ribbons, paired with a gingham sheer mini sarong, straw hat, and white sandals.",
+      "tokens": [
+        "lavender bikini",
+        "scalloped frills",
+        "white satin ribbons",
+        "gingham sarong",
+        "sheer wrap",
+        "straw sunhat",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

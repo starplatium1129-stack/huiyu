@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "asia_argento/holy_nun_habit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1761,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "asia_argento",
     "outfit": {
       "characterId": "asia_argento",
       "id": "holy_nun_habit",
       "name": "圣洁修女见习长袍",
-      "prose": "A traditional sacred Catholic nun habit with black flowing robe, white collar, modest wimple veil, and a silver crucifix rosary necklace.",
+      "prose": "A traditional black flowing nun habit with a crisp white collar, draped white wimple veil, silver crucifix rosary necklace, and modest black flat shoes.",
       "tokens": [
-        "nun",
-        "habit",
-        "nun_veil",
-        "black_dress",
-        "white_collar",
-        "rosary",
-        "cross_necklace",
-        "long_dress"
+        "black nun habit",
+        "white wimple veil",
+        "white stiff collar",
+        "flowing long robe",
+        "silver rosary necklace",
+        "black flat shoes"
       ],
       "default": true,
       "isDefault": true

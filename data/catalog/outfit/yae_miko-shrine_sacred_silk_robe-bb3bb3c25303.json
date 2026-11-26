@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "yae_miko/shrine_sacred_silk_robe",
+  "revision": 1,
+  "sortOrder": 4162,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "yae_miko",
+    "outfit": {
+      "id": "shrine_sacred_silk_robe",
+      "name": "神樱幻魅绯白真丝高开叉和风吊带袍",
+      "prose": "Modified scarlet-and-white silk kimono-cut slip robe parted with a waist-high side slit, tied at the neckline with a sacred crimson cord knot, flowing sheer sleeves, tassel earrings, gold anklet, and bare feet.",
+      "tokens": [
+        "scarlet silk robe",
+        "white slip",
+        "high slit",
+        "red cord knot",
+        "sheer sleeves",
+        "tassel earrings",
+        "gold anklet",
+        "barefoot"
+      ],
+      "characterId": "yae_miko",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "情趣 / 蕾丝内衣"
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3523,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "texas_arknights_lingerie_whisper",
     "characterId": "texas_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "叙拉古郊外安全屋汽车旅馆，推拉窗外是荒芜公路与远山连绵的夜色。坐在皮箱上，嘴里咬着半根细长巧克力棒，狼耳微动，单手插在睡袍口袋里，黑发垂肩，琥珀色眼眸带着叙拉古旧日风尘的沉静与对你的无声依赖。 她微微抬眸轻语——“……罗德岛的生活很平静，这样就好。博士……要分你半根巧克力吗？”",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "charcoal_minimal_silk_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

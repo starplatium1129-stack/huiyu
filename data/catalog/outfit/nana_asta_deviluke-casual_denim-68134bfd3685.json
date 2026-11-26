@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/casual_denim",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 687,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -12,12 +12,14 @@
       "id": "casual_denim",
       "isDefault": false,
       "name": "暗红背心与磨边牛仔短裤",
-      "prose": "A square-hem dark-red cotton tank, faded denim cutoff shorts with contrast stitching, and white sneakers.",
+      "prose": "A square-hem crimson sleeveless cotton tank paired with faded denim cutoff shorts with yellow contrast stitching, a brown leather belt, a cotton wristband, and white canvas sneakers.",
       "tokens": [
-        "dark red sleeveless shirt",
-        "faded denim cutoff shorts",
-        "contrast stitching",
-        "white sneakers"
+        "crimson sleeveless tank",
+        "faded denim shorts",
+        "yellow contrast stitching",
+        "brown leather belt",
+        "red cotton wristband",
+        "white canvas sneakers"
       ]
     }
   }

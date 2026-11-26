@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/standard_mercenary",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
@@ -12,20 +12,15 @@
       "id": "standard_mercenary",
       "isDefault": true,
       "name": "狂宴灰色短斗篷与腿部装备套",
-      "prose": "An ash-grey combat capelet over a black leather bustier and frayed shorts, with a practical thigh holster for equipment.",
+      "prose": "An ash-grey asymmetrical combat capelet worn over a black leather bustier, frayed dark shorts, buckled thigh holster, fingerless gloves, and laced combat boots.",
       "tokens": [
-        "asymmetrical_jacket",
-        "cropped_jacket",
-        "gray_capelet",
-        "leather_bustier",
-        "denim_shorts",
-        "short_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "thigh_holster",
-        "holster",
-        "combat_boots",
-        "fingerless_gloves"
+        "ash grey capelet",
+        "asymmetrical jacket",
+        "black leather bustier",
+        "frayed shorts",
+        "thigh holster",
+        "fingerless gloves",
+        "combat boots"
       ],
       "characterId": "lappland_arknights"
     }

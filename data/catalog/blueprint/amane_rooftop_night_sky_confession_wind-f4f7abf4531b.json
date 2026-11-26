@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "amane_rooftop_night_sky_confession_wind",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1181,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "id": "amane_rooftop_night_sky_confession_wind",
     "title": "周防天音 · 学园天台的夜风倾诉",
     "category": "星空倾怀",
     "characterId": "suou_amane",
-    "outfitId": "sfw_neat_mihama_uniform",
+    "outfitId": "mihama_uniform",
     "coverageTags": [
       "night"
     ],

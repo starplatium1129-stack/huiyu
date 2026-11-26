@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/crimson_silk_bath_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1425,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "crimson_silk_bath_robe",
       "name": "深绯真丝系带长晨袍与蕾丝内衣",
       "tokens": [
-        "crimson_robe",
-        "silk_robe",
-        "sheer_fabric",
-        "open_robe",
-        "black_lace_lingerie",
-        "high_slit",
-        "bare_legs",
+        "crimson silk robe",
+        "sheer chiffon fabric",
+        "open front wrap",
+        "satin waist sash",
+        "black lace camisole",
+        "bare legs",
         "barefoot"
       ],
-      "prose": "A crimson silk chiffon robe tied with a sash and worn open over sheer black lace lingerie.",
+      "prose": "A crimson silk chiffon dressing robe tied loosely with a satin waist sash over sheer black lace lingerie, worn with bare legs and barefoot.",
       "default": false,
       "isDefault": false,
       "characterId": "rias_gremory"

@@ -1,22 +1,26 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/swimsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "黑色红结猫耳海滨泳装",
-      "prose": "a clean black bikini with a small red ribbon at the center and a cat-ear-shaped swim hood",
+      "name": "黑红丝带猫耳海滨泳装",
+      "prose": "A sleek black halter bikini accented with a small crimson chest ribbon, layered under an open cat-ear cropped swim hoodie and translucent black pareo with sandals.",
       "tokens": [
         "black bikini",
-        "cat-ear swim hood",
-        "red ribbon"
+        "red ribbon",
+        "halterneck",
+        "sheer black pareo",
+        "cat-ear hoodie",
+        "bare legs",
+        "black sandals"
       ]
     }
   }

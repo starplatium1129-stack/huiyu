@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/shrine_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
@@ -12,13 +12,14 @@
       "id": "shrine_casual",
       "isDefault": false,
       "name": "绿米拼色针织家政套装",
-      "prose": "a green-and-cream color-block sweater with fitted cuffs beneath a white frilled apron, a dark-brown pleated skirt, loose socks and house slippers",
+      "prose": "A green-and-cream color-block knit sweater beneath a white frilled apron and brown pleated skirt, completed with white loose socks and soft house slippers.",
       "tokens": [
-        "green and cream sweater",
+        "green knit sweater",
         "white frilled apron",
         "brown pleated skirt",
-        "loose socks",
-        "slippers"
+        "cream ribbed cuffs",
+        "white loose socks",
+        "soft house slippers"
       ]
     }
   }

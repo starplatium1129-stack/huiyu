@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phoebe_wuwa/unbuttoned_vestment_bare_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3309,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phoebe_wuwa",
     "outfit": {
       "id": "unbuttoned_vestment_bare_r18",
-      "name": "敞开圣咏白袍与金色丝带缠绕",
-      "prose": "Her white ceremonial dress pulled open off her shoulders to expose her bare breasts, wearing her gold-trimmed wide-brimmed hat and white thigh-highs.",
+      "name": "敞开圣咏白袍与礼帽长袜",
+      "prose": "Her white liturgical dress unfastened and pulled down off her shoulders to expose her bare breasts, keeping on her gold-trimmed brimmed hat and white thigh-highs, worn barefoot.",
       "tokens": [
-        "open clothes",
-        "wide-brimmed hat",
-        "white thighhighs",
+        "open white dress",
+        "off shoulder",
+        "topless",
         "bare breasts",
         "nipples",
-        "nude"
+        "brimmed hat",
+        "white thighhighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

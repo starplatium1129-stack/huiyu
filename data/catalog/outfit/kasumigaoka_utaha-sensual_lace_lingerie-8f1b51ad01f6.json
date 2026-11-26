@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sensual_lace_lingerie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "毒舌学姐酒红高叉真丝吊带裙配黑丝连裤袜",
-      "prose": "A provocative boudoir gown in rich wine-red stretch silk satin featuring a hip-high side slit, plunging cowl neck, and styled with signature ultra-sheer 20-denier black pantyhose.",
+      "name": "酒红高衩真丝吊带裙配黑丝连裤袜",
+      "prose": "A wine-red stretch silk slip with a plunging cowl neckline and hip-high side slit, paired with ultra-sheer black pantyhose and velvet mules.",
       "tokens": [
-        "wine red silk slip",
-        "high hip slit",
+        "burgundy silk slip",
         "cowl neckline",
+        "high hip slit",
+        "thin straps",
+        "gold anklet",
         "sheer black pantyhose",
-        "20 denier tights",
-        "author femme fatale"
+        "velvet mules"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

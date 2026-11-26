@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3498,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "rena_liechtenauer_swimsuit_allure",
     "characterId": "rena_liechtenauer",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "游艇劈开深蓝海浪激起两道雪白航迹。蕾娜扶着前甲板金属栏杆，金色双螺旋发辫在海风中如琴弦般律动，象牙白金边比基尼彰显出毫无死角的名门仪态。她举起泛着气泡的香槟杯迎向前方，碧绿双眸闪烁着热烈耀眼的光芒——「为这无边无际的晴空与大海干杯！在我的故乡可没有这么辽阔温热的夏海呢！来吧亲爱的，尽情享受由我为你准备的盛宴吧！」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "royal_filigree_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

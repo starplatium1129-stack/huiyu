@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/rehearsal_plaid",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2047,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "rehearsal_plaid",
-      "name": "褪蓝格纹衬衫与炭灰短裤",
-      "prose": "A faded blue plaid overshirt with rolled cuffs over a black T-shirt and charcoal shorts, finished with red stitching and lace-up sneakers.",
+      "name": "褪蓝格纹衬衫与炭灰牛仔短裤",
+      "prose": "A faded blue plaid overshirt with rolled cuffs worn open over a black tee and charcoal denim shorts, styled with a guitar-pick pendant, striped tube socks, and high-top sneakers.",
       "tokens": [
-        "faded blue plaid overshirt",
-        "rolled cuffs",
-        "black t-shirt",
-        "charcoal shorts",
-        "red stitching",
-        "lace-up sneakers"
+        "blue plaid overshirt",
+        "rolled shirt cuffs",
+        "black graphic tee",
+        "charcoal denim shorts",
+        "striped tube socks",
+        "high top sneakers"
       ],
       "characterId": "ray_arknights",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3139,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_swimsuit_allure",
     "characterId": "wakaba_mutsumi_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "防风松林外空旷长椅上的阴天暮色。若叶睦穿着静默吉他手灰绿素色双层分体泳衣，双手捧着装着小黄瓜片的保鲜盒小口咀嚼。长长的墨绿发丝在清冷海风中飘动，她没有多余的表情与言语，只是默默地递过一片黄瓜，在沉默中传递着笨拙而真实的善意。",
-    "outfitId": "azure_summer_bikini",
+    "outfitId": "sage_layered_tankini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

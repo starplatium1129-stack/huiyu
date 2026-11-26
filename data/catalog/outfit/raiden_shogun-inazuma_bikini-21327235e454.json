@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/inazuma_bikini",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:26:38.560750500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "inazuma_bikini",
       "name": "紫电金纹高衩挂颈泳装与薄纱巾",
-      "prose": "A high-cut royal purple halter bikini accented with golden ringlets, styled with a gossamer violet sarong.",
+      "prose": "High-cut royal-purple halter bikini fastened with polished gold rings, draped in a sheer violet chiffon sarong and accented with a floral brooch, slim gold anklet, and metallic strappy sandals.",
       "tokens": [
-        "purple_bikini",
+        "purple bikini",
         "halterneck",
-        "high-leg_bikini",
-        "sarong",
-        "sheer_fabric",
-        "gold_trim",
-        "bare_legs"
+        "high-leg bikini",
+        "sheer sarong",
+        "gold rings",
+        "gold anklet",
+        "floral brooch",
+        "strappy sandals"
       ],
       "default": false,
       "isDefault": false,

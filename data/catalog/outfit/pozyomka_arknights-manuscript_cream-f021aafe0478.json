@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/manuscript_cream",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2066,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "manuscript_cream",
-      "name": "奶油色蝴蝶结丝衫与雾蓝长裙",
-      "prose": "A cream silk blouse with a soft bow collar and pearl cuffs tucked into a muted-blue flowing long skirt, with a delicate silver necklace.",
+      "name": "奶油蝴蝶结丝衫与雾蓝垂长裙",
+      "prose": "A cream silk blouse with a tied bow collar and pearl cufflinks tucked into a mist-blue flowing skirt, styled with a silver filigree necklace, sheer ivory stockings, and beige suede pumps.",
       "tokens": [
-        "cream silk blouse",
-        "bow collar",
-        "pearl cuffs",
-        "muted blue flowing long skirt",
-        "silver necklace"
+        "cream pussybow blouse",
+        "pearl cufflinks",
+        "mist blue skirt",
+        "silver filigree necklace",
+        "sheer ivory stockings",
+        "beige suede pumps"
       ],
       "characterId": "pozyomka_arknights",
       "default": false,

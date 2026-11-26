@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/sketch_coral",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2034,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "sketch_coral",
-      "name": "珊瑚色画家罩裙与帆布小挎包",
-      "prose": "A coral cotton smock dress over a white blouse, with a stitched pencil pocket, a small canvas satchel and flat shoes.",
+      "name": "珊瑚色插笔画家罩裙与贝雷帽",
+      "prose": "A coral-pink cotton smock dress with a stitched pencil pocket over an ecru poplin blouse, styled with a canvas shoulder satchel, wool beret, cream knit socks, and tan suede flats.",
       "tokens": [
-        "coral cotton smock dress",
-        "white blouse",
+        "coral cotton smock",
+        "ecru poplin blouse",
         "stitched pencil pocket",
-        "canvas satchel",
-        "flat shoes"
+        "canvas shoulder satchel",
+        "cream knit socks",
+        "tan suede flats"
       ],
       "characterId": "nymph_arknights",
       "default": false,

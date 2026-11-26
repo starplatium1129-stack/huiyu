@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/dawn_lace_swimdress",
+  "revision": 1,
+  "sortOrder": 4037,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "dawn_lace_swimdress",
+      "name": "笼外清晨 · 素白蕾丝长泳裙与薄荷披纱",
+      "prose": "A pure white embossed floral-lace swimdress with a gentle empire waist, accompanied by a drifting sheer mint-green chiffon wrap, a silver feather charm, and bare feet.",
+      "tokens": [
+        "white lace swimdress",
+        "embossed floral pattern",
+        "empire waist seam",
+        "mint chiffon wrap",
+        "silver feather charm",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

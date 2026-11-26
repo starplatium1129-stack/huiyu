@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_watering_can",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2891,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "nymph_arknights_watering_can",
     "characterId": "nymph_arknights",
@@ -39,7 +39,7 @@
       "trailing ivy",
       "city rooftop views",
       "bright cheerful daylight",
-      "industrious cute mood",
+      "watering plants",
       "medium shot"
     ],
     "negativeTokens": [],

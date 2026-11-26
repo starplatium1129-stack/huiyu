@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sachi_workbench_bomb_defusal_tools",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1190,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "sachi_workbench_bomb_defusal_tools",
     "title": "小岭幸 · 地下工坊的硬核防爆拆解",
     "category": "硬核反差",
     "characterId": "komine_sachi",
-    "outfitId": "maid_uniform",
+    "outfitId": "workbench_utility_apron",
     "coverageTags": [
       "tactical"
     ],

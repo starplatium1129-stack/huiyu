@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/morning_kendo_robe",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 303,
   "createdAt": null,
-  "updatedAt": "2026-11-21T19:19:41.751431800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "morning_kendo_robe",
       "isDefault": false,
       "name": "晨光道场白衿黛青改良剑道短装",
-      "prose": "A white cotton keikogi with a deep teal collar and matching pleated short hakama, with a red obi knotted at the waist.",
+      "prose": "A crisp white cotton kendo jacket piped in deep teal over a short pleated hakama skirt tied with a red waist obi, worn barefoot on dojo boards.",
       "tokens": [
-        "kimono top",
-        "white top",
-        "teal trim",
-        "pleated skirt",
-        "hakama skirt",
-        "obi",
-        "bare legs"
+        "white keikogi top",
+        "teal collar trim",
+        "short hakama skirt",
+        "red waist obi",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "chen_arknights"
     }

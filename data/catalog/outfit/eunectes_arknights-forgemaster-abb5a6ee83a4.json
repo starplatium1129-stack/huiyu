@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eunectes_arknights/forgemaster",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 336,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "eunectes_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "forgemaster",
       "isDefault": false,
       "name": "熔锻耐热工装",
-      "prose": "A black fire-resistant shirt with olive coveralls rolled down at the waist, reinforced knees, heat-resistant gloves and heavy work boots.",
+      "prose": "A fitted black heat-resistant undershirt worn with olive mechanic coveralls rolled down and knotted at the waist, reinforced knees, insulated gloves, and steel-toe work boots.",
       "tokens": [
         "black work shirt",
         "olive coveralls",
-        "clothes around waist",
+        "rolled-down waist",
         "reinforced knees",
         "heat-resistant gloves",
-        "work boots"
+        "heavy work boots"
       ]
     }
   }

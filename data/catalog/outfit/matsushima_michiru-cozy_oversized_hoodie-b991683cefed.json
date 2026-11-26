@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "matsushima_michiru/cozy_oversized_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1517,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "matsushima_michiru",
     "outfit": {
       "id": "cozy_oversized_hoodie",
       "name": "宿舍闲适大号柠檬印花卫衣",
-      "prose": "comfy private dormitory loungewear: an oversized pastel cream-white fleece pullover hoodie featuring a whimsical cartoon lemon print across the chest, hemlines reaching mid-thigh, soft grey lounge boy-shorts peeking underneath, bare legs, cute mismatched fluffy house slippers, and twintails bundled casually",
+      "prose": "An oversized cream-white fleece pullover hoodie featuring a cheerful lemon print across the chest over soft grey lounge shorts and fluffy house slippers.",
       "tokens": [
-        "hoodie",
-        "oversized_hoodie",
-        "white_hoodie",
-        "print_hoodie",
-        "shorts",
-        "bare_legs",
-        "slippers",
-        "casual",
-        "loungewear"
+        "oversized cream hoodie",
+        "lemon chest print",
+        "fleece pullover cut",
+        "grey lounge shorts",
+        "ribbed cuff sleeves",
+        "fluffy house slippers"
       ],
       "default": false,
       "isDefault": false

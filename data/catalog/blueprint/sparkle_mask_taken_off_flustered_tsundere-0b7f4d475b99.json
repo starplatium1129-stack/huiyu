@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_mask_taken_off_flustered_tsundere",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "id": "sparkle_mask_taken_off_flustered_tsundere",
     "title": "花火 · 被摘面具的破防羞恼",
@@ -44,7 +44,7 @@
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "sfw_mask_removed_kimono",
+    "outfitId": "official_kimono_dress",
     "coverageTags": [
       "gap_moe",
       "flustered",

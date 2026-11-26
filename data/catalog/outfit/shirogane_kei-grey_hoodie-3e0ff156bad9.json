@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/grey_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1432,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "grey_hoodie",
       "name": "落肩炭灰卫衣与黑色短裤",
-      "prose": "An oversized charcoal hoodie with an off-center silver zip collar over black shorts, paired with sheer black over-knee stockings and Chelsea boots.",
+      "prose": "An oversized charcoal hoodie with an off-center silver zip funnel neck over black shorts, paired with sheer black thigh-high stockings and black Chelsea boots.",
       "tokens": [
-        "oversized_hoodie",
-        "charcoal_hoodie",
-        "funnel_neck",
-        "short_shorts",
-        "black_thighhighs",
-        "sheer_stockings",
-        "chelsea_boots",
-        "techwear_chic"
+        "charcoal oversized hoodie",
+        "silver zip funnel",
+        "black short shorts",
+        "sheer black thighhighs",
+        "black chelsea boots",
+        "black leather belt"
       ],
       "characterId": "shirogane_kei",
       "default": false,

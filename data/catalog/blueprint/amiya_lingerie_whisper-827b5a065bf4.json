@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3402,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "amiya_lingerie_whisper",
     "characterId": "amiya",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "夜深了，罗德岛甲板上的风暴渐渐平息。阿米娅刚结束今日的日常琴谱练习，换上了一件素雅的天蓝棉麻长款睡裙。她小心翼翼地把小提琴锁入琴盒，转过身看见走近的博士。两只修长的兔耳温柔地向后轻贴，她合拢手指放在胸前，棕色眼眸中盛满了纯粹的温暖——「博士，您还没有休息吗？……今天琴弦的声音很平稳，没有一丝焦躁。愿今晚罗德岛的所有人，都能做个好梦。」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "sky_linen_lace_nightdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

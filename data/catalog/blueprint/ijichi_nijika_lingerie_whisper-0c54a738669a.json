@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3406,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "ijichi_nijika_lingerie_whisper",
     "characterId": "ijichi_nijika",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "STARRY地下排练室打烊后的晚间加练。团结乐队的真正支柱伊地知虹夏，换上了一套明亮如向日葵的亮黄色无袖连帽运动棉质家居套。她随性地倒坐在黑色皮鼓凳上，手里捧着从楼上买来的大杯黑糖珍珠奶茶。头顶标志性的三角形小呆毛随着她晃荡双腿的节拍欢快跳动。她咬着吸管吸了一大口，转头对着累趴下的波奇酱和推门进来的你绽放出治愈一切阴霾的耀眼笑容——「辛苦啦！今天的排练超有默契的哦！来，黑糖奶茶分你一大半，喝完这杯我们一起去吃下北泽最棒的咖喱饭吧！」",
-    "outfitId": "crimson_lace_lingerie",
+    "outfitId": "yellow_terry_lounge_hoodie",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

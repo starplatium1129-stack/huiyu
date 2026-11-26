@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rikuhachima_aru/burgundy_vinyl_trench_bikini",
+  "revision": 1,
+  "sortOrder": 3940,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "rikuhachima_aru",
+    "outfit": {
+      "id": "burgundy_vinyl_trench_bikini",
+      "name": "酒红黑漆皮金链披风泳装",
+      "prose": "A glamorous deep-burgundy designer bikini detailed with glossy black vinyl trim and a gold chain waist belt, layered under an airy crimson-lined sheer black shoulder cape with wedge sandals.",
+      "tokens": [
+        "burgundy bikini",
+        "black vinyl trim",
+        "gold waist chain",
+        "halterneck",
+        "sheer black cape",
+        "red lining",
+        "bare legs",
+        "black wedge sandals"
+      ]
+    }
+  }
+}

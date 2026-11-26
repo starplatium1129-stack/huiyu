@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "hu_tao/crimson_talisman_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1380,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "crimson_talisman_wrap",
       "name": "暗红符纹薄纱浴裹",
       "tokens": [
-        "dark red wrap",
-        "sheer fabric",
-        "patterned fabric"
+        "crimson wrap",
+        "sheer gauze",
+        "talisman print",
+        "waist tie",
+        "gold hairpin",
+        "barefoot"
       ],
-      "prose": "A dark-crimson gauze wrap bearing a restrained talisman pattern.",
+      "prose": "Dark-crimson sheer silk gauze wrap printed with restrained talisman motifs and secured with a slim waist tie, paired with a small gold hairpin and bare feet.",
       "default": false,
       "isDefault": false
     }

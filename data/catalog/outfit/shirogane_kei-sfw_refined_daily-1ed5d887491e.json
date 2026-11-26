@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_refined_daily",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "英伦学院风粗花呢短外套与格纹裙",
-      "prose": "A cream bouclé collegiate jacket over an ice-blue striped shirt and charcoal pleated skirt, paired with ribbed black knee socks and chunky platform loafers.",
+      "prose": "A cream bouclé jacket layered over an ice-blue striped shirt and charcoal pleated mini skirt, paired with ribbed black knee socks and chunky platform loafers.",
       "tokens": [
-        "tweed_jacket",
-        "cropped_jacket",
-        "striped_shirt",
-        "collared_shirt",
-        "pleated_skirt",
-        "miniskirt",
-        "knee_socks",
-        "platform_loafers",
-        "preppy_chic"
+        "cream tweed jacket",
+        "blue striped shirt",
+        "charcoal pleated skirt",
+        "silver brooch",
+        "black knee socks",
+        "platform leather loafers"
       ],
       "characterId": "shirogane_kei",
       "default": false,

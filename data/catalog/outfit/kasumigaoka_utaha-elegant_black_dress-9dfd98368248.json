@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/elegant_black_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "elegant_black_dress",
       "name": "墨黑真丝折领高开衩礼裙",
-      "prose": "A black crepe evening gown with an off-shoulder fold neckline and deep slit, paired with sheer dark stockings.",
+      "prose": "A black silk-crepe evening gown with a folded off-shoulder neckline, high leg slit, silver drop earrings, sheer dark stockings, and stiletto heels.",
       "tokens": [
-        "black_dress",
-        "evening_dress",
-        "off_shoulder",
-        "high_slit",
-        "crepe",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "high_heels"
+        "black crepe gown",
+        "off shoulder fold",
+        "high side slit",
+        "silver drop earrings",
+        "pearl bracelet",
+        "sheer stockings",
+        "stiletto heels"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

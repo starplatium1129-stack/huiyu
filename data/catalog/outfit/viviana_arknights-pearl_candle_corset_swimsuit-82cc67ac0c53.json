@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/pearl_candle_corset_swimsuit",
+  "revision": 1,
+  "sortOrder": 4017,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "pearl_candle_corset_swimsuit",
+      "name": "烛光圣洁·珍珠白胸衣泳裙与金纱",
+      "prose": "A structured pearl-white silk swim corset draped with translucent gold chiffon sashes, a flowing sheer skirt train, and a small brass candle pin, worn barefoot.",
+      "tokens": [
+        "pearl white corset",
+        "silk swim bodice",
+        "gold chiffon sash",
+        "sheer skirt train",
+        "metallic cord ties",
+        "brass candle pin",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

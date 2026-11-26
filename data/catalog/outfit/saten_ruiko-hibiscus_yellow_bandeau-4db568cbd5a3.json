@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "saten_ruiko/hibiscus_yellow_bandeau",
+  "revision": 1,
+  "sortOrder": 4117,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "saten_ruiko",
+    "outfit": {
+      "id": "hibiscus_yellow_bandeau",
+      "name": "常夏热浪·柠檬黄扶桑花比基尼",
+      "prose": "A sunny lemon-yellow bandeau bikini patterned with red hibiscus prints, ruffled top trim, side-tie briefs, and a white five-petal clip, worn barefoot.",
+      "tokens": [
+        "yellow floral bikini",
+        "red hibiscus print",
+        "ruffled bandeau top",
+        "side-tie swim briefs",
+        "white petal clip",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

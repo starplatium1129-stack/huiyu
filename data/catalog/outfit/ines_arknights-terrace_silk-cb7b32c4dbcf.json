@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/terrace_silk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2019,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "terrace_silk",
-      "name": "夜蓝斜领丝缎长裙与银色耳坠",
-      "prose": "A midnight-blue silk column dress with an asymmetric draped neckline and narrow shoulder wrap, paired with long oxidized-silver earrings.",
+      "name": "夜蓝垂领丝缎长裙与银耳坠",
+      "prose": "A midnight-navy silk column gown with an asymmetric cowl neckline and a narrow black chiffon shoulder wrap, styled with long silver drop earrings, sheer dark stockings, and strappy black heels.",
       "tokens": [
-        "midnight blue silk column dress",
-        "asymmetric draped neckline",
-        "narrow shoulder wrap",
-        "silver drop earrings"
+        "navy silk gown",
+        "asymmetric cowl neck",
+        "black chiffon wrap",
+        "silver drop earrings",
+        "sheer dark stockings",
+        "strappy black heels"
       ],
       "characterId": "ines_arknights",
       "default": false,

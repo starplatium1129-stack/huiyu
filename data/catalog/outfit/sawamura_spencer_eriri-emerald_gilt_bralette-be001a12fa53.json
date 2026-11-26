@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "sawamura_spencer_eriri/emerald_gilt_bralette",
+  "revision": 1,
+  "sortOrder": 4203,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "sawamura_spencer_eriri",
+    "outfit": {
+      "id": "emerald_gilt_bralette",
+      "name": "金芒傲娇·墨绿双拼金边蕾丝内衣",
+      "prose": "A forest-green silk and black lace bralette set edged with fine gold lace and tiny velvet ribbon bows, paired with garter straps and sheer stockings, worn barefoot.",
+      "tokens": [
+        "forest green bralette",
+        "silk satin",
+        "black lace cups",
+        "gold lace trim",
+        "velvet bows",
+        "garter straps",
+        "sheer stockings",
+        "barefoot"
+      ]
+    }
+  }
+}

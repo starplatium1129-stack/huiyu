@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "modernia/pure_ribbon_slip_dress",
+  "revision": 1,
+  "sortOrder": 4056,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "modernia",
+    "outfit": {
+      "id": "pure_ribbon_slip_dress",
+      "name": "无瑕白纱缎带系结吊带短裙",
+      "prose": "A layered pure-white sheer chiffon slip dress wrapped with soft white satin ribbon ties along the bodice and a ruffled tiered hem, paired with delicate white lace anklets and worn barefoot.",
+      "tokens": [
+        "white chiffon dress",
+        "sheer slip dress",
+        "white satin ribbons",
+        "layered ruffled hem",
+        "thin shoulder straps",
+        "white lace anklets",
+        "barefoot"
+      ]
+    }
+  }
+}

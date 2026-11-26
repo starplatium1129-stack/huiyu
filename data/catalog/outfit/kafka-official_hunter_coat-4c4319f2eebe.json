@@ -1,27 +1,25 @@
 {
   "kind": "outfit",
   "id": "kafka/official_hunter_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "official_hunter_coat",
       "name": "星核猎手酒红黑色披肩外套",
-      "prose": "Her signature burgundy-black tailored coat draped over the shoulders, a white collared shirt with spiderweb lace, dark-purple shorts, spiderweb-patterned sheer black tights, leather gloves and high-heeled boots.",
+      "prose": "Tailored burgundy-and-black long coat draped over the shoulders above a white spiderweb-lace collared shirt and dark-purple shorts, paired with spiderweb-patterned sheer black tights, leather gloves, and heeled boots.",
       "tokens": [
         "burgundy coat",
-        "black trim",
-        "jacket draped over shoulders",
+        "draped coat",
         "white shirt",
         "lace collar",
         "purple shorts",
-        "black pantyhose",
-        "spider web print",
+        "spiderweb tights",
         "leather gloves",
-        "high heel boots"
+        "heeled boots"
       ],
       "default": true,
       "isDefault": true

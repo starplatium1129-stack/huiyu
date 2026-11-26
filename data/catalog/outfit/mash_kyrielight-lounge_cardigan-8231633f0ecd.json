@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/lounge_cardigan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1213,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "lounge_cardigan",
       "name": "炭灰落肩开衫与真丝百褶裙",
-      "prose": "A charcoal cashmere cardigan draped over a white silk camisole and pleated skirt, paired with sheer black stockings.",
+      "prose": "An open charcoal cashmere long cardigan draped over a lace-edged ivory silk camisole, pleated miniskirt, sheer black stockings, and indoor slippers.",
       "tokens": [
-        "cardigan",
-        "cashmere_cardigan",
-        "long_cardigan",
-        "off_shoulder",
-        "silk_camisole",
-        "pleated_skirt",
-        "miniskirt",
-        "black_stockings",
-        "slippers",
-        "casual_chic"
+        "charcoal cardigan",
+        "cashmere knit",
+        "white silk camisole",
+        "pleated miniskirt",
+        "sheer black stockings",
+        "plush indoor slippers"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "wakaba_mutsumi_arknights/marionettes_id",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1967,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "wakaba_mutsumi_arknights",
     "outfit": {
       "id": "marionettes_id",
-      "name": "提线的本我 · 蓝色兔耳裙装",
+      "name": "提线的本我 · 蓝色人偶裙装",
       "characterId": "wakaba_mutsumi_arknights",
       "default": false,
       "isDefault": false,
-      "prose": "A blue pinafore dress with a blue ribbon, rabbit ears and brown shoes.",
+      "prose": "A slate-blue pinafore dress layered over a white ruffled blouse trimmed with white lace and a blue satin bow, worn with black knee socks and brown oxford shoes.",
       "tokens": [
         "blue pinafore dress",
-        "blue ribbon",
-        "rabbit ears",
-        "brown shoes"
+        "white ruffled blouse",
+        "blue satin bow",
+        "white lace trim",
+        "black knee socks",
+        "brown oxford shoes"
       ],
       "identityTokensOverride": [
         "wakaba mutsumi",

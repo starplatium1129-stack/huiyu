@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "shirai_kuroko/tokiwadai_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1645,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfit": {
       "id": "tokiwadai_uniform",
       "name": "常盘台针织背心与百褶裙",
-      "prose": "A beige V-neck school sweater vest over a white short-sleeved collared blouse, a brown pleated skirt, white ankle socks, brown loafers, and pink hair ribbons",
+      "prose": "A beige V-neck school sweater vest over a white collared blouse and brown pleated skirt with a green Judgement armband, pink ribbon ties, white ankle socks, and brown loafers.",
       "tokens": [
-        "beige_sweater_vest",
-        "v-neck",
-        "white_blouse",
-        "short_sleeves",
-        "brown_skirt",
-        "pleated_skirt",
-        "ankle_socks",
-        "loafers",
-        "pink_hair_ribbon"
+        "beige v-neck vest",
+        "white school blouse",
+        "brown pleated skirt",
+        "green judgement armband",
+        "pink ribbon ties",
+        "white ankle socks",
+        "brown loafers"
       ],
       "default": true
     }

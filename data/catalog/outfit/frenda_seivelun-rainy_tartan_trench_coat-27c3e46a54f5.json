@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "frenda_seivelun/rainy_tartan_trench_coat",
+  "revision": 1,
+  "sortOrder": 4126,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "frenda_seivelun",
+    "outfit": {
+      "id": "rainy_tartan_trench_coat",
+      "name": "雨巷风衣·卡其双排扣风衣与格纹短裙",
+      "prose": "A belted khaki double-breasted trench coat and black beret layered over a white knit sweater and red tartan mini skirt, paired with sheer black tights and rain ankle boots.",
+      "tokens": [
+        "khaki belted trench",
+        "double-breasted lapel",
+        "white knit sweater",
+        "red tartan skirt",
+        "black beret hat",
+        "sheer black tights",
+        "rain ankle boots"
+      ]
+    }
+  }
+}

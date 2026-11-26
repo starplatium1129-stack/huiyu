@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "carlotta_wuwa/gondola_cashmere_shawl",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3204,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "carlotta_wuwa",
     "outfit": {
       "id": "gondola_cashmere_shawl",
       "name": "运河夜航珍珠流苏披肩丝裙",
-      "prose": "A champagne-silk midi dress draped with a pearl-fringed burgundy cashmere shawl and delicate diamond drop earrings.",
+      "prose": "A champagne-silk midi dress draped with a pearl-fringed burgundy cashmere shawl, pearl necklace, diamond drop earrings, and strappy heels.",
       "tokens": [
-        "champagne dress",
-        "silk dress",
-        "shawl",
+        "champagne silk dress",
+        "midi dress",
+        "burgundy shawl",
+        "pearl fringe",
         "pearl necklace",
         "drop earrings",
-        "heels"
+        "bare legs",
+        "strappy heels"
       ],
       "default": false,
       "isDefault": false,

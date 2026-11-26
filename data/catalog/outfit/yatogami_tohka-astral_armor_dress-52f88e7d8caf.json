@@ -1,22 +1,26 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/astral_armor_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1455,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "astral_armor_dress",
-      "name": "紫白灵装铠裙",
+      "name": "紫白神威灵装铠裙",
       "tokens": [
-        "purple armor",
-        "white dress",
-        "layered skirt",
-        "gold trim"
+        "violet armored bodice",
+        "white layered dress",
+        "gold plate trim",
+        "shoulder guards",
+        "pleated overskirt",
+        "armored gauntlets",
+        "bare breasts",
+        "armored boots"
       ],
-      "prose": "A violet armored bodice and white layered spirit dress retain their angular gold-edged panels.",
+      "prose": "A violet and gold-trimmed astral armor bodice slipped open over a white layered spirit skirt, complete with gauntlets and armored boots.",
       "default": false,
       "isDefault": false
     }

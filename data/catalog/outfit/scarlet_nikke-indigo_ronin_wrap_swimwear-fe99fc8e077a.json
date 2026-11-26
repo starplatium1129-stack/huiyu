@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "scarlet_nikke/indigo_ronin_wrap_swimwear",
+  "revision": 1,
+  "sortOrder": 4058,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "scarlet_nikke",
+    "outfit": {
+      "id": "indigo_ronin_wrap_swimwear",
+      "name": "靛蓝手染和风裹胸分体泳装",
+      "prose": "A deep indigo hand-dyed cotton wrap bikini secured with twisted hemp cords and a sheer white waist sarong tie, paired with a woven bamboo jingasa hat, bare legs, and barefoot.",
+      "tokens": [
+        "indigo wrap bikini",
+        "white sarong tie",
+        "hemp waist cord",
+        "bamboo hat",
+        "side-tie bottom",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

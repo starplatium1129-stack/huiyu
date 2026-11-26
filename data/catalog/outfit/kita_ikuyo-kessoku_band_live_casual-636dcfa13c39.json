@@ -1,29 +1,26 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/kessoku_band_live_casual",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1560,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "kessoku_band_live_casual",
-      "name": "结束乐队 · 露脐短T牛仔裙",
+      "name": "结束乐队露脐短T牛仔裙",
       "tokens": [
-        "crop_top",
-        "print_t-shirt",
-        "short_sleeves",
-        "midriff",
-        "navel",
-        "denim_skirt",
-        "miniskirt",
-        "belt",
-        "wristband",
-        "bare_legs",
-        "sneakers"
+        "cropped t-shirt",
+        "graphic print",
+        "short sleeves",
+        "denim miniskirt",
+        "leather belt",
+        "red wristband",
+        "crew socks",
+        "canvas sneakers"
       ],
-      "prose": "A cropped band T-shirt with a denim skirt.",
+      "prose": "Cropped black graphic band T-shirt paired with an indigo denim miniskirt and studded leather belt, accented with a red wristband, crew socks, and canvas sneakers.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

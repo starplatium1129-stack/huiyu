@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/sensual_golden_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "sensual_golden_lace_lingerie",
       "name": "黑金宝石链蕾丝内衣",
-      "prose": "A black lingerie set edged in gold lace, a jeweled waist chain, sheer black thigh-high stockings with garters and a translucent veil cape.",
+      "prose": "An opulent black silk lingerie set bordered in shimmering gold lace, draped with jeweled waist chains, garter straps, sheer black thigh-highs, and a gossamer cape.",
       "tokens": [
         "black lingerie",
-        "gold lace",
+        "gold lace trim",
         "jeweled waist chain",
-        "black thighhighs",
-        "garter straps",
-        "sheer cape"
+        "garter belt",
+        "sheer black thighhighs",
+        "sheer veil cape",
+        "barefoot"
       ]
     }
   }

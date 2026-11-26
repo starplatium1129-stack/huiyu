@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/plum_cardigan_tights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1326,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "plum_cardigan_tights",
       "name": "熟梅落肩羊绒开衫与真丝包臀裙",
-      "prose": "An oversized plum cashmere cardigan draped over a silk slip, with sheer dark thigh-highs.",
+      "prose": "A relaxed plum cashmere long cardigan slipping off one shoulder over a fitted ivory silk slip dress, sheer black thigh-high stockings, and low pumps.",
       "tokens": [
-        "plum_cardigan",
-        "long_cardigan",
-        "knitwear",
-        "silk_slip_dress",
-        "bodycon_dress",
-        "black_thighhighs",
-        "pumps"
+        "plum cardigan",
+        "oversized knitwear",
+        "off shoulder",
+        "ivory silk slip",
+        "bodycon skirt",
+        "sheer black thighhighs",
+        "dark pumps"
       ],
       "characterId": "matou_sakura",
       "default": false,

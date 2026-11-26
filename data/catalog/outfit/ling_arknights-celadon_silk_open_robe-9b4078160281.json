@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ling_arknights/celadon_silk_open_robe",
+  "revision": 1,
+  "sortOrder": 4016,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "ling_arknights",
+    "outfit": {
+      "id": "celadon_silk_open_robe",
+      "name": "青瓷醉玉·天青真丝对襟抹胸睡袍",
+      "prose": "A heavy celadon-green raw silk open-front robe with wide billowing sleeves draped over a jade-teal embroidered bandeau bra, secured loosely with a thin gold cord sash, worn barefoot.",
+      "tokens": [
+        "celadon silk robe",
+        "open front drape",
+        "wide flowing sleeves",
+        "jade embroidered bandeau",
+        "raw silk weave",
+        "gold cord sash",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3495,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_lingerie_whisper",
     "characterId": "bazett_fraga_mcremitz",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@reDrop",
     "description": "卫宫邸宁静的清晨五点。魔术协会封印指定执行官巴泽特已经完成了五百次单手俯卧撑与深蹲。她穿着一套炭黑工装系带运动打底背心与拳击短裤，单膝跪在木地板的练习垫上。灰色的运动毛巾挂在颈后，她单手拉着毛巾擦拭从下巴滴落的汗珠，微湿的棕紫短发下是坚毅清爽的面容。看见起早准备早餐的你，她端正地点头致意——「早安。肌肉在清晨激活能最大程度维持对逆光剑斩击的反应神经……嗯？我这身打扮很失礼吗？抱歉，习惯了执行官基地的训练规程，我马上去换正装。」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "charcoal_boxing_cami_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

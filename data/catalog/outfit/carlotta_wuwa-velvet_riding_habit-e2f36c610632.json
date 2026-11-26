@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "carlotta_wuwa/velvet_riding_habit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3203,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "carlotta_wuwa",
     "outfit": {
       "id": "velvet_riding_habit",
       "name": "庄园巡猎双排扣酒红骑士装",
-      "prose": "A cropped double-breasted wine-red riding jacket over a pleated ivory silk shirt, high-waisted riding breeches, and polished knee boots.",
+      "prose": "A cropped wine-red riding jacket with gold buttons over a pleated ivory silk shirt, high-waisted riding breeches, leather gloves, and polished knee boots.",
       "tokens": [
-        "red jacket",
-        "double-breasted",
-        "white shirt",
+        "wine red jacket",
+        "cropped blazer",
+        "ivory silk shirt",
         "riding breeches",
-        "knee boots",
-        "leather gloves"
+        "gold buttons",
+        "leather gloves",
+        "fitted cuffs",
+        "knee boots"
       ],
       "default": false,
       "isDefault": false,

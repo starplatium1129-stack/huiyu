@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "katou_megumi_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3312,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "katou_megumi_swimsuit_allure",
     "characterId": "katou_megumi",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海边的午后蝉鸣阵阵，树荫下的长椅隔绝了大部分热浪。惠身上的白衬衫被海风吹得轻轻贴着单侧肩膀，神情平静自然，双手将刚掰开的双生草莓棒冰递到了你的面前。她微微歪了歪头，语气一如既往的波澜不惊，却带着让人彻底安心的温度——「给，安艺同学。在太阳底下跑来跑去买饮料辛苦了。既然是难得的合宿取材，就坐下来安静吃完棒冰，不要总是脑子里只想着剧本和死线哦。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "sakura_linen_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

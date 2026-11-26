@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/mage_battle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "mage_battle",
       "name": "赤红开衩魔导礼服裙",
-      "prose": "A crimson combat dress with a high side slit, black waist cincher and ruby brooches.",
+      "prose": "A combat-tailored crimson magus dress cinched with a black corset waist belt and ruby brooches, cut with an asymmetrical high side slit over leather heeled boots.",
       "tokens": [
-        "red_dress",
-        "high_slit",
-        "asymmetrical_hem",
-        "corset",
-        "long_sleeves",
-        "bare_legs",
-        "ankle_boots"
+        "red dress",
+        "long sleeves",
+        "black corset belt",
+        "ruby brooch",
+        "high side slit",
+        "asymmetrical hem",
+        "bare legs",
+        "heeled boots"
       ],
       "isDefault": false,
       "default": false,

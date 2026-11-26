@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "suzuran_arknights/sunflower_cotton_nightgown",
+  "revision": 1,
+  "sortOrder": 4014,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "suzuran_arknights",
+    "outfit": {
+      "id": "sunflower_cotton_nightgown",
+      "name": "向阳绒花·浅鹅黄钩织雏菊棉麻睡裙",
+      "prose": "A pale pastel-yellow double-cotton nightgown trimmed with white crocheted daisies along the neckline and wide ruffled hem, tailored with an open-back ribbon tie, worn barefoot.",
+      "tokens": [
+        "pale yellow nightgown",
+        "double cotton gauze",
+        "crocheted daisy trim",
+        "wide ruffled hem",
+        "open back tie",
+        "puff short sleeves",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

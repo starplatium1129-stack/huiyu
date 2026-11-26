@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3332,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "yatogami_tohka_lingerie_whisper",
     "characterId": "yatogami_tohka",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tsunako",
     "description": "五河家客厅矮几旁，茶几上放着两杯热麦茶与厚厚的面包包装袋。盘腿坐在地毯上，双手小心翼翼地捧着一个金黄饱满的黄豆粉面包，嘴边沾着细细的糖霜，紫色长发如银河披散，满脸幸福地将面包递到士道嘴边。 她微微抬眸轻语——“士道！士道快看！这是今天刚出炉的究极黄豆粉面包哦！最大的这一块……留给士道吃！”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "sandalphon_chiffon_babydoll",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

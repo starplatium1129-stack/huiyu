@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 270,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
@@ -13,10 +13,13 @@
       "isDefault": false,
       "default": false,
       "isNsfw": true,
-      "prose": "Nude.",
+      "prose": "Completely unclothed with bare shoulders, a bare back, and bare legs, resting barefoot.",
       "tokens": [
         "nude",
-        "uncensored"
+        "bare shoulders",
+        "bare back",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

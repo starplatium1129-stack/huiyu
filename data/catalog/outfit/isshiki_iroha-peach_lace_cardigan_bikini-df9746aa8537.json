@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/peach_lace_cardigan_bikini",
+  "revision": 1,
+  "sortOrder": 4149,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "peach_lace_cardigan_bikini",
+      "name": "蜜桃奶杏系带比基尼与蕾丝开衫",
+      "prose": "A pastel peach-pink and apricot-cream halter bikini with side-tie ruched bottoms and pearl bead cords, layered under an open short-sleeved white pointelle lace cardigan, bare legs, and barefoot.",
+      "tokens": [
+        "peach halter bikini",
+        "apricot contrast trim",
+        "side-tie bottom",
+        "white lace cardigan",
+        "pearl bead ties",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

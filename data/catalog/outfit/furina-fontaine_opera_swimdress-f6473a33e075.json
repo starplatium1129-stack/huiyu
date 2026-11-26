@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "furina/fontaine_opera_swimdress",
+  "revision": 1,
+  "sortOrder": 4160,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "furina",
+    "outfit": {
+      "id": "fontaine_opera_swimdress",
+      "name": "枫丹歌剧宫廷高衩分体泳装",
+      "prose": "Theatrical midnight-navy and porcelain-white halter bikini trimmed with pleated lace edges, oceanic sapphire droplet brooches, dramatic bow accents, a sheer flowing silk train, gold anklet, and heeled sandals.",
+      "tokens": [
+        "navy bikini",
+        "white lace trim",
+        "pleated frills",
+        "sheer train",
+        "sapphire brooch",
+        "bow tie",
+        "gold anklet",
+        "heeled sandals"
+      ],
+      "characterId": "furina",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
+    }
+  }
+}

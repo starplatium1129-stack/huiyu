@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/sfw_white_bridal",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "sfw_white_bridal",
       "name": "反转尖角抹胸高衩白纱礼裙",
-      "prose": "A bridal gown with angular corset points, a cutout back and high side slit, paired with pale thigh-high stockings.",
+      "prose": "A dramatic ivory bridal gown sculpted with sharp architectural bustier points, open cutout back, soaring leg slit, pale thigh-high stockings, and flowing veil.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "strapless_dress",
-        "pointed_bustier",
-        "high_slit",
-        "backless_dress",
-        "white_thighhighs",
-        "veil"
+        "white bridal gown",
+        "pointed corset",
+        "strapless",
+        "cutout back",
+        "high side slit",
+        "white thighhighs",
+        "sheer bridal veil"
       ],
       "isDefault": false,
       "default": false,

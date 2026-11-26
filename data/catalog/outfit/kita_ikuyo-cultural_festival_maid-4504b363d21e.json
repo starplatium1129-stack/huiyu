@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/cultural_festival_maid",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1570,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "cultural_festival_maid",
       "name": "文化祭经典黑白荷叶边女仆短裙",
       "tokens": [
-        "maid",
-        "maid_dress",
-        "black_dress",
-        "white_apron",
-        "frilled_apron",
-        "frills",
-        "black_thighhighs",
-        "thighhighs",
-        "mary_janes"
+        "black maid dress",
+        "white apron",
+        "frilled trim",
+        "puff sleeves",
+        "lace headdress",
+        "neck ribbon",
+        "black thighhighs",
+        "mary janes"
       ],
-      "prose": "A frilled black maid dress with a white apron and ruffled trim, paired with black thigh-high stockings.",
+      "prose": "Frilled black maid dress with short puff sleeves, crisp white ruffled apron, lace headdress, red neck ribbon, black thighhigh stockings, and buckled mary janes.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

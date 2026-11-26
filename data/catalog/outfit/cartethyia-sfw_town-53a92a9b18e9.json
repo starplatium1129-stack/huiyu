@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_town",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_town",
-      "name": "小镇蓝裙麦穗针织装",
-      "prose": "A pale-blue ankle-length dress with a softly gathered waist and a cream cardigan bearing a small wheat-ear embroidery at one cuff, with flat shoes.",
+      "name": "埃格拉蓝裙与麦穗刺绣米白开衫",
+      "prose": "A pale-blue midi dress with a softly gathered waist under a cream knit cardigan bearing gold wheat embroidery at the cuff, worn with white socks and flat shoes.",
       "tokens": [
-        "light blue ankle-length dress",
-        "gathered waist",
+        "pale blue dress",
+        "midi dress",
         "cream cardigan",
         "wheat embroidery",
+        "gathered waist",
+        "ribbon tie",
+        "white socks",
         "flat shoes"
       ],
       "default": false,

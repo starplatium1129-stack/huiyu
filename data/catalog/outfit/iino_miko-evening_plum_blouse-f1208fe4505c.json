@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/evening_plum_blouse",
+  "revision": 1,
+  "sortOrder": 4157,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "id": "evening_plum_blouse",
+      "name": "微醺梅紫领口解扣衬衫与炭灰窄裙",
+      "prose": "A dark plum silk collared blouse with the top button undone and sleeves rolled over a tailored charcoal pencil skirt, sheer black pantyhose, and black leather loafers.",
+      "tokens": [
+        "plum silk blouse",
+        "unbuttoned collar",
+        "rolled sleeves",
+        "charcoal pencil skirt",
+        "sheer black pantyhose",
+        "black leather loafers"
+      ]
+    }
+  }
+}

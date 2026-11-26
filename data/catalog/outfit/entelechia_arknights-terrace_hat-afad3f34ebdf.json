@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/terrace_hat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2130,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "terrace_hat",
       "name": "羽饰宽檐帽与黑金长礼裙",
-      "prose": "An ivory wide-brimmed hat with a black feather and ribbon, paired with a black long dress, narrow gold belt and a light ivory capelet.",
+      "prose": "An ivory wide-brimmed hat trimmed with a black feather and ribbon paired with a floor-length black evening gown, an ivory shoulder capelet, a narrow gold belt, and black satin pumps.",
       "tokens": [
-        "ivory wide-brimmed hat",
-        "black feather",
-        "black hat ribbon",
-        "black long dress",
-        "gold belt",
-        "ivory capelet"
+        "ivory wide hat",
+        "black hat feather",
+        "black evening gown",
+        "ivory shoulder capelet",
+        "gold waist belt",
+        "black satin pumps"
       ],
       "characterId": "entelechia_arknights",
       "default": false,

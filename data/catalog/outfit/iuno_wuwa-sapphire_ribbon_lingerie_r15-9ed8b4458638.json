@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/sapphire_ribbon_lingerie_r15",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3708,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "sapphire_ribbon_lingerie_r15",
       "name": "月华银边宝蓝丝缎内衣与白丝",
-      "prose": "A sapphire-blue satin bra and matching lace panties edged with silver crescent embroidery, paired with white thigh-high stockings.",
+      "prose": "A sapphire-blue satin bra and matching lace panties edged with silver crescent embroidery and a silk choker, paired with a garter belt, white thigh-highs, and satin mules.",
       "tokens": [
-        "blue bra",
-        "satin",
-        "blue panties",
-        "lace trim",
+        "sapphire satin bra",
+        "crescent embroidery",
+        "blue lace panties",
+        "silver garter belt",
+        "silk choker",
         "white thighhighs",
-        "blush"
+        "bare shoulders",
+        "satin mules"
       ],
       "default": false,
       "isDefault": false,

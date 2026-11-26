@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3511,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "aurora_shadow_lingerie_whisper",
     "characterId": "aurora_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "封印在圣域深处的异界记忆。被誉为‘灾厄魔女’的奥萝拉褪去封印锁链，换上一袭深紫半透天鹅绒深V连体吊带衣。她慵懒地斜靠在一块发光的紫晶石前，修长双腿在虚空中轻盈舒展，指尖慢条斯理地缠绕着深紫色的卷发。那双红宝石般的眼眸带着危险的玩味紧盯着你——「怎么，看到真正的魔女穿成这样，心跳就加速到这种程度了吗？小弟弟……要不要更靠近一点，看看这颗被封印的心脏究竟有多冰冷呢？」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "amethyst_velvet_bodysuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/ninja_suit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 620,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
@@ -12,15 +12,15 @@
       "id": "ninja_suit",
       "isDefault": true,
       "name": "常陆流黑色无袖忍者装",
-      "prose": "a fitted black sleeveless ninja top with fishnet arm warmers and leather guards, a pleated wrap skirt over black bike shorts, a thigh pouch and soft tabi boots",
+      "prose": "A fitted black sleeveless ninja top with fishnet arm warmers and leather arm guards over black bike shorts and a pleated wrap skirt, fitted with a thigh pouch and soft tabi boots.",
       "tokens": [
-        "black sleeveless ninja top",
+        "black ninja top",
         "fishnet arm warmers",
         "leather arm guards",
         "pleated wrap skirt",
         "black bike shorts",
-        "thigh pouch",
-        "tabi boots"
+        "thigh utility pouch",
+        "soft tabi boots"
       ]
     }
   }

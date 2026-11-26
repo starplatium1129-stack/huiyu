@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "amiya/rhodes_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1625,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "amiya",
     "outfit": {
       "id": "rhodes_coat",
       "name": "罗德岛黑外套与蓝色内搭",
-      "prose": "A structured black field coat over a blue tunic dress with a white collar and narrow black tie, black tights, ankle boots, and black gloves",
+      "prose": "A structured black Rhodes Island field coat worn over a blue tunic dress with a crisp white collar, narrow black necktie, black tights, fitted gloves, and ankle boots.",
       "tokens": [
-        "black_coat",
-        "blue_dress",
-        "white_collar",
-        "black_necktie",
-        "black_pantyhose",
-        "ankle_boots",
-        "black_gloves"
+        "black field coat",
+        "blue tunic dress",
+        "white collar",
+        "black necktie",
+        "black pantyhose",
+        "black gloves",
+        "ankle boots"
       ],
       "default": true
     }

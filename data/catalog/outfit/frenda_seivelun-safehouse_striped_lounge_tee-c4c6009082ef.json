@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "frenda_seivelun/safehouse_striped_lounge_tee",
+  "revision": 1,
+  "sortOrder": 4125,
+  "createdAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "data": {
+    "characterId": "frenda_seivelun",
+    "outfit": {
+      "id": "safehouse_striped_lounge_tee",
+      "name": "安全屋沙发·黄黑条纹宽袖家居衫与短裤",
+      "prose": "An oversized yellow-and-black striped knit lounge tee with red ribbed cuffs and a ribbon headband over black cotton shorts, paired with white plush socks and house slippers.",
+      "tokens": [
+        "yellow striped tee",
+        "oversized cotton knit",
+        "black lounge shorts",
+        "red ribbed cuffs",
+        "ribbon headband",
+        "white plush socks",
+        "house slippers"
+      ]
+    }
+  }
+}

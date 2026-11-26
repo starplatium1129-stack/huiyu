@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/flame_ombre_slip",
+  "revision": 1,
+  "sortOrder": 4046,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "flame_ombre_slip",
+      "name": "生息苇火 · 绯红渐变雪纺吊带裙",
+      "prose": "A double-layered semi-sheer chiffon slip gown fading from deep wine-red to warm amber-gold, cut with a thigh-high side slit, slender gold straps, and bare feet.",
+      "tokens": [
+        "crimson gradient gown",
+        "sheer chiffon layers",
+        "thigh high slit",
+        "thin gold straps",
+        "amber hem piping",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

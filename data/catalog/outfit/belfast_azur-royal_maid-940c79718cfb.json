@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "belfast_azur/royal_maid",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1664,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "belfast_azur",
     "outfit": {
       "id": "royal_maid",
-      "name": "皇家女仆礼服",
-      "prose": "A black and white long-sleeved maid dress with a white apron, a frilled white headdress and a dark choker.",
+      "name": "皇家女仆礼服与金属颈环",
+      "prose": "A black and white long-sleeved royal maid dress with a ruffled white apron, frilled headdress, silver chain choker, white thigh-highs, and black strapped heels.",
       "tokens": [
         "black maid dress",
-        "white apron",
-        "white maid headdress",
-        "black choker",
-        "long sleeves"
+        "white ruffled apron",
+        "frilled maid headdress",
+        "silver chain choker",
+        "long fitted sleeves",
+        "white thighhighs",
+        "black strapped heels"
       ],
       "default": true,
       "characterId": "belfast_azur",

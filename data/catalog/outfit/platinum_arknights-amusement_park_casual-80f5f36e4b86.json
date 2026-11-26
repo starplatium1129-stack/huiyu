@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "platinum_arknights/amusement_park_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 401,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "platinum_arknights",
     "outfit": {
       "id": "amusement_park_casual",
       "characterId": "platinum_arknights",
       "name": "游乐园约会针织衫配百褶裙",
-      "prose": "A cozy pastel cream-colored knit cardigan over a light camisole, pleated miniskirt, small crossbody bag, and satin hair ribbons.",
+      "prose": "A soft cream knit cardigan over a white ribbed camisole and navy pleated miniskirt, accessorized with a tan crossbody bag, a satin bow clip, and brown mary janes.",
       "tokens": [
-        "cardigan",
-        "pleated skirt",
-        "camisole",
-        "crossbody bag",
-        "hair ribbon",
-        "casual clothes"
+        "cream knit cardigan",
+        "white ribbed camisole",
+        "navy pleated miniskirt",
+        "tan crossbody bag",
+        "satin bow clip",
+        "brown mary janes"
       ],
       "default": false,
       "isDefault": false

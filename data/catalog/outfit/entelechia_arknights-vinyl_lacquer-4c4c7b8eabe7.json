@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/vinyl_lacquer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2128,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "vinyl_lacquer",
       "name": "漆黑短皮衣与暗红缎面长裙",
-      "prose": "A cropped black leather jacket with subtle oxblood piping over a muted red satin midi skirt and a fine ribbed black top.",
+      "prose": "A cropped black leather jacket with subtle oxblood piping over a ribbed black knit top and crimson satin midi skirt, finished with silver zip cuffs and black stiletto boots.",
       "tokens": [
-        "cropped black leather jacket",
-        "oxblood piping",
-        "muted red satin midi skirt",
-        "black ribbed top"
+        "black leather jacket",
+        "oxblood trim piping",
+        "ribbed black knit",
+        "crimson satin skirt",
+        "silver zip cuffs",
+        "black stiletto boots"
       ],
       "characterId": "entelechia_arknights",
       "default": false,

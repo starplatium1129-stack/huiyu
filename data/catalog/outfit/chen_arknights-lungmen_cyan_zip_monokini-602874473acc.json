@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "chen_arknights/lungmen_cyan_zip_monokini",
+  "revision": 1,
+  "sortOrder": 3985,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "chen_arknights",
+    "outfit": {
+      "id": "lungmen_cyan_zip_monokini",
+      "name": "黛青墨黑拉链红结连体泳装",
+      "prose": "A streamlined dark-cyan and ink-black racing monokini built with a functional front zipper, high-cut leg arches, a knotted crimson hip tassel, and minimalist black sandals.",
+      "tokens": [
+        "dark cyan monokini",
+        "black trim",
+        "front zipper",
+        "high leg cut",
+        "red cord tassel",
+        "bare legs",
+        "black sandals"
+      ]
+    }
+  }
+}

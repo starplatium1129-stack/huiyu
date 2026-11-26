@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_bamboo_terrace_moonlight",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2114,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "sunohara_shun_bamboo_terrace_moonlight",
     "characterId": "sunohara_shun",
-    "outfitId": "plum_garden_qipao_robe",
+    "outfitId": "plum_violet_silk_qipao",
     "title": "春原瞬 · 竹影月台的晚风侧颜",
     "category": "古风月色",
     "description": "高悬于山海经楼阁之上的露天竹影月台，夜空皎洁如银的圆月洒下清辉。瞬迎风而立，单手握着一把精巧的泥金折扇半遮朱唇，如墨长发在夜风中徐徐飘舞。她回首望向步入露台的老师，绿色眼眸映着月光，流露出风华绝代的大家风范。",

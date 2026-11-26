@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/combat_undersuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1211,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "combat_undersuit",
       "name": "前拉链机能作战连体衣",
-      "prose": "A matte black tactical bodysuit with a silver front zipper open slightly at the collar.",
+      "prose": "A matte-black sleeveless inner combat undersuit detailed with ergonomic panel seams and a heavy silver front zipper loosened slightly at the collar.",
       "tokens": [
-        "bodysuit",
-        "combat_suit",
-        "front_zipper",
-        "unzipped",
-        "sleeveless_bodysuit",
-        "tight_suit",
-        "bare_legs",
-        "tactical_chic"
+        "black tactical bodysuit",
+        "sleeveless",
+        "silver front zipper",
+        "high collar",
+        "reinforced seams",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

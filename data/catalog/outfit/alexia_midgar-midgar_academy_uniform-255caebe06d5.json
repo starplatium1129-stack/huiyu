@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "alexia_midgar/midgar_academy_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1809,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T03:13:40.166180700+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "alexia_midgar",
     "outfit": {
       "id": "midgar_academy_uniform",
       "name": "米德加魔剑士学园制服",
-      "prose": "Midgar Academy tailored black cropped blazer with crimson piping, white button-up, pleated miniskirt, sheer black thigh-highs, and sword belt.",
+      "prose": "Midgar Academy tailored cropped black blazer edged with crimson piping, crisp white button-up shirt, red necktie, pleated miniskirt, buckled sword belt, sheer black thighhighs, and laced ankle boots.",
       "tokens": [
-        "school_uniform",
-        "black_jacket",
-        "red_trim",
-        "white_shirt",
-        "black_skirt",
-        "black_thighhighs",
-        "boots"
+        "black blazer",
+        "crimson piping",
+        "white shirt",
+        "red necktie",
+        "pleated miniskirt",
+        "sword belt",
+        "black thighhighs",
+        "leather boots"
       ],
       "characterId": "alexia_midgar",
       "default": true,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3153,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "nightingale_arknights_swimsuit_allure",
     "characterId": "nightingale_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "鸟笼的阴影终于被无垠的大海融化。丽兹赤足踩在如镜面般平整的浅滩水波中，纯白蕾丝裙摆随风摇曳，仿佛随时会化作羽翼飞去。她微微仰起柔美的脸庞，任由温热的第一缕阳光抚摸眼睑，嘴角泛起久违的恬静弧度——「大海的尽头……原来没有锁链。海风是暖的，没有药水的气味。闪灵说得对……世界真的很广阔。」",
-    "outfitId": "azure_summer_bikini",
+    "outfitId": "dawn_lace_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

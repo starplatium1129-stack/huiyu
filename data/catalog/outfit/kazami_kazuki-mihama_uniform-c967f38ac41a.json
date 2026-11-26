@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/mihama_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 639,
   "createdAt": null,
-  "updatedAt": "2026-11-06T01:02:18.783Z",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
       "id": "mihama_uniform",
       "name": "美滨紫衫白褶裙制服（一姬款）",
-      "prose": "The Mihama Academy purple blazer and white pleated skirt uniform tailored for Kazuki.",
+      "prose": "The Mihama Academy uniform featuring a tailored lavender blouse with purple sailor collar, blue plaid necktie, crisp white pleated skirt, dark knee socks, and brown leather loafers.",
       "tokens": [
-        "lavender shirt",
-        "sailor collar",
+        "lavender sailor blouse",
+        "purple lapel collar",
         "blue plaid necktie",
         "white pleated skirt",
         "dark knee socks",
-        "brown loafers"
+        "brown leather loafers"
       ],
       "default": false,
       "isDefault": false

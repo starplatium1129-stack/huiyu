@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "administrator_arknights/endfield_competition_swimsuit",
+  "revision": 1,
+  "sortOrder": 4070,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "administrator_arknights",
+    "outfit": {
+      "id": "endfield_competition_swimsuit",
+      "name": "协议开拓黑黄拉链竞速泳装",
+      "prose": "A matte-black high-neck front-zip competition swimsuit with safety-yellow trim and compression seams, layered under a sheer water-repellent cropped hooded jacket, bare legs, and barefoot.",
+      "tokens": [
+        "black racing swimsuit",
+        "yellow trim",
+        "high-neck front zipper",
+        "translucent cropped jacket",
+        "high-cut leg",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

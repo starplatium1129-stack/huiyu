@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_rest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 940,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_rest",
-      "name": "云白透纱轻开衫与海蓝挂颈短裙",
-      "prose": "A gossamer white sheer-knit cardigan resting open over a rich marine-blue halter mini dress with a slit hem.",
+      "name": "云白透纱开衫与海蓝挂颈短裙",
+      "prose": "An airy white sheer-knit cardigan worn open over a cobalt-blue halter mini dress with a slit hem and silver anklet, paired with flat sandals.",
       "tokens": [
-        "white_cardigan",
-        "sheer_cardigan",
-        "blue_dress",
-        "halterneck",
-        "short_dress",
-        "side_slit",
-        "bare_legs"
+        "white cardigan",
+        "sheer knit",
+        "cobalt mini dress",
+        "halter neckline",
+        "slit hem",
+        "silver anklet",
+        "bare legs",
+        "flat sandals"
       ],
       "default": false,
       "isDefault": false,

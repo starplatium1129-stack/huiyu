@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_beach",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_beach",
       "name": "黑红拼色交叠泳衣与真丝雪纺披肩",
-      "prose": "A structured black-and-crimson cutout swimsuit under a breezy silk wrap.",
+      "prose": "A sculpted crimson-and-black cutout monokini anchored with a polished gold center ring and draped beneath an airy sheer crimson silk wrap.",
       "tokens": [
-        "one-piece_swimsuit",
-        "cutout_swimsuit",
-        "crimson_and_black",
-        "gold_ring",
-        "sheer_shawl",
-        "beach_cover-up",
-        "bare_legs"
+        "crimson cutout swimsuit",
+        "black trim",
+        "gold front ring",
+        "sheer red shawl",
+        "bare legs",
+        "strappy black sandals"
       ],
       "characterId": "kama_fate",
       "default": false,

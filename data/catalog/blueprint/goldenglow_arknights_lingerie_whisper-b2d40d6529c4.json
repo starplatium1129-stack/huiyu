@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3170,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "goldenglow_arknights_lingerie_whisper",
     "characterId": "goldenglow_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛沙龙打烊后的私密时刻。年轻的理发师兼源石技艺师苏西（澄闪），换上一套鹅黄色小雏菊碎花纯棉吊带短裤睡衣。刚洗完头吹干，由于她体质极其容易积蓄静电源石技艺，头顶柔顺的粉色短发和两只毛茸茸的菲林猫耳瞬间“噼里啪啦”地炸成了蓬松大蒲公英！手里的小梳子被电得粘在头发上拔不出来，她转过身泪眼汪汪地吸着鼻子向博士求助——「呜……博士！救、救命啊！静电又失控了，梳子拔不下来了呜呜……明天还要帮大家做发型呢，要是被大家看到这副爆炸头的样子就太丢人啦！」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "buttercup_daisy_sleep_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

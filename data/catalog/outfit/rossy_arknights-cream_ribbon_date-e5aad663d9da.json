@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/cream_ribbon_date",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1108,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
@@ -12,16 +12,15 @@
       "default": false,
       "isDefault": false,
       "name": "奶油白蝴蝶结衬衫与酒红裙",
-      "prose": "A burgundy-ribbon cream blouse, wine-red A-line skirt with tail opening, cropped cocoa cardigan, cream socks, brown Mary Janes and woven shoulder bag.",
+      "prose": "A cream blouse tied with a burgundy satin bow under a cropped cocoa cardigan, paired with a wine-red A-line skirt, woven shoulder bag, cream socks, and brown Mary Janes.",
       "tokens": [
-        "cream blouse",
-        "burgundy ribbon",
-        "wine red A-line skirt",
-        "tail opening",
+        "cream ribbon blouse",
+        "burgundy satin bow",
+        "wine-red skirt",
         "cropped cocoa cardigan",
+        "woven shoulder bag",
         "cream socks",
-        "brown mary janes",
-        "woven shoulder bag"
+        "brown mary janes"
       ],
       "category": "日常衣装（创作）"
     }

@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/rain_cloak",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2177,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "rain_cloak",
       "name": "雨松绿短披风与棕灰羊毛裙",
-      "prose": "A rain-dark pine-green short cloak with a hood over a taupe wool dress, fastened at the collar by a copper clasp.",
+      "prose": "A deep pine-green hooded wool short cloak secured by a copper collar clasp over a taupe wool dress, worn with charcoal wool tights and dark leather boots.",
       "tokens": [
-        "pine green short cloak",
-        "hood",
+        "pine green cloak",
+        "hooded wool weave",
         "taupe wool dress",
-        "copper collar clasp"
+        "copper collar clasp",
+        "charcoal wool tights",
+        "dark leather boots"
       ],
       "characterId": "reed_arknights",
       "default": false,

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "sawamura_spencer_eriri/school_blazer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1641,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfit": {
       "id": "school_blazer",
       "name": "丰之崎深蓝制服与红领结",
-      "prose": "A navy school blazer over a white blouse with a red ribbon tie, a gray pleated skirt, black tights, brown loafers, and small dark hair ribbons",
+      "prose": "A navy school blazer over a white blouse with a crimson ribbon tie, grey pleated skirt, black pantyhose, brown loafers, and dark ribbon clips.",
       "tokens": [
-        "navy_blazer",
-        "white_blouse",
-        "red_ribbon",
-        "grey_skirt",
-        "pleated_skirt",
-        "black_pantyhose",
-        "loafers",
-        "hair_ribbon"
+        "navy school blazer",
+        "white blouse",
+        "crimson neck ribbon",
+        "grey pleated skirt",
+        "ribbon clips",
+        "black pantyhose",
+        "brown loafers"
       ],
       "default": true
     }

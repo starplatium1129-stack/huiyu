@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3371,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "shu_arknights_swimsuit_allure",
     "characterId": "shu_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "入海口湿地金光流淌的傍晚。黍身着青苗丰岁蔓草交织连体泳装，赤足浸在清凉的溪流中。她手捧清甜瓜果转头微笑，翠绿禾簪迎风微颤，举手投足间带着大地神明般的丰饶温厚与让人心安的夏日暖意。",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "jade_vine_crossover_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

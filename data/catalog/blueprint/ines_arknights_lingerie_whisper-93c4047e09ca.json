@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3121,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "ines_arknights_lingerie_whisper",
     "characterId": "ines_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛深处无人打扰的情报暗室。萨卡兹佣兵伊内丝换上一套贴身哑光黑色皮革纹弹性背心与修身平角裤，将全身曲线勾勒得冷硬而危险。她独自坐在最背光的单人皮椅中，一只修长的美腿翘在扶手上，纤细苍白的手指灵巧地翻飞着贴身短匕，一整条红苹果皮连绵不断地垂落。察觉到你站在门边，她头也不抬地挑起眼梢，淡紫色的眼眸在烛光下如同潜伏的毒蛇——「脚步声太重了，博士。在卡兹戴尔的黑夜里，这样的动静足够死上三次……接着。削好的，算是我今晚提供情报的赠品。」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "safehouse_leather_tank",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

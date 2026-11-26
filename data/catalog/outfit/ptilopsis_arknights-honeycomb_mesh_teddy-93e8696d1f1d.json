@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/honeycomb_mesh_teddy",
+  "revision": 1,
+  "sortOrder": 4040,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "honeycomb_mesh_teddy",
+      "name": "矩阵协议 · 冰灰蜂窝网纱连体衣",
+      "prose": "An ice-grey sheer honeycomb-mesh teddy bodysuit engineered with clean streamline piping, wireless lace cups, high-cut leg openings, and bare feet.",
+      "tokens": [
+        "ice grey bodysuit",
+        "sheer honeycomb mesh",
+        "streamline seam piping",
+        "wireless lace cups",
+        "high cut leg",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

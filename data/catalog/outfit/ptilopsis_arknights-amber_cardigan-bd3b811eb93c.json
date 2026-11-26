@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/amber_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2170,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "amber_cardigan",
       "name": "琥珀滚边短开衫与深灰连衣裙",
-      "prose": "A deep-grey fitted dress beneath a soft cream cropped cardigan with amber piping and a small geometric feather clasp.",
+      "prose": "A fitted charcoal dress beneath a cream cropped cardigan edged with amber piping and a geometric feather clasp, paired with grey ribbed tights and charcoal flat shoes.",
       "tokens": [
-        "deep grey fitted dress",
+        "charcoal fitted dress",
         "cream cropped cardigan",
-        "amber piping",
-        "geometric feather clasp"
+        "amber contrast piping",
+        "geometric feather clasp",
+        "grey ribbed tights",
+        "charcoal flat shoes"
       ],
       "characterId": "ptilopsis_arknights",
       "default": false,

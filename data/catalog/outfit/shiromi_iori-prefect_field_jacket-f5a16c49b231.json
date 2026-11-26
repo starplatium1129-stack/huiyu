@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/prefect_field_jacket",
+  "revision": 1,
+  "sortOrder": 3929,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "id": "prefect_field_jacket",
+      "name": "军绿短款风纪便装夹克与黑热裤",
+      "prose": "A cropped olive-drab field utility jacket layered over a fitted white tank top with a crimson collar tie and black cargo shorts, paired with a thigh strap, knee-high socks, and black ankle boots.",
+      "tokens": [
+        "olive field jacket",
+        "cropped jacket",
+        "white tank top",
+        "red collar ribbon",
+        "black cargo shorts",
+        "thigh strap",
+        "black knee highs",
+        "ankle boots"
+      ]
+    }
+  }
+}

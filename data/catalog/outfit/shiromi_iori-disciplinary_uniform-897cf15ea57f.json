@@ -1,29 +1,28 @@
 {
   "kind": "outfit",
   "id": "shiromi_iori/disciplinary_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 513,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "shiromi_iori",
     "outfit": {
       "default": true,
       "id": "disciplinary_uniform",
       "isDefault": true,
-      "name": "红臂章黑色风纪突击装",
-      "prose": "a sleeveless black cropped military jacket with a red disciplinary armband, a short black pleated skirt, garter-held black thigh-high stockings, fingerless gloves, a tactical harness and black combat boots",
+      "name": "红臂章无袖黑风纪突击制服",
+      "prose": "A sleeveless black cropped Gehenna Prefect military jacket with crimson armband over a crisp blouse and short black pleated skirt, rigged with tactical harness straps, gartered black thigh-highs, fingerless gloves, and laced combat boots.",
       "tokens": [
         "military uniform",
-        "black cropped jacket",
-        "sleeveless",
+        "sleeveless black jacket",
         "red armband",
-        "black pleated skirt",
+        "black pleated miniskirt",
+        "tactical harness",
         "garter belt",
         "black thighhighs",
         "fingerless gloves",
-        "tactical harness",
-        "combat boots"
+        "black combat boots"
       ]
     }
   }

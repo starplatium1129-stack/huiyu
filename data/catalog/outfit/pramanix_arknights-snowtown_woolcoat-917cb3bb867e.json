@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "pramanix_arknights/snowtown_woolcoat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1997,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pramanix_arknights",
     "outfit": {
       "id": "snowtown_woolcoat",
       "name": "雪山奶油毛呢大衣与冰蓝围巾",
-      "prose": "A cream double-faced wool coat with a sculpted collar and small silver toggles, worn over a navy skirt with an ice-blue scarf and dark lace-up boots.",
+      "prose": "A cream wool overcoat with silver toggle clasps over a navy pleated skirt, draped with an ice-blue scarf and paired with knit mittens, opaque charcoal tights, and dark suede boots.",
       "tokens": [
-        "cream double-faced wool coat",
-        "sculpted collar",
-        "silver toggles",
-        "navy skirt",
+        "cream wool coat",
+        "silver toggle clasp",
+        "navy pleated skirt",
         "ice blue scarf",
-        "dark lace-up boots"
+        "knit wool mittens",
+        "opaque charcoal tights",
+        "dark suede boots"
       ],
       "characterId": "pramanix_arknights",
       "default": false,

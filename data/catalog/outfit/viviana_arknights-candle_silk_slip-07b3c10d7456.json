@@ -1,27 +1,26 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/candle_silk_slip",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 395,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "default": false,
       "id": "candle_silk_slip",
       "isDefault": false,
-      "name": "香槟金垂坠真丝细带睡裙与象牙蕾丝",
-      "prose": "A lustrous champagne-gold silk slip dress trimmed with delicate ivory floral lace along the low neckline and slit hem.",
+      "name": "香槟金真丝垂坠细带睡裙",
+      "prose": "A lustrous champagne-gold silk slip dress trimmed with delicate ivory floral lace along its low draped neckline, slender spaghetti straps, and side slit, worn barefoot.",
       "tokens": [
-        "slip_dress",
-        "nightgown",
-        "silk_dress",
-        "champagne_dress",
-        "lace_trim",
-        "spaghetti_straps",
-        "bare_shoulders",
-        "bare_legs"
+        "champagne silk slip",
+        "ivory floral lace",
+        "spaghetti straps",
+        "low draped neckline",
+        "side hem slit",
+        "bare shoulders",
+        "barefoot"
       ],
       "characterId": "viviana_arknights"
     }

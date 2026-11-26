@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/teahouse_hakama",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2102,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "teahouse_hakama",
       "name": "墨绿羽织与炭灰袴式宽裤",
-      "prose": "A dark-green haori with a subtle woven wave border over a light-grey kimono-style top and charcoal hakama-inspired wide-leg trousers.",
+      "prose": "A deep forest-green haori with a subtle woven wave border layered over a light grey wrap tunic and charcoal hakama trousers, tied with a braided cord and worn with wooden geta sandals.",
       "tokens": [
         "dark green haori",
-        "woven wave border",
-        "light grey kimono-style top",
-        "charcoal hakama trousers"
+        "wave border weave",
+        "grey wrap tunic",
+        "charcoal hakama pants",
+        "braided waist cord",
+        "wooden geta sandals"
       ],
       "characterId": "hoshiguma_arknights",
       "default": false,

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/imperial_navy_bandeau",
+  "revision": 1,
+  "sortOrder": 4106,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "imperial_navy_bandeau",
+      "name": "帝国海军 · 蓝白金辫抹胸分体泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "rosa_arknights",
+      "prose": "An imperial-navy and ivory bandeau bikini trimmed with faux-ermine edging, gold frogging braid, and dangling baroque pearl strands, paired with high-waist bottoms and a white sarong wrap, worn barefoot.",
+      "tokens": [
+        "navy bandeau bikini",
+        "ivory fur trim",
+        "gold frogging braid",
+        "baroque pearl strands",
+        "white sarong wrap",
+        "barefoot"
+      ]
+    }
+  }
+}

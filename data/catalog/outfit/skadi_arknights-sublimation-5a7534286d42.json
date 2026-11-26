@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/sublimation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 350,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,11 +12,15 @@
       "id": "sublimation",
       "isDefault": false,
       "name": "升华·白金神官礼服",
-      "prose": "A pure white backless priestess gown with sculpted folds and openwork gold ornaments.",
+      "prose": "A floor-length pure white backless priestess gown with sculpted silk pleats, openwork gold filigree ornaments, a sheer layered veil, and delicate gold anklets, worn barefoot.",
       "tokens": [
-        "white gown",
-        "backless dress",
-        "gold ornaments"
+        "white priestess gown",
+        "open back",
+        "gold filigree",
+        "sculpted silk pleats",
+        "layered veil",
+        "gold anklets",
+        "barefoot"
       ]
     }
   }

@@ -1,28 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/city_rider",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "city_rider",
       "name": "企鹅物流红白骑手夹克与织带腿部装备",
-      "prose": "A cropped red-and-white motorcycle jacket over a black bandeau and biker shorts, paired with an adjustable fabric thigh harness and sneakers.",
+      "prose": "A cropped red-and-white motorcycle jacket layered over a dark bandeau and compression biker shorts, fitted with a buckled thigh harness and sneakers.",
       "tokens": [
-        "biker_jacket",
-        "red_jacket",
-        "leather_jacket",
-        "crop_top",
-        "black_shorts",
-        "spandex_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "leg_harness",
-        "buckle",
-        "sneakers"
+        "bicolor biker jacket",
+        "black bandeau top",
+        "spandex biker shorts",
+        "thigh webbing harness",
+        "fingerless gloves",
+        "running sneakers"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

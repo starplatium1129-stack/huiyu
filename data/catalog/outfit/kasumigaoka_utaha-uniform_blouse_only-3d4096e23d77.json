@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/uniform_blouse_only",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1399,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "uniform_blouse_only",
       "name": "解构卷袖白衬衫与高腰百褶裙",
-      "prose": "A white blouse with rolled sleeves and a red ribbon, tucked into a high-waisted pleated skirt with sheer black tights.",
+      "prose": "A white cotton shirt with rolled sleeves and an unbuttoned collar loosely tied with a red silk ribbon, tucked into a high-waisted skirt with sheer tights and patent pumps.",
       "tokens": [
-        "white_shirt",
-        "collared_shirt",
-        "rolled_sleeves",
-        "red_ribbon",
-        "pleated_skirt",
-        "mini_skirt",
-        "black_thighhighs",
-        "sheer_thighhighs"
+        "rolled sleeve blouse",
+        "unbuttoned collar",
+        "red silk ribbon",
+        "high waisted skirt",
+        "leather waist belt",
+        "sheer tights",
+        "patent pumps"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,

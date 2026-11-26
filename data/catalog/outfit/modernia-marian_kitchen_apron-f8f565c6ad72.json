@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "modernia/marian_kitchen_apron",
+  "revision": 1,
+  "sortOrder": 4055,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "modernia",
+    "outfit": {
+      "id": "marian_kitchen_apron",
+      "name": "浅灰针织裙与奶油亚麻围裙",
+      "prose": "A soft pale-grey ribbed knit sweater dress layered beneath a cream linen waist apron with a chest pocket and back waist bow, worn with white ankle socks and cream house slippers.",
+      "tokens": [
+        "grey knit dress",
+        "cream linen apron",
+        "ribbed long sleeves",
+        "waist bow",
+        "chest pocket",
+        "white ankle socks",
+        "cream house slippers"
+      ]
+    }
+  }
+}

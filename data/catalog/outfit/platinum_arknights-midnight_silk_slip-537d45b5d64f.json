@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "platinum_arknights/midnight_silk_slip",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 408,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "platinum_arknights",
     "outfit": {
       "id": "midnight_silk_slip",
       "characterId": "platinum_arknights",
       "name": "冰蓝真丝开衩细吊带睡裙",
-      "prose": "A luxurious ice-blue silk slip dress with delicate spaghetti straps, scalloped lace trim along neckline, low backless cut, and high side slit.",
+      "prose": "An ice-blue silk satin slip dress with delicate spaghetti straps, scalloped lace neckline trim, a high side slit, and bare feet.",
       "tokens": [
-        "slip dress",
-        "silk nightgown",
-        "spaghetti straps",
-        "lace trim",
-        "backless dress",
-        "nightgown"
+        "ice blue slip",
+        "silk satin fabric",
+        "delicate thin straps",
+        "scalloped lace trim",
+        "high side slit",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/emerald_python_bandeau_set",
+  "revision": 1,
+  "sortOrder": 3996,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "id": "emerald_python_bandeau_set",
+      "name": "墨绿蛇纹抹胸与系带裹身短裙",
+      "prose": "A breathable ripstop-jersey deep-green python-print stretch bandeau matched with an asymmetric side-tie wrap micro skirt.",
+      "tokens": [
+        "emerald python bandeau",
+        "snakeskin print",
+        "wrap micro skirt",
+        "side tie strings",
+        "ripstop jersey",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

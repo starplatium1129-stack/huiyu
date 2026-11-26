@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_haruno_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3319,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "yukinoshita_haruno_swimsuit_allure",
     "characterId": "yukinoshita_haruno",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "豪华天台无边泳池的静谧深夜。雪之下阳乃身穿恶魔姐姐酒红挂脖深V交叉高叉连身泳装，湿漉的长发贴在凝脂般的肩背上。她将双臂搭在玻璃池壁边缘，下巴轻靠手臂回头嫣然一笑，深邃莫测的眼眸中满是恶作剧式的玩味与穿透人心的犀利，令人心旌摇曳却又暗暗心惊。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "burgundy_strappy_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

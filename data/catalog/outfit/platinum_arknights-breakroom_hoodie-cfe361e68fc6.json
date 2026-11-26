@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "platinum_arknights/breakroom_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 402,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "platinum_arknights",
     "outfit": {
       "id": "breakroom_hoodie",
       "characterId": "platinum_arknights",
       "name": "罗德岛干员宽松连帽卫衣",
-      "prose": "An oversized soft heather-grey pullover hoodie, lounge shorts, striped knee-high socks, and comfortable indoor slippers.",
+      "prose": "An oversized heather-grey cotton fleece hoodie with white drawstring cords paired with charcoal lounge shorts, striped knee-high socks, and plush house slippers.",
       "tokens": [
-        "oversized hoodie",
-        "shorts",
-        "striped socks",
-        "knee-high socks",
-        "slippers",
-        "loungewear"
+        "heather grey hoodie",
+        "oversized cotton fleece",
+        "charcoal lounge shorts",
+        "striped knee socks",
+        "plush house slippers",
+        "white drawstring cords"
       ],
       "default": false,
       "isDefault": false

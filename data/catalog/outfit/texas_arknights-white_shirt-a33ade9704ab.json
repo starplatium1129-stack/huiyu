@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/white_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1467,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "id": "white_shirt",
       "name": "宽松白色府绸长衬衫",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "collared_shirt",
-        "long_shirt",
-        "bare_legs"
+        "oversized white shirt",
+        "cotton poplin",
+        "concealed placket",
+        "rolled sleeves",
+        "mid-thigh hem",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "An oversized white poplin shirt with a clean concealed placket, falling loosely past the hips.",
+      "prose": "A crisp oversized white cotton poplin tunic shirt with a clean concealed button placket falling to mid-thigh over bare legs.",
       "default": false,
       "isDefault": false,
       "characterId": "texas_arknights"

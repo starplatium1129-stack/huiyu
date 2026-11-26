@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_izakaya_knit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_izakaya_knit",
       "name": "墨绿紧身高领羊绒针织衫与高开衩裹身裙",
-      "prose": "A forest-green cashmere turtleneck with a black leather wrap skirt, sheer black stockings and boots.",
+      "prose": "A forest-green fitted cashmere turtleneck paired with a black leather wrap skirt with a high side slit, sheer black tights, and black leather ankle boots.",
       "tokens": [
-        "turtleneck",
-        "green_sweater",
-        "tight_sweater",
-        "wrap_skirt",
-        "leather_skirt",
-        "high_slit",
-        "black_tights",
-        "sheer_tights",
-        "ankle_boots",
-        "mature_chic"
+        "green cashmere turtleneck",
+        "fitted knit sweater",
+        "black wrap skirt",
+        "high side slit",
+        "sheer black tights",
+        "black ankle boots"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

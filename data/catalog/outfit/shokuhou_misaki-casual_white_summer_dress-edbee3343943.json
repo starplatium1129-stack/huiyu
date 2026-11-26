@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/casual_white_summer_dress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "casual_white_summer_dress",
-      "name": "蛛网蕾丝抹胸吊带白裙与镂空手套",
-      "prose": "A pristine tiered white linen sundress with web-lace trim along the sweetheart neckline and sheer web gloves.",
+      "name": "蛛网蕾丝抹胸白裙与镂空手套",
+      "prose": "A tiered white linen sundress edged with web-pattern lace, worn with sheer fingerless lace gloves, a woven straw hat, and wedge sandals.",
       "tokens": [
-        "sundress",
-        "white_dress",
-        "sweetheart_neckline",
-        "lace_trim",
-        "fingerless_gloves",
-        "lace_gloves",
-        "bare_legs",
-        "wedge_sandals"
+        "white linen sundress",
+        "tiered ruffled hem",
+        "web lace trim",
+        "fingerless lace gloves",
+        "woven straw hat",
+        "bare legs",
+        "wedge sandals"
       ],
       "characterId": "shokuhou_misaki",
       "default": false,

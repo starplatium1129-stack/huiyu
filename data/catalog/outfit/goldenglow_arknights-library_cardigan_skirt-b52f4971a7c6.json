@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/library_cardigan_skirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1293,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "id": "library_cardigan_skirt",
-      "name": "蜜桃软绒开衫与炭黑褶裙",
+      "name": "蜜桃羊绒开衫与炭黑百褶裙",
       "tokens": [
-        "pink_cardigan",
-        "fitted_sweater",
-        "white_blouse",
-        "ribbon_tie",
-        "black_skirt",
-        "pleated_skirt",
-        "black_thighhighs"
+        "peach cashmere cardigan",
+        "white collared blouse",
+        "charcoal pleated skirt",
+        "black ribbon tie",
+        "covered buttons",
+        "fitted cuffs",
+        "dark sheer stockings",
+        "leather loafers"
       ],
-      "prose": "A peach cashmere cardigan over an ivory collared shirt, tucked into a charcoal pleated skirt with sheer dark thigh-highs.",
+      "prose": "A peach cashmere cardigan layered over a crisp white collared blouse with a narrow black ribbon tie and a charcoal pleated skirt, worn with dark sheer stockings and leather loafers.",
       "default": false,
       "isDefault": false,
       "characterId": "goldenglow_arknights"

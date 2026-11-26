@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "rosa_arknights/gallery_blue",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2078,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "rosa_arknights",
     "outfit": {
       "id": "gallery_blue",
-      "name": "雾蓝圆领长袖裙与银色浮雕胸针",
-      "prose": "A mist-blue long-sleeved dress with an ivory Peter Pan collar and a small silver cameo brooch, finished with a narrow velvet waist ribbon.",
+      "name": "雾蓝彼得潘领长裙与银浮雕胸针",
+      "prose": "A mist-blue long-sleeved dress with an ivory Peter Pan collar, pearl cuffs, and a narrow navy velvet waist belt pinned with a silver cameo brooch, worn with sheer pantyhose and navy suede flats.",
       "tokens": [
-        "mist blue long-sleeved dress",
-        "ivory peter pan collar",
+        "mist blue dress",
+        "ivory peter collar",
         "silver cameo brooch",
-        "velvet waist ribbon"
+        "navy velvet belt",
+        "sheer nude pantyhose",
+        "navy suede flats"
       ],
       "characterId": "rosa_arknights",
       "default": false,

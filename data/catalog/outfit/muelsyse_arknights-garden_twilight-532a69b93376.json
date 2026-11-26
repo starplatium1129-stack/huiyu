@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/garden_twilight",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2027,
   "createdAt": "2026-11-04T05:26:35.927073100+00:00",
-  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "garden_twilight",
-      "name": "暮青薄纱披肩裙与银叶发簪",
-      "prose": "A soft teal dress with an asymmetric pale sheer shawl, a silver leaf hairpin and understated low heels.",
+      "name": "暮青不对称薄纱披肩裙与银簪",
+      "prose": "A soft teal silk dress draped with an asymmetric pale sheer shawl and narrow velvet sash, accented with a silver leaf hairpin, pearl drop earrings, sheer black tights, and teal low heels.",
       "tokens": [
-        "soft teal dress",
-        "asymmetric pale sheer shawl",
+        "teal silk dress",
+        "sheer asymmetric shawl",
         "silver leaf hairpin",
-        "low heels"
+        "narrow velvet sash",
+        "sheer black tights",
+        "teal low heels"
       ],
       "characterId": "muelsyse_arknights",
       "default": false,

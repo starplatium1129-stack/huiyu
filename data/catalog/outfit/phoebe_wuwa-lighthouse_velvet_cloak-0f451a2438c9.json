@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "phoebe_wuwa/lighthouse_velvet_cloak",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3306,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "phoebe_wuwa",
     "outfit": {
       "id": "lighthouse_velvet_cloak",
       "name": "灯塔守望深蓝天鹅绒连帽斗篷",
-      "prose": "A warm midnight-blue wool hooded cloak fastened with a golden sun-clasp over a cream ruffled blouse and pleated skirt.",
+      "prose": "A midnight-blue velvet hooded cloak fastened with a golden sun clasp over a cream ruffled blouse, navy pleated skirt, dark tights, and leather boots.",
       "tokens": [
-        "blue cloak",
+        "midnight blue cloak",
         "hooded cloak",
-        "gold clasp",
-        "white blouse",
-        "pleated skirt",
-        "boots"
+        "gold sun clasp",
+        "cream blouse",
+        "ruffled collar",
+        "navy skirt",
+        "tights",
+        "leather boots"
       ],
       "default": false,
       "isDefault": false,

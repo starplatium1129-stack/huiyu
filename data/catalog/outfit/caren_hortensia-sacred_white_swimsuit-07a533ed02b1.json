@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/sacred_white_swimsuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "sacred_white_swimsuit",
-      "name": "纯白交叉背带竞速泳装",
-      "prose": "a white high-neck one-piece swimsuit with clean panel seams, crossed back straps and high-cut leg openings",
+      "name": "纯白高领交叉背带竞速泳装",
+      "prose": "An immaculate high-neck white one-piece swimsuit structured with crisp seam lines, crossed open-back straps, and high-cut leg arches.",
       "tokens": [
         "white one-piece swimsuit",
-        "highleg",
         "high collar",
-        "crossed back straps"
+        "crossed back straps",
+        "high leg cut",
+        "gold seam piping",
+        "bare legs",
+        "barefoot"
       ],
       "isDefault": false,
       "default": false

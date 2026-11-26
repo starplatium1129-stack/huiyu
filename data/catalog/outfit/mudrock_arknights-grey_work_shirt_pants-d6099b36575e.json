@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/grey_work_shirt_pants",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1417,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "grey_work_shirt_pants",
-      "name": "深灰廓形工装衬衫与开衩收腿裤",
-      "prose": "A relaxed charcoal utility shirt worn open over a white ribbed crop top and cargo trousers with side vents.",
+      "name": "深灰敞领工装衬衫与工装裤",
+      "prose": "A relaxed charcoal utility shirt worn unbuttoned over a black sports bra and olive cargo trousers with side vents, secured with a woven belt and rugged work boots.",
       "tokens": [
-        "work_shirt",
-        "grey_shirt",
-        "unbuttoned",
-        "tank_top",
-        "crop_top",
-        "slit_pants",
-        "bare_legs",
-        "work_boots"
+        "charcoal work shirt",
+        "unbuttoned front",
+        "black sports bra",
+        "olive cargo trousers",
+        "side vents",
+        "metal snaps",
+        "woven belt",
+        "work boots"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3296,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "id": "tomotake_yoshino_lingerie_whisper",
     "characterId": "tomotake_yoshino",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "朝武神社深处温泉池畔的木质水榭，头顶开满如紫色飞瀑般的百年紫藤花。跪坐在神社回廊木地板上，双手轻按在膝前，紫藤花发饰在黑发间微摇，低眉垂目，微启朱唇含羞向主人行礼，温婉神态如古典画卷中的大和抚子。 她微微抬眸轻语——“神乐之舞已罢……如今在这里的，不再是朝武家的巫女，而只是想要侍奉在您身旁的芳乃。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "wisteria_yukata_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

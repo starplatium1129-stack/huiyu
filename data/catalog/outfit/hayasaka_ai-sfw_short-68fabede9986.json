@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_short",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_short",
       "name": "冰蓝工装短夹克与高腰褶裙",
-      "prose": "A cropped ice-blue utility jacket with zip pockets worn over an ivory mock-neck top and pleated mini skirt.",
+      "prose": "A cropped ice-blue utility jacket with zip pockets worn over an ivory mock-neck top and pleated mini skirt, accented with a slim chain, bare legs, and white sneakers.",
       "tokens": [
-        "light_blue_jacket",
-        "cropped_jacket",
-        "pocket_detail",
-        "ivory_top",
-        "pleated_skirt",
-        "mini_skirt",
-        "bare_legs",
-        "sneakers"
+        "ice blue jacket",
+        "zip utility pockets",
+        "ivory mock-neck top",
+        "pleated mini skirt",
+        "slim silver chain",
+        "bare legs",
+        "white sneakers"
       ],
       "characterId": "hayasaka_ai",
       "default": false,

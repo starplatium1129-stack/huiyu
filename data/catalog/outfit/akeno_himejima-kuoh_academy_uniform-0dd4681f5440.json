@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/kuoh_academy_uniform",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 699,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "kuoh_academy_uniform",
       "name": "驹王学园西装马甲制服与黑色长袜",
-      "prose": "A tailored black vest over an open-collar blouse and pleated school skirt, paired with sheer black stockings.",
+      "prose": "A tailored black vest over an open-collar white blouse, red ribbon bow, and pleated school mini skirt, paired with sheer black thigh-high stockings and black high heels.",
       "tokens": [
-        "school_uniform",
-        "white_shirt",
-        "black_vest",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "high_heels"
+        "kuoh school uniform",
+        "white collared shirt",
+        "black vest",
+        "pleated mini skirt",
+        "red ribbon bow",
+        "sheer black thighhighs",
+        "black high heels"
       ],
       "characterId": "akeno_himejima",
       "default": false,

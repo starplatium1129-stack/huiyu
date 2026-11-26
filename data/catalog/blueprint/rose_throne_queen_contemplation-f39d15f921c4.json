@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rose_throne_queen_contemplation",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2483,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "rose_throne_queen_contemplation",
     "characterId": "rose_oriana",
-    "outfitId": "oriana_knight_uniform",
+    "outfitId": "coronation_queen_gown",
     "title": "萝丝 · 王座厅内的烛影沉思",
     "category": "女王加冕",
     "description": "恢弘而清冷的王宫正殿内，已加冕为女王的萝丝独自倚坐在雕花王座上，佩剑竖立身侧，琥珀眼眸凝望着窗外夜空中的明月，思念着心中的少年。",

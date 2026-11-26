@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/midnight_fishbone_strappy_lingerie",
+  "revision": 1,
+  "sortOrder": 4012,
+  "createdAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "id": "midnight_fishbone_strappy_lingerie",
+      "name": "深潮孤歌·墨蓝微透系带内衣",
+      "prose": "A deep-navy and sheer black layered mesh bralette set fastened with a silver fishbone clasp and narrow cross-back satin-elastic straps, paired with matching strappy briefs, worn barefoot.",
+      "tokens": [
+        "deep navy bralette",
+        "sheer black mesh",
+        "silver fishbone clasp",
+        "cross-back straps",
+        "matching strappy briefs",
+        "satin elastic bands",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_pistol_shadow",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 882,
   "createdAt": null,
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "action": "独自握枪凝视窗外",
     "adult": false,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "seminar_uniform",
+    "outfitId": "formal_dress",
     "promptProse": "Standing beside a massive concrete pillar inside an empty warehouse, Rio inspects the slide mechanism of her automatic handgun with calm precision. Shafts of cool moonlight stream through high skylights, casting crisp shadows across the industrial floor.",
     "promptTokens": [
       "standing",

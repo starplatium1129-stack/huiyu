@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "chen_qianyu/wuling_modal_sleep_set",
+  "revision": 1,
+  "sortOrder": 4075,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "chen_qianyu",
+    "outfit": {
+      "id": "wuling_modal_sleep_set",
+      "name": "武陵玄黑莫代尔背心与束脚裤",
+      "prose": "A breathable obsidian-black modal jersey set featuring a fitted high-neck sleeveless tank top with reinforced seams and tapered drawstring lounge joggers, worn barefoot.",
+      "tokens": [
+        "black modal tank",
+        "high-neck top",
+        "tapered lounge joggers",
+        "drawstring waist",
+        "reinforced seams",
+        "barefoot"
+      ]
+    }
+  }
+}

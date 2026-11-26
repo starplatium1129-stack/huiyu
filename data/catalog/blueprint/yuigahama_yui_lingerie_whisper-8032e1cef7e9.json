@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3254,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "yuigahama_yui_lingerie_whisper",
     "characterId": "yuigahama_yui",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "由比滨家明亮的粉白少女卧室，床头摆着心形抱枕与爱犬萨布鲁的照片。盘腿坐在小地毯上，双手抱膝，标志性的团子发髻微微歪着，微红着脸咬着嘴唇，清亮明快的大眼睛闪烁着泪花，鼓起全部勇气注视着面前的比企谷。 她微微抬眸轻语——“自私一点也没关系的吧……？小企……我不想只当善解人意的由比滨同学……我想要属于我的全部！”",
-    "outfitId": "pink_lace_lingerie",
+    "outfitId": "peach_ruffled_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/hourglass_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2168,
   "createdAt": "2026-11-04T05:39:13.776172300+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "hourglass_knit",
       "name": "沙色细针织衫与深紫压褶裙",
-      "prose": "A sand-colored fine-knit turtleneck tucked into a deep plum pressed-pleat skirt, accented by a small hourglass-shaped silver brooch.",
+      "prose": "A sand-toned fine-knit turtleneck with ribbed cuffs tucked into a deep plum pressed-pleat skirt, accented with a silver hourglass brooch, a slim black belt, and plum mary janes.",
       "tokens": [
-        "sand colored fine-knit turtleneck",
-        "deep plum pleated skirt",
-        "silver hourglass brooch"
+        "sand knit turtleneck",
+        "ribbed cuff trim",
+        "plum pleated skirt",
+        "silver hourglass brooch",
+        "black slim belt",
+        "plum mary janes"
       ],
       "characterId": "ptilopsis_arknights",
       "default": false,

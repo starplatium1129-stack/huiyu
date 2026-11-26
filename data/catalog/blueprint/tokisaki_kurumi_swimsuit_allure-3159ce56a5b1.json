@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3173,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.245Z",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "id": "tokisaki_kurumi_swimsuit_allure",
     "characterId": "tokisaki_kurumi",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "晚钟将歇的海崖废弃钟楼。时崎狂三身着时间梦魇绯黑蕾丝束腰哥特泳装，倚在石券廊柱前。绯红晚霞将海面染作深红，她掩唇轻笑，金色时计之瞳在阴影中闪烁着摄人心魄的流光。玉指轻勾滑落的蕾丝肩带，向你发出游走在毁灭与甜美之间的危险邀约。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "nightmare_corset_swimdress",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

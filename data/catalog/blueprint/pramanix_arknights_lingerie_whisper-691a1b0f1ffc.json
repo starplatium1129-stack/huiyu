@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3117,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "pramanix_arknights_lingerie_whisper",
     "characterId": "pramanix_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "谢拉格圣殿最高神龛后侧的隐秘暖阁，银质香炉升起细细雪莲熏香。跪坐在白熊皮地毯上，双手将巨大蓬松的雪豹尾巴抱在怀里，雪白豹耳微颤，眼神带着摆脱圣女沉重职责后的纯真娇柔。 她微微抬眸轻语——“在这里……请不要叫我圣女大人。就只是恩雅，只属于你一个人的恩雅……这样可以吗？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "sanctuary_fur_slip",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

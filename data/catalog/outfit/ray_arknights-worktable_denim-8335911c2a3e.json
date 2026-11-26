@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/worktable_denim",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2045,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "worktable_denim",
-      "name": "靛蓝背带工装裤与条纹棉衫",
-      "prose": "Soft indigo denim overalls with a small stitched tool pocket over a striped long-sleeved cotton shirt, paired with worn canvas shoes.",
+      "name": "靛蓝工装背带裤与条纹棉衫",
+      "prose": "Soft indigo denim overalls with brass clasp buckles, rolled cuffs, and a stitched tool pocket worn over a striped cotton shirt, finished with grey crew socks and tan canvas sneakers.",
       "tokens": [
         "indigo denim overalls",
         "stitched tool pocket",
-        "striped long-sleeved cotton shirt",
-        "canvas shoes"
+        "striped cotton tee",
+        "brass clasp buckles",
+        "grey crew socks",
+        "tan canvas sneakers"
       ],
       "characterId": "ray_arknights",
       "default": false,

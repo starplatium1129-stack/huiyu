@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/summer_swimsuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 229,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "summer_swimsuit",
       "name": "皇家白金挂脖比基尼",
-      "prose": "A gleaming ivory halter bikini detailed with miniature gold rings and a sheer chiffon hip wrap.",
+      "prose": "An ivory halterneck bikini detailed with miniature gold rings and a sheer chiffon hip wrap, accented with crown sunglasses, a gold anklet, and strappy sandals.",
       "tokens": [
-        "bikini",
-        "white_bikini",
-        "halterneck",
-        "gold_trim",
-        "sarong",
-        "bare_legs",
-        "sandals"
+        "ivory halter bikini",
+        "gold ring hardware",
+        "sheer chiffon sarong",
+        "crown tinted sunglasses",
+        "gold ankle chain",
+        "bare shoulders",
+        "strappy sandals"
       ],
       "characterId": "shokuhou_misaki",
       "default": false,

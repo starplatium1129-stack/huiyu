@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_glasses_removed_flustered_tsundere",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
   "data": {
     "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
     "camera": "close-up, eye level",
@@ -23,7 +23,7 @@
     "negativeTokens": [
       "glasses worn"
     ],
-    "outfitId": "sfw_school_uniform_without_glasses",
+    "outfitId": "misaki_school_uniform",
     "promptProse": "She lightly grips the viewer's offered sleeve with both hands and looks up with a surprised, shy smile. Only the sleeve enters the foreground; her folded glasses rest on the desk behind her in sunset light.",
     "promptTokens": [
       "clubroom",

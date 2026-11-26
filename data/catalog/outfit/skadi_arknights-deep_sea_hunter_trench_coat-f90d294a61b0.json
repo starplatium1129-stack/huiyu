@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/deep_sea_hunter_trench_coat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 355,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
@@ -12,15 +12,16 @@
       "id": "deep_sea_hunter_trench_coat",
       "isDefault": false,
       "name": "深海猎人·红衬黑风衣",
-      "prose": "A split-hem black trench coat with deep-red lining over a red-edged sleeveless black bodysuit, with black thigh-high boots.",
+      "prose": "A split-hem matte black wool-gabardine trench coat with wine-red lining and metal clasp layered over a dark fitted undersuit with leather belt and tall leather boots.",
       "tokens": [
         "black trench coat",
-        "split hem",
-        "deep red lining",
-        "black bodysuit",
-        "sleeveless",
-        "red edging",
-        "black thigh boots"
+        "split coat hem",
+        "wine red lining",
+        "matte wool gabardine",
+        "dark turtleneck undersuit",
+        "leather belt",
+        "metal clasp",
+        "tall leather boots"
       ]
     }
   }

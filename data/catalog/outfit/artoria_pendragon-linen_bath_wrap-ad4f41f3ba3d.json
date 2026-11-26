@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/linen_bath_wrap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1359,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "linen_bath_wrap",
-      "name": "挂颈高开衩白亚麻系带裹身裙",
+      "name": "挂颈高开衩纯白亚麻裹身裙",
       "tokens": [
+        "white wrap dress",
+        "linen sarong",
         "halterneck",
-        "sarong",
-        "white_dress",
-        "wrap_dress",
-        "high_slit",
-        "backless_dress",
-        "bare_legs",
+        "backless dress",
+        "high side slit",
+        "bare shoulders",
+        "bare legs",
         "barefoot"
       ],
-      "prose": "A minimalist white linen wrap dress with a crisscross halter neckline, open back, and provocative high leg slit.",
+      "prose": "A minimalist pure-white linen bath wrap styled with crossed halter straps, bare back, and a sweeping high side slit.",
       "default": false,
       "isDefault": false,
       "characterId": "artoria_pendragon"

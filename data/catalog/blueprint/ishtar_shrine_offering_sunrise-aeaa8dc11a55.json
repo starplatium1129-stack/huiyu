@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_shrine_offering_sunrise",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 255,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "ishtar_shrine_offering_sunrise",
     "title": "伊什塔尔 · 神殿供品的清晨",
@@ -48,7 +48,7 @@
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_slice_of_life",
     "animaStyleHint": "anime_slice_of_life",
-    "outfitId": "official_goddess_attire",
+    "outfitId": "dawn_temple_silk_robe",
     "coverageTags": [
       "daily",
       "signature",

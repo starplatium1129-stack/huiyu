@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3152,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "specter_arknights_lingerie_whisper",
     "characterId": "specter_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛个人艺术雕刻工作室，四处陈列着带有深海触须扭曲风格的大理石雕像。单手握着未完成的白理石雕像，修长双腿在长椅上优雅交叠，沾着石粉的发丝轻贴锁骨，猩红眼眸带着狂乱褪去后的清醒与戏谑，优雅歪头注视博士。 她微微抬眸轻语——“理智的回归真是令人扫兴……不过，博士，既然你来了，何不成为我下一件作品唯一的模特呢？”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "coral_lace_bralette",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

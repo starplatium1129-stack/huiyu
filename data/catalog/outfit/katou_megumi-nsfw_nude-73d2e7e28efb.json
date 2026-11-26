@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 797,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "name": "加藤惠·全裸态",
+      "prose": "Completely without clothing or footwear, resting bare from shoulder to foot.",
       "tokens": [
-        "nude"
+        "nude",
+        "completely nude",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

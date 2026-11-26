@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/sfw_shield_training_armor",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1131,
   "createdAt": "2026-10-06T10:46:28.602196100+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "sfw_shield_training_armor",
       "name": "轻量训练菱格铠裙与腿部护具",
-      "prose": "An obsidian-and-white training armor dress with a diamond mesh waist, with reinforced compression legwear held by fabric straps.",
+      "prose": "A streamlined obsidian-and-white simulation training suit pairing a lightweight chestplate and mesh waist panel with flexible compression tights and ankle boots.",
       "tokens": [
-        "armored_dress",
-        "diamond_cutout",
-        "elbow_gloves",
-        "compression_pants",
-        "thighhighs",
-        "thigh_strap",
-        "leg_harness",
-        "armored_boots",
-        "techwear"
+        "training bodysuit",
+        "white chestplate",
+        "mesh waist cutout",
+        "light shoulder guards",
+        "fingerless gloves",
+        "compression tights",
+        "ankle combat boots"
       ],
       "characterId": "mash_kyrielight",
       "default": false,

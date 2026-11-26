@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/sfw_siesta_black_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1161,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "id": "sfw_siesta_black_bikini",
       "name": "汐斯塔银扣极细绑带挂颈黑色泳装",
       "tokens": [
-        "black_bikini",
-        "string_bikini",
+        "black string bikini",
         "halterneck",
-        "silver_buckle",
-        "buckle",
-        "bare_legs",
-        "bare_shoulders"
+        "silver square buckles",
+        "thin side ties",
+        "sunglasses",
+        "bare legs",
+        "black sandals"
       ],
-      "prose": "A daring black string bikini featuring silver square buckles and ultra-thin ties across the open back.",
+      "prose": "A sleek black string bikini accented with polished silver square buckles and thin crisscross neck and hip ties, paired with flat sandals.",
       "default": false,
       "isDefault": false,
       "characterId": "lappland_arknights"

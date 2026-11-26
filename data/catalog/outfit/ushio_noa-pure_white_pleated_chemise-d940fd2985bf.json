@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ushio_noa/pure_white_pleated_chemise",
+  "revision": 1,
+  "sortOrder": 3931,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "ushio_noa",
+    "outfit": {
+      "id": "pure_white_pleated_chemise",
+      "name": "纯白细褶雪纺双层吊带睡裙",
+      "prose": "A translucent double-layer pure-white chiffon slip nightdress sculpted with micro-pleated bodice folds, delicate spaghetti straps, and an airy billowing skirt.",
+      "tokens": [
+        "white chiffon slip",
+        "sheer nightgown",
+        "pleated bodice",
+        "spaghetti straps",
+        "layered hem",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

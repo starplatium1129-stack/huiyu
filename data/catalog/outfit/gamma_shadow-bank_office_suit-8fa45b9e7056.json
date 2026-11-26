@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "gamma_shadow/bank_office_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1922,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "gamma_shadow",
     "outfit": {
       "id": "bank_office_suit",
       "name": "四越银行头取职业套装",
-      "prose": "Sharp navy business suit with pencil skirt and silk blouse, the attire of the Mitsugoshi Bank president reviewing ledgers.",
+      "prose": "Sharp midnight-navy tailored blazer over an ivory silk blouse and knee-length pencil skirt, accented with a gold guild brooch, pearl studs, sheer black pantyhose, and pointed pumps.",
       "tokens": [
-        "business_suit",
-        "office_lady",
-        "pencil_skirt",
-        "blouse",
-        "pantyhose",
-        "high_heels"
+        "navy suit",
+        "tailored blazer",
+        "silk blouse",
+        "pencil skirt",
+        "gold brooch",
+        "pearl earrings",
+        "sheer pantyhose",
+        "pointed pumps"
       ],
       "characterId": "gamma_shadow",
       "default": false,

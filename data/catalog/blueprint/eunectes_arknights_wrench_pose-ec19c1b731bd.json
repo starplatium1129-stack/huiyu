@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_wrench_pose",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 590,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "把扳手扛在肩上，比了个大拇指",
     "camera": "medium shot",
@@ -20,7 +20,7 @@
     "location": "罗德岛机工坊门口",
     "mood": "骄傲飒爽",
     "negativeTokens": [],
-    "outfitId": "standard",
+    "outfitId": "forgemaster",
     "promptProse": "One hand balances a giant pipe wrench on her shoulder; the other gives the viewer a confident thumbs-up before the assembly bench in warm workshop light.",
     "promptTokens": [
       "wrench",

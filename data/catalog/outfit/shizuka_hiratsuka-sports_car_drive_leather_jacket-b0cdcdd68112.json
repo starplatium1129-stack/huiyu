@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "shizuka_hiratsuka/sports_car_drive_leather_jacket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1770,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shizuka_hiratsuka",
     "outfit": {
       "characterId": "shizuka_hiratsuka",
       "id": "sports_car_drive_leather_jacket",
       "name": "兜风丽人·帅气黑皮衣修身牛仔裤",
-      "prose": "A sleek black biker leather jacket over a form-fitting white scooped-neck tank top and snug dark blue denim jeans.",
+      "prose": "A black biker leather moto jacket layered over a fitted white scoop-neck tank top and dark blue denim jeans with a silver-buckled belt and black ankle boots.",
       "tokens": [
-        "leather_jacket",
-        "black_jacket",
-        "tank_top",
-        "white_tank_top",
-        "jeans",
-        "denim_pants",
-        "cleavage"
+        "black leather jacket",
+        "zippered moto collar",
+        "white scooped tank",
+        "dark denim jeans",
+        "silver belt buckle",
+        "black ankle boots"
       ],
       "default": false,
       "isDefault": false

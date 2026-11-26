@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_school",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_school",
-      "name": "藏蓝整齐制服",
-      "prose": "A neatly tailored navy blazer and white blouse pair with a matching knife-pleated skirt.",
+      "name": "来禅高校藏蓝整齐制服",
+      "prose": "A neatly tailored navy blazer over a crisp white shirt with a blue ribbon tie and knife-pleated skirt, paired with black stockings and leather loafers.",
       "tokens": [
         "navy blazer",
-        "white blouse",
-        "navy pleated skirt"
+        "white collared shirt",
+        "blue neck ribbon",
+        "knife pleated skirt",
+        "black stockings",
+        "leather loafers"
       ],
       "default": true,
       "isDefault": true,

@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "rose_oriana/illusion_bridal_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1900,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "rose_oriana",
     "outfit": {
       "id": "illusion_bridal_gown",
       "name": "誓约幻想纯白层叠婚纱",
-      "prose": "A romantic fantasy multi-tiered white lace bridal gown featuring an off-shoulder corset bodice, cathedral-length lace-trimmed veil, and an armful of white roses.",
+      "prose": "Multi-tiered pure-white Chantilly lace bridal gown with an off-shoulder corset bodice and flowing train, topped with a cathedral-length lace-edged veil, pearl drop earrings, and white satin pumps.",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "white_veil",
-        "off-shoulder_dress",
-        "lace_dress",
-        "bridal_bouquet",
-        "bouquet",
-        "white_roses",
-        "train"
+        "wedding dress",
+        "lace gown",
+        "off-shoulder",
+        "corset bodice",
+        "cathedral veil",
+        "white veil",
+        "pearl earrings",
+        "white pumps"
       ],
       "characterId": "rose_oriana",
       "default": false,

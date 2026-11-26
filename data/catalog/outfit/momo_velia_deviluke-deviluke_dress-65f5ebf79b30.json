@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "momo_velia_deviluke/deviluke_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 677,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "momo_velia_deviluke",
     "outfit": {
@@ -12,14 +12,13 @@
       "id": "deviluke_dress",
       "isDefault": false,
       "name": "浅紫银边王女短礼裙",
-      "prose": "A lilac strapless dress with silver panels and a layered short skirt, detached white cuffs, gold choker and purple thigh boots.",
+      "prose": "A lilac strapless royal dress accented with silver metallic panels and a layered short skirt, worn with detached white cuffs, a gold choker, and purple thigh-high boots.",
       "tokens": [
         "lilac strapless dress",
-        "silver panels",
-        "layered skirt",
-        "short skirt",
+        "silver metallic panels",
+        "layered ruffled skirt",
         "detached white cuffs",
-        "gold choker",
+        "gold neck choker",
         "purple thigh boots"
       ]
     }

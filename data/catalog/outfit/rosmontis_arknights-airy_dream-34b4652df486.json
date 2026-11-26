@@ -1,20 +1,23 @@
 {
   "kind": "outfit",
   "id": "rosmontis_arknights/airy_dream",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2088,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "rosmontis_arknights",
     "outfit": {
       "id": "airy_dream",
-      "name": "轻盈一梦·白色褶边裙与花饰",
-      "prose": "A white frilled dress with a large pale bow, flower hair ornament and white ankle boots.",
+      "name": "轻盈一梦·白纱褶边裙与丝带结",
+      "prose": "A light white frilled chiffon dress accented with a large pastel silk bow, floral ribbon clip, and lace cuff trim, worn with sheer white tights and white ankle boots.",
       "tokens": [
         "white frilled dress",
-        "large pale bow",
-        "flower hair ornament",
+        "pastel silk bow",
+        "tiered chiffon skirt",
+        "floral ribbon clip",
+        "lace cuff trim",
+        "white sheer tights",
         "white ankle boots"
       ],
       "characterId": "rosmontis_arknights",

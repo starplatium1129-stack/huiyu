@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_hsr_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3387,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.642Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "firefly_hsr_lingerie_whisper",
     "characterId": "firefly_hsr",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "筑梦边境无人知晓的高空秘密基地。流萤褪去萨姆装甲的重压，换上一袭薄荷青与纯白拼色的羽翼蕾丝分体吊带睡衣，黑色发带挽起银灰长发。她赤着脚坐在高高的铁栏杆上，双腿在云海中晃晃悠悠，手里还捏着两万信用点买来的橡木蛋糕卷。她回过头看着走近的开拓者，海蓝色的眼眸里满是清澈如星河的依恋与温柔——「开拓者……你看，这里的风很温暖对吧？……虽然梦境终会醒来，但只要能像这样作为‘流萤’和你坐在一起……我就觉得，活着真的是一件很棒的事。」",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "glamoth_mint_chiffon_camisole",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

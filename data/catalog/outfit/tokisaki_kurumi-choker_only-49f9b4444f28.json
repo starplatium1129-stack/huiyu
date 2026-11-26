@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/choker_only",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1475,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "choker_only",
-      "name": "齿轮项圈与极简丝缎连体衣",
+      "name": "齿轮项圈全裸态",
       "tokens": [
-        "choker",
-        "black_bodysuit",
-        "strapless",
-        "silk_bodysuit",
-        "cutout",
-        "bare_legs"
+        "nude",
+        "completely nude",
+        "gear pendant choker",
+        "bare shoulders",
+        "barefoot"
       ],
-      "prose": "A velvet gear-pendant choker paired with a minimalist silk-satin bodysuit sculpted with daring hip cutouts.",
+      "prose": "Completely without clothing or footwear, wearing only a black velvet choker with an antique gear pendant.",
       "default": false,
       "isDefault": false,
       "characterId": "tokisaki_kurumi"

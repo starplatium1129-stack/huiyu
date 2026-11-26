@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "hu_tao/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "nsfw_nude",
       "name": "赤子之躯",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed state with bare shoulders, bare torso, bare legs, and bare feet, free of any garments.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "bare torso",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

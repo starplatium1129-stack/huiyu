@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3234,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:41:25.094970500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "id": "eyjafjalla_arknights_swimsuit_allure",
     "characterId": "eyjafjalla_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "午后的沙滩被太阳晒得温热松软。艾雅法拉把针织小斗篷拢在肩上，小心地护着篮子里五颜六色的贝壳与海玻璃。因为听觉不便，她微微倾过身躯，努力辨识着海浪击打沙岸的震动。看见你走近，她脸上绽放出毫无保留的安心笑靥，轻声唤道——「前辈……！快看，这些贝壳被地热温泉冲刷过，摸起来暖暖的。这一颗最圆最光滑的海玻璃，我想做成挂坠……送给前辈。」",
-    "outfitId": "silver_summer_bikini",
+    "outfitId": "volcanic_coral_swimsuit",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

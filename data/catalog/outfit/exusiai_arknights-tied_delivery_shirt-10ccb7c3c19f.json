@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/tied_delivery_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1368,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "tied_delivery_shirt",
       "name": "前襟系带白衬衫与牛仔短裤",
-      "prose": "A white button-down shirt knotted at the waist with dark denim shorts and ankle boots.",
+      "prose": "A crisp white button-down shirt knotted high at the waist over frayed dark denim cutoffs and scuffed leather ankle boots.",
       "tokens": [
-        "white_shirt",
-        "tied_shirt",
-        "crop_shirt",
-        "navel",
-        "denim_shorts",
-        "bare_legs",
-        "ankle_boots"
+        "white tied shirt",
+        "cropped front knot",
+        "bare midriff",
+        "frayed denim cutoffs",
+        "bare legs",
+        "brown ankle boots"
       ],
       "characterId": "exusiai_arknights",
       "default": false,

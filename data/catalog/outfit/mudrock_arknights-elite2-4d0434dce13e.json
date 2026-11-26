@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/elite2",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "elite2",
-      "name": "破茧卸甲高弹机能战术连体衣",
-      "prose": "A black-and-olive compression bodysuit with mesh side panels, unzipped at the collar.",
+      "name": "破茧卸甲高弹机能连体战术服",
+      "prose": "A sleeveless black-and-olive compression bodysuit with breathable mesh side panels and a front zipper, paired with a utility waist strap and combat boots.",
       "tokens": [
-        "bodysuit",
-        "compression_suit",
-        "front_zipper",
-        "cutout",
-        "sleeveless_bodysuit",
-        "bare_legs"
+        "black compression bodysuit",
+        "olive mesh panels",
+        "sleeveless cut",
+        "front zipper",
+        "side cutouts",
+        "utility waist strap",
+        "bare legs",
+        "combat boots"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

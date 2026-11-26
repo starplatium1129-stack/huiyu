@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/dreamscape_casual_cardigan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1585,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "dreamscape_casual_cardigan",
       "name": "梦境偶遇奶油落肩粗针开衫与工装短裙",
       "tokens": [
-        "cardigan",
-        "cable_knit",
-        "camisole",
-        "cargo_skirt",
-        "miniskirt",
-        "bare_legs",
-        "loafers"
+        "cream cardigan",
+        "cable knit",
+        "ribbed camisole",
+        "sage skirt",
+        "cargo miniskirt",
+        "leather belt",
+        "brown loafers"
       ],
-      "prose": "A relaxed cream-white cable cardigan draped loosely over a ribbed camisole and sage-green cargo miniskirt.",
+      "prose": "Relaxed cream-white cable-knit cardigan draped loosely over a fitted ribbed camisole and sage-green cargo miniskirt, finished with a slim leather belt and polished loafers.",
       "isDefault": false,
       "default": false,
       "characterId": "firefly_hsr",

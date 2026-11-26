@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "rossweisse/sheer_indigo_silk_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1760,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "rossweisse",
     "outfit": {
       "characterId": "rossweisse",
       "id": "sheer_indigo_silk_nightgown",
-      "name": "极北冰华 · 冰晶海蓝透视蕾丝吊带内衣",
-      "prose": "一套具有北欧冰晶神圣美感的水蓝色透视蕾丝内衣，罩杯边缘以精致银丝勾勒出雪花图案，虽然是为了省钱在特卖场买下的，却将女武神完美的熟女身段勾勒得淋漓尽致。",
+      "name": "极北冰华·水蓝银雪透视蕾丝内衣套",
+      "prose": "An ice-blue sheer floral lace bralette with silver snowflake embroidery along a plunging neckline paired with matching sheer bikini briefs, worn with bare legs and barefoot.",
       "tokens": [
-        "nordic ice-blue sheer floral lace bralette set",
-        "silver snowflake filigree",
-        "plunge neckline",
-        "matching sheer bikini briefs",
-        "mature valkyrie economic boudoir"
+        "ice blue bralette",
+        "sheer floral lace",
+        "silver snowflake embroidery",
+        "plunging neckline",
+        "matching bikini briefs",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

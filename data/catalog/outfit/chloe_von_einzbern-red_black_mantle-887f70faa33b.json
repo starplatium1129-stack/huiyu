@@ -1,19 +1,25 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/red_black_mantle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1166,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "red_black_mantle",
-      "name": "红黑魔法战袍",
+      "name": "红黑魔法弓兵短战袍",
       "tokens": [
-        "red and black mantle"
+        "bicolor cloak",
+        "white belly shirt",
+        "crimson waist cloth",
+        "fingerless arm warmers",
+        "black shorts",
+        "bare legs",
+        "strapped boots"
       ],
-      "prose": "her red-and-black magical combat mantle",
+      "prose": "Her crimson-and-black Archer cloak and asymmetric shoulder mantle worn over a cropped white tunic, crimson hip sash, black shorts, arm warmers, and strapped battle boots.",
       "default": false,
       "isDefault": false
     }

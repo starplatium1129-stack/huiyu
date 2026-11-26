@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/gallery_monochrome",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2127,
   "createdAt": "2026-11-04T05:37:08.161511700+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "gallery_monochrome",
       "name": "墨白拼接长外套与银链马甲",
-      "prose": "An architectural black-and-ivory long coat with a sharp asymmetrical lapel over a charcoal waistcoat, straight trousers and a fine silver watch chain.",
+      "prose": "An architectural black-and-ivory long coat with an asymmetrical lapel over a charcoal wool waistcoat and black straight slacks, completed with a silver watch chain and glossy oxford shoes.",
       "tokens": [
-        "black and ivory long coat",
-        "asymmetrical lapel",
-        "charcoal waistcoat",
-        "straight trousers",
-        "silver watch chain"
+        "monochrome long coat",
+        "asymmetrical wide lapel",
+        "charcoal wool waistcoat",
+        "black straight slacks",
+        "silver watch chain",
+        "glossy oxford shoes"
       ],
       "characterId": "entelechia_arknights",
       "default": false,

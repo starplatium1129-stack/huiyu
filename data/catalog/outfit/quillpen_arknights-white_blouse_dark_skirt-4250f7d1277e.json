@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/white_blouse_dark_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1422,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "id": "white_blouse_dark_skirt",
-      "name": "白衬衫与炭黑裙装",
+      "name": "微敞领口白衬衫与炭黑高腰裙",
       "tokens": [
-        "white blouse",
-        "charcoal skirt"
+        "unbuttoned white blouse",
+        "charcoal wrap skirt",
+        "grey silk sash",
+        "mother-of-pearl buttons",
+        "silver brooch",
+        "bare legs",
+        "heeled loafers"
       ],
-      "prose": "A plain white blouse and a charcoal skirt.",
+      "prose": "A crisp white blouse with loosened front buttons tucked into a charcoal wrap skirt tied with a grey silk sash and small silver brooch, paired with heeled loafers.",
       "default": false,
       "isDefault": false
     }

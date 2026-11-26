@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3141,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "fiammetta_arknights_swimsuit_allure",
     "characterId": "fiammetta_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "集装箱的铁皮在烈日下散发出滚烫的金属气息。菲亚梅塔一把捏扁了喝完的冰柠檬汽水罐，羽翼在穿堂风里不耐烦地抖落几片赤红飞羽。她狠狠瞪了一眼顶上盘旋聒噪的海鸥，转头看向你，眉宇间满是暴躁的火药味——「叫什么苦路休假！这鬼地方的热浪比熔炉还要呛人！……喂，莫斯提马那家伙跑到哪片浅滩摸鱼去了？给我指个方向，我现在就去把她连人带游泳圈一起轰飞！」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "phoenix_crossstrap_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

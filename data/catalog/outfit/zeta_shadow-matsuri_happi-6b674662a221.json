@@ -1,21 +1,25 @@
 {
   "kind": "outfit",
   "id": "zeta_shadow/matsuri_happi",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1929,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "zeta_shadow",
     "outfit": {
       "id": "matsuri_happi",
       "name": "祭典金豹纹法披",
-      "prose": "Festival happi coat with golden leopard patterns over shorts, worn while running a rigged shooting stall as cover.",
+      "prose": "Short black cotton happi coat accented with golden leopard-print borders over a sleeveless white tunic and dark shorts, fastened with a woven cotton sash and paired with tabi socks and wooden geta.",
       "tokens": [
-        "happi",
-        "japanese_clothes",
-        "shorts",
-        "cat_ears"
+        "black happi",
+        "leopard trim",
+        "gold border",
+        "white tunic",
+        "dark shorts",
+        "cotton sash",
+        "tabi socks",
+        "wooden geta"
       ],
       "characterId": "zeta_shadow",
       "default": false,

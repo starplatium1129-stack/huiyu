@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/sfw_arcade_varsity",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1116,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "sfw_arcade_varsity",
       "name": "拼色棒球短夹克与高街运动短裙",
-      "prose": "A cropped two-tone varsity bomber over a white ribbed top and pleated athletic skirt, with crew socks.",
+      "prose": "A cropped two-tone varsity bomber jacket with brass snaps over a white ribbed tank and navy pleated athletic skirt, paired with crew socks and chunky sneakers.",
       "tokens": [
-        "varsity_jacket",
-        "cropped_jacket",
-        "crop_top",
-        "tank_top",
-        "pleated_skirt",
-        "mini_skirt",
-        "crew_socks",
-        "sneakers",
-        "bare_legs"
+        "cropped varsity jacket",
+        "white ribbed tank",
+        "navy athletic skirt",
+        "contrast striped trim",
+        "brass snap buttons",
+        "white crew socks",
+        "chunky sneakers"
       ],
       "default": false,
       "isDefault": false,

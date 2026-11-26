@@ -1,0 +1,31 @@
+{
+  "kind": "outfit",
+  "id": "acheron/spider_lily_silk_robe",
+  "revision": 1,
+  "sortOrder": 4169,
+  "createdAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "data": {
+    "characterId": "acheron",
+    "outfit": {
+      "id": "spider_lily_silk_robe",
+      "name": "幽紫暗纹真丝系带晨袍与薄纱内衬",
+      "prose": "Flowing deep-violet silk kimono robe woven with subtle spider lily jacquard and secured by a wide charcoal sash over a sheer black lace camisole, paired with sheer stockings and bare feet.",
+      "tokens": [
+        "violet silk robe",
+        "kimono robe",
+        "floral jacquard",
+        "black camisole",
+        "lace trim",
+        "charcoal sash",
+        "sheer stockings",
+        "barefoot"
+      ],
+      "characterId": "acheron",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "睡衣 / 晨袍"
+    }
+  }
+}

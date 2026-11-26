@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "atago_azur/silk_peignoir_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1712,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "atago_azur",
     "outfit": {
       "characterId": "atago_azur",
       "id": "silk_peignoir_nightgown",
-      "name": "幽夜私语·薄纱丝绸系带睡袍",
-      "prose": "An alluring black silk peignoir with delicate floral lace trim along the edges, draped loosely over a sheer nightgown.",
+      "name": "幽夜私语·黑纱蕾丝系带睡袍",
+      "prose": "A black sheer silk peignoir edged with delicate floral lace and scalloped cuffs, tied loosely with a thin ribbon over a matching sheer slip, worn barefoot.",
       "tokens": [
-        "silk_robe",
-        "sheer_nightgown",
-        "lace_trim",
-        "bare_shoulders",
-        "translucent_fabric",
+        "black peignoir robe",
+        "sheer mesh slip",
+        "floral lace trim",
+        "ribbon waist tie",
+        "scalloped cuffs",
+        "bare shoulders",
         "barefoot"
       ],
       "default": false,

@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_home",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 780,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "sfw_home",
       "name": "燕麦华夫格露肩针织衫与过膝袜",
-      "prose": "A soft oatmeal-hued waffle-knit slouchy pullover with an extra-wide neckline falling off the collarbones, layered over grey ribbed boy-shorts. Worn with thigh-high charcoal heather wool socks that hug the thigh snugly, creating a cute soft indentation around the top edge, barefoot on carpet.",
+      "prose": "An oatmeal waffle-knit pullover with a wide neckline slipping off shoulder over grey ribbed shorts, paired with snug charcoal wool thigh-high socks and worn barefoot.",
       "tokens": [
-        "knit_sweater",
-        "slouchy_sweater",
-        "off_shoulder",
-        "waffle_knit",
-        "shorts",
-        "thighhighs",
-        "wool_socks",
-        "barefoot",
-        "cozy_chic"
+        "oatmeal waffle sweater",
+        "off shoulder",
+        "grey ribbed shorts",
+        "charcoal thighhighs",
+        "wool knit socks",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "shirogane_kei",
       "default": false,

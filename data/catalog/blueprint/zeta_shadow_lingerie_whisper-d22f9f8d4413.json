@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3514,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "id": "zeta_shadow_lingerie_whisper",
     "characterId": "zeta_shadow",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "暗影庭园古代遗迹神殿顶梁阴影处，下方的宏伟大厅沉浸在静谧月光中。轻盈倒挂在天花板的横梁上，黑色猫耳与修长猫尾在空中自如摆动，暗金双眸在阴影中闪烁着猫科掠食者的专注光芒，无声无息地向暗影大人的床榻前俯冲降落。 她微微抬眸轻语——“喵呜……暗影大人。泽塔已经将妨碍您大业的残渣全部抹除了。今晚……能给乖巧的泽塔一些摸头奖励吗？”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "feline_harness_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_alter_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3278,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "id": "artoria_pendragon_alter_swimsuit_allure",
     "characterId": "artoria_pendragon_alter",
@@ -13,7 +13,7 @@
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "obsidian_gothic_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

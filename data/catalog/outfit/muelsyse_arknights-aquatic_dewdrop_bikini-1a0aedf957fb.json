@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/aquatic_dewdrop_bikini",
+  "revision": 1,
+  "sortOrder": 4096,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "aquatic_dewdrop_bikini",
+      "name": "碧水露珠 · 渐青玻璃珠纱裙比基尼",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "muelsyse_arknights",
+      "prose": "A shimmering gradient-cyan halter bikini trimmed with dewdrop glass beads and delicate crystal waist chains, paired with ribbon-tie briefs and a translucent floating aqua chiffon pareo, worn barefoot.",
+      "tokens": [
+        "cyan halter bikini",
+        "gradient aqua chiffon",
+        "glass bead trim",
+        "translucent water pareo",
+        "crystal waist chain",
+        "barefoot"
+      ]
+    }
+  }
+}

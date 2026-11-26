@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "iino_miko/white_ruffled_tankini",
+  "revision": 1,
+  "sortOrder": 4158,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "iino_miko",
+    "outfit": {
+      "id": "white_ruffled_tankini",
+      "name": "风纪纯白荷叶边高腰分体泳装",
+      "prose": "A modest pure-white ruffled tankini with double-layered bust frills and high-waisted boy-short bottoms paired with orange ribbon ties and an open pastel cardigan, bare legs, and barefoot.",
+      "tokens": [
+        "white ruffled tankini",
+        "high-waisted boy shorts",
+        "pastel cardigan",
+        "orange ribbon ties",
+        "double-layer ruffles",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

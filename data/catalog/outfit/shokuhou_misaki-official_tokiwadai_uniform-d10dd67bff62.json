@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/official_tokiwadai_uniform",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 227,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,16 +12,15 @@
       "id": "official_tokiwadai_uniform",
       "isDefault": true,
       "name": "常盘台学院制服与蛛网手套",
-      "prose": "A Tokiwadai knit vest over a short-sleeved blouse and pleated skirt, with web-print gloves and white over-knee socks.",
+      "prose": "A Tokiwadai cream knit sweater vest over a short-sleeved blouse and camel pleated skirt, paired with signature web-print lace gloves, white thigh-highs, and brown loafers.",
       "tokens": [
-        "tokiwadai_school_uniform",
-        "sweater_vest",
-        "short_sleeves",
-        "pleated_skirt",
-        "lace_gloves",
-        "white_gloves",
-        "white_thighhighs",
-        "loafers"
+        "cream sweater vest",
+        "short white sleeves",
+        "camel pleated skirt",
+        "web lace gloves",
+        "shoulder purse",
+        "white thighhighs",
+        "brown leather loafers"
       ],
       "characterId": "shokuhou_misaki"
     }

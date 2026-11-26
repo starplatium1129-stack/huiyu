@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nakano_yotsuba/clover_athletic_camisole",
+  "revision": 1,
+  "sortOrder": 4211,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "nakano_yotsuba",
+    "outfit": {
+      "id": "clover_athletic_camisole",
+      "name": "青翠晨光·苍绿运动透气吊带短裤套",
+      "prose": "A clover-green breathable racerback athletic camisole edged with white binding trim and paired with side-slit runner shorts and a ribbon headband, worn barefoot.",
+      "tokens": [
+        "clover green camisole",
+        "racerback athletic top",
+        "white binding trim",
+        "side slit shorts",
+        "ribbon headband",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

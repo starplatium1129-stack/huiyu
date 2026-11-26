@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/casual",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "casual",
       "name": "宝蓝修身马甲与英伦百褶短裙",
-      "prose": "A sharp royal blue tailored vest over a crisp collared white blouse and an A-line pleated miniskirt.",
+      "prose": "A sharp tailored royal-blue waistcoat layered over a crisp white collared blouse and high-waisted pleated miniskirt, finished with ankle socks and brown leather oxfords.",
       "tokens": [
-        "suit_vest",
-        "white_shirt",
-        "collared_shirt",
-        "pleated_skirt",
-        "blue_skirt",
-        "high-waist_skirt",
-        "bare_legs",
-        "oxfords"
+        "royal blue vest",
+        "white collared shirt",
+        "blue pleated skirt",
+        "high waist",
+        "gold cufflinks",
+        "white ankle socks",
+        "brown oxfords"
       ],
       "isDefault": false,
       "default": false,

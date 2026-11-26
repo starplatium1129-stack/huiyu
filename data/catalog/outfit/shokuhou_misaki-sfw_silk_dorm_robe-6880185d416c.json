@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_silk_dorm_robe",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,16 +12,15 @@
       "id": "sfw_silk_dorm_robe",
       "isDefault": false,
       "name": "冰蓝暗纹丝绸落肩晨袍",
-      "prose": "A lustrous ice-blue silk dressing gown trimmed with gold piping, loosely draped to open at the hip.",
+      "prose": "A lustrous ice-blue jacquard silk dressing robe trimmed with gold piping and worn over a lace camisole, loosely belted with satin slippers.",
       "tokens": [
-        "silk_robe",
-        "blue_robe",
-        "open_robe",
-        "sash",
-        "gold_trim",
-        "lace_trim",
-        "bare_legs",
-        "slippers"
+        "ice blue robe",
+        "jacquard silk satin",
+        "gold piping trim",
+        "tied waist sash",
+        "lace camisole beneath",
+        "bare legs",
+        "satin slippers"
       ],
       "characterId": "shokuhou_misaki"
     }

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/lungmen_silk_robe",
+  "revision": 1,
+  "sortOrder": 4028,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "lungmen_silk_robe",
+      "name": "龙门督察 · 墨黑丝麻开襟睡袍",
+      "prose": "A roomy ink-black lounging robe woven from textured silk-linen blend with an open collar, wide raglan sleeves, a thick braided rope belt, and bare feet.",
+      "tokens": [
+        "black silk robe",
+        "textured linen weave",
+        "open kimono collar",
+        "wide raglan sleeves",
+        "thick rope belt",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

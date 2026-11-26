@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3279,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "gotoh_hitori_swimsuit_allure",
     "characterId": "gotoh_hitori",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "沙滩上的派对音乐和现充笑声像重炮一样轰炸着耳膜。一里酱整个人缩成一颗粉色的小球，死死躲在救生塔的木桩阴影里，拉链一路拉到锁骨，眼神已经变成了彻底失去聚焦的螺旋蚊香圈。她瑟瑟发抖地把脸埋进膝盖，声音细若蚊蚋——「呜……呜啊啊……阳光好刺眼……大家看起来都闪闪发光好耀眼……要被社会性蒸发了……为什么我要答应来海边啊……变成沙子吧……让我当一粒无知无觉的贝壳碎屑吧……」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "bocchi_shy_tankini_jersey",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

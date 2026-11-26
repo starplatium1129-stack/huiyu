@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/breacher_standard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2103,
   "createdAt": "2026-11-04T05:34:11.848069100+00:00",
-  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "breacher_standard",
       "name": "黑色长外套与白色袴裤",
-      "prose": "A black long coat with white hakama trousers, a dark top and red boots.",
+      "prose": "A structured black long coat over a slate undershirt and wide white hakama trousers, cinched with a crimson waist sash, padded wrist bracers, and bold red leather boots.",
       "tokens": [
-        "black long coat",
-        "white hakama trousers",
-        "dark top",
-        "red boots"
+        "black trench coat",
+        "slate under shirt",
+        "white hakama pants",
+        "crimson waist sash",
+        "padded wrist bracers",
+        "red leather boots"
       ],
       "characterId": "hoshiguma_arknights",
       "default": false,

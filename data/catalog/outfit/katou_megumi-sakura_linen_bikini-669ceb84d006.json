@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/sakura_linen_bikini",
+  "revision": 1,
+  "sortOrder": 4201,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "sakura_linen_bikini",
+      "name": "路人女主·柔白樱粉挂脖比基尼与亚麻衬衫",
+      "prose": "A minimalist white halter bikini with soft sakura-pink ribbon bows beneath an unbuttoned sheer white linen shirt slipping off one shoulder, worn barefoot.",
+      "tokens": [
+        "white halter bikini",
+        "sakura pink bows",
+        "sheer linen shirt",
+        "off shoulder",
+        "unbuttoned shirt",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

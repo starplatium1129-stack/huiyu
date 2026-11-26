@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/white_plain_dress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 332,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "white_plain_dress",
-      "name": "素白法式收腰棉麻开衩裙",
-      "prose": "A minimalist crisp white linen sundress with a fitted bodice and a sweeping thigh slit.",
+      "name": "素白棉麻收腰开衩连衣裙",
+      "prose": "A minimalist crisp white cotton-linen dress with a fitted bodice, covered buttons, a thin woven waist belt, and a sweeping side slit, worn with leather sandals.",
       "tokens": [
-        "white_dress",
-        "linen_dress",
-        "sweetheart_neckline",
-        "high_slit",
-        "bare_legs",
-        "sandals"
+        "white linen dress",
+        "fitted bodice",
+        "high side slit",
+        "thin woven belt",
+        "covered buttons",
+        "bare legs",
+        "leather sandals"
       ],
       "characterId": "mudrock_arknights",
       "default": false,

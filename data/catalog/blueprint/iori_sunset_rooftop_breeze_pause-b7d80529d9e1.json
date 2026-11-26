@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_sunset_rooftop_breeze_pause",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "action": "背靠着铁丝网栏杆怀抱狙击枪，微仰头享受晚风吹拂，眼神柔和",
     "camera": "cowboy shot, medium angle",
@@ -19,7 +19,7 @@
     "location": "歌赫娜教学楼夕阳天台",
     "mood": "宁静唯美",
     "negativeTokens": [],
-    "outfitId": "disciplinary_uniform",
+    "outfitId": "prefect_field_jacket",
     "promptProse": "Leaning against the rooftop fence, she cradles the rifle across her chest and looks toward the horizon; orange-violet sunset rims her windblown hair and tail.",
     "promptTokens": [
       "leaning",

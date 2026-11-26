@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "furina/sensual_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "sensual_lingerie",
       "name": "水之歌姬深海群青荷叶边丝缎吊带礼服睡裙",
-      "prose": "An operatic boudoir slip dress crafted from liquid-finish ultramarine silk satin, detailed with tiered narcissus floral lace ruffles along the sweetheart bustier and a high-low flowing hem.",
+      "prose": "Liquid-finish ultramarine silk satin slip dress sculpted with a sweetheart bodice, tiered floral lace ruffles, and an asymmetrical high-low hem, paired with sheer stockings and bare feet.",
       "tokens": [
-        "ultramarine satin slip",
-        "narcissus lace",
-        "sweetheart bustier",
+        "ultramarine slip",
+        "silk satin",
+        "sweetheart bodice",
         "tiered ruffles",
+        "floral lace",
         "high-low hem",
-        "fontaine starlet style"
+        "sheer stockings",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

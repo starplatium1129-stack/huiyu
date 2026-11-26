@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3240,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:53:39.052011800+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "id": "perlica_arknights_lingerie_whisper",
     "characterId": "perlica_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "终末地技术探索指挥舱，淡蓝色的行星地貌全息云在空气中缓缓旋转。站在全息星图前，单手摘下战术耳机，烟蓝长发垂在露出的优美背沟上，回头望向管理员，神色严谨中带着一丝罕见的局促。 她微微抬眸轻语——“非勤务时间的着装规范并没有违反终末地协议……管理员，请不要用做任务简报的眼神看着我。”",
-    "outfitId": "silver_lace_lingerie",
+    "outfitId": "slate_nanomesh_bustier",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

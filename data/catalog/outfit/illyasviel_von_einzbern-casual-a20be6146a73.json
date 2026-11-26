@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
       "id": "casual",
-      "name": "淡紫开衫与雪白收腰洋装",
-      "prose": "A soft lavender cardigan with small pearl buttons over a white knee-length dress with a gently gathered waist. A narrow purple ribbon and simple flat shoes retain her snow-castle palette.",
+      "name": "淡紫珍珠扣开衫与雪白洋装",
+      "prose": "A soft pastel-lavender pearl-button cardigan layered over an ivory knee-length sundress cinched with a narrow purple ribbon, worn with white socks and flat mary janes.",
       "tokens": [
         "lavender cardigan",
-        "white dress",
+        "pearl buttons",
+        "white sundress",
         "knee-length dress",
-        "purple ribbon",
-        "flat shoes"
+        "purple waist ribbon",
+        "white socks",
+        "mary janes"
       ],
       "isDefault": false,
       "default": false

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "rena_liechtenauer/sky_mesh_racerback",
+  "revision": 1,
+  "sortOrder": 4192,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "rena_liechtenauer",
+    "outfit": {
+      "id": "sky_mesh_racerback",
+      "name": "苍穹飞羽 · 晴空蓝网眼吊带短裤套",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "rena_liechtenauer",
+      "prose": "A sky-blue breathable mesh racerback camisole with crisp white trim paired with elastic-waist side-striped sleep boyshorts, worn barefoot.",
+      "tokens": [
+        "sky blue camisole",
+        "white mesh trim",
+        "racerback tank cut",
+        "striped sleep boyshorts",
+        "elastic waist band",
+        "barefoot"
+      ]
+    }
+  }
+}

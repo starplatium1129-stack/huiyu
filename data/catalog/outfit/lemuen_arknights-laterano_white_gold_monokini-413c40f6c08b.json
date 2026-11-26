@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/laterano_white_gold_monokini",
+  "revision": 1,
+  "sortOrder": 3998,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "laterano_white_gold_monokini",
+      "name": "圣堂白金滚边高领连体泳装",
+      "prose": "An immaculate sanctuary-white high-neck halter monokini piped in muted gold with a graceful open back, draped with a sheer lace beach shawl and white sandals.",
+      "tokens": [
+        "white monokini",
+        "gold piping",
+        "high halter collar",
+        "open back",
+        "sheer lace shawl",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

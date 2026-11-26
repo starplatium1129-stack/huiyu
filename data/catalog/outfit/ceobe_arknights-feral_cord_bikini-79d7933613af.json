@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/feral_cord_bikini",
+  "revision": 1,
+  "sortOrder": 4041,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "feral_cord_bikini",
+      "name": "烈夏狂奔 · 绯红系带木珠比基尼",
+      "prose": "A vibrant scarlet-red and khaki cord-tie bikini decorated with wooden bead fasteners, paired with a natural seashell choker necklace, waterproof leather arm guards, and bare feet.",
+      "tokens": [
+        "scarlet cord bikini",
+        "khaki trim ties",
+        "wooden bead fasteners",
+        "seashell choker necklace",
+        "leather arm guards",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

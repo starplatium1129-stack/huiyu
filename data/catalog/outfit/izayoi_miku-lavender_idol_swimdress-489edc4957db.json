@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "izayoi_miku/lavender_idol_swimdress",
+  "revision": 1,
+  "sortOrder": 4198,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "izayoi_miku",
+    "outfit": {
+      "id": "lavender_idol_swimdress",
+      "name": "破军歌姬·银紫荷叶边系带泳裙",
+      "prose": "A lavender and moonlight-silver layered swimdress with ruffled sweetheart cups, pearl-trimmed cross-back ties, and a tiered skirt, worn barefoot.",
+      "tokens": [
+        "lavender swimdress",
+        "silver ruffles",
+        "sweetheart neckline",
+        "tiered swim skirt",
+        "pearl trim",
+        "cross straps",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

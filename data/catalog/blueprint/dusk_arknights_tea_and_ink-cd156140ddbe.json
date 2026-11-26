@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_tea_and_ink",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 569,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "跪坐茶席前，研墨的手微顿",
     "camera": "medium close-up",
@@ -19,7 +19,7 @@
     "location": "岁家廊下",
     "mood": "闲适清寂",
     "negativeTokens": [],
-    "outfitId": "standard",
+    "outfitId": "celadon_studio_hanfu",
     "promptProse": "She pauses the ink stick over its stone and slides the steaming tea toward the viewer with her free hand. Soft courtyard light reaches the cup beside the red clay stove.",
     "promptTokens": [
       "veranda",

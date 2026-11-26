@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "talulah_arknights/casual_warm_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1605,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "talulah_arknights",
     "outfit": {
@@ -13,15 +13,14 @@
       "isDefault": false,
       "name": "极北雪原高领厚毛衣与长靴",
       "tokens": [
-        "cream sweater",
+        "cream cable knit",
         "turtleneck sweater",
-        "cable knit",
-        "dark skirt",
-        "wool scarf",
-        "thighhighs",
-        "leather boots"
+        "dark wool skirt",
+        "plaid wool scarf",
+        "black thighhighs",
+        "leather knee boots"
       ],
-      "prose": "a cozy cream cable-knit turtleneck sweater paired with a dark pleated wool skirt and knee-high leather boots"
+      "prose": "A cozy cream cable-knit turtleneck sweater paired with a dark wool pleated skirt, woven winter scarf, sheer black thigh-high stockings, and tall leather boots."
     }
   }
 }

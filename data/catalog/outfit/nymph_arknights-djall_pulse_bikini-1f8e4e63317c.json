@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/djall_pulse_bikini",
+  "revision": 1,
+  "sortOrder": 4098,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "djall_pulse_bikini",
+      "name": "霓虹心跳 · 桃黑不对称防晒袖比基尼",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "nymph_arknights",
+      "prose": "A vibrant neon berry-pink and black asymmetrical strappy bikini printed with pulse-wave graphics, paired with detached sheer fingerless mesh sun sleeves, a black choker, and worn barefoot.",
+      "tokens": [
+        "neon pink bikini",
+        "black asymmetric straps",
+        "pulse wave print",
+        "sheer sun sleeves",
+        "fingerless mesh cuffs",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "kama_fate/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "暗夜黑纱金饰神装与细链腿饰",
-      "prose": "A sheer black dress with layered golden waist chains, dark stockings and a delicate matching gold chain around one thigh.",
+      "prose": "A gossamer sheer black goddess gown slit high to the waist over a black bodysuit, draped with layered gold waist chains, a thigh chain, sheer stockings, and heels.",
       "tokens": [
-        "black_sheer_dress",
-        "sheer_fabric",
-        "gold_chains",
-        "waist_chain",
-        "bodysuit",
-        "high_slit",
-        "thigh_strap",
-        "gold_chain",
-        "black_thighhighs",
-        "bare_thighs"
+        "sheer black dress",
+        "black bodysuit",
+        "gold waist chains",
+        "gold thigh chain",
+        "high side slit",
+        "black thighhighs",
+        "gold heels"
       ],
       "characterId": "kama_fate",
       "default": false,

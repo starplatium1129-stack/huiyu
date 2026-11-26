@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "typhon_arknights/hunter_green_fur_camisole",
+  "revision": 1,
+  "sortOrder": 4002,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "typhon_arknights",
+    "outfit": {
+      "id": "hunter_green_fur_camisole",
+      "name": "墨绿白绒边棉麻吊带睡衣套",
+      "prose": "A rustic hunter-green linen camisole and tap-shorts sleep set bordered with fluffy white faux-fur along the neckline and crisscrossed with thin back cords.",
+      "tokens": [
+        "hunter green camisole",
+        "linen fabric",
+        "white fur trim",
+        "crossed back cords",
+        "matching tap shorts",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

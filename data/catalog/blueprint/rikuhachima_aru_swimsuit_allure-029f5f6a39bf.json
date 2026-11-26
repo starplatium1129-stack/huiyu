@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3434,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "rikuhachima_aru_swimsuit_allure",
     "characterId": "rikuhachima_aru",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "原本想在便利屋68全员面前展现成熟硬派反派头目的绝佳气场。阿露披着黑色丝绸风衣，酒红色的泳装剪裁大胆又时髦，本来双手插兜靠在躺椅边冷酷俯视海滩，结果一波调皮的大浪直接冲上海岸，把她心爱的定制凉鞋卷向大海。阿露的大墨镜瞬间滑到鼻尖，眼角溢出慌乱的泪花，双手抱头尖叫起来——「哇啊啊啊！我的特制硬派拖鞋！怎么会有这么没有眼力见的海浪啊！快帮我捡回来啦，求求你了老师——！」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "burgundy_vinyl_trench_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "horn_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1972,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "horn_arknights",
     "outfit": {
@@ -13,12 +13,14 @@
       "characterId": "horn_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A dark dress under a cape, a black hairband and dark boots.",
+      "prose": "A structured black pleated dress beneath a navy military shoulder cape edged in gold cord trim, completed with a black velvet headband, a leather waist belt, and tall black riding boots.",
       "tokens": [
-        "dark dress",
-        "cape",
-        "black hairband",
-        "black boots"
+        "black pleated dress",
+        "navy shoulder cape",
+        "gold cord trim",
+        "black velvet headband",
+        "leather waist belt",
+        "black riding boots"
       ]
     }
   }

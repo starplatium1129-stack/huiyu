@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3217,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "id": "yukinoshita_yukino_lingerie_whisper",
     "characterId": "yukinoshita_yukino",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
     "description": "雪之下高级公寓卧室，一整面书架摆满古典文学与整齐陈列的潘先生周边。坐在床沿静静抚摸着一只潘先生猫咪毛绒玩偶，长及腰际的乌黑长发如瀑散落，侧颜清冷孤高宛如雪中寒梅，看到八幡走近，深邃蓝眸泛起唯独为他绽放的极尽温柔。 她微微抬眸轻语——“……你曾经说过，你想要‘真物’。那么现在，站在你眼前的这个我……足够真实了吗，比企谷君？”",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "ice_silk_slip_gown",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

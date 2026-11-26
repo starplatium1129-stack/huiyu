@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3125,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:47:33.877431900+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "id": "nymph_arknights_lingerie_whisper",
     "characterId": "nymph_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛深层心理观测室，单向玻璃反射出幽暗暖黄的台灯光泽。倒坐在转椅上，下巴搁在椅背顶端，萨卡兹小角在红发间微耸，修长指节托着下巴，眼神充满看穿心绪的狡黠。 她微微抬眸轻语——“你的恐惧、心跳还有欲望……在我的视野里就像写在脸上的密文一样清晰哦。不用装傻啦，博士。”",
-    "outfitId": "pink_lace_lingerie",
+    "outfitId": "velvet_buckle_lingerie",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

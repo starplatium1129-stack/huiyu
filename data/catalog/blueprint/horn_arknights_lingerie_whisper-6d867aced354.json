@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3146,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T02:42:52.758299500+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "id": "horn_arknights_lingerie_whisper",
     "characterId": "horn_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "伦蒂尼姆战区简易营房的破晓时分。风暴突击队中队长号角（白狼）准时在晨曦中醒来。她穿着一件极简的维多利亚军用白棉工字背心与迷彩工装平角睡裤，修长结实的肩膀与锁骨在晨风中毫无避讳地展露。她单手抓着粗麻军巾擦拭微湿的金色长卷发，白色狼耳警觉地微微转动。看向推门查哨的指挥官，她立刻放下毛巾，笔直站定行了一个标准的注视礼——「指挥官，晨间整备完毕。维多利亚白狼随时可以归队出战……放心吧，只要风暴突击队还在，阵线就不会后退半步。」",
-    "outfitId": "azure_lace_lingerie",
+    "outfitId": "barracks_ribbed_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

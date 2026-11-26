@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "galbrena_wuwa/safehouse_oversized_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3806,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "galbrena_wuwa",
     "outfit": {
       "id": "safehouse_oversized_knit",
       "name": "安全屋慵懒炭灰一字领毛衣",
-      "prose": "An oversized charcoal cable-knit sweater slipping off one shoulder over dark lounge shorts and soft knit socks.",
+      "prose": "An oversized charcoal cable-knit sweater slipping off one shoulder over dark lounge shorts and a silver dog-tag pendant, paired with soft knit socks.",
       "tokens": [
-        "grey sweater",
-        "oversized sweater",
-        "off-shoulder sweater",
-        "black shorts",
-        "socks",
-        "bare thighs"
+        "charcoal cable sweater",
+        "oversized knit",
+        "off shoulder",
+        "black lounge shorts",
+        "dog tag pendant",
+        "ribbed cuffs",
+        "knit socks",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/evening_dress",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 490,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "evening_dress",
       "isDefault": false,
-      "name": "墨夜天鹅绒抹胸高开衩晚礼裙",
-      "prose": "A strapless obsidian velvet evening gown with a soaring side slit and satin gloves.",
+      "name": "墨夜天鹅绒抹胸晚礼裙",
+      "prose": "A strapless obsidian velvet evening gown cut with a soaring side slit, accessorized with a strand of pearls, satin opera gloves, and slender black heels.",
       "tokens": [
-        "black_dress",
-        "evening_gown",
-        "strapless_dress",
-        "high_slit",
-        "opera_gloves",
-        "bare_legs",
-        "high_heels"
+        "black evening gown",
+        "velvet dress",
+        "strapless dress",
+        "high slit",
+        "black opera gloves",
+        "pearl necklace",
+        "black high heels"
       ],
       "characterId": "sorasaki_hina"
     }

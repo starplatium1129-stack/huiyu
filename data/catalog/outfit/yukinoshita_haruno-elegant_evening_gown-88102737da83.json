@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/elegant_evening_gown",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "elegant_evening_gown",
       "name": "极夜深V露背黑丝绒高衩礼服",
-      "prose": "A midnight-black velvet gown with a plunging neckline, open back and high slit over sheer smoky stockings.",
+      "prose": "A midnight-black velvet evening gown with a plunging neckline, open back, and high leg slit, paired with silver drop earrings, sheer black stockings, and black stiletto pumps.",
       "tokens": [
-        "velvet_dress",
-        "evening_gown",
-        "black_dress",
-        "plunging_neckline",
-        "backless_dress",
-        "high_slit",
-        "black_stockings",
-        "high_heels",
-        "couture"
+        "black velvet gown",
+        "plunging neckline",
+        "open back",
+        "high side slit",
+        "silver drop earrings",
+        "sheer black stockings",
+        "black stiletto pumps"
       ],
       "characterId": "yukinoshita_haruno",
       "default": false,

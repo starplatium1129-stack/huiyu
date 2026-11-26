@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/gym_tracksuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "gym_tracksuit",
       "isDefault": false,
-      "name": "晄轮大祭短款运动连帽夹克与高腰运动短裤",
-      "prose": "A cropped Millennium sports jacket zipped over a fitted athletic crop top and navy running shorts.",
+      "name": "晄轮大祭藏青短款运动套装",
+      "prose": "A cropped navy-and-white Millennium athletics zip jacket layered over a snug white sports crop top and white-piped navy running shorts, paired with ankle socks and sneakers.",
       "tokens": [
-        "track_jacket",
-        "cropped_jacket",
-        "tank_top",
-        "gym_shorts",
-        "athletic_shorts",
-        "white_socks",
-        "bare_legs",
-        "sneakers"
+        "cropped track jacket",
+        "two-tone navy jacket",
+        "athletic crop top",
+        "navy running shorts",
+        "white trim",
+        "white socks",
+        "bare legs",
+        "white sneakers"
       ],
       "characterId": "hayase_yuuka"
     }

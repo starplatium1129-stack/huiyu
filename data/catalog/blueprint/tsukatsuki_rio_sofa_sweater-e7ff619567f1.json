@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_sofa_sweater",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:56:31.670080300+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "action": "侧身斜倚在研讨会休息室真皮沙发上，黑色毛衣领口自然拉至肩侧，修长双腿包裹黑丝优雅交叠于沙发，金红光环微倾，目光含蓄凝望",
     "adult": true,
@@ -29,7 +29,7 @@
       "cleavage",
       "black pantyhose"
     ],
-    "outfitId": "seminar_uniform",
+    "outfitId": "charcoal_offshoulder_knit",
     "promptProse": "Tsukatsuki Rio reclining gracefully on a sleek black leather sofa, black knit sweater slipping off one shoulder revealing her delicate collarbone, wearing a black pleated skirt and sheer black pantyhose with crossed legs, red geometric halo glowing softly, ruby-red eyes, looking at viewer with calm affection, panoramic city night view, warm ambient floor lamp.",
     "promptTokens": [
       "rio (blue archive)",

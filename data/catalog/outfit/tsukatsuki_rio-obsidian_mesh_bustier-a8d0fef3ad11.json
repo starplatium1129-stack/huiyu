@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/obsidian_mesh_bustier",
+  "revision": 1,
+  "sortOrder": 3925,
+  "createdAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "id": "obsidian_mesh_bustier",
+      "name": "墨黑哑光皮网镂空胸衣套",
+      "prose": "A structured matte-black faux leather and sheer geometric tech-mesh bustier set featuring underwire cups, silver ring hardware, a sleek high-collar strap, and matching boyshorts.",
+      "tokens": [
+        "black bustier",
+        "faux leather",
+        "sheer mesh panels",
+        "high-collar strap",
+        "black boyshorts",
+        "silver rings",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

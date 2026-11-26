@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3285,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "id": "kafka_swimsuit_allure",
     "characterId": "kafka",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "悬崖之下的海浪撞击着万载巨岩，发出雄浑的轰鸣。卡芙卡斜倚在圆榻软垫上，深红色的镂空泳装将成熟曼妙的曲线收束得极致惊艳，指尖慢条斯理地将墨镜推至发间。她轻轻晃动杯中的深红浆果酒，紫眸在落日霞光中流转着洞悉一切的暗香，低沉优雅的嗓音在海风里微响——「听听海浪的声音，开拓者。剧本里并没有写下今天下午的每一个音符……但无论何时，只要你向这片悬崖走来，我就一定会在这里等候你。」",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "stellaron_spiderweb_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

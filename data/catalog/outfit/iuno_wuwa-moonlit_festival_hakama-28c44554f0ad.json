@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/moonlit_festival_hakama",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3704,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "moonlit_festival_hakama",
       "name": "月神祭典白蓝金丝礼仪长裙",
-      "prose": "A ceremonial white silk tunic with wide star-patterned sleeves over a flowing cobalt-blue pleated long skirt cinched with a silver cord.",
+      "prose": "A ceremonial white silk tunic with wide star-embroidered sleeves over a flowing cobalt pleated maxi skirt cinched with a silver cord belt and star charm, worn with tabi socks and wooden sandals.",
       "tokens": [
-        "white top",
+        "white silk tunic",
         "wide sleeves",
-        "blue skirt",
-        "long skirt",
-        "silver belt",
-        "sandals"
+        "cobalt maxi skirt",
+        "pleated long skirt",
+        "silver cord belt",
+        "star charm",
+        "tabi socks",
+        "wooden sandals"
       ],
       "default": false,
       "isDefault": false,

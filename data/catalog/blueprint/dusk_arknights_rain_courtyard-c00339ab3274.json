@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_rain_courtyard",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "action": "倚着廊柱，看雨打芭蕉",
     "camera": "medium shot",
@@ -19,7 +19,7 @@
     "location": "岁家庭院",
     "mood": "寂寥入画",
     "negativeTokens": [],
-    "outfitId": "standard",
+    "outfitId": "celadon_studio_hanfu",
     "promptProse": "She leans against the pillar watching rain strike the broad leaves. Gray daylight reaches the courtyard beyond the shaded timber.",
     "promptTokens": [
       "veranda",

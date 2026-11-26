@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fujiwara_chika/polka_dot_sweetheart_bikini",
+  "revision": 1,
+  "sortOrder": 4155,
+  "createdAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "data": {
+    "characterId": "fujiwara_chika",
+    "outfit": {
+      "id": "polka_dot_sweetheart_bikini",
+      "name": "粉白波点荷叶边抹胸比基尼",
+      "prose": "A baby-pink and white polka-dot sweetheart bikini layered with voluminous ruffles, heart-shaped clasps, and a matching ruffled swim skirt bottom, worn with bare legs and barefoot.",
+      "tokens": [
+        "pink polka-dot bikini",
+        "white ruffle trim",
+        "sweetheart neckline",
+        "heart clasp detail",
+        "ruffled swim skirt",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

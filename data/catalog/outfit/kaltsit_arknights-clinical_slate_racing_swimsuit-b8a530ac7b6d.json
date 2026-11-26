@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/clinical_slate_racing_swimsuit",
+  "revision": 1,
+  "sortOrder": 3983,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "id": "clinical_slate_racing_swimsuit",
+      "name": "冷灰立领拉链竞速泳衣与白长衫",
+      "prose": "A clinical cool-grey and matte-black one-piece racing swimsuit with a zippered high stand collar, layered under an open white linen duster and minimalist sandals.",
+      "tokens": [
+        "slate grey monokini",
+        "black trim",
+        "stand collar",
+        "front zipper",
+        "white linen duster",
+        "bare legs",
+        "white sandals"
+      ]
+    }
+  }
+}

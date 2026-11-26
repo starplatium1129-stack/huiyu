@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/sfw_lounge_white_tee",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1160,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "id": "sfw_lounge_white_tee",
       "name": "黑领做旧落肩白T恤与毛边水洗牛仔短裤",
       "tokens": [
-        "white_shirt",
-        "t-shirt",
-        "black_collar",
-        "denim_shorts",
-        "frayed_shorts",
-        "bare_legs",
-        "sneakers"
+        "white cotton tee",
+        "black rib collar",
+        "off shoulder",
+        "frayed denim shorts",
+        "bare legs",
+        "white sneakers"
       ],
-      "prose": "A relaxed off-shoulder white cotton tee with a contrasting black rib collar, paired with frayed light-wash denim cutoffs.",
+      "prose": "A slouchy distressed white cotton tee with a contrasting black ribbed collar slipping off one shoulder, worn with frayed denim cutoffs and casual sneakers.",
       "default": false,
       "isDefault": false,
       "characterId": "lappland_arknights"

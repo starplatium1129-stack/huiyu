@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 782,
   "createdAt": null,
-  "updatedAt": "2026-11-06T01:02:18.774Z",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,9 +12,14 @@
       "id": "nsfw_boudoir",
       "isDefault": false,
       "name": "白银家素净纯棉白浴巾",
-      "prose": "A simple white cotton towel wrap after a relaxing home bath.",
+      "prose": "A plain white cotton terrycloth bath towel tucked neatly across the chest, worn with bare legs and barefoot.",
       "tokens": [
-        "white towel"
+        "white bath towel",
+        "terrycloth wrap",
+        "tucked chest fold",
+        "damp cotton hem",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kazuki_forest_cabin_hearth_warmth",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1168,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "id": "kazuki_forest_cabin_hearth_warmth",
     "title": "风见一姬 · 避难木屋的炉火温存",
     "category": "深山逆境",
     "characterId": "kazami_kazuki",
-    "outfitId": "white_dress",
+    "outfitId": "cabin_knit_sweater",
     "coverageTags": [
       "cabin"
     ],

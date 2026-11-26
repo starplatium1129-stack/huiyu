@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/combat_outfit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "combat_outfit",
       "isDefault": true,
       "name": "珊瑚嵌线工程作战装",
-      "prose": "a black cropped combat top edged in coral pink, detached sleeves with compact cuff fasteners, gloves, reinforced black leggings and short boots",
+      "prose": "A black cropped combat top edged in coral pink with detached fastened sleeves, fingerless gloves, reinforced black leggings, and short combat boots.",
       "tokens": [
         "black crop top",
         "coral pink trim",
         "detached sleeves",
-        "gloves",
+        "fingerless gloves",
         "black leggings",
-        "ankle boots"
+        "short combat boots"
       ]
     }
   }

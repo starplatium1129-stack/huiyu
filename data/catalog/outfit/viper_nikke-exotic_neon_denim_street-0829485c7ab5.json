@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "viper_nikke/exotic_neon_denim_street",
+  "revision": 1,
+  "sortOrder": 4059,
+  "createdAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "data": {
+    "characterId": "viper_nikke",
+    "outfit": {
+      "id": "exotic_neon_denim_street",
+      "name": "粉黑露脐挂脖衫与水洗牛仔短裤",
+      "prose": "A bright pink halter crop top layered under an open cropped black mesh zip hoodie, paired with distressed denim shorts, a studded leather belt, heart chain choker, and chunky platform sneakers.",
+      "tokens": [
+        "pink halter top",
+        "black mesh hoodie",
+        "denim shorts",
+        "studded leather belt",
+        "heart chain choker",
+        "platform sneakers"
+      ]
+    }
+  }
+}

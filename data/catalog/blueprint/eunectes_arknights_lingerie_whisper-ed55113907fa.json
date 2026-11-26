@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3231,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:44:26.342520+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "id": "eunectes_arknights_lingerie_whisper",
     "characterId": "eunectes_arknights",
@@ -21,7 +21,7 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@rella",
     "description": "罗德岛地下重型机甲整备库。来自萨尔贡雨林的森蚺祖玛玛，在检修‘大丑’机甲直到深夜。她只穿了一套墨绿蛇纹抹胸与不对称系带短裙，身上还留有干爽的机油香气。她随性地靠坐在钢铁巨兽的脚掌旁，纤手里握着重型套筒扳手，绿宝石般的眼眸中倒映着机甲电路的指示灯光。看见博士提着工具箱走近，她抹了抹脸颊上的油污，眼神发亮地招手——「博士！快看，大丑的左腿液压轴承改装完成了！听听这声音……多么美妙的钢铁心脏啊！」",
-    "outfitId": "black_lace_lingerie",
+    "outfitId": "emerald_python_bandeau_set",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "special_nsfw"

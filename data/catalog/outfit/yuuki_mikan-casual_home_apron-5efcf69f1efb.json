@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuuki_mikan/casual_home_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1501,
   "createdAt": "2026-10-21T15:20:00+00:00",
-  "updatedAt": "2026-10-21T15:30:22.622953400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "yuuki_mikan",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "casual_home_apron",
       "isDefault": true,
       "name": "结城家日常便服与暖黄围裙",
-      "prose": "wearing a warm sunny yellow cooking apron over a casual short-sleeved t-shirt and comfortable shorts, slippers, looking tidy and capable",
+      "prose": "A warm sunny-yellow cotton cooking apron with a front pocket layered over a crisp white short-sleeved tee, navy denim shorts, striped ankle socks, and soft house slippers.",
       "tokens": [
-        "yellow_apron",
-        "t-shirt",
-        "shorts",
-        "casual_clothes",
-        "bare_legs",
-        "slippers"
+        "yellow cotton apron",
+        "white short tee",
+        "navy denim shorts",
+        "front apron pocket",
+        "striped ankle socks",
+        "soft house slippers"
       ]
     }
   }

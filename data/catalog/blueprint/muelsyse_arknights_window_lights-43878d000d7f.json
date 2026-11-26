@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_window_lights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2883,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "muelsyse_arknights_window_lights",
     "characterId": "muelsyse_arknights",
@@ -35,7 +35,7 @@
       "panoramic high-rise window",
       "city skyline night lights",
       "pointing at glass reflection",
-      "playful charming smile",
+      "playful smile",
       "twin reflections on glass",
       "aqua hair tips",
       "warm amber interior light",

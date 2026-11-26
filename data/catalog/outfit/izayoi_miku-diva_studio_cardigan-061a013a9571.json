@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "izayoi_miku/diva_studio_cardigan",
+  "revision": 1,
+  "sortOrder": 4197,
+  "createdAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "data": {
+    "characterId": "izayoi_miku",
+    "outfit": {
+      "id": "diva_studio_cardigan",
+      "name": "星耀录音室·银灰羊绒开衫与紫罗兰短裙",
+      "prose": "A soft silver-grey cashmere cardigan layered over a pearl-white blouse and violet A-line mini skirt with a bow choker, sheer stockings, and heeled loafers.",
+      "tokens": [
+        "silver grey cardigan",
+        "pearl white blouse",
+        "violet mini skirt",
+        "bow choker",
+        "gold bracelet",
+        "sheer stockings",
+        "heeled loafers"
+      ]
+    }
+  }
+}

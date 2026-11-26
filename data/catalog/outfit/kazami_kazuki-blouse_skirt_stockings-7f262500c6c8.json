@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/blouse_skirt_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1189,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:31:57.687955200+00:00",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
       "id": "blouse_skirt_stockings",
       "name": "衬衫褶裙与黑长袜",
       "tokens": [
-        "blouse",
-        "pleated skirt",
-        "black stockings"
+        "ivory button blouse",
+        "folded shirt collar",
+        "charcoal pleated skirt",
+        "narrow black tie",
+        "black sheer stockings",
+        "black penny loafers"
       ],
-      "prose": "a blouse and pleated skirt with black stockings",
+      "prose": "A crisp ivory button-down blouse with a narrow black tie tucked into a charcoal pleated skirt, worn with sheer black stockings and black penny loafers.",
       "default": false,
       "isDefault": false
     }

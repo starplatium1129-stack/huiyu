@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/black_cabin_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1390,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "black_cabin_robe",
       "name": "舱室深黑真丝系带长晨袍",
-      "prose": "A lustrous black silk dressing gown worn loosely belted at the waist.",
+      "prose": "A lustrous black silk cabin dressing gown loosely belted at the waist over a black camisole, leaving bare legs and bare feet.",
       "tokens": [
-        "black_robe",
-        "silk_robe",
-        "dressing_gown",
-        "open_robe",
-        "black_camisole",
-        "high_slit",
-        "bare_legs",
+        "black silk robe",
+        "dressing gown",
+        "open front",
+        "black lace camisole",
+        "waist sash",
+        "bare legs",
         "barefoot"
       ],
       "characterId": "kaltsit_arknights",

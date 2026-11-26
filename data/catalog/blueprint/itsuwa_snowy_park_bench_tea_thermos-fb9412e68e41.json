@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_snowy_park_bench_tea_thermos",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2294,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "id": "itsuwa_snowy_park_bench_tea_thermos",
     "characterId": "itsuwa",
-    "outfitId": "amakusa_combat_casual_attire",
+    "outfitId": "camel_park_coat_muffler",
     "title": "五和 · 雪景公园长椅的保温壶倒茶",
     "category": "假日出行",
     "description": "冬日落雪的公园长椅上，五和小心翼翼地从保温壶中倒出一杯热腾腾的焙茶。双手捧着茶杯递给你，在升腾的白气中缩了缩脖子，露出温柔至极的恬静微笑。",

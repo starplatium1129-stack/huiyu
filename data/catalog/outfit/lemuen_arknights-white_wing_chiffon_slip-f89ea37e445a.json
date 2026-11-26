@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/white_wing_chiffon_slip",
+  "revision": 1,
+  "sortOrder": 3999,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "white_wing_chiffon_slip",
+      "name": "纯白银线羽纹双带薄纱睡裙",
+      "prose": "A gossamer white double-layer chiffon slip nightdress featuring slender double shoulder straps and silver metallic thread embroidery tracing feather motifs along the hem.",
+      "tokens": [
+        "white chiffon slip",
+        "sheer layered skirt",
+        "double spaghetti straps",
+        "silver embroidery",
+        "wing motif",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

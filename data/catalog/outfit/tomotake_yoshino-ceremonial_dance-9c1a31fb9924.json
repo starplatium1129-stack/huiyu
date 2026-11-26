@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/ceremonial_dance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 626,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
@@ -12,12 +12,14 @@
       "id": "ceremonial_dance",
       "isDefault": false,
       "name": "白金粉锦神乐礼装",
-      "prose": "A white silk kagura kimono with gold cloud borders and wide sleeves beneath a trailing pink brocade haori.",
+      "prose": "A white silk kagura kimono bordered with gold cloud trim and wide ceremonial sleeves beneath a trailing pink brocade haori, worn with white tabi socks and gold strapped sandals.",
       "tokens": [
         "white silk kimono",
         "pink brocade haori",
-        "gold trim",
-        "wide sleeves"
+        "gold cloud border",
+        "wide ceremonial sleeves",
+        "white tabi socks",
+        "gold strapped sandals"
       ]
     }
   }

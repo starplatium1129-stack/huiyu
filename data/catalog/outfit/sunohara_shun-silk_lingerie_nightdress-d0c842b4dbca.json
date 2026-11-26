@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "sunohara_shun/silk_lingerie_nightdress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1686,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:05:47.468913800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "characterId": "sunohara_shun",
     "outfit": {
       "characterId": "sunohara_shun",
       "id": "silk_lingerie_nightdress",
-      "name": "静谧居室深绯真丝蕾丝睡裙",
-      "prose": "A sensual sheer burgundy silk slip nightdress with delicate scalloped lace along the plunging neckline, draped gracefully over her voluptuous silhouette.",
+      "name": "深绯真丝蕾丝深V长睡裙",
+      "prose": "A fluid deep-burgundy silk slip nightgown trimmed with scalloped dark lace along its plunging neckline and fluid side slit.",
       "tokens": [
-        "nightgown",
-        "silk nightgown",
-        "lace trim",
-        "bare shoulders",
-        "collarbone",
-        "bare legs"
+        "burgundy silk nightgown",
+        "plunging neckline",
+        "scalloped lace trim",
+        "spaghetti straps",
+        "high slit",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

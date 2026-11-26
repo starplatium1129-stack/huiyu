@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/rainforest_tactical_boyleg_bikini",
+  "revision": 1,
+  "sortOrder": 3995,
+  "createdAt": "2026-11-26T12:06:35.024069500+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "id": "rainforest_tactical_boyleg_bikini",
+      "name": "橄榄黑扣带机能平角泳装",
+      "prose": "A rugged olive-and-matte-black two-piece mechanic swimsuit outfitted with heavy-duty webbing straps, quick-release alloy buckles, boyleg shorts, and a waterproof thigh pouch.",
+      "tokens": [
+        "olive tactical bikini",
+        "black webbing straps",
+        "alloy buckles",
+        "boyleg swim shorts",
+        "thigh holster",
+        "bare legs",
+        "black sandals"
+      ]
+    }
+  }
+}

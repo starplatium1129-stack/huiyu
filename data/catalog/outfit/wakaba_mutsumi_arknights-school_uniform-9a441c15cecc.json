@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "wakaba_mutsumi_arknights/school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1966,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "wakaba_mutsumi_arknights",
     "outfit": {
@@ -13,13 +13,14 @@
       "characterId": "wakaba_mutsumi_arknights",
       "default": true,
       "isDefault": true,
-      "prose": "A blue school uniform shirt and pleated skirt with a grey neckerchief, black socks and brown loafers.",
+      "prose": "A neat navy school blazer over a white collared shirt and blue pleated skirt, paired with a grey tie neckerchief, black calf socks, and brown leather loafers.",
       "tokens": [
-        "blue shirt",
+        "navy school blazer",
+        "white collared shirt",
         "blue pleated skirt",
-        "grey neckerchief",
-        "black socks",
-        "brown loafers"
+        "grey tie neckerchief",
+        "black calf socks",
+        "brown leather loafers"
       ]
     }
   }

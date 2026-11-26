@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "shinano/twilight_mermaid_evening_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1703,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
   "data": {
     "characterId": "shinano",
     "outfit": {
       "characterId": "shinano",
       "id": "twilight_mermaid_evening_gown",
       "name": "暮色梦境·暗紫抹胸鱼尾礼服",
-      "prose": "A deep twilight purple strapless velvet evening gown tailored into a flowing mermaid cut, accented with silver starlight jewels.",
+      "prose": "A deep twilight-purple strapless velvet evening gown tailored in a flowing mermaid cut with a silver starlight necklace, sheer shawl, and silver heeled sandals.",
       "tokens": [
-        "purple_evening_gown",
-        "strapless_dress",
-        "mermaid_dress",
-        "velvet_fabric",
-        "bare_shoulders",
-        "jewelry_necklace"
+        "twilight purple gown",
+        "strapless velvet bodice",
+        "flared mermaid hem",
+        "silver starlight necklace",
+        "sheer midnight shawl",
+        "bare shoulders",
+        "silver heeled sandals"
       ],
       "default": false,
       "isDefault": false

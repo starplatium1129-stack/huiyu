@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sfw_home_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
+  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sfw_home_tea",
       "name": "紫边落肩丝质宽衬衫与真丝系带短裤",
-      "prose": "An oversized ivory silk tunic shirt with amethyst piping slipping off one shoulder, worn over high-cut lounge shorts.",
+      "prose": "An oversized ivory mulberry-silk tunic shirt edged with amethyst piping slipping off one shoulder over relaxed drawstring silk shorts.",
       "tokens": [
-        "loose_shirt",
-        "off_shoulder",
-        "silk_shirt",
-        "purple_trim",
-        "short_shorts",
-        "lounge_shorts",
-        "bare_legs",
+        "ivory silk shirt",
+        "purple piping",
+        "off shoulder",
+        "loose cuffs",
+        "silk lounge shorts",
+        "bare legs",
         "barefoot"
       ],
       "isDefault": false,

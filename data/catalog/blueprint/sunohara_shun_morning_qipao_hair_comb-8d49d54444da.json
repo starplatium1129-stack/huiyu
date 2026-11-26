@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_morning_qipao_hair_comb",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2668,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "sunohara_shun_morning_qipao_hair_comb",
     "characterId": "sunohara_shun",
-    "outfitId": "plum_garden_qipao_robe",
+    "outfitId": "plum_violet_silk_qipao",
     "title": "春原瞬 · 晨光梳妆镜前的旗袍回眸",
     "category": "私享时刻",
     "description": "清晨的柔光穿透木格花窗，洒在古色古香的梳妆台前。瞬身穿深紫底金纹的华丽旗袍，修长的旗袍侧开衩展露出无可挑剔的光洁长腿。她正手持檀木梳梳理着如瀑青丝，从黄铜镜中望见走来的老师，嘴角绽开极尽宠溺的温婉笑意，虎耳快意地微晃，宛如一幅典雅绝艳的仕女图卷。",

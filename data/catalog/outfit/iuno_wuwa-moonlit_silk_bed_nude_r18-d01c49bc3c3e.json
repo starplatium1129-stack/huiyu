@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "iuno_wuwa/moonlit_silk_bed_nude_r18",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3710,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-26T12:28:42.580255300+00:00",
   "data": {
     "characterId": "iuno_wuwa",
     "outfit": {
       "id": "moonlit_silk_bed_nude_r18",
-      "name": "月光观星寝阁深蓝丝绸床榻全裸",
-      "prose": "Completely nude on midnight-blue silk sheets with silver starlight across her bare skin, wearing only her crescent hair ornament.",
+      "name": "月光观星寝阁全裸态",
+      "prose": "Completely without clothing or footwear, wearing only her silver crescent tiara.",
       "tokens": [
         "nude",
         "completely nude",
-        "crescent hair ornament",
-        "bare breasts",
-        "nipples",
-        "heavy blush"
+        "crescent tiara",
+        "bare shoulders",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

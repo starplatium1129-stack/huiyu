@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3436,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
   "data": {
     "id": "sunohara_shun_swimsuit_allure",
     "characterId": "sunohara_shun",
@@ -21,7 +21,7 @@
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
     "description": "海滨中式茶阁午后的清凉回廊。春原瞬身着玄色墨翠高叉旗袍风连身泳装，侧卧在竹榻凉席之上。折扇轻摇，送来带有檀木清香的徐徐凉风。她眉眼弯弯地凝望着满头大汗的你，语气中尽是教官独有的体贴与如水般的包容宠溺。",
-    "outfitId": "black_summer_bikini",
+    "outfitId": "emerald_cheongsam_monokini",
     "recommendedSize": "832x1216",
     "coverageTags": [
       "daily"

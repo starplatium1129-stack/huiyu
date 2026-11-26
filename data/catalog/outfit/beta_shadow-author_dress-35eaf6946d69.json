@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "beta_shadow/author_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1909,
   "createdAt": "2026-10-28T13:08:39.422196400+00:00",
-  "updatedAt": "2026-10-28T13:08:39.422196400+00:00",
+  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
   "data": {
     "characterId": "beta_shadow",
     "outfit": {
       "id": "author_dress",
       "name": "夏目老师知性洋装",
-      "prose": "Scholarly brown vest over a crisp white blouse with a silk ribbon tie, pleated skirt, and author spectacles.",
+      "prose": "Scholarly chestnut-brown tailored vest over a crisp white pleated blouse with a silk ribbon tie, ankle-length navy skirt, tortoiseshell author spectacles, leather book satchel, dark tights, and buckled mary janes.",
       "tokens": [
-        "brown_vest",
-        "white_blouse",
-        "long_skirt",
-        "ribbon_tie",
-        "spectacles",
-        "author_attire"
+        "brown vest",
+        "white blouse",
+        "navy long skirt",
+        "silk ribbon",
+        "tortoiseshell glasses",
+        "leather satchel",
+        "opaque tights",
+        "mary janes"
       ],
       "characterId": "beta_shadow",
       "default": false,

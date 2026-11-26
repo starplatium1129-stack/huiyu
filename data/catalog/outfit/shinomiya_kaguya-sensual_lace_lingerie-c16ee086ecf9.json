@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/sensual_lace_lingerie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 768,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "sensual_lace_lingerie",
       "name": "绯红真丝落肩晨袍与蕾丝内衣",
-      "prose": "A crimson silk dressing gown slips off one shoulder over scalloped lace lingerie and a delicate suspender belt.",
+      "prose": "A crimson silk dressing gown slipped off one shoulder over a scalloped red lace bra, matching panties, garter belt, and sheer black thigh-high stockings, worn barefoot.",
       "tokens": [
-        "silk_robe",
-        "crimson_robe",
-        "open_robe",
-        "lace_camisole",
-        "lace_trim",
-        "bare_shoulders",
-        "bare_legs",
-        "garter_belt",
-        "garter_straps"
+        "crimson silk robe",
+        "off shoulder",
+        "red lace bra",
+        "matching lace panties",
+        "garter belt",
+        "garter straps",
+        "sheer black thighhighs",
+        "barefoot"
       ],
       "characterId": "shinomiya_kaguya",
       "default": false,

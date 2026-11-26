@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/migurd_sapphire_bikini",
+  "revision": 1,
+  "sortOrder": 4178,
+  "createdAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "id": "migurd_sapphire_bikini",
+      "name": "水圣初夏 · 蓝白条纹挂脖分体泳装",
+      "category": "泳装 / 比基尼",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "characterId": "roxy_migurdia",
+      "prose": "A modest two-piece swimsuit in deep sapphire blue and sky-blue striped trim with halter neck ties, a dainty silver water-rune locket, and a miniature felt mage-hat clip, worn barefoot.",
+      "tokens": [
+        "sapphire striped bikini",
+        "sky blue trim",
+        "halter neck ties",
+        "silver rune locket",
+        "mini hat clip",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_home_long",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_home_long",
-      "name": "浅蓝长袖居家套装",
-      "prose": "A pale-blue stand-collar blouse and ivory ankle-length skirt with narrow pleats.",
+      "name": "浅蓝立领长袖居家套装",
+      "prose": "A pale-blue stand-collar long-sleeved blouse paired with a narrowly pleated ivory maxi skirt, cotton socks, and flat house slippers.",
       "tokens": [
         "pale blue blouse",
         "stand collar",
         "long sleeves",
-        "ivory ankle-length skirt",
-        "narrow pleats"
+        "ivory maxi skirt",
+        "narrow pleats",
+        "cotton socks",
+        "flat slippers"
       ],
       "default": false,
       "isDefault": false,

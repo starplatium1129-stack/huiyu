@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "swire_arknights/tea_jade",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2208,
   "createdAt": "2026-11-04T05:41:40.018499400+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
   "data": {
     "characterId": "swire_arknights",
     "outfit": {
       "id": "tea_jade",
       "name": "玉色立领衫与墨黑马面裙",
-      "prose": "A jade-green stand-collar silk blouse with delicate knot buttons, paired with a black pleated mamian skirt and a narrow antique-gold belt.",
+      "prose": "A jade-green stand-collar silk blouse with traditional knot frog buttons paired with a black pleated mamian skirt, an antique gold belt, and embroidered cloth shoes.",
       "tokens": [
-        "jade green silk blouse",
-        "stand collar",
-        "knot buttons",
+        "jade silk blouse",
+        "mandarin stand collar",
+        "knot frog buttons",
         "black mamian skirt",
-        "antique gold belt"
+        "antique gold belt",
+        "embroidered cloth shoes"
       ],
       "characterId": "swire_arknights",
       "default": false,

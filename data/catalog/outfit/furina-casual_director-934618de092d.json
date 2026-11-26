@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "furina/casual_director",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "casual_director",
       "name": "深蓝珍珠扣开衫与导演百褶裙",
-      "prose": "A cropped navy cardigan with pearl buttons over a white frilled-collar blouse, a navy pleated skirt, black beret, white socks and polished loafers.",
+      "prose": "Cropped navy knit cardigan fastened with pearl buttons over a white frilled-collar blouse and navy pleated skirt, styled with a black beret, white crew socks, and polished leather loafers.",
       "tokens": [
-        "cropped navy cardigan",
+        "navy cardigan",
         "pearl buttons",
         "white blouse",
         "frilled collar",
-        "navy pleated skirt",
+        "pleated skirt",
         "black beret",
         "white socks",
-        "loafers"
+        "leather loafers"
       ],
       "default": false,
       "isDefault": false

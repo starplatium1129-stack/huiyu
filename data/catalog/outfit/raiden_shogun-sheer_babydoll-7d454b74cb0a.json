@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/sheer_babydoll",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:03:46.999171500+00:00",
+  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "sheer_babydoll",
       "name": "深紫蕾丝薄纱睡裙与黑色吊袜带",
-      "prose": "A translucent dark purple babydoll with fine shoulder straps and eyelash-lace trim, paired with sheer black thigh-high stockings and a black lace garter belt.",
+      "prose": "Translucent dark-purple chiffon babydoll edged with delicate eyelash lace and fine spaghetti straps, paired with black panties, a lace garter belt, sheer black thighhighs, and bare feet.",
       "tokens": [
-        "purple_babydoll",
-        "sheer_dress",
-        "lace_trim",
-        "spaghetti_straps",
-        "black_panties",
-        "sheer_thighhighs",
-        "black_thighhighs",
-        "garter_belt",
-        "garter_straps"
+        "purple babydoll",
+        "sheer dress",
+        "lace trim",
+        "spaghetti straps",
+        "black panties",
+        "garter belt",
+        "sheer thighhighs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

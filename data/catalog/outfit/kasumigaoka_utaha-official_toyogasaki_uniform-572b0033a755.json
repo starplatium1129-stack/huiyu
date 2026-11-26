@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/official_toyogasaki_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 786,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "official_toyogasaki_uniform",
       "name": "丰之崎学院高定羊毛制服",
-      "prose": "A midnight-navy blazer and pleated skirt over a white blouse with red ribbon, styled with sheer black stockings.",
+      "prose": "A midnight-navy wool blazer over a white shirt with a crimson ribbon tie, gold crest pin, and dark pleated skirt, styled with sheer black thigh-highs and leather loafers.",
       "tokens": [
-        "school_uniform",
-        "navy_blazer",
-        "white_shirt",
-        "red_ribbon",
-        "pleated_skirt",
-        "black_thighhighs",
-        "sheer_thighhighs",
-        "loafers"
+        "navy wool blazer",
+        "white shirt",
+        "crimson ribbon tie",
+        "dark pleated skirt",
+        "gold crest pin",
+        "black thighhighs",
+        "leather loafers"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": true,

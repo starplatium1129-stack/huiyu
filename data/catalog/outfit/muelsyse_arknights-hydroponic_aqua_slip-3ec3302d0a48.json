@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/hydroponic_aqua_slip",
+  "revision": 1,
+  "sortOrder": 4097,
+  "createdAt": "2026-11-26T12:29:48.202513500+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "hydroponic_aqua_slip",
+      "name": "水培波光 · 浅青挂脖露背薄纱睡裙",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "muelsyse_arknights",
+      "prose": "A translucent aqua-gradient sheer chiffon halter slip nightgown with a deep open back and ruffled hem, accented by a water-lily hairpin and a slender pearl anklet chain, worn barefoot.",
+      "tokens": [
+        "aqua halter slip",
+        "sheer damp chiffon",
+        "open back cut",
+        "ruffled sheer hem",
+        "lily hairpin",
+        "pearl anklet chain",
+        "barefoot"
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/artificer_gingham_romper",
+  "revision": 1,
+  "sortOrder": 4032,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "artificer_gingham_romper",
+      "name": "工匠暖阳 · 金格纹连体棉麻睡衣",
+      "prose": "A relaxed golden-yellow gingham cotton-linen lounge romper featuring a buttoned front placket, rolled ankle cuffs, deep patch pockets, and bare feet.",
+      "tokens": [
+        "yellow gingham romper",
+        "cotton linen weave",
+        "button front placket",
+        "rolled ankle cuffs",
+        "deep patch pockets",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

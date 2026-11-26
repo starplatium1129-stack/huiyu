@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "pozyomka_arknights/library_tweed",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2064,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-26T12:29:48.202513500+00:00",
   "data": {
     "characterId": "pozyomka_arknights",
     "outfit": {
       "id": "library_tweed",
-      "name": "米灰细格呢外套与深青长裙",
-      "prose": "A beige-and-grey checked tweed jacket with antique buttons over a dark teal blouse and matching long skirt, with polished leather loafers.",
+      "name": "米灰格呢外套与深青丝质长裙",
+      "prose": "A beige-and-grey checked tweed jacket with brass crest buttons over a dark teal silk blouse and matching maxi skirt, finished with a pearl collar pin, sheer tights, and espresso leather loafers.",
       "tokens": [
-        "beige grey checked tweed jacket",
-        "antique buttons",
-        "dark teal blouse",
-        "dark teal long skirt",
-        "leather loafers"
+        "beige tweed jacket",
+        "brass crest buttons",
+        "teal silk blouse",
+        "teal maxi skirt",
+        "sheer tan tights",
+        "espresso leather loafers"
       ],
       "characterId": "pozyomka_arknights",
       "default": false,

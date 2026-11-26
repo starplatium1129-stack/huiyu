@@ -1,20 +1,25 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/travel_shirt_stockings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1204,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
       "id": "travel_shirt_stockings",
-      "name": "旅行衬衫与长袜",
+      "name": "旅行白衬衫与透肤丝袜装",
       "tokens": [
-        "shirt",
-        "stockings"
+        "white travel shirt",
+        "unbuttoned collar",
+        "off shoulder",
+        "rolled cuffs",
+        "sheer stockings",
+        "bare thighs",
+        "barefoot"
       ],
-      "prose": "a travel shirt and stockings",
+      "prose": "A crisp oversized white travel shirt unbuttoned partway off one shoulder over sheer pale thigh-high stockings and bare feet.",
       "default": false,
       "isDefault": false
     }

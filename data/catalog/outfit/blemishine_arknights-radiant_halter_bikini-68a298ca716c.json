@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/radiant_halter_bikini",
+  "revision": 1,
+  "sortOrder": 4031,
+  "createdAt": "2026-11-26T12:27:56.488962600+00:00",
+  "updatedAt": "2026-11-26T12:27:56.488962600+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "radiant_halter_bikini",
+      "name": "荣光暖阳 · 耀金系带泳衣与亚麻罩衫",
+      "prose": "A golden-yellow and ivory halter bikini with brass buckle clasps and double hip cords, layered beneath an unbuttoned buttercup linen shirt, worn barefoot.",
+      "tokens": [
+        "gold halter bikini",
+        "ivory edge piping",
+        "brass buckle clasps",
+        "strappy hip cords",
+        "unbuttoned linen shirt",
+        "barefoot"
+      ],
+      "default": false
+    }
+  }
+}

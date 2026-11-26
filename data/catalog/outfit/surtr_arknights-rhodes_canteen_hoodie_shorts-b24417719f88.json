@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/rhodes_canteen_hoodie_shorts",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 292,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-26T12:06:35.024069500+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,16 +12,15 @@
       "id": "rhodes_canteen_hoodie_shorts",
       "isDefault": false,
       "name": "燕麦灰短卫衣与红边运动短裤",
-      "prose": "An oatmeal-grey cropped hoodie over a black tank top and sport shorts with crimson piping, paired with striped thigh-highs.",
+      "prose": "An oatmeal-grey cropped fleece hoodie over a black tank top and crimson-piped athletic gym shorts, styled with striped thigh-high socks and white sneakers.",
       "tokens": [
-        "grey_hoodie",
-        "cropped_hoodie",
-        "drawstring",
-        "black_tank_top",
-        "black_shorts",
-        "gym_shorts",
-        "red_trim",
-        "striped_thighhighs"
+        "oatmeal cropped hoodie",
+        "drawstring hood",
+        "black tank top",
+        "crimson trim",
+        "black gym shorts",
+        "striped thighhighs",
+        "white sneakers"
       ],
       "characterId": "surtr_arknights"
     }
