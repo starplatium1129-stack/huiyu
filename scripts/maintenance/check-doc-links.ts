@@ -19,7 +19,7 @@ function generatedSourceExists(target: string): boolean {
   return fs.statSync(source, { throwIfNoEntry: false })?.isFile() === true;
 }
 function check() {
-  const files = [...documents(path.join(root, 'docs')), ...documents(path.join(root, 'plans')),
+  const files = [...documents(path.join(root, 'docs')),
     ...['README.md', 'README_zh.md', 'DESIGN.md', 'AGENTS.md', 'STARTUP.md'].map(file => path.join(root, file))];
   const errors: string[] = [];
   const repositoryLinks = new Map<string, string[]>();

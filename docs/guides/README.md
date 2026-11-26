@@ -1,6 +1,6 @@
 # 专题指南
 
-整理日期：2026-10-09。按问题查阅，通用约束以 DESIGN 和工程契约为准。以下只保留现行操作入口与独立创作参考；历史参数/实验不作为本次验证。当前实现见[项目状态](../project-status.md)，待办见[未来规划](../roadmap.md)。
+整理日期：2026-11-26。按问题查阅，通用约束以 DESIGN 和工程契约为准。以下只保留现行操作入口与独立创作参考；历史参数/实验不作为本次验证。当前实现见[项目状态](../project-status.md)，待办见[未来规划](../roadmap.md)。
 
 [返回主索引](../INDEX.md)
 
@@ -9,7 +9,7 @@
 - [离线素材安装与发行](offline-resources.md)：程序、素材与模型分开准备。
 - [本地模型配置与换机指南](setup-and-models.md)：文件位置、下载入口、硬件推荐与房间 API 连接。
 - [独立图像与视频推理](independent-inference.md)：原生运行库、多机绘图、离线导入转换与显存策略。
-- [远程出图、Muse 助手与手机聊天协议](remote-and-muse.md)：Cloudflare 中转、Tailscale 虚拟机协议与 QQ 收发。
+- [远程出图、Muse 助手、手机聊天与好友试玩](remote-and-muse.md)：Cloudflare 中转、Tailscale 虚拟机协议、QQ 收发与好友公网试玩。
 
 <a id="art"></a>
 
@@ -44,11 +44,11 @@
 
 - [页面标题 · 绫季绘境](engineering/page-template.html)
 - [随机灵感（Random Prompt Assembler）设计文档](engineering/random-prompt-assembler-design.md)
-- [工程维护边界](engineering/maintainability-boundaries.md)
+- [工程维护边界与资源所有权](../engineering-contracts.md#1-模块边界与分层)：模块依赖方向、`PhotoSwipeStage` 边界与资源清理清单。
 - [新模型原生接入工作流](engineering/model-onboarding-workflow.md)：通道分流、生态借用边界、原生推理接入与验收清单。
 - [TypeScript 开发与生成物边界](engineering/typescript-development.md)
 - [Tailwind 样式维护](engineering/tailwind-styling.md)
-- [Apple HIG / WCAG 评审速查](design/apple-hig-web-guidelines.md)
+- WCAG 2.2 AA 量化底线与错误恢复文案规范见 [设计规范](../../DESIGN.md#accessibility-wcag-22-aa)。
 
 <a id="prompts"></a>
 

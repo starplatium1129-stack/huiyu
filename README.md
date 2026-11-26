@@ -41,7 +41,7 @@ Move seamlessly from browsing series bookshelves and scene inspiration to organi
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> Character Room & Desktop Companion
 
-A dedicated character room pairs text chat with Live2D rendering and voice playback, while a transparent desktop companion stays nearby with screen reading and co-watching. Connect compatible APIs, existing Ollama, managed local llama.cpp (GGUF), or [remote Muse & QQ/WeChat channels](docs/guides/remote-and-muse.md).
+A dedicated character room pairs a full tavern workbench (character card CRUD, SillyTavern V2 JSON/PNG import & export, upgraded lorebooks, multi-user personas, rolling story summary) with bidirectional affection & status sync, emotion sprite switching, per-message scene illustrations, room backgrounds, Live2D and voice playback. Connect compatible APIs, existing Ollama, managed local llama.cpp (GGUF), or [remote Muse & QQ/WeChat channels](docs/guides/remote-and-muse.md).
 
 [![Character room with Ayachi Nene's portrait and a text conversation](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
 
@@ -91,7 +91,7 @@ npm run start:run
 
 The runtime's `content/catalog.sqlite` serves as the working authority for characters, outfits, scenes and blueprints, while `data/catalog/` stores explicitly exported snapshots. See [startup & troubleshooting](STARTUP.md), [desktop deployment](docs/desktop-deployment.md), [engineering contracts](docs/engineering-contracts.md) and [workflow guide](docs/workflow.md).
 
-Muse and local agents can use the same CLI to search the catalog, submit drawings, and save original PNGs. A shared batch key lets another agent pick up a job and inspect generation or delivery errors. [Desktop CLI setup](docs/desktop-deployment.md#多个助手共用一台出图机)
+Muse and local agents can use the same CLI to search the catalog, submit drawings, render videos, synthesize voice and save original outputs, handing off work by batch key. [Desktop CLI setup](tools/cli-anything-huiyu/SKILL.md)
 
 ## Project & Licensing
 

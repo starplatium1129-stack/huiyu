@@ -280,7 +280,12 @@ Provide persistent accessible labels (placeholders are examples only). Selected 
 Reserve media dimensions before decoding. Zoom/pan limits follow image & viewport bounds; in the 3D artbook, wheel over the image zooms around pointer (hitting zoom limits must not trigger page turns). Shared viewer sidebar/drawer behavior and modal focus-return rules live in [交互落地](.agents/skills/studio-ui-design/references/interaction.md#图片查看).
 
 ### Status and errors
-Use short factual labels + actionable recovery (state + unaffected scope + next step). Implement all reachable flow states (`loading`, `empty`, `selected`, `disabled`, `success`, `failure/retry`, `cancelled`) on first delivery; never mask backend failure with reload/fake success. Raw logs stay behind disclosures.
+Use short factual labels + actionable recovery (`发生了什么 + 哪些数据不受影响 + 下一步怎么做`). Implement all reachable flow states (`loading`, `empty`, `selected`, `disabled`, `success`, `failure/retry`, `cancelled`) on first delivery; report real percentages or phases (never fake timer progress, mark unreachable server state as unknown instead of failing/re-submitting), keep actionable errors visible until resolved/dismissed rather than auto-hiding toasts, and place raw logs behind disclosures.
+
+### Accessibility (WCAG 2.2 AA)
+- **Contrast & targets:** Maintain ≥ `4.5:1` for normal text (≥ `3:1` for ≥ `24px` or `18.67px` bold text) and ≥ `3:1` for control boundaries/status indicators across both themes and image overlays; keep minimum pointer targets ≥ `24×24 CSS px` (`44×44 CSS px` on touch/coarse pointers).
+- **Reflow, zoom & keyboard:** Support `200%` text zoom and `320 CSS px` vertical reflow without losing function or obscuring focused elements under sticky toolbars; enforce full keyboard reachability, modal `Tab` trap / `Escape` exit / focus return, and polite status announcements.
+- **Release blockers:** Verify full task lifecycle recovery, duplicate-submit / disconnect safety, dual-theme overlay contrast, zoom/short-viewport clearance, and reduced-motion / reduced-transparency parity before release.
 
 ### Character styling
 Character art provides subtle contextual presence behind controls and stays crisp on character/result pages.

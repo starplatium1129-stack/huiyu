@@ -20,20 +20,8 @@
   - 蓝图中的 `promptTokens` / `promptProse` 承载核心动作与环境。
   - `nsfwTokens` / `nsfwProse` 用于承载专门的 NSFW 标签与生动散文描述，最终由编译器统一解析装配。
 
-## 3. 模型编译与负向策略
+## 3. 编译与交付入口
 
-- **Anima 引擎**：
-  - 普通标签优先遵循 Gelbooru 规范写法，小写英文、空格分词。
-  - 画师风格沿用 Danbooru 名称并加 `@` 前缀。
-  - 统一遵循六段式编译结构（见 [Anima 参考](../../../.agents/skills/studio-prompt-craft/references/anima.md)）。
-- **Krea 2 引擎**：
-  - 采用连贯生动的纯英文自然语言散文，清晰描摹人物状态、触感、光影与画面氛围。
-  - 本地工作流默认 `negative = ''`。
-- **精简负向**：
-  - 使用 checkpoint 专属基础负面（如 MiaoMiao 1.6 的作者推荐负面），仅追加画面明确冲突的排除项。
-  - 绝不机械套用与画面目标（如特定体态、局部特写、裸露度）相冲突的通用负面词。
-
-## 4. 存储与交付
-
-- 数据以运行目录 `content/catalog.sqlite` 为工作权威，通过记录 API 或 `npm run wf -- content:catalog` 维护与预览。
-- 最终定稿导出到 `data/catalog/` 快照。批量跳过 `data/prompt-pinned-scenes.json` 保护字段，单条修改须在真实出图后捕获基线。
+- **精简负向原则**：仅使用对应底模推荐的基础负面并追加与当前画面明确冲突的排除项，绝不机械套用与裸露度、局部特写或多人构图目标冲突的通用排除词。
+- **引擎编译语法与模型配方**：Anima 六段式、Krea 2 散文、MOSS 与负向细则统一见 [Studio Prompt Craft](../../../.agents/skills/studio-prompt-craft/SKILL.md)（含 [Anima 参考](../../../.agents/skills/studio-prompt-craft/references/anima.md) · [Krea 参考](../../../.agents/skills/studio-prompt-craft/references/krea.md)）。
+- **仓储、字段核对与定稿保护**：统一见 [仓库写入与生成验收](../../../.agents/skills/studio-prompt-craft/references/delivery.md) 与 [项目内容维护手册](../../maintenance.md)。

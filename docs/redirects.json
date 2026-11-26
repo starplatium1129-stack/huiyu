@@ -102,5 +102,9 @@
   "/docs/audits/2026-10-13/remacri-loading-performance.html": "/docs/project-status.md",
   "/docs/audits/2026-10-14/backend-office-batch.html": "/docs/project-status.md",
   "/docs/audits/2026-10-14/backend-office-round-two.html": "/docs/project-status.md",
-  "/docs/research/prompts/arknights-artists-research-2026-08-31.html": "/docs/research/README.md"
+  "/docs/research/prompts/arknights-artists-research-2026-08-31.html": "/docs/research/README.md",
+  "/docs/architecture/UI-STARTUP-PET-REDESIGN.md": "/docs/project-status.md",
+  "/docs/architecture/VIDEO-STUDIO-SIMPLIFIED-DESIGN.md": "/docs/guides/video/video-ai-storyboard.md",
+  "/docs/guides/engineering/maintainability-boundaries.md": "/docs/engineering-contracts.md",
+  "/docs/guides/design/apple-hig-web-guidelines.md": "/docs/INDEX.md"
 }

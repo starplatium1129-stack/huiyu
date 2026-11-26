@@ -41,7 +41,7 @@
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> 角色房间与桌面陪伴
 
-独立角色房间提供文字对话、Live2D 动作展示与语音合成；桌面陪伴窗可常驻手边并支持看屏与陪看。聊天可连接兼容 API、已有 Ollama、受管本地 llama.cpp（GGUF），或接入 [远程 Muse 与 QQ/微信通道](docs/guides/remote-and-muse.md)。
+独立角色房间支持完整酒馆工作台能力（角色卡创作管理与 Tavern V2 JSON/PNG 导入导出、增强世界书、多用户人格、滚动剧情摘要），配合好感与 `<status>` 双向同步、6 表情立绘切换、单句场景配图、房间背景及语音合成；桌面陪伴窗可常驻手边支持看屏与陪看。聊天可连接兼容 API、已有 Ollama、受管本地 llama.cpp（GGUF），或接入 [远程 Muse 与 QQ/微信通道](docs/guides/remote-and-muse.md)。
 
 [![角色房间，左侧展示绫地宁宁的立绘，右侧为文字对话](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
 
@@ -91,7 +91,7 @@ npm run start:run
 
 角色、服装、场景与蓝图以运行目录的 `content/catalog.sqlite` 为工作权威，`data/catalog/` 为显式导出的项目快照。详情参阅 [STARTUP](STARTUP.md)、[部署指南](docs/desktop-deployment.md)、[工程契约](docs/engineering-contracts.md) 与 [工作流](docs/workflow.md)。
 
-Muse 和本机智能体可以通过同一套绘遇命令搜索素材、提交绘图和保存原图，也可以凭批次编号交接任务、查询报错。[智能体命令行用法](docs/desktop-deployment.md#多个助手共用一台出图机)
+Muse 和本机智能体可以通过同一套绘遇命令搜索素材、提交绘图、生成短视频与语音，也可以凭批次编号交接任务、查询报错。[智能体命令行用法](tools/cli-anything-huiyu/SKILL.md)
 
 ## 项目与许可
 

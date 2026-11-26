@@ -96,4 +96,4 @@ npm run wf -- content:catalog export --runtime-root <运行目录> --out runtime
 ## 4. 迁移与数据保护
 
 1. **定稿场景保护**：`data/prompt-pinned-scenes.json` 为字节级基线保护文件。批量修改一律跳过；单条修改必须先真实出图验证，再执行 `npm run scenes:pin-capture -- --id=<场景ID>` 更新基线。
-2. **用户数据保留**：桌面部署使用 `--sync-bundle` 逐条合并上游更新，保留本机较新的已接收版本及个性化修改。手动导入可用 `--preserve-local` 保留个性化修改，遇到过期快照会报错。
+2. **用户数据保留**：手动导入快照可用 `--preserve-local` 保留本地个性化修改（遇到过期快照会报错）；桌面部署增量同步见 [部署指南](desktop-deployment.md#数据同步机制)。

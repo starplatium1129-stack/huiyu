@@ -41,9 +41,7 @@ npm run wf -- diagnostics:window-capture -Out runtime/<输出图片.png> [-Title
 
 ## 2. 数据与内容维护
 
-人物、服装、场景、蓝图与记录式文档通过 `content:catalog` 维护：
-- **开发权威库**：`runtime/content/catalog.sqlite`（维护时固定传 `--runtime-root runtime`）。
-- **项目快照**：`data/catalog/`（Git 跟踪，供构建读取与发行打包）。
+人物、服装、场景与蓝图的数据权威、Patch 校验及导出规范见 [维护手册](maintenance.md)：
 
 | 操作 | 入口 | 说明 |
 | --- | --- | --- |
@@ -96,7 +94,7 @@ MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线�
 <a id="门禁与构建"></a>
 ## 4. 门禁与构建
 
-**严禁编写和运行任何测试**。仓库不包含且不运行单测、组件测试、E2E 测试与覆盖率统计。代码通过源码审查、类型检查与真实构建进行验证：
+项目严禁编写和运行任何自动化测试（详见 [AGENTS.md](../AGENTS.md#验证与止损)），改动通过源码审查、类型检查与真实构建核验：
 
 | 入口 | 用途 |
 | --- | --- |

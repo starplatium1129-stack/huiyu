@@ -2,7 +2,7 @@
 
 ## 使用绘遇
 
-[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md) · [远程与 Muse](guides/remote-and-muse.md)
+[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md) · [远程与试玩](guides/remote-and-muse.md)
 
 ## 日常入口
 
@@ -31,8 +31,6 @@
 - [持久任务](architecture/TASK-RUNTIME-DESIGN.md)：接受、取消、结果回收和重启恢复。
 - [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md)：宿主、网关、会话与原生能力。
 - [远程内容投影](architecture/REMOTE-CONTENT-DESIGN.md)：发布索引、最小字段和未知状态拒绝。
-- [前端审美、首屏提速与桌宠独立区域改造方案](architecture/UI-STARTUP-PET-REDESIGN.md)：全站「1+3」视觉翻新、单层融合顶栏、零闪现启动与像素级动态穿透实施规格。
-- [极简点选式套图与短片创作工作流方案](architecture/VIDEO-STUDIO-SIMPLIFIED-DESIGN.md)：参考图净底与星型锚定规范、点标签换装工坊简化、抽尾帧/TTS/混音导出与高阶视频模型路由规格。
 - [设备与外部条件验收清单](architecture/acceptance-checklist.md)：原 012 条件项及 009/010 场景，保留稳定 ID 和要求，不沿用旧 PASS。
 
 专项剩余范围和暂停事项统一维护在[未来规划](roadmap.md)。
@@ -41,7 +39,7 @@
 
 [专题索引](guides/README.md)按环境、角色、美术、提示词、视频、桌面与工程分类。[研究来源](research/README.md)说明参考资料和采用边界。
 
-角色档案与场景故事使用 [humanizer-zh](../.agents/skills/humanizer-zh/SKILL.md)，图像提示词使用 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md)，视频提示词使用 [video-prompt-craft](../.agents/skills/video-prompt-craft/SKILL.md)，UI 工作使用 [studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 和[设计规范](../DESIGN.md)。
+写作、提示词与前端技能（5 项）：角色档案与故事 [humanizer-zh](../.agents/skills/humanizer-zh/SKILL.md)、图像提示词 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md)、视频提示词 [video-prompt-craft](../.agents/skills/video-prompt-craft/SKILL.md)、桌面 Vue UI [studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md)（配合[设计规范](../DESIGN.md)）与 Web API 实践 [modern-web-guidance](../.agents/skills/modern-web-guidance/SKILL.md)。
 
 ## 维护方式
 

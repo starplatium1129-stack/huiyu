@@ -29,16 +29,10 @@
 
 ## 3. 双引擎写法要点
 
-- **Anima（锚点 + 标签 + 关系句）**：
-  1. 质量、分级、画师与精确触发词沿用 profile 与角色数据，不在正文中重复注入。
-  2. 标签描述人物、服装、道具、地点与景别（普通标签空格分隔，精确词保持下划线）。
-  3. 用描述句说明位置、接触、光源与细节（兼容场景的 `animaCaption` 或蓝图 `promptProse`）。
-  4. 负向仅针对具体冲突（特写不排斥裁切，多人不带单人排斥词）。
-- **Krea 2（连贯英文散文）**：
-  - 按「媒介与事件 → 人物动作 → 空间与光照」自然行文，属性紧邻所属人物，媒介修饰覆盖整幅画面。
-  - 删除空洞赞美词（如 `masterpiece`/`8k`），当前本地工作流 `negative` 为空，排除项改写为明确正向状态（如独自一人、完整着装）。
-  - 仅在画面确需文字时加引号写明内容。
-- **多人互动（`compositionIntent: group`）**：先核对角色外貌、位置、衣装与手部归属分别绑定，禁用单人句式模板直接改数字。
+引擎编译规则、底层参数与标签溯源统一见 [Studio Prompt Craft](../../../.agents/skills/studio-prompt-craft/SKILL.md)（[Anima](../../../.agents/skills/studio-prompt-craft/references/anima.md) · [Krea 2](../../../.agents/skills/studio-prompt-craft/references/krea.md) · [构图准则](../../../.agents/skills/studio-prompt-craft/references/narrative-composition.md)）；叙事 CG 重点关注以下结构对齐：
+- **Anima**：核心动作/道具/地点入标签段，位置、接触与光源细节用 ≤ 2 句英文兼容 `animaCaption` / `promptProse`；不重复注入质量/画师/触发词。
+- **Krea 2**：按「媒介与事件 → 人物动作 → 空间与光照」连续行文，属性紧邻所属人物；排除项改写为明确正向状态。
+- **多人互动（`compositionIntent: group`）**：先为每位角色分别绑定外貌、位置、衣装与手部归属，禁用单人句式直接改数量。
 
 ---
 
@@ -87,6 +81,5 @@
 
 ## 5. 落库与对照实验交付
 
-1. **映射字段**：场景事件写入 `promptTokens` / `promptProse`（或场景 `prompt` / `animaCaption`），与镜头/光照/尺寸保持一致；身份与服装从角色源读取，不改 schema。
-2. **最终核对**：检查完整编译后的正负向与实际 workflow，防止通用默认值覆盖构图意图；真实 tokenizer 计数与字符估算分开记录。
-3. **对照实验方法（单因素控制）**：小样先用 3 个固定 seeds 检验单变量改动，扩大验证用 `A/B/C × 8 seeds × 2 写法`（共 48 张/模型），冻结模型、尺寸、LoRA 与参数，保留全部失败图与客观分项评价；交付流程见 [字段与交付](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。
+1. **字段映射与编译核对**：场景事件写入 `promptTokens` / `promptProse`（或 `prompt` / `animaCaption`），落库校验与编译核对流程见 [仓库写入与生成验收](../../../.agents/skills/studio-prompt-craft/references/delivery.md)。
+2. **对照实验方法（单因素控制）**：小样先用 3 个固定 seeds 检验单变量改动，扩大验证用 `A/B/C × 8 seeds × 2 写法`（共 48 张/模型），冻结模型、尺寸、LoRA 与参数，保留全部失败图与客观分项评价；真实 tokenizer 计数与字符估算分开记录。

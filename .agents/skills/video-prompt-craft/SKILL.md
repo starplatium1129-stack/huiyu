@@ -5,21 +5,14 @@ description: 编写、改写或审查 AI-CG-Studio 视频提示词、场景预�
 
 # Video Prompt Craft
 
-为 AI-CG-Studio 编写、组装与审查视频生成提示词，确保同一创作意图在各视频模型上都能正确编译执行。
-
-**核心原则**：
-- **写时间演化**：按「起势 → 过程 → 落幅」写自然语言，不使用 Danbooru 标签堆叠或 `(tag:1.2)` 权重。
-- **单一动作主线**：短片聚焦 1 个清晰主动作 + 1 种克制运镜，不塞入冲突运动或冗余硬切。
-- **按输入分工**：图生视频不复述首帧静态外观；首尾帧只写中间过渡；动作/配音驱动仅定调光影、氛围与神态。
-- **全分级自由创作**：支持全年龄至 NSFW/R18 自由创作；衣着状态、动作神态与亲密接触如实表达，不人为降级。
+为 AI-CG-Studio 编写、组装与审查视频生成提示词，确保同一创作意图在各视频模型上都能正确编译执行；支持全年龄至 NSFW/R18 全分级自由创作。
 
 ## 权威参考导航
 
-- **完整视频规范与对照范例**：[视频提示词规范](../../../docs/guides/video/video-prompt-standard.md)
+- **完整视频规范、积木槽位契约与对照范例**：[视频提示词规范](../../../docs/guides/video/video-prompt-standard.md)
+- **MiniMax H3 详细格式与模板**（三段式、时间戳与 Ref2VA）：[H3 格式指南](references/h3-prompt-writing.md)（含 `h3-base-en.txt` / `h3-ref-en.txt`）
 - **创作台积木库与编译器**：[prompt-library.json](../../../runtime-rs/src/video/prompt-library.json) · [prompt_compiler.rs](../../../runtime-rs/src/video/prompt_compiler.rs)
-- **MiniMax H3 详细格式**（三段式、时间戳与 Ref2VA）：本机见 `.agents/skills/h3-prompt-writing/SKILL.md`
-- **全分级与 NSFW 写作边界**：[NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md)
-- **原生模型能力清单**：[原生视频适配清单](../../../tools/inference/adapter-models.json)
+- **全分级创作与原生能力**：[NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md) · [原生视频适配清单](../../../tools/inference/adapter-models.json)
 
 ## 模型家族快速路由
 
@@ -35,6 +28,6 @@ description: 编写、改写或审查 AI-CG-Studio 视频提示词、场景预�
 ## 积木编译与交付自查
 
 1. **槽位对齐**：工作台按 `framing`、`subject`、`action`、`camera`、`atmosphere`、`ending`、`audio` 组织，同槽互斥且不重复拼接已有运镜/动作。
-2. **模式裁剪**：I2V 隐藏静态外貌复述；无声模型剥离声音与配乐；`negative: false` 模型不传负向词。
-3. **身份与分级保真**：保留真实角色状态、衣着或裸露描述与合理空间接触。
+2. **模式裁剪**：I2V 不复述首帧静态外观；FL2V 只写中间过渡；无声模型剥离声音与配乐；`negative: false` 模型不传负向词。
+3. **身份与分级保真**：按「起势 → 过程 → 落幅」写单一动作主线与自然语言（不用 Danbooru 标签/权重），如实保留角色状态、衣着或裸露描述。
 4. **实事求是**：规范审查只确认结构与编译规则对齐，真实画质与音画同步待主力机生成后确认。
