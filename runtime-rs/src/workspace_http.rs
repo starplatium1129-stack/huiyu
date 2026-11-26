@@ -11,7 +11,7 @@ use axum::{
     Json, Router,
     body::Bytes,
     extract::{ConnectInfo, DefaultBodyLimit, OriginalUri, State},
-    http::{HeaderMap, Method, StatusCode, Uri},
+    http::{HeaderMap, HeaderValue, Method, StatusCode, Uri},
     response::{IntoResponse, Response},
     routing::any,
 };
@@ -41,7 +41,9 @@ async fn handle(
         .await
         .unwrap_or_else(IntoResponse::into_response);
     let output = response.headers_mut();
-    output.insert("cache-control", "private, no-store".parse().unwrap());
+    if !output.contains_key("cache-control") {
+        output.insert("cache-control", HeaderValue::from_static("private, no-store"));
+    }
     output.insert("vary", "Origin".parse().unwrap());
     if allowed && let Some(origin) = headers.get("origin") {
         output.insert("access-control-allow-origin", origin.clone());
@@ -85,7 +87,7 @@ async fn perform(
                 ),
                 (
                     "access-control-allow-headers",
-                    "Content-Type, x-aics-workspace-session, Range",
+                    "Content-Type, x-aics-workspace-session, Range, If-None-Match",
                 ),
             ],
         )
@@ -149,6 +151,16 @@ async fn perform(
     {
         commands::text(&json!(&path[1]))?;
         return media::download(state, &storage, method, &path[1]).await;
+    }
+    if path.len() == 3
+        && path[0] == "media"
+        && path[2] == "derivative"
+        && matches!(*method, Method::GET | Method::HEAD)
+    {
+        commands::text(&json!(&path[1]))?;
+        let width = query.get("width").map(|value| value.parse::<u64>()
+            .map_err(|_| ApiError::invalid("Invalid derivative width"))).transpose()?;
+        return media::derivative(&storage, headers, method, &path[1], width).await;
     }
     if path == ["video-images"] && method == Method::POST {
         if body.len() > 4096 {

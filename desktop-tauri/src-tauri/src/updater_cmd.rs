@@ -6,15 +6,18 @@
 //! `desktop-update-found`；控制面板横幅点击后经 `desktop_update_install`
 //! 下载安装并由安装器重启（passive 模式，不弹交互向导）。
 
+use crate::mutex::RecoverMutex;
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
 use tauri::{AppHandle, Emitter, Manager};
 use tauri_plugin_notification::NotificationExt;
+use tauri_plugin_opener::OpenerExt;
 use tauri_plugin_updater::UpdaterExt;
 use tokio::sync::watch;
 
 mod cache;
 mod download;
+mod notice;
 
 mod verify;
 
@@ -27,7 +30,9 @@ static SESSION: UpdateSession = UpdateSession(Mutex::new(SessionState {
     version: String::new(),
     status_text: String::new(),
     error_text: String::new(),
+    progress: None,
 }));
+static REMINDER: Mutex<Option<tauri::async_runtime::JoinHandle<()>>> = Mutex::new(None);
 
 #[derive(Clone, Copy, Default, serde::Serialize, PartialEq, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -47,11 +52,13 @@ enum UpdatePhase {
 #[serde(rename_all = "camelCase")]
 pub struct UpdateSnapshot {
     revision: u64,
+    current_version: &'static str,
     phase: UpdatePhase,
     version: String,
     status_text: String,
     error_text: String,
     can_cancel: bool,
+    progress: Option<f64>,
 }
 
 #[derive(Default)]
@@ -63,17 +70,20 @@ struct SessionState {
     version: String,
     status_text: String,
     error_text: String,
+    progress: Option<f64>,
 }
 
 impl SessionState {
     fn snapshot(&self) -> UpdateSnapshot {
         UpdateSnapshot {
             revision: self.revision,
+            current_version: env!("CARGO_PKG_VERSION"),
             phase: self.phase,
             version: self.version.clone(),
             status_text: self.status_text.clone(),
             error_text: self.error_text.clone(),
             can_cancel: self.cancel.as_ref().is_some_and(|sender| !*sender.borrow()),
+            progress: self.progress,
         }
     }
 }
@@ -88,13 +98,12 @@ struct SessionGuard<'a> {
 impl UpdateSession {
     fn snapshot(&self) -> UpdateSnapshot {
         self.0
-            .lock()
-            .unwrap_or_else(|error| error.into_inner())
+            .recover_lock()
             .snapshot()
     }
 
     fn begin(&self) -> Result<(SessionGuard<'_>, watch::Receiver<bool>), String> {
-        let mut state = self.0.lock().unwrap_or_else(|error| error.into_inner());
+        let mut state = self.0.recover_lock();
         if state.active {
             return Err("已有更新正在进行，请等待完成或取消下载".into());
         }
@@ -105,6 +114,7 @@ impl UpdateSession {
         state.phase = UpdatePhase::Checking;
         state.status_text = "正在检查更新…".into();
         state.error_text.clear();
+        state.progress = None;
         Ok((
             SessionGuard {
                 session: self,
@@ -115,7 +125,7 @@ impl UpdateSession {
     }
 
     fn cancel(&self) -> bool {
-        let mut state = self.0.lock().unwrap_or_else(|error| error.into_inner());
+        let mut state = self.0.recover_lock();
         let accepted = state.cancel.as_ref().is_some_and(|sender| {
             let cancelled = *sender.borrow();
             !cancelled && sender.send(true).is_ok()
@@ -130,13 +140,12 @@ impl UpdateSession {
 }
 
 impl SessionGuard<'_> {
-    fn report(&self, app: &AppHandle, phase: UpdatePhase, version: Option<&str>, text: String) {
+    fn report(&self, app: &AppHandle, phase: UpdatePhase, version: Option<&str>, text: String, progress: Option<f64>) {
         let snapshot = {
             let mut state = self
                 .session
                 .0
-                .lock()
-                .unwrap_or_else(|error| error.into_inner());
+                .recover_lock();
             // A final download callback must never undo an accepted cancellation.
             if state.phase == UpdatePhase::Cancelling {
                 return;
@@ -147,6 +156,7 @@ impl SessionGuard<'_> {
                 state.version = version.into();
             }
             state.status_text = text;
+            state.progress = progress;
             state.snapshot()
         };
         let _ = app.emit("desktop-update-state", snapshot);
@@ -156,8 +166,7 @@ impl SessionGuard<'_> {
         let mut state = self
             .session
             .0
-            .lock()
-            .unwrap_or_else(|error| error.into_inner());
+            .recover_lock();
         // Serialize cancellation with the hand-off to the installer. Never install
         // bytes after accepting a cancellation, even if the last chunk won select.
         let accepted = state.cancel.take().is_some_and(|sender| !*sender.borrow());
@@ -173,11 +182,11 @@ impl SessionGuard<'_> {
         let mut state = self
             .session
             .0
-            .lock()
-            .unwrap_or_else(|error| error.into_inner());
+            .recover_lock();
         // Release the gate before announcing that another explicit attempt is allowed.
         state.active = false;
         state.cancel = None;
+        state.progress = None;
         state.revision += 1;
         match result {
             Err(error) => {
@@ -207,8 +216,7 @@ impl Drop for SessionGuard<'_> {
         let mut state = self
             .session
             .0
-            .lock()
-            .unwrap_or_else(|error| error.into_inner());
+            .recover_lock();
         state.active = false;
         state.cancel = None;
         state.revision += 1;
@@ -255,6 +263,7 @@ impl DownloadProgress {
 
 /// 启动后台检查一次（静默失败：更新不可达不影响正常使用）。
 pub fn spawn_startup_check(app: AppHandle) {
+    schedule_reminder(&app);
     tauri::async_runtime::spawn(async move {
         if let Err(error) = notify_if_update_available(&app).await {
             eprintln!("[aics-updater] startup check failed: {error}");
@@ -262,11 +271,27 @@ pub fn spawn_startup_check(app: AppHandle) {
     });
 }
 
+fn schedule_reminder(app: &AppHandle) {
+    let mut scheduled = REMINDER.recover_lock();
+    if let Some(previous) = scheduled.take() { previous.abort(); }
+    let Some(delay) = notice::reminder_delay(app) else { return; };
+    let app = app.clone();
+    *scheduled = Some(tauri::async_runtime::spawn(async move {
+        tokio::time::sleep(delay).await;
+        if app.state::<crate::state::AppState>().quitting.load(std::sync::atomic::Ordering::Acquire)
+            || crate::maintenance::active(&app) {
+            return;
+        }
+        let _ = notify_if_update_available(&app).await;
+    }));
+}
+
 async fn notify_if_update_available(app: &AppHandle) -> Result<(), String> {
     let Some(update) = check(app).await? else {
         return Ok(());
     };
     let version = update.version.clone();
+    if notice::suppressed(app, &version) { return Ok(()); }
     let _ = app.emit("desktop-update-found", version.clone());
     app.notification()
         .builder()
@@ -287,26 +312,66 @@ async fn check(app: &AppHandle) -> Result<Option<tauri_plugin_updater::Update>, 
         .map_err(|error| error.to_string())?;
     tokio::time::timeout(Duration::from_secs(30), updater.check())
         .await
-        .map_err(|_| "检查更新超时，请检查网络后重试".to_string())?
-        .map_err(|error| format!("检查更新失败，请检查网络后重试：{error}"))
+        .map_err(|_| "检查更新超时，请检查网络与系统代理，或在浏览器打开发布页。".to_string())?
+        .map_err(|_| "无法连接更新服务，请检查 GitHub 连通性与系统代理。".to_owned())
 }
 
-/// 供前端查询当前可用更新（无更新返回 null）。
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateCheck {
+    current_version: String,
+    available: Option<UpdateOffer>,
+}
+
+#[derive(serde::Serialize)]
+struct UpdateOffer {
+    version: String,
+    notes: String,
+}
+
 #[tauri::command]
-pub async fn desktop_update_check(app: AppHandle) -> Result<Option<String>, String> {
-    let update = check(&app).await?;
-    Ok(update.map(|update| update.version))
+pub async fn desktop_update_check(window: tauri::WebviewWindow, manual: Option<bool>) -> Result<UpdateCheck, String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let app = window.app_handle();
+    let offer = check(app).await?.filter(|update|
+        manual.unwrap_or(false) || !notice::suppressed(app, &update.version));
+    Ok(UpdateCheck {
+        current_version: app.package_info().version.to_string(),
+        available: offer.map(|update| UpdateOffer {
+            version: update.version,
+            notes: update.body.unwrap_or_default().chars().take(4_000).collect(),
+        }),
+    })
+}
+
+#[tauri::command]
+pub fn desktop_update_reminder(window: tauri::WebviewWindow, version: String, choice: notice::Choice) -> Result<(), String> {
+    crate::bootstrap::require_atelier(&window)?;
+    notice::record(window.app_handle(), version, choice)?;
+    schedule_reminder(window.app_handle());
+    Ok(())
+}
+
+#[tauri::command]
+pub fn desktop_update_release_page(window: tauri::WebviewWindow) -> Result<(), String> {
+    crate::bootstrap::require_atelier(&window)?;
+    window.app_handle().opener().open_url(
+        "https://github.com/starplatium1129-stack/huiyu/releases/latest", None::<&str>,
+    ).map_err(|_| "无法在浏览器打开发布页".to_owned())
 }
 
 /// Current process session; querying it never starts a network check or download.
 #[tauri::command]
-pub fn desktop_update_state() -> UpdateSnapshot {
-    SESSION.snapshot()
+pub fn desktop_update_state(window: tauri::WebviewWindow) -> Result<UpdateSnapshot, String> {
+    crate::bootstrap::require_atelier(&window)?;
+    Ok(SESSION.snapshot())
 }
 
 /// 下载并安装更新，安装器结束后自动重启应用（passive 模式）。
 #[tauri::command]
-pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
+pub async fn desktop_update_install(window: tauri::WebviewWindow) -> Result<bool, String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let app = window.app_handle().clone();
     let (session, mut cancelled) = SESSION.begin()?;
     let _ = app.emit("desktop-update-state", SESSION.snapshot());
     let result = async {
@@ -319,6 +384,7 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
                 UpdatePhase::Downloading,
                 Some(&update.version),
                 format!("正在连接下载 {}，等待服务器响应…", update.version),
+                None,
             );
             let started = Instant::now();
             let mut progress = DownloadProgress::default();
@@ -360,6 +426,7 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
                     UpdatePhase::Downloading,
                     None,
                     "正在检查已下载缓存并尝试续传…".into(),
+                    None,
                 );
             }
             download::fetch(
@@ -371,7 +438,9 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
                     if let Some(text) =
                         progress.report(downloaded, total, transferred, started.elapsed())
                     {
-                        session.report(&app, UpdatePhase::Downloading, None, text);
+                        let percent = total.filter(|total| *total > 0)
+                            .map(|total| (downloaded as f64 / total as f64).min(1.0));
+                        session.report(&app, UpdatePhase::Downloading, None, text, percent);
                     }
                 },
             )
@@ -381,6 +450,7 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
                 UpdatePhase::Verifying,
                 None,
                 "下载完成，正在校验完整安装包签名…".into(),
+                Some(1.0),
             );
             let signature = update.signature.clone();
             let version = update.version.clone();
@@ -434,8 +504,9 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
 
 /// Only cancels checking/downloading. The installer owns the update after hand-off.
 #[tauri::command]
-pub fn desktop_update_cancel(app: AppHandle) -> bool {
+pub fn desktop_update_cancel(window: tauri::WebviewWindow) -> Result<bool, String> {
+    crate::bootstrap::require_atelier(&window)?;
     let accepted = SESSION.cancel();
-    let _ = app.emit("desktop-update-state", SESSION.snapshot());
-    accepted
+    let _ = window.app_handle().emit("desktop-update-state", SESSION.snapshot());
+    Ok(accepted)
 }

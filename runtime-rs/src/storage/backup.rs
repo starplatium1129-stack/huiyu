@@ -239,6 +239,7 @@ pub(super) fn release_unsealed(c: &Context, id: Option<&str>) {
 fn copy_database(files: &Files, source: Connection, directory: &Path, id: &str) -> Result<()> {
     let database = schema::safe(directory, "huiyu.sqlite3")?;
     let mut snapshot = Connection::open(&database)?;
+    snapshot.execute_batch("PRAGMA synchronous=FULL;")?;
     {
         let backup = rusqlite::backup::Backup::new(&source, &mut snapshot)?;
         loop {

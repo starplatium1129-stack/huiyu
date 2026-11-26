@@ -1,5 +1,6 @@
 //! Bundled resource UI remains available while the authenticated gateway drains.
 //! The renderer never supplies install roots, commands or approval fingerprints.
+use crate::mutex::RecoverMutex;
 use std::{io::{BufRead, BufReader, Read}, path::PathBuf, process::{Command, Stdio, ChildStdin}, sync::Mutex};
 use serde_json::{Value, json};
 use tauri::{AppHandle, Manager, WebviewWindow};
@@ -40,7 +41,7 @@ pub fn open(app: &AppHandle) -> Result<(), String> {
     window.on_window_event(move |event| {
         if let tauri::WindowEvent::CloseRequested { api, .. } = event {
             let host = handle.state::<ResourceAssistant>();
-            let mut job = host.0.lock().unwrap();
+            let mut job = host.0.recover_lock();
             if job.busy || job.paused {
                 api.prevent_close();
                 if job.busy { cancel(&mut job); }
@@ -71,7 +72,7 @@ fn snapshot(job: &Job) -> Value {
 }
 #[tauri::command]
 pub fn resource_assistant_status(app: AppHandle) -> Value {
-    snapshot(&app.state::<ResourceAssistant>().0.lock().unwrap())
+    snapshot(&app.state::<ResourceAssistant>().0.recover_lock())
 }
 fn cancel(job: &mut Job) {
     job.cancelled = true;
@@ -80,12 +81,12 @@ fn cancel(job: &mut Job) {
 }
 #[tauri::command]
 pub fn resource_assistant_cancel(app: AppHandle) {
-    let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+    let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
     if job.busy { cancel(&mut job); }
 }
 fn fail(app: &AppHandle, error: String) {
     app.state::<AppState>().warn(&format!("resource assistant: {error}"));
-    let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+    let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
     job.busy = false; job.input.take();
     job.snapshot["stage"] = if job.cancelled { "cancelled" } else { "failed" }.into();
     job.snapshot["error"] = error.into();
@@ -94,7 +95,7 @@ fn fail(app: &AppHandle, error: String) {
 pub async fn resource_assistant_pick(window: WebviewWindow, directory: Option<bool>) -> Result<(), String> {
     let app = window.app_handle().clone();
     {
-        let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+        let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
         if job.busy || job.paused { return Err("请先完成当前安装，或返回画室后重新选择。".into()); }
         job.busy = true; job.cancelled = false;
         job.snapshot["phase"] = "choosing".into();
@@ -112,11 +113,11 @@ pub async fn resource_assistant_pick(window: WebviewWindow, directory: Option<bo
     }).await;
     let archive = match picked {
         Ok(Ok(Some(path))) => path,
-        Ok(Ok(None)) => { let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap(); job.busy = false; job.snapshot["phase"] = "".into(); return Ok(()); }
+        Ok(Ok(None)) => { let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock(); job.busy = false; job.snapshot["phase"] = "".into(); return Ok(()); }
         other => { fail(&app, format!("无法选择文件：{other:?}")); return Ok(()); }
     };
     {
-        let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+        let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
         job.snapshot = json!({"stage":"checking","phase":"inventory","done":0,"total":0,"preview":null,"result":null,"error":null,
             "fileName":archive.file_name().unwrap_or_default().to_string_lossy(),"startedAt":milliseconds()});
         job.archive = Some(archive); job.staging = None;
@@ -127,7 +128,7 @@ pub async fn resource_assistant_pick(window: WebviewWindow, directory: Option<bo
 #[tauri::command]
 pub async fn resource_assistant_install(app: AppHandle) -> Result<(), String> {
     let paused = {
-        let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+        let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
         if job.busy || job.archive.is_none() || !job.snapshot["preview"].is_object() || job.snapshot["stage"] == "completed" {
             return Err("请先选择并识别资源包。".into());
         }
@@ -145,13 +146,13 @@ pub async fn resource_assistant_install(app: AppHandle) -> Result<(), String> {
             if let Err(error) = crate::maintenance::prepare_resources(&app).await {
                 // Cancellation before drain thaws existing windows. A failed
                 // drain remains frozen and can only leave through normal restart.
-                app.state::<ResourceAssistant>().0.lock().unwrap().paused = crate::maintenance::active(&app);
+                app.state::<ResourceAssistant>().0.recover_lock().paused = crate::maintenance::active(&app);
                 fail(&app, error); return;
             }
-            let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+            let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
             job.paused = true; job.drained = true;
         }
-        if app.state::<ResourceAssistant>().0.lock().unwrap().cancelled {
+        if app.state::<ResourceAssistant>().0.recover_lock().cancelled {
             fail(&app, "CANCELLED".into()); return;
         }
         let worker = app.clone();
@@ -166,7 +167,7 @@ pub async fn resource_assistant_install(app: AppHandle) -> Result<(), String> {
 fn run(app: &AppHandle, apply: bool) -> Result<(), String> {
     let paths = app.state::<AppState>().paths.clone();
     let (archive, staging) = {
-        let host = app.state::<ResourceAssistant>(); let job = host.0.lock().unwrap();
+        let host = app.state::<ResourceAssistant>(); let job = host.0.recover_lock();
         (job.archive.clone().ok_or("未选择资源包")?, job.staging.clone())
     };
     let mut command = Command::new("powershell.exe");
@@ -182,7 +183,7 @@ fn run(app: &AppHandle, apply: bool) -> Result<(), String> {
     #[cfg(windows)] { use std::os::windows::process::CommandExt; command.creation_flags(0x08000000); }
     let mut child = command.spawn().map_err(|error| format!("无法启动资源安装：{error}"))?;
     {
-        let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+        let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
         let input = child.stdin.take();
         if !job.cancelled { job.input = input; }
         if apply { job.snapshot["stage"] = "installing".into(); }
@@ -202,14 +203,14 @@ fn run(app: &AppHandle, apply: bool) -> Result<(), String> {
         let line = match line {
             Ok(line) => line,
             Err(error) => {
-                app.state::<ResourceAssistant>().0.lock().unwrap().input.take();
+                app.state::<ResourceAssistant>().0.recover_lock().input.take();
                 pipe_error = Some(error.to_string()); break;
             }
         };
         let Ok(record) = serde_json::from_str::<Value>(&line) else { continue; };
         if record["type"] == "result" { outcome = Some(record); continue; }
         if record["type"] == "progress" {
-            let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+            let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
             for key in ["phase", "done", "total"] { job.snapshot[key] = record[key].clone(); }
         }
     }
@@ -217,7 +218,7 @@ fn run(app: &AppHandle, apply: bool) -> Result<(), String> {
     let diagnostic = diagnostics.join().unwrap_or_default();
     if let Some(error) = pipe_error { return Err(format!("安装进度通道中断：{error} {diagnostic}")); }
     let record = outcome.ok_or_else(|| format!("安装进程未返回结果（{exit}）：{diagnostic}"))?;
-    let host = app.state::<ResourceAssistant>(); let mut job = host.0.lock().unwrap();
+    let host = app.state::<ResourceAssistant>(); let mut job = host.0.recover_lock();
     job.input.take(); job.busy = false;
     job.staging = if record["canResume"] == true { record["staging"].as_str().map(str::to_owned) } else { None };
     let success = exit.success() && record["error"].is_null() && record["result"]["ok"] == true
@@ -235,7 +236,7 @@ fn run(app: &AppHandle, apply: bool) -> Result<(), String> {
 }
 #[tauri::command]
 pub fn resource_assistant_finish(app: AppHandle) -> Result<(), String> {
-    let host = app.state::<ResourceAssistant>(); let job = host.0.lock().unwrap();
+    let host = app.state::<ResourceAssistant>(); let job = host.0.recover_lock();
     if job.busy { return Err("请等待安装或取消完成。".into()); }
     if job.paused {
         let state = app.state::<AppState>();

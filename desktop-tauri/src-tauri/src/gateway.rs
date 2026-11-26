@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpListener, TcpStream, ToSocketAddrs};
 use std::process::{Child, Command, Stdio};
@@ -22,6 +23,7 @@ const MAX_HEALTH_RESPONSE_BYTES: usize = 16 * 1024;
 const STARTUP_TIMEOUT: Duration = Duration::from_secs(20);
 const HEALTH_TIMEOUT: Duration = Duration::from_millis(1200);
 const STARTUP_PROBE_INTERVAL: Duration = Duration::from_millis(80);
+const STARTUP_FALLBACK_INTERVAL: Duration = Duration::from_millis(400);
 
 #[derive(Debug, Clone)]
 pub struct GatewayHealth {
@@ -154,28 +156,34 @@ impl GatewaySupervisor {
         }
     }
     pub fn base_url(&self) -> String {
-        let port = *self.active_port.lock().unwrap();
+        let port = *self.active_port.recover_lock();
         format!("http://{GATEWAY_HOST}:{port}")
     }
 
     pub fn port(&self) -> u16 {
-        *self.active_port.lock().unwrap()
+        *self.active_port.recover_lock()
     }
 
     pub fn owns_gateway(&self) -> bool {
         self.owned.load(Ordering::Relaxed)
     }
 
+    pub fn owned_child_exited(&self) -> bool {
+        let mut child = self.child.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+        self.owns_gateway() && child.as_mut()
+            .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))))
+    }
+
     pub fn host_request(&self, payload: serde_json::Value) -> Result<Option<GatewayHostResponse>, String> {
         let generation = self.stop_generation.load(Ordering::SeqCst);
-        let Some(secret) = self.identity_token.lock().unwrap().clone() else { return Ok(None); };
+        let Some(secret) = self.identity_token.recover_lock().clone() else { return Ok(None); };
         let origin = self.base_url();
         let owned = self.owns_gateway();
         let is_current = || {
             !self.stopping.load(Ordering::SeqCst)
                 && self.stop_generation.load(Ordering::SeqCst) == generation
                 && self.base_url() == origin
-                && self.identity_token.lock().unwrap().as_ref() == Some(&secret)
+                && self.identity_token.recover_lock().as_ref() == Some(&secret)
                 && self.owns_gateway() == owned
         };
         if !is_current() { return Ok(None); }
@@ -206,7 +214,7 @@ impl GatewaySupervisor {
     }
 
     async fn probe_health(&self, connect_timeout: Duration) -> bool {
-        let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
+        let Some(token) = self.identity_token.recover_lock().clone() else { return false; };
         let base = self.base_url();
         let generation = self.stop_generation.load(Ordering::SeqCst);
         let (target, secret) = (base.clone(), token.clone());
@@ -215,7 +223,7 @@ impl GatewaySupervisor {
         // A probe from before stop/restart cannot authenticate the replacement.
         if self.stop_generation.load(Ordering::SeqCst) != generation
             || self.base_url() != base
-            || self.identity_token.lock().unwrap().as_ref() != Some(&token) {
+            || self.identity_token.recover_lock().as_ref() != Some(&token) {
             return false;
         }
         self.authenticated.store(healthy, Ordering::SeqCst);
@@ -223,7 +231,7 @@ impl GatewaySupervisor {
     }
 
     fn check_authenticated_health(&self) -> bool {
-        let Some(token) = self.identity_token.lock().unwrap().clone() else { return false; };
+        let Some(token) = self.identity_token.recover_lock().clone() else { return false; };
         authenticated_health(&self.base_url(), &token, HEALTH_TIMEOUT)
     }
 
@@ -235,7 +243,7 @@ impl GatewaySupervisor {
         if !self.runtime_path.is_absolute() || !self.runtime_path.is_file() {
             return Err(format!("Rust runtime executable is missing or not absolute: {}", self.runtime_path.display()));
         }
-        if self.identity_token.lock().unwrap().as_ref().is_some_and(|token| !identity::valid_secret(token)) {
+        if self.identity_token.recover_lock().as_ref().is_some_and(|token| !identity::valid_secret(token)) {
             return Err("AICS_DESKTOP_ATTACH_TOKEN must be exactly 64 lowercase hexadecimal characters".into());
         }
         let generation = self.stop_generation.load(Ordering::SeqCst);
@@ -245,7 +253,7 @@ impl GatewaySupervisor {
             return Err("Gateway start cancelled".into());
         }
         if healthy {
-            *self.authenticated_port.lock().unwrap() = Some(self.port());
+            *self.authenticated_port.recover_lock() = Some(self.port());
             return Ok(self.base_url());
         }
         // A failed health check on an owned instance is a restart, not an
@@ -260,23 +268,24 @@ impl GatewaySupervisor {
                 (self.on_output)("host", "Recovered workspace ownership after confirmed process exit");
             }
         }
-        let current = *self.active_port.lock().unwrap();
+        let current = *self.active_port.recover_lock();
         if !is_port_available(GATEWAY_HOST, current) {
             let bundled = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_BUNDLED_UI" && value == "1");
             let preserve = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_PRESERVE_ORIGIN" && value == "1");
-            if !bundled && (self.authenticated_port.lock().unwrap().is_some() || preserve) {
+            if !bundled && (self.authenticated_port.recover_lock().is_some() || preserve) {
                 return Err("Legacy profile origin is occupied; close the conflicting service before migration".into());
             }
             let next = find_available_port(GATEWAY_HOST, current.saturating_add(1), 32)
                 .ok_or("No available desktop gateway port")?;
-            *self.active_port.lock().unwrap() = next;
+            *self.active_port.recover_lock() = next;
         }
 
         let port = self.port();
         let token = identity::random_secret()?;
-        *self.identity_token.lock().unwrap() = Some(token.clone());
+        *self.identity_token.recover_lock() = Some(token.clone());
 
         let mut command = Command::new(&self.runtime_path);
+        let (ready_sender, mut ready_receiver) = tokio::sync::oneshot::channel();
 
         command
             .arg("--app-root").arg(&self.cwd)
@@ -302,7 +311,7 @@ impl GatewaySupervisor {
         // Register ownership before authorizing runtime initialization. Exit
         // takes this same slot, so no startup child can escape reap_child.
         {
-            let mut slot = self.child.lock().unwrap();
+            let mut slot = self.child.recover_lock();
             if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
                 return Err("Gateway start cancelled".into());
             }
@@ -332,55 +341,63 @@ impl GatewaySupervisor {
             }
 
             if let Some(stdout) = child.process.stdout.take() {
-                pipe_output(stdout, "stdout", self.on_output.clone());
+                pipe_output(stdout, "stdout", self.on_output.clone(), Some((self.base_url(), ready_sender)));
             }
             if let Some(stderr) = child.process.stderr.take() {
-                pipe_output(stderr, "stderr", self.on_output.clone());
+                pipe_output(stderr, "stderr", self.on_output.clone(), None);
             }
         }
 
         let started_at = Instant::now();
+        let mut waiting_for_signal = true;
         loop {
+            if waiting_for_signal {
+                if tokio::time::timeout(STARTUP_FALLBACK_INTERVAL, &mut ready_receiver).await.is_ok() {
+                    waiting_for_signal = false;
+                }
+            } else {
+                tokio::time::sleep(STARTUP_PROBE_INTERVAL).await;
+            }
             if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
                 self.reap_child();
                 return Err("Gateway start cancelled".into());
             }
-            let exited = self.child.lock().unwrap().as_mut()
+            let exited = self.child.recover_lock().as_mut()
                 .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))));
             if exited {
                 // 网关提前退出
                 let _ = self.stop().await;
                 return Err("Gateway exited during startup".into());
             }
-            // A cold child may not have bound the port yet. Retry the connection
-            // promptly, but give an accepted request its full authentication deadline.
+            // The pipe wakes this probe as soon as the child serves its router.
+            // Older children still work through periodic, authenticated probes.
+            // A ready record never grants authority on its own.
             if self.probe_health(STARTUP_PROBE_INTERVAL).await {
-                let slot = self.child.lock().unwrap();
+                let slot = self.child.recover_lock();
                 if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
                     drop(slot);
                     self.reap_child();
                     return Err("Gateway start cancelled".into());
                 }
-                *self.authenticated_port.lock().unwrap() = Some(port);
+                *self.authenticated_port.recover_lock() = Some(port);
                 return Ok(self.base_url());
             }
             if started_at.elapsed() > STARTUP_TIMEOUT {
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
             }
-            tokio::time::sleep(STARTUP_PROBE_INTERVAL).await;
         }
     }
 
     fn reap_child(&self) {
         self.authenticated.store(false, Ordering::SeqCst);
-        let child = self.child.lock().unwrap().take();
+        let child = self.child.recover_lock().take();
         self.owned.store(false, Ordering::Relaxed);
         if let Some(mut child) = child {
             let config = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_CONFIG_ROOT")
                 .map(|(_, value)| std::path::PathBuf::from(value));
             let snapshot = config.as_ref().and_then(|root| host::owner_snapshot(root, child.process.id()));
-            if let (Some(profile), Some(secret)) = (self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID"), self.identity_token.lock().unwrap().clone()) {
+            if let (Some(profile), Some(secret)) = (self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID"), self.identity_token.recover_lock().clone()) {
                 let _ = host::request(&self.base_url(), &secret, serde_json::json!({
                     "action": "shutdown", "windowId": "atelier", "origin": self.base_url(), "sourceProfileId": profile.1,
                 }));
@@ -406,7 +423,7 @@ impl GatewaySupervisor {
         self.stopping.store(true, Ordering::SeqCst);
         let _start_guard = self.start_lock.lock().await;
         self.stop_generation.fetch_add(1, Ordering::SeqCst);
-        let mut slot = self.child.lock().unwrap();
+        let mut slot = self.child.recover_lock();
         if let Some(child) = slot.as_mut() {
             if child.process.try_wait().map_err(|_| "MAINTENANCE_CHILD_WAIT")?.is_none() {
                 return Err("MAINTENANCE_CHILD_RUNNING".into());
@@ -421,14 +438,14 @@ impl GatewaySupervisor {
         let _start_guard = self.start_lock.lock().await;
         self.stop_generation.fetch_add(1, Ordering::SeqCst);
         if !self.owns_gateway() { return Err("MAINTENANCE_REQUIRES_OWNED_GATEWAY".into()); }
-        let secret = self.identity_token.lock().unwrap().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
+        let secret = self.identity_token.recover_lock().clone().ok_or("HOST_IDENTITY_UNAVAILABLE")?;
         let profile = self.env.iter().find(|(key, _)| key == "AICS_DESKTOP_SOURCE_PROFILE_ID").ok_or("HOST_PROFILE_UNAVAILABLE")?;
         if !self.is_healthy_async().await { return Err("HOST_IDENTITY_UNAVAILABLE".into()); }
         let drained = host::request(&self.base_url(), &secret, serde_json::json!({
             "action":"shutdown", "windowId":"atelier", "origin":self.base_url(), "sourceProfileId":profile.1,
         }))?;
         if drained["closed"] != true { return Err("MAINTENANCE_DRAIN_UNCONFIRMED".into()); }
-        let mut slot = self.child.lock().unwrap();
+        let mut slot = self.child.recover_lock();
         let child = slot.as_mut().ok_or("MAINTENANCE_CHILD_MISSING")?;
         // The retained Child handle proves ownership. The gateway has finished
         // durable writes and released its lease before this process is reaped.
@@ -481,6 +498,7 @@ fn pipe_output<R: Read + Send + 'static>(
     reader: R,
     stream: &'static str,
     on_output: Arc<dyn Fn(&str, &str) + Send + Sync>,
+    mut ready: Option<(String, tokio::sync::oneshot::Sender<()>)>,
 ) {
     std::thread::spawn(move || {
         let mut reader = BufReader::new(reader);
@@ -490,7 +508,19 @@ fn pipe_output<R: Read + Send + 'static>(
             // A single log record can arrive in several pipe reads. Bound lines from native tools.
             match reader.by_ref().take(16 * 1024).read_until(b'\n', &mut line) {
                 Ok(0) => break,
-                Ok(_) => on_output(stream, &String::from_utf8_lossy(&line)),
+                Ok(_) => {
+                    if ready.as_ref().is_some_and(|(origin, _)| {
+                        serde_json::from_slice::<serde_json::Value>(&line).is_ok_and(|value| {
+                            value["event"] == "ready" && value["runtime"] == "rust"
+                                && value["candidate"] == true && value["origin"].as_str() == Some(origin)
+                        })
+                    }) {
+                        if let Some((_, signal)) = ready.take() {
+                            let _ = signal.send(());
+                        }
+                    }
+                    on_output(stream, &String::from_utf8_lossy(&line));
+                }
                 Err(_) => break,
             }
         }

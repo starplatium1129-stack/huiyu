@@ -1,5 +1,5 @@
 <template>
-  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar" @dragover="cardImport.dragOver" @drop="cardImport.drop">
+  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar" @dragover="cardImport.dragOver" @drop="dropRoomFiles">
     <h1 class="sr-only">角色聊天</h1>
     <input v-if="isLocalHost" ref="cardFile" type="file" accept=".json,.png" multiple hidden @change="cardImport.choose" />
     <Teleport to="body">
@@ -251,6 +251,9 @@ import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useChatHistoryWindow } from '@/composables/chat/useChatHistoryWindow'
 import { useChatCardImport } from '@/composables/chat/useChatCardImport'
+import { pendingDesktopFileAction, takeDesktopFiles } from '@/composables/useDesktopFileDrop'
+import { getDesktopWindowRole } from '@/platform/desktop/runtime'
+import { useRoute } from 'vue-router'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, provide, ref, watch } from 'vue'
@@ -481,6 +484,15 @@ const cardFile = ref<HTMLInputElement>()
 const allowCardImport = () => isLocalHost.value && !busy.value && !storyBusy.value && !chatMutationBusy.value && !storage.writeBlocked.value
 const cardImport = useChatCardImport(allowCardImport, () => activeChar.value, switchCharacter, setError)
 const cardImportLocked = computed(() => !allowCardImport() || cardImport.pending.value)
+const dropRoute = useRoute()
+function dropRoomFiles(event: DragEvent) {
+  if (!event.defaultPrevented && getDesktopWindowRole() !== 'atelier') cardImport.drop(event)
+}
+watch([pendingDesktopFileAction, cardImportLocked, () => dropRoute.path], ([action, locked, path]) => {
+  if (action === 'card' && !locked && path === '/chat' && getDesktopWindowRole() === 'atelier') {
+    void cardImport.importFiles(takeDesktopFiles(action))
+  }
+}, { immediate: true, flush: 'post' })
 const lastUserMessage = computed(() => currentMessages.value.findLast(message => message.role === 'user'))
 const lastAssistantMessage = computed(() => currentMessages.value.findLast(message => message.role === 'assistant'))
 const lastMessage = computed(() => currentMessages.value.at(-1))

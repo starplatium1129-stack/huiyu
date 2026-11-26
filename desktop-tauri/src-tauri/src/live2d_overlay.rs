@@ -1,5 +1,6 @@
 //! Tauri adapter for the reusable native Live2D renderer.
 
+use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
 use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
@@ -21,13 +22,12 @@ pub fn ensure_overlay(app: &AppHandle, assets_root: std::path::PathBuf) -> Arc<L
 fn start_overlay(app: &AppHandle, assets_root: std::path::PathBuf, prewarm: bool) -> Arc<Live2DOverlayState> {
     let _init_guard = OVERLAY_STATE_INIT
         .get_or_init(|| Mutex::new(()))
-        .lock()
-        .unwrap();
+        .recover_lock();
     let state = if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
         state.inner().clone()
     } else {
         let state = Arc::new(Live2DOverlayState::default());
-        let shown = app.state::<crate::state::AppState>().companion_presentation.lock().unwrap().shown;
+        let shown = app.state::<crate::state::AppState>().companion_presentation.recover_lock().shown;
         state.revealed.store(shown, Ordering::Release);
         app.manage(state.clone());
         state
@@ -87,7 +87,7 @@ async fn send_command_async(
 ) -> Result<(), String> {
     let deadline = Instant::now() + Duration::from_secs(2);
     loop {
-        let tx = state.cmd_tx.lock().unwrap().clone();
+        let tx = state.cmd_tx.recover_lock().clone();
         if let Some(tx) = tx {
             tx.send(cmd)
                 .map_err(|_| "renderer thread disconnected".to_string())?;
@@ -262,7 +262,7 @@ pub async fn aics_live2d_destroy(app: AppHandle) -> Result<(), String> {
     let (tx, rx) = tokio::sync::oneshot::channel();
     send_command(&state, OverlayCommand::Destroy { reply: tx })?;
     let _ = rx.await;
-    if let Some(hwnd) = state.hwnd.lock().unwrap().clone().map(|h| h as HWND) {
+    if let Some(hwnd) = state.hwnd.recover_lock().clone().map(|h| h as HWND) {
         unsafe {
             ShowWindow(hwnd, SW_HIDE);
         }

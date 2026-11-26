@@ -1,0 +1,8 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "clipboard-awareness",
+  "description": "Opt in to clipboard awareness from the atelier or companion settings.",
+  "windows": ["atelier", "companion"],
+  "local": true,
+  "permissions": ["allow-desktop-get-clipboard-awareness", "allow-desktop-set-clipboard-awareness"]
+}

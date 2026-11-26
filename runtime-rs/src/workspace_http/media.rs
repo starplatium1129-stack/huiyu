@@ -10,7 +10,7 @@ use crate::{
 use axum::{
     Json,
     body::{Body, Bytes},
-    http::{HeaderMap, HeaderValue, Method},
+    http::{HeaderMap, HeaderValue, Method, StatusCode, header},
     response::{IntoResponse, Response},
 };
 use futures_util::StreamExt;
@@ -158,6 +158,40 @@ pub(super) async fn download(
         .await
         .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out"))??;
     download_opened(state, storage, method, alias, source)
+}
+
+pub(super) async fn derivative(
+    storage: &Storage,
+    request: &HeaderMap,
+    method: &Method,
+    alias: &str,
+    width: Option<u64>,
+) -> Result<Response> {
+    let image = tokio::time::timeout(Duration::from_secs(30), storage.media_derivative(alias, width))
+        .await
+        .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Artwork derivative timed out"))??
+        .ok_or_else(|| ApiError::new(404, "MEDIA_NOT_FOUND", "Artwork derivative unavailable"))?;
+    let unchanged = request.get_all(header::IF_NONE_MATCH).iter()
+        .filter_map(|value| value.to_str().ok())
+        .flat_map(|value| value.split(','))
+        .map(str::trim)
+        .any(|value| value == "*" || value.strip_prefix("W/").unwrap_or(value) == image.etag);
+    let etag = HeaderValue::from_str(&image.etag)
+        .map_err(|_| ApiError::new(500, "MEDIA_INVALID", "Artwork derivative digest is invalid"))?;
+    let mut response = if unchanged {
+        StatusCode::NOT_MODIFIED.into_response()
+    } else {
+        let length = image.bytes.len();
+        let mut response = if *method == Method::HEAD { Body::empty() } else { Body::from(image.bytes) }
+            .into_response();
+        response.headers_mut().insert(header::CONTENT_TYPE, HeaderValue::from_static(image.mime));
+        response.headers_mut().insert(header::CONTENT_LENGTH, HeaderValue::from(length));
+        response
+    };
+    let headers = response.headers_mut();
+    headers.insert(header::ETAG, etag);
+    headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("private, no-cache, must-revalidate"));
+    Ok(response)
 }
 
 pub(crate) fn download_opened(

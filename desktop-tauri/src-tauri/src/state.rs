@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::sync::atomic::AtomicBool;
 use std::sync::Mutex;
 
@@ -7,6 +8,7 @@ use crate::window_state::CompanionPreferences;
 pub struct AppState {
     pub paths: DesktopPaths,
     pub gateway_url: Mutex<String>,
+    pub gateway_recovery: crate::gateway_monitor::Recovery,
     pub ignore_mouse_events: AtomicBool,
     pub quitting: AtomicBool,
     pub startup_dispatched: AtomicBool,
@@ -26,6 +28,7 @@ impl AppState {
         Self {
             paths,
             gateway_url: Mutex::new(String::new()),
+            gateway_recovery: crate::gateway_monitor::Recovery::default(),
             ignore_mouse_events: AtomicBool::new(preferences.ignore_mouse_events),
             quitting: AtomicBool::new(false),
             startup_dispatched: AtomicBool::new(false),
@@ -39,7 +42,7 @@ impl AppState {
     }
 
     pub fn save_preferences(&self) {
-        let prefs = self.preferences.lock().unwrap();
+        let prefs = self.preferences.recover_lock();
         if !crate::window_state::save_companion_preferences(&self.paths.preferences_file, &prefs) {
             self.warn("could not save companion preferences");
         }

@@ -1,5 +1,6 @@
 //! JSONL acceptance host, available only in an explicitly isolated PoC process.
 //! Uses the same supervisor and job as Tauri; it is never a WebView capability.
+use crate::mutex::RecoverMutex;
 use std::io::{BufReader, Write};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -23,7 +24,7 @@ struct ProbeRequest {
 type Output = Arc<Mutex<std::io::Stdout>>;
 
 fn write(output: &Output, message: Value) {
-    let mut output = output.lock().unwrap();
+    let mut output = output.recover_lock();
     if serde_json::to_writer(&mut *output, &message).is_ok() {
         let _ = output.write_all(b"\n").and_then(|_| output.flush());
     }

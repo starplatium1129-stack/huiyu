@@ -5,7 +5,8 @@ use tokio_util::sync::CancellationToken;
 
 pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
-    if args.iter().any(|arg| arg == "--desktop-owned") {
+    let desktop_owned = args.iter().any(|arg| arg == "--desktop-owned");
+    if desktop_owned {
         use std::io::Read;
         // Do not initialize services before the desktop attaches its Windows
         // Job Object. If the desktop exits during spawn/attach, stdin is EOF.
@@ -183,6 +184,11 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         "{}",
         serde_json::json!({"event":"ready","origin":state.config.gateway_origin,"runtime":"rust","candidate":true})
     );
+    if desktop_owned {
+        // The parent wakes its authenticated handshake from this exact child
+        // pipe. Leave the periodic probe available if stdout has already closed.
+        let _ = std::io::Write::flush(&mut std::io::stdout());
+    }
     let signal = shutdown.clone();
     let host = state.host.clone();
     // Interactive JSON and token streams must not wait for Nagle's batch timer.

@@ -30,6 +30,12 @@ export interface TrashEntry {
 }
 export type ArtworkTrashSelection = Pick<TrashEntry, 'id' | 'deletedAt'>
 
+export interface ArtworkDerivativeLease {
+  url: string
+  bytes: number
+  release(): void
+}
+
 /** Business capabilities shared by the Web library and the future desktop authority. */
 export interface ArtworkRepository {
   readHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
@@ -58,6 +64,9 @@ export interface ArtworkRepository {
   getThumbnail(id: string): Promise<string | null>
   /** Persistent display-sized derivatives, when supported by the authority. */
   getPreview?(id: string, width: number, signal?: AbortSignal): Promise<string | null>
+  /** The consumer releases its share of the image URL once the image is retired. */
+  getImageDerivative?(id: string, width?: number, signal?: AbortSignal): Promise<ArtworkDerivativeLease | null>
+  clearImageDerivatives?(): void
   setThumbnail(id: string, dataUrl: string): Promise<void>
   cacheThumbnail(id: string, blob: Blob): Promise<void>
   withStaging<T>(work: () => Promise<T>): Promise<T>

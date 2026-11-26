@@ -226,6 +226,6 @@ pub(in crate::storage) fn finish(c: &mut Context, id: String, outcome: Result<Ou
     }
     let pending = c.migration_verification.take().unwrap();
     c.cancel = pending.identity.cancel.clone();
-    let result = (|| pending.commit(c, &outcome?))();
+    let result = c.durable(|c| pending.commit(c, &outcome?));
     let _ = pending.reply.send(result);
 }

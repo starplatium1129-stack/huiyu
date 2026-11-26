@@ -1,0 +1,20 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "atelier-recovery",
+  "description": "Update, recovery, and diagnostic commands for the authenticated atelier window.",
+  "windows": ["atelier"],
+  "local": true,
+  "permissions": [
+    "allow-desktop-update-check",
+    "allow-desktop-update-state",
+    "allow-desktop-update-install",
+    "allow-desktop-update-cancel",
+    "allow-desktop-update-reminder",
+    "allow-desktop-update-release-page",
+    "allow-desktop-gateway-recovery",
+    "allow-desktop-gateway-retry",
+    "allow-desktop-export-diagnostics",
+    "allow-desktop-live2d-isolation",
+    "allow-desktop-set-live2d-isolation"
+  ]
+}

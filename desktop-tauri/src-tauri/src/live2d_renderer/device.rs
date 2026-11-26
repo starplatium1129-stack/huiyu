@@ -158,6 +158,7 @@ impl RenderContext {
     pub(super) fn reset_surface(&mut self) {
         self.surface = None;
         self.renderer = None;
+        self.alpha_readback = None;
         self.last_rect = OverlayRect::default();
         self.surface_failures = 0;
         self.surface_recoveries += 1;

@@ -15,6 +15,17 @@ fn window_role(label: &str) -> Result<WindowRole, String> {
     }
 }
 
+pub(crate) fn require_atelier(window: &WebviewWindow) -> Result<(), String> {
+    if window_role(window.label())? != WindowRole::Atelier {
+        return Err("HOST_ROLE_DENIED".into());
+    }
+    let url = window.url().map_err(|_| "BOOTSTRAP_ORIGIN_DENIED")?;
+    if !crate::main_shared::is_gateway_origin(window.app_handle(), &url) {
+        return Err("BOOTSTRAP_ORIGIN_DENIED".into());
+    }
+    Ok(())
+}
+
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RuntimeDescriptor {

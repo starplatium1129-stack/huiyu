@@ -1,18 +1,21 @@
 import { shallowRef } from 'vue'
+import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository'
 
 const CACHE_LIMIT = 96
 const CACHE_BYTES = 8 * 1024 * 1024
 
-/** Derived DataURLs only. Originals and viewer URLs keep their existing owners. */
+/** The wall owns one lease per displayed thumbnail. */
 export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
   // Raw null-prototype snapshots support even Vue-reserved legacy IDs and
   // publish a new identity to child stages receiving the whole URL dictionary.
   const urls = shallowRef<Record<string, string>>(Object.create(null))
-  const order = new Map<string, number>()
+  const order = new Map<string, { bytes: number; lease?: ArtworkDerivativeLease }>()
   let bytes = 0
   function forget(id: string | number) {
     const key = String(id)
-    bytes -= order.get(key) ?? 0
+    const entry = order.get(key)
+    bytes -= entry?.bytes ?? 0
+    entry?.lease?.release()
     order.delete(key)
     if (Object.hasOwn(urls.value, key)) {
       const next = Object.assign(Object.create(null), urls.value)
@@ -28,12 +31,14 @@ export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
       if (!protectedKeys.has(key)) forget(key)
     }
   }
-  function remember(id: string | number, dataUrl: string) {
-    const key = String(id), size = (key.length + dataUrl.length) * 2
+  function remember(id: string | number, source: string | ArtworkDerivativeLease) {
+    const lease = typeof source === 'string' ? undefined : source
+    const url = typeof source === 'string' ? source : source.url
+    const key = String(id), size = key.length * 2 + (lease?.bytes ?? url.length * 2)
     forget(key)
-    if (size > CACHE_BYTES) return
-    urls.value = Object.assign(Object.create(null), urls.value, { [key]: dataUrl })
-    order.set(key, size); bytes += size
+    if (size > CACHE_BYTES) { lease?.release(); return }
+    urls.value = Object.assign(Object.create(null), urls.value, { [key]: url })
+    order.set(key, { bytes: size, lease }); bytes += size
     trim()
   }
   function retain(ids: ReadonlySet<string>) {

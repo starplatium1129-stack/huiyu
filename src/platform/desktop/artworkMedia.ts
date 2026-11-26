@@ -1,24 +1,87 @@
 import { blobThumbDataUrl } from '../../utils/imageThumb.ts'
-import { desktopRuntimeFetch, getDesktopRuntime } from './runtime.ts'
+import type { ArtworkDerivativeLease } from '../../application/artwork/artworkRepository.ts'
+import { desktopRuntimeFetch, desktopRuntimeIdentity } from './runtime.ts'
 import { rememberWorkspaceMedia, workspaceMediaAuthority } from './workspaceMediaSource.ts'
 
 // Count keys and strings conservatively as UTF-16, retaining only recent pages.
 const THUMBNAIL_CACHE_LIMIT = 96
 const THUMBNAIL_CACHE_BYTES = 8 * 1024 * 1024
 
+interface SharedRead<T> {
+  controller: AbortController
+  promise: Promise<T>
+  readers: number
+}
+
+interface Derivative {
+  blob: Blob
+  url: string
+  readers: number
+}
+
+function readShared<T>(reads: Map<string, SharedRead<T>>, key: string,
+  read: (signal: AbortSignal) => Promise<T>, signal?: AbortSignal): Promise<T> {
+  signal?.throwIfAborted()
+  let entry = reads.get(key)
+  if (!entry) {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(new DOMException('作品读取超时', 'TimeoutError')), 35_000)
+    const cleanup = () => {
+      clearTimeout(timer)
+      if (reads.get(key)?.controller === controller) reads.delete(key)
+    }
+    controller.signal.addEventListener('abort', cleanup, { once: true })
+    entry = { controller, readers: 0, promise: read(controller.signal).finally(() => {
+      cleanup()
+      controller.signal.removeEventListener('abort', cleanup)
+    }) }
+    reads.set(key, entry)
+  }
+  const pending = entry
+  pending.readers++
+  return new Promise<T>((resolve, reject) => {
+    let settled = false
+    const release = () => {
+      if (settled) return false
+      settled = true
+      signal?.removeEventListener('abort', abort)
+      pending.controller.signal.removeEventListener('abort', cancelled)
+      if (--pending.readers === 0 && reads.get(key) === pending) pending.controller.abort()
+      return true
+    }
+    const abort = () => { if (release()) reject(signal?.reason) }
+    const cancelled = () => { if (release()) reject(pending.controller.signal.reason) }
+    signal?.addEventListener('abort', abort, { once: true })
+    pending.controller.signal.addEventListener('abort', cancelled, { once: true })
+    pending.promise.then(value => { if (release()) resolve(value) }, error => { if (release()) reject(error) })
+  })
+}
+
 /** Desktop thumbnails are derived in the workspace, so cold gallery visits never
  * download originals just to create previews. Original reads only share in-flight
  * work: resolved large blobs remain owned and released by their callers. */
 export function createDesktopArtworkMedia(requireAuthority: () => void, readThumbnail: (id: string) => Promise<string | null>) {
-  const images = new Map<string, { controller: AbortController; promise: Promise<Blob | null>; readers: number }>()
+  const images = new Map<string, SharedRead<Blob | null>>()
+  const derivativeReads = new Map<string, SharedRead<Derivative | null>>()
+  const derivatives = new Map<string, Derivative>()
   const pendingThumbnails = new Map<string, Promise<string | null>>()
   const renderingThumbnails = new Map<string, object>()
   const thumbnails = new Map<string, string>()
   let thumbnailBytes = 0
+  let mediaAuthority = desktopRuntimeIdentity()
   function key(id: string) {
     requireAuthority()
-    const runtime = getDesktopRuntime().bootstrap?.runtime
-    return JSON.stringify([runtime?.runtimeEpoch, runtime?.workspace?.generation, id])
+    const authority = desktopRuntimeIdentity()
+    if (authority !== mediaAuthority) {
+      mediaAuthority = authority
+      clearImageDerivatives()
+      thumbnails.clear()
+      thumbnailBytes = 0
+      pendingThumbnails.clear()
+      renderingThumbnails.clear()
+      for (const pending of images.values()) pending.controller.abort()
+    }
+    return JSON.stringify([authority, id])
   }
   function forget(identity: string) {
     const previous = thumbnails.get(identity)
@@ -38,6 +101,71 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
     forget(identity)
     pendingThumbnails.delete(identity)
     renderingThumbnails.delete(identity)
+    const prefix = identity + '/'
+    for (const key of derivatives.keys()) if (key.startsWith(prefix)) derivatives.delete(key)
+    for (const [key, pending] of derivativeReads) if (key.startsWith(prefix)) pending.controller.abort()
+  }
+  function clearImageDerivatives() {
+    derivatives.clear()
+    for (const pending of derivativeReads.values()) pending.controller.abort()
+  }
+  function trimDerivatives() {
+    let bytes = 0
+    for (const entry of derivatives.values()) bytes += entry.blob.size
+    for (const [identity, entry] of derivatives) {
+      if (derivatives.size <= THUMBNAIL_CACHE_LIMIT && bytes <= THUMBNAIL_CACHE_BYTES) break
+      if (entry.readers > 0) continue
+      derivatives.delete(identity)
+      bytes -= entry.blob.size
+    }
+  }
+
+  async function getImageDerivative(id: string, width?: number, signal?: AbortSignal): Promise<ArtworkDerivativeLease | null> {
+    signal?.throwIfAborted()
+    if (width !== undefined && (!Number.isSafeInteger(width) || width < 1 || width > 8192)) throw new Error('作品预览宽度无效')
+    const authority = key(id)
+    const variant = width === undefined ? 0 : [560, 1120, 1680, 2240, 3360, 4480, 8192].find(bucket => bucket >= width) ?? 8192
+    const identity = authority + '/' + variant
+    const entry = derivatives.get(identity) ?? await readShared(derivativeReads, identity, async readSignal => {
+      const path = '/api/workspace/media/' + encodeURIComponent(id) + '/derivative'
+      const response = await desktopRuntimeFetch(variant ? path + '?width=' + variant : path, { signal: readSignal, cache: 'no-cache' })
+      try {
+        if (response.status === 404) return null
+        if (!response.ok) throw new Error('作品预览读取未完成')
+        const mime = response.headers.get('content-type')
+        if (mime !== 'image/jpeg' && mime !== 'image/webp') throw new Error('作品预览格式无效')
+        const blob = await response.blob()
+        readSignal.throwIfAborted()
+        if (blob.type !== mime || !blob.size) throw new Error('作品预览内容不完整')
+        const value = { blob, url: '', readers: 0 }
+        derivatives.set(identity, value)
+        return value
+      } finally {
+        if (!response.bodyUsed) await response.body?.cancel().catch(() => {})
+      }
+    }, signal)
+    signal?.throwIfAborted()
+    if (key(id) !== authority) throw new Error('作品库连接已变化，请重新读取')
+    if (!entry || derivatives.get(identity) !== entry) return null
+    const current = entry
+    derivatives.delete(identity)
+    derivatives.set(identity, current)
+    current.url ||= URL.createObjectURL(current.blob)
+    current.readers++
+    trimDerivatives()
+    let released = false
+    return {
+      url: current.url,
+      bytes: current.blob.size,
+      release() {
+        if (released) return
+        released = true
+        if (--current.readers > 0) return
+        URL.revokeObjectURL(current.url)
+        current.url = ''
+        trimDerivatives()
+      },
+    }
   }
   async function fetchImage(id: string, signal: AbortSignal): Promise<Blob | null> {
     signal.throwIfAborted()
@@ -68,48 +196,10 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
   async function getImage(id: string, signal?: AbortSignal): Promise<Blob | null> {
     signal?.throwIfAborted()
     const identity = key(id)
-    let pending = images.get(identity)
-    if (!pending) {
-      const controller = new AbortController()
-      const timer = setTimeout(() => controller.abort(new DOMException('作品原图读取超时', 'TimeoutError')), 35_000)
-      const entry = { controller, readers: 0, promise: Promise.resolve<Blob | null>(null) }
-      const cleanup = () => {
-        clearTimeout(timer)
-        if (images.get(identity) === entry) images.delete(identity)
-      }
-      controller.signal.addEventListener('abort', cleanup, { once: true })
-      entry.promise = fetchImage(id, controller.signal).finally(() => {
-        cleanup()
-        controller.signal.removeEventListener('abort', cleanup)
-      })
-      pending = entry
-      images.set(identity, pending)
-    }
-    const entry = pending
-    entry.readers++
-    return new Promise<Blob | null>((resolve, reject) => {
-      let settled = false
-      const finish = (error?: unknown, value?: Blob | null) => {
-        if (settled) return
-        settled = true
-        signal?.removeEventListener('abort', cancel)
-        entry.controller.signal.removeEventListener('abort', abort)
-        if (--entry.readers === 0 && images.get(identity) === entry) entry.controller.abort()
-        if (error !== undefined) reject(error)
-        else resolve(value ?? null)
-      }
-      const cancel = () => finish(signal?.reason)
-      const abort = () => finish(entry.controller.signal.reason)
-      signal?.addEventListener('abort', cancel, { once: true })
-      entry.controller.signal.addEventListener('abort', abort, { once: true })
-      entry.promise.then(value => {
-        if (settled) return
-        try {
-          if (key(id) !== identity) throw new Error('作品库连接已变化，请重新读取')
-          finish(undefined, value)
-        } catch (error) { finish(error) }
-      }, error => finish(error))
-    })
+    const value = await readShared(images, identity, readSignal => fetchImage(id, readSignal), signal)
+    signal?.throwIfAborted()
+    if (key(id) !== identity) throw new Error('作品库连接已变化，请重新读取')
+    return value
   }
   async function getThumbnail(id: string): Promise<string | null> {
     const identity = key(id)
@@ -146,5 +236,5 @@ export function createDesktopArtworkMedia(requireAuthority: () => void, readThum
       if (value && renderingThumbnails.get(identity) === rendering && key(id) === identity) remember(identity, value)
     } finally { if (renderingThumbnails.get(identity) === rendering) renderingThumbnails.delete(identity) }
   }
-  return { getImage, getThumbnail, setThumbnail, cacheThumbnail, forgetThumbnail }
+  return { getImage, getImageDerivative, clearImageDerivatives, getThumbnail, setThumbnail, cacheThumbnail, forgetThumbnail }
 }

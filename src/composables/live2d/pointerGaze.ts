@@ -12,7 +12,7 @@ export function createPointerGazeController(ctx: Live2DCtx) {
   let pendingPointer: { x: number; y: number; global: boolean; token: number } | null = null
 
   function queuePointer(x: number, y: number, global: boolean) {
-    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
+    if (ctx.session?.kind === 'native' || !ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
     // High-rate pointer devices can deliver many events per rendered frame.
     // Measure the stage once, using the latest coordinates at frame time.
     pendingPointer = { x, y, global, token: ctx.lifecycleToken }
@@ -30,7 +30,7 @@ export function createPointerGazeController(ctx: Live2DCtx) {
   }
 
   function schedule() {
-    if (ctx.frames.gaze || !ctx.ready.value || !ctx.model || isStageHidden(ctx) || prefersReducedMotion()) return
+    if (ctx.session?.kind === 'native' || ctx.frames.gaze || !ctx.ready.value || !ctx.model || isStageHidden(ctx) || prefersReducedMotion()) return
     ctx.gaze.lastFrame = performance.now()
     ctx.frames.gaze = window.requestAnimationFrame(runFrame)
   }
@@ -39,7 +39,7 @@ export function createPointerGazeController(ctx: Live2DCtx) {
     ctx.frames.gaze = 0
     const pointer = pendingPointer
     pendingPointer = null
-    if (!ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
+    if (ctx.session?.kind === 'native' || !ctx.ready.value || !ctx.model || ctx.destroyed.value || isStageHidden(ctx) || prefersReducedMotion()) return
     if (pointer && pointer.token === ctx.lifecycleToken) {
       const rect = ctx.stageEl?.getBoundingClientRect()
       if (rect?.width && rect.height) {
@@ -69,7 +69,6 @@ export function createPointerGazeController(ctx: Live2DCtx) {
         (1 - ctx.gaze.currentY) * 0.5 * screen.height,
       )
     }
-    ctx.session?.sendGaze?.(ctx.gaze.currentX, ctx.gaze.currentY)
     if (ctx.stageEl) {
       ctx.stageEl.dataset.pointerFocus = ctx.gaze.active ? ctx.gaze.kind : 'idle'
       ctx.stageEl.dataset.pointerGazeX = ctx.gaze.currentX.toFixed(3)

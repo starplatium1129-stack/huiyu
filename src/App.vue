@@ -3,7 +3,7 @@
     <DesktopTitleBar v-if="atelierWindow && !isCompanion" />
     <RuntimeConnectionNotice />
     <RouteRecoveryBanner />
-    <DesktopUpdateBanner v-if="desktop && !isCompanion" />
+    <DesktopUpdateBanner v-if="atelierWindow" />
     <div class="route-stage tw:relative tw:grid tw:[align-items:start] tw:min-w-0">
       <p v-if="atelierWindow && !route.matched.length && !routeRecovery" class="startup-route-status" role="status">正在打开画室…</p>
       <RouterView v-slot="{ Component }">
@@ -44,6 +44,9 @@ import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
 import { routeRecovery } from '@/composables/useRouteRecovery'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { useAtelierIdle } from '@/composables/useAtelierIdle'
+import { useDesktopDiagnostics } from '@/composables/useDesktopDiagnostics'
+import { onDesktopShellMenuAction } from '@/platform/desktop/shell'
 
 const route = useRoute()
 const desktop = Boolean(getDesktopCapabilities())
@@ -51,6 +54,8 @@ const desktopWindowRole = desktop ? getDesktopWindowRole() : undefined
 const localStudioHost = isLocalStudioHost()
 const mediaOnboardingMounted = ref(false)
 const atelierWindow = desktopWindowRole === 'atelier'
+const atelierIdle = useAtelierIdle(atelierWindow)
+const diagnostics = atelierWindow ? useDesktopDiagnostics() : undefined
 const confirmation = useConfirmState()
 const ConfirmDialog = defineAsyncComponent(() => import('@/components/ConfirmDialog.vue').catch(error => {
   resolveConfirm(confirmation.value.requestId, false)
@@ -74,11 +79,13 @@ onErrorCaptured((error, instance, info) => {
 const layoutMotion = useRouteTransition()
 let detachDesktopNavigation: (() => void) | undefined
 let detachMediaBootstrap: (() => void) | undefined
+let detachDiagnostics: (() => void) | undefined
 const onOpenMediaOnboarding = () => {
   if (localStudioHost && !isCompanion.value) mediaOnboardingMounted.value = true
 }
 onMounted(() => {
   if (getDesktopCapabilities()) detachDesktopNavigation = onDesktopNavigate(path => { void router.push(path) })
+  if (diagnostics) detachDiagnostics = onDesktopShellMenuAction('export-diagnostics', () => { void diagnostics.exportDiagnostics() })
   if (localStudioHost && !isCompanion.value) {
     window.addEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
     const check = async () => {
@@ -97,6 +104,7 @@ onMounted(() => {
 onUnmounted(() => {
   detachDesktopNavigation?.()
   detachMediaBootstrap?.()
+  detachDiagnostics?.()
   window.removeEventListener('huiyu:media-packs-onboarding', onOpenMediaOnboarding)
 })
 const isCompanion = computed(() => desktopWindowRole === 'companion' || desktopWindowRole === 'companion-chat'
@@ -106,10 +114,10 @@ let stopThumbnailWarmup: (() => void) | undefined
 
 onMounted(() => {
   // Archive preparation belongs to an active gallery, not a cold home visit.
-  watch(() => route.path, async path => {
-    if (path !== '/gallery') { stopThumbnailWarmup?.(); stopThumbnailWarmup = undefined; return }
+  watch([() => route.path, atelierIdle], async ([path, idle]) => {
+    if (path !== '/gallery' || idle) { stopThumbnailWarmup?.(); stopThumbnailWarmup = undefined; return }
     const { startGalleryThumbnailWarmup } = await import('@/utils/galleryThumbnailWarmup')
-    if (route.path === '/gallery' && !stopThumbnailWarmup) stopThumbnailWarmup = startGalleryThumbnailWarmup()
+    if (route.path === '/gallery' && !atelierIdle.value && !stopThumbnailWarmup) stopThumbnailWarmup = startGalleryThumbnailWarmup()
   }, { immediate:true })
   // bfcache（Chromium 后退/前进缓存）恢复时，Vue Router 内部路由可能与地址栏
   // 不同步：组件不重挂载、onMounted 深链不执行，导致「点击场景/卡片后页面

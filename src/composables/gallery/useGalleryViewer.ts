@@ -4,6 +4,8 @@ import { artworkRepository } from '@/storage/artworkRepository'
 import { useOriginalImage } from '../useOriginalImage'
 import type { ArtworkRecord } from '@/types/artwork'
 import { artworkIndexById, safeImageUrl } from './galleryHelpers'
+import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository'
+import { readGalleryDerivative } from './readGalleryDerivative'
 
 /** Gallery owns the image until its enclosing transition actually finishes. */
 export function useGalleryViewer(options: {
@@ -20,6 +22,8 @@ export function useGalleryViewer(options: {
   const viewerLoadFailed = computed(() => Boolean(original.error.value))
   const neighborPreviews = shallowRef<Record<string, string>>(Object.create(null))
   const previewMedia = new Map<string, Pick<ArtworkRecord, 'id' | 'image_id' | 'image_url' | 'image_data'>>()
+  const previewLeases = new Map<string, ArtworkDerivativeLease>()
+  let previewRead = new AbortController()
   const details = shallowRef<ArtworkRecord | null>(null)
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
@@ -29,9 +33,14 @@ export function useGalleryViewer(options: {
   })
   let loadedMedia: ArtworkRecord | null = null
   let disposed = false
+  let mediaSuspended = false
   let previewRevision = 0, navigationRevision = 0
 
   function hydratePreviews() {
+    if (mediaSuspended) return
+    previewRead.abort()
+    previewRead = new AbortController()
+    const signal = previewRead.signal
     const revision = ++previewRevision
     const repository = artworkRepository, session = original.session.value
     const center = artworkIndexById(options.visible.value, viewerItemId.value)
@@ -42,24 +51,30 @@ export function useGalleryViewer(options: {
       const id = String(source.id)
       if (sameArtworkMedia(previewMedia.get(id), source) && neighborPreviews.value[id]) retained[id] = neighborPreviews.value[id]
     }
-    for (const id of previewMedia.keys()) if (!Object.hasOwn(retained, id)) previewMedia.delete(id)
+    for (const id of previewMedia.keys()) if (!Object.hasOwn(retained, id)) {
+      previewMedia.delete(id)
+      previewLeases.get(id)?.release()
+      previewLeases.delete(id)
+    }
     neighborPreviews.value = retained
     for (const source of neighbors) {
       if (retained[source.id]) continue
       const item = { ...source }
       void (async () => {
-        let url = ''
+        let lease: ArtworkDerivativeLease | null = null
         try {
-          const thumbnail = item.image_id ? await repository.getThumbnail(item.image_id) : null
-          if (thumbnail?.startsWith('data:image/')) url = thumbnail
+          lease = item.image_id ? await readGalleryDerivative(repository, item.image_id, undefined, signal) : null
+          if (disposed || viewerIndex.value < 0 || revision !== previewRevision || repository !== artworkRepository
+            || session !== original.session.value || !lease) return
+          const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
+          if (sameArtworkMedia(live, item)) {
+            previewMedia.set(String(item.id), { id: item.id, image_id: item.image_id, image_url: item.image_url, image_data: item.image_data })
+            previewLeases.set(String(item.id), lease)
+            neighborPreviews.value = Object.assign(Object.create(null), neighborPreviews.value, { [item.id]: lease.url })
+            lease = null
+          }
         } catch { /* Missing previews stay empty; neighboring originals are never fetched here. */ }
-        if (disposed || viewerIndex.value < 0 || revision !== previewRevision || repository !== artworkRepository
-          || session !== original.session.value || !url) return
-        const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
-        if (sameArtworkMedia(live, item)) {
-          previewMedia.set(String(item.id), { id: item.id, image_id: item.image_id, image_url: item.image_url, image_data: item.image_data })
-          neighborPreviews.value = Object.assign(Object.create(null), neighborPreviews.value, { [item.id]: url })
-        }
+        finally { lease?.release() }
       })()
     }
   }
@@ -71,6 +86,7 @@ export function useGalleryViewer(options: {
   }
 
   async function hydrate(source: ArtworkRecord, preserve = false) {
+    if (mediaSuspended) return
     let item = { ...source }
     loadedMedia = item
     await original.load({
@@ -116,6 +132,7 @@ export function useGalleryViewer(options: {
   function closeViewer() {
     navigationRevision++; original.stop()
     previewRevision++
+    previewRead.abort()
     viewerIndex.value = -1
     // Keep image, comparison and metadata intact while the surface leaves.
   }
@@ -124,10 +141,30 @@ export function useGalleryViewer(options: {
     // A reversed leave must never clear the image of the reopened viewer.
     if (viewerIndex.value >= 0) return
     viewerItemId.value = null
-    neighborPreviews.value = Object.create(null)
-    previewMedia.clear()
+    releasePreviews()
     releaseImage()
     options.resetControls()
+  }
+
+  function releasePreviews() {
+    previewRevision++
+    previewRead.abort()
+    for (const lease of previewLeases.values()) lease.release()
+    previewLeases.clear()
+    previewMedia.clear()
+    neighborPreviews.value = Object.create(null)
+  }
+
+  function setViewerMediaSuspended(suspended: boolean) {
+    mediaSuspended = suspended
+    if (suspended) {
+      releasePreviews()
+      original.release()
+      loadedMedia = null
+    } else if (!disposed && viewerIndex.value >= 0 && current.value) {
+      void hydrate(current.value)
+      hydratePreviews()
+    }
   }
 
   function step(delta: number) {
@@ -152,5 +189,5 @@ export function useGalleryViewer(options: {
   onDeactivated(dispose)
   onUnmounted(() => { disposed = true; dispose() })
 
-  return { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step, getViewerRevision: () => previewRevision }
+  return { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step, setViewerMediaSuspended, getViewerRevision: () => previewRevision }
 }

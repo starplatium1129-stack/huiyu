@@ -1,5 +1,5 @@
 //! Private parent/renderer protocol. No WebView accepts this command envelope.
-use crate::live2d_renderer::OverlayRect;
+use crate::live2d_renderer::{OverlayRect, PointerHitSample};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -41,7 +41,8 @@ pub enum Command {
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase", deny_unknown_fields)]
-pub enum ChildMessage {
+pub(crate) enum ChildMessage {
     Reply { id: u64, result: Result<Value, String> },
     Event { name: String, payload: Value },
+    PointerHit { sample: Option<PointerHitSample> },
 }

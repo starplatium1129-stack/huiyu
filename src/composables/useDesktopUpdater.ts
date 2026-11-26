@@ -4,10 +4,14 @@ import { getDesktopUpdater, type DesktopUpdateState } from '@/platform/desktop/u
 /** The Rust process owns update progress; each banner only subscribes to it. */
 export function useDesktopUpdater() {
   const availableVersion = ref('')
+  const currentVersion = ref('')
+  const releaseNotes = ref('')
+  const progress = ref<number | null>(null)
   const statusText = ref('')
   const phase = ref<DesktopUpdateState['phase']>('idle')
   const canCancel = ref(false)
   const starting = ref(false), cancelPending = ref(false), checking = ref(false)
+  const reminderPending = ref(false)
   const errorText = ref('')
   const installing = computed(() => ['checking', 'downloading', 'verifying', 'cancelling', 'installing'].includes(phase.value))
   const cancelling = computed(() => cancelPending.value || phase.value === 'cancelling')
@@ -17,11 +21,17 @@ export function useDesktopUpdater() {
   // Browsers lack this optional capability; automatic checks remain silent.
   const supported = api !== null
   const foundSubscription = api?.onFound(version => {
-    if (!disposed && !installing.value && !starting.value) { checkRevision++; availableVersion.value = version }
+    if (!disposed && !installing.value && !starting.value && !reminderPending.value) {
+      if (version !== availableVersion.value) releaseNotes.value = ''
+      availableVersion.value = version
+      void check(true)
+    }
   })
   const observation = api?.observe(state => {
     checkRevision++
     phase.value = state.phase
+    currentVersion.value = state.currentVersion || currentVersion.value
+    progress.value = state.progress
     if (state.version || state.phase === 'idle') availableVersion.value = state.version
     statusText.value = state.statusText
     errorText.value = state.errorText
@@ -37,17 +47,22 @@ export function useDesktopUpdater() {
     try {
       await ready
       const preserveTerminal = silent && (phase.value === 'cancelled' || phase.value === 'failed')
-      if (disposed || installing.value || starting.value
+      if (disposed || installing.value || starting.value || checking.value || reminderPending.value
         || (silent && phase.value !== 'idle' && !(preserveTerminal && !availableVersion.value))) return
       const revision = ++checkRevision
       const request = ++checkRequest
       checking.value = true
       const current = () => !disposed && !installing.value && !starting.value && revision === checkRevision
       try {
-        const version = await api.check()
+        const result = await api.check(!silent)
         if (!current()) return
-        availableVersion.value = version ?? ''
-        if (!preserveTerminal) { statusText.value = ''; errorText.value = '' }
+        currentVersion.value = result.currentVersion || currentVersion.value
+        availableVersion.value = result.available?.version ?? ''
+        releaseNotes.value = result.available?.notes ?? ''
+        if (!preserveTerminal) {
+          statusText.value = !silent && !result.available ? '已是最新版本' : ''
+          errorText.value = ''
+        }
       } catch (error) {
         if (current() && !preserveTerminal) errorText.value = silent ? '' : message(error)
       } finally {
@@ -96,6 +111,31 @@ export function useDesktopUpdater() {
     }
   }
 
+  async function remind(choice: 'later' | 'skip') {
+    const version = availableVersion.value
+    if (!api || !version || reminderPending.value || installing.value) return
+    reminderPending.value = true
+    ++checkRevision
+    try {
+      await api.reminder(version, choice)
+      if (!disposed && version === availableVersion.value) {
+        availableVersion.value = ''
+        releaseNotes.value = ''
+        statusText.value = ''
+        errorText.value = ''
+      }
+    } catch (error) {
+      if (!disposed) errorText.value = message(error)
+    } finally {
+      if (!disposed) reminderPending.value = false
+    }
+  }
+
+  async function openReleasePage() {
+    try { await api?.openReleasePage() }
+    catch (error) { if (!disposed) errorText.value = message(error) }
+  }
+
   onScopeDispose(() => {
     disposed = true
     checkRevision++
@@ -103,5 +143,6 @@ export function useDesktopUpdater() {
     if (foundSubscription !== undefined) api?.off(foundSubscription)
   })
 
-  return { availableVersion, statusText, installing, cancelling, canCancel, starting, checking, errorText, supported, check, install, cancel }
+  return { availableVersion, currentVersion, releaseNotes, progress, statusText, installing, cancelling, canCancel,
+    starting, checking, reminderPending, errorText, supported, check, install, cancel, remind, openReleasePage }
 }

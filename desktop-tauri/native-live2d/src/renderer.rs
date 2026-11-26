@@ -103,7 +103,12 @@ struct RenderOptions {
 }
 
 impl RenderOptions {
-    fn from_env() -> Self {
+    fn from_env() -> &'static Self {
+        static OPTIONS: std::sync::OnceLock<RenderOptions> = std::sync::OnceLock::new();
+        OPTIONS.get_or_init(Self::read_env)
+    }
+
+    fn read_env() -> Self {
         Self {
             x_shift: std::env::var("L2D_X_SHIFT")
                 .ok()

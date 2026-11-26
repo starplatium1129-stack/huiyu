@@ -25,7 +25,7 @@ export function createDesktopGalleryReads(request: Request, session: () => strin
     if (!Number.isSafeInteger(value.revision) || value.revision < 0 || typeof value.projectsVersion !== 'string') throw new Error('作品库修订号无效')
   }
   async function readGalleryPage(query: GalleryQuery, cursor: GalleryCursor | null, signal: AbortSignal, limit = 24): Promise<GalleryPage> {
-    const page = await read<Omit<GalleryPage, 'items'> & { items: unknown[] }>({ kind: 'readGalleryPage', query: structuredClone(query), cursor, limit }, signal)
+    const page = await read<Omit<GalleryPage, 'items'> & { items: unknown[] }>({ kind: 'readGalleryPage', query, cursor, limit }, signal)
     version(page)
     if (!Array.isArray(page.items) || page.items.length > limit || !Number.isSafeInteger(page.total) || page.total < 0) throw new Error('作品分页无效')
     const next = page.nextCursor
@@ -53,16 +53,22 @@ export function createDesktopGalleryReads(request: Request, session: () => strin
     const identity = session(), version = mutationVersion()
     const offline = recent?.session === identity && recent.version === version ? recent.history : historyCache()
     if (getDesktopRuntime().connection !== 'ready' && offline) return structuredClone(offline.slice(0, limit))
-    const result = await request<unknown>({ kind: 'readArtworkRecentIndex', candidateLimit: limit }, signal)
+    const result = await request<unknown>({ kind: 'readArtworkRecentIndex', candidateLimit: limit, projection: 'records' }, signal)
     signal?.throwIfAborted()
     const selected = parseArtworkRecentIndex(result).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, limit)
-    const rows = selected.length ? await request<unknown>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal) : []
+    const items = (result as { items: Array<{ id: unknown }> }).items
+    const byId = new Map(items.map(row => [String(row.id).trim(), row]))
+    // A bundled gateway returns the complete rows in this read. Retain the
+    // older two-request projection only for an attached runtime without it.
+    const combined = selected.map(row => byId.get(String(row.id).trim()))
+    const rows = combined.every(row => row && Object.hasOwn(row, 'body'))
+      ? combined : await request<unknown>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal)
     signal?.throwIfAborted()
     if (!Array.isArray(rows) || rows.length !== selected.length) throw new Error('最近作品响应无效')
     const parsed = rows.map((row, index) => parseArtworkRow(row, selected[index].id))
     if (parsed.some((row, index) => !row || row.deletedAt !== null || row.revision !== selected[index].revision)) throw new Error('作品库在读取期间发生变更，请重新读取')
     if (session() !== identity) throw new Error('作品库连接已变化，请重新读取')
-    const history = structuredClone(parsed.map(row => row!.body))
+    const history = parsed.map(row => row!.body)
     if (version === mutationVersion()) recent = { session: identity, version, history }
     return structuredClone(history)
   }

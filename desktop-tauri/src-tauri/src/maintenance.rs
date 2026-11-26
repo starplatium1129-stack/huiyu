@@ -1,4 +1,5 @@
 //! A finite single-instance deployment handoff, separate from renderer IPC.
+use crate::mutex::RecoverMutex;
 use std::collections::BTreeMap;
 use std::path::PathBuf;
 use std::sync::{Mutex, atomic::Ordering};
@@ -59,11 +60,11 @@ impl MaintenanceHost {
     }
 }
 pub fn active(app: &AppHandle) -> bool {
-    app.try_state::<MaintenanceHost>().is_some_and(|host| host.handoff.lock().unwrap().is_some())
+    app.try_state::<MaintenanceHost>().is_some_and(|host| host.handoff.recover_lock().is_some())
 }
 pub fn admits(app: &AppHandle, command: &str) -> bool {
     let Some(host) = app.try_state::<MaintenanceHost>() else { return true; };
-    let guard = host.handoff.lock().unwrap();
+    let guard = host.handoff.recover_lock();
     let Some(state) = guard.as_ref() else { return true; };
     phase_admits(state.phase, command)
 }
@@ -94,7 +95,7 @@ pub fn handle(app: &AppHandle, argv: &[String]) -> bool {
     tauri::async_runtime::spawn(async move {
         if command == "status" {
             let host = app.state::<MaintenanceHost>();
-            let phase = host.handoff.lock().unwrap().as_ref().map(|value| value.phase);
+            let phase = host.handoff.recover_lock().as_ref().map(|value| value.phase);
             // This is process/gateway readiness, not proof that frontend JS or
             // images have mounted. Real window acceptance remains separate.
             let healthy = match app.try_state::<crate::gateway::GatewaySupervisor>() {
@@ -109,8 +110,8 @@ pub fn handle(app: &AppHandle, argv: &[String]) -> bool {
 }
 fn complete(app: &AppHandle, id: &str, state: &'static str, reason: &str) {
     let host = app.state::<MaintenanceHost>();
-    if state == "cancelled" { *host.handoff.lock().unwrap() = None; }
-    else if let Some(value) = host.handoff.lock().unwrap().as_mut() { value.phase = "blocked"; }
+    if state == "cancelled" { *host.handoff.recover_lock() = None; }
+    else if let Some(value) = host.handoff.recover_lock().as_mut() { value.phase = "blocked"; }
     let _ = app.emit("aics:maintenance-result", serde_json::json!({ "requestId":id, "state":state, "reason":reason }));
     host.respond(id, state, Some(reason));
 }
@@ -119,6 +120,32 @@ async fn shutdown(app: AppHandle, id: String) {
     app.state::<MaintenanceHost>().respond(&id, "drained", None);
     app.state::<crate::state::AppState>().quitting.store(true, Ordering::SeqCst);
     app.exit(0);
+}
+
+pub(crate) fn request_atelier_quit(app: &AppHandle) {
+    if active(app) { return; }
+    let app = app.clone();
+    tauri::async_runtime::spawn(async move {
+        let mut nonce = [0u8; 16];
+        let result = if SystemRandom::new().fill(&mut nonce).is_ok() {
+            let id = nonce.iter().map(|byte| format!("{byte:02x}")).collect::<String>();
+            prepare_windows(&app, &id).await
+        } else {
+            Err("MAINTENANCE_RANDOM".into())
+        };
+        match result {
+            Ok(()) => {
+                app.state::<crate::state::AppState>().quitting.store(true, Ordering::SeqCst);
+                app.exit(0);
+            }
+            Err(error) if error != "MAINTENANCE_BUSY" => {
+                use tauri_plugin_dialog::DialogExt;
+                app.dialog().message("当前编辑尚未保存或窗口正在处理操作。请保存或等待操作完成后再退出。")
+                    .title("绘遇 · 尚未退出").show(|_| {});
+            }
+            Err(_) => {}
+        }
+    });
 }
 
 /// The updater plugin exits Windows directly. Finish the same authenticated
@@ -141,7 +168,7 @@ pub async fn prepare_resources(app: &AppHandle) -> Result<(), String> {
     if crate::resource_assistant::recovery_pending(app)
         && app.webview_windows().keys().all(|label| label == "resource-assistant") {
         {
-            let host = app.state::<MaintenanceHost>(); let mut handoff = host.handoff.lock().unwrap();
+            let host = app.state::<MaintenanceHost>(); let mut handoff = host.handoff.recover_lock();
             if handoff.is_some() { return Err("MAINTENANCE_BUSY".into()); }
             *handoff = Some(Handoff { id:id.clone(), phase:"draining", acknowledgements:BTreeMap::new() });
         }
@@ -158,11 +185,11 @@ pub fn update_failed(app: &AppHandle, id: &str) {
     complete(app, id, "blocked", "UPDATE_INSTALL_FAILED");
 }
 
-async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
+async fn prepare_windows(app: &AppHandle, id: &str) -> Result<(), String> {
     let labels: Vec<String> = app.webview_windows().keys().filter(|label| matches!(label.as_str(), "atelier" | "companion" | "companion-chat")).cloned().collect();
     {
         let host = app.state::<MaintenanceHost>();
-        let mut state = host.handoff.lock().unwrap();
+        let mut state = host.handoff.recover_lock();
         if state.is_some() { host.respond(id, "refused", Some("MAINTENANCE_BUSY")); return Err("MAINTENANCE_BUSY".into()); }
         if labels.is_empty() { host.respond(id, "refused", Some("MAINTENANCE_UI_NOT_READY")); return Err("MAINTENANCE_UI_NOT_READY".into()); }
         *state = Some(Handoff { id:id.into(), phase:"preparing", acknowledgements:labels.iter().map(|label| (label.clone(), None)).collect() });
@@ -175,8 +202,8 @@ async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
     }
     loop {
         let result = {
-            let host = app.state::<MaintenanceHost>(); let guard = host.handoff.lock().unwrap();
-            let state = guard.as_ref().unwrap();
+            let host = app.state::<MaintenanceHost>(); let guard = host.handoff.recover_lock();
+            let state = guard.as_ref().filter(|state| state.id == id).ok_or("MAINTENANCE_CANCELLED")?;
             if let Some(error) = state.acknowledgements.values().find_map(|value| value.as_ref().and_then(|result| result.as_ref().err())) { Some(Err(error.clone())) }
             else if state.acknowledgements.values().all(Option::is_some) { Some(Ok(())) } else { None }
         };
@@ -187,7 +214,16 @@ async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
             None => tokio::time::sleep(Duration::from_millis(40)).await,
         }
     }
-    app.state::<MaintenanceHost>().handoff.lock().unwrap().as_mut().unwrap().phase = "draining";
+    Ok(())
+}
+
+async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
+    prepare_windows(app, id).await?;
+    {
+        let host = app.state::<MaintenanceHost>();
+        let mut handoff = host.handoff.recover_lock();
+        handoff.as_mut().filter(|state| state.id == id).ok_or("MAINTENANCE_CANCELLED")?.phase = "draining";
+    }
     let Some(gateway) = app.try_state::<crate::gateway::GatewaySupervisor>() else { complete(app, id, "blocked", "MAINTENANCE_GATEWAY_MISSING"); return Err("MAINTENANCE_GATEWAY_MISSING".into()); };
     if let Err(error) = gateway.maintenance_stop().await { complete(app, id, "blocked", &error); return Err(error); }
     // Stop admission stays closed until exit. A late stopped-event retry cannot
@@ -200,7 +236,7 @@ async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
 pub fn desktop_maintenance_ack(window: WebviewWindow, request_id: String, ok: bool, error: Option<String>) -> Result<(), String> {
     if !protocol::valid_id(&request_id) { return Err("MAINTENANCE_REQUEST".into()); }
     let app = window.app_handle(); let host = app.state::<MaintenanceHost>();
-    let mut guard = host.handoff.lock().unwrap();
+    let mut guard = host.handoff.recover_lock();
     let state = guard.as_mut().filter(|value| value.id == request_id && value.phase == "preparing").ok_or("MAINTENANCE_NOT_PREPARING")?;
     let slot = state.acknowledgements.get_mut(window.label()).ok_or("MAINTENANCE_WINDOW_DENIED")?;
     if slot.is_none() {

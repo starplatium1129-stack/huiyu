@@ -97,17 +97,32 @@ export function initializeDesktopRuntime() {
     // near token expiry; an idle connected window needs no health RPC loop.
     if (state.connection !== 'ready' || session && session.expiresAt <= Date.now() + 30_000) void refreshDesktopRuntime()
   }, 10_000)
-  let unlisten: (() => void) | undefined
+  const unlisten: (() => void)[] = []
   const events = hostApi()?.event
   // Subscribe before taking the first snapshot. A later ready event supersedes
   // a stale in-flight snapshot instead of waiting for the periodic renewal.
   const ready = (async () => {
     try {
-      const remove = await events?.listen('aics:gateway-ready', () => {
-        if (!disposed && unlisten) void refreshDesktopRuntime(true)
-      })
-      if (disposed) { remove?.(); return }
-      unlisten = remove
+      if (events) {
+        const add = async (name: string, listener: () => void) => {
+          const remove = await events.listen(name, listener)
+          if (disposed) remove()
+          else unlisten.push(remove)
+        }
+        await Promise.all([
+          add('aics:gateway-ready', () => { if (!disposed) void refreshDesktopRuntime(true) }),
+          add('aics:gateway-unavailable', () => {
+            if (disposed) return
+            refreshSequence++
+            refreshPending = null
+            setRuntimeOrigin(null, true)
+            epochController.abort()
+            epochController = new AbortController()
+            configureApiTransport(desktopRuntimeFetch)
+            publish({ connection: 'unavailable', bootstrap: state.bootstrap })
+          }),
+        ])
+      }
     } catch (error) { console.warn('网关就绪通知暂不可用', error) }
     if (!disposed) await refreshDesktopRuntime()
   })()
@@ -116,7 +131,7 @@ export function initializeDesktopRuntime() {
     disposed = true; runtimeSetup = undefined
     // A pending host handshake belongs to this lifetime, not a later initialization.
     refreshSequence++; refreshPending = null
-    clearInterval(timer); unlisten?.(); epochController.abort(); listeners.clear()
+    clearInterval(timer); unlisten.splice(0).forEach(remove => remove()); epochController.abort(); listeners.clear()
   }
   runtimeSetup = { stop, ready }
   return runtimeSetup

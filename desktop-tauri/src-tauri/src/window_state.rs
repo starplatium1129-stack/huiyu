@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::fs;
 use std::path::Path;
 use std::sync::Mutex;
@@ -31,6 +32,10 @@ pub struct CompanionPreferences {
     pub chat_docked: bool,
     #[serde(default)]
     pub startup_mode: StartupMode,
+    #[serde(default)]
+    pub clipboard_awareness: bool,
+    #[serde(default)]
+    pub isolated_live2d_renderer: bool,
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -46,7 +51,8 @@ pub enum StartupMode {
 fn default_chat_docked() -> bool { true }
 impl Default for CompanionPreferences {
     fn default() -> Self {
-        Self { always_on_top: false, ignore_mouse_events: false, live2d_enabled: None, chat_docked: true, startup_mode: StartupMode::Companion }
+        Self { always_on_top: false, ignore_mouse_events: false, live2d_enabled: None, chat_docked: true,
+            startup_mode: StartupMode::Companion, clipboard_awareness: false, isolated_live2d_renderer: false }
     }
 }
 
@@ -82,7 +88,7 @@ pub fn load_window_presentation(file_path: &Path) -> WindowPresentation {
 }
 
 pub fn save_window_presentation(file_path: &Path, zoom: Option<f64>, maximized: Option<bool>) -> bool {
-    let _guard = WINDOW_STATE_WRITE.lock().unwrap_or_else(|error| error.into_inner());
+    let _guard = WINDOW_STATE_WRITE.recover_lock();
     let mut value = window_state_json(file_path);
     let previous = value.clone();
     if let Some(zoom) = zoom { value["zoom"] = serde_json::json!(bounded_window_zoom(zoom)); }
@@ -140,7 +146,7 @@ pub fn save_json_atomic(file_path: &Path, value: &serde_json::Value) {
     let _ = try_save_json_atomic(file_path, value);
 }
 
-fn try_save_json_atomic(file_path: &Path, value: &serde_json::Value) -> bool {
+pub(crate) fn try_save_json_atomic(file_path: &Path, value: &serde_json::Value) -> bool {
     let Some(parent) = file_path.parent() else { return false };
     if fs::create_dir_all(parent).is_err() { return false; }
     let temporary = file_path.with_extension(format!("{}.{}.tmp", "json", std::process::id()));
@@ -161,7 +167,7 @@ pub fn save_window_bounds(file_path: &Path, bounds: &WindowBounds, physical: Opt
     // 拒绝异常状态（2026-08-15 实机：远程会话中窗口被最小化/虚拟屏切换后
     // 保存了 -18286 坐标与 158x26 尺寸，下次启动窗口在屏幕外不可见）。
     if !valid_saved_bounds(bounds) { return; }
-    let _guard = WINDOW_STATE_WRITE.lock().unwrap_or_else(|error| error.into_inner());
+    let _guard = WINDOW_STATE_WRITE.recover_lock();
     let mut value = window_state_json(file_path);
     let previous = value.clone();
     value["x"] = serde_json::json!(bounds.x);

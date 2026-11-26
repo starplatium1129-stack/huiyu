@@ -139,6 +139,7 @@ fn expired(stat: &fs::Metadata) -> Result<bool> {
         <= now() - records::RETENTION)
 }
 fn remove_metadata(c: &Context, hash: &str) -> Result<()> {
+    c.derivatives.forget(hash);
     for (version, extension) in [
         ("thumbnails-v1", "jpg"),
         ("thumbnails-rust-v1", "jpg"),

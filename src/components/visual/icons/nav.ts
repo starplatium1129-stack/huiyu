@@ -2,6 +2,12 @@ import type { ArchiveIconDef } from './types.ts'
 
 // 绘遇线描：偏心轮廓、连笔弧线与呼吸口；用留白表达物象，不叠加装饰。
 export const navDefs = {
+  'history-back': {
+    paths: ['M19.5 12.2 Q12.3 11.7 4.6 12 M10.3 6.4 Q7.4 8.8 4.6 12 Q7.5 15.3 10.4 17.6'],
+  },
+  'history-forward': {
+    paths: ['M4.5 12.2 Q11.9 11.7 19.4 12 M13.7 6.4 Q16.5 8.8 19.4 12 Q16.5 15.3 13.6 17.6'],
+  },
   'chevron-down': {
     paths: [
       'M6.5 9.3 Q9.1 11.6 12 14.2 Q14.9 11.6 17.5 9.3',

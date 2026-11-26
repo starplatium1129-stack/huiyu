@@ -64,13 +64,10 @@ fn range(value: &str) -> Option<(u64, u64, u64)> {
 
 fn network(error: reqwest::Error) -> String {
     if error.is_timeout() {
-        "更新下载超时（连接超时或连续 45 秒未收到数据）；已保留可用缓存，重试时检查续传".into()
+        "更新下载超时。请检查 GitHub 连通性和系统代理，重试时将检查能否续传。".into()
     } else {
-        // Do not display expiring redirect URLs or their query credentials.
-        format!(
-            "更新下载中断，已保留可用缓存，重试时检查续传：{}",
-            error.without_url()
-        )
+        // Library errors can carry a redirect URL or proxy details.
+        "更新下载中断。请检查 GitHub 连通性和系统代理，重试时将检查能否续传。".into()
     }
 }
 

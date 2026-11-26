@@ -1,7 +1,7 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
-import { runtimeTasksEnabled, runtimeTaskError, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeTaskActiveCount, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks, hasRuntimeTaskSession, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
@@ -302,6 +302,7 @@ export async function downloadTaskMedia(url: string, filename = '绘遇结果', 
 /** One application subscription; page controllers own only their cancellable reads. */
 export function startRuntimeTaskPolling(): () => void {
   let timer: number | undefined
+  let interval = 0
   let pending: AbortController | undefined
   function stopReading() {
     window.clearInterval(timer)
@@ -315,14 +316,24 @@ export function startRuntimeTaskPolling(): () => void {
     pending = current
     try { await refreshRuntimeTasks(current.signal) }
     catch { /* refreshRuntimeTasks publishes the current failure to the inbox. */ }
-    finally { if (pending === current) pending = undefined }
+    finally {
+      if (pending === current) {
+        pending = undefined
+        if (document.hidden && !runtimeTaskActiveCount.value) stopReading()
+      }
+    }
   }
   function reconcile() {
-    if (document.hidden || !runtimeTasksEnabled.value || getDesktopRuntime().connection !== 'ready') {
+    if ((document.hidden && !runtimeTaskActiveCount.value) || !runtimeTasksEnabled.value || getDesktopRuntime().connection !== 'ready') {
       stopReading()
       return
     }
-    timer ??= window.setInterval(refresh, 2500)
+    const nextInterval = document.hidden ? 8000 : 2500
+    if (timer === undefined || interval !== nextInterval) {
+      window.clearInterval(timer)
+      timer = window.setInterval(refresh, nextInterval)
+      interval = nextInterval
+    }
     void refresh()
   }
   const unsubscribe = onDesktopRuntime(state => {

@@ -1,20 +1,43 @@
 use std::sync::{atomic::{AtomicBool, Ordering}, Arc};
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use serde::Serialize;
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{AppHandle, Emitter, EventTarget, Manager, State, WebviewWindow};
 use windows_sys::Win32::Foundation::{POINT, RECT};
 use windows_sys::Win32::Graphics::Gdi::ClientToScreen;
-use windows_sys::Win32::System::DataExchange::{CloseClipboard, GetClipboardData, GetClipboardSequenceNumber, OpenClipboard};
-use windows_sys::Win32::System::Memory::{GlobalLock, GlobalSize, GlobalUnlock};
 use windows_sys::Win32::System::Power::GetSystemPowerStatus;
 use windows_sys::Win32::UI::Input::KeyboardAndMouse::{GetAsyncKeyState, VK_LBUTTON, VK_RBUTTON};
 use windows_sys::Win32::UI::WindowsAndMessaging::{GetClientRect, GetCursorPos, IsWindowVisible};
 use crate::{live2d_renderer::{Live2DOverlayState, OverlayRect}, state::AppState};
 
-/// 全局鼠标轮询：约 30fps，坐标变化 >=2px 才发；仅可见桌宠需要凝视事件。
-/// 事件名 aics:global-mouse，payload 与 Electron 版 desktop:global-mouse 同构。
+mod clipboard;
+mod system;
+pub use system::start_system_watch;
+
+#[tauri::command]
+pub fn desktop_get_clipboard_awareness(window: WebviewWindow, state: State<AppState>) -> Result<bool, String> {
+    clipboard::authorize(&window)?;
+    state.preferences.lock().map(|prefs| prefs.clipboard_awareness)
+        .map_err(|_| "暂时无法读取剪贴板设置".into())
+}
+
+#[tauri::command]
+pub fn desktop_set_clipboard_awareness(window: WebviewWindow, state: State<AppState>, enabled: bool) -> Result<(), String> {
+    clipboard::authorize(&window)?;
+    let mut preferences = state.preferences.lock().map_err(|_| "暂时无法修改剪贴板设置")?;
+    if preferences.clipboard_awareness == enabled { return Ok(()); }
+    let mut next = preferences.clone();
+    next.clipboard_awareness = enabled;
+    if !crate::window_state::save_companion_preferences(&state.paths.preferences_file, &next) {
+        return Err("保存剪贴板设置失败，请重试".into());
+    }
+    *preferences = next;
+    Ok(())
+}
+
+/// 物理坐标用于透明穿透。原生渲染直接采样光标，WebView 只接收交互区、
+/// 展开面板或浏览器渲染所需的坐标。
 pub fn start_global_mouse_watch(app: AppHandle) {
     thread::spawn(move || {
         let state = app.state::<AppState>();
@@ -22,8 +45,8 @@ pub fn start_global_mouse_watch(app: AppHandle) {
         let applying_input = Arc::new(AtomicBool::new(false));
         let mut last_buttons = (false, false);
         loop {
-            if state.quitting.load(Ordering::Relaxed) { break; }
-            if !state.companion_presentation.lock().unwrap().shown {
+            if state.quitting.load(Ordering::Acquire) { break; }
+            if !state.companion_presentation.lock().is_ok_and(|state| state.shown) {
                 last_mouse = None;
                 last_buttons = (false, false);
                 thread::sleep(Duration::from_millis(200));
@@ -54,8 +77,8 @@ pub fn start_global_mouse_watch(app: AppHandle) {
             let inside = bounds.contains(pt.x, pt.y);
             let local = (pt.x - origin.x, pt.y - origin.y);
             let buttons = unsafe { (GetAsyncKeyState(VK_LBUTTON as i32) < 0, GetAsyncKeyState(VK_RBUTTON as i32) < 0) };
-            let (locked, in_panel, in_portrait, has_panels) = {
-                let mut input = state.companion_input.lock().unwrap();
+            let (locked, in_panel, in_portrait, has_panels, process_frame) = {
+                let Ok(mut input) = state.companion_input.lock() else { continue; };
                 if input.moving {
                     last_mouse = None;
                     last_buttons = buttons;
@@ -63,14 +86,21 @@ pub fn start_global_mouse_watch(app: AppHandle) {
                 }
                 if input.locked && !crate::companion_window::primary_button_down() { input.locked = false; }
                 let in_panel = inside && input.panels.iter().any(|rect| rect.contains(local.0, local.1));
-                let in_portrait = inside && (input.static_mask.as_ref().is_some_and(|mask| mask.hit(local.0, local.1))
-                    || input.process_frame.is_some_and(|rect| rect.contains(local.0, local.1)) && crate::live2d_process::current().is_some());
-                (input.locked, in_panel, in_portrait, !input.panels.is_empty())
+                let in_portrait = inside && input.static_mask.as_ref().is_some_and(|mask| mask.hit(local.0, local.1));
+                (input.locked, in_panel, in_portrait, !input.panels.is_empty(), input.process_frame)
             };
             let pressed = buttons.0 && !last_buttons.0 || buttons.1 && !last_buttons.1;
             last_buttons = buttons;
-            let in_model = inside && app.try_state::<Arc<Live2DOverlayState>>()
-                .is_some_and(|overlay| overlay.hit_opaque_pixel(pt.x, pt.y));
+            let overlay = app.try_state::<Arc<Live2DOverlayState>>();
+            let renderer_process = process_frame.and_then(|_| crate::live2d_process::current());
+            let process_ready = renderer_process.is_some();
+            let native_ready = process_ready || overlay.as_ref().is_some_and(|overlay|
+                overlay.visible.load(Ordering::Acquire) && overlay.model_ready.load(Ordering::Acquire));
+            let in_model = inside && (overlay.is_some_and(|overlay| overlay.hit_opaque_pixel(pt.x, pt.y))
+                || renderer_process.zip(process_frame).is_some_and(|(renderer, rect)| {
+                    let screen_frame = OverlayRect { x: rect.x + origin.x, y: rect.y + origin.y, ..rect };
+                    renderer.pointer_hit(screen_frame, pt.x, pt.y)
+                }));
             let ignore = state.ignore_mouse_events.load(Ordering::Relaxed);
             let passthrough = ignore || !(locked || in_panel || in_portrait || in_model);
             if crate::companion_window::mouse_passthrough(hwnd.0) != passthrough && !applying_input.swap(true, Ordering::AcqRel) {
@@ -78,24 +108,30 @@ pub fn start_global_mouse_watch(app: AppHandle) {
                 let window = window.clone();
                 if app.run_on_main_thread(move || {
                     if let Ok(hwnd) = window.hwnd() {
-                        let moving = window.state::<AppState>().companion_input.lock().unwrap().moving;
-                        if !moving && unsafe { IsWindowVisible(hwnd.0) } != 0 {
+                        let can_apply = window.state::<AppState>().companion_input.lock().is_ok_and(|input| !input.moving);
+                        if can_apply && unsafe { IsWindowVisible(hwnd.0) } != 0 {
                             crate::companion_window::set_mouse_passthrough(hwnd.0, passthrough);
                         }
                     }
                     applying.store(false, Ordering::Release);
                 }).is_err() { applying_input.store(false, Ordering::Release); }
             }
-            if pressed && has_panels && passthrough { let _ = window.emit("aics:companion-dismiss", ()); }
+            let target = EventTarget::webview_window("companion");
+            if pressed && has_panels && passthrough { let _ = app.emit_to(target.clone(), "aics:companion-dismiss", ()); }
             let mouse = GlobalMouse {
                 x: pt.x, y: pt.y, in_window: !passthrough && inside, bounds,
             };
             let moved = last_mouse.as_ref().is_none_or(|last| {
                 pt.x.abs_diff(last.x) >= 2 || pt.y.abs_diff(last.y) >= 2 || mouse.bounds != last.bounds || mouse.in_window != last.in_window
             });
-            if moved {
-                let _ = window.emit("aics:global-mouse", &mouse);
-                last_mouse = Some(mouse);
+            if !native_ready || has_panels || locked || mouse.in_window {
+                if moved {
+                    let _ = app.emit_to(target, "aics:global-mouse", &mouse);
+                    last_mouse = Some(mouse);
+                }
+            } else if last_mouse.take().is_some_and(|last| last.in_window) {
+                // Interactive overlays still need the exit edge.
+                let _ = app.emit_to(target, "aics:global-mouse", &mouse);
             }
         }
     });
@@ -110,199 +146,12 @@ struct GlobalMouse {
     bounds: OverlayRect,
 }
 
-/// 剪贴板轮询：图片（CF_DIB→PNG）或文本（4-400 字）变化时通知 Companion。
-/// 事件：aics:clipboard-image（Uint8Array PNG）/ aics:clipboard-text（String）。
-pub fn start_clipboard_watch(app: AppHandle) {
-    thread::spawn(move || {
-        let mut text_signature = String::new();
-        let mut image_signature = 0u32;
-        let mut clipboard_sequence = 0u32;
-        loop {
-            thread::sleep(Duration::from_millis(1500));
-            if app.get_webview_window("companion").map(|w| w.is_visible().unwrap_or(false)).unwrap_or(false) == false {
-                continue;
-            }
-            let sequence = unsafe { GetClipboardSequenceNumber() };
-            if sequence != 0 && sequence == clipboard_sequence {
-                continue;
-            }
-            if let Some((png, signature)) = read_clipboard_image() {
-                clipboard_sequence = sequence;
-                if signature != image_signature && !png.is_empty() {
-                    image_signature = signature;
-                    let _ = app.emit("aics:clipboard-image", png);
-                }
-                continue;
-            }
-            if let Some(text) = read_clipboard_text() {
-                // Failed reads remain eligible for the next poll (clipboard contention).
-                clipboard_sequence = sequence;
-                let trimmed = text.trim().to_string();
-                if (4..=400).contains(&trimmed.chars().count()) {
-                    let signature = hash_string(&trimmed);
-                    if signature != text_signature {
-                        text_signature = signature;
-                        let _ = app.emit("aics:clipboard-text", trimmed);
-                    }
-                } else if trimmed.is_empty() {
-                    text_signature.clear();
-                }
-            }
-        }
-    });
-}
-
-fn read_clipboard_text() -> Option<String> {
-    unsafe {
-        if OpenClipboard(std::ptr::null_mut()) == 0 {
-            return None;
-        }
-        let handle = GetClipboardData(13); // CF_UNICODETEXT
-        if handle.is_null() {
-            CloseClipboard();
-            return None;
-        }
-        let ptr = GlobalLock(handle) as *const u16;
-        if ptr.is_null() {
-            CloseClipboard();
-            return None;
-        }
-        // Other applications supply this allocation; a missing terminator must
-        // never let the read escape its actual byte length.
-        let units = std::slice::from_raw_parts(ptr, GlobalSize(handle) / std::mem::size_of::<u16>());
-        let text = units.iter().position(|unit| *unit == 0)
-            .map(|len| String::from_utf16_lossy(&units[..len]));
-        GlobalUnlock(handle);
-        CloseClipboard();
-        text
-    }
-}
-
-fn read_clipboard_image() -> Option<(Vec<u8>, u32)> {
-    let data = unsafe {
-        if OpenClipboard(std::ptr::null_mut()) == 0 {
-            return None;
-        }
-        let handle = GetClipboardData(8); // CF_DIB
-        if handle.is_null() {
-            CloseClipboard();
-            return None;
-        }
-        let ptr = GlobalLock(handle) as *const u8;
-        if ptr.is_null() {
-            CloseClipboard();
-            return None;
-        }
-        let size = GlobalSize(handle);
-        let data = std::slice::from_raw_parts(ptr, size).to_vec();
-        GlobalUnlock(handle);
-        CloseClipboard();
-        data
-    };
-    // Encoding can be expensive; never hold the system clipboard lock for it.
-    let png = dib_to_png(&data)?;
-    let signature = data.iter().fold(5381u32, |h, b| h.wrapping_mul(33).wrapping_add(*b as u32));
-    Some((png, signature))
-}
-
-/// CF_DIB（BITMAPINFOHEADER + 像素）→ 补 BITMAPFILEHEADER 构造完整 BMP → 解码 → PNG。
-fn dib_to_png(dib: &[u8]) -> Option<Vec<u8>> {
-    if dib.len() < 40 {
-        return None;
-    }
-    let bi_size = u32::from_le_bytes(dib[0..4].try_into().ok()?) as usize;
-    if bi_size < 40 || dib.len() < bi_size {
-        return None;
-    }
-    let width = i32::from_le_bytes(dib[4..8].try_into().ok()?);
-    let height = i32::from_le_bytes(dib[8..12].try_into().ok()?);
-    let bit_count = u16::from_le_bytes(dib[14..16].try_into().ok()?);
-    if width <= 0 || height == 0 || !(1..=32).contains(&bit_count) {
-        return None;
-    }
-    // 调色板：biClrUsed 或按位深推算（<=8bpp）
-    let clr_used = u32::from_le_bytes(dib[32..36].try_into().ok()?) as usize;
-    let palette_entries = if clr_used > 0 {
-        clr_used
-    } else if bit_count <= 8 {
-        1usize << bit_count
-    } else {
-        0
-    };
-    let palette_bytes = palette_entries * 4;
-    let compression = u32::from_le_bytes(dib[16..20].try_into().ok()?);
-    // BITMAPINFOHEADER stores BI_BITFIELDS masks after its 40 bytes; newer
-    // headers include them. Pixel data must start after those external masks.
-    let mask_bytes = if bi_size == 40 && compression == 3 { 12 } else { 0 };
-    let header_size = bi_size + mask_bytes + palette_bytes;
-    if dib.len() < header_size {
-        return None;
-    }
-    let file_size = u32::try_from(14 + dib.len()).ok()?;
-    let mut bmp = Vec::with_capacity(file_size as usize);
-    bmp.extend_from_slice(b"BM");
-    bmp.extend_from_slice(&file_size.to_le_bytes());
-    bmp.extend_from_slice(&[0u8; 4]);
-    bmp.extend_from_slice(&((14 + header_size) as u32).to_le_bytes());
-    bmp.extend_from_slice(dib);
-    let image = image::load_from_memory(&bmp).ok()?;
-    let mut out = Vec::new();
-    image.write_to(&mut std::io::Cursor::new(&mut out), image::ImageFormat::Png).ok()?;
-    Some(out)
-}
-
-fn hash_string(value: &str) -> String {
-    let mut hash = 5381u32;
-    for byte in value.bytes() {
-        hash = hash.wrapping_mul(33).wrapping_add(byte as u32);
-    }
-    format!("{hash:x}")
-}
-
-/// 电源轮询：AC/电池变化时发 aics:power-mode（bool = 电池）。
+/// 当前电源状态，供初次桌宠会话和 Windows 电源通知使用。
 pub fn on_battery_power() -> bool {
     unsafe {
         let mut status = std::mem::zeroed::<windows_sys::Win32::System::Power::SYSTEM_POWER_STATUS>();
         GetSystemPowerStatus(&mut status) != 0 && status.ACLineStatus == 0
     }
-}
-
-pub fn start_power_watch(app: AppHandle) {
-    thread::spawn(move || {
-        let mut last_battery: Option<bool> = None;
-        let mut last_check = Instant::now();
-        loop {
-            thread::sleep(Duration::from_secs(5));
-            let now = Instant::now();
-            let on_battery = on_battery_power();
-            if last_battery != Some(on_battery) {
-                last_battery = Some(on_battery);
-                let _ = app.emit("aics:power-mode", on_battery);
-            }
-            // A long polling gap indicates sleep/hibernation. Notify the
-            // desktop bridge once after resume so Companion can re-sync room
-            // state and Live2D visibility.
-            if now.duration_since(last_check) > Duration::from_secs(15) {
-                let _ = app.emit("aics:resume", ());
-            }
-            last_check = now;
-        }
-    });
-}
-
-/// 显示器轮询：各屏工作区或 DPI 变化时把窗口整体收进实际可用的屏幕。
-pub fn start_display_watch(app: AppHandle) {
-    thread::spawn(move || {
-        let mut last_areas = crate::main_shared::display_work_areas(&app);
-        loop {
-            thread::sleep(Duration::from_secs(3));
-            let areas = crate::main_shared::display_work_areas(&app);
-            if areas != last_areas {
-                last_areas = areas;
-                clamp_windows(&app, &last_areas);
-            }
-        }
-    });
 }
 
 fn clamp_windows(app: &AppHandle, monitors: &[crate::window_state::DisplayWorkArea]) {

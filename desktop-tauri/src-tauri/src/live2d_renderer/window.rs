@@ -1,4 +1,13 @@
+use crate::mutex::RecoverMutex;
 use super::*;
+use windows_sys::Win32::System::RemoteDesktop::{
+    WTSRegisterSessionNotification, WTSUnRegisterSessionNotification, NOTIFY_FOR_THIS_SESSION,
+};
+use windows_sys::Win32::UI::WindowsAndMessaging::{
+    GetCursorPos, GetWindowLongPtrW, PBT_APMRESUMEAUTOMATIC, PBT_APMRESUMESUSPEND,
+    PBT_APMSUSPEND, WM_POWERBROADCAST, WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK,
+    WTS_SESSION_UNLOCK,
+};
 
 fn create_overlay_window() -> Option<HWND> {
     unsafe {
@@ -65,6 +74,21 @@ extern "system" fn overlay_wnd_proc(
                 PostQuitMessage(0);
                 return 0;
             }
+            WM_WTSSESSION_CHANGE | WM_POWERBROADCAST => {
+                let state = GetWindowLongPtrW(hwnd, GWLP_USERDATA) as *const Live2DOverlayState;
+                if let Some(state) = state.as_ref() {
+                    match (msg, wparam as u32) {
+                        (WM_WTSSESSION_CHANGE, WTS_SESSION_LOCK | WTS_SESSION_UNLOCK) => {
+                            state.session_locked.store(wparam as u32 == WTS_SESSION_LOCK, Ordering::Release);
+                        }
+                        (WM_POWERBROADCAST, PBT_APMSUSPEND | PBT_APMRESUMEAUTOMATIC | PBT_APMRESUMESUSPEND) => {
+                            state.system_suspended.store(wparam as u32 == PBT_APMSUSPEND, Ordering::Release);
+                        }
+                        _ => {}
+                    }
+                }
+                if msg == WM_POWERBROADCAST { return 1; }
+            }
             _ => {}
         }
         DefWindowProcW(hwnd, msg, wparam, lparam)
@@ -108,6 +132,7 @@ pub(crate) fn overlay_window_thread(
         emit_stopped(app, reason);
         return;
     };
+    let session_events = unsafe { WTSRegisterSessionNotification(hwnd, NOTIFY_FOR_THIS_SESSION) } != 0;
     unsafe {
         SetWindowLongPtrW(
             hwnd,
@@ -115,10 +140,10 @@ pub(crate) fn overlay_window_thread(
             &*state as *const Live2DOverlayState as isize,
         );
     }
-    *state.hwnd.lock().unwrap() = Some(hwnd as isize);
+    *state.hwnd.recover_lock() = Some(hwnd as isize);
 
     let (tx, rx): (Sender<OverlayCommand>, Receiver<OverlayCommand>) = channel();
-    *state.cmd_tx.lock().unwrap() = Some(tx);
+    *state.cmd_tx.recover_lock() = Some(tx);
 
     // Merely attaching the overlay must not allocate a GPU device. Destroy returns
     // to this state while leaving the lightweight window/command loop reusable.
@@ -138,7 +163,14 @@ pub(crate) fn overlay_window_thread(
     let mut next_frame = last_frame;
     let mut next_display_check = last_frame;
     let mut follow_until = last_frame;
+    let mut pointer_active_until = last_frame;
+    let mut previous_pointer = None;
+    let mut last_pointer_sample = None;
+    let mut next_visibility_check = last_frame;
+    let mut desktop_blocked = false;
+    let mut paused = false;
     let mut display_hz = frame_pacing::FALLBACK_HZ;
+    let mut pointer_margin = 32;
     let mut last_z_order_sync = Instant::now() - Duration::from_secs(1);
     let mut running = true;
     // 线程退出原因：None 表示 WM_QUIT 正常退出（窗口销毁，如进程退出），
@@ -193,17 +225,19 @@ pub(crate) fn overlay_window_thread(
                 break;
             }
         }
-        if let Some(ctx) = ctx.as_mut().filter(|_| running && state.visible.load(Ordering::SeqCst)) {
-            let mut rect = *state.rect.lock().unwrap();
-            let companion = *state.companion_hwnd.lock().unwrap();
+        if let Some(renderer) = ctx.as_mut().filter(|_| running && state.visible.load(Ordering::SeqCst)) {
+            let mut rect = *state.rect.recover_lock();
+            let companion = *state.companion_hwnd.recover_lock();
             if iteration_started >= next_display_check {
                 // The companion selects the monitor even while the overlay is parked offscreen.
                 let anchor = companion.map_or(hwnd, |handle| handle as HWND);
                 display_hz = frame_pacing::display_refresh_hz(anchor);
+                pointer_margin = unsafe { windows_sys::Win32::UI::HiDpi::GetDpiForWindow(anchor) }
+                    .max(96).div_ceil(3);
                 state.display_hz.store(display_hz, Ordering::Relaxed);
                 next_display_check = iteration_started + Duration::from_secs(1);
             }
-            if let (Some(companion), Some(offset)) = (companion, *state.companion_offset.lock().unwrap()) {
+            if let (Some(companion), Some(offset)) = (companion, *state.companion_offset.recover_lock()) {
                 let companion = companion as HWND;
                 if let Some(point) = companion_origin(companion) {
                     let followed = followed_overlay_rect(
@@ -231,16 +265,55 @@ pub(crate) fn overlay_window_thread(
                         if sync_z_order { last_z_order_sync = iteration_started; }
                     }
                     if moved {
-                        *state.rect.lock().unwrap() = followed;
+                        *state.rect.recover_lock() = followed;
                         rect = followed;
                         follow_until = iteration_started + Duration::from_millis(120);
                     }
                 }
             }
+            if iteration_started >= next_visibility_check {
+                desktop_blocked = frame_pacing::desktop_blocks_present()
+                    || (state.revealed.load(Ordering::Acquire)
+                        && state.first_frame_ready.load(Ordering::Acquire)
+                        && frame_pacing::fully_covered(hwnd, companion.map_or(std::ptr::null_mut(), |handle| handle as HWND), rect));
+                next_visibility_check = iteration_started + Duration::from_millis(250);
+            }
+            let blocked = desktop_blocked || state.session_locked.load(Ordering::Acquire)
+                || state.system_suspended.load(Ordering::Acquire);
+            state.render_suspended.store(blocked, Ordering::Relaxed);
+            if blocked {
+                state.target_fps.store(0, Ordering::Relaxed);
+                paused = true;
+                clear_pointer_feedback(&state, &mut last_pointer_sample);
+                if let Some(cmd) = frame_pacing::wait(&rx, None) {
+                    handle_command(&state, &mut ctx, &environment, hwnd, cmd);
+                }
+                continue;
+            }
+            if paused {
+                // Keep motion time frozen while the desktop could not show the
+                // frame. Do not give Cubism the accumulated sleep interval.
+                next_frame = iteration_started;
+                last_frame = iteration_started;
+                paused = false;
+            }
+            let pointer = cursor_position();
+            let cursor_near = pointer.is_some_and(|(x, y)| near_rect(rect, x, y, pointer_margin));
+            if cursor_near && previous_pointer != pointer {
+                pointer_active_until = iteration_started + Duration::from_millis(350);
+            }
+            previous_pointer = pointer;
             // Keep the last presented image attached to the moving input window
             // at display cadence, even if model updates are capped to save power.
             let fps_limit = state.fps_limit.load(Ordering::Relaxed);
-            let model_hz = frame_pacing::model_fps(fps_limit, display_hz);
+            let active = iteration_started < follow_until || iteration_started < pointer_active_until
+                || renderer.mouth_level > 0.01 || renderer.overlay_settler.is_some()
+                || renderer.active_motion.as_ref().is_some_and(|motion| motion.phase != MotionPhase::Idle)
+                || !state.first_frame_ready.load(Ordering::Acquire);
+            let model_hz = frame_pacing::model_fps(fps_limit, display_hz, active);
+            if model_hz > state.target_fps.swap(model_hz, Ordering::Relaxed) {
+                next_frame = next_frame.min(iteration_started);
+            }
             let period = frame_pacing::interval(model_hz);
             let now = Instant::now();
             if now >= next_frame {
@@ -248,12 +321,15 @@ pub(crate) fn overlay_window_thread(
                 if next_frame <= now { next_frame = now + period; }
                 let dt = (now - last_frame).as_secs_f32().min(0.1);
                 last_frame = now;
-                ctx.step(dt);
-                ctx.advance_motion(dt);
-                match ctx.render_frame(&state, hwnd, rect) {
+                if companion.is_some() {
+                    update_native_gaze(renderer, rect, pointer, dt);
+                }
+                renderer.step(dt);
+                renderer.advance_motion(dt);
+                match renderer.render_frame(&state, hwnd, rect, cursor_near) {
                     Ok(true) => {
                         state.frame_count.fetch_add(1, Ordering::Relaxed);
-                        if fps_limit == 0 && state.revealed.load(Ordering::Acquire) {
+                        if fps_limit == 0 && model_hz == display_hz && state.revealed.load(Ordering::Acquire) {
                             // Acquire wakes on the display's actual vblank. Allow it to
                             // clock normal frames; bound rapid returns if DWM is occluded.
                             next_frame = iteration_started + period.mul_f32(0.75);
@@ -262,7 +338,7 @@ pub(crate) fn overlay_window_thread(
                             && state.alpha_mask.read().unwrap().is_some()
                             && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
                             if state.revealed.load(Ordering::Acquire) {
-                                let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
+                                let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
                                 frame::place_overlay(&state, hwnd, companion, rect);
                             }
                             if let Some(events) = app { let _ = events.emit("aics:live2d:first-frame", ()); }
@@ -279,6 +355,12 @@ pub(crate) fn overlay_window_thread(
             next_tick = Some(if now < follow_until {
                 next_frame.min(iteration_started + frame_pacing::interval(display_hz))
             } else { next_frame });
+            update_pointer_feedback(&state, rect, pointer, &mut last_pointer_sample);
+        } else {
+            state.target_fps.store(0, Ordering::Relaxed);
+            state.render_suspended.store(false, Ordering::Relaxed);
+            paused = true;
+            clear_pointer_feedback(&state, &mut last_pointer_sample);
         }
         if let Some(cmd) = if running { frame_pacing::wait(&rx, next_tick) } else { None } {
             handle_command(&state, &mut ctx, &environment, hwnd, cmd);
@@ -287,7 +369,86 @@ pub(crate) fn overlay_window_thread(
 
     // The surface borrows HWND: drop all GPU/model resources before destroying it.
     drop(ctx);
-    unsafe { DestroyWindow(hwnd); }
+    unsafe {
+        if session_events { WTSUnRegisterSessionNotification(hwnd); }
+        DestroyWindow(hwnd);
+    }
     reset_runtime_state(&state);
     emit_stopped(app, stopped_reason.as_deref().unwrap_or("renderer shutdown"));
+}
+
+type SentPointerSample = (PointerHitSample, crate::live2d_framing::StageFraming, Instant);
+
+fn clear_pointer_feedback(state: &Live2DOverlayState, last: &mut Option<SentPointerSample>) {
+    if last.take().is_some() {
+        if let Some(publish) = state.pointer_feedback.get() { publish(None); }
+    }
+}
+
+fn update_pointer_feedback(
+    state: &Live2DOverlayState,
+    rect: OverlayRect,
+    point: Option<(i32, i32)>,
+    last: &mut Option<SentPointerSample>,
+) {
+    let Some(publish) = state.pointer_feedback.get() else { return; };
+    let Some((x, y)) = point.filter(|&(x, y)| {
+        rect.contains(x, y) && state.revealed.load(Ordering::Acquire)
+            && state.first_frame_ready.load(Ordering::Acquire)
+    }) else {
+        clear_pointer_feedback(state, last);
+        return;
+    };
+    let Some(framing) = state.framing.lock().ok().map(|value| *value) else {
+        clear_pointer_feedback(state, last);
+        return;
+    };
+    // Reuse a tile for nearby points and avoid polling-aligned pipe traffic
+    // at high refresh rates. A changed layout bypasses the cache immediately.
+    if last.as_ref().is_some_and(|(sample, recorded_framing, sent)| {
+        framing == *recorded_framing
+            && (sent.elapsed() < Duration::from_millis(16)
+                || (sample.covers(rect, x, y) && sent.elapsed() < Duration::from_millis(125)))
+    }) {
+        return;
+    }
+    let sample = state.alpha_mask.read().ok()
+        .and_then(|mask| mask.as_ref()?.pointer_sample(rect, framing, x, y));
+    if let Some(sample) = sample {
+        publish(Some(sample.clone()));
+        *last = Some((sample, framing, Instant::now()));
+    } else {
+        clear_pointer_feedback(state, last);
+    }
+}
+
+fn cursor_position() -> Option<(i32, i32)> {
+    let mut point = POINT { x: 0, y: 0 };
+    (unsafe { GetCursorPos(&mut point) } != 0).then_some((point.x, point.y))
+}
+
+fn near_rect(rect: OverlayRect, x: i32, y: i32, margin: u32) -> bool {
+    if rect.width == 0 || rect.height == 0 { return false; }
+    let local_x = i64::from(x) - i64::from(rect.x);
+    let local_y = i64::from(y) - i64::from(rect.y);
+    let margin = i64::from(margin);
+    (-margin..i64::from(rect.width) + margin).contains(&local_x)
+        && (-margin..i64::from(rect.height) + margin).contains(&local_y)
+}
+
+fn update_native_gaze(ctx: &mut RenderContext, rect: OverlayRect, point: Option<(i32, i32)>, dt: f32) {
+    let (target, response) = match point {
+        Some((x, y)) if rect.width > 0 && rect.height > 0 => {
+            let limit = if rect.contains(x, y) { 1.0 } else { 0.82 };
+            let local_x = (i64::from(x) - i64::from(rect.x)) as f32 / rect.width as f32;
+            let local_y = (i64::from(y) - i64::from(rect.y)) as f32 / rect.height as f32;
+            (((local_x * 2.0 - 1.0).clamp(-limit, limit), (1.0 - local_y * 2.0).clamp(-limit, limit)), 12.0)
+        }
+        _ => ((0.0, 0.0), 6.0),
+    };
+    let blend = 1.0 - f32::exp(-response * dt);
+    let smooth = |value: f32, target: f32| {
+        if (target - value).abs() <= 0.002 { target } else { value + (target - value) * blend }
+    };
+    ctx.gaze = (smooth(ctx.gaze.0, target.0), smooth(ctx.gaze.1, target.1));
 }

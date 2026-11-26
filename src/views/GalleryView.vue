@@ -67,7 +67,7 @@
     <section aria-live="polite">
       <!-- Keep the trash read slots through close/reopen; deactivation releases queued reads and previews. -->
       <KeepAlive><GalleryTrashWall
-        v-if="trashMode"
+        v-if="trashMode && !idleMediaSuspended"
         :column-count="columnCount"
         :trash-items="trashItems"
         :trash-busy="trashBusy"
@@ -121,7 +121,8 @@
         <template v-for="group in masonryGroups" :key="group.key">
           <h2 class="gallery-section">{{ group.key }}</h2>
             <GalleryVirtualRows
-              :rows="group.rows" :ratio-of="ratioOf" :enabled="visible.length >= 200" @rendered="scheduleWallScan"
+              :rows="group.rows" :ratio-of="ratioOf" :enabled="visible.length >= 120"
+              :defer-offscreen="visible.length >= 60" @rendered="scheduleWallScan"
             >
               <template #default="{ item }">
               <GalleryArtworkCard
@@ -165,7 +166,7 @@
           aria-label="作品观赏模式"
           ref="viewerEl"
         >
-      <ArtworkViewerStage v-if="displayedCurrent" :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
+      <ArtworkViewerStage v-if="displayedCurrent" :total="visibleTotal" :items="visible" :index="displayedIndex" :active="viewerIndex >= 0 && !idleMediaSuspended" :original="originalViewer"
         :src="viewerUrl" :preview-src="viewerSurface.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
         :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
         @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer">
@@ -179,7 +180,7 @@
             />
             <p v-if="parentImageStatus.message" class="viewer-compare-notice" role="status"><span>{{ parentImageStatus.message }}</span><button v-if="parentImageStatus.failed" class="btn btn-ghost btn-sm" type="button" @click="retryComparisonOriginal">重新读取修改前原图</button></p>
           </div>
-          <component :is="PhotoSwipeStage" v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="failGesture" />
+          <component :is="PhotoSwipeStage" v-else-if="gestureViewer && current && !idleMediaSuspended" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="failGesture" />
         </template>
         <template #tools>
         <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
@@ -332,7 +333,7 @@ const {
   comparisonMarksReading, history, resetGalleryFilters, masonryGroups, scheduleWallScan, retryCardImage,
   columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete, sceneTitle, toggleFavorite,
   toggleSelect, openViewer, indexOf, thumbUrls, measure, cardUrls, onHdLoad, missingImageIds,
-  formatDate, stamp, hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden,
+  formatDate, stamp, hasMoreToRender, pagedVisible, viewerIndex, idleMediaSuspended, infoOpen, infoDrawerHidden,
   toggleInfoDrawer, closeInfoDrawer, closeViewer, compareMode, hasComparableImage, viewerUrl,
   viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, parentImageLabel,
   parentImageStatus, current, characterName, facts, downloadCurrent, downloading, copyPrompt,

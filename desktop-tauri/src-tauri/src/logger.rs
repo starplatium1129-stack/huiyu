@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::fs::{self, OpenOptions};
 use std::io::Write;
 use std::path::Path;
@@ -38,7 +39,7 @@ impl FileLogger {
     pub fn write(&self, level: &str, message: &str) {
         let line = format!("{} [{}] {}\n", crate::now_iso(), level, message);
         // Every producer shares this logger, so rotation and append are one operation.
-        let _writer = self.writer.lock().unwrap_or_else(|error| error.into_inner());
+        let _writer = self.writer.recover_lock();
         let _ = self.ensure_dir();
         self.rotate();
         if let Ok(mut file) = OpenOptions::new().create(true).append(true).open(&self.file_path) {

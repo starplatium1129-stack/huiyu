@@ -167,7 +167,7 @@ pub(in crate::storage) fn import(
     job.progress("preparing-workspace", 0, 1);
     {
         let db = Connection::open(schema::safe(&root, "huiyu.sqlite3")?)?;
-        db.execute_batch("PRAGMA journal_mode=DELETE; BEGIN IMMEDIATE;")?;
+        db.execute_batch("PRAGMA journal_mode=DELETE; PRAGMA synchronous=FULL; BEGIN IMMEDIATE;")?;
         db.execute("UPDATE meta SET value=? WHERE key='workspaceId'", [&id])?;
         db.execute("UPDATE meta SET value='' WHERE key='writerEpoch'", [])?;
         // Imported tasks are historical receipts, never permission to contact the

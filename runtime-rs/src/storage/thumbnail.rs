@@ -11,22 +11,75 @@ use image::{
     imageops::FilterType,
 };
 use serde_json::Value;
-use std::{fs, io::Write, path::Path, sync::OnceLock};
+use std::{collections::VecDeque, fs, io::Write, path::Path, sync::{Mutex, OnceLock}};
 
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
+#[derive(Clone)]
+pub(crate) struct Derivative {
+    pub(crate) bytes: Bytes,
+    pub(crate) mime: &'static str,
+    pub(crate) etag: String,
+}
+
+impl Derivative {
+    fn new(bytes: Bytes, mime: &'static str) -> Self {
+        let etag = format!("\"{}\"", super::canonical::digest(&bytes));
+        Self { bytes, mime, etag }
+    }
+}
+
+#[derive(Default)]
+pub(super) struct Cache(Mutex<VecDeque<(String, Derivative)>>);
+
+impl Cache {
+    const MAX_BYTES: usize = 24 * 1024 * 1024;
+    const MAX_ENTRIES: usize = 128;
+
+    fn get(&self, key: &str) -> Option<Derivative> {
+        let mut entries = self.0.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+        let index = entries.iter().position(|(entry_key, _)| entry_key == key)?;
+        let entry = entries.remove(index)?;
+        let value = entry.1.clone();
+        entries.push_back(entry);
+        Some(value)
+    }
+
+    fn put(&self, key: String, value: Derivative) {
+        if value.bytes.len() > Self::MAX_BYTES { return; }
+        let mut entries = self.0.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+        entries.retain(|(entry_key, _)| entry_key != &key);
+        let mut total = value.bytes.len() + entries.iter().map(|(_, entry)| entry.bytes.len()).sum::<usize>();
+        while entries.len() >= Self::MAX_ENTRIES || total > Self::MAX_BYTES {
+            let Some((_, old)) = entries.pop_front() else { break };
+            total -= old.bytes.len();
+        }
+        entries.push_back((key, value));
+    }
+
+    pub(super) fn forget(&self, source_hash: &str) {
+        self.0.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+            .retain(|(key, _)| !key.rsplit_once('/').is_some_and(|(_, file)| file.starts_with(source_hash)));
+    }
+}
+
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
-    let preview = command.get("width").is_some();
     let requested = command
         .get("width")
-        .map(|value| {
-            value
-                .as_u64()
-                .filter(|width| (1..=8192).contains(width))
-                .ok_or_else(|| ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192"))
-        })
-        .transpose()?
-        .unwrap_or(560);
+        .map(|value| value.as_u64().ok_or_else(invalid_width))
+        .transpose()?;
+    Ok(read_binary(storage, string(command, "alias")?, requested).await?
+        .map_or(Value::Null, |image| thumbnail_value(&image.bytes, image.mime)))
+}
+
+fn invalid_width() -> ApiError {
+    ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192")
+}
+
+pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Option<u64>) -> Result<Option<Derivative>> {
+    let preview = requested.is_some();
+    let requested = requested.unwrap_or(560);
+    if !(1..=8192).contains(&requested) { return Err(invalid_width()); }
     let width = [560, 1120, 1680, 2240, 3360, 4480, 8192]
         .into_iter()
         .find(|width| u64::from(*width) >= requested)
@@ -35,14 +88,14 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     let _cancel = cancelled.clone().drop_guard();
     let source = match tokio::select! { biased;
         _ = cancelled.cancelled() => return Err(super::unavailable()),
-        source = storage.media(string(command, "alias")?) => source,
+        source = storage.media(alias) => source,
     } {
         Ok(source) => source,
-        Err(error) if error.status.as_u16() == 404 => return Ok(Value::Null),
+        Err(error) if error.status.as_u16() == 404 => return Ok(None),
         Err(error) => return Err(error),
     };
     if !source.mime.starts_with("image/") {
-        return Ok(Value::Null);
+        return Ok(None);
     }
     // Unsupported preview codecs must leave the browser's original fallback in
     // charge instead of publishing a derivative with different image semantics.
@@ -52,7 +105,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             "image/png" | "image/jpeg" | "image/webp"
         )
     {
-        return Ok(Value::Null);
+        return Ok(None);
     }
     let root = storage.root.clone();
     // Different encoders/resampling must never share sharp's thumbnails-v1 cache.
@@ -69,6 +122,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         format!("-{width}")
     };
     let relative = format!("cache/{version}/{}{suffix}.{extension}", source.sha256);
+    let memory = storage.derivatives.clone();
+    if let Some(value) = memory.get(&relative) { return Ok(Some(value)); }
     let owner = storage.sender.clone();
     let (cache_root, cache_relative, read_cancel) =
         (root.clone(), relative.clone(), cancelled.clone());
@@ -88,7 +143,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     .await
     .map_err(|_| worker_failed())??;
     if let Some(value) = cached {
-        return Ok(value);
+        memory.put(relative, value.clone());
+        return Ok(Some(value));
     }
     let queue = DECODERS.get_or_init(queue::Queue::new);
     // Coalesce the same workspace/hash/cache-version before taking a decoder
@@ -97,6 +153,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         _ = cancelled.cancelled() => return Err(super::unavailable()),
         guard = queue.image(cache.clone()) => guard,
     };
+    if let Some(value) = memory.get(&relative) { return Ok(Some(value)); }
     let (cache_path, read_cancel) = (cache.clone(), cancelled.clone());
     let (cached, image_guard, reader, owner) = tokio::task::spawn_blocking(move || {
         if read_cancel.is_cancelled() {
@@ -111,7 +168,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     .await
     .map_err(|_| worker_failed())??;
     if let Some(value) = cached {
-        return Ok(value);
+        memory.put(relative, value.clone());
+        return Ok(Some(value));
     }
     let permit = tokio::select! { biased;
         _ = cancelled.cancelled() => return Err(super::unavailable()),
@@ -125,7 +183,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         let _image_guard = image_guard;
 
         if cancelled.is_cancelled() {
-            return Ok(Value::Null);
+            return Ok(None);
         }
         let encoded = if let Some(library) = native {
             crate::native_images::thumbnail(&source.path, &library, width, preview, &cancelled)
@@ -134,10 +192,10 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             encode(&source.path, width, preview)?.map(Bytes::from)
         };
         let Some(bytes) = encoded else {
-            return Ok(Value::Null);
+            return Ok(None);
         };
         if cancelled.is_cancelled() {
-            return Ok(Value::Null);
+            return Ok(None);
         }
         let parent = cache.parent().expect("cache has a parent");
         fs::create_dir_all(parent)?;
@@ -150,15 +208,17 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         {
             return Err(error.error.into());
         }
-        Ok(thumbnail_value(&bytes, mime))
+        let value = Derivative::new(bytes, mime);
+        memory.put(relative, value.clone());
+        Ok(Some(value))
     })
     .await
     .map_err(|_| worker_failed())?
 }
 
-fn read_cached(cache: &Path, mime: &str) -> Result<Option<Value>> {
+fn read_cached(cache: &Path, mime: &'static str) -> Result<Option<Derivative>> {
     match fs::read(cache) {
-        Ok(bytes) => Ok(Some(thumbnail_value(&bytes, mime))),
+        Ok(bytes) => Ok(Some(Derivative::new(bytes.into(), mime))),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(error) => Err(error.into()),
     }

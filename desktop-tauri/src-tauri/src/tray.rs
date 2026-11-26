@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use tauri::menu::{CheckMenuItem, Menu, MenuBuilder, MenuItem, PredefinedMenuItem};
 use tauri::tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent};
 use tauri::{AppHandle, Manager};
@@ -16,6 +17,8 @@ const MENU_TOGGLE_AUTOSTART: &str = "toggle_autostart";
 const MENU_OPEN_WORKSPACE: &str = "open_workspace";
 const MENU_OPEN_RUNTIME: &str = "open_runtime";
 const MENU_OPEN_LOG: &str = "open_log";
+const MENU_CHECK_UPDATES: &str = "check_updates";
+const MENU_EXPORT_DIAGNOSTICS: &str = "export_diagnostics";
 const MENU_QUIT: &str = "quit";
 
 const TRAY_ICON_PNG: &[u8] = include_bytes!("../icons/icon-32.png");
@@ -30,7 +33,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
         .show_menu_on_left_click(false)
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click { button: MouseButton::Left, button_state: tauri::tray::MouseButtonState::Up, .. } = event {
-                crate::main_shared::show_companion(tray.app_handle(), true);
+                crate::desktop_shell::tray_click(tray.app_handle());
             }
         })
         .menu(&build_menu(app)?)
@@ -43,15 +46,15 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     crate::main_shared::toggle_companion_visibility(app);
                 }
                 MENU_OPEN_CHAT => {
-                    let url = state.gateway_url.lock().unwrap().clone();
+                    let url = state.gateway_url.recover_lock().clone();
                     crate::main_shared::open_companion_chat(app, &url);
                 }
                 MENU_OPEN_ATELIER => {
-                    let url = state.gateway_url.lock().unwrap().clone();
-                    crate::main_shared::open_atelier(app, &url, None);
+                    crate::desktop_shell::focus_atelier(app);
                 }
                 MENU_COMPANION_SETTINGS => {
                     crate::companion_window::show(app, true, true);
+                    crate::desktop_shell::publish_companion(app);
                 }
                 MENU_TOGGLE_ALWAYS_ON_TOP => {
                     crate::bridge::toggle_always_on_top(app.clone(), state);
@@ -60,17 +63,9 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     let next = !state.ignore_mouse_events.load(std::sync::atomic::Ordering::Relaxed);
                     crate::bridge::set_ignore_mouse_events(app, next);
                 }
-                MENU_TOGGLE_AUTOSTART => {
-                    let currently = app.autolaunch().is_enabled().unwrap_or(false);
-                    let _ = if currently {
-                        app.autolaunch().disable()
-                    } else {
-                        app.autolaunch().enable()
-                    };
-                    refresh_tray_menu(app);
-                }
+                MENU_TOGGLE_AUTOSTART => crate::desktop_shell::toggle_autostart(app),
                 MENU_OPEN_WORKSPACE => {
-                    let root = state.workspace_root.lock().unwrap().clone();
+                    let root = state.workspace_root.recover_lock().clone();
                     let root = if root.is_empty() {
                         state.paths.config_root.parent().unwrap_or(&state.paths.config_root).join("AI").to_string_lossy().to_string()
                     } else {
@@ -85,6 +80,8 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     let log = state.paths.desktop_log.to_string_lossy().to_string();
                     let _ = app.opener().open_path(log, None::<&str>);
                 }
+                MENU_CHECK_UPDATES => crate::desktop_shell::tray_action(app, crate::desktop_shell::MenuAction::CheckUpdates),
+                MENU_EXPORT_DIAGNOSTICS => crate::desktop_shell::tray_action(app, crate::desktop_shell::MenuAction::ExportDiagnostics),
                 MENU_QUIT => {
                     state.quitting.store(true, std::sync::atomic::Ordering::Relaxed);
                     state.log("info", "quit from tray");
@@ -107,8 +104,8 @@ pub fn refresh_tray_menu(app: &AppHandle) {
 
 fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let state = app.state::<AppState>();
-    let always_on_top = state.preferences.lock().unwrap().always_on_top;
-    let companion_open = state.companion_presentation.lock().unwrap().preparing()
+    let always_on_top = state.preferences.recover_lock().always_on_top;
+    let companion_open = state.companion_presentation.recover_lock().preparing()
         || app.get_webview_window("companion").is_some_and(|w| w.is_visible().unwrap_or(false));
     let passthrough = state.ignore_mouse_events.load(std::sync::atomic::Ordering::Relaxed);
     let autostart = app.autolaunch().is_enabled().unwrap_or(false);
@@ -137,6 +134,8 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let open_workspace = MenuItem::with_id(app, MENU_OPEN_WORKSPACE, "打开 AI 工作区", true, None::<&str>)?;
     let open_runtime = MenuItem::with_id(app, MENU_OPEN_RUNTIME, "打开运行时目录", true, None::<&str>)?;
     let open_log = MenuItem::with_id(app, MENU_OPEN_LOG, "查看日志文件", true, None::<&str>)?;
+    let check_updates = MenuItem::with_id(app, MENU_CHECK_UPDATES, "检查更新", true, None::<&str>)?;
+    let export_diagnostics = MenuItem::with_id(app, MENU_EXPORT_DIAGNOSTICS, "导出诊断包", true, None::<&str>)?;
     let quit = MenuItem::with_id(app, MENU_QUIT, "退出绘遇", true, None::<&str>)?;
 
     MenuBuilder::new(app)
@@ -152,6 +151,8 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         .item(&open_runtime)
         .item(&open_log)
         .item(&separator)
+        .item(&check_updates)
+        .item(&export_diagnostics)
         .item(&quit)
         .build()
 }

@@ -9,6 +9,8 @@ mod ui_entry;
 mod credentials;
 mod gateway;
 mod gateway_monitor;
+mod diagnostics;
+mod mutex;
 mod live2d_overlay;
 mod live2d_renderer;
 mod live2d_process_protocol;
@@ -32,10 +34,12 @@ mod live2d_framing;
 mod maintenance;
 mod maintenance_protocol;
 mod resource_assistant;
+mod desktop_shell;
 
+use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
 
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{Emitter, Manager};
 
 use crate::state::AppState;
 
@@ -46,50 +50,14 @@ pub fn now_iso() -> String {
     format!("{:?}", now.as_secs())
 }
 
-fn register_shortcuts(app: &AppHandle) {
-    use tauri_plugin_global_shortcut::GlobalShortcutExt;
-    let handler = |app: &AppHandle, shortcut: &tauri_plugin_global_shortcut::Shortcut, event: tauri_plugin_global_shortcut::ShortcutEvent| {
-        if maintenance::active(app) { return; }
-        use tauri_plugin_global_shortcut::ShortcutState;
-        if event.state() != ShortcutState::Pressed {
-            return;
-        }
-        // 实测 into_string() 输出 shift+control+KeyP，宽松匹配
-        let key = shortcut.to_string();
-        if key.contains("KeyP") {
-            let state = app.state::<AppState>();
-            let next = !state.ignore_mouse_events.load(Ordering::Relaxed);
-            bridge::set_ignore_mouse_events(app, next);
-        } else if key.contains("Space") {
-            main_shared::toggle_companion_visibility(app);
-        } else if key.contains("KeyA") {
-            let url = app.state::<AppState>().gateway_url.lock().unwrap().clone();
-            main_shared::open_atelier(app, &url, None);
-        } else if key.contains("KeyX") {
-            // Ctrl+Shift+X：开/关聊天窗（避开与浏览器 DevTools 冲突的 Ctrl+Shift+C）
-            let url = app.state::<AppState>().gateway_url.lock().unwrap().clone();
-            main_shared::toggle_companion_chat(app, &url);
-        }
-    };
-    let _ = app.global_shortcut().on_shortcuts(
-        ["ctrl+shift+p", "ctrl+shift+space", "ctrl+shift+a", "ctrl+shift+x"],
-        handler,
-    );
-}
-
 fn main() {
     // R12 compares the same renderer in a child process. Dispatch before Tauri
     // plugins so a renderer never owns user storage, the gateway or a tray.
     let child_mode = std::env::args().any(|arg| arg == "--live2d-renderer-child");
     let probe_mode = std::env::args().any(|arg| arg == "--live2d-renderer-probe-host");
-    if child_mode || probe_mode {
-        if !live2d_process::enabled() {
-            eprintln!("Live2D process experiment requires an isolated profile and config");
-            std::process::exit(2);
-        }
-        let result = if child_mode { live2d_renderer_child::run() } else { live2d_process_probe::run() };
-        if let Err(error) = result { eprintln!("Live2D process: {error}"); std::process::exit(1); }
-        return;
+    if (child_mode && !live2d_process::child_allowed()) || (probe_mode && !live2d_process::enabled()) {
+        eprintln!("Live2D child session is not enabled");
+        std::process::exit(2);
     }
     // 进程最早期 DPI awareness：必须在任何窗口创建之前设置，否则 Win32 会
     // 按系统 DPI 缩放窗口坐标。overlay 线程内的设置只覆盖自身创建时机，而
@@ -104,6 +72,11 @@ fn main() {
         if SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2) == 0 {
             let _ = SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         }
+    }
+    if child_mode || probe_mode {
+        let result = if child_mode { live2d_renderer_child::run() } else { live2d_process_probe::run() };
+        if let Err(error) = result { eprintln!("Live2D process: {error}"); std::process::exit(1); }
+        return;
     }
     let mut context = tauri::generate_context!();
     let maintenance_namespace = maintenance::namespace().unwrap_or_else(|error| { eprintln!("{error}"); std::process::exit(2); });
@@ -121,7 +94,7 @@ fn main() {
                     let target = arg.trim_start_matches("aics://").trim_start_matches('/').to_string();
                     let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
                     state.info(&format!("deep link: {arg} -> {path}"));
-                    let url = state.gateway_url.lock().unwrap().clone();
+                    let url = state.gateway_url.recover_lock().clone();
                     main_shared::open_atelier(app, &url, Some(&path));
                     return;
                 }
@@ -156,6 +129,15 @@ fn main() {
             bridge::get_state,
             bridge::get_startup_mode,
             bridge::set_startup_mode,
+            desktop_shell::desktop_shell_preferences,
+            desktop_shell::desktop_shell_set_preferences,
+            desktop_shell::desktop_shell_autostart,
+            desktop_shell::desktop_shell_set_autostart,
+            desktop_shell::desktop_shell_companion_state,
+            desktop_shell::desktop_shell_toggle_companion,
+            desktop_shell::desktop_shell_take_action,
+            desktop_shell::taskbar::desktop_shell_task_progress,
+            desktop_shell::taskbar::desktop_shell_notify_task,
             bridge::companion_mark_ready,
             companion_window::start_companion_move,
             bridge::companion_set_interactive_regions,
@@ -190,6 +172,15 @@ fn main() {
             updater_cmd::desktop_update_state,
             updater_cmd::desktop_update_install,
             updater_cmd::desktop_update_cancel,
+            updater_cmd::desktop_update_reminder,
+            updater_cmd::desktop_update_release_page,
+            gateway_monitor::desktop_gateway_recovery,
+            gateway_monitor::desktop_gateway_retry,
+            diagnostics::desktop_export_diagnostics,
+            live2d_process::desktop_live2d_isolation,
+            live2d_process::desktop_set_live2d_isolation,
+            watchers::desktop_get_clipboard_awareness,
+            watchers::desktop_set_clipboard_awareness,
             live2d_overlay::aics_live2d_set_character,
             live2d_framing::aics_live2d_set_frame,
             live2d_overlay::aics_live2d_play_motion,
@@ -227,6 +218,7 @@ fn main() {
             app.manage(state);
             app.manage(window_persistence::WindowStateWriter::new());
             let state = app.state::<AppState>();
+            live2d_process::initialize(crate::mutex::RecoverMutex::recover_lock(&state.preferences).isolated_live2d_renderer);
             app.manage(host);
             app.manage(resource_assistant::ResourceAssistant::default());
             if (std::env::args().any(|arg| arg == "--resource-assistant") && !state.paths.config_root.join("resource-restart.json").exists()) || resource_assistant::recovery_pending(app.handle()) { resource_assistant::open(app.handle()).map_err(std::io::Error::other)?; }
@@ -252,7 +244,7 @@ fn main() {
                             .to_string();
                         let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
                         state.info(&format!("deep link: {url} -> {path}"));
-                        let gateway = state.gateway_url.lock().unwrap().clone();
+                        let gateway = state.gateway_url.recover_lock().clone();
                         main_shared::open_atelier(&handle, &gateway, Some(&path));
                     }
                 });
@@ -267,10 +259,10 @@ fn main() {
             }
 
             // 工作区回填：迁移后重新读取
-            if state.workspace_root.lock().unwrap().is_empty() {
+            if state.workspace_root.recover_lock().is_empty() {
                 let loaded = window_state::load_ai_workspace(&state.paths.ai_workspace_file);
                 if !loaded.is_empty() {
-                    *state.workspace_root.lock().unwrap() = loaded;
+                    *state.workspace_root.recover_lock() = loaded;
                 }
             }
 
@@ -292,10 +284,10 @@ fn main() {
                 state.paths.gateway_cwd.clone(),
                 configured_port,
                 {
-                    let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.lock().unwrap()));
+                    let mut env = main_shared::gateway_env(&state.paths, is_packaged, Some(&state.workspace_root.recover_lock()));
                     // Retain the exact workspace passed to this gateway, including the default/env fallback.
                     if let Some((_, root)) = env.iter().find(|(key, _)| key == "AI_WORKSPACE_ROOT") {
-                        *state.workspace_root.lock().unwrap() = root.clone();
+                        *state.workspace_root.recover_lock() = root.clone();
                     }
                     if ui_entry::bundled(app.handle()) { env.push(("AICS_DESKTOP_BUNDLED_UI".into(), "1".into())); }
                     env
@@ -308,7 +300,7 @@ fn main() {
 
             use window_state::StartupMode;
             if matches!(main_shared::normal_startup_mode(app.handle()), Some(StartupMode::Companion | StartupMode::Both))
-                && state.preferences.lock().unwrap().live2d_enabled != Some(false)
+                && state.preferences.recover_lock().live2d_enabled != Some(false)
             {
                 live2d_overlay::prewarm(app.handle());
             }
@@ -322,16 +314,19 @@ fn main() {
                     Ok(url) => {
                         if let Err(error) = main_shared::authorize_gateway_origin(&handle, &url) {
                             s.error(&format!("gateway capability rejected: {error}"));
+                            s.gateway_recovery.publish(&handle, gateway_monitor::Phase::Reconnecting, "authorization");
                             return;
                         }
-                        *s.gateway_url.lock().unwrap() = url.clone();
+                        *s.gateway_url.recover_lock() = url.clone();
                         window_state::save_desktop_gateway_port(&s.paths.gateway_port_file, supervisor.port());
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
                         let _ = handle.emit("aics:gateway-ready", &url);
+                        s.gateway_recovery.publish(&handle, gateway_monitor::Phase::Ready, "");
                         main_shared::dispatch_startup(&handle, &url);
                     }
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));
+                        s.gateway_recovery.publish(&handle, gateway_monitor::Phase::Reconnecting, "startup");
                         if ui_entry::bundled(&handle) || resource_assistant::recovery_pending(&handle) {
                             return;
                         }
@@ -344,14 +339,12 @@ fn main() {
                 }
             });
 
+            desktop_shell::initialize(app.handle());
             let _ = tray::create_tray(app.handle());
             if ui_entry::bundled(app.handle()) { main_shared::dispatch_startup(app.handle(), ""); }
-            if ui_entry::isolated_profile().is_none() { register_shortcuts(app.handle()); }
             let handle = app.handle().clone();
             watchers::start_global_mouse_watch(handle.clone());
-            if ui_entry::isolated_profile().is_none() { watchers::start_clipboard_watch(handle.clone()); }
-            watchers::start_power_watch(handle.clone());
-            watchers::start_display_watch(handle.clone());
+            watchers::start_system_watch(handle.clone(), ui_entry::isolated_profile().is_none());
             gateway_monitor::start(handle);
             Ok(())
         })
@@ -380,12 +373,13 @@ fn main() {
                 }
             }
             RunEvent::WindowEvent { label, event: win_event, .. } => match win_event {
+                tauri::WindowEvent::Focused(true) => desktop_shell::remember_focus(app_handle, &label),
                 change @ (tauri::WindowEvent::Moved(_) | tauri::WindowEvent::Resized(_)) => {
                     if label == "companion" { chat_dock::follow(app_handle); }
                     // The native move loop owns the position until release. Resizes
                     // still reach the WebView immediately on a per-monitor DPI change.
                     if matches!(change, tauri::WindowEvent::Moved(_)) && label == "companion"
-                        && app_handle.state::<AppState>().companion_input.lock().unwrap().moving { return; }
+                        && app_handle.state::<AppState>().companion_input.recover_lock().moving { return; }
                     window_persistence::changed(app_handle, &label);
                     if label == "atelier" {
                         if let Some(window) = app_handle.get_webview_window("atelier") {
@@ -397,9 +391,7 @@ fn main() {
                     if label == "atelier" {
                         window_persistence::closing(app_handle, &label);
                         api.prevent_close();
-                        if let Some(w) = app_handle.get_webview_window("atelier") {
-                            let _ = w.hide();
-                        }
+                        desktop_shell::close_atelier(app_handle);
                     } else if label == "companion" {
                         api.prevent_close();
                         main_shared::hide_companion(app_handle);

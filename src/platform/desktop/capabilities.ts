@@ -41,9 +41,9 @@ const capabilities: CompanionDesktopBridge = {
   onWindowBoundsChanged: listener => on('aics:window-bounds', listener), offWindowBoundsChanged: off,
   onPowerModeChanged: listener => on('aics:power-mode', listener), offPowerModeChanged: off,
   onInteractionModeChanged: listener => on('aics:interaction-mode', listener), offInteractionModeChanged: off,
-  onClipboardImage: listener => on<number[]>('aics:clipboard-image', bytes => listener(Uint8Array.from(bytes))), offClipboardImage: off,
-  onClipboardText: listener => on('aics:clipboard-text', listener), offClipboardText: off,
-  onGlobalMouse: listener => on('aics:global-mouse', listener), offGlobalMouse: off,
+  onClipboardImage: listener => on<number[]>('aics:clipboard-image', bytes => listener(Uint8Array.from(bytes)), 'current-window'), offClipboardImage: off,
+  onClipboardText: listener => on('aics:clipboard-text', listener, 'current-window'), offClipboardText: off,
+  onGlobalMouse: listener => on('aics:global-mouse', listener, 'current-window'), offGlobalMouse: off,
   minimizeWindow: () => invoke('window_minimize'), toggleMaximizeWindow: () => invoke('window_maximize_toggle'),
   closeWindow: () => invoke('window_close'), getWindowState: () => invoke('get_window_state'),
   onMaximizedChanged: listener => on('aics:maximized', listener), offMaximizedChanged: off,
@@ -66,7 +66,7 @@ export const companionWindow = {
   setInteractiveRegions: (regions: CompanionRect[], lock: boolean) => invoke<void>('companion_set_interactive_regions', { regions, lock }),
   setStaticMask: (mask: CompanionAlphaMask | null) => invoke<void>('companion_set_static_mask', { mask }),
   on<K extends keyof CompanionSignals>(signal: K, listener: (payload: CompanionSignals[K]) => void) {
-    const subscription = on<CompanionSignals[K]>(`aics:companion-${signal}`, listener)
+    const subscription = on<CompanionSignals[K]>(`aics:companion-${signal}`, listener, signal === 'dismiss' ? 'current-window' : undefined)
     return () => off(subscription)
   },
   onChatVisibility(listener: (visible: boolean) => void) {

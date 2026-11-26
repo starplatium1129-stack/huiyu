@@ -1,14 +1,15 @@
+use crate::mutex::RecoverMutex;
 use super::*;
 
 pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRect, visible: bool, opacity: Option<u32>, companion: Option<isize>) -> Result<(), String> {
     // A late layout update after Destroy may carry visible=true. It must not
     // reveal an empty overlay or wake the idle command loop at the active FPS.
     let visible = visible && state.model_ready.load(Ordering::SeqCst);
-    let Some(hwnd) = state.hwnd.lock().unwrap().clone().map(|h| h as HWND) else {
+    let Some(hwnd) = state.hwnd.recover_lock().clone().map(|h| h as HWND) else {
         return Err("overlay window not ready".to_string());
     };
     let companion_hwnd = companion.map(|handle| handle as HWND).unwrap_or(std::ptr::null_mut());
-    *state.companion_hwnd.lock().unwrap() = (!companion_hwnd.is_null())
+    *state.companion_hwnd.recover_lock() = (!companion_hwnd.is_null())
         .then_some(companion_hwnd as isize);
     let (rect, companion_offset) = if companion_hwnd.is_null() {
         (local_rect, None)
@@ -27,9 +28,9 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
             (local_rect, None)
         }
     };
-    *state.companion_offset.lock().unwrap() = companion_offset;
+    *state.companion_offset.recover_lock() = companion_offset;
     {
-        let mut previous = state.rect.lock().unwrap();
+        let mut previous = state.rect.recover_lock();
         if (previous.width, previous.height) != (rect.width, rect.height) {
             *state.alpha_mask.write().unwrap() = None;
         }
@@ -37,7 +38,7 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
     }
     state.visible.store(visible, Ordering::SeqCst);
     if !visible {
-        *state.model_bounds.lock().unwrap() = None;
+        *state.model_bounds.recover_lock() = None;
         *state.alpha_mask.write().unwrap() = None;
         state.first_frame_ready.store(false, Ordering::Release);
     }
@@ -67,11 +68,11 @@ pub(super) fn place_overlay(state: &Live2DOverlayState, hwnd: HWND, companion: H
 
 pub(crate) fn set_revealed(state: &Live2DOverlayState, revealed: bool) {
     state.revealed.store(revealed, Ordering::Release);
-    let hwnd = *state.hwnd.lock().unwrap();
+    let hwnd = *state.hwnd.recover_lock();
     let Some(hwnd) = hwnd.map(|value| value as HWND) else { return; };
     if revealed && state.visible.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
-        let companion = state.companion_hwnd.lock().unwrap().unwrap_or(0) as HWND;
-        let rect = *state.rect.lock().unwrap();
+        let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
+        let rect = *state.rect.recover_lock();
         place_overlay(state, hwnd, companion, rect);
     } else if !revealed {
         unsafe { ShowWindow(hwnd, SW_HIDE); }
@@ -82,7 +83,7 @@ pub(crate) fn set_revealed(state: &Live2DOverlayState, revealed: bool) {
 pub(crate) fn send_command(state: &Arc<Live2DOverlayState>, cmd: OverlayCommand) -> Result<(), String> {
     let deadline = Instant::now() + Duration::from_secs(2);
     loop {
-        let tx = state.cmd_tx.lock().unwrap().clone();
+        let tx = state.cmd_tx.recover_lock().clone();
         if let Some(tx) = tx {
             tx.send(cmd)
                 .map_err(|_| "renderer thread disconnected".to_string())?;
@@ -100,17 +101,18 @@ pub(crate) fn state_snapshot(state: &Live2DOverlayState) -> serde_json::Value {
     let display_hz = state.display_hz.load(Ordering::Relaxed);
     serde_json::json!({
         "active": true,
-        "rect": *state.rect.lock().unwrap(),
+        "rect": *state.rect.recover_lock(),
         "visible": state.visible.load(Ordering::SeqCst),
         "frameCount": state.frame_count.load(Ordering::SeqCst),
-        "targetFps": frame_pacing::model_fps(state.fps_limit.load(Ordering::Relaxed), display_hz),
+        "targetFps": state.target_fps.load(Ordering::Relaxed),
         "displayRefreshHz": display_hz,
+        "renderSuspended": state.render_suspended.load(Ordering::Relaxed),
         "ready": state.model_ready.load(Ordering::SeqCst),
         "windowReady": state.window_ready.load(Ordering::SeqCst),
         "rendererAttached": state.renderer_attached.load(Ordering::SeqCst),
         "starting": state.starting.load(Ordering::SeqCst),
-        "character": state.character.lock().unwrap().clone(),
-        "modelBounds": *state.model_bounds.lock().unwrap(),
+        "character": state.character.recover_lock().clone(),
+        "modelBounds": *state.model_bounds.recover_lock(),
         "mouthLevel": f32::from_bits(state.last_mouth_level.load(Ordering::SeqCst)),
         "mouthMappedValue": f32::from_bits(state.last_mapped_mouth_value.load(Ordering::SeqCst)),
         "surfaceFailures": state.surface_failures.load(Ordering::Relaxed),

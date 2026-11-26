@@ -8,8 +8,9 @@ pub(super) fn run(
     mut receiver: mpsc::Receiver<Work>,
     opened: oneshot::Sender<Result<()>>,
     sender: mpsc::WeakSender<Work>,
+    derivatives: Arc<thumbnail::Cache>,
 ) {
-    let mut context = match schema::open(root, id, epoch, create) {
+    let mut context = match schema::open(root, id, epoch, create, derivatives) {
         Ok(context) => {
             if opened.send(Ok(())).is_err() {
                 return;
@@ -304,7 +305,7 @@ pub(super) fn run(
                         )));
                         continue;
                     }
-                    match backup::prepare(&mut context, &principal, &command) {
+                    match context.durable(|c| backup::prepare(c, &principal, &command)) {
                         Ok(backup::Prepared::Complete(value)) => {
                             let _ = reply.send(Ok(value));
                         }
@@ -365,7 +366,7 @@ pub(super) fn run(
                 }
             }
             Work::CopyFinished(completion, result, reply) => {
-                let result = backup::finish(&mut context, completion, result);
+                let result = context.durable(|c| backup::finish(c, completion, result));
                 let _ = reply.send(result);
                 copying = None;
             }

@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
 use tauri::{AppHandle, Emitter, Manager, WebviewWindowBuilder};
 
@@ -92,14 +93,16 @@ pub fn position_window_client_area(window: &tauri::WebviewWindow, target: tauri:
 
 pub fn show_companion(app: &AppHandle, focus: bool) {
     crate::companion_window::show(app, focus, false);
+    crate::desktop_shell::publish_companion(app);
 }
 
 pub fn hide_companion(app: &AppHandle) {
     crate::companion_window::hide(app);
+    crate::desktop_shell::publish_companion(app);
 }
 
 pub fn toggle_companion_visibility(app: &AppHandle) {
-    let preparing = app.state::<AppState>().companion_presentation.lock().unwrap().preparing();
+    let preparing = app.state::<AppState>().companion_presentation.recover_lock().preparing();
     if preparing || app.get_webview_window("companion").is_some_and(|window| window.is_visible().unwrap_or(false)) {
         hide_companion(app);
     } else {
@@ -117,7 +120,7 @@ pub fn normal_startup_mode(app: &AppHandle) -> Option<crate::window_state::Start
     {
         return None;
     }
-    let mode = state.preferences.lock().unwrap().startup_mode;
+    let mode = state.preferences.recover_lock().startup_mode;
     Some(mode)
 }
 
@@ -176,7 +179,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let base = gateway_url.to_string();
     if let Some(w) = app.get_webview_window("atelier") {
-        if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); let _ = w.set_focus(); }
+        if !crate::ui_entry::isolated_hidden() { crate::desktop_shell::focus_atelier(app); }
         let _ = w.emit("aics:navigate", pathname);
         return;
     }
@@ -227,7 +230,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
 
 pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Result<()> {
     static OPEN: std::sync::Mutex<()> = std::sync::Mutex::new(());
-    let _open = OPEN.lock().unwrap_or_else(|error| error.into_inner());
+    let _open = OPEN.recover_lock();
     if crate::maintenance::active(app) { return Ok(()); }
     if app.get_webview_window("companion").is_some() { return Ok(()); }
     let state = app.state::<AppState>();
@@ -235,7 +238,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
     let bounds = &placement.logical;
     let source = crate::ui_entry::source(app, gateway_url, "/companion").map_err(|error| tauri::Error::Io(std::io::Error::other(error)))?;
     // WebView creation waits for the UI thread, which also reads preferences.
-    let always_on_top = state.preferences.lock().unwrap().always_on_top;
+    let always_on_top = state.preferences.recover_lock().always_on_top;
     let win = webview_builder(app, "companion", source)
         .title("绘遇 Companion")
         .inner_size(bounds.width as f64, bounds.height as f64)
@@ -284,7 +287,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
             return;
         }
         let bounds = &placement.logical;
-        let always_on_top = state.preferences.lock().unwrap().always_on_top;
+        let always_on_top = state.preferences.recover_lock().always_on_top;
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
         let mut builder = webview_builder(&app, "companion-chat", source);
         #[cfg(windows)]
@@ -416,7 +419,7 @@ pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
     let Some(state) = app.try_state::<AppState>() else { return false; };
     // Retain capabilities for an already loaded trusted document while the
     // runtime reconnects. Every new navigation still verifies fresh identity.
-    let expected = state.gateway_url.lock().unwrap().clone();
+    let expected = state.gateway_url.recover_lock().clone();
     // Frequent pointer IPC from the loopback origin needs no migration-file read.
     let bundled = crate::ui_entry::native_origin(url) && crate::ui_entry::bundled(app);
     registered_desktop_origin(&expected, bundled, url)
@@ -426,7 +429,7 @@ pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
 pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String> {
     let parsed = tauri::Url::parse(url).map_err(|e| e.to_string())?;
     if !same_gateway_origin(url, &parsed) { return Err("Untrusted gateway origin".into()); }
-    let current = app.state::<AppState>().gateway_url.lock().unwrap().clone();
+    let current = app.state::<AppState>().gateway_url.recover_lock().clone();
     if !current.is_empty() {
         if same_gateway_origin(&current, &parsed) { return Ok(()); }
         if !crate::ui_entry::bundled(app) { return Err("Gateway origin changed; restart the desktop before granting privileges".into()); }
@@ -435,6 +438,9 @@ pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String
         include_str!("../capabilities/default.json"),
         include_str!("../capabilities/companion-live2d.json"),
         include_str!("../capabilities/companion-dialogue.json"),
+        include_str!("../capabilities/atelier-recovery.json"),
+        include_str!("../capabilities/atelier-shell.json"),
+        include_str!("../capabilities/clipboard-awareness.json"),
     ] {
         let mut capability: serde_json::Value = serde_json::from_str(template).map_err(|e| e.to_string())?;
         capability["identifier"] = serde_json::json!(format!("{}-{}", capability["identifier"].as_str().unwrap(), parsed.port_or_known_default().unwrap()));

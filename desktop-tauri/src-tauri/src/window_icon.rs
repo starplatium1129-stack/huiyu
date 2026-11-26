@@ -1,5 +1,6 @@
 //! Native ICO loading preserves the AND mask that Tao's RGBA conversion corrupts.
 //! Keep this Windows override until the upstream conversion preserves that mask.
+use crate::mutex::RecoverMutex;
 use std::{io, ptr, sync::Mutex};
 use tauri::{WebviewWindow, WindowEvent};
 use windows_sys::Win32::{
@@ -61,7 +62,7 @@ pub fn set_window_icons(window: &WebviewWindow) -> tauri::Result<()> {
     icons.apply(hwnd);
     let retained = Mutex::new(Some(icons));
     window.on_window_event(move |event| {
-        if matches!(event, WindowEvent::Destroyed) { retained.lock().unwrap().take(); }
+        if matches!(event, WindowEvent::Destroyed) { retained.recover_lock().take(); }
     });
     Ok(())
 }

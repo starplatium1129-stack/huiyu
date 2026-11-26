@@ -1,4 +1,5 @@
 //! Renderer-only entry point: no Tauri runtime, workspace, gateway, or WebView.
+use crate::mutex::RecoverMutex;
 use std::io::{BufRead, Write};
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
@@ -66,6 +67,15 @@ impl ChildRuntime {
         self.state.starting.store(true, Ordering::SeqCst);
         let state = self.state.clone();
         let events_state = state.clone();
+        let pointer_writer = output.clone();
+        let pointer_state = Arc::downgrade(&state);
+        let _ = state.pointer_feedback.set(Arc::new(move |sample| {
+            if write_message(&pointer_writer, &ChildMessage::PointerHit { sample }).is_err() {
+                if let Some(state) = pointer_state.upgrade() {
+                    state.shutdown.store(true, Ordering::SeqCst);
+                }
+            }
+        }));
         let output = output.clone();
         let events = RendererEvents(Arc::new(move |name, payload| {
             if write_message(&output, &ChildMessage::Event { name: name.into(), payload }).is_err() {
@@ -138,7 +148,7 @@ impl ChildRuntime {
             Command::SetFrame { rect, visible, opacity, framing, companion_hwnd } => {
                 let framing: crate::live2d_framing::StageFraming = framing.map(serde_json::from_value)
                     .transpose().map_err(|error| format!("invalid Live2D framing: {error}"))?.unwrap_or_default();
-                *self.state.framing.lock().unwrap() = framing.validate()?;
+                *self.state.framing.recover_lock() = framing.validate()?;
                 apply_frame(&self.state, rect, visible, opacity, companion_hwnd)?;
             }
             Command::PlayMotion { group, index, priority } => {
@@ -170,7 +180,7 @@ impl ChildRuntime {
 
     fn stop(&mut self) {
         self.state.shutdown.store(true, Ordering::SeqCst);
-        if let Some(sender) = self.state.cmd_tx.lock().unwrap().as_ref() { let _ = sender.send(OverlayCommand::Shutdown); }
+        if let Some(sender) = self.state.cmd_tx.recover_lock().as_ref() { let _ = sender.send(OverlayCommand::Shutdown); }
         if let Some(worker) = self.worker.take() { let _ = worker.join(); }
     }
 }

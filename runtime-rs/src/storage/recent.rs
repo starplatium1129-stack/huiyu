@@ -12,15 +12,29 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
         .transpose()?
         .unwrap_or(3);
     artwork_index::refresh(c)?;
-    let sql = "SELECT r.id_json,r.timestamp_json,r.revision FROM artwork_gallery_index g
-            JOIN artwork_read_index r ON r.id_key=g.id_key ORDER BY g.time DESC,g.id_key LIMIT ?1";
+    let records = command["projection"] == "records";
+    let sql = if records {
+        "SELECT r.id_json,r.timestamp_json,r.revision,a.body FROM artwork_gallery_index g
+         JOIN artwork_read_index r ON r.id_key=g.id_key
+         JOIN artworks a ON a.id_key=g.id_key AND a.deleted_at IS NULL
+         ORDER BY g.time DESC,g.id_key LIMIT ?1"
+    } else {
+        "SELECT r.id_json,r.timestamp_json,r.revision FROM artwork_gallery_index g
+         JOIN artwork_read_index r ON r.id_key=g.id_key ORDER BY g.time DESC,g.id_key LIMIT ?1"
+    };
     let mut statement = c.db.prepare_cached(sql)?;
     let mut rows = statement.query([limit])?;
     let mut items = Vec::new();
     while let Some(row) = rows.next()? {
         c.check_cancel()?;
-        items.push(json!({"id":serde_json::from_str::<Value>(text_column(row,0)?)?,
-            "timestamp":serde_json::from_str::<Value>(text_column(row,1)?)?,"revision":row.get::<_,i64>(2)?}));
+        let mut item = json!({"id":null,"timestamp":null,"revision":row.get::<_,i64>(2)?});
+        item["id"] = super::records::json_column(row, 0)?;
+        item["timestamp"] = super::records::json_column(row, 1)?;
+        if records {
+            item["body"] = super::records::json_column(row, 3)?;
+            item["deletedAt"] = Value::Null;
+        }
+        items.push(item);
     }
     let mut result = json!({"items":null,"revision":c.revision()?});
     result["items"] = items.into();

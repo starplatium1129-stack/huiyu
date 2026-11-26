@@ -8,6 +8,8 @@ import { captureGallerySource } from './galleryStorage';
 import { safeImageUrl } from './galleryHelpers';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import type { ArtworkRecord } from '@/types/artwork';
+import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository';
+import { readGalleryDerivative } from './readGalleryDerivative';
 
 export interface UseGalleryComparisonOptions {
   history: Ref<ArtworkRecord[]>;
@@ -101,6 +103,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   // Own one preview separately: wall LRU eviction must never revoke our Blob URL.
   const parentPreview = ref(''), parentLoading = ref(false), parentError = ref(''), parentOriginal = ref(false);
   let parentObjectUrl = '', version = 0, active = true, disposed = false;
+  let parentLease: ArtworkDerivativeLease | null = null, mediaSuspended = false;
   let parentRead: AbortController | null = null;
   let parentTimer: ReturnType<typeof setTimeout> | undefined;
   let relation: { child: ArtworkRecord; parent: ArtworkRecord } | null = null;
@@ -110,6 +113,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     clearTimeout(parentTimer);
     parentRead?.abort(); parentRead = null;
     if (parentObjectUrl) URL.revokeObjectURL(parentObjectUrl);
+    parentLease?.release(); parentLease = null;
     parentObjectUrl = ''; parentPreview.value = ''; parentLoading.value = false; parentError.value = '';
     relation = null; parentOriginal.value = false; readingOriginal = false;
   }
@@ -118,7 +122,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       && relation.child.parent_id === current.value?.parent_id
       && sameArtworkMedia(relation.parent, parentArtwork.value ?? undefined);
     if (!retained) releaseParent();
-    if (!active || disposed || !current.value || !parentArtwork.value) return;
+    if (!active || mediaSuspended || disposed || !current.value || !parentArtwork.value) return;
     const child = { ...current.value }, parent = { ...parentArtwork.value };
     relation = { child, parent };
     // A mode toggle upgrades this pair; it never discards a usable preview or
@@ -154,6 +158,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
         });
         if (!decoded || !isCurrent()) return false;
         if (parentObjectUrl && parentObjectUrl !== source) URL.revokeObjectURL(parentObjectUrl);
+        parentLease?.release(); parentLease = null;
         parentObjectUrl = candidate; candidate = '';
         parentPreview.value = source; parentOriginal.value = true;
         return true;
@@ -173,9 +178,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       if (parent.image_id) {
         // Desktop derives missing thumbnails locally. Legacy web records may
         // lack one, so only that miss/failure needs a separately owned original.
-        const thumb = readingOriginal ? null : await artworkRepository.getThumbnail(parent.image_id).catch(() => null);
-        if (!isCurrent()) return;
-        if (thumb?.startsWith('data:image/')) { parentPreview.value = thumb; return; }
+        const lease = readingOriginal ? null : await readGalleryDerivative(artworkRepository, parent.image_id, undefined, controller.signal).catch(() => null);
+        if (!isCurrent()) { lease?.release(); return; }
+        if (lease) { parentLease = lease; parentPreview.value = lease.url; return; }
         readingOriginal = true;
         const blob = await artworkRepository.getImage(parent.image_id, controller.signal).catch(() => null);
         if (!isCurrent()) return;
@@ -235,6 +240,11 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       : parentError.value ? `${parentError.value}${parentImageUrl.value ? '当前显示预览，可重新读取原图。' : '可重新读取修改前原图。'}` : '',
   }));
   async function retryParentImage() { if (!parentLoading.value) await loadParent(); }
+  function setComparisonMediaSuspended(suspended: boolean) {
+    mediaSuspended = suspended;
+    if (suspended) releaseParent();
+    else if (current.value) void loadParent();
+  }
 
   return {
     compareMode,
@@ -245,6 +255,6 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     refreshComparisonRecords, comparisonReading,
     parentImageUrl,
     parentImageLabel, parentImageStatus, retryParentImage,
-    hasComparableImage,
+    hasComparableImage, setComparisonMediaSuspended,
   };
 }

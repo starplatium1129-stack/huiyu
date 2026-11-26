@@ -1,50 +1,155 @@
-use crate::{gateway::GatewaySupervisor, main_shared, maintenance, state::AppState};
-use std::{sync::atomic::Ordering, time::Duration};
-use tauri::{AppHandle, Emitter, Manager};
+use crate::{gateway::GatewaySupervisor, main_shared, maintenance, mutex::RecoverMutex, state::AppState};
+use std::sync::{atomic::Ordering, Mutex};
+use std::time::{Duration, Instant};
+use tauri::{AppHandle, Emitter, Manager, WebviewWindow};
+use tokio::sync::Notify;
 
-/// 网关健康监控：5s 轮询，连续 3 次失败或子进程退出 → 指数退避重启（2^n 秒封顶 30s）
+const HEALTH_INTERVAL: Duration = Duration::from_secs(5);
+const EXIT_INTERVAL: Duration = Duration::from_millis(250);
+const STABLE_AFTER: Duration = Duration::from_secs(25);
+const MAX_RESTARTS: u32 = 3;
+
+#[derive(Clone, Copy, Default, PartialEq, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) enum Phase {
+    #[default]
+    Starting,
+    Ready,
+    Reconnecting,
+    Failed,
+}
+
+#[derive(Clone, Copy, Default, serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Snapshot {
+    revision: u64,
+    phase: Phase,
+    reason: &'static str,
+}
+
+#[derive(Default)]
+pub(crate) struct Recovery {
+    snapshot: Mutex<Snapshot>,
+    retry: Notify,
+}
+
+impl Recovery {
+    pub(crate) fn publish(&self, app: &AppHandle, phase: Phase, reason: &'static str) {
+        let next = {
+            let mut snapshot = self.snapshot.recover_lock();
+            if snapshot.phase == phase && snapshot.reason == reason { return; }
+            snapshot.revision += 1;
+            snapshot.phase = phase;
+            snapshot.reason = reason;
+            *snapshot
+        };
+        let _ = app.emit_to("atelier", "aics:gateway-recovery", next);
+    }
+}
+
+#[tauri::command]
+pub(crate) fn desktop_gateway_recovery(window: WebviewWindow) -> Result<Snapshot, String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let snapshot = *window.state::<AppState>().gateway_recovery.snapshot.recover_lock();
+    Ok(snapshot)
+}
+
+#[tauri::command]
+pub(crate) fn desktop_gateway_retry(window: WebviewWindow) -> Result<(), String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let state = window.state::<AppState>();
+    if state.quitting.load(Ordering::Acquire) || maintenance::active(window.app_handle()) {
+        return Err("桌面端正在退出或维护中".into());
+    }
+    if state.gateway_recovery.snapshot.recover_lock().phase == Phase::Reconnecting { return Ok(()); }
+    state.gateway_recovery.retry.notify_one();
+    Ok(())
+}
+
+async fn restart(app: &AppHandle, supervisor: &GatewaySupervisor) -> Result<(), String> {
+    let state = app.state::<AppState>();
+    let url = supervisor.start().await?;
+    main_shared::authorize_gateway_origin(app, &url).map_err(|error| error.to_string())?;
+    *state.gateway_url.recover_lock() = url.clone();
+    crate::window_state::save_desktop_gateway_port(&state.paths.gateway_port_file, supervisor.port());
+    let _ = app.emit("aics:gateway-ready", &url);
+    main_shared::dispatch_startup(app, &url);
+    Ok(())
+}
+
 pub(crate) fn start(app: AppHandle) {
     tauri::async_runtime::spawn(async move {
+        let state = app.state::<AppState>();
+        let supervisor = app.state::<GatewaySupervisor>();
+        let recovery = &state.gateway_recovery;
+        let mut tick = tokio::time::interval(EXIT_INTERVAL);
+        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+        let mut next_health = Instant::now() + HEALTH_INTERVAL;
         let mut failures = 0u32;
-        let mut restart_attempt = 0u32;
+        let mut restarts = 0u32;
+        let mut stable_since = None;
+        let mut next_restart = None;
         loop {
-            tokio::time::sleep(Duration::from_secs(5)).await;
-            let state = app.state::<AppState>();
-            if maintenance::active(&app) || state.quitting.load(Ordering::SeqCst) { continue; }
-            let Some(supervisor) = app.try_state::<GatewaySupervisor>() else {
-                continue;
+            let manual = tokio::select! {
+                _ = tick.tick() => false,
+                _ = recovery.retry.notified() => true,
             };
-            let healthy = supervisor.is_healthy_async().await;
-            if healthy {
+            if state.quitting.load(Ordering::Acquire) { break; }
+            if maintenance::active(&app) { continue; }
+            let snapshot = *recovery.snapshot.recover_lock();
+            let phase = snapshot.phase;
+            if phase == Phase::Starting { continue; }
+            if manual {
                 failures = 0;
-                restart_attempt = 0;
-                continue;
-            }
-            failures += 1;
-            if failures < 3 {
-                continue;
-            }
-            // 子进程已退出（owned 但不在运行）或 3 次探测失败 → 重启
-            let delay = Duration::from_secs((2u64.saturating_pow(restart_attempt.min(5))).min(30));
-            restart_attempt += 1;
-            failures = 0;
-            state.warn(&format!("gateway unhealthy, restarting in {delay:?}"));
-            tokio::time::sleep(delay).await;
-            if maintenance::active(&app) || state.quitting.load(Ordering::SeqCst) { continue; }
-            match supervisor.start().await {
-                Ok(url) => {
-                    if let Err(error) = main_shared::authorize_gateway_origin(&app, &url) {
-                        state.error(&format!("gateway capability rejected: {error}"));
+                restarts = 0;
+                stable_since = None;
+                next_restart = Some((Instant::now(), "manual"));
+            } else if phase == Phase::Failed { continue; }
+            let now = Instant::now();
+            if next_restart.is_none() {
+                if phase == Phase::Reconnecting {
+                    next_restart = Some((now, snapshot.reason));
+                } else if supervisor.owned_child_exited() {
+                    next_restart = Some((now, "childExited"));
+                } else if now >= next_health {
+                    next_health = now + HEALTH_INTERVAL;
+                    if supervisor.is_healthy_async().await {
+                        failures = 0;
+                        if now.duration_since(*stable_since.get_or_insert(now)) >= STABLE_AFTER {
+                            restarts = 0;
+                        }
                         continue;
                     }
-                    *state.gateway_url.lock().unwrap() = url.clone();
-                    let _ = app.emit("aics:gateway-ready", url.clone());
-                    state.info(&format!("gateway restarted at {url}"));
-                    // Existing documents reconnect through the typed transport;
-                    // navigation here would discard unsaved drafts and task views.
-                    main_shared::dispatch_startup(&app, &url);
+                    stable_since = None;
+                    failures += 1;
+                    if failures >= 3 {
+                        next_restart = Some((now, "healthCheck"));
+                    }
                 }
-                Err(e) => state.error(&format!("gateway restart failed: {e}")),
+            }
+            let Some((scheduled, reason)) = next_restart else { continue; };
+            if now < scheduled { continue; }
+            if restarts >= MAX_RESTARTS {
+                next_restart = None;
+                recovery.publish(&app, Phase::Failed, reason);
+                continue;
+            }
+            restarts += 1;
+            stable_since = None;
+            failures = 0;
+            recovery.publish(&app, Phase::Reconnecting, reason);
+            let _ = app.emit("aics:gateway-unavailable", ());
+            match restart(&app, &supervisor).await {
+                Ok(()) => {
+                    state.info("gateway recovered");
+                    recovery.publish(&app, Phase::Ready, "");
+                    next_health = Instant::now() + HEALTH_INTERVAL;
+                    next_restart = None;
+                }
+                Err(error) => {
+                    state.error(&format!("gateway restart failed ({restarts}): {error}"));
+                    next_restart = Some((Instant::now() + Duration::from_secs(u64::from(restarts)), "restartFailed"));
+                }
             }
         }
     });

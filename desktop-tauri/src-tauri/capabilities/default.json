@@ -45,10 +45,6 @@
     "allow-open-workspace",
     "allow-save-image",
     "allow-workspace-portable-backup",
-    "allow-desktop-update-check",
-    "allow-desktop-update-state",
-    "allow-desktop-update-install",
-    "allow-desktop-update-cancel",
     "allow-chat-credential-read",
     "allow-chat-credential-write"
   ],

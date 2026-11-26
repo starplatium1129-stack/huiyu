@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::time::Duration;
 
 use serde::Deserialize;
@@ -60,7 +61,7 @@ fn dispatch(app: &AppHandle, action: impl FnOnce(&AppHandle) + Send + 'static) {
 }
 
 pub fn show(app: &AppHandle, focus: bool, menu: bool) {
-    let gateway = app.state::<AppState>().gateway_url.lock().unwrap().clone();
+    let gateway = app.state::<AppState>().gateway_url.recover_lock().clone();
     if gateway.is_empty() && !crate::ui_entry::bundled(app) { return; }
     dispatch(app, move |app| {
         if crate::maintenance::active(app) { return; }
@@ -73,7 +74,7 @@ pub fn show(app: &AppHandle, focus: bool, menu: bool) {
             return;
         }
 
-        let mut presentation = state.companion_presentation.lock().unwrap();
+        let mut presentation = state.companion_presentation.recover_lock();
         if let Some(request) = &mut presentation.pending {
             request.focus |= focus;
             request.menu |= menu;
@@ -96,7 +97,7 @@ pub fn show(app: &AppHandle, focus: bool, menu: bool) {
                     app.state::<AppState>().error(&format!("open companion: {error}"));
                     dispatch(&app, move |app| {
                         let state = app.state::<AppState>();
-                        let mut presentation = state.companion_presentation.lock().unwrap();
+                        let mut presentation = state.companion_presentation.recover_lock();
                         if presentation.pending.as_ref().is_some_and(|r| r.generation == generation) {
                             presentation.pending = None;
                             drop(presentation);
@@ -114,7 +115,7 @@ pub fn show(app: &AppHandle, focus: bool, menu: bool) {
             dispatch(&app, move |app| {
                 let state = app.state::<AppState>();
                 {
-                    let mut presentation = state.companion_presentation.lock().unwrap();
+                    let mut presentation = state.companion_presentation.recover_lock();
                     let Some(request) = presentation.pending.as_mut().filter(|r| r.generation == generation) else { return; };
                     request.timed_out = true;
                 }
@@ -126,7 +127,7 @@ pub fn show(app: &AppHandle, focus: bool, menu: bool) {
 
 pub fn configured(app: &AppHandle) {
     dispatch(app, |app| {
-        app.state::<AppState>().companion_presentation.lock().unwrap().configured = true;
+        app.state::<AppState>().companion_presentation.recover_lock().configured = true;
         reveal_if_ready(app);
     });
 }
@@ -134,7 +135,7 @@ pub fn configured(app: &AppHandle) {
 pub fn mark_ready(app: &AppHandle, ready: ReadyKind) {
     dispatch(app, move |app| {
         let state = app.state::<AppState>();
-        let mut presentation = state.companion_presentation.lock().unwrap();
+        let mut presentation = state.companion_presentation.recover_lock();
         presentation.ready = Some(ready);
         drop(presentation);
         reveal_if_ready(app);
@@ -149,7 +150,7 @@ fn reveal_if_ready(app: &AppHandle) {
     if crate::maintenance::active(app) { return; }
     let state = app.state::<AppState>();
     let Some(window) = app.get_webview_window("companion") else { return; };
-    let mut presentation = state.companion_presentation.lock().unwrap();
+    let mut presentation = state.companion_presentation.recover_lock();
     if !presentation.configured { return; }
     let native_ready = live2d_overlay::first_frame_ready(app);
     let ready = match presentation.ready {
@@ -176,7 +177,7 @@ fn reveal_if_ready(app: &AppHandle) {
     let foreground = unsafe { GetForegroundWindow() };
     if request.focus { let _ = window.unminimize(); }
     if let Err(error) = window.show() {
-        state.companion_presentation.lock().unwrap().shown = false;
+        state.companion_presentation.recover_lock().shown = false;
         state.warn(&format!("show companion failed: {error}"));
         crate::tray::refresh_tray_menu(app);
         return;
@@ -203,14 +204,14 @@ fn reveal_if_ready(app: &AppHandle) {
 pub fn hide(app: &AppHandle) {
     dispatch(app, |app| {
         let state = app.state::<AppState>();
-        let mut presentation = state.companion_presentation.lock().unwrap();
+        let mut presentation = state.companion_presentation.recover_lock();
         presentation.pending = None;
         presentation.shown = false;
         presentation.ready = None;
         presentation.startup_failed = false;
         drop(presentation);
         {
-            let mut input = state.companion_input.lock().unwrap();
+            let mut input = state.companion_input.recover_lock();
             input.panels.clear();
             input.locked = false;
             input.process_frame = None;
@@ -222,7 +223,7 @@ pub fn hide(app: &AppHandle) {
             let _ = window.hide();
             let _ = window.emit("aics:visibility", false);
         }
-        let chat_docked = state.preferences.lock().unwrap().chat_docked;
+        let chat_docked = state.preferences.recover_lock().chat_docked;
         if chat_docked { crate::main_shared::hide_companion_chat(app); }
         crate::tray::refresh_tray_menu(app);
     });
@@ -328,14 +329,14 @@ fn move_window(window: &WebviewWindow, request: WindowMove) -> Result<bool, Stri
     let state = window.state::<AppState>();
     if pet {
         {
-            let mut input = state.companion_input.lock().unwrap();
+            let mut input = state.companion_input.recover_lock();
             if input.moving { return Ok(true); }
             input.moving = true;
         }
     }
     let result = perform_move(hwnd, request, pet);
     if pet {
-        state.companion_input.lock().unwrap().moving = false;
+        state.companion_input.recover_lock().moving = false;
         if matches!(result, Ok(true)) { crate::window_persistence::changed(window.app_handle(), "companion"); }
     }
     result
@@ -376,7 +377,7 @@ pub fn set_regions(window: &WebviewWindow, panels: Vec<OverlayRect>, locked: boo
         return Err("invalid companion input regions".into());
     }
     let state = window.state::<AppState>();
-    let mut input = state.companion_input.lock().unwrap();
+    let mut input = state.companion_input.recover_lock();
     input.panels = panels;
     input.locked = locked;
     Ok(())
@@ -386,6 +387,6 @@ pub fn set_static_mask(window: &WebviewWindow, mask: Option<AlphaMaskSnapshot>) 
     if window.label() != "companion" || mask.as_ref().is_some_and(|mask| !mask.valid_local()) {
         return Err("invalid companion portrait mask".into());
     }
-    window.state::<AppState>().companion_input.lock().unwrap().static_mask = mask;
+    window.state::<AppState>().companion_input.recover_lock().static_mask = mask;
     Ok(())
 }

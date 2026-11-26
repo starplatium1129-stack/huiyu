@@ -6,6 +6,8 @@ import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { safeImageUrl } from './galleryHelpers'
 import { cardPreviewImage } from '@/utils/cardPreviewImage'
 import { sameArtworkMedia } from './artworkMediaIdentity'
+import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository'
+import { readGalleryDerivative } from './readGalleryDerivative'
 
 interface CardPreviewOptions {
   shell: Ref<HTMLElement | null>
@@ -17,7 +19,7 @@ interface CardPreviewOptions {
   current: (item: ArtworkRecord) => boolean
   urls: Ref<Record<string, string>>
   thumbnails: Readonly<Ref<Readonly<Record<string, string>>>>
-  rememberThumbnail: (id: string | number, url: string) => void
+  rememberThumbnail: (id: string | number, source: string | ArtworkDerivativeLease) => void
   forgetThumbnail: (id: string | number) => void
   markMissing: (id: string | number) => void
   clearMissing: (id: string | number) => void
@@ -43,7 +45,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   const widths = new Map<string | number, number>()
   const layoutWidths = new Map<Element, number>()
   const satisfied = new Map<string | number, number>()
-  const cache = new Map<string | number, { bytes: number; pixels: number }>()
+  const cache = new Map<string | number, { bytes: number; pixels: number; lease?: ArtworkDerivativeLease }>()
   const queue = new Map<string | number, PreviewRead>()
   const reads = new Map<string | number, { controller: AbortController; item: ArtworkRecord }>()
   let observer: IntersectionObserver | undefined, resize: ResizeObserver | undefined
@@ -53,7 +55,9 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   const wantedWidth = (id: string | number) => widths.get(id) || 560
   function releaseCardImage(id: string | number) {
     const url = options.urls.value[id]
-    if (url?.startsWith('blob:')) URL.revokeObjectURL(url)
+    const lease = cache.get(id)?.lease
+    if (lease) lease.release()
+    else if (url?.startsWith('blob:')) URL.revokeObjectURL(url)
     if (Object.hasOwn(options.urls.value, id)) {
       const next = Object.assign(Object.create(null), options.urls.value)
       delete next[id]; options.urls.value = next
@@ -99,6 +103,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
     if (!current()) return
     let fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
     let thumbnail = options.thumbnails.value[item.id]
+    let thumbnailLease: ArtworkDerivativeLease | null = null
     try {
       if (!item.image_id && !fallback && item._gallerySummary) {
         const complete = await repository.readArtwork(item.id, signal)
@@ -106,34 +111,49 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
         fallback = safeImageUrl(complete?.image_url) || (complete?.image_data?.startsWith('data:image/') ? complete.image_data : '')
       }
       if (!thumbnail && item.image_id) {
-        try { thumbnail = await repository.getThumbnail(item.image_id) || '' }
+        try {
+          thumbnailLease = await readGalleryDerivative(repository, item.image_id, undefined, signal)
+          thumbnail = thumbnailLease?.url || ''
+        }
         catch { /* A failed optional thumbnail must not prevent original recovery. */ }
       }
       if (!current()) return
-      if (thumbnail?.startsWith('data:image/')) {
+      if (thumbnail?.startsWith('data:image/') || thumbnail?.startsWith('blob:')) {
         try {
           const size = await dimensions(thumbnail, signal)
           if (!current()) return
-          options.rememberThumbnail(item.id, thumbnail)
+          if (thumbnailLease) {
+            options.rememberThumbnail(item.id, thumbnailLease)
+            thumbnailLease = null
+          }
           if (size.width >= width) { satisfied.set(item.id, size.width); return }
         } catch {
           if (!current()) return
-          thumbnail = ''; options.forgetThumbnail(item.id)
+          if (thumbnail === options.thumbnails.value[item.id]) options.forgetThumbnail(item.id)
+          thumbnail = ''
         }
       }
-      if (item.image_id && repository.getPreview) {
+      if (item.image_id && (repository.getImageDerivative || repository.getPreview)) {
         // Workspace derivatives survive the card's bounded memory cache. The
         // authority rounds up the requested size and never upscales originals.
-        const preview = await repository.getPreview(item.image_id, width, signal).catch(() => null)
-        if (!current()) return
-        if (preview) {
-          const size = await dimensions(preview, signal)
+        let preview = await readGalleryDerivative(repository, item.image_id, Math.min(width, 8192), signal).catch(() => null)
+        try {
           if (!current()) return
-          releaseCardImage(item.id)
-          options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: preview })
-          satisfied.set(item.id, size.width < width ? Infinity : size.width)
-          cache.set(item.id, { bytes: preview.length * 2, pixels: size.width * size.height }); trim()
-          return
+          if (preview) {
+            const size = await dimensions(preview.url, signal)
+            if (!current()) return
+            releaseCardImage(item.id)
+            options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: preview.url })
+            satisfied.set(item.id, size.width < width ? Infinity : size.width)
+            cache.set(item.id, { bytes: preview.bytes, pixels: size.width * size.height, lease: preview })
+            preview = null
+            trim()
+            return
+          }
+        } catch {
+          if (!current()) return
+        } finally {
+          preview?.release()
         }
       }
       const blob = item.image_id ? await repository.getImage(item.image_id, signal) : null
@@ -174,7 +194,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
         options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: fallback }); satisfied.set(item.id, Infinity)
         cache.set(item.id, { bytes: fallback.length * 2, pixels: 32 * 1024 * 1024 }); trim()
       } else if (!options.thumbnails.value[item.id]) options.markMissing(item.id)
-    }
+    } finally { thumbnailLease?.release() }
   }
   function pump() {
     while (options.active() && workers < 2 && queue.size) {

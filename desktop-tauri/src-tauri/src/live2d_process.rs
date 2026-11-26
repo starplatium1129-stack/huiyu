@@ -1,4 +1,5 @@
 //! Opt-in R12 renderer ownership. Only an explicit model selection starts a child.
+use crate::mutex::RecoverMutex;
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader, Write};
 use std::os::windows::process::CommandExt;
@@ -6,11 +7,12 @@ use std::path::PathBuf;
 use std::process::{Child, Command as ProcessCommand, Stdio};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{mpsc, Arc, Mutex, OnceLock};
-use std::time::Duration;
+use std::time::{Duration, Instant};
 use serde_json::{json, Value};
 use tauri::{AppHandle, Emitter, Manager};
 use tokio::sync::oneshot;
 use crate::live2d_process_protocol::{ChildMessage, Command, Request, CHILD_ARGUMENT, MAX_MESSAGE_BYTES};
+use crate::live2d_renderer::{OverlayRect, PointerHitSample};
 #[path = "process_job.rs"]
 mod job;
 
@@ -23,15 +25,40 @@ static GENERATION: AtomicU64 = AtomicU64::new(0);
 // allows an old callback to resume after a new renderer has already started.
 static EVENT_GENERATION: Mutex<u64> = Mutex::new(0);
 static SHUTTING_DOWN: AtomicBool = AtomicBool::new(false);
+static USER_ENABLED: AtomicBool = AtomicBool::new(false);
+const CHILD_ENV: &str = "AICS_LIVE2D_CHILD";
 const MAX_PENDING: usize = 32;
 
 pub fn enabled() -> bool {
-    std::env::var("AICS_LIVE2D_RENDERER_PROCESS").as_deref() == Ok("1")
+    USER_ENABLED.load(Ordering::Acquire) || (std::env::var("AICS_LIVE2D_RENDERER_PROCESS").as_deref() == Ok("1")
         && crate::ui_entry::isolated_profile().is_some()
         && std::env::var_os("AICS_DESKTOP_CONFIG_ROOT")
-            .map(PathBuf::from).is_some_and(|path| path.is_absolute())
+            .map(PathBuf::from).is_some_and(|path| path.is_absolute()))
 }
 
+pub fn initialize(configured: bool) { USER_ENABLED.store(configured, Ordering::Release); }
+pub fn child_allowed() -> bool { std::env::var(CHILD_ENV).as_deref() == Ok("1") || enabled() }
+
+#[tauri::command]
+pub(crate) fn desktop_live2d_isolation(window: tauri::WebviewWindow) -> Result<bool, String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let enabled = window.state::<crate::state::AppState>().preferences.recover_lock().isolated_live2d_renderer;
+    Ok(enabled)
+}
+
+#[tauri::command]
+pub(crate) fn desktop_set_live2d_isolation(window: tauri::WebviewWindow, enabled: bool) -> Result<(), String> {
+    crate::bootstrap::require_atelier(&window)?;
+    let state = window.state::<crate::state::AppState>();
+    let mut preferences = state.preferences.recover_lock();
+    let mut next = preferences.clone();
+    next.isolated_live2d_renderer = enabled;
+    if !crate::window_state::save_companion_preferences(&state.paths.preferences_file, &next) {
+        return Err("无法保存独立渲染设置".into());
+    }
+    *preferences = next;
+    Ok(())
+}
 pub struct RendererProcess {
     generation: u64,
     pid: u32,
@@ -39,6 +66,7 @@ pub struct RendererProcess {
     _job: job::ProcessJob,
     writer: mpsc::SyncSender<Vec<u8>>,
     pending: Mutex<HashMap<u64, oneshot::Sender<Reply>>>,
+    pointer_hit: Mutex<Option<(PointerHitSample, Instant)>>,
     next_id: AtomicU64,
     stopped: AtomicBool,
     shutdown_requested: AtomicBool,
@@ -47,7 +75,7 @@ pub struct RendererProcess {
 
 impl RendererProcess {
     fn emit_current(&self, name: &str, payload: Value) {
-        let generation = EVENT_GENERATION.lock().unwrap();
+        let generation = EVENT_GENERATION.recover_lock();
         if *generation == self.generation
             && (name == "aics:live2d:stopped" || !self.stopped.load(Ordering::SeqCst))
         {
@@ -57,13 +85,20 @@ impl RendererProcess {
 
     pub fn diagnostics(&self) -> Value {
         json!({"alive": !self.stopped.load(Ordering::SeqCst), "childPid": self.pid,
-            "generation": self.generation, "pending": self.pending.lock().unwrap().len()})
+            "generation": self.generation, "pending": self.pending.recover_lock().len()})
+    }
+
+    pub(crate) fn pointer_hit(&self, frame: OverlayRect, x: i32, y: i32) -> bool {
+        !self.stopped.load(Ordering::Acquire)
+            && self.pointer_hit.lock().is_ok_and(|slot| slot.as_ref().is_some_and(|(sample, received)| {
+                received.elapsed() <= Duration::from_millis(500) && sample.hit(frame, x, y)
+            }))
     }
 
     pub fn stop(&self, reason: &str) {
         if self.stopped.swap(true, Ordering::SeqCst) { return; }
-        let _ = self.child.lock().unwrap().kill();
-        for (_, reply) in self.pending.lock().unwrap().drain() {
+        let _ = self.child.recover_lock().kill();
+        for (_, reply) in self.pending.recover_lock().drain() {
             let _ = reply.send(Err(format!("renderer stopped: {reason}")));
         }
         self.emit_current("aics:live2d:stopped", json!({"reason": reason}));
@@ -77,7 +112,7 @@ impl RendererProcess {
         bytes.push(b'\n');
         let (tx, rx) = oneshot::channel();
         {
-            let mut pending = self.pending.lock().unwrap();
+            let mut pending = self.pending.recover_lock();
             if self.stopped.load(Ordering::SeqCst) { return Err("renderer not attached".into()); }
             if self.shutdown_requested.load(Ordering::SeqCst) { return Err("renderer is shutting down".into()); }
             if pending.len() >= MAX_PENDING { return Err("renderer request queue is full".into()); }
@@ -108,7 +143,7 @@ impl RendererProcess {
 
 struct Pending { process: Arc<RendererProcess>, id: u64 }
 impl Drop for Pending {
-    fn drop(&mut self) { self.process.pending.lock().unwrap().remove(&self.id); }
+    fn drop(&mut self) { self.process.pending.recover_lock().remove(&self.id); }
 }
 struct Starting { process: Arc<RendererProcess>, accepted: bool }
 impl Drop for Starting {
@@ -134,7 +169,7 @@ pub fn read_line(reader: &mut impl BufRead) -> Result<Option<Vec<u8>>, String> {
 
 fn spawn(emit: EventSink) -> Result<Starting, String> {
     let executable = std::env::current_exe().map_err(|e| e.to_string())?;
-    let mut child = ProcessCommand::new(executable).arg(CHILD_ARGUMENT)
+    let mut child = ProcessCommand::new(executable).arg(CHILD_ARGUMENT).env(CHILD_ENV, "1")
         .creation_flags(0x08000000) // CREATE_NO_WINDOW; stderr remains diagnostic-only.
         .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::inherit())
         .spawn().map_err(|e| format!("start renderer: {e}"))?;
@@ -148,11 +183,12 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
     let stdout = child.stdout.take().ok_or("renderer stdout unavailable")?;
     let (writer, queued) = mpsc::sync_channel::<Vec<u8>>(MAX_PENDING);
     let generation = GENERATION.fetch_add(1, Ordering::SeqCst) + 1;
-    *EVENT_GENERATION.lock().unwrap() = generation;
+    *EVENT_GENERATION.recover_lock() = generation;
     let process = Arc::new(RendererProcess {
         generation,
         pid: child.id(), child: Mutex::new(child), _job: job, writer,
         pending: Mutex::new(HashMap::new()), next_id: AtomicU64::new(1),
+        pointer_hit: Mutex::new(None),
         stopped: AtomicBool::new(false), shutdown_requested: AtomicBool::new(false), emit,
     });
     let writing = process.clone();
@@ -179,7 +215,15 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
             if reading.stopped.load(Ordering::SeqCst) { break; }
             match message {
                 Ok(ChildMessage::Reply { id, result }) => {
-                    if let Some(reply) = reading.pending.lock().unwrap().remove(&id) { let _ = reply.send(result); }
+                    if let Some(reply) = reading.pending.recover_lock().remove(&id) { let _ = reply.send(result); }
+                }
+                Ok(ChildMessage::PointerHit { sample }) => {
+                    let active = EVENT_GENERATION.lock();
+                    if active.is_ok_and(|generation| *generation == reading.generation) {
+                        if let Ok(mut slot) = reading.pointer_hit.lock() {
+                            *slot = sample.map(|sample| (sample, Instant::now()));
+                        }
+                    }
                 }
                 Ok(ChildMessage::Event { name, payload }) => {
                     if name == "aics:live2d:stopped" {
@@ -196,7 +240,7 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
     });
     let waiting = process.clone();
     std::thread::spawn(move || loop {
-        let status = waiting.child.lock().unwrap().try_wait();
+        let status = waiting.child.recover_lock().try_wait();
         match status {
             Ok(Some(_)) => {
                 // A clean Shutdown writes its reply immediately before exiting.
@@ -214,14 +258,14 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
 }
 
 pub fn current() -> Option<Arc<RendererProcess>> {
-    CURRENT.get_or_init(|| Mutex::new(None)).lock().unwrap().clone()
+    CURRENT.get_or_init(|| Mutex::new(None)).recover_lock().clone()
         .filter(|process| !process.stopped.load(Ordering::SeqCst))
 }
 
 pub async fn get_or_start(assets_root: PathBuf, local_root: Option<PathBuf>, emit: EventSink)
     -> Result<Arc<RendererProcess>, String>
 {
-    if !enabled() { return Err("renderer process requires explicit isolated profile".into()); }
+    if !enabled() { return Err("独立 Live2D 渲染尚未启用".into()); }
     let _start = START.lock().await;
     if SHUTTING_DOWN.load(Ordering::SeqCst) { return Err("desktop is shutting down".into()); }
     if let Some(process) = current() { return Ok(process); }
@@ -232,7 +276,7 @@ pub async fn get_or_start(assets_root: PathBuf, local_root: Option<PathBuf>, emi
         local_root: local_root.map(|path| path.to_string_lossy().into_owned()),
     }, Duration::from_secs(35)).await?;
     if SHUTTING_DOWN.load(Ordering::SeqCst) { return Err("desktop is shutting down".into()); }
-    *CURRENT.get_or_init(|| Mutex::new(None)).lock().unwrap() = Some(starting.process.clone());
+    *CURRENT.get_or_init(|| Mutex::new(None)).recover_lock() = Some(starting.process.clone());
     starting.accepted = true;
     Ok(starting.process.clone())
 }
@@ -262,7 +306,7 @@ pub async fn call(app: &AppHandle, command: Command) -> Reply {
 
 pub fn shutdown() {
     SHUTTING_DOWN.store(true, Ordering::SeqCst);
-    if let Some(process) = CURRENT.get_or_init(|| Mutex::new(None)).lock().unwrap().take() {
+    if let Some(process) = CURRENT.get_or_init(|| Mutex::new(None)).recover_lock().take() {
         process.stop("desktop exiting");
     }
 }

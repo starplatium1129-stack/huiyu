@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-gateway-recovery"
+description = "Enables the desktop_gateway_recovery command without any pre-configured scope."
+commands.allow = ["desktop_gateway_recovery"]
+
+[[permission]]
+identifier = "deny-desktop-gateway-recovery"
+description = "Denies the desktop_gateway_recovery command without any pre-configured scope."
+commands.deny = ["desktop_gateway_recovery"]

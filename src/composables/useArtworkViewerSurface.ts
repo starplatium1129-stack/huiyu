@@ -49,6 +49,12 @@ export function useArtworkViewerSurface(options: ViewerOptions) {
   let unbind: (() => void) | undefined
 
   function interrupt() { pending = null; origin.cancel() }
+  function setMediaSuspended(suspended: boolean) {
+    if (suspended) {
+      revision++; interrupt(); unbind?.()
+      captured = null; previewSrc.value = ''
+    } else if (host && !leaving && options.active()) bind(host)
+  }
   function captureOrigin(image: HTMLImageElement | null, key: ImageKey) {
     revision++
     // A different work cannot borrow a previous work's frame or velocity.
@@ -109,6 +115,7 @@ export function useArtworkViewerSurface(options: ViewerOptions) {
     ...surface,
     previewSrc: readonly(previewSrc),
     captureOrigin,
+    setMediaSuspended,
     enter(el: Element, done: () => void) {
       const token = ++revision
       currentKey = options.imageKey() ?? currentKey

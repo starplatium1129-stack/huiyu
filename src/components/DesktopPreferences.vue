@@ -22,6 +22,8 @@
     />
     <p v-if="feedback" class="desktop-preferences-note" role="status">{{ feedback }}</p>
     <button v-if="saveFailed" type="button" class="btn btn-ghost btn-sm" @click="retrySave">重试保存</button>
+    <DesktopShellPreferences />
+    <DesktopRecoveryPreferences />
   </section>
 </template>
 
@@ -30,6 +32,8 @@ import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import DesktopShellPreferences from './DesktopShellPreferences.vue'
+import DesktopRecoveryPreferences from './DesktopRecoveryPreferences.vue'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'

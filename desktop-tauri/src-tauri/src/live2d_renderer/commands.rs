@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use super::*;
 
 pub(super) fn handle_command(
@@ -89,7 +90,7 @@ fn handle_model_command(
                 renderer.release_texture_uploads();
             }
             if result.is_ok() {
-                *state.character.lock().unwrap() = Some(character.clone());
+                *state.character.recover_lock() = Some(character.clone());
                 state.model_ready.store(true, Ordering::SeqCst);
             }
             let loaded = result.is_ok();

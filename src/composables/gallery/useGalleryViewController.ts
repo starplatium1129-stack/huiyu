@@ -29,7 +29,7 @@ export function useGalleryViewController() {
     sceneTitle, openViewer,
     formatDate, stamp,
     pagedVisible,
-    viewerIndex, infoDrawerHidden,
+    viewerIndex, idleMediaSuspended, infoDrawerHidden,
     closeViewer, onViewerClosed,
     compareMode, retryParentImage,
     current, characterName,
@@ -85,7 +85,7 @@ export function useGalleryViewController() {
   }, { flush: 'sync' })
 
   const viewerSurface = useArtworkViewerSurface({
-    active: () => viewerIndex.value >= 0,
+    active: () => viewerIndex.value >= 0 && !idleMediaSuspended.value,
     imageKey: () => current.value?.id,
     mode: () => `${originalViewer.value}/${compareMode.value}/${gesture.gestureViewer.value}`,
     source: id => {
@@ -94,6 +94,7 @@ export function useGalleryViewController() {
         ?? card?.querySelector<HTMLImageElement>('.artwork-image:not(.artwork-image-hd)') ?? null
     },
   })
+  watch(idleMediaSuspended, suspended => viewerSurface.setMediaSuspended(suspended), { flush: 'sync' })
 
   function openFromCard(index: number, event: MouseEvent) {
     const button = event.currentTarget as HTMLElement

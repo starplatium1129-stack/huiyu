@@ -1,0 +1,18 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "atelier-shell",
+  "description": "Window preferences and task feedback for the trusted atelier window.",
+  "windows": ["atelier"],
+  "permissions": [
+    "allow-desktop-shell-preferences",
+    "allow-desktop-shell-set-preferences",
+    "allow-desktop-shell-autostart",
+    "allow-desktop-shell-set-autostart",
+    "allow-desktop-shell-companion-state",
+    "allow-desktop-shell-toggle-companion",
+    "allow-desktop-shell-take-action",
+    "allow-desktop-shell-task-progress",
+    "allow-desktop-shell-notify-task"
+  ],
+  "local": true
+}

@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use live2d_native::model::ViewTransform;
 use tauri::{AppHandle, Manager};
 use std::sync::Arc;
@@ -40,10 +41,10 @@ pub async fn aics_live2d_set_frame(app: AppHandle, rect: serde_json::Value, visi
         }).await;
         // The isolated renderer probe owns its own device and mask. Retain
         // mouse input over that renderer's client frame in this opt-in mode.
-        app.state::<crate::state::AppState>().companion_input.lock().unwrap().process_frame =
+        app.state::<crate::state::AppState>().companion_input.recover_lock().process_frame =
             (result.is_ok() && visible && rect.valid_local()).then_some(rect);
         return result.map(|_| ());
     }
-    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() { *state.framing.lock().unwrap() = framing; }
+    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() { *state.framing.recover_lock() = framing; }
     apply_frame(&app, rect, visible, opacity.map(|o| (o.clamp(0.0, 1.0) * 255.0) as u32))
 }

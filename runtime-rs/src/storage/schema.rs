@@ -197,6 +197,7 @@ pub(super) fn open(
     workspace_id: String,
     epoch: String,
     create: bool,
+    derivatives: Arc<super::thumbnail::Cache>,
 ) -> Result<Context> {
     let root = normalize_root(root)?;
     if !root.is_absolute()
@@ -347,6 +348,7 @@ pub(super) fn open(
     super::artwork_index::initialize(&db)?;
     let mut context = Context {
         db,
+        derivatives,
         gallery_catalog: Default::default(),
         gallery_page_count: Default::default(),
         image_batch_recovery: None,
@@ -365,6 +367,10 @@ pub(super) fn open(
     };
     migration::repair_activated(&mut context)?;
     super::verification::recover_staging(&context)?;
+    context.db.execute_batch(
+        "PRAGMA synchronous=NORMAL; PRAGMA temp_store=MEMORY;
+         PRAGMA cache_size=-32768; PRAGMA mmap_size=134217728;",
+    )?;
     Ok(context)
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {

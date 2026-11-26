@@ -6,11 +6,13 @@ import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import type { ArtworkRecord } from '@/types/artwork'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { createImageReadSlot } from '@/utils/imageReadSlot'
+import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository'
 
 /** Only the visible history tab owns reads. Keep small previews, never original Blob URLs. */
 export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () => boolean) {
   const thumbs = shallowRef<Record<string | number, string>>(Object.create(null))
   let imageIds = new Map<string, string | undefined>()
+  const leases = new Map<string, ArtworkDerivativeLease>()
   let repositoryOwner = artworkRepository
   const reads = [createImageReadSlot(), createImageReadSlot()]
   const mediaVisit = ref(0)
@@ -24,6 +26,8 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
   const stopRuntime = onDesktopRuntime(refreshSession)
   watch(runtimeResourceIdentity, refreshSession, { flush: 'sync' })
   function clear() {
+    for (const lease of leases.values()) lease.release()
+    leases.clear()
     imageIds.clear()
     thumbs.value = Object.create(null)
   }
@@ -47,6 +51,8 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
       let retained: Record<string | number, string> | undefined
       for (const id of Object.keys(thumbs.value)) {
         if (!nextImages.has(id) || nextImages.get(id) !== imageIds.get(id)) {
+          leases.get(id)?.release()
+          leases.delete(id)
           retained ??= Object.assign(Object.create(null), thumbs.value) as Record<string | number, string>
           delete retained[id]
         }
@@ -61,8 +67,19 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
           const [id, imageId] = entries[next++]
           if (!imageId || thumbs.value[id]) continue
           try {
-            const thumbnail = await slot.read(async () => {
-              let value = await repository.getThumbnail(imageId).catch(() => null)
+            const thumbnail = await slot.read(async signal => {
+              let value: string | null = null
+              if (repository.getImageDerivative) {
+                const lease = await repository.getImageDerivative(imageId, undefined, signal).catch(() => null)
+                if (lease) {
+                  if (signal.aborted || !current()) lease.release()
+                  else {
+                    leases.set(String(id), lease)
+                    thumbs.value = Object.assign(Object.create(null), thumbs.value, { [id]: lease.url })
+                  }
+                  return null
+                }
+              } else value = await repository.getThumbnail(imageId).catch(() => null)
               if (!current()) return null
               if (!value) {
                 // Keep the slot through the actual read and encode. Cancelling only

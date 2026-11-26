@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use tauri::{AppHandle, Emitter, Manager, PhysicalPosition};
 use crate::state::AppState;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -19,7 +20,7 @@ pub fn dock_position(pet: (i32, i32, i32, i32), chat: (i32, i32), area: (i32, i3
 }
 
 pub fn follow(app: &AppHandle) {
-    if !app.state::<AppState>().preferences.lock().unwrap().chat_docked { return; }
+    if !app.state::<AppState>().preferences.recover_lock().chat_docked { return; }
     let (Some(pet), Some(chat)) = (app.get_webview_window("companion"), app.get_webview_window("companion-chat")) else { return };
     if !chat.is_visible().unwrap_or(false) || chat.is_maximized().unwrap_or(false) { return; }
     let (Ok(pos), Ok(size), Ok(chat_size), Ok(Some(monitor))) = (pet.outer_position(), pet.outer_size(), chat.outer_size(), pet.current_monitor()) else { return };
@@ -56,7 +57,7 @@ pub fn resize_companion_dialogue(app: AppHandle, window: tauri::WebviewWindow, w
     if (current.width - width).abs() >= 1.0 || (current.height - height).abs() >= 1.0 {
         window.set_size(size).map_err(|error| error.to_string())?;
     }
-    let docked = state.preferences.lock().unwrap().chat_docked;
+    let docked = state.preferences.recover_lock().chat_docked;
     if docked {
         follow(&app);
     } else {
@@ -74,11 +75,11 @@ pub fn resize_companion_dialogue(app: AppHandle, window: tauri::WebviewWindow, w
 #[tauri::command]
 pub fn set_chat_docked(app: AppHandle, docked: bool) -> bool {
     let state = app.state::<AppState>();
-    state.preferences.lock().unwrap().chat_docked = docked;
+    state.preferences.recover_lock().chat_docked = docked;
     state.save_preferences();
     if docked { follow(&app); }
     docked
 }
 
 #[tauri::command]
-pub fn get_chat_docked(app: AppHandle) -> bool { app.state::<AppState>().preferences.lock().unwrap().chat_docked }
+pub fn get_chat_docked(app: AppHandle) -> bool { app.state::<AppState>().preferences.recover_lock().chat_docked }

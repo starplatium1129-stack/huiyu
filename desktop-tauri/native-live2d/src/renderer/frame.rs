@@ -446,16 +446,19 @@ impl Renderer {
         self.ss_bg = Some(bind_group);
     }
 
-    /// Present a captured frame with the same color path as the supersample blit.
-    pub fn blit_frame(&self, encoder: &mut wgpu::CommandEncoder, source: &wgpu::TextureView, target: &wgpu::TextureView) {
-        let bind_group = self.device.create_bind_group(&wgpu::BindGroupDescriptor {
+    pub fn create_blit_bind_group(&self, source: &wgpu::TextureView) -> wgpu::BindGroup {
+        self.device.create_bind_group(&wgpu::BindGroupDescriptor {
             label: Some("live2d captured frame blit"),
             layout: &self.tex_layout,
             entries: &[
                 wgpu::BindGroupEntry { binding: 0, resource: wgpu::BindingResource::TextureView(source) },
                 wgpu::BindGroupEntry { binding: 1, resource: wgpu::BindingResource::Sampler(&self.sampler) },
             ],
-        });
+        })
+    }
+
+    /// Present a captured frame with the same color path as the supersample blit.
+    pub fn blit_frame(&self, encoder: &mut wgpu::CommandEncoder, bind_group: &wgpu::BindGroup, target: &wgpu::TextureView) {
         let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
             label: Some("live2d captured frame blit"),
             color_attachments: &[Some(wgpu::RenderPassColorAttachment {
@@ -469,7 +472,7 @@ impl Renderer {
             occlusion_query_set: None,
         });
         pass.set_pipeline(&self.ss_pipeline);
-        pass.set_bind_group(0, &bind_group, &[]);
+        pass.set_bind_group(0, bind_group, &[]);
         pass.draw(0..3, 0..1);
     }
 }

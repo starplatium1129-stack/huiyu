@@ -69,5 +69,5 @@ export function useChatCardImport(allowed: () => boolean, active: () => string, 
     event.preventDefault()
     void importFiles(Array.from(event.dataTransfer.files))
   }
-  return { pending, progress, failures, choose, dragOver, drop, cancel: () => operation?.abort() }
+  return { pending, progress, failures, choose, dragOver, drop, importFiles, cancel: () => operation?.abort() }
 }

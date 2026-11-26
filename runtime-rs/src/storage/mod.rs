@@ -52,6 +52,7 @@ pub(crate) use canonical::{
 pub use media::Media;
 pub(crate) use media::detected_mime;
 pub(crate) use verification::OpenedMedia;
+pub(crate) use thumbnail::Derivative;
 
 pub(crate) enum TaskMediaSource {
     Staged(verification::Staged),
@@ -67,6 +68,7 @@ pub struct Storage {
     native_images: Option<Arc<PathBuf>>,
     verification: Arc<verification::Verifier>,
     thumbnails: Arc<thumbnail::Readers>,
+    derivatives: Arc<thumbnail::Cache>,
     result_writes: Arc<tokio::sync::Semaphore>,
     search_warming: Arc<AtomicBool>,
     pub(crate) jobs: Arc<crate::workspace_jobs::Jobs>,
@@ -166,6 +168,7 @@ impl Drop for CancelOnDrop {
 
 pub(super) struct Context {
     db: Connection,
+    derivatives: Arc<thumbnail::Cache>,
     gallery_catalog: std::cell::RefCell<Option<gallery::CatalogCache>>,
     gallery_page_count: std::cell::RefCell<Option<gallery::PageCount>>,
     image_batch_recovery: Option<(String, Value)>,
@@ -183,6 +186,16 @@ pub(super) struct Context {
     job: Option<Arc<crate::workspace_jobs::Job>>,
 }
 impl Context {
+    fn durable<T>(&mut self, work: impl FnOnce(&mut Self) -> Result<T>) -> Result<T> {
+        self.db.pragma_update(None, "synchronous", "FULL")?;
+        let result = work(self);
+        let restore = self.db.pragma_update(None, "synchronous", "NORMAL");
+        match result {
+            Ok(value) => { restore?; Ok(value) }
+            Err(error) => Err(error),
+        }
+    }
+
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {
         self.check_cancel()?;
         if principal.is_empty() {
@@ -216,7 +229,7 @@ impl Context {
                     return Err(invalid("A stable operation ID is required"));
                 }
             }
-            return migration::execute(self, principal, command);
+            return self.durable(|context| migration::execute(context, principal, command));
         }
         if !matches!(
             kind,
@@ -285,8 +298,8 @@ impl Context {
             "status" => Ok(
                 json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":schema::VERSION,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
+            "readArtworkExportPage" => self.durable(|context| records::read(context, command)),
             "listArtworks"
-            | "readArtworkExportPage"
             | "readArtworkRecentIndex"
             | "readGalleryPage"
             | "readGalleryCatalog"

@@ -1,4 +1,5 @@
 //! Capture geometry on the event thread; one debounced worker owns disk writes.
+use crate::mutex::RecoverMutex;
 use std::{
     collections::HashMap,
     path::PathBuf,
@@ -40,7 +41,7 @@ impl WindowStateWriter {
         let queue = shared.clone();
         let worker = std::thread::spawn(move || {
             let (lock, changed) = &*queue;
-            let mut pending = lock.lock().unwrap();
+            let mut pending = lock.recover_lock();
             loop {
                 if pending.windows.is_empty() {
                     if pending.closing { return; }
@@ -57,7 +58,7 @@ impl WindowStateWriter {
                 pending.writing = true;
                 drop(pending);
                 for (file, snapshot) in windows { snapshot.save(&file); }
-                pending = lock.lock().unwrap();
+                pending = lock.recover_lock();
                 pending.writing = false;
                 changed.notify_all();
             }
@@ -66,7 +67,7 @@ impl WindowStateWriter {
     }
     fn schedule(&self, file: PathBuf, mut snapshot: Snapshot) {
         let (lock, changed) = &*self.shared;
-        let mut pending = lock.lock().unwrap();
+        let mut pending = lock.recover_lock();
         if pending.closing { return; }
         // Maximizing before the debounce expires must retain the last normal bounds.
         if snapshot.bounds.is_none() {
@@ -78,7 +79,7 @@ impl WindowStateWriter {
     }
     pub fn flush(&self) {
         let (lock, changed) = &*self.shared;
-        let mut pending = lock.lock().unwrap();
+        let mut pending = lock.recover_lock();
         pending.deadline = Some(Instant::now());
         changed.notify_all();
         while pending.writing || !pending.windows.is_empty() {
@@ -87,9 +88,9 @@ impl WindowStateWriter {
     }
     pub fn shutdown(&self) {
         let (lock, changed) = &*self.shared;
-        lock.lock().unwrap().closing = true;
+        lock.recover_lock().closing = true;
         changed.notify_all();
-        if let Some(worker) = self.worker.lock().unwrap().take() { let _ = worker.join(); }
+        if let Some(worker) = self.worker.recover_lock().take() { let _ = worker.join(); }
     }
 }
 impl Drop for WindowStateWriter {

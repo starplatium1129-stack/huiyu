@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, AtomicU32, AtomicU64, Ordering};
 use std::sync::mpsc::{channel, Receiver, Sender, TryRecvError};
@@ -41,7 +42,7 @@ mod texture_cache;
 
 pub(crate) use window::overlay_window_thread;
 pub(crate) use frame::{apply_frame, set_revealed, state_snapshot, send_command};
-pub(crate) use alpha_mask::AlphaMaskSnapshot;
+pub(crate) use alpha_mask::{AlphaMaskSnapshot, PointerHitSample};
 use blink::BlinkState;
 
 use commands::handle_command;
@@ -98,6 +99,7 @@ pub struct Live2DOverlayState {
     pub revealed: AtomicBool,
     pub first_frame_ready: AtomicBool,
     alpha_mask: RwLock<Option<alpha_mask::PaintedPixels>>,
+    pub(crate) pointer_feedback: std::sync::OnceLock<PointerFeedback>,
     pub opacity: AtomicU32,
     /// HWND 以 isize 存储（HWND = *mut c_void 非 Send）。
     pub hwnd: Mutex<Option<isize>>,
@@ -120,6 +122,10 @@ pub struct Live2DOverlayState {
     /// 原生渲染循环目标帧率。
     pub fps_limit: AtomicU32,
     pub display_hz: AtomicU32,
+    pub target_fps: AtomicU32,
+    render_suspended: AtomicBool,
+    session_locked: AtomicBool,
+    system_suspended: AtomicBool,
     /// 模型 ready 标记：仅在 setCharacter 成功后允许绘制模型。
     pub model_ready: AtomicBool,
     /// 最近一次规范化口型意图与角色映射值，仅供只读发布验收诊断。
@@ -142,6 +148,7 @@ impl Default for Live2DOverlayState {
             revealed: AtomicBool::new(true),
             first_frame_ready: AtomicBool::new(false),
             alpha_mask: RwLock::default(),
+            pointer_feedback: std::sync::OnceLock::new(),
             opacity: AtomicU32::new(255),
             hwnd: Mutex::new(None),
             companion_hwnd: Mutex::new(None),
@@ -155,6 +162,10 @@ impl Default for Live2DOverlayState {
             model_bounds: Mutex::new(None),
             fps_limit: AtomicU32::new(0),
             display_hz: AtomicU32::new(frame_pacing::FALLBACK_HZ),
+            target_fps: AtomicU32::new(0),
+            render_suspended: AtomicBool::new(false),
+            session_locked: AtomicBool::new(false),
+            system_suspended: AtomicBool::new(false),
             model_ready: AtomicBool::new(false),
             last_mouth_level: AtomicU32::new(0.0f32.to_bits()),
             last_mapped_mouth_value: AtomicU32::new(0.0f32.to_bits()),
@@ -164,12 +175,14 @@ impl Default for Live2DOverlayState {
     }
 }
 
+pub(crate) type PointerFeedback = Arc<dyn Fn(Option<PointerHitSample>) + Send + Sync>;
+
 impl Live2DOverlayState {
     pub fn hit_opaque_pixel(&self, screen_x: i32, screen_y: i32) -> bool {
         if !self.visible.load(Ordering::Acquire) || !self.revealed.load(Ordering::Acquire) { return false; }
-        let rect = *self.rect.lock().unwrap();
+        let rect = *self.rect.recover_lock();
         if !rect.contains(screen_x, screen_y) { return false; }
-        let framing = *self.framing.lock().unwrap();
+        let framing = *self.framing.recover_lock();
         self.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| {
             mask.hit(rect, framing, screen_x - rect.x, screen_y - rect.y)
         })
@@ -193,8 +206,8 @@ fn clear_model_state(state: &Live2DOverlayState) {
     state.model_ready.store(false, Ordering::SeqCst);
     state.first_frame_ready.store(false, Ordering::Release);
     *state.alpha_mask.write().unwrap() = None;
-    *state.character.lock().unwrap() = None;
-    *state.model_bounds.lock().unwrap() = None;
+    *state.character.recover_lock() = None;
+    *state.model_bounds.recover_lock() = None;
     reset_mouth_diagnostics(state);
 }
 
@@ -211,14 +224,18 @@ pub(crate) fn try_begin_startup(state: &Live2DOverlayState) -> bool {
 }
 
 fn reset_runtime_state(state: &Live2DOverlayState) {
-    *state.cmd_tx.lock().unwrap() = None;
-    *state.hwnd.lock().unwrap() = None;
-    *state.companion_hwnd.lock().unwrap() = None;
-    *state.companion_offset.lock().unwrap() = None;
+    *state.cmd_tx.recover_lock() = None;
+    *state.hwnd.recover_lock() = None;
+    *state.companion_hwnd.recover_lock() = None;
+    *state.companion_offset.recover_lock() = None;
     state.window_ready.store(false, Ordering::SeqCst);
     state.renderer_attached.store(false, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
     state.visible.store(false, Ordering::SeqCst);
+    state.target_fps.store(0, Ordering::Relaxed);
+    state.render_suspended.store(false, Ordering::Relaxed);
+    state.session_locked.store(false, Ordering::Relaxed);
+    state.system_suspended.store(false, Ordering::Relaxed);
     clear_model_state(state);
     // 渲染线程退出即丢弃 RenderContext，计数随之重建；镜像值同步清零，
     // 否则新线程起来后 state 里还留着上一代的故障计数，误导诊断。

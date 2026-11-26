@@ -24,7 +24,12 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'studio.write': return ['POST', '/studio/changes']
     case 'listArtworks': return ['GET', '/artworks?' + new URLSearchParams(Object.entries(command).filter(([key, value]) => key !== 'kind' && value !== undefined).map(([key, value]) => [key, String(value)]))]
     case 'searchArtworks': return ['GET', '/artwork-search?' + new URLSearchParams({ terms: JSON.stringify(command.terms), ...(command.cursor === undefined ? {} : { cursor: String(command.cursor) }) })]
-    case 'readArtworkRecentIndex': return ['GET', '/artwork-recent-index' + (command.candidateLimit === undefined ? '' : `?candidateLimit=${encode(command.candidateLimit)}`)]
+    case 'readArtworkRecentIndex': {
+      const query = new URLSearchParams()
+      if (command.candidateLimit !== undefined) query.set('candidateLimit', String(command.candidateLimit))
+      if (command.projection !== undefined) query.set('projection', String(command.projection))
+      return ['GET', '/artwork-recent-index' + (query.size ? '?' + query : '')]
+    }
     case 'readGalleryPage': return ['POST', '/gallery/query']
     case 'readGalleryCatalog': return ['GET', '/gallery/catalog']
     case 'readArtworkExportPage': return ['GET', '/artwork-export?' + new URLSearchParams(Object.entries(command).filter(([key,value]) => key !== 'kind' && value !== undefined).map(([key,value]) => [key,String(value)]))]

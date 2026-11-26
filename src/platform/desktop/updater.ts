@@ -3,11 +3,18 @@ import { hostApi, invokeHost, onHostEvent, offHostEvent } from './hostApi.ts'
 const phases = ['idle', 'checking', 'downloading', 'verifying', 'cancelling', 'installing', 'cancelled', 'failed'] as const
 export interface DesktopUpdateState {
   revision: number
+  currentVersion: string
   phase: typeof phases[number]
   version: string
   statusText: string
   errorText: string
   canCancel: boolean
+  progress: number | null
+}
+
+interface UpdateCheck {
+  currentVersion: string
+  available: { version: string; notes: string } | null
 }
 
 function updateState(value: unknown): DesktopUpdateState {
@@ -17,16 +24,34 @@ function updateState(value: unknown): DesktopUpdateState {
     || typeof state.statusText !== 'string' || typeof state.errorText !== 'string'
     || typeof state.canCancel !== 'boolean') throw new Error('桌面更新状态无效')
   return { revision: state.revision!, phase: state.phase!, version: state.version,
-    statusText: state.statusText, errorText: state.errorText, canCancel: state.canCancel }
+    currentVersion: typeof state.currentVersion === 'string' ? state.currentVersion : '',
+    statusText: state.statusText, errorText: state.errorText, canCancel: state.canCancel,
+    progress: typeof state.progress === 'number' && Number.isFinite(state.progress)
+      && state.progress >= 0 && state.progress <= 1 ? state.progress : null }
+}
+
+function decodeUpdateCheck(value: unknown): UpdateCheck {
+  if (value === null || typeof value === 'string') {
+    return { currentVersion: '', available: value ? { version: value, notes: '' } : null }
+  }
+  const data = value as Partial<UpdateCheck> | undefined
+  if (!data || typeof data.currentVersion !== 'string' || data.available !== null
+    && (typeof data.available?.version !== 'string' || typeof data.available.notes !== 'string')) {
+    throw new Error('桌面更新信息无效')
+  }
+  return { currentVersion: data.currentVersion, available: data.available ?? null }
 }
 
 export function getDesktopUpdater() {
   const host = hostApi()
   if (!host) return null
   return {
-    check: () => invokeHost<string | null>('desktop_update_check'),
+    check: async (manual: boolean) => decodeUpdateCheck(await invokeHost<unknown>('desktop_update_check', { manual })),
+    current: async () => updateState(await invokeHost<unknown>('desktop_update_state')).currentVersion,
     install: () => invokeHost<boolean>('desktop_update_install'),
     cancel: () => invokeHost<boolean>('desktop_update_cancel'),
+    reminder: (version: string, choice: 'later' | 'skip') => invokeHost<void>('desktop_update_reminder', { version, choice }),
+    openReleasePage: () => invokeHost<void>('desktop_update_release_page'),
     onFound: (listener: (version: string) => void) => onHostEvent<unknown>('desktop-update-found', value => { if (typeof value === 'string') listener(value) }),
     off: offHostEvent,
     observe(listener: (state: DesktopUpdateState) => void) {

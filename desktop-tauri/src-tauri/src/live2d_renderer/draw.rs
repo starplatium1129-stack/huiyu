@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use super::*;
 
 impl RenderContext {
@@ -6,6 +7,7 @@ impl RenderContext {
         state: &Live2DOverlayState,
         hwnd: HWND,
         rect: OverlayRect,
+        cursor_near: bool,
     ) -> Result<bool, String> {
         if rect.width == 0 || rect.height == 0 {
             return Ok(false);
@@ -80,7 +82,7 @@ impl RenderContext {
             && rect.width.max(rect.height) <= max_side / 2;
         let disp_scale = if supersample { 2.0 } else { 1.0 };
         let (rw, rh) = (rect.width as f32 * disp_scale, rect.height as f32 * disp_scale);
-        let framing = *state.framing.lock().unwrap();
+        let framing = *state.framing.recover_lock();
         let transform = framing.transform(bounds, rw, rh);
         let (min_x, min_y) = transform.canvas_to_screen(bounds.0[0], bounds.0[1], rw, rh);
         let (max_x, max_y) = transform.canvas_to_screen(bounds.1[0], bounds.1[1], rw, rh);
@@ -94,7 +96,7 @@ impl RenderContext {
         let clamp_y = (rect.y + by).clamp(rect.y, rect.y + rect.height as i32);
         let clamp_w = bw.min((rect.x + rect.width as i32 - clamp_x).max(1) as u32);
         let clamp_h = bh.min((rect.y + rect.height as i32 - clamp_y).max(1) as u32);
-        *state.model_bounds.lock().unwrap() = Some(OverlayRect {
+        *state.model_bounds.recover_lock() = Some(OverlayRect {
             x: clamp_x,
             y: clamp_y,
             width: clamp_w,
@@ -112,12 +114,12 @@ impl RenderContext {
             Duration::from_millis(250)
         };
         let needs_mask = state.alpha_mask.read().unwrap().is_none();
-        let captured = capture.capture_target(&self.device, rect, self.surface_format, framing, interval, needs_mask);
+        let captured = capture.capture_target(renderer, rect, self.surface_format, framing, interval, needs_mask, cursor_near);
         let mut encoder = renderer.draw_frame(
             model,
             &transform,
             &self.textures,
-            captured.unwrap_or(&view),
+            captured.map_or(&view, |target| &target.view),
             rect.width,
             rect.height,
             false,
@@ -125,8 +127,8 @@ impl RenderContext {
             supersample,
         );
         let sampling = captured.is_some();
-        if let Some(source) = captured {
-            renderer.blit_frame(&mut encoder, source, &view);
+        if let Some(target) = captured {
+            renderer.blit_frame(&mut encoder, &target.blit_bind_group, &view);
             capture.encode(&mut encoder);
         }
         let _ = self.queue.submit(std::iter::once(encoder.finish()));
@@ -137,11 +139,11 @@ impl RenderContext {
 
     /// Select the authored interaction only where the presented model is painted.
     pub(super) fn hit_test(&self, state: &Live2DOverlayState, nx: f32, ny: f32) -> Vec<String> {
-        let rect = *state.rect.lock().unwrap();
+        let rect = *state.rect.recover_lock();
         if !state.visible.load(Ordering::Acquire) || !(0.0..1.0).contains(&nx) || !(0.0..1.0).contains(&ny) {
             return vec![];
         }
-        let framing = *state.framing.lock().unwrap();
+        let framing = *state.framing.recover_lock();
         let (width, height) = (rect.width as f32, rect.height as f32);
         let (x, y) = (nx * width, ny * height);
         if !state.alpha_mask.read().unwrap().as_ref().is_some_and(|mask| mask.hit(rect, framing, x as i32, y as i32)) {

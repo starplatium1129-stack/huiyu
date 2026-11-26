@@ -143,6 +143,8 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { pendingDesktopFileAction, takeDesktopFiles } from '@/composables/useDesktopFileDrop'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
@@ -321,6 +323,12 @@ const emit = defineEmits<{
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
 const { busy: interrogateBusy, error: interrogateError, interrogate, cancel } = useInterrogate((result, current) => props.applyInterrogateResult(result, current))
+const desktopDropRoute = useRoute()
+watch([pendingDesktopFileAction, interrogateBusy, () => desktopDropRoute.path], ([action, busy, path]) => {
+  if (action !== 'interrogate' || busy || path !== '/prompt-builder') return
+  const [file] = takeDesktopFiles(action)
+  if (file) void runInterrogateFile(file)
+}, { immediate: true, flush: 'post' })
 // Keep the source identity after success so delayed notices also retire when
 // the current picture changes. File/clipboard requests do not own the canvas.
 let interrogatedResultUrl: string | null = null

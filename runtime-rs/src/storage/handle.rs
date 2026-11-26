@@ -35,6 +35,8 @@ impl Storage {
         let (opened, ready) = oneshot::channel();
         let (id, thread_epoch) = (workspace_id.clone(), epoch.clone());
         let weak_sender = sender.downgrade();
+        let derivatives = Arc::new(thumbnail::Cache::default());
+        let derivative_cache = derivatives.clone();
         std::thread::Builder::new()
             .name("workspace-sqlite".into())
             .spawn(move || {
@@ -46,6 +48,7 @@ impl Storage {
                     receiver,
                     opened,
                     weak_sender,
+                    derivative_cache,
                 )
             })?;
         ready.await.map_err(|_| unavailable())??;
@@ -57,6 +60,7 @@ impl Storage {
             native_images: None,
             verification: Arc::new(verification::Verifier::new()),
             thumbnails: Arc::new(thumbnail::Readers::new()),
+            derivatives,
             result_writes: Arc::new(tokio::sync::Semaphore::new(1)),
             search_warming: Arc::new(AtomicBool::new(false)),
             jobs: Arc::default(),
@@ -367,6 +371,9 @@ impl Storage {
     }
     pub async fn media(&self, alias: &str) -> Result<Media> {
         Ok(self.open_media(alias).await?.media)
+    }
+    pub(crate) async fn media_derivative(&self, alias: &str, width: Option<u64>) -> Result<Option<Derivative>> {
+        thumbnail::read_binary(self, alias, width).await
     }
     pub(crate) async fn open_media(&self, alias: &str) -> Result<OpenedMedia> {
         let media = self.lookup_media(alias).await?;

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-update-release-page"
+description = "Enables the desktop_update_release_page command without any pre-configured scope."
+commands.allow = ["desktop_update_release_page"]
+
+[[permission]]
+identifier = "deny-desktop-update-release-page"
+description = "Denies the desktop_update_release_page command without any pre-configured scope."
+commands.deny = ["desktop_update_release_page"]

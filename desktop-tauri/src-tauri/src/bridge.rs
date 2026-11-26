@@ -1,3 +1,4 @@
+use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
 
 use serde::Serialize;
@@ -55,7 +56,7 @@ pub fn set_ignore_mouse_events(app: &AppHandle, ignore: bool) {
     if let Some(w) = companion(app) {
         let _ = w.emit("aics:interaction-mode", ignore);
     }
-    state.preferences.lock().unwrap().ignore_mouse_events = ignore;
+    state.preferences.recover_lock().ignore_mouse_events = ignore;
     state.save_preferences();
     crate::tray::refresh_tray_menu(app);
 }
@@ -63,11 +64,11 @@ pub fn set_ignore_mouse_events(app: &AppHandle, ignore: bool) {
 #[tauri::command]
 pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
     let (preparing, startup_failed) = {
-        let presentation = state.companion_presentation.lock().unwrap();
+        let presentation = state.companion_presentation.recover_lock();
         (presentation.preparing(), presentation.startup_failed)
     };
-    let always_on_top = state.preferences.lock().unwrap().always_on_top;
-    let live2d_enabled = *state.live2d_enabled.lock().unwrap();
+    let always_on_top = state.preferences.recover_lock().always_on_top;
+    let live2d_enabled = *state.live2d_enabled.recover_lock();
     DesktopState {
         always_on_top,
         ignore_mouse_events: state.ignore_mouse_events.load(Ordering::Relaxed),
@@ -86,12 +87,12 @@ pub fn get_state(app: AppHandle, state: State<AppState>) -> DesktopState {
 
 #[tauri::command]
 pub fn get_startup_mode(state: State<AppState>) -> StartupMode {
-    state.preferences.lock().unwrap().startup_mode
+    state.preferences.recover_lock().startup_mode
 }
 
 #[tauri::command]
 pub fn set_startup_mode(state: State<AppState>, mode: StartupMode) -> Result<(), String> {
-    let mut preferences = state.preferences.lock().unwrap();
+    let mut preferences = state.preferences.recover_lock();
     if preferences.startup_mode == mode { return Ok(()); }
     let mut next = preferences.clone();
     next.startup_mode = mode;
@@ -130,12 +131,12 @@ pub fn set_ignore_mouse_events_cmd(app: AppHandle, ignore: bool) {
 
 #[tauri::command]
 pub fn toggle_always_on_top(app: AppHandle, state: State<AppState>) -> bool {
-    let next = !state.preferences.lock().unwrap().always_on_top;
+    let next = !state.preferences.recover_lock().always_on_top;
     if let Some(w) = companion(&app) {
         if w.set_always_on_top(next).is_err() { return !next; }
         let _ = w.emit("aics:companion-pin", next);
     }
-    state.preferences.lock().unwrap().always_on_top = next;
+    state.preferences.recover_lock().always_on_top = next;
     state.save_preferences();
     crate::chat_dock::follow(&app);
     crate::tray::refresh_tray_menu(&app);
@@ -144,8 +145,8 @@ pub fn toggle_always_on_top(app: AppHandle, state: State<AppState>) -> bool {
 
 #[tauri::command]
 pub fn set_live2d_enabled(_app: AppHandle, state: State<AppState>, enabled: bool) {
-    *state.live2d_enabled.lock().unwrap() = Some(enabled);
-    state.preferences.lock().unwrap().live2d_enabled = Some(enabled);
+    *state.live2d_enabled.recover_lock() = Some(enabled);
+    state.preferences.recover_lock().live2d_enabled = Some(enabled);
     state.save_preferences();
 }
 
@@ -158,7 +159,7 @@ pub fn is_packaged(app: AppHandle) -> bool {
 
 #[tauri::command]
 pub fn get_workspace(state: State<AppState>) -> serde_json::Value {
-    let active_root = state.workspace_root.lock().unwrap().clone();
+    let active_root = state.workspace_root.recover_lock().clone();
     let saved_root = crate::window_state::load_ai_workspace(&state.paths.ai_workspace_file);
     let root = if saved_root.is_empty() { active_root.clone() } else { saved_root };
     serde_json::json!({
@@ -304,7 +305,7 @@ pub fn notify(app: AppHandle, title: String, body: String) {
 
 #[tauri::command]
 pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<String>) {
-    let gateway = state.gateway_url.lock().unwrap().clone();
+    let gateway = state.gateway_url.recover_lock().clone();
     state.info(&format!("open atelier: path={pathname:?} gateway={gateway}"));
     crate::main_shared::open_atelier(&app, &gateway, pathname.as_deref());
 }
@@ -312,7 +313,7 @@ pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<Str
 /// 打开/聚焦聊天窗（companion-chat）。由角色窗悬停胶囊、托盘与快捷键调用。
 #[tauri::command]
 pub fn open_companion_chat(app: AppHandle, state: State<AppState>) {
-    let gateway = state.gateway_url.lock().unwrap().clone();
+    let gateway = state.gateway_url.recover_lock().clone();
     crate::main_shared::open_companion_chat(&app, &gateway);
 }
 
@@ -445,7 +446,7 @@ pub fn get_window_state(app: AppHandle) -> serde_json::Value {
 
 #[tauri::command]
 pub fn open_workspace(app: AppHandle, state: State<AppState>) -> bool {
-    let root = state.workspace_root.lock().unwrap().clone();
+    let root = state.workspace_root.recover_lock().clone();
     let root = if root.is_empty() {
         state
             .paths

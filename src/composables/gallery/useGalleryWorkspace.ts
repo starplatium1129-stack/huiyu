@@ -25,6 +25,7 @@ import { useGalleryViewer } from './useGalleryViewer';
 import { useGalleryListMotion } from './useGalleryListMotion';
 import { useGalleryThumbnails } from './useGalleryThumbnails';
 import { useGalleryCardPreviews } from './useGalleryCardPreviews';
+import { readGalleryDerivative } from './readGalleryDerivative';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useGalleryWorkspace() {
     const sceneStore = useSceneStore();
@@ -36,6 +37,7 @@ export function useGalleryWorkspace() {
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
+    const idleMediaSuspended = ref(false);
     // Legacy/imported artwork IDs may also be Object prototype property names.
     const cardUrls = shallowRef<Record<string, string>>(Object.create(null));
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
@@ -48,11 +50,11 @@ export function useGalleryWorkspace() {
         pending: thumbPending,
         hasThumb: item => Boolean(thumbUrls.value[item.id]),
         signal: () => imageReads.signal,
-        current: item => !unmounted && viewActive && isMediaCurrent(item),
+        current: item => mediaActive() && isMediaCurrent(item),
         saveThumb: async (item, dataUrl, imageId) => {
             const epoch = imageEpoch;
             await artworkRepository.setThumbnail(imageId, dataUrl);
-            if (!unmounted && viewActive && epoch === imageEpoch && isMediaCurrent(item)) rememberThumbnail(item.id, dataUrl);
+            if (mediaActive() && epoch === imageEpoch && isMediaCurrent(item)) rememberThumbnail(item.id, dataUrl);
         },
     });
     /** The card owns decoded visibility; measurement must not delay its first paint. */
@@ -128,7 +130,7 @@ export function useGalleryWorkspace() {
     const allVisibleSelected = computed(() => allLoadedSelected.value && visible.value.length === visibleTotal.value);
     let selectingAll = false;
     async function selectAllVisible() { if (selectingAll) return; selectingAll = true; try { if (!galleryQuery.enabled.value || await galleryQuery.all()) selectLoaded(); } finally { selectingAll = false; } }
-    const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
+    const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, setViewerMediaSuspended, getViewerRevision } = useGalleryViewer({
         history, visible, hasMore: galleryQuery.hasMore, loadMore: galleryQuery.more, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
@@ -142,7 +144,7 @@ export function useGalleryWorkspace() {
         refreshComparisonRecords, comparisonReading,
         parentImageUrl,
         parentImageLabel, parentImageStatus, retryParentImage,
-        hasComparableImage,
+        hasComparableImage, setComparisonMediaSuspended,
     } = useGalleryComparison({
         history,
         selectedIds,
@@ -250,9 +252,10 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 可见缩略图与按显示像素生成的预览 ---------- */
     const THUMB_CONCURRENCY = 8;
+    function mediaActive() { return !unmounted && viewActive && !idleMediaSuspended.value; }
     const { returnThumbIds, viewportItems, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
         shell: shellEl, items: () => pagedVisible.value,
-        active: () => !unmounted && viewActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
+        active: mediaActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
         epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => {
             const index = visibleIndices.value.get(item.id), live = index === undefined ? undefined : visible.value[index];
             return index !== undefined && index < pagedVisible.value.length && sameArtworkMedia(item, live) && item._galleryRevision === live?._galleryRevision;
@@ -264,9 +267,11 @@ export function useGalleryWorkspace() {
     let thumbHydration: Promise<void> | null = null;
     let thumbsDirty = false;
     function hydrateThumbs(): Promise<void> {
+        if (!mediaActive()) return Promise.resolve();
         thumbsDirty = true;
         if (thumbHydration) return thumbHydration;
         const epoch = imageEpoch, visited = new Map<string | number, ArtworkRecord>();
+        const signal = imageReads.signal, repository = artworkRepository;
         async function run() {
             do {
                 thumbsDirty = false;
@@ -278,23 +283,24 @@ export function useGalleryWorkspace() {
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
-                        if (unmounted || !viewActive || epoch !== imageEpoch || thumbsDirty) return;
+                        if (!mediaActive() || epoch !== imageEpoch || thumbsDirty) return;
                         const item = pending[index++];
                         visited.set(item.id, item);
                         try {
-                            const thumb = await artworkRepository.getThumbnail(item.image_id!);
-                            if (unmounted || !viewActive || epoch !== imageEpoch) return;
-                            if (isMediaCurrent(item) && typeof thumb === 'string' && thumb.startsWith('data:image/')) rememberThumbnail(item.id, thumb);
+                            const thumb = await readGalleryDerivative(repository, item.image_id!, undefined, signal);
+                            if (!mediaActive() || epoch !== imageEpoch || repository !== artworkRepository) { thumb?.release(); return; }
+                            if (thumb && isMediaCurrent(item)) rememberThumbnail(item.id, thumb);
+                            else thumb?.release();
                         }
                         catch { /* 缩略图缺失正常，直接走 HD */ }
                     }
                 }
                 await Promise.all(Array.from({ length: Math.min(THUMB_CONCURRENCY, pending.length) }, () => worker()));
-            } while (thumbsDirty && !unmounted && viewActive && epoch === imageEpoch);
+            } while (thumbsDirty && mediaActive() && epoch === imageEpoch);
         }
         thumbHydration = run().finally(() => {
             thumbHydration = null;
-            if (thumbsDirty && !unmounted && viewActive) void hydrateThumbs();
+            if (thumbsDirty && mediaActive()) void hydrateThumbs();
         });
         return thumbHydration;
     }
@@ -399,8 +405,37 @@ export function useGalleryWorkspace() {
     // Keep an original only where the return viewport has no thumbnail fallback;
     // it still shares the bounded LRU and is released on eviction or unmount.
     let activatedOnce = false;
-    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void refreshComparison(); });
+    function suspendIdleMedia() {
+        if (!mediaActive() || compareOpen.value || deleting.value || bulkDeleting.value) return;
+        idleMediaSuspended.value = true;
+        releaseImages();
+        clearThumbnails();
+        setViewerMediaSuspended(true);
+        setComparisonMediaSuspended(true);
+        artworkRepository.clearImageDerivatives?.();
+        stopCardObservation();
+        document.removeEventListener('keydown', onKeydown);
+    }
+    function resumeIdleMedia() {
+        if (!viewActive || !idleMediaSuspended.value) return;
+        idleMediaSuspended.value = false;
+        document.addEventListener('keydown', onKeydown);
+        setViewerMediaSuspended(false);
+        setComparisonMediaSuspended(false);
+        void hydrateThumbs(); scheduleWallScan();
+    }
+    function listenForIdleMedia() {
+        document.addEventListener('aics:release-idle-gallery-media', suspendIdleMedia);
+        document.addEventListener('aics:resume-idle-gallery-media', resumeIdleMedia);
+    }
+    function stopIdleMediaListener() {
+        document.removeEventListener('aics:release-idle-gallery-media', suspendIdleMedia);
+        document.removeEventListener('aics:resume-idle-gallery-media', resumeIdleMedia);
+    }
+    onMounted(listenForIdleMedia);
+    onActivated(() => { viewActive = true; resumeIdleMedia(); listenForIdleMedia(); document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void refreshComparison(); });
     onDeactivated(() => {
+        stopIdleMediaListener();
         cancelGalleryStorageLoad(history);
         viewActive = false; comparisonRevision++; cleanupFilterSync();
         // The optional comparison panel may still be loading and have no
@@ -409,14 +444,19 @@ export function useGalleryWorkspace() {
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
         // A stored URL is not a decoded fallback (failed/pending thumbnails
         // otherwise leave a black frame when the painted original is revoked).
-        releaseImages(new Set([...keep].filter(id => {
-            const card = shellEl.value?.querySelector<HTMLElement>(`[data-card-id="${CSS.escape(id)}"]`);
-            return card?.dataset.thumbReady !== 'true';
-        })));
-        retainThumbnails(keep);
+        if (artworkRepository.getImageDerivative) {
+            releaseImages(); clearThumbnails();
+        } else {
+            releaseImages(new Set([...keep].filter(id => {
+                const card = shellEl.value?.querySelector<HTMLElement>(`[data-card-id="${CSS.escape(id)}"]`);
+                return card?.dataset.thumbReady !== 'true';
+            })));
+            retainThumbnails(keep);
+        }
         document.removeEventListener('keydown', onKeydown); stopCardObservation();
     });
     onUnmounted(() => {
+        stopIdleMediaListener();
         cancelGalleryStorageLoad(history);
         unmounted = true; comparisonRevision++;
         stopComparisonRuntime(); stopComparisonResources();
@@ -484,7 +524,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         masonryGroups, scheduleWallScan, retryCardImage, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
-        hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,
+        hasMoreToRender, pagedVisible, viewerIndex, idleMediaSuspended, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,
         compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, parentImageLabel, parentImageStatus, retryParentImage, current, characterName,
         facts, downloadCurrent, downloading: actions.downloading, copyPrompt, showToast, releaseCardResources,
     };

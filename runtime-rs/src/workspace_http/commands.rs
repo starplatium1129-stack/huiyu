@@ -256,6 +256,10 @@ pub(super) fn command(
             if query.contains_key("candidateLimit") {
                 command["candidateLimit"] = query_int(query, "candidateLimit", 1, 1)?;
             }
+            if let Some(projection) = query.get("projection") {
+                if projection != "records" { return Err(ApiError::invalid("Unknown recent artwork projection")); }
+                command["projection"] = json!(projection);
+            }
             command
         }
         ("POST", ["gallery", "query"]) => {

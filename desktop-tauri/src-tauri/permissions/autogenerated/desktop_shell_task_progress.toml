@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-desktop-shell-task-progress"
+description = "Enables the desktop_shell_task_progress command without any pre-configured scope."
+commands.allow = ["desktop_shell_task_progress"]
+
+[[permission]]
+identifier = "deny-desktop-shell-task-progress"
+description = "Denies the desktop_shell_task_progress command without any pre-configured scope."
+commands.deny = ["desktop_shell_task_progress"]
