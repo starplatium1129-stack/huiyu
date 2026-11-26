@@ -12,6 +12,7 @@ export interface StoryActionOptions {
   busy: Ref<boolean>
   chatReady: Readonly<Ref<boolean>>
   regenerateMessage: (mid: string) => Promise<void>
+  continueMessage: (mid: string) => Promise<void>
   stopVoice: () => void
   notice: (message: string, kind?: string) => void
   scrollBottom: () => void

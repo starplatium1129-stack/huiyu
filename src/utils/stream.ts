@@ -1,6 +1,7 @@
 export interface ChatStreamEvent {
   type: string
   model?: string
+  matchedLore?: string[]
   content?: string
   speechFirst?: boolean
   /** 工具调用事件（type:'tool-call'）：index/id/name/arguments */
@@ -24,9 +25,13 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
   if (!isRecord(value) || typeof value.type !== 'string') return null
+  const matchedLore = Array.isArray(value.matchedLore)
+    ? value.matchedLore.filter((item): item is string => typeof item === 'string' && Boolean(item.trim())).slice(0, 16)
+    : undefined
   return {
     type: value.type,
     model: typeof value.model === 'string' ? value.model : undefined,
+    matchedLore: matchedLore?.length ? matchedLore : undefined,
     content: typeof value.content === 'string' ? value.content : undefined,
     speechFirst: value.speechFirst === true || undefined,
     index: typeof value.index === 'number' ? value.index : undefined,
@@ -60,6 +65,8 @@ export function inferEmotion(text: string, character = ''): string {
   return 'neutral'
 }
 
+import { stripChatMarkupForSpeech } from './chatMessageFormat'
+
 /**
  * Roleplay models often prefix dialogue with directions such as
  * `（稍微有点慌乱）`. Keep those directions in the text transcript, but never
@@ -67,7 +74,8 @@ export function inferEmotion(text: string, character = ''): string {
  */
 export function extractSpokenDialogue(value: unknown): RoleplaySpeech {
   const directions: string[] = []
-  const text = String(value || '').replace(
+  const cleaned = stripChatMarkupForSpeech(String(value || ''))
+  const text = cleaned.replace(
     /（([^（）\n]{1,120})）|\(([^()\n]{1,120})\)|【([^【】\n]{1,120})】|\[([^\[\]\n]{1,120})\]|(?:\*|＊)([^*＊\n]{1,120})(?:\*|＊)/g,
     (_all, roundCn, round, squareCn, square, stars) => {
       const direction = String(roundCn || round || squareCn || square || stars || '')

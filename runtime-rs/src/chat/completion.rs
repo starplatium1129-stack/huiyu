@@ -57,6 +57,9 @@ impl ChatService {
                 card_tools: false,
                 web_search: false,
                 reasoning: "off".into(),
+                sampling: validation::SamplingOptions::default(),
+                disable_bubble_split: false,
+                matched_lore: Vec::new(),
                 messages,
             };
             let prepared = self
@@ -98,6 +101,9 @@ pub(super) async fn complete_api(
         card_tools: false,
         web_search: false,
         reasoning: "off".into(),
+        sampling: validation::SamplingOptions::default(),
+        disable_bubble_split: false,
+        matched_lore: Vec::new(),
         messages,
     };
     let mut body = compatible::payload(input, api);

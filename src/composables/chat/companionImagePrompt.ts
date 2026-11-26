@@ -15,6 +15,7 @@ import { sceneDirectorSources } from '@/utils/promptDirector'
 
 export interface CompanionImageArgs {
   character: string; description: string; visualDescription?: string; outfit?: string; mature?: boolean
+  allowUnbound?: boolean; noArtist?: boolean
 }
 export type CompanionPromptDraft = UnifiedPromptAssemblyState & ResultContextInput & { story: string }
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(toRaw(value))) as T
@@ -35,20 +36,21 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   state: AnimaGenerationState, inferred?: InterrogateResult, report?: (message: string) => void): CompanionPromptDraft {
   const studio = args.character === 'nene' || args.character === 'natsume'
   const character = studio ? null : findCharacter(pb.popularCharacters, args.character)
-  if (!studio && !character) throw new Error('该桌宠尚未绑定工作台角色，请先补齐角色配置')
+  const unbound = !studio && !character && args.allowUnbound === true
+  if (!studio && !character && !unbound) throw new Error('该桌宠尚未绑定工作台角色，请先补齐角色配置')
   const requestedOutfit = args.outfit?.trim() || 'default'
   const outfit = character ? requestedOutfit === 'default' ? defaultOutfit(character)
     : findOutfit(character, requestedOutfit) || character.outfits.find(item => item.name === requestedOutfit) : null
   if (character && !outfit) throw new Error('这套服装未在当前角色目录中找到，请选择已配置的服装')
-  if (studio && requestedOutfit !== 'default' && !/^[a-z0-9_ -]+$/i.test(requestedOutfit)) throw new Error('工作室角色服装需要使用英文服装词条')
+  if ((studio || unbound) && requestedOutfit !== 'default' && !/^[a-z0-9_ -]+$/i.test(requestedOutfit)) throw new Error('工作室角色服装需要使用英文服装词条')
   const matureTokens = new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en)))
   const visual = args.visualDescription?.trim() || (plainEnglish(args.description) ? args.description.trim() : '')
   const mature = args.mature === true || requestedOutfit === 'nsfw_nude'
     || isManualR18Tags([requestedOutfit, ...visual.split(/[\s,;.]+/), ...(inferred?.tags ?? [])], matureTokens)
     || Boolean(inferred && Math.max(inferred.rating.questionable, inferred.rating.explicit) > Math.max(inferred.rating.general, inferred.rating.sensitive))
-  const char = studio ? args.character as 'nene' | 'natsume' : pb.char
+  const char = studio ? args.character as 'nene' | 'natsume' : unbound ? 'none' : pb.char
   const manual = new Set<string>()
-  if (studio && requestedOutfit !== 'default') {
+  if ((studio || unbound) && requestedOutfit !== 'default') {
     const token = requestedOutfit === 'nsfw_nude' ? 'nude' : normalizeKey(requestedOutfit)
     const controls = characterControlTokens({ prompt: token, tags: [token], rating: mature ? 'R18' : 'All' }, char, { [char]: state.loraId })
     for (const value of controls.length ? controls : [token]) manual.add(value)
@@ -59,7 +61,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
     char, charPrompt: CHAR_PROMPT[char], subject: character && outfit
       ? { kind: 'popular', characterId: character.id, outfitId: outfit.id, blueprintId: null, outfitExplicit: requestedOutfit !== 'default' } : { kind: 'studio' },
     isPopular: Boolean(character), sceneId: null, activeScene: null, story: args.description.trim(), visualDescription: visual,
-    artistStyleIds: [...pb.artistStyleIds], directorMode: pb.directorMode, colorMood: null, concise: pb.concise, emotionPrompt: '',
+    artistStyleIds: args.noArtist ? [] : [...pb.artistStyleIds], directorMode: pb.directorMode, colorMood: null, concise: pb.concise, emotionPrompt: '',
     manualTags: manual, randomVariation: null, referenceInput: null, selections: { emotion: [], shot: null, lighting: null, composition: null },
     directorSources: sceneDirectorSources(),
     characters: copy(pb.characters), loraMeta: copy(pb.loraMeta), modelProfiles: copy(pb.modelProfiles), tags: copy(pb.tags),

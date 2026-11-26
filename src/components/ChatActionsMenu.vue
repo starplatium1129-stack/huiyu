@@ -10,6 +10,9 @@ const emit = defineEmits<{
   (e: 'toggle-archive'): void
   (e: 'toggle-memory'): void
   (e: 'toggle-profile'): void
+  (e: 'toggle-rp'): void
+  (e: 'toggle-cards'): void
+  (e: 'toggle-lorebooks'): void
 }>()
 </script>
 
@@ -25,14 +28,23 @@ const emit = defineEmits<{
       <DropdownMenuItem v-if="canImport" class="chat-more-item" :disabled="importDisabled" @select="run(() => emit('import-card'))">
         <ArchiveIcon name="character" /><span>导入角色卡（PNG / JSON）</span>
       </DropdownMenuItem>
+      <DropdownMenuItem v-if="canImport" class="chat-more-item" @select="run(() => emit('toggle-cards'))">
+        <ArchiveIcon name="character" /><span>角色卡工作台（新建/编辑/导出）</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-lorebooks'))">
+        <ArchiveIcon name="folder" /><span>世界书管理</span>
+      </DropdownMenuItem>
+      <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-rp'))">
+        <ArchiveIcon name="wand" /><span>RP 预设与导演指令</span>
+      </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-archive'))">
         <ArchiveIcon name="chat" /><span>对话归档</span>
       </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-memory'))">
-        <ArchiveIcon name="pin" /><span>长期记忆</span>
+        <ArchiveIcon name="pin" /><span>记忆与前情摘要</span>
       </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-profile'))">
-        <ArchiveIcon name="character" /><span>我的档案</span>
+        <ArchiveIcon name="character" /><span>我的马甲与档案</span>
       </DropdownMenuItem>
       <DropdownMenuSeparator class="chat-more-separator" />
       <DropdownMenuItem class="chat-more-item is-danger" @select="run(() => emit('clear-all'))">

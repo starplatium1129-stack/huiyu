@@ -192,12 +192,14 @@ impl Ollama {
         *self.model.lock().unwrap() = selected.clone();
         let num_predict = if input.japanese_voice {
             super::stream::japanese_voice::prompt(&mut input.messages);
-            (settings.num_predict * 2).min(2048)
+            (input.sampling.max_tokens.map(u64::from).unwrap_or(settings.num_predict) * 2).min(4096)
         } else {
-            settings.num_predict
+            input.sampling.max_tokens.map(u64::from).unwrap_or(settings.num_predict).min(8192)
         };
+        let temperature = input.sampling.temperature.unwrap_or(0.72);
+        let top_p = input.sampling.top_p.unwrap_or(0.88);
         let mut body = json!({"model":selected,"stream":true,"think":false,"keep_alive":settings.keep_alive,
-            "options":{"temperature":0.72,"top_p":0.88,"repeat_penalty":1.1,"num_predict":num_predict,"num_ctx":settings.num_context}});
+            "options":{"temperature":temperature,"top_p":top_p,"repeat_penalty":1.1,"num_predict":num_predict,"num_ctx":settings.num_context}});
         body["messages"] = Value::Array(persona::single_system_messages(input.messages));
         let body = request_body::encode(body, admission, cancel).await?;
         let response = client

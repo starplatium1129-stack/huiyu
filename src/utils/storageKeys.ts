@@ -39,7 +39,14 @@ export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
 /** Retain historical search preferences in existing backups. */
 const CHAT_SEARCH_KEY = 'aics_chat_search_v1'
 export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
+export const CHAT_USER_PERSONAS_KEY = 'aics_user_personas_v1'
 export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
+export const CHAT_RP_SETTINGS_KEY = 'aics_chat_rp_v1'
+export const CHAT_SCENE_STATE_KEY = 'aics_chat_scene_state_v1'
+export const CHAT_CARD_SPRITES_KEY = 'aics_chat_card_sprites_v1'
+export const CHAT_ROOM_BG_KEY = 'aics_chat_room_bg_v1'
+export const CHAT_LOREBOOKS_KEY = 'aics_chat_lorebooks_v1'
+export const CHAT_STORY_SUMMARY_KEY = 'aics_chat_story_summary_v1'
 /** 高频偏好单独保存，避免每次输入或调音量重写聊天历史。 */
 export const CHAT_VOLUME_KEY = 'aics_chat_volume_v1'
 export const CHAT_PREFERENCES_KEY = 'aics_chat_preferences_v1'
@@ -150,7 +157,14 @@ const LIVE_LOCAL_KEYS = [
   CHAT_THINKING_KEY,
   CHAT_SEARCH_KEY,
   CHAT_USER_PROFILE_KEY,
+  CHAT_USER_PERSONAS_KEY,
   CHAT_MEMORY_KEY,
+  CHAT_RP_SETTINGS_KEY,
+  CHAT_SCENE_STATE_KEY,
+  CHAT_CARD_SPRITES_KEY,
+  CHAT_ROOM_BG_KEY,
+  CHAT_LOREBOOKS_KEY,
+  CHAT_STORY_SUMMARY_KEY,
   CHAT_VOLUME_KEY,
   CHAT_PREFERENCES_KEY,
   COMPANION_LIVE2D_KEY,

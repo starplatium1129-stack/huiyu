@@ -36,7 +36,7 @@ export function normalizeChatUserProfile(value: unknown): ChatUserProfile {
   return {
     callName: clean(record.callName, 40),
     relationship,
-    note: clean(record.note, 200),
+    note: clean(record.note, 500),
   }
 }
 

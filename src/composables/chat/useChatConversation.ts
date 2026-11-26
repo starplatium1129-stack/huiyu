@@ -77,7 +77,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   function captureTurn(characterId: string, user: ChatMessage, assistant: ChatMessage, restricted = false,
-    regeneration?: { replyId: string; previousMid: string }): ChatTurn {
+    regeneration?: { replyId: string; previousMid: string; continuePrefix?: string }): ChatTurn {
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
     streamingMid.value = assistant.mid
@@ -90,7 +90,7 @@ export function useChatConversation(options: ChatConversationOptions) {
 
   function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
     const characterId = options.activeChar.value, messages = options.storage.messages(characterId)
-    const greeting = options.currentCharacter.value.greeting
+    const greeting = options.selectedGreeting?.() || options.currentCharacter.value.greeting
     if (!messages.length && greeting) {
       messages.push({ role: 'assistant', content: greeting, mid: createMessageId(), stopped: false })
     }
@@ -149,6 +149,33 @@ export function useChatConversation(options: ChatConversationOptions) {
     await runTurn(turn)
   }
 
+  async function continueMessage(mid: string) {
+    if (disposed || options.busy.value || !options.chatReady.value || !options.storage.canWrite()) return
+    const characterId = options.activeChar.value, branch = options.storage.branchId(characterId)
+    try { await options.storage.refresh() }
+    catch { options.onError('对话未能同步，请重试；原回复已保留。'); return }
+    if (disposed || options.busy.value || options.activeChar.value !== characterId
+      || options.storage.branchId(characterId) !== branch || !options.storage.canWrite()) return
+    const history = options.storage.messages(characterId), target = history.at(-1)
+    if (!target || target.mid !== mid || target.role !== 'assistant' || !target.content.trim()) {
+      options.onError('请先切换到这条消息所在的剧情末尾。', 'info')
+      return
+    }
+    const userIndex = history.map(message => message.role).lastIndexOf('user', history.length - 2)
+    const user = userIndex >= 0 ? history[userIndex] : target
+    const prepared = options.storage.prepareContinue(characterId, mid)
+    if (!prepared) return
+    const turn = captureTurn(characterId, user, prepared.message, true, {
+      replyId: prepared.replyId,
+      previousMid: prepared.previousMid,
+      continuePrefix: prepared.prefix,
+    })
+    turn.continueMode = true
+    turn.continuePrefix = prepared.prefix
+    turn.messages = [...history]
+    await runTurn(turn)
+  }
+
   async function runTurn(turn: ChatTurn, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     options.onError('')
     const connection = captureConnection(), text = turn.text, turnMid = turn.assistant.mid
@@ -168,7 +195,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     let watchdog = startTurnWatchdog(attemptController)
     const japaneseVoice = sendOptions.action !== 'generate-from-image' && isLocalStudioHost()
       && connection.provider !== 'muse' && options.voice.wantsJapanese(turn.character.voice)
-    const speechState: TurnSpeechState = { separateSpeech: false, spokenThrough: 0 }
+    const speechState: TurnSpeechState = { separateSpeech: false, spokenThrough: turn.continuePrefix?.length || 0 }
     let resetEmotion = () => {}
     const voiceTurn = {
       mid: turn.assistant.mid,
@@ -217,6 +244,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     syncToolOrigin(fallbackState.activeConnection)
     const usedTools = new Set<string>()
     const drawingResults = new Map<string, ToolCallResult>()
+    let turnCompleted = false
 
     try {
       const memories = options.recallMemories(turn.characterId, text)
@@ -230,7 +258,8 @@ export function useChatConversation(options: ChatConversationOptions) {
         (emotion, explicit) => {
           if (explicit) options.voice.setTurnEmotion(emotion, true)
           if (canPresent()) options.onStreamEmotion?.(emotion)
-        })
+        },
+        turn.continuePrefix || '')
       resetEmotion = tracker.reset
       if (turn.restricted) {
         const { captureRegenerationImages } = await abortableTask(() => import('./chatRegenerationImages'), controller.signal)
@@ -358,13 +387,38 @@ export function useChatConversation(options: ChatConversationOptions) {
       checkCurrent()
       if (speechState.separateSpeech) options.voice.append(turn.assistant.content.slice(speechState.spokenThrough))
       turn.assistant.content = turn.assistant.content.trim()
+      if (turn.continuePrefix && turn.assistant.content === turn.continuePrefix.trim()) {
+        throw new Error('模型没有返回续写内容，请重试；已有回复已保留。')
+      }
       if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
       if (!turn.assistant.drawingBatchId) turn.assistant.content ||= '……'
+      if (turn.assistant.content && turn.assistant.content !== '……') {
+        const currentScore = options.affection?.getScore(turn.characterId)
+        const statusUpdate = options.sceneState?.extractStatusUpdate?.(turn.assistant.content, currentScore) ?? null
+        if (options.affection) {
+          if (statusUpdate?.affectionDelta !== undefined) {
+            options.affection.addScore(turn.characterId, statusUpdate.affectionDelta)
+          } else if (options.rpState?.value.affectionPromptEnabled !== false && !turn.restricted) {
+            options.affection.addScore(turn.characterId, 1)
+          }
+        }
+        if (statusUpdate && (statusUpdate.location || statusUpdate.outfit || statusUpdate.mood)) {
+          options.sceneState?.updateSceneState(turn.characterId, {
+            ...(statusUpdate.location ? { location: statusUpdate.location } : {}),
+            ...(statusUpdate.outfit ? { outfit: statusUpdate.outfit } : {}),
+            ...(statusUpdate.mood ? { mood: statusUpdate.mood } : {}),
+          })
+        }
+        if (statusUpdate?.mood && canPresent()) {
+          options.onStreamEmotion?.(statusUpdate.mood)
+        }
+      }
       if (canPresent() && turn.assistant.content) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
       if (canPresent() && fallbackState.activeFallbackLabel) {
         options.onError(`原模型暂不可用，已自动切换至 ${fallbackState.activeFallbackLabel} 完成本次回复。`, 'info', 4500)
       }
       options.voice.finishTurn()
+      turnCompleted = true
     } catch (error) {
       if (!ownsRequest() || !ownsHistory()) return
       handleChatTurnError({ error, controller, attemptController, sendOptions, turn, options, watchdog, connection, fallbackState, canPresent })
@@ -376,7 +430,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       if (ownsRequest()) {
         try {
           if (!ownsHistory()) options.voice.stop({ preserveMessageAudio: true, silent: true })
-          if (turn.regeneration) options.storage.finishRegeneration(turn.characterId, turn.regeneration.replyId, turn.regeneration.previousMid)
+          if (turn.regeneration) options.storage.finishRegeneration(turn.characterId, turn.regeneration.replyId, turn.regeneration.previousMid, turn.regeneration.continuePrefix)
           options.storage.trim(turn.characterId)
           options.storage.save(true, true, [turn.characterId])
         } finally {
@@ -385,6 +439,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           streamingMid.value = ''
           activeRequest = null
           options.setBusy(false)
+          if (turnCompleted && !disposed && !turn.restricted) options.onTurnCompleted?.(turn.characterId, turn.branch)
           if (!disposed && options.nearBottom()) options.scrollBottom()
         }
       }
@@ -421,6 +476,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     stopEverything,
     sendMessage,
     regenerateMessage,
+    continueMessage,
     useStarter,
     onInputChange,
     clearDraftInput,

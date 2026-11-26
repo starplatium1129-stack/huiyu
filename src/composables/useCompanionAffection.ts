@@ -121,6 +121,7 @@ export function useCompanionAffection() {
   return {
     getScore,
     getLevelInfo,
+    addScore,
     dispatchInteractiveMotion,
   }
 }

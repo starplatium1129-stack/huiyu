@@ -1,4 +1,4 @@
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, type Ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
@@ -19,10 +19,19 @@ import { screenWatchConnection } from '@/api/companionScreenWatchApi'
 import { readChatPreferences } from '@/storage/chatPreferences'
 import { useCharacterStageSync } from '@/composables/chat/useCharacterStageSync'
 import { useCharacterRoomLifecycle } from '@/composables/chat/useCharacterRoomLifecycle'
+import { useCompanionAffection } from '@/composables/useCompanionAffection'
+import type { ChatRpState } from '@/utils/chatRpSettings'
+import type { ChatConversationOptions } from './chatTurnExecution'
 
 export function useCharacterRoomSession(
   reading?: { latest: () => void; nearBottom: () => boolean },
   presentation?: { character: string; startConversation: Promise<void> },
+  workbench?: {
+    rpState?: Ref<ChatRpState>
+    sceneState?: ChatConversationOptions['sceneState']
+    getExtraPayload?: (characterId: string, branchId: string) => Promise<Record<string, unknown>> | Record<string, unknown>
+    onTurnCompleted?: (characterId: string, branchId: string) => void
+  },
 ) {
   const route = useRoute()
   const router = useRouter()
@@ -214,7 +223,23 @@ export function useCharacterRoomSession(
     voice,
     clearDraftInput: () => clearDraftInput(),
   })
+  const affection = useCompanionAffection()
   const chatCharacter = computed(() => renderChatGreeting(currentCharacter.value, userProfile.value.callName))
+  const greetingIndex = ref(0)
+  const currentGreetings = computed(() => {
+    const config = chatCharacter.value
+    const list = config.greetings?.length ? config.greetings : [config.greeting].filter(Boolean)
+    return list.length ? list : [config.greeting]
+  })
+  const selectedGreeting = computed(() => {
+    const list = currentGreetings.value
+    const index = Math.max(0, Math.min(greetingIndex.value, list.length - 1))
+    return list[index] || chatCharacter.value.greeting
+  })
+  watch(activeChar, () => { greetingIndex.value = 0 })
+  watch(currentGreetings, list => {
+    if (greetingIndex.value >= list.length) greetingIndex.value = 0
+  })
 
   const {
     inputText,
@@ -223,6 +248,7 @@ export function useCharacterRoomSession(
     abortCurrentRequest,
     sendMessage,
     regenerateMessage,
+    continueMessage,
     useStarter,
     onInputChange,
     clearDraftInput,
@@ -233,6 +259,10 @@ export function useCharacterRoomSession(
     voice,
     activeChar,
     currentCharacter: chatCharacter,
+    rpState: workbench?.rpState,
+    selectedGreeting: () => selectedGreeting.value,
+    affection,
+    sceneState: workbench?.sceneState,
     busy,
     chatReady,
     chatProvider,
@@ -264,12 +294,14 @@ export function useCharacterRoomSession(
     onThinking: (thinking) => {
       thinkingActivity.value = thinking !== null
     },
+    getExtraPayload: workbench?.getExtraPayload,
+    onTurnCompleted: workbench?.onTurnCompleted,
     nearBottom,
     scrollBottom,
   })
 
   const { branchId, storyBranches, storyBusy, handleStoryAction, cancelStoryAction, canRegenerateMessage } = useChatStoryActions({
-    storage, activeChar, busy: computed(() => busy.value || clearBusy.value || resettingChat.value), chatReady, regenerateMessage,
+    storage, activeChar, busy: computed(() => busy.value || clearBusy.value || resettingChat.value), chatReady, regenerateMessage, continueMessage,
     stopVoice: () => voice.stop({ preserveMessageAudio: true, silent: true }), notice: setError, scrollBottom,
   })
 
@@ -357,6 +389,10 @@ export function useCharacterRoomSession(
     chatReady,
     isLocalHost,
     currentCharacter: chatCharacter,
+    affection,
+    greetingIndex,
+    currentGreetings,
+    selectedGreeting,
     currentMessages,
     companionMessages,
     webSearchEnabled, companionTools,

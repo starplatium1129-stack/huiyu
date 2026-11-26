@@ -240,6 +240,9 @@ impl ChatService {
                 card_tools: false,
                 web_search: false,
                 reasoning: reasoning.into(),
+                sampling: validation::SamplingOptions::default(),
+                disable_bubble_split: false,
+                matched_lore: Vec::new(),
                 messages: msgs,
             };
 

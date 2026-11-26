@@ -26,6 +26,8 @@ pub(super) enum Event {
         model: String,
         #[serde(rename = "queueWaitMs")]
         queue_wait_ms: u64,
+        #[serde(rename = "matchedLore", skip_serializing_if = "Vec::is_empty")]
+        matched_lore: Vec<String>,
     },
     Reasoning {
         content: String,
@@ -299,12 +301,13 @@ fn vision_refusal() -> Error {
     Error::stream("VISION_REFUSAL", "视觉服务拒绝描述此图")
 }
 
-fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
+fn events(prepared: Prepared, matched_lore: Vec<String>, shutdown: CancellationToken) -> Events {
     let wait = prepared.wait_ms;
     let vendor = super::validation::vendor(prepared.response.url());
     let mut pending = VecDeque::from([Event::Meta {
         model: prepared.model,
         queue_wait_ms: wait,
+        matched_lore,
     }]);
     if prepared.japanese_voice {
         pending.push_back(Event::JapaneseSpeechMode { speech_first: true });
@@ -335,11 +338,11 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
 }
 
 pub(super) async fn collect_text(prepared: Prepared, cancel: CancellationToken) -> Result<String> {
-    collect_text_events(events(prepared, cancel)).await
+    collect_text_events(events(prepared, Vec::new(), cancel)).await
 }
 
 pub(super) async fn collect_vision(prepared: Prepared, cancel: CancellationToken) -> Result<String> {
-    let mut stream = events(prepared, cancel);
+    let mut stream = events(prepared, Vec::new(), cancel);
     stream.reject_refusals = true;
     collect_text_events(stream).await
 }
@@ -371,7 +374,7 @@ pub(super) async fn collect_channel(
     prepared: Prepared,
     cancel: CancellationToken,
 ) -> Result<(String, Vec<ToolCall>)> {
-    let mut events = events(prepared, cancel);
+    let mut events = events(prepared, Vec::new(), cancel);
     let mut text = String::new();
     let mut calls = Vec::new();
     while let Some(event) = events.next().await? {
@@ -390,11 +393,15 @@ pub(super) async fn collect_channel(
     Err(Error::stream("INCOMPLETE_STREAM", "消息回复中断"))
 }
 
-pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Response {
+pub(super) fn response(
+    prepared: Prepared,
+    matched_lore: Vec<String>,
+    shutdown: CancellationToken,
+) -> Response {
     let wait = prepared.wait_ms;
     let cancel = shutdown.child_token();
     let events = futures_util::stream::try_unfold(
-        events(prepared, cancel.clone()),
+        events(prepared, matched_lore, cancel.clone()),
         |mut events| async move { Ok(events.next().await?.map(|event| (event, events))) },
     );
     from_events(events, wait, cancel)

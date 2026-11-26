@@ -4,13 +4,19 @@ import { isLocalStudioHost } from './runtimeEnvironment'
 import { forgetChatCard, listCompanionCharacterIds, registerCompanionCharacter } from './companionRegistry'
 import { loadChatCharacterProfiles } from './chatCharacterProfiles'
 
-interface ChatCard {
+export interface ChatCard {
   id: string
   name: string
   description: string
   greeting: string
+  greetings?: string[]
+  alternateGreetings?: string[]
   avatarUrl: string
   catalogId?: string
+  voiceId?: string
+  source?: 'user' | 'catalog'
+  overridden?: boolean
+  loreCount?: number
 }
 interface CatalogProfile { image?: string; source?: string; aliases: string[] }
 let profiles: Promise<Map<string, CatalogProfile>> | undefined
@@ -64,16 +70,25 @@ function registerCard(card: ChatCard, owner: string, profiles?: ReadonlyMap<stri
     || typeof card.greeting !== 'string' || typeof card.description !== 'string'
     || (card.avatarUrl !== '' && card.avatarUrl !== `/api/chat/cards/${card.id}/avatar`)) throw new Error('角色卡目录格式错误')
   const catalogId = typeof card.catalogId === 'string' && /^[a-z0-9_-]{1,80}$/.test(card.catalogId) ? card.catalogId : undefined
-  const voice = catalogId === 'roxy_migurdia' ? 'roxy' : ''
+  const customVoiceId = typeof card.voiceId === 'string' && /^[a-z0-9][a-z0-9_-]{0,63}$/.test(card.voiceId) ? card.voiceId : ''
+  const voice = customVoiceId || (catalogId === 'roxy_migurdia' ? 'roxy' : '')
   const profile = catalogId ? profiles?.get(catalogId) : undefined
   const image = card.avatarUrl || (catalogId && characterArtEntry(catalogId)?.portraitUrl) || profile?.image || '/assets/logo.svg'
   if (owner !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新打开角色卡')
+  const rawGreetings = [
+    ...(Array.isArray(card.greetings) ? card.greetings : []),
+    card.greeting,
+    ...(Array.isArray(card.alternateGreetings) ? card.alternateGreetings : []),
+  ]
+  const greetings = [...new Set(rawGreetings.filter((item): item is string => typeof item === 'string' && Boolean(item.trim())))]
+  const primaryGreeting = greetings[0] || card.greeting
   registerCompanionCharacter({
     id: card.id, name: card.name, shortName: card.name, defaultAvatarId: '', tags: ['chat-card'], catalogId,
     source: profile?.source, aliases: profile?.aliases, voiceId: voice || undefined,
     presentation: {
       id: card.id, name: card.name, image, voice, icon: 'character', caption: '', description: card.description,
-      greeting: card.greeting, roomCode: '', roomMood: '', starters: [], accent: 'var(--accent)',
+      greeting: primaryGreeting, ...(greetings.length > 1 ? { greetings } : {}),
+      roomCode: '', roomMood: '', starters: [], accent: 'var(--accent)',
       live2dLayout: { scale: 1, anchorX: 0.5, bottomOffset: 0 },
     },
   })

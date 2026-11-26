@@ -12,13 +12,14 @@ export function canRegenerateChatMessage(messages: readonly ChatMessage[], mid: 
     : messages.slice(0, index).some(message => message.role === 'user')
 }
 export function replySnapshot(message: ChatReplyVariant): ChatReplyVariant {
-  const { mid, content, stopped, recalledMemories, drawingDrafts, drawingBatchId, images } = message
+  const { mid, content, stopped, recalledMemories, matchedLore, drawingDrafts, drawingBatchId, images } = message
   return JSON.parse(JSON.stringify({ mid, content, stopped, ...(recalledMemories?.length ? { recalledMemories } : {}),
+    ...(matchedLore?.length ? { matchedLore } : {}),
     ...(drawingDrafts?.length ? { drawingDrafts } : {}), ...(drawingBatchId ? { drawingBatchId } : {}), ...(images?.length ? { images } : {}) }))
 }
 export function applyReplyVariant(message: ChatMessage, variant: ChatReplyVariant) {
   const snapshot = replySnapshot(variant)
-  delete message.recalledMemories; delete message.drawingDrafts; delete message.drawingBatchId; delete message.images
+  delete message.recalledMemories; delete message.matchedLore; delete message.drawingDrafts; delete message.drawingBatchId; delete message.images
   Object.assign(message, snapshot)
 }
 function normalizeVariant(value: unknown, createId: () => string): ChatReplyVariant | null {
@@ -27,11 +28,14 @@ function normalizeVariant(value: unknown, createId: () => string): ChatReplyVari
   const drawingBatchId = parseCompanionDrawingBatchId(value.drawingBatchId)
   if (!content && !drawingBatchId) return null
   const recalledMemories = Array.isArray(value.recalledMemories) ? value.recalledMemories.map(item => text(item, 240)).filter(Boolean).slice(0, 6) : []
+  const matchedLore = Array.isArray(value.matchedLore) ? value.matchedLore.map(item => text(item, 80)).filter(Boolean).slice(0, 16) : []
   const drawingDrafts = Array.isArray(value.drawingDrafts) ? value.drawingDrafts.map(parseCompanionDrawingDraft)
     .filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
   const images = parseCompanionChatImages(value.images)
   return { mid: text(value.mid, 160) || text(value.id, 160) || createId(), content, stopped: value.stopped === true,
-    ...(recalledMemories.length ? { recalledMemories } : {}), ...(drawingDrafts.length ? { drawingDrafts } : {}),
+    ...(recalledMemories.length ? { recalledMemories } : {}),
+    ...(matchedLore.length ? { matchedLore } : {}),
+    ...(drawingDrafts.length ? { drawingDrafts } : {}),
     ...(drawingBatchId ? { drawingBatchId } : {}), ...(images.length ? { images } : {}) }
 }
 export function normalizeChatMessage(value: unknown, createId: () => string): ChatMessage | null {

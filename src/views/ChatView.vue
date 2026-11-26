@@ -12,9 +12,27 @@
             <component :is="component" v-if="roomPanel === 'archive'" :storage="storage" :active-char="activeChar"
               @vue:mounted="focusRoomPanel" @close="closeRoomPanel" @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
             <component :is="component" v-else-if="roomPanel === 'profile'" :profile="userProfile" :save-profile="onUserProfileSave"
+              :character-id="activeChar" :character-name="currentCharacter.name"
               @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
-            <component :is="component" v-else-if="roomPanel === 'memory'" :key="activeChar" :items="currentMemories" :character-name="currentCharacter.name"
+            <component :is="component" v-else-if="roomPanel === 'memory'" :key="`${activeChar}:${branchId}`" :items="currentMemories" :character-name="currentCharacter.name"
+              :character-id="activeChar" :branch-id="branchId" :summary-context="memorySummaryContext"
               @vue:mounted="focusRoomPanel" :save-memory="updateMemory" :delete-memory="deleteMemory" @close="closeRoomPanel" />
+            <component :is="component" v-else-if="roomPanel === 'cards'" :active-char="activeChar" :can-edit-cards="isLocalHost"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
+              @select-character="switchCharacter" @import-file="cardFile?.click()"
+              @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
+            <component :is="component" v-else-if="roomPanel === 'lorebooks'" :character-id="activeChar" :character-name="currentCharacter.name"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
+              @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
+            <component :is="component" v-else-if="roomPanel === 'rp'" :rp="rpSettings" :character-id="activeChar"
+              :character-name="currentCharacter.name" :provider="chatProvider"
+              :affection="affection" :scene-state="sceneState" :room-background="roomBackground"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
+              @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
+            <component :is="component" v-else-if="roomPanel === 'sprites'" :character="currentCharacter"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel"
+              @preview-emotion="(emotion: string) => characterStageRef?.setEmotion(emotion)"
+              @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
           </template>
           <template #feedback="{ failed, retried, retry, reload }">
             <section class="room-tool-panel room-panel-loading" aria-labelledby="roomPanelLoadingTitle">
@@ -69,7 +87,8 @@
     </Teleport>
     <section class="chat-layout" aria-label="角色聊天">
       <Suspense>
-        <ChatCardPortrait v-if="activeChar.startsWith('card-')" :character="currentCharacter" />
+        <ChatCardPortrait v-if="activeChar.startsWith('card-')" ref="characterStageRef" :character="currentCharacter"
+          :can-manage-sprites="isLocalHost" @open-sprites="openRoomPanel('sprites')" />
         <ChatCharacterStage v-else ref="characterStageRef" :active-id="activeChar" :suspended="presentationSuspended"
           :surface="immersive ? 'immersive' : 'room'" :character="currentCharacter" :speaking="isSpeaking"
           :volume="volume" :chat-status-text="chatStatusText" :status-kind="statusKind"
@@ -82,21 +101,35 @@
           </aside>
         </template>
       </Suspense>
-      <section class="conversation-card" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
+      <section class="conversation-card" :class="{ 'has-room-bg': Boolean(roomBackground.imageUrl.value) }" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
+        <div
+          v-if="roomBackground.imageUrl.value"
+          class="room-bg-layer"
+          :style="{ backgroundImage: `url(${roomBackground.imageUrl.value})`, '--room-bg-opacity': String(roomBackground.entry.value?.opacity ?? 0.24) }"
+          aria-hidden="true"
+        />
         <header class="conversation-head">
           <div class="room-chat-identity">
             <RuntimeImage class="room-chat-avatar" :src="avatar" alt="" :data-chibi="Boolean(companionChatAvatars[activeChar]) || undefined" />
             <div class="room-chat-channel">
               <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
-              <span v-if="chatReady" class="room-chat-caption"><i aria-hidden="true" />{{ voiceActive ? '语音播放中' : '可对话' }}</span>
+              <div class="room-chat-meta-row">
+                <span v-if="chatReady" class="room-chat-caption"><i aria-hidden="true" />{{ voiceActive ? '语音播放中' : '可对话' }}</span>
+                <button type="button" class="room-affection-pill" :title="affectionLevel.description" @click="openRoomPanel('rp')">
+                  <ArchiveIcon name="star" />
+                  <span>Lv.{{ affectionLevel.level }} {{ affectionLevel.title }} · {{ affectionScore }}</span>
+                  <span v-if="currentSceneState.location" class="room-scene-loc">· {{ currentSceneState.location }}</span>
+                </button>
+              </div>
             </div>
           </div>
           <div class="room-chat-actions">
+            <StudioTooltip content="RP 预设与参数"><button class="btn btn-ghost room-rp-trigger" type="button" aria-label="RP 预设与参数" :aria-pressed="roomPanel === 'rp' || rpActive" @click="openRoomPanel('rp')"><ArchiveIcon name="wand" /></button></StudioTooltip>
             <StudioTooltip :content="immersive ? '展开对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" :aria-label="immersive ? '展开对话' : '专注陪伴'" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
             <StudioTooltip :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <Suspense>
-              <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
+              <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" @toggle-rp="openRoomPanel('rp')" @toggle-cards="openRoomPanel('cards')" @toggle-lorebooks="openRoomPanel('lorebooks')" />
               <template #fallback><button class="btn btn-ghost" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
             </Suspense>
           </div>
@@ -122,7 +155,18 @@
           <div v-if="!currentMessages.length" class="chat-empty">
             <div class="room-welcome-art" aria-hidden="true"><RuntimeImage class="room-empty-avatar" :src="avatar" alt="" /></div>
             <h2 class="room-empty-title">和{{ currentCharacter.name }}聊一会儿</h2>
-            <div class="chat-empty-greeting">{{ currentCharacter.greeting }}</div>
+            <div class="chat-empty-greeting">
+              <ChatMessageText :text="selectedGreeting" :regex-rules="rpSettings.rpState.value.regexRules" />
+            </div>
+            <div v-if="currentGreetings.length > 1" class="room-greeting-switcher" role="group" aria-label="切换开场白">
+              <button type="button" class="btn btn-ghost btn-sm" aria-label="上一条开场白" @click="cycleGreeting(-1)">
+                <ArchiveIcon class="room-greeting-prev" name="chevron-down" /><span>上一条</span>
+              </button>
+              <span class="room-greeting-count">{{ greetingIndex + 1 }} / {{ currentGreetings.length }}</span>
+              <button type="button" class="btn btn-ghost btn-sm" aria-label="下一条开场白" @click="cycleGreeting(1)">
+                <span>下一条</span><ArchiveIcon class="room-greeting-next" name="chevron-down" />
+              </button>
+            </div>
             <div class="chat-starters" role="group" aria-label="对话开场建议">
               <button v-for="starter in currentCharacter.starters" :key="starter" class="room-starter" type="button" @click="chooseStarter(starter)">
                 <span class="room-starter-copy">{{ starter }}</span><ArchiveIcon class="room-starter-arrow" name="chevron-down" />
@@ -135,9 +179,20 @@
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
             :arrival="arrivingMessages.has(msg.mid)" :activity="msg.mid === streamingMid ? activityText : undefined"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
-            :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
+            :can-regenerate="chatReady && canRegenerateMessage(msg.mid)"
+            :can-continue="chatReady && msg.role === 'assistant' && Boolean(msg.content.trim()) && msg === lastMessage"
+            :can-edit="Boolean(msg.content)" :can-illustrate="isLocalHost" :illustrating="illustratingMid === msg.mid" :can-delete="true" :can-truncate="true"
+            :disable-bubble-split="rpSettings.activePreset.value.disableBubbleSplit"
+            :regex-rules="rpSettings.rpState.value.regexRules"
+            :story-disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
             @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
-            @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })" @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
+            @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })"
+            @continue="handleStoryAction({ kind: 'continue', messageId: msg.mid })"
+            @edit="(messageId, content) => handleStoryAction({ kind: 'edit', messageId, content })"
+            @illustrate="illustrateMessage"
+            @delete="handleStoryAction({ kind: 'delete', messageId: msg.mid })"
+            @truncate="handleStoryAction({ kind: 'truncate', messageId: msg.mid })"
+            @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
             @select-variant="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
           <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">后续消息</button>
         </div>
@@ -157,7 +212,7 @@
             </StudioTooltip>
             </template>
             <label class="sr-only" for="room-chat-input">聊天输入</label>
-            <textarea id="room-chat-input" ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" :placeholder="`对${currentCharacter.name}说…`"
+            <textarea id="room-chat-input" ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="16000" :placeholder="`对${currentCharacter.name}说…`"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"></textarea>
             <template #commit><StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : chatGptUsagePaused ? '请查看 ChatGPT 用量' : '请先连接聊天模型'">
               <StudioSendButton id="room-chat-submit" :busy="busy || voiceActive" :disabled="chatMutationBusy || storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
@@ -188,6 +243,7 @@
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ConversationComposer from '@/components/ConversationComposer.vue'
+import ChatMessageText from '@/components/ChatMessageText.vue'
 import ChatTurnIndicator from '@/components/ChatTurnIndicator.vue'
 import { useChatMessageArrival } from '@/composables/chat/useChatMessageArrival'
 import StudioSendButton from '@/components/ui/StudioSendButton.vue'
@@ -197,9 +253,14 @@ import { useChatHistoryWindow } from '@/composables/chat/useChatHistoryWindow'
 import { useChatCardImport } from '@/composables/chat/useChatCardImport'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
-import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, provide, ref, watch } from 'vue'
 import { useResizeObserver, useTextareaAutosize } from '@vueuse/core'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
+import { useChatRpSettings } from '@/composables/chat/useChatRpSettings'
+import { useChatSceneState } from '@/composables/chat/useChatSceneState'
+import { useChatRoomBackground } from '@/composables/chat/useChatRoomBackground'
+import type { ChatMessage } from '@/composables/chat/chatStorageTypes'
+import type { CompanionChatImage } from '@/types/companionDrawing'
 import { CHATGPT_USAGE_SETTINGS_URL } from '@/composables/chat/useChatGptAuth'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import { companionChatAvatars } from '@/config/companionChatAvatars'
@@ -231,7 +292,14 @@ const roomToolLoaders = {
   archive: () => import('@/components/ChatArchivePanel.vue'),
   profile: () => import('@/components/ChatUserProfilePanel.vue'),
   memory: () => import('@/components/ChatMemoryPanel.vue'),
+  cards: () => import('@/components/ChatCardManagerPanel.vue'),
+  lorebooks: () => import('@/components/ChatLorebookPanel.vue'),
+  rp: () => import('@/components/ChatRpPanel.vue'),
+  sprites: () => import('@/components/ChatCardSpritesPanel.vue'),
 }
+
+const rpSettings = useChatRpSettings()
+const sceneState = useChatSceneState()
 
 const {
   chatListRef,
@@ -274,6 +342,10 @@ const {
   chatReady,
   isLocalHost,
   currentCharacter,
+  affection,
+  greetingIndex,
+  currentGreetings,
+  selectedGreeting,
   currentMessages,
   toolActivity,
   thinkingActivity,
@@ -308,7 +380,94 @@ const {
   clearCharacterConversation, clearBusy, clearLabel, chatMutationBusy,
   clearAllMemory,
   onAutoVoiceChange,
-} = useCharacterRoomSession({ latest: () => { void latest() }, nearBottom: () => !showLatest.value })
+} = useCharacterRoomSession(
+  { latest: () => { void latest() }, nearBottom: () => !showLatest.value },
+  undefined,
+  {
+    rpState: rpSettings.rpState,
+    sceneState,
+    async getExtraPayload(charId, activeBranchId) {
+      const [{ collectActiveLorebookPayload }, { getStorySummary }, { resolvePersonaForCharacter, toChatUserProfile }] = await Promise.all([
+        import('@/utils/chatLorebooks'),
+        import('@/utils/chatStorySummary'),
+        import('@/utils/chatUserPersonas'),
+      ])
+      const lorebooks = collectActiveLorebookPayload(charId)
+      const storySummary = getStorySummary(charId, activeBranchId).text
+      const persona = toChatUserProfile(resolvePersonaForCharacter(charId))
+      return {
+        ...(lorebooks ? { lorebooks } : {}),
+        ...(storySummary ? { storySummary } : {}),
+        userProfile: persona,
+      }
+    },
+    onTurnCompleted(charId, activeBranchId) {
+      void maybeAutoSummarize(charId, activeBranchId)
+    },
+  },
+)
+
+const memorySummaryContext = computed(() => ({
+  provider: chatProvider.value,
+  model: chatProvider.value === 'chatgpt' ? chatGpt.selectedModel.value : useHostConfig.value ? '' : currentModel.value,
+  hostConfig: chatProvider.value === 'api' && useHostConfig.value,
+  api: chatProvider.value === 'api' && !useHostConfig.value
+    ? { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value }
+    : undefined,
+  chatgptClientId: chatProvider.value === 'chatgpt' ? chatGpt.activeClientId.value || undefined : undefined,
+  userName: userProfile.value.callName || '用户',
+  messages: currentMessages.value.map(m => ({ mid: m.mid, role: m.role, content: m.content })),
+}))
+
+let autoSummarizeAbort: AbortController | null = null
+let autoSummarizing = false
+function cancelAutoSummary() {
+  autoSummarizeAbort?.abort()
+  autoSummarizeAbort = null
+}
+watch(activeChar, cancelAutoSummary)
+onBeforeUnmount(cancelAutoSummary)
+
+async function maybeAutoSummarize(charId: string, completedBranchId: string) {
+  if (autoSummarizing || chatProvider.value === 'muse' || activeChar.value !== charId || branchId.value !== completedBranchId) return
+  const msgs = storage.messages(charId)
+  const maxMessages = rpSettings.rpState.value.contextBudget.maxMessages
+  if (msgs.length <= maxMessages) return
+  const { getStorySummary, requestStorySummary, saveStorySummary } = await import('@/utils/chatStorySummary')
+  const entry = getStorySummary(charId, completedBranchId)
+  if (!entry.autoEnabled) return
+  const prevIdx = entry.summarizedThroughMid ? msgs.findIndex(m => m.mid === entry.summarizedThroughMid) : -1
+  const keepRecent = Math.min(8, Math.floor(maxMessages / 2))
+  const summarizeEnd = msgs.length - keepRecent
+  if (summarizeEnd <= prevIdx + 9) return
+  const slice = msgs.slice(Math.max(0, prevIdx + 1), summarizeEnd)
+  if (!slice.length) return
+  autoSummarizing = true
+  const controller = new AbortController()
+  autoSummarizeAbort = controller
+  try {
+    const summary = await requestStorySummary({
+      ...memorySummaryContext.value,
+      characterName: currentCharacter.value.name,
+      existingSummary: entry.text,
+      messages: slice.map(m => ({ role: m.role, content: m.content })),
+      signal: controller.signal,
+    })
+    if (controller.signal.aborted) return
+    saveStorySummary(charId, completedBranchId, {
+      text: summary,
+      summarizedThroughMid: slice.at(-1)?.mid || entry.summarizedThroughMid,
+    })
+    if (activeChar.value === charId && branchId.value === completedBranchId) {
+      setError('已自动滚动更新前情提要。', 'info', 2500)
+    }
+  } catch {
+    /* Silent background task: failures never disrupt active chatting. */
+  } finally {
+    if (autoSummarizeAbort === controller) autoSummarizeAbort = null
+    autoSummarizing = false
+  }
+}
 
 const chatGptUsagePaused = computed(() => chatProvider.value === 'chatgpt' && chatGpt.usagePaused.value)
 const showChatGptUsageActions = computed(() => !storage.writeBlocked.value && chatProvider.value === 'chatgpt'
@@ -324,13 +483,81 @@ const cardImport = useChatCardImport(allowCardImport, () => activeChar.value, sw
 const cardImportLocked = computed(() => !allowCardImport() || cardImport.pending.value)
 const lastUserMessage = computed(() => currentMessages.value.findLast(message => message.role === 'user'))
 const lastAssistantMessage = computed(() => currentMessages.value.findLast(message => message.role === 'assistant'))
+const lastMessage = computed(() => currentMessages.value.at(-1))
+const rpActive = computed(() => {
+  const note = rpSettings.getAuthorNote(activeChar.value)
+  return rpSettings.rpState.value.activePresetId !== 'default'
+    || rpSettings.rpState.value.statusBarEnabled
+    || Boolean(note.enabled && note.text.trim())
+})
+const affectionScore = computed(() => Math.round(affection.getScore(activeChar.value)))
+const affectionLevel = computed(() => affection.getLevelInfo(activeChar.value))
+const currentSceneState = computed(() => sceneState.getSceneState(activeChar.value))
+const roomBackground = useChatRoomBackground(activeChar)
+provide('huiyu-set-room-bg', (image: CompanionChatImage) => {
+  roomBackground.setBackground(image)
+  setError('已设为当前角色聊天室背景。', 'info', 2500)
+})
 
-type RoomPanel = 'archive' | 'memory' | 'profile' | 'settings'
+const illustratingMid = ref('')
+const illustrateStatus = ref('')
+let illustrateController: AbortController | null = null
+function cancelIllustration() {
+  illustrateController?.abort('user-cancel')
+  illustrateController = null
+  illustratingMid.value = ''
+  illustrateStatus.value = ''
+}
+watch(activeChar, cancelIllustration)
+onBeforeUnmount(cancelIllustration)
+
+async function illustrateMessage(message: ChatMessage) {
+  if (!isLocalHost.value || illustratingMid.value || busy.value || storyBusy.value || storage.writeBlocked.value) return
+  const characterId = activeChar.value
+  const controller = new AbortController()
+  illustrateController = controller
+  illustratingMid.value = message.mid
+  illustrateStatus.value = '正在构思并绘制剧情插画…'
+  try {
+    const { illustrateChatMessage } = await import('@/composables/chat/chatSceneIllustration')
+    const index = currentMessages.value.findIndex(item => item.mid === message.mid)
+    const recent = index >= 0 ? currentMessages.value.slice(Math.max(0, index - 2), index + 1) : [message]
+    await illustrateChatMessage({
+      characterId,
+      characterName: currentCharacter.value.name,
+      targetMessage: message,
+      recentMessages: recent,
+      sceneState: currentSceneState.value,
+      storage,
+      signal: controller.signal,
+      report: text => { if (illustrateController === controller) illustrateStatus.value = text },
+    })
+    if (illustrateController === controller) setError('剧情插画已生成并附在消息下方。', 'info', 3500)
+  } catch (error) {
+    if (illustrateController === controller && !controller.signal.aborted) {
+      setError(error instanceof Error ? error.message : '剧情插画生成失败，请重试。', 'warning', 6000)
+    }
+  } finally {
+    if (illustrateController === controller) {
+      illustrateController = null
+      illustratingMid.value = ''
+      illustrateStatus.value = ''
+    }
+  }
+}
+
+function cycleGreeting(delta: number) {
+  const count = currentGreetings.value.length
+  if (count <= 1) return
+  greetingIndex.value = (greetingIndex.value + delta + count) % count
+}
+
+type RoomPanel = 'archive' | 'memory' | 'profile' | 'rp' | 'sprites' | 'cards' | 'lorebooks' | 'settings'
 const roomPanel = ref<RoomPanel | null>(null)
 watch(cardImport.pending, importing => { if (importing && roomPanel.value === 'settings') closeRoomPanel() })
 const roomPanelGeneration = ref(0)
 let roomPanelClosing = false
-const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案', settings: '聊天设置' }
+const roomPanelLabels = { archive: '对话归档', memory: '记忆与前情摘要', profile: '我的马甲与档案', rp: 'RP 预设与参数', sprites: '情绪差分立绘', cards: '角色卡工作台', lorebooks: '世界书与知识库', settings: '聊天设置' }
 const roomPanelDialog = ref<HTMLDialogElement | null>(null)
 const roomPanelMotion = useFluidDialog(roomPanelDialog)
 useResizeObserver(roomPanelDialog, () => {
@@ -352,7 +579,7 @@ async function openRoomPanel(panel: RoomPanel) {
   roomPanel.value = panel
   await nextTick()
   if (roomPanelClosing || roomPanel.value !== panel || generation !== roomPanelGeneration.value) return
-  roomPanelMotion.open(document.querySelector<HTMLElement>(panel === 'settings' ? '.chat-settings-trigger' : '.chat-more-trigger'))
+  roomPanelMotion.open(document.querySelector<HTMLElement>(panel === 'settings' ? '.chat-settings-trigger' : panel === 'rp' ? '.room-rp-trigger' : '.chat-more-trigger'))
   void focusRoomPanel()
 }
 async function focusRoomPanel() {
@@ -376,7 +603,7 @@ const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadE
 const arrivingMessages = useChatMessageArrival(() => currentMessages.value, () => `${activeChar.value}:${branchId.value}`, () => busy.value)
 const currentLine = computed(() => {
   const reply = lastAssistantMessage.value
-  return (reply && chatMessageBubbles(reply).at(-1)) || currentCharacter.value.greeting
+  return (reply && chatMessageBubbles(reply, rpSettings.activePreset.value.disableBubbleSplit).at(-1)) || selectedGreeting.value
 })
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
@@ -415,7 +642,7 @@ watch([apiSettingsOpen, speechSettingsOpen], ([api, speech]) => {
   if ((api || speech) && !roomPanelClosing && roomPanel.value !== 'settings') void openRoomPanel('settings')
 }, { immediate: true })
 const avatar = computed(() => companionChatAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
-const activityText = computed(() => toolActivity.value || (thinkingActivity.value ? '思考中…' : '')
+const activityText = computed(() => illustrateStatus.value || toolActivity.value || (thinkingActivity.value ? '思考中…' : '')
   || (speechState.value === 'error' ? speechError.value : '')
   || (voiceActive.value ? voiceStatusText.value : '') || (isSpeaking.value ? '正在说话' : '') || (busy.value ? '正在回复…' : '')
   || (['acquiring', 'capturing', 'recognizing'].includes(speechState.value) ? speechButtonText.value : '')

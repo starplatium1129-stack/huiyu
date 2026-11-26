@@ -7,7 +7,7 @@
       <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭对话归档" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>超 20 条自动归档 · 导出含全部剧情 · 并入仅恢复当前剧情</p>
+      <p>超 120 条自动归档 · 导出含全部剧情 · 并入仅恢复当前剧情</p>
 
       <div class="archive-counts" role="list" aria-label="各角色归档条数">
         <span v-for="id in characterIds" :key="id" role="listitem">

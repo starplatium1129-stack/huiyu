@@ -314,7 +314,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       if (draft === null) continue
       try {
         const value: unknown = JSON.parse(draft)
-        if (typeof value === 'string') state.settings.drafts[char] = value.slice(0, 1200)
+        if (typeof value === 'string') state.settings.drafts[char] = value.slice(0, 16000)
       } catch { /* A malformed preference must not discard legacy history. */ }
     }
   }

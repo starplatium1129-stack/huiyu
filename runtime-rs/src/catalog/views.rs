@@ -19,7 +19,9 @@ impl Catalog {
                  'id', card.value->>'$.id', 'catalogId', c.id,
                  'name', card.value->>'$.document.data.name',
                  'description', substr(card.value->>'$.document.data.description',1,160),
-                 'greeting', card.value->>'$.document.data.first_mes', 'avatarUrl', '')
+                 'greeting', card.value->>'$.document.data.first_mes',
+                 'alternateGreetings', COALESCE(card.value->'$.document.data.alternate_greetings', json('[]')),
+                 'avatarUrl', '')
              FROM content_records d CROSS JOIN json_each(d.payload) card
              CROSS JOIN content_records c
              WHERE d.kind='document' AND d.id='chat-cards' AND d.deleted=0

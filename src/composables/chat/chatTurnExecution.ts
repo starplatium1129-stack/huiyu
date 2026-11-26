@@ -18,6 +18,7 @@ import type { CompanionToolContext } from './companionChatTools'
 import type { startTurnWatchdog } from './chatTurnWatchdog'
 import { buildChatFallbackCandidates, shouldFallbackOnError, type ChatFallbackCandidate } from './chatTurnFallback'
 import { abortableTask } from '@/utils/abortableTask'
+import type { ChatRpState } from '@/utils/chatRpSettings'
 
 export type ChatStorage = ReturnType<typeof useChatStorage>
 export type VoiceController = ReturnType<typeof useVoice>
@@ -34,6 +35,23 @@ export interface ChatConversationOptions extends ChatConnectionOptions {
   busy: Ref<boolean>
   chatReady: ComputedRef<boolean>
   userProfile: Ref<ChatUserProfile>
+  rpState?: Ref<ChatRpState>
+  selectedGreeting?: () => string
+  affection?: {
+    getScore: (character: string) => number
+    getLevelInfo: (character: string) => { level: number; title: string; description: string }
+    addScore: (character: string, delta: number) => number
+  }
+  sceneState?: {
+    getSceneState: (character: string) => { location: string; outfit: string; mood: string }
+    updateSceneState: (character: string, patch: { location?: string; outfit?: string; mood?: string }) => void
+    extractStatusUpdate?: (replyText: string, currentScore?: number) => {
+      affectionDelta?: number
+      mood?: string
+      location?: string
+      outfit?: string
+    } | null
+  }
   recallMemories: (character: string, query: string) => string[]
   setBusy: (value: boolean) => void
   /** 流式回复文本驱动情绪（无配音时替代 TTS 情绪通道）；情绪变化才回调 */
@@ -43,6 +61,8 @@ export interface ChatConversationOptions extends ChatConnectionOptions {
   /** 思考过程进行中（收到 reasoning 增量）；第一个正文 token 到达时以 null 结束 */
   onThinking?: (thinking: string | null) => void
   onChatGptStatusChanged?: () => void
+  getExtraPayload?: (characterId: string, branchId: string) => Promise<Record<string, unknown>> | Record<string, unknown>
+  onTurnCompleted?: (characterId: string, branchId: string) => void
   nearBottom: () => boolean
   scrollBottom: () => void
 }
@@ -56,7 +76,9 @@ export interface ChatTurn {
   assistant: ChatMessage
   messages: TurnMessages
   restricted: boolean
-  regeneration?: { replyId: string; previousMid: string }
+  regeneration?: { replyId: string; previousMid: string; continuePrefix?: string }
+  continueMode?: boolean
+  continuePrefix?: string
   text: string
 }
 
@@ -129,6 +151,16 @@ export async function streamChatAttempt(params: {
   let streamedSpeech = false
   let legacySpeech = ''
 
+  const affectionInfo = options.affection && options.rpState?.value.affectionPromptEnabled !== false
+    ? (() => {
+        const score = Math.round(options.affection.getScore(turn.characterId))
+        const level = options.affection.getLevelInfo(turn.characterId)
+        return { score, level: level.level, title: level.title, description: level.description }
+      })()
+    : undefined
+  const sceneInfo = options.sceneState?.getSceneState(turn.characterId)
+  const extraPayload = options.getExtraPayload ? await options.getExtraPayload(turn.characterId, turn.branch) : undefined
+
   const response = await runtimeFetch('/api/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -141,6 +173,11 @@ export async function streamChatAttempt(params: {
       toolsEnabled,
       museDrawing,
       japaneseVoice,
+      continueMode: turn.continueMode,
+      rpState: options.rpState?.value,
+      affection: affectionInfo,
+      sceneState: sceneInfo,
+      extraPayload,
       toolResultOrigin,
       roundMessages,
       messages: turn.messages,
@@ -155,8 +192,9 @@ export async function streamChatAttempt(params: {
   await parseNdjsonResponse(response, event => {
     checkCurrent()
     watchdog.touch()
-    if (event.type === 'meta' && event.model && !activeFallbackLabel) {
-      applyModelWriteback(event.model, hostMode, useVision, activeConnection)
+    if (event.type === 'meta') {
+      if (event.model && !activeFallbackLabel) applyModelWriteback(event.model, hostMode, useVision, activeConnection)
+      if (event.matchedLore?.length) turn.assistant.matchedLore = [...event.matchedLore]
     }
     if (event.type === 'tool-call') {
       if (event.id && event.name) {

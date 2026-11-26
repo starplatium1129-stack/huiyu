@@ -246,6 +246,7 @@ impl Connections {
             tokio::time::Instant::now() + REPLY_KEEP_ALIVE,
             REPLY_KEEP_ALIVE,
         );
+        let matched_lore = input.matched_lore;
         let tokens = futures_stream::unfold(Some((turn, reply, heartbeat)), |state| async move {
             let (turn, mut reply, mut heartbeat) = state?;
             let events = tokio::select! {
@@ -274,6 +275,7 @@ impl Connections {
         let events = futures_stream::iter([Ok(Event::Meta {
             model: "Muse".into(),
             queue_wait_ms: 0,
+            matched_lore,
         })])
         .chain(tokens)
         .chain(futures_stream::iter([Ok(Event::Done)]));

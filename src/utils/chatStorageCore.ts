@@ -77,7 +77,7 @@ export function normalizeChatStorage(
     normalizedHistories[id] = normalizeChatMessages(
       histories[id], options.maxMessages, options.createMessageId,
     )
-    normalizedDrafts[id] = text(drafts[id], 1200)
+    normalizedDrafts[id] = text(drafts[id], 16000)
   }
 
   const providerCandidate = settings.provider ?? raw.provider

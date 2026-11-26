@@ -1,0 +1,611 @@
+<template>
+  <section class="chat-card-manager room-tool-panel" aria-labelledby="chatCardManagerTitle">
+    <header class="room-tool-heading">
+      <div>
+        <span class="ccm-kicker">CHARACTER CARDS</span>
+        <h2 id="chatCardManagerTitle">
+          {{ mode === 'list' ? '角色卡工作台' : editingId ? `编辑角色卡 · ${draft.data.name || '未命名'}` : '新建空白角色卡' }}
+        </h2>
+      </div>
+      <div class="ccm-head-actions">
+        <button v-if="mode === 'edit'" type="button" class="btn btn-ghost btn-sm" @click="backToList">返回列表</button>
+        <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭角色卡工作台" @click="emit('close')">
+          <ArchiveIcon name="close" />
+        </button>
+      </div>
+    </header>
+
+    <div v-if="mode === 'list'" class="room-tool-body ccm-body">
+      <div class="ccm-toolbar">
+        <input
+          v-model="search"
+          type="search"
+          class="input ccm-search"
+          placeholder="搜索角色卡名称、绑定ID…"
+          aria-label="搜索角色卡"
+        />
+        <button type="button" class="btn btn-primary btn-sm" @click="startCreate">新建角色卡</button>
+        <button v-if="canEditCards" type="button" class="btn btn-ghost btn-sm" @click="emit('import-file')">导入 PNG/JSON</button>
+      </div>
+
+      <p v-if="loading" class="ccm-status" role="status">正在读取本机角色卡目录…</p>
+      <p v-else-if="loadError" class="ccm-status is-error" role="alert">{{ loadError }}</p>
+      <div v-else-if="!filteredCards.length" class="ccm-empty">
+        {{ search.trim() ? '未找到匹配的角色卡。' : '还没有导入或自建的角色卡，点击右上角「新建角色卡」开始创作。' }}
+      </div>
+
+      <div v-else class="ccm-card-list">
+        <article
+          v-for="card in filteredCards"
+          :key="card.id"
+          class="ccm-card-item"
+          :class="{ 'is-active': card.id === activeChar }"
+        >
+          <div class="ccm-card-avatar">
+            <RuntimeImage v-if="card.avatarUrl" :src="card.avatarUrl" alt="" />
+            <ArchiveIcon v-else name="character" />
+          </div>
+          <div class="ccm-card-info">
+            <div class="ccm-card-title-row">
+              <strong>{{ card.name }}</strong>
+              <span v-if="card.id === activeChar" class="ccm-badge is-accent">当前对话</span>
+              <span class="ccm-badge">{{ card.source === 'catalog' ? '目录内置' : '用户卡' }}</span>
+              <span v-if="card.overridden" class="ccm-badge is-accent">已定制</span>
+            </div>
+            <p class="ccm-card-desc">{{ card.description || '暂无描述' }}</p>
+            <div class="ccm-card-meta">
+              <span v-if="card.catalogId">绘图素材：{{ catalogNameOf(card.catalogId) }}</span>
+              <span v-if="card.voiceId">语音音色：{{ voiceNameOf(card.voiceId) }}</span>
+              <span v-if="card.loreCount">内置世界书：{{ card.loreCount }} 条</span>
+            </div>
+          </div>
+          <div class="ccm-card-actions">
+            <button type="button" class="btn btn-primary btn-sm" @click="selectAndClose(card.id)">对话</button>
+            <button type="button" class="btn btn-ghost btn-sm" :disabled="openingId === card.id" @click="startEdit(card.id)">
+              {{ openingId === card.id ? '载入中…' : '编辑/绑定' }}
+            </button>
+            <a class="btn btn-quiet btn-sm" :href="chatCardExportUrl(card.id, 'json')" :download="`card-${card.id.slice(5, 17)}.json`">JSON</a>
+            <a class="btn btn-quiet btn-sm" :href="chatCardExportUrl(card.id, 'png')" :download="`card-${card.id.slice(5, 17)}.png`">PNG</a>
+            <button
+              v-if="card.source !== 'catalog' || card.overridden"
+              type="button"
+              class="btn btn-quiet btn-sm"
+              :disabled="deletingId === card.id"
+              @click="requestDelete(card)"
+            >
+              {{ card.source === 'catalog' ? '恢复默认' : '删除' }}
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <form v-else class="room-tool-body ccm-body" @submit.prevent="saveCard">
+      <div class="ccm-editor-top">
+        <div class="ccm-avatar-preview">
+          <img v-if="avatarPreviewUrl" :src="avatarPreviewUrl" alt="角色卡头像预览" />
+          <ArchiveIcon v-else name="character" />
+        </div>
+        <div class="ccm-avatar-controls">
+          <input ref="avatarInputRef" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden @change="onPickAvatar" />
+          <button type="button" class="btn btn-ghost btn-sm" @click="avatarInputRef?.click()">上传头像 / 封面</button>
+          <button v-if="avatarPreviewUrl" type="button" class="btn btn-quiet btn-sm" @click="clearAvatar">清除头像</button>
+          <small>支持 PNG / JPEG / WebP；导出 PNG 时将把酒馆 V2 数据写入该图片</small>
+        </div>
+      </div>
+
+      <section class="ccm-section" aria-label="基础人设">
+        <label class="studio-field-label" for="ccm-name">角色名称 *</label>
+        <input id="ccm-name" v-model="draft.data.name" class="input" maxlength="80" required placeholder="输入角色名" />
+
+        <label class="studio-field-label" for="ccm-personality">性格关键词（Personality）</label>
+        <input id="ccm-personality" v-model="draft.data.personality" class="input" maxlength="2000" placeholder="例如：温柔体贴、偶尔害羞、嘴硬心软" />
+
+        <label class="studio-field-label" for="ccm-desc">角色详细设定（Description）</label>
+        <textarea id="ccm-desc" v-model="draft.data.description" class="textarea ccm-autosize" rows="4" maxlength="16000" placeholder="角色外貌、背景故事、行为习惯、隐藏秘密…" />
+
+        <label class="studio-field-label" for="ccm-scenario">当前场景（Scenario）</label>
+        <textarea id="ccm-scenario" v-model="draft.data.scenario" class="textarea ccm-autosize" rows="2" maxlength="8000" placeholder="对话所处的环境与关系背景" />
+
+        <label class="studio-field-label" for="ccm-first-mes">主开场白（First Message）</label>
+        <textarea id="ccm-first-mes" v-model="draft.data.first_mes" class="textarea ccm-autosize" rows="3" maxlength="16000" placeholder="新建对话时的第一句问候（支持 {{user}} / {{char}}）" />
+      </section>
+
+      <section class="ccm-section ccm-binding-box" aria-label="绘遇专属视觉与语音绑定">
+        <h3>绘遇独家绑定（立绘 / 生图 / 语音）</h3>
+        <div class="ccm-two-col">
+          <label class="ccm-field">
+            <span>绑定绘图素材库角色（{{ catalogBindingLabel }}）</span>
+            <StudioSelect v-model="huiyuCatalogId" label="绑定绘图素材角色" :options="catalogSelectOptions" />
+            <small>绑定后可直接使用对应角色的画风、服饰配方与 CG 插画一致化生成。</small>
+          </label>
+          <label class="ccm-field">
+            <span>绑定语音音色（{{ voiceBindingLabel }}）</span>
+            <StudioSelect v-model="huiyuVoiceId" label="绑定语音音色" :options="voiceSelectOptions" />
+            <small>绑定后在聊天中开启语音朗读时将使用该音色配音。</small>
+          </label>
+        </div>
+      </section>
+
+      <details class="ccm-accordion">
+        <summary>备用开场白（{{ draft.data.alternate_greetings.length }} 条）</summary>
+        <div class="ccm-accordion-body">
+          <div v-for="(_, index) in draft.data.alternate_greetings" :key="index" class="ccm-alt-row">
+            <textarea
+              v-model="draft.data.alternate_greetings[index]"
+              class="textarea ccm-autosize"
+              rows="2"
+              maxlength="16000"
+              :placeholder="`备用开场白 #${index + 1}`"
+            />
+            <button type="button" class="btn btn-quiet btn-sm" @click="draft.data.alternate_greetings.splice(index, 1)">删除</button>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" @click="draft.data.alternate_greetings.push('')">+ 添加备用开场白</button>
+        </div>
+      </details>
+
+      <details class="ccm-accordion">
+        <summary>高级酒馆提示词（System / Post-History / Depth Prompt / 对话示例）</summary>
+        <div class="ccm-accordion-body">
+          <label class="studio-field-label" for="ccm-system-prompt" v-pre>System Prompt（支持 {{original}} 与 {{char}}/{{user}}）</label>
+          <textarea id="ccm-system-prompt" v-model="draft.data.system_prompt" class="textarea ccm-autosize" rows="2" maxlength="8000" />
+
+          <label class="studio-field-label" for="ccm-post-history">Post-History Instructions（对话末尾加固指令）</label>
+          <textarea id="ccm-post-history" v-model="draft.data.post_history_instructions" class="textarea ccm-autosize" rows="2" maxlength="4000" />
+
+          <div class="ccm-two-col">
+            <label class="ccm-field">
+              <span>深度提示词（Depth Prompt）</span>
+              <textarea v-model="depthPromptText" class="textarea ccm-autosize" rows="2" maxlength="2000" />
+            </label>
+            <label class="ccm-field">
+              <span>插入深度（0 = 最新回复前）</span>
+              <input v-model.number="depthPromptDepth" type="number" class="input" min="0" max="16" />
+            </label>
+          </div>
+
+          <label class="studio-field-label" for="ccm-mes-example">对话示例（&lt;START&gt; 分隔）</label>
+          <textarea id="ccm-mes-example" v-model="draft.data.mes_example" class="textarea ccm-autosize" rows="3" maxlength="12000" />
+        </div>
+      </details>
+
+      <details class="ccm-accordion">
+        <summary>卡片内置世界书（{{ cardLoreEntries.length }} 条）</summary>
+        <div class="ccm-accordion-body">
+          <div v-for="(entry, index) in cardLoreEntries" :key="index" class="ccm-lore-entry">
+            <div class="ccm-lore-head">
+              <input v-model="entry.comment" class="input" maxlength="48" placeholder="条目标题（可选）" />
+              <select v-model="entry.position" class="input ccm-pos-select" aria-label="注入位置">
+                <option value="before_char">设定前</option>
+                <option value="after_char">设定后</option>
+                <option value="at_depth">指定深度</option>
+              </select>
+              <ToggleSwitch :model-value="entry.enabled !== false" label="启用条目" @update:model-value="entry.enabled = $event">启用</ToggleSwitch>
+              <button type="button" class="btn btn-quiet btn-sm" @click="removeCardLore(index)">删除</button>
+            </div>
+            <input
+              :value="entry.keys.join(', ')"
+              class="input"
+              placeholder="触发关键词（多个用英文逗号分隔）；留空并勾选常驻可始终注入"
+              @input="entry.keys = parseKeysInput(($event.target as HTMLInputElement).value)"
+            />
+            <textarea v-model="entry.content" class="textarea ccm-autosize" rows="2" maxlength="4000" placeholder="命中关键词后注入的设定内容" />
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" @click="addCardLore">+ 添加内置世界书条目</button>
+        </div>
+      </details>
+
+      <footer class="ccm-footer">
+        <p v-if="saveError" class="ccm-status is-error" role="alert">{{ saveError }}</p>
+        <button type="button" class="btn btn-ghost" @click="backToList">取消</button>
+        <button type="submit" class="btn btn-primary" :disabled="saving || !draft.data.name.trim()">
+          {{ saving ? '保存中…' : editingId ? '保存修改' : '创建角色卡' }}
+        </button>
+      </footer>
+    </form>
+  </section>
+</template>
+
+<script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import { confirmAction } from '@/composables/useConfirm'
+import { loadChatCards, announceChatCardsChanged, type ChatCard } from '@/utils/chatCards'
+import {
+  chatCardExportUrl,
+  createChatCard,
+  createEmptyCardDocument,
+  deleteChatCard,
+  fetchCatalogCharacterOptions,
+  fetchChatCardDetail,
+  fetchVoiceOptions,
+  listChatCardSummaries,
+  updateChatCard,
+  type CardV2Document,
+  type CardV2LoreEntry,
+  type CatalogCharacterOption,
+  type VoiceOption,
+} from '@/utils/chatCardApi'
+
+const props = defineProps<{
+  activeChar: string
+  canEditCards?: boolean
+}>()
+
+const emit = defineEmits<{
+  close: []
+  'select-character': [id: string]
+  'cards-changed': []
+  'import-file': []
+  notice: [message: string, kind?: 'info' | 'warning' | 'error']
+}>()
+
+const mode = ref<'list' | 'edit'>('list')
+const search = ref('')
+const loading = ref(true)
+const loadError = ref('')
+const cards = ref<ChatCard[]>([])
+const catalogOptions = ref<CatalogCharacterOption[]>([])
+const voiceOptions = ref<VoiceOption[]>([])
+
+const openingId = ref('')
+const deletingId = ref('')
+const editingId = ref<string | null>(null)
+const draft = ref<CardV2Document>(createEmptyCardDocument())
+const saving = ref(false)
+const saveError = ref('')
+
+const avatarInputRef = ref<HTMLInputElement>()
+const pendingAvatarFile = ref<File | null>(null)
+const removeAvatarFlag = ref(false)
+const existingAvatarUrl = ref('')
+let objectAvatarUrl = ''
+
+const controller = new AbortController()
+onBeforeUnmount(() => {
+  controller.abort()
+  if (objectAvatarUrl) URL.revokeObjectURL(objectAvatarUrl)
+})
+
+const avatarPreviewUrl = computed(() => {
+  if (removeAvatarFlag.value) return ''
+  if (pendingAvatarFile.value && objectAvatarUrl) return objectAvatarUrl
+  return existingAvatarUrl.value
+})
+
+const filteredCards = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return cards.value
+  return cards.value.filter(card =>
+    card.name.toLowerCase().includes(q)
+    || card.description.toLowerCase().includes(q)
+    || (card.catalogId && card.catalogId.toLowerCase().includes(q))
+    || (card.voiceId && card.voiceId.toLowerCase().includes(q)),
+  )
+})
+
+const catalogSelectOptions = computed(() => [
+  { value: '', label: '不绑定绘图素材角色' },
+  ...catalogOptions.value.map(item => ({
+    value: item.id,
+    label: item.franchise ? `${item.name} · ${item.franchise}` : item.name,
+  })),
+])
+
+const voiceSelectOptions = computed(() => [
+  { value: '', label: '不绑定语音音色' },
+  ...voiceOptions.value.map(item => ({ value: item.id, label: `${item.label} (${item.id})` })),
+])
+
+const huiyuCatalogId = computed({
+  get: () => draft.value.data.extensions.huiyu?.character_id || '',
+  set: (value: string) => {
+    draft.value.data.extensions.huiyu ||= {}
+    if (value) draft.value.data.extensions.huiyu.character_id = value
+    else delete draft.value.data.extensions.huiyu.character_id
+  },
+})
+
+const huiyuVoiceId = computed({
+  get: () => draft.value.data.extensions.huiyu?.voice_id || '',
+  set: (value: string) => {
+    draft.value.data.extensions.huiyu ||= {}
+    if (value) draft.value.data.extensions.huiyu.voice_id = value
+    else delete draft.value.data.extensions.huiyu.voice_id
+  },
+})
+
+const catalogBindingLabel = computed(() => huiyuCatalogId.value ? catalogNameOf(huiyuCatalogId.value) : '未绑定')
+const voiceBindingLabel = computed(() => huiyuVoiceId.value ? voiceNameOf(huiyuVoiceId.value) : '未绑定')
+
+const depthPromptText = computed({
+  get: () => draft.value.data.extensions.depth_prompt?.prompt || '',
+  set: (value: string) => {
+    draft.value.data.extensions.depth_prompt ||= { prompt: '', depth: 1 }
+    draft.value.data.extensions.depth_prompt.prompt = value
+  },
+})
+
+const depthPromptDepth = computed({
+  get: () => draft.value.data.extensions.depth_prompt?.depth ?? 1,
+  set: (value: number) => {
+    draft.value.data.extensions.depth_prompt ||= { prompt: '', depth: 1 }
+    const clamped = Number.isFinite(value) ? Math.max(0, Math.min(16, Math.round(value))) : 1
+    draft.value.data.extensions.depth_prompt.depth = clamped
+  },
+})
+
+const cardLoreEntries = computed(() => draft.value.data.character_book?.entries || [])
+
+function catalogNameOf(id: string): string {
+  return catalogOptions.value.find(item => item.id === id)?.name || id
+}
+
+function voiceNameOf(id: string): string {
+  return voiceOptions.value.find(item => item.id === id)?.label || id
+}
+
+function parseKeysInput(raw: string): string[] {
+  return raw.split(',').map(item => item.trim()).filter(Boolean)
+}
+
+function addCardLore() {
+  draft.value.data.character_book ||= { entries: [] }
+  draft.value.data.character_book.entries.push({
+    comment: '',
+    keys: [],
+    secondary_keys: [],
+    content: '',
+    enabled: true,
+    position: 'after_char',
+    insertion_order: 100,
+    depth: 4,
+  })
+}
+
+function removeCardLore(index: number) {
+  draft.value.data.character_book?.entries.splice(index, 1)
+}
+
+function resetAvatarDraft(initialUrl = '') {
+  if (objectAvatarUrl) {
+    URL.revokeObjectURL(objectAvatarUrl)
+    objectAvatarUrl = ''
+  }
+  pendingAvatarFile.value = null
+  removeAvatarFlag.value = false
+  existingAvatarUrl.value = initialUrl
+}
+
+function onPickAvatar(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
+  if (!file) return
+  if (objectAvatarUrl) URL.revokeObjectURL(objectAvatarUrl)
+  objectAvatarUrl = URL.createObjectURL(file)
+  pendingAvatarFile.value = file
+  removeAvatarFlag.value = false
+}
+
+function clearAvatar() {
+  if (objectAvatarUrl) {
+    URL.revokeObjectURL(objectAvatarUrl)
+    objectAvatarUrl = ''
+  }
+  pendingAvatarFile.value = null
+  existingAvatarUrl.value = ''
+  removeAvatarFlag.value = true
+}
+
+async function refreshAll() {
+  loading.value = true
+  loadError.value = ''
+  try {
+    const [cardList, catalogs, voices] = await Promise.all([
+      listChatCardSummaries(controller.signal),
+      fetchCatalogCharacterOptions(controller.signal),
+      fetchVoiceOptions(controller.signal),
+    ])
+    cards.value = cardList
+    catalogOptions.value = catalogs
+    voiceOptions.value = voices
+  } catch (error) {
+    if (!controller.signal.aborted) {
+      loadError.value = error instanceof Error ? error.message : '读取角色卡列表失败'
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => { void refreshAll() })
+
+function normalizeDraftDocument(doc: CardV2Document): CardV2Document {
+  const base = createEmptyCardDocument()
+  const raw = doc?.data || ({} as CardV2Document['data'])
+  return {
+    spec: doc?.spec === 'chara_card_v3' ? 'chara_card_v3' : 'chara_card_v2',
+    spec_version: doc?.spec_version || '2.0',
+    data: {
+      ...base.data,
+      ...raw,
+      alternate_greetings: Array.isArray(raw.alternate_greetings) ? [...raw.alternate_greetings] : [],
+      character_book: raw.character_book
+        ? {
+            ...raw.character_book,
+            entries: Array.isArray(raw.character_book.entries)
+              ? raw.character_book.entries.map((entry: CardV2LoreEntry) => ({
+                  ...entry,
+                  keys: Array.isArray(entry.keys) ? [...entry.keys] : [],
+                  secondary_keys: Array.isArray(entry.secondary_keys) ? [...entry.secondary_keys] : [],
+                  position: entry.position === 'before_char' || entry.position === 'at_depth' ? entry.position : 'after_char',
+                  enabled: entry.enabled !== false,
+                }))
+              : [],
+          }
+        : undefined,
+      extensions: {
+        ...(raw.extensions || {}),
+        depth_prompt: raw.extensions?.depth_prompt
+          ? { prompt: raw.extensions.depth_prompt.prompt || '', depth: raw.extensions.depth_prompt.depth ?? 1 }
+          : { prompt: '', depth: 1 },
+        huiyu: { ...(raw.extensions?.huiyu || {}) },
+      },
+    },
+  }
+}
+
+function startCreate() {
+  editingId.value = null
+  draft.value = createEmptyCardDocument()
+  saveError.value = ''
+  resetAvatarDraft('')
+  mode.value = 'edit'
+}
+
+async function startEdit(id: string) {
+  if (openingId.value) return
+  openingId.value = id
+  saveError.value = ''
+  try {
+    const detail = await fetchChatCardDetail(id, controller.signal)
+    editingId.value = detail.id
+    draft.value = normalizeDraftDocument(detail.document)
+    resetAvatarDraft(detail.summary.avatarUrl || '')
+    mode.value = 'edit'
+  } catch (error) {
+    if (!controller.signal.aborted) {
+      emit('notice', error instanceof Error ? error.message : '读取角色卡详情失败', 'warning')
+    }
+  } finally {
+    openingId.value = ''
+  }
+}
+
+function backToList() {
+  mode.value = 'list'
+  editingId.value = null
+  saveError.value = ''
+  resetAvatarDraft('')
+}
+
+function selectAndClose(id: string) {
+  emit('select-character', id)
+  emit('close')
+}
+
+async function saveCard() {
+  if (saving.value || !draft.value.data.name.trim()) return
+  saving.value = true
+  saveError.value = ''
+  try {
+    const payload = normalizeDraftDocument(draft.value)
+    payload.data.alternate_greetings = payload.data.alternate_greetings.filter(item => Boolean(item.trim()))
+    if (payload.data.character_book && !payload.data.character_book.entries.length) {
+      delete payload.data.character_book
+    }
+    const saved = editingId.value
+      ? await updateChatCard(editingId.value, payload, {
+          avatarFile: pendingAvatarFile.value,
+          removeAvatar: removeAvatarFlag.value,
+          signal: controller.signal,
+        })
+      : await createChatCard(payload, pendingAvatarFile.value, controller.signal)
+    await loadChatCards().catch(() => {})
+    announceChatCardsChanged()
+    emit('cards-changed')
+    emit('notice', editingId.value ? `已更新角色卡「${saved.name}」` : `已创建角色卡「${saved.name}」`, 'info')
+    backToList()
+    await refreshAll()
+  } catch (error) {
+    if (!controller.signal.aborted) {
+      saveError.value = error instanceof Error ? error.message : '保存角色卡失败'
+    }
+  } finally {
+    saving.value = false
+  }
+}
+
+async function requestDelete(card: ChatCard) {
+  if (deletingId.value) return
+  const isCatalog = card.source === 'catalog'
+  const confirmed = await confirmAction({
+    title: isCatalog ? `恢复「${card.name}」为默认角色卡？` : `删除角色卡「${card.name}」？`,
+    message: isCatalog
+      ? '将移除你对该目录卡片的本地修改与自定义头像，恢复项目默认配置。'
+      : '删除后不可恢复。已有聊天记录仍保留在本地存档中，但角色卡定义将被移除。',
+    confirmLabel: isCatalog ? '恢复默认' : '删除角色卡',
+    danger: true,
+  })
+  if (!confirmed) return
+  deletingId.value = card.id
+  try {
+    const res = await deleteChatCard(card.id, controller.signal)
+    await loadChatCards().catch(() => {})
+    announceChatCardsChanged()
+    emit('cards-changed')
+    emit('notice', res.restoredCatalog ? `已恢复「${card.name}」为默认设定` : `已删除角色卡「${card.name}」`, 'info')
+    await refreshAll()
+  } catch (error) {
+    if (!controller.signal.aborted) {
+      emit('notice', error instanceof Error ? error.message : '操作失败', 'warning')
+    }
+  } finally {
+    deletingId.value = ''
+  }
+}
+</script>
+
+<style scoped>
+.ccm-kicker { display:block; color:var(--text-secondary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-mono); letter-spacing:0.08em; }
+.ccm-head-actions { display:flex; align-items:center; gap:var(--s-2); }
+.ccm-body { display:grid; gap:var(--s-3); align-content:start; }
+.ccm-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
+.ccm-search { flex:1 1 180px; }
+.ccm-status { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
+.ccm-status.is-error { color:var(--danger, #c63d3d); }
+.ccm-empty { padding:var(--s-5); border:1px dashed var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); text-align:center; font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
+.ccm-card-list { display:grid; gap:var(--s-2); }
+.ccm-card-item { display:grid; grid-template-columns:56px minmax(0, 1fr); gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.ccm-card-item.is-active { border-color:var(--accent); }
+.ccm-card-avatar { width:56px; height:56px; border-radius:var(--r-md); overflow:hidden; background:var(--bg-elevated); display:grid; place-items:center; color:var(--text-secondary); }
+.ccm-card-avatar img { width:100%; height:100%; object-fit:cover; }
+.ccm-card-info { min-width:0; display:grid; gap:4px; }
+.ccm-card-title-row { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1); }
+.ccm-card-title-row strong { font:600 var(--fs-body-sm)/1.3 var(--font-sans); color:var(--text-primary); }
+.ccm-badge { padding:1px 6px; border-radius:999px; background:var(--bg-elevated); color:var(--text-secondary); font:500 11px/1.4 var(--font-sans); }
+.ccm-badge.is-accent { background:color-mix(in srgb, var(--accent) 16%, transparent); color:var(--accent); }
+.ccm-card-desc { margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/1.4 var(--font-sans); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.ccm-card-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); color:var(--text-secondary); font:400 11px/1.3 var(--font-sans); }
+.ccm-card-actions { grid-column:1 / -1; display:flex; flex-wrap:wrap; gap:var(--s-1); justify-content:flex-end; border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
+
+.ccm-editor-top { display:flex; align-items:center; gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.ccm-avatar-preview { width:72px; height:72px; flex:none; border-radius:var(--r-md); overflow:hidden; background:var(--bg-elevated); display:grid; place-items:center; color:var(--text-secondary); }
+.ccm-avatar-preview img { width:100%; height:100%; object-fit:cover; }
+.ccm-avatar-controls { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
+.ccm-avatar-controls small { flex-basis:100%; color:var(--text-secondary); font:400 var(--fs-label-xs)/1.4 var(--font-sans); }
+.ccm-section { display:grid; gap:var(--s-2); }
+.ccm-binding-box { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.ccm-binding-box h3 { margin:0; font:600 var(--fs-body-sm)/1.3 var(--font-sans); color:var(--text-primary); }
+.ccm-two-col { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap:var(--s-3); }
+.ccm-field { display:grid; gap:var(--s-1); align-content:start; }
+.ccm-field > span { color:var(--text-secondary); font:600 var(--fs-label-xs)/1.3 var(--font-sans); }
+.ccm-field small { color:var(--text-secondary); font:400 11px/1.4 var(--font-sans); }
+.ccm-accordion { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); padding:var(--s-2) var(--s-3); }
+.ccm-accordion > summary { cursor:pointer; font:600 var(--fs-label)/1.5 var(--font-sans); color:var(--text-primary); }
+.ccm-accordion-body { display:grid; gap:var(--s-2); margin-top:var(--s-2); }
+.ccm-alt-row { display:grid; grid-template-columns:minmax(0, 1fr) auto; gap:var(--s-2); align-items:start; }
+.ccm-lore-entry { display:grid; gap:var(--s-2); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
+.ccm-lore-head { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
+.ccm-lore-head .input { flex:1 1 140px; }
+.ccm-pos-select { flex:0 0 auto; width:auto; }
+@supports (field-sizing:content) {
+  .ccm-autosize { field-sizing:content; resize:none; min-block-size:2.5lh; max-block-size:14lh; }
+}
+.ccm-footer { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:var(--s-2); padding-top:var(--s-2); border-top:1px solid var(--border-soft); }
+.ccm-footer .ccm-status { flex-basis:100%; }
+</style>

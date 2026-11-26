@@ -37,7 +37,7 @@ export function createChatPreferenceSetters(state: ChatState, characterIds: stri
   function draft(char = state.active) { return state.settings.drafts[char] || '' }
   function setDraft(char: string, val: string) {
     if (!characterIds.includes(char)) return
-    state.settings.drafts[char] = String(val || '').slice(0, 1200)
+    state.settings.drafts[char] = String(val || '').slice(0, 16000)
     savePreference(CHAT_DRAFT_PREFIX + char, JSON.stringify(state.settings.drafts[char]))
   }
   return {

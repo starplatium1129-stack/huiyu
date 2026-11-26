@@ -116,6 +116,9 @@ impl ChatService {
                 card_tools: false,
                 web_search: false,
                 reasoning: "off".into(),
+                sampling: validation::SamplingOptions::default(),
+                disable_bubble_split: false,
+                matched_lore: Vec::new(),
                 messages,
             };
             let prepared = match route.0 {

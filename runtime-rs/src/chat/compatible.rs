@@ -169,6 +169,34 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     } else if api.vendor == "opencode" && !input.reasoning.is_empty() && input.reasoning != "off" {
         value["reasoning_effort"] = json!(input.reasoning);
     }
+    let openai_reasoning_active = api.vendor == "openai"
+        && thinking
+        && !input.tools
+        && !input.web_search
+        && (api.model.starts_with("o1")
+            || api.model.starts_with("o3")
+            || api.model.starts_with("o4")
+            || api.model.starts_with("gpt-5")
+            || api.model.starts_with("gpt-6"));
+    if !openai_reasoning_active {
+        if let Some(temperature) = input.sampling.temperature {
+            value["temperature"] = json!(temperature);
+        }
+        if let Some(top_p) = input.sampling.top_p {
+            value["top_p"] = json!(top_p);
+        }
+        if api.vendor != "gemini" {
+            if let Some(frequency_penalty) = input.sampling.frequency_penalty {
+                value["frequency_penalty"] = json!(frequency_penalty);
+            }
+            if let Some(presence_penalty) = input.sampling.presence_penalty {
+                value["presence_penalty"] = json!(presence_penalty);
+            }
+        }
+    }
+    if let Some(max_tokens) = input.sampling.max_tokens {
+        value["max_tokens"] = json!(max_tokens);
+    }
     let tools = if input.channel_tools {
         persona::channel_tools(input.tools, input.channel_voice)
     } else {

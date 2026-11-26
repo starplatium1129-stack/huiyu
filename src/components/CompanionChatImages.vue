@@ -55,6 +55,16 @@
             <div class="companion-chat-image-actions">
               <span v-if="originalLoading" class="companion-chat-image-pill" role="status">读取原图中…</span>
               <button
+                v-if="setRoomBackground && opened"
+                class="companion-chat-image-action"
+                type="button"
+                aria-label="设为当前角色聊天室背景"
+                title="设为当前角色聊天室背景"
+                @click="setRoomBackground(opened)"
+              >
+                <ArchiveIcon name="scene" />
+              </button>
+              <button
                 v-if="drag.position.value"
                 class="companion-chat-image-action"
                 type="button"
@@ -90,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch } from 'vue'
+import { computed, inject, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch } from 'vue'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { companionImageKey as identity, useCompanionImageMedia } from '@/composables/chat/useCompanionImageMedia'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -103,6 +113,7 @@ let nextDialogId = 0
 const dialogTitleId = `companion-chat-image-title-${++nextDialogId}`
 
 const props = defineProps<{ images?: CompanionChatImage[] }>()
+const setRoomBackground = inject<((image: CompanionChatImage) => void) | null>('huiyu-set-room-bg', null)
 const root = ref<HTMLElement>(), dialog = ref<HTMLDialogElement | null>(null)
 const dragHeader = ref<HTMLElement | null>(null), dragHandle = ref<HTMLButtonElement | null>(null)
 const modal = useFluidDialog(dialog)

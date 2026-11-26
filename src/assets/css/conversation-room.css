@@ -29,7 +29,12 @@
 .room-surface .character-name { @apply tw:text-body; }
 .room-surface .character-controls { @apply tw:m-0; }
 .room-surface .avatar-status[data-state="ready"], .room-surface .live2d-interaction-hint { @apply tw:hidden; }
-.room-surface .conversation-card { container:room-conversation / inline-size; @apply tw:rounded-xl tw:border-soft; background:var(--bg-surface); box-shadow:var(--shadow-sm); animation:none; @apply tw:min-h-0; }
+.room-surface .conversation-card { position:relative; overflow:hidden; container:room-conversation / inline-size; @apply tw:rounded-xl tw:border-soft; background:var(--bg-surface); box-shadow:var(--shadow-sm); animation:none; @apply tw:min-h-0; }
+.room-surface .conversation-card > :not(.room-bg-layer) { position:relative; z-index:1; }
+.room-bg-layer { position:absolute; inset:0; z-index:0; pointer-events:none; background-size:cover; background-position:center; opacity:var(--room-bg-opacity, 0.24); filter:saturate(0.95); }
+.room-surface .conversation-card.has-room-bg .chat-list { background:color-mix(in srgb, var(--bg-surface) 74%, transparent); }
+.room-surface .conversation-card.has-room-bg .conversation-head,
+.room-surface .conversation-card.has-room-bg .chat-composer { background:color-mix(in srgb, var(--bg-surface) 88%, transparent); }
 .room-surface .conversation-card::before { @apply tw:hidden; }
 .room-surface .conversation-head { @apply tw:shrink-0 tw:items-center; flex-direction:row; gap:var(--s-2); min-height:64px; padding:var(--s-2) var(--s-4); background:var(--bg-surface); border-bottom:1px solid var(--border-soft); }
 .room-volume { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label; }
@@ -115,7 +120,13 @@
 .room-surface.room-immersive .conversation-head { padding-block: var(--s-2); }
 .room-chat-identity { display:flex; align-items:center; gap:var(--s-2); min-width:0; flex:1; }
 .room-chat-channel { display:grid; gap:var(--s-1); min-inline-size:0; }
+.room-chat-meta-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-inline-size:0; }
 .room-chat-caption { display:inline-flex; align-items:center; gap:var(--s-1); padding-inline:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.room-affection-pill { display:inline-flex; align-items:center; gap:4px; max-width:100%; padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.room-affection-pill:hover { color:var(--text-primary); background:var(--bg-hover); border-color:var(--border-strong); }
+.room-affection-pill:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.room-affection-pill .archive-icon { width:12px; height:12px; color:var(--accent); flex:none; }
+.room-scene-loc { color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; }
 .room-chat-caption i { inline-size:6px; block-size:6px; border-radius:var(--r-pill); background:var(--success); }
 .room-chat-avatar { flex:none; width:36px; height:36px; object-fit:cover; border-radius:50%; }
 .room-chat-avatar[data-chibi='true'] { object-fit:contain; border-radius:0; }
@@ -138,6 +149,10 @@
 .room-welcome-art::after { inset:14px; background:var(--bg-surface); transform:rotate(8deg); box-shadow:var(--shadow-sm); }
 .room-surface .room-welcome-art .room-empty-avatar { margin:0; }
 .room-empty-title { margin:0 0 var(--s-3); color:var(--text-primary); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.room-greeting-switcher { display:flex; align-items:center; justify-content:center; gap:var(--s-2); margin-top:var(--s-3); }
+.room-greeting-count { color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); min-width:48px; text-align:center; }
+.room-greeting-prev { transform:rotate(90deg); }
+.room-greeting-next { transform:rotate(-90deg); }
 .room-surface .chat-starters { display:grid; gap:var(--s-2); margin-top:var(--s-5); }
 /* Inspira UI / Magic UI Interactive Hover Button: layered surface and arrow exchange.
    Adapted from unovue/inspira-ui@04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt. */

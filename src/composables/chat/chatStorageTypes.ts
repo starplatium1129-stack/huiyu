@@ -7,6 +7,7 @@ export interface ChatReplyVariant {
   mid: string
   stopped: boolean
   recalledMemories?: string[]
+  matchedLore?: string[]
   drawingDrafts?: CompanionDrawingDraft[]
   drawingBatchId?: string
   images?: CompanionChatImage[]

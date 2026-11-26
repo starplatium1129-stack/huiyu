@@ -7,9 +7,15 @@ use std::borrow::Cow;
 
 pub(super) const HISTORY_LIMIT: usize = 24;
 pub(super) const TEXT_LIMIT: usize = 12000;
+pub(in crate::chat) const MAX_HISTORY_LIMIT: usize = 120;
+pub(in crate::chat) const MAX_TEXT_LIMIT: usize = 120_000;
+pub(in crate::chat) const MAX_MESSAGE_LENGTH: usize = 16_000;
 
-pub(super) use card::CardData;
-pub(super) use prompt::{build, single_system_messages};
+pub(super) use card::{CardData, ExternalLorebook};
+pub(super) use prompt::{
+    AffectionContext, RpOptions, SceneStateContext, build, build_with_options,
+    single_system_messages,
+};
 pub(super) use tools::{channel_tools, known_tool, tools};
 
 pub(super) fn length(text: &str) -> usize {

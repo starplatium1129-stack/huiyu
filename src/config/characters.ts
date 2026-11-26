@@ -10,6 +10,7 @@ export interface CharacterConfig {
   image: string
   icon: string
   greeting: string
+  greetings?: string[]
   roomCode: string
   roomMood: string
   starters: string[]
@@ -105,7 +106,7 @@ export const DEFAULT_NATSUME_OUTFIT: NatsumeOutfitId = 'natsume-cafe'
 
 export const STORAGE_KEY = 'aics_chat_v1'
 export const STORAGE_VERSION = 4
-export const MAX_LOCAL_MESSAGES = 20
+export const MAX_LOCAL_MESSAGES = 120
 
 export function createMessageId(): string {
   if (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function') {

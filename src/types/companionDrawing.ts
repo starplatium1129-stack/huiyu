@@ -21,7 +21,8 @@ export interface CompanionChatSendOptions {
 }
 
 export type ChatStoryAction =
-  | { kind: 'regenerate' | 'fork'; messageId: string }
+  | { kind: 'regenerate' | 'fork' | 'delete' | 'truncate' | 'continue'; messageId: string }
+  | { kind: 'edit'; messageId: string; content: string }
   | { kind: 'select-variant'; messageId: string; variantId: string }
   | { kind: 'switch-branch'; branchId: string }
 

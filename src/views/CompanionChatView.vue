@@ -116,7 +116,7 @@
       </StudioTooltip>
       </template>
       <label class="sr-only" for="dialogue-chat-input">桌宠聊天输入</label>
-      <textarea id="dialogue-chat-input" ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
+      <textarea id="dialogue-chat-input" ref="inputRef" v-model="inputText" rows="1" maxlength="16000" class="companion-dialogue-input"
         :placeholder="`对${currentCharacter.name}说…`"
         @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, sendChat)"></textarea>
       <template #commit>

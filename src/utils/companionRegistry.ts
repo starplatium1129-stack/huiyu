@@ -142,9 +142,14 @@ export function forgetChatCard(id: string) {
 }
 
 export function renderChatGreeting(config: CharacterConfig, callName: string): CharacterConfig {
-  if (!config.id.startsWith('card-') || !config.greeting.includes('{{')) return config
-  return { ...config, greeting: config.greeting.replace(/\{\{(char|user)\}\}/gi,
-    (_, key: string) => key.toLowerCase() === 'char' ? config.name : callName.trim() || '对方') }
+  const replaceMacros = (text: string) =>
+    text.includes('{{')
+      ? text.replace(/\{\{(char|user)\}\}/gi, (_, key: string) => key.toLowerCase() === 'char' ? config.name : callName.trim() || '对方')
+      : text
+  const greeting = replaceMacros(config.greeting)
+  const greetings = config.greetings?.map(replaceMacros)
+  if (greeting === config.greeting && !greetings?.some((item, index) => item !== config.greetings?.[index])) return config
+  return { ...config, greeting, ...(greetings ? { greetings } : {}) }
 }
 
 export function registerCompanionCharacter(character: CompanionCharacterDefinition): void {

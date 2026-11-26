@@ -23,6 +23,7 @@ import { assertWorkspaceMediaAuthority, type MediaSource } from '@/platform/desk
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { captureResultContext } from '@/utils/resultContext'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import { findCharacter } from '@/utils/popularContent'
 import { companionPromptDraft, validateCompanionImageArgs, type CompanionImageArgs } from './companionImagePrompt'
 export type { CompanionImageArgs } from './companionImagePrompt'
 
@@ -63,16 +64,22 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
     state.width = width; state.height = height
   }
   const studio = args.character === 'nene' || args.character === 'natsume'
-  if (!studio) await pb.loadPopularCharacter(args.character)
+  let popularMatched = !studio && Boolean(findCharacter(pb.popularCharacters, args.character))
+  if (!studio && !popularMatched) {
+    await pb.loadPopularCharacter(args.character)
+    popularMatched = Boolean(findCharacter(pb.popularCharacters, args.character))
+  }
   signal.throwIfAborted()
-  const binding = endfieldAnimaBinding(studio ? null : args.character, family, model.id)
-  state.loraId = family === 'krea2' ? '' : studio ? state.characterLoraEnabled === false ? '' : ANIMA_LORA_BY_CHARACTER[args.character as 'nene' | 'natsume'] : binding?.loraId ?? ''
+  const unbound = !studio && !popularMatched && args.allowUnbound === true
+  const binding = endfieldAnimaBinding(studio || unbound ? null : args.character, family, model.id)
+  state.loraId = family === 'krea2' || unbound ? '' : studio ? state.characterLoraEnabled === false ? '' : ANIMA_LORA_BY_CHARACTER[args.character as 'nene' | 'natsume'] : binding?.loraId ?? ''
   if (binding && saved?.loraId !== binding.loraId) state.loraStrength = binding.loraStrength
   if (state.loraId) {
     await useSceneStore().loadLoraCatalog()
     signal.throwIfAborted()
     if (!pb.loraMeta.some(meta => meta.id === state.loraId || meta.name === state.loraId)) throw new Error('角色 LoRA 的提示词资料尚未准备好，请先在绘图页重新读取模型资料')
   }
+  if (args.noArtist) state.styleLoraId = ''
   if (state.styleLoraId && !state.styleLoras.some(style => style.id === state.styleLoraId && style.available !== false)) throw new Error('工作台选择的风格 LoRA 尚未准备好，请先在绘图页重新选择')
   const inferred = options.referenceImage ? (report?.('正在反推参考图片的服装、姿势与背景…'), await interrogateImage(options.referenceImage, signal)) : undefined
   signal.throwIfAborted()

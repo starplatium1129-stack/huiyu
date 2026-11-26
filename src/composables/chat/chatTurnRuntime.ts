@@ -2,6 +2,7 @@ import { inferEmotion } from '@/utils/stream'
 import { createMoodTagStream } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { resolveActiveRpPreset, resolveEffectiveSampling, type ChatRpState } from '@/utils/chatRpSettings'
 import type { ChatMessage, ChatProvider } from './chatStorageTypes'
 
 /** Protocol mood tags own the whole turn once present; text hints are a fallback. */
@@ -9,6 +10,7 @@ export function createTurnEmotionTracker(
   characterId: string,
   append: (text: string) => void,
   onEmotion?: (emotion: string, explicit?: boolean) => void,
+  initialText = '',
 ) {
   const emotionState = { value: 'neutral', moodTagged: false }
   let moodStream = createMoodTagStream()
@@ -29,9 +31,10 @@ export function createTurnEmotionTracker(
   }
   return {
     applyTokenDelta(assistant: { content: string }, delta: string) {
-      const prevCleanLen = assistant.content.length, committedLength = moodStream.committedLength
+      const prevTailLen = Math.max(0, assistant.content.length - initialText.length)
+      const committedLength = moodStream.committedLength
       const extracted = moodStream.push(delta)
-      assistant.content = extracted.cleanText
+      assistant.content = initialText + extracted.cleanText
       if (extracted.emotion) {
         const wasTagged = emotionState.moodTagged
         emotionState.moodTagged = true
@@ -39,8 +42,8 @@ export function createTurnEmotionTracker(
           emotionState.value = extracted.emotion
           onEmotion?.(extracted.emotion, true)
         }
-      } else if (!emotionState.moodTagged) maybeStreamEmotion(assistant.content, committedLength)
-      append(extracted.cleanText.slice(prevCleanLen))
+      } else if (!emotionState.moodTagged) maybeStreamEmotion(extracted.cleanText, committedLength)
+      append(extracted.cleanText.slice(prevTailLen))
     },
     reset() {
       if (emotionState.value !== 'neutral') onEmotion?.('neutral', false)
@@ -74,21 +77,46 @@ function isVisionMessage(message: Record<string, unknown>): boolean {
 export function buildChatRequestBody(args: {
   characterId: string; sessionId: string; imageUrls: string[]; hostMode: boolean; useVision: boolean
   toolsEnabled: boolean; museDrawing: boolean; toolResultOrigin?: string; restricted: boolean; roundMessages: Array<Record<string, unknown>>
-  japaneseVoice: boolean
+  japaneseVoice: boolean; continueMode?: boolean; rpState?: ChatRpState
+  affection?: { score: number; level: number; title: string; description: string }
+  sceneState?: { location: string; outfit: string; mood: string }
+  extraPayload?: Record<string, unknown>
   messages: ChatMessage[]; connection: TurnConnection; userProfile: ChatUserProfile; memories: string[]
 }): string {
   const { characterId, sessionId, imageUrls, hostMode, useVision, toolsEnabled, restricted,
-    roundMessages, messages, connection, userProfile, memories } = args
-  const historyList = messages.slice(0, useVision && imageUrls.length ? -2 : -1)
-    // Persist full replies and alternatives; only the gateway context is bounded.
-    .filter(message => message.content || !message.drawingBatchId)
-    .map(message => {
-      // Community greetings can be a whole scene. Keep its closing cue and reserve room for the user's reply.
-      const content = characterId.startsWith('card-') && message.role === 'assistant'
-        ? message.content.slice(-(12_000 - 1_200)).replace(/^[\uDC00-\uDFFF]/u, '')
-        : message.content.slice(0, 1200).replace(/[\uD800-\uDBFF]$/u, '')
-      return { role: message.role, content }
-    })
+    roundMessages, messages, connection, userProfile, memories, continueMode, rpState, affection, sceneState, extraPayload } = args
+  const maxMessages = rpState?.contextBudget.maxMessages ?? 48
+  const maxChars = rpState?.contextBudget.maxChars ?? 32_000
+  const rawHistory = continueMode
+    ? messages
+    : messages.slice(0, useVision && imageUrls.length ? -2 : -1)
+  const boundedHistory: Array<{ role: 'user' | 'assistant'; content: string }> = []
+  let usedChars = 0
+  for (let index = rawHistory.length - 1; index >= 0 && boundedHistory.length < maxMessages; index -= 1) {
+    const message = rawHistory[index]
+    if (!message.content && message.drawingBatchId) continue
+    const content = message.content.slice(-16_000).replace(/^[\uDC00-\uDFFF]/u, '')
+    if (!content.trim()) continue
+    if (usedChars + content.length > maxChars && boundedHistory.length > 0) break
+    usedChars += content.length
+    boundedHistory.push({ role: message.role, content })
+  }
+  boundedHistory.reverse()
+
+  const activePreset = rpState ? resolveActiveRpPreset(rpState) : undefined
+  const sampling = rpState ? resolveEffectiveSampling(rpState) : undefined
+  const authorNote = rpState?.authorNotes[characterId]
+  const activeNote = authorNote?.enabled && authorNote.text.trim()
+    ? { text: authorNote.text.trim(), depth: authorNote.depth }
+    : undefined
+  const statusBarEnabled = Boolean(rpState?.statusBarEnabled)
+  const hasRpPreset = Boolean(activePreset && (activePreset.systemPrefix || activePreset.postHistory || activePreset.disableBubbleSplit || statusBarEnabled))
+  const hasSceneState = Boolean(sceneState && (sceneState.location || sceneState.outfit || sceneState.mood))
+
+  const resolvedProfile = extraPayload?.userProfile && typeof extraPayload.userProfile === 'object'
+    ? extraPayload.userProfile as ChatUserProfile
+    : userProfile
+
   return JSON.stringify({
     character: characterId, sessionId, provider: connection.provider,
     chatgptClientId: connection.provider === 'chatgpt' ? connection.chatgptClientId || undefined : undefined,
@@ -102,8 +130,24 @@ export function buildChatRequestBody(args: {
     japaneseVoice: args.japaneseVoice || undefined,
     toolResultOrigin: args.toolResultOrigin,
     reasoning: connection.reasoning,
-    userProfile: hasChatUserProfile(userProfile) ? userProfile : undefined,
+    contextBudget: rpState ? { maxMessages, maxChars } : undefined,
+    sampling: sampling && Object.keys(sampling).length ? sampling : undefined,
+    rpPreset: hasRpPreset
+      ? {
+          systemPrefix: activePreset?.systemPrefix || '',
+          postHistory: activePreset?.postHistory || '',
+          disableBubbleSplit: Boolean(activePreset?.disableBubbleSplit),
+          statusBarEnabled,
+        }
+      : undefined,
+    authorNote: activeNote,
+    affection: rpState?.affectionPromptEnabled !== false ? affection : undefined,
+    sceneState: hasSceneState ? sceneState : undefined,
+    lorebooks: extraPayload?.lorebooks,
+    storySummary: typeof extraPayload?.storySummary === 'string' && extraPayload.storySummary ? extraPayload.storySummary : undefined,
+    continueMode: continueMode || undefined,
+    userProfile: hasChatUserProfile(resolvedProfile) ? resolvedProfile : undefined,
     memories,
-    messages: [...historyList, ...(useVision ? roundMessages : roundMessages.filter(message => !isVisionMessage(message)))],
+    messages: [...boundedHistory, ...(useVision ? roundMessages : roundMessages.filter(message => !isVisionMessage(message)))],
   })
 }

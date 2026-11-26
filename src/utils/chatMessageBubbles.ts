@@ -2,11 +2,11 @@ import type { ChatMessage } from '@/composables/chat/chatStorageTypes'
 
 const targetLength = 44
 const minimumLength = 20
-const formattedReply = /^[ \t]*(?:`{3,}|~{3,}|#{1,6}[ \t]|>[ \t]?|\||(?:[-*+]|\d+[.)])[ \t])/m
+const formattedReply = /^[ \t]*(?:`{3,}|~{3,}|#{1,6}[ \t]|>[ \t]?|\||(?:[-*+]|\d+[.)])[ \t]|---+$)|<(?:status|think|thought|details)\b/mi
 
-export function chatMessageBubbles(message: ChatMessage): string[] {
+export function chatMessageBubbles(message: ChatMessage, disableSplit = false): string[] {
   const { content } = message
-  if (message.role === 'user' || message.drawingBatchId || message.drawingDrafts?.length
+  if (disableSplit || message.role === 'user' || message.drawingBatchId || message.drawingDrafts?.length
     || message.images?.length || formattedReply.test(content)) return [content]
 
   const paragraphs = content.trim().split(/\r?\n(?:[ \t]*\r?\n)+/)
