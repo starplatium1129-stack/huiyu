@@ -7,7 +7,7 @@ description: 为 Muse 和其他智能体操作同一台绘遇桌面主机。支�
 
 Windows 安装包的入口是安装目录下的 `gateway\tools\cli-anything-huiyu\cli-anything-huiyu.exe`。将该目录加入当前终端的 PATH 后，可以直接使用下列命令。源码入口是 `node tools/cli-anything-huiyu/cli.mjs`，需要从任意目录调用时也可以在仓库根目录运行 `npm install --global ./tools/cli-anything-huiyu`。
 
-在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.8.0.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
+在另一台助手主机上，将命令行包复制过去，用 Node.js 22.18 或以上版本运行 `npm install --global ./cli-anything-huiyu-1.8.1.tgz`。安装后运行 `cli-anything-huiyu --json help`，即可读取本机可用命令和本说明文件的位置。
 
 ## 接到聊天模型（`invoke`）
 
