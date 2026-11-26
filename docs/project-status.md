@@ -8,8 +8,8 @@
 | --- | --- | --- |
 | 源码版本 | [package.json](../package.json) | 工作区改动以 Git 为准 |
 | 发行说明 | [版本索引](INDEX.md#发行说明) | 公开发行以 [GitHub Releases](https://github.com/starplatium1129-stack/huiyu/releases) 为准 |
-| 本机安装记录 | 2026-10-24 以快速升级包更新至 `D:/AI-CG-Studio` | 当时确认 EXE/DLL 绑定及宿主网关启动 |
-| 资料迁移记录 | 2026-10-24 激活 SQLite 工作区（格式 v6） | 原 IndexedDB 留存备用，来源隔离不覆盖 |
+| 桌面构建与部署 | `main` 分支统一使用根目录 `deploy-desktop.bat` 增量同步或安装包构建 | 原生窗口绑定、模型与内容资源受控同步 |
+| 数据工作区边界 | 开发权威为 `runtime/content/catalog.sqlite`，用户数据独立存于 SQLite 工作区 | 源码快照与本地用户资料来源隔离、互不覆盖 |
 | 桌面实现 | Tauri 2 宿主、Rust 网关、原生 Live2D 线程渲染 | 参见 [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md) 与 [原生运行时](guides/desktop/live2d-native-runtime.md) |
 
 ## 现行能力与边界

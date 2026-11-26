@@ -427,6 +427,20 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
       ],
     },
   },
+  'check': {
+    desc: '秒级手动快检：默认仅按 git 改动域并行跑类型/lint/文档/Cargo 检查；--all 全量体检',
+    cmd: ['node', 'scripts/maintenance/check-quick.js'],
+    opts: '[--all] [--json]',
+    docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['read-only', 'guard'], machine: ['node'], switches: { '--all': ['read-only', 'guard'], '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/check-quick.ts', unknown: [] },
+  },
+  'audit:file-size': {
+    desc: '只读巡检核心源码目录中超过 500 行的文件（信息性，不阻断）',
+    cmd: ['node', 'scripts/maintenance/audit-file-size.js'],
+    opts: '[--limit 500] [--json]',
+    docs: 'docs/workflow.md#门禁与构建',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--json': ['read-only'] }, resume: 'na', evidence: 'scripts/maintenance/audit-file-size.ts', unknown: [] },
+  },
   'check:contrast': {
     desc: '双主题全局与角色强调色对比度门禁（WCAG AA）',
     cmd: ['node', 'scripts/maintenance/check-contrast.js', '--check'],
@@ -461,11 +475,11 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     run: { nature: ['writes-product', 'delete'], machine: ['node'], switches: {}, resume: 'checkpoint', evidence: 'scripts/maintenance/git-bundle-backup.js:61-129', unknown: [], notes: ['清理超量旧 bundle；不能替代 push/异地副本'] },
   },
   'runtime:clean': {
-    desc: '实验孤儿目录清理（dry-run 默认、白名单保护、30 天 mtime 门槛）',
+    desc: '过期实验目录与临时文件清理（dry-run 默认、白名单保护、14 天 mtime 门槛）',
     cmd: ['node', 'scripts/maintenance/clean-runtime-experiments.js'],
     docs: 'scripts/maintenance/clean-runtime-experiments.js:1',
-    opts: '[--prune] 真删  [--days N] 改门槛',
-    run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.js:31-43,121-143', unknown: [], notes: ['--prune 仅删已收编实验目录（KNOWN_EXPERIMENTS/tmp-*）且超 --days（默认 30）；白名单与未识别目录永不删'] },
+    opts: '[--prune] 真删  [--days N] 改门槛  [--include-archive] 含本地归档',
+    run: { nature: ['read-only'], machine: ['node'], switches: { '--prune': ['delete'], '--include-archive': ['read-only'] }, resume: 'idempotent', evidence: 'scripts/maintenance/clean-runtime-experiments.ts:1', unknown: [], notes: ['--prune 仅删已收编实验目录/超龄根目录临时文件且超 --days（默认 14）；核心数据与未识别目录永不删'] },
   },
   'comfy:start': {
     desc: '启动本机 ComfyUI（AI 工作区下的 Windows venv 布局）',

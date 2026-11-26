@@ -206,8 +206,16 @@ export default tseslint.config(
     },
   },
   {
-    // 维护/测试脚本：console 是 CLI 输出方式，不按应用代码的 no-console 管
+    // 维护/测试脚本：console 是 CLI 输出方式，不按应用代码的 no-console 管；
+    // 运维脚本中的通用 JSON/AST 适配允许显式 any。
     files: ['scripts/**'],
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+  {
+    files: ['tools/promotional-film/**'],
     rules: {
       'no-console': 'off',
     },

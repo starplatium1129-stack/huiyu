@@ -254,15 +254,13 @@ import { useChatCardImport } from '@/composables/chat/useChatCardImport'
 import { pendingDesktopFileAction, takeDesktopFiles } from '@/composables/useDesktopFileDrop'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 import { useRoute } from 'vue-router'
-import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
-import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, provide, ref, watch } from 'vue'
-import { useResizeObserver, useTextareaAutosize } from '@vueuse/core'
+import { computed, defineAsyncComponent, nextTick, provide, ref, watch } from 'vue'
+import { useTextareaAutosize } from '@vueuse/core'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import { useChatRpSettings } from '@/composables/chat/useChatRpSettings'
 import { useChatSceneState } from '@/composables/chat/useChatSceneState'
 import { useChatRoomBackground } from '@/composables/chat/useChatRoomBackground'
-import type { ChatMessage } from '@/composables/chat/chatStorageTypes'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { CHATGPT_USAGE_SETTINGS_URL } from '@/composables/chat/useChatGptAuth'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
@@ -271,10 +269,18 @@ import { characterArtEntry } from '@/platform/characterArtState'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
-import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { chatMessageBubbles } from '@/utils/chatMessageBubbles'
 import { copyText } from '@/utils/clipboard'
+import { buildChatExtraPayload, useChatAutoSummary } from '@/composables/chat/useChatAutoSummary'
+import {
+  loadChatApiSettings,
+  loadChatModelControls,
+  loadSpeechInputSettings,
+  loadSpeechPopover,
+  roomToolLoaders,
+  useChatRoomPanels,
+} from '@/composables/chat/useChatRoomPanels'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatCardPortrait = defineAsyncComponent(() => import('@/components/ChatCardPortrait.vue'))
@@ -285,192 +291,59 @@ const ChatActionsMenu = defineAsyncComponent(() => import('@/components/ChatActi
 // App's TaskCenter already loads this boundary before tools can open; keep its
 // low-frequency use outside the room's static dependency closure.
 const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
-// The local boundary mounts portal controls in the visible dialog and owns import recovery.
-const loadChatModelControls = () => import('@/components/ChatModelControls.vue')
-const loadChatApiSettings = () => import('@/components/ChatApiSettings.vue')
-const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
-const loadSpeechPopover = () => import('@/components/ui/StudioPopover.vue')
-// These panels mount only after a menu action; load their component CSS then too.
-const roomToolLoaders = {
-  archive: () => import('@/components/ChatArchivePanel.vue'),
-  profile: () => import('@/components/ChatUserProfilePanel.vue'),
-  memory: () => import('@/components/ChatMemoryPanel.vue'),
-  cards: () => import('@/components/ChatCardManagerPanel.vue'),
-  lorebooks: () => import('@/components/ChatLorebookPanel.vue'),
-  rp: () => import('@/components/ChatRpPanel.vue'),
-  sprites: () => import('@/components/ChatCardSpritesPanel.vue'),
-}
 
 const rpSettings = useChatRpSettings()
 const sceneState = useChatSceneState()
 
 const {
-  chatListRef,
-  characterStageRef,
-  activeChar,
-  busy,
-  voiceActive,
-  voiceStatusText,
-  chatError,
-  chatErrorKind,
-  chatErrorCode,
-  voiceCapabilityText,
-  showVoiceRecovery,
-  playingMid,
-  isSpeaking,
-  autoVoice,
-  volume,
-  preparingRoom,
-  storage,
+  chatListRef, characterStageRef, activeChar, busy, voiceActive, voiceStatusText,
+  chatError, chatErrorKind, chatErrorCode, voiceCapabilityText, showVoiceRecovery,
+  playingMid, isSpeaking, autoVoice, volume, preparingRoom, storage,
   branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
   ollamaOnline, localStatusText, checkingChatStatus, refreshChatStatus,
-  museStatus, museStatusText, checkingMuse, refreshMuseStatus,
-  chatGpt,
-  models,
-  currentModel,
-  chatProvider,
-  apiBaseUrl,
-  hostApiBaseUrl,
-  apiModel,
-  apiKey,
-  apiVendor,
-  apiSettingsOpen,
-  apiConfigHint,
-  chatStatusText,
-  statusKind,
-  hostApiConfigured,
-  hostApiModel,
-  useHostConfig,
-  apiConfigured,
-  chatReady,
-  isLocalHost,
-  currentCharacter,
-  affection,
-  greetingIndex,
-  currentGreetings,
-  selectedGreeting,
-  currentMessages,
-  toolActivity,
-  thinkingActivity,
-  reasoning,
-  userProfile,
-  updateUserProfile,
-  currentMemories,
-  rememberMessage,
-  updateMemory,
-  deleteMemory,
-  messageRemembered,
-  onReasoningChange,
-  webSearchEnabled, companionTools,
-  setupTitle,
-  inputText,
-  streamingMid,
-  replyAnnouncement,
-  voice,
-  setError,
-  saveToHost,
-  clearHostConfigAndRefresh,
-  setChatProvider,
-  saveApiSettings,
-  clearApiCredential,
-  onVolumeChange,
-  handleSend,
-  useStarter,
-  onInputChange,
-  prepareRoom,
-  stopEverything,
-  switchCharacter,
-  clearCharacterConversation, clearBusy, clearLabel, chatMutationBusy,
-  clearAllMemory,
-  onAutoVoiceChange,
+  museStatus, museStatusText, checkingMuse, refreshMuseStatus, chatGpt,
+  models, currentModel, chatProvider, apiBaseUrl, hostApiBaseUrl, apiModel, apiKey, apiVendor,
+  apiSettingsOpen, apiConfigHint, chatStatusText, statusKind, hostApiConfigured, hostApiModel,
+  useHostConfig, apiConfigured, chatReady, isLocalHost, currentCharacter, affection,
+  greetingIndex, currentGreetings, selectedGreeting, currentMessages,
+  toolActivity, thinkingActivity, reasoning, userProfile, updateUserProfile,
+  currentMemories, rememberMessage, updateMemory, deleteMemory, messageRemembered,
+  onReasoningChange, webSearchEnabled, companionTools, setupTitle, inputText, streamingMid,
+  replyAnnouncement, voice, setError, saveToHost, clearHostConfigAndRefresh,
+  setChatProvider, saveApiSettings, clearApiCredential, onVolumeChange,
+  handleSend, useStarter, onInputChange, prepareRoom, stopEverything,
+  switchCharacter, clearCharacterConversation, clearBusy, clearLabel, chatMutationBusy,
+  clearAllMemory, onAutoVoiceChange,
 } = useCharacterRoomSession(
   { latest: () => { void latest() }, nearBottom: () => !showLatest.value },
   undefined,
   {
     rpState: rpSettings.rpState,
     sceneState,
-    async getExtraPayload(charId, activeBranchId) {
-      const [{ collectActiveLorebookPayload }, { getStorySummary }, { resolvePersonaForCharacter, toChatUserProfile }] = await Promise.all([
-        import('@/utils/chatLorebooks'),
-        import('@/utils/chatStorySummary'),
-        import('@/utils/chatUserPersonas'),
-      ])
-      const lorebooks = collectActiveLorebookPayload(charId)
-      const storySummary = getStorySummary(charId, activeBranchId).text
-      const persona = toChatUserProfile(resolvePersonaForCharacter(charId))
-      return {
-        ...(lorebooks ? { lorebooks } : {}),
-        ...(storySummary ? { storySummary } : {}),
-        userProfile: persona,
-      }
-    },
+    getExtraPayload: buildChatExtraPayload,
     onTurnCompleted(charId, activeBranchId) {
       void maybeAutoSummarize(charId, activeBranchId)
     },
   },
 )
 
-const memorySummaryContext = computed(() => ({
-  provider: chatProvider.value,
-  model: chatProvider.value === 'chatgpt' ? chatGpt.selectedModel.value : useHostConfig.value ? '' : currentModel.value,
-  hostConfig: chatProvider.value === 'api' && useHostConfig.value,
-  api: chatProvider.value === 'api' && !useHostConfig.value
-    ? { baseUrl: apiBaseUrl.value, model: apiModel.value, apiKey: apiKey.value }
-    : undefined,
-  chatgptClientId: chatProvider.value === 'chatgpt' ? chatGpt.activeClientId.value || undefined : undefined,
-  userName: userProfile.value.callName || '用户',
-  messages: currentMessages.value.map(m => ({ mid: m.mid, role: m.role, content: m.content })),
-}))
-
-let autoSummarizeAbort: AbortController | null = null
-let autoSummarizing = false
-function cancelAutoSummary() {
-  autoSummarizeAbort?.abort()
-  autoSummarizeAbort = null
-}
-watch(activeChar, cancelAutoSummary)
-onBeforeUnmount(cancelAutoSummary)
-
-async function maybeAutoSummarize(charId: string, completedBranchId: string) {
-  if (autoSummarizing || chatProvider.value === 'muse' || activeChar.value !== charId || branchId.value !== completedBranchId) return
-  const msgs = storage.messages(charId)
-  const maxMessages = rpSettings.rpState.value.contextBudget.maxMessages
-  if (msgs.length <= maxMessages) return
-  const { getStorySummary, requestStorySummary, saveStorySummary } = await import('@/utils/chatStorySummary')
-  const entry = getStorySummary(charId, completedBranchId)
-  if (!entry.autoEnabled) return
-  const prevIdx = entry.summarizedThroughMid ? msgs.findIndex(m => m.mid === entry.summarizedThroughMid) : -1
-  const keepRecent = Math.min(8, Math.floor(maxMessages / 2))
-  const summarizeEnd = msgs.length - keepRecent
-  if (summarizeEnd <= prevIdx + 9) return
-  const slice = msgs.slice(Math.max(0, prevIdx + 1), summarizeEnd)
-  if (!slice.length) return
-  autoSummarizing = true
-  const controller = new AbortController()
-  autoSummarizeAbort = controller
-  try {
-    const summary = await requestStorySummary({
-      ...memorySummaryContext.value,
-      characterName: currentCharacter.value.name,
-      existingSummary: entry.text,
-      messages: slice.map(m => ({ role: m.role, content: m.content })),
-      signal: controller.signal,
-    })
-    if (controller.signal.aborted) return
-    saveStorySummary(charId, completedBranchId, {
-      text: summary,
-      summarizedThroughMid: slice.at(-1)?.mid || entry.summarizedThroughMid,
-    })
-    if (activeChar.value === charId && branchId.value === completedBranchId) {
-      setError('已自动滚动更新前情提要。', 'info', 2500)
-    }
-  } catch {
-    /* Silent background task: failures never disrupt active chatting. */
-  } finally {
-    if (autoSummarizeAbort === controller) autoSummarizeAbort = null
-    autoSummarizing = false
-  }
-}
+const currentSceneState = computed(() => sceneState.getSceneState(activeChar.value))
+const {
+  memorySummaryContext,
+  maybeAutoSummarize,
+  illustratingMid,
+  illustrateStatus,
+  cancelIllustration,
+  illustrateMessage,
+} = useChatAutoSummary({
+  activeChar, branchId, chatProvider, busy, storyBusy, isLocalHost, storage, rpSettings,
+  currentCharacter, currentMessages, currentSceneState, useHostConfig, currentModel,
+  apiBaseUrl, apiModel, apiKey,
+  chatGptSelectedModel: chatGpt.selectedModel,
+  chatGptClientId: chatGpt.activeClientId,
+  userProfile,
+  setError,
+})
 
 const chatGptUsagePaused = computed(() => chatProvider.value === 'chatgpt' && chatGpt.usagePaused.value)
 const showChatGptUsageActions = computed(() => !storage.writeBlocked.value && chatProvider.value === 'chatgpt'
@@ -504,59 +377,11 @@ const rpActive = computed(() => {
 })
 const affectionScore = computed(() => Math.round(affection.getScore(activeChar.value)))
 const affectionLevel = computed(() => affection.getLevelInfo(activeChar.value))
-const currentSceneState = computed(() => sceneState.getSceneState(activeChar.value))
 const roomBackground = useChatRoomBackground(activeChar)
 provide('huiyu-set-room-bg', (image: CompanionChatImage) => {
   roomBackground.setBackground(image)
   setError('已设为当前角色聊天室背景。', 'info', 2500)
 })
-
-const illustratingMid = ref('')
-const illustrateStatus = ref('')
-let illustrateController: AbortController | null = null
-function cancelIllustration() {
-  illustrateController?.abort('user-cancel')
-  illustrateController = null
-  illustratingMid.value = ''
-  illustrateStatus.value = ''
-}
-watch(activeChar, cancelIllustration)
-onBeforeUnmount(cancelIllustration)
-
-async function illustrateMessage(message: ChatMessage) {
-  if (!isLocalHost.value || illustratingMid.value || busy.value || storyBusy.value || storage.writeBlocked.value) return
-  const characterId = activeChar.value
-  const controller = new AbortController()
-  illustrateController = controller
-  illustratingMid.value = message.mid
-  illustrateStatus.value = '正在构思并绘制剧情插画…'
-  try {
-    const { illustrateChatMessage } = await import('@/composables/chat/chatSceneIllustration')
-    const index = currentMessages.value.findIndex(item => item.mid === message.mid)
-    const recent = index >= 0 ? currentMessages.value.slice(Math.max(0, index - 2), index + 1) : [message]
-    await illustrateChatMessage({
-      characterId,
-      characterName: currentCharacter.value.name,
-      targetMessage: message,
-      recentMessages: recent,
-      sceneState: currentSceneState.value,
-      storage,
-      signal: controller.signal,
-      report: text => { if (illustrateController === controller) illustrateStatus.value = text },
-    })
-    if (illustrateController === controller) setError('剧情插画已生成并附在消息下方。', 'info', 3500)
-  } catch (error) {
-    if (illustrateController === controller && !controller.signal.aborted) {
-      setError(error instanceof Error ? error.message : '剧情插画生成失败，请重试。', 'warning', 6000)
-    }
-  } finally {
-    if (illustrateController === controller) {
-      illustrateController = null
-      illustratingMid.value = ''
-      illustrateStatus.value = ''
-    }
-  }
-}
 
 function cycleGreeting(delta: number) {
   const count = currentGreetings.value.length
@@ -564,51 +389,16 @@ function cycleGreeting(delta: number) {
   greetingIndex.value = (greetingIndex.value + delta + count) % count
 }
 
-type RoomPanel = 'archive' | 'memory' | 'profile' | 'rp' | 'sprites' | 'cards' | 'lorebooks' | 'settings'
-const roomPanel = ref<RoomPanel | null>(null)
-watch(cardImport.pending, importing => { if (importing && roomPanel.value === 'settings') closeRoomPanel() })
-const roomPanelGeneration = ref(0)
-let roomPanelClosing = false
-const roomPanelLabels = { archive: '对话归档', memory: '记忆与前情摘要', profile: '我的马甲与档案', rp: 'RP 预设与参数', sprites: '情绪差分立绘', cards: '角色卡工作台', lorebooks: '世界书与知识库', settings: '聊天设置' }
-const roomPanelDialog = ref<HTMLDialogElement | null>(null)
-const roomPanelMotion = useFluidDialog(roomPanelDialog)
-useResizeObserver(roomPanelDialog, () => {
-  if (!speechSettingsOpen.value) return
-  const dialog = roomPanelDialog.value
-  const popover = dialog?.querySelector<HTMLElement>('.chat-speech-settings')
-  const trigger = dialog?.querySelector<HTMLElement>('.room-settings-voice [aria-haspopup="dialog"]')
-  const body = trigger?.closest<HTMLElement>('.room-tool-body')
-  if (!trigger || !body || (document.activeElement !== document.body && !popover?.contains(document.activeElement))) return
-  const bounds = body.getBoundingClientRect(), anchor = trigger.getBoundingClientRect()
-  if (anchor.top >= bounds.top && anchor.bottom <= bounds.bottom) return
-  // Keep the draft mounted when a smaller viewport clips Reka's anchor.
-  trigger.scrollIntoView({ block:'nearest', inline:'nearest', behavior:'instant' })
-  trigger.focus({ preventScroll:true })
-}, { box:'border-box' })
-async function openRoomPanel(panel: RoomPanel) {
-  roomPanelClosing = false
-  const generation = ++roomPanelGeneration.value
-  roomPanel.value = panel
-  await nextTick()
-  if (roomPanelClosing || roomPanel.value !== panel || generation !== roomPanelGeneration.value) return
-  roomPanelMotion.open(document.querySelector<HTMLElement>(panel === 'settings' ? '.chat-settings-trigger' : panel === 'rp' ? '.room-rp-trigger' : '.chat-more-trigger'))
-  void focusRoomPanel()
-}
-async function focusRoomPanel() {
-  const generation = roomPanelGeneration.value
-  await nextTick()
-  const dialog = roomPanelDialog.value, active = document.activeElement
-  if (!dialog?.open || roomPanelClosing || !roomPanel.value || generation !== roomPanelGeneration.value) return
-  // Loading removes its close button on resolve; preserve focus already moved into the ready panel or a nested portal.
-  if (active && active !== document.body && active !== dialog && active !== dialog.querySelector('.room-panel-content > .async-panel')) return
-  dialog.querySelector<HTMLElement>('.room-panel-content button')?.focus({ preventScroll: true })
-}
-function clearRoomPanel() { roomPanel.value = null; apiSettingsOpen.value = false; speechSettingsOpen.value = false }
-function closeRoomPanel() { roomPanelClosing = true; speechSettingsOpen.value = false; roomPanelMotion.close(clearRoomPanel) }
-function onRoomPanelClosed() { if (!roomPanelDialog.value?.open) clearRoomPanel() }
-function closeRoomPanelFromBackdrop(event: MouseEvent) {
-  if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
-}
+const {
+  roomPanel, roomPanelGeneration, roomPanelLabels, roomPanelDialog, focusRoomPanel,
+  openRoomPanel, closeRoomPanel, onRoomPanelClosed, closeRoomPanelFromBackdrop,
+  onUserProfileSave, focusSpeechPopover, returnSpeechFocus, focusSpeechSettings,
+  bindSpeechSettingsOpen,
+} = useChatRoomPanels({
+  apiSettingsOpen,
+  cardImportPending: computed(() => cardImport.pending.value),
+  updateUserProfile,
+})
 const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
@@ -624,24 +414,10 @@ async function copyMessage(content: string) {
   else setError('复制失败，可以选中文字后复制。', 'warning')
 }
 
-async function onUserProfileSave(profile: ChatUserProfile): Promise<boolean> {
-  const generation = roomPanelGeneration.value
-  return await updateUserProfile(profile) && generation === roomPanelGeneration.value && !roomPanelClosing && roomPanel.value === 'profile'
-}
-
 const {
-  speechSettingsOpen,
-  speechNotice,
-  speechState,
-  speechError,
-  speechAutoListening,
-  speechReady,
-  speechButtonDisabled,
-  speechButtonText,
-  speechSessionActive,
-  speechHold,
-  onSpeechSettingsSaved,
-  onSpeechSessionEnd,
+  speechSettingsOpen, speechNotice, speechState, speechError, speechAutoListening,
+  speechReady, speechButtonDisabled, speechButtonText, speechSessionActive,
+  speechHold, onSpeechSettingsSaved, onSpeechSessionEnd,
 } = useChatSpeechInteraction({
   currentCharacter,
   chatReady,
@@ -650,9 +426,7 @@ const {
   onInputChange,
   handleSend: accepted => handleSend(undefined, undefined, accepted),
 })
-watch([apiSettingsOpen, speechSettingsOpen], ([api, speech]) => {
-  if ((api || speech) && !roomPanelClosing && roomPanel.value !== 'settings') void openRoomPanel('settings')
-}, { immediate: true })
+bindSpeechSettingsOpen(speechSettingsOpen)
 const avatar = computed(() => companionChatAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
 const activityText = computed(() => illustrateStatus.value || toolActivity.value || (thinkingActivity.value ? '思考中…' : '')
   || (speechState.value === 'error' ? speechError.value : '')
@@ -661,26 +435,5 @@ const activityText = computed(() => illustrateStatus.value || toolActivity.value
   || speechNotice.value || (speechSessionActive.value ? '连续对话中' : speechAutoListening.value ? '听候唤醒' : ''))
 const inputRef = ref<HTMLTextAreaElement>()
 watch(branchId, () => { void nextTick(() => inputRef.value?.focus({ preventScroll: true })) })
-useTextareaAutosize({ element:inputRef, input:inputText, maxHeight:120 })
-async function focusSpeechPopover(event: Event) {
-  event.preventDefault()
-  const opener = document.activeElement
-  await nextTick()
-  const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
-  if (!speechSettingsOpen.value || !panel || (document.activeElement !== opener && !panel.contains(document.activeElement))) return
-  ;(panel.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)') || panel).focus({ preventScroll: true })
-}
-function returnSpeechFocus(event: Event) {
-  const dialog = roomPanelDialog.value, active = document.activeElement
-  if (!dialog?.open || (active !== document.body && !active?.closest('.chat-speech-settings'))) return
-  const trigger = dialog.querySelector<HTMLElement>('.room-settings-voice [aria-haspopup="dialog"]')
-  if (trigger) { event.preventDefault(); trigger.focus({ preventScroll:true }) }
-}
-function focusSpeechSettings() {
-  const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
-  // An uncached editor arrives after Reka focuses the empty popover. Preserve
-  // any focus the user has moved elsewhere while it was loading.
-  if (speechSettingsOpen.value && (panel === document.activeElement || panel?.querySelector(':scope > .async-panel') === document.activeElement))
-    panel?.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)')?.focus({ preventScroll: true })
-}
+useTextareaAutosize({ element: inputRef, input: inputText, maxHeight: 120 })
 </script>

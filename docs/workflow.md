@@ -21,11 +21,14 @@
 | 搜索命令 | `npm run wf -- search 样张` | 支持中英文关键词 |
 | 查看命令运行条件 | `npm run wf -- <命令> --help` | 包含运行前置条件与参数说明 |
 | 检查失效入口 | `npm run wf -- audit:workflows --json` | 核对工作流注册表 |
+| 按改动快速体检 | `npm run wf -- check` | 按改动域并发执行静态检查（加 `--all` 全量检查，不自动拦截提交） |
+| 源码体积审计 | `npm run wf -- audit:file-size` | 只读巡检超过 500 行的核心源码文件 |
+| 运行时卫生清理 | `npm run wf -- runtime:clean` | 默认干跑 14 天前实验产物与零散日志；加 `--prune` 真实删除，加 `--include-archive` 涵盖历史归档脚本 |
 | 文档链接检查 | `npm run wf -- docs:check` | 检查死链接与重定向映射 |
 | 生成品牌图标 | `npm run wf -- brand:build` | SVG 生成深浅字标、favicon 与桌面图标 |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server` | 分别在两个终端运行 |
 | TypeScript 类型检查 | `npm run typecheck` | 检查 Vue 应用、Node 工具和独立浏览器脚本 |
-| 桌面打包能力检查 | `npm run wf -- desktop:doctor --json` | 检测本机构建与打包环境 |
+| 桌面打包能力检查 | `npm run wf -- desktop:doctor --json` | 检测本机构建、版本对齐与运行时卫生 |
 | 桌面部署与同步 | `deploy-desktop.bat` | 桌面端同步与安装（详见 [部署指南](desktop-deployment.md)） |
 | 安装器界面预览 | `npm run wf -- installer:modern --preview --capture` | 预览现代安装器，加 `--uninstall` 预览卸载 |
 
@@ -99,6 +102,9 @@ MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线�
 | 入口 | 用途 |
 | --- | --- |
 | `npm run typecheck` | 前端、Node 维护工具与独立脚本类型检查 |
+| `npm run wf -- check` | 手动按改动域快速体检；传 `--all` 跑全套类型、`lint:js`、`lint:literals`、文档链接、工作流清单与 Rust 检查 |
+| `npm run wf -- audit:file-size` | 非阻断统计超过 500 行的前端与 Rust 核心源码（支持 `--limit N`、`--json`） |
+| `npm run wf -- runtime:clean` | 清理 `runtime/` 过期实验与根目录零散日志（白名单保护内容库、SDK 与模型；默认干跑，确认后传 `--prune`，可选 `--include-archive`） |
 | `npm run build:runtime` | 从 TypeScript 构建运行时维护工具；仅在工具源变化时执行，不手改生成的 `.js` |
 | `npm run build` | 前端网页构建、包体预算核对与预压缩 |
 | `npm run wf -- models:check` | 离线核对模型 ID、文件字节数、SHA-256、镜像与脚本引用，识别固定 Git 对象和 Git LFS 指针 |

@@ -5,13 +5,13 @@
     </header>
     <div class="comparison-choices studio-segments tw:flex tw:flex-wrap tw:gap-s-2" data-fluid-glass role="group" aria-label="选择光色对照">
       <AnimatedSelection />
-      <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="selectPair(index, $event)">
+      <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="selectedPair === index" @click="selectPair(index, $event)">
         {{ pair.name }}
       </button>
     </div>
-    <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="active">{{ current.question }}</p>
+    <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="selectedPair">{{ current.question }}</p>
     <p v-if="referenceError" class="library-reference-feedback" role="status"><span>{{ referenceError }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retryReferences"><ArchiveIcon name="refresh" />重新读取参考</button></p>
-    <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:[direction]="active">
+    <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:[direction]="selectedPair">
       <figure v-for="sample in current.samples" :key="sample.id" class="light-study tw:min-w-0 tw:m-0 tw:overflow-hidden tw:rounded-lg">
         <RuntimeImage :src="referenceUrl(sample.id)" v-slot="{ image, loaded, failed }">
           <div class="study-image" :class="{ 'is-failed': failed }">
@@ -68,14 +68,14 @@ const PAIRS = [
     { id: 'sc006', title: '平安夜的手作礼物', name: '点点灯火围住节日心意', tone: '暖灯 · 小光点', light: '道路两侧灯火与树上灯串围绕人物，形成远近层次。', color: '暖金灯火、红色衣装与冷白积雪，冷暖相互衬托。', feeling: '热闹中保留亲近，礼物与人物成为故事的落点。', mood: 'warmth', moodName: '温馨' },
   ] },
 ]
-const active = ref(0)
+const selectedPair = ref(0)
 const direction = ref<'left' | 'right' | 'fade'>('fade')
 function selectPair(index: number, event: MouseEvent) {
-  if (active.value === index) return
-  direction.value = event.detail === 0 ? 'fade' : index > active.value ? 'right' : 'left'
-  active.value = index
+  if (selectedPair.value === index) return
+  direction.value = event.detail === 0 ? 'fade' : index > selectedPair.value ? 'right' : 'left'
+  selectedPair.value = index
 }
-const current = computed(() => PAIRS[active.value]!)
+const current = computed(() => PAIRS[selectedPair.value]!)
 const { loading, error: referenceError, reload, referenceUrl, retryReference } = useMoodReferences(() => props.active)
 function retryCover(id: string, event: MouseEvent) {
   const origin = event.currentTarget

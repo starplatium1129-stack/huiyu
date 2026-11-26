@@ -6,20 +6,17 @@ import { useFocusTrap } from '@/composables/useFocusTrap';
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer';
 import { useScrollReveal } from '@/composables/useScrollReveal';
 import { useToast } from '@/composables/useToast';
-import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
-import { onDesktopRuntime } from '@/platform/desktop/runtime';
-import { imageMediaSession } from '@/platform/imageMediaSession';
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
+import { artworkRepository, type TrashEntry } from '@/storage/artworkRepository';
 import { useSceneStore } from '@/stores/sceneStore';
-import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
-import { computed,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
-import { useRoute,useRouter } from 'vue-router';
-import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
-import { cancelGalleryStorageLoad, loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
+import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
+import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction } from './galleryMutations';
+import { cancelGalleryStorageLoad, loadGalleryStorageAction, type GalleryProject } from './galleryStorage';
 import { useGalleryExports } from './useGalleryExports';
 import { useGalleryTrash } from './useGalleryTrash';
 import { useGalleryFilters } from './useGalleryFilters';
-import { useGalleryComparison } from './useGalleryComparison';
+import { useGalleryComparisonFlow } from './useGalleryComparisonFlow';
 import { useGallerySelection } from './useGallerySelection';
 import { useGalleryViewer } from './useGalleryViewer';
 import { useGalleryListMotion } from './useGalleryListMotion';
@@ -135,97 +132,28 @@ export function useGalleryWorkspace() {
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
+    let galleryReadRevision = 0;
     const {
-        compareMode,
-        compareOpen,
-        compareItems,
-        compareSelected: openSelectedComparison,
-        compareFromRoute: openRouteComparison,
-        refreshComparisonRecords, comparisonReading,
-        parentImageUrl,
-        parentImageLabel, parentImageStatus, retryParentImage,
-        hasComparableImage, setComparisonMediaSuspended,
-    } = useGalleryComparison({
+        compareMode, compareOpen, compareItems, parentImageUrl, parentImageLabel, parentImageStatus,
+        retryParentImage, hasComparableImage, setComparisonMediaSuspended,
+        compareSelected, closeComparison, refreshComparison, canMarkComparison,
+        comparisonMarksMessage, comparisonMarksReading, retryComparisonMarks, saveComparisonMarks,
+        captureReadGuard, syncComparisonAfterRead, bumpComparisonRevision, stopComparisonFlow,
+    } = useGalleryComparisonFlow({
         history,
         selectedIds,
         route,
+        router,
         current,
         cardUrls,
         thumbUrls,
+        galleryLoading,
+        galleryIndexLoading,
+        galleryError,
+        isViewActive: () => viewActive,
+        isUnmounted: () => unmounted,
+        loadGalleryStorage,
     });
-    const requestedComparison = computed(() => route.path === '/gallery' && typeof route.query.compare === 'string' ? route.query.compare : '');
-    let comparisonOwner = '', dismissedComparison = '', comparisonRevision = 0;
-    function compareSelected() {
-        comparisonRevision++; comparisonOwner = ''; dismissedComparison = requestedComparison.value;
-        openSelectedComparison();
-    }
-    function closeComparison() {
-        if (!compareOpen.value) return;
-        retireComparisonIntent();
-    }
-    function retireComparisonIntent() {
-        const owner = comparisonOwner;
-        comparisonRevision++; comparisonOwner = ''; compareOpen.value = false;
-        // Retire a route intent even while its refresh or lazy panel is pending.
-        dismissedComparison = requestedComparison.value || owner;
-        if (!owner || unmounted || !viewActive || requestedComparison.value !== owner) return;
-        const query = { ...route.query };
-        delete query.compare;
-        void router.replace({ query, hash: route.hash });
-    }
-    async function refreshComparison() {
-        const request = requestedComparison.value, revision = ++comparisonRevision;
-        await loadGalleryStorage();
-        if (unmounted || !viewActive || revision !== comparisonRevision || !request
-            || request !== requestedComparison.value || request === dismissedComparison) return;
-        await openRouteComparison();
-        if (unmounted || !viewActive || revision !== comparisonRevision) return;
-        comparisonOwner = compareOpen.value ? request : '';
-    }
-    let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository, comparisonSourceRevision = 0;
-    let comparisonWriteRevision = 0, galleryReadRevision = 0;
-    const comparisonMarkPending = ref(false), comparisonNeedsRead = ref(false);
-    const comparisonMarkOutcome = ref<'saved' | 'unconfirmed' | ''>('');
-    const comparisonMarksReading = computed(() => galleryLoading.value || galleryIndexLoading.value || comparisonReading.value);
-    function comparisonMetadataReady() {
-        return !unmounted && viewActive && !comparisonMarkPending.value && !comparisonNeedsRead.value
-            && !comparisonMarksReading.value && !galleryError.value;
-    }
-    function canMarkComparison() { return compareOpen.value && comparisonMetadataReady(); }
-    const comparisonMarksMessage = computed(() => {
-        if (comparisonMarkPending.value) return '';
-        if (comparisonMetadataReady()) return comparisonMarkOutcome.value === 'unconfirmed' ? '已重新读取作品册，请核对当前标记；此前操作未全部确认。' : '';
-        if (comparisonMarkOutcome.value === 'saved') return '标记已保存，但作品信息尚未重新读取。请先重新读取，不要重复保存。';
-        if (comparisonMarkOutcome.value === 'unconfirmed') return '标记结果未全部确认，请先重新读取作品册后核对，不要重复提交。';
-        return '作品信息尚未就绪，请重新读取后再标记。';
-    });
-    async function retryComparisonMarks() {
-        if (!unmounted && viewActive && compareOpen.value && !comparisonMarkPending.value && !comparisonMarksReading.value) await loadGalleryStorage();
-    }
-    async function saveComparisonMarks(write: () => Promise<void>) {
-        if (!canMarkComparison()) return;
-        const sourceRevision = comparisonSourceRevision, source = artworkRepository, session = imageMediaSession();
-        const currentSource = () => sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession();
-        comparisonMarkPending.value = true; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = ''; comparisonWriteRevision++;
-        let saved = false;
-        try { await write(); saved = true; }
-        catch { /* Sequential desktop patches may have committed a prefix. Re-read, never replay. */ }
-        finally { comparisonMarkPending.value = false; comparisonWriteRevision++; }
-        // Modal close does not cancel an admitted write or lose its refresh
-        // requirement. Source invalidation, however, cannot refresh a new owner.
-        if (unmounted || !currentSource()) return;
-        comparisonMarkOutcome.value = saved ? 'saved' : 'unconfirmed';
-        if (viewActive) await loadGalleryStorage();
-    }
-    function refreshComparisonSession() {
-        const next = imageMediaSession();
-        if (next === comparisonSession && comparisonRepository === artworkRepository) return;
-        comparisonSession = next; comparisonRepository = artworkRepository;
-        comparisonSourceRevision++; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = '';
-        retireComparisonIntent();
-    }
-    const stopComparisonRuntime = onDesktopRuntime(refreshComparisonSession);
-    const stopComparisonResources = watch(runtimeResourceIdentity, refreshComparisonSession, { flush: 'sync' });
 
     const facts = computed(() => artworkFacts(current.value, sceneStore.loras));
     /* ---------- 工具函数 ---------- */
@@ -374,16 +302,12 @@ export function useGalleryWorkspace() {
     }
     /* ---------- 初始化 ---------- */
     async function loadGalleryStorage(): Promise<void> {
-        const read = ++galleryReadRevision, write = comparisonWriteRevision, sourceRevision = comparisonSourceRevision;
-        const source = artworkRepository, session = imageMediaSession(), comparison = comparisonRevision;
-        const isCurrent = () => !unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
-            && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
-            && comparison === comparisonRevision && !comparisonMarkPending.value;
+        const read = ++galleryReadRevision;
+        const isCurrent = captureReadGuard(() => !unmounted && viewActive && read === galleryReadRevision);
         if (galleryQuery.enabled.value) await galleryQuery.refresh();
         else await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
         if (!isCurrent() || galleryLoading.value || galleryIndexLoading.value || galleryError.value) return;
-        comparisonNeedsRead.value = true;
-        if (await refreshComparisonRecords(isCurrent) && isCurrent()) comparisonNeedsRead.value = false;
+        await syncComparisonAfterRead(isCurrent);
     }
     watch([() => route.path, () => sceneStore.version], ([path]) => {
         if (path === '/gallery') void Promise.all([sceneStore.loadCharacterDirectory(), sceneStore.loadSceneTitles(), sceneStore.loadLoraCatalog()])
@@ -437,7 +361,7 @@ export function useGalleryWorkspace() {
     onDeactivated(() => {
         stopIdleMediaListener();
         cancelGalleryStorageLoad(history);
-        viewActive = false; comparisonRevision++; cleanupFilterSync();
+        viewActive = false; bumpComparisonRevision(); cleanupFilterSync();
         // The optional comparison panel may still be loading and have no
         // child deactivation hook yet. Its owner must close the intent now.
         closeComparison();
@@ -458,8 +382,8 @@ export function useGalleryWorkspace() {
     onUnmounted(() => {
         stopIdleMediaListener();
         cancelGalleryStorageLoad(history);
-        unmounted = true; comparisonRevision++;
-        stopComparisonRuntime(); stopComparisonResources();
+        unmounted = true; bumpComparisonRevision();
+        stopComparisonFlow();
         cleanupFilterSync();
         stopCardObservation();
         document.removeEventListener('keydown', onKeydown);
@@ -486,16 +410,6 @@ export function useGalleryWorkspace() {
         scheduleWallScan();
     });
     watch(masonryGroups, scheduleWallScan);
-    // Filter URL sync replaces query too. Watch the two values independently so
-    // it cannot reload/remount the wall and detach an open viewer's focus target.
-    watch([requestedComparison, () => route.query.batch], ([request], [previous]) => {
-        comparisonRevision++;
-        if (request !== previous) {
-            dismissedComparison = '';
-            if (comparisonOwner) { comparisonOwner = ''; compareOpen.value = false; }
-        }
-        if (viewActive && route.path === '/gallery') void refreshComparison();
-    }, { flush: 'sync' });
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     const { copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }

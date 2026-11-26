@@ -260,6 +260,19 @@ function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] 
     fs.mkdirSync(path.dirname(item.recordFile), { recursive: true });
     buildPath(root, relativeInside(root, item.recordFile));
     fs.writeFileSync(item.recordFile, `${JSON.stringify(item.record, null, 2)}\n`);
+    if (item.project === 'node') {
+      for (const folder of ['scripts/maintenance', 'scripts/lib']) {
+        const dir = path.join(root, folder);
+        if (!fs.existsSync(dir)) continue;
+        for (const ent of fs.readdirSync(dir, { withFileTypes: true })) {
+          if (!ent.isFile() || !/\.(?:[cm]?js|d\.ts)$/.test(ent.name)) continue;
+          const relative = `${folder}/${ent.name}`;
+          if (item.contents.has(relative) || fs.existsSync(path.join(root, sourceForOutput(relative)))) continue;
+          const file = buildPath(root, relative);
+          if (fs.existsSync(file)) fs.unlinkSync(file);
+        }
+      }
+    }
   }
   if (!options.quiet) for (const result of results) {
     console.log(`[typescript] ${result.project}: ${result.sources} sources; ${options.check ? 'checked' : result.cached ? 'current' : `${result.outputs} outputs built`}`);

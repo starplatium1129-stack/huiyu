@@ -49,6 +49,42 @@ function desktopBuildEnvironment(root = ROOT, source: NodeJS.ProcessEnv = proces
   return env;
 }
 
+function inspectVersionSync(root: string): BuildCheck {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version as string;
+    const tauriConf = JSON.parse(fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/tauri.conf.json'), 'utf8')).version as string;
+    const cargoText = fs.readFileSync(path.join(root, 'desktop-tauri/src-tauri/Cargo.toml'), 'utf8');
+    const cargoMatch = cargoText.match(/^\[package\][\s\S]*?^version\s*=\s*"([^"]+)"/m);
+    const cargoVersion = cargoMatch?.[1] || '';
+    const synced = Boolean(pkg) && pkg === tauriConf && pkg === cargoVersion;
+    return {
+      name: 'Version Sync',
+      ready: synced,
+      detail: `package=${pkg} tauri.conf=${tauriConf} Cargo=${cargoVersion}`,
+      help: '保持 package.json、tauri.conf.json 与 desktop-tauri/src-tauri/Cargo.toml 版本号一致',
+    };
+  } catch (error) {
+    return {
+      name: 'Version Sync',
+      ready: false,
+      detail: error instanceof Error ? error.message : String(error),
+      help: '检查版本配置文件完整性',
+    };
+  }
+}
+
+function inspectRuntimeHygiene(root: string): BuildCheck {
+  const runtimeDir = path.join(root, 'runtime');
+  if (!fs.existsSync(runtimeDir)) {
+    return { name: 'Runtime Hygiene', ready: true, detail: 'runtime/ 未创建' };
+  }
+  const count = fs.readdirSync(runtimeDir).length;
+  const detail = count > 100
+    ? `runtime/ 顶层有 ${count} 项（可运行 npm run wf -- runtime:clean 预览清理）`
+    : `runtime/ 顶层 ${count} 项`;
+  return { name: 'Runtime Hygiene', ready: true, detail };
+}
+
 function inspectDesktopBuildEnvironment(options: EnvironmentOptions = {}) {
   const root = options.root || ROOT;
   const env = desktopBuildEnvironment(root, options.env || process.env);
@@ -70,6 +106,8 @@ function inspectDesktopBuildEnvironment(options: EnvironmentOptions = {}) {
   const sdkRoot = env.LIVE2D_CUBISM_SDK_DIR || '';
   add('Cubism Native R5', sdkRoot && SDK_PARTS.every(part => fs.existsSync(path.join(sdkRoot, part))), sdkRoot,
     '将官方 CubismSdkForNative-5-r.5 放在 runtime/desktop-build-sdk/，或设置 LIVE2D_CUBISM_SDK_DIR');
+  checks.push(inspectVersionSync(root));
+  checks.push(inspectRuntimeHygiene(root));
   return { ready: checks.every(check => check.ready), checks, sdkRoot };
 }
 
