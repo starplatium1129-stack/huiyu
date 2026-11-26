@@ -5,28 +5,49 @@ export interface LensDimensions {
   rim: number
 }
 
-/** Encode a rounded lens into red/green offsets; its centre stays undistorted.
- * This is a small geometry texture, never a screenshot or a copy of UI content. */
+/** Encode a convex liquid-glass bezel into red/green displacement offsets.
+ * The bevel bends smoothly like a thick water droplet while the reading center
+ * stays optically flat so text remains sharp. */
 async function lensMap({ width, height, radius, rim }: LensDimensions) {
-  const ratio = Math.min(1, 1024 / width, 768 / height, Math.sqrt(180000 / (width * height)))
+  const ratio = Math.min(1, 1024 / width, 768 / height, Math.sqrt(200000 / (width * height)))
   const canvas = new OffscreenCanvas(Math.max(1, Math.ceil(width * ratio)), Math.max(1, Math.ceil(height * ratio)))
   const context = canvas.getContext('2d')
   if (!context) return
   const pixels = context.createImageData(canvas.width, canvas.height)
+  const halfW = width / 2
+  const halfH = height / 2
+  const innerW = Math.max(0, halfW - radius)
+  const innerH = Math.max(0, halfH - radius)
+
   for (let y = 0; y < canvas.height; y++) {
+    const py = (y + .5) * height / canvas.height - halfH
+    const qy = Math.abs(py) - innerH
+    const cy = Math.max(qy, 0)
     for (let x = 0; x < canvas.width; x++) {
-      const px = (x + .5) * width / canvas.width - width / 2
-      const py = (y + .5) * height / canvas.height - height / 2
-      const qx = Math.abs(px) - (width / 2 - radius), qy = Math.abs(py) - (height / 2 - radius)
-      const cx = Math.max(qx, 0), cy = Math.max(qy, 0), length = Math.hypot(cx, cy)
+      const px = (x + .5) * width / canvas.width - halfW
+      const qx = Math.abs(px) - innerW
+      const cx = Math.max(qx, 0)
+      const length = Math.hypot(cx, cy)
       const depth = -(length + Math.min(Math.max(qx, qy), 0) - radius)
-      const bend = Math.pow(1 - Math.max(0, Math.min(1, depth / rim)), 1.8)
-      const nx = length > 0 ? cx / length : qx >= qy ? 1 : 0
-      const ny = length > 0 ? cy / length : qy > qx ? 1 : 0
+
+      let dx = 0
+      let dy = 0
+      if (depth >= 0 && depth < rim) {
+        // Polished crystal bevel: C2-smooth cubic falloff concentrated in the outer rim
+        // so the reading center remains 100% optically flat and distortion-free.
+        const u = 1 - depth / rim
+        const bend = u * u * (3 - 2 * u) * u
+        const nx = length > 0 ? cx / length : qx >= qy ? 1 : 0
+        const ny = length > 0 ? cy / length : qy > qx ? 1 : 0
+        dx = Math.sign(px) * nx * bend
+        dy = Math.sign(py) * ny * bend
+      }
+
       const index = (y * canvas.width + x) * 4
-      pixels.data[index] = Math.round(128 - Math.sign(px) * nx * bend * 127)
-      pixels.data[index + 1] = Math.round(128 - Math.sign(py) * ny * bend * 127)
-      pixels.data[index + 2] = 128; pixels.data[index + 3] = 255
+      pixels.data[index] = Math.round(128 - dx * 127)
+      pixels.data[index + 1] = Math.round(128 - dy * 127)
+      pixels.data[index + 2] = 128
+      pixels.data[index + 3] = 255
     }
   }
   context.putImageData(pixels, 0, 0)

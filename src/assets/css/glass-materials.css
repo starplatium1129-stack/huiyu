@@ -1,64 +1,130 @@
 @reference "./tailwind.css";
+/* Atelier Liquid Glass: clean Apple-style luminous crystal chrome, razor-sharp
+   Fresnel specular rims, subtle convex edge refraction, and tactile droplet pills. */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] {
-  --material-fill:color-mix(in srgb,var(--bg-surface) calc(70% + var(--glass-tint,.35) * 16%),transparent);
-  --material-blur:14px;
+  --material-fill:color-mix(in oklab,var(--bg-surface) calc(44% + var(--glass-tint,.35) * 34%),transparent);
+  --material-menu-fill:color-mix(in oklab,var(--bg-surface) calc(62% + var(--glass-tint,.35) * 24%),transparent);
+  --material-nav-fill:color-mix(in oklab,var(--bg-surface) calc(58% + var(--glass-tint,.35) * 26%),transparent);
+  --material-blur:22px;
+  --liquid-brightness:1.06;
+  --liquid-edge:color-mix(in oklab,var(--on-art-primary) 16%,var(--border-soft));
+  --liquid-rim-top:color-mix(in oklab,var(--on-art-primary) 26%,transparent);
+  --liquid-rim-ring:color-mix(in oklab,var(--on-art-primary) 10%,transparent);
+  --liquid-rim-bottom:color-mix(in oklab,var(--on-art-primary) 8%,transparent);
+  --liquid-sheen-a:color-mix(in oklab,var(--on-art-primary) 10%,transparent);
+  --liquid-sheen-b:color-mix(in oklab,var(--on-art-primary) 4%,transparent);
+  --liquid-track-fill:color-mix(in oklab,var(--ink-base) 34%,color-mix(in oklab,var(--bg-surface) 76%,transparent));
+  --liquid-track-inset:color-mix(in oklab,var(--ink-base) 36%,transparent);
+  --liquid-pill-fill:color-mix(in oklab,var(--on-art-primary) 12%,var(--bg-elevated));
+  --liquid-pill-edge:color-mix(in oklab,var(--on-art-primary) 22%,transparent);
+  --liquid-pill-shadow:0 1px 3px color-mix(in oklab,var(--ink-base) 34%,transparent),0 6px 14px -4px color-mix(in oklab,var(--ink-base) 42%,transparent);
+  --liquid-shadow:0 1px 2px color-mix(in oklab,var(--ink-base) 22%,transparent),0 10px 28px -8px color-mix(in oklab,var(--ink-base) 38%,transparent),0 22px 46px -18px color-mix(in oklab,var(--ink-base) 28%,transparent);
+  --liquid-nav-shadow:0 6px 24px -12px color-mix(in oklab,var(--ink-base) 44%,transparent);
 }
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'][data-theme='light'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(58% + var(--glass-tint,.35) * 20%),transparent); }
-/* Navigation sidebars sit behind dense labels, so use a heavier material. */
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] [data-fluid-glass='sidebar'] { --material-fill:color-mix(in srgb,var(--bg-surface) 88%,transparent); --material-blur:18px; }
-/* Atelier liquid material only: pixel wood and paper own their opaque fallbacks,
-   and switching back to light painted mode leaves no lingering overrides.
-   :where keeps the atelier's existing specificity across lazy CSS load order.
-   One material per floating group; text is original and never filtered or copied. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'][data-theme='light'] {
+  --material-fill:color-mix(in oklab,var(--on-art-primary) calc(56% + var(--glass-tint,.35) * 28%),transparent);
+  --material-menu-fill:color-mix(in oklab,var(--on-art-primary) calc(72% + var(--glass-tint,.35) * 20%),transparent);
+  --material-nav-fill:color-mix(in oklab,var(--on-art-primary) calc(68% + var(--glass-tint,.35) * 22%),transparent);
+  --liquid-brightness:1.02;
+  --liquid-edge:color-mix(in oklab,var(--on-art-primary) 72%,var(--border-strong));
+  --liquid-rim-top:color-mix(in oklab,var(--on-art-primary) 98%,transparent);
+  --liquid-rim-ring:color-mix(in oklab,var(--on-art-primary) 68%,transparent);
+  --liquid-rim-bottom:color-mix(in oklab,var(--on-art-primary) 46%,transparent);
+  --liquid-sheen-a:color-mix(in oklab,var(--on-art-primary) 42%,transparent);
+  --liquid-sheen-b:color-mix(in oklab,var(--on-art-primary) 18%,transparent);
+  --liquid-track-fill:color-mix(in oklab,var(--ink-base) 4.5%,color-mix(in oklab,var(--bg-surface) 88%,transparent));
+  --liquid-track-inset:color-mix(in oklab,var(--ink-base) 6%,transparent);
+  --liquid-pill-fill:color-mix(in oklab,var(--on-art-primary) 94%,var(--bg-surface));
+  --liquid-pill-edge:color-mix(in oklab,var(--on-art-primary) 92%,var(--border-soft));
+  --liquid-pill-shadow:0 1px 2px color-mix(in oklab,var(--ink-base) 7%,transparent),0 4px 10px -2px color-mix(in oklab,var(--ink-base) 9%,transparent);
+  --liquid-shadow:0 1px 2px color-mix(in oklab,var(--ink-base) 5%,transparent),0 10px 26px -8px color-mix(in oklab,var(--ink-base) 11%,transparent),0 20px 42px -18px color-mix(in oklab,var(--ink-base) 8%,transparent);
+  --liquid-nav-shadow:0 4px 18px -10px color-mix(in oklab,var(--ink-base) 10%,transparent);
+}
+
+/* Navigation sidebars sit behind dense labels, so keep a steady frosted body. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] [data-fluid-glass='sidebar'] {
+  --material-fill:color-mix(in oklab,var(--bg-surface) calc(68% + var(--glass-tint,.35) * 20%),transparent);
+  --material-blur:24px;
+}
+
+/* Floating liquid-glass surfaces: nav, popovers, docks, and viewer pills (never inline segments). */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
-  border-color:var(--glass-edge); background:var(--material-fill); box-shadow:var(--shadow-glass-sm);
-  --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface));
-  -webkit-backdrop-filter:blur(var(--material-blur)) saturate(145%);
-  backdrop-filter:blur(var(--material-blur)) saturate(145%);
+  border-color:var(--liquid-edge);
+  background:linear-gradient(148deg,var(--liquid-sheen-a) 0%,transparent 44%,var(--liquid-sheen-b) 100%),var(--material-fill);
+  box-shadow:inset 0 1px 0 var(--liquid-rim-top),inset 0 0 0 0.5px var(--liquid-rim-ring),inset 0 -1px 0 var(--liquid-rim-bottom),var(--liquid-shadow);
+  --accent-soft:color-mix(in oklab,var(--accent) 14%,var(--bg-surface));
+  -webkit-backdrop-filter:blur(var(--material-blur)) saturate(180%) brightness(var(--liquid-brightness));
+  backdrop-filter:blur(var(--material-blur)) saturate(180%) brightness(var(--liquid-brightness));
 }
-/* Menus share the selected glass tint; edge light and elevation define the floating layer. */
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)):is(.studio-select-content,.studio-popover,.chat-more-menu) {
-  box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--glass-edge),var(--shadow-md);
+
+/* Top navigation bar: crisp luminous full-width crystal ribbon without edge warp. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .nav {
+  background:linear-gradient(180deg,var(--liquid-sheen-a) 0%,transparent 55%),var(--material-nav-fill);
+  border-bottom-color:var(--liquid-edge);
+  box-shadow:inset 0 1px 0 var(--liquid-rim-top),inset 0 -1px 0 var(--liquid-rim-bottom),var(--liquid-nav-shadow);
+  -webkit-backdrop-filter:blur(24px) saturate(185%) brightness(var(--liquid-brightness));
+  backdrop-filter:blur(24px) saturate(185%) brightness(var(--liquid-brightness));
 }
-/* A curved optical rim on chrome only; the central tint protects original ink.
-   The SVG filter displaces the backdrop, never the control or its descendants. */
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] {
-  --liquid-rim:color-mix(in srgb,var(--on-art-primary) 48%,transparent);
-  --liquid-rim-soft:color-mix(in srgb,var(--on-art-primary) 15%,transparent);
-  --liquid-depth:color-mix(in srgb,var(--ink-base) 38%,transparent);
+
+/* Menus and popovers float above dense UI: instant GPU-native frosted crystal with zero decode flicker. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav-more-menu,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)):is(.studio-select-content,.studio-popover,.chat-more-menu,.wardrobe-menu)) {
+  --material-fill:var(--material-menu-fill);
+  isolation:isolate;
+  box-shadow:inset 0 1px 0 var(--liquid-rim-top),inset 0 0 0 0.5px var(--liquid-rim-ring),inset 0 -1px 0 var(--liquid-rim-bottom),var(--liquid-shadow);
+  -webkit-backdrop-filter:blur(28px) saturate(185%) brightness(var(--liquid-brightness));
+  backdrop-filter:blur(28px) saturate(185%) brightness(var(--liquid-brightness));
 }
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'][data-theme='light'] {
-  --liquid-rim:color-mix(in srgb,var(--on-art-primary) 88%,transparent);
-  --liquid-rim-soft:color-mix(in srgb,var(--on-art-primary) 48%,transparent);
-  --liquid-depth:color-mix(in srgb,var(--ink-base) 15%,transparent);
-}
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome:is(.nav,.companion-toolbar,[data-fluid-glass]) {
-  background:linear-gradient(118deg,var(--liquid-rim-soft),transparent 34% 72%,var(--glass-specular)),var(--material-fill);
-  box-shadow:inset 0 1px 0 var(--liquid-rim),inset 1px 0 0 var(--liquid-rim-soft),inset -1px 0 0 var(--glass-edge),inset 0 -1px 0 var(--liquid-depth),inset 0 -2px 2px -1px var(--liquid-rim-soft),inset 0 0 14px -9px var(--liquid-rim),var(--glass-shadow);
-  -webkit-backdrop-filter:blur(4px) saturate(145%);
-  backdrop-filter:blur(4px) saturate(145%);
-}
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu) {
-  --material-fill:color-mix(in srgb,var(--bg-surface) calc(78% + var(--glass-tint,.35) * 12%),transparent);
+
+/* Rounded floating optical chrome over artwork/canvas: crisp Fresnel rim + pre-decoded convex edge lens. */
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome:is(.companion-toolbar,[data-fluid-glass]) {
+  isolation:isolate;
+  -webkit-backdrop-filter:blur(18px) saturate(185%) brightness(var(--liquid-brightness));
+  backdrop-filter:blur(18px) saturate(185%) brightness(var(--liquid-brightness));
 }
 :root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
-  -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(145%);
-  backdrop-filter:var(--fluid-glass-filter) saturate(145%);
+  -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(175%) brightness(var(--liquid-brightness));
+  backdrop-filter:var(--fluid-glass-filter) saturate(175%) brightness(var(--liquid-brightness));
 }
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .nav.fluid-glass-chrome { box-shadow:inset 0 1px 0 var(--liquid-rim-soft),inset 0 -1px 0 var(--liquid-rim),0 6px 22px -12px var(--liquid-depth); }
+
+/* Inline segmented controls stay clean inside panels: subtle recessed glass well + floating liquid droplet pill. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .studio-segments[role] {
+  border-color:var(--border-soft);
+  background:var(--liquid-track-fill);
+  box-shadow:inset 0 1px 2px var(--liquid-track-inset),inset 0 -1px 0 var(--liquid-rim-bottom);
+}
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav-links,.studio-segments[role]) .animated-selection:not(.animated-selection--underline):not(.animated-selection--bookmark) {
+  border-color:var(--liquid-pill-edge);
+  background:linear-gradient(155deg,var(--liquid-sheen-a) 0%,transparent 58%,var(--liquid-sheen-b) 100%),var(--liquid-pill-fill);
+  box-shadow:inset 0 1px 0 var(--liquid-rim-top),inset 0 -1px 0 var(--liquid-rim-bottom),var(--liquid-pill-shadow);
+}
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav-links,.studio-segments[role]) .animated-selection-highlight {
+  background:linear-gradient(104deg,transparent 14%,var(--liquid-rim-ring) 40%,var(--liquid-rim-top) 52%,var(--liquid-rim-ring) 64%,transparent 86%);
+}
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .nav .nav-links .animated-selection { border:0; }
+
+/* Tactile press feedback on standalone floating glass buttons. */
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.viewer-close,.viewer-nav,.viewer-mode-switch,.directory-pocket)[data-fluid-glass] {
+  transition:transform var(--spring-press-duration) var(--spring-press-ease);
+}
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.viewer-close,.viewer-nav,.viewer-mode-switch,.directory-pocket)[data-fluid-glass]:active:not(:disabled) {
+  transform:scale(0.94);
+}
+
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)) .studio-select-item[data-state='checked']:not([data-disabled]) {
   color:var(--text-primary);
 }
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .nav .nav-links .animated-selection { border:0; }
+
 /* Only nested glass surfaces share a backdrop. Painted fields keep their own fill. */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.companion-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)) {
-  background:color-mix(in srgb,var(--bg-surface) 18%,transparent); box-shadow:none;
+  background:color-mix(in oklab,var(--bg-surface) 22%,transparent);
+  box-shadow:inset 0 1px 0 var(--liquid-rim-ring);
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) :is(button:disabled,.badge) { background:var(--bg-surface); }
+
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] { --material-fill:var(--bg-surface); }
+  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] { --material-fill:var(--bg-surface); --material-menu-fill:var(--bg-surface); --material-nav-fill:var(--bg-surface); }
 }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid']:is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
   background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;

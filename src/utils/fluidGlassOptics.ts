@@ -1,9 +1,31 @@
 import type { LensDimensions } from './fluidGlassLens.worker'
 
-const CHROME_SELECTOR = '.nav, .companion-toolbar, .studio-popover[data-fluid-glass], .studio-select-content[data-fluid-glass], .chat-more-menu[data-fluid-glass], .wardrobe-menu[data-fluid-glass], .gallery-selection-dock[data-fluid-glass], .gallery-orbit-navigation[data-fluid-glass]'
+const CHROME_SELECTOR = [
+  '.companion-toolbar',
+  '.gallery-selection-dock[data-fluid-glass]',
+  '.gallery-orbit-navigation[data-fluid-glass]',
+  '.drawing-jump-links[data-fluid-glass]',
+  '.viewer-close[data-fluid-glass]',
+  '.viewer-nav[data-fluid-glass]',
+  '.viewer-mode-switch[data-fluid-glass]',
+  '.directory-pocket[data-fluid-glass]',
+].join(', ')
 const OPTICS_SELECTOR = CHROME_SELECTOR
 const SVG_NS = 'http://www.w3.org/2000/svg'
 let sequence = 0
+
+function preloadMap(dataUrl: string): Promise<void> {
+  return new Promise(resolve => {
+    const img = new Image()
+    img.src = dataUrl
+    if (typeof img.decode === 'function') {
+      img.decode().then(() => resolve(), () => resolve())
+    } else {
+      img.onload = () => resolve()
+      img.onerror = () => resolve()
+    }
+  })
+}
 
 /** Static backdrop refraction is sized only on mount/resize. Pointer motion
  * continues to use the existing transform/opacity light, never animated filters. */
@@ -54,21 +76,30 @@ export function mountFluidGlassOptics(): () => void {
     const filter = state.filter ?? document.createElementNS(SVG_NS, 'filter')
     if (!state.filter) { filter.id = `atelier-glass-${++sequence}`; defs.append(filter); state.filter = filter }
     filter.setAttribute('filterUnits', 'userSpaceOnUse'); filter.setAttribute('primitiveUnits', 'userSpaceOnUse')
-    filter.setAttribute('x', '-24'); filter.setAttribute('y', '-24')
-    filter.setAttribute('width', String(width + 48)); filter.setAttribute('height', String(height + 48))
+    filter.setAttribute('x', '-16'); filter.setAttribute('y', '-16')
+    filter.setAttribute('width', String(width + 32)); filter.setAttribute('height', String(height + 32))
     filter.setAttribute('color-interpolation-filters', 'sRGB')
     const blur = document.createElementNS(SVG_NS, 'feGaussianBlur')
-    blur.setAttribute('in', 'SourceGraphic'); blur.setAttribute('stdDeviation', '3.2'); blur.setAttribute('result', 'softened')
+    blur.setAttribute('in', 'SourceGraphic')
+    blur.setAttribute('stdDeviation', '5.5')
+    blur.setAttribute('result', 'softened')
     const image = document.createElementNS(SVG_NS, 'feImage')
     image.setAttribute('x', '0'); image.setAttribute('y', '0')
     image.setAttribute('href', map); image.setAttribute('width', String(width)); image.setAttribute('height', String(height))
     image.setAttribute('preserveAspectRatio', 'none'); image.setAttribute('result', 'lens')
+    // Single-pass neutral displacement preserves true backdrop colors and crisp edges
+    // without chromatic text fringing or multi-stage premultiplied alpha artifacts.
     const bend = document.createElementNS(SVG_NS, 'feDisplacementMap')
-    bend.setAttribute('in', 'softened'); bend.setAttribute('in2', 'lens'); bend.setAttribute('scale', String(rim * 2.2))
+    bend.setAttribute('in', 'softened'); bend.setAttribute('in2', 'lens')
+    bend.setAttribute('scale', Math.min(16, rim * 1.35).toFixed(2))
     bend.setAttribute('xChannelSelector', 'R'); bend.setAttribute('yChannelSelector', 'G')
     filter.replaceChildren(blur, image, bend)
-    element.style.setProperty('--fluid-glass-filter', `url("#${filter.id}")`)
-    element.classList.add('fluid-glass-refractive')
+    const geometry = state.geometry
+    void preloadMap(map).then(() => {
+      if (!element.isConnected || surfaces.get(element) !== state || state.geometry !== geometry) return
+      element.style.setProperty('--fluid-glass-filter', `url("#${filter.id}")`)
+      element.classList.add('fluid-glass-refractive')
+    })
   }
 
   function stopWorker() {
@@ -100,7 +131,7 @@ export function mountFluidGlassOptics(): () => void {
         worker.onmessageerror = stopWorker
         worker.onmessage = (event: MessageEvent<string | null>) => {
           if (!workingOn) return
-          if (maps.size >= 8) maps.delete(maps.keys().next().value!)
+          if (maps.size >= 16) maps.delete(maps.keys().next().value!)
           maps.set(workingOn, event.data)
           workingOn = undefined
           updateMaps()
@@ -127,7 +158,7 @@ export function mountFluidGlassOptics(): () => void {
       if (!state || !element.isConnected || !width || !height || !filters) continue
       const geometry = `${width}:${height}:${radius}`
       if (state.geometry === geometry) continue
-      const rim = Math.min(12, Math.max(4, Math.min(width, height) * .16))
+      const rim = Math.min(13, Math.max(7, Math.min(width, height) * .18))
       state.geometry = geometry
       state.requested = { width, height, radius, rim }
     }

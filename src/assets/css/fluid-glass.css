@@ -2,9 +2,10 @@
 .fluid-glass-definitions { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
 .fluid-glass-positioned { position:relative; }
 .fluid-glass-lit { isolation:isolate; }
-.fluid-glass-optics { position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; }
-.fluid-glass-sheen { position:absolute; left:50%; top:50%; width:min(300px,120%); height:min(140px,180%); border-radius:50%; opacity:0; pointer-events:none;
-  background:radial-gradient(ellipse,var(--on-art-primary),transparent 65%); transform:translate3d(-50%,-50%,0);
+.fluid-glass-optics { position:absolute; inset:0; z-index:var(--z-base); overflow:hidden; border-radius:inherit; pointer-events:none; mix-blend-mode:soft-light; }
+.fluid-glass-sheen { position:absolute; left:50%; top:50%; width:min(280px,115%); height:min(140px,170%); border-radius:50%; opacity:0; pointer-events:none;
+  background:radial-gradient(ellipse at center,var(--on-art-primary) 0%,color-mix(in oklab,var(--on-art-primary) 34%,transparent) 34%,transparent 72%);
+  transform:translate3d(-50%,-50%,0);
   transition:opacity var(--motion-hover) var(--ease-out); }
 @media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .fluid-glass-sheen { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .fluid-glass-sheen { transition:none; }

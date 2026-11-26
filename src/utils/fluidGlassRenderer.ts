@@ -1,7 +1,7 @@
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 import { mountFluidGlassOptics } from './fluidGlassOptics'
 
-// Match the material opt-ins: painted browse controls and segments never own optics.
+// Match floating glass chrome only; inline segmented controls stay clean inside panels.
 const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))'
 
 /** Native backdrop filters paint the material. JS moves one compositor light. */
@@ -40,8 +40,11 @@ export function mountFluidGlass(): () => void {
       frame = 0
       if (!active?.element.isConnected) { clear(); return }
       const { box, light } = active
-      light.style.transform = `translate3d(calc(-50% + ${x - box.left - box.width / 2}px),calc(-50% + ${y - box.top - box.height / 2}px),0)`
-      light.style.opacity = pressed ? '.18' : '.10'
+      const dx = x - box.left - box.width / 2
+      const dy = y - box.top - box.height / 2
+      const scale = pressed ? ' scale(1.12)' : ''
+      light.style.transform = `translate3d(calc(-50% + ${dx}px),calc(-50% + ${dy}px),0)${scale}`
+      light.style.opacity = pressed ? '.36' : '.22'
     })
   }
   function move(event: PointerEvent) {

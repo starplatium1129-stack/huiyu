@@ -222,22 +222,25 @@ function render() {
     // elongates during long leaps and tapers softly to 0 without cusps on overshoot.
     const dx = targetX - left
     const distX = Math.abs(dx)
+    const liquid = document.documentElement.dataset.glassMaterial === 'liquid'
     let extension = 0
     let leadingLeft = left
-    if (props.stretch && !keyboardInput && distX > 0.5) {
+    let squishY = 1
+    if ((props.stretch || liquid) && !keyboardInput && distX > 0.5) {
       const ramp = Math.min(1, distX / Math.max(24, baseWidth * 0.6))
       const eased = ramp * ramp * (3 - 2 * ramp)
-      extension = Math.min(baseWidth * 0.48, distX * 0.26 * eased)
+      extension = Math.min(baseWidth * (liquid ? 0.56 : 0.48), distX * (liquid ? 0.30 : 0.26) * eased)
       leadingLeft = dx < 0 ? left - extension : left
+      if (liquid) squishY = 1 - Math.min(0.08, (extension / Math.max(1, baseWidth)) * 0.22)
     }
-    el.style.transform = `translate(${leadingLeft}px,${top}px) scale(${(width + extension) / baseWidth},${height / baseHeight})`
+    el.style.transform = `translate(${leadingLeft}px,${top}px) scale(${(width + extension) / baseWidth},${(height / baseHeight) * squishY})`
     // Light travels with the existing geometry spring and disappears when settled.
     // No timer, layout read, restarting keyframe or extra animation loop on rapid input.
     const light = highlight.value
     if (light) {
       const energy = Math.min(1, Math.hypot(dx, targetY - top, (baseWidth - width) * 0.5, (baseHeight - height) * 0.5) / Math.max(40, baseWidth))
-      light.style.opacity = String(energy * 0.42)
-      light.style.transform = `translateX(${Math.sign(dx) * energy * 14}%)`
+      light.style.opacity = String(energy * (liquid ? 0.85 : 0.42))
+      light.style.transform = `translateX(${Math.sign(dx) * energy * (liquid ? 22 : 14)}%)`
     }
   }, SELECTION_SPRING.frequency, SELECTION_SPRING.damping)
   // Layout changes under the same selection snap. Selecting another control
