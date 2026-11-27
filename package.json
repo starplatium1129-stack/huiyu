@@ -1,6 +1,6 @@
 {
   "name": "huiyu",
-  "version": "2.3.0",
+  "version": "1.0.0",
   "private": true,
   "author": "绘遇 HUIYU",
   "description": "绘遇 AI CG 创作工作台，支持多角色同框、深度酒馆、Live2D、图片与视频生成及多引擎独立推理",
