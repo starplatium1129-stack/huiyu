@@ -67,7 +67,7 @@
       </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
       <div ref="listRoot" class="pop-grid">
-        <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
+        <article v-for="(blueprint, index) in paged" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id" :data-list-key="blueprint.id"
           :style="{ '--scene-preview-ratio': previewRatio(blueprint) }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
@@ -75,7 +75,7 @@
           <button class="pop-thumb" :class="{ 'is-missing': failed, 'is-r18': visibleSampleRating(blueprint) === 'R18' }" type="button"
             :aria-label="`欣赏场景：${blueprint.title}`" @click="openPreview(blueprint, $event)">
             <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
-            <img v-if="image.src" v-bind="image" alt="" loading="lazy" decoding="async"
+            <img v-if="image.src" v-bind="image" alt="" :loading="index < 6 ? 'eager' : 'lazy'" :fetchpriority="index < 6 ? undefined : 'low'" decoding="async"
               :class="{
                 'pop-thumb-r18': visibleSampleRating(blueprint) === 'R18',
                 'pop-thumb-missing': failed,
@@ -155,7 +155,7 @@ import { useListTransition } from '@/composables/useListTransition'
 import { useBrowseSearch } from '@/composables/useBrowseSearch'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, nextTick, onUnmounted, watch } from 'vue'
+import { ref, computed, nextTick, onActivated, onDeactivated, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -203,17 +203,21 @@ const openingFilters = routeFilters()
 const { query, settledQuery, restoreQuery } = useBrowseSearch(openingFilters.q)
 const category = ref(openingFilters.category)
 const ratingFilter = ref(openingFilters.rating)
-let pendingRouteWrite: ReturnType<typeof routeFilters> | null = null
+type RouteFilters = ReturnType<typeof routeFilters>
+function sameFilters(a: RouteFilters, b: RouteFilters) {
+  return a.q === b.q && a.category === b.category && a.rating === b.rating
+}
+let pendingRouteWrite: RouteFilters | null = null
 watch(routeFilters, filters => {
   if (route.path !== '/popular-scenes') return
-  if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) return
+  if (pendingRouteWrite && sameFilters(pendingRouteWrite, filters)) return
   pendingRouteWrite = null
   restoreQuery(filters.q); category.value = filters.category; ratingFilter.value = filters.rating
 }, { flush: 'sync' })
 watch([settledQuery, category, ratingFilter], () => {
   if (route.path !== '/popular-scenes') return
   const filters = { q: settledQuery.value, category: category.value, rating: ratingFilter.value }
-  if (JSON.stringify(filters) === JSON.stringify(routeFilters())) return
+  if (sameFilters(filters, routeFilters())) return
   const next = { ...route.query }
   if (filters.q) next.q = filters.q; else delete next.q
   if (filters.category !== 'all') next.category = filters.category; else delete next.category
@@ -351,14 +355,17 @@ function setDetailsOpen(id: string, event: Event) {
   else openDetails.value.delete(id)
 }
 watch([selectedId, settledQuery, category, ratingFilter], () => { visibleCount.value = 24; previewId.value = null })
-watch(loadSentinel, element => {
+function observeLoadSentinel(element: HTMLElement | null) {
   moreObserver?.disconnect()
   if (!element) return
   moreObserver ??= new IntersectionObserver(entries => {
     if (entries.some(entry => entry.isIntersecting)) loadMore()
   }, { rootMargin: '600px' })
   moreObserver.observe(element)
-}, { flush: 'post' })
+}
+watch(loadSentinel, observeLoadSentinel, { flush: 'post' })
+onActivated(() => observeLoadSentinel(loadSentinel.value))
+onDeactivated(() => { moreObserver?.disconnect(); previewId.value = null })
 onUnmounted(() => moreObserver?.disconnect())
 
 function selectCharacter(id: string) {
@@ -398,7 +405,7 @@ async function init() {
     if (revision !== loadRevision) return
     if (selectedId.value) await sceneStore.loadBlueprintCharacter(selectedId.value)
     if (revision === loadRevision && !sceneStore.popularCharacters.length) {
-      void sceneStore.loadPopularCharacters().catch(() => {})
+      void sceneStore.loadPopularCharacters('low').catch(() => {})
     }
   } catch (error) {
     if (revision === loadRevision) loadError.value = error instanceof Error ? error.message : String(error)

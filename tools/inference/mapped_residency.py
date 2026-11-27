@@ -33,7 +33,8 @@ class Residency(memory.Residency):
             import torch
             self.cast_reserve = max((sum(t.numel() * 2 for t in module.parameters(recurse=False)
                 if t.dtype == torch.float8_e4m3fn) for component in self.modules.values()
-                for module in component.modules()), default=0)
+                for module in component.modules() if not (getattr(module, "_huiyu_packed_linear", False)
+                                                          and module.fast)), default=0)
         self.report["strategy"] = "mapped-retained-offload-v1"
 
     def add(self, name, module):
@@ -240,12 +241,15 @@ class Residency(memory.Residency):
             if record["name"] != "transformer":
                 self.restore(record)
 
-    def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels, available_bytes=None):
+    def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels, available_bytes=None,
+             capacity_bytes=None, lookahead_bytes=None, activation_bytes=None):
         import torch
         self.control = control
         self.decode_reserve = max(1024**3, decode_pixels * 1536)
         torch.cuda.empty_cache()
         free, _ = torch.cuda.mem_get_info()
+        if callable(available_bytes):
+            available_bytes = available_bytes()
         owned = {id(tensor): tensor for module in self.modules.values()
                  for tensor in (*module.parameters(), *module.buffers()) if tensor.device.type == "cuda"}
         # Cold loading has no denoiser to preserve: let the first text pass use
@@ -253,13 +257,21 @@ class Residency(memory.Residency):
         # weights instead of uploading the same denoiser again after every edit.
         self.retain_components = self.retention_requested and any(
             tensor.device.type == "cuda" for tensor in self.modules["transformer"].parameters())
-        reserve = activation_reserve(pixels, image_conditioned) + self.cast_reserve
-        if self.stream_text:
-            # The Krea denoiser has large joint-attention blocks. Leave another
+        workspace = activation_reserve(pixels, image_conditioned) if activation_bytes is None else activation_bytes
+        reserve = workspace + self.cast_reserve
+        if lookahead_bytes is not None:
+            # The ordinary streamed group below pays for the current device
+            # slot. Only the additional, concurrent lookahead is charged here.
+            reserve += lookahead_bytes
+        elif self.stream_text:
+            # These denoisers have large joint-attention blocks. Leave another
             # block of headroom for transient allocations on shared desktops.
             reserve += self.block_reserves.get("transformer", 0)
         allocatable = min(free, available_bytes) if available_bytes is not None else free
-        budget = max(0, allocatable + sum(t.numel() * t.element_size() for t in owned.values()) - reserve)
+        capacity = allocatable + sum(t.numel() * t.element_size() for t in owned.values())
+        if capacity_bytes is not None:
+            capacity = min(capacity, capacity_bytes)
+        budget = max(0, capacity - reserve)
         self.report.update(freeBytes=free, activationReserveBytes=reserve, weightBudgetBytes=budget)
         remaining = budget
         text_stream = max((record["bytes"] for record in self.records
@@ -274,7 +286,7 @@ class Residency(memory.Residency):
             if not records:
                 continue
             component_budget = remaining if self.retain_components else budget
-            if self.retain_components and row["name"] == "transformer":
+            if self.retain_components and row["name"] == "transformer" and lookahead_bytes is None:
                 component_budget = max(0, component_budget - text_stream)
             streamed = self.block_reserves[row["name"]]
             for _ in range(2):
@@ -328,3 +340,69 @@ class Residency(memory.Residency):
         self.copy_events.clear()
         self.block_reserves.clear()
         self.control = None
+
+
+class QwenResidency(Residency):
+    """Bound the BF16 image pipeline on WDDM, including its full-frame VAE."""
+    capacity = None
+
+    def plan(self, pixels, *, image_conditioned, control, decode_pixels):
+        import os
+        import torch
+        self.target_pixels = decode_pixels if image_conditioned else 0
+        self.capacity = headroom = None
+        if os.name == "nt":
+            total = torch.cuda.get_device_properties(self.device).total_memory
+            self.capacity = total - min(total // 4, 4 * 1024**3)
+            commit = load_sibling("video_memory").available_commit()
+            if commit is not None:
+                headroom = max(0, commit - 2 * 1024**3)
+        super().plan(pixels, image_conditioned=image_conditioned, control=control, decode_pixels=decode_pixels,
+                     available_bytes=headroom, capacity_bytes=self.capacity)
+
+    def retain_for_target(self, prefix_layer_bytes, staging_layer_bytes):
+        """Trade expired reference-prefill workspace for repeatedly streamed DiT weights."""
+        import torch
+        if not self.target_pixels or self.capacity is None or self.active != "transformer":
+            return 0
+        # The target still attends to the prefix. Leave room for one joined
+        # K/V pair, two upload slots and the ordinary target-only workspace.
+        block_bytes = self.block_reserves["transformer"]
+        reserve = activation_reserve(self.target_pixels, False) + block_bytes + prefix_layer_bytes + 2 * staging_layer_bytes
+        savings = self.report["activationReserveBytes"] - reserve
+        if not block_bytes or savings < block_bytes:
+            return 0
+        device = self.device
+        used = torch.cuda.memory_allocated(device)
+        free, _ = torch.cuda.mem_get_info(device)
+        reusable = torch.cuda.memory_reserved(device) - used
+        available = min(self.capacity - used, free + reusable - 1024**3)
+        commit = load_sibling("video_memory").available_commit()
+        if commit is not None:
+            available = min(available, max(0, commit - 2 * 1024**3))
+        # Limit growth to half the expired prefill arena after K/V staging.
+        # The remaining slabs can be reused by the target's transient kernels.
+        expired = max(0, reusable - prefix_layer_bytes - 2 * staging_layer_bytes)
+        room = min(savings, available - reserve - block_bytes, expired // 2)
+        main_blocks = set(self.modules["transformer"].transformer_blocks)
+        promoted = 0
+        for record in self.records:
+            modules = record["group"].modules
+            if (not record["keep"] and 0 < record["bytes"] <= room and len(modules) == 1
+                    and modules[0] in main_blocks):
+                record["keep"] = True  # Uploaded by its normal next-use hook.
+                promoted += record["bytes"]
+                room -= record["bytes"]
+        if promoted:
+            # The long-lived weights need contiguous slabs. Release fragmented
+            # prefill scratch once at the phase boundary before their first use.
+            torch.cuda.empty_cache()
+        return promoted
+
+    def make_room(self, required):
+        import torch
+        if self.capacity is not None:
+            free, _ = torch.cuda.mem_get_info(self.device)
+            allowed = max(0, self.capacity - torch.cuda.memory_reserved(self.device))
+            required += max(0, free - allowed)
+        super().make_room(required)

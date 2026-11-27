@@ -326,6 +326,7 @@ async fn attempt(
         let idle = Duration::from_secs(match plan.input["family"].as_str() {
             Some("moss-image") if value.is_ok() && plan.input["mossUpscaleScale"].is_null() => 300,
             Some("moss-image") => 90,
+            Some("krea2") => 45,
             _ => 600,
         });
         Engine::retain_worker(inner.clone(), worker, idle).await;

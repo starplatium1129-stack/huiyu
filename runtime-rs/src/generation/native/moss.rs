@@ -217,6 +217,8 @@ pub(super) fn execution(value: &Value) -> Option<Value> {
     Some(
         json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
         "sampler":sampler,"scheduler":scheduler,"textPrecision":precision,"weightPrecision":weights,"quantizedLinearCount":quantized,
+        "fusedActivationCalls":value["fusedActivationCalls"].as_u64().filter(|n| *n <= 100_000).unwrap_or(0),
+        "fusedRopeCalls":value["fusedRopeCalls"].as_u64().filter(|n| *n <= 100_000).unwrap_or(0),
         "timings":timings,"contextCache":cache,"compile":compile,"performanceVerified":false}),
     )
 }

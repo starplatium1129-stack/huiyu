@@ -15,8 +15,14 @@
   border-radius:var(--r-lg);
   background:var(--bg-surface);
   box-shadow:var(--workspace-inset);
+}
+/* Defer layout and paint only for cards below the initial viewport. */
+.pop-grid > .pop-card:nth-child(n+9) {
   content-visibility: auto;
-  contain-intrinsic-size:auto calc(var(--scene-row-height) + 180px);
+  contain-intrinsic-size: auto none auto calc(var(--scene-row-height) + 180px);
+}
+@supports not (content-visibility: auto) {
+  .pop-grid > .pop-card:nth-child(n+9) { contain: layout style paint; }
 }
 .pop-card:focus-within { @apply tw:border-strong; }
 /* Reserve the planned frame while loading; contain keeps the whole thumbnail visible. */

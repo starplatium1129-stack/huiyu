@@ -145,10 +145,10 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     images = []
     success = False
     try:
-        def load_pipeline():
+        def load_pipeline(model_identity, protection):
             return _loading.load_adapter_pipeline(root, spec, data, policy, control, is_video=is_video,
                 video_device=video_device, device_backend=device_backend, memory_pixels=memory_pixels,
-                conditioned=conditioned, render_pixels=render_pixels)
+                conditioned=conditioned, render_pixels=render_pixels, model_identity=model_identity, protection=protection)
 
         pipeline, identity, reused = cache.acquire(root, spec, data, policy, control,
             lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},
@@ -210,6 +210,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         def on_step(pipe, step, timestep, callback_kwargs):
             total = pipe.num_timesteps if spec["family"] == "qwen-image" else data["steps"]
             control.progress(step + 1, total)
+            if spec["family"] == "krea2" and policy == "offload":
+                cache.memory.step_finished(step + 1, total)
             if step + 1 == total:
                 if prefix is not None:
                     prefix.retire()
@@ -266,7 +268,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
             compile_safe=spec["family"] == "moss-image" and data["mossCompile"],
             moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_attention", False)))
         with torch.inference_mode(), sibling("qwen_prefix_cache").context(
-                use_prefix, pipeline, branches, control, observation, allow_partial=packed_manga) as prefix, attention as backend:
+                use_prefix, pipeline, branches, control, observation,
+                directory=Path(job["outputPath"]).parent, allow_partial=packed_manga) as prefix, attention as backend:
             observation["attentionBackend"] = ("comfy-kitchen-int8" if packed_manga
                 and pipeline.transformer._huiyu_manga_int8_attention else backend)
             if spec["family"] == "moss-image":
@@ -383,7 +386,7 @@ def main():
                 try:
                     return lifecycle.serve(lambda job, control, prepared: generate(job, control, prepared, resident=resident),
                         input_stream=sys.stdin, stream=stream, emit=emit, error=Error,
-                        initialize=initialize, cancel_cleanup=resident.clear)
+                        initialize=initialize, cancel_cleanup=resident.clear, idle_cleanup=resident.offload_idle_images)
                 finally:
                     resident.clear()
         return 0

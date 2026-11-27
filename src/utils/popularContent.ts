@@ -213,17 +213,42 @@ export function parseSceneBlueprint(value: unknown): SceneBlueprint | null {
   }
 }
 
-export function parseSceneBlueprints(value: unknown): SceneBlueprint[] {
-  const source = isRecord(value) && Array.isArray(value.blueprints)
-    ? value.blueprints
-    : Array.isArray(value) ? value : []
-  const list = parsePopularList(source, parseSceneBlueprint, '场景蓝图')
+function finalizeSceneBlueprints(list: SceneBlueprint[]): SceneBlueprint[] {
   const seen = new Set<string>()
   for (const blueprint of list) {
     if (seen.has(blueprint.id)) throw new Error(`blueprints: duplicated blueprint id ${blueprint.id}`)
     seen.add(blueprint.id)
   }
   return list
+}
+
+export function parseSceneBlueprints(value: unknown): SceneBlueprint[] {
+  const source = isRecord(value) && Array.isArray(value.blueprints)
+    ? value.blueprints
+    : Array.isArray(value) ? value : []
+  return finalizeSceneBlueprints(parsePopularList(source, parseSceneBlueprint, '场景蓝图'))
+}
+
+/** 分片解析场景蓝图全量文件，每 ~50ms 主动让出主线程以防远程回退或全量载入掉帧。 */
+export async function parseSceneBlueprintsAsync(value: unknown): Promise<SceneBlueprint[]> {
+  const source = isRecord(value) && Array.isArray(value.blueprints)
+    ? value.blueprints
+    : Array.isArray(value) ? value : []
+  const list: SceneBlueprint[] = []
+  let deadline = performance.now() + 50
+  for (const item of source) {
+    try {
+      const parsed = parseSceneBlueprint(item)
+      if (parsed !== null) list.push(parsed)
+    } catch (error) {
+      console.warn('[popular-data] 跳过无效场景蓝图条目：', error instanceof Error ? error.message : String(error))
+    }
+    if (performance.now() >= deadline) {
+      await yieldToMainThread()
+      deadline = performance.now() + 50
+    }
+  }
+  return finalizeSceneBlueprints(list)
 }
 
 // ── 查询 ──────────────────────────────────────────────────────────────────

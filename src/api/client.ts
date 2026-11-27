@@ -25,6 +25,8 @@ interface ApiRequestOptions extends Omit<RequestInit, 'body' | 'signal'> {
   cacheTtlMs?: number
   /** 内存缓存策略，见 ApiCachePolicy。非 GET 或带 body 的请求固定等价于 `bypass`。 */
   cachePolicy?: ApiCachePolicy
+  /** Fetch Priority hint; progressive enhancement ignored by older browsers. */
+  priority?: 'high' | 'low' | 'auto'
 }
 
 export interface ApiClient {

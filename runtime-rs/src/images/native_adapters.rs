@@ -179,7 +179,7 @@ fn validate_image(raw: &Value, family: &str, manga_rewrite: bool) -> Result<Valu
         _ => {
             return Err(error(
                 "UNKNOWN_STYLE_LORA",
-                "请选择已登记的 Krea 2 官方风格 LoRA",
+                "请选择已登记的 Krea 2 风格 LoRA",
             ));
         }
     };

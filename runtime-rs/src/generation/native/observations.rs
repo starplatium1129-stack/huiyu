@@ -131,6 +131,17 @@ fn krea_execution(source: &Value) -> Option<Value> {
     for key in ["conditioningHits", "conditioningMisses", "fusionHits", "projectionHits", "rotaryHits"] {
         result[key] = json!(source[key].as_u64().filter(|n| *n <= 400)?);
     }
+    for key in ["packedBlockMatrices", "directPackedMatrices", "textPackedMatrices", "fp8GemmCalls", "fp8InputHits", "fusedInputPacks", "textEncoderBlocks",
+                "groupedAttentionCalls", "cudnnGqaCalls", "prefetchHits", "warmBlocks", "residentBlocks", "preloadMs"] {
+        if let Some(count) = source[key].as_u64().filter(|n| *n <= 1_000_000) {
+            result[key] = json!(count);
+        }
+    }
+    for key in ["textPackedTransferBytes", "fusionOffloadedBytes", "preloadedPackedBytes"] {
+        if let Some(bytes) = source[key].as_u64().filter(|n| *n <= 1_u64 << 48) {
+            result[key] = json!(bytes);
+        }
+    }
     if let Some(mode) = source["vaeDecode"].as_str().filter(|m| matches!(*m, "full" | "tiled")) {
         result["vaeDecode"] = json!(mode);
         result["vaeTiles"] = json!(source["vaeTiles"].as_u64().filter(|n| *n <= 4096)?);

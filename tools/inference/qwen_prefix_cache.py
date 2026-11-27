@@ -5,13 +5,94 @@ Uses the pinned Diffusers cache interface, never ComfyUI code or quantization.
 One task owns all buffers/streams; no prefetch crosses a condition branch.
 """
 from contextlib import contextmanager
+from functools import wraps
+
+
+def bind_target_forward(model, *, packed_manga):
+    """Use the layout observed at prefill to schedule only live token work on cached steps."""
+    import torch
+    original = model.forward
+
+    def capture(_block, _args, kwargs):
+        prefix = kwargs.get("cache_write_slice")
+        cache = getattr(kwargs.get("layer_cache"), "cache", None)
+        if kwargs.get("kv_cache_mode") != "extract" or prefix is None or getattr(cache, "target_inputs", None) is None:
+            return
+        rotation = kwargs["rotary_emb"][prefix.stop:]
+        mask = kwargs["target_token_mask"][prefix.stop:]
+        valid = kwargs.get("key_valid")
+        # The worker appends the target as one contiguous suffix. Retain only
+        # its coordinates, without pinning the (possibly multi-image) prefix.
+        if rotation.nbytes <= 16 * 1024**2 and mask.numel() and bool(mask.all()):
+            cache.target_layout = (rotation.clone(), mask.clone(), None if valid is None else valid[:, None, None, :])
+
+    model.transformer_blocks[0].register_forward_pre_hook(capture, with_kwargs=True)
+
+    @wraps(original)
+    def forward(*args, **kwargs):
+        cache = kwargs.get("kv_cache")
+        mode = kwargs.get("kv_cache_mode")
+        if mode == "extract" and hasattr(cache, "target_layout"):
+            cache.target_layout = cache.target_inputs = None
+        if (args or not hasattr(cache, "target_layout") or not torch.is_inference_mode_enabled()
+                or kwargs.get("return_dict", True) or kwargs.get("attention_kwargs") or getattr(model, "peft_config", None)):
+            return original(*args, **kwargs)
+        # A pipeline-owned CFG lane keeps these exact objects for all steps.
+        # Each new task and each positive/negative branch owns a separate cache.
+        image_mask, text_mask = kwargs["img_mask"], kwargs.get("encoder_hidden_states_mask")
+        embeds, shapes = kwargs["encoder_hidden_states"], kwargs["img_shapes"]
+        latents = kwargs["hidden_states"]
+        layout = (tuple(tuple(row) for row in shapes[0]), latents.shape, latents.dtype, latents.device)
+        if mode == "extract":
+            cache.target_inputs = (image_mask, text_mask, embeds, layout)
+            return original(**kwargs)
+        if mode != "cached" or cache.target_layout is None:
+            return original(**kwargs)
+        slots, padding, source, previous_layout = cache.target_inputs
+        if image_mask is not slots or text_mask is not padding or embeds is not source or layout != previous_layout:
+            return original(**kwargs)
+        rotation, target_mask, attention_mask = cache.target_layout
+        cache.owner.begin_target()
+        # Keep even the input GEMM shape identical for reference edits. The
+        # text projection, expanded joint buffer, position grid and scatter
+        # are dead after prefill; the blocks read their cached K/V instead.
+        x = model.img_in(latents)[:, -rotation.shape[0]:]
+        t = kwargs["timestep"].to(x.dtype)
+        temb = model.time_text_embed(torch.cat((t, t.new_zeros(1))), x)
+        modulation = model.modulation(temb)
+        if not packed_manga:
+            modulation = modulation[:-1]  # Only the target timestep reaches these blocks.
+        for i, block in enumerate(model.transformer_blocks):
+            x = block(hidden_states=x, modulation=modulation, rotary_emb=rotation, attention_mask=attention_mask,
+                      layer_cache=cache.get_layer(i), kv_cache_mode="cached")
+        result = model.proj_out(model.norm_out(x, temb, target_mask))
+        cache.owner.stats["targetOnlyPasses"] += 1
+        return (result,)
+
+    model.forward = forward
+
+
+def use_target_modulation(block, args, kwargs):
+    # In the pinned BF16 model a cached pass slices off the complete prefix
+    # before the first block. Every remaining token uses the sampled timestep.
+    # Broadcasting its row avoids four sequence-sized torch.where results per
+    # block. Prefill still selects the real vs. zero timestep for every token.
+    if kwargs.get("kv_cache_mode") == "cached" and kwargs.get("target_token_mask") is not None:
+        kwargs["modulation"] = kwargs["modulation"][:-1]
+        kwargs["target_token_mask"] = None
+        return args, kwargs
 
 
 class Prefix:
     SLOT_BYTES = 256 * 1024**2
 
-    def __init__(self, memory, branches, control, *, allow_partial=False):
+    def __init__(self, memory, branches, control, directory, *, allow_partial=False):
+        from huiyu_worker_lifecycle import load_sibling
         self.control, self.branches = control, branches
+        self.memory = memory
+        self.directory = directory
+        self.available_commit = load_sibling("video_memory").available_commit
+        self.target_started = False
         self.allow_partial = allow_partial
         self.reserve = max(512 * 1024**2, memory.observation().get("activationReserveBytes", 0))
         self.caches, self.pending, self.slots = [], {}, [None, None]
@@ -23,7 +104,79 @@ class Prefix:
         self.stats = dict(schemaVersion=1, policy="budgeted-lossless-v1", gpuLayers=0, cpuLayers=0,
             gpuBytes=0, cpuBytes=0, pinnedBytes=0, stagingBytes=0, asyncLoads=0,
             prefetchLoads=0, prefetchHits=0, synchronousLoads=0, pinFallback=False,
-            performanceVerified=False)
+            performanceVerified=False, targetOnlyPasses=0, promotedWeightBytes=0, fileBackedBytes=0)
+
+    def begin_target(self):
+        if self.target_started:
+            return
+        self.target_started = True
+        promote = getattr(self.memory, "retain_for_target", None)
+        if promote is None or len(self.caches) != self.branches:
+            return
+        largest = staging = 0
+        for cache in self.caches:
+            if cache.target_layout is None or cache.target_layout[2] is not None:
+                return
+            for layer in cache.layer_caches:
+                if layer.key is None:
+                    return
+                size = layer.key.nbytes + layer.value.nbytes
+                largest = max(largest, size)
+                if layer.key.device.type == "cpu" and size <= self.SLOT_BYTES:
+                    staging = max(staging, size)
+        self.stats["promotedWeightBytes"] = promote(largest, staging)
+
+    def file_slot(self, layer, key, value):
+        """Keep immutable CPU KV in a shared temporary mapping when private commit is scarce."""
+        cache = layer.cache
+        if cache.file_unavailable or key.dtype != value.dtype:
+            return None
+        count = key.numel() + value.numel()
+        if not count:
+            return None
+        commit = self.available_commit()
+        if commit is None:
+            return None
+        layers = len(cache.layer_caches)
+        remaining = layers - layer.index
+        size = count * key.element_size()
+        # Both guidance lanes exist before prefill. Recheck the unfilled
+        # demand after every layer so only the shortfall uses file backing.
+        future_lanes = len(self.caches) - self.caches.index(cache) - 1
+        demand = (remaining + future_lanes * layers) * size
+        shortfall = demand + self.reserve + 2 * 1024**3 - commit
+        if shortfall <= 0:
+            return None
+        if cache.file_buffer is None or layer.index >= cache.file_first + len(cache.file_buffer):
+            import mmap
+            import shutil
+            import tempfile
+            import torch
+            try:
+                # Size a new extent for the shortfall, in whole layer pairs.
+                # Earlier extents remain owned by the layers that use them.
+                slots = min(remaining, (shortfall + size - 1) // size, max(1, 1024**3 // size),
+                            shutil.disk_usage(self.directory).free // size)
+                if slots == 0:
+                    cache.file_unavailable = True
+                    return None
+                capacity = slots * size
+                # An OS delete-on-close file also retires on worker termination.
+                # ACCESS_WRITE is shared/file-backed; copy-on-write would still
+                # charge the Windows commit limit for the entire prefix.
+                with tempfile.TemporaryFile(dir=self.directory, prefix="huiyu-qwen-kv-") as file:
+                    file.truncate(capacity)
+                    mapping = mmap.mmap(file.fileno(), capacity, access=mmap.ACCESS_WRITE)
+            except (OSError, MemoryError):
+                cache.file_unavailable = True
+                return None  # Ordinary bounded staging still works without a scratch file.
+            cache.file_buffer = torch.frombuffer(mapping, dtype=key.dtype).view(slots, count)
+            cache.file_first = layer.index
+        offset = layer.index - cache.file_first
+        if (not 0 <= offset < len(cache.file_buffer) or cache.file_buffer.shape[1] != count
+                or cache.file_buffer.dtype != key.dtype):
+            return None
+        return cache.file_buffer[offset]
 
     def store(self, layer, key, value):
         import torch
@@ -38,10 +191,25 @@ class Prefix:
             layer.cache.gpu = free > self.reserve + 4 * estimate
         headroom = 3 if self.allow_partial else 2
         gpu = (layer.cache.gpu or self.allow_partial) and free > self.reserve + headroom * size
-        device = key.device if gpu else "cpu"
-        # Prefix slices may alias the full joint sequence: always detach/copy.
-        layer.key = key.detach().to(device=device, copy=True)
-        layer.value = value.detach().to(device=device, copy=True)
+        slot = None if gpu else self.file_slot(layer, key, value)
+        if slot is not None:
+            split = key.numel()
+            layer.key = slot[:split].view_as(key).copy_(key)
+            layer.value = slot[split:].view_as(value).copy_(value)
+            self.stats["fileBackedBytes"] += size
+        else:
+            if not gpu and layer.cache.file_unavailable:
+                commit = self.available_commit()
+                if commit is not None and commit < size + 2 * 1024**3:
+                    from huiyu_worker_lifecycle import load_sibling
+                    raise load_sibling("adapter_contract").AdapterError("NATIVE_OUT_OF_MEMORY",
+                        f"Qwen 临时键值缓存无法写入输出盘，Windows 可提交余量为 {commit // 2**20} MiB。"
+                        "请释放输出盘空间或关闭占用内存的程序后重试。")
+            device = key.device if gpu else "cpu"
+            # The BF16 processor passes private prefix clones. The packed manga
+            # processor can supply views into a full projection, so copy those.
+            layer.key = key.detach().to(device=device, copy=self.allow_partial)
+            layer.value = value.detach().to(device=device, copy=self.allow_partial)
         self.stats["gpuLayers" if gpu else "cpuLayers"] += 1
         self.stats["gpuBytes" if gpu else "cpuBytes"] += size
         self.control.check()
@@ -156,6 +324,7 @@ class Prefix:
         self.capacities.clear()
         self.slots = [None, None]
         for cache in self.caches:
+            cache.target_layout = cache.target_inputs = cache.file_buffer = None
             for layer in cache.layer_caches:
                 layer.key = layer.value = None
         self.caches.clear()
@@ -168,13 +337,13 @@ class Prefix:
 
 
 @contextmanager
-def context(enabled, pipeline, branches, control, observation, *, allow_partial=False):
+def context(enabled, pipeline, branches, control, observation, *, directory, allow_partial=False):
     if not enabled:
         yield None
         return
     from diffusers.pipelines.qwenimage21 import pipeline_qwenimage21 as implementation
     original = implementation.QwenImage21KVCache
-    owner = Prefix(pipeline._huiyu_memory, branches, control, allow_partial=allow_partial)
+    owner = Prefix(pipeline._huiyu_memory, branches, control, directory, allow_partial=allow_partial)
 
     class Layer:
         def __init__(self, cache, index):
@@ -190,6 +359,9 @@ def context(enabled, pipeline, branches, control, observation, *, allow_partial=
     class Cache(original):
         def __init__(self, count):
             self.gpu = None
+            self.target_layout = self.target_inputs = None
+            self.owner = owner
+            self.file_buffer, self.file_first, self.file_unavailable = None, 0, False
             self.layer_caches = [Layer(self, index) for index in range(count)]
             owner.caches.append(self)
 
@@ -202,4 +374,5 @@ def context(enabled, pipeline, branches, control, observation, *, allow_partial=
             owner.retire()
         finally:
             observation["prefixCacheDevice"] = owner.device_name()
+            owner.stats["referenceLatentHits"] = getattr(pipeline, "_huiyu_reference_hits", 0)
             observation["qwenPrefixCache"] = dict(owner.stats)

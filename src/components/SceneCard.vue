@@ -15,9 +15,9 @@
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': sampleRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         alt=""
-        loading="lazy"
+        :loading="eager ? 'eager' : 'lazy'"
         decoding="async"
-        fetchpriority="auto"
+        :fetchpriority="eager ? undefined : 'low'"
       />
       <img v-if="preview.src && !thumbFailed" v-bind="preview" class="sc-thumb sc-thumb-hd"
         :class="{ 'sc-thumb-r18': sampleRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
@@ -88,6 +88,7 @@ const props = withDefaults(defineProps<{
   imageUrl?: string
   previewPending?: boolean
   previewDimensions?: { width: number; height: number }
+  eager?: boolean
   ariaLabel?: string
   ariaExpanded?: boolean
 }>(), {
@@ -95,6 +96,7 @@ const props = withDefaults(defineProps<{
   clickable: undefined,
   suppressTags: false,
   completePreview: false,
+  eager: false,
   ariaExpanded: undefined,
 })
 

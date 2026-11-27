@@ -48,6 +48,20 @@ def load(root, control, contract, model_id, *, text_precision="bf16", weight_pre
     control.check()
     control.stage("loading", component="transformer")
     transformer = load_transformer(root, control, contract, variant, backend)
+    if torch.version.cuda and torch.cuda.is_available() and torch.cuda.get_device_capability() >= (8, 0):
+        try:
+            kernels = load_sibling("moss_fused")
+        except (ImportError, OSError):
+            pass  # Triton is optional in the managed adapter environment.
+        else:
+            fused = kernels.FusedSiTU(module._situ)
+            rotate = kernels.FusedRoPE(module._rotate)
+            for block in transformer.layers:
+                block.situ = fused
+            for block in (*transformer.layers, *transformer.text_embedder.blocks):
+                block.rotate = rotate
+            transformer._huiyu_situ = fused
+            transformer._huiyu_rope = rotate
     transformer._huiyu_compiler = load_sibling("moss_execution").Compiler(transformer, encoder)
     control.check()
     control.stage("loading", component="vae")
@@ -132,6 +146,10 @@ def generate(pipeline, data, control, observation, spec):
              if acceleration in ("spectrum", "spectrum-adaptive") else None)
     execution = load_sibling("moss_execution").Execution(control)
     compiler = pipeline.transformer._huiyu_compiler
+    fused = getattr(pipeline.transformer, "_huiyu_situ", None)
+    fused_before = fused.calls if fused is not None else 0
+    rotate = getattr(pipeline.transformer, "_huiyu_rope", None)
+    rope_before = rotate.calls if rotate is not None else 0
     try:
         if preview is not None:
             # Each task owns its pipeline. Leave Diffusers' registered model config intact.
@@ -160,7 +178,9 @@ def generate(pipeline, data, control, observation, spec):
         stats = execution.finish()
         count = getattr(pipeline.transformer, "_huiyu_int8_count", 0)
         stats.update(sampler=sampler, textPrecision=data["mossTextPrecision"], quantizedLinearCount=count,
-                     weightPrecision="int8-convrot" if count else "fp16", compile=compile_stats)
+                     weightPrecision="int8-convrot" if count else "fp16", compile=compile_stats,
+                     fusedActivationCalls=fused.calls - fused_before if fused is not None else 0,
+                     fusedRopeCalls=rotate.calls - rope_before if rotate is not None else 0)
         if preview is not None:
             stats["scheduler"] = "simple"
         observation["mossExecution"] = stats

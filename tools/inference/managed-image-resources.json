@@ -2,6 +2,19 @@
   "schemaVersion": 1,
   "files": [
     {
+      "id": "krea-style-flatcelanime",
+      "label": "Krea 2 · 平涂赛璐璐",
+      "family": "krea2",
+      "path": "loras/flat-cel-anime-comfy.safetensors",
+      "repo": "ilkerzgi/krea-2-flat-cel-anime-lora",
+      "revision": "7e851c02e0c9b6ac57b79ffcde3b309ddc8745aa",
+      "remotePath": "flat-cel-anime-comfy.safetensors",
+      "bytes": 234676792,
+      "sha256": "a959de4d5f1bfd3de173b2f6ea1a28ff42b471ebeb6d793efce6aac26cd93cdc",
+      "licenseUrl": "https://huggingface.co/krea/Krea-2-LoRA-impressionist/blob/main/LICENSE.pdf",
+      "sourceUrl": "https://huggingface.co/ilkerzgi/krea-2-flat-cel-anime-lora/resolve/7e851c02e0c9b6ac57b79ffcde3b309ddc8745aa/flat-cel-anime-comfy.safetensors"
+    },
+    {
       "id": "krea-style-darkbrush",
       "label": "Krea 2 · 水墨",
       "family": "krea2",

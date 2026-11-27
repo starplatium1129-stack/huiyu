@@ -150,7 +150,7 @@
       <button class="btn btn-primary" type="button" @click="sortBy === 'favorite' && !showHidden && !searchQuery ? showAllScenes() : resetFilters()">{{ sortBy === 'favorite' && !showHidden && !searchQuery ? '浏览全部场景' : '重置筛选' }}</button>
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
-      <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
+      <SceneCard v-for="(s, index) in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags :eager="index < 6"
           data-reveal :data-reveal-key="`scene:${s.id}`"
           :thumb-url="thumbUrl(s.id)" :image-url="imageUrl(s.id)" :preview-pending="samplesPending" :preview-dimensions="thumbDimensions(s.id)" :sample-rating="entryFor(s.id)?.rating"
           :class="{ 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"

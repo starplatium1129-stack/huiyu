@@ -46,7 +46,7 @@ fn entries() -> Result<Vec<Resource>> {
             directory: "loras".into(),
             path: path.clone(),
             description: if entry["family"] == "krea2" {
-                "适用于 Krea 2 的官方风格 LoRA。"
+                "适用于 Krea 2 的风格 LoRA。"
             } else {
                 "适用于对应 Anima 模型的角色 LoRA。"
             }

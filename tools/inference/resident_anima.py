@@ -163,6 +163,13 @@ class PipelineCache:
     def keep_allocator(self):
         return self.memory is not None and self.memory.policy == "resident"
 
+    def release_idle_allocator(self):
+        if self.keep_allocator():
+            # Keep the resident model, adapters and conditioning. Only return
+            # free allocator blocks left by sampling/decoding to the desktop.
+            gc.collect()
+            self.device.api.empty_cache()
+
     def cancel_cleanup(self):
         self.clear_upscaler()
         if self.memory is not None:

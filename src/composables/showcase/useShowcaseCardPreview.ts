@@ -108,7 +108,7 @@ async function createPreview(source: string, width: number, signal: AbortSignal)
     const bounded = AbortSignal.any([signal, AbortSignal.timeout(30_000)])
     const url = new URL(source, window.location.href)
     url.searchParams.set('preview', String(Math.min(width, 3360)))
-    const response = await runtimeFetch(url.href, { signal: bounded })
+    const response = await runtimeFetch(url.href, { signal: bounded, priority: 'low' } as RequestInit)
     if (!response.ok) throw new Error('样张预览暂不可用')
     const blob = await response.blob()
     bounded.throwIfAborted()
@@ -129,14 +129,19 @@ export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, orig
   let image: HTMLImageElement | undefined, active = true, visible = false, watching = false
   let boxWidth = 0, boxHeight = 0, satisfied = 0, failed = 0
   let request: AbortController | undefined
+  let settleTimer: ReturnType<typeof setTimeout> | undefined
   let lease: Awaited<ReturnType<typeof leasePreview>>
   const retired = new Set<NonNullable<typeof lease>>()
   function releaseRetired() {
     for (const entry of retired) entry.release()
     retired.clear()
   }
+  function cancelSettle() {
+    if (settleTimer !== undefined) { clearTimeout(settleTimer); settleTimer = undefined }
+  }
 
   function clearPreview() {
+    cancelSettle()
     request?.abort(); request = undefined; satisfied = 0
     lease?.release(); lease = undefined
     releaseRetired(); previewSrc.value = ''; previewReady.value = false
@@ -186,10 +191,15 @@ export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, orig
     observeImage(image, {
       visible(value) {
         visible = value
-        if (value) requestPreview()
-        else { failed = 0; clearPreview() }
+        if (value) {
+          cancelSettle()
+          settleTimer = setTimeout(() => { settleTimer = undefined; requestPreview() }, 100)
+        } else { failed = 0; clearPreview() }
       },
-      resize(width, height) { boxWidth = width; boxHeight = height; requestPreview() },
+      resize(width, height) {
+        boxWidth = width; boxHeight = height
+        if (visible && settleTimer === undefined) requestPreview()
+      },
       density: requestPreview,
     })
   }

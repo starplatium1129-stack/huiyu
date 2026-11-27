@@ -1,6 +1,6 @@
 import { shallowRef } from 'vue'
 import { catalogApi } from '../api/catalogApi'
-import { parseSceneBlueprints, type SceneBlueprint } from '../utils/popularContent.ts'
+import { parseSceneBlueprints, parseSceneBlueprintsAsync, type SceneBlueprint } from '../utils/popularContent.ts'
 import { requireDataCollection } from '../utils/dataRecords.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 
@@ -13,9 +13,9 @@ export function useBlueprintCatalog(fetchFallback: () => Promise<unknown>) {
 
   function fallbackGroups() {
     if (fallback) return fallback
-    const request = fetchFallback().then(raw => {
+    const request = fetchFallback().then(async raw => {
       const groups = new Map<string, SceneBlueprint[]>()
-      for (const blueprint of parseSceneBlueprints(requireDataCollection(raw, 'blueprints'))) {
+      for (const blueprint of await parseSceneBlueprintsAsync(requireDataCollection(raw, 'blueprints'))) {
         const id = blueprint.characterId ?? ''
         if (!groups.has(id)) groups.set(id, [])
         groups.get(id)!.push(blueprint)

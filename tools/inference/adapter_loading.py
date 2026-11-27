@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
+from collections import defaultdict
+import copy
 import contextlib
 import os
 import threading
@@ -102,18 +104,95 @@ def load_qwen_pipeline(root, spec, control):
             control.check()
             transformer = QwenImage21Transformer2DModel.from_pretrained(str(root / "transformer"),
                 torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
+            target_modulation = sibling("qwen_prefix_cache").use_target_modulation
+            for block in transformer.transformer_blocks:
+                block.register_forward_pre_hook(target_modulation, with_kwargs=True)
+        sibling("qwen_prefix_cache").bind_target_forward(transformer, packed_manga=bool(manga))
         control.check()
         vae = AutoencoderKLQwenImage21.from_pretrained(str(root / "vae"),
             torch_dtype=torch.bfloat16, low_cpu_mem_usage=True, **weights)
+        image_vae = sibling("qwen_manga_vae")
+        image_vae.disable_video_cache(vae)
         if manga:
-            sibling("qwen_manga_vae").configure(vae)
+            image_vae.configure(vae)
         scheduler = scheduler_cls.from_pretrained(str(root / "scheduler"), local_files_only=True)
         return pipeline_cls(scheduler=scheduler, vae=vae, text_encoder=encoder, processor=processor.result(),
                                    transformer=transformer, sample_sigmas=spec.get("sampleSigmas"))
 
 
+def load_krea_pipeline(root, spec, policy, control, identity, protection):
+    import torch
+    from accelerate import init_empty_weights
+    from diffusers import AutoencoderKLQwenImage, FlowMatchEulerDiscreteScheduler, Krea2Pipeline, Krea2Transformer2DModel
+    from transformers import AutoModel, Qwen2Tokenizer, Qwen2TokenizerFast, Qwen3VLConfig, Qwen3VLModel
+    from transformers.models.qwen3_vl.modeling_qwen3_vl import Qwen3VLPreTrainedModel
+
+    index = contract.config(root, root / "model_index.json")
+    options = {key: index[key] for key in ("text_encoder_select_layers", "is_distilled", "patch_size") if key in index}
+    transport = sibling("krea_transport")
+    verified = policy == "offload" and protection is not None and identity["scope"] == "prepared-local-weights"
+    weights = dict(torch_dtype=torch.bfloat16, use_safetensors=True, low_cpu_mem_usage=True, local_files_only=True)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        tokenizer_cls = {"Qwen2Tokenizer": Qwen2Tokenizer, "Qwen2TokenizerFast": Qwen2TokenizerFast}[index["tokenizer"][1]]
+        tokenizer = pool.submit(tokenizer_cls.from_pretrained, str(root / "tokenizer"), local_files_only=True)
+        scheduler = pool.submit(FlowMatchEulerDiscreteScheduler.from_pretrained, str(root / "scheduler"), local_files_only=True)
+        control.check()
+        config = Qwen3VLConfig.from_dict(contract.config(root, root / "text_encoder/config.json"))
+        depth = config.text_config.num_hidden_layers
+        taps = options.get("text_encoder_select_layers") or (2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35)
+        text_config = copy.deepcopy(config.text_config)
+        if min(taps) > 0 and max(taps) < depth:
+            text_config.num_hidden_layers = max(taps)
+        with init_empty_weights(include_buffers=False):
+            # Same class/forward and text decoder as the pinned Qwen3VLModel.
+            # Construct only its text side, including the real CPU RoPE buffers.
+            encoder = Qwen3VLModel.__new__(Qwen3VLModel)
+            Qwen3VLPreTrainedModel.__init__(encoder, config)
+            encoder.visual = encoder.rope_deltas = None
+            encoder.language_model = AutoModel.from_config(text_config, trust_remote_code=False)
+            encoder.post_init()
+        encoder.language_model.config.num_hidden_layers = depth
+        if verified and transport.prepared(root, "text_encoder"):
+            transport.load_packed(root, "text_encoder", encoder, control)
+        else:
+            # The image-only encoder never calls the vision tower. Even a
+            # mixed shard exposes only requested language tensors to PyTorch.
+            folder = root / "text_encoder"
+            index_file = folder / "model.safetensors.index.json"
+            names = list(encoder.state_dict())
+            if index_file.is_file():
+                mapping = contract.config(root, index_file)["weight_map"]
+            else:
+                single = contract.safe_file(root, folder / "model.safetensors")
+                with sibling("mapped_weights").ReadOnlyWeights(single) as reader:
+                    mapping = dict.fromkeys(reader.keys(), single.name)
+            shards = defaultdict(list)
+            for key in names:
+                actual = key if key in mapping else "model." + key
+                shards[mapping[actual]].append((key, actual))
+            state = {}
+            for shard, keys in shards.items():
+                with sibling("mapped_weights").ReadOnlyWeights(contract.safe_file(root, folder / shard)) as reader:
+                    for key, actual in keys:
+                        control.check()
+                        state[key] = reader.get_tensor(actual).to(torch.bfloat16)
+            encoder.load_state_dict(state, strict=True, assign=True)
+            del state
+        control.check()
+        if verified and transport.prepared(root):
+            with init_empty_weights(include_buffers=False):
+                transformer = Krea2Transformer2DModel.from_config(contract.config(root, root / "transformer/config.json"))
+            transport.load_packed(root, "transformer", transformer, control)
+        else:
+            transformer = Krea2Transformer2DModel.from_pretrained(str(root / "transformer"), **weights)
+        control.check()
+        vae = AutoencoderKLQwenImage.from_pretrained(str(root / "vae"), **weights)
+        return Krea2Pipeline(tokenizer=tokenizer.result(), scheduler=scheduler.result(), text_encoder=encoder.eval(),
+                             transformer=transformer.eval(), vae=vae, **options)
+
+
 def load_adapter_pipeline(root, spec, data, policy, control, *, is_video, video_device, device_backend,
-                          memory_pixels, conditioned, render_pixels):
+                          memory_pixels, conditioned, render_pixels, model_identity, protection):
     import torch
     import diffusers
 
@@ -141,6 +220,8 @@ def load_adapter_pipeline(root, spec, data, policy, control, *, is_video, video_
             with windows_weight_reads() if spec["family"] in ("qwen-image", "krea2") else contextlib.nullcontext():
                 if spec["family"] == "qwen-image":
                     template = load_qwen_pipeline(root, spec, control)
+                elif spec["family"] == "krea2":
+                    template = load_krea_pipeline(root, spec, policy, control, model_identity, protection)
                 else:
                     template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
             if spec["family"] == "krea2":
@@ -164,9 +245,13 @@ def load_adapter_pipeline(root, spec, data, policy, control, *, is_video, video_
                     return SimpleNamespace(hidden_states=(output.last_hidden_state,))
                 encoder.forward = hidden_only
         if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
-            placement = sibling("mapped_residency").Residency(template.components, policy, memory_pixels,
+            mapped = sibling("mapped_residency")
+            qwen = spec["family"] == "qwen-image" and not spec.get("packedManga")
+            owner = mapped.QwenResidency if qwen else mapped.Residency
+            placement = owner(template.components, policy, memory_pixels,
                 image_conditioned=conditioned, decode_pixels=render_pixels,
-                retain_components=spec["family"] == "moss-image", stream_mapped_dit=spec["family"] == "qwen-image")
+                retain_components=spec["family"] == "moss-image", stream_text=qwen,
+                stream_mapped_dit=spec["family"] == "qwen-image")
         control.check()
         return template, placement
     except BaseException:

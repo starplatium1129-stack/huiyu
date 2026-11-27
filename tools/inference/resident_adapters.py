@@ -12,6 +12,21 @@ import json
 from huiyu_worker_lifecycle import load_sibling, settle_resources
 
 
+def _copy_condition(value, device):
+    import torch
+    if isinstance(value, torch.Tensor):
+        return value.detach().to(device=device, copy=True)
+    if isinstance(value, tuple):
+        return tuple(_copy_condition(item, device) for item in value)
+    return value
+
+
+def _condition_bytes(value):
+    if isinstance(value, tuple):
+        return sum(_condition_bytes(item) for item in value)
+    return getattr(value, "nbytes", 0)
+
+
 class PipelineCache:
     def __init__(self):
         self.lease = load_sibling("locked_identity").AssetIdentityLease(tree=True)
@@ -82,7 +97,7 @@ class PipelineCache:
                     self.style_identity = self.style_lease.acquire(style_path, lambda path: style.fingerprint(path, control))
                     self.style_protection = self.style_lease.protection_token()
                 control.stage("loading")
-                template, self.memory = load()
+                template, self.memory = load(identity, protection)
                 if style is not None:
                     # Style changes reload the weight set before attaching hooks;
                     # ordinary jobs never inherit a previous style's PEFT layers.
@@ -107,8 +122,7 @@ class PipelineCache:
                     # after applying the style so both base and LoRA tensors
                     # are owned by the same group throughout its lifetime.
                     pixels = data["width"] * data["height"]
-                    self.memory = load_sibling("krea_adapter").Residency(
-                        self.components, pixels, root=root, identity=identity, protection=protection)
+                    self.memory = load_sibling("krea_adapter").Residency(self.components, pixels)
                 elif self.memory is None:
                     self.memory = load_sibling("native_memory").Residency(self.components, policy)
                 self.scope, self.identity = scope, identity
@@ -139,8 +153,12 @@ class PipelineCache:
                 self.bind_conditioning(pipeline, "_get_t5_prompt_embeds", data.get("videoAttention"))
             elif spec["pipeline"] == "MiniMaxH3ModularPipeline":
                 load_sibling("h3_text").bind_conditioning(pipeline, self.conditioning, control)
+            elif spec.get("packedManga"):
+                self.bind_conditioning(pipeline, "_get_qwen_prompt_embeds")
             elif spec["family"] in ("qwen-image", "moss-image", "hunyuan-video-1.5", "kandinsky-6"):
                 self.bind_conditioning(pipeline, attention=data.get("videoAttention"))
+                if spec["family"] == "qwen-image":
+                    self.bind_reference_latents(pipeline)
             if self.protection is not None and self.lease.protection_token() is not self.protection:
                 raise error("MODEL_CHANGED", "Model protection was lost before inference; generation rejected")
             if self.style_protection is not None and self.style_lease.protection_token() is not self.style_protection:
@@ -157,17 +175,60 @@ class PipelineCache:
         elif self.memory is not None:
             self.memory.finish()
 
+    def offload_idle_images(self):
+        if (self.memory is not None and self.scope is not None and self.scope[2] == "offload"
+                and load_sibling("adapter_contract").model(self.scope[1])["family"] in ("qwen-image", "moss-image", "krea2")):
+            self.memory.offload_all()
+            settle_resources(False)
+
+    def store_condition(self, key, value):
+        size = _condition_bytes(value)
+        if size <= 64 * 1024**2:
+            while self.conditioning and (len(self.conditioning) >= 8
+                    or sum(entry[1] for entry in self.conditioning.values()) + size > 64 * 1024**2):
+                self.conditioning.popitem(last=False)
+            self.conditioning[key] = (_copy_condition(value, "cpu"), size)
+
+    def bind_reference_latents(self, pipeline):
+        import torch
+        prepare_latents, encode_image = pipeline.prepare_latents, pipeline._encode_vae_image
+        pipeline._huiyu_reference_hits = 0
+        sources = iter(())
+
+        def prepare(images, *args, **kwargs):
+            nonlocal sources
+            sources = iter(images) if images is not None else iter(())
+            try:
+                # Upstream packs each result in request order and draws fresh
+                # target noise even when every reference is already encoded.
+                return prepare_latents(images, *args, **kwargs)
+            finally:
+                sources = iter(())
+
+        def encode(image, generator):
+            # The BF16 VAE uses the posterior mode. Hash its preprocessed CPU
+            # pixels before the device cast, independently for each reference.
+            source = next(sources, None)
+            if source is None or source.device.type != "cpu":
+                return encode_image(image, generator)
+            digest = hashlib.sha256(memoryview(source.contiguous().view(torch.uint8).numpy())).digest()
+            key = ("qwen-reference", tuple(source.shape), source.dtype, digest, image.dtype, image.device,
+                   pipeline.vae.use_tiling, pipeline.vae.use_slicing, isinstance(generator, list))
+            if key in self.conditioning:
+                self.conditioning.move_to_end(key)
+                pipeline._huiyu_reference_hits += 1
+                return _copy_condition(self.conditioning[key][0], image.device)
+            encoded = encode_image(image, generator)
+            self.store_condition(key, encoded)
+            return encoded
+
+        pipeline.prepare_latents = prepare
+        pipeline._encode_vae_image = encode
+
     def bind_conditioning(self, pipeline, method="encode_prompt", attention=None, *, counts=None):
         import torch
         original = getattr(pipeline, method)
         signature = inspect.signature(original)
-
-        def copy_tensors(value, device):
-            if isinstance(value, torch.Tensor):
-                return value.detach().to(device=device, copy=True)
-            if isinstance(value, tuple):
-                return tuple(copy_tensors(item, device) for item in value)
-            return value
 
         def encode(*args, **kwargs):
             bound = signature.bind(*args, **kwargs)
@@ -188,23 +249,11 @@ class PipelineCache:
                 if counts is not None:
                     counts["conditioningHits"] += 1
                 self.conditioning.move_to_end(key)
-                return copy_tensors(self.conditioning[key][0], device)
+                return _copy_condition(self.conditioning[key][0], device)
             if counts is not None:
                 counts["conditioningMisses"] += 1
             output = original(*args, **kwargs)
-            size = tensor_bytes(output)
-            # Keep recent prompt revisions and frequently reused negatives. The
-            # byte limit also bounds long Qwen/image conditioning on host RAM.
-            if size <= 64 * 1024**2:
-                while self.conditioning and (len(self.conditioning) >= 8
-                        or sum(entry[1] for entry in self.conditioning.values()) + size > 64 * 1024**2):
-                    self.conditioning.popitem(last=False)
-                self.conditioning[key] = (copy_tensors(output, "cpu"), size)
+            self.store_condition(key, output)
             return output
-
-        def tensor_bytes(value):
-            if isinstance(value, torch.Tensor):
-                return value.numel() * value.element_size()
-            return sum(tensor_bytes(item) for item in value) if isinstance(value, tuple) else 0
 
         setattr(pipeline, method, encode)

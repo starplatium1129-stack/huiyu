@@ -70,6 +70,10 @@ class Cache:
         if self.weights is not None:
             self.weights.clear()
 
+    def offload_idle_images(self):
+        if self.weights is not None:
+            self.weights.offload_idle_images()
+
     def line_input(self, weight, rgb, upstream):
         if self.line_lease is None:
             self.line_lease = load_sibling("locked_identity").AssetIdentityLease(tree=False)

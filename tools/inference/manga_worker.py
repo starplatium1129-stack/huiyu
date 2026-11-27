@@ -275,7 +275,7 @@ def main():
                 try:
                     return lifecycle.serve(lambda job, control, prepared: generate(job, control, prepared, resident=resident),
                         input_stream=sys.stdin, stream=stream, emit=emit, error=Error, initialize=initialize,
-                        cancel_cleanup=resident.clear)
+                        cancel_cleanup=resident.clear, idle_cleanup=resident.offload_idle_images)
                 finally:
                     resident.clear()
         return 0

@@ -1,7 +1,6 @@
 """Ordered reference-image edits on the local stable-diffusion.cpp CUDA runner."""
 from collections import deque
 from contextlib import ExitStack
-import hashlib
 import os
 from pathlib import Path
 import re
@@ -34,12 +33,7 @@ def resources(model_dir, spec):
 
 
 def digest(path, control):
-    sha = hashlib.sha256()
-    with path.open("rb") as stream:
-        while chunk := stream.read(8 * 1024 * 1024):
-            control.check()
-            sha.update(chunk)
-    return sha.hexdigest()
+    return load_sibling("native_hash").file_sha256(path, check=control.check)
 
 
 def run_cli(command, directory, steps, control, *, disable_cuda_graphs=False):

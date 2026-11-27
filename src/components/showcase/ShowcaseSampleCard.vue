@@ -7,7 +7,7 @@
       :aria-label="`${broken || !image.src ? '预览暂未连接，' : ''}查看 ${entry.title} 大图`" @click="emit('open', entry.id)">
       <Transition :css="false" @leave="skeleton.leave" @leave-cancelled="skeleton.cancel"><span v-if="image.src && !loaded && !broken" class="sample-loading" aria-hidden="true"></span></Transition>
       <img v-if="image.src && !broken" v-bind="image" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
-        :alt="entry.title" :width="dimensions.width" :height="dimensions.height" :loading="eager ? 'eager' : 'lazy'" :fetchpriority="eager ? 'high' : undefined" decoding="async" />
+        :alt="entry.title" :width="dimensions.width" :height="dimensions.height" :loading="eager ? 'eager' : 'lazy'" :fetchpriority="eager ? undefined : 'low'" decoding="async" />
       <img v-if="preview.src && !broken" v-bind="preview" class="sample-image sample-image-hd tw:w-full tw:block" :class="{ 'sample-image-ready': previewReady }"
         alt="" aria-hidden="true" decoding="async" draggable="false" />
       <span v-if="!image.src || broken" class="sample-image-fallback" aria-hidden="true"><ArchiveIcon name="image" /><span>预览暂未连接 · 可查看大图</span></span>

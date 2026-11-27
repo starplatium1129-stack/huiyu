@@ -39,10 +39,16 @@ class MangaPipeline(QwenImage21Pipeline):
         prompts = [prompt] if isinstance(prompt, str) else prompt
         prompts = [text.replace(r"\(", "(").replace(r"\)", ")") for text in prompts]
         embeds, mask, image_slots = super()._get_qwen_prompt_embeds(prompts, image, device)
-        self.transformer.txt_in.text_indices = (~image_slots[0]).nonzero(as_tuple=True)[0]
         # The text encoder runs in FP32. Comfy casts conditioning to the
         # denoiser's compute dtype on entry, before projection and VAE encoding.
         return embeds.to(self.transformer.img_in.weight.dtype), mask, image_slots
+
+    def encode_prompt(self, *args, **kwargs):
+        embeds, mask, image_slots = super().encode_prompt(*args, **kwargs)
+        # Rebind the projection indices even when an earlier image/prompt
+        # returns from the CPU conditioning cache after another layout ran.
+        self.transformer.txt_in.text_indices = (~image_slots[0]).nonzero(as_tuple=True)[0]
+        return embeds, mask, image_slots
 
     def _image_vae(self, tensor, pixels, *, decode):
         memory = getattr(self, "_huiyu_memory", None)

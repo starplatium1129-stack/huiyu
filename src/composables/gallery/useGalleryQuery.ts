@@ -93,8 +93,8 @@ export function useGalleryQuery(options: {
   async function refresh() {
     return read(true, true, options.history.value.length)
   }
-  watch(() => JSON.stringify(options.query()), () => {
-    if (!started || !enabled.value || requestedQuery === JSON.stringify(options.query())) return
+  watch(() => JSON.stringify(options.query()), nextQuery => {
+    if (!started || !enabled.value || requestedQuery === nextQuery) return
     cancel(); options.history.value = []; cursor.value = null; total.value = 0
     void read(true, false)
   })

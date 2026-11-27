@@ -28,13 +28,13 @@ function parseRuntimeResultPath(url: string) {
 export const isRuntimeResultPath = (url: string) => parseRuntimeResultPath(url) !== null
 
 function remember(task: TaskRecord): TaskRecord { return rememberTask(task, epoch()) }
-async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal, onSubmitting?: () => void): Promise<T> {
+async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal, onSubmitting?: () => void, priority?: 'high' | 'low' | 'auto'): Promise<T> {
   ensureAuthority()
   signal?.throwIfAborted()
   const expected = epoch()
   onSubmitting?.()
   const response = await apiClient.request<{ result: T; runtimeEpoch: string }>(base + path, {
-    method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && (path === '' || path.endsWith('/retry')) ? 150_000 : method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
+    method, body, signal, priority, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && (path === '' || path.endsWith('/retry')) ? 150_000 : method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
   })
   if (expected !== epoch() || response.runtimeEpoch !== expected) throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
   return response.result
@@ -48,7 +48,7 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     const items: TaskSummary[] = []
     let before: number | undefined, through: number | undefined
     do {
-      const page = await requestTaskPage(after ? 'all' : 'overview', { after, before, through, limit: 100, signal })
+      const page = await requestTaskPage(after ? 'all' : 'overview', { after, before, through, limit: 100, signal, priority: 'low' })
       if (read !== activeRead || expected !== epoch()) return
       items.push(...page.items)
       through = page.throughRevision
@@ -65,13 +65,13 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     throw error
   }
 }
-interface TaskPageOptions { after?: number; before?: number; through?: number; limit?: number; signal?: AbortSignal }
+interface TaskPageOptions { after?: number; before?: number; through?: number; limit?: number; signal?: AbortSignal; priority?: 'high' | 'low' | 'auto' }
 async function requestTaskPage(scope: TaskListScope, options: TaskPageOptions): Promise<TaskPage> {
   const params = new URLSearchParams({ scope, summary: 'true', limit: String(options.limit ?? 30) })
   if (options.before !== undefined) params.set('before', String(options.before))
   if (options.after !== undefined) params.set('afterRevision', String(options.after))
   if (options.through !== undefined) params.set('throughRevision', String(options.through))
-  const page = await request<TaskPage>('?' + params, 'GET', undefined, options.signal)
+  const page = await request<TaskPage>('?' + params, 'GET', undefined, options.signal, undefined, options.priority)
   if (!page || !Array.isArray(page.items) || !Number.isSafeInteger(page.throughRevision) || page.throughRevision < (options.after ?? 0)
     || (options.through !== undefined && page.throughRevision !== options.through)
     || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= (options.after ?? 0) || (options.before !== undefined && page.nextCursor >= options.before)))) throw new Error('任务分页响应无效')

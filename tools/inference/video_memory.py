@@ -34,13 +34,16 @@ def available_commit():
     return status.avail_page if _memory_status_api()(ctypes.byref(status)) else None
 
 
-def _packing(record):
-    """Only the native H3 main stack has these static, disjoint weight views."""
+def block_transfer_layout(record, *, fp8=False):
+    """Pack a block's immutable CPU views into one aligned device transfer."""
     import torch
+    dtypes = (torch.int8, torch.bfloat16, torch.float32)
+    if fp8:
+        dtypes += (torch.float8_e4m3fn,)
     rows = []
     for tensor, source in record["sources"].items():
         size = source.numel() * source.element_size()
-        if (source.device.type != "cpu" or source.dtype not in (torch.int8, torch.bfloat16, torch.float32)
+        if (source.device.type != "cpu" or source.dtype not in dtypes
                 or (not source.is_contiguous() and size > _BlockTransfer.page)):
             return None
         location = getattr(source.untyped_storage(), "_huiyu_file_slice", None)
@@ -68,19 +71,31 @@ class _BlockTransfer:
         self.page_events = [None, None]
         self.cursor = 0
         self.pending = self.consumed = self.spare = None
+        self.other_spare = None
+
+    def reserve_pair(self, size, device):
+        """Keep both equal-sized Krea slots through the gap between denoising steps."""
+        import torch
+        current = torch.cuda.current_stream(device)
+        buffers = [torch.empty(size, dtype=torch.uint8, device=device) for _ in range(2)]
+        ready = current.record_event()
+        for raw in buffers:
+            raw.record_stream(self.stream)
+        self.spare, self.other_spare = ((raw, ready) for raw in buffers)
 
     def queue(self, record, control, stats):
         import torch
-        size, layout = record["h3_packing"]
+        size, layout = record["transfer_layout"]
         if self.spare is not None and self.spare[0].numel() == size:
             raw, finished = self.spare
+            self.spare, self.other_spare = self.other_spare, None
         else:
             # The compute stream owns the large cached activations from the
             # refiner. Reuse its slabs instead of charging WDDM on a new stream.
             raw = torch.empty(size, dtype=torch.uint8, device=self.stream.device)
             finished = torch.cuda.current_stream(self.stream.device).record_event()
             raw.record_stream(self.stream)
-        self.spare = None
+            self.spare = self.other_spare = None
         with torch.cuda.stream(self.stream):
             self.stream.wait_event(finished)
             row = 0
@@ -129,23 +144,25 @@ class _BlockTransfer:
         compute = torch.cuda.current_stream(device)
         compute.wait_event(ready)
         raw.record_stream(compute)
-        for left, right, tensor, source, _ in record["h3_packing"][1]:
+        for left, right, tensor, source, _ in record["transfer_layout"][1]:
             tensor.data = raw[left:right].view(source.dtype).reshape(source.shape)
         self.consumed, self.pending = (record, raw), None
         return True
 
-    def retire(self, record, device):
+    def retire(self, record, device, *, keep_pair=False):
         import torch
         if self.consumed is not None and self.consumed[0] is record:
             if not record["keep"]:
                 # This slab enters the spare slot only after the next upload
                 # has used the previous spare, so copy and compute can overlap.
+                if keep_pair:
+                    self.other_spare = self.spare
                 self.spare = (self.consumed[1], torch.cuda.current_stream(device).record_event())
             self.consumed = None
 
     def close(self):
         self.stream.synchronize()
-        self.pending = self.consumed = self.spare = None
+        self.pending = self.consumed = self.spare = self.other_spare = None
         self.pages, self.views, self.page_events = None, [], []
 
 
@@ -203,7 +220,7 @@ class Residency(mapped.Residency):
                                  uploadedTransformerBytes=0, pressureReleases=0, guardSkips=0,
                                  prefetchHits=0, prefetchedBlockBytes=0, prefetchGuardSkips=0,
                                  completedMainPasses=0, pressureReleaseRounds=0, retentionPaused=False)
-            packed_sizes = [r["h3_packing"][0] for r in self.records if r.get("h3_packing")]
+            packed_sizes = [r["transfer_layout"][0] for r in self.records if r.get("transfer_layout")]
             self.h3_stats["prefetchEligibleBlocks"] = len(packed_sizes)
             double_buffer = 2 * max(packed_sizes, default=0)
             working = max(self.block_reserves["transformer"], double_buffer)
@@ -235,7 +252,7 @@ class Residency(mapped.Residency):
                     if len(group.modules) == 1 and group.modules[0] in self.h3_blocks:
                         blocks[group.modules[0]] = record
                         record["h3_block"] = True
-                        record["h3_packing"] = _packing(record)
+                        record["transfer_layout"] = block_transfer_layout(record)
                         original = group.offload_
                         def offload(record=record, original=original):
                             if self.active != "transformer" or not self.h3_stats:
@@ -351,9 +368,9 @@ class Residency(mapped.Residency):
             # after text and VAE work. Its normal multithreaded CPU upload is
             # faster on this cold working set than serially filling DMA pages.
             if (not self.h3_stats["completedMainPasses"] or not self.prefetch_enabled
-                    or following["keep"] or not following["h3_packing"]):
+                    or following["keep"] or not following["transfer_layout"]):
                 return
-            size = following["h3_packing"][0]
+            size = following["transfer_layout"][0]
             free, reusable, commit = headroom
             spare = self.transfer.spare if self.transfer else None
             fresh = 0 if spare and spare[0].numel() == size else max(0, size - reusable)

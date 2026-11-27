@@ -80,6 +80,17 @@ def _attention(layer, x):
     return layer.proj(context.squeeze(1).transpose(1, 2).reshape_as(image)).unsqueeze(2) + x
 
 
+def disable_video_cache(vae):
+    # All callers are still-image pipelines. This also covers each spatial
+    # tile and keeps the original decoder's first_chunk and placement hooks.
+    def without_video_cache(module, args, kwargs):
+        if kwargs.get("feat_cache") is not None:
+            return args, {**kwargs, "feat_cache": None}
+
+    for component in (vae.encoder, vae.decoder):
+        component.register_forward_pre_hook(without_video_cache, with_kwargs=True)
+
+
 def configure(vae):
     from diffusers.models.autoencoders.autoencoder_kl_qwenimage21 import (
         QwenImage21AttentionBlock, QwenImage21CausalConv3d, QwenImage21ResidualBlock,
@@ -106,15 +117,6 @@ def configure(vae):
             return result
         return F.conv3d(x, weight, layer.bias, stride, padding, dilation, layer.groups)
 
-    # The Qwen 2.1 image pipeline supplies exactly one frame, including per
-    # spatial tile. No later frame consumes the full-resolution feature clones.
-    # Keep the decoder's first_chunk flag and the public encode/decode hooks.
-    def without_video_cache(module, args, kwargs):
-        if kwargs.get("feat_cache") is not None:
-            return args, {**kwargs, "feat_cache": None}
-
-    for component in (vae.encoder, vae.decoder):
-        component.register_forward_pre_hook(without_video_cache, with_kwargs=True)
     for layer in vae.modules():
         if isinstance(layer, QwenImage21CausalConv3d):
             layer.forward = MethodType(convolution, layer)

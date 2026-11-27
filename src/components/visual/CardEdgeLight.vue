@@ -2,73 +2,137 @@
   <span ref="frame" class="card-edge-light" aria-hidden="true"><span ref="light" class="card-edge-light-dot" /></span>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 // Inspira UI CardSpotlight, adapted to a masked border and a prepainted moving light.
 // https://github.com/unovue/inspira-ui/blob/04c57ab62b9713872ebbf68988dff1836ed3d764/app/components/inspira/ui/card-spotlight/CardSpotlight.vue
 // MIT Copyright (c) 2024-2026 rahulv.dev; notice: assets/licenses/inspira-ui.txt.
-import { onActivated, onDeactivated, onMounted, onScopeDispose, shallowRef } from 'vue'
 import { cancelFrame, frame as motionFrame } from 'motion'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
+
+interface CardLightEntry {
+  frame: HTMLElement
+  light: HTMLElement
+}
+
+const HOST_ATTR = 'data-card-edge-host'
+const registry = new WeakMap<HTMLElement, CardLightEntry>()
+let registeredCount = 0
+let activeHost: HTMLElement | null = null
+let activeEntry: CardLightEntry | null = null
+let x = 0, y = 0, transform = ''
+let releaseMotion: (() => void) | undefined
+let fineHoverQuery: MediaQueryList | undefined
+
+function supportsFineHover(): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
+  fineHoverQuery ??= window.matchMedia('(hover: hover) and (pointer: fine)')
+  return fineHoverQuery.matches
+}
+
+function stopActive() {
+  cancelFrame(measure); cancelFrame(paint)
+  if (activeEntry) activeEntry.frame.style.opacity = '0'
+  activeHost = null
+  activeEntry = null
+  releaseMotion?.(); releaseMotion = undefined
+  document.removeEventListener('pointermove', onPointerMove)
+  document.removeEventListener('pointerout', onPointerOut)
+  document.removeEventListener('pointercancel', stopActive)
+  document.removeEventListener('keydown', stopActive, true)
+  document.removeEventListener('scroll', stopActive, true)
+  window.removeEventListener('resize', stopActive)
+}
+
+function measure() {
+  if (!activeHost || !activeEntry || !activeHost.isConnected || activeHost.closest('[inert], [hidden]')) {
+    stopActive(); return
+  }
+  const rect = activeHost.getBoundingClientRect()
+  if (!rect.width || !rect.height) { stopActive(); return }
+  transform = `translate(${x - rect.left}px, ${y - rect.top}px) translate(-50%, -50%)`
+  motionFrame.render(paint)
+}
+
+function paint() {
+  if (!activeEntry) return
+  activeEntry.light.style.transform = transform
+  activeEntry.frame.style.opacity = '1'
+}
+
+function onPointerMove(event: PointerEvent) {
+  if (!activeHost || event.pointerType === 'touch') return
+  x = event.clientX; y = event.clientY
+  motionFrame.read(measure)
+}
+
+function onPointerOut(event: PointerEvent) {
+  if (!activeHost) return
+  const related = event.relatedTarget
+  if (related instanceof Node && activeHost.contains(related)) return
+  stopActive()
+}
+
+function onPointerOver(event: PointerEvent) {
+  if (event.pointerType === 'touch' || document.hidden || prefersReducedMotion() || !supportsFineHover()) return
+  const nextHost = event.target instanceof Element ? event.target.closest<HTMLElement>(`[${HOST_ATTR}]`) : null
+  if (!nextHost) {
+    if (activeHost) stopActive()
+    return
+  }
+  const entry = registry.get(nextHost)
+  if (!entry) return
+  if (nextHost === activeHost) {
+    onPointerMove(event)
+    return
+  }
+  stopActive()
+  activeHost = nextHost
+  activeEntry = entry
+  releaseMotion = listenMotionChanges(() => { if (prefersReducedMotion() || document.hidden) stopActive() })
+  document.addEventListener('pointermove', onPointerMove, { passive: true })
+  document.addEventListener('pointerout', onPointerOut, { passive: true })
+  document.addEventListener('pointercancel', stopActive, { passive: true })
+  document.addEventListener('keydown', stopActive, true)
+  document.addEventListener('scroll', stopActive, true)
+  window.addEventListener('resize', stopActive, { passive: true })
+  onPointerMove(event)
+}
+
+function registerCard(host: HTMLElement, entry: CardLightEntry) {
+  if (registry.has(host)) return
+  registry.set(host, entry)
+  host.setAttribute(HOST_ATTR, '')
+  if (++registeredCount === 1) {
+    document.addEventListener('pointerover', onPointerOver, { passive: true })
+  }
+}
+
+function unregisterCard(host: HTMLElement) {
+  if (!registry.delete(host)) return
+  host.removeAttribute(HOST_ATTR)
+  if (activeHost === host) stopActive()
+  if (--registeredCount <= 0) {
+    registeredCount = 0
+    document.removeEventListener('pointerover', onPointerOver)
+  }
+}
+</script>
+
+<script setup lang="ts">
+import { onActivated, onDeactivated, onMounted, onScopeDispose, shallowRef } from 'vue'
 
 const frame = shallowRef<HTMLElement | null>(null)
 const light = shallowRef<HTMLElement | null>(null)
 let host: HTMLElement | null = null
-let x = 0, y = 0, tracking = false, transform = ''
-let release: (() => void) | undefined
 
-function stop(event?: Event) {
-  const next = (event as PointerEvent | undefined)?.relatedTarget
-  if (event?.type === 'pointerleave' && next instanceof Node && host?.contains(next)) return
-  tracking = false
-  cancelFrame(measure); cancelFrame(paint)
-  if (frame.value) frame.value.style.opacity = '0'
-  release?.(); release = undefined
-  document.removeEventListener('keydown', stop, true)
-  document.removeEventListener('scroll', stop, true)
-  window.removeEventListener('resize', stop)
-}
-function move(event: PointerEvent) {
-  if (!tracking || event.pointerType === 'touch') return
-  x = event.clientX; y = event.clientY
-  motionFrame.read(measure)
-}
-function measure() {
-  if (!tracking || !host?.isConnected || host.closest('[inert], [hidden]')) { stop(); return }
-  const rect = host.getBoundingClientRect()
-  if (!rect.width || !rect.height) { stop(); return }
-  transform = `translate(${x - rect.left}px, ${y - rect.top}px) translate(-50%, -50%)`
-  motionFrame.render(paint)
-}
-function paint() {
-  if (!tracking) return
-  if (light.value) light.value.style.transform = transform
-  if (frame.value) frame.value.style.opacity = '1'
-}
-function enter(event: PointerEvent) {
-  if (event.pointerType === 'touch' || document.hidden || prefersReducedMotion()
-    || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
-  stop()
-  tracking = true
-  release = listenMotionChanges(() => { if (prefersReducedMotion() || document.hidden) stop() })
-  document.addEventListener('keydown', stop, true)
-  document.addEventListener('scroll', stop, true)
-  window.addEventListener('resize', stop)
-  move(event)
-}
 function bind() {
-  if (host) return
-  host = frame.value?.parentElement ?? null
-  host?.addEventListener('pointerenter', enter, { passive: true })
-  host?.addEventListener('pointermove', move, { passive: true })
-  host?.addEventListener('pointerleave', stop)
-  host?.addEventListener('pointercancel', stop)
+  if (host || !frame.value || !light.value) return
+  host = frame.value.parentElement
+  if (host) registerCard(host, { frame: frame.value, light: light.value })
 }
 function unbind() {
-  stop()
-  host?.removeEventListener('pointerenter', enter)
-  host?.removeEventListener('pointermove', move)
-  host?.removeEventListener('pointerleave', stop)
-  host?.removeEventListener('pointercancel', stop)
+  if (!host) return
+  unregisterCard(host)
   host = null
 }
 onMounted(bind)

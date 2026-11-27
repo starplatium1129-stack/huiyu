@@ -152,7 +152,8 @@ def settle_resources(cancelled):
             api.empty_cache()
 
 
-def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None, keep_allocator=None):
+def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None, keep_allocator=None,
+          idle_cleanup=None):
     """Run generate(job, control, prepared); return a process exit code.
 
     initialize(job, imports_ready, control) releases the reader after imports and returns
@@ -169,7 +170,16 @@ def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cle
     initialized = False
     try:
         while True:
-            item = requests.pending.get()
+            # Only the inference thread mutates model placement. A request
+            # arriving during cleanup stays in the queue until it finishes.
+            if initialized and idle_cleanup is not None:
+                try:
+                    item = requests.pending.get(timeout=10)
+                except queue.Empty:
+                    idle_cleanup()
+                    item = requests.pending.get()
+            else:
+                item = requests.pending.get()
             if item is None:
                 return 0
             if isinstance(item, Exception):

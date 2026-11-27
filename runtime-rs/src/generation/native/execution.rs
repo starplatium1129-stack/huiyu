@@ -112,5 +112,15 @@ pub(super) fn qwen_prefix(source: &Value) -> Option<Value> {
     ] {
         result[key] = json!(source[key].as_u64().filter(|n| *n <= limit)?);
     }
+    for key in ["targetOnlyPasses", "referenceLatentHits"] {
+        if let Some(count) = source[key].as_u64().filter(|n| *n <= 1000) {
+            result[key] = json!(count);
+        }
+    }
+    for key in ["promotedWeightBytes", "fileBackedBytes"] {
+        if let Some(bytes) = source[key].as_u64().filter(|n| *n <= 1 << 36) {
+            result[key] = json!(bytes);
+        }
+    }
     Some(result)
 }

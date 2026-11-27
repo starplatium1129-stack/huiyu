@@ -1,4 +1,4 @@
-"""Official Krea style LoRA loading through the pinned Diffusers implementation."""
+"""Validate registered Krea style matrices before installing the PEFT adapter."""
 import hashlib
 import importlib.metadata
 import json
@@ -36,8 +36,26 @@ def apply(pipeline, path, control):
     with safe_open(str(path), framework="pt", device="cpu") as source:
         keys = set(source.keys())
         metadata = source.metadata() or {}
-    if not keys or any(not re.search(r"\.lora_[AB]\.weight$", key) for key in keys):
-        raise WorkerError("NATIVE_LORA_UNSUPPORTED", "Krea 风格仅支持完整的 LoRA A/B 权重，不支持 DoRA 或额外权重")
+        if not keys or any(not re.search(r"\.lora_[AB]\.weight$", key) for key in keys):
+            raise WorkerError("NATIVE_LORA_UNSUPPORTED", "Krea 风格仅支持完整的 LoRA A/B 权重，不支持 DoRA 或额外权重")
+        state, original = {}, {}
+        for key in keys:
+            control.check()
+            name = key.removeprefix("model.diffusion_model.").removeprefix("base_model.model.")
+            name = name.removeprefix("diffusion_model.").removeprefix("transformer.")
+            target = name.rsplit(".lora_", 1)[0]
+            try:
+                pipeline.transformer.get_submodule(target)
+            except AttributeError:
+                # The pinned Krea converter maps blocks.N.attn.wq and trainer
+                # names such as txtmlp.1 to their Diffusers projection paths.
+                dest, table = "diffusion_model." + name, original
+            else:
+                dest, table = "transformer." + name, state
+            if dest in table:
+                raise WorkerError("NATIVE_LORA_UNSUPPORTED", f"重复的 Krea LoRA 目标：{dest}")
+            table[dest] = source.get_tensor(key)
+    config = None
     if "lora_adapter_metadata" in metadata:
         config = json.loads(metadata["lora_adapter_metadata"])
         json.dumps(config, allow_nan=False)
@@ -53,8 +71,9 @@ def apply(pipeline, path, control):
                 raise WorkerError("NATIVE_LORA_UNSUPPORTED", f"不支持的 LoRA 配置：{key}")
             if (field == "bias" and value != "none") or (field == "init_lora_weights" and value not in (True, False, "gaussian")):
                 raise WorkerError("NATIVE_LORA_UNSUPPORTED", "不支持修改底模的 LoRA 初始化或 bias")
-    state = pipeline.lora_state_dict(str(path.parent), weight_name=path.name,
-                                    local_files_only=True, use_safetensors=True)
+    if original:
+        state.update(pipeline.lora_state_dict(original))
+        del original
     if len(state) != len(keys):
         raise WorkerError("NATIVE_LORA_UNSUPPORTED", "Krea LoRA 转换存在遗漏或重复目标")
     for key, weight in state.items():
@@ -72,9 +91,9 @@ def apply(pipeline, path, control):
                 or a.shape[1] != module.in_features or b.shape[0] != module.out_features):
             raise WorkerError("NATIVE_LORA_UNSUPPORTED", f"LoRA 与 Krea 模型尺寸不匹配：{target}")
     expected = {key.removeprefix("transformer.") for key in state}
+    pipeline.load_lora_into_transformer(state, transformer=pipeline.transformer, adapter_name="huiyu_style",
+                                        metadata=config, _pipeline=pipeline, low_cpu_mem_usage=True)
     del state
-    pipeline.load_lora_weights(str(path.parent), weight_name=path.name, adapter_name="huiyu_style",
-                               local_files_only=True, use_safetensors=True)
     actual = set(get_peft_model_state_dict(pipeline.transformer, adapter_name="huiyu_style", save_embedding_layers=False))
     if actual != expected:
         raise WorkerError("NATIVE_LORA_UNSUPPORTED", "已加载的 Krea 风格权重与文件不一致")

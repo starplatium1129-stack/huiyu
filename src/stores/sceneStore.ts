@@ -63,10 +63,11 @@ export { DATA_VERSION }
 export const SCENE_DATA_TIMEOUT_MS = 15_000
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
-async function fetchJson<T>(file: string, version: number, onMissing?: () => Promise<T>): Promise<T> {
+async function fetchJson<T>(file: string, version: number, onMissing?: () => Promise<T>, priority?: 'high' | 'low' | 'auto'): Promise<T> {
   const signal = AbortSignal.timeout(SCENE_DATA_TIMEOUT_MS)
   try {
-    const response = await runtimeFetch(`/data/${file}?v=${version}`, { signal })
+    const init: RequestInit & { priority?: 'high' | 'low' | 'auto' } = priority ? { signal, priority } : { signal }
+    const response = await runtimeFetch(`/data/${file}?v=${version}`, init)
     if (response.status === 404 && onMissing) return onMissing()
     if (!response.ok) {
       if (response.status === 403) throw new Error('此内容尚未审核为远程可用，请在本机工作室查看。')
@@ -239,6 +240,7 @@ export const useSceneStore = defineStore('scenes', () => {
     spec: MetaSpec,
     epoch: number,
     requestVersion: number,
+    priority?: 'high' | 'low' | 'auto',
   ): Promise<MetaLoadResult> {
     requestedMetadata.add(spec)
     if (epoch === loadEpoch && metaOk.has(spec.file)) {
@@ -253,7 +255,7 @@ export const useSceneStore = defineStore('scenes', () => {
     const entry: MetaInflightEntry = { epoch, promise: Promise.resolve({ file: spec.file, required: spec.required, ok: false }) }
     entry.promise = (async () => {
       try {
-        const raw = await (spec.read ? spec.read(epoch, requestVersion) : fetchJson(spec.file, requestVersion))
+        const raw = await (spec.read ? spec.read(epoch, requestVersion) : fetchJson(spec.file, requestVersion, undefined, priority))
         const parsed = await spec.parse(raw)
         // The response may belong to a previous force load. Let that caller
         // finish, but never publish its data into the current store.
@@ -278,8 +280,8 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
-  async function loadOne(spec: MetaSpec) {
-    const result = await loadMetaSpec(spec, loadEpoch, version.value)
+  async function loadOne(spec: MetaSpec, priority?: 'high' | 'low' | 'auto') {
+    const result = await loadMetaSpec(spec, loadEpoch, version.value, priority)
     if (!result.ok) throw result.error
   }
   const metadata = (file: string) => META_SPECS.find(spec => spec.file === file)!
@@ -287,7 +289,7 @@ export const useSceneStore = defineStore('scenes', () => {
   const loadCharacterArchive = () => loadOne(archiveSpec)
   const loadCharacterProfiles = () => loadOne(metadata('characters.json'))
   const loadPresetCatalog = () => loadOne(metadata('presets.json'))
-  const loadPopularCharacters = () => loadOne(metadata('popular-characters.json'))
+  const loadPopularCharacters = (priority?: 'high' | 'low' | 'auto') => loadOne(metadata('popular-characters.json'), priority)
   const loadCharacterDirectory = () => loadOne(directorySpec)
   const loadSceneTitles = () => loadOne(titlesSpec)
   const loadCuration = () => loadOne(metadata('curation.json'))

@@ -39,15 +39,17 @@ def _rotate(x, rope):
     return x * cos + torch.cat((-b, a), -1) * sin
 
 
-def _attention(q, k, v, rope, heads):
+def _attention(q, k, v, rope, heads, rotate=None):
     shape = (*q.shape[:2], heads, q.shape[-1] // heads)
-    q = _rotate(q.reshape(shape), rope).transpose(1, 2)
-    k = _rotate(k.reshape(shape), rope).transpose(1, 2)
+    q, k = q.reshape(shape), k.reshape(shape)
+    q, k = rotate(q, k, rope) if rotate is not None else (_rotate(q, rope), _rotate(k, rope))
+    q, k = q.transpose(1, 2), k.transpose(1, 2)
     v = v.reshape(shape).transpose(1, 2)
     return F.scaled_dot_product_attention(q.to(v.dtype), k.to(v.dtype), v).transpose(1, 2).flatten(2)
 
 
 class _TextBlock(nn.Module):
+    rotate = None
     def __init__(self, dim, ffn_dim, heads):
         super().__init__()
         self.heads = heads
@@ -62,7 +64,7 @@ class _TextBlock(nn.Module):
         q, k, v = self.qkv(self.norm1(x)).chunk(3, -1)
         q = self.q_norm(q.unflatten(-1, (self.heads, -1))).flatten(2)
         k = self.k_norm(k.unflatten(-1, (self.heads, -1))).flatten(2)
-        x = x + self.proj(_attention(q, k, v, rope, self.heads))
+        x = x + self.proj(_attention(q, k, v, rope, self.heads, self.rotate))
         y = self.norm2(x)
         return x + self.ffn_down(_situ(self.ffn_up(y), self.ffn_gate(y)))
 
@@ -81,6 +83,9 @@ class _TextProjection(nn.Module):
 
 
 class _Block(nn.Module):
+    situ = staticmethod(_situ)
+    rotate = None
+
     def __init__(self, dim, ffn_dim, heads):
         super().__init__()
         self.heads = heads
@@ -103,10 +108,10 @@ class _Block(nn.Module):
             self.proj['q'](y), self.proj['k'](y), self.proj['v'](y))
         q = self.q_norm(q.unflatten(-1, (self.heads, -1))).flatten(2)
         k = self.k_norm(k.unflatten(-1, (self.heads, -1))).flatten(2)
-        x = x + self.proj['o'](_attention(q, k, v, rope, self.heads)) * gate_a
+        x = x + self.proj['o'](_attention(q, k, v, rope, self.heads, self.rotate)) * gate_a
         y = self.norm2(x) * factor_f + shift_f
         hidden, gate = self.proj['ffn_up_gate'](y.to(dtype)).chunk(2, -1)
-        return x + self.proj['ffn_down'](_situ(hidden, gate)) * gate_f
+        return x + self.proj['ffn_down'](self.situ(hidden, gate)) * gate_f
 
 
 class _RoPE(nn.Module):

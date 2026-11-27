@@ -98,7 +98,9 @@ def torch_int8_linear(value, weight, weight_scale):
     if not rows.shape[0]:
         return result.reshape(*value.shape[:-1], outputs)
     # Chunk activations before rotation and INT32 accumulation to bound peak workspace.
-    matrix = (pad(weight, (0, 0, 0, -outputs % 8)) if outputs % 8 else weight).t().contiguous()
+    # CUDA INT8 GEMM accepts a column-major right operand. The checkpoint's
+    # contiguous [out, in] storage already has that layout when viewed as [in, out].
+    matrix = (pad(weight, (0, 0, 0, -outputs % 8)) if outputs % 8 else weight).t()
     basis = convrot_basis(value.device, value.dtype)
     matmul = getattr(torch, "int8_mm", None) or torch._int_mm
     chunk_size = max(32, min(1024, (16 * 1024**2 // (max(features, outputs) * 4)) // 32 * 32))

@@ -120,13 +120,18 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 | `wan-animate-2` | `Wan2.2-Animate-2-14B-Distilled` | `/api/video/jobs` | 角色图 + H.264 MP4 动作参考，10 步，3/5 秒无声 |
 | `longcat-avatar-1.6` | `LongCat-Video-Avatar-1.6` | `/api/video/jobs` | 角色图 + PCM WAV 配音，8 步，25 fps，3/5 秒对白 |
 
-已用本地 FP8 权重转好 Krea 2 Turbo 的 Windows 机器，可以复用原始文件加快显卡传输。使用下列命令核对原文件与已有 BF16 分片，并在模型目录建立同卷硬链接。随后原生引擎在显卡上逐块还原 BF16，再沿用原有采样和风格 LoRA。实际使用时，任务记录会显示 `kreaExecution.weightTransport=fp8-to-bf16`。 [Krea 2 Turbo 原始权重与校验值](https://huggingface.co/Comfy-Org/Krea-2/blob/eb1eddd3983a54678545a9b2c178c5853b30f7be/diffusion_models/krea2_turbo_fp8_scaled.safetensors)
+本地 FP8 转 BF16 的 Krea 2 Turbo 可用下列命令校验原文件和转换分片，并建立同卷硬链接。`--source` 和 `--text-source` 可分别执行。在受保护的分层卸载模式下，加载器直接映射通过校验的原始权重，挂载风格 LoRA 后也使用相同的压缩底模。文本编码只加载需要的语言层，并保留原有 BF16 运算。换种子可复用提示词编码。[Turbo 原始权重](https://huggingface.co/Comfy-Org/Krea-2/blob/eb1eddd3983a54678545a9b2c178c5853b30f7be/diffusion_models/krea2_turbo_fp8_scaled.safetensors) · [文本编码器权重](https://huggingface.co/DreamFast/Qwen3-VL-4b-Heretic-ComfyUI)
 
 ```powershell
 python -I -B tools/inference/krea_transport.py --apply `
   --model-dir "D:\HuiyuAI\inference\models\krea2-turbo" `
-  --source "D:\HuiyuAI\ComfyUI\models\diffusion_models\krea2_turbo_fp8_scaled.safetensors"
+  --source "D:\HuiyuAI\ComfyUI\models\diffusion_models\krea2_turbo_fp8_scaled.safetensors" `
+  --text-source "D:\HuiyuAI\ComfyUI\models\text_encoders\qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors"
 ```
+
+Krea 按桌面专用显存、系统可提交余量和当前画幅决定常驻块数。挂载风格 LoRA 时，预算也计入其投影产生的临时张量。采样会复用预取缓冲区，解码时按需腾出空间。任务记录 `kreaExecution` 中的 `warmBlocks` 是接单时复用的块数，`residentBlocks` 是采样末步的常驻块数，`preloadMs` 和 `preloadedPackedBytes` 记录采样开始时的权重上传。官方 Turbo 权重指定以全精度计算注意力门控，只有允许使用 FP8 的投影才计入 `fp8InputHits`。本机 RTX 4070 Ti SUPER 的桌面 Torch 2.13 环境使用 SageAttention 2.2.0。托管 Torch 2.9 环境在支持的形状使用 cuDNN 分组注意力，`cudnnGqaCalls` 记录实际调用次数。
+
+在模型准备页选择「Krea 2 · 平涂赛璐璐」后，CLI 使用 `--style-lora flatcelanime`。服务会加入作者指定的触发词 `flat cel anime style`。[Flat Cel Anime 模型卡](https://huggingface.co/ilkerzgi/krea-2-flat-cel-anime-lora)
 
 ### 原生视频准备与加速
 
@@ -186,15 +191,19 @@ git -C $avatarSource switch --detach 58eb336edc5c8c63389838727e40b8c18434e54e
 
 ## 7. 显存策略与进程生命周期
 
-- **策略区分**：Anima 使用 `inference.memoryPolicy`（默认 `resident`常驻显存）；Krea、Qwen、MOSS、漫画重绘与视频使用 `inference.adapterMemoryPolicy`（默认 `offload` 按层/阶段动态卸载，Sage/编译加速仅作用于 Anima）。
-- **前缀与编码缓存**：Qwen/MOSS 在 offload 模式下直接映射原权重文件并按预算分层驻留，条件/文本编码复用受限 CPU LRU 缓存（≤ 64 MiB）；采样前自动整理显存防止换页。
-- **自动释放**：最后一次任务完成后空闲 **10 分钟** 自动卸载模型并释放显存；启动本地对话或语音时自动让出显存，退出桌面端即终止子进程。
+- Anima 的 `inference.memoryPolicy` 默认让模型常驻显存。任务之间空闲 10 秒时归还采样和解码留下的空闲显存，下一张仍可复用模型。
+- Krea、Qwen、MOSS、漫画重绘和视频使用 `inference.adapterMemoryPolicy`，默认按层或阶段卸载。Krea、Qwen 和 MOSS 在此模式下可连续出图，空闲 10 秒后将权重卸下显卡。Krea 在系统可提交余量低于 6 GiB 时立即卸载，空闲约 45 秒退出工作进程。进程存活时可以复用受保护的文件映射和最多 64 MiB 的条件编码。
+- Qwen 2.1 首步分别计算各个提示词分支的文字与参考图上下文。后续步骤沿用该分支的位置和注意力掩码，直接处理目标图。BF16 参考图编辑可在首步结束后，将释放的显存留给多步反复读取的权重。VAE 按参考图复用编码，换序时仍按新顺序组合，与提示词共用上述 64 MiB 内存预算。任务记录中的 `qwenPrefixCache.targetOnlyPasses`、`promotedWeightBytes` 和 `referenceLatentHits` 可用于核对这三项调度。
+- 多参考图和正负提示词会增大采样所用的键值缓存。Windows 提交余量紧张时，worker 按缺口把部分键值存入输出目录所在磁盘的临时映射文件，读取时沿用原有分层预取。文件随任务释放，进程退出时操作系统也会回收。`qwenPrefixCache.fileBackedBytes` 表示本次采用文件映射的键值字节数。
+- Krea 的 worker 空闲 45 秒后退出，MOSS 普通出图为 5 分钟，独立放大为 90 秒，其他图像模型为 10 分钟。本地对话和语音需要显卡时可提前交接。
 
 ---
 
 ## 8. MiaoMiao Harem MOSS BASE v1.0 / v1.1
 
 新创作默认使用 `moss-miaomiao-base-v1.1`（保留 1.0 历史兼容）。完整组件约 **27.2 GB**，采用 `Euler`、50 步、CFG 3.5、768×1280（宽高为 16 倍数），Shift 固定 5，不使用 Anima LoRA 或 TeaCache。
+
+在支持的 NVIDIA 显卡与 Triton 环境中，常规推理会把 MOSS 前馈层的 BF16 激活运算合并执行。任务记录里的 `mossExecution.fusedActivationCalls` 是本次实际执行次数。使用纯 PyTorch 的 INT8 ConvRot 时，矩阵乘法直接读取权重的转置视图，省去每次投影前的整块复制。
 
 ### 模型准备与 INT8 量化导入
 

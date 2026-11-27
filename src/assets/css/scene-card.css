@@ -14,13 +14,19 @@
   border: 1px solid var(--border-soft);
   border-radius: var(--r-dossier);
   @apply tw:overflow-hidden tw:flex tw:flex-col tw:cursor-pointer;
-  content-visibility: auto;
-  contain-intrinsic-size: auto 280px;
   /* 卡片抬升是 transform-only 物理弹簧；linear() 不支持时回退到 Bézier。 */
   transition: transform var(--spring-gentle-duration) var(--spring-gentle-ease);
   @apply tw:min-w-0 tw:text-primary;
   text-decoration: none;
   box-shadow: var(--shadow-sm);
+}
+/* Skip layout and paint for off-screen grid cards while keeping above-the-fold cards immediate. */
+.sc:not(.sc-strip):nth-child(n+9) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 340px;
+}
+@supports not (content-visibility: auto) {
+  .sc:not(.sc-strip):nth-child(n+9) { contain: layout style paint; }
 }
 /* Keep card metadata and secondary actions outside the native preview button. */
 .sc-pick { position:absolute; inset:0; z-index:var(--z-float); width:100%; height:100%; padding:0; border:0; border-radius:inherit; background:transparent; cursor:pointer; --control-press-transform:none; }
@@ -58,7 +64,6 @@
 .sc-thumb-ready { opacity:1; }
 /* The inspiration library displays reviewed artwork at its natural ratio.
    Other card consumers retain the compact cover preview. */
-.sc-complete-preview { content-visibility:visible; contain-intrinsic-size:none; }
 .sc-complete-preview .sc-band { aspect-ratio:auto; display:block; min-height:120px; padding:var(--s-2); background:var(--art-stage); }
 .sc-complete-preview .sc-thumb { position:relative; inset:auto; display:block; width:100%; height:auto; aspect-ratio:var(--scene-preview-ratio, 3 / 4); object-fit:contain; object-position:center; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); box-shadow:var(--art-frame-shadow); }
 .sc-complete-preview .sc-thumb.sc-thumb-hd { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }

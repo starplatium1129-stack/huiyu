@@ -347,6 +347,7 @@ def main(argv=None):
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
                             cancel_cleanup=resident.cancel_cleanup, keep_allocator=resident.keep_allocator,
+                            idle_cleanup=resident.release_idle_allocator,
                             initialize=lambda job, ready, _control: resident.prepare_job(job, validate_job, validate_model, lambda: dependencies(full=False), load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:

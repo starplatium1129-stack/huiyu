@@ -225,6 +225,10 @@
       "file": "krea2_dotmatrix.safetensors",
       "trigger": "monochrome stippling style"
     },
+    "flatcelanime": {
+      "file": "flat-cel-anime-comfy.safetensors",
+      "trigger": "flat cel anime style"
+    },
     "kidsdrawing": {
       "file": "krea2_kidsdrawing.safetensors",
       "trigger": "naive expressive sketch style"
