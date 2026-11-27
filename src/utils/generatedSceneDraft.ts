@@ -1,4 +1,4 @@
-import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
+import { kreaStyleSnapshot } from './kreaStyleSelection.ts'
 import type { SceneDraft, SceneRating } from '@/types/api'
 import type { BlueprintCompositionIntent, SceneBlueprint } from '@/types/sceneBlueprint'
 import type { GeneratedRecipe } from '@/types/generatedRecipe'

@@ -1,6 +1,6 @@
 import type { KreaStyleLoraSelection } from '@/types/generation'
 import type { AnimaGenerationState } from '@/types/anima'
-import { kreaStyleLoraLabel } from '@/config/kreaStyleLoraLabels'
+import { kreaStyleLoraLabel } from '../config/kreaStyleLoraLabels.ts'
 
 type StyleForm = Pick<AnimaGenerationState, 'styleLoraId' | 'styleLoraStrength' | 'secondaryStyleLoraId' | 'secondaryStyleLoraStrength'>
 
