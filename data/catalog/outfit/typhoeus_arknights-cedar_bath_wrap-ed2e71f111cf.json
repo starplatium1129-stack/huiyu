@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/cedar_bath_wrap",
+  "revision": 1,
+  "sortOrder": 4218,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "cedar_bath_wrap",
+      "name": "雪松滚边米白华夫格裹胸浴巾",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "A plush cream waffle-weave cotton bath towel edged with narrow pine-green piping, tucked snugly across the chest to leave her shoulders, collarbones, and legs bare, worn barefoot.",
+      "tokens": [
+        "cream waffle bath towel",
+        "pine green trim",
+        "towel wrap",
+        "bare shoulders",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

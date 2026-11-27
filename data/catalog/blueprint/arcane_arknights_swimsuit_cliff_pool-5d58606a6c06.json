@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_swimsuit_cliff_pool",
+  "revision": 1,
+  "sortOrder": 19099,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_swimsuit_cliff_pool",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 山崖无边温水池畔休憩",
+    "category": "夏日海滩",
+    "action": "扶着山崖无边池畔石沿凝望远山后回眸",
+    "location": "高地度假崖边无边水池",
+    "timeOfDay": "傍晚",
+    "lighting": "柔和橘粉晚霞与清蓝池水反光",
+    "camera": "cowboy shot",
+    "mood": "疏朗动人",
+    "description": "高地崖边的无边温水池倒映着淡橘色晚霞。换上朱砂红露背连体泳装的李织烟外披半透明玄黑轻纱站在池畔，微湿的发丝与雪青羽翼在晚风中轻轻晃动。她偏头回望，冷白肌肤与朱红泳装在霞光下形成鲜明而克制的视觉张力。",
+    "outfitId": "vermilion_onepiece_swimsuit",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "swimsuit"
+    ],
+    "sceneTags": [
+      "swimsuit",
+      "infinity_pool",
+      "sunset",
+      "cliff",
+      "water",
+      "elegant"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing by infinity pool",
+      "looking back over shoulder",
+      "calm alluring gaze",
+      "sunset sky",
+      "distant misty mountains",
+      "shimmering water reflection",
+      "warm twilight glow",
+      "damp skin"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Standing beside a cliffside infinity pool reflecting warm sunset clouds, Arcane wears a vermilion halter one-piece swimsuit draped with a sheer black beach cover-up and glances back over her shoulder with cool poise.",
+    "animaCaption": "She pauses beside the sunset-lit cliffside infinity pool, glancing back over her shoulder as the breeze lifts her sheer black cover-up.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

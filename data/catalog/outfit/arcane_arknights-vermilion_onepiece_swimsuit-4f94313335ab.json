@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/vermilion_onepiece_swimsuit",
+  "revision": 1,
+  "sortOrder": 4225,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "vermilion_onepiece_swimsuit",
+      "name": "朱砂红露背交叉系带连体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装假日",
+      "prose": "A sleek vermilion-red halter one-piece swimsuit with crisp criss-cross front straps and a deep open back, draped loosely with a sheer black chiffon beach kimono cover-up, accented by a fine gold waist chain and bare feet.",
+      "tokens": [
+        "vermilion one-piece swimsuit",
+        "criss-cross halter straps",
+        "sheer black kimono cover-up",
+        "gold waist chain",
+        "bare shoulders",
+        "barefoot"
+      ]
+    }
+  }
+}

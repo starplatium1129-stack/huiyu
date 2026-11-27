@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/plum_velvet_lingerie",
+  "revision": 1,
+  "sortOrder": 4219,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "plum_velvet_lingerie",
+      "name": "暗梅紫丝绒蕾丝系带薄纱寝衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "A translucent dark-plum mesh babydoll slip trimmed with plush velvet ribbon over a matching floral lace bralette and tie-side lace panties, accented with a narrow black velvet choker and burgundy sheer silk thigh-high stockings, worn barefoot.",
+      "tokens": [
+        "plum sheer babydoll",
+        "velvet lace bralette",
+        "tie-side lace panties",
+        "black velvet choker",
+        "burgundy silk thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

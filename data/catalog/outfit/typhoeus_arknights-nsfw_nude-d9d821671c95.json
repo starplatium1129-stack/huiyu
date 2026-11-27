@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 4220,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "卸甲沐暖全裸态（无着装）",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "Completely free of hunting harness, sleeves, skirts, and boots, wearing only a slender silver pendant chain and a braided crimson cord around her wrist.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "slender silver necklace",
+        "red wrist cord",
+        "bare shoulders",
+        "bare breasts",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

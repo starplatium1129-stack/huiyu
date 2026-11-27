@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lala_satalin_deviluke",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
+  "updatedAt": "2026-11-27T02:56:29.834975600+00:00",
   "data": {
     "id": "lala_satalin_deviluke",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "💖",
       "portrait": {
-        "image": "../assets/characters/popular-lala_satalin_deviluke.png?v=eb02f2862059",
+        "image": "../assets/characters/popular-lala_satalin_deviluke.png?v=cc5a6803c39e",
         "alt": "菈菈·萨塔琳·戴比路克样张立绘",
         "sourceShowcaseId": "pc_lala_satalin_deviluke_pc_lala_satalin_deviluke_lala_yuuki_kitchen_breakfast_hug",
-        "sourceShowcaseSha256": "754607ce85800613dae56ce6562e5cc7ed63af2cc0091a03c8efbde4def0bd08"
+        "sourceShowcaseSha256": "61a96c4866dd592391704b77c96d8adbb69a52bae1956b94d1be560e2824e89c"
       },
       "visual_dna": {
         "hair": "及踝泡泡糖粉色长发 · 活泼高挑呆毛",

@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/sami_winter_parka",
+  "revision": 1,
+  "sortOrder": 4214,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "sami_winter_parka",
+      "name": "雪凇绒领象牙白短派克冬装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常常服",
+      "prose": "A cropped ivory winter parka with a plush charcoal fur-trimmed hood worn open over a dark ribbed turtleneck sweater, paired with a burgundy plaid wool mini skirt cinched by a brown leather buckle belt, thick charcoal knit over-the-knee socks, and fur-lined brown snow boots.",
+      "tokens": [
+        "ivory cropped parka",
+        "fur-trimmed hood",
+        "charcoal ribbed turtleneck",
+        "burgundy plaid skirt",
+        "leather buckle belt",
+        "thick knit thighhighs",
+        "brown snow boots"
+      ]
+    }
+  }
+}

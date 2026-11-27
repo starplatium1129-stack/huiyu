@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_balcony_reading",
+  "revision": 1,
+  "sortOrder": 19098,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_balcony_reading",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 午后阳窗翻阅旧日札记",
+    "category": "相伴日常",
+    "action": "坐于明窗软椅翻阅手写札记停笔望向来人",
+    "location": "休养寓所朝南阳窗",
+    "timeOfDay": "午后",
+    "lighting": "清朗明亮的午后斜阳与柔和室内反射光",
+    "camera": "medium shot",
+    "mood": "淡泊安宁",
+    "description": "午后阳光铺满朝南的木地板，空气里浮着细微尘影。李织烟靠在藤编软椅里翻阅自己早年的勘探札记，发梢青绿在光下泛着柔和光泽。听见脚步声，她用书签合拢半页纸，眼神清澈而平静地迎向你的视线。",
+    "outfitId": "hongshan_tea_shirt",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "reading",
+      "notebook",
+      "sunlight",
+      "afternoon",
+      "window",
+      "peaceful"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "sitting in armchair",
+      "holding open book",
+      "looking at viewer",
+      "calm peaceful expression",
+      "sunlit balcony window",
+      "afternoon sunlight",
+      "potted plants",
+      "quiet interior"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Sitting in a rattan armchair beside a bright sunlit balcony window, Arcane pauses while reading a bound journal and looks calmly toward the viewer in peaceful afternoon light.",
+    "animaCaption": "She sits in a sunlit armchair holding an open journal, pausing her reading to meet the viewer's eyes calmly.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

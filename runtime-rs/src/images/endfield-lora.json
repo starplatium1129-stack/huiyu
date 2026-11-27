@@ -16,6 +16,7 @@
     "laevatain_arknights": { "label": "莱万汀", "trigger": "laevatain (arknights)" },
     "perlica_arknights": { "label": "佩丽卡", "trigger": "perlica (arknights)" },
     "rossy_arknights": { "label": "洛茜", "trigger": "rossi (arknights)" },
+    "typhoeus_arknights": { "label": "提弗洛斯", "trigger": "typhoeus (arknights)" },
     "yvonne_arknights": { "label": "伊冯", "trigger": "yvonne (arknights)" },
     "zhuang_fangyi_arknights": { "label": "庄方宜", "trigger": "zhuang fangyi (arknights)" }
   }

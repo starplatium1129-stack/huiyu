@@ -79261,10 +79261,10 @@
     "type": "popular",
     "icon": "💖",
     "portrait": {
-      "image": "../assets/characters/popular-lala_satalin_deviluke.png?v=eb02f2862059",
+      "image": "../assets/characters/popular-lala_satalin_deviluke.png?v=cc5a6803c39e",
       "alt": "菈菈·萨塔琳·戴比路克样张立绘",
       "sourceShowcaseId": "pc_lala_satalin_deviluke_pc_lala_satalin_deviluke_lala_yuuki_kitchen_breakfast_hug",
-      "sourceShowcaseSha256": "754607ce85800613dae56ce6562e5cc7ed63af2cc0091a03c8efbde4def0bd08"
+      "sourceShowcaseSha256": "61a96c4866dd592391704b77c96d8adbb69a52bae1956b94d1be560e2824e89c"
     },
     "visual_dna": {
       "hair": "及踝泡泡糖粉色长发 · 活泼高挑呆毛",
@@ -202588,5 +202588,574 @@
         "description": "游走于暗夜前沿的猎魔枪手与新一代学院优等生。"
       }
     ]
+  },
+  {
+    "id": "typhoeus_arknights",
+    "name": "提弗洛斯",
+    "alias": [
+      "Typhoeus",
+      "提弗洛斯",
+      "ティフォロス"
+    ],
+    "type": "popular",
+    "icon": "🏹",
+    "portrait": {
+      "image": "../assets/characters/popular-typhoeus_arknights.png?v=980c6f3dbae9",
+      "alt": "提弗洛斯样张立绘",
+      "sourceShowcaseId": "pc_typhoeus_arknights_typhoeus_arknights_cafe_cocoa",
+      "sourceShowcaseSha256": "6a735f299b4c8344ffe43141dbfafb8cf0426043a63d1e793d4cf49ae648757b"
+    },
+    "visual_dna": {
+      "hair": "薰衣草紫超长发，脸侧螺旋垂发，黑缎带扎起的低双马尾",
+      "hair_color": "薰衣草紫（#9b7be8）",
+      "eyes": "亮粉紫渐变双眸",
+      "hairstyle": "齐刘海 · 螺旋侧发 · 低双钻马尾",
+      "uniform": "黑色机械护目发箍、白色无袖胸衣与黑红战术束带、露肩分离宽袖、黑手套、黑色战术百褶外裙配短裤、毛边过膝袜与黑色作战靴",
+      "expression": "沉静敏锐、带几分狡黠笑意",
+      "style": "萨米荒野猎装与近未来战术机能风",
+      "signature": "薰衣草紫低双钻马尾、粉紫瞳、弯曲深蓝黑龙角、机械发箍与分节龙尾"
+    },
+    "personality": [
+      "冷静敏锐",
+      "好奇故事与旧传说",
+      "可靠守信",
+      "外小内稳",
+      "带一点猎人的幽默感",
+      "重视同行者安危"
+    ],
+    "likes": [
+      "收集萨米荒野的古老传说与口述故事",
+      "在暖风口旁喝热可可",
+      "细致保养萨米复合弓与箭矢",
+      "观察高空风向与云层变化",
+      "听营地同伴分享各地见闻"
+    ],
+    "identity": {
+      "role": "罗德岛荒野猎手 / 终末地协防干员",
+      "age": "少女外貌（常年独行荒野、阅历老练的猎手）",
+      "occupation": "荒野猎手 / 自然属性强袭干员",
+      "faction": "罗德岛 / 明日方舟：终末地"
+    },
+    "tags": [
+      "紫发双马尾",
+      "粉紫瞳",
+      "弯曲龙角",
+      "分节龙尾",
+      "萨米猎手",
+      "浮空弓手",
+      "自然强袭"
+    ],
+    "bg_story": "来自罗德岛的荒野猎手，代号“提弗洛斯”，常年游走于寒冷辽阔的萨米雪原，对当地的古老传说与失落记忆抱有浓厚兴趣。她身形娇小，却背负着一把萨米风格的巨型复合弓型法术单元，在《明日方舟：终末地》的塔卫二开拓防线中作为六星自然属性强袭干员参与协防。实战时，她借风矢跃至半空，在规避地面冲击的同时锁定复数目标倾泻强化猎矢；撤下火线回到基地后，这位年轻猎手却喜欢缩在暖灯边修整弓弦、捧一杯热饮听人讲故事，习惯先看清人心再决定把后背交给谁。",
+    "speech": "「好的故事和优秀的猎人，总是先瞄准人心。风向变了——把后背交给我吧，雪原上的猎物逃不出我的弓弦。」",
+    "accent_color": "#9b7be8",
+    "bg_color": "#141124",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "typhoeus (arknights)",
+      "1girl",
+      "solo",
+      "purple hair",
+      "long hair",
+      "low twintails",
+      "low-tied sidelocks",
+      "purple eyes",
+      "purple horns",
+      "black tail",
+      "arknights: endfield"
+    ],
+    "lora": {
+      "name": "终末地角色合集 · Anima v1.0",
+      "trigger_words": [
+        "typhoeus (arknights)"
+      ],
+      "recommended_scene": [
+        "提弗洛斯角色样张与日常场景"
+      ]
+    },
+    "classic_cg": {
+      "title": "雪凇高空的风矢连射",
+      "description": "在落雪纷飞的塔卫二荒野高地，提弗洛斯凌空跃起拉开萨米巨型复合法术弓，薰衣草色长发与弯曲龙角在寒风中定格，数道缠绕自然灵光的猎矢顺风齐发，精准穿透地面侵蚀体的防线。"
+    },
+    "voice": "「好的故事和优秀的猎人，总是先瞄准人心。风向变了——把后背交给我吧，雪原上的猎物逃不出我的弓弦。」",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "明日方舟：终末地",
+      "people": [
+        {
+          "id": "administrator",
+          "name": "管理员",
+          "aliases": [
+            "Administrator",
+            "Endministrator",
+            "女性管理员",
+            "总指挥官"
+          ],
+          "characterId": "administrator_arknights"
+        },
+        {
+          "id": "perlica",
+          "name": "佩丽卡",
+          "aliases": [
+            "Perlica",
+            "监督",
+            "佩丽卡监督",
+            "Supervisor Perlica"
+          ],
+          "characterId": "perlica_arknights"
+        },
+        {
+          "id": "laevatain",
+          "name": "莱万汀",
+          "aliases": [
+            "Laevatain",
+            "莱瓦汀",
+            "终末地特勤干员"
+          ],
+          "characterId": "laevatain_arknights"
+        },
+        {
+          "id": "yvonne",
+          "name": "伊冯",
+          "aliases": [
+            "Yvonne",
+            "イヴォンヌ",
+            "天才工程师",
+            "双枪干员"
+          ],
+          "characterId": "yvonne_arknights"
+        },
+        {
+          "id": "zhuang_fangyi",
+          "name": "庄方宜",
+          "aliases": [
+            "Zhuang Fangyi",
+            "庄天师",
+            "息壤主持天师",
+            "武陵管代"
+          ],
+          "characterId": "zhuang_fangyi_arknights"
+        },
+        {
+          "id": "rossy",
+          "name": "洛茜",
+          "aliases": [
+            "Rossi",
+            "洛茜娜·狼珀·卢皮诺",
+            "狼群首领"
+          ],
+          "characterId": "rossy_arknights"
+        },
+        {
+          "id": "si",
+          "name": "祀",
+          "aliases": [
+            "Si",
+            "小葱",
+            "巨兽代理人",
+            "塔卫二神裔"
+          ],
+          "characterId": "si_arknights"
+        },
+        {
+          "id": "typhoeus",
+          "name": "提弗洛斯",
+          "aliases": [
+            "Typhoeus",
+            "ティフォロス",
+            "萨米猎手"
+          ],
+          "characterId": "typhoeus_arknights"
+        },
+        {
+          "id": "arcane",
+          "name": "诀",
+          "aliases": [
+            "Arcane",
+            "李织烟",
+            "决",
+            "应龙特勤队队长"
+          ],
+          "characterId": "arcane_arknights"
+        },
+        {
+          "id": "chen_qianyu",
+          "name": "陈千语",
+          "aliases": [
+            "Chen Qianyu",
+            "千语",
+            "终末地近卫干员",
+            "炎国流云剑客"
+          ],
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
+        }
+      ],
+      "relations": [
+        {
+          "id": "administrator-typhoeus-sami_wilderness_bow",
+          "source": "administrator",
+          "target": "typhoeus",
+          "label": "荒野协防与高空火力支援",
+          "description": "来自罗德岛的萨米猎手提弗洛斯与终末地工业展开外勤协防，在管理员统筹的开拓战线上以浮空弓术压制高危目标，休整时则爱听管理员聊起各地见闻。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "雪凇幽梦 · 荒野协防合作",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》1.5版本角色档案：提弗洛斯",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "arcane-typhoeus-nature_tactical_synergy",
+          "source": "arcane",
+          "target": "typhoeus",
+          "label": "自然附着布阵与高空猎矢协同",
+          "description": "诀在地面布设阵诀稳定施加自然附着并牵制敌群，提弗洛斯则借风矢升空消耗附着倾泻强化猎矢，两人在自然属性作战体系中配合极为默契。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "前线协同作战编组",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》干员战术协作资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-arcane-yinglung_cooperation",
+          "source": "administrator",
+          "target": "arcane",
+          "label": "应龙特勤协作与休养互信",
+          "description": "在北部禁区负伤休养期间，宏山科学院应龙特勤队队长李织烟（代号“诀”）与终末地工业建立长期合作，以缜密阵法协助管理员应对裂隙灾害。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "宏山科学院 · 终末地联合协防",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》角色档案：诀",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "zhuang_fangyi-arcane-hongshan_colleagues",
+          "source": "zhuang_fangyi",
+          "target": "arcane",
+          "label": "宏山同僚 · 科研管代与特勤队长",
+          "description": "庄方宜主理武陵科学发展区与息壤课题，诀统领宏山科学院应龙特勤队负责高危一线行动，两人在面对塔卫二裂隙异象时分担文武重任。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "宏山科学院体系协同",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》宏山科学院阵营资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-perlica-supreme_partnership",
+          "source": "administrator",
+          "target": "perlica",
+          "label": "统帅与执行监督 · 唤醒与托付",
+          "description": "管理员沉睡数载后被佩丽卡监督自休眠舱倾力唤醒，两人形成终末地工业最核心的战术决策与基地统筹黄金中枢。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "开拓序幕 · 塔卫二基地重启",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》官方网站人物档案",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-zhuang_fangyi-wuling_alliance",
+          "source": "administrator",
+          "target": "zhuang_fangyi",
+          "label": "武陵盟约与息壤固化重托",
+          "description": "庄方宜代表宏科院与管理员建立战略同盟，以息壤新材与终末地工业管网合力应对裂隙侵蚀。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "主线第二章 · 裂隙稳定化项目",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》武陵阵营公布资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "arcane_arknights",
+    "name": "诀",
+    "alias": [
+      "Arcane",
+      "李织烟",
+      "诀",
+      "决",
+      "オクギ",
+      "Li Zhiyan"
+    ],
+    "type": "popular",
+    "icon": "🪶",
+    "portrait": {
+      "image": "../assets/characters/popular-arcane_arknights.png?v=2c78363a44b2",
+      "alt": "诀样张立绘",
+      "sourceShowcaseId": "pc_arcane_arknights_arcane_arknights_tea_pavilion",
+      "sourceShowcaseSha256": "f9722980a7f74a198a0a7fcedfcce0ba91cf789c0403b4f99b53ed23d3b30f46"
+    },
+    "visual_dna": {
+      "hair": "灰白底色配刘海与发尾青绿渐变长发，侧编细辫，束成利落高马尾",
+      "hair_color": "灰白渐青绿（#4db8b0）",
+      "eyes": "清冷明亮的蓝紫双眸，微带淡红眼影",
+      "hairstyle": "侧编发 · 青绿挑染 · 高马尾长发",
+      "uniform": "黑色机械头箍、高立领黑色应龙特勤服、青绿内衬黑色长外套、不对称战术手套与红黑分段过膝战靴",
+      "expression": "冷峻克制、目光沉静如铁",
+      "style": "东方神话精卫意象与硬派现代特勤战术风",
+      "signature": "灰白渐青绿高马尾、眉心细长红菱印、头侧成对白青鸟羽翼与头顶双羽簇"
+    },
+    "personality": [
+      "沉静果决",
+      "执拗不屈",
+      "外冷内热",
+      "习惯独自担责",
+      "心思缜密",
+      "重诺守信"
+    ],
+    "likes": [
+      "在清静茶室慢火煮茶观雾",
+      "整理旧任务记录与阵法推演笔记",
+      "在雨后竹院听风声",
+      "独自擦拭维护特勤装备",
+      "观察远山云海与飞鸟掠影"
+    ],
+    "identity": {
+      "role": "宏山科学院应龙特勤队行动队长 / 终末地协作干员",
+      "age": "青年女性（久经高危一线任务的资深行动队长）",
+      "occupation": "应龙特勤队行动队长 / 自然属性双形态术师",
+      "faction": "宏山科学院 / 应龙特勤队 / 终末地合作阵线"
+    },
+    "tags": [
+      "灰白青绿高马尾",
+      "头侧羽翼",
+      "眉心红印",
+      "黎博利",
+      "应龙特勤队",
+      "李织烟",
+      "阵诀双形态"
+    ],
+    "bg_story": "本名李织烟，行动代号“诀”，种族为黎博利，现任宏山科学院应龙特勤队行动队长。此前在北部禁区执行高危任务时负伤，目前处于长期休养状态，同时与终末地工业建立了紧密的协同合作。作为六星自然属性术师，她兼修「阵诀·智」与「阵诀·意」双形态，既能以凌厉阵势撕开敌阵，也能精准牵制、聚敌并放大队伍元素连携。在档案与私下谈话里，她常以“衔石填海的鸟”自喻——面对庞大到近乎无解的裂隙灾害，即便明知人力有穷，她仍愿一次次振翅落子，绝不轻言退步。",
+    "speech": "「宏山科学院应龙特勤队，行动代号“诀”。不必在意旧伤——既然海未平、裂隙仍在，衔石的鸟便没有停翅的道理。」",
+    "accent_color": "#4db8b0",
+    "bg_color": "#0d171c",
+    "source": "Hypergryph《明日方舟：终末地 / Arknights: Endfield》",
+    "traits": [
+      "arcaneendfield",
+      "1girl",
+      "solo",
+      "forehead mark",
+      "head wings",
+      "bird ears",
+      "grey hair",
+      "aqua gradient hair",
+      "high ponytail",
+      "blue eyes",
+      "arknights: endfield"
+    ],
+    "lora": {
+      "name": "诀 · Anima LoRA v2",
+      "trigger_words": [
+        "arcaneendfield"
+      ],
+      "recommended_scene": [
+        "诀（李织烟）角色样张与日常场景"
+      ]
+    },
+    "classic_cg": {
+      "title": "应龙关破晦启阵",
+      "description": "云雾翻涌的应龙关断崖前，李织烟黑衣青衬的长外套在朔风中猎猎翻飞，眉心红菱印与双侧雪青羽翼在冷光里清晰分明。她抬手结起阵诀，青碧流光化作纵横网格压向裂隙浪潮，身姿清冷而寸步不退。"
+    },
+    "voice": "「宏山科学院应龙特勤队，行动代号“诀”。不必在意旧伤——既然海未平、裂隙仍在，衔石的鸟便没有停翅的道理。」",
+    "relationshipGraph": {
+      "version": 1,
+      "work": "明日方舟：终末地",
+      "people": [
+        {
+          "id": "administrator",
+          "name": "管理员",
+          "aliases": [
+            "Administrator",
+            "Endministrator",
+            "女性管理员",
+            "总指挥官"
+          ],
+          "characterId": "administrator_arknights"
+        },
+        {
+          "id": "perlica",
+          "name": "佩丽卡",
+          "aliases": [
+            "Perlica",
+            "监督",
+            "佩丽卡监督",
+            "Supervisor Perlica"
+          ],
+          "characterId": "perlica_arknights"
+        },
+        {
+          "id": "laevatain",
+          "name": "莱万汀",
+          "aliases": [
+            "Laevatain",
+            "莱瓦汀",
+            "终末地特勤干员"
+          ],
+          "characterId": "laevatain_arknights"
+        },
+        {
+          "id": "yvonne",
+          "name": "伊冯",
+          "aliases": [
+            "Yvonne",
+            "イヴォンヌ",
+            "天才工程师",
+            "双枪干员"
+          ],
+          "characterId": "yvonne_arknights"
+        },
+        {
+          "id": "zhuang_fangyi",
+          "name": "庄方宜",
+          "aliases": [
+            "Zhuang Fangyi",
+            "庄天师",
+            "息壤主持天师",
+            "武陵管代"
+          ],
+          "characterId": "zhuang_fangyi_arknights"
+        },
+        {
+          "id": "rossy",
+          "name": "洛茜",
+          "aliases": [
+            "Rossi",
+            "洛茜娜·狼珀·卢皮诺",
+            "狼群首领"
+          ],
+          "characterId": "rossy_arknights"
+        },
+        {
+          "id": "si",
+          "name": "祀",
+          "aliases": [
+            "Si",
+            "小葱",
+            "巨兽代理人",
+            "塔卫二神裔"
+          ],
+          "characterId": "si_arknights"
+        },
+        {
+          "id": "typhoeus",
+          "name": "提弗洛斯",
+          "aliases": [
+            "Typhoeus",
+            "ティフォロス",
+            "萨米猎手"
+          ],
+          "characterId": "typhoeus_arknights"
+        },
+        {
+          "id": "arcane",
+          "name": "诀",
+          "aliases": [
+            "Arcane",
+            "李织烟",
+            "决",
+            "应龙特勤队队长"
+          ],
+          "characterId": "arcane_arknights"
+        },
+        {
+          "id": "chen_qianyu",
+          "name": "陈千语",
+          "aliases": [
+            "Chen Qianyu",
+            "千语",
+            "终末地近卫干员",
+            "炎国流云剑客"
+          ],
+          "role": "终末地工业特勤干员 / 剑术习练者",
+          "summary": "严谨果决的执行者，佩丽卡最得力的前线统帅。挥舞长剑在塔卫二的荒野开拓路线，维系开拓基地秩序。",
+          "characterId": "chen_qianyu"
+        }
+      ],
+      "relations": [
+        {
+          "id": "administrator-arcane-yinglung_cooperation",
+          "source": "administrator",
+          "target": "arcane",
+          "label": "应龙特勤协作与休养互信",
+          "description": "在北部禁区负伤休养期间，宏山科学院应龙特勤队队长李织烟（代号“诀”）与终末地工业建立长期合作，以缜密阵法协助管理员应对裂隙灾害。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "宏山科学院 · 终末地联合协防",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》角色档案：诀",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "zhuang_fangyi-arcane-hongshan_colleagues",
+          "source": "zhuang_fangyi",
+          "target": "arcane",
+          "label": "宏山同僚 · 科研管代与特勤队长",
+          "description": "庄方宜主理武陵科学发展区与息壤课题，诀统领宏山科学院应龙特勤队负责高危一线行动，两人在面对塔卫二裂隙异象时分担文武重任。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "宏山科学院体系协同",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》宏山科学院阵营资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "arcane-typhoeus-nature_tactical_synergy",
+          "source": "arcane",
+          "target": "typhoeus",
+          "label": "自然附着布阵与高空猎矢协同",
+          "description": "诀在地面布设阵诀稳定施加自然附着并牵制敌群，提弗洛斯则借风矢升空消耗附着倾泻强化猎矢，两人在自然属性作战体系中配合极为默契。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "前线协同作战编组",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》干员战术协作资料",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-typhoeus-sami_wilderness_bow",
+          "source": "administrator",
+          "target": "typhoeus",
+          "label": "荒野协防与高空火力支援",
+          "description": "来自罗德岛的萨米猎手提弗洛斯与终末地工业展开外勤协防，在管理员统筹的开拓战线上以浮空弓术压制高危目标。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "雪凇幽梦 · 荒野协防合作",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》1.5版本角色档案：提弗洛斯",
+            "url": "https://endfield.hypergryph.com"
+          }
+        },
+        {
+          "id": "administrator-perlica-supreme_partnership",
+          "source": "administrator",
+          "target": "perlica",
+          "label": "统帅与执行监督 · 唤醒与托付",
+          "description": "管理员沉睡数载后被佩丽卡监督自休眠舱倾力唤醒，两人形成终末地工业最核心的战术决策与基地统筹黄金中枢。",
+          "directed": false,
+          "spoiler": false,
+          "stage": "开拓序幕 · 塔卫二基地重启",
+          "evidence": {
+            "title": "Hypergryph · 《明日方舟：终末地》官方网站人物档案",
+            "url": "https://endfield.hypergryph.com"
+          }
+        }
+      ]
+    }
   }
 ]

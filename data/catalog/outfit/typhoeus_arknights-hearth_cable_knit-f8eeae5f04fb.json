@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/hearth_cable_knit",
+  "revision": 1,
+  "sortOrder": 4215,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "hearth_cable_knit",
+      "name": "暖杏粗麻花针织毛衣与灯芯绒裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常常服",
+      "prose": "A cozy oversized cream cable-knit crewneck sweater tucked loosely into a warm caramel corduroy pleated skirt with a braided leather waist belt, accented by a small amber pendant necklace, slouchy ivory knit socks, and polished brown penny loafers.",
+      "tokens": [
+        "cream cable-knit sweater",
+        "caramel corduroy pleated skirt",
+        "braided brown belt",
+        "amber pendant necklace",
+        "slouchy white socks",
+        "brown loafers"
+      ]
+    }
+  }
+}

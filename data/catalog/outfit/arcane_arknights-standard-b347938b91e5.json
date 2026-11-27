@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/standard",
+  "revision": 1,
+  "sortOrder": 4221,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "应龙特勤玄黑长衣（默认）",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false,
+      "category": "官方衣装",
+      "prose": "A black Yinglung Special Task Force tactical outfit featuring a structured high collar, a fitted black zipper top, a slit tactical front skirt with utility belt pouches, an open long black coat lined in aqua teal with armored wide cuffs, black tactical gloves, and crimson segmented thigh-high boots.",
+      "tokens": [
+        "black clothes",
+        "long coat",
+        "teal coat lining",
+        "high collar",
+        "black tactical top",
+        "slit front skirt",
+        "tactical belt",
+        "black gloves",
+        "red thighhighs",
+        "black combat boots"
+      ]
+    }
+  }
+}

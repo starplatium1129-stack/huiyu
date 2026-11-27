@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_tactical_sandbox",
+  "revision": 1,
+  "sortOrder": 19096,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_tactical_sandbox",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 作战室全息沙盘推演阵势",
+    "category": "剧情任务",
+    "action": "单手撑在全息地形台边缘凝视战线标注",
+    "location": "应龙特勤队战术推演室",
+    "timeOfDay": "夜晚",
+    "lighting": "青蓝色全息沙盘上打光映亮脸庞与发梢",
+    "camera": "medium shot",
+    "mood": "锐利笃定",
+    "description": "深夜作战室里只亮着全息地形台幽微的青蓝辉光。李织烟俯身单手撑住台面，另一手轻点北境裂隙的等高线，冷静拆解下一阶段两套阵诀的切换节点。抬头撞见你端着夜宵推门而入时，她紧绷的唇线才略略一松。",
+    "outfitId": "standard",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "story"
+    ],
+    "sceneTags": [
+      "command_room",
+      "hologram",
+      "tactical",
+      "night",
+      "focused"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "leaning over tactical table",
+      "holographic map projection",
+      "cyan glowing light",
+      "looking at viewer",
+      "sharp focused gaze",
+      "dark command room interior",
+      "cinematic lighting"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Leaning slightly over a glowing cyan holographic terrain table in a quiet command room, Arcane looks up toward the viewer with cool, decisive intensity.",
+    "animaCaption": "She leans one hand on the glowing holographic map table in the dim command room, glancing up with a sharp composed gaze.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

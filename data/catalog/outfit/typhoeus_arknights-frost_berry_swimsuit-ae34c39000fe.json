@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/frost_berry_swimsuit",
+  "revision": 1,
+  "sortOrder": 4217,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "frost_berry_swimsuit",
+      "name": "霜莓紫荷叶边系带分体泳装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "泳装假日",
+      "prose": "A frost-lavender halter two-piece swimsuit with delicate ruffled bust trim and a brushed silver o-ring clasp at the center, paired with a translucent lilac chiffon pareo tied neatly at the hip, a slender silver anklet, and bare feet.",
+      "tokens": [
+        "lavender halter bikini",
+        "ruffled trim",
+        "silver o-ring clasp",
+        "sheer lilac pareo",
+        "silver anklet",
+        "barefoot"
+      ]
+    }
+  }
+}

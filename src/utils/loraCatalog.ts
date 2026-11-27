@@ -7,6 +7,10 @@ export function endfieldAnimaBinding(characterId: string | null | undefined, fam
     if (!['anima-base-v1.0', 'anima-miaomiao-v1.6'].includes(modelId)) return null
     return { character: characterId, loraId: 'L_SI_ANIMA_BASE_V1', loraStrength: 0.8 }
   }
+  if (characterId === 'arcane_arknights') {
+    if (!['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'].includes(modelId)) return null
+    return { character: characterId, loraId: 'L_ARCANE_ANIMA_V2', loraStrength: 0.95 }
+  }
   const nativeCharacters = endfieldLora.nativeCharactersByModel as Record<string, string[]>
   if (!Object.hasOwn(endfieldLora.characters, characterId)
     || !endfieldLora.compatibleModels.includes(modelId) || nativeCharacters[modelId]?.includes(characterId)) return null

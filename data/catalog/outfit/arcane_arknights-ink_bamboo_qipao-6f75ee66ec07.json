@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/ink_bamboo_qipao",
+  "revision": 1,
+  "sortOrder": 4224,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "ink_bamboo_qipao",
+      "name": "月白青竹暗纹改良无袖旗袍",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "礼服雅集",
+      "prose": "A moon-white silk sleeveless modern qipao woven with subtle bamboo jacquard and finished with deep teal piping and silver frog clasps, draped with a sheer celadon chiffon shawl across the elbows, paired with silver drop earrings and silver-buckled low-heel pumps.",
+      "tokens": [
+        "moon-white silk qipao",
+        "bamboo jacquard",
+        "dark teal piping",
+        "sheer celadon shawl",
+        "silver drop earrings",
+        "low heel pumps"
+      ]
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_hearth_storytelling",
+  "revision": 1,
+  "sortOrder": 19087,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_hearth_storytelling",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 壁炉软毯边轻述萨米旧事",
+    "category": "相伴日常",
+    "action": "盘腿坐在壁炉前毛毯上翻开旧笔记本轻声讲述",
+    "location": "前哨木屋壁炉休息室",
+    "timeOfDay": "夜晚",
+    "lighting": "温暖跃动的壁炉橙红火光映亮侧脸",
+    "camera": "cowboy shot",
+    "mood": "静谧悠远",
+    "description": "木柴在石砌壁炉里发出细碎的噼啪声。提弗洛斯盘腿坐在厚实的编织毛毯上，膝头摊开一本贴满雪松干叶的旧笔记本，橙红火光映在她粉紫色的眼底。她压低嗓音，像萨米老猎人那样娓娓道来风雪深处的古老传闻。",
+    "outfitId": "hearth_cable_knit",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily",
+      "story"
+    ],
+    "sceneTags": [
+      "fireplace",
+      "notebook",
+      "night",
+      "warm_glow",
+      "cozy",
+      "storytelling"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "sitting on rug",
+      "open notebook on lap",
+      "fireplace in background",
+      "warm firelight",
+      "soft glow on face",
+      "looking at viewer",
+      "storytelling expression",
+      "gentle smile",
+      "wooden cabin lounge"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Sitting cross-legged on a woven rug in front of a crackling stone fireplace, Typhoeus rests an open field notebook across her lap and looks up at the viewer with warm firelight dancing across her face.",
+    "animaCaption": "She sits on a woven rug before the warm glow of the fireplace with an open notebook on her lap, speaking softly to the viewer.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/obsidian_silk_lingerie",
+  "revision": 1,
+  "sortOrder": 4227,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "obsidian_silk_lingerie",
+      "name": "玄黑朱边真丝系带内衣与长纱袍",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "A sleek obsidian-black silk bralette and matching tie-side lace panties edged with fine crimson piping and tiny silver rings, worn beneath an open translucent black silk dressing robe with red-trimmed sheer black thigh-high stockings and bare feet.",
+      "tokens": [
+        "black silk bralette",
+        "crimson lace trim",
+        "matching lace panties",
+        "sheer black silk robe",
+        "red-trim black thighhighs",
+        "barefoot"
+      ]
+    }
+  }
+}

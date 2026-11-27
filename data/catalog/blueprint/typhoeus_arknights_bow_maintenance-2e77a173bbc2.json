@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_bow_maintenance",
+  "revision": 1,
+  "sortOrder": 19086,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_bow_maintenance",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 工坊长桌擦拭保养弓弦",
+    "category": "相伴日常",
+    "action": "俯身在工坊工作台前给弓弦上蜡检查羽箭",
+    "location": "基地装备保养工坊",
+    "timeOfDay": "傍晚",
+    "lighting": "工坊悬吊暖白台灯聚焦照射木桌",
+    "camera": "medium shot",
+    "mood": "专注沉静",
+    "description": "工坊里弥漫着松脂蜡与金属保养油的淡香。系着橄榄绿帆布围裙的提弗洛斯把袖口卷到小臂，低头仔细检查箭羽的平衡度，察觉你走进来才抬头笑了一声，扬手示意你递过桌角的校准尺。",
+    "outfitId": "workshop_canvas_apron",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "workshop",
+      "maintenance",
+      "archery",
+      "arrows",
+      "desk_lamp",
+      "focused"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "sitting at workbench",
+      "inspecting arrow",
+      "wooden workbench",
+      "archery tools",
+      "bow resting on table",
+      "warm hanging lamp",
+      "looking up at viewer",
+      "focused gentle smile",
+      "cozy workshop interior"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Seated at a cluttered wooden workbench under a warm hanging lamp, Typhoeus inspects the fletching of an arrow while her bow and maintenance tools rest nearby, glancing up at the viewer with a quiet smile.",
+    "animaCaption": "She sits at the warmly lit wooden workbench holding an arrow for inspection, looking up at the viewer with an easy focused smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

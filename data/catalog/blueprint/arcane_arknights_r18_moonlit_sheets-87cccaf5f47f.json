@@ -1,0 +1,60 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_r18_moonlit_sheets",
+  "revision": 1,
+  "sortOrder": 19102,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_r18_moonlit_sheets",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 月影素床卸甲相拥",
+    "category": "成人",
+    "action": "半卧月光素白床榻轻抬下颌呼吸微促",
+    "location": "月夜私密卧房床榻",
+    "timeOfDay": "深夜",
+    "lighting": "清冷银白月光透过纱帘勾勒肌肤与发丝",
+    "camera": "cowboy shot",
+    "mood": "脆弱动情",
+    "adult": true,
+    "sampleRating": "R18",
+    "description": "月色顺着薄纱窗帘铺在素白床单上，将她灰白渐青的长发与头侧羽翼映出柔和银边。彻底卸下防备与衣物的李织烟半倚枕间，冷白肌肤在夜色里微微泛红，胸口随着略微急促的呼吸轻伏。向来习惯独自硬撑的应龙队长伸出手，轻声让你留在这个只属于两人的夜晚。",
+    "outfitId": "nsfw_nude",
+    "recommendedSize": "832x1216",
+    "coverageTags": [],
+    "sceneTags": [
+      "bedroom",
+      "moonlight",
+      "bed",
+      "nude",
+      "blush",
+      "intimate",
+      "sensual"
+    ],
+    "promptTokens": [
+      "adult",
+      "r18",
+      "cowboy shot",
+      "bedroom",
+      "lying on bed",
+      "partially covered by white sheet",
+      "bare breasts",
+      "blush",
+      "parted lips",
+      "heavy breathing",
+      "looking at viewer",
+      "soft moonlight",
+      "white silk sheets",
+      "intimate"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Resting back against pale silk pillows bathed in cool silver moonlight, Arcane lies unadorned with a white sheet loosely draped across her lower hips, flushed cheeks and parted lips betraying rare vulnerability as she looks at the viewer.",
+    "animaCaption": "She rests naked among moonlit white sheets with a soft flush across her skin, gazing warmly up at the viewer with parted lips.",
+    "nsfwTokens": [
+      "nude",
+      "nipples",
+      "bare breasts"
+    ],
+    "nsfwProse": "Her bare upper body and collarbones catch the soft silver moonlight above the loosely draped white sheet."
+  }
+}

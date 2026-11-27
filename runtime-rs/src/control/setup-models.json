@@ -331,6 +331,19 @@
       "purpose": "祀角色绘图 LoRA · 建议强度 0.8",
       "modelCardUrl": "https://github.com/starplatium1129-stack/huiyu/releases/latest",
       "licenseUrl": "https://huggingface.co/circlestone-labs/Anima#license"
+    },
+    {
+      "id": "L_ARCANE_ANIMA_V2",
+      "kind": "lora",
+      "path": "loras/arcane_anima_v2.safetensors",
+      "bytes": 46004136,
+      "sha256": "48659b6e5d7b0782b4b91c0c56bce37794da704edc1a9a1e986669d0e31af2c2",
+      "sourceUrl": "https://civitai.com/api/download/models/3201375?fileId=3082615",
+      "revision": "3201375",
+      "label": "诀 · Anima LoRA v2",
+      "purpose": "诀（李织烟）角色绘图 LoRA · 建议强度 0.95",
+      "modelCardUrl": "https://civitai.com/models/2696000?modelVersionId=3201375",
+      "licenseUrl": "https://civitai.com/models/2696000?modelVersionId=3201375"
     }
   ],
   "recommendedModel": "anima-miaomiao-v1.6"

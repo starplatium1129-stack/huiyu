@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_snow_overlook",
+  "revision": 1,
+  "sortOrder": 19083,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_snow_overlook",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 雪凇高地哨所观风",
+    "category": "剧情任务",
+    "action": "立于积雪岩台边缘单手扶弓远眺回眸",
+    "location": "塔卫二雪原高地哨所",
+    "timeOfDay": "清晨",
+    "lighting": "清冽冷调的雪地晨光与微弱暖金日出边光",
+    "camera": "cowboy shot",
+    "mood": "冷静敏锐",
+    "description": "晨霜还未从哨所护栏上散去，提弗洛斯踩着碎雪站在岩台边，一手轻按腰侧战术扣、微微偏头朝你看来。冷风拂过她的薰衣草色长发与深色龙角，粉紫双眸清亮沉静——「西北方的风里混着侵蚀体的腥气。先别急着下坡，我从上面替你清出路来。」",
+    "outfitId": "standard",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "combat",
+      "story"
+    ],
+    "sceneTags": [
+      "snow",
+      "overlook",
+      "highland",
+      "morning",
+      "wind",
+      "hunter"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing",
+      "hand on hip",
+      "looking at viewer",
+      "calm confident smile",
+      "snowy highland outpost",
+      "rocky cliff railing",
+      "falling snow",
+      "crisp morning sunlight",
+      "wind blowing hair"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Standing at the edge of a snow-dusted highland outpost with crisp morning sunlight catching her horns and lavender hair, Typhoeus rests one hand on her hip and looks back toward the viewer with a calm, sharp hunter's smile.",
+    "animaCaption": "She stands poised at the snowy cliffside railing, wind lifting her hair as she looks toward the viewer with quiet confidence.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

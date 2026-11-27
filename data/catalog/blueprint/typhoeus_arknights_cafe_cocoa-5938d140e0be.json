@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_cafe_cocoa",
+  "revision": 1,
+  "sortOrder": 19084,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_cafe_cocoa",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 暖窗咖啡座捧热可可",
+    "category": "相伴日常",
+    "action": "靠在木桌旁双手捧热可可杯轻笑",
+    "location": "基地生活区阳光咖啡角",
+    "timeOfDay": "午后",
+    "lighting": "透过玻璃窗洒落的柔和暖金午后光",
+    "camera": "medium shot",
+    "mood": "惬意温暖",
+    "description": "外头还飘着细雪，生活区咖啡角却暖得像刚烘好的面包房。提弗洛斯换下厚重的战术绑带，穿一身暖杏色麻花针织毛衣坐在靠窗卡座里，双手捧着冒热气的陶瓷杯，托着腮把听来的萨米轶事一桩桩讲给你听，嘴角挂着难得松弛的笑意。",
+    "outfitId": "hearth_cable_knit",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "cafe",
+      "cocoa",
+      "window",
+      "warm",
+      "cozy",
+      "sweater"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "sitting at wooden table",
+      "holding mug",
+      "steaming hot cocoa",
+      "gentle smile",
+      "looking at viewer",
+      "cozy cafe interior",
+      "sunlight through window",
+      "warm afternoon light",
+      "relaxed atmosphere"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Relaxing in a sunlit cafe booth beside a frosty window, Typhoeus cradles a steaming mug of hot cocoa in both hands and smiles warmly across the wooden table.",
+    "animaCaption": "She sits comfortably by the sunlit cafe window holding a steaming mug of cocoa, looking across the table with a soft relaxed smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

@@ -200,6 +200,20 @@
       ],
       "minStrength": 0.5,
       "maxStrength": 1
+    },
+    "L_ARCANE_ANIMA_V2": {
+      "file": "arcane_anima_v2.safetensors",
+      "name": "诀 · Anima LoRA v2",
+      "character": "arcane_arknights",
+      "compatibleModels": [
+        "anima-base-v1.0",
+        "anima-aesthetic-v1.1",
+        "anima-yume-v1.0",
+        "anima-miaomiao-v1.2",
+        "anima-miaomiao-v1.6"
+      ],
+      "minStrength": 0.6,
+      "maxStrength": 1
     }
   },
   "KREA_STYLE_LORAS": {
@@ -255,6 +269,11 @@
       "id": "si_arknights",
       "label": "祀",
       "loraId": "L_SI_ANIMA_BASE_V1"
+    },
+    "arcane_arknights": {
+      "id": "arcane_arknights",
+      "label": "诀",
+      "loraId": "L_ARCANE_ANIMA_V2"
     }
   },
   "contract": {
@@ -352,7 +371,8 @@
     "CHARACTER_LORA_BINDINGS": {
       "nene": "L_NENE_V21_ANIMA",
       "natsume": "L_NAT_V21_ANIMA",
-      "si_arknights": "L_SI_ANIMA_BASE_V1"
+      "si_arknights": "L_SI_ANIMA_BASE_V1",
+      "arcane_arknights": "L_ARCANE_ANIMA_V2"
     }
   }
 }

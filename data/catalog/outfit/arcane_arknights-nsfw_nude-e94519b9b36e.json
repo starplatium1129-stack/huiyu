@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 4228,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "褪衣临泉全裸态（无着装）",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "Completely free of tactical coats, straps, gloves, and boots, wearing only a thin crimson silk cord at her neck and a smooth celadon jade bangle on her wrist.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "thin red neck cord",
+        "jade bangle",
+        "bare shoulders",
+        "bare breasts",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

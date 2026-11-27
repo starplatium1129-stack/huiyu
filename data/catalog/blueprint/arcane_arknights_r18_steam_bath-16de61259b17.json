@@ -1,0 +1,53 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_r18_steam_bath",
+  "revision": 1,
+  "sortOrder": 19100,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_r18_steam_bath",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 疗伤温泉氤氲青瓷松袍",
+    "category": "成人",
+    "action": "坐于温泉木廊浴袍领口微敞肩线滑落",
+    "location": "宏山私密药浴汤屋",
+    "timeOfDay": "深夜",
+    "lighting": "温暖昏黄木灯笼光穿透袅袅汤雾",
+    "camera": "cowboy shot",
+    "mood": "微醺克制",
+    "adult": true,
+    "sampleRating": "R15",
+    "description": "泡完药汤后，汤屋里弥漫着草药与热汽的温润气息。李织烟松松系着青瓷色真丝浴袍坐在温热木沿上，敞开的领口顺着一侧肩头轻滑下来，白皙肌肤泛着沐浴后的淡粉水光。她收起平日作为队长的冷肃防备，眼神微润地望着走近的你。",
+    "outfitId": "celadon_bath_yukata",
+    "recommendedSize": "832x1216",
+    "coverageTags": [],
+    "sceneTags": [
+      "bathhouse",
+      "steam",
+      "bathrobe",
+      "blush",
+      "wet",
+      "night",
+      "sensual"
+    ],
+    "promptTokens": [
+      "adult",
+      "cowboy shot",
+      "sitting on wooden bathhouse ledge",
+      "steaming hot spring mist",
+      "wet skin",
+      "loose robe slipping off shoulder",
+      "cleavage",
+      "soft blush",
+      "looking at viewer",
+      "warm dim lantern light",
+      "intimate"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Sitting on the warm cypress ledge of a steam-filled private bathhouse, Arcane wears a loose celadon silk bathrobe slipping off one shoulder, her flushed damp skin glowing softly in dim lantern light as she watches the viewer.",
+    "animaCaption": "She sits on the steamy wooden bathhouse ledge with her celadon silk robe slipping off one shoulder, gazing warmly at the viewer.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

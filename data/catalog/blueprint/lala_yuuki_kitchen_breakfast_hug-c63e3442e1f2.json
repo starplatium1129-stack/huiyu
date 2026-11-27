@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lala_yuuki_kitchen_breakfast_hug",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1231,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T02:53:05.533562500+00:00",
   "data": {
-    "action": "飞扑跳跃紧紧搂住对方脖颈拥抱，胸前丰满紧贴，爱心尾巴缠绕，笑容灿烂如阳",
-    "camera": "medium shot, first-person view from Rito",
+    "action": "张开双臂欢快扑向前方迎接拥抱，粉红长发与爱心尾巴轻快扬起，笑容灿烂如阳",
+    "camera": "cowboy shot",
     "category": "日常热恋",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [
@@ -18,20 +18,25 @@
     "lighting": "厨房大窗洒入的温润晨曦与白瓷餐具的柔和光晕",
     "location": "结城家温馨起居室与餐桌旁",
     "mood": "甜美热烈",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "pov hands"
+    ],
     "outfitId": "sainan_uniform",
-    "promptProse": "Lala throws both arms around the off-frame viewer's neck in a bright morning hug, seen from their viewpoint. The breakfast table and white dishes catch the kitchen-window light behind her.",
+    "promptProse": "Bounding joyfully forward across the sunlit Yuuki kitchen with both arms flung wide open for a warm morning hug, Lala beams at the viewer as her long pink hair and heart-tipped tail flutter cheerfully behind her, with a breakfast table of toast and plates glowing in the morning window light.",
     "promptTokens": [
-      "Lala",
-      "hugging",
-      "jumping",
-      "kitchen",
-      "breakfast",
-      "pov",
+      "cowboy shot",
+      "leaning forward",
+      "open arms",
+      "outstretched arms",
       "bright smile",
-      "morning",
+      "open mouth",
+      "blush",
+      "looking at viewer",
+      "sunlit home kitchen",
+      "breakfast table",
+      "morning sunlight",
       "window light",
-      "medium shot"
+      "hair fluttering"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +53,6 @@
     "title": "菈菈 · 结城家清晨的飞扑拥抱",
     "compositionIntent": "single",
     "characterTokens": [],
-    "animaCaption": "Both arms wrap around the off-frame viewer's neck, breakfast dishes behind her."
+    "animaCaption": "She leans eagerly forward toward the viewer with both arms stretched wide open for a morning hug, beaming happily in the sunlit kitchen."
   }
 }

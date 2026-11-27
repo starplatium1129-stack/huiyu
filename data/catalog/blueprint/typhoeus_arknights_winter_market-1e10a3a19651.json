@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_winter_market",
+  "revision": 1,
+  "sortOrder": 19085,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_winter_market",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 雪夜集市暖灯热饮摊",
+    "category": "相伴日常",
+    "action": "雪夜街灯下递来一杯热姜茶",
+    "location": "开拓前哨冬季夜市",
+    "timeOfDay": "夜晚",
+    "lighting": "摊位暖黄串灯与冷蓝雪夜环境光交织",
+    "camera": "medium shot",
+    "mood": "轻快亲近",
+    "description": "雪花落在派克外套厚实的毛领上很快融成水珠，提弗洛斯从热饮摊接过两只纸杯，顺手把更烫的那一杯往你手心里一塞。身后暖黄串灯映亮她微红的鼻尖与弯弯的眼角——「再站一会儿手都要冻僵了，边喝边把这条街逛完吧。」",
+    "outfitId": "sami_winter_parka",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "winter",
+      "night",
+      "market",
+      "snow",
+      "warm_lights",
+      "drink"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "standing",
+      "holding paper cup",
+      "offering drink",
+      "warm smile",
+      "looking at viewer",
+      "winter night street market",
+      "string lights",
+      "light snow falling",
+      "warm lantern glow",
+      "bokeh background"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Under strings of warm lanterns at a snowy outpost night market, Typhoeus holds out a steaming paper cup of hot drink toward the viewer with a bright, inviting smile.",
+    "animaCaption": "She stands beneath warm winter market lights in light falling snow, extending a steaming cup toward the viewer with a cheerful smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

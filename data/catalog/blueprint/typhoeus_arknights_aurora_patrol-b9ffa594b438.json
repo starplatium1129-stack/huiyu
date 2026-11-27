@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_aurora_patrol",
+  "revision": 1,
+  "sortOrder": 19088,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_aurora_patrol",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 极光雪松林边缘短暂歇脚",
+    "category": "风景写生",
+    "action": "靠在覆雪松树旁仰望极光后转头微笑",
+    "location": "塔卫二极光雪松林",
+    "timeOfDay": "深夜",
+    "lighting": "翠绿与淡紫交织的天空极光与雪面反光",
+    "camera": "cowboy shot",
+    "mood": "澄澈浪漫",
+    "description": "夜巡收尾时，天幕忽然垂下绵延数里的青紫极光。提弗洛斯停在挂满雪凇的冷杉下，呼出一团温热白雾，抬手把滑落的毛领拢紧，回头朝你眨了眨眼——「在萨米，撞见这种夜空就说明明天会是个好天气。」",
+    "outfitId": "sami_winter_parka",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily",
+      "scenic"
+    ],
+    "sceneTags": [
+      "aurora",
+      "pine_forest",
+      "snow",
+      "night",
+      "winter",
+      "scenic"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing",
+      "looking back at viewer",
+      "soft smile",
+      "aurora borealis in night sky",
+      "snow-covered pine trees",
+      "winter forest",
+      "cool luminescent sky light",
+      "frosty breath",
+      "starry night"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Standing beside frost-laden pine trees beneath ribbons of green and violet aurora, Typhoeus turns back toward the viewer with a bright, serene smile as cool celestial light shimmers across the snow.",
+    "animaCaption": "She pauses beside snow-laden pines beneath the glowing aurora sky, turning back with a warm smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

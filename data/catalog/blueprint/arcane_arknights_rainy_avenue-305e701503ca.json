@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_rainy_avenue",
+  "revision": 1,
+  "sortOrder": 19095,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_rainy_avenue",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 细雨武陵长街撑伞同行",
+    "category": "相伴日常",
+    "action": "撑着深色长柄伞在细雨石板街上停步侧望",
+    "location": "武陵城郊雨后石板街",
+    "timeOfDay": "傍晚",
+    "lighting": "湿润青灰雨光与街边暖黄檐灯倒影",
+    "camera": "cowboy shot",
+    "mood": "从容柔和",
+    "description": "暮色里落起细密小雨，石板路映着沿街商铺暖黄的灯影。身着雾灰长风衣的李织烟把深色油布伞微微往你这边倾斜半分，修长手指搭在伞柄上，回眸时眼底映着细碎水光——「再往前走两条街有家老汤馆，去避避雨吧。」",
+    "outfitId": "mist_trench_coat",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "rain",
+      "umbrella",
+      "street",
+      "evening",
+      "trench_coat",
+      "reflections"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing",
+      "holding dark umbrella",
+      "light rain",
+      "looking at viewer",
+      "gentle calm expression",
+      "wet cobblestone avenue",
+      "warm shopfront lights",
+      "evening twilight",
+      "raindrops"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Pausing on a rain-slicked cobblestone avenue at dusk beneath a dark umbrella, Arcane wears a tailored mist-grey trench coat and turns slightly toward the viewer with quiet warmth as shopfront lanterns glow behind her.",
+    "animaCaption": "She stands on the wet evening street holding a dark umbrella tilted slightly in the rain, looking calmly toward the viewer.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

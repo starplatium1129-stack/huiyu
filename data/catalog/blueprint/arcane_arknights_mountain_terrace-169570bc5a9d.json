@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_mountain_terrace",
+  "revision": 1,
+  "sortOrder": 19093,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_mountain_terrace",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 应龙关雾山石台巡望",
+    "category": "剧情任务",
+    "action": "立于云雾石台边缘迎风回眸目光冷峻",
+    "location": "宏山应龙关外围石台",
+    "timeOfDay": "清晨",
+    "lighting": "清冷柔和的阴天高地散射光与雾气轮廓光",
+    "camera": "cowboy shot",
+    "mood": "冷峻克制",
+    "description": "山雾在青石栏杆外缓慢翻涌，李织烟一袭黑衣青衬的应龙特勤长外套被山风掀起衣角。她收起望向北部禁区方向的视线，微微侧身看过来，眉心细长的红印在冷白晨雾间显得格外清晰——「风势稳了。你若随行，便跟紧我的步距。」",
+    "outfitId": "standard",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "combat",
+      "story"
+    ],
+    "sceneTags": [
+      "mountain",
+      "mist",
+      "terrace",
+      "wind",
+      "tactical",
+      "overcast"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "standing",
+      "looking at viewer",
+      "calm composed expression",
+      "misty mountain stone terrace",
+      "distant mountain peaks",
+      "flowing coat in wind",
+      "soft overcast daylight",
+      "atmospheric mist"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Standing composed upon a mist-shrouded stone mountain terrace with cool wind lifting her dark tactical coat and aqua-tipped ponytail, Arcane looks calmly toward the viewer under soft overcast highland light.",
+    "animaCaption": "She stands composed on the misty stone terrace as mountain wind lifts her long coat and ponytail.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

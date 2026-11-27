@@ -60,6 +60,14 @@ let LORAS: Readonly<Record<string, LoraDefinition>> = Object.freeze({
     minStrength:0.5,
     maxStrength:1
   },
+  L_ARCANE_ANIMA_V2: {
+    file:'arcane_anima_v2.safetensors',
+    name:'诀 · Anima LoRA v2',
+    character:'arcane_arknights',
+    compatibleModels:['anima-base-v1.0', 'anima-aesthetic-v1.1', 'anima-yume-v1.0', 'anima-miaomiao-v1.2', 'anima-miaomiao-v1.6'],
+    minStrength:0.6,
+    maxStrength:1
+  },
   L_NENE_V21_ANIMA: {
     file:'ayachi_nene_v21_anima.safetensors',
     name:'ayachi_nene_v21_anima',

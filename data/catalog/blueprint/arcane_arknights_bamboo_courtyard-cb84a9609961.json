@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_bamboo_courtyard",
+  "revision": 1,
+  "sortOrder": 19097,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_bamboo_courtyard",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 晚风竹院回廊灯下小驻",
+    "category": "相伴日常",
+    "action": "轻倚竹院木栏在暖灯晚风中回首浅笑",
+    "location": "武陵竹影庭院回廊",
+    "timeOfDay": "夜晚",
+    "lighting": "廊下纸灯笼柔暖微光与清凉月色",
+    "camera": "cowboy shot",
+    "mood": "典雅温润",
+    "description": "雅集散场后，晚风拂过院外成片修竹发出沙沙轻响。换上月白青竹改良旗袍的李织烟停步在木质回廊栏杆边，青色轻纱披肩随风滑过手肘。平日总显得疏离克制的队长此刻眼神温润，轻轻朝你抬手——「夜风正好，陪我多站片刻吧。」",
+    "outfitId": "ink_bamboo_qipao",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily",
+      "formal"
+    ],
+    "sceneTags": [
+      "courtyard",
+      "bamboo",
+      "lantern",
+      "night",
+      "qipao",
+      "elegant"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "leaning on wooden railing",
+      "looking back at viewer",
+      "gentle graceful smile",
+      "traditional wooden corridor",
+      "bamboo courtyard at night",
+      "warm paper lanterns",
+      "soft moonlight",
+      "gentle breeze"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Resting lightly against a dark wooden corridor railing beside a moonlit bamboo courtyard, Arcane wears a moon-white silk qipao and sheer celadon shawl, turning toward the viewer in the soft glow of paper lanterns.",
+    "animaCaption": "She rests lightly by the wooden corridor railing with warm lanterns and moonlit bamboo behind her, offering a graceful quiet smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

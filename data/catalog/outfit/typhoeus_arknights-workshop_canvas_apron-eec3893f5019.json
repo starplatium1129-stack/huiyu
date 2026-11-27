@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/workshop_canvas_apron",
+  "revision": 1,
+  "sortOrder": 4216,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "workshop_canvas_apron",
+      "name": "橄榄绿帆布工坊修弓围裙装",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常常服",
+      "prose": "A heavy olive-green canvas workshop apron with riveted leather tool pockets worn over a heather-grey henley shirt with sleeves rolled to the forearms, dark washed straight denim jeans, a stitched brown leather archer bracer on the wrist, and rugged tan suede work boots.",
+      "tokens": [
+        "olive canvas apron",
+        "leather tool pockets",
+        "heather grey henley shirt",
+        "rolled up sleeves",
+        "dark denim jeans",
+        "leather bracer",
+        "suede work boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "typhoeus_arknights_swimsuit_lagoon",
+  "revision": 1,
+  "sortOrder": 19089,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "typhoeus_arknights_swimsuit_lagoon",
+    "characterId": "typhoeus_arknights",
+    "title": "提弗洛斯 · 地热暖泉石畔清夏戏水",
+    "category": "夏日海滩",
+    "action": "坐在温暖清澈的浅池石沿轻晃双足回眸",
+    "location": "塔卫二地热暖水生态池",
+    "timeOfDay": "午后",
+    "lighting": "晴朗通透的日光与水面粼粼波光",
+    "camera": "cowboy shot",
+    "mood": "明快舒展",
+    "description": "基地生态穹顶内的地热池四季温润如夏。换上霜莓紫荷叶边分体泳装的提弗洛斯坐在池畔浅灰石沿上，赤足轻点微暖的水面激起一圈圈涟漪，浅紫薄纱随微风轻扬，龙尾悠闲地贴着石面轻摆。",
+    "outfitId": "frost_berry_swimsuit",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "swimsuit"
+    ],
+    "sceneTags": [
+      "swimsuit",
+      "poolside",
+      "water",
+      "sunlight",
+      "summer",
+      "relaxed"
+    ],
+    "promptTokens": [
+      "cowboy shot",
+      "sitting on pool edge",
+      "feet in water",
+      "water ripples",
+      "bright natural sunlight",
+      "sparkling water",
+      "looking at viewer",
+      "playful smile",
+      "tropical conservatory pool",
+      "wet skin"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Sitting along the stone rim of a sunlit geothermal lagoon pool, Typhoeus dangles her bare feet into the shimmering clear water and looks toward the viewer with a playful, sunlit smile.",
+    "animaCaption": "She sits on the sunlit stone edge dipping her feet into the sparkling water, smiling playfully toward the viewer.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

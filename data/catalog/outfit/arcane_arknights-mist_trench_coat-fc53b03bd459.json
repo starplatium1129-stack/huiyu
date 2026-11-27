@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/mist_trench_coat",
+  "revision": 1,
+  "sortOrder": 4223,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "mist_trench_coat",
+      "name": "雾灰双排扣长风衣与绯红高领",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常常服",
+      "prose": "A tailored mist-grey knee-length double-breasted trench coat cinched with a black leather waist belt over a fitted crimson ribbed turtleneck knit and a sleek black pencil skirt, accessorized with a rectangular silver wristwatch, sheer black tights, and low-heeled black chelsea boots.",
+      "tokens": [
+        "mist grey trench coat",
+        "black waist belt",
+        "crimson turtleneck knit",
+        "black pencil skirt",
+        "silver wristwatch",
+        "sheer black tights",
+        "black chelsea boots"
+      ]
+    }
+  }
+}

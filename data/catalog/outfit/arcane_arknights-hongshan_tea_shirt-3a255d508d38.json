@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/hongshan_tea_shirt",
+  "revision": 1,
+  "sortOrder": 4222,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "hongshan_tea_shirt",
+      "name": "烟青立领亚麻茶服与阔腿西裤",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "category": "日常常服",
+      "prose": "A relaxed slate-blue linen mandarin-collar shirt with knotted frog buttons worn partly open over an ivory silk camisole, paired with tailored charcoal wide-leg draped trousers, a slender celadon jade bead bracelet, and minimalist black cloth flats.",
+      "tokens": [
+        "slate blue mandarin shirt",
+        "frog buttons",
+        "ivory silk camisole",
+        "charcoal wide-leg trousers",
+        "jade bead bracelet",
+        "black flat shoes"
+      ]
+    }
+  }
+}

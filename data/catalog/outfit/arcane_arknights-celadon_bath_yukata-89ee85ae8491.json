@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "arcane_arknights/celadon_bath_yukata",
+  "revision": 1,
+  "sortOrder": 4226,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "arcane_arknights",
+    "outfit": {
+      "id": "celadon_bath_yukata",
+      "name": "青瓷色宽松真丝温泉浴袍",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "category": "场景衣装状态",
+      "prose": "A draped celadon-green silk bath yukata tied loosely at the waist with a deep indigo woven sash, collar parted open and slipping off one shoulder to reveal her collarbone and slender legs, worn barefoot.",
+      "tokens": [
+        "celadon silk bathrobe",
+        "loose dark blue sash",
+        "open collar",
+        "off shoulder",
+        "cleavage",
+        "bare legs",
+        "barefoot"
+      ]
+    }
+  }
+}

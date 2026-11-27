@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "arcane_arknights_tea_pavilion",
+  "revision": 1,
+  "sortOrder": 19094,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "id": "arcane_arknights_tea_pavilion",
+    "characterId": "arcane_arknights",
+    "title": "诀 · 休养茶室晨光手捧清茗",
+    "category": "相伴日常",
+    "action": "端坐明窗茶案前双手轻捧青瓷茶盏",
+    "location": "宏山休养院临窗茶室",
+    "timeOfDay": "清晨",
+    "lighting": "柔和温暖的晨曦斜照窗格与茶烟",
+    "camera": "medium shot",
+    "mood": "清雅静谧",
+    "description": "难得没有外勤通报的早晨，李织烟换下硬挺的黑色战术装，穿一身烟青立领亚麻茶服坐在临窗木案旁。窗外竹影随风轻晃，她指节修长地托起温热的青瓷茶盏，眉梢间那层常年不散的冷意在晨光与茶香里稍稍融化了些许。",
+    "outfitId": "hongshan_tea_shirt",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "daily",
+      "tea_room",
+      "morning",
+      "window",
+      "sunlight",
+      "serene"
+    ],
+    "promptTokens": [
+      "medium shot",
+      "sitting at wooden tea table",
+      "holding porcelain teacup",
+      "steaming tea",
+      "soft composed smile",
+      "looking at viewer",
+      "quiet traditional tea room",
+      "morning sunlight through window",
+      "bamboo shadows",
+      "serene atmosphere"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Seated calmly at a sunlit wooden tea table beside a lattice window, Arcane holds a warm porcelain teacup with delicate poise and meets the viewer's gaze with a faint, serene smile.",
+    "animaCaption": "She sits quietly beside the sunlit window holding a steaming porcelain teacup, looking calmly toward the viewer with a faint smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

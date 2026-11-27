@@ -1,0 +1,32 @@
+{
+  "kind": "outfit",
+  "id": "typhoeus_arknights/standard",
+  "revision": 1,
+  "sortOrder": 4213,
+  "createdAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "data": {
+    "characterId": "typhoeus_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "萨米荒野机能猎装（默认）",
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false,
+      "category": "官方衣装",
+      "prose": "A black mechanical goggle hairband, a fitted sleeveless white tactical top under a black corset harness with a crimson chest emblem, mismatched detached wide sleeves, black gloves, a black pleated overskirt over short black shorts with a belt pouch, fur-trimmed thighhigh socks, and lace-up black combat boots.",
+      "tokens": [
+        "black hairband",
+        "leotard",
+        "detached sleeves",
+        "mismatched sleeves",
+        "black gloves",
+        "black skirt",
+        "black short shorts",
+        "fur-trimmed thighhighs",
+        "belt pouch",
+        "black boots"
+      ]
+    }
+  }
+}
