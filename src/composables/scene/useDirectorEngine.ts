@@ -122,9 +122,9 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       return
     }
     drawEngine.value = v
-    patchAnimaState({ styleLoraId: '' })
-    syncAnimaCharacter(pb.char)
+    // Restore the new family's saved settings before reconciling the character with its catalog.
     void refreshAnimaBackend()
+    syncAnimaCharacter(pb.char)
     if (!options.silent) flash(v === 'anima'
       ? (pb.isUnbound || !pb.isPopular && animaState.value.characterLoraEnabled === false ? '已切换到 Anima（无角色 LoRA）' : '已切换到 Anima（按角色配置加载 LoRA）')
       : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')

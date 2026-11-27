@@ -137,7 +137,7 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "errors": "批次看 items[].status、code、error；经中转还可看 deliveryStatus。历史中 failedCount 大于 0 的批次可按编号查询明细。"
         },
         "usage": "使用当前地址、X-Token 与以下相对路径；新任务生成新 UUID requestKey，重试沿用原编号与原请求体。",
-        "sceneModels": ["anima-miaomiao-v1.6", "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1", "krea2-turbo", "krea2-raw"],
+        "sceneModels": super::muse::recipe_models(),
         "quickDraw": {
             "submit": "已有目录 id 或 prompt 时，直接 POST /api/muse/jobs，无需先查目录或队列。",
             "receive": "中转回执含 receivePath 时可直接 GET 长轮询（≤20s）；202 或 pending=true 按 Retry-After 续查，收到 PNG 后校验长度与 SHA-256。查进度或并行下载 GET statusPath。",
@@ -171,8 +171,10 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "mossLayout": "自定义布局支持在 prompt 传 JSON/```json``` 或显式传 layout 对象（自动支持 normalized/rel_0_1、rel_1000、abs/xyxy 与 abs_centralized/yxyx 四种坐标并换算校验为规范像素框，1–16 项，支持 assistLayout 直通）。"
         },
         "krea2": {
-            "models": ["krea2-turbo", "krea2-raw"],
-            "usage": "支持目录场景/蓝图/服装配方（动态编译英文自然语言并匹配最接近宽高比），可选 styleLoraId；不支持 negative 与 initImage。"
+            "models": super::muse::krea_models(),
+            "styleLoraStrength": {"min":-2,"max":2,"default":1},
+            "maxStyleLoras": 2,
+            "usage": "支持目录场景/蓝图/服装配方（动态编译英文自然语言并匹配最接近宽高比），可传 styleLoraId、styleLoraStrength 或最多两项的 styleLoras 数组，每项含 id 与 strength。负向描述能力由所选模型声明，蒸馏版本使用模型默认采样。"
         },
         "img2img": {
             "anima": "支持 initImage（别名 imageId）、denoisingStrength（0.1–1.0）、maskImage 或 maskPrompt（二选一，含 maskThreshold/growMaskBy）、sketchControl、regions（≤4 区域）。",

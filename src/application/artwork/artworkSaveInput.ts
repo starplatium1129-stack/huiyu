@@ -81,6 +81,7 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     ...readArtworkCastSnapshot(merged),
     referenceInput: merged.referenceInput === undefined ? undefined : parseReferenceInput(merged.referenceInput),
     loras: merged.loras?.map(lora => ({ ...lora })),
+    styleLoras: merged.styleLoras?.map(lora => ({ ...lora })),
     sketchControl: merged.sketchControl ? { ...merged.sketchControl } : undefined,
     sketchControlModel: merged.sketchControlModel ? { ...merged.sketchControlModel } : undefined,
     regions: merged.regions?.map(region => ({ ...region })),

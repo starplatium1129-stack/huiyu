@@ -11,7 +11,7 @@ import { cleanCastProse } from '@/utils/promptCast'
 import { supplementalReferenceCaption } from '@/utils/promptBuilderPersistence'
 
 /** The workspace supplies selections; the shared recipe owns native prompt rendering. */
-export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
+export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>, kreaStyleRecipeId: Readonly<Ref<string>>) {
   const artists = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
   function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
@@ -22,6 +22,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
         .map(item => cleanCastProse(item ?? '')).filter(Boolean).join('. ')
       : pb.visualDescription
     return compilePromptRecipe({
+      kreaStyleRecipeId: kreaStyleRecipeId.value,
       kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
       randomSetting: !caption && pb.randomVariation?.source === '',
       backgroundProse: caption,

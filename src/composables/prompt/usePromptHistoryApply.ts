@@ -1,3 +1,4 @@
+import { readKreaStyles, kreaStyleState } from '@/utils/kreaStyleSelection'
 import { readStoryOrigin } from '@/types/storyOrigin'
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
@@ -128,13 +129,11 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     const animaHistoryPatch = () => {
       // 风格 LoRA 只有 Krea 2 有；候选列表在 refresh 后才就位，这里乐观恢复，
       // 由 refreshBackend 的存续校验兜底（不可用则自动清空）。
-      let styleLoraId = ''
-      if (entry.styleLoraId) {
-        if (entryEngine === 'krea2') styleLoraId = entry.styleLoraId
-        else restoreNotes.push('风格 LoRA 仅 Krea 2 支持，未恢复')
-      }
+      const styles = readKreaStyles(entry)
+      if (styles.length && entryEngine !== 'krea2') restoreNotes.push('风格 LoRA 仅 Krea 2 支持，未恢复')
       return {
-        styleLoraId,
+        ...kreaStyleState(entryEngine === 'krea2' ? styles : []),
+        kreaStyleRecipeId: entryEngine === 'krea2' ? entry.kreaStyleRecipeId ?? '' : '',
         hiresFix: typeof entry.hiresFix === 'boolean' ? entry.hiresFix : animaState.value.hiresFix,
         hiresScale: typeof entry.hiresScale === 'number' ? entry.hiresScale : animaState.value.hiresScale,
         hiresDenoise: typeof entry.hiresDenoise === 'number' ? entry.hiresDenoise : animaState.value.hiresDenoise,
@@ -259,7 +258,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       if (!isCurrent() || !checked) return false
       const after = animaState.value
       if (!after.online) restoreNotes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
-      for (const [key, label] of [['modelId', '底模'], ['loraId', '角色 LoRA'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
+      for (const [key, label] of [['modelId', '底模'], ['loraId', '角色 LoRA'], ['styleLoraId', '风格 LoRA'], ['styleLoraStrength', '风格强度'], ['secondaryStyleLoraId', '叠加 LoRA'], ['secondaryStyleLoraStrength', '叠加强度'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
         if (before[key] !== after[key]) restoreNotes.push(`${label}：${before[key] === '' ? '未设置' : before[key] ?? '未设置'} → ${after[key] === '' ? '不可用' : after[key] ?? '不可用'}`)
       }
       if (entry.loraId && before.loraId !== entry.loraId) restoreNotes.push(`原角色 LoRA ${entry.loraId} 不适用于当前角色，已使用角色绑定`)

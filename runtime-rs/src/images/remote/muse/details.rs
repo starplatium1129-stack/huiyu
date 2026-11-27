@@ -45,7 +45,7 @@ pub(super) async fn describe(state: &crate::AppState, kind: String, id: String) 
                 };
                 detail["id"] = json!(id);
                 detail["kind"] = json!(kind);
-                detail["compatibleModels"] = if bundled { json!(RECIPE_MODELS) } else { json!([]) };
+                detail["compatibleModels"] = if bundled { json!(recipe_models()) } else { json!([]) };
                 return Ok(json!({"outfit":detail}));
             }
             let record = library.catalog.get(&kind, &id)?;
@@ -59,6 +59,6 @@ pub(super) async fn describe(state: &crate::AppState, kind: String, id: String) 
             Ok(json!({"scene":{"kind":kind,"id":id,"title":data["title"],
                 "characterId":data.get("characterId").unwrap_or(&data["char"]),"outfitId":data["outfitId"],
                 "size":data["recommendedSize"],"seed":seed,"seedSource":source,"variants":1,"maxVariants":MAX_VARIANTS,"hasBundledRecipe":bundled,
-                "compatibleModels":if bundled { json!(RECIPE_MODELS) } else { json!([]) }}}))
+                "compatibleModels":if bundled { json!(recipe_models()) } else { json!([]) }}}))
         }).await.map_err(|_| unavailable())?
 }

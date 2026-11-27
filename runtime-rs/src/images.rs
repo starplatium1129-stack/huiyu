@@ -3,6 +3,7 @@ mod catalog;
 mod composition;
 mod http;
 mod inputs;
+pub(crate) mod krea_styles;
 mod manga;
 pub(crate) mod media_import;
 mod native;

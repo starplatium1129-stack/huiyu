@@ -2,6 +2,19 @@
   "schemaVersion": 1,
   "files": [
     {
+      "id": "krea-style-bartstyle",
+      "label": "Krea 2 · 蔚蓝档案画风",
+      "family": "krea2",
+      "path": "loras/BArtstyle-KREA2-V2-1024.safetensors",
+      "repo": "4BEraser/BArtstyle-Blue-Archive-Artstyle-LoRA-for-Krea2",
+      "revision": "37b9d8892e42e9085a4dc14ffa0f55b2c2fb12a2",
+      "remotePath": "BArtstyle-KREA2-V2-1024.safetensors",
+      "bytes": 938539208,
+      "sha256": "9c19dc382d92002bfc53ece7df5556acc288579af9f0719752059dfae7fe9f70",
+      "licenseUrl": "https://huggingface.co/4BEraser/BArtstyle-Blue-Archive-Artstyle-LoRA-for-Krea2/blob/37b9d8892e42e9085a4dc14ffa0f55b2c2fb12a2/README.md",
+      "sourceUrl": "https://huggingface.co/4BEraser/BArtstyle-Blue-Archive-Artstyle-LoRA-for-Krea2/resolve/37b9d8892e42e9085a4dc14ffa0f55b2c2fb12a2/BArtstyle-KREA2-V2-1024.safetensors"
+    },
+    {
       "id": "krea-style-flatcelanime",
       "label": "Krea 2 · 平涂赛璐璐",
       "family": "krea2",

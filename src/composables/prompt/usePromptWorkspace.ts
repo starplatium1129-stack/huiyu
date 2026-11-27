@@ -67,7 +67,7 @@ export function usePromptWorkspace() {
      */
     const resultContext = ref<AnimaResultContext | null>(null);
     function captureResultContext(): AnimaResultContext {
-        return snapshotResultContext(pb);
+        return snapshotResultContext(pb, drawEngine.value === 'krea2' ? animaState.value.kreaStyleRecipeId : undefined);
     }
     const animaCastActive = computed(() => drawEngine.value === 'anima' && pb.castRequiresNoLora);
     const animaSession = useAnimaSession({
@@ -104,7 +104,7 @@ export function usePromptWorkspace() {
         void refreshAnimaBackend();
     });
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaCastActive.value
-        || !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId));
+        || !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId), computed(() => animaState.value.kreaStyleRecipeId));
     const { currentTraits, modelProfile } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
@@ -327,6 +327,6 @@ export function usePromptWorkspace() {
         cancelGeneration, outfitOverridden, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings, compositionBindings, mossPlan: unified.mossPlan,
         nativeHistoryRecipe, draftReady: computed(() => draftRecovery.initialized),
-        recipePreviewContext: { engine: drawEngine, animaRequest: () => engine.buildAnimaRequest(true) },
+        recipePreviewContext: { engine: drawEngine, kreaStyleRecipeId: () => animaState.value.kreaStyleRecipeId, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

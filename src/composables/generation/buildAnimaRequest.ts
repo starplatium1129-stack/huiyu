@@ -1,3 +1,4 @@
+import { kreaStylesFromState, kreaStyleFields } from '@/utils/kreaStyleSelection'
 import type { AnimaGenerationState } from '@/types/anima'
 import type { CharKey } from '@/types/promptHistory'
 import type { DrawSubject } from '@/utils/popularContent'
@@ -25,7 +26,7 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
     ...(state.family === 'anima' ? { sampler: state.sampler, scheduler: state.scheduler } : {}),
     ...(state.seed == null ? {} : { seed: state.seed }),
-    ...(state.family === 'krea2' && state.styleLoraId ? { styleLoraId: state.styleLoraId } : {}),
+    ...(state.family === 'krea2' ? kreaStyleFields(kreaStylesFromState(state)) : {}),
     hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
     hiresSteps: state.hiresSteps, hiresCfg: state.hiresCfg,
     ...(capabilities.teaCache ? {

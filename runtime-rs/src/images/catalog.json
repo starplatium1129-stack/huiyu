@@ -134,6 +134,7 @@
       "label": "Krea 2 Turbo",
       "family": "krea2",
       "profileId": "krea2_turbo_fp8",
+      "fixedSampling": true,
       "steps": 12,
       "cfg": 1,
       "sampler": "er_sde",
@@ -141,7 +142,8 @@
       "sizes": [
         "1024x1024",
         "1024x1536",
-        "1536x1024"
+        "1536x1024",
+        "1536x864"
       ],
       "noLora": true,
       "rebalance": {
@@ -217,43 +219,59 @@
     }
   },
   "KREA_STYLE_LORAS": {
+    "bartstyle": {
+      "label": "蔚蓝档案画风",
+      "file": "BArtstyle-KREA2-V2-1024.safetensors",
+      "trigger": "azure youth anime style",
+      "recommendedStrength": 0.8
+    },
     "darkbrush": {
+      "label": "水墨笔触",
       "file": "krea2_darkbrush.safetensors",
       "trigger": "monochrome ink wash style"
     },
     "dotmatrix": {
+      "label": "点阵点绘",
       "file": "krea2_dotmatrix.safetensors",
       "trigger": "monochrome stippling style"
     },
     "flatcelanime": {
+      "label": "平涂赛璐璐动漫",
       "file": "flat-cel-anime-comfy.safetensors",
       "trigger": "flat cel anime style"
     },
     "kidsdrawing": {
+      "label": "童趣手绘",
       "file": "krea2_kidsdrawing.safetensors",
       "trigger": "naive expressive sketch style"
     },
     "neondrip": {
+      "label": "霓虹滴彩抽象",
       "file": "krea2_neondrip.safetensors",
       "trigger": "textured abstract style"
     },
     "rainywindow": {
+      "label": "雨窗氛围",
       "file": "krea2_rainywindow.safetensors",
       "trigger": "rainy window style"
     },
     "retroanime": {
+      "label": "紫调复古动画",
       "file": "krea2_retroanime.safetensors",
       "trigger": "purple retro anime style"
     },
     "softwatercolor": {
+      "label": "柔和水彩",
       "file": "krea2_softwatercolor.safetensors",
       "trigger": "art deco watercolor style"
     },
     "sunsetblur": {
+      "label": "落日柔焦模糊",
       "file": "krea2_sunsetblur.safetensors",
       "trigger": "ethereal motion blur style"
     },
     "vintagetarot": {
+      "label": "复古塔罗",
       "file": "krea2_vintagetarot.safetensors",
       "trigger": "vintage tarot style"
     }
@@ -353,6 +371,8 @@
       "seed",
       "character",
       "styleLoraId",
+      "styleLoraStrength",
+      "styleLoras",
       "hiresFix",
       "hiresOnly",
       "hiresScale",

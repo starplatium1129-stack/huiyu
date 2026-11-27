@@ -10,6 +10,8 @@ import StudioSlider from '@/components/ui/StudioSlider.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
+import { kreaStyleLoraLabel } from '@/config/kreaStyleLoraLabels'
+import { KREA_STYLE_RECIPES } from '@/config/kreaStyleRecipes'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -36,7 +38,25 @@ const uid = useId()
 function idOf(field: string) { return `${uid}-${field}` }
 
 const loraId = computed({ get: () => props.state.loraId, set: value => patch({ loraId: value }) })
-const styleLoraId = computed({ get: () => props.state.styleLoraId, set: value => patch({ styleLoraId: value }) })
+function recommendedStyleStrength(id: string): number {
+  const found = props.state.styleLoras.find(style => style.id === id)
+  return found && Number.isFinite(found.recommendedStrength) ? found.recommendedStrength : 1
+}
+const styleLoraId = computed({
+  get: () => props.state.styleLoraId,
+  set: value => patch(value ? { styleLoraId: value, styleLoraStrength: recommendedStyleStrength(value) } : { styleLoraId: '' }),
+})
+const secondaryStyleLoraId = computed({
+  get: () => props.state.secondaryStyleLoraId,
+  set: value => patch(value ? { secondaryStyleLoraId: value, secondaryStyleLoraStrength: recommendedStyleStrength(value) } : { secondaryStyleLoraId: '' }),
+})
+const styleLoraStrength = computed({ get: () => props.state.styleLoraStrength, set: value => patch({ styleLoraStrength: value }) })
+const secondaryStyleLoraStrength = computed({ get: () => props.state.secondaryStyleLoraStrength, set: value => patch({ secondaryStyleLoraStrength: value }) })
+const styleOptions = computed(() => props.state.styleLoras.map(style => ({
+  value: style.id, label: `${kreaStyleLoraLabel(style.id, style.label)}${style.available ? '' : ' · 未安装'}`, disabled: !style.available,
+})))
+const styleRecipeId = computed({ get: () => props.state.kreaStyleRecipeId, set: value => patch({ kreaStyleRecipeId: value }) })
+const recipeOptions = [{ value: '', label: '跟随场景' }, ...KREA_STYLE_RECIPES.map(recipe => ({ value: recipe.id, label: recipe.name }))]
 const loraStrength = computed({ get: () => props.state.loraStrength, set: value => patch({ loraStrength: value }) })
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
@@ -86,7 +106,7 @@ const selectedLora = computed(() => props.state.loras.find(lora => lora.id === p
 /** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
 const capabilities = computed(() => resolveDrawCapabilities(props.state.family, null, selectedModel.value?.capabilities ?? null))
 const nativeAnima = computed(() => native.value && props.state.family === 'anima')
-const fixedSampling = computed(() => selectedModel.value?.capabilities?.fixedSampling ?? (!native.value && props.state.family === 'krea2'))
+const fixedSampling = computed(() => selectedModel.value?.capabilities?.fixedSampling ?? false)
 /** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
 const noLoraMode = computed(() => props.noLora === true && selectedModel.value?.capabilities?.noLora === true)
 function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) }) }
@@ -110,11 +130,25 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="input input-sm anima-num" :disabled="busy" />
         </div>
        </div>
-       <div v-if="state.family === 'krea2' && state.styleLoras.length" class="anima-field">
-         <label :for="idOf('style')">官方风格 LoRA</label>
-         <StudioSelect :id="idOf('style')" v-model="styleLoraId" label="官方风格 LoRA" :disabled="busy"
-           :options="[{ value: '', label: '不使用风格 LoRA' }, ...state.styleLoras.map(style => ({ value: style.id, label: `${style.id}${style.available ? '' : ' · 未安装'}`, disabled: !style.available }))]" />
-       </div>
+       <template v-if="state.family === 'krea2'">
+         <div class="anima-field">
+           <label :for="idOf('recipe')">画风配方</label>
+           <StudioSelect :id="idOf('recipe')" v-model="styleRecipeId" label="画风配方" :options="recipeOptions" :disabled="busy" />
+         </div>
+         <div v-if="styleOptions.length" class="anima-field">
+           <label :for="idOf('style')">风格 LoRA</label>
+           <StudioSelect :id="idOf('style')" v-model="styleLoraId" label="风格 LoRA" :disabled="busy"
+             :options="[{ value: '', label: '不使用风格 LoRA' }, ...styleOptions]" />
+           <span v-if="!styleLoraId" class="anima-field-hint">本地风格文件放入 LoRA 目录下的 <code>krea2/</code>，可附同名 <code>.json</code> 设置中文名、触发词与推荐强度。</span>
+           <template v-if="styleLoraId">
+             <StudioSlider v-model="styleLoraStrength" label="风格强度" :min="-2" :max="2" :step="0.05" compact :disabled="busy" />
+             <label :for="idOf('second-style')">叠加 LoRA</label>
+             <StudioSelect :id="idOf('second-style')" v-model="secondaryStyleLoraId" label="叠加 LoRA" :disabled="busy"
+               :options="[{ value: '', label: '不叠加' }, ...styleOptions.filter(option => option.value !== styleLoraId)]" />
+             <StudioSlider v-if="secondaryStyleLoraId" v-model="secondaryStyleLoraStrength" label="叠加强度" :min="-2" :max="2" :step="0.05" compact :disabled="busy" />
+           </template>
+         </div>
+       </template>
       <div class="anima-parameter-grid">
         <div class="anima-field anima-seed-field">
           <label :for="idOf('seed')">随机种子</label>

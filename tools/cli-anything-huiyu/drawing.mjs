@@ -11,6 +11,7 @@ export const drawingTextOptions = {
 }
 export const drawingIntegerOptions = ['seed', 'variants', 'width', 'height', 'grow-mask-by']
 export const drawingNumberOptions = {
+  'style-lora-strength': { field: 'styleLoraStrength', min: -2, max: 2 },
   'tea-cache-thresh': { field: 'teaCacheThresh', max: 1 },
   'moss-spectrum-flex-window': { field: 'mossSpectrumFlexWindow', max: 2 },
   denoise: { field: 'denoisingStrength', min: 0.1, max: 1 },
@@ -26,9 +27,9 @@ export const sharedControlOptions = [
 ]
 export const drawingOptions = [
   ...Object.keys(drawingTextOptions), ...drawingIntegerOptions, 'tea-cache', ...Object.keys(drawingNumberOptions),
-  ...sharedControlOptions,
+  ...sharedControlOptions, 'style-loras',
 ]
-export const drawingHelp = '通用选项包括 --model 模型ID、--seed 种子、--variants 张数、--width 宽 --height 高、--upscale off|ultrasharp|remacri、--style-lora 风格LoRA。\n'
+export const drawingHelp = '通用选项包括 --model 模型ID、--seed 种子、--variants 张数、--width 宽 --height 高、--upscale off|ultrasharp|remacri、--style-lora 风格ID、--style-lora-strength=-0.5（范围 -2 至 2，默认 1）。--style-loras 可传最多两项的 JSON 数组，每项含 id 与 strength。\n'
   + '    同框（1–5 人）支持重复传 --cast 角色[:服装ID|=自定义服装|none][:动作] 或 --cast-file JSON（原创角色使用对象 name/appearance/gender；服装可传 outfitPrompt 或 outfitId:"none"，另支持 ≤600 字 action 和 MOSS 归一化 bbox）。--interaction 描述对视或共用物品等互动；--formation 支持 row|close|staggered。--prompt 写共享环境/光影/镜头。\n'
   + '    进阶控制支持 --init-image 底图、--ref 参考图（可多次传）、--mask 蒙版图或 --mask-prompt 蒙版提示词、--mask-threshold 0.05–0.95、--grow-mask-by 0–32、--denoise 0.1–1.0、--sketch-file 线稿JSON、--regions-file 分区JSON、--layout-file MOSS布局JSON。\n'
   + '    底图/参考图/蒙版支持已上传文件名或本地图片路径（自动 SHA-256 复用或上传）。\n'
@@ -76,6 +77,11 @@ export function drawingOverrides(options) {
     const value = Number(raw)
     if (!raw.trim() || !Number.isFinite(value) || value < min || value > max) throw new Error(`--${flag} 需要 ${min}–${max} 的数值。`)
     payload[field] = value
+  }
+  if (options['style-loras'] !== undefined) {
+    const styles = JSON.parse(options['style-loras'])
+    if (!Array.isArray(styles) || styles.length > 2) throw new Error('--style-loras 需要最多两个风格的 JSON 数组。')
+    payload.styleLoras = styles
   }
   if (options['mask-prompt'] !== undefined) payload.maskPrompt = options['mask-prompt']
   const teaCache = options['tea-cache']

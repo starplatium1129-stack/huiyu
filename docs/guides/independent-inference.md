@@ -109,6 +109,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 | `modelId` | 来源 | 接口路径 | 说明 |
 | --- | --- | --- | --- |
 | `krea2-raw` / `krea2-turbo` | `krea/Krea-2-*` | `/api/creative/jobs` | 文生图；Turbo 为 8 步蒸馏，连续换种复用提示词编码 |
+| `krea2-turbo-int8-convrot` | lilcheaty Krea2-INT8-ConvRot | `/api/creative/jobs` | 本地导入单文件 INT8，复用 Krea 2 文本与 VAE 组件 |
 | `qwen-image-2.1` / `qwen-image-2.1-turbo` | `Qwen/Qwen-Image-2.1*` | `/api/qwen/jobs` | 文生图与最多 4 图参考指令编辑（Turbo 为 8 步） |
 | `moss-miaomiao-base-v1.0` / `v1.1` | MIAOKA / OpenMOSS | `/api/moss/jobs` | MiaoMiao MOSS 文生图（详见第 8 节） |
 | `wan2.2-ti2v-5b` | `Wan-AI/Wan2.2-TI2V-5B-Diffusers` | `/api/video/jobs` | 文字/首帧，3/5 秒，24 fps |
@@ -119,6 +120,19 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 | `kandinsky-6-lite-distill` | `Kandinsky-6.0-Lite-distill-5s` | `/api/video/jobs` | 文字/首帧，10 步生成 5 秒带 44.1 kHz 单声道音轨视频 |
 | `wan-animate-2` | `Wan2.2-Animate-2-14B-Distilled` | `/api/video/jobs` | 角色图 + H.264 MP4 动作参考，10 步，3/5 秒无声 |
 | `longcat-avatar-1.6` | `LongCat-Video-Avatar-1.6` | `/api/video/jobs` | 角色图 + PCM WAV 配音，8 步，25 fps，3/5 秒对白 |
+
+**Krea 2 ConvRot 导入规格**
+
+- 原生档使用 lilcheaty 的 Turbo，修订 `030fc9dbc25471dabf5faf67edc1a7631225cb43`，14,132,232,424 字节，SHA-256 为 `778cdba5023ce37d20024c971be097d47434db899044721b45c29b37a09fcc12`，采用 Krea 2 Community License。发布者推荐 Euler、8 步、常规 CFG 1。实读文件头含 `model.diffusion_model.` 前缀，28 层各有 8 个 INT8 投影，注意力门控也量化；每个投影附逐输出行 FP32 尺度和 256 元旋转元数据。归一化、调制、输入输出头和文本融合保留文件指定的浮点精度。[量化发布页](https://huggingface.co/lilcheaty/Krea2-INT8-ConvRot/tree/030fc9dbc25471dabf5faf67edc1a7631225cb43)
+- 该档复用已安装的 Qwen3-VL-4B、tokenizer、QwenImage VAE 及 Krea 2 Turbo 的 FlowMatch Euler 配置。原生短步时间表使用固定 `mu=1.15`，限纯文本、512 个提示词 token；推荐 1024×1024、1024×1536、1536×1024、1536×864，16 像素对齐，上限沿用本机 Turbo 档 2048。推理沿用已锁定的 adapters 环境、WDDM 分层卸载以及可选 Kitchen / PyTorch INT8 算子。[Krea 官方流水线](https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/krea2/pipeline_krea2.py)
+
+在控制室准备好原生 Krea 2 Turbo 或 RAW，选择「Krea 2 Turbo · INT8 ConvRot」，指定下载的原始文件。也可在仓库根目录用以下命令导入。去掉 `--apply` 可只用 CPU 查看文件前缀、各层精度、矩阵数量和完整 SHA-256。导入会在本机模型目录写入逐文件凭据，同卷组件使用硬链接。探测其他社区文件时，可只传 `--inspect --source <文件>` 读取张量类型与量化元数据。
+
+```powershell
+python -I -B tools/inference/import_krea_int8.py --model-id krea2-turbo-int8-convrot `
+  --source "D:\models\Krea2-Turbo-int8-ConvRot.safetensors" `
+  --base-dir "D:\HuiyuAI\inference\models\krea2-turbo" --models-root "D:\HuiyuAI\inference\models" --apply
+```
 
 本地 FP8 转 BF16 的 Krea 2 Turbo 可用下列命令校验原文件和转换分片，并建立同卷硬链接。`--source` 和 `--text-source` 可分别执行。在受保护的分层卸载模式下，加载器直接映射通过校验的原始权重，挂载风格 LoRA 后也使用相同的压缩底模。文本编码只加载需要的语言层，并保留原有 BF16 运算。换种子可复用提示词编码。[Turbo 原始权重](https://huggingface.co/Comfy-Org/Krea-2/blob/eb1eddd3983a54678545a9b2c178c5853b30f7be/diffusion_models/krea2_turbo_fp8_scaled.safetensors) · [文本编码器权重](https://huggingface.co/DreamFast/Qwen3-VL-4b-Heretic-ComfyUI)
 
@@ -131,7 +145,11 @@ python -I -B tools/inference/krea_transport.py --apply `
 
 Krea 按桌面专用显存、系统可提交余量和当前画幅决定常驻块数。挂载风格 LoRA 时，预算也计入其投影产生的临时张量。采样会复用预取缓冲区，解码时按需腾出空间。任务记录 `kreaExecution` 中的 `warmBlocks` 是接单时复用的块数，`residentBlocks` 是采样末步的常驻块数，`preloadMs` 和 `preloadedPackedBytes` 记录采样开始时的权重上传。官方 Turbo 权重指定以全精度计算注意力门控，只有允许使用 FP8 的投影才计入 `fp8InputHits`。本机 RTX 4070 Ti SUPER 的桌面 Torch 2.13 环境使用 SageAttention 2.2.0。托管 Torch 2.9 环境在支持的形状使用 cuDNN 分组注意力，`cudnnGqaCalls` 记录实际调用次数。
 
-在模型准备页选择「Krea 2 · 平涂赛璐璐」后，CLI 使用 `--style-lora flatcelanime`。服务会加入作者指定的触发词 `flat cel anime style`。[Flat Cel Anime 模型卡](https://huggingface.co/ilkerzgi/krea-2-flat-cel-anime-lora)
+在模型准备页选择「Krea 2 · 平涂赛璐璐」后，CLI 使用 `--style-lora flatcelanime`（自动追加 `flat cel anime style`）；选择「Krea 2 · 蔚蓝档案画风」后，CLI 使用 `--style-lora bartstyle --style-lora-strength 0.8`（自动追加 `azure youth anime style`，作者推荐强度 0.8，如出现多余光环可继续调低）。[Flat Cel Anime 模型卡](https://huggingface.co/ilkerzgi/krea-2-flat-cel-anime-lora) · [BArtstyle Krea 2 模型卡](https://huggingface.co/4BEraser/BArtstyle-Blue-Archive-Artstyle-LoRA-for-Krea2)
+
+第三方 Krea 2 LoRA 放入当前引擎配置的 LoRA 根目录下的 `krea2/`。如需给自定义 LoRA 配置中文名、自动触发词或默认推荐强度，可在同目录放一个同名 `.json` 文件（如 `my_style.json`，字段 `{"label":"自定义中文名","trigger":"触发词","recommendedStrength":0.8}`）。在「绘制 → Krea 2 → 专家模式 → 采样与细节」可选两份，分别调到 −2 至 2，步进 0.05。零强度会跳过该份 LoRA 的计算和触发词。作品参数保留选择顺序与强度，原有仅存 ID 的作品按 1.0 回放。Anime Artstyle Krea 2 Turbo 的作者标记为「in the style of V4NSOUL, 2d, drawing, anime」。
+
+例如，CLI 可用 `--style-lora krea2/RealismSlider-v1.safetensors --style-lora-strength=-0.65` 调整写实方向。双 LoRA 可传 `--style-loras '[{"id":"krea2/V4NSOUL_Retraining_Krea_2_Turbo_copy.safetensors","strength":0.65},{"id":"krea2/RealismSlider-v1.safetensors","strength":-0.65}]'`。在支持此权重的模型上，任务记录的 `kreaExecution.int8GemmCalls` 和 `int8Backend` 显示实际 INT8 调用和后端。[动漫 LoRA 发布页](https://civitai.com/api/v1/model-versions/3106707) · [写实滑块发布页](https://civitai.com/api/v1/model-versions/3132956)
 
 ### 原生视频准备与加速
 

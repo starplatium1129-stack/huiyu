@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { AnimaGenerationState } from '@/types/anima'
 import type { CharKey, HistoryEntry, Selections } from '@/types/promptHistory'
 import type { Scene } from '@/types/scene'
@@ -169,6 +170,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         .filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag)))
       const visualDescription = target.kind === 'character' ? roamingContent.caption : pb.visualDescription
       const planResult = compilePromptRecipe({
+        kreaStyleRecipeId: state.kreaStyleRecipeId,
         kind: 'popular', character: pop, outfit, blueprint, engine, profile, directorSources,
         manual,
         emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
@@ -222,6 +224,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       const targetOverride = pb.outfitOverride ? { ...pb.outfitOverride,
         tokens: pb.outfitOverride.tokens.filter(tag => !/^(?:nene|natsume)_/i.test(tag) || tag.toLowerCase().startsWith(`${charInfo.charKey}_`)) } : null
       const result = compilePromptRecipe({
+        kreaStyleRecipeId: state.kreaStyleRecipeId,
         kind: 'studio', character: charInfo.charKey, scene, engine, profile,
         activeLoras: activeLora ? { [charInfo.charKey]: activeLora } : {}, loraMeta: pb.loraMeta,
         shot, lighting, composition, directorSources,
@@ -289,9 +292,10 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         seed: request.seed, negative: request.negative, prompt,
         size: `${request.width}x${request.height}`, engine: state.family === 'krea2' ? 'krea2' as const : 'anima' as const,
         model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
-        lora: request.loraId, noLora: !request.loraId, styleLoraId: request.styleLoraId ?? null,
+        lora: request.loraId, noLora: !request.loraId, ...kreaStyleSnapshot(request),
         cfg: request.cfg, steps: request.steps, sampler: state.sampler, scheduler: state.scheduler,
         visualDescription: plans.get(target.id)!.visualDescription, manual_tags: plans.get(target.id)!.manual,
+        ...(state.family === 'krea2' ? { kreaStyleRecipeId: state.kreaStyleRecipeId } : {}),
         negativeCustom: pb.negativeCustom, artistStyleIds: [...pb.artistStyleIds], project: pb.projectId,
         // 精准覆盖角色元数据
         ...(isTargetPopular ? {

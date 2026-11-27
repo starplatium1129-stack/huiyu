@@ -171,14 +171,30 @@ export function cameraPhrase(value: string): string {
 }
 
 const LIGHT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
-  window_light: 'soft window light', golden_hour: 'golden-hour light', golden_light: 'warm golden light',
-  backlight: 'backlighting', backlit: 'backlighting', rim_light: 'rim light', moonlight: 'moonlight',
-  lantern_light: 'warm lantern light', overcast: 'soft overcast light', soft_light: 'soft light',
-  soft_lighting: 'soft lighting', warm_light: 'warm light', warm_lighting: 'warm lighting',
-  cinematic_lighting: 'cinematic lighting', volumetric_lighting: 'volumetric light',
-  screen_light: 'the glow of a screen', dim_lighting: 'dim light', shadows: 'deep shadow',
-  strong_shadows: 'strong shadows', soft_shadows: 'soft shadows', morning_light: 'morning light',
-  diffused_light: 'diffused light', sunlight: 'sunlight', backlighting: 'backlighting',
+  window_light: 'luminous natural window light filtering softly across the space with gentle shadow depth',
+  golden_hour: 'radiant golden-hour sunlight with warm amber highlights and deep cool shadows',
+  golden_light: 'warm golden sunlight casting luminous highlights and soft atmospheric glow',
+  backlight: 'dramatic luminous backlighting tracing crisp rim light along hair strands and silhouettes',
+  backlit: 'dramatic luminous backlighting tracing crisp rim light along hair strands and silhouettes',
+  backlighting: 'dramatic luminous backlighting tracing crisp rim light along hair strands and silhouettes',
+  rim_light: 'crisp luminous rim lighting separating the figure from the atmospheric backdrop',
+  moonlight: 'cool silvery-blue moonlight casting ethereal luminous highlights and deep indigo shadows',
+  lantern_light: 'warm glowing amber lantern light contrasting richly against deep cool ambient shadows',
+  overcast: 'soft diffused overcast daylight with clean translucent tones and airy atmospheric clarity',
+  soft_light: 'soft luminous ambient light with smooth translucent shadow transitions',
+  soft_lighting: 'soft luminous ambient lighting with smooth translucent shadow transitions',
+  warm_light: 'rich warm atmospheric light with soft golden bounce highlights',
+  warm_lighting: 'rich warm atmospheric lighting with soft golden bounce highlights',
+  cinematic_lighting: 'dramatic cinematic lighting with sculptural light-and-shadow contrast and atmospheric depth',
+  volumetric_lighting: 'luminous volumetric light shafts cutting through drifting dust motes and air haze',
+  screen_light: 'the cool luminous glow of a screen illuminating the face against deep ambient shadows',
+  dim_lighting: 'moody dim ambient lighting with subtle luminous highlights',
+  shadows: 'deep sculpted shadows with rich cool-toned atmospheric contrast',
+  strong_shadows: 'dramatic sculpted shadows with high-contrast directional light',
+  soft_shadows: 'soft translucent shadows with delicate ambient fill light',
+  morning_light: 'fresh luminous morning sunlight with clear airy reflections',
+  diffused_light: 'soft diffused natural light with pearlescent highlights',
+  sunlight: 'radiant natural sunlight with luminous reflections and atmospheric depth',
 })
 
 export function lightPhrase(value: string): string {

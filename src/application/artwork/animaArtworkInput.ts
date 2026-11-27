@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 import type { GeneratedArtworkInput } from './artworkSaveInput'
 
@@ -27,7 +28,7 @@ export function captureAnimaArtworkInput(
     loraStrength: metadata.loraStrength,
     noLora: !metadata.loraId,
     loras: metadata.loras,
-    styleLoraId: metadata.styleLoraId ?? null,
+    ...kreaStyleSnapshot(metadata),
     preview: metadata.preview === true,
     cfg: metadata.cfg,
     steps: metadata.steps,

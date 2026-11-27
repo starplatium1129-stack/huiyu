@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { SceneDraft, SceneRating } from '@/types/api'
 import type { BlueprintCompositionIntent, SceneBlueprint } from '@/types/sceneBlueprint'
 import type { GeneratedRecipe } from '@/types/generatedRecipe'
@@ -21,7 +22,7 @@ export interface GeneratedSceneDetails {
 
 const textKeys = ['character', 'characterId', 'outfitId', 'blueprintId', 'subject', 'scene', 'sceneTitle',
   'story', 'visualDescription', 'shot', 'lighting', 'composition', 'colorMood', 'lora', 'loraId',
-  'checkpoint', 'model', 'profile', 'provider', 'sampler', 'scheduler', 'size', 'styleLoraId', 'hiresUpscaler'] as const
+  'checkpoint', 'model', 'profile', 'provider', 'sampler', 'scheduler', 'size', 'kreaStyleRecipeId', 'hiresUpscaler'] as const
 const numberKeys = ['seed', 'steps', 'cfg', 'loraStrength', 'width', 'height', 'hiresScale', 'hiresSteps', 'hiresCfg', 'hiresDenoise'] as const
 const booleanKeys = ['noLora', 'hiresFix', 'faceDetailer', 'outfitExplicit'] as const
 const listKeys = ['emotion', 'manual_tags', 'artistStyleIds'] as const
@@ -37,6 +38,7 @@ function parameters(value: Record<string, unknown>): HistorySnapshot {
   }
   for (const key of booleanKeys) if (typeof value[key] === 'boolean') output[key] = value[key]
   for (const key of listKeys) if (Array.isArray(value[key]) && value[key].every(item => typeof item === 'string')) output[key] = [...value[key]]
+  if ('styleLoraId' in value || 'styleLoras' in value) Object.assign(output, kreaStyleSnapshot(value))
   if (value.outfitOverride !== undefined) output.outfitOverride = parseOutfitOverride(value.outfitOverride)
   if (value.directorSources !== undefined) output.directorSources = normalizeDirectorSources(value.directorSources)
   if (Array.isArray(value.loras) && value.loras.every(item => record(item) && typeof item.id === 'string'

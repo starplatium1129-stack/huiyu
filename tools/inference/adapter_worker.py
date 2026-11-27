@@ -112,8 +112,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     contract.resolve_local_h3(root, spec, data, local_steps, auto_steps="steps" not in job["input"])
     if spec["family"] == "moss-image":
         resolve_moss_text_precision(root, data)
-    style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
-    if style_path is not None:
+    styles = _loading.style_selection(job)
+    if styles:
         sibling("krea_style").require_dependency()
     import torch
     is_video = spec["media"] == "video"
@@ -150,12 +150,17 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                 video_device=video_device, device_backend=device_backend, memory_pixels=memory_pixels,
                 conditioned=conditioned, render_pixels=render_pixels, model_identity=model_identity, protection=protection)
 
-        pipeline, identity, reused = cache.acquire(root, spec, data, policy, control,
-            lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},
-            load_pipeline, Error, style_path=style_path,
-            prepared_identity=lambda path, task: model_identity(path, data["modelId"], task,
-                moss_weight_precision=data.get("mossWeightPrecision", "auto"),
-                moss_text_precision=data.get("mossTextPrecision")))
+        def prepared(path, task):
+            return model_identity(path, data["modelId"], task, moss_weight_precision=data.get("mossWeightPrecision", "auto"),
+                                  moss_text_precision=data.get("mossTextPrecision"))
+
+        def unprotected(path, task):
+            if spec.get("kreaInt8"):
+                return prepared(path, task)
+            return {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"}
+
+        pipeline, identity, reused = cache.acquire(root, spec, data, policy, control, unprotected,
+            load_pipeline, Error, styles=styles, prepared_identity=prepared)
         if spec["family"] in ("qwen-image", "moss-image", "krea2") and policy == "offload":
             cache.memory.plan(memory_pixels, image_conditioned=conditioned, control=control, decode_pixels=render_pixels)
         if is_video and hasattr(cache.memory, "plan_video"):
@@ -164,8 +169,9 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                        "modelIdentityScope": identity["scope"],
                        "memoryPolicy": policy, "weightReuse": reused,
                        "memoryScheduling": cache.memory.observation()}
-        if style_path is not None:
-            observation["styleLoraSha256"] = cache.style_identity
+        if styles:
+            observation["styleLoraSha256s"] = [identity for _, identity, _ in cache.style_assets]
+            observation["styleLoraSha256"] = observation["styleLoraSha256s"][0]
         video.prepare(pipeline, spec, data)
         if policy == "offload" and spec["family"] in ("qwen-image", "moss-image"):
             pipeline.vae.enable_tiling()
@@ -259,6 +265,9 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                     args["output_resolution"] = reference_resolution
         else:
             args["guidance_scale"] = data["cfg"]
+            if spec["family"] == "krea2" and spec.get("cfgConvention") == "standard":
+                # Krea applies guidance to the conditional prediction: CFG 1 needs only that branch.
+                args["guidance_scale"] -= 1
             if spec["negative"]:
                 args["negative_prompt"] = data["negativePrompt"]
         control.stage("encoding")
@@ -356,6 +365,8 @@ def main():
                 sibling("krea_style").require_dependency()
                 import torch
                 cuda = torch.cuda.is_available()
+                if args.model_id and contract.model(args.model_id).get("kreaInt8"):
+                    versions = dict(versions, kreaInt8Backend=sibling("moss_int8").require_backend(contract))
                 emit(stream, None, "diagnostic", valid=True, dependencies=versions, cudaAvailable=cuda,
                      deviceName=torch.cuda.get_device_name() if cuda else None,
                      scope="imports and device visibility; no weights or inference", validation="待主力机验证")

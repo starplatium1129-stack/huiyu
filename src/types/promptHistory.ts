@@ -1,5 +1,6 @@
 import type { AnimaPromptRegion, AnimaSketchControl } from './animaComposition'
 import type { ArtworkCastSnapshot, DraftOutfitOverride, DraftReferenceInput } from '@/utils/promptBuilderPersistence'
+import type { KreaStyleLoraSelection } from './generation'
 import type { DirectorControlSources } from './promptDirector'
 
 export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
@@ -43,6 +44,9 @@ export type HistoryEntry = ArtworkCastSnapshot & {
   noLora?: boolean
   /** 生成时实际使用的 Krea Style LoRA id；旧历史缺省无 Style LoRA。 */
   styleLoraId?: string | null
+  styleLoraStrength?: number
+  styleLoras?: ReadonlyArray<KreaStyleLoraSelection>
+  kreaStyleRecipeId?: string
   /** 专家模式选中的模型原生画师风格 id，最多两位。 */
   artistStyleIds?: string[]
   /** 2026-08-29 修复：高清修复（SD hires）与脸部修复等生成参数此前未保存，

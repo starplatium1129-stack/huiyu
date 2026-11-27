@@ -32,13 +32,16 @@ const DRAW_BODY_BYTES: usize = 64 * 1024;
 pub(crate) const ANIMA: &str = "anima-miaomiao-v1.6";
 const MAX_SEED: u64 = 9_007_199_254_740_991;
 const MAX_VARIANTS: u8 = 8;
-const RECIPE_MODELS: &[&str] = &[
-    ANIMA,
-    "moss-miaomiao-base-v1.0",
-    "moss-miaomiao-base-v1.1",
-    krea::KREA_TURBO,
-    krea::KREA_RAW,
-];
+pub(super) fn krea_models() -> Vec<&'static str> {
+    generation::native::adapters::manifest()["models"].as_object().unwrap().iter()
+        .filter(|(_, model)| model["family"] == "krea2" && model["media"] == "image")
+        .map(|(id, _)| id.as_str()).collect()
+}
+pub(super) fn recipe_models() -> Vec<&'static str> {
+    let mut models = vec![ANIMA, "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"];
+    models.extend(krea_models());
+    models
+}
 
 pub(crate) async fn guest_catalog(state: &crate::AppState, uri: &axum::http::Uri) -> Result<Value> {
     let Query(mut input) =

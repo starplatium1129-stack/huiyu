@@ -22,6 +22,10 @@ pub(super) struct VideoImport {
     outputs: Vec<String>,
     pub required_bytes: u64,
 }
+pub(super) enum LocalSource<'a> {
+    Video(&'a VideoImport),
+    Krea(&'a Path),
+}
 impl VideoImport {
     pub(super) fn download_bytes(&self, model: &ModelBundle) -> u64 {
         if model.id != "minimax-h3" {
@@ -216,9 +220,9 @@ pub(super) fn selected(view: &Value, requested: bool) -> Result<Option<&'static 
 }
 
 impl ControlService {
-    pub(super) async fn import_local_video(
+    pub(super) async fn import_local_adapter(
         &self,
-        import: &VideoImport,
+        source: LocalSource<'_>,
         model: &ModelBundle,
         target: &Path,
         operation: &Value,
@@ -239,31 +243,38 @@ impl ControlService {
         }
         flow::require_space(
             Some(plan::safe_workspace(workspace, &self.config.app_root)?),
-            import.required_bytes,
+            match source { LocalSource::Video(import) => import.required_bytes, LocalSource::Krea(_) => 64 * 1024 * 1024 },
         )?;
         let runtime = image_models::runtime_for(Some(&model.id))?;
         let settings = image_models::settings(self, &runtime)?;
         fs::create_dir_all(&staging)?;
         let temporary = Arc::new(
             tempfile::Builder::new()
-                .prefix("video-import-")
+                .prefix("adapter-import-")
                 .tempdir_in(staging)?,
         );
         let output = temporary.path().join(&model.id);
         self.native_stage(operation, 1);
-        self.native_progress(operation, json!({"stage":"converting","phase":"converting","message":"正在将本机视频权重导入原生引擎"}));
+        self.native_progress(operation, json!({"stage":"converting","phase":"converting","message":"正在核验并导入本机模型权重"}));
         let script = self
             .config
             .app_root
             .join("tools/inference")
-            .join(import.script);
+            .join(match source { LocalSource::Video(import) => import.script, LocalSource::Krea(_) => "import_krea_int8.py" });
         let mut command = crate::native_python::command(&settings.python, &script);
-        if model.id == "minimax-h3" {
-            command.arg("--discover-dwd");
+        match source {
+            LocalSource::Video(_) => {
+                if model.id == "minimax-h3" { command.arg("--discover-dwd"); }
+                command.arg("--comfy-models").arg(workspace.join("ComfyUI/models"));
+            }
+            LocalSource::Krea(path) => {
+                let base = ["krea2-turbo", "krea2-raw"].into_iter()
+                    .map(|id| (id, models.join(id))).find(|(id, dir)| image_models::model_issue(dir, id).is_none())
+                    .ok_or_else(|| ApiError::invalid("请先准备原生 Krea 2 Turbo 或 RAW，以复用文本编码器与 VAE。"))?;
+                command.arg("--model-id").arg(&model.id).arg("--source").arg(path).arg("--base-dir").arg(base.1);
+            }
         }
         command
-            .arg("--comfy-models")
-            .arg(workspace.join("ComfyUI/models"))
             .arg("--models-root")
             .arg(temporary.path())
             .arg("--apply")

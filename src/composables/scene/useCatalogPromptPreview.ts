@@ -192,6 +192,7 @@ export function useCatalogPromptPreview(
     if (!recipe) return {}
     const params = recipe.parameters
     return {
+      kreaStyleRecipeId: params.kreaStyleRecipeId,
       shot: params.shot || null, lighting: params.lighting || null, composition: params.composition || null,
       directorSources: sceneDirectorSources(),
       emotion: (params.emotion || []).map(id => EMOTION.find(item => item.id === id)?.prompt || id),

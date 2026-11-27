@@ -8,6 +8,7 @@ import contextlib
 import os
 import threading
 from types import SimpleNamespace
+from pathlib import Path
 from huiyu_worker_lifecycle import load_sibling as sibling
 
 
@@ -26,12 +27,19 @@ def resolve_moss_text_precision(root, data):
         data["mossTextPrecision"] = "int8" if variant else "bf16"
 
 
-def prepare_moss_start(root, data, resident, control, ready):
+def style_selection(job):
+    return tuple((Path(row["path"]), row.get("strength", 1.0)) for row in job.get("loras", ()))
+
+
+def prepare_protected_start(root, data, spec, resident, control, ready, styles):
     # The lease and DLL imports stay on the owner thread. Preload the stdlib
     # helpers before starting the independent read of the protected bytes.
-    sibling("moss_int8")
     sibling("native_hash")
-    resolve_moss_text_precision(root, data)
+    if spec.get("kreaInt8"):
+        sibling("import_krea_int8")
+    else:
+        sibling("moss_int8")
+        resolve_moss_text_precision(root, data)
 
     def import_pipeline():
         try:
@@ -47,9 +55,9 @@ def prepare_moss_start(root, data, resident, control, ready):
             if stop.is_set():
                 raise InterruptedError("Stopped model verification after an import failure")
 
-        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="moss-verify") as pool:
+        with ThreadPoolExecutor(max_workers=1, thread_name_prefix="weight-verify") as pool:
             verification = pool.submit(identity.model_identity, path, data["modelId"], SimpleNamespace(check=check),
-                moss_weight_precision=data["mossWeightPrecision"], moss_text_precision=data["mossTextPrecision"])
+                moss_weight_precision=data.get("mossWeightPrecision", "auto"), moss_text_precision=data.get("mossTextPrecision"))
             try:
                 import_pipeline()
                 if not verification.done():
@@ -62,9 +70,13 @@ def prepare_moss_start(root, data, resident, control, ready):
     resident.lease.acquire(root, lambda _: None, prepared_identity=protected_identity)
     if resident.lease.cached:
         policy = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
-        resident.scope = resident.weight_scope(root, data, policy, None)
+        resident.scope = resident.weight_scope(root, data, policy, styles)
     else:
         import_pipeline()
+
+
+def prepare_moss_start(root, data, resident, control, ready):
+    prepare_protected_start(root, data, contract.model(data["modelId"]), resident, control, ready, ())
 
 
 def prepare_job(job, *, resident=None, control=None, ready=None):
@@ -73,6 +85,8 @@ def prepare_job(job, *, resident=None, control=None, ready=None):
         identity.runtime_dependencies()
     elif resident is not None and os.name == "nt" and spec["family"] == "moss-image":
         prepare_moss_start(contract.layout(job["modelDir"], spec), data, resident, control, ready)
+    elif resident is not None and os.name == "nt" and spec.get("kreaInt8") and resident.components is None:
+        prepare_protected_start(contract.layout(job["modelDir"], spec), data, spec, resident, control, ready, style_selection(job))
     else:
         identity.dependencies(data["modelId"])
     return data, spec
@@ -179,10 +193,13 @@ def load_krea_pipeline(root, spec, policy, control, identity, protection):
             encoder.load_state_dict(state, strict=True, assign=True)
             del state
         control.check()
-        if verified and transport.prepared(root):
+        if spec.get("kreaInt8") or (verified and transport.prepared(root)):
             with init_empty_weights(include_buffers=False):
                 transformer = Krea2Transformer2DModel.from_config(contract.config(root, root / "transformer/config.json"))
-            transport.load_packed(root, "transformer", transformer, control)
+            if spec.get("kreaInt8"):
+                sibling("krea_int8").load(root, transformer, policy, control)
+            else:
+                transport.load_packed(root, "transformer", transformer, control)
         else:
             transformer = Krea2Transformer2DModel.from_pretrained(str(root / "transformer"), **weights)
         control.check()

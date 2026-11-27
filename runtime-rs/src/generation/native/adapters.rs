@@ -40,6 +40,8 @@ const FILES: &[&str] = &[
     "krea_style.py",
     "krea_adapter.py",
     "krea_transport.py",
+    "krea_int8.py",
+    "import_krea_int8.py",
     "krea_fp8.py",
     "anima_vae.py",
     "moss_adapter.py",
@@ -145,6 +147,20 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
                 return super::model_layout::inspect_managed_bundle(root, id, false);
             }
             super::model_layout::inspect_adapter(root, model)?;
+            if let Some(asset) = model.get("kreaInt8") {
+                let marker = root.join("huiyu-model.json");
+                let receipt = std::fs::symlink_metadata(&marker).ok().filter(|m| m.is_file() && m.len() <= 65536)
+                    .and_then(|_| std::fs::read(marker).ok())
+                    .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
+                let ready = receipt.is_some_and(|r| r["schemaVersion"] == 1 && r["modelId"] == id
+                    && r["scope"] == "local-krea-int8-convrot" && r["revision"] == model["revision"]
+                    && r["checkpoint"] == *asset && r["componentsSha256"].as_str().is_some_and(|s|
+                        s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit())));
+                if !ready || !std::fs::symlink_metadata(root.join("transformer/diffusion_pytorch_model.safetensors"))
+                    .is_ok_and(|m| m.is_file() && Some(m.len()) == asset["bytes"].as_u64()) {
+                    return Err("Krea INT8 导入凭据或权重不完整，请重新核对作者原始文件。".into());
+                }
+            }
             if model["packedManga"] == true {
                 super::model_layout::inspect_managed_bundle(root, id, true)?;
             }

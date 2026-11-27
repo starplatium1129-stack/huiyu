@@ -374,7 +374,7 @@
     "krea2-raw": {
       "label": "Krea 2 RAW · 原生 BF16",
       "profileId": "krea2_raw",
-      "sizes": ["1024x1024", "768x1024", "1024x768"],
+      "sizes": ["1024x1024", "768x1024", "1024x768", "1024x576"],
       "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
       "repository": "krea/Krea-2-Raw",
       "revision": "6b0ece7fffb640c5e3bcbe0a7f10f66b8e60a603",
@@ -389,7 +389,7 @@
       "label": "Krea 2 Turbo · 原生 BF16",
       "profileId": "krea2_turbo",
       "localConversionComponentsSha256": "a8a78d87439291db2eb44918e5037c6a5aeddc128fd5c1c51fbb2bf0076218ab",
-      "sizes": ["1024x1024", "1024x1536", "1536x1024"],
+      "sizes": ["1024x1024", "1024x1536", "1536x1024", "1536x864"],
       "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
       "repository": "krea/Krea-2-Turbo",
       "revision": "98e0fe118d17c9e3547fbb2e25acdbae2cadf7c7",
@@ -398,6 +398,18 @@
       "licenseUrl": "https://www.krea.ai/krea-2-licensing",
       "layoutNote": "The official Turbo Diffusers snapshot and the prepared local FP8-to-BF16 conversion use is_distilled=true. The distilled transformer contains the eight-step recipe.",
       "steps": 8, "cfg": 0, "maxSize": 2048, "alignment": 16,
+      "edit": false, "negative": false, "distilled": true
+    },
+    "krea2-turbo-int8-convrot": {
+      "label": "Krea 2 Turbo · INT8 ConvRot", "profileId": "krea2_turbo_int8_convrot",
+      "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
+      "repository": "lilcheaty/Krea2-INT8-ConvRot", "revision": "030fc9dbc25471dabf5faf67edc1a7631225cb43",
+      "source": "https://huggingface.co/lilcheaty/Krea2-INT8-ConvRot",
+      "license": "Krea 2 Community License", "licenseUrl": "https://www.krea.ai/krea-2-licensing",
+      "kreaInt8": {"filename": "Krea2-Turbo-int8-ConvRot.safetensors", "bytes": 14132232424,
+        "sha256": "778cdba5023ce37d20024c971be097d47434db899044721b45c29b37a09fcc12"},
+      "sizes": ["1024x1024", "1024x1536", "1536x1024", "1536x864"],
+      "steps": 8, "cfg": 1, "cfgConvention": "standard", "maxSize": 2048, "alignment": 16,
       "edit": false, "negative": false, "distilled": true
     },
     "qwen-image-2.1": {

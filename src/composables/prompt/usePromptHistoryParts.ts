@@ -1,3 +1,4 @@
+import { readKreaStyles, kreaStyleState } from '@/utils/kreaStyleSelection'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { HistoryRecipeParts } from '@/types/historyReuse'
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
@@ -26,13 +27,15 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     apply(entry.artistStyleIds, ids => pb.setArtistStyleIds(ids))
     apply(entry.lighting, value => pb.setLighting(value))
     apply(entry.colorMood, value => pb.setColorMood(value))
-    if (entry.styleLoraId !== undefined) {
-      if (engine === 'krea2' && sameEngine) {
-        if (!entry.styleLoraId || animaState.value.styleLoras?.some(item => item.id === entry.styleLoraId)) apply(entry.styleLoraId, value => patchAnimaState({ styleLoraId: value ?? '' }))
-        else notes.push('原风格 LoRA 不在当前已确认列表，未沿用；保留当前风格 LoRA')
+    if (engine === 'krea2' && sameEngine) {
+      apply(entry.kreaStyleRecipeId, value => patchAnimaState({ kreaStyleRecipeId: value }))
+      if (entry.styleLoraId !== undefined || entry.styleLoras !== undefined) {
+        const styles = readKreaStyles(entry)
+        const missing = styles.find(row => !animaState.value.styleLoras.some(item => item.id === row.id && item.available))
+        if (missing) notes.push(`原风格 LoRA ${missing.id} 当前不可用，保留当前组合`)
+        else apply(styles, rows => patchAnimaState(kreaStyleState(rows)))
       }
-      else notes.push('原风格 LoRA 不适用于当前引擎，保留当前风格 LoRA')
-    }
+    } else if (entry.styleLoraId) notes.push('原风格 LoRA 不适用于当前引擎，保留当前风格 LoRA')
   }
   if (parts.camera) {
     apply(entry.shot, value => pb.setShot(value))
@@ -120,7 +123,7 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     const checked = await refreshAnimaBackend()
     if (!isCurrent() || !checked) return false
     if (!animaState.value.online) notes.push('生成后端未就绪，模型与 LoRA 可用性尚未确认')
-    for (const [key, label] of [['modelId', '底模'], ['styleLoraId', '风格 LoRA'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
+    for (const [key, label] of [['modelId', '底模'], ['styleLoraId', '风格 LoRA'], ['styleLoraStrength', '风格强度'], ['secondaryStyleLoraId', '叠加 LoRA'], ['secondaryStyleLoraStrength', '叠加强度'], ['width', '宽度'], ['height', '高度'], ['steps', '步数'], ['cfg', 'CFG'], ['sampler', '采样器'], ['scheduler', '调度器']] as const) {
       if (before[key] !== animaState.value[key]) notes.push(`${label}：${before[key] ?? '未设置'} → ${animaState.value[key] ?? '不可用'}`)
     }
   }

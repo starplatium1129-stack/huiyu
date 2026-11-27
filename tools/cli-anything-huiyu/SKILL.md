@@ -51,7 +51,7 @@ cli-anything-huiyu --json save <batchKey> .\成图 --all
 
 - `doctor` 检查连接、凭据格式、协议版本、中转存储及全部新能力开关（兼容老版本出图机与中转）；`health` 返回只读主机模块在线状态、模型数量和推理引擎摘要。
 - `models` 返回所有已安装图像模型（含 `anima`、`moss-image`、`qwen-image`、`krea2`、`keyframe`、`manga-screen`）及其 `img2img`/`mask`/`maxReferenceImages`/`mossLayout`/`multiCast` 与 `standaloneUpscale` 能力。
-- 目录出图支持 `--kind scene|blueprint|outfit|prompt|manga`、同角色 `--outfit` 换装、Krea 2 目录动态编译及 `--style-lora`。Anima 加速用 `--tea-cache on|off` 与 `--tea-cache-thresh 0–1`；MOSS 加速用 `--moss-sampler euler|er-sde`、`--moss-acceleration off|spectrum|spectrum-adaptive`、`--moss-spectrum-flex-window 0–2`。
+- 目录出图支持 `--kind scene|blueprint|outfit|prompt|manga`、同角色 `--outfit` 换装、Krea 2 目录动态编译及 `--style-lora`。可通过 `--style-lora-strength=-0.5` 调整权重，或用 `--style-loras` 提交最多两项的 JSON 数组，每项含 `id` 与 `strength`。Anima 加速用 `--tea-cache on|off` 与 `--tea-cache-thresh 0–1`；MOSS 加速用 `--moss-sampler euler|er-sde`、`--moss-acceleration off|spectrum|spectrum-adaptive`、`--moss-spectrum-flex-window 0–2`。
 - **1–5 人多角色混搭同框**：重复传 `--cast 角色ID[:服装ID|=自定义服装|none][:动作]`，也可用 `--cast-file JSON`。目录角色可用 ID、名称或唯一别名。原创成员用对象表示，例如 `{"characterId":"oc","name":"Mira","appearance":"short copper hair, green eyes","gender":"girl"}`。可省略 `characterId` 或写 `custom`、`original`、`oc`，称呼（最多 80 字）和外貌（最多 400 字）至少填一项，`gender` 可用 `girl`、`boy`、`other`，默认 `girl`。
   - **自定义服装 / 睡衣 / 剧情装**：在对象中传 `outfitPrompt`（或在 CLI 简写用 `=自定义服装` 如 `--cast "nene:=cream knit pajamas, fluffy socks:curled up smiling"`），或传 `outfitId: "none"` 清空官方默认服，完全不会被默认校服/制服覆盖。
   - **角色间细致互动 & 亲密站位**：用 `--interaction`（JSON 中 `interaction`，支持字符串或数组，≤1000 字）描述对视、牵手、共用一把伞/杯子等关系；每个成员 `action` 支持最多 600 字细节；`--formation` 支持 `row|close|staggered`（2–3 人带 `interaction` 时自动默认 `close` 亲密重叠构图；MOSS 还支持在成员对象传 0..1 归一化 `bbox: [y1, x1, y2, x2]` 自由叠框）。

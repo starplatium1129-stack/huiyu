@@ -69,24 +69,18 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
     }
     let krea = model["family"] == "krea2";
     let lora = body["loraId"].as_str().and_then(catalog::lora);
-    if !krea && object.contains_key("styleLoraId") {
-        return Err(error("WRONG_ROUTE_FAMILY", "Style LoRA 仅适用于 Krea 2"));
-    }
+    let styles = krea_styles::selection(body, krea)?;
     if krea {
         if truthy(&body["loraId"])
             || object.contains_key("loraStrength")
-            || !negative.trim().is_empty()
         {
             return Err(error(
                 "KREA_UNSUPPORTED_PARAMETER",
-                "Krea 2 不接受角色 LoRA 或负向 Prompt",
+                "Krea 2 不接受 Anima 角色 LoRA",
             ));
         }
-        if object.get("styleLoraId").is_some_and(|v| {
-            v.as_str()
-                .is_none_or(|id| catalog::styles().get(id).is_none())
-        }) {
-            return Err(error("UNKNOWN_STYLE_LORA", "未知 Krea 2 官方 Style LoRA"));
+        if !negative.trim().is_empty() && model["negative"] != true {
+            return Err(error("KREA_UNSUPPORTED_PARAMETER", "所选 Krea 2 模型不支持负向提示词"));
         }
     } else if model["noLora"] == true && !truthy(&body["loraId"]) {
         if object.contains_key("loraStrength") {
@@ -155,47 +149,20 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
             limit["integer"] == true,
         )
     };
-    let (steps, cfg) = if krea {
-        if object.get("steps").is_some_and(|v| v.as_f64() != Some(12.)) {
-            return Err(error("INVALID_PARAMETER", "Krea 2 steps 固定为 12"));
+    let setting = |key: &str| -> Result<Value> {
+        let value = object.get(key).unwrap_or(&model[key]);
+        if model["fixedSampling"] == true && value.as_f64() != model[key].as_f64() {
+            return Err(error("INVALID_PARAMETER", format!("{key} 必须使用该模型声明的值 {}", model[key])));
         }
-        if object.get("cfg").is_some_and(|v| v.as_f64() != Some(1.)) {
-            return Err(error("INVALID_PARAMETER", "Krea 2 CFG 固定为 1"));
-        }
-        (json!(12), json!(1))
-    } else {
-        (
-            object
-                .get("steps")
-                .map(|v| validate_limit("steps", v))
-                .transpose()?
-                .unwrap_or_else(|| model["steps"].clone()),
-            object
-                .get("cfg")
-                .map(|v| validate_limit("cfg", v))
-                .transpose()?
-                .unwrap_or_else(|| model["cfg"].clone()),
-        )
+        validate_limit(key, value)
     };
+    let (steps, cfg) = (setting("steps")?, setting("cfg")?);
     let seed = if let Some(seed) = object.get("seed") {
         validate_limit("seed", seed)?
     } else {
         json!((uuid::Uuid::new_v4().as_u128() % 2_147_483_647) as u64)
     };
-    let style = if krea {
-        body["styleLoraId"].as_str()
-    } else {
-        None
-    };
-    let prompt = if let Some(style) = style {
-        format!(
-            "{}, {}",
-            prompt.trim(),
-            catalog::styles()[style]["trigger"].as_str().unwrap()
-        )
-    } else {
-        prompt.trim().into()
-    };
+    let prompt = krea_styles::prompt(prompt, &styles)?;
     let hires = truthy(&body["hiresFix"]);
     let or_default = |key: &str, default: f64| {
         if truthy(&body[key]) {
@@ -211,7 +178,8 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
             .filter(|s| !s.is_empty())
             .map(str::to_string)
     };
-    let mut normalized = json!({"prompt":prompt,"negative":if krea{""}else{negative.trim()},"family":model["family"],"profileId":catalog::CATALOG["PROFILE_BY_MODEL"][model_id],"modelId":model_id,"loraStrength":strength,"width":width,"height":height,"steps":steps,"cfg":cfg,"sampler":model["sampler"],"scheduler":model["scheduler"],"seed":seed,"styleLoraId":style,"hiresFix":hires,"hiresScale":if hires{number(&or_default("hiresScale",1.5),"hiresScale",1.1,3.,false)?}else{json!(1)},"hiresDenoise":if hires{number(&or_default("hiresDenoise",0.8),"hiresDenoise",0.1,1.,false)?}else{json!(0.35)},"hiresUpscaler":match body["hiresUpscaler"].as_str(){Some(name @ ("4x-UltraSharp" | "Remacri" | "Latent" | "R-ESRGAN 4x+ Anime6B" | "R-ESRGAN 4x+"))=>Some(name),_=>hires.then_some("Auto")},"teaCache":object.get("teaCache").map(truthy).unwrap_or(true),"teaCacheThresh":object.get("teaCacheThresh").map(|v|validate_limit("teaCacheThresh",v)).transpose()?.unwrap_or_else(||model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))),"initImage":trimmed("initImage"),"maskImage":trimmed("maskImage"),"maskPrompt":trimmed("maskPrompt"),"denoisingStrength":object.get("denoisingStrength").map(|v|validate_limit("denoisingStrength",v)).transpose()?.unwrap_or(json!(0.8)),"growMaskBy":object.get("growMaskBy").map(|v|validate_limit("growMaskBy",v)).transpose()?.unwrap_or(json!(6)),"maskThreshold":object.get("maskThreshold").map(|v|validate_limit("maskThreshold",v)).transpose()?.unwrap_or(json!(0.45))});
+    let mut normalized = json!({"prompt":prompt,"negative":negative.trim(),"family":model["family"],"profileId":catalog::CATALOG["PROFILE_BY_MODEL"][model_id],"modelId":model_id,"loraStrength":strength,"width":width,"height":height,"steps":steps,"cfg":cfg,"sampler":model["sampler"],"scheduler":model["scheduler"],"seed":seed,"styleLoraId":null,"hiresFix":hires,"hiresScale":if hires{number(&or_default("hiresScale",1.5),"hiresScale",1.1,3.,false)?}else{json!(1)},"hiresDenoise":if hires{number(&or_default("hiresDenoise",0.8),"hiresDenoise",0.1,1.,false)?}else{json!(0.35)},"hiresUpscaler":match body["hiresUpscaler"].as_str(){Some(name @ ("4x-UltraSharp" | "Remacri" | "Latent" | "R-ESRGAN 4x+ Anime6B" | "R-ESRGAN 4x+"))=>Some(name),_=>hires.then_some("Auto")},"teaCache":object.get("teaCache").map(truthy).unwrap_or(true),"teaCacheThresh":object.get("teaCacheThresh").map(|v|validate_limit("teaCacheThresh",v)).transpose()?.unwrap_or_else(||model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))),"initImage":trimmed("initImage"),"maskImage":trimmed("maskImage"),"maskPrompt":trimmed("maskPrompt"),"denoisingStrength":object.get("denoisingStrength").map(|v|validate_limit("denoisingStrength",v)).transpose()?.unwrap_or(json!(0.8)),"growMaskBy":object.get("growMaskBy").map(|v|validate_limit("growMaskBy",v)).transpose()?.unwrap_or(json!(6)),"maskThreshold":object.get("maskThreshold").map(|v|validate_limit("maskThreshold",v)).transpose()?.unwrap_or(json!(0.45))});
+    krea_styles::write_selection(&mut normalized, &styles);
     if !krea {
         for (key, allowed) in [
             ("sampler", &["euler", "res_multistep"][..]),

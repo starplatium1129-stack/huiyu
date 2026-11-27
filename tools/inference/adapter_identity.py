@@ -195,6 +195,11 @@ def imported_weight_digest(root, asset, control):
 
 def model_identity(root, model_id, control, *, moss_weight_precision="auto", moss_text_precision=None):
     model = contract.model(model_id)
+    if model.get("kreaInt8"):
+        try:
+            return sibling("import_krea_int8").identity(root, model_id, control)
+        except (ValueError, OSError, KeyError) as exc:
+            raise Error("MODEL_CHANGED", f"Krea ConvRot 权重或导入凭据不符：{exc}") from exc
     moss = model["family"] == "moss-image"
     variant = sibling("moss_int8").selected(root, moss_weight_precision, contract, expected_model=model_id) if moss else None
     marker = root / "huiyu-model.json"

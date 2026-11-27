@@ -74,6 +74,8 @@ fn parameters(value: &Value) -> bool {
         }
         "hiresScale" => number(v, 1.0, 4.0, false),
         "hiresDenoise" => number(v, 0.0, 1.0, false),
+        "styleLoraStrength" => number(v, -2., 2., false),
+        "styleLoras" => crate::images::krea_styles::selection(value, true).is_ok(),
         "loraStrength" => v.is_null() || number(v, -4.0, 4.0, false),
         "hiresFix" | "faceDetailer" | "noLora" | "preview" | "outfitExplicit" => v.is_boolean(),
         "size" => size(v),
@@ -82,7 +84,7 @@ fn parameters(value: &Value) -> bool {
         "outfitOverride" => outfit_override(v),
         "lora" | "loraId" | "styleLoraId" => v.is_null() || string(v, 512, true),
         "model" | "profile" | "checkpoint" | "sampler" | "scheduler" | "hiresUpscaler"
-        | "outfitId" | "character" | "characterId" | "blueprintId" | "subject" | "scene"
+        | "outfitId" | "kreaStyleRecipeId" | "character" | "characterId" | "blueprintId" | "subject" | "scene"
         | "sceneTitle" | "shot" | "lighting" | "composition" | "colorMood" => {
             v.is_null() || string(v, 512, true)
         }

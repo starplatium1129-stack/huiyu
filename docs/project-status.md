@@ -21,6 +21,7 @@
 | **受管绘图与反推** | 控制室一键准备独立运行库与 PixAI 反推环境，逐项下载校验并支持断点续传 | 首次运行需检查硬件显存是否满足要求 |
 | **AMD 核显支持** | 实验性支持 Windows AMD Portable v0.39.0（分块注意力与低显存模式） | 已验证 Radeon 880M 基本可用性，画质与性能需实测 |
 | **独立 Anima 推理** | 内置 TeaCache 加速，复用现成资源，任务完成后自动释放空闲显存 | 支持 resident / offload 显存策略 |
+| **Krea 2 Turbo INT8 ConvRot** | 本地校验导入、双风格 LoRA 和可调正负强度 | RTX 4070 Ti SUPER 已完成 Kitchen 宽屏 8 步、PyTorch INT8 出图、调强度复用及取消恢复。8 GiB 显卡待实机验证。[导入与风格设置](guides/independent-inference.md) |
 | **内容与短片创作** | 极简点选套图换装（`outfit` 差分与星型锚定）、记录 API、修订历史、批量 Patch 与定向导出；桌面整片导出支持配音/超分/插帧 | [维护手册](maintenance.md) · [视频工作流](guides/video/video-ai-storyboard.md) |
 | **角色房间与酒馆** | 支持角色卡 CRUD 与 Tavern V2 JSON/PNG 导入导出、增强世界书（正则/全词/位置注入/递归扫描/预算）、多用户人格、滚动剧情摘要、好感与 `<status>` 双向同步、6 表情立绘与单句配图、动态房间背景 | 兼容 API、Ollama、llama.cpp 与 [Muse/QQ 通道](guides/remote-and-muse.md) |
 | **界面与桌面陪伴** | Vue 3 + Pinia，全功能双主题，独立聊天窗，浏览器/原生双后端 Live2D 与像素级动态穿透 | 隐藏桌宠自动释放 GPU 资源与上下文 |

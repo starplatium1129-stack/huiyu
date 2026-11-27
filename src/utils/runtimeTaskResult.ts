@@ -1,16 +1,17 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { TaskRecord } from '../../types/tasks'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 
 const metadataKeys = [
-  'prompt', 'negative', 'profileId', 'modelId', 'loraId', 'loraStrength', 'loras', 'styleLoraId',
+  'prompt', 'negative', 'profileId', 'modelId', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'styleLoraStrength', 'styleLoras',
   'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'character', 'preview',
   'hiresFix', 'hiresOnly', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'faceDetailer',
   'teaCache', 'teaCacheThresh', 'initImage', 'maskImage', 'maskPrompt', 'denoisingStrength', 'growMaskBy',
   'sketchControl', 'sketchControlModel', 'regions',
 ] as const
 const recipeKeys = ['engine', 'provider', 'profile', 'model', 'checkpoint', 'prompt', 'negative', 'seed', 'cfg', 'steps', 'sampler', 'scheduler', 'size',
-  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'hiresDenoise', 'faceDetailer',
+  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'styleLoraStrength', 'styleLoras', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'hiresDenoise', 'faceDetailer',
   'sketchControl', 'sketchControlModel', 'regions']
 
 /** Runtime effective input and provider observations are facts; form values are not. */
@@ -41,7 +42,8 @@ export function runtimeTaskRecipe(task: TaskRecord): Partial<HistoryEntry> {
   if (typeof denoise === 'number' && Number.isFinite(denoise)) recipe.hiresDenoise = denoise
   if (typeof source.width === 'number' && source.width > 0 && typeof source.height === 'number' && source.height > 0) recipe.size = `${source.width}x${source.height}`
   if (task.provider === 'webui' || task.provider === 'comfy' || task.provider === 'native') recipe.provider = task.provider
-  for (const key of ['loraId', 'styleLoraId']) if (source[key] === null || typeof source[key] === 'string') recipe[key] = source[key]
+  if (source.loraId === null || typeof source.loraId === 'string') recipe.loraId = source.loraId
+  if ('styleLoraId' in source || 'styleLoras' in source) Object.assign(recipe, kreaStyleSnapshot(source))
   if (source.loraStrength === null || typeof source.loraStrength === 'number' && Number.isFinite(source.loraStrength)) recipe.loraStrength = source.loraStrength
   if (Array.isArray(source.loras) && source.loras.every(lora => lora && typeof lora.id === 'string' && typeof lora.strength === 'number' && Number.isFinite(lora.strength))) {
     const loras = source.loras.map(lora => ({ id: lora.id, strength: lora.strength }))

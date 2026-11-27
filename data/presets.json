@@ -300,7 +300,7 @@
       "steps": 52,
       "cfg": 3.5,
       "size": "1024×1024",
-      "sizes": ["1024×1024", "768×1024", "1024×768"],
+      "sizes": ["1024×1024", "768×1024", "1024×768", "1024×576"],
       "capabilities": {
         "negative": false,
         "lora": false,
@@ -328,7 +328,7 @@
       "steps": 8,
       "cfg": 0,
       "size": "1024×1024",
-      "sizes": ["1024×1024", "1024×1536", "1536×1024"],
+      "sizes": ["1024×1024", "1024×1536", "1536×1024", "1536×864"],
       "capabilities": {
         "negative": false,
         "lora": false,
@@ -343,6 +343,18 @@
       }
     },
     {
+      "id": "krea2_turbo_int8_convrot", "engine": "krea2", "model_id": "krea2-turbo-int8-convrot",
+      "name": "Krea 2 Turbo · INT8 ConvRot", "match": ["krea2-turbo-int8-convrot"],
+      "tag_style": "space", "quality_prefix": "", "negative_prefix": "",
+      "sampler": "euler", "scheduler": "model-config", "steps": 8, "cfg": 1,
+      "size": "1024×1024", "sizes": ["1024×1024", "1024×1536", "1536×1024", "1536×864"],
+      "capabilities": {
+        "negative": false, "lora": false, "noLora": true, "characterIdentity": false,
+        "dualCharacter": false, "hires": false, "teaCache": false, "weightSyntax": false,
+        "promptFormat": "natural-language", "experimental": true
+      }
+    },
+    {
       "id": "krea2_turbo_fp8",
       "engine": "krea2",
       "model_id": "krea2-turbo-fp8",
@@ -353,15 +365,16 @@
       "tag_style": "space",
       "quality_prefix": "",
       "negative_prefix": "",
-      "sampler": "euler",
+      "sampler": "er_sde",
       "scheduler": "simple",
-      "steps": 8,
+      "steps": 12,
       "cfg": 1,
       "size": "1024×1024",
       "sizes": [
         "1024×1024",
         "1024×1536",
-        "1536×1024"
+        "1536×1024",
+        "1536×864"
       ],
       "capabilities": {
         "negative": false,

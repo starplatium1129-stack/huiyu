@@ -182,11 +182,15 @@ function proseWithoutOutfit(prose: string): string {
   return out.trim()
 }
 
+const GENERIC_STYLE_LEAD_RE = /^(?:an?\s+)?(?:exquisite|high-craft|intricate|polished|vibrant|warm,\s*luminous|refined|mature)\s+(?:modern\s+)?(?:2d\s+)?(?:mature\s+)?(?:japanese\s+)?(?:anime|light novel|visual novel)/i
+
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
   const { character, outfit, blueprint, engine } = options
   const profile = engine === 'moss' ? null : options.profile ?? null
   const style = engine === 'moss' ? null : options.style === undefined && blueprint
     ? resolveStyleRecipe(KREA_STYLE_RECIPES, engine, blueprint, null) : options.style
+  // A picked recipe complements the artist; automatic generic prose would compete with the artist's optical description.
+  const styleLead = style && (options.style || !options.artistProse?.trim() || !GENERIC_STYLE_LEAD_RE.test(style.lead)) ? style.lead : ''
   const adult = Boolean(blueprint?.adult || style?.adult)
 
   const manual = sanitizePopularManual(options.manual || [])
@@ -346,7 +350,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const modelInput: PromptCompilerInput = engine === 'krea2'
     ? {
         scenePrompt: compositionTokens([...sceneTokensFiltered, ...nsfwTokens], blueprint).join(', '),
-        style: style ? [style.lead] : [],
+        style: styleLead ? [styleLead] : [],
         medium: style?.medium ?? '',
         artistProse: options.artistProse,
       }

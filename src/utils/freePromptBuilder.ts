@@ -1,3 +1,4 @@
+import type { ResolvedStyle } from '../config/kreaStyleRecipes.ts'
 import { COMPOSITION, LIGHTING, SHOT } from '../config/promptConstants.ts'
 import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCompiler.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
@@ -19,6 +20,7 @@ export interface FreePromptOptions {
   palette?: readonly string[]
   artistTags?: readonly string[]
   artistProse?: string
+  style?: ResolvedStyle | null
   visualDescription?: string
   backgroundProse?: string
   referenceLayout?: InterrogateAssistLayout | null
@@ -49,7 +51,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
   const tags = [...manual, ...emotion, camera, lighting, composition, ...palette].filter(Boolean).join(', ')
   const negative = input.engine !== 'moss' && resolveDrawCapabilities(input.engine, profile).negative
     ? mergeTokenText(input.negativeCustom || '', profile?.negative_prefix || '') : ''
-  const adult = isManualR18Tags(manual)
+  const adult = isManualR18Tags(manual) || Boolean(input.engine === 'krea2' && input.style?.adult)
 
   // A profile's quality defaults and a negative prompt do not make an empty draft drawable.
   const artistContent = input.engine === 'krea2' ? input.artistProse?.trim() : artistTags.join(', ').trim()
@@ -83,7 +85,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
       composition: [composition],
       palette,
       manual,
-      artistProse: input.artistProse,
+      artistProse: input.artistProse, style: input.style ? [input.style.lead] : [], medium: input.style?.medium,
     })
     return { plan, prompt: renderPromptPlan(plan, 'krea2', profile).prompt, negative, adult }
   }

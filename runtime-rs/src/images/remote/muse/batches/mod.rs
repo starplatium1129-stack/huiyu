@@ -33,6 +33,8 @@ pub(super) struct Batch {
     mask_threshold: Option<f64>,
     grow_mask_by: Option<u64>,
     style_lora_id: Option<String>,
+    style_lora_strength: Option<f64>,
+    style_loras: Option<Vec<krea_styles::Style>>,
     sketch_control: Option<Value>,
     regions: Option<Vec<Value>>,
     layout: Option<Value>,
@@ -63,6 +65,12 @@ impl Batch {
                 id: Some(id),
                 ..Default::default()
             }));
+        if self.style_lora_id.is_some() || self.style_loras.is_some() {
+            let styles = krea_styles::fields(self.style_lora_id.as_deref(), self.style_lora_strength, self.style_loras.as_deref());
+            krea_styles::selection(&styles, true)?;
+        } else if let Some(weight) = self.style_lora_strength {
+            validation::number(&json!(weight), "styleLoraStrength", -2., 2., false)?;
+        }
         let default_size = submission::dimensions(self.width, self.height)?;
         for scene in &mut self.scenes {
             scene.variants = scene.variants.or(self.variants);
@@ -94,8 +102,16 @@ impl Batch {
             }
             scene.mask_threshold = scene.mask_threshold.or(self.mask_threshold);
             scene.grow_mask_by = scene.grow_mask_by.or(self.grow_mask_by);
-            if scene.style_lora_id.is_none() {
+            if scene.style_lora_id.is_none() && scene.style_loras.is_none() {
                 scene.style_lora_id.clone_from(&self.style_lora_id);
+                scene.style_loras.clone_from(&self.style_loras);
+                if let (Some(weight), Some(first)) = (scene.style_lora_strength,
+                    scene.style_loras.as_mut().and_then(|rows| rows.first_mut())) {
+                    first.strength = weight;
+                }
+                scene.style_lora_strength = scene.style_lora_strength.or(self.style_lora_strength);
+            } else if self.style_lora_id.is_none() && self.style_loras.is_none() && scene.style_loras.is_none() {
+                scene.style_lora_strength = scene.style_lora_strength.or(self.style_lora_strength);
             }
             if scene.sketch_control.is_none() {
                 scene.sketch_control.clone_from(&self.sketch_control);

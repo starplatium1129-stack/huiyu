@@ -78,10 +78,13 @@ class TensorSlice:
 
 class ReadOnlyWeights:
     def __init__(self, filename, framework="pt", device="cpu", *, backend=None, private_tensors=False):
-        import torch
-        if framework not in ("pt", "pytorch"):
-            raise ValueError("Read-only weights support PyTorch only")
-        self.device = torch.device(f"cuda:{device}" if isinstance(device, int) else device)
+        if framework == "metadata":
+            self.device = None
+        elif framework in ("pt", "pytorch"):
+            import torch
+            self.device = torch.device(f"cuda:{device}" if isinstance(device, int) else device)
+        else:
+            raise ValueError("Read-only weights support PyTorch or metadata inspection")
         self.private_tensors = private_tensors
         self.file = open(filename, "rb", buffering=0)
         try:

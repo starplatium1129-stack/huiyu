@@ -67,6 +67,7 @@ pub(crate) async fn drawing_options(
         return Ok(json!({"available":false,"models":[]}));
     }
     let status = crate::images::native::status(&images.backend, &images.native_status, "", cancel).await?;
+    let recipe_models = recipe_models();
     let mut models: Vec<_> = status["models"].as_array().into_iter().flatten()
         .filter(|model| matches!(model["family"].as_str(), Some("anima" | "krea2" | "moss-image" | "qwen-image" | "keyframe"))
             && (model["available"] == true || model_id.is_some_and(|id| model["id"] == id)))
@@ -96,7 +97,7 @@ pub(crate) async fn drawing_options(
                 model["capabilities"]["mask"].clone()
             };
             json!({"id":id,"label":model["label"],"family":family,"available":model["available"],
-                "catalogRecipes":RECIPE_MODELS.contains(&id),"sizes":model["sizes"],"sizeLimits":size_limits,
+                "catalogRecipes":recipe_models.contains(&id),"sizes":model["sizes"],"sizeLimits":size_limits,
                 "defaultSize":default_size,"defaults":model["defaults"],"negative":model["capabilities"]["negative"],
                 "img2img":img2img,"mask":mask,"maxReferenceImages":model["capabilities"]["maxReferenceImages"],
                 "requiresInitImage":family == "keyframe","modes":model["modes"],

@@ -1,3 +1,4 @@
+import type { ResolvedStyle } from '../config/kreaStyleRecipes.ts'
 import type { Scene } from '../types/scene'
 import type { DirectorControlSources } from '../types/promptDirector'
 import { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS } from '../config/promptConstants.ts'
@@ -42,6 +43,7 @@ export interface StudioPromptOptions {
   palette?: string[]
   artistTags?: string[]
   artistProse?: string
+  style?: ResolvedStyle | null
   visualDescription?: string
   backgroundProse?: string
   referenceLayout?: InterrogateAssistLayout | null
@@ -122,6 +124,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
       : options.controls ? wardrobeTokens(options.controls) : originalControls,
     outfitProse: wardrobeProse(override?.prose, overrideTokens),
     artists: [...(options.artistTags || [])], artistProse: options.artistProse,
+    ...(engine === 'krea2' && options.style ? { style: [options.style.lead], medium: options.style.medium } : {}),
     camera: selections.shot ? [SHOT.find(item => item.id === selections.shot)?.prompt || ''] : [],
     lighting: selections.lighting ? [LIGHTING.find(item => item.id === selections.lighting)?.prompt || ''] : [],
     composition: selections.composition ? [COMPOSITION.find(item => item.id === selections.composition)?.prompt || ''] : [],
@@ -144,6 +147,6 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
   return {
     plan, ...renderPromptPlan(plan, engine, profile),
     negative: assembleNegative(profile, scene, engine, { character, shot: selections.shot, custom: options.negativeCustom }),
-    adult: sceneRating(scene) === 'R18', profile, selections,
+    adult: sceneRating(scene) === 'R18' || Boolean(engine === 'krea2' && options.style?.adult), profile, selections,
   }
 }

@@ -43,7 +43,7 @@ export interface ResultContextInput {
 }
 
 /** 提交时取值；只保存可序列化的创作信息，不保存响应式对象或图片。 */
-export function captureResultContext(pb: ResultContextInput): AnimaResultContext {
+export function captureResultContext(pb: ResultContextInput, kreaStyleRecipeId?: string): AnimaResultContext {
   const subject = pb.subject
   const override = parseOutfitOverride(pb.outfitOverride)
   const origin = readStoryOrigin(pb.storyOrigin)
@@ -63,6 +63,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
     story: String(pb.story || '').trim(),
     char: pb.char,
     history: {
+      ...(kreaStyleRecipeId !== undefined ? { kreaStyleRecipeId } : {}),
       ...readArtworkCastSnapshot(pb),
       referenceInput: parseReferenceInput(pb.referenceInput) ?? undefined,
       storyOrigin,

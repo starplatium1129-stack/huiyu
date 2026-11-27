@@ -1,3 +1,4 @@
+import { readKreaStyles, kreaStyleState } from '@/utils/kreaStyleSelection'
 import type { UseDirectorPopularInput } from './useDirectorPopular'
 import { parseGeneratedRecipe } from '@/utils/generatedSceneDraft'
 import type { AnimaGenerationState } from '@/types/anima'
@@ -82,9 +83,12 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
       if (binding && parameters.loraStrength === undefined) patch.loraStrength = binding.loraStrength
       if (!animaState.value.loras.some(lora => lora.id === loraId && lora.available !== false)) notes.push('原角色 LoRA 尚未确认可用，请核对后生成')
     } else patch.loraId = ''
-    if (recipe.engine === 'krea2' && parameters.styleLoraId) {
-      patch.styleLoraId = parameters.styleLoraId
-      if (!animaState.value.styleLoras.some(lora => lora.id === parameters.styleLoraId && lora.available)) notes.push('原风格 LoRA 尚未确认可用，请核对后生成')
+    if (recipe.engine === 'krea2') {
+      const styles = readKreaStyles(parameters)
+      Object.assign(patch, kreaStyleState(styles), { kreaStyleRecipeId: parameters.kreaStyleRecipeId ?? '' })
+      for (const row of styles) {
+        if (!animaState.value.styleLoras.some(lora => lora.id === row.id && lora.available)) notes.push(`原风格 LoRA ${row.id} 尚未确认可用，请核对后生成`)
+      }
     }
     patchAnimaState(patch)
   }

@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import { PendingMediaUploadError } from './mediaUpload.ts'
 import { ArtworkSaveSupersededError } from './artworkSaveInput'
 import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
@@ -66,7 +67,8 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
     outfitExplicit: isPopular ? entry.outfitExplicit ?? currentSubject.outfitExplicit : undefined,
     outfitOverride: isPopular || entry.coStars?.length ? parseOutfitOverride(entry.outfitOverride) : undefined,
     blueprintId: isPopular ? currentSubject.blueprintId : undefined,
-    noLora: entry.noLora ?? (isPopular && !recordedLora), styleLoraId: entry.styleLoraId ?? null,
+    noLora: entry.noLora ?? (isPopular && !recordedLora), ...kreaStyleSnapshot(entry),
+    ...(entry.kreaStyleRecipeId !== undefined ? { kreaStyleRecipeId: entry.kreaStyleRecipeId } : {}),
     artistStyleIds: normalizeStyles(entry.artistStyleIds ?? defaults.artistStyleIds),
   }
 }

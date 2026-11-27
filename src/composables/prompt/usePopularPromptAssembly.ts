@@ -40,6 +40,7 @@ export function usePopularPromptAssembly(
   pb: PopularPromptAssemblyState,
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
+  kreaStyleRecipeId: Readonly<Ref<string>>,
 ) {
   /** 无 LoRA 模式下直接取模型 profile，不叠加任何角色 LoRA 契约。 */
   const profile = computed(() =>
@@ -95,6 +96,7 @@ export function usePopularPromptAssembly(
       : ''
     const referenceLayout = !subject.blueprintId && target === 'moss' ? reference?.layout ?? null : null
     return compilePromptRecipe({
+      kreaStyleRecipeId: kreaStyleRecipeId.value,
       kind: 'popular',
       randomSetting: !refCaption && !subject.blueprintId && randomVariation.value?.source === '',
       backgroundProse: refCaption,

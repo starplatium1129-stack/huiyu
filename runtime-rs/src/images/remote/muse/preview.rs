@@ -53,6 +53,8 @@ fn compile(config: &crate::config::Config, loras: PathBuf, scene: SceneSelection
         "loraId",
         "loraStrength",
         "styleLoraId",
+        "styleLoraStrength",
+        "styleLoras",
         "teaCache",
         "teaCacheThresh",
         "hiresFix",
@@ -66,6 +68,10 @@ fn compile(config: &crate::config::Config, loras: PathBuf, scene: SceneSelection
         if let Some(value) = payload.get(field).filter(|value| !value.is_null()) {
             result[field] = value.clone();
         }
+    }
+    if prepared.family == "krea2" {
+        let styles = krea_styles::selection(&payload, true)?;
+        result["prompt"] = json!(krea_styles::prompt(payload["prompt"].as_str().unwrap_or_default(), &styles)?);
     }
     if let Some(seed) = prepared.seed {
         result["seed"] = json!(seed);

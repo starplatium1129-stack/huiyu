@@ -343,6 +343,12 @@ async function execute(argv, session, json, compact) {
   const options = Object.fromEntries((spec.options ?? []).map(key => [key, {
     type: booleans.has(key) ? 'boolean' : 'string', multiple: multiples.has(key),
   }]))
+  // node:util considers a separate negative value another flag.
+  for (let index = 0; index + 1 < args.length; index++) {
+    if (args[index] === '--style-lora-strength' && /^-(?:\d+(?:\.\d*)?|\.\d+)$/.test(args[index + 1])) {
+      args.splice(index, 2, `--style-lora-strength=${args[index + 1]}`)
+    }
+  }
   const { values, positionals } = parseArgs({ args, allowPositionals: true, options: {
     ...options, json: { type: 'boolean' }, compact: { type: 'boolean' }, help: { type: 'boolean', short: 'h' },
   } })

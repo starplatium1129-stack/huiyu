@@ -3,7 +3,7 @@ use super::*;
 impl Service {
     pub(crate) async fn resume_prepared(
         &self,
-        input: Value,
+        mut input: Value,
         hooks: &dyn ExecutionHooks,
         cancel: CancellationToken,
     ) -> Result<Prepared> {
@@ -60,6 +60,16 @@ impl Service {
             );
             if input["teaCacheAuto"] == true {
                 raw.as_object_mut().unwrap().remove("teaCache");
+            }
+            // Previously accepted single-style jobs predate the ordered list.
+            // Fill only derived fields before the existing frozen-input comparison.
+            if family == "krea2" && input.get("styleLoras").is_none() && input["styleLoraId"].is_string() {
+                let styles = krea_styles::selection(&input, true)?;
+                let old = &catalog::styles()[&styles[0].id]["trigger"];
+                if &input["styleLoraTrigger"] == old {
+                    input["styleLoraTrigger"] = json!(krea_styles::trigger_suffix(input["prompt"].as_str().unwrap_or(""), &styles)?);
+                }
+                krea_styles::write_selection(&mut input, &styles);
             }
             let prepared = self.prepare_owned(raw, &family, true, None, cancel).await?;
             if prepared.input() != &input {

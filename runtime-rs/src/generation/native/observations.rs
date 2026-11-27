@@ -123,15 +123,20 @@ fn krea_execution(source: &Value) -> Option<Value> {
         return None;
     }
     let mut result = json!({"textTokens":tokens});
-    if source["weightTransport"] == "fp8-to-bf16" {
+    if matches!(source["weightTransport"].as_str(), Some("fp8-to-bf16" | "int8-convrot")) {
         result["weightTransport"] = source["weightTransport"].clone();
         result["transferredMatrices"] = json!(source["transferredMatrices"].as_u64().filter(|n| *n <= 1_000_000)?);
         result["packedTransferBytes"] = json!(source["packedTransferBytes"].as_u64().filter(|n| *n <= 1_u64 << 48)?);
     }
+    if source["weightTransport"] == "int8-convrot" {
+        if let Some(backend @ ("torch" | "kitchen")) = source["int8Backend"].as_str() {
+            result["int8Backend"] = json!(backend);
+        }
+    }
     for key in ["conditioningHits", "conditioningMisses", "fusionHits", "projectionHits", "rotaryHits"] {
         result[key] = json!(source[key].as_u64().filter(|n| *n <= 400)?);
     }
-    for key in ["packedBlockMatrices", "directPackedMatrices", "textPackedMatrices", "fp8GemmCalls", "fp8InputHits", "fusedInputPacks", "textEncoderBlocks",
+    for key in ["packedBlockMatrices", "directPackedMatrices", "textPackedMatrices", "int8GemmCalls", "fp8GemmCalls", "fp8InputHits", "fusedInputPacks", "textEncoderBlocks",
                 "groupedAttentionCalls", "cudnnGqaCalls", "prefetchHits", "warmBlocks", "residentBlocks", "preloadMs"] {
         if let Some(count) = source[key].as_u64().filter(|n| *n <= 1_000_000) {
             result[key] = json!(count);
@@ -288,6 +293,13 @@ pub(super) fn capture(value: &Value) -> Value {
                     .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
             {
                 result["styleLoraSha256"] = value["styleLoraSha256"].clone();
+            }
+            if id.starts_with("krea2-") && let Some(hashes) = value["styleLoraSha256s"].as_array()
+                && (1..=2).contains(&hashes.len()) && hashes.iter().all(|v| v.as_str().is_some_and(|s|
+                    s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit())))
+                && hashes.first() == result.get("styleLoraSha256")
+            {
+                result["styleLoraSha256s"] = json!(hashes);
             }
             if id.starts_with("krea2-") && let Some(execution) = krea_execution(&value["kreaExecution"]) {
                 result["kreaExecution"] = execution;

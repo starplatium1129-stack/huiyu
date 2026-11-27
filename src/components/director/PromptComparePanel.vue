@@ -17,6 +17,7 @@
           <figcaption class="pb-compare-facts">
             <span>Seed {{ snap.seed ?? '随机' }}</span><span>{{ snap.size }}</span><span>{{ snap.sampler }}</span>
             <span>CFG {{ snap.cfg }}</span><span>Steps {{ snap.steps }}</span><span>Hires {{ snap.hires }}</span>
+            <span v-if="snap.styleLoraId || snap.styleLoras?.length">风格 LoRA · {{ describeKreaStyles(readKreaStyles(snap)) }}</span>
             <span class="pb-compare-time">{{ snap.at }}</span>
           </figcaption>
         </figure>
@@ -29,6 +30,7 @@ import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
+import { readKreaStyles, describeKreaStyles } from '@/utils/kreaStyleSelection'
 import type { ResultSnapshot } from '@/composables/prompt/promptResultSnapshot'
 
 const props = defineProps<{ open: boolean; previous: ResultSnapshot; current: ResultSnapshot }>()

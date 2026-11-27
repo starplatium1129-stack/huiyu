@@ -1,3 +1,4 @@
+import { readKreaStyles, kreaStyleState } from '@/utils/kreaStyleSelection'
 import { readStoryOrigin } from '@/types/storyOrigin'
 import type { Ref } from 'vue'
 import type { PromptDraftState } from './usePromptDraft'
@@ -201,7 +202,6 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     }
     const patch: Parameters<AnimaSession['patchState']>[0] = {}
     const loraId = text(anima.loraId)
-    const styleLoraId = text(anima.styleLoraId)
     if (pb.isUnbound) patch.loraId = ''
     else if (subject === 'popular') patch.loraId = endfieldAnimaBinding(ctx.pb.subject.kind === 'popular' ? ctx.pb.subject.characterId : null,
       engine, ctx.animaState.value.modelId)?.loraId ?? ''
@@ -212,8 +212,14 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     }
     else if (loraId && ctx.animaState.value.loras.some(item => item.id === loraId)) { patch.loraId = loraId; if (engine === 'anima') patch.characterLoraEnabled = true }
     else if (loraId) warnings.push(`原 LoRA ${loraId} 当前不可用，未恢复`)
-    if (styleLoraId && ctx.animaState.value.styleLoras.some(item => item.id === styleLoraId)) patch.styleLoraId = styleLoraId
-    else if (styleLoraId) warnings.push(`原风格 LoRA ${styleLoraId} 当前不可用，未恢复`)
+    if (engine === 'krea2') {
+      const styles = readKreaStyles(anima).filter(row => {
+        const ready = ctx.animaState.value.styleLoras.some(item => item.id === row.id && item.available)
+        if (!ready) warnings.push(`原风格 LoRA ${row.id} 当前不可用，未恢复`)
+        return ready
+      })
+      Object.assign(patch, kreaStyleState(styles), { kreaStyleRecipeId: text(anima.kreaStyleRecipeId) || '' })
+    }
     const loraStrength = finite(anima.loraStrength, 0, 2)
     const steps = finite(anima.steps, 1, 150)
     const cfg = finite(anima.cfg, 0, 20)

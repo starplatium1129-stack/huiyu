@@ -146,9 +146,6 @@ pub(super) fn prepare(
     if raw_cast.iter().any(|m| m.bbox.is_some()) && family != "moss-image" {
         return Err(ApiError::invalid("cast 成员的自定义 bbox 仅适用于 MOSS 图像模型"));
     }
-    if input.style_lora_id.is_some() && family != "krea2" {
-        return Err(ApiError::invalid("styleLoraId 仅适用于 Krea 2"));
-    }
 
     let (max_seed, variants) = submission::limits(&input, family)?;
     let catalog =
@@ -394,6 +391,7 @@ pub(super) fn prepare(
             payload["cfg"] = cfg.clone();
         }
     }
+    input.apply_styles(&mut payload, family)?;
     input.apply_tea_cache_options(&mut payload, family)?;
     input.apply_moss_options(&mut payload, family)?;
     input.apply_edit_options(&mut payload, family)?;
@@ -406,9 +404,6 @@ pub(super) fn prepare(
     }
     if let Some(value) = input.cfg {
         payload["cfg"] = json!(value);
-    }
-    if let Some(value) = input.style_lora_id {
-        payload["styleLoraId"] = json!(value);
     }
     submission::prepare_payload(&mut payload, family)?;
 

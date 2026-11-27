@@ -1,3 +1,4 @@
+import { kreaStylesFromState, kreaStyleFields } from '@/utils/kreaStyleSelection'
 import { computed, ref, onActivated, onDeactivated, onScopeDispose, getCurrentInstance, type Ref } from 'vue'
 import type { Scene } from '@/stores/promptBuilderStore'
 import { useDirectorDerived } from '@/composables/scene/useDirectorDerived'
@@ -60,7 +61,8 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     size: drawEngine.value === 'sd' ? sdSize.value : `${animaState.value.width}x${animaState.value.height}`,
     anima: {
       modelId: animaState.value.modelId, loraId: animaState.value.loraId, characterLoraEnabled: animaState.value.characterLoraEnabled,
-      loraStrength: animaState.value.loraStrength, styleLoraId: animaState.value.styleLoraId,
+      loraStrength: animaState.value.loraStrength, styleLoraId: '', ...kreaStyleFields(kreaStylesFromState(animaState.value)),
+      kreaStyleRecipeId: animaState.value.kreaStyleRecipeId,
       width: animaState.value.width, height: animaState.value.height,
       steps: animaState.value.steps, cfg: animaState.value.cfg,
       sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,

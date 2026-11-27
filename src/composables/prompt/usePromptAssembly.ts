@@ -58,6 +58,7 @@ export function usePromptAssembly(
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
   selectedLoraId: Readonly<Ref<string>>,
+  kreaStyleRecipeId: Readonly<Ref<string>>,
 ) {
   /** 当前引擎 + 模型对应的 profile，禁止跨引擎回退规则。 */
   const modelProfile = computed(() => {
@@ -278,6 +279,7 @@ export function usePromptAssembly(
       : ''
     const referenceLayout = !pb.sceneId && target === 'moss' ? reference?.layout ?? null : null
     return compilePromptRecipe({
+      kreaStyleRecipeId: kreaStyleRecipeId.value,
       kind: 'studio', character: pb.char, scene: effectiveScene.value,
       randomSetting: !refCaption && !pb.sceneId && pb.randomVariation?.source === '',
       backgroundProse: refCaption,

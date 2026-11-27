@@ -352,6 +352,9 @@ fn krea(input: &Value, model: &Value) -> Result<Value> {
             ),
         ),
     ]));
+    if model["negative"] == true && input["negative"].as_str().is_some_and(|s| !s.is_empty()) {
+        graph["5"] = node("CLIPTextEncode", json!({"clip":["2",0],"text":input["negative"]}));
+    }
     let mut positive = link("4", 0);
     if model.get("rebalance").is_some() {
         let rebalance = &model["rebalance"];
@@ -362,15 +365,13 @@ fn krea(input: &Value, model: &Value) -> Result<Value> {
         positive = link("11", 0);
     }
     let mut model_link = link("1", 0);
-    if let Some(style) = input["styleLoraId"].as_str() {
-        let style = catalog::styles()
-            .get(style)
-            .ok_or_else(|| error("UNKNOWN_STYLE_LORA", "未知 Krea 2 官方 Style LoRA"))?;
-        graph["12"] = node(
-            "LoraLoaderModelOnly",
-            json!({"model":model_link,"lora_name":style["file"],"strength_model":1}),
-        );
-        model_link = link("12", 0);
+    for (index, style) in krea_styles::selection(input, true)?.iter().enumerate() {
+        if style.strength == 0. { continue; }
+        let id = (12 + index).to_string();
+        let name = krea_styles::file_name(&style.id)?.replace('/', std::path::MAIN_SEPARATOR_STR);
+        graph[&id] = node("LoraLoaderModelOnly",
+            json!({"model":model_link,"lora_name":name,"strength_model":style.strength}));
+        model_link = link(&id, 0);
     }
     graph["14"] = node(
         "ComfyUI-Krea2T-Enhancer",
@@ -378,7 +379,7 @@ fn krea(input: &Value, model: &Value) -> Result<Value> {
     );
     graph["7"] = node(
         "KSampler",
-        json!({"model":["14",0],"positive":positive,"negative":["5",0],"latent_image":["6",0],"seed":input["seed"],"steps":12,"cfg":1,"sampler_name":"er_sde","scheduler":"simple","denoise":1}),
+        json!({"model":["14",0],"positive":positive,"negative":["5",0],"latent_image":["6",0],"seed":input["seed"],"steps":input["steps"],"cfg":input["cfg"],"sampler_name":model["sampler"],"scheduler":model["scheduler"],"denoise":1}),
     );
     graph["15"] = node(
         "ImageSharpenKJ",

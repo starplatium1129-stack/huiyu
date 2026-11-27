@@ -1,3 +1,4 @@
+import { findStyleRecipe, KREA_STYLE_RECIPES } from '../config/kreaStyleRecipes.ts'
 import { buildPopularPromptPlan, type PopularPromptOptions } from './popularPromptBuilder.ts'
 import { buildStudioPromptPlan, type StudioPromptOptions } from './studioPromptBuilder.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
@@ -9,10 +10,12 @@ export type PromptRecipe = (
   | ({ kind: 'popular' } & PopularPromptOptions)
   | ({ kind: 'studio' } & StudioPromptOptions)
   | ({ kind: 'free' } & FreePromptOptions)
-) & { randomSetting?: boolean }
+) & { randomSetting?: boolean; kreaStyleRecipeId?: string }
 
 /** Complete content-to-prompt entry point. Callers select inputs; they never append rendered text. */
 export function compilePromptRecipe(recipe: PromptRecipe) {
+  const selectedStyle = recipe.engine === 'krea2' ? findStyleRecipe(KREA_STYLE_RECIPES, recipe.kreaStyleRecipeId) : null
+  if (selectedStyle) recipe = { ...recipe, style: selectedStyle }
   // Recheck the current controls on every compilation. Editing an anchor or light
   // retires its caption, and an explicit user description always owns the prose.
   if (recipe.randomSetting && !recipe.visualDescription?.trim() && !recipe.backgroundProse?.trim()) {

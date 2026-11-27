@@ -246,6 +246,10 @@ fn receipt_matches(root: &Path, model: &ModelBundle) -> bool {
     installation_source(root, model).is_some()
 }
 
+fn krea_int8(model: &ModelBundle) -> bool {
+    crate::generation::native::adapters::model(&model.id).is_some_and(|spec| spec.get("kreaInt8").is_some())
+}
+
 fn installation_source(root: &Path, model: &ModelBundle) -> Option<&'static str> {
     let path = root.join("huiyu-model.json");
     let mut receipt = std::fs::symlink_metadata(&path).ok()
@@ -259,6 +263,9 @@ fn installation_source(root: &Path, model: &ModelBundle) -> Option<&'static str>
         return local_adapters::krea_receipt(root, &receipt).then_some("local");
     }
     if receipt["revision"] != model.revision { return None; }
+    if krea_int8(model) {
+        return (receipt["scope"] == "local-krea-int8-convrot").then_some("local");
+    }
     if receipt["scope"] == "converted-local-weights-sha256" {
         return local_adapters::video_receipt(root, &model.id, &mut receipt).then_some("local");
     }

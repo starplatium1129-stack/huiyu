@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { HistorySnapshot } from '@/types/promptHistory'
 import { historyFromResultContext } from '@/utils/resultContext'
@@ -22,7 +23,7 @@ export async function loadGeneratedSceneCapture(facts: CapturedSceneFacts, url: 
       cfg: meta.cfg, steps: meta.steps, sampler: meta.sampler, scheduler: meta.scheduler,
       width: meta.width, height: meta.height, size: `${meta.width}x${meta.height}`,
       lora: meta.loraId, loraId: meta.loraId, loraStrength: meta.loraStrength,
-      loras: meta.loras, styleLoraId: meta.styleLoraId,
+      loras: meta.loras, ...kreaStyleSnapshot(meta),
       hiresFix: meta.hiresFix, hiresScale: meta.hiresScale, hiresDenoise: meta.hiresDenoise,
       hiresUpscaler: meta.hiresUpscaler ?? undefined, hiresSteps: meta.hiresSteps, hiresCfg: meta.hiresCfg,
     } : { engine: 'sd', prompt }),

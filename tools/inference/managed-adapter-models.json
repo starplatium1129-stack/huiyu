@@ -2,6 +2,19 @@
   "schemaVersion": 1,
   "models": [
     {
+      "id": "krea2-turbo-int8-convrot", "label": "Krea 2 Turbo · INT8 ConvRot",
+      "revision": "030fc9dbc25471dabf5faf67edc1a7631225cb43",
+      "license": "Krea 2 Community License", "licenseUrl": "https://www.krea.ai/krea-2-licensing",
+      "sourceUrl": "https://huggingface.co/lilcheaty/Krea2-INT8-ConvRot",
+      "checkpointFilename": "Krea2-Turbo-int8-ConvRot.safetensors", "requiresLocalCheckpoint": true,
+      "requiredBytes": 14132232424,
+      "files": [{
+        "path": "transformer/diffusion_pytorch_model.safetensors", "bytes": 14132232424,
+        "sha256": "778cdba5023ce37d20024c971be097d47434db899044721b45c29b37a09fcc12",
+        "url": "https://huggingface.co/lilcheaty/Krea2-INT8-ConvRot/resolve/030fc9dbc25471dabf5faf67edc1a7631225cb43/Krea2-Turbo-int8-ConvRot.safetensors"
+      }]
+    },
+    {
       "id": "longcat-avatar-1.6",
       "label": "LongCat-Video-Avatar 1.6 · 配音驱动",
       "revision": "acfc628244201fc53fb6fe8a8903c5bac9bdf68f",

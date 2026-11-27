@@ -32,7 +32,7 @@ fn prepare_manga(input: SceneSelection) -> Result<PreparedScene> {
         || input.character.is_some()
         || input.lora_id.is_some()
         || input.lora_strength.is_some()
-        || input.style_lora_id.is_some()
+        || input.has_styles()
         || input.layout.is_some()
         || input.reference_images.is_some()
         || input.denoising_strength.is_some()
@@ -161,6 +161,7 @@ pub(super) fn custom(
     };
     let mut payload =
         json!({"modelId":model,"prompt":resolved_prompt,"width":width,"height":height});
+    input.apply_styles(&mut payload, family)?;
     input.apply_tea_cache_options(&mut payload, family)?;
     input.apply_moss_options(&mut payload, family)?;
     input.apply_edit_options(&mut payload, family)?;
@@ -173,9 +174,6 @@ pub(super) fn custom(
     }
     if let Some(value) = input.cfg {
         payload["cfg"] = json!(value);
-    }
-    if let Some(value) = input.style_lora_id {
-        payload["styleLoraId"] = json!(value);
     }
     if input.character.is_some() || input.lora_id.is_some() || input.lora_strength.is_some() {
         if family != "anima" {

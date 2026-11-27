@@ -64,6 +64,7 @@ export interface AnimaOption {
 
 interface KreaStyleLoraOption {
   id: string
+  label?: string
   trigger: string
   recommendedStrength: number
   available: boolean
@@ -119,6 +120,10 @@ export interface AnimaGenerationState {
   allLoras?: AnimaOption[]
   styleLoras: KreaStyleLoraOption[]
   styleLoraId: string
+  styleLoraStrength: number
+  secondaryStyleLoraId: string
+  secondaryStyleLoraStrength: number
+  kreaStyleRecipeId: string
   prompt: string
   negative: string
   modelId: string

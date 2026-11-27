@@ -21,6 +21,8 @@ pub(super) const KEYS: &[&str] = &[
     "initImage",
     "referenceImages",
     "styleLoraId",
+    "styleLoraStrength",
+    "styleLoras",
 ];
 const UNSUPPORTED: &[&str] = &[
     "loraId",
@@ -169,33 +171,12 @@ fn validate_image(raw: &Value, family: &str, manga_rewrite: bool) -> Result<Valu
             ));
         }
     };
-    let style = match raw.get("styleLoraId") {
-        None | Some(Value::Null) => None,
-        Some(Value::String(id))
-            if spec["family"] == "krea2" && catalog::styles().get(id).is_some() =>
-        {
-            Some(id.as_str())
-        }
-        _ => {
-            return Err(error(
-                "UNKNOWN_STYLE_LORA",
-                "请选择已登记的 Krea 2 风格 LoRA",
-            ));
-        }
-    };
+    let styles = krea_styles::selection(raw, spec["family"] == "krea2")?;
     let prompt = raw["prompt"]
         .as_str()
         .filter(|s| !s.trim().is_empty() && s.encode_utf16().count() <= 12000)
         .ok_or_else(|| error("INVALID_PARAMETER", "prompt 需为 1—12000 字符"))?;
-    if let Some(id) = style {
-        let trigger = catalog::styles()[id]["trigger"].as_str().unwrap();
-        if prompt.encode_utf16().count() + trigger.encode_utf16().count() + 2 > 12000 {
-            return Err(error(
-                "INVALID_PARAMETER",
-                "加入风格描述后的 prompt 超过 12000 字符",
-            ));
-        }
-    }
+    let trigger = krea_styles::trigger_suffix(prompt, &styles)?;
     let negative = match raw.get("negative") {
         None => "",
         Some(Value::String(s)) if s.encode_utf16().count() <= 8000 => s.trim(),
@@ -309,8 +290,7 @@ fn validate_image(raw: &Value, family: &str, manga_rewrite: bool) -> Result<Valu
             ));
         }
     };
-    Ok(
-        json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
+    let mut input = json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
         "width":width,"height":height,"steps":steps,"cfg":cfg,"seed":seed,"initImage":image,
         "mossSampler":if spec["family"] == "moss-image" {Some(moss_sampler)}else{None},
         "mossAcceleration":if spec["family"] == "moss-image" {Some(moss_acceleration)}else{None},
@@ -319,11 +299,12 @@ fn validate_image(raw: &Value, family: &str, manga_rewrite: bool) -> Result<Valu
         "mossCompile":if spec["family"] == "moss-image" {Some(moss_compile)}else{None},
         "mossWeightPrecision":if spec["family"] == "moss-image" {Some(moss_weight_precision)}else{None},
         "referenceImages":if accepts_references {Some(references)}else{None},
-        "profileId":spec["profileId"],"styleLoraId":style,"styleLoraTrigger":style.map(|id| &catalog::styles()[id]["trigger"]),
+        "profileId":spec["profileId"],"styleLoraId":null,"styleLoraTrigger":trigger,
         "inferenceEngine":"native","nativeAdapterVersion":1,"validation":"待主力机验证",
         "sampler":moss_sampler,"scheduler":if preview {sampling_defaults["scheduler"].as_str().unwrap_or("simple")} else {"model-config"},
-        "teaCache":false,"hiresFix":false,"rcasStrength":0}),
-    )
+        "teaCache":false,"hiresFix":false,"rcasStrength":0});
+    krea_styles::write_selection(&mut input, &styles);
+    Ok(input)
 }
 pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     supported_options(raw)?;
@@ -342,36 +323,26 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
 }
 pub(super) async fn plan(
     settings: &generation::native::Settings,
-    input: Value,
+    mut input: Value,
     image: Option<generation::native::InputFile>,
 ) -> Result<generation::native::Plan> {
-    let style = input["styleLoraId"].as_str().map(str::to_owned);
+    let styles = krea_styles::selection(&input, input["family"] == "krea2")?;
+    if styles.is_empty() { return adapters::plan(settings, input, image).await; }
     let root = settings.loras_root.clone();
-    let loras = tokio::task::spawn_blocking(move || -> Result<Vec<Value>> {
-        let Some(id) = style else {
-            return Ok(vec![]);
-        };
-        let file = catalog::styles()[&id]["file"]
-            .as_str()
-            .ok_or_else(|| error("UNKNOWN_STYLE_LORA", "未知 Krea 2 风格 LoRA"))?;
-        let path = generation::native::resources::file(&root, file, true).ok_or_else(|| {
-            ApiError::new(
-                503,
-                "NATIVE_LORA_UNAVAILABLE",
-                "LoRA 目录中缺少所选 Krea 2 风格文件",
-            )
-        })?;
-        Ok(vec![json!({"path":path,"strength":1})])
-    })
-    .await
-    .map_err(|_| ApiError::new(503, "NATIVE_LORA_UNAVAILABLE", "风格文件读取未完成"))??;
+    let prompt_text = input["prompt"].as_str().unwrap_or_default().to_owned();
+    let (loras, trigger) = tokio::task::spawn_blocking(move || {
+        let loras = styles.iter().map(|style| {
+            let path = krea_styles::resolve(&root, &style.id)?;
+            Ok(json!({"path":path,"strength":style.strength}))
+        }).collect::<Result<Vec<_>>>()?;
+        let trigger = krea_styles::trigger_suffix_with_root(&prompt_text, &styles, Some(&root))?;
+        Ok::<_, ApiError>((loras, trigger))
+    }).await.map_err(|_| ApiError::new(503, "NATIVE_LORA_UNAVAILABLE", "风格文件读取未完成"))??;
+    input["styleLoraTrigger"] = json!(trigger);
     let mut plan = adapters::plan(settings, input, image).await?;
     plan.loras = loras;
     Ok(plan)
 }
 pub(super) fn styles(settings: &generation::native::Settings) -> Vec<Value> {
-    catalog::styles().as_object().unwrap().iter().map(|(id, style)| {
-        let available = style["file"].as_str().is_some_and(|file| generation::native::resources::file(&settings.loras_root, file, true).is_some());
-        json!({"id":id,"trigger":style["trigger"],"recommendedStrength":1,"available":available,"formatValidation":"on-load"})
-    }).collect()
+    krea_styles::list(&settings.loras_root)
 }

@@ -44,6 +44,25 @@ pub(super) fn check_uploaded_name(name: &str, field: &str) -> Result<()> {
 }
 
 impl SceneSelection {
+    pub(in super::super) fn has_styles(&self) -> bool {
+        self.style_lora_id.is_some() || self.style_lora_strength.is_some() || self.style_loras.is_some()
+    }
+
+    pub(in super::super) fn apply_styles(&self, payload: &mut Value, family: &str) -> Result<()> {
+        if !self.has_styles() { return Ok(()); }
+        let styles = krea_styles::selection(&krea_styles::fields(
+            self.style_lora_id.as_deref(), self.style_lora_strength, self.style_loras.as_deref()
+        ), family == "krea2")?;
+        if styles.is_empty() {
+            if let Some(fields) = payload.as_object_mut() {
+                for key in ["styleLoraId", "styleLoraStrength", "styleLoras"] { fields.remove(key); }
+            }
+        } else {
+            krea_styles::write_selection(payload, &styles);
+        }
+        Ok(())
+    }
+
     pub(in super::super) fn apply_tea_cache_options(
         &self,
         payload: &mut Value,

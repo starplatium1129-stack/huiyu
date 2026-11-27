@@ -1,3 +1,5 @@
+import type { KreaStyleLoraSelection } from '@/types/generation'
+import { readKreaStyles, kreaStyleFields } from '@/utils/kreaStyleSelection'
 import type { ApiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaOption, AnimaSizeLimits, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
@@ -33,6 +35,8 @@ export interface AnimaRequest {
   seed?: number
   character: string | null
   styleLoraId?: string
+  styleLoraStrength?: number
+  styleLoras?: KreaStyleLoraSelection[]
   hiresFix?: boolean
   hiresOnly?: boolean
   hiresScale?: number
@@ -137,7 +141,7 @@ export function animaRequestPayload(
     negative: request.negative,
     modelId: request.modelId,
     ...(request.loraId ? { loraId: request.loraId, loraStrength: request.loraStrength } : {}),
-    ...(request.styleLoraId ? { styleLoraId: request.styleLoraId } : {}),
+    ...kreaStyleFields(readKreaStyles(request)),
     width: request.width,
     height: request.height,
     steps: request.steps,

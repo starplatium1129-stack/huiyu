@@ -1,3 +1,5 @@
+import { kreaStyleSnapshot, kreaStylesFromState } from '@/utils/kreaStyleSelection'
+import type { KreaStyleLoraSelection } from '@/types/generation'
 import type { Ref } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 import type { DrawEngine } from '@/storage/settingsRepository'
@@ -7,6 +9,8 @@ export interface ResultSnapshot {
   url: string
   seed: number | null
   styleLoraId: string | null
+  styleLoraStrength?: number
+  styleLoras?: KreaStyleLoraSelection[]
   size: string
   sampler: string
   cfg: number
@@ -31,7 +35,7 @@ export function snapshotResult(ctx: {
   return {
     url: persistentUrl,
     seed: displayResultSeed.value ?? (isComfy ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
-    styleLoraId: isComfy ? ((metadata?.styleLoraId ?? animaState.value.styleLoraId) || null) : null,
+    ...kreaStyleSnapshot(isComfy ? metadata ?? { styleLoras: kreaStylesFromState(animaState.value) } : null),
     size: upscaleOnly && metadata ? `${upscaleSize(metadata.width)}x${upscaleSize(metadata.height)}`
       : isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
     sampler: upscaleOnly ? (ultraSharp ? 'euler' : 'Remacri') : isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),

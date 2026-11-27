@@ -190,16 +190,13 @@ impl RecipeLibrary {
         let family = match model {
             ANIMA => "anima",
             "moss-miaomiao-base-v1.0" | "moss-miaomiao-base-v1.1" => "moss-image",
-            krea::KREA_TURBO | krea::KREA_RAW => "krea2",
+            id if generation::native::adapters::model(id).is_some_and(|m| m["family"] == "krea2") => "krea2",
             _ => {
                 return Err(ApiError::invalid(
-                    "按目录 ID 出图支持 MiaoMiao Anima 1.6、MOSS BASE v1.0/v1.1 与 Krea 2 Turbo/RAW",
+                    "按目录 ID 出图支持 MiaoMiao Anima 1.6、MOSS BASE v1.0/v1.1 与已登记的原生 Krea 2",
                 ));
             }
         };
-        if scene.style_lora_id.is_some() && family != "krea2" {
-            return Err(ApiError::invalid("styleLoraId 仅适用于 Krea 2"));
-        }
         if scene.has_edit_fields() && family != "anima" {
             return Err(ApiError::invalid(
                 "目录出图的参考底图、蒙版和构图控制仅适用于 Anima",
@@ -241,9 +238,11 @@ impl RecipeLibrary {
         };
         let fields = payload.as_object_mut().ok_or_else(unavailable)?;
         fields.insert("modelId".into(), json!(model));
-        if let Some(style) = &scene.style_lora_id {
-            fields.insert("styleLoraId".into(), json!(style));
+        if family == "krea2" && let Some(spec) = generation::native::adapters::model(model) {
+            fields.insert("steps".into(), spec["steps"].clone());
+            fields.insert("cfg".into(), spec["cfg"].clone());
         }
+        scene.apply_styles(&mut payload, family)?;
         scene.apply_tea_cache_options(&mut payload, family)?;
         scene.apply_moss_options(&mut payload, family)?;
         scene.apply_edit_options(&mut payload, family)?;
@@ -262,7 +261,7 @@ impl RecipeLibrary {
             || scene.upscale.is_some()
             || scene.tea_cache.is_some()
             || scene.tea_cache_thresh.is_some()
-            || scene.style_lora_id.is_some()
+            || scene.has_styles()
             || scene.has_edit_fields()
         {
             submission::prepare_payload(&mut payload, family)?;

@@ -30,8 +30,7 @@ def _condition_bytes(value):
 class PipelineCache:
     def __init__(self):
         self.lease = load_sibling("locked_identity").AssetIdentityLease(tree=True)
-        self.style_lease = load_sibling("locked_identity").AssetIdentityLease(tree=False)
-        self.style_identity = self.style_protection = None
+        self.style_assets = []
         self.components = self.parameters = self.scope = self.identity = self.pipeline_class = None
         self.configs = {}
         self.memory = None
@@ -59,8 +58,9 @@ class PipelineCache:
         self.release_components()
         self.lease.close()
         self.scope = None
-        self.style_lease.close()
-        self.style_identity = self.style_protection = None
+        for lease, _, _ in self.style_assets:
+            lease.close()
+        self.style_assets.clear()
         self.protection = None
         if had_resources:
             # Hook registries can form cycles. Retire the old set and allocator
@@ -68,16 +68,20 @@ class PipelineCache:
             settle_resources(False)
 
     @staticmethod
-    def weight_scope(root, data, policy, style_path):
+    def weight_scope(root, data, policy, styles):
         return (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
-                str(style_path) if style_path else None, data.get("_h3TurboSteps"),
+                tuple(str(path) for path, _ in styles) if styles else None, data.get("_h3TurboSteps"),
                 data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"), data.get("_h3DwdPath"),
                 bool(data.get("_h3DwdPath") and data.get("_videoImage")))
 
-    def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, style_path=None, prepared_identity=None):
-        scope = self.weight_scope(root, data, policy, style_path)
+    def styles_valid(self, *, require_protection):
+        return all((not require_protection if token is None else lease.protection_token() is token)
+                   for lease, _, token in self.style_assets)
+
+    def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, styles=(), prepared_identity=None):
+        scope = self.weight_scope(root, data, policy, styles)
         # Retire weights before attempting a new protection interval.
-        if self.scope != scope or not self.lease.valid() or (style_path is not None and not self.style_lease.valid()):
+        if self.scope != scope or not self.lease.valid() or not self.styles_valid(require_protection=True):
             self.clear()
         control.stage("fingerprint")
         identity = self.lease.acquire(root, lambda path: fingerprint(path, control),
@@ -92,19 +96,29 @@ class PipelineCache:
                     self.clear()
                     identity = self.lease.acquire(root, lambda path: fingerprint(path, control))
                 protection = self.lease.protection_token()
-                style = load_sibling("krea_style") if style_path is not None else None
-                if style is not None:
-                    self.style_identity = self.style_lease.acquire(style_path, lambda path: style.fingerprint(path, control))
-                    self.style_protection = self.style_lease.protection_token()
+                if styles:
+                    style = load_sibling("krea_style")
+                    for path, _ in styles:
+                        lease = load_sibling("locked_identity").AssetIdentityLease(tree=False)
+                        digest = lease.acquire(path, lambda asset: style.fingerprint(asset, control))
+                        self.style_assets.append((lease, digest, lease.protection_token()))
+                    if len({digest for _, digest, _ in self.style_assets}) != len(styles):
+                        raise error("INVALID_PARAMETER", "Two Krea style files contain the same weights")
                 control.stage("loading")
                 template, self.memory = load(identity, protection)
-                if style is not None:
+                if styles:
                     # Style changes reload the weight set before attaching hooks;
                     # ordinary jobs never inherit a previous style's PEFT layers.
-                    style.apply(template, style_path, control)
-                    if ((self.style_protection is not None and self.style_lease.protection_token() is not self.style_protection)
-                            or (self.style_protection is None and style.fingerprint(style_path, control) != self.style_identity)):
+                    for index, (path, _) in enumerate(styles):
+                        style.apply(template, path, style.ADAPTER_NAMES[index], control)
+                    if not self.styles_valid(require_protection=False) or any(
+                            token is None and style.fingerprint(path, control) != digest
+                            for (path, _), (_, digest, token) in zip(styles, self.style_assets)):
                         raise error("MODEL_CHANGED", "Krea style changed during loading; generation rejected")
+                    style.set_strengths(template, [strength for _, strength in styles])
+                if spec.get("kreaInt8"):
+                    # Install the integer base inside each PEFT wrapper before either placement policy moves tensors.
+                    template.transformer._huiyu_transport.pack_blocks(template.transformer, check=control.check)
                 control.stage("fingerprint")
                 if ((protection is not None and self.lease.protection_token() is not protection)
                         or (protection is None and fingerprint(root, control) != identity)):
@@ -138,6 +152,10 @@ class PipelineCache:
                     dwd=data.get("h3Decoder") == "dwd")
             else:
                 pipeline = self.pipeline_class(**components, **copy.deepcopy(self.parameters))
+            if styles and reused:
+                # Strength belongs to this request. A protected file set can be
+                # reused across strengths, including a transition through zero.
+                load_sibling("krea_style").set_strengths(pipeline, [strength for _, strength in styles])
             for component in self.memory.modules.values():
                 registry = getattr(component, "_diffusers_hook", None)
                 if registry is not None:
@@ -161,7 +179,7 @@ class PipelineCache:
                     self.bind_reference_latents(pipeline)
             if self.protection is not None and self.lease.protection_token() is not self.protection:
                 raise error("MODEL_CHANGED", "Model protection was lost before inference; generation rejected")
-            if self.style_protection is not None and self.style_lease.protection_token() is not self.style_protection:
+            if not self.styles_valid(require_protection=False):
                 raise error("MODEL_CHANGED", "Krea style protection was lost before inference; generation rejected")
             return pipeline, identity, reused
         except BaseException:
@@ -170,7 +188,7 @@ class PipelineCache:
 
     def finish(self, success):
         if (not success or self.protection is None or self.lease.protection_token() is not self.protection
-                or self.style_identity is not None and (self.style_protection is None or self.style_lease.protection_token() is not self.style_protection)):
+                or not self.styles_valid(require_protection=True)):
             self.clear()
         elif self.memory is not None:
             self.memory.finish()

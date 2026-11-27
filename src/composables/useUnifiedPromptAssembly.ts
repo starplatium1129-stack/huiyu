@@ -30,10 +30,11 @@ export function useUnifiedPromptAssembly(
   engine: Readonly<Ref<PromptEngine>>,
   modelName: Readonly<Ref<string>>,
   selectedLoraId: Readonly<Ref<string>>,
+  kreaStyleRecipeId: Readonly<Ref<string>>,
 ) {
-  const studio = usePromptAssembly(pb, checkpoint, engine, modelName, selectedLoraId)
-  const popular = usePopularPromptAssembly(pb, engine, modelName)
-  const unbound = useUnboundPromptAssembly(pb, engine, studio.modelProfile)
+  const studio = usePromptAssembly(pb, checkpoint, engine, modelName, selectedLoraId, kreaStyleRecipeId)
+  const popular = usePopularPromptAssembly(pb, engine, modelName, kreaStyleRecipeId)
+  const unbound = useUnboundPromptAssembly(pb, engine, studio.modelProfile, kreaStyleRecipeId)
   const active = computed(() => pb.isPopular ? popular : pb.char === 'none' ? unbound : studio)
 
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)

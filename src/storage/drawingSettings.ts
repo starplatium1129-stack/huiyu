@@ -1,10 +1,12 @@
+import { kreaStylesFromState, kreaStyleState } from '@/utils/kreaStyleSelection'
+import { KREA_STYLE_RECIPES } from '@/config/kreaStyleRecipes'
 import type { AnimaGenerationState } from '@/types/anima'
 import { saveSettingValue } from './settingWrites'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 
 // Registered model-draft prefix: shared by every desktop window and stored by the profile runtime.
 const KEY = 'aics-model-draft-image-settings-v1'
-const fields = ['modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler',
+const fields = ['modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'styleLoraStrength', 'secondaryStyleLoraId', 'secondaryStyleLoraStrength', 'kreaStyleRecipeId', 'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler',
   'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
 export type DrawingSettings = Pick<AnimaGenerationState, typeof fields[number]>
 
@@ -33,7 +35,9 @@ export function readDrawingSettings(family: 'anima' | 'krea2'): DrawingSettings 
     || (value.hiresSteps !== undefined && (!Number.isInteger(value.hiresSteps) || value.hiresSteps < 1 || value.hiresSteps > 60))
     || (value.hiresCfg !== undefined && (value.hiresCfg < 0.5 || value.hiresCfg > 10))
     || (value.hiresUpscaler !== undefined && !['Auto', 'Latent', 'Remacri', '4x-UltraSharp'].includes(value.hiresUpscaler))) return null
-  return Object.fromEntries(fields.filter(key => value[key] !== undefined).map(key => [key, value[key]])) as DrawingSettings
+  const saved = Object.fromEntries(fields.filter(key => value[key] !== undefined).map(key => [key, value[key]])) as DrawingSettings
+  return { ...saved, ...kreaStyleState(family === 'krea2' ? kreaStylesFromState(saved) : []),
+    kreaStyleRecipeId: family === 'krea2' && KREA_STYLE_RECIPES.some(item => item.id === saved.kreaStyleRecipeId) ? saved.kreaStyleRecipeId : '' }
 }
 
 export async function saveDrawingSettings(state: AnimaGenerationState): Promise<void> {

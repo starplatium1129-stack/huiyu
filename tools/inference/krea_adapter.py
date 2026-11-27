@@ -58,12 +58,26 @@ class Residency(mapped.Residency):
         compact_decode = ((props.major, props.minor) == (8, 9)
                           and vae.dtype == torch.bfloat16 and vae.config.base_dim == 96)
         self.decode_bytes_per_pixel = 2176 if compact_decode else 2560
-        # PEFT casts the input for A and creates a full-width B output and a
-        # scaled/add result. Budget their projection widths at the adapter dtype.
-        self.style_bytes_per_token = max((
-            (layer.in_features + 2 * proj.out_features) * proj.weight.element_size()
-            for layer in components["transformer"].modules() if hasattr(layer, "lora_B")
-            for proj in layer.lora_B.values()), default=0)
+        self.style_projections = []
+        transformer = components["transformer"]
+        for name, layer in transformer.named_modules():
+            if not hasattr(layer, "lora_B"):
+                continue
+            # Main blocks see image + text tokens. Time has one row, while
+            # the fusion stage reshapes its 12 taps and hidden features into rows.
+            rows = None
+            if name.startswith("time_"):
+                rows = 1
+            elif name.startswith("text_fusion.layerwise_blocks."):
+                rows = 512 * transformer.config.num_text_layers
+            elif name == "text_fusion.projector":
+                rows = 512 * transformer.config.text_hidden_dim
+            elif name.startswith(("text_fusion.", "txt_in.")):
+                rows = 512
+            # Input cast, rank-sized A activation, B output and scaled delta.
+            costs = {adapter: (layer.in_features + proj.in_features + 2 * proj.out_features) * proj.weight.element_size()
+                     for adapter, proj in layer.lora_B.items()}
+            self.style_projections.append((rows, layer, costs))
         self.style_workspace = 0
         self.changing_stage = False
         self.bounded_upload = False
@@ -102,7 +116,8 @@ class Residency(mapped.Residency):
         self.step_room = None
         self.checked_pressure = False
         if self.transport is not None:
-            self.transport.report.update(uploads=0, packedBytes=0, fp8GemmCalls=0, fp8InputHits=0, fusedInputPacks=0)
+            for key in self.transport.report:
+                self.transport.report[key] = 0
         self.report.pop("minimumAvailableCommitBytes", None)
         self.report["reclaimedWeightBytes"] = 0
         self.report["lowCommitStreamGroups"] = 0
@@ -264,7 +279,7 @@ class Residency(mapped.Residency):
             if self.transfer is None:
                 self.transfer = load_sibling("video_memory")._BlockTransfer(self.device)
             self.transfer.queue(following, self.control, self.report)
-            packed = [source for source in following["sources"].values() if source.dtype == torch.float8_e4m3fn]
+            packed = [source for source in following["sources"].values() if source.dtype in (torch.float8_e4m3fn, torch.int8)]
             self.transport.report["uploads"] += len(packed)
             self.transport.report["packedBytes"] += sum(source.numel() for source in packed)
         except (RuntimeError, MemoryError) as exc:
@@ -312,7 +327,10 @@ class Residency(mapped.Residency):
     def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels):
         self.pixels = pixels
         # Krea packs 16x16 image pixels per token and accepts up to 512 text tokens.
-        self.style_workspace = ((pixels + 255) // 256 + 512) * self.style_bytes_per_token
+        token_rows = (pixels + 255) // 256 + 512
+        self.style_workspace = max((
+            (rows or token_rows) * sum(costs[name] for name in layer.active_adapters if name in costs)
+            for rows, layer, costs in self.style_projections if not layer.disable_adapters), default=0)
         self.activation_reserve = mapped.activation_reserve(pixels, image_conditioned) + self.style_workspace
         super().plan(pixels, image_conditioned=image_conditioned, control=control,
                      decode_pixels=decode_pixels, available_bytes=self.planning_room,
@@ -434,7 +452,7 @@ class Residency(mapped.Residency):
 
     def to_cuda(self, source, retain):
         import torch
-        if source.dtype == torch.float8_e4m3fn:
+        if source.dtype in (torch.float8_e4m3fn, torch.int8):
             value = super().to_cuda(source, retain, mapped_pages=True)
             if self.active == "text_encoder":
                 self.report["textPackedTransferBytes"] += source.nbytes
@@ -452,6 +470,7 @@ class Residency(mapped.Residency):
             self.desktop.close()
             self.fusion_cold.clear()
             self.block_records.clear()
+            self.style_projections.clear()
             if self.transport is not None:
                 self.transport.close()
                 self.transport = None
@@ -666,6 +685,9 @@ def generate(pipeline, args, control, observation):
                   fusionHits=0, projectionHits=0, rotaryHits=0, groupedAttentionCalls=0, cudnnGqaCalls=0)
     original_encode = pipeline.encode_prompt
     transformer = pipeline.transformer
+    transport = getattr(transformer, "_huiyu_transport", None)
+    if transport is not None and "int8GemmCalls" in transport.report:
+        transport.report["int8GemmCalls"] = 0
     sampling = False
     positions = {}
 
@@ -736,13 +758,17 @@ def generate(pipeline, args, control, observation):
         observation["attentionBackend"] = grouped_backend
     memory = pipeline._huiyu_memory.report
     report["prefetchHits"] = memory.get("prefetchHits", 0)
-    transport = getattr(pipeline._huiyu_memory, "transport", None)
+    transport = getattr(pipeline.transformer, "_huiyu_transport", None)
     if transport is not None:
-        report.update(weightTransport="fp8-to-bf16", transferredMatrices=transport.report["uploads"],
+        report.update(transferredMatrices=transport.report["uploads"],
                       packedTransferBytes=transport.report["packedBytes"], packedBlockMatrices=transport.block_count,
-                      directPackedMatrices=transport.packed_count,
-                      fp8GemmCalls=transport.report["fp8GemmCalls"], fp8InputHits=transport.report["fp8InputHits"],
-                      fusedInputPacks=transport.report["fusedInputPacks"])
+                      directPackedMatrices=transport.packed_count)
+        if "int8GemmCalls" in transport.report:
+            report.update(weightTransport="int8-convrot", int8GemmCalls=transport.report["int8GemmCalls"],
+                          int8Backend=transport.backend)
+        else:
+            report.update(weightTransport="fp8-to-bf16", fp8GemmCalls=transport.report["fp8GemmCalls"],
+                          fp8InputHits=transport.report["fp8InputHits"], fusedInputPacks=transport.report["fusedInputPacks"])
     report["textPackedMatrices"] = getattr(pipeline.text_encoder, "_huiyu_packed_text_layers", 0)
     for field in ("warmBlocks", "residentBlocks", "textPackedTransferBytes", "fusionOffloadedBytes",
                   "preloadedPackedBytes", "preloadMs"):

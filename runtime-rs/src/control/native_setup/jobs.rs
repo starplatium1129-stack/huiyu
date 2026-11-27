@@ -294,7 +294,11 @@ impl ControlService {
             return Ok(());
         }
         if let Some(import) = local_import {
-            return self.import_local_video(import, model, &target, operation, cancel, permit).await;
+            return self.import_local_adapter(local_adapters::LocalSource::Video(import), model, &target, operation, cancel, permit).await;
+        }
+        if krea_int8(model) {
+            let input = imported.ok_or_else(|| ApiError::invalid("请指定本机 Krea 2 ConvRot 作者权重文件。"))?;
+            return self.import_local_adapter(local_adapters::LocalSource::Krea(&input.path), model, &target, operation, cancel, permit).await;
         }
         let workspace_check = workspace.clone();
         let app = self.config.app_root.clone();

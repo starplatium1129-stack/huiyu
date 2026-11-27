@@ -2,8 +2,7 @@
 //! Used when `remote-scene-recipes.sqlite` does not yet contain precompiled `krea2` payloads.
 use super::*;
 
-pub(super) const KREA_TURBO: &str = "krea2-turbo";
-pub(super) const KREA_RAW: &str = "krea2-raw";
+const KREA_ANIME_LEAD: &str = "An exquisite modern Japanese anime illustration with delicate fine linework, translucent luminous shading, rich chromatic depth, and cinematic atmospheric light";
 
 fn studio_subject_prose(character: &str) -> &'static str {
     match character {
@@ -217,20 +216,20 @@ pub(super) fn build_catalog_payload(
         "outfit" => {
             if id.starts_with("studio/") {
                 let (character, tags_prose) = studio_wardrobe_outfit(&library.db, id)?;
-                let mut parts = Vec::new();
+                let mut parts = vec![KREA_ANIME_LEAD.to_owned()];
                 let subject = studio_subject_prose(&character);
                 if !subject.is_empty() {
                     parts.push(subject.to_owned());
                 }
                 if !tags_prose.is_empty() {
-                    parts.push(format!("Wearing {tags_prose}"));
+                    parts.push(format!("She is dressed in {tags_prose}"));
                 }
-                parts.push("Clean anime illustration portrait, natural soft lighting".into());
+                parts.push("Framed in a graceful medium portrait bathed in luminous natural soft lighting and airy depth of field".into());
                 join_sentences(parts)
             } else {
                 let record = library.catalog.get("outfit", id)?;
                 let character_id = record.data["characterId"].as_str().unwrap_or("");
-                let mut parts = Vec::new();
+                let mut parts = vec![KREA_ANIME_LEAD.to_owned()];
                 let identity = character_prose(&library.catalog, character_id);
                 if !identity.is_empty() {
                     parts.push(identity);
@@ -239,7 +238,7 @@ pub(super) fn build_catalog_payload(
                 if !outfit_text.is_empty() {
                     parts.push(outfit_text);
                 }
-                parts.push("Clean anime illustration portrait, natural soft lighting".into());
+                parts.push("Framed in a graceful medium portrait bathed in luminous natural soft lighting and airy depth of field".into());
                 join_sentences(parts)
             }
         }
@@ -250,7 +249,7 @@ pub(super) fn build_catalog_payload(
                 desired_size = Some(raw);
             }
             let character = data["char"].as_str().unwrap_or("none");
-            let mut parts = Vec::new();
+            let mut parts = vec![KREA_ANIME_LEAD.to_owned()];
             let subject = studio_subject_prose(character);
             if !subject.is_empty() {
                 parts.push(subject.to_owned());
@@ -284,7 +283,7 @@ pub(super) fn build_catalog_payload(
             }
             let character_id = data["characterId"].as_str().unwrap_or("");
             let adult = data["adult"] == true;
-            let mut parts = Vec::new();
+            let mut parts = vec![KREA_ANIME_LEAD.to_owned()];
             let identity = character_prose(&library.catalog, character_id);
             if !identity.is_empty() {
                 parts.push(identity);
@@ -331,7 +330,7 @@ pub(super) fn build_catalog_payload(
                 .map(str::trim)
                 .filter(|s| !s.is_empty() && s.is_ascii())
             {
-                parts.push(format!("Camera framing: {camera}"));
+                parts.push(format!("Framed in {camera} with rich spatial depth"));
             }
             join_sentences(parts)
         }

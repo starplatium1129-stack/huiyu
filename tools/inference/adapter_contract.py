@@ -267,16 +267,20 @@ def validate(job):
     if job.get("upscaleModelPath") is not None:
         raise AdapterError("UNSUPPORTED_OPTION", "Upscaler weights require a pixel-upscale operation")
     loras = job.get("loras", [])
-    if not isinstance(loras, list) or len(loras) > 1 or (loras and spec["family"] != "krea2"):
-        raise AdapterError("UNSUPPORTED_OPTION", "Only one Krea style LoRA is supported")
+    if not isinstance(loras, list) or len(loras) > 2 or (loras and spec["family"] != "krea2"):
+        raise AdapterError("UNSUPPORTED_OPTION", "Only Krea supports style LoRAs (up to two)")
+    style_files = []
     for row in loras:
-        if (not isinstance(row, dict) or set(row) != {"path", "strength"}
-                or type(row["strength"]) not in (int, float) or row["strength"] != 1
-                or not isinstance(row["path"], str) or not Path(row["path"]).is_absolute()
-                or Path(row["path"]).suffix != ".safetensors"):
-            raise AdapterError("UNSUPPORTED_OPTION", "Expected a host-selected Krea style safetensors file at strength 1")
+        if (not isinstance(row, dict) or set(row) - {"path", "strength"}
+                or not isinstance(row.get("path"), str) or not Path(row["path"]).is_absolute()
+                or Path(row["path"]).suffix.lower() != ".safetensors"):
+            raise AdapterError("UNSUPPORTED_OPTION", "Expected a host-selected Krea style safetensors file")
+        number(row, "strength", 1.0, -2, 2)
         path = Path(row["path"])
         safe_file(path.parent.resolve(), path)
+        if any(path.samefile(previous) for previous in style_files):
+            raise AdapterError("INVALID_PARAMETER", "The same Krea style file was selected twice")
+        style_files.append(path)
     if not isinstance(data.get("prompt"), str) or not data["prompt"].strip() or len(data["prompt"]) > 12000:
         raise AdapterError("INVALID_PARAMETER", "prompt must be nonempty and at most 12000 characters")
     negative = data.get("negativePrompt", "")
@@ -316,7 +320,7 @@ def validate(job):
             raise AdapterError("INVALID_PARAMETER", f"{key} must be divisible by {spec['alignment']}")
     default_steps = 2 if data.get("h3Decoder") == "dwd" else sampling_defaults["steps"]
     result["steps"] = number(data, "steps", default_steps, spec.get("minSteps", 1), 100, True)
-    result["cfg"] = number(data, "cfg", sampling_defaults["cfg"], 0, 20)
+    result["cfg"] = number(data, "cfg", sampling_defaults["cfg"], 1 if spec.get("cfgConvention") == "standard" else 0, 20)
     result["seed"] = number(data, "seed", 0, 0, 2147483647, True)
     if spec["distilled"] and (result["steps"] not in spec.get("stepOptions", (spec["steps"],)) or result["cfg"] != spec["cfg"]):
         raise AdapterError("INVALID_PARAMETER", "Turbo requires its declared step count and guidance")

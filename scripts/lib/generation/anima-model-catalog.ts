@@ -13,6 +13,7 @@ interface ModelDefinition {
   teaCacheThresh?: number;
   sizes: string[];
   noLora?: boolean;
+  fixedSampling?: boolean;
   lora?: boolean;
   rebalance?: { preset: string; multiplier: number; normalizeTaps: boolean };
 }
@@ -48,7 +49,7 @@ let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
   // 官方推荐 Euler/normal、30 步、CFG 4.0-5.0；缓存采用保守 Euler 起点。
   // 注意：1.5/1.6 为美学强化模型，会影响 artist tag 表现；负面官方建议含 shiny skin。
   'anima-miaomiao-v1.6': { file:'miaomiaoHarem_anima16.safetensors', label:'MiaoMiao Harem Anima v1.6', family:'anima', profileId:'anima_miaomiao_v16', ...generationContract.MIAOMIAO_V16_DEFAULTS, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
-  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024'], noLora:true, rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
+  'krea2-turbo-fp8': { file:'krea2_turbo_fp8_scaled.safetensors', label:'Krea 2 Turbo', family:'krea2', profileId:'krea2_turbo_fp8', steps:generationContract.KREA_DEFAULTS.steps, cfg:generationContract.KREA_DEFAULTS.cfg, sampler:generationContract.KREA_DEFAULTS.sampler, scheduler:generationContract.KREA_DEFAULTS.scheduler, sizes:['1024x1024','1024x1536','1536x1024','1536x864'], fixedSampling:true, noLora:true, rebalance:{ preset:'standard', multiplier:1.1, normalizeTaps:false } }
 });
 
 let LORAS: Readonly<Record<string, LoraDefinition>> = Object.freeze({

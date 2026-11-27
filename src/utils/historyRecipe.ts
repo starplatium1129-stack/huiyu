@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { ArtworkRecord } from '@/types/artwork'
 import { parseOutfitOverride, parseReferenceInput, readPromptCastSnapshot } from './promptBuilderPersistence'
 import { normalizeDirectorSources } from './promptDirector'
@@ -53,7 +54,8 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     outfitId: text('outfitId'), blueprintId: nullableText('blueprintId'), noLora: boolean('noLora'),
     outfitExplicit: boolean('outfitExplicit'),
     outfitOverride: record.outfitOverride === undefined ? undefined : parseOutfitOverride(record.outfitOverride),
-    model: text('model'), checkpoint: text('checkpoint'), styleLoraId: nullableText('styleLoraId'),
+    model: text('model'), checkpoint: text('checkpoint'), ...('styleLoraId' in record || 'styleLoras' in record ? kreaStyleSnapshot(record) : {}),
+    kreaStyleRecipeId: text('kreaStyleRecipeId'),
     loraId: text('loraId'), loraStrength: number('loraStrength'),
     size: text('size'), seed: number('seed'), steps: number('steps'), cfg: number('cfg'),
     sampler: text('sampler'), scheduler: text('scheduler'), negative: text('negative'),

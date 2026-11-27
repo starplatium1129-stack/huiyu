@@ -1,3 +1,4 @@
+import { kreaStylesFromState, kreaStyleState } from '@/utils/kreaStyleSelection'
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { ref } from 'vue'
 import { apiClient } from '@/api/client'
@@ -79,13 +80,15 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
     signal.throwIfAborted()
     if (!pb.loraMeta.some(meta => meta.id === state.loraId || meta.name === state.loraId)) throw new Error('角色 LoRA 的提示词资料尚未准备好，请先在绘图页重新读取模型资料')
   }
-  if (args.noArtist) state.styleLoraId = ''
-  if (state.styleLoraId && !state.styleLoras.some(style => style.id === state.styleLoraId && style.available !== false)) throw new Error('工作台选择的风格 LoRA 尚未准备好，请先在绘图页重新选择')
+  if (args.noArtist) Object.assign(state, kreaStyleState([]), { kreaStyleRecipeId: '' })
+  for (const row of kreaStylesFromState(state)) {
+    if (!state.styleLoras.some(style => style.id === row.id && style.available !== false)) throw new Error(`风格 LoRA ${row.id} 尚未准备好，请在绘图页重新选择`)
+  }
   const inferred = options.referenceImage ? (report?.('正在反推参考图片的服装、姿势与背景…'), await interrogateImage(options.referenceImage, signal)) : undefined
   signal.throwIfAborted()
   const draft = companionPromptDraft(pb, args, state, inferred, report)
   const engine = ref(family), modelId = ref(state.modelId), loraId = ref(state.loraId)
-  const assembly = useUnifiedPromptAssembly(draft, ref(''), engine, modelId, loraId)
+  const assembly = useUnifiedPromptAssembly(draft, ref(''), engine, modelId, loraId, ref(state.kreaStyleRecipeId))
   const request = buildAnimaRequest({ subject: draft.subject, char: draft.char, state, profile: assembly.modelProfile.value,
     prompt: assembly.positivePrompt.value, negative: assembly.negativePrompt.value })
   if (!request.prompt.trim()) throw new Error('没有可生成的画面描述，请补充描述后再试')
@@ -93,7 +96,7 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
     const blocked = nativeAnimaRequestBlocker(state.models, request)
     if (blocked) throw new Error(blocked)
   }
-  const context = { ...captureResultContext(draft), source: 'companion-chat' }
+  const context = { ...captureResultContext(draft, family === 'krea2' ? state.kreaStyleRecipeId : undefined), source: 'companion-chat' }
   return { family, request, context }
 }
 

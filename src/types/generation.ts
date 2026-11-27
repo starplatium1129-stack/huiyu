@@ -1,4 +1,6 @@
 import type { AnimaSketchControl, AnimaPromptRegion } from './animaComposition'
+export interface KreaStyleLoraSelection { id: string; strength: number }
+
 export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 
 export interface AnimaJobMetadata {
@@ -13,6 +15,8 @@ export interface AnimaJobMetadata {
   loraStrength: number | null
   loras?: Array<{ id: string; strength: number }>
   styleLoraId?: string | null
+  styleLoraStrength?: number
+  styleLoras?: KreaStyleLoraSelection[]
   width: number
   height: number
   steps: number

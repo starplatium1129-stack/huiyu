@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import type { AnimaJobMetadata, AnimaPublicJob } from '@/types/anima'
 import type { AnimaRequest } from './animaSessionContract'
 
@@ -15,7 +16,7 @@ export function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, fami
         modelId: request.modelId,
         loraId: request.loraId,
         loraStrength: request.loraStrength,
-        styleLoraId: request.styleLoraId ?? null,
+        ...kreaStyleSnapshot(request),
         width: request.width,
         height: request.height,
         steps: request.steps,

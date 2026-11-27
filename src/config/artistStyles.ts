@@ -182,83 +182,83 @@ export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleE
 }
 
 /**
- * Krea2 自然语言风格描述表：Danbooru 画师 tag 对 Krea2 无效，
- * 这里把画师风格转成 Krea2 能理解的英文散文风格描述。
- * 未收录的画师会退回 `in the style of {name}`。
+ * Krea 2 自然语言光学/色彩/笔触风格描述表：
+ * Krea 2（Qwen3-VL-4B 编码器）不直接识别 Danbooru 画师名，但对具体的
+ * 色彩色相、光学折射、笔触媒介、线稿密度和空间空气感高度敏感。
  */
 const KREA_ARTIST_PROSE: Record<string, string> = {
-  blue_archive_style: 'anime illustration in the style of Blue Archive',
-  yoneyama_mai: 'cinematic anime illustration with flowing dynamic lines, expressive mood lighting, and a film-like color palette',
-  rella: 'ethereal anime illustration with dreamy night glow, luminous colors, and cinematic lighting',
-  swav: 'high-impact fantasy poster art with magical lighting and strong spatial depth',
-  hidulume: 'cinematic anime illustration with dynamic eye-tracking visual guidance, wide atmospheric perspective, and luminous translucent airiness',
-  kantoku: 'clear and soft Japanese anime style with gentle sunlight, clean lines, and cute girls',
-  momoco_haru: 'light novel illustration with glossy watery eyes, bright fair skin, and lively youthful charm',
-  ponkan8: 'clear watercolor cel style with bright youthful spring atmosphere',
-  shirotaka: 'delicate fantasy adventure illustration with soft watery highlights and refined detail',
-  abe_tsukasa: 'classical cinematic fantasy illustration with dignified composition and quiet atmosphere',
-  fujiwara_cocoa: 'gothic cool moe style with clean elegant lines and a touch of mystery',
-  kazutake_hazano: 'warm healing illustration with gentle holy soft lines and comforting atmosphere',
-  azuuru: 'ethereal watercolor style with translucent hair and a wandering traveler mood',
-  'hiten_(hitenkei)': 'soft light Japanese illustration with refined features and clear healing air',
-  tiv: 'light novel cover style with delicate ambient light and flowing hair',
-  anmi: 'light macaron pastel watercolor style with graceful elegant figures',
-  tsunako: 'bright cute anime girl style with vivid colors and energetic charm',
-  morikura_en: 'bright commercial character art with natural everyday light and energetic mood',
-  paryi: 'popular beautiful girl illustration with silky hair and bright clear eyes',
-  muririn: 'Yuzusoft-style bright cel shading with rounded faces and clear transparent skin',
-  kobuichi: 'Yuzusoft-style crisp cel art with clean outlines and vivid colors',
-  nekotomi_chao: 'Doga Kobo-style lively delicate cel shading with expressive fine lines',
-  atdan: 'pure adult-oriented anime style with delicate skin and shy expressions',
-  jazz_jack: 'refreshing energetic anime style with clean lines and lively girls',
-  hisasi: 'classic adult-oriented soft coloring with sweet shy atmosphere',
-  suimya: 'soft erotic atmosphere with moist glossy highlights and lazy intimate mood',
-  mignon: 'anime character illustration with smooth, luminous skin shading, soft highlights, and delicate linework',
-  rucarachi: 'delicate game character fan art with fine linework, soft harmonious coloring, and charming bright-eyed girls',
-  'lam_(ramdayo)': 'highly saturated neon trendy illustration with bold eye makeup and graphic composition',
-  mika_pikazo: 'vivid pop art anime style with bold geometric color blocking and energetic vibes',
-  bunbun: 'dynamic game key visual style with clear costume design and action pose',
-  fujimoto_tatsuki: 'raw cinematic manga style with rough textures and intense emotional tension',
-  takeuchi_takashi: 'TYPE-MOON style dignified anime illustration with sharp determined eyes and iconic servant designs',
-  shirabi: 'bold dramatic anime illustration with strong outlines and theatrical lighting',
-  'ask_(askzy)': 'cool noble anime illustration with silky smooth coloring and restrained elegance',
-  hxxg: 'dynamic wide-angle perspective with colorful special effects and deep spatial composition',
-  nardack: 'jewel-toned fantasy illustration with luxurious costumes and sparkling details',
-  fuzichoco: 'ornate Japanese fantasy style with layered watercolor and decorative details',
-  lack: 'rich fantasy thick painting with mature heavy colors and epic atmosphere',
-  'so-bin': 'dark gothic oil painting style with heavy fabrics and solemn epic mood',
-  kousaki_rui: 'refined elegant FGO-style illustration with graceful coloring and majestic atmosphere',
-  xinzoruo: 'seductive dark anime style with deep chiaroscuro and dangerous atmosphere',
-  gweda: 'delicate Korean-style anime illustration with soft thick-paint shading, glossy glass-like eyes, and refined beautiful girls',
-  eufoniuz: 'soft adult-oriented anime fan art with cute rounded girls, smooth skin shading, and intimate sweet atmosphere',
-  'solar_(happymonk)': 'glossy adult-oriented game character fan art with bright skin, seductive poses, and vibrant colors',
-  alllisso: 'polished anime game character fan art with clean lineart, vibrant colors, and appealing soft shading',
-  mesilmen: 'soft adult-oriented anime game fan art with smooth skin shading, expressive eyes, and intimate sweet atmosphere',
-  betanonbeet: 'anime character illustration in the style of anon (betanonbeet)',
-  xiayehongming: 'Chinese illustration with bold color-block rendering without outlines, strong light-dark contrast, and classical oriental elegance',
-  huanxiang_heitu: 'ornate Chinese fantasy illustration with divine-demonic motifs, intricate decorative details, and luminous elegant figures',
-  liduke: 'soft delicate thick-paint illustration with gentle light diffusion, warm skin tones, and serene feminine charm',
-  alchemaniac: 'cool melancholic illustration with deep sea atmosphere, subdued palette, and refined elegant lines',
-  'namie-kun': 'delicate character illustration with soft colors and expressive eyes',
-  ryuuzaki_ichi: 'detailed fantasy character illustration with refined costumes and cool, restrained colors',
-  'sho_(sho_lwlw)': 'finely detailed character illustration with soft light, rich fabrics and atmospheric settings',
-  'banban_(vvvviiiiiia)': 'dramatic character illustration with refined fashion, expressive silhouettes and rich contrast',
-  norizc: 'luminous fantasy character illustration with delicate fabrics and atmospheric natural light',
-  'yuji_(fantasia)': 'colorful fantasy character illustration with delicate details and playful soft lighting',
-  'lm7_(op-center)': 'polished game character illustration with crisp silhouettes and atmospheric details',
-  cenm0: 'expressive game character illustration with lively color and detailed costume design',
-  chuzenji: 'refined game character illustration with delicate lines and evocative lighting',
-  skade: 'atmospheric game character illustration with elegant silhouettes and cool, delicate colors',
-  wenquangua: 'delicate game character illustration with expressive details and soft colors',
-  infukun: 'confident character illustration with strong silhouettes and clear costume structure',
-  m9nokuro: 'elegant game character illustration with restrained colors and detailed clothing',
-  starshadowmagician: 'delicate game character illustration with luminous colors and detailed clothing',
-  'five-fall': 'expressive game character illustration with bold silhouettes and detailed design',
-  asano_kyoji: 'dramatic WIT Studio anime style with bold dark line art, sharp expressive eyes, dynamic motion tension, and gritty cinematic atmosphere',
-  isayama_hajime: 'intense gritty manga illustration with raw emotional tension, deep shadowed eyes, and powerful resolute expression',
-  yokoyari_mengo: 'expressive anime manga style with luminous starry eyes, delicate emotional linework, and radiant idol highlights',
-  wei_at_w: 'sleek futuristic concept art with tactical techwear design, sharp clean lines, and atmospheric cool lighting',
-  yabuki_kentarou: 'clean delicate anime illustration with translucent skin, glossy expressive eyes, soft blush, and refined soft-cel coloring in classic romantic comedy manga style',
+  blue_archive_style: 'crisp modern Japanese anime game illustration with radiant sky-blue and sunlit white color harmony, clean airy linework, bright translucent shading, and refreshing youthful clarity',
+  yoneyama_mai: 'high-craft theatrical Japanese anime illustration with sweeping kinetic linework, prismatic chromatic aberration at light edges, translucent backlit hair strands, expressive teal-coral-and-amber color contrast, and cinematic shallow depth of field',
+  rella: 'museum-grade Japanese anime illustration with luminous pearlescent coloring, crystalline light refraction, ultra-fine delicate linework, translucent backlit hair strands, iridescent turquoise-gold-and-sapphire shadow harmony, and ethereal poetic grandeur',
+  swav: 'grand cinematic fantasy anime key illustration with sweeping architectural perspective, dramatic volumetric light shafts, glowing arcane rim lighting, painterly brushwork, and monumental atmospheric depth',
+  hidulume: 'expansive theatrical Japanese anime illustration with dynamic wide-angle visual flow, luminous translucent airiness, sparkling floating light particles, crisp backlit silhouettes, and radiant sky-to-shadow atmospheric perspective',
+  kantoku: 'luminous modern Japanese anime illustration with crisp fine linework, translucent dappled sunlight filtering across silky hair and fluttering fabrics, vibrant clear color harmony, and refreshing airy atmosphere',
+  momoco_haru: 'delicate modern light novel anime illustration with jewel-like glistening eyes, translucent fair skin with soft warm subsurface glow, fine feather-light hair strands, and dreamy pastel-lit clarity',
+  ponkan8: 'airy Japanese light novel watercolor-anime illustration with translucent layered color washes, fine crisp ink linework, warm sunlit spring highlights, and expressive emotional delicacy',
+  shirotaka: 'refined fantasy light novel anime illustration with translucent watery specular highlights, delicate ornate fabric folds, airy atmospheric depth, and poetic sunlit color harmony',
+  abe_tsukasa: 'classical theatrical fantasy anime illustration with restrained dignified linework, soft natural painterly light, muted pastoral-and-twilight tones, and serene contemplative spatial depth',
+  fujiwara_cocoa: 'elegant gothic Japanese anime illustration with crisp delicate linework, deep velvet-indigo and ivory color contrast, translucent crystalline highlights, and refined melancholic grace',
+  kazutake_hazano: 'warm healing Japanese anime illustration with gossamer soft linework, radiant golden ambient light diffusion, translucent pearlescent tones, and gentle poetic serenity',
+  azuuru: 'ethereal Japanese watercolor-anime illustration with luminous translucent hair strands, soft prismatic light scatter, airy turquoise-and-amber washes, and expansive wandering atmosphere',
+  'hiten_(hitenkei)': 'luminous high-craft Japanese anime illustration with ultra-fine delicate linework, warm translucent sunlight glow across hair and skin, sparkling bokeh particles, and tender cinematic clarity',
+  tiv: 'graceful modern light novel cover anime illustration with flowing windblown hair, luminous translucent ambient light, delicate pearlescent highlights, and refined pastel-jewel color harmony',
+  anmi: 'luminous pastel watercolor-anime illustration with delicate balletic linework, translucent macaron-toned glazing, soft sunlit sparkle on fabrics, and airy graceful elegance',
+  tsunako: 'vibrant modern Japanese anime key illustration with sparkling multi-layered jewel eyes, crisp fine linework, luminous candy-and-celestial gradients, and energetic radiant highlights',
+  morikura_en: 'fresh modern Japanese anime illustration with clean expressive linework, bright translucent natural daylight, soft warm skin bounce light, and crisp contemporary color clarity',
+  paryi: 'high-craft modern anime character illustration with lustrous silky hair strands, crystalline bright eyes, delicate crisp linework, and translucent luminous color shading',
+  muririn: 'refined modern Japanese anime illustration with crisp translucent shading, luminous pastel-warm skin tones, sparkling clear eyes, and delicate clean linework',
+  kobuichi: 'vibrant modern Japanese anime illustration with crisp expressive linework, luminous saturated color accents, clean translucent highlights, and polished character clarity',
+  nekotomi_chao: 'lively theatrical Japanese anime illustration with delicate fine linework, expressive translucent light-and-shadow modeling, soft ambient rim glow, and airy emotional warmth',
+  atdan: 'exquisite modern Japanese anime illustration with translucent luminous skin rendering, delicate fine linework, glossy subtle light reflections on fabrics and water, and intimate soft ambient glow',
+  jazz_jack: 'crisp vibrant Japanese anime illustration with confident clean linework, luminous sunlit color contrast, expressive dynamic framing, and refreshing translucent highlights',
+  hisasi: 'soft luminous modern Japanese anime illustration with smooth translucent skin shading, warm ambient blush tones, fine clean linework, and tender intimate light',
+  suimya: 'intimate luminous Japanese anime illustration with moist pearlescent skin highlights, translucent warm indoor light, delicate silky hair rendering, and dreamy atmospheric softness',
+  mignon: 'high-craft Japanese anime illustration with extraordinarily translucent luminous skin shading, delicate fine linework, soft subsurface warmth, glistening highlights, and intimate clarity',
+  rucarachi: 'delicate modern Japanese anime illustration with fine crisp linework, soft harmonious luminous coloring, expressive sparkling eyes, and refined atmospheric polish',
+  'lam_(ramdayo)': 'striking contemporary neon-pop anime illustration with intense chromatic contrast, jewel-sharp luminous eye details, bold directional rim light, and sleek graphic visual impact',
+  mika_pikazo: 'vivid avant-garde pop-art Japanese anime illustration with dazzling electric color contrast, luminous prismatic highlights, bold graphic framing, and kinetic modern energy',
+  bunbun: 'dynamic modern Japanese anime key illustration with sleek precise linework, dramatic directional backlighting, rich costume material sheen, and cinematic spatial momentum',
+  fujimoto_tatsuki: 'raw cinematic Japanese anime-manga illustration with expressive textured ink linework, stark dramatic lighting contrast, moody muted film colors, and visceral emotional tension',
+  takeuchi_takashi: 'dignified theatrical Japanese anime key visual with sharp noble eye expression, crisp refined linework, dramatic backlit aura, and stately ceremonial color contrast',
+  shirabi: 'dramatic modern Japanese anime illustration with crisp decisive linework, theatrical directional light-and-shadow modeling, rich saturated accents, and atmospheric depth',
+  'ask_(askzy)': 'refined noble Japanese anime illustration with ultra-smooth silky painterly shading, cool pearl-and-crimson color harmony, delicate translucent light falloff, and restrained poetic elegance',
+  hxxg: 'breathtaking wide-angle theatrical anime illustration with sweeping dramatic perspective, radiant chromatic light effects, layered luminous particles, and colossal spatial depth',
+  nardack: 'opulent jewel-toned fantasy anime illustration with intricate gilded embroidery, sparkling crystalline light scatter, delicate linework, and rich royal color harmony',
+  fuzichoco: 'ornate luminous Japanese fantasy anime illustration with richly layered translucent watercolor-and-ink detail, kaleidoscope-like floral and architectural motifs, and radiant atmospheric glow',
+  lack: 'richly painted epic fantasy anime illustration with sculpted painterly brushwork, dramatic chiaroscuro fire-and-twilight lighting, heavy material textures, and grand heroic weight',
+  'so-bin': 'dark gothic painterly anime illustration with expressive oil-and-ink brushwork, luminous golden-crimson highlights emerging from deep obsidian shadows, and solemn mythic grandeur',
+  kousaki_rui: 'majestic refined Japanese fantasy anime illustration with graceful delicate linework, luminous translucent silk and metallic sheen, and stately atmospheric lighting',
+  xinzoruo: 'seductive dark gothic anime illustration with deep dramatic chiaroscuro, luminous crimson-and-moonlit skin highlights, glossy dark textures, and mysterious nocturnal tension',
+  gweda: 'high-craft luminous East Asian anime illustration with silky painterly translucent shading, crystalline glass-like eyes, soft pearlescent rim light, and refined atmospheric elegance',
+  eufoniuz: 'soft luminous modern Japanese anime illustration with smooth translucent skin shading, warm golden ambient glow, delicate fine linework, and tender intimate atmosphere',
+  'solar_(happymonk)': 'vibrant glossy modern Japanese anime illustration with radiant luminous skin highlights, rich saturated colors, crisp fine linework, and dramatic warm rim lighting',
+  alllisso: 'refined modern Japanese anime illustration with crisp fine linework, luminous translucent shading, harmonious vibrant colors, and clean atmospheric depth',
+  mesilmen: 'tender luminous modern Japanese anime illustration with smooth translucent skin rendering, expressive sparkling eyes, soft golden rim light, and intimate atmospheric warmth',
+  betanonbeet: 'clean modern Japanese anime illustration with refined fine linework, luminous translucent shading, harmonious color tones, and airy atmospheric clarity',
+  xiayehongming: 'painterly Eastern fantasy anime illustration with sculpted color-block light planes, bold dramatic warm-cool contrast, flowing ink-like silhouettes, and classical poetic elegance',
+  huanxiang_heitu: 'ornate celestial Eastern fantasy anime illustration with intricate gilded motifs, luminous jade-and-gold light dispersion, translucent flowing silks, and transcendent mythic atmosphere',
+  liduke: 'silky high-craft painterly anime illustration with gentle luminous light diffusion, refined muted-warm and cool-slate color harmony, subtle fabric textures, and serene poise',
+  alchemaniac: 'ethereal cool-toned anime illustration with deep-sea cerulean and pearl-silver palette, delicate flowing ink lines, translucent watery light caustics, and poetic melancholy',
+  'namie-kun': 'delicate luminous anime illustration with dreamy pastel-jewel coloring, sparkling translucent eyes, soft feather-light hair shading, and airy poetic charm',
+  ryuuzaki_ichi: 'refined dark-fantasy anime illustration with cool slate-and-silver color restraint, intricate tailored costume detail, crisp fine linework, and moody atmospheric depth',
+  'sho_(sho_lwlw)': 'finely crafted atmospheric anime illustration with soft directional light, richly textured layered fabrics, delicate fine linework, and serene spatial depth',
+  'banban_(vvvviiiiiia)': 'dramatic high-fashion anime illustration with bold crisp silhouettes, striking warm-and-cool directional lighting, refined textile sheen, and editorial cinematic tension',
+  norizc: 'luminous fantasy anime illustration with airy translucent fabrics, sparkling natural light refraction, delicate fine linework, and expansive sunlit atmosphere',
+  'yuji_(fantasia)': 'vibrant luminous fantasy anime illustration with jewel-bright transparent colors, delicate ornate details, playful sunlit bokeh, and crisp airy clarity',
+  'lm7_(op-center)': 'stylized high-craft anime concept illustration with razor-sharp silhouettes, subtle weathered textures, cool atmospheric lighting, and striking graphic poise',
+  cenm0: 'expressive modern anime character illustration with crisp dynamic linework, lively luminous color accents, detailed layered attire, and fresh directional light',
+  chuzenji: 'refined atmospheric anime illustration with delicate razor-fine linework, cool poetic twilight lighting, subtle fabric luster, and quiet cinematic elegance',
+  skade: 'aristocratic atmospheric anime illustration with elongated graceful silhouettes, cool silver-blue and muted crimson tones, soft luminous mist, and refined painterly depth',
+  wenquangua: 'delicate luminous anime illustration with soft pearlescent color transitions, expressive fine linework, airy light diffusion, and refined character grace',
+  infukun: 'bold architectural anime concept illustration with crisp commanding silhouettes, dramatic directional rim lighting, sleek dark-and-accent color contrast, and sharp presence',
+  m9nokuro: 'elegant minimalist-toned anime illustration with restrained monochrome-and-jewel accents, crisp fine linework, soft overcast studio lighting, and refined texture detail',
+  starshadowmagician: 'radiant celestial anime illustration with sparkling iridescent light particles, luminous sapphire-and-gold color harmony, intricate flowing garments, and dreamy grandeur',
+  'five-fall': 'expressive modern anime illustration with striking graphic silhouettes, crisp confident linework, vivid directional light accents, and rich atmospheric polish',
+  asano_kyoji: 'dramatic theatrical anime film frame with expressive dark ink linework, sharp intense eye focus, kinetic motion energy, and gritty sunlit cinematic depth',
+  isayama_hajime: 'intense raw Japanese manga-anime illustration with textured expressive ink hatching, stark shadowed eyes, heavy dramatic light contrast, and gripping emotional weight',
+  yokoyari_mengo: 'dazzling modern Japanese anime illustration with luminous starry crystalline eyes, delicate glowing highlights, vibrant magenta-cyan chromatic light, and glossy theatrical polish',
+  wei_at_w: 'sleek futuristic anime concept illustration with sharp architectural linework, cool cyan-and-steel atmospheric lighting, crisp tactical fabric textures, and cinematic depth',
+  yabuki_kentarou: 'exquisite luminous Japanese anime illustration with ultra-smooth translucent skin shading, glistening expressive eyes, delicate fine linework, and warm airy clarity',
 }
 
 export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngine = 'sd'): string {
@@ -267,11 +267,16 @@ export function artistStyleProse(ids: readonly string[], engine: ArtistStyleEngi
   const parsedList = normalized.map(parseArtistStyleItem).filter((item): item is ParsedArtistStyle => Boolean(item))
   if (!parsedList.length) return ''
   if (engine === 'krea2') {
-    return parsedList.map(item => {
-      const base = KREA_ARTIST_PROSE[item.id] || `in the style of ${artistDisplayName(item.id)}`
-      if (item.weight >= 1.1) return `strongly featuring ${base}`
-      if (item.weight <= 0.8) return `with subtle hints of ${base}`
-      return base
+    return parsedList.map((item, index) => {
+      const base = KREA_ARTIST_PROSE[item.id] || `high-craft Japanese anime illustration inspired by ${artistDisplayName(item.id)}`
+      if (index === 0) {
+        if (item.weight >= 1.1) return `${base}, rendered with heightened stylistic intensity`
+        if (item.weight <= 0.8) return `${base}, applied with a restrained subtle touch`
+        return base
+      }
+      if (item.weight >= 1.1) return `strongly blended with ${base}`
+      if (item.weight <= 0.8) return `accented with subtle hints of ${base}`
+      return `blended with ${base}`
     }).join(', ')
   }
   const names = parsedList.map(item => {

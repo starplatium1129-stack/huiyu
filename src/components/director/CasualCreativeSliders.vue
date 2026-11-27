@@ -46,7 +46,6 @@
 import { computed, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSlider from '@/components/ui/StudioSlider.vue'
-import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import type { DrawEngine } from '@/types/promptHistory'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
 import type { AnimaGenerationState } from '@/types/anima'
@@ -68,9 +67,8 @@ const uid = useId()
 const cfgSliderId = `${uid}-casual-cfg`
 const stepsSliderId = `${uid}-casual-steps`
 const selectedModel = computed(() => props.animaState.models.find(model => model.id === props.animaState.modelId))
-const capabilities = computed(() => resolveDrawCapabilities(props.animaState.family, null, selectedModel.value?.capabilities))
-const fixedSampling = computed(() => props.drawEngine !== 'sd' && capabilities.value.promptFormat === 'natural-language')
-const cfgMin = computed(() => props.drawEngine === 'sd' ? 1 : 0.5)
+const fixedSampling = computed(() => props.drawEngine !== 'sd' && selectedModel.value?.capabilities?.fixedSampling === true)
+const cfgMin = computed(() => props.drawEngine === 'sd' ? 1 : props.drawEngine === 'krea2' ? 0 : 0.5)
 const cfgMax = computed(() => props.drawEngine === 'sd' ? 20 : 10)
 const stepsMax = computed(() => props.drawEngine === 'sd' ? 150 : 60)
 

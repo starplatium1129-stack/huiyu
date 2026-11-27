@@ -1,3 +1,4 @@
+import { kreaStyleSnapshot } from '@/utils/kreaStyleSelection'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { getRuntimeTaskByKey, recoverRuntimeTaskRequest, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
@@ -27,7 +28,7 @@ export function batchHistoryFromMetadata(plan: Exclude<PreparedBatchImage, { eng
     profile: metadata.profileId, model: metadata.modelId,
     lora: metadata.loraId, loraId: metadata.loraId, loraStrength: metadata.loraStrength,
     loras: metadata.loras?.map(lora => ({ ...lora })), noLora: !metadata.loraId,
-    styleLoraId: metadata.styleLoraId ?? null, preview: metadata.preview === true,
+    ...kreaStyleSnapshot(metadata), preview: metadata.preview === true,
     cfg: metadata.cfg, steps: metadata.steps, sampler: metadata.sampler, scheduler: metadata.scheduler,
     size: `${metadata.width}x${metadata.height}`,
     hiresFix: metadata.hiresFix ?? Boolean(plan.request.hiresFix),

@@ -286,7 +286,7 @@ impl ControlService {
                 let (required, required_with_checkpoint) = if installed { (0, 0) } else if let Some(import) = local_import {
                     (import.required_bytes, import.required_bytes)
                 } else { model_space(&root, model) };
-                let download_bytes = if installed { 0 } else {
+                let download_bytes = if installed || krea_int8(model) { 0 } else {
                     local_import.map_or_else(|| model.files.iter().map(|file| file.bytes).sum::<u64>(), |import| import.download_bytes(model))
                 };
                 let label = if source == Some("local") || local_import.is_some() {
@@ -404,6 +404,10 @@ pub(super) fn retained(root: &Path, files: &[Artifact]) -> u64 {
         .sum()
 }
 pub(super) fn model_space(root: &Path, model: &ModelBundle) -> (u64, u64) {
+    if krea_int8(model) {
+        let staging = 64 * 1024 * 1024;
+        return (model.required_bytes + staging, staging);
+    }
     let target = root.join("models").join(&model.id);
     if let Some(checkpoint) = checkpoint_models::conversion_checkpoint(model) {
         let inputs = anima_models::input_root(&target, model);

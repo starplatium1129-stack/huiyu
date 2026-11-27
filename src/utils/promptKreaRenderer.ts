@@ -52,27 +52,92 @@ function naturalList(values: string[]): string {
   return `${unique.slice(0, -1).join(', ')}, and ${unique[unique.length - 1]}`
 }
 
+function withIndefiniteArticle(phrase: string): string {
+  const trimmed = phrase.trim()
+  if (!trimmed) return ''
+  if (/^(?:a|an|the|in|strongly|with|rendered|captured|set)\b/i.test(trimmed)) {
+    return trimmed[0].toUpperCase() + trimmed.slice(1)
+  }
+  const article = /^(?:a|e(?!u)|i|o|u(?!(?:ni|se|tili)))/i.test(trimmed) ? 'An' : 'A'
+  return `${article} ${trimmed}`
+}
+
 function inferredKreaStyle(plan: PromptPlan): string {
   const explicit = plan.style.map(sentence).find(Boolean)
-  if (explicit) return plan.artistProse
-    ? sentence(`${explicit.replace(/[.!?]+$/, '')}, ${plan.artistProse}`)
-    : explicit
+  const artist = clean(plan.artistProse)
+  if (artist) return [sentence(withIndefiniteArticle(artist)), explicit].filter(Boolean).join(' ')
+  if (explicit) return explicit
   const scene = plan.scene
-  if (!scene && !plan.sceneProse) return sentence(plan.artistProse)
+  if (!scene && !plan.sceneProse && !plan.subjectProse && !plan.identity.length && !plan.visualDescription) return ''
   const tags = new Set((scene?.tags || []).map(normalizeProseKey))
   const category = String(scene?.category || '').toLowerCase()
   const usage = (scene?.usage || []).join(' ').toLowerCase()
   const landscape = tags.has('landscape') || /官方cg|展示图/.test(`${category} ${usage}`)
   const mature = String(scene?.rating || '').toUpperCase() === 'R18'
-  // 2026-08-30 Krea2 默认偏厚涂/半写实质感，'polished' 词又引导光泽——
-  // 加 cel shading/flat colors/crisp line art 二次元限定，把模型拉回赛璐璐。
-  // 实验 D 句（cel+flat+line art）效果明显优于原句"polished anime wallpaper illustration"。
   const base = mature
-    ? 'A polished 2D mature anime visual novel wallpaper with clean cel shading, flat colors and crisp line art'
+    ? 'A high-craft mature Japanese anime illustration with delicate fine linework, translucent luminous skin shading, soft subsurface glow, and intimate atmospheric depth'
     : landscape
-      ? 'A cinematic 2D anime wallpaper composed like a polished visual novel event CG with cel shading, flat colors and crisp line art'
-      : 'A polished 2D anime illustration with clean cel shading, flat colors and crisp line art'
-  return sentence(plan.artistProse ? `${base}, ${plan.artistProse}` : base)
+      ? 'A breathtaking theatrical Japanese anime illustration with delicate fine linework, translucent luminous shading, sweeping atmospheric depth, and cinematic lighting'
+      : 'An exquisite modern Japanese anime illustration with delicate fine linework, translucent luminous shading, rich chromatic depth, and natural atmospheric light'
+  return sentence(base)
+}
+
+function outfitSentence(outfitText: string, dual: boolean): string {
+  const trimmed = outfitText.trim()
+  if (!trimmed) return ''
+  if (/^no clothing$/i.test(trimmed)) {
+    return sentence(dual ? 'They are completely unclothed' : 'She is completely unclothed')
+  }
+  if (/^(?:she|they)\s+(?:wears?|is\s+wearing|are\s+wearing|is\s+dressed|are\s+dressed)\b/i.test(trimmed)) {
+    return sentence(trimmed)
+  }
+  if (/^(?:wearing|dressed\s+in)\b/i.test(trimmed)) {
+    return sentence(`${dual ? 'They are' : 'She is'} ${trimmed}`)
+  }
+  if (/^(?:her|their)\b/i.test(trimmed)) {
+    return sentence(`${dual ? 'They wear' : 'She wears'} ${trimmed}`)
+  }
+  return sentence(`${dual ? 'They are dressed in' : 'She is dressed in'} ${trimmed}`)
+}
+
+function portrayalSentences(actionText: string, moodText: string, visualDescription: string, dual: boolean): string[] {
+  const result: string[] = []
+  let actionClause = ''
+  if (actionText) {
+    if (/^(?:[a-z]+ing\b|with\b|wearing\b|completely\b|in\b|on\b|at\b)/i.test(actionText)) {
+      actionClause = `${dual ? 'They are' : 'She is'} ${actionText}`
+    } else {
+      actionClause = `The moment captures ${actionText}`
+    }
+  }
+  if (actionClause && moodText) {
+    result.push(sentence(`${actionClause}, ${dual ? 'their expressions' : 'her expression'} ${moodText}`))
+  } else if (actionClause) {
+    result.push(sentence(actionClause))
+  } else if (moodText) {
+    result.push(sentence(`${dual ? 'Their expressions are' : 'Her expression is'} ${moodText}`))
+  }
+  const visual = clean(visualDescription)
+  if (visual) result.push(sentence(visual))
+  return result
+}
+
+function atmosphereSentence(direction: string, atmosphere: string, palette: string): string {
+  const parts: string[] = []
+  if (direction) parts.push(`Framed in ${direction}`)
+  if (atmosphere) {
+    parts.push(direction ? `the scene is illuminated by ${atmosphere}` : `Illuminated by ${atmosphere}`)
+  }
+  if (palette) {
+    if (parts.length) {
+      parts[parts.length - 1] = `${parts[parts.length - 1]} with ${palette} color harmony`
+    } else {
+      parts.push(`Rendered with ${palette} color harmony`)
+    }
+  } else if (direction && !atmosphere) {
+    parts[0] = `${parts[0]} with rich atmospheric depth`
+  }
+  return parts.length ? sentence(parts.join(', ')) : ''
 }
 
 
@@ -242,71 +307,53 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   }
 
   const parts = [style]
-  if (artists.length) parts.push(sentence(`Use artistic influences from ${naturalList(artists)}`))
+  if (artists.length && !plan.artistProse) {
+    parts.push(sentence(`Styled with artistic influences from ${naturalList(artists)}`))
+  }
   const outfitText = naturalList(outfit)
   if (subject) parts.push(sentence(subject))
-  if (features.length) parts.push(sentence(`Distinctive features include ${naturalList(features)}`))
-  // Outfit prose may already be a complete sentence; do not attach it to "wearing".
-  if (outfitText) parts.push(sentence(/^her\b/i.test(outfitText) ? `She wears ${outfitText}` : `Clothing: ${outfitText}`))
+  if (features.length) parts.push(sentence(`Accented by ${naturalList(features)}`))
+  if (outfitText) parts.push(outfitSentence(outfitText, dual))
   const actionText = naturalList(action.map(proseClause))
   const moodText = naturalList(compactMood(mood))
-  const portrayal: string[] = []
-  if (actionText) portrayal.push(`Include ${actionText}`)
-  if (moodText) portrayal.push(dual ? `their expressions are ${moodText}` : `${actionText ? 'her' : 'Her'} expression is ${moodText}`)
-  if (plan.visualDescription) portrayal.push(clean(plan.visualDescription).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, ''))
-  if (portrayal.length) parts.push(sentence(portrayal.join(actionText && moodText ? ', while ' : ', ')))
+  parts.push(...portrayalSentences(actionText, moodText, plan.visualDescription, dual))
   // 精简蓝图将环境与镜头放在标签，关系放在 prose；两个通道都须消费。
   if (authoredProse) parts.push(sentence(authoredSceneCaption(plan, authoredProse, false)))
   const environmentText = naturalList(environment)
-  // 2026-08-30 调研 §七/§八：Krea 见「室内/场景」就爱画人，官方推荐空场景
-  // 在正句追加 "no characters, no people, no figures"（本地 Turbo 负面失效的
-  // 替代通道）。判定：散文里确实没有主体（无 subject 描述、环境句也不含
-  // 人物代词）时追加——热门角色恒有 subjectProse 不会误伤；纯背景/风景
-  // 场景（studio 背景图）自动兜底。
+  // 纯空景无主体时追加明确无人语义（本地 Krea 2 不走负向分支的替代通道）。
   const emptySceneGuard = !subject && !outfitText && Boolean(environmentText)
     && !/no characters|no people|no figures/i.test(environmentText)
     && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(`${environmentText} ${authoredProse}`)
   if (environmentText) {
+    const setting = /^with\s+/i.test(environmentText)
+      ? `The setting features ${environmentText.slice(5)}`
+      : `Set ${environmentText}`
     parts.push(sentence(
-      `The scene takes place ${environmentText}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
+      `${setting}${emptySceneGuard ? '; an uninhabited vista with no characters, no people, and no figures' : ''}`,
     ))
   }
-  // Authored blueprint/recipe prose also carries actions and spatial relations, so keep it.
-  // Its presence must not swallow manual background tags; make their narrower priority explicit.
   const authoredLower = authoredProse.toLowerCase()
   const overridingBackground = manualBackground.filter(bg => !authoredLower.includes(bg.toLowerCase()))
   if (authoredProse && overridingBackground.length) {
-    parts.push(sentence(`For the background, use ${naturalList(overridingBackground)} in preference to the earlier setting`))
+    parts.push(sentence(`The background opens onto ${naturalList(overridingBackground)}, replacing the earlier setting`))
   }
   const direction = naturalList([...camera, ...plan.composition.map(cameraPhrase).filter(Boolean)])
   const atmosphere = naturalList(lighting)
   const palette = naturalList(plan.palette.map(proseToken).filter(Boolean))
-  if (direction || atmosphere || palette) {
-    const clauses: string[] = []
-    if (direction) clauses.push(`The composition uses ${direction}`)
-    if (atmosphere) clauses.push(`the scene is lit by ${atmosphere}`)
-    if (palette) clauses.push(`the color palette uses ${palette}`)
-    parts.push(...clauses.map(sentence))
-  }
-  // 2026-08-30 调研 §四/§五.2：媒介词（medium）放散文末尾收尾——官方
-  // 「命名工作室收尾」让模型承诺特定完成度（polished X style/finish）。
-  // 此前 medium 被 sanitize 但从未织入渲染输出（审计发现），这里补上；
-  // lead 已含同一媒介短语时跳过，避免 "visual novel event CG" 重复两遍。
-  const medium = sanitizeKreaProse(plan.medium)
-  if (medium && !style.toLowerCase().includes(medium.toLowerCase())) {
-    parts.push(sentence(`polished ${medium} finish`))
-  }
+  const closing = atmosphereSentence(direction, atmosphere, palette)
+  if (closing) parts.push(closing)
   return parts.filter(Boolean).join(' ')
 }
 
 /** Free subjects retain all supplied people and relationships without assigning a default gender. */
 function buildFreeKreaDescription(plan: PromptPlan): string {
+  const paletteKeys = new Set(plan.palette.map(normalizeProseKey).filter(Boolean))
   const tokens = resolveCameraTags([...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments,
-    ...plan.emotion, ...plan.camera, ...plan.lighting, ...plan.palette, ...plan.composition, ...plan.manual], plan.manual, plan.camera)
+    ...plan.emotion, ...plan.camera, ...plan.lighting, ...plan.composition, ...plan.manual], plan.manual, plan.camera)
   const details: string[] = [], camera: string[] = [], lighting: string[] = [], subjects: string[] = [], artists: string[] = []
   for (const token of tokens) {
     const safe = sanitizeKreaProse(token), key = normalizeProseKey(safe)
-    if (!key) continue
+    if (!key || paletteKeys.has(key)) continue
     const count = /^(\d+)\+?(girls?|boys?|others?|people)$/.exec(safe.toLowerCase().replace(/\s+/g, ''))
     if (count) {
       const kind = /^girl/.test(count[2]) ? 'female character' : /^boy/.test(count[2]) ? 'male character' : 'person'
@@ -319,14 +366,18 @@ function buildFreeKreaDescription(plan: PromptPlan): string {
     else if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) lighting.push(lightPhrase(safe))
     else details.push(actionPhrase(safe))
   }
+  const artistLead = plan.artistProse ? sentence(withIndefiniteArticle(plan.artistProse)) : ''
+  const palette = naturalList(plan.palette.map(proseToken).filter(Boolean))
+  const closing = atmosphereSentence(naturalList(camera), naturalList(lighting), palette)
   return [
-    ...plan.style.map(sentence), sentence(plan.artistProse),
-    artists.length ? sentence(`Use artistic influences from ${naturalList(artists)}`) : '',
-    subjects.length ? sentence(`The image contains ${naturalList(subjects)}`) : '',
-    details.length ? sentence(`Include ${naturalList(details)}`) : '',
-    plan.sceneProse ? sentence(authoredSceneCaption(plan, plan.sceneProse, false)) : '', sentence(plan.visualDescription),
-    camera.length ? sentence(`The composition uses ${naturalList(camera)}`) : '',
-    lighting.length ? sentence(`The scene is lit by ${naturalList(lighting)}`) : '',
+    artistLead,
+    ...plan.style.map(sentence),
+    artists.length && !artistLead ? sentence(`Styled with artistic influences from ${naturalList(artists)}`) : '',
+    subjects.length ? sentence(`Featuring ${naturalList(subjects)}`) : '',
+    plan.sceneProse ? sentence(authoredSceneCaption(plan, plan.sceneProse, false)) : '',
+    sentence(plan.visualDescription),
+    details.length ? sentence(`Key visual details include ${naturalList(details)}`) : '',
+    closing,
   ].filter(Boolean).join(' ')
 }
 

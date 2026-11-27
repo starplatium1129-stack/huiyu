@@ -50,6 +50,10 @@ pub(super) struct SceneSelection {
     pub(super) lora_strength: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) style_lora_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) style_lora_strength: Option<f64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) style_loras: Option<Vec<krea_styles::Style>>,
     // Multi-character cast composition (1–5 studio, popular or original characters)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) cast: Option<Vec<cast::CastMemberInput>>,

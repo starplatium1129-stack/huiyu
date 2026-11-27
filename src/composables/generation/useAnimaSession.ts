@@ -1,3 +1,4 @@
+import { kreaStyleState } from '@/utils/kreaStyleSelection'
 import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
@@ -31,7 +32,7 @@ export type { AnimaRequest } from './animaSessionContract'
 
 const BUSY_PHASES = ['submitting', 'running', 'cancelling']
 const INITIAL_STATE: AnimaGenerationState = {
-  phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
+  phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], ...kreaStyleState([]), kreaStyleRecipeId: '',
   prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA', characterLoraEnabled: true,
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
@@ -54,7 +55,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     try { await saveDrawingSettings(state.value) }
     catch { options.flash('绘图参数尚未保存，桌宠暂时无法同步这次设置，请检查本机资料连接') }
   }
-  const editableKeys = ['family', 'modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'width', 'height',
+  const editableKeys = ['family', 'modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'styleLoraStrength', 'secondaryStyleLoraId', 'secondaryStyleLoraStrength', 'kreaStyleRecipeId', 'width', 'height',
     'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
@@ -98,7 +99,17 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   function patchState(patch: Partial<AnimaGenerationState>) {
     if (!reconcilingSettings && 'loraStrength' in patch) loraStrengthTouched = true
     if (patch.provider && patch.provider !== state.value.provider && !('autoHiresModel' in patch)) patch = { ...patch, autoHiresModel: undefined }
+    if (patch.family && patch.family !== state.value.family) patch = { ...kreaStyleState([]), kreaStyleRecipeId: '', ...patch }
+    if ('styleLoraId' in patch && (!patch.styleLoraId || patch.styleLoraId !== state.value.styleLoraId)) patch = { ...kreaStyleState([]), ...patch }
+    if ('secondaryStyleLoraId' in patch && patch.secondaryStyleLoraId !== state.value.secondaryStyleLoraId) patch = { secondaryStyleLoraStrength: 1, ...patch }
     state.value = { ...state.value, ...patch }
+  }
+
+  function catalogStyleSelection(options: AnimaGenerationState['styleLoras']) {
+    const { styleLoraId, secondaryStyleLoraId } = state.value
+    if (!styleLoraId || !options.some(item => item.id === styleLoraId)) return kreaStyleState([])
+    if (secondaryStyleLoraId && !options.some(item => item.id === secondaryStyleLoraId)) return { secondaryStyleLoraId: '', secondaryStyleLoraStrength: 1 }
+    return {}
   }
 
   function projectStatus(data: AnimaStatusResponse, character: CharKey = options.getCharacter()) {
@@ -154,14 +165,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (cached) {
       const projected = projectStatus(cached, character)
       const loraPatch = resolveCharacterLora(character, projected.familyLoras, projected.modelIdCurrent)
-      const styleLoraId = projected.styleLoras.some(lora => lora.id === state.value.styleLoraId) ? state.value.styleLoraId : ''
       patchState({
         ...backendReadiness(cached, projected.selectedModel, projected.family, projected.visibleModels.length, projected.familyLoras.length),
         models: projected.visibleModels,
         loras: projected.familyLoras,
         allLoras: Array.isArray(cached.loras) ? cached.loras : state.value.allLoras,
         styleLoras: projected.styleLoras,
-        styleLoraId,
+        ...catalogStyleSelection(projected.styleLoras),
         modelId: projected.modelIdCurrent,
         ...loraPatch,
       })
@@ -282,16 +292,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
        */
       const shouldApplyDefaults = (defaultsAppliedFor !== modelIdCurrent || (state.value.provider && state.value.provider !== provider)) && settingsRevision === initialSettingsRevision
       // 风格 LoRA 只在候选里已经不存在时才清空，而不是每 15 秒清一次
-      const styleLoraId = styleLoras.some(lora => lora.id === state.value.styleLoraId)
-        ? state.value.styleLoraId
-        : ''
       reconcilingSettings = true
       try {
         patchState({
           ...backendReadiness(data, selectedModel, family, visibleModels.length, familyLoras.length),
-          models: visibleModels, loras: familyLoras, allLoras: Array.isArray(data.loras) ? data.loras : [], styleLoras, styleLoraId, modelId: modelIdCurrent, loraId, width, height,
+          models: visibleModels, loras: familyLoras, allLoras: Array.isArray(data.loras) ? data.loras : [], styleLoras, ...catalogStyleSelection(styleLoras), modelId: modelIdCurrent, loraId, width, height,
           ...(endfield && loraId === endfield.loraId && state.value.loraId !== loraId ? { loraStrength: endfield.loraStrength } : {}),
-          family: selectedModel?.family === 'krea2' ? 'krea2' : 'anima',
+          family,
           ...(shouldApplyDefaults ? modelDefaults(selectedModel, provider) : {}),
         })
         // An edit during discovery owns these defaults for this model, including later polls.

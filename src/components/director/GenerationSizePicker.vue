@@ -40,11 +40,12 @@ const mossSizeLabels: Record<string, string> = {
 }
 const cards = computed(() => props.animaSizes.map(value => {
   const [width, height] = value.split('x').map(Number)
-  const shape = width === height ? '方形' : width < height ? '竖幅' : '横幅'
-  return { value, label: props.engine === 'moss' ? mossSizeLabels[value] || shape : shape, ratio: width / height }
+  const wide = props.engine === 'krea2' && width * 9 === height * 16
+  const shape = width === height ? '方形' : width < height ? '竖幅' : wide ? '16:9 宽屏' : '横幅'
+  return { value, label: props.engine === 'moss' ? mossSizeLabels[value] || shape : shape, ratio: width / height, wide }
 }))
-const sizeOptions = computed(() => cards.value.map(({ value, label }) => ({ value,
-  label: props.engine === 'moss' ? `${label} · ${value.replace('x', ' × ')}` : value.replace('x', ' × '),
+const sizeOptions = computed(() => cards.value.map(({ value, label, wide }) => ({ value,
+  label: props.engine === 'moss' || wide ? `${label} · ${value.replace('x', ' × ')}` : value.replace('x', ' × '),
 })))
 function change(value: string | number) { if (value !== '') emit('update:size', String(value)) }
 

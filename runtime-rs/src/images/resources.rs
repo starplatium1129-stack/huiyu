@@ -55,22 +55,15 @@ async fn required(config: &Config, input: &Value) -> Result<Vec<PathBuf>> {
                 })?,
         );
     }
-    if let Some(style) = input["styleLoraId"].as_str() {
-        paths.push(
-            file(
-                config,
-                "loras",
-                catalog::styles()[style]["file"].as_str().unwrap(),
-            )
-            .await
-            .ok_or_else(|| {
-                ApiError::new(
-                    503,
-                    "KREA_STYLE_LORA_UNAVAILABLE",
-                    "所选 Krea 2 Style LoRA 文件不可用",
-                )
-            })?,
-        );
+    if family == "krea2" {
+        let styles = krea_styles::selection(input, true)?;
+        if !styles.is_empty() {
+            let root = config.ai_workspace_root.join("ComfyUI/models/loras");
+            let checkpoint = paths[0].clone();
+            let files = tokio::task::spawn_blocking(move || krea_styles::comfy_files(&root, &checkpoint, &styles))
+                .await.map_err(|_| ApiError::new(503,"KREA_STYLE_LORA_UNAVAILABLE","读取风格文件未完成"))??;
+            paths.extend(files);
+        }
     }
     for key in ["initImage", "maskImage"] {
         if let Some(name) = input[key].as_str() {
@@ -106,6 +99,19 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     };
     if !frozen {
         input["requestedHiresUpscaler"] = input["hiresUpscaler"].clone();
+        if family == "krea2" {
+            let styles = krea_styles::selection(&input, true)?;
+            if !styles.is_empty() {
+                let root = config.ai_workspace_root.join("ComfyUI/models/loras");
+                let prompt_text = input["prompt"].as_str().unwrap_or_default().to_owned();
+                let updated = tokio::task::spawn_blocking(move || {
+                    krea_styles::prompt_with_root(&prompt_text, &styles, Some(&root))
+                })
+                .await
+                .map_err(|_| ApiError::new(503, "KREA_STYLE_LORA_UNAVAILABLE", "读取风格元数据未完成"))??;
+                input["prompt"] = json!(updated);
+            }
+        }
     }
     if input["hiresFix"] == true && family != "krea2" && input["hiresUpscaler"] != "Latent" {
         let selected = if frozen {
@@ -145,6 +151,8 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     let mut metadata = json!({"engine":family,"provider":"comfy","prompt":input["prompt"],"negative":input["negative"],"profileId":input["profileId"].as_str().unwrap_or(""),"modelId":input["modelId"],"loras":loras,"loraStrength":input["loraStrength"],"styleLoraId":input["styleLoraId"],"width":input["width"],"height":input["height"],"hiresFix":input["hiresFix"]==true,"hiresScale":input["hiresScale"],"denoisingStrength":input["denoisingStrength"],"faceDetailer":generation::truthy(&input["faceDetailer"]),"steps":input["steps"],"cfg":input["cfg"],"sampler":input["sampler"].as_str().unwrap_or("res_multistep"),"scheduler":input["scheduler"].as_str().unwrap_or("simple"),"teaCache":generation::truthy(&input["teaCache"]),"teaCacheThresh":input["teaCacheThresh"],"seed":input["seed"],"character":if generation::truthy(&input["character"]){input["character"].clone()}else{Value::Null},"preview":false,"resultUrl":null});
     for key in [
         "loraId",
+        "styleLoraStrength",
+        "styleLoras",
         "hiresOnly",
         "hiresSteps",
         "hiresCfg",
@@ -268,7 +276,7 @@ fn local_status(root: PathBuf, anima: bool) -> Value {
                 },
             )
             && available("vae", "qwen_image_vae.safetensors");
-        let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}});
+        let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea||model["negative"]==true,"fixedSampling":model["fixedSampling"]==true,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}});
         if !krea {
             entry["capabilities"]["customSize"] = validation::anima_size_limits();
         }
@@ -278,9 +286,6 @@ fn local_status(root: PathBuf, anima: bool) -> Value {
     for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
         loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":available("loras",lora["file"].as_str().unwrap())}));
     }
-    let mut styles = Vec::new();
-    for (id, style) in catalog::styles().as_object().unwrap() {
-        styles.push(json!({"id":id,"trigger":style["trigger"],"recommendedStrength":1,"available":available("loras",style["file"].as_str().unwrap())}));
-    }
+    let styles = if anima { vec![] } else { krea_styles::list(&root.join("loras")) };
     json!({"online":false,"models":models,"loras":loras,"styleLoras":styles,"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":null,"pending":0,"maxPending":4})
 }

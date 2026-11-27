@@ -417,13 +417,7 @@ fn lora_count(root: &Path) -> usize {
         .filter_map(|lora| lora["file"].as_str())
         .filter(|name| resources::file(root, name, false).is_some())
         .count()
-        + crate::images::catalog()["KREA_STYLE_LORAS"]
-            .as_object()
-            .unwrap()
-            .values()
-            .filter_map(|lora| lora["file"].as_str())
-            .filter(|name| resources::file(root, name, true).is_some())
-            .count()
+        + crate::images::krea_styles::list(root).iter().filter(|style| style["available"] == true).count()
 }
 
 fn read_optional(path: &std::path::Path) -> Result<Value> {

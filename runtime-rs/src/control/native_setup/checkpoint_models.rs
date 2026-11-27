@@ -17,6 +17,13 @@ pub(super) fn conversion_checkpoint(model: &ModelBundle) -> Option<&Artifact> {
 }
 
 pub(super) fn workspace_checkpoint(workspace: &Path, model: &ModelBundle) -> Option<PathBuf> {
+    if krea_int8(model) {
+        let name = model.checkpoint_filename.as_deref()?;
+        let artifact = model.files.first()?;
+        return ["inference/.downloads", "ComfyUI/models/diffusion_models"].iter()
+            .map(|folder| workspace.join(folder).join(name))
+            .find(|p| std::fs::symlink_metadata(p).is_ok_and(|m| m.is_file() && m.len() == artifact.bytes));
+    }
     let artifact = conversion_checkpoint(model)?;
     let spec = setup_verify::model_file(&model.id).ok()?;
     if spec.bytes != artifact.bytes || spec.sha256 != artifact.sha256 {
@@ -41,6 +48,18 @@ pub(super) async fn stage_checkpoint(
     let Some(filename) = model.checkpoint_filename.as_ref() else {
         return Ok(None);
     };
+    if krea_int8(model) {
+        let path = source.map(Path::to_owned).or_else(|| workspace_checkpoint(&service.config.ai_workspace_root, model))
+            .ok_or_else(|| ApiError::invalid(&format!("请在作者发布页下载 {filename}，并选择本机文件。")))?;
+        let artifact = model.files.first().ok_or_else(|| ApiError::invalid("缺少 Krea 权重规格"))?;
+        stopped(cancel)?;
+        if !path.is_absolute() || !std::fs::symlink_metadata(&path).is_ok_and(|m| m.is_file() && m.len() == artifact.bytes) {
+            return Err(ApiError::invalid(&format!("请选择完整的本机作者文件 {filename}。")));
+        }
+        // The importer hashes the staged link and all shared components before
+        // publishing them. Hashing the input here would reread the whole DiT.
+        return Ok(Some(LocalCheckpoint { artifact: artifact.path.clone(), path, guard: None }));
+    }
     let workspace = service.config.ai_workspace_root.join("inference");
     let target = workspace.join("models").join(&model.id);
     let root = if model.conversion_profile.is_some() {
