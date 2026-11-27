@@ -45,7 +45,11 @@ namespace Ayaki.Installer {
         var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.StreamSource = art; image.EndInit(); image.Freeze();
         var background = new ImageBrush(image) { Stretch = Stretch.UniformToFill, AlignmentX = AlignmentX.Center, AlignmentY = AlignmentY.Top };
         background.Freeze(); Get<Border>("PortraitFrame").Background = background;
-        var avatar = new CroppedBitmap(image, new Int32Rect(image.PixelWidth / 4, image.PixelHeight / 8, image.PixelWidth / 2, image.PixelWidth / 2));
+        int cropY = image.PixelHeight / 8;
+        int side = Math.Max(1, Math.Min(image.PixelWidth / 2, image.PixelHeight - cropY));
+        int cropX = Math.Max(0, (image.PixelWidth - side) / 2);
+        cropY = Math.Max(0, Math.Min(cropY, image.PixelHeight - side));
+        var avatar = new CroppedBitmap(image, new Int32Rect(cropX, cropY, side, side));
         avatar.Freeze(); Get<Image>("HeroImage").Source = avatar;
       }
       directory.Text = String.IsNullOrEmpty(options.Directory) ? installed.Directory : options.Directory;
