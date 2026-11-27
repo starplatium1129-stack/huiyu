@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3108,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单脚踩在丝绒矮凳上整理吊袜带，回眸微喘",
     "adult": false,
@@ -32,10 +32,7 @@
     "promptProse": "Striped by late afternoon sunlight filtering through wooden blinds, Camellya rests one foot on a velvet ottoman beside a tall mirror, fastening her sheer camellia-embroidered garter belt while glancing over her shoulder.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "tacet mark on chest",
       "black lingerie",

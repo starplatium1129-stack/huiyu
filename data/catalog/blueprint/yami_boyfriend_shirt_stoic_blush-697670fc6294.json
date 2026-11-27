@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_boyfriend_shirt_stoic_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1771,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yami_boyfriend_shirt_stoic_blush",
     "title": "金色暗影 · 晨光窗台的白衬衫与微红面颊",
@@ -42,10 +42,8 @@
       "knees_to_chest",
       "bare_shoulders",
       "barefoot",
-      "blonde_hair",
       "floor_length_hair",
       "hair_intakes",
-      "red_eyes",
       "soft_blush",
       "kuudere",
       "morning_light",

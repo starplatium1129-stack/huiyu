@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3309,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐天鹅绒祈祷垫上敞开圣袍前襟，含泪低喘",
     "adult": true,
@@ -30,18 +30,13 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
       "spread legs"
     ],
     "outfitId": "unbuttoned_vestment_bare_r18",
     "promptProse": "Kneeling on a velvet cushion inside the moonlit sanctuary, Phoebe lets her white-and-gold vestments fall open off her shoulders, baring her breasts while keeping her wide-brimmed hat and white thigh-high stockings on.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "wide-brimmed hat",
       "open clothes",
       "white dress",

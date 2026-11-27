@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_puzzle_piece",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2858,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_puzzle_piece",
     "characterId": "vulpisfoglia_arknights",
@@ -27,7 +27,7 @@
       "overhead view"
     ],
     "promptProse": "In the warm ambient glow of a private lounge, Vulpisfoglia hovers the final wooden piece over an intricate vintage map jigsaw puzzle, smiling with satisfied smile. Polished dark wood tables, leather-bound books, and a glass of scotch on the rocks frame her sharp intellect and leisurely, tactical mind.",
-    "animaCaption": "",
+    "animaCaption": "At a dark wood lounge table beside a glass of scotch and leather-bound books, she holds the final wooden piece poised above an antique map puzzle. A satisfied, sharp smile curves her lips in the warm side light.",
     "promptTokens": [
       "sitting",
       "private lounge table",

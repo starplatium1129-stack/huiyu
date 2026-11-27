@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_intimate_riverbank_sunset_breeze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2041,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfitId": "riverside_parka",
@@ -21,10 +21,8 @@
     "mood": "温存与俏皮",
     "promptProse": "Leaning forward over the back of a wooden park bench along the golden riverbank, Saten Ruiko smiles playfully close. The sunset breeze scatters her long straight black hair and white hair flower as she leans within inches of the viewer's face.",
     "promptTokens": [
-      "saten_ruiko",
       "1girl",
       "solo",
-      "black_hair",
       "long_hair",
       "hair_flower",
       "casual",

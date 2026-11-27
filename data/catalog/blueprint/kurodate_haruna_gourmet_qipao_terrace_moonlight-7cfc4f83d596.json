@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_gourmet_qipao_terrace_moonlight",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2672,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kurodate_haruna_gourmet_qipao_terrace_moonlight",
     "characterId": "kurodate_haruna",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kurodate_haruna",
-      "grey_hair",
       "long_hair",
-      "red_eyes",
       "wings",
       "black_wings",
       "demon_wings",
@@ -44,7 +41,6 @@
       "warm_lighting",
       "banquet_hall_window",
       "moonlight",
-      "high_contrast",
       "smirk",
       "looking_at_viewer",
       "full_body"

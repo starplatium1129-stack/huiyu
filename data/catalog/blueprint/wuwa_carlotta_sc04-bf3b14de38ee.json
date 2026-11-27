@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3204,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于贡多拉丝绒船座俯身指尖轻触水面，温柔浅笑",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "gondola_cashmere_shawl",
     "promptProse": "Gliding beneath an arched stone bridge along Ragunna's moonlit canal, Carlotta sits in a velvet-cushioned gondola wrapped in a pearl-fringed shawl, trailing her fingers through the lantern-lit water.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "hair ornament",
       "earrings",
       "champagne dress",

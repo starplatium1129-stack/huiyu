@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3808,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于床沿双手撑床微倾向前，冷峻面容染上绯红",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "midnight_blue_lace_set_r15",
     "promptProse": "Seated on the edge of her bed beside a rain-streaked window overlooking distant city lights, Galbrena wears a black lace lingerie set with azure flame embroidery, a leather thigh strap, and black thigh-highs.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "black bra",
       "lace",
       "blue embroidery",

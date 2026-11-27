@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_photo_wall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2991,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:21:24.674Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoshiguma_arknights_photo_wall",
     "characterId": "hoshiguma_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a brightly lit, cheerful community activity room, tall oni Hoshiguma gently presses a red pushpin into a corkboard photo wall covered in colorful snapshots of local residents and festival memories. Sunlight streams through wide windows, illuminating cork textures, notice flyers, and potted plants on the wooden counter below as she steps back with a satisfied grin.",
-    "animaCaption": "",
+    "animaCaption": "Standing before a sunlit community corkboard packed with festival snapshots, she presses a red pushpin into a fresh photo with a satisfied grin. Bright window light warms the wooden counter and potted plants below.",
     "promptTokens": [
       "standing",
       "pinning photograph",

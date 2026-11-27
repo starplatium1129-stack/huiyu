@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_manuscript_reading",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2933,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pozyomka_arknights_manuscript_reading",
     "characterId": "pozyomka_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Leaning close across a polished tea table in a sunlit parlor, Pozyomka holds out a sheaf of handwritten story manuscript pages, watching the viewer's reaction with an eager, affectionate smile. Delicate bone china teacups, a silver sugar bowl, and fluttering sheer lace curtains in the garden window frame an intimate, shared literary secret.",
-    "animaCaption": "",
+    "animaCaption": "Leaning close across the sunlit parlor table, she offers handwritten manuscript pages toward the viewer with an eager, affectionate smile. Warm light filters through fluttering lace curtains onto bone china teacups.",
     "promptTokens": [
       "sunlit parlor table",
       "offering handwritten manuscript",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_morning_tousled_bed_pout",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1997,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_morning_tousled_bed_pout",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "逗趣温存",
     "promptProse": "Sitting up amidst messy white bed sheets in the golden morning light, Power rubs her eyes with a delightfully grumpy pout in cozy sleepwear, her long blonde hair charmingly disheveled.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "sharp_teeth",

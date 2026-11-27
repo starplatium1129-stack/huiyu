@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_quiet_notes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2433,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_quiet_notes",
     "characterId": "mitsukasa_ayase",
@@ -32,7 +32,7 @@
       "quiet reflection",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "At her sunlit window desk, she pauses with a pen poised above her open leather planner in quiet, pensive thought. Bright afternoon light catches the ceramic mug, clips, and a potted succulent on the sill.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kouzuki_kallen",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 199,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen",
     "profile": {
@@ -327,7 +327,7 @@
         "卡莲",
         "code geass"
       ],
-      "identityProse": "Adult Kallen Kouzuki from Code Geass, a mature and athletic ace pilot with vibrant red short spiky hair, piercing blue eyes, wearing a sleek modern jacket, carrying an air of seasoned grace, strength, and quiet reliability.",
+      "identityProse": "Adult Kallen Kouzuki from Code Geass, a mature and athletic ace pilot with vibrant red short spiky hair and piercing blue eyes, carrying an air of seasoned grace, strength, and quiet reliability.",
       "identityTokens": [
         "kallen stadtfeld",
         "1girl",

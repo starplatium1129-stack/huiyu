@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_rainy_cafe_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3104,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_rainy_cafe_window",
     "characterId": "platinum_arknights",
@@ -27,7 +27,7 @@
       "warm lighting"
     ],
     "promptProse": "Sitting by the steaming window of a quaint European coffee shop on a rainy afternoon, Platinum cradles a warm ceramic mug with both hands. Raindrops bead dynamically on the transparent glass panes behind her. She looks wistfully outside with calm, contemplative eyes, surrounded by the cozy ambient glow of vintage brass lamps.",
-    "animaCaption": "",
+    "animaCaption": "Seated beside a rain-beaded European cafe window, she cradles a steaming ceramic mug in both hands and gazes wistfully out at the wet street. Vintage brass lamps fill the cozy interior with warm amber glow.",
     "promptTokens": [
       "solo",
       "sitting",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3501,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于舞台中央单手举起指挥棒，彼岸花瓣旋舞",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "spider_lily_conductor_coat",
     "promptProse": "Beneath the shattered dome of a moonlit opera house, Phrolova stands upon the weathered wooden stage in her black-and-crimson conductor tailcoat, raising her baton amidst swirling spider lily petals.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black tailcoat",

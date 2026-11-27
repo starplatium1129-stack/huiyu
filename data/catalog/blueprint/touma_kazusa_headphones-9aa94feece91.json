@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_headphones",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2382,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "touma_kazusa_headphones",
     "characterId": "touma_kazusa",
@@ -31,7 +31,7 @@
       "living room",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated cross-legged on the wool rug with studio headphones over her ears, she closes her eyes peacefully amid sheet music spread across the floor. A nearby floor lamp casts a warm golden pool over her and the glowing tube amplifier.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

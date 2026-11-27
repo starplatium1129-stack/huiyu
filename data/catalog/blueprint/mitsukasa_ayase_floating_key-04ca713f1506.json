@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_floating_key",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2432,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_floating_key",
     "characterId": "mitsukasa_ayase",
@@ -32,7 +32,7 @@
       "cautious focused expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Crouched discreetly beside the wooden cabinet, she extends one steady hand as a brass key levitates toward her fingertips in faint sparkling motes. Slanted afternoon sunbeams illuminate floating dust and her cautious concentration.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3404,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单手轻贴海底玻璃幕墙侧身回望，裙摆薄纱飘动",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "conservatory_sheer_cape_dress",
     "promptProse": "Walking through a vaulted underwater glass tunnel illuminated by rippling blue caustics, Cantarella touches one palm to the viewing wall as her iridescent cape billows around her high-slit plum gown.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "sleeveless dress",

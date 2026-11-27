@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3901,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "手扶天台栏杆随晚风回眸微笑，红丝带轻扬",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "startorch_crimson_sailor",
     "promptProse": "On the sunlit rooftop of Startorch Academy at dusk, Chisa rests one hand along the railing in her black-and-crimson sailor uniform, turning back with a warm smile as sunset rims her straight black hair.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "black sailor collar",
       "sailor uniform",

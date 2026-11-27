@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "togakushi_touko/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "togakushi_touko",
-      "prose": "一袭散发着浓郁成熟女人味的深酒红天鹅绒吊带长裙，背部大面积镂空直抵腰窝，胸前深V以黑色细蕾丝包裹，优雅矜贵，将千金学姐的非凡身段勾勒得摄人心魄。",
+      "prose": "A rich wine-red velvet plunging slip gown with black eyelash lace edging at the deep V-neckline, a sleek drape, and an open back dipping to the lower waist.",
       "tokens": [
         "wine red velvet plunging slip dress",
         "open back to lower spine",

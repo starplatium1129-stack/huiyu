@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_music_sheet",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3039,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nightingale_arknights_music_sheet",
     "characterId": "nightingale_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Standing beside a polished ebony grand piano in a sun-dappled conservatory music room, Nightingale holds a sheaf of handwritten sheet music, her eyes following the melodic staves with quiet melancholy. Sheer white draperies flutter against French doors opening onto a rose garden, letting in warm breezes and golden afternoon light.",
-    "animaCaption": "",
+    "animaCaption": "Standing beside a polished dark grand piano in a sunlit conservatory, she holds handwritten sheet music in both hands and follows the staves with quiet melancholy. Sheer curtains flutter in the breeze beside open French doors.",
     "promptTokens": [
       "standing",
       "grand piano",

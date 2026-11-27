@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
@@ -25,7 +25,6 @@
     ],
     "promptProse": "Beneath her pink umbrella outside the station exit, Sakura smiles with relief toward the approaching viewer; overcast evening light reflects in the rain-darkened pavement.",
     "promptTokens": [
-      "Sakura",
       "rain",
       "station",
       "medium shot",

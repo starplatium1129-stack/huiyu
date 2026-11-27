@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bed_hands",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "侧卧床上脱下最后一只手套，手指贴着大腿内侧，石盾靠在墙边",
     "adult": true,
@@ -54,6 +54,7 @@
       "lying_on_side"
     ],
     "timeOfDay": "深夜",
-    "title": "泥岩 · 掌心温热"
+    "title": "泥岩 · 掌心温热",
+    "animaCaption": "Lying nude on her side on the bed in wrist wraps with legs crossed, she slips off her last glove while her bare fingers rest against her inner thigh. Soft moonlight traces her exposed nipples and the stone shield leaning by the wall."
   }
 }

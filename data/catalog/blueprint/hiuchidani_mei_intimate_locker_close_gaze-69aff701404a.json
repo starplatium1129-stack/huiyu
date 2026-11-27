@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_intimate_locker_close_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2012,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "hiuchidani_mei",
     "outfitId": "sport_track",
@@ -21,10 +21,8 @@
     "mood": "娇羞动情",
     "promptProse": "Cornered against the metal lockers as sunset streams through slatted blinds, Hiuchidani Mei stands in her sporty athletic tank top with a light sheen of sweat. Her cheeks glow bright red as her breath hitches in breathless close proximity.",
     "promptTokens": [
-      "hiuchidani_mei",
       "1girl",
       "solo",
-      "purple_hair",
       "twintails",
       "tank_top",
       "sports_bra",

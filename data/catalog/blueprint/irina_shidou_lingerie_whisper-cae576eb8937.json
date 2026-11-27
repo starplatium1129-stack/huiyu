@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irina_shidou_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3462,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.870Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "irina_shidou_lingerie_whisper",
     "characterId": "irina_shidou",
@@ -42,7 +42,6 @@
       "kneeling",
       "twintails",
       "blushing",
-      "amber eyes",
       "sweet"
     ],
     "negativeTokens": [],

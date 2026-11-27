@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_bridge_view",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2421,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_bridge_view",
     "characterId": "rena_liechtenauer",
@@ -29,7 +29,7 @@
       "dappled sunbeams on water",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Resting her forearms on the mossy wooden bridge railing, she gazes down serenely at a scarlet maple leaf floating along the clear stream. Dappled sunlight filters through autumn foliage across the rippling water.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1624,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_02",
     "title": "久远寺有珠 · 药草调配的深夜",
@@ -32,7 +32,6 @@
     ],
     "promptProse": "Alice steadies the mortar with one hand and grinds a remedy with the other among the small bottles. The candle casts her profile onto the workshop stone wall.",
     "promptTokens": [
-      "kuonji_alice",
       "mortar and pestle",
       "medicine bottles",
       "workshop",

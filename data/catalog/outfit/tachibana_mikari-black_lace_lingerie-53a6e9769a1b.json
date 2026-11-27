@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/black_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tachibana_mikari",
-      "prose": "一套精心挑选的樱粉色双层透视蕾丝吊带内衣，领口与短裤下摆覆以层叠的小荷叶边，可爱浪漫而又充满挑逗，承载着青梅竹马渴望被当作真正女人注视的炽烈心愿。",
+      "prose": "A cherry-blossom pink double-layer sheer lace bralette and low-rise ruffled tap shorts set trimmed with layered flutter ruffles along the neckline and cuffs.",
       "tokens": [
         "cherry blossom pink sheer lace bralette set",
         "layered flutter ruffles",

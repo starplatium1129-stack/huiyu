@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_tea_salon_glass_maid_service",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1904,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "cinderella_tea_salon_glass_maid_service",
     "characterId": "cinderella_nikke",
@@ -38,7 +38,6 @@
       "holding silver tea tray",
       "porcelain cup",
       "curtsying slightly",
-      "red eyes",
       "composed serene expression",
       "large panoramic window",
       "sky view",

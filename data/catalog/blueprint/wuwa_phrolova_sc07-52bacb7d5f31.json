@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3507,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于化妆镜前单手轻理银白长发，微红双颊回眸",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "black_lace_corset_slip_r15",
     "promptProse": "In front of a bulb-lit backstage vanity mirror after the curtain falls, Phrolova wears a satin-laced black velvet bustier over a sheer red half-slip and seamed thigh-highs, glancing over her shoulder.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black bustier",

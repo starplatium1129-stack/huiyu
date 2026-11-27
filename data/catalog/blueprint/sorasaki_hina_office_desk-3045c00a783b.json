@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_desk",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 854,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "深陷高背转椅，黑翼垂落于椅侧，银紫长发散落，双手捧温茶杯，紫瞳含倦温存凝望观众",
     "adult": false,
@@ -36,9 +36,7 @@
       "facing viewer",
       "looking directly at viewer",
       "eye contact",
-      "Sorasaki Hina",
       "very long hair",
-      "silver hair",
       "halo",
       "large black wings",
       "Gehenna uniform coat draped over shoulders",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_resort_beach_sparkling_summer_splash",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1820,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "anis_resort_beach_sparkling_summer_splash",
     "title": "阿尼斯 · 阳光海滩的冰爽汽水水花飞溅",
@@ -60,8 +60,6 @@
       "wide_hips",
       "barefoot",
       "cheerful_laughter",
-      "blonde_hair",
-      "blue_eyes",
       "bright_sunlight",
       "summer",
       "standing",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_bedroom_camisole_quiet_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2675,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sunaookami_shiroko_bedroom_camisole_quiet_gaze",
     "characterId": "sunaookami_shiroko",
@@ -23,10 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "sunaookami_shiroko",
       "silver_hair",
       "short_hair",
-      "blue_eyes",
       "wolf_ears",
       "halo",
       "camisole",

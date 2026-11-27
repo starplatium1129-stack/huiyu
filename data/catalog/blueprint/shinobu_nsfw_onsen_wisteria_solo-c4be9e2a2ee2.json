@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_onsen_wisteria_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1461,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "斜倚池边湿身白浴衣，水下手指自抚，紫瞳失神望花影",
     "adult": true,
@@ -28,7 +28,6 @@
     "outfitId": "white_bath_yukata",
     "promptProse": "Shinobu rests against the hot-spring rim and touches herself beneath the water, her soaked yukata translucent beneath wisteria shadows.",
     "promptTokens": [
-      "kochou_shinobu",
       "white yukata",
       "wet clothes",
       "onsen",
@@ -57,11 +56,7 @@
     ],
     "timeOfDay": "夜雾",
     "title": "蝴蝶忍 · 紫藤温泉的湿身独处",
-    "nsfwTokens": [
-      "masturbation",
-      "hand between legs",
-      "see-through"
-    ],
+    "nsfwTokens": [],
     "animaCaption": "She rests against the spring rim with one hand underwater, wisteria shadows crossing the soaked yukata."
   }
 }

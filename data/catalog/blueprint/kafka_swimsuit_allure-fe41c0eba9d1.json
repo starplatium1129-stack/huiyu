@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3285,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kafka_swimsuit_allure",
     "characterId": "kafka",
@@ -39,9 +39,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kafka (honkai: star rail)",
       "magenta hair",
-      "purple eyes",
       "wine red monokini",
       "spiderweb straps",
       "sunglasses on head",

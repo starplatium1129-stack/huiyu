@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_postcard_stamp",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2889,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_postcard_stamp",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "close-up"
     ],
     "promptProse": "Sitting at a cozy wooden desk, Nymph sticks out her tongue in concentration as she presses a colorful collectible bird stamp onto a postcard, deliberately tilting it at a funny, jaunty angle. Ink stamp pads, souvenir stickers, and scattered postcards surround her hands, illuminated by cheerful morning window sunshine.",
-    "animaCaption": "",
+    "animaCaption": "At the wooden desk, she sticks her tongue out in playful focus while pressing a bird stamp at a crooked angle onto a postcard. Morning window light warms scattered postcards, stickers, and ink pads around her hands.",
     "promptTokens": [
       "sitting",
       "wooden writing desk",

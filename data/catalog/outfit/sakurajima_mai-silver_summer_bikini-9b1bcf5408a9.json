@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2297,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
@@ -18,15 +18,12 @@
       "prose": "A deeply alluring haute-couture halter bikini in midnight black stretch velvet, featuring gold hardware clasps, daring high-leg hip ties, and an ultra-chic wide-brimmed straw hat embellished with playful subtle bunny-ear peaks.",
       "tokens": [
         "black velvet bikini",
-        "highleg ties",
-        "gold accents",
-        "bunny straw hat",
-        "long black hair",
-        "purple eyes",
-        "bunny hairpin",
-        "celebrity elegance",
-        "mature tsundere smile",
-        "slender model curves"
+        "halterneck",
+        "highleg",
+        "side-tie bikini bottom",
+        "gold clasp",
+        "straw hat",
+        "bunny hairpin"
       ]
     }
   }

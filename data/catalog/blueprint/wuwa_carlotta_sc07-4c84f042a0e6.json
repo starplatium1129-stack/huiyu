@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3207,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于床沿单手轻拢滑落的真丝晨袍，羞赧侧目",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "ivory_silk_robe_r15",
     "promptProse": "Bathed in soft morning sunlight filtering through sheer white curtains, Carlotta sits on the edge of her bed in an unfastened ivory silk robe over a dusty-rose lace chemise and white thigh-high stockings.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "earrings",
       "white bathrobe",
       "silk",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rooftop_moon",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 855,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于天台栏杆旁，一手轻挽颈间领巾，黑翼在月风中微展，银紫长发飘拂，紫眸静谧深情直视观众",
     "adult": false,
@@ -36,8 +36,6 @@
       "facing viewer",
       "looking directly at viewer",
       "eye contact",
-      "Sorasaki Hina",
-      "silver hair",
       "very long hair",
       "halo",
       "large black wings",

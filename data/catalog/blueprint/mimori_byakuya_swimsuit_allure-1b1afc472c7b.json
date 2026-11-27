@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mimori_byakuya_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3263,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mimori_byakuya_swimsuit_allure",
     "characterId": "mimori_byakuya",
@@ -41,10 +41,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "mimori byakuya",
       "blonde hair",
       "long hair",
-      "blue eyes",
       "pink swimdress",
       "lace ruffles",
       "sitting on beach blanket",

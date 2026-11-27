@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_cardigan_tea_nap_veranda",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2669,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sunohara_shun_cardigan_tea_nap_veranda",
     "characterId": "sunohara_shun",
@@ -23,12 +23,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "sunohara_shun",
-      "black_hair",
       "long_hair",
       "animal_ears",
       "tiger_ears",
-      "green_eyes",
       "halo",
       "cardigan",
       "off-shoulder_sweater",

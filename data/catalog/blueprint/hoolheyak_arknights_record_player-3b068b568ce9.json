@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_record_player",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2899,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_record_player",
     "characterId": "hoolheyak_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Sitting comfortably in a velvet armchair beside a vintage brass-horned phonograph in a listening room, Ho'olheyak rests one hand near a spinning vinyl record. A warm table lamp casts golden light across her face and the polished turntable, while stacked record sleeves rest on a credenza under gentle evening ambient light.",
-    "animaCaption": "",
+    "animaCaption": "Settled in a velvet armchair beside a brass-horned phonograph, she rests one hand near the spinning vinyl record as she listens calmly. Warm evening lamplight glows over her face, the turntable, and stacked sleeves.",
     "promptTokens": [
       "sitting",
       "velvet armchair",

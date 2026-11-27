@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3409,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐丝绸床榻敞开薄纱外袍，指尖轻拨胸前珍珠链",
     "adult": true,
@@ -30,20 +30,14 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
-      "large breasts"
+      "spread legs"
     ],
     "outfitId": "open_jellyfish_veil_r18",
     "promptProse": "Kneeling amid deep violet silk sheets, Cantarella lets her iridescent jellyfish veil fall open off her shoulders, leaving her full bare breasts adorned only by shimmering pearl body chains.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "open robe",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/sfw_shiromuku",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 830,
   "createdAt": null,
-  "updatedAt": "2026-11-22T01:48:55.068887900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
@@ -13,14 +13,12 @@
       "prose": "A closed ivory silk-brocade shiromuku layers a long outer uchikake over a white kimono and matching obi. Flying cranes are woven into the brocade in the same ivory thread, with layered white cuffs, white tabi and pale zori.",
       "tokens": [
         "shiromuku",
-        "uchikake",
+        "ivory uchikake",
         "white kimono",
-        "wide sleeves",
-        "layered clothes",
-        "crane print",
-        "obi",
-        "tabi",
-        "zouri"
+        "layered collar",
+        "brocade sash",
+        "white tabi",
+        "white zouri"
       ],
       "characterId": "chitanda_eru",
       "default": false,

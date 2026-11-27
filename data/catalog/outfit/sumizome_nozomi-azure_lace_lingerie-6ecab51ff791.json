@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sumizome_nozomi/azure_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2468,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sumizome_nozomi",
-      "prose": "一套质朴清新的米白色纯棉短连体睡衣，腰间带有细绳抽褶，下摆装饰小雏菊镂空花边，清爽透气，完美展现出神社少女天然纯真的质朴之美。",
+      "prose": "A breezy pale-cream pure cotton muslin romper sleepsuit gathered with a thin waist drawstring and edged with delicate daisy eyelet lace.",
       "tokens": [
         "pale cream cotton romper sleepsuit",
         "drawstring gathered waist",

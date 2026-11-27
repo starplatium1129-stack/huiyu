@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3219,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.529Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "elaina_lingerie_whisper",
     "characterId": "elaina",
@@ -42,7 +42,6 @@
       "travel diary",
       "quill pen",
       "ash hair",
-      "purple eyes",
       "smug giggle",
       "oil lamp"
     ],

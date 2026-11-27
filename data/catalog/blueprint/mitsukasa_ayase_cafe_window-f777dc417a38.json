@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_cafe_window",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2438,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_cafe_window",
     "characterId": "mitsukasa_ayase",
@@ -33,7 +33,7 @@
       "thoughtful expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated beside the rain-speckled cafe window with her hands folded near a warm porcelain coffee cup, she gazes thoughtfully at blurred passersby outside. Bright daylight traces soft highlights along her profile and the rustic tabletop.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

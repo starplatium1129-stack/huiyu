@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_living_room_kotatsu_orange_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1926,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_living_room_kotatsu_orange_winter",
     "characterId": "yuuki_mikan",
@@ -42,7 +42,6 @@
       "tilted head",
       "affectionate smile",
       "brown hair shoulder length",
-      "brown eyes",
       "cowboy shot",
       "warm yellow room lamp",
       "snow falling outside window"

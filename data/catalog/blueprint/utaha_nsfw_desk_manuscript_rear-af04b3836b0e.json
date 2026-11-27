@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_desk_manuscript_rear",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_nsfw_desk_manuscript_rear",
     "title": "霞之丘诗羽 · 稿纸桌上的截稿日",
@@ -30,7 +30,6 @@
     "promptProse": "Utaha braces both hands on the manuscript-covered desk and looks back over her shoulder with her skirt raised beneath the desk lamp.",
     "nsfwProse": "",
     "promptTokens": [
-      "Utaha Kasumigaoka",
       "skirt",
       "torn black pantyhose",
       "bent over",
@@ -54,7 +53,6 @@
       "h_cg"
     ],
     "nsfwTokens": [
-      "skirt lift",
       "crotchless panties"
     ],
     "animaCaption": "Both hands brace on the manuscript-covered desk as she looks back beneath the lamp."

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3709,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐丝绒软垫双臂被宝蓝丝带轻绕，双颊潮红含泪喘息",
     "adult": true,
@@ -30,19 +30,13 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
-      "pussy",
-      "spread legs"
+      "pussy"
     ],
     "outfitId": "unfastened_oracle_ribbons_r18",
     "promptProse": "Having shed her oracle vestments in the moonlit chamber, Iuno kneels bare on velvet cushions wearing only her silver crescent tiara, white thigh-highs, and trailing blue silk ribbons.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "nude",
       "blue ribbons",

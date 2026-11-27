@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_greenhouse_leaf",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2952,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosa_arknights_greenhouse_leaf",
     "characterId": "rosa_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Within the humid, lush expanse of a vast Victorian-style greenhouse, Rosa gently inspects a broad, vibrant green tropical leaf, brushing away a droplet of condensation. Sunlight filters through the overhead glass panels in hazy, diffused shafts, illuminating the exotic foliage, mossy path, and a hanging metal thermometer, creating a serene, immersive botanical environment.",
-    "animaCaption": "",
+    "animaCaption": "Along the mossy path of a lush Victorian greenhouse, she tilts a broad green tropical leaf lightly between her fingertips to brush away a bead of condensation. Hazy diffused sunlight filters down through the overhead glass.",
     "promptTokens": [
       "standing",
       "Victorian greenhouse",

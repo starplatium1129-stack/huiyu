@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3807,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "斜倚皮质沙发单手解开衬衫领口，耳根泛红凝望",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "unbuttoned_shirt_holster_r15",
     "promptProse": "Relaxing on a distressed leather couch in her dimly lit safehouse, Galbrena leaves her white button-down open over a black lace bralette and leather shoulder-holster harness, blushing faintly.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "unbuttoned shirt",
       "white shirt",
       "black bralette",

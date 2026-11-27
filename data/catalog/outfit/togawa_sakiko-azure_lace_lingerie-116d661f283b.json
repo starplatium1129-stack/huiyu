@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "togawa_sakiko/azure_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2434,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "togawa_sakiko",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "togawa_sakiko",
-      "prose": "一件曾经华丽但如今略显单薄的墨黑双层雪纺吊带长睡裙，胸前保留着旧日名门家徽暗纹刺绣，微透的裙身包裹着消瘦清丽的少女身躯，带着令人怜惜的落难贵族凄美感。",
+      "prose": "A slender ink-black tailored double-layer sheer chiffon long slip nightgown bearing faded tonal embroidery of a noble family crest on the bodice.",
       "tokens": [
         "inky black tailored sheer chiffon nightgown",
         "faded heraldic crest embroidery",

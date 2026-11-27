@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_alter_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3278,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "artoria_pendragon_alter_swimsuit_allure",
     "characterId": "artoria_pendragon_alter",
@@ -44,7 +44,6 @@
       "solo",
       "artoria pendragon alter",
       "pale blonde hair",
-      "yellow eyes",
       "black bikini",
       "choker collar",
       "holding parfait",

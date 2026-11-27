@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3201,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "倚靠雕花石栏手持红酒杯，优雅微笑",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "montelli_crystal_gown",
     "promptProse": "On the grand marble terrace of the Montelli estate overlooking Ragunna's canals at sunset, Carlotta rests one elbow on the balustrade, swirling a crystal goblet of ruby wine with composed elegance.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "hair ornament",
       "earrings",
       "burgundy dress",

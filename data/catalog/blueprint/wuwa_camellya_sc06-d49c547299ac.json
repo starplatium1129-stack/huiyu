@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3106,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单手持剑挥舞旋转，花瓣随风飞散",
     "adult": false,
@@ -32,10 +32,7 @@
     "promptProse": "In a grand marble training hall pierced by shafts of amber evening light, Camellya executes a fluid sword flourish in a fitted black brocade vest, surrounded by swirling red camellia petals.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "black vest",
       "sleeveless",

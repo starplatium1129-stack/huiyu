@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/silver_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2580,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "violet_evergarden",
-      "prose": "一袭承袭19世纪维多利亚风韵的象牙白细蕾丝吊带长睡裙，胸前点缀小巧墨绿丝绒蝴蝶结，质朴高雅的古典剪裁包裹着少女端庄圣洁的躯体，纯美如圣母画像。",
+      "prose": "A nineteenth-century Victorian-inspired ivory fine-lace slip gown with a softly structured bodice, a tiny forest-green velvet ribbon bow at the bust, and a floor-length flowing skirt.",
       "tokens": [
         "ivory Victorian lace-trimmed slip gown",
         "tiny forest-green velvet ribbon at bust",

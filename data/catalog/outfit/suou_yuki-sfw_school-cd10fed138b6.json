@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_school",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 445,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
@@ -12,15 +12,13 @@
       "name": "政岭学园名门西装制服",
       "prose": "A tailored navy academy blazer and white blouse are paired with a pleated skirt and sheer black stockings.",
       "tokens": [
-        "school_uniform",
-        "navy_blazer",
-        "tailored_jacket",
-        "white_shirt",
-        "neck_ribbon",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "loafers"
+        "school uniform",
+        "navy blazer",
+        "white blouse",
+        "neck ribbon",
+        "pleated skirt",
+        "black thighhighs",
+        "brown loafers"
       ],
       "characterId": "suou_yuki",
       "default": true,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_church_couch_supine_devotion",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "caren_nsfw_church_couch_supine_devotion",
     "title": "卡莲 · 教会软榻的深情仰卧索吻",
@@ -27,10 +27,8 @@
       "lying_on_side",
       "candlelight"
     ],
-    "promptProse": "Caren Hortensia lying on her side on a navy blue velvet couch, white ceremonial dress unbuttoned at collar, bare shoulders and collarbone, red decorative shroud ribbons draped across the couch cushions, short silver hair, amber eyes, gentle blush, looking at viewer, church prayer room, dim wall lamps, warm candlelight.",
+    "promptProse": "Caren Hortensia reclines gracefully on her side across a navy-blue velvet couch in a quiet church prayer room, her white ceremonial dress unbuttoned at the collar to reveal bare shoulders and collarbone while crimson shroud ribbons trail over the cushions. Warm candlelight and dim wall lamps catch her gentle blush as she meets the viewer with soft amber eyes.",
     "promptTokens": [
-      "caren hortensia",
-      "white hair",
       "short hair",
       "amber eyes",
       "white dress",
@@ -63,7 +61,6 @@
     "nsfwProse": "",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "animaCaption": "She lies on her side on the velvet couch with red ribbons draped beside her.",

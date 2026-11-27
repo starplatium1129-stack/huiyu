@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_mushroom_book",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3057,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-07T04:26:09.847Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_mushroom_book",
     "characterId": "ceobe_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Curled up comfortably on a round woven carpet in a cozy corner of the library, Ceobe eagerly points a clawed finger at a colorful botanical illustration of forest mushrooms in a large hardcover encyclopedia. Towering bookshelves stacked with aged tomes surround her, while soft amber lamplight from a green banker's lamp casts warm reading illumination across the open pages.",
-    "animaCaption": "",
+    "animaCaption": "Curled up on a woven carpet in a cozy library corner, she eagerly points a finger at bright mushroom illustrations in a large open encyclopedia. Warm amber glow from a green banker's lamp lights her wide-eyed curiosity.",
     "promptTokens": [
       "sitting on woven carpet",
       "pointing at mushroom book",

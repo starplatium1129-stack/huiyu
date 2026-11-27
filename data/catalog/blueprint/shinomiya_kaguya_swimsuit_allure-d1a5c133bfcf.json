@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinomiya_kaguya_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3311,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shinomiya_kaguya_swimsuit_allure",
     "characterId": "shinomiya_kaguya",
@@ -43,7 +43,6 @@
       "sun lounger",
       "crossed legs",
       "blush",
-      "red eyes",
       "resort",
       "parasol",
       "sunlight",

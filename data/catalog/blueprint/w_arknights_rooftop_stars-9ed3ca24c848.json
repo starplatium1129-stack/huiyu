@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_rooftop_stars",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2942,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "w_arknights_rooftop_stars",
     "characterId": "w_arknights",
@@ -27,7 +27,7 @@
       "wide shot"
     ],
     "promptProse": "Lounging back against the weathered concrete ledge of an open rooftop, W tilts her head upward toward a brilliant canopy of twinkling stars and a glowing silver moon. The sprawling night skyline of the city glimmers with distant tower beacons and moving headlights below, while soft city ambient light illuminates her silhouette.",
-    "animaCaption": "",
+    "animaCaption": "Reclining back against the weathered concrete rooftop ledge, she tilts her head upward toward the glowing silver moon and brilliant starry sky. Soft nocturnal glow from the sprawling city skyline shimmers far below.",
     "promptTokens": [
       "reclining on ledge",
       "rooftop ledge",

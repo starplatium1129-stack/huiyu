@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_swimsuit_allure",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3408,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_swimsuit_allure",
     "characterId": "sawamura_spencer_eriri",
@@ -42,11 +42,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "sawamura spencer eriri",
-      "blonde hair",
       "long twintails",
       "green hair ribbons",
-      "blue eyes",
       "single fang",
       "green tartan bikini",
       "sitting on beach chair with sketchbook",

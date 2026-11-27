@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3215,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.435Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yuzuriha_inori_swimsuit_allure",
     "characterId": "yuzuriha_inori",
@@ -40,8 +40,6 @@
       "gradient goldfish monokini",
       "floating ribbons",
       "dancing on mirror water",
-      "pink hair",
-      "red eyes",
       "dreamlike sunset"
     ],
     "negativeTokens": [],

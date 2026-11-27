@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_vinyl_cover",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3021,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "entelechia_arknights_vinyl_cover",
     "characterId": "entelechia_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Browsing the classical section of a dimly lit, atmospheric record store, Entelechia holds up a rare orchestral vinyl sleeve, running her fingertips over the embossed typography on the vintage cover. Warm brass pendant lamps illuminate wooden record crates, acoustic foam panels on the walls, and antique brass horns, capturing a deep, scholarly reverence for musical craft.",
-    "animaCaption": "",
+    "animaCaption": "Browsing wooden crates in a dimly lit record store, she lifts an orchestral vinyl sleeve and grazes its embossed typography with her fingertips. Warm brass pendant lamps glow softly over stacked records and acoustic walls.",
     "promptTokens": [
       "standing",
       "atmospheric record store",

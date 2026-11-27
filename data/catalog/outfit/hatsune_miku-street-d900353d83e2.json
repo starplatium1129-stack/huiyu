@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "street",
       "name": "青绿机能短外套街头装",
-      "prose": "A teal cropped jacket with a magenta zipper over a plain black crop top and an asymmetric black mini skirt, with white sneakers.",
+      "prose": "A teal cropped jacket worn over a plain black crop top and an asymmetric black miniskirt with a studded belt, thigh strap, ankle socks, and white sneakers.",
       "tokens": [
         "teal cropped jacket",
-        "magenta zipper",
         "black crop top",
         "asymmetric black miniskirt",
+        "studded belt",
+        "thigh strap",
+        "ankle socks",
         "white sneakers"
       ],
       "isDefault": false,

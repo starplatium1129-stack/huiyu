@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_bath_steam",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 335,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_bath_steam",
     "title": "楪祈 · 虚空花瓣的蒸汽浴",
@@ -32,9 +32,7 @@
       "facing viewer",
       "looking directly at viewer",
       "eye contact",
-      "pink hair",
       "gradient hair",
-      "red eyes",
       "red gauze wrap",
       "wet translucent wrap",
       "see-through",

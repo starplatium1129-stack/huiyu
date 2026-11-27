@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_beach_red_swimsuit",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1429,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_beach_red_swimsuit",
     "title": "霞之丘诗羽 · 海边的成熟邀请",
@@ -29,7 +29,6 @@
     ],
     "promptProse": "Utaha sits partly turned away on the sand, offering her white hairband to the viewer with one hand and indicating the unreachable back zipper with the other. Bright reflected sea light catches her turned face.",
     "promptTokens": [
-      "kasumigaoka_utaha",
       "hairband",
       "zipper",
       "beach",

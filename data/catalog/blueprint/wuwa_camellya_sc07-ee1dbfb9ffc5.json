@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3107,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐丝绒卧榻倾身向前，肩带滑落指尖触唇",
     "adult": false,
@@ -32,10 +32,7 @@
     "promptProse": "Kneeling on a deep crimson velvet daybed in a dimly lit private chamber, Camellya leans close as a thin silk strap slips off her bare shoulder, touching one finger to her parted lips with a sultry smile.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "tacet mark on chest",
       "red slip dress",

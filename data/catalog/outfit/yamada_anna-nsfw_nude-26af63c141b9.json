@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without outerwear or accessories, revealing tall graceful bare shoulders, long bare legs, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "yamada_anna",
       "default": false,

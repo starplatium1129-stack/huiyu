@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_rooftop_plants",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2871,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ines_arknights_rooftop_plants",
     "characterId": "ines_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Perched on the edge of a breezy, sun-soaked industrial rooftop, Ines carefully tends to a collection of hearty potted plants arranged on a weathered metal grating. Soft, golden late-afternoon sunbeams illuminate the lush greenery, rustling urban rooftop ventilation shafts, and the vast, sprawling city view extending into the hazy, distant horizon.",
-    "animaCaption": "",
+    "animaCaption": "Standing on weathered metal grating across a breezy industrial rooftop, she bends slightly to tend potted mint lined beside the vents. Low golden afternoon sunbeams skim the green leaves against a hazy sprawling skyline.",
     "promptTokens": [
       "standing",
       "industrial rooftop",

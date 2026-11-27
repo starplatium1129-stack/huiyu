@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_bath_warm",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-11-08T14:24:15.273444+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_bath_warm",
     "title": "雪之下雪乃 · 热汤浴后",
@@ -29,10 +29,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "yukinoshita yukino",
-      "black hair",
       "hair bun",
-      "blue eyes",
       "blush",
       "looking down",
       "shy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_fold_towels",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2425,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_fold_towels",
     "characterId": "rena_liechtenauer",
@@ -31,7 +31,7 @@
       "gentle focused expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "On the wooden ryokan veranda overlooking a raked-gravel zen garden, she aligns the corners of crisp sun-dried white towels onto a neat stack with quiet care. Warm afternoon sunlight brightens the linen and bamboo fountain outside.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

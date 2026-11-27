@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_market_flyer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2921,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-07T14:45:00.000Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "archetto_arknights_market_flyer",
     "characterId": "archetto_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In the vibrant, bustling atmosphere of a crowded neighborhood market, Archetto stands with a friendly, eager smile, holding out a monastery pamphlet to the viewer. Colorful, canopy-covered market stalls filled with fresh fruits and artisan goods blur softly in the bright, cheerful daylight background, emphasizing her lively, engaging interaction with the bustling urban crowd.",
-    "animaCaption": "",
+    "animaCaption": "Amidst a bustling neighborhood market, she extends a monastery pamphlet toward the viewer with a bright, welcoming smile. Cheerful daylight washes over colorful produce stalls and softly blurred crowds behind her.",
     "promptTokens": [
       "standing",
       "holding pamphlet",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_r18_training_locker_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2828,
   "createdAt": "2026-10-31T04:39:58.773044+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "gamma_shadow_r18_training_locker_room",
     "characterId": "gamma_shadow",
@@ -47,7 +47,6 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "topless",
       "unzipped_bodysuit",
       "sweaty_skin"
     ],

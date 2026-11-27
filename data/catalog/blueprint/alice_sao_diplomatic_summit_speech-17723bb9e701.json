@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_diplomatic_summit_speech",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1999,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_diplomatic_summit_speech",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "典雅端庄",
     "promptProse": "Addressing a grand modern international summit from behind a sleek podium, Alice looks out with commanding poise in her royal blue and gold embroidered ambassador gown.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "podium",
       "conference_hall",
       "dignified",

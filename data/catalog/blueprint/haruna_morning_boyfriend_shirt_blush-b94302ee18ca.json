@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_morning_boyfriend_shirt_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1770,
   "createdAt": "2026-10-21T13:40:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "haruna_morning_boyfriend_shirt_blush",
     "title": "西连寺春菜 · 晨光窗边的白衬衫与羞涩回眸",
@@ -42,7 +42,6 @@
       "standing",
       "side_view",
       "from_behind",
-      "purple_hair",
       "short_hair",
       "two_hair_clips",
       "heavy_blush",

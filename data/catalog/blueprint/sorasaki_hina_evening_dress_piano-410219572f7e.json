@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_evening_dress_piano",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "穿晚礼服弹钢琴",
     "adult": false,
@@ -28,7 +28,6 @@
     "outfitId": "midnight_piano_gown",
     "promptProse": "Hina plays at the grand piano and looks toward the teacher beyond it, the piano lamp lighting her hands against softly blurred warm banquet lights.",
     "promptTokens": [
-      "Hina",
       "piano",
       "banquet",
       "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_bed_supine_devotion",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_nsfw_bed_supine_devotion",
     "title": "霞之丘诗羽 · 卸下毒舌的床褥真心",
@@ -30,7 +30,6 @@
     "promptProse": "Utaha touches herself on the bed, looking toward the viewer with a tender expression in the dim warm light.",
     "nsfwProse": "",
     "promptTokens": [
-      "Utaha Kasumigaoka",
       "on back",
       "loose hair",
       "bed",
@@ -55,7 +54,6 @@
     ],
     "nsfwTokens": [
       "nude",
-      "masturbation",
       "spread legs",
       "nipples",
       "pussy"

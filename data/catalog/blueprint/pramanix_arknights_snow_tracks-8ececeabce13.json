@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_snow_tracks",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2852,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pramanix_arknights_snow_tracks",
     "characterId": "pramanix_arknights",
@@ -27,7 +27,7 @@
       "full body"
     ],
     "promptProse": "Pausing along a pristine snowy forest trail lined with frost-coated silver birch trees, Pramanix crouches gracefully to inspect small animal tracks pressed into the fresh powder. Crisp winter morning sunlight sparkles across the snowfield like scattered diamonds, with her long leopard tail sweeping softly over the untouched snow.",
-    "animaCaption": "",
+    "animaCaption": "Crouched gracefully along a fresh snowy birch trail, she leans close to inspect tiny animal footprints pressed into the untouched powder as her fluffy tail sweeps the snow. Crisp winter sunlight sparkles across frosted trees and drifts.",
     "promptTokens": [
       "snowy birch forest path",
       "crouching by animal tracks",

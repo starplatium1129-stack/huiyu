@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kushima_kamome/silver_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2540,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kushima_kamome",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kushima_kamome",
-      "prose": "一套海军风蓝白细条纹棉麻内衣，无钢圈舒适剪裁，胸前点缀小巧船锚金属纽扣与白色绳结绑带，透着海风般的清爽自然。",
+      "prose": "A breezy navy-and-white pinstriped cotton-linen wireless bralette and briefs set detailed with white nautical rope-knot ties and a tiny brass anchor charm.",
       "tokens": [
         "navy and white pinstriped linen bralette set",
         "nautical rope knot details",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_shower_steam_refresh",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2021,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "tea_linen",
@@ -21,10 +21,8 @@
     "mood": "浪漫温存",
     "promptProse": "Stepping out from a hot shower at the forward operating base, Chen Qianyu wears a loose dark green linen tunic. Damp black hair clings to the nape of her neck as she looks back through the misty steam with softened, affectionate eyes.",
     "promptTokens": [
-      "chen_qianyu",
       "1girl",
       "solo",
-      "black_hair",
       "damp_hair",
       "tunic",
       "linen",

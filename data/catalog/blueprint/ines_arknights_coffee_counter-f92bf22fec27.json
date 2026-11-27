@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_coffee_counter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2869,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ines_arknights_coffee_counter",
     "characterId": "ines_arknights",
@@ -26,7 +26,7 @@
       "medium close-up"
     ],
     "promptProse": "Ines leans casually against a sleek marble coffee counter in a modern, bustling cafe, waiting for her drink. Steam rises from a nearby espresso machine, while soft, recessed spotlighting catches the metallic glint of coffee equipment, and blurred urban commuters rush past the rain-streaked window in the background.",
-    "animaCaption": "",
+    "animaCaption": "Leaning relaxed against the sleek marble counter, she holds a freshly poured coffee cup as espresso steam curls nearby. Soft recessed spotlights gleam on metallic machines while commuters rush past the rain-streaked window.",
     "promptTokens": [
       "modern coffee cafe",
       "leaning on marble counter",

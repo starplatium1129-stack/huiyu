@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_sunlit_bedroom_morning_grace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2003,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_sunlit_bedroom_morning_grace",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "神圣纯洁",
     "promptProse": "Perched gracefully at the edge of a sunlit bed in soft morning light, Alice looks over her shoulder in a white silk gown, her lustrous golden braid catching the daybreak glow with an affectionate smile.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "in_bed",
       "white_sheets",
       "bare_shoulders",

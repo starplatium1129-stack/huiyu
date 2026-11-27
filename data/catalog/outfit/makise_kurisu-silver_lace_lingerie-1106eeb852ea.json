@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "makise_kurisu/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2535,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "makise_kurisu",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makise_kurisu",
-      "prose": "一套选用深绯红真丝搭配透黑细蕾丝的吊带内衣，兼具理性与感性，精致的几何罩杯轮廓与小巧黑蝴蝶结，让一向理智的助手流露出惊人的妩媚。",
+      "prose": "A deep crimson satin-trimmed sheer soft-cup bralette and briefs set edged with fine black eyelash lace and tiny black satin ribbon bows.",
       "tokens": [
         "crimson satin trimmed sheer camisole set",
         "black eyelash lace edges",

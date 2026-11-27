@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3708,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐深蓝丝绒软榻双臂轻环胸前，傲娇脸红喘息",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "sapphire_ribbon_lingerie_r15",
     "promptProse": "Under the faint starlight projections of her private study, Iuno kneels on a midnight-blue velvet couch in a silver-trimmed sapphire satin bra, matching panties, and white thigh-high stockings.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "blue bra",
       "satin",

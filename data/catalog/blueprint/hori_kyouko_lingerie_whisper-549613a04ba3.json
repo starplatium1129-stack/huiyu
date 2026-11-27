@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3330,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hori_kyouko_lingerie_whisper",
     "characterId": "hori_kyouko",
@@ -42,7 +42,6 @@
       "ironing shirt",
       "domestic living room",
       "warm smile",
-      "brown hair",
       "cozy",
       "chandelier",
       "warm lighting"

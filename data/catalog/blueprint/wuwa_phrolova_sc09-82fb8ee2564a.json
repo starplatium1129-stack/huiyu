@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3509,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于钢琴琴凳敞开白衬衫衣襟，双腿微张喘息仰望",
     "adult": true,
@@ -30,18 +30,12 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
-      "pussy",
-      "spread legs"
+      "pussy"
     ],
     "outfitId": "unbuttoned_conductor_shirt_r18",
     "promptProse": "Seated on the bench before a moonlit grand piano, Phrolova lets her unbuttoned white Victorian shirt slip off her shoulders, baring her breasts and black thigh-highs as her composure melts into a breathless blush.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "unbuttoned shirt",

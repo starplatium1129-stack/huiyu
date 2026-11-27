@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "makima/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2270,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makima",
-      "prose": "一袭剪裁极度苛求的墨黑透视蕾丝吊带束身衣，细致入微的黑色花卉暗纹紧贴身躯，颈间一抹细黑天鹅绒颈带，优雅、严苛而透着不可逾越的诱惑。",
+      "prose": "A precisely tailored jet-black sheer floral lace corset babydoll with contoured underwire cups, semi-transparent lace paneling, and a slim black velvet choker around the neck.",
       "tokens": [
         "pure black sheer floral lace corset babydoll",
         "underwire contour cups",

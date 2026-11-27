@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_postcard_view",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3001,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_postcard_view",
     "characterId": "horn_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Inside an antique stationery boutique lined with mahogany display cases, Horn inspects a fine architectural postcard of Victoria's capital spires against the window light. Glass jars of vintage fountain pens, brass seals, and calligraphy paper rolls on the counter surround her focused, nostalgic gaze.",
-    "animaCaption": "",
+    "animaCaption": "Inside a mahogany-lined stationery boutique, she holds an architectural postcard up toward the window light to inspect its fine lines. Vintage fountain pens and brass seals on the counter frame her nostalgic gaze.",
     "promptTokens": [
       "standing",
       "antique stationery shop",

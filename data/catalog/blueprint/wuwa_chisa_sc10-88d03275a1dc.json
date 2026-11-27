@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3910,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸仰卧纯白棉质床单，双手轻按床单羞赧喘息",
     "adult": true,
@@ -30,21 +30,15 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "dormitory_moonlight_nude_r18",
     "promptProse": "Resting completely unclothed on white cotton sheets in her moonlit dormitory room, Chisa spreads her long black hair across the pillow, wearing only her crimson hair ribbon as she blushes deeply.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "hair spread out",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "nude",
       "completely nude",

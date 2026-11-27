@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_library",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2444,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_library",
     "characterId": "arihara_nanami",
@@ -32,7 +32,7 @@
       "peaceful atmosphere",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing in a quiet library aisle, she eases a hardcover volume from the mahogany shelf while her other hand steadies the neighboring spines. Golden afternoon sunbeams slant through arched windows, illuminating floating dust motes.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

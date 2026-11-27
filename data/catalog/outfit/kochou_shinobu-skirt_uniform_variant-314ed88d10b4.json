@@ -1,28 +1,26 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/skirt_uniform_variant",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1191,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
       "id": "skirt_uniform_variant",
       "name": "双排扣立领精裁西服裙与蝶翼斗篷",
       "tokens": [
-        "black_jacket",
-        "double_breasted",
-        "high_collar",
-        "grey_shirt",
-        "black_skirt",
-        "pencil_skirt",
-        "side_slit",
-        "butterfly_haori",
-        "white_belt",
-        "bare_legs"
+        "double-breasted blazer",
+        "stand collar",
+        "grey blouse",
+        "pencil skirt",
+        "side slit",
+        "butterfly capelet",
+        "leather waist belt",
+        "black pumps"
       ],
-      "prose": "A double-breasted black jacket and slit pencil skirt beneath a light butterfly haori.",
+      "prose": "A tailored double-breasted black stand-collar blazer over a grey blouse, paired with a side-slit pencil skirt, a light sheer butterfly capelet, a slim leather belt, and black pumps.",
       "default": false,
       "isDefault": false,
       "characterId": "kochou_shinobu"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_office_unbutton",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:56:31.670080300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐在学生会会长办公椅上，衬衫领带微松，黑丝长腿优雅交叠展露于桌侧，红瞳平静注视眼前之人",
     "adult": true,
@@ -25,18 +25,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "cleavage",
-      "bare shoulders",
-      "black pantyhose"
+      "bare shoulders"
     ],
     "outfitId": "seminar_uniform",
-    "promptProse": "Tsukatsuki Rio sitting in an ergonomic executive chair beside a sleek desk, unbuttoned collar with a loosened necktie showing bare collarbone, wearing black pantyhose and crossed legs clearly visible beside the desk, red geometric halo, ruby eyes, looking at viewer, modern seminar office, glowing holographic screens, warm desk lamp, cinematic lighting.",
+    "promptProse": "Tsukatsuki Rio sits back in an ergonomic chair beside her sleek executive desk in the late-night Seminar office, her shirt collar unbuttoned with a loosened necktie revealing her collarbone while her sheer black-stockinged legs rest crossed at the side of the desk. A warm desk lamp and faint holographic displays cast soft shadows around her calm crimson gaze.",
     "promptTokens": [
-      "rio (blue archive)",
       "halo",
-      "black hair",
       "long straight hair",
-      "red eyes",
       "hairclip",
       "unbuttoned shirt",
       "loosened necktie",

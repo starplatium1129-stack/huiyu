@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_flower_shop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2860,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_flower_shop",
     "characterId": "vulpisfoglia_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Strolling through a sun-drenched Italian-style florist shop along a Siracusan canal, Vulpisfoglia selects a dramatic bouquet of dark crimson dahlias and eucalyptus. Buckets of vibrant blooms line the cobblestone entry, while bright morning sunbeams reflect off the canal ripples outside, casting dancing light patterns across her sharp, tailored silhouette.",
-    "animaCaption": "",
+    "animaCaption": "Inside a bright canal-side florist shop lined with bloom buckets, she holds a striking bouquet of dark crimson dahlias and eucalyptus to inspect its balance. Morning sunbeams bounce off the canal ripples into dancing reflections.",
     "promptTokens": [
       "standing",
       "sun-drenched flower shop",

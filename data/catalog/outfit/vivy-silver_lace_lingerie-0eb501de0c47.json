@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "vivy/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "vivy",
-      "prose": "一套充满未来流线型美感的晶透水蓝连体内衣，结合高科技微光纤维与半透蕾丝，腰侧微露音符频率波形光导纤维，将歌姬完美的仿生曲线展现得神圣而动人。",
+      "prose": "A streamlined crystalline-cyan sheer teddy bodysuit combining delicate semi-translucent lace, contoured underwire cups, and subtle glowing soundwave fiber-optic piping along the waist.",
       "tokens": [
         "crystalline cyan fiber-optic sheer teddy bodysuit",
         "streamlined soundwave luminescent piping",

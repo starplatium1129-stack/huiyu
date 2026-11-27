@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_archive_margins",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2896,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_archive_margins",
     "characterId": "hoolheyak_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a quiet historical archive room filled with soft dust motes, Ho'olheyak leans over a weathered parchment map spread across a massive oak study table. Warm afternoon sunlight slants through leaded mullioned windows, illuminating delicate brass calipers, stacks of handwritten field reports, and the feathers at her head as she marks margins with a vintage ink quill.",
-    "animaCaption": "",
+    "animaCaption": "Leaning over a weathered parchment map on the oak archive table, she guides a vintage ink quill along the margin beside brass calipers. Slanted afternoon sunbeams from mullioned windows catch drifting dust motes.",
     "promptTokens": [
       "sitting",
       "archive",

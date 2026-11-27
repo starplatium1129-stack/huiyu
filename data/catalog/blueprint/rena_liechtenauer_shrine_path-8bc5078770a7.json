@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_shrine_path",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2423,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_shrine_path",
     "characterId": "rena_liechtenauer",
@@ -30,7 +30,7 @@
       "fresh morning mountain air",
       "full body"
     ],
-    "animaCaption": "",
+    "animaCaption": "At the foot of mossy stone stairs, she looks up with a soft, reverent smile toward the weathered vermilion torii gate rising into the cedar grove. Morning sunbeams cut through drifting mist and stone lanterns.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

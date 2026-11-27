@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_scarf_share_winter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2035,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "gallery_beret",
@@ -21,10 +21,8 @@
     "mood": "傲娇与雪景",
     "promptProse": "Sharing a single long red plaid knitted scarf on a snowy hillside bench, Eriri Spencer Sawamura pulls the viewer tightly beside her. Her cheeks flush bright crimson against the snow as her small fang shows in an adorable, defiant pout. Amber streetlights illuminate falling winter snowflakes along the park bench, casting warm nostalgic reflections across their shared knitted scarf.",
     "promptTokens": [
-      "sawamura_spencer_eriri",
       "1girl",
       "solo",
-      "blonde_hair",
       "twintails",
       "fang",
       "coat",

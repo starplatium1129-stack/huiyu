@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "maomao/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 984,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "无衣装状态",
-      "prose": "Unclothed.",
+      "prose": "Completely unclothed without apothecary tunic or bandages, showing slender bare shoulders, slight collarbones, and bare feet.",
       "tokens": [
-        "completely_nude"
+        "nude",
+        "completely nude",
+        "bare shoulders",
+        "collarbone",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

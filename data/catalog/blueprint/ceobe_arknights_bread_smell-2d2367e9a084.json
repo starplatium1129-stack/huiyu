@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_bread_smell",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3056,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_bread_smell",
     "characterId": "ceobe_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing excitedly outside an inviting brick-facade bakery in the golden morning light, Perro girl Ceobe hugs a brown paper bag overflowing with hot, golden-brown baguettes. Delicious steam curls from the bread, while her canine ears twitch with delight against the background of a sunlit cobblestone shopping alley decorated with flower boxes and a chalkboard cafe menu.",
-    "animaCaption": "",
+    "animaCaption": "Outside a sunlit cobblestone bakery storefront, she hugs a brown paper bag of steaming fresh bread close to her chest with an excited, open-mouthed grin. Golden morning light catches the rising steam and her perked ears.",
     "promptTokens": [
       "running",
       "holding paper bag",

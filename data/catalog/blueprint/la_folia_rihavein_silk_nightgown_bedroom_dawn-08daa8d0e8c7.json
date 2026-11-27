@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2746,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
     "characterId": "la_folia_rihavein",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "la_folia_rihavein",
-      "silver_hair",
       "long_hair",
-      "green_eyes",
       "nightgown",
       "slip_dress",
       "sheer_clothing",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3383,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nakano_miku_swimsuit_allure",
     "characterId": "nakano_miku",
@@ -42,10 +42,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "nakano miku",
-      "brown hair",
       "hair over one eye",
-      "blue eyes",
       "matcha blue bikini",
       "high-waist bikini",
       "teal headphones around neck",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_rainy_corridor_confession",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2482,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "id": "rose_rainy_corridor_confession",
     "characterId": "rose_oriana",
@@ -17,21 +17,19 @@
     "action": "在雨幕长廊下紧握对方双手，将祖传戒指贴在胸口，泪眼深情告白",
     "timeOfDay": "day",
     "lighting": "dramatic overcast rainy skylight reflecting in puddle water on flagstone floor",
-    "camera": "medium_shot",
+    "camera": "medium shot",
     "mood": "温存与神圣",
     "promptProse": "In a rainswept stone corridor, blonde knight princess Rose holds hands against her chest with tearful amber eyes.",
     "promptTokens": [
       "rain",
       "corridor",
-      "holding_hands",
+      "holding hands",
       "emotional",
       "tears",
       "ring",
-      "close-up",
-      "medium_shot",
-      "sunlight",
+      "medium shot",
       "overcast",
-      "water_reflection"
+      "water reflection"
     ],
     "negativeTokens": [],
     "animaCaption": "Entrusting the ring and her devoted heart with trembling hands amidst the torrential rain.",

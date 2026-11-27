@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -42,6 +42,7 @@
     "timeOfDay": "白天",
     "title": "泥岩 · 装甲整备",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Kneeling beside her empty power armor over an open toolbox, she turns a wrench on the exposed knee joint while steadying the frame with her other hand. Warm workshop lamps gleam across the steel plates and her focused gaze."
   }
 }

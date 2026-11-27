@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3105,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "蹲在花丛边手提黄铜洒水壶浇花，灿烂微笑",
     "adult": false,
@@ -32,10 +32,7 @@
     "promptProse": "Kneeling among vibrant red camellia shrubs in an outdoor botanical garden, Camellya tends the blossoms with a brass watering can, wearing a breezy cream linen sundress tied with crimson ribbons.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "cream dress",
       "sundress",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yarai_miu/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2549,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "yarai_miu",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yarai_miu",
-      "prose": "一套具有哥特魅惑风采的墨黑真丝钢圈内衣，胸前点缀暗红蔷薇花蕊蕾丝，利落的镂空系带缠绕腰际，将吸血鬼少女傲人妖娆的身材线条衬托得惊心动魄。",
+      "prose": "A gothic ink-black silk underwire corset bralette set accented with deep crimson rose-lace appliques, sheer side panels, and strappy waist and hip harness details.",
       "tokens": [
         "inky black underwire corset bralette",
         "crimson rose lace applique",

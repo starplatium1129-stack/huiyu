@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3605,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "高举黄金双耳酒杯微笑致意，火炬火星飞舞",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "solstice_banquet_gown",
     "promptProse": "At Septimont's torchlit solstice banquet under a clear starry sky, Augusta lifts a hammered gold chalice in toast, wearing a draped gold-and-crimson backless silk gown.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "gold laurel crown",
       "tall",
       "evening gown",

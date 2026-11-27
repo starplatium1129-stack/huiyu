@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_coffee",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2374,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ogiso_setsuna_coffee",
     "characterId": "ogiso_setsuna",
@@ -31,7 +31,7 @@
       "long glossy dark hair",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated at a sunny second-floor cafe table above the busy street, she writes song titles on a napkin beside her caramel latte and phone. Bright morning window light illuminates her cheerful smile and the silver pen in her hand.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

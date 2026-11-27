@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_garden_bench",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2884,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "muelsyse_arknights_garden_bench",
     "characterId": "muelsyse_arknights",
@@ -30,7 +30,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting on an ornate cast-iron garden bench beside a cascading stone fountain at twilight, Muelsyse pats the wooden slats beside her, tilting her head with an irresistible, affectionate smile. Golden pathway lanterns turn on along winding gravel trails, illuminating blossoming hydrangeas, misty water spray, and her shimmering translucent green hair.",
-    "animaCaption": "",
+    "animaCaption": "Seated on the cast-iron bench beside a stone fountain, she pats the wooden slats next to her and tilts her head with an affectionate smile. Golden pathway lanterns and twilight mist glow across blooming hydrangeas.",
     "promptTokens": [
       "sitting",
       "ornate garden bench",

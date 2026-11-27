@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3601,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于神殿石栏边单手扶巨剑剑柄，英气微笑",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "solarium_archon_regalia",
     "promptProse": "High on the white marble colonnade of Septimont's solar temple at dawn, Augusta stands tall in her crimson-and-gold archon regalia and golden laurel crown, resting a hand upon her greatsword.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "gold laurel crown",
       "tall",
       "white and red dress",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3710,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸仰卧深蓝丝绸床单，双手抓紧丝绸喘息",
     "adult": true,
@@ -30,21 +30,15 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "moonlit_silk_bed_nude_r18",
     "promptProse": "Stretched completely nude across midnight-blue silk sheets beneath a starry window, Iuno spreads her long blue twin tails across the pillows, biting her lower lip with a deep crimson blush.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
       "hair spread out",
-      "blue eyes",
       "crescent hair ornament",
       "nude",
       "completely nude",

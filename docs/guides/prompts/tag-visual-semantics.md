@@ -14,8 +14,8 @@
 | **L3 自造复合词** 🟡 | 字面透明但无训练先验 | `tail_coil` `halo_focus` `cinematic_lighting` | 方向大致正确但强度较弱 |
 | **L4 反模式** ❌ | 否定词、AI 玄学词、装配词 | `no_customers` `masterpiece` `8k` | 失效或反向召唤不需要的元素 |
 
-- **Anima**：普通标签用空格分隔（影响 Qwen3/T5 分词），精确角色/作品 triggers（如 `ayachi_nene`）保留下划线；底模均开启 `strip_quality_tokens=true`，数据层不写质量词。
-- **Krea 2**：纯英文散文 3–5 句，禁用否定短语和 `masterpiece`/`8k`/`stunning` 等通用空词。
+- **Anima**：模型标签字段用空格分隔（影响 Qwen3/T5 分词；检索字段 `sceneTags`/`tags` 与旧工作室场景仍兼容下划线）。热门角色名与作品名在 Anima 编译时同样转空格，仅工作室 `nene_*`/`natsume_*` 与显式 LoRA 触发词保留下划线。各底模由 `data/presets.json` 注入自身质量前缀（仅 `anima_aesthetic_v11` 开启 `strip_quality_tokens=true` 主动剥离质量词），数据层一律不手写质量词。
+- **Krea 2**：纯英文散文，禁用中文、标签堆叠、否定短语和 `masterpiece`/`8k`/`stunning` 等通用空词。
 
 ---
 
@@ -42,10 +42,13 @@
 ## 3. 双引擎消费路径
 
 ```text
-promptTokens   ─▶ Anima: renderPromptPlan (strip_quality_tokens) → 空格 tag + visual direction
-               └─ Krea:  不消费
-nsfwTokens     ─▶ 按 R18 分级注入 Anima caption
-promptProse    ─▶ Krea 散文织入；Anima visual direction
+promptTokens   ─▶ Anima: 第 5 段普通标签流（orderedAnimaTags → 空格分词）
+               ├─ Krea:  promptKreaRenderer 翻译为动作/景别/光影/环境英文短语
+               └─ MOSS:  renderMossDrawingPrompt 结构化标签流
+nsfwTokens     ─▶ 成人蓝图（adult: true）注入 Anima 第 5 段（exactControls）、Krea 与 MOSS
+animaCaption   ─▶ Anima 第 6 段自然语言补充（≤ 2 句）；非空时优先于 nsfwProse
+promptProse    ─▶ Krea / MOSS 散文主体；无 animaCaption 时作 Anima 回落
+nsfwProse      ─▶ 成人蓝图 Krea / MOSS 前置散文；无 animaCaption 时作 Anima 回落
 krea/animaStyleHint ─▶ 可选引擎配方或风格短语
 recommendedSize     ─▶ 视图层 closestSupportedSize(activeModel) 收敛
 ```

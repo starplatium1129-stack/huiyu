@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3906,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于木质花架旁手持银剪修剪红玫瑰，恬静微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "botanical_glasshouse_blouse",
     "promptProse": "Surrounded by thriving greenery in Startorch Academy's botanical glasshouse, Chisa wears a frilled white blouse and charcoal suspender skirt, trimming a potted crimson rose with silver shears.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "white blouse",
       "frills",

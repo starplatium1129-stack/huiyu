@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_run",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2408,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_run",
     "characterId": "bazett_fraga_mcremitz",
@@ -30,7 +30,7 @@
       "focused expression",
       "wide shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Jogging at a steady, athletic pace along a winding coastal trail above the rocky sea, she keeps her gaze forward in quiet focus. Golden sunrise light breaks over the horizon and brightens the ocean waves beside her.",
     "negativeTokens": [],
     "recommendedSize": "1216x832",
     "adult": false,

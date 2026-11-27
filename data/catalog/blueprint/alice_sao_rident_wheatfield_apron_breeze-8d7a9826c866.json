@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_rident_wheatfield_apron_breeze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2692,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_rident_wheatfield_apron_breeze",
     "characterId": "alice_sao",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "alice_zuberg",
-      "blonde_hair",
       "long_hair",
       "ponytail",
-      "blue_eyes",
       "apron",
       "dress",
       "bare_arms",

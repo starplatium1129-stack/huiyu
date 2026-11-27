@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/council_blazer_skirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1352,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "council_blazer_skirt",
       "name": "学生会银边西装与百褶短裙",
-      "prose": "A sharply tailored navy blazer with metallic piping over a pleated miniskirt and sheer black pantyhose.",
+      "prose": "A sharply tailored student council blazer with silver piping and a gold crest badge over a crisp collared shirt and pleated miniskirt, finished with sheer black pantyhose and black pumps.",
       "tokens": [
-        "school_uniform",
-        "navy_blazer",
-        "blazer",
-        "collared_shirt",
-        "neck_ribbon",
-        "pleated_skirt",
-        "miniskirt",
-        "pantyhose",
-        "black_pantyhose",
-        "loafers"
+        "silver-piped blazer",
+        "tailored jacket",
+        "gold crest badge",
+        "crisp collared shirt",
+        "pleated miniskirt",
+        "sheer black pantyhose",
+        "black pumps"
       ],
       "characterId": "suou_yuki",
       "default": false,

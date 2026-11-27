@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_osmanthus_tree_sacred_vow",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1998,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_osmanthus_tree_sacred_vow",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "神圣纯洁",
     "promptProse": "Beneath a grand blooming osmanthus tree showering fragrant golden petals, Alice stands poised in her ornate Integrity Knight armor, resting her hand upon her sacred blade.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "holding_sword",
       "tree",
       "flowers",

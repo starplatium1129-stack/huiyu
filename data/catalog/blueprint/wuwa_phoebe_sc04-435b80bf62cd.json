@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3304,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于木桌前手握鹅毛笔抄写手稿，抬头微笑",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "archivist_cardigan_ensemble",
     "promptProse": "Surrounded by towering bookshelves in the Order's scriptorium, Phoebe wears round reading glasses and an oatmeal knit cardigan, pausing with a feather quill over an illuminated manuscript.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "glasses",
       "beige cardigan",
       "white blouse",

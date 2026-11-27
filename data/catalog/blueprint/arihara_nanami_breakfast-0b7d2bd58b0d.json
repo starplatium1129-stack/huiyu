@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_breakfast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2447,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_breakfast",
     "characterId": "arihara_nanami",
@@ -32,7 +32,7 @@
       "airy atmosphere",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing beside the stove in a bright, orderly kitchen, she reaches for a ceramic bowl while a simmering soup pot sends up curls of soft steam. Crisp morning window light catches the neat row of jars and breakfast ware.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

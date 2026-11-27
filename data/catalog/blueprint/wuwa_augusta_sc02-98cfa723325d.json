@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3602,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "肩扛训练大剑单手叉腰，爽朗大笑汗水微光",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "arena_gladiator_tunic",
     "promptProse": "In the center of Septimont's sunlit stone arena after morning drills, Augusta rests a broadsword across her shoulder in a sleeveless white athletic tunic and bronze waist belt, grinning brightly.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "tall",
       "sleeveless dress",
       "white tunic",

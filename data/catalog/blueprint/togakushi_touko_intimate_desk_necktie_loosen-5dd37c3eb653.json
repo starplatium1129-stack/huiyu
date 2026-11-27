@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_desk_necktie_loosen",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2004,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "town_blouse",
@@ -21,7 +21,6 @@
     "mood": "动情与治愈",
     "promptProse": "Inside the quiet, locked office room at twilight, Togakushi Touko loosens her blouse collar while seated at the dark wooden desk. She leans her forehead gently against the viewer's shoulder, her long black hair cascading as she relaxes all defenses.",
     "promptTokens": [
-      "togakushi_touko",
       "1girl",
       "solo",
       "long_hair",

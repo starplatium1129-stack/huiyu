@@ -1,26 +1,25 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/school_blouse_skirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1180,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "school_blouse_skirt",
       "name": "微敞校服衬衫、百褶裙与黑色长袜",
-      "prose": "A white school shirt with an open collar tucked into a navy pleated skirt, paired with semi-sheer black thigh-highs.",
+      "prose": "A white school blouse with an unbuttoned collar, loosened ribbon tie, and rolled sleeves tucked into a short pleated skirt, paired with sheer black stockings and indoor shoes.",
       "tokens": [
-        "school_uniform",
-        "white_shirt",
-        "unbuttoned_shirt",
-        "pleated_skirt",
-        "navy_skirt",
-        "miniskirt",
-        "black_thighhighs",
-        "zettai_ryouiki",
-        "loafers"
+        "unbuttoned white shirt",
+        "open collar",
+        "rolled sleeves",
+        "ribbon tie",
+        "checkered miniskirt",
+        "sheer black stockings",
+        "zettai ryouiki",
+        "indoor shoes"
       ],
       "characterId": "futaba_rio",
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "touma_kazusa/silver_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2547,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "touma_kazusa",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "touma_kazusa",
-      "prose": "一袭极简而极度修身的重磅墨黑真丝吊带长裙，极致流畅的垂坠感贴合高挑孤傲的身段，高开叉在琴凳边自然滑落，优雅冷冽如同古典交响乐中的独奏独白。",
+      "prose": "A sleek, minimalist ink-black heavy liquid-silk bias-cut slip gown with ultra-thin straps and a high thigh slit.",
       "tokens": [
         "inky black heavy liquid-silk slip gown",
         "minimalist thin straps",

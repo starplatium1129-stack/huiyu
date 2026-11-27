@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3308,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "微侧身双手交叉轻护胸口，泪眼汪汪满面通红",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "white_silk_undergarments_r15",
     "promptProse": "Beside a carved wooden screen in the sacristy dressing room, Phoebe freezes in an ivory satin bandeau bra, bow-trimmed panties, and white thigh-high stockings, crossing her hands over her chest in a flustered blush.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "white bra",
       "satin",
       "white panties",

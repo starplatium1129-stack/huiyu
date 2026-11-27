@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_coastal_cliff_wind_trench",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2680,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "aozaki_aoko_coastal_cliff_wind_trench",
     "characterId": "aozaki_aoko",
@@ -23,7 +23,6 @@
     "promptTokens": [
       "red_hair",
       "long_hair",
-      "blue_eyes",
       "trench_coat",
       "open_coat",
       "jeans",

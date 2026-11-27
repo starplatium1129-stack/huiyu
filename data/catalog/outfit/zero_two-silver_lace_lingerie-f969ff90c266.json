@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zero_two/silver_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2410,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "zero_two",
-      "prose": "一套将驾驶服元素与极致性感内衣融合的猩红与黑皮革拼接内衣，高开叉细黑绑带束缚在腰腹与大腿根部，将02完美的叫龙神性身段展现得霸道狂放、摄人心魄。",
+      "prose": "A striking crimson and glossy black leather strappy bralette and high-cut bottom set inspired by pilot-suit accents, detailed with white piping and sleek black waist and thigh harness cords.",
       "tokens": [
         "crimson red and black patent leather strappy bralette set",
         "high-cut hip harness cords",

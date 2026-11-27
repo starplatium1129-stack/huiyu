@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_tea_break",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2449,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_tea_break",
     "characterId": "arihara_nanami",
@@ -31,7 +31,7 @@
       "evening atmosphere",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated peacefully at the polished wooden dining table after finishing chores, she pauses beside a steaming teacup with a squarely folded cloth resting near her hand. Warm overhead pendant light softens the tidy evening kitchen.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

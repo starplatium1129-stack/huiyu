@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_balcony_wind",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2945,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-07T04:22:41.836Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "w_arknights_balcony_wind",
     "characterId": "w_arknights",
@@ -29,7 +29,7 @@
       "medium close-up"
     ],
     "promptProse": "Leaning over an industrial high-rise balcony railing, Sarkaz mercenary W leans in close toward the viewer with her trademark sharp-toothed mischievous grin. Night winds whip through her short white hair and coat tassels, while below them, the vast cybernetic metropolis of neon signs, illuminated highways, and drifting airships casts vibrant reflections in her glowing crimson eyes.",
-    "animaCaption": "",
+    "animaCaption": "Resting on the high-rise balcony railing, she leans close toward the viewer with a sharp mischievous grin as night wind whips her hair. Vibrant neon glow from the skyline and highways shimmers across the dark air.",
     "promptTokens": [
       "leaning on balcony railing",
       "leaning toward viewer",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_crop_top_shibuya_night_selfie",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2724,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "viper_nikke_crop_top_shibuya_night_selfie",
     "characterId": "viper_nikke",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "viper_(nikke)",
-      "pink_hair",
       "long_hair",
       "wavy_hair",
-      "green_eyes",
       "crop_top",
       "midriff",
       "navel",

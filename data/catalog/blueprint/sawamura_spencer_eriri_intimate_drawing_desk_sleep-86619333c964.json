@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_drawing_desk_sleep",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2032,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "studio_tracksuit",
@@ -21,10 +21,8 @@
     "mood": "温存与神圣",
     "promptProse": "Slumped fast asleep over her cluttered manga drawing desk late at night, Eriri Spencer Sawamura rests beside her glowing graphics tablet. Her twin blonde tails drape across the floor as a warm jacket is draped over her shoulders, her fang subtly showing as she mumbles in her sleep.",
     "promptTokens": [
-      "sawamura_spencer_eriri",
       "1girl",
       "solo",
-      "blonde_hair",
       "twintails",
       "fang",
       "tracksuit",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3701,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于黄铜浑天仪旁轻拨星环，微抬下巴傲娇浅笑",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "lunar_oracle_chiton",
     "promptProse": "High atop Septimont's open-air lunar observatory beneath a starry sky, Iuno rests her fingertips on a rotating brass astrolabe in her white-and-sapphire oracle attire.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "white and blue dress",
       "pleated dress",

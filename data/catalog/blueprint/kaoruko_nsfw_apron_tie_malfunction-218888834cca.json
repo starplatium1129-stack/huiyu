@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_apron_tie_malfunction",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kaoruko_nsfw_apron_tie_malfunction",
     "title": "和栗薰子 · 后厨真空围裙系带松脱事故",
@@ -44,7 +44,6 @@
       "hand on table",
       "holding apron",
       "flustered",
-      "warm_lighting",
       "soft_lighting"
     ],
     "negativeTokens": [],

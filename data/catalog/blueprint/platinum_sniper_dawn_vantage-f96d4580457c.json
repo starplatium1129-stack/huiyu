@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_sniper_dawn_vantage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3100,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_sniper_dawn_vantage",
     "characterId": "platinum_arknights",
@@ -28,7 +28,7 @@
       "city skyline"
     ],
     "promptProse": "On a gothic clocktower rooftop at chilly daybreak, Platinum kneels gracefully behind stone balustrades, pulling back a sleek high-tech compound longbow. Her silver-white straight hair and hooded cape whip dynamically in the morning gale. A glowing crystalline arrow tip illuminates her sharp, tranquil blue eyes, overlooking the sprawling skyline of Kazimierz in soft dawn mist.",
-    "animaCaption": "",
+    "animaCaption": "Kneeling behind the stone balustrade of a gothic clocktower rooftop at daybreak, she draws back a sleek compound bow with calm, intense aim. Cold dawn wind whips her hair while cool blue and pale gold light washes the misty skyline.",
     "promptTokens": [
       "solo",
       "kneeling",

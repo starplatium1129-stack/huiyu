@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_souvenir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2428,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_souvenir",
     "characterId": "rena_liechtenauer",
@@ -31,7 +31,7 @@
       "thoughtful curious smile",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Inside a quaint folk craft shop, she holds up two patterned silk pouches toward the light, comparing their designs with a curious, thoughtful smile. Warm window daylight gleams on lacquerware shelves and woven baskets around her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

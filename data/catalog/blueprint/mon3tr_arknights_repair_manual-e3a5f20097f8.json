@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_repair_manual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3068,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_repair_manual",
     "characterId": "mon3tr_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting hunched over a cluttered engineering workbench covered in multimeter probes, soldering irons, and disassembled drone circuits, Mon3tr reads a dog-eared equipment schematic manual under a bright magnifying work lamp. The metallic workshop glow and racks of spare components highlight her focused analytical gaze.",
-    "animaCaption": "",
+    "animaCaption": "Seated hunched over a cluttered engineering workbench amid soldering tools and disassembled circuits, she reads a dog-eared schematic manual with analytical focus. A bright magnifying work lamp lights the pages and spare parts.",
     "promptTokens": [
       "sitting",
       "engineering workbench",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_05",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1577,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "zero_two_sfw_b6_05",
     "title": "02 · 海风里的彩色糖果",
@@ -42,8 +42,7 @@
       "grin",
       "barefoot",
       "water reflection",
-      "sunlight",
-      "water_reflection"
+      "sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

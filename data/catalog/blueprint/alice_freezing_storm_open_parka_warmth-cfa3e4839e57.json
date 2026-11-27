@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_freezing_storm_open_parka_warmth",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1808,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_freezing_storm_open_parka_warmth",
     "title": "爱丽丝 · 冰封雪洞中的羽绒服拥抱取暖",
@@ -51,8 +51,6 @@
       "gentle_blush",
       "warm_expression",
       "frost_crystals",
-      "pink_hair",
-      "blue_eyes",
       "cozy_glow",
       "cinematic_lighting",
       "hugging",

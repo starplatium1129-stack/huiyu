@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_sunflower_sundress_lemonade_stand",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1899,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "anis_sunflower_sundress_lemonade_stand",
     "characterId": "anis_nikke",
@@ -39,7 +39,6 @@
       "holding iced drink",
       "lemonade cup",
       "bright smile",
-      "blonde hair",
       "short hair",
       "cleavage",
       "dappled sunlight",

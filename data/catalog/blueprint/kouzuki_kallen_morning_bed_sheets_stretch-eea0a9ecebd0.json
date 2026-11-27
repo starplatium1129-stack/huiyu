@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_morning_bed_sheets_stretch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2686,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen_morning_bed_sheets_stretch",
     "characterId": "kouzuki_kallen",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kouzuki_kallen",
-      "red_hair",
       "short_hair",
-      "blue_eyes",
       "camisole",
       "bare_shoulders",
       "collarbone",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_rainy_ginger_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2037,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "training_pants",
@@ -21,10 +21,8 @@
     "mood": "娇羞动情",
     "promptProse": "Exhausted after a storm patrol, Shirai Kuroko sips hot ginger tea inside a warm safehouse. Damp curls frame her blushing face as the viewer gently holds her cold hands to warm them, prompting her to lean softly against their chest.",
     "promptTokens": [
-      "shirai_kuroko",
       "1girl",
       "solo",
-      "brown_hair",
       "damp_hair",
       "loungewear",
       "holding_mug",

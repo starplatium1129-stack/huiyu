@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "la_folia_rihavein/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2521,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "la_folia_rihavein",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "la_folia_rihavein",
-      "prose": "一袭纯银白透光雪纺抹胸内衣，双乳中央垂挂一颗水滴形纯蓝宝石链饰，侧摆拼接高开叉银丝薄纱长披帛，尽显王室的华贵神圣与极度诱惑。",
+      "prose": "A luminous silver sheer chiffon bandeau lingerie set with a teardrop sapphire crystal pendant suspended at the center bust, silver thread embroidery, and a high-slit sheer floating peignoir.",
       "tokens": [
         "silver sheer chiffon bandeau bra",
         "sapphire teardrop crystal chain",

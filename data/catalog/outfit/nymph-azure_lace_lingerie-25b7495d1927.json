@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nymph/azure_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2528,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "nymph",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nymph",
-      "prose": "一袭天蓝色的半透明轻雪纺荷叶边连体短睡衣，颈间系着金色小铃铛缎带颈圈，后背预留羽翼展开的半圆镂空，纯真、娇小又带着微性感的科技梦幻。",
+      "prose": "A sky-blue translucent chiffon ruffled playsuit with a cute boyleg cut, a gold-bell ribbon choker, and a semicircular open back cutout designed for wings.",
       "tokens": [
         "sky blue translucent chiffon frill playsuit",
         "golden bell choker collar",

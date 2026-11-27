@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2361,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
@@ -18,15 +18,11 @@
       "prose": "A deeply artistic gradient ultramarine-blue and midnight-black bandeau bikini featuring delicate criss-cross wrap ties, sparkling star charms, and an airy indigo-tinted chiffon scarf trailing in the breeze.",
       "tokens": [
         "gradient blue bikini",
+        "bandeau bikini",
         "black straps",
         "cross-wrap ties",
         "star charms",
-        "indigo chiffon scarf",
-        "medium blue hair",
-        "purple eyes",
-        "star eyes",
-        "method actress gaze",
-        "slender build"
+        "indigo chiffon scarf"
       ]
     }
   }

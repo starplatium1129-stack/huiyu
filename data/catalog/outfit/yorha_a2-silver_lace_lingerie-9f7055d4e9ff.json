@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yorha_a2/silver_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "yorha_a2",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yorha_a2",
-      "prose": "一套由耐磨合成皮革与透气纤维拼接的战损风抹胸内衣，边缘带着细微战损磨痕，利落包裹着人造人紧致有力的腹肌与修长肢体，展现出绝境独行者的冰冷与力量之美。",
+      "prose": "A charcoal distressed faux-leather and breathable tech-fabric tube top paired with utility-ring boy-shorts featuring subtle battle-worn frayed edges.",
       "tokens": [
         "charcoal distressed faux-leather tube top set",
         "battle-worn edge accents",

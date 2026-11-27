@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_tatami_afternoon_nap",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2009,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "market_casual",
@@ -21,7 +21,6 @@
     "mood": "宁静祥和",
     "promptProse": "Napping peacefully on a woven tatami mat in the breezy shrine room, Sumizome Nozomi hugs the viewer's arm like a plush cushion in her sleep. The sound of a wind chime echoes as soft green garden shadows ripple across her innocent sleeping face. Only the viewer's arm enters the frame.",
     "promptTokens": [
-      "sumizome_nozomi",
       "1girl",
       "solo",
       "brown_hair",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_fireside_talk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2855,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.097Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pramanix_arknights_fireside_talk",
     "characterId": "pramanix_arknights",
@@ -30,7 +30,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting gracefully on a thick sheepskin rug beside a roaring stone fireplace in a mountain sanctuary, Pramanix cradles a steaming stoneware mug of spiced winter cider, leaning closer with an affectionate, tranquil smile. Dancing firelight casts amber warmth over her soft silver hair and patterned knit shawl, while outside the timber walls, a silent blizzard blankets the dark pine forest.",
-    "animaCaption": "",
+    "animaCaption": "Seated on a thick sheepskin rug beside the crackling stone hearth, she cradles a steaming mug of spiced cider in both hands and leans closer with an affectionate smile. Dancing amber firelight warms her shawl against the wintry night.",
     "promptTokens": [
       "sheepskin rug by fireplace",
       "roaring stone hearth",

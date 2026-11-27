@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ram/crimson_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2292,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "ram",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ram",
-      "prose": "一袭轮廓分明的深浆果红短款吊带睡裙，典雅的方领剪裁衬托出锁骨线条，胸下搭配微弹力黑色细绑带，干练利落中透着如玫瑰般的刺与美。",
+      "prose": "A crisp crimson-berry sheer short corset nightdress with a clean square neckline, scalloped hem, and slender black underbust lace-up cords.",
       "tokens": [
         "crimson berry square-neck sheer corset nightdress",
         "black underbust lace-up cords",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_pamphlet_table",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2916,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-07T15:05:00.000Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "archetto_arknights_pamphlet_table",
     "characterId": "archetto_arknights",
@@ -31,8 +31,7 @@
       "meticulous expression",
       "medium shot"
     ],
-    "animaCaption": "",
-    "characterId": "archetto_arknights",
+    "animaCaption": "Seated at a round wooden lounge table, she neatly aligns and folds a fresh stack of monastery pamphlets with calm, meticulous care. Bright morning window daylight casts crisp shadows across the printed pages.",
     "recommendedSize": "1152x1536",
     "negativeTokens": [],
     "adult": false,

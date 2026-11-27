@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3211,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "artoria_pendragon_swimsuit_allure",
     "characterId": "artoria_pendragon",
@@ -44,10 +44,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "artoria pendragon",
-      "blonde hair",
       "hair bun",
-      "green eyes",
       "royal blue bikini",
       "white pareo",
       "cupping water in hands",

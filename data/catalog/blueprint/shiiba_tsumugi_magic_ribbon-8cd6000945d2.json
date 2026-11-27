@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_magic_ribbon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2414,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shiiba_tsumugi_magic_ribbon",
     "characterId": "shiiba_tsumugi",
@@ -30,7 +30,7 @@
       "playful smile",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing before the dressing room vanity mirror, she fingers the crimson ribbon on her witch costume and studies her reflection with a playful smile. Glowing vanity bulbs cast warm golden light across the table and accessories.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

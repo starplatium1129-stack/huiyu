@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3203,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于皮质长椅擦拭晶簇手枪，侧目凝视",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "velvet_riding_habit",
     "promptProse": "Inside a stone-vaulted private shooting gallery, Carlotta sits in a tailored wine-red riding jacket and knee boots, calmly inspecting the crystal chamber of her bespoke flintlock pistol.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "earrings",
       "red jacket",
       "double-breasted",

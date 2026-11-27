@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3804,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于营地木箱双手捧热咖啡杯，火光映照柔和微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "campfire_wool_poncho",
     "promptProse": "Beside a crackling campfire in a quiet rocky canyon under the Milky Way, Galbrena wears a heavy charcoal-and-indigo woven poncho and holds a steaming tin mug with a softened, genuine smile.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "poncho",
       "blue and black",
       "black sweater",

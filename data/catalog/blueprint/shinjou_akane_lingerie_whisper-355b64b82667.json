@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3527,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shinjou_akane_lingerie_whisper",
     "characterId": "shinjou_akane",
@@ -47,7 +47,6 @@
       "smile",
       "1girl",
       "solo",
-      "shinjou akane",
       "bare feet",
       "pale skin",
       "relaxed casual fit",

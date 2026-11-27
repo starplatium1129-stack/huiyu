@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_oversized_hoodie_morning_sofa",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2009,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "iino_miko_oversized_hoodie_morning_sofa",
     "characterId": "iino_miko",
@@ -21,13 +21,10 @@
     "mood": "宁静祥和",
     "promptProse": "Curled up comfortably on a sunlit living room couch wearing an oversized cozy lavender hoodie and round glasses, Iino Miko cradles a warm mug and looks up with a tender, bashful smile.",
     "promptTokens": [
-      "iino_miko",
       "1girl",
       "solo",
       "short_hair",
       "low_twintails",
-      "brown_hair",
-      "brown_eyes",
       "holding_cup",
       "sofa",
       "sunlight",

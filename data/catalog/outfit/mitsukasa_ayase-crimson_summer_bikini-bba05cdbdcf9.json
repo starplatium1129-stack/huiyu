@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mitsukasa_ayase/crimson_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2556,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "mitsukasa_ayase",
     "outfit": {
@@ -20,14 +20,9 @@
         "coral pink bikini",
         "bandeau bikini",
         "ruffled swim skirt",
-        "pearl brooch",
-        "padded top",
-        "twintails",
-        "brown hair",
-        "hazel eyes",
-        "cute",
-        "slender",
-        "shy blush"
+        "pearl accent",
+        "sweetheart neckline",
+        "mesh skirt"
       ]
     }
   }

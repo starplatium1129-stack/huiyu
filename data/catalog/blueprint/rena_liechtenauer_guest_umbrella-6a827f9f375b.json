@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_guest_umbrella",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2426,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_guest_umbrella",
     "characterId": "rena_liechtenauer",
@@ -31,7 +31,7 @@
       "paper lantern glow",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "In the wooden inn entryway during an afternoon drizzle, she lifts a damp umbrella from the ceramic stand to set it neatly aside with diligent care. Warm paper lantern glow contrasts with glistening rain along the mossy stones outside.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

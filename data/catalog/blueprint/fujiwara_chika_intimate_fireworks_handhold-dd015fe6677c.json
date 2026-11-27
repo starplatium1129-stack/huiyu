@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_fireworks_handhold",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2029,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "weekend_parka",
@@ -21,10 +21,8 @@
     "mood": "娇羞动情",
     "promptProse": "Found under a stone lantern pathway as fireworks boom overhead, Fujiwara Chika clutches the viewer's sleeve tightly with both hands. Tears sparkle in her blue eyes after being separated in the festival crowd, her black bow fluttering in the festive breeze.",
     "promptTokens": [
-      "fujiwara_chika",
       "1girl",
       "solo",
-      "pink_hair",
       "long_hair",
       "black_bow",
       "hair_bow",

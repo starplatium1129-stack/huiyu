@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_night",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "深夜独自整理文件",
     "adult": false,
@@ -28,7 +28,6 @@
     "outfitId": "gehenna_uniform",
     "promptProse": "Hina looks up with relief from the midnight paperwork as the teacher arrives, cool desk-lamp light reaching her tired face.",
     "promptTokens": [
-      "Hina",
       "documents",
       "office",
       "medium shot",

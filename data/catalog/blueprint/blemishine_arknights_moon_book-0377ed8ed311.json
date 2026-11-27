@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_moon_book",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3015,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_moon_book",
     "characterId": "blemishine_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Curled up in a deep velvet reading chair beside a grand arched library window at midnight, Blemishine studies an illustrated celestial atlas open on her lap. Outside, a luminous silver full moon shines brightly in the starry night sky, while an adjustable brass reading lamp casts a cozy pool of light over intricate star charts and lunar diagrams.",
-    "animaCaption": "",
+    "animaCaption": "Curled in a deep reading chair beside an arched library window at midnight, she studies an open celestial atlas resting on her lap. A brass lamp lights the star charts while a bright full moon shines through the glass.",
     "promptTokens": [
       "sitting",
       "sitting in armchair",

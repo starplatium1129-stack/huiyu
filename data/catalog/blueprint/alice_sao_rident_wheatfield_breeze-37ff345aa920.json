@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_rident_wheatfield_breeze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2000,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_rident_wheatfield_breeze",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "宁静与田园",
     "promptProse": "Walking gently through shimmering golden wheatfields near her rural homeland in a simple country dress and apron, Alice brushes her fingertips across the ripening ears as the warm evening wind catches her blonde braid.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "wheat_field",
       "field",
       "sunset",

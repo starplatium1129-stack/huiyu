@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2460,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mizuhara_chizuru",
-      "prose": "一袭低调典雅的赤陶橙真丝吊带睡裙，胸前缀有精巧风琴细褶与米白蕾丝花边，质感高级内敛，衬托出女演员私底下无可挑剔的优美体态。",
+      "prose": "An understated terracotta silk camisole slip dress with fine accordion pleats across the bust, thin spaghetti straps, and delicate beige lace trim.",
       "tokens": [
         "terracotta orange-brown silk slip dress",
         "fine pleats at bust",

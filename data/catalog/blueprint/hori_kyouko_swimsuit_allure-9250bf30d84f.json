@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3329,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hori_kyouko_swimsuit_allure",
     "characterId": "hori_kyouko",
@@ -39,16 +39,13 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "hori kyouko",
-      "brown hair",
       "hair bun",
-      "brown eyes",
       "white bikini",
       "denim shorts",
       "seasoning bbq skewers",
       "beach campsite grill",
       "cozy sunset glow",
-      "flustered cute blush",
+      "heavy blush",
       "toned tummy",
       "depth of field",
       "cinematic lighting"

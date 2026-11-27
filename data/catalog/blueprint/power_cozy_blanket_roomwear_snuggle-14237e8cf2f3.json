@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_cozy_blanket_roomwear_snuggle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1996,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_cozy_blanket_roomwear_snuggle",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "雪景与治愈",
     "promptProse": "Snuggled on the living room rug wrapped in a plush blanket and comfy fleece hoodie, Power peers up with rosy cheeks and a slight pout, tugging gently on the viewer's sleeve for warmth.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "sharp_teeth",

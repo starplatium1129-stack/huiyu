@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_interrogation",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:56:31.670080300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "从容端坐在秘密审讯室金属转椅上，黑白战术紧身衣前置拉链半开，修长双腿优雅交叠，冷艳蓝瞳与耳麦在战术顶灯下从容凝视",
     "adult": true,
@@ -24,19 +24,12 @@
     "mood": "危险冷艳",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "cleavage",
-      "bare shoulders",
-      "high-leg cut"
-    ],
+    "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "Toki sitting composed on a metallic swivel chair in an interrogation room, black and white combat suit with front zipper unzipped to mid-chest revealing her collarbone and cleavage, slender legs crossed in high-leg tactical cut with thigh strap, earpiece, blue halo, blue eyes, cool kuudere expression, overhead tactical spotlight with subtle blue rim lighting, cinematic atmosphere.",
+    "promptProse": "Seated with cool poise on a metal swivel chair inside a dimly lit interrogation room, Toki crosses her long legs in her high-leg black-and-white combat suit, its front zipper lowered to mid-chest to show her collarbone and cleavage. An overhead tactical spotlight and cool blue rim light frame her earpiece and calm gaze.",
     "promptTokens": [
-      "toki (blue archive)",
       "halo",
-      "blonde hair",
       "side ponytail",
-      "blue eyes",
       "earpiece",
       "black and white combat suit",
       "front zipper unzipped",

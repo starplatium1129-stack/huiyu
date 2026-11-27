@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_kitchen_flour_hug",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 2010,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-26T10:59:06.195656700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "stella_yellow",
@@ -21,7 +21,6 @@
     "mood": "温存与柔媚",
     "promptProse": "In the quiet back kitchen of the closed cafe at night, Sumizome Nozomi pauses while kneading dough in her striped yellow apron. She shyly brushes her flour-dusted cheek with the back of her hand, blushing with an alluring sweet expression under the warm pendant light.",
     "promptTokens": [
-      "sumizome_nozomi",
       "1girl",
       "solo",
       "brown_hair",

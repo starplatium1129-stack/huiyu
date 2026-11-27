@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_morning_bed_darling_worship",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2219,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "miku_morning_bed_darling_worship",
     "characterId": "izayoi_miku",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "izayoi_miku",
-      "purple_hair",
       "silver_hair",
       "long_hair",
-      "purple_eyes",
       "nightgown",
       "sheer_clothing",
       "bare_shoulders",

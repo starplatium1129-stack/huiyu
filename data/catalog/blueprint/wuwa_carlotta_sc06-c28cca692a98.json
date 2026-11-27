@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3206,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于铸铁花椅端起骨瓷茶杯，明媚微笑",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "villa_sunlit_organza",
     "promptProse": "Under a sunlit pergola framed by fragrant citrus trees, Carlotta enjoys afternoon tea in a pastel rose organza dress and ribbon-trimmed sunhat, lifting a porcelain cup with a warm smile.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "earrings",
       "pink dress",
       "organza",

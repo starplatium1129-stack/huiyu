@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2419,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kuonji_alice",
-      "prose": "一袭鸦青墨黑天鹅绒高领无袖睡裙，前襟拼接精致的复古黑蛛网蕾丝，锁骨间嵌一枚浮雕银质浮雕扣，神秘冷艳而又充满禁欲美感。",
+      "prose": "A midnight-teal velvet sleeveless slip dress with a high vintage black spiderweb-lace illusion neckline, fastened at the collarbone with an antique silver cameo brooch.",
       "tokens": [
         "midnight teal velvet slip dress",
         "high lace illusion neckline",

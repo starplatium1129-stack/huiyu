@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_bakery_queue",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2977,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiammetta_arknights_bakery_queue",
     "characterId": "fiammetta_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing in a sun-drenched bakery queue on a cobblestone street, Fiammetta receives a warm paper bag of freshly baked bread at the shop counter, crossing her other arm with an impatient pout. Bright morning sunlight reflects off glass pastry displays brimming with fruit tarts, rolls, and golden croissants.",
-    "animaCaption": "",
+    "animaCaption": "Standing at the sunlit bakery counter, she holds a warm paper bag of fresh bread with her other arm folded and a faintly impatient pout. Bright morning light gleams off glass pastry cases packed with tarts and croissants.",
     "promptTokens": [
       "standing",
       "bakery counter",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3408,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于天鹅绒梳妆凳微倾身体佩戴耳坠，镜面映出背影",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "pearl_straps_boudoir_set_r15",
     "promptProse": "At an ornate mother-of-pearl vanity table lit by warm sconce bulbs, Cantarella sits in a sheer lavender lace lingerie set draped with strands of sea pearls, fastening an earring as she meets your gaze.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "purple bra",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_beach_sunset_summer_confession",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1803,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rapi_beach_sunset_summer_confession",
     "title": "拉毗 · 绯红余晖海滩的温柔并肩漫步",
@@ -52,9 +52,7 @@
       "blushing_cheeks",
       "shy_smile",
       "affectionate_gaze",
-      "brown_hair",
       "long_hair",
-      "red_eyes",
       "wet_legs",
       "sunlit_skin",
       "lens_flare",

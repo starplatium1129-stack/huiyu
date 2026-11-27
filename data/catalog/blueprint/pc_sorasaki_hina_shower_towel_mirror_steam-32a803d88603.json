@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pc_sorasaki_hina_shower_towel_mirror_steam",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 19073,
   "createdAt": "2026-11-26T15:28:54.466147500+00:00",
-  "updatedAt": "2026-11-26T15:28:54.466147500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pc_sorasaki_hina_shower_towel_mirror_steam",
     "characterId": "sorasaki_hina",
@@ -48,7 +48,6 @@
     "negativeTokens": [],
     "nsfwTokens": [
       "bath towel wrap",
-      "bare shoulders",
       "damp skin",
       "steamy intimacy"
     ],

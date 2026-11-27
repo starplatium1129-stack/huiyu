@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_photo_print",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3072,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_photo_print",
     "characterId": "mon3tr_arknights",
@@ -26,7 +26,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting on the floor of Dr. Kal'tsit's study beside a low table, Mon3tr carefully holds a freshly printed polaroid photograph between her fingers, looking down with quiet curiosity under the warm amber glow of a desk lamp.",
-    "animaCaption": "",
+    "animaCaption": "Sitting on the study floor beside a low table, she holds a freshly printed polaroid photograph carefully between her fingers and gazes down in quiet curiosity. Warm amber desk lamplight softens the calm room around her.",
     "promptTokens": [
       "sitting on floor",
       "holding photo",

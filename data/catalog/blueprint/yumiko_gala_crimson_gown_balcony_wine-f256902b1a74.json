@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_gala_crimson_gown_balcony_wine",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1920,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yumiko_gala_crimson_gown_balcony_wine",
     "characterId": "sakaki_yumiko",
@@ -39,7 +39,6 @@
       "red wine",
       "leaning on marble railing",
       "very long black hair",
-      "purple eyes",
       "aloof proud gaze",
       "bare back",
       "cowboy shot",

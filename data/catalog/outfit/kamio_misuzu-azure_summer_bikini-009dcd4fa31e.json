@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kamio_misuzu/azure_summer_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2541,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kamio_misuzu",
     "outfit": {
@@ -15,17 +15,13 @@
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kamio_misuzu",
-      "prose": "A nostalgic sky-blue and cloud-white ruffled halter bikini with delicate eyelet lace trims, side-tie bottoms, golden twintails, and a vibrant green beach towel printed with a cute cartoon dinosaur (Gao-Gao).",
+      "prose": "A nostalgic sky-blue and cloud-white ruffled halter bikini with delicate eyelet lace trims, side-tie bottoms, and a vibrant green beach towel printed with a cute cartoon dinosaur.",
       "tokens": [
         "sky blue bikini",
         "white eyelet frills",
         "sweetheart halter",
         "side-tie ribbon",
-        "dinosaur beach towel",
-        "blonde twintails",
-        "blue eyes",
-        "gentle radiant smile",
-        "nostalgic atmosphere"
+        "green printed towel"
       ]
     }
   }

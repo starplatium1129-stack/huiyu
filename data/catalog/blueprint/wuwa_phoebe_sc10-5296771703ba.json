@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3310,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸仰躺纯白床单，双手轻按胸口潮红喘息",
     "adult": true,
@@ -30,20 +30,14 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "candlelight_sanctuary_nude_r18",
     "promptProse": "Resting completely nude upon soft white linen sheets in a candlelit chamber, Phoebe spreads her golden hair across the pillow, her bare chest rising and falling with tearful, overwhelmed breath.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
       "hair spread out",
-      "blue eyes",
       "necklace",
       "nude",
       "completely nude",

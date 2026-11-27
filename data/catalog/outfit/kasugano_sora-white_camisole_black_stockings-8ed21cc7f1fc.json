@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/white_camisole_black_stockings",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1395,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "white_camisole_black_stockings",
       "name": "极细白丝绸吊带与吊袜带黑色蕾丝长袜",
-      "prose": "A white silk camisole edged with tiny ruffles, paired with a garter belt and sheer black lace-top stockings.",
+      "prose": "A delicate white satin spaghetti-strap camisole with tiny ruffled trim and a white ribbon bow, contrasted with suspender clips and sheer black lace-top thigh-highs.",
       "tokens": [
-        "white_camisole",
-        "silk_camisole",
-        "lace_trim",
-        "spaghetti_straps",
-        "black_thighhighs",
-        "garter_belt",
-        "garter_straps"
+        "white satin camisole",
+        "spaghetti straps",
+        "ruffled trim",
+        "lace-top thighhighs",
+        "suspender clips",
+        "white ribbon bow",
+        "barefoot"
       ],
       "characterId": "kasugano_sora",
       "default": false,

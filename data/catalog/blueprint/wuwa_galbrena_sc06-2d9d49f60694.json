@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3806,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于落地窗前双臂上举慵懒伸懒腰，毛衣滑落一侧肩头",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "safehouse_oversized_knit",
     "promptProse": "In the warm morning sunlight streaming through tall loft windows, Galbrena stretches lazily in an oversized off-shoulder charcoal cable-knit sweater and lounge shorts.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "grey sweater",
       "oversized sweater",
       "off-shoulder sweater",

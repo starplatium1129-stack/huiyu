@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3505,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于红叶石阶上轻扶银柄手杖，微侧头凝望",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "gothic_capelet_travelling_suit",
     "promptProse": "On moss-edged stone steps strewn with crimson autumn foliage, Phrolova wears a gold-braided charcoal shoulder capelet and tailored riding trousers, resting her gloved hands upon a silver cane.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black capelet",

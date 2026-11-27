@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_boyfriend_shirt_sly_tease",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1773,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "momo_boyfriend_shirt_sly_tease",
     "title": "梦梦 · 闺房软榻的滑肩白衬衫与狡黠轻语",
@@ -42,9 +42,7 @@
       "off_shoulder",
       "bare_shoulders",
       "short_hair",
-      "pink_hair",
       "curled_hair_strands",
-      "purple_eyes",
       "sly_smile",
       "demon_tail",
       "heart_tail",

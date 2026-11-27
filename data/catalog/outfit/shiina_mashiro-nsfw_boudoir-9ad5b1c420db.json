@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/nsfw_boudoir",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 854,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "素画初心 · 纯白半透明无痕雪纺吊带裙",
-      "prose": "一袭纯粹得没有一丝杂质的极薄双层白雪纺吊带睡裙，极细肩带仿佛随时会滑落，透光的布料下隐约勾勒出少女纤细无瑕的骨相与雪白身躯。",
+      "prose": "A featherweight pure-white double-layer sheer chiffon slip nightdress suspended from ultra-thin spaghetti straps with an airy, translucent drape.",
       "tokens": [
         "pure white semi-translucent gossamer slip dress",
         "featherweight double-layer chiffon",

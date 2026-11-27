@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3907,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于书桌旋转椅双腿微并，轻捏睡衣领口脸红凝视",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "dorm_silk_pajama_shirt_r15",
     "promptProse": "In the warm pool of light from her dormitory desk lamp, Chisa sits in a crimson-piped ivory silk pajama shirt worn loosely unbuttoned at the neck, blushing softly as she meets your eyes.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "white shirt",
       "pajamas",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3702,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "双手轻捧发光星象水晶球，侧头微撇嘴",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "observatory_star_cape_dress",
     "promptProse": "Inside the domed telescope chamber illuminated by projected star charts, Iuno wears a constellation-embroidered sheer capelet over her navy dress, cradling a luminous crystal orb.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "blue dress",
       "sleeveless dress",

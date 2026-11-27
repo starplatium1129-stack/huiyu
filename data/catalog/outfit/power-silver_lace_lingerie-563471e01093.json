@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "power/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2491,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "power",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "power",
-      "prose": "一套随性不羁的猩红纯棉抹胸与小恶魔平角裤，弹性棉料紧贴饱满曲线，侧边印有夸张恶魔爪痕涂鸦，将血之恶魔的狂放不羁与天生丽质展露无遗。",
+      "prose": "A bold crimson-red stretchy cotton tube top paired with relaxed boy-shorts printed with playful demon claw-mark graphics along the side.",
       "tokens": [
         "crimson red athletic cotton tube top",
         "relaxed boy-shorts with demon scratch print",

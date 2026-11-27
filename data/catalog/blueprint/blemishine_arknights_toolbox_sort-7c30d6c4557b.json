@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_toolbox_sort",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3009,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.730Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_toolbox_sort",
     "characterId": "blemishine_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Perched on a wooden work stool inside an airy garage workshop, Blemishine methodically organizes a heavy steel toolbox, lining up chrome wrenches by size and sorting brass nuts into clear plastic organizer trays. Broad beams of afternoon sunlight illuminate hanging pegboard tools, motorcycle parts, and clean motor oil cans in the tidy background.",
-    "animaCaption": "",
+    "animaCaption": "Perched on a wooden garage stool beside a heavy steel toolbox, she lines up chrome wrenches by size next to clear hardware trays. Broad afternoon sunbeams illuminate hanging pegboard tools and her satisfied expression.",
     "promptTokens": [
       "sitting on work stool",
       "heavy steel toolbox",

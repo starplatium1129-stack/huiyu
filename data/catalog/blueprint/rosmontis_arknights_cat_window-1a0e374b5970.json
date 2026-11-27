@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_cat_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2957,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:37:16.602Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_cat_window",
     "characterId": "rosmontis_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Crouching gently beside a wide sunlit bay window in the Rhodes Island observation lounge, Rosmontis coaxes a shy calico kitten toward a ceramic water dish. Soft morning light streams through sheer white curtains, casting warm geometric squares across the pale wooden floor and her silver feline ears.",
-    "animaCaption": "",
+    "animaCaption": "Crouching quietly beside the wide sunlit bay window, she holds out a gentle hand to coax a shy calico kitten toward a small ceramic water dish. Soft morning sunlight streams through sheer white curtains onto pale floorboards.",
     "promptTokens": [
       "crouching by bay window",
       "coaxing calico kitten",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_r18_bath_steam_towel_wrap",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1768,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "haruna_r18_bath_steam_towel_wrap",
     "title": "西连寺春菜 · 雾气浴室的毛巾轻挽",
@@ -42,7 +42,6 @@
       "drying_hair",
       "wet_hair",
       "bare_shoulders",
-      "purple_hair",
       "short_hair",
       "two_hair_clips",
       "soft_blush",

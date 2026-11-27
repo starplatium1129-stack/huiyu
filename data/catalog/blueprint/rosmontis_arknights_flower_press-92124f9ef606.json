@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_flower_press",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2962,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_flower_press",
     "characterId": "rosmontis_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting at a weathered cedar table in a lush garden, Rosmontis carefully places a fallen mauve blossom between the pages of an open leather-bound book. Warm afternoon sunlight filters through tree leaves, illuminating her delicate expression, blooming hydrangeas in glass vases, and the open book.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a weathered cedar table in the lush garden, she delicately lays a fallen mauve blossom onto the open page of a leather-bound book. Warm dappled afternoon sunlight filters through tree leaves onto hydrangea vases nearby.",
     "promptTokens": [
       "sitting",
       "garden table",

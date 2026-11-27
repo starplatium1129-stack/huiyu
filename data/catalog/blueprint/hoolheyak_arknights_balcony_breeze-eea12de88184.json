@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_balcony_breeze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2904,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_balcony_breeze",
     "characterId": "hoolheyak_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Leaning against an ornate marble balustrade on an elevated terrace under the star-filled Columbia night sky, Ho'olheyak catches her dark silk shawl as evening breezes ruffle her grey hair and feathers. She glances over her bare shoulder with a captivating smirk, while warm terrace sconces and glittering city tower lights spread across the vast skyline below.",
-    "animaCaption": "",
+    "animaCaption": "By the marble terrace balustrade in the evening breeze, she catches her fluttering silk shawl with one hand and glances over her shoulder with a captivating smirk. Warm sconce light meets glittering neon skyline bokeh below.",
     "promptTokens": [
       "standing",
       "marble balustrade",

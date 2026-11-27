@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3301,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "双手怀抱金边圣典微侧头微笑，彩窗光辉洒落",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "order_gilded_vestments",
     "promptProse": "Bathed in jewel-toned morning light streaming through cathedral stained glass, Phoebe cradles a gilt-edged scripture book in her white-and-gold ceremonial vestments, offering a serene smile.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "wide-brimmed hat",
       "white dress",
       "capelet",

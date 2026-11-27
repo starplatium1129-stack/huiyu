@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_school",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
@@ -12,15 +12,12 @@
       "name": "落肩蓝开衫私立制服",
       "prose": "A loose blue school cardigan slides off one shoulder over a white shirt, paired with a pleated skirt and black thigh-highs.",
       "tokens": [
-        "school_uniform",
-        "cardigan",
-        "blue_cardigan",
-        "off_shoulder",
-        "white_shirt",
-        "open_collar",
-        "pleated_skirt",
-        "miniskirt",
-        "black_thighhighs",
+        "school uniform",
+        "blue cardigan",
+        "off shoulder",
+        "open collar shirt",
+        "pleated miniskirt",
+        "black thighhighs",
         "loafers"
       ],
       "characterId": "shinjou_akane",

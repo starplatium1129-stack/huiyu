@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_bridge_dawn_embrace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2019,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "rhodes_coat",
@@ -24,7 +24,6 @@
       "amiya",
       "1girl",
       "solo",
-      "brown_hair",
       "rabbit_ears",
       "rabbit_girl",
       "rhodes_island",

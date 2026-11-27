@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_blanket_black_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2018,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "restday_knit",
@@ -24,7 +24,6 @@
       "amiya",
       "1girl",
       "solo",
-      "brown_hair",
       "rabbit_ears",
       "rabbit_girl",
       "sweater",

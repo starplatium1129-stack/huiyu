@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_art_room_pencil_gaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2033,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "school_blazer",
@@ -21,12 +21,9 @@
     "mood": "傲娇与温存",
     "promptProse": "Turning abruptly from her canvas in the sunset-flooded school art room, Eriri Spencer Sawamura bites the tip of her drawing pencil. Her twin blonde tails gleam golden against the light as her blue eyes flash with a furious, deeply flustered tsundere blush.",
     "promptTokens": [
-      "sawamura_spencer_eriri",
       "1girl",
       "solo",
-      "blonde_hair",
       "twintails",
-      "blue_eyes",
       "fang",
       "school_uniform",
       "easel",

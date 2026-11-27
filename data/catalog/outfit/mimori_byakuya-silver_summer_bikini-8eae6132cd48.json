@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2351,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -18,14 +18,10 @@
       "prose": "An adorable magical-girl inspired pale pink and cream swimdress featuring tiered lace ruffles, a sweet sweetheart neckline, and pearlescent shell hair clips.",
       "tokens": [
         "pink swimdress",
+        "cream trim",
         "lace ruffles",
         "sweetheart neckline",
-        "cream trim",
         "shell hair clip",
-        "long blonde hair",
-        "blue eyes",
-        "slender",
-        "soft smile",
         "modest swimsuit"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_red_hood_awakening_flame_resonance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1802,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rapi_red_hood_awakening_flame_resonance",
     "title": "拉毗 · 绯红风暴中小红帽核心共鸣觉醒",
@@ -54,7 +54,6 @@
       "holding_weapon",
       "confident_smirk",
       "intense_gaze",
-      "brown_hair",
       "trench_coat",
       "flame_effects",
       "epic_composition",

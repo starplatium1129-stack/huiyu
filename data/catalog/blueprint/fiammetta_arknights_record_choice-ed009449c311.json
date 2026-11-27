@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_record_choice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2978,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:28:56.624Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiammetta_arknights_record_choice",
     "characterId": "fiammetta_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "While browsing through weathered wooden record bins in a cozy music shop, Fiammetta stops, her attention captured by the distinct, eye-catching cover of an old vinyl record. She turns the sleeve to examine the tracklist, with rows of stacked vinyl records, warm amber Edison bulbs, and acoustic soundproofing panels framing the scene in a tranquil, music-filled atmosphere.",
-    "animaCaption": "",
+    "animaCaption": "Pausing beside weathered wooden record bins, she pulls out an old vinyl sleeve and turns it between her hands to read the tracklist. Warm amber Edison bulbs cast a quiet glow across the stacked records and her thoughtful gaze.",
     "promptTokens": [
       "music shop",
       "browsing record bins",

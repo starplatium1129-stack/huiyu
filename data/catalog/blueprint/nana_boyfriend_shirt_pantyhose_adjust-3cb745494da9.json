@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_boyfriend_shirt_pantyhose_adjust",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1775,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nana_boyfriend_shirt_pantyhose_adjust",
     "title": "娜娜 · 穿衣镜旁的提袜白衬衫与羞恼抗议",
@@ -44,9 +44,7 @@
       "balancing",
       "one_arm_raised",
       "pushing_hand",
-      "pink_hair",
       "twintails",
-      "purple_eyes",
       "blush",
       "pout",
       "demon_tail",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_rain_shelter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3004,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:39:18.780Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_rain_shelter",
     "characterId": "horn_arknights",
@@ -29,7 +29,7 @@
       "medium close-up"
     ],
     "promptProse": "Huddled close beneath the dark canvas awning of a boutique shopfront during a torrential evening downpour, Horn looks toward the viewer with a rare, softening smile that eases her soldierly reserve. Rain cascades in shimmering curtains from the eaves, while warm shop window lights and wet street reflections cast radiant amber halos around their shared dry sanctuary.",
-    "animaCaption": "",
+    "animaCaption": "Standing close beneath a dark boutique canvas awning during an evening downpour, she turns toward the viewer with a rare, softened smile. Warm shop window light reflects across the wet street beyond the streaming eaves.",
     "promptTokens": [
       "boutique canvas awning",
       "torrential evening rain",

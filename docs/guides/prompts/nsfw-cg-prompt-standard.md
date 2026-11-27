@@ -12,13 +12,13 @@
 
 - **着装与裸露状态真实表达**：
   - 穿衣场景完整保留衣装细节与剪裁特征。
-  - 局部解衣、内衣、泳装或完全裸露（如 `lingerie`, `nude`, `bare_shoulders`, `open_shirt` 等）依创作者意图准确编写，不含糊其辞或反向改动。
+  - 局部解衣、内衣、泳装或完全裸露（如 `lingerie`, `nude`, `bare shoulders`, `open shirt` 等空格分词标准词）依创作者意图准确编写，不含糊其辞或反向改动。
 - **肢体动作与亲密互动**：
   - 明确主体数量、姿态体位、接触受力点以及关键视线方向。
   - 多人场景（`compositionIntent: group`）分别绑定各自主体的特征与服饰，防止特征串染。
 - **字段协同**：
-  - 蓝图中的 `promptTokens` / `promptProse` 承载核心动作与环境。
-  - `nsfwTokens` / `nsfwProse` 用于承载专门的 NSFW 标签与生动散文描述，最终由编译器统一解析装配。
+  - 成人蓝图（`adult: true`）在未显式换装时由蓝图自身承载着装/裸露状态（编译器不注入默认服装），`promptTokens` 与 `nsfwTokens` 共同进入 Anima 第 5 段标签流及 Krea/MOSS。
+  - `animaCaption`（≤ 2 句）专供 Anima 第 6 段（非空时会覆盖 `nsfwProse`），因此须自带完整成人关系；`nsfwProse` 供 Krea 2 / MOSS 前置高权重散文及缺 `animaCaption` 时回落。
 
 ## 3. 编译与交付入口
 

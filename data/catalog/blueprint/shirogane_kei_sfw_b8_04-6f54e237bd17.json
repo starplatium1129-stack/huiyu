@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1414,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "矮桌旁核对完花束预算合上家计簿，向镜头露出没有超支的满足笑",
     "adult": false,
@@ -27,7 +27,6 @@
     "outfitId": "sfw_bridal",
     "promptProse": "Seated at the low table, Kei rests a hand on the closed household ledger and smiles, an inexpensive fresh bouquet beside it in the morning light.",
     "promptTokens": [
-      "Kei Shirogane",
       "bouquet",
       "ledger",
       "cowboy shot",

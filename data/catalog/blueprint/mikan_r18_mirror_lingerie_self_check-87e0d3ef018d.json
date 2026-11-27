@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_mirror_lingerie_self_check",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1781,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_r18_mirror_lingerie_self_check",
     "title": "结城美柑 · 穿衣镜前的侧影对视与慌乱遮挡",
@@ -47,10 +47,8 @@
       "bare_shoulders",
       "bare_legs",
       "barefoot",
-      "brown_hair",
       "short_hair",
       "single_side_bun",
-      "brown_eyes",
       "heavy_blush",
       "biting_lip",
       "embarrassed",

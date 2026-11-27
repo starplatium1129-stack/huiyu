@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3905,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐榻榻米双手捧起青瓷抹茶碗向前递出，礼貌微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "tea_club_bolero_dress",
     "promptProse": "Kneeling in formal seiza on the tatami floor of the academy tea club with shoji screens open to a bamboo garden, Chisa presents a ceramic bowl of matcha in a burgundy bolero and lace-collared white dress.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "white dress",
       "lace collar",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2352,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mimori_byakuya",
-      "prose": "一件如糖果般可爱的浅粉色纯棉睡裙，裙摆外覆一层透明点点雪纺，胸前系着草莓形状的小木纽扣，将贫穷魔法少女的质朴甜美呈现得令人心化。",
+      "prose": "A sweet powder-pink pure cotton nightshirt overlaid with sheer dotted chiffon, finished with a soft ruffled collar and tiny wooden strawberry buttons at the chest.",
       "tokens": [
         "powder pink cotton nightshirt",
         "dotted sheer tulle overlay",

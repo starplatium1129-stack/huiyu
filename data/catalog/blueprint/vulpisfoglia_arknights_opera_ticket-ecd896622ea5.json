@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_opera_ticket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2856,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_opera_ticket",
     "characterId": "vulpisfoglia_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing beneath the illuminated grand entrance marquee of an ornate opera theater as patrons disperse, Vulpisfoglia holds a gold-foil opera ticket between gloved fingers with a thoughtful smirk. Towering Corinthian columns, polished marble steps, and warm theater spotlights create an atmosphere of refined evening ambiance and refined nighttime elegance.",
-    "animaCaption": "",
+    "animaCaption": "Paused beneath the glowing opera marquee beside towering marble columns, she holds a gold-foil ticket between gloved fingers with a knowing smirk. Warm theater spotlights shimmer over wet marble steps and the dispersing night crowd.",
     "promptTokens": [
       "walking",
       "opera theater entrance",

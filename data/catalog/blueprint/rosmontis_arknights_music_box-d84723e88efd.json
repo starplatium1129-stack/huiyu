@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_music_box",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2965,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_music_box",
     "characterId": "rosmontis_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Resting her chin on her hands at an antique mahogany living room table, Rosmontis watches the tiny rotating ballerina inside a vintage brass wind-up music box. Warm evening lamplight casts golden reflections across the varnished wood and lace doilies, with the cozy, quiet living room interior enveloping her in nostalgic wonder.",
-    "animaCaption": "",
+    "animaCaption": "Resting her chin on both hands at the antique mahogany table, she watches the tiny spinning ballerina inside a brass music box with quiet wonder. Warm evening lamplight gleams across the varnished wood and lace doily.",
     "promptTokens": [
       "sitting",
       "antique mahogany table",

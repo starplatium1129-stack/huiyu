@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_phrase_notes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2427,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_phrase_notes",
     "characterId": "rena_liechtenauer",
@@ -28,7 +28,7 @@
       "window light",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated at a quiet cafe table, she pencils a new Japanese phrase into her open notebook while leaning close to verify the notes beside it. Soft window daylight illuminates her earnest expression and neat handwriting.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

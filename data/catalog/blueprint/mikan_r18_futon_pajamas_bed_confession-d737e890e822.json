@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_futon_pajamas_bed_confession",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1780,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_r18_futon_pajamas_bed_confession",
     "title": "结城美柑 · 深夜被窝里的睡衣轻解与私密心事",
@@ -46,10 +46,8 @@
       "off_shoulder",
       "bare_shoulders",
       "barefoot",
-      "brown_hair",
       "short_hair",
       "single_side_bun",
-      "brown_eyes",
       "soft_blush",
       "tender_look",
       "bedside_lamp",

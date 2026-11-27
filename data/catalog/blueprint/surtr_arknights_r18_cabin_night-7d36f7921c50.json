@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_cabin_night",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 522,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "半倚床沿，回眸相望",
     "adult": true,
@@ -27,7 +27,6 @@
     "outfitId": "cabin_shirt_coat",
     "promptProse": "Surtr reclines at the cabin bunk’s edge in a loose black shirt and red-lined coat, looking toward the viewer; warm candlelight meets blue night at the bedside.",
     "promptTokens": [
-      "Surtr",
       "black coat",
       "open black shirt",
       "reclining",

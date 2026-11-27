@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_afternoon_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2997,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_afternoon_tea",
     "characterId": "horn_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Inside a stately Victorian conservatory tearoom, Horn sits upright at a lace-covered table, carefully pouring amber Darjeeling tea from a polished silver teapot into fine bone china cups. Sunlight filters through leaded glass panels, illuminating tiered stands of cucumber sandwiches and scones, with potted palms and her golden curls glowing in the peaceful afternoon warmth.",
-    "animaCaption": "",
+    "animaCaption": "At a lace-draped conservatory table, she holds a polished silver teapot with composed poise, pouring amber tea into a fine bone china cup. Afternoon sunlight streams through leaded glass across the tiered pastry stand.",
     "promptTokens": [
       "standing",
       "stately conservatory tearoom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3506,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "蜷坐天鹅绒扶手椅双手捧红茶杯，闭目聆听黑胶旋律",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "crimson_silk_lounging_kimono",
     "promptProse": "Beside a vintage brass gramophone playing a vinyl record in her study, Phrolova curls up barefoot in a jet-black silk robe embroidered with golden spider lilies, holding a steaming cup of tea.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black robe",

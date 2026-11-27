@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_wonderland_tea_party_sweet_picnic",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1807,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_wonderland_tea_party_sweet_picnic",
     "title": "爱丽丝 · 废墟花园童话茶会的草莓点心分享",
@@ -53,7 +53,6 @@
       "feeding",
       "joyful_smile",
       "sparkling_blue_eyes",
-      "pink_hair",
       "wavy_twintails",
       "frilly_maid_dress",
       "white_apron",

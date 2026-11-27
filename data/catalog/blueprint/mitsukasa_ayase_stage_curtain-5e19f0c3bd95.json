@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_stage_curtain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2434,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_stage_curtain",
     "characterId": "mitsukasa_ayase",
@@ -31,7 +31,7 @@
       "evening",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Tucked behind the heavy velvet stage curtain, she adjusts her coat collar with crisp composure as bright white stage beams spill past the fabric edge. Dancing dust motes and sharp shadows frame the backstage rigging around her.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yumiko_poolside_purple_bikini_sunglasses",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1921,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yumiko_poolside_purple_bikini_sunglasses",
     "characterId": "sakaki_yumiko",
@@ -39,7 +39,6 @@
       "legs crossed",
       "holding novel",
       "very long black hair",
-      "purple eyes",
       "composed stern gaze",
       "cowboy shot",
       "parasol shadow",

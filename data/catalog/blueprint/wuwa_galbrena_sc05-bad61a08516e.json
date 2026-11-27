@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3805,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "倚靠露台护栏手持威士忌古典杯，冷艳浅笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "nocturne_velvet_suit",
     "promptProse": "On a quiet corner of a high-rise terrace above the illuminated harbor, Galbrena wears a tailored midnight-blue velvet tuxedo dress, swirling an amber glass of whiskey with cool composure.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "blue dress",
       "tuxedo dress",
       "velvet",

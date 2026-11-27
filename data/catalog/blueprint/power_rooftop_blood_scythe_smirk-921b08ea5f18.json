@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_rooftop_blood_scythe_smirk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1992,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_rooftop_blood_scythe_smirk",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "狂放霸气",
     "promptProse": "Atop a rainy skyscraper ledge amid flashing lightning, Power balances effortlessly while hoisting a giant glowing crimson scythe, her fangs bared in a wild, triumphant grin.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "sharp_teeth",

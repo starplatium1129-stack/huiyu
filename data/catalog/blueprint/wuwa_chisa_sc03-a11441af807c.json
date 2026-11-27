@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3903,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于祭典灯笼摊前双手轻握红色苹果糖，温柔浅笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "taisho_hakama_festival",
     "promptProse": "Along an evening festival path lined with glowing paper lanterns and red maple trees, Chisa wears an arrow-feather patterned kimono top and maroon hakama, holding a shiny crimson candy apple.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "hakama",
       "red kimono",

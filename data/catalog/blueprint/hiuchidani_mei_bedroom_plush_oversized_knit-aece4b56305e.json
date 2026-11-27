@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_bedroom_plush_oversized_knit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2636,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hiuchidani_mei_bedroom_plush_oversized_knit",
     "characterId": "hiuchidani_mei",
@@ -23,7 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "hiuchidani_mei",
       "black_hair",
       "twintails",
       "blue_eyes",

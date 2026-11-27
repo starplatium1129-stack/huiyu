@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_01",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_01",
     "title": "美狄亚 · 柳洞寺厨房的手作料理",
@@ -35,7 +35,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "medea_(caster)_(fate)",
       "cooking spoon",
       "temple kitchen",
       "tasting",

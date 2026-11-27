@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 634,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -12,9 +12,13 @@
       "id": "nsfw_boudoir",
       "isDefault": false,
       "name": "明月栞那·成人私密造型",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without apron or stockings, showing smooth bare shoulders, gentle collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ]
     }
   }

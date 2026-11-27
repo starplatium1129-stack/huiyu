@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ogiso_setsuna/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2545,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "ogiso_setsuna",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ogiso_setsuna",
-      "prose": "一袭触感极其细腻温软的羊绒混纺纯白吊带长睡裙，胸口以白色绒球缎带系结，如初雪般无瑕温存，完美衬托出高岭之花内在的脆弱与炽热深情。",
+      "prose": "A finely knitted pure snow-white cashmere-blend ankle-length slip dress with delicate ribbing and a soft white pom-pom ribbon bow tied at the neckline.",
       "tokens": [
         "pure snow white fine-knit slip dress",
         "soft pom-pom ribbon bow",

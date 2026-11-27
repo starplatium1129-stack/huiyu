@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3403,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于水廊柱旁半转身回眸，指尖轻抚珍珠链",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "pearl_mermaid_evening_dress",
     "promptProse": "Along a sea-facing marble colonnade bathed in full moonlight, Cantarella turns her head over a pearl-draped bare shoulder, the train of her lavender satin mermaid dress pooling on the stone floor.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "mermaid dress",
       "purple dress",

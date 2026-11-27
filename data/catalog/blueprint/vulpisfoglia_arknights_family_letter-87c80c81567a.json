@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_family_letter",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2861,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_family_letter",
     "characterId": "vulpisfoglia_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Seated at a dark mahogany hotel bureau under the pool of a brass desk lamp, Vulpisfoglia carefully writes a personal letter with an ink fountain pen, an open envelope and a colorful dried-flower bookmark resting beside her blotter. The quiet luxury of the room, with heavy damask curtains and leather armchairs, contrasts with her tender, protective thoughts of family.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a dark mahogany hotel bureau, she writes a personal letter with a fountain pen beside an open envelope and dried-flower bookmark. A brass desk lamp pools warm light over her tender, protective expression.",
     "promptTokens": [
       "sitting",
       "mahogany hotel bureau",

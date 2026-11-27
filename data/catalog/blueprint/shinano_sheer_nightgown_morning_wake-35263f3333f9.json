@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_sheer_nightgown_morning_wake",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2710,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shinano_sheer_nightgown_morning_wake",
     "characterId": "shinano",
@@ -23,12 +23,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "shinano_(azur_lane)",
-      "silver_hair",
       "fox_ears",
       "multiple_tails",
       "nine_tails",
-      "golden_eyes",
       "nightgown",
       "sheer_clothing",
       "bare_shoulders",

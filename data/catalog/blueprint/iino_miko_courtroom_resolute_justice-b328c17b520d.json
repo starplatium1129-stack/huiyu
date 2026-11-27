@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_courtroom_resolute_justice",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2004,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "iino_miko_courtroom_resolute_justice",
     "characterId": "iino_miko",
@@ -21,13 +21,10 @@
     "mood": "专注坚毅",
     "promptProse": "Behind the defense desk of a stately courtroom, Iino Miko stands with immaculate poise in her tailored charcoal suit, presenting her brief with intellectual fire and unwavering conviction.",
     "promptTokens": [
-      "iino_miko",
       "1girl",
       "solo",
       "short_hair",
       "low_twintails",
-      "brown_hair",
-      "brown_eyes",
       "documents",
       "courtroom",
       "serious",

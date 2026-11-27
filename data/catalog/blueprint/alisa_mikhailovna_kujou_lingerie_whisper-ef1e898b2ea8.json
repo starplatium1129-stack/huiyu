@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alisa_mikhailovna_kujou_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3250,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou_lingerie_whisper",
     "characterId": "alisa_mikhailovna_kujou",
@@ -40,9 +40,7 @@
       "sky blue silk chemise",
       "hugging knees",
       "city skyline window",
-      "silver hair",
       "heavy blush",
-      "blue eyes",
       "midnight",
       "glow",
       "soft lighting"

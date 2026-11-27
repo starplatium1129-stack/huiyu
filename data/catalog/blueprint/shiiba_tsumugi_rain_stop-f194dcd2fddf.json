@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rain_stop",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2413,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shiiba_tsumugi_rain_stop",
     "characterId": "shiiba_tsumugi",
@@ -30,7 +30,7 @@
       "gentle smile",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Stepping out from under the striped storefront awning, she raises a bright yellow umbrella and tilts her face upward with a gentle smile to check the easing rain. Soft overcast daylight reflects in puddles across the wet pavement.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

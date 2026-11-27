@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_platform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2375,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ogiso_setsuna_platform",
     "characterId": "ogiso_setsuna",
@@ -30,7 +30,7 @@
       "fluttering red scarf",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing near the platform edge at dusk, she presses her phone tightly against her chest and gazes down the misty empty tracks as her red scarf flutters. Cold halogen platform lamps catch her white breath in the chilly twilight air.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3209,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐扶手椅双臂轻掩却难遮春光，白丝手套轻抚胸口",
     "adult": true,
@@ -30,18 +30,13 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
       "spread legs"
     ],
     "outfitId": "unfastened_opera_gloves_r18",
     "promptProse": "Having shed her ball gown in the privacy of a velvet-draped opera box, Carlotta kneels nude on an armchair wearing only white opera gloves and garter stockings, blushing furiously as she bites her lower lip.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "earrings",
       "nude",
       "opera gloves",

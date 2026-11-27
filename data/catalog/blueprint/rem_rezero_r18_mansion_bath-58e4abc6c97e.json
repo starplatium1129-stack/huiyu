@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_mansion_bath",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 439,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rem_rezero_r18_mansion_bath",
     "title": "雷姆 · 宅邸浴汤的温润水波",
@@ -34,9 +34,7 @@
       "looking at viewer",
       "eye contact",
       "Rem ReZero",
-      "blue hair",
       "maid hair ornament",
-      "blue eyes",
       "white bath towel wrap",
       "wrapped in towel",
       "wet towel",

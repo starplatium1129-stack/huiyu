@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3110,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸浸于花瓣温泉池边，双手撑石俯身湿发垂落",
     "adult": true,
@@ -30,21 +30,13 @@
     "nsfwProse": "Completely nude in the steaming petal-strewn water, her wet two-tone hair clings to her bare shoulders as she presses her chest against the warm stone rim with a heavy blush.",
     "nsfwTokens": [
       "nsfw",
-      "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
-      "wet skin",
-      "steam"
+      "explicit"
     ],
     "outfitId": "petal_bath_unclad_r18",
     "promptProse": "Soaking in a steam-veiled stone hot spring blanketed with crimson camellia petals, Camellya leans forward completely unclothed against the wet pool edge, water droplets beading over her bare breasts.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "wet hair",
-      "red eyes",
       "ahoge",
       "tacet mark on chest",
       "nude",

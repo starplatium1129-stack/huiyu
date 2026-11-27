@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_post_workout_shower_steam",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1991,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen_post_workout_shower_steam",
     "characterId": "kouzuki_kallen",
@@ -21,12 +21,9 @@
     "mood": "柔媚与水光",
     "promptProse": "Standing in a softly misted room in light silk loungewear, Kallen Kouzuki brushes wet red strands from her flushed cheek, glancing aside with a shy, captivating blush.",
     "promptTokens": [
-      "kallen_stadtfeld",
       "1girl",
       "solo",
-      "red_hair",
       "wet_hair",
-      "blue_eyes",
       "collarbone",
       "steam",
       "blush",

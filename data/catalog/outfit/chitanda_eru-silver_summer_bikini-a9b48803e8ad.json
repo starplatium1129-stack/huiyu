@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/silver_summer_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2396,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
@@ -22,11 +22,7 @@
         "eyelet embroidery",
         "pleated skirt",
         "straw hat",
-        "lavender ribbon",
-        "long black hair",
-        "purple eyes",
-        "wide sparkling eyes",
-        "modest swimwear"
+        "lavender ribbon"
       ]
     }
   }

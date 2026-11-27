@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_argento_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3464,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.272Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "asia_argento_lingerie_whisper",
     "characterId": "asia_argento",
@@ -40,7 +40,6 @@
       "mint floral nightgown",
       "praying hands",
       "kneeling",
-      "blonde hair",
       "emerald eyes",
       "morning sunlight",
       "angelic smile"

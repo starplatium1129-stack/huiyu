@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_workshop_night_cooling_sweat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2630,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "chen_qianyu_workshop_night_cooling_sweat",
     "characterId": "chen_qianyu",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "chen_qianyu",
-      "black_hair",
       "ponytail",
       "black_eyes",
       "open_jacket",

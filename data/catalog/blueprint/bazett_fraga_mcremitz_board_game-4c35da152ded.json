@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_board_game",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2403,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_board_game",
     "characterId": "bazett_fraga_mcremitz",
@@ -30,7 +30,7 @@
       "tavern interior",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "At a weathered oak pub table beside a glowing hearth, she holds a carved chess piece poised above the board while studying her next move. Warm firelight flickers across the chessboard, her glass of dark stout, and her intent expression.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

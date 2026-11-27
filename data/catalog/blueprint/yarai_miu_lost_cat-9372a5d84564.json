@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_lost_cat",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2392,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yarai_miu_lost_cat",
     "characterId": "yarai_miu",
@@ -30,7 +30,7 @@
       "tender smile",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Crouched beside a glowing vending machine in a quiet night alley, she reaches one gentle hand toward a small black cat with a warm, tender smile. Colored light from the machine illuminates the damp asphalt around them.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_intimate_campfire_fur_blanket",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2044,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfitId": "camp_tunic",
@@ -23,7 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "blonde_hair",
       "robe",
       "blanket",
       "fur_blanket",

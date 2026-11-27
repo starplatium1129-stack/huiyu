@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_intimate_inn_bed_morning_sun",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2046,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfitId": "inn_soft_nightgown",
@@ -23,7 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "blonde_hair",
       "messy_hair",
       "nightgown",
       "lying",

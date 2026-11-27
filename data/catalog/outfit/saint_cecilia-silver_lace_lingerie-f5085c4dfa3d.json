@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2354,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "saint_cecilia",
-      "prose": "一套质朴而极为舒适的象牙白纯棉荷叶边睡裙，圆润的小排扣与领口细腻的花边点缀，宛如教堂唱诗班少女般纯洁无瑕、软糯可爱。",
+      "prose": "A simple, cozy ivory-white pure cotton ruffled nightdress with a scalloped lace collar, neat pearlescent front buttons, and a relaxed flowing fit.",
       "tokens": [
         "ivory white pure cotton ruffled nightdress",
         "delicate pearlescent buttons",

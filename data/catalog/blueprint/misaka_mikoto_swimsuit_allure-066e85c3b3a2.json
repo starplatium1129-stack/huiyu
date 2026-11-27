@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3174,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:31:32.803642+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "misaka_mikoto_swimsuit_allure",
     "characterId": "misaka_mikoto",
@@ -40,9 +40,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "misaka mikoto",
       "short brown hair",
-      "brown eyes",
       "hair clip",
       "navy competition swimsuit",
       "yellow stripes",

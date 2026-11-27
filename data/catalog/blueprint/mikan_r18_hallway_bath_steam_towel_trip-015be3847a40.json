@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_hallway_bath_steam_towel_trip",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1779,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_r18_hallway_bath_steam_towel_trip",
     "title": "结城美柑 · 浴后走廊的意外跌坐心跳",
@@ -49,10 +49,8 @@
       "bare_shoulders",
       "bare_legs",
       "barefoot",
-      "brown_hair",
       "short_hair",
       "single_side_bun",
-      "brown_eyes",
       "heavy_blush",
       "tears_in_eyes",
       "warm_indoor_light",

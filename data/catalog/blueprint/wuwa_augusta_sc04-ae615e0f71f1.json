@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3604,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于山巅石垛旁单手指向云海远方，披风猎猎飞扬",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "mountain_ridge_cloak_suit",
     "promptProse": "High above a crimson sea of sunset clouds on Septimont's ridge watchtower, Augusta gestures toward the distant peaks while the mountain wind sweeps her gold-embroidered scarlet travel cloak.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "tall",
       "red cloak",
       "gold embroidery",

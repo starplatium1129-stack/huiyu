@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3201,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ram_swimsuit_allure",
     "characterId": "ram",
@@ -41,10 +41,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "ram (re:zero)",
-      "pink hair",
       "short hair over one eye",
-      "red eyes",
       "hair flower",
       "peach pink bikini",
       "black ribbons",

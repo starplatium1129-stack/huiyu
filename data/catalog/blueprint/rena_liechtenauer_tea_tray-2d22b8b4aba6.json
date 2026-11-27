@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_tea_tray",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2424,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rena_liechtenauer_tea_tray",
     "characterId": "rena_liechtenauer",
@@ -31,7 +31,7 @@
       "attentive expression",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Pausing before a guest room sliding door along the tatami inn corridor, she steadies a polished wooden tray carrying a steaming teapot and two porcelain cups. Soft shoji lantern light warms her attentive, poised expression.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

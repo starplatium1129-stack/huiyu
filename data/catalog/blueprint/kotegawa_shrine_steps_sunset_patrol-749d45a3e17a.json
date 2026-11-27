@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_shrine_steps_sunset_patrol",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1256,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "手按红色风纪袖章伫立石阶顶端迎风侧立，黑长直发丝飞舞，眼神清澈而坚定",
     "camera": "full body, low angle, three-quarter view, sweeping town view",
@@ -22,7 +22,6 @@
     "outfitId": "sainan_uniform",
     "promptProse": "Yui rests one hand on her discipline armband at the top of the shrine steps, facing the evening wind. Low golden-red sunlight rims her black hair and casts deep stair shadows toward the town below.",
     "promptTokens": [
-      "Yui Kotegawa",
       "standing",
       "stone stairs",
       "shrine",

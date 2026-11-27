@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3365,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:27:56.823417100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "administrator_arknights_swimsuit_allure",
     "characterId": "administrator_arknights",
@@ -42,8 +42,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "female endministrator (arknights)",
-      "black hair",
       "short hair",
       "black competition swimsuit",
       "yellow trim",

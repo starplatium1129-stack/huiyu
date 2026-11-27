@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_morning_kitchen_apron_only",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2231,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rossweisse_morning_kitchen_apron_only",
     "characterId": "rossweisse",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "rossweisse",
-      "silver_hair",
       "hair_bun",
-      "blue_eyes",
       "apron",
       "tank_top",
       "bare_shoulders",

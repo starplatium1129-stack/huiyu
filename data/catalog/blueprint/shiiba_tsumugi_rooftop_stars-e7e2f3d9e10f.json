@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rooftop_stars",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2416,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shiiba_tsumugi_rooftop_stars",
     "characterId": "shiiba_tsumugi",
@@ -28,7 +28,7 @@
       "moonlight",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing beside the rooftop railing under a clear night sky, she holds up a star chart with both hands and gazes upward to match its lines with the constellations. Cool moonlight outlines her shoulders and the paper sheet.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

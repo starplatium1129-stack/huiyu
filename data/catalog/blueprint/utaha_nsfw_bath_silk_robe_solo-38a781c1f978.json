@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_bath_silk_robe_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_nsfw_bath_silk_robe_solo",
     "title": "霞之丘诗羽 · 浴后的丝绸湿身独奏",
@@ -30,7 +30,6 @@
     "promptProse": "Utaha touches herself beneath the bathwater, her soaked robe translucent as she reclines against the rim. Warm bathroom light catches the wet silk.",
     "nsfwProse": "",
     "promptTokens": [
-      "Utaha Kasumigaoka",
       "white silk robe",
       "wet clothes",
       "bath",
@@ -55,8 +54,6 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "masturbation",
-      "see-through",
       "hand between legs"
     ],
     "animaCaption": "Her soaked robe rests against the tub rim as one hand stays beneath the water."

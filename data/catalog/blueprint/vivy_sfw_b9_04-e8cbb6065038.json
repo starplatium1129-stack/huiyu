@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vivy_sfw_b9_04",
     "title": "Vivy · 无人舞台的白蓝花嫁",
@@ -32,7 +32,6 @@
     ],
     "promptProse": "Vivy faces the viewer for the opening phrase, her hand still beside the white flowers placed on the piano. Dawn from the side doorway lights the veil and floating stage dust.",
     "promptTokens": [
-      "Vivy",
       "bouquet",
       "piano",
       "empty theater",

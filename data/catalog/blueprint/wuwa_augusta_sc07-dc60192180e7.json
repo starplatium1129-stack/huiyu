@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3607,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单手扶住湿润白丝浴巾边缘倚靠石柱，水珠滑落锁骨",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "thermae_silk_wrap_r15",
     "promptProse": "Stepping from the warm mineral pools into a steam-veiled marble colonnade, Augusta leans against a pillar wrapped in a gold-bordered white silk bath sheet, water droplets gleaming on her bare shoulders.",
     "promptTokens": [
-      "red hair",
       "long hair",
       "wet hair",
-      "yellow eyes",
       "tall",
       "towel",
       "white silk",

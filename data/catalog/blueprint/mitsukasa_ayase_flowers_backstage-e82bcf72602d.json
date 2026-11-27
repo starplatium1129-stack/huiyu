@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_flowers_backstage",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2436,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_flowers_backstage",
     "characterId": "mitsukasa_ayase",
@@ -32,7 +32,7 @@
       "curious surprised expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Leaning beside the cluttered backstage dressing table, she reads a greeting card drawn from a lush bouquet of lilies and roses with curious surprise. Warm vanity bulbs glow across her glossy costume and the garment racks behind her.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/black_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2303,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
@@ -18,14 +18,12 @@
       "prose": "An electrifying cyber-turquoise and metallic-silver athletic halter bikini featuring illuminated circuit board trims, translucent dual-tone hip ribbons, and floating audio-equalizer goggles perched atop her head.",
       "tokens": [
         "turquoise bikini",
+        "halterneck",
         "silver trim",
-        "illuminated circuit accents",
+        "circuit print",
+        "hip ribbons",
         "audio goggles",
-        "long turquoise twintails",
-        "blue eyes",
-        "futuristic swimwear",
-        "bright youthful smile",
-        "slender build"
+        "futuristic swimwear"
       ]
     }
   }

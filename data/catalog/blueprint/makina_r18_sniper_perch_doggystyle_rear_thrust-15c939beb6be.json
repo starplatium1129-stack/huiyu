@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_r18_sniper_perch_doggystyle_rear_thrust",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1799,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "makina_r18_sniper_perch_doggystyle_rear_thrust",
     "title": "入巢莳菜 · 隐蔽狙击阵地从后贯穿的禁忌战栗",
@@ -61,10 +61,8 @@
       "sweaty_skin",
       "heavy_blush",
       "drool_at_mouth",
-      "pink_hair",
       "low_twintails",
       "ahoge",
-      "brown_eyes",
       "dramatic_backlighting",
       "hands on sandbags",
       "from behind"
@@ -73,7 +71,6 @@
     "negativeTokens": [],
     "nsfwTokens": [
       "standing_doggystyle",
-      "from_behind",
       "bent_over_sandbags",
       "holding_hips",
       "deep_raw_penetration",

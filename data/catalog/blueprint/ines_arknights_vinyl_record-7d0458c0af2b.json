@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_vinyl_record",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2870,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ines_arknights_vinyl_record",
     "characterId": "ines_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a cozy music nook filled with shelves of vinyl records, Ines carefully places a needle on a spinning record player on a wooden cabinet. A warm amber desk lamp illuminates the turntable, her hands, and nearby album sleeves under gentle evening light.",
-    "animaCaption": "",
+    "animaCaption": "Leaning over the wooden cabinet in her music nook, she guides the turntable needle onto a spinning vinyl record beside stacked album sleeves. Warm amber lamplight glows softly across her focused hands and the dark grooves.",
     "promptTokens": [
       "standing",
       "music nook",

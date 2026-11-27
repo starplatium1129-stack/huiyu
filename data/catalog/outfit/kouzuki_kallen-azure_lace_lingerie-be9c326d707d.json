@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kouzuki_kallen/azure_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2485,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kouzuki_kallen",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kouzuki_kallen",
-      "prose": "一套深酒红真丝与弹性透气微透纱结合的运动风内衣，宽幅交叉绑带紧贴腹部线条，勾勒出紧致有力的小腹与利落身段，英气勃发。",
+      "prose": "A deep crimson silk and breathable sheer-mesh athletic lingerie set featuring a wide criss-cross elastic waist band and fitted boyleg briefs.",
       "tokens": [
         "scarlet red criss-cross sheer athletic bralette",
         "wide elasticized waist strap",

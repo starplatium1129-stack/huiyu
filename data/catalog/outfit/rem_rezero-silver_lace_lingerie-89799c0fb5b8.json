@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2311,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "rem_rezero",
-      "prose": "一件专为心上人换上的浅天蓝半透蕾丝娃娃裙，胸前缀以纯白缎带蝴蝶结，柔软透明的薄纱勾勒出少女玲珑的身材曲线，倾注了雷姆所有纯洁的爱慕。",
+      "prose": "A soft sky-blue sheer floral lace babydoll nightdress with a ruffled empire waist, delicate semi-transparent mesh skirt, and pure white satin ribbon bows at the bust.",
       "tokens": [
         "sky blue sheer floral lace babydoll dress",
         "white satin ribbon bows",

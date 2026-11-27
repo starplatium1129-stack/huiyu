@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_tea_temperature",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3070,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_tea_temperature",
     "characterId": "mon3tr_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Resting her arms on a clean counter beside a steaming porcelain teacup, Mon3tr leans in slightly to watch the rising vapor with curious green eyes under soft laboratory lighting.",
-    "animaCaption": "",
+    "animaCaption": "Resting her arms on a clean counter beside a steaming porcelain teacup, she leans slightly forward to watch the curling vapor with curious eyes. Soft interior laboratory light highlights the delicate steam rising between them.",
     "promptTokens": [
       "leaning forward",
       "steaming teacup",

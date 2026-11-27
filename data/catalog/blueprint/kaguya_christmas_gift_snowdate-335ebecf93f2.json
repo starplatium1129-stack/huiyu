@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_christmas_gift_snowdate",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "围白围巾递出礼物盒，雪光里红瞳亮晶晶，傲娇嘴硬",
     "adult": false,
@@ -27,7 +27,6 @@
     "outfitId": "winter_shuchiin_uniform",
     "promptProse": "Kaguya offers the gift toward the viewer with both hands, her reserved expression softened above the white scarf. Gold decorations and blue snowlight meet on the falling flakes.",
     "promptTokens": [
-      "shinomiya_kaguya",
       "gift box",
       "snow",
       "christmas lights",

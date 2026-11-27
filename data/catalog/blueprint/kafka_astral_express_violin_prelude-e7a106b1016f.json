@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_astral_express_violin_prelude",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kafka_astral_express_violin_prelude",
     "title": "卡芙卡 · 空间站虚空小提琴",
@@ -31,7 +31,6 @@
     ],
     "promptProse": "She raises her left forearm beneath an invisible violin and draws an imaginary bow with her right, eyes lowered; blue holograms and the ring lights trace her poised hands and coat.",
     "promptTokens": [
-      "Kafka",
       "violin pose",
       "space station",
       "hologram",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_breakroom_magazine_nap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3102,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_breakroom_magazine_nap",
     "characterId": "platinum_arknights",
@@ -28,7 +28,7 @@
       "relaxed"
     ],
     "promptProse": "In a bright modern lounge bathed in golden afternoon sunlight, Platinum reclines sideways on a plush leather sofa surrounded by cushions. She lazily flips through an open glossy magazine while nibbling on a slice of blueberry cheesecake. Warm sunbeams cast soft window shadows across her relaxed posture and soft white hair.",
-    "animaCaption": "",
+    "animaCaption": "Reclining sideways on a plush leather lounge sofa amid cushions, she lazily flips through an open magazine with a slice of cake waiting on the table. Golden afternoon sunlight streams across the cozy room.",
     "promptTokens": [
       "solo",
       "reclining",

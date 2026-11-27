@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3393,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "inaba_meguru_swimsuit_allure",
     "characterId": "inaba_meguru",
@@ -39,13 +39,12 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "inaba meguru",
       "short hair",
       "amber eyes",
       "pink ruffled bikini",
       "riding pink flamingo float",
       "peering over heart sunglasses",
-      "cute fang smile",
+      "fang",
       "resort pool",
       "tropical foliage background",
       "playful flirtatious pose",

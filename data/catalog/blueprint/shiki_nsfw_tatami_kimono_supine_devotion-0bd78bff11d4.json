@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_tatami_kimono_supine_devotion",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1351,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "侧卧在和室草席被褥上，深蓝和服衣襟微敞露出白皙锁骨与肩颈，单手轻轻攥住衣角，在竹影月色与灯影交织中偏头凝望",
     "adult": true,
@@ -24,9 +24,8 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "casual_blue_kimono",
-    "promptProse": "Ryougi Shiki lying on her side on a futon in a Japanese tatami room, dark blue kimono slightly loosened at the collar, bare shoulders and neck visible, short dark hair, dark eyes, subtle blush, hand holding edge of kimono, looking at viewer, shoji screen, moonlight, gentle paper lantern light.",
+    "promptProse": "Ryougi Shiki reclines on her side atop a futon in a quiet tatami room, her dark-blue kimono loosened at the collar to bare her neck and shoulders while one hand holds the edge of the fabric. Cool moonlight filters through the shoji screen alongside the gentle glow of a paper lantern as she looks quietly toward the viewer.",
     "promptTokens": [
-      "ryougi shiki",
       "short black hair",
       "dark eyes",
       "blue kimono",
@@ -62,8 +61,6 @@
     "timeOfDay": "深夜",
     "title": "两仪式 · 榻榻米和服半敞的深情仰卧",
     "nsfwTokens": [
-      "bare shoulders",
-      "collarbone",
       "bare legs"
     ],
     "animaCaption": "She rests on her side on a futon in soft moonlight.",

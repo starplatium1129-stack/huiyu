@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_flower_bridge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2888,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-07T04:39:18.784Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_flower_bridge",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Leaning over the rustic wooden railing of an arched footbridge in a sun-drenched botanical park, Nymph peers down at vibrant water lilies and yellow irises blooming along the babbling creek. Dappled sunlight sparkles across the moving water ripples, while weeping willow branches and stone stepping stones frame her curious, youthful exploration.",
-    "animaCaption": "",
+    "animaCaption": "Resting her hands along the rustic wooden footbridge rail, she leans forward to gaze curiously at water lilies and yellow irises blooming along the creek. Dappled sunlight sparkles on the ripples beneath swaying willow boughs.",
     "promptTokens": [
       "arched wooden footbridge",
       "leaning over railing",

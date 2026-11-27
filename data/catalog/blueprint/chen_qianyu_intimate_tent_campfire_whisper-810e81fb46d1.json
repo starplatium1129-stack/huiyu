@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_tent_campfire_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2020,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "weekend_overall",
@@ -21,10 +21,8 @@
     "mood": "荒野温存",
     "promptProse": "Inside an insulated exploration tent on a freezing wasteland, Chen Qianyu rests without her bulky armor in a fitted black sleeveless tank top. The glowing orange heater highlights her sculpted shoulders and collarbone as she hands over a cup of warm tea.",
     "promptTokens": [
-      "chen_qianyu",
       "1girl",
       "solo",
-      "black_hair",
       "ponytail",
       "tank_top",
       "black_tank_top",

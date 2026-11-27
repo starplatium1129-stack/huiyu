@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_pastry_choice",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2939,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "w_arknights_pastry_choice",
     "characterId": "w_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "At a sunlit corner table of a sweet shop, W playfully aims a silver dessert fork at the last powdered pastry on an ornate ceramic plate. Dappled afternoon light streams through a striped outdoor awning, illuminating delicate crumbs on the table, glass display cases filled with colorful cakes, and W's amused, daring expression as she dares the viewer to take it.",
-    "animaCaption": "",
+    "animaCaption": "At the sunlit sweet shop corner table, she playfully aims a silver dessert fork at the last powdered pastry on the plate and flashes the viewer a daring, amused look. Dappled afternoon light filters beneath the striped awning.",
     "promptTokens": [
       "sitting",
       "sweet shop cafe",

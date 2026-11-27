@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3109,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "仰卧花瓣床榻敞开红纱，绯红丝带缠绕身体，含泪娇喘",
     "adult": true,
@@ -30,21 +30,13 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
-      "spread legs",
-      "pussy",
-      "sweat"
+      "pussy"
     ],
     "outfitId": "crimson_vine_silk_wrap_r18",
     "promptProse": "Reclining across crimson silk sheets strewn with camellia petals, Camellya lets her sheer red robe slip entirely open, crimson satin ribbons trailing across her bare breasts and flushed skin in warm candlelight.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "tacet mark on chest",
       "open robe",

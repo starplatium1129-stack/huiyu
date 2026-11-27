@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_hallway_accidental_trip",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1764,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "haruna_hallway_accidental_trip",
     "title": "西连寺春菜 · 学园楼梯转角的神摔失重跌坐",
@@ -41,7 +41,6 @@
       "hands_on_ground",
       "scattered_books",
       "scattered_papers",
-      "purple_hair",
       "short_hair",
       "two_hair_clips",
       "heavy_blush",

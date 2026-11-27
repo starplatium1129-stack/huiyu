@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3379,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:32:20.825991500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kita_ikuyo_swimsuit_allure",
     "characterId": "kita_ikuyo",
@@ -39,8 +39,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kita ikuyo",
-      "red hair",
       "yellow-green eyes",
       "crimson red ruffled bikini",
       "jumping playfully in ocean surf",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3703,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于书架木梯怀抱星图古籍，微红耳根回眸",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "astrolabe_scholar_blouse",
     "promptProse": "Halfway up a rolling wooden ladder in Septimont's celestial archive, Iuno hugs a stack of gilded star atlases in a silver-buttoned blouse and navy pleated skirt, glancing back over her shoulder.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "white blouse",
       "blue ribbon",

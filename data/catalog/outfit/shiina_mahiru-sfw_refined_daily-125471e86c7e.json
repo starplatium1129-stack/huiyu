@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/sfw_refined_daily",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 821,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "奶油粗花落肩毛衣与侧开衩天丝居家服",
-      "prose": "A cream cable-knit pullover with sky-blue lounge trousers cut with side vents and cream over-knee socks.",
+      "prose": "A soft cream cable-knit pullover with dropped shoulders paired with wide-leg sky-blue tencel lounge trousers cut with side vents, cream over-knee socks, and indoor slippers.",
       "tokens": [
-        "cable_knit",
-        "cream_sweater",
-        "oversized_sweater",
-        "off_shoulder",
-        "lounge_pants",
-        "slit_pants",
-        "thighhighs",
-        "barefoot",
-        "home_chic"
+        "cream cable-knit sweater",
+        "dropped shoulder",
+        "sky blue lounge pants",
+        "wide-leg trousers",
+        "side vents",
+        "cream over-knee socks",
+        "indoor slippers"
       ],
       "characterId": "shiina_mahiru",
       "default": false,

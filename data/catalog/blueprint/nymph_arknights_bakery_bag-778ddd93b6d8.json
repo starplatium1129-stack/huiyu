@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_bakery_bag",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2893,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_bakery_bag",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Outside a quaint bakery on a sunny corner, Sarkaz girl Nymph excitedly hugs a crinkling paper bag of warm pastries to her chest, her pink hair catching the bright morning rays. The shop's colorful striped awning flutters overhead, while sidewalk flower pots and window displays of tiered cakes create a cheerful street scene.",
-    "animaCaption": "",
+    "animaCaption": "Standing outside the sunlit corner bakery beneath its fluttering striped awning, she hugs a crinkling brown paper bag of warm pastries to her chest with a joyful smile. Bright morning rays gleam off the tiered cake display.",
     "promptTokens": [
       "standing",
       "corner bakery storefront",

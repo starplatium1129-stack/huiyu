@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3508,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "斜倚丝绒长椅指尖轻拉胸前红丝带，脸红微喘",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "crimson_ribbon_lingerie_r15",
     "promptProse": "Lounging against crimson velvet cushions in a private parlor, Phrolova wears a black Chantilly lace bra and garter set laced with scarlet satin ribbons, tugging lightly at the center ribbon with a flushed gaze.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black bra",

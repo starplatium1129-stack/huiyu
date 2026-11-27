@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_river_postcards",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2901,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_river_postcards",
     "characterId": "hoolheyak_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Browsing a revolving metal postcard stand beside a stone river embankment, Ho'olheyak holds up a vintage postcard with an arched stone bridge, examining the details with a subtle smile. Gentle afternoon sunlight glints off the river currents behind her, framed by weeping willows and a tranquil riverside promenade.",
-    "animaCaption": "",
+    "animaCaption": "Standing beside a revolving metal rack on the stone embankment, she holds up a vintage arched-bridge postcard and studies it with a subtle smile. Afternoon sunlight glints off the river currents and weeping willows behind her.",
     "promptTokens": [
       "standing",
       "riverside embankment",

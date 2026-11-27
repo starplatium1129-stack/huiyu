@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_sofa_night",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 336,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_sofa_night",
     "title": "楪祈 · 深夜沙发的音律温存",
@@ -32,8 +32,6 @@
       "facing viewer",
       "looking at viewer",
       "eye contact",
-      "pink hair",
-      "red eyes",
       "red silk robe",
       "open robe",
       "silk sheen",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2353,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -19,14 +19,10 @@
       "tokens": [
         "ivory swimdress",
         "gold embroidery",
+        "empire waist",
         "modest neckline",
         "sheer long skirt",
-        "golden hair ribbons",
-        "long blonde hair",
-        "blue eyes",
-        "innocent",
-        "sweet gentle smile",
-        "plump cheeks"
+        "gold hair ribbons"
       ]
     }
   }

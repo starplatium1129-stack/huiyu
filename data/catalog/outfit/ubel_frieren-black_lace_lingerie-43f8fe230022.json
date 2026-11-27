@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2408,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ubel_frieren",
-      "prose": "一袭线条充满攻击性的墨黑高弹微透短吊带裙，胸前深V大开至胸骨，双侧腰腹不规则几何剪裁，将少女轻盈致命的身姿与毫无防备的性感彻底展露。",
+      "prose": "A body-hugging ink-black sheer stretch mini slip with a deep plunging halter V-neckline, asymmetrical geometric waist cutouts, and a jagged raw-edged hem.",
       "tokens": [
         "inky black deep plunging halter mini slip",
         "asymmetrical side cutouts",

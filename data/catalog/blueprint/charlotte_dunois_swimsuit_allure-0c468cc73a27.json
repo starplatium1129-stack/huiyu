@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_dunois_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3453,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "charlotte_dunois_swimsuit_allure",
     "characterId": "charlotte_dunois",
@@ -42,8 +42,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "charlotte dunois",
-      "blonde hair",
       "short hair",
       "purple eyes",
       "orange gingham bikini",

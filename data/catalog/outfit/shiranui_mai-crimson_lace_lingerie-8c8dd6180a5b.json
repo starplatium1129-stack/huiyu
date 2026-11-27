@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/crimson_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2433,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shiranui_mai",
-      "prose": "一袭改良自女忍战斗服的绯红真丝露背肚兜式睡衣，双侧腰腹仅以金色细绳相连，大开叉下摆飘逸如蝶翼，完美烘托出格斗界无可匹敌的丰腴神韵。",
+      "prose": "A scarlet-red silk halter dudou sleep dress with an open back laced by criss-cross gold cords at the waist and dramatic high-slit gossamer side panels.",
       "tokens": [
         "scarlet red silk halter dudou bodice",
         "open back with gold string criss-cross ties",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_morning_sunlight_kitten_cuddle",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2255,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kotori_morning_sunlight_kitten_cuddle",
     "characterId": "kotori_itsuka",
@@ -24,9 +24,7 @@
       "1girl",
       "solo",
       "itsuka_kotori",
-      "red_hair",
       "twintails",
-      "red_eyes",
       "hoodie",
       "oversized_hoodie",
       "bare_shoulders",

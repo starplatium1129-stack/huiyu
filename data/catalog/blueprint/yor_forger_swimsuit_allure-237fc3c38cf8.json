@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_swimsuit_allure",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 3258,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yor_forger_swimsuit_allure",
     "characterId": "yor_forger",
@@ -45,8 +45,6 @@
       "crystal clear water",
       "blushing red",
       "shy pose",
-      "black hair",
-      "red eyes",
       "gap moe",
       "sunlight",
       "water reflection",

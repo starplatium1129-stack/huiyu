@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1411,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸",
     "adult": false,
@@ -26,7 +26,6 @@
     "outfitId": "sfw_delivery",
     "promptProse": "Kei pedals down the residential street with newspapers in the front basket, her breath visible beneath the remaining streetlights.",
     "promptTokens": [
-      "shirogane_kei",
       "bicycle",
       "newspapers",
       "dawn",

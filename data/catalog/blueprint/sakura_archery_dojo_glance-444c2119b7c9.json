@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_archery_dojo_glance",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sakura_archery_dojo_glance",
     "characterId": "matou_sakura",
@@ -26,7 +26,6 @@
     ],
     "promptProse": "After the shot, Sakura lowers her bow beside her leg and turns with a shy smile across the sunset-lit dojo.",
     "promptTokens": [
-      "Sakura",
       "archery",
       "bow beside leg",
       "gloves",

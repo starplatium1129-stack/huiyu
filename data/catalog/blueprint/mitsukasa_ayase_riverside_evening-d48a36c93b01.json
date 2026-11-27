@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_riverside_evening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2439,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_riverside_evening",
     "characterId": "mitsukasa_ayase",
@@ -32,7 +32,7 @@
       "relaxed peaceful mood",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Strolling along the paved riverside embankment at dusk, she lifts one hand to tuck windblown hair behind her ear in peaceful ease. Golden-orange sunset light shimmers across the river beneath early streetlamps and a distant bridge.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

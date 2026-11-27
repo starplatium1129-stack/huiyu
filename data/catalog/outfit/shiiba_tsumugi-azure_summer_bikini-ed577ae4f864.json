@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiiba_tsumugi/azure_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2552,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiiba_tsumugi",
     "outfit": {
@@ -18,15 +18,10 @@
       "prose": "A tomboyish yet undeniably cute two-piece athletic tankini in dark olive-green and charcoal, featuring a racerback cropped tank with supportive inner lining, paired with comfortable low-rise board shorts.",
       "tokens": [
         "olive green tankini",
-        "sporty crop top",
+        "racerback crop top",
         "board shorts",
         "black trim",
-        "short black hair",
-        "blue eyes",
-        "flat chest",
-        "tomboy charm",
-        "bashful smile",
-        "athletic build"
+        "sporty swimwear"
       ]
     }
   }

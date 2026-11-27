@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_mage_tower",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "frieren_r18_mage_tower",
     "title": "芙莉莲 · 魔导塔星夜下的研读",
@@ -33,7 +33,6 @@
       "facing viewer",
       "looking at viewer",
       "eye contact",
-      "Frieren",
       "elf ears",
       "white and gold mage robe",
       "loose robe",

@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 863,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_uniform",
       "name": "白衬衫与藏蓝制服开衫",
-      "prose": "A white school shirt sits beneath a navy cardigan, with a grey pleated skirt and plain ankle socks.",
+      "prose": "A crisp white collared school shirt with a red ribbon tie beneath a navy cardigan, paired with a grey pleated skirt, plain ankle socks, and brown loafers.",
       "tokens": [
-        "white shirt",
+        "school uniform",
+        "white collared shirt",
         "navy cardigan",
+        "red ribbon tie",
         "grey pleated skirt",
-        "ankle socks"
+        "ankle socks",
+        "brown loafers"
       ],
       "default": true,
       "isDefault": true

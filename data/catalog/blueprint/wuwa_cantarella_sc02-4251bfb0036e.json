@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3402,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于雕花实验台前举起荧光紫药剂瓶，唇角含笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "apothecary_velvet_kimono",
     "promptProse": "Surrounded by antique glass distillation flasks and dried wisteria in her private apothecary, Cantarella wears a velvet wisteria-embroidered robe and raises a luminescent violet vial.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "purple robe",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aozaki_aoko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 198,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "aozaki_aoko",
     "profile": {
@@ -294,7 +294,7 @@
         "magic gunner",
         "mahoutsukai no yoru"
       ],
-      "identityProse": "Adult Aozaki Aoko from Witch on the Holy Night, a confident and free-spirited wandering magician with long reddish-brown hair, sharp azure eyes, wearing a stylish traveler trench coat, exuding a mature, cool, and effortless aura.",
+      "identityProse": "Adult Aozaki Aoko from Witch on the Holy Night, a confident and free-spirited wandering magician with long reddish-brown hair and sharp azure eyes, exuding a mature, cool, and effortless aura.",
       "identityTokens": [
         "aozaki aoko",
         "1girl",

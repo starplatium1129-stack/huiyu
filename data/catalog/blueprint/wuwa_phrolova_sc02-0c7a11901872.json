@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3502,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "靠在丝绒包厢护栏单手支颐，微侧头凝望",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "opera_box_velvet_gown",
     "promptProse": "Framed by heavy crimson velvet drapes inside a gilded opera box, Phrolova leans on the balustrade in an off-shoulder velvet gown with black Chantilly lace sleeves, gazing quietly into the dusk.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "red dress",

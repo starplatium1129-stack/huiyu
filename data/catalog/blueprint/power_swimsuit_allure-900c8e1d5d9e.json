@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3420,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_swimsuit_allure",
     "characterId": "power",
@@ -41,7 +41,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "power (chainsaw man)",
       "strawberry blonde hair",
       "yellow eyes",
       "red horns",

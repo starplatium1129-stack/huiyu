@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3704,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "踏水立于水镜祭坛中央手提银月灯笼，浅笑凝望",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "moonlit_festival_hakama",
     "promptProse": "Stepping across the shallow reflective basin of the Lunar Altar under a full moon, Iuno carries a silver filigree lantern in her ceremonial white-and-cobalt festival attire.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "white top",
       "wide sleeves",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_herb_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2879,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "muelsyse_arknights_herb_tea",
     "characterId": "muelsyse_arknights",
@@ -28,7 +28,7 @@
       "close-up"
     ],
     "promptProse": "In a bright, cheerful modern kitchen filled with potted culinary herbs on the windowsill, Muelsyse drops sprigs of fresh garden mint into a clear glass teapot, creating swirls of chartreuse as boiling water is poured. Steam rises gently against sun-bleached tiles, while ceramic mugs, honey jars, and her bright emerald eyes radiate wholesome, homely warmth.",
-    "animaCaption": "",
+    "animaCaption": "Standing by the sunny kitchen counter, she drops fresh mint sprigs into a clear glass teapot as hot water sends pale green swirls and steam rising upward. Potted windowsill herbs and honey jars glow in the bright morning light.",
     "promptTokens": [
       "standing",
       "bright modern kitchen",

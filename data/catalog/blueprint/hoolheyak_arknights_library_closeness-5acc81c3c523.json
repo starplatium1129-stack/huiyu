@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_library_closeness",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2905,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_library_closeness",
     "characterId": "hoolheyak_arknights",
@@ -28,7 +28,7 @@
       "close-up"
     ],
     "promptProse": "Sitting intimately close across a polished walnut reading table in a private archive, Ho'olheyak tilts a heavy gilt-edged codex just low enough to meet the viewer's eyes with an enigmatic, teasing smile. Warm amber light from a fringed reading lamp illuminates the fine print of ancient script, soft dust motes, and the playful challenge in her glowing aqua eyes.",
-    "animaCaption": "",
+    "animaCaption": "Leaning close across the walnut archive table, she tilts a heavy gilt-edged codex just below her eyes and meets the viewer's gaze with a teasing smile. Warm amber lamplight pools over ancient script and dust motes.",
     "promptTokens": [
       "leaning forward",
       "sitting",

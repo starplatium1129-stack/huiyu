@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_cloud_window",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3045,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nightingale_arknights_cloud_window",
     "characterId": "nightingale_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Sitting close against the clear glass pane of a tranquil solarium window, Nightingale watches slow-moving cumulus clouds drift across an azure sky. Soft daylight reflects across her gentle expression and long blonde hair, while potted white lilies, hanging ferns, and wicker chairs frame the quiet room.",
-    "animaCaption": "",
+    "animaCaption": "Seated close beside a bright solarium glass window framed by white lilies and hanging ferns, she watches slow cumulus clouds drift across the sky. Soft daylight reflects calmly across her peaceful expression.",
     "promptTokens": [
       "sitting",
       "looking through window",

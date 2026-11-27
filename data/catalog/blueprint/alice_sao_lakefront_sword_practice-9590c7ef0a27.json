@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_lakefront_sword_practice",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2001,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_lakefront_sword_practice",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "专注坚毅",
     "promptProse": "By the calm, misty edge of a forest lake at daybreak, Alice executes a flawless sword kata, the golden edge of her blade cutting through swirling water vapor.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "sword",
       "lake",
       "water",

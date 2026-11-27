@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_garden_wheel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3013,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.728Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_garden_wheel",
     "characterId": "blemishine_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Kneeling on the soft grass of a blossoming flower garden, Blemishine tightens the wheel axle of a rustic green wooden handcart with an open-ended wrench. Surrounding her are vibrant blooming roses, clay planting pots, and watering cans, all drenched in warm morning light filtering through overhead trellis vines.",
-    "animaCaption": "",
+    "animaCaption": "Kneeling on the soft grass of a rose-filled garden, she uses a wrench to tighten the wheel axle of a rustic green wooden handcart. Warm morning sunlight filters through overhead trellis vines across the clay pots beside her.",
     "promptTokens": [
       "kneeling on garden grass",
       "repairing wooden handcart",

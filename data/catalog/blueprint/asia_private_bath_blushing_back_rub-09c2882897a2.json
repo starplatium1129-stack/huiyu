@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_private_bath_blushing_back_rub",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "asia_private_bath_blushing_back_rub",
     "characterId": "asia_argento",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "asia_argento",
-      "blonde_hair",
       "short_hair",
-      "green_eyes",
       "towel",
       "bare_shoulders",
       "collarbone",

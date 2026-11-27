@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3510,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸仰卧彼岸花瓣丝绒软垫，双臂轻抬潮红喘息",
     "adult": true,
@@ -30,20 +30,14 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "crimson_velvet_stage_nude_r18",
     "promptProse": "Surrounded by fallen spider lily petals and draped crimson velvet curtains, Phrolova lies completely unclothed on plush cushions, wearing only her crimson flower eyepatch as warm light traces her flushed body.",
     "promptTokens": [
-      "white hair",
       "long hair",
       "hair spread out",
-      "red eyes",
       "eyepatch",
       "red flower",
       "nude",

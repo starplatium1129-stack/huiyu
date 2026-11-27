@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1054,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
     "title": "花火 · 榻榻米和风短裙半褪的更衣自抚",
@@ -33,7 +33,6 @@
     ],
     "promptProse": "Kneeling over the tatami, Sparkle supports herself on one hand and forearm, using the other hand to draw her panties aside and touch herself; she looks back beneath cool moonlight through the shoji.",
     "promptTokens": [
-      "Sparkle",
       "red and black kimono dress",
       "bent over",
       "looking back",

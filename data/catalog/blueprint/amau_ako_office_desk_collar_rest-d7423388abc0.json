@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_office_desk_collar_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2657,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "amau_ako_office_desk_collar_rest",
     "characterId": "amau_ako",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "amau_ako",
-      "grey_hair",
       "twintails",
-      "blue_eyes",
       "horns",
       "halo",
       "choker",

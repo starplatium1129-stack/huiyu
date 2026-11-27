@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_tea_leaves",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2946,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosa_arknights_tea_leaves",
     "characterId": "rosa_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a minimalist, serene tea-ceremony room, Rosa carefully measures dried tea leaves from a ceramic canister into a delicate porcelain teapot with a tiny bamboo scoop. The room is quiet, featuring tatami mats, a simple wooden tea table, and a soft, filtered light that emphasizes the minimalist aesthetic and the precision of her meditative, traditional activity.",
-    "animaCaption": "",
+    "animaCaption": "Seated calmly on tatami mats beside a low wooden table, she uses a slender bamboo scoop to measure dried tea leaves from a ceramic canister into a porcelain teapot. Soft filtered daylight settles across the serene minimalist room.",
     "promptTokens": [
       "sitting",
       "serene tea-ceremony room",

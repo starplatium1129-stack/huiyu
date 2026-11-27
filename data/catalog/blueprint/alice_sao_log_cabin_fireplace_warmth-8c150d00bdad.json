@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_log_cabin_fireplace_warmth",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2002,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_sao_log_cabin_fireplace_warmth",
     "characterId": "alice_sao",
@@ -21,13 +21,10 @@
     "mood": "浪漫温存",
     "promptProse": "Seated before a crackling fireplace in a peaceful wooden cabin, Alice rests her chin on her knees in a flowing white gown, her golden braid glowing amber in the hearthlight as she gazes softly.",
     "promptTokens": [
-      "alice_synthesis_thirty",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "braid",
-      "blue_eyes",
       "bare_shoulders",
       "fireplace",
       "firelight",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3104,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "海风中伸出手掌邀舞，薄纱裙摆飞扬",
     "adult": false,
@@ -31,10 +31,7 @@
     "promptProse": "On a dramatic basalt cliff overlooking the foaming ocean at sunset, Camellya reaches out an inviting hand as the coastal wind billows the sheer tulle sleeves of her ivory and ruby evening gown.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "evening gown",
       "backless dress",

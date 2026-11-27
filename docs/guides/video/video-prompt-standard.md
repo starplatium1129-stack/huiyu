@@ -33,39 +33,41 @@
 
 | 模型 ID | 支持模式 | 时长 / 帧率 | 原生音频 | 负向词 / CFG | 编译目标格式 |
 | --- | --- | --- | --- | --- | --- |
-| `minimax-h3` | `text` / `image` / `first-last-frame` | 5 / 10 秒 · 24 fps | 32 kHz | 否（`cfg=1`） | 英文三段式（关键帧对齐 + 音画 + 声景 + 配乐） |
-| `ltx-2.3` | `text` / `image` | 3 / 5 秒 · 24 fps | 48 kHz | 是（`cfg=3`） | 英文单段现在时电影散文（画面与声音融合） |
-| `ltx-2.5-distilled` | `text` / `image` | 3 / 5 秒 · 24 fps | 48 kHz | 否（`cfg=1`） | 同上；8 步蒸馏无负向词，正向需写得更具体 |
-| `wan2.2-ti2v-5b` | `text` / `image` | 3 / 5 秒 · 24 fps | 无声 | 是（`cfg=5`） | 中/英自然语言视觉动态段 + 按需裁剪负向词 |
-| `wan2.2-14b` | `text` | 3 / 5 秒 · 16 fps | 无声 | 是（`cfg=4/3`） | 同 Wan 2.2；双噪声阶段更响应光影层次与运镜 |
-| `hunyuan-video-1.5` | `text`（480p） | 3 / 5 秒 · 24 fps | 无声 | 是（`cfg=6`） | 中/英自然语言视觉段；含 ByT5，画面文字用引号保原文 |
-| `kandinsky-6-lite-distill` | `text` / `image` | 固定 5 秒 · 24 fps | 44.1 kHz 单声道 | 否（`cfg=1`） | 2–3 句精炼英文单主线动作 + 同步物理声景 |
-| `wan-animate-2` | `image` + 动作视频 | 3 / 5 秒 · 24 fps | 无声 | 否（`cfg=1`） | 中/英简短定调（画风、光影、氛围与稳定性） |
-| `longcat-avatar-1.6` | `image` + 配音 WAV | 3 / 5 秒 · 25 fps | 跟随配音 48 kHz | 否（`cfg=1`） | 英/中简短神态、微动作与光影定调（默认稳机位） |
+| `minimax-h3` | `text` / `image` / `first-last-frame` | 5 / 10 秒（ComfyUI 3–15 秒）· 24 fps | 32 kHz | 否（`cfg=1`） | 英文三段式（关键帧对齐 + 音画 + 声景 + 配乐） |
+| `ltx-2.3` | `text` / `image` | 3 / 5 秒 · 24 fps | 48 kHz（含对白） | 是（`cfg=3`，透传用户输入） | 英文单段现在时电影散文（画面与声音融合） |
+| `ltx-2.5-distilled` | `text` / `image` | 3 / 5 秒 · 24 fps | 48 kHz（含对白） | 否（`cfg=1`） | 同上；8 步蒸馏无负向词，正向需写得更具体 |
+| `wan2.2-ti2v-5b` | `text` / `image` | 3 / 5 秒 · 24 fps | 无声 | 是（`cfg=5`，合并 `WAN_NEGATIVE`） | 中/英自然语言视觉动态段（积木编为中文）+ 自动裁剪负向词 |
+| `wan2.2-14b` | `text` | 3 / 5 秒 · 16 fps | 无声 | 是（`cfg=4/3`，合并 `WAN_NEGATIVE`） | 同 Wan 2.2；双噪声阶段更响应光影层次与运镜 |
+| `wan2.2-i2v-a14b-gguf` | `image` / `first-last-frame` | 2 / 3 / 5 秒 · 16 fps | 无声 | 否（4/8 步蒸馏 `cfg=1`） | 同 Wan 2.2 视觉动态段；首尾帧缺省自动补 `match-last` |
+| `hunyuan-video-1.5` | `text`（480p） | 3 / 5 秒 · 24 fps | 无声 | 是（`cfg=6`，合并 `WAN_NEGATIVE`） | 中/英自然语言视觉段；含 ByT5，画面文字自动转双引号保原文 |
+| `kandinsky-6-lite-distill` | `text` / `image` | 固定 5 秒 · 24 fps | 44.1 kHz 单声道（仅 `sound`） | 否（`cfg=1`） | 2–3 句精炼英文单主线动作 + 同步物理声景（丢弃配乐与对白） |
+| `wan-animate-2` | `image` + 动作视频 | 3 / 5 秒 · 24 fps | 无声 | 否（`cfg=1`） | 简短定调（画风、光影、神态与稳机位，积木编为中文） |
+| `longcat-avatar-1.6` | `image` + 配音 WAV | 3 / 5 秒 · 25 fps | 跟随配音 48 kHz | 否（`cfg=1`） | 简短神态、微动作与光影定调（稳机位，积木编为中文） |
+| `musetalk-1.5` | `image` + 配音 WAV | 2 / 3 / 5 / 10 / 15 秒 · 25 fps | 跟随配音 48 kHz | 否（1 步 `cfg=1`） | 同配音驱动；仅需简洁光影与稳机位神态定调 |
 
 ### 2.2 分家族要点
 
-- **MiniMax H3**：按 [H3 格式指南](../../../.agents/skills/video-prompt-craft/references/h3-prompt-writing.md) 组装。`image` 首行写 `For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.`；`first-last-frame` 首行写 `How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot N) aligns with the S.SS-second mark of the target video.`，空一行后依次写 `integrated_multimodal_description`、`overall_soundscape`、`non_diegetic_music`。对白用 `(S1)` 与 `<d>[Language] 原文</d>`，无配乐写 `N/A`。（原生接口当前 `references` / `dialogue` 独立字段尚待接入，以 `adapter-models.json` 的 `pendingVideo` 为准。）
-- **LTX-2.3 / LTX-2.5 Distilled**：本地推理关闭内置扩写（`enable_prompt_enhancement=False`），输入正文须自带完整细节。统一写为**单段英文现在时电影化散文**：`画风与构图 → 主体连续动作与微表情 → 镜头运动 → 光线与环境响应 → 同步环境音/音效/对白`。不用标签堆砌，不写 `masterpiece`、`8k` 等空泛画质词；`ltx-2.5-distilled` 不接收负向词。
-- **Wan 2.2（5B / 14B）与 HunyuanVideo 1.5**：中英文自然语言均可，聚焦可见动态与运镜，**自动剥离配乐与纯声音描写**（无声模型写声音词会稀释视觉权重）。负向词从基础负面起步并剔除冲突项（如需要轻柔微动/定格时删去「静止/静态」，需要画面文字时删去「字幕/文字」）；Hunyuan 1.5 画面文字用双引号保留原文。
-- **Kandinsky 6.0 Lite Distill**：本地推理关闭内置扩写（`expand_prompts=False`），固定 5 秒且不支持负向词。用 2–3 句简洁英文写清「单一动作主线 + 明确运镜 + 对应物理环境声」，不在 5 秒内切换多镜头。
-- **驱动类（Wan-Animate-2 / LongCat-Avatar 1.6）**：提示词仅作辅助定调（画面质感、光线色温、微表情倾向与镜头稳定），不写大幅位移、换装或与驱动源矛盾的口型/姿态；`cfg=1` 不传负向词。
+- **MiniMax H3**：按 [H3 格式指南](../../../.agents/skills/video-prompt-craft/references/h3-prompt-writing.md) 组装（工作台请求走 `prompt_compiler`，仅支持 `text`/`image`/`first-last-frame`，不自动注入 `2D-animated, cinematic`）。`image` 首行写 `For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.`；`first-last-frame` 首行写 `How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the S.SS-second mark of the target video.`，空一行后依次写 `integrated_multimodal_description`、`overall_soundscape`、`non_diegetic_music`。对白用 `(S1)` 与 `<d>[Language] 原文</d>`，无配乐写 `N/A`。（原生 `Ref2VA` 与独立 `dialogue` 参数尚待接入，以 `adapter-models.json` 的 `pendingVideo` 为准。）
+- **LTX-2.3 / LTX-2.5 Distilled**：本地推理关闭内置扩写（`enable_prompt_enhancement=False`），输入正文须自带完整细节。统一写为**单段英文现在时电影化散文**：`画风与构图 → 主体连续动作与微表情 → 镜头运动 → 光线与环境响应 → 同步环境音/音效/对白`。支持对白编译（`The subject says in {Lang}, "..."`）；不用标签堆砌或 `masterpiece`/`8k` 等空泛画质词；`ltx-2.3` 负向词原样透传用户输入（不合并默认模板），`ltx-2.5-distilled` 不接收负向词。
+- **Wan 2.2（5B / 14B / A14B GGUF）与 HunyuanVideo 1.5**：中英文自然语言均可，聚焦可见动态与运镜，编译器**自动剥离音频槽与常见听觉句式**（但编写纯视觉正文仍应避开声音/重低音等词）。`wan2.2-ti2v-5b`/`wan2.2-14b`/`hunyuan-video-1.5` 合并 `WAN_NEGATIVE` 并按微动/画面文字自动剔除冲突项；`wan2.2-i2v-a14b-gguf` 为 `cfg=1` 蒸馏模型，不传负向词；Hunyuan 1.5 画面文字自动转双引号保留原文。
+- **Kandinsky 6.0 Lite Distill**：本地推理关闭内置扩写（`expand_prompts=False`），固定 5 秒且不支持负向词。用 2–3 句简洁英文写清「单一动作主线 + 明确运镜 + 对应物理环境声」，不在 5 秒内切换多镜头；编译层仅保留 `sound`，自动丢弃 `music`（配乐）与 `dialogue`（对白）。
+- **驱动类（Wan-Animate-2 / LongCat-Avatar 1.6 / MuseTalk 1.5）**：提示词仅作辅助定调（画面质感、光线色温与微表情倾向），禁用 `framing`/`camera` 槽并由编译器硬编码稳机位句，强制剥离音频槽；不写大幅位移、换装或与驱动源矛盾的口型/姿态；`cfg=1` 不传负向词。
 
 ---
 
 ## 3. 工作台积木槽位与编译契约
 
-面向「场景预设 + 点选积木 + 自动编译」的统一数据结构：
+面向「场景预设 + 点选积木 + 自动编译」的统一数据结构（6 个视觉槽 + 1 个结构化 `audio: { sound?, music?, dialogue?, language? }` 对象槽，对白上限 300 UTF-16 字符）：
 
 | 槽位 | 内容职责 | 生效模式 | 编译取舍 |
 | --- | --- | --- | --- |
-| `framing` | 景别与机位视角 | `text`（`image` 仅作承接参考） | 驱动模式省略；I2V 不覆盖首帧构图 |
-| `subject` | 开场主体、衣着状态与场景锚点 | `text` | `image` / `first-last-frame` 隐去外观复述，仅保留动作起点 |
-| `action` | 1 条主动作 + 神态变化（或 FL2V 过渡路径） | `text` / `image` / `first-last-frame` | 驱动模式降级为轻量神态与稳定提示 |
-| `camera` | 运镜类型、幅度与速度 | 除配音驱动外均可用 | 若正文已写明确运镜，编译层不重复追加兜底运镜句 |
+| `framing` | 景别与机位视角 | 仅 `text` | `image` / `first-last-frame` / 驱动模式均忽略 |
+| `subject` | 开场主体、衣着状态与场景锚点 | 仅 `text` | `image` / `first-last-frame` / 驱动模式忽略 |
+| `action` | 1 条主动作 + 神态变化（或 FL2V 过渡路径） | 全模式 | 驱动模式降级为轻量神态定调；正文已写动作时自动抑制 |
+| `camera` | 运镜类型、幅度与速度 | `text` / `image` / `first-last-frame` | `motion-driver` 与 `voice-driver` 均禁用并硬编码稳机位；正文已写运镜时不重复追加 |
 | `atmosphere` | 风/雨/光影/粒子等物理与环境响应 | 全模式 | 驱动模式重点保留光照与氛围 |
-| `ending` | 动作落幅、定格节奏或尾帧收敛状态 | `text` / `image` / `first-last-frame` | FL2V 必须收束至尾帧姿势与构图 |
-| `audio` | 环境声景、物理音效、对白与配乐选择 | 仅原生带音视频模型 | Wan 2.2 / Hunyuan 1.5 / Wan-Animate-2 编译时自动剥离 |
+| `ending` | 动作落幅、定格节奏或尾帧收敛状态 | `text` / `image` / `first-last-frame` | FL2V 缺省时自动补 `match-last` |
+| `audio` | 环境声景（`sound`）、配乐（`music`）与对白（`dialogue`/`language`） | 仅非驱动带音模型（H3 / LTX / Kandinsky 仅 `sound`） | 无声与驱动模型自动剥离 |
 
 **防冲突规则**：
 1. **同槽单选互斥**：运镜方向（推进/拉远/横移/环绕/固定）、景别与节奏等互斥项单选，避免出现自相矛盾的运动指令。

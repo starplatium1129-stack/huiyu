@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_casual",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 446,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
@@ -12,12 +12,12 @@
       "name": "落肩拼色居家大卫衣",
       "prose": "An oversized slouchy gray lounge hoodie sliding off one shoulder over micro athletic shorts.",
       "tokens": [
-        "hoodie",
-        "grey_hoodie",
-        "oversized_clothes",
-        "off_shoulder",
-        "short_shorts",
-        "bare_legs"
+        "color-block pullover hoodie",
+        "oversized loungewear",
+        "bare shoulder",
+        "athletic micro shorts",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "suou_yuki",
       "default": false,

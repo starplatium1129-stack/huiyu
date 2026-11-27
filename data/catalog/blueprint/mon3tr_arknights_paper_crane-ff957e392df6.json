@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_paper_crane",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3073,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_paper_crane",
     "characterId": "mon3tr_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting at a low metal worktable in a brightly lit recreation room, Mon3tr carefully folds a small origami paper crane, following step-by-step printed diagrams. Colored paper squares, discarded fold attempts, and warm overhead fluorescent light illuminate her focused expression and cat ears.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a brightly lit recreation room table beside step-by-step diagrams and colored paper squares, she carefully folds a small origami paper crane. Clear overhead light catches her focused expression and neat creases.",
     "promptTokens": [
       "sitting",
       "recreation room table",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_locker",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2443,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_locker",
     "characterId": "arihara_nanami",
@@ -31,7 +31,7 @@
       "focused expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing before an open metal locker lined with neatly hung gear, she pulls on and straightens a crisp white glove with calm, focused readiness. Cool ambient light reflects off the rows of industrial lockers behind her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_base_after_mission",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 877,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:56:31.670080300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐在维修工坊操作台边缘，黑白战术服拉链半开，外骨骼装甲整齐卸放在身侧，修长双腿自然悬空晃动，指尖整理耳麦",
     "adult": true,
@@ -24,18 +24,12 @@
     "mood": "战后松弛",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "cleavage",
-      "bare shoulders"
-    ],
+    "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "Toki resting on the edge of a workshop metal workbench after a mission, black and white combat suit unzipped at the front showing bare shoulders and collarbone, mechanical armor neatly detached beside her on the bench, blonde side ponytail, blue eyes, blue halo, dangling slender legs, warm workshop lighting, illuminated monitors.",
+    "promptProse": "Perched on the edge of a metal workshop workbench after returning from a mission, Toki lets her slender legs dangle casually while her black-and-white combat suit is unzipped at the front to reveal her shoulders and collarbone. Detached mechanical armor pieces rest neatly beside her under warm overhead workshop lighting and softly glowing monitors.",
     "promptTokens": [
-      "toki (blue archive)",
       "halo",
-      "blonde hair",
       "side ponytail",
-      "blue eyes",
       "earpiece",
       "black and white combat suit",
       "front zipper unzipped",

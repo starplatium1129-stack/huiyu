@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_wine_tasting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2857,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_wine_tasting",
     "characterId": "vulpisfoglia_arknights",
@@ -26,7 +26,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting at a speakeasy mahogany bar lined with backlit bottles of vintage amaro, Vulpisfoglia gently swirls a glass of deep ruby wine, looking toward the viewer with a subtle, knowing smile. Brass accents, smoked mirrors, and warm amber bar lighting illuminate the polished counter and her tailored suit.",
-    "animaCaption": "",
+    "animaCaption": "Seated at the polished mahogany speakeasy bar, she gently swirls a glass of deep ruby wine while eyeing the viewer with a subtle, knowing smile. Warm amber lighting gleams off backlit vintage bottles and smoked mirrors behind her.",
     "promptTokens": [
       "sitting at bar",
       "holding wine glass",

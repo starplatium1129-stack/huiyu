@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/crimson_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2582,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shinjou_akane",
-      "prose": "一件随性套在身上的烟粉色弹力针织露肩细吊带睡裙，侧腰微破洞设计，透出如白瓷般的肌肤，松垮慵懒中散发着危险而颓废的致死诱惑。",
+      "prose": "A relaxed smoky-pink ribbed stretch-knit off-shoulder camisole slip dress with casually distressed cutout accents along the side waist.",
       "tokens": [
         "smoky pink ribbed knit off-shoulder camisole slip",
         "intentional distressed side cuts",

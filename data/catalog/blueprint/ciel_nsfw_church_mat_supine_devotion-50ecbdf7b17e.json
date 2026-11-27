@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_church_mat_supine_devotion",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1340,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "摘去眼镜侧卧在静谧圣堂的深蓝丝绒软榻上，短发贴在泛红面颊，单手轻掩胸前起伏，深蓝眼眸泛着水光与彻底坦露的依恋",
     "adult": true,
@@ -24,12 +24,9 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "Ciel lying on her side on a deep blue velvet couch without glasses, short dark blue hair, dark blue eyes, heavy blush, parted lips, holding a velvet pillow close to chest, bare shoulders, collarbone, church prayer room, warm candlelight, soft dramatic shadows, intimate atmosphere.",
+    "promptProse": "Without her glasses, Ciel lies on her side along a deep-blue velvet couch in the hushed church prayer room, hugging a plush velvet pillow close against her chest while her bare shoulders and collarbones catch the flickering warmth of nearby candles. A deep blush and parted lips soften her earnest gaze.",
     "promptTokens": [
-      "ciel (tsukihime)",
-      "blue hair",
       "short hair",
-      "blue eyes",
       "no glasses",
       "bare shoulders",
       "collarbone",
@@ -62,7 +59,6 @@
     "animaCaption": "She rests on her side holding a soft pillow without glasses.",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "compositionIntent": "single"

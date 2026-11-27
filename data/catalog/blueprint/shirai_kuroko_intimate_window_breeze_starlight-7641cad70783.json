@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_window_breeze_starlight",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2038,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "cafe_checks",
@@ -21,10 +21,8 @@
     "mood": "温存与柔媚",
     "promptProse": "Standing barefoot alone before panoramic high-rise windows overlooking the Academy City skyline at night, Shirai Kuroko leans gently against the glass in her navy slip dress. The evening wind billows sheer white curtains as she rests one hand on her bare shoulder, gazing out with alluring grace.",
     "promptTokens": [
-      "shirai_kuroko",
       "1girl",
       "solo",
-      "brown_hair",
       "twintails",
       "slip_dress",
       "bare_shoulders",

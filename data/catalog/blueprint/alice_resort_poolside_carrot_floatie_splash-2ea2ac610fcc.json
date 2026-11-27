@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_resort_poolside_carrot_floatie_splash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1809,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alice_resort_poolside_carrot_floatie_splash",
     "title": "爱丽丝 · 阳光度假泳池的胡萝卜气垫戏水",
@@ -50,9 +50,7 @@
       "lying_on_stomach",
       "playful_laugh",
       "kicking_water",
-      "pink_hair",
       "twintails",
-      "blue_eyes",
       "wet_skin",
       "sparkling_droplets",
       "bright_sunshine",

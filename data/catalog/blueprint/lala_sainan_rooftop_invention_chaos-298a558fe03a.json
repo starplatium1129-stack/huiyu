@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_sainan_rooftop_invention_chaos",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1230,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "双手高举发光的奇特外星发明道具，制服领口微敞，及踝粉发与爱心尾巴欢快甩动",
     "camera": "dynamic low angle, cowboy shot, vibrant anime slapstick depth",
@@ -22,7 +22,6 @@
     "outfitId": "sainan_uniform",
     "promptProse": "Lala raises the glowing invention over her head with both hands. Pink and violet smoke streams away in the rooftop wind, lit from within by the gadget and from above by the clear midday sun.",
     "promptTokens": [
-      "Lala",
       "raised arms",
       "glowing gadget",
       "smoke",

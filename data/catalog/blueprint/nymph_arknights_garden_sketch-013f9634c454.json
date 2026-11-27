@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_garden_sketch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2894,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-07T04:39:18.784Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_garden_sketch",
     "characterId": "nymph_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Sitting cross-legged on a weathered stone garden bench beneath an arbor of pink climbing roses, Nymph scribbles a whimsical crayon sketch of butterflies into a spiral notebook. Fallen petals scatter across her lap and the flagstones, while warm afternoon sunlight and flitting garden bees add lively outdoor charm to her creative nook.",
-    "animaCaption": "",
+    "animaCaption": "Sitting cross-legged on the weathered stone bench beneath a climbing pink rose arbor, she leans over a spiral notebook to draw butterflies in crayon. Fallen petals rest across her lap in the warm afternoon sunlight.",
     "promptTokens": [
       "stone garden bench",
       "sitting cross-legged",

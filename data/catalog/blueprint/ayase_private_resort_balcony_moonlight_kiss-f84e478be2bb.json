@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_private_resort_balcony_moonlight_kiss",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2260,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ayase_private_resort_balcony_moonlight_kiss",
     "characterId": "ayase_aragaki",
@@ -24,7 +24,6 @@
       "1girl",
       "solo",
       "aragaki_ayase",
-      "black_hair",
       "long_hair",
       "brown_eyes",
       "bikini",

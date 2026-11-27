@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_r18_river_moon_wash",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2842,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "zeta_shadow_r18_river_moon_wash",
     "characterId": "zeta_shadow",
@@ -46,11 +46,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "nsfwTokens": [
-      "nude",
-      "masturbation",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "animaCaption": "The river hides many things tonight — blood, dust, and a golden leopard who cannot wash him out of her head."
   }

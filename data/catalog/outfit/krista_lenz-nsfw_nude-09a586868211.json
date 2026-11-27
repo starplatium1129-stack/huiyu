@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1193,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装状态",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare back",
+        "barefoot"
       ],
-      "prose": "unclothed",
+      "prose": "Completely unclothed without outerwear or ribbons, showing dainty bare shoulders, delicate collarbones, and bare feet.",
       "default": false,
       "isDefault": false
     }

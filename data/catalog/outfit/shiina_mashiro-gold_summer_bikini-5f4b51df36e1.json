@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/gold_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2400,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
@@ -17,15 +17,12 @@
       "characterId": "shiina_mashiro",
       "prose": "A minimalist pristine-white triangle bikini paired with an artistic oversized sheer silk shirt decorated with faint pastel watercolor paint splashes, soft frayed cuffs, and simple tie-side strings.",
       "tokens": [
-        "pure white bikini",
-        "watercolor splash shirt",
-        "oversized sheer shirt",
+        "white bikini",
+        "triangle bikini",
         "side-tie bikini",
-        "long pale blonde hair",
-        "red eyes",
-        "petite slender",
-        "blank innocent expression",
-        "artistic genius"
+        "oversized sheer shirt",
+        "watercolor splash shirt",
+        "frayed cuffs"
       ]
     }
   }

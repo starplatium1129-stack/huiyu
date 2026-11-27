@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_private_jacuzzi_passionate_embrace",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2320,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-22T02:45:10.022381400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "michiru_private_jacuzzi_passionate_embrace",
     "characterId": "hyoudou_michiru",
@@ -49,8 +49,7 @@
       "topless",
       "bare shoulders",
       "cleavage",
-      "water",
-      "steam"
+      "water"
     ],
     "nsfwProse": "Her deep-violet triangle bikini is untied and drifting loose in the hot water, leaving her wet chest and bare shoulders pressed directly against her partner."
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3305,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "蹲在野花草坡伸手轻抚可爱小声骸，开心大笑",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "meadow_pilgrim_sundress",
     "promptProse": "On a sun-kissed coastal meadow carpeted with blue and white wildflowers, Phoebe wears an embroidered linen pilgrim dress and straw bonnet, kneeling to gently pet a friendly little Echo creature.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "white dress",
       "floral embroidery",
       "straw hat",

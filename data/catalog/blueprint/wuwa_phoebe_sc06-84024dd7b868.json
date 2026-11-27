@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3306,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于灯塔石栏边手提黄铜风灯，微风拂动斗篷",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "lighthouse_velvet_cloak",
     "promptProse": "High on the stone gallery of a seaside lighthouse as twilight deepens over the waves, Phoebe wraps herself in a midnight-blue velvet cloak fastened with a gold sun clasp, holding a warm brass lantern.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "blue cloak",
       "hooded cloak",
       "gold clasp",

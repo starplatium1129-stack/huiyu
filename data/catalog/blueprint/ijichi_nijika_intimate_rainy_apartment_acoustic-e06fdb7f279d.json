@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_rainy_apartment_acoustic",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2026,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "cream_home_tshirt",
@@ -21,10 +21,8 @@
     "mood": "宁静祥和",
     "promptProse": "Sitting barefoot on the warm wooden floor of her cozy apartment during a rainy evening, Ijichi Nijika cradles an acoustic guitar in an oversized cream t-shirt. She plucks the strings softly, smiling up at the viewer with an inviting, gentle melody.",
     "promptTokens": [
-      "ijichi_nijika",
       "1girl",
       "solo",
-      "blonde_hair",
       "side_ponytail",
       "ahoge",
       "oversized_t-shirt",

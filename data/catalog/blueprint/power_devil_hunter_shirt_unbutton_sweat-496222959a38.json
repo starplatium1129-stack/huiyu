@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_devil_hunter_shirt_unbutton_sweat",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2688,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_devil_hunter_shirt_unbutton_sweat",
     "characterId": "power",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "power_(chainsaw_man)",
-      "blonde_hair",
       "long_hair",
       "red_horns",
       "horns",

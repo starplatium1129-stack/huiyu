@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_festival_yukata_goldfish",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1355,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "蹲在金鱼摊边，举起托着红金鱼的纸网，回头向画外同伴微笑",
     "adult": false,
@@ -27,7 +27,6 @@
     "outfitId": "festival_navy_yukata",
     "promptProse": "Still crouching beside the stall, Lena turns toward the viewer with a red goldfish resting in the raised paper net. Lantern light warms her smile while distant fireworks glimmer beyond the booths.",
     "promptTokens": [
-      "vladilena_millize",
       "hair up",
       "goldfish scooping",
       "festival",

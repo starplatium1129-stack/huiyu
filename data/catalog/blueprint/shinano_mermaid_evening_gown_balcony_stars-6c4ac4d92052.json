@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_mermaid_evening_gown_balcony_stars",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2707,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shinano_mermaid_evening_gown_balcony_stars",
     "characterId": "shinano",
@@ -23,12 +23,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "shinano_(azur_lane)",
-      "silver_hair",
       "fox_ears",
       "multiple_tails",
       "nine_tails",
-      "golden_eyes",
       "evening_gown",
       "mermaid_dress",
       "backless_dress",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_bridal_suite_ecstatic_surrender",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2189,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "stella_bridal_suite_ecstatic_surrender",
     "characterId": "stella_vermillion",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "stella_vermillion",
-      "red_hair",
       "long_hair",
       "twintails",
-      "red_eyes",
       "nightgown",
       "camisole",
       "sheer_clothing",

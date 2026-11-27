@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_highleg_bunny_lounge_pose",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2660,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kakudate_karin_highleg_bunny_lounge_pose",
     "characterId": "kakudate_karin",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kakudate_karin",
-      "black_hair",
       "long_hair",
       "dark_skin",
-      "yellow_eyes",
       "halo",
       "bunny_suit",
       "rabbit_ears",

@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 963,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "nsfw_nude",
       "name": "私密全裸 / 纯粹形态",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without costume or accessories, showing graceful bare shoulders, sleek collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false,

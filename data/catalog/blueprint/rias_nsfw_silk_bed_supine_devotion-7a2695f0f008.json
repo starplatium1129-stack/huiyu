@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_silk_bed_supine_devotion",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rias_nsfw_silk_bed_supine_devotion",
     "title": "莉雅丝 · 丝绸床榻的深情仰卧",
@@ -26,9 +26,8 @@
       "lying_on_side",
       "candlelight"
     ],
-    "promptProse": "Rias Gremory lying gracefully on her side on a crimson silk bed, very long crimson red hair flowing across red sheets, cyan eyes, ahoge, bare shoulders, collarbone, resting head on one arm, other hand resting on silk sheets, gentle warm smile, blush, looking at viewer, candelabra light, warm ambient bedroom lighting.",
+    "promptProse": "Rias Gremory reclines gracefully on her side across crimson silk sheets, her long red hair fanning across the bedding as she props her head on one arm and rests her other hand lightly on the silk. Warm candelabra light glows over her bare shoulders, collarbone, and affectionate blushing smile.",
     "promptTokens": [
-      "rias gremory",
       "crimson hair",
       "very long hair",
       "cyan eyes",
@@ -63,7 +62,6 @@
     "nsfwProse": "",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "animaCaption": "She rests gracefully on her side on crimson silk sheets.",

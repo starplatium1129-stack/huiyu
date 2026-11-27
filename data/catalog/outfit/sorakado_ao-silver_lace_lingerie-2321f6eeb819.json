@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorakado_ao/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2539,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "sorakado_ao",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sorakado_ao",
-      "prose": "一套随性透气的浅紫白波点纯棉吊带睡衣，搭配蓬松柔软的花苞收口小短裤，透出无拘无束的海岛夏夜气息，天然可爱中透着少女未经修饰的体温。",
+      "prose": "A relaxed pale-lavender cotton camisole patterned with tiny white polka dots, paired with soft gathered bubble tap shorts.",
       "tokens": [
         "pale lavender polka dot cotton camisole set",
         "gathered bubble tap shorts",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_pony_sticker",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3012,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.729Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_pony_sticker",
     "characterId": "blemishine_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "At a sunny wooden writing desk covered in colored pencils and stamps, Blemishine carefully peels a cute stylized pony sticker, pressing it onto the corner of a handwritten postcard to her sister. Daylight filters through fluttering lace curtains, catching the grain of the wooden desk, an inkwell, and envelopes stacked neatly for mailing.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a sunlit wooden desk cluttered with pencils and stamps, she carefully presses a small pony sticker onto the corner of a handwritten postcard. Morning daylight filters through fluttering lace curtains onto her gentle smile.",
     "promptTokens": [
       "wooden writing desk",
       "applying pony sticker",

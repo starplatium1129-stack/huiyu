@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_morning_bed",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 524,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "裹着薄被侧卧回眸",
     "adult": true,
@@ -27,7 +27,6 @@
     "outfitId": "morning_shirt",
     "promptProse": "Surtr lies on her side beneath a thin sheet, reaching for the viewer’s wrist and glancing back; pale morning light crosses the bedding and her shirt cuff.",
     "promptTokens": [
-      "Surtr",
       "black cotton shirt",
       "on side",
       "sheet",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_sticker_box",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2961,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_sticker_box",
     "characterId": "rosmontis_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "At a sunny bedroom desk, Rosmontis delicately peels a glossy cartoon kitten sticker from an open tin box, ready to decorate the corner of her diary. Morning sunbeams illuminate floating dust specks, miniature toy figures, and pastel washi tape rolls, while her white cat tail sways slowly with contentment.",
-    "animaCaption": "",
+    "animaCaption": "At her sunlit bedroom desk, she carefully peels a glossy kitten sticker from an open tin box to decorate her diary with a contented smile. Morning sunbeams catch pastel washi tape rolls and miniature figures nearby.",
     "promptTokens": [
       "sitting",
       "sunny bedroom desk",

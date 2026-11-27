@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_streetwear_urban_stroll",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1995,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_streetwear_urban_stroll",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "自信张扬",
     "promptProse": "Striding confidently across a bustling Shibuya crosswalk, Power sports an oversized denim jacket and shorts, hands on hips with an unapologetic, proud swagger.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "sharp_teeth",

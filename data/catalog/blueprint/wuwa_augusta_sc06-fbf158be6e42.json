@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3606,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于大理石喷泉池沿伸掌喂食白鸽，温柔微笑",
     "adult": false,
@@ -31,9 +31,7 @@
     "outfitId": "villa_linen_chiton",
     "promptProse": "Without her crown or armor, Augusta relaxes on the stone ledge of a courtyard fountain shaded by silver-green olive trees, feeding white doves in a simple white linen Grecian dress.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "tall",
       "white dress",
       "grecian dress",

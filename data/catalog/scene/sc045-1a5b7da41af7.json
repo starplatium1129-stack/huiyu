@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-11-22T02:15:00.708590100+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "animaCaption": "Nene's white bath towel stays securely wrapped. She peeks into the amber hallway through a partly closed bathroom door and reaches through the opening to touch the fingers holding her folded clothes. Steam softens the frosted panel behind her.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -20,7 +20,7 @@
     "location": "同居公寓浴室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "open towel, nudity, explicit, empty background, flat white wall, dark foreground, pitch black shadows",
+    "negative": "open towel, nudity, empty background, flat white wall, dark foreground, pitch black shadows",
     "prompt": "adult, 1girl, ayachi_nene, bath towel, covered shoulders, peeking out, wooden door, frosted glass, doorway, reaching, holding clothes, folded clothes, pov hands, steam, hallway, wall lamp, blush, medium close-up",
     "rating": "R15",
     "season": "冬",

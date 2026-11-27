@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3809,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于皮质长椅敞开风衣前襟，双腿微张含羞喘息",
     "adult": true,
@@ -30,20 +30,14 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "open_hunter_coat_bare_r18",
     "promptProse": "Completely unclothed beneath her open dark indigo trench coat, Galbrena sits back on the leather couch wearing only her fingerless gloves and black thigh-high stockings, her cool demeanor melting into a heavy blush.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "nude",
       "open coat",
       "blue trench coat",

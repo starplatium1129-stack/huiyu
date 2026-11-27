@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_surface_combat_grenade_launcher_stance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1818,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "anis_surface_combat_grenade_launcher_stance",
     "title": "阿尼斯 · 瓦砾阵地的重炮轰击经典战姿",
@@ -57,8 +57,6 @@
       "heavy_weapon",
       "muzzle_flash",
       "beret",
-      "blonde_hair",
-      "blue_eyes",
       "looking_back",
       "confident_smile",
       "tactical_jacket",

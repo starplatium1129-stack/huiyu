@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/official_demon_slayer_uniform",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 801,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -14,16 +14,15 @@
       "name": "立领黑金收腰制服与蝶翼欧根纱羽织",
       "prose": "A high-collar black jacket beneath a sheer gradient butterfly haori and a pleated skirt.",
       "tokens": [
-        "demon_slayer_uniform",
-        "black_jacket",
-        "high_collar",
-        "gold_buttons",
-        "butterfly_haori",
-        "white_belt",
-        "black_skirt",
-        "pleated_skirt",
+        "demon slayer uniform",
+        "black jacket",
+        "high collar",
+        "gold buttons",
+        "butterfly haori",
+        "white belt",
+        "pleated skirt",
         "tabi",
-        "bare_legs"
+        "zouri"
       ],
       "characterId": "kochou_shinobu"
     }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/azure_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2583,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "marcille_donato",
-      "prose": "一件富有精灵族古老编织风格的墨绿色雪纺睡裙，裙身以金绿丝线绣出精细的缠绕常春藤纹样，微透的裙幅露出修长纤巧的腰肢，仙气与羞涩并存。",
+      "prose": "A forest-green sheer chiffon elven-weave slip dress embroidered with intricate gold and ivy vine patterns and fastened with tiny leaf clasps.",
       "tokens": [
         "forest green sheer chiffon slip",
         "gold and ivy vine embroidery",

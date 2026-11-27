@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3407,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fujiwara_chika_swimsuit_allure",
     "characterId": "fujiwara_chika",
@@ -39,9 +39,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "fujiwara chika",
-      "pink hair",
-      "blue eyes",
       "pink ruffled bikini",
       "riding giant yellow inflatable duck",
       "splashing water",

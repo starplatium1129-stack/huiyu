@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_outpost_balcony_soda_sunset_breeze",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1819,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "anis_outpost_balcony_soda_sunset_breeze",
     "title": "阿尼斯 · 前哨基地露台的傍晚汽水与微风",
@@ -52,8 +52,6 @@
       "yellow_hoodie",
       "shorts",
       "bare_legs",
-      "blonde_hair",
-      "blue_eyes",
       "gentle_smile",
       "warm_atmosphere",
       "golden_hour",

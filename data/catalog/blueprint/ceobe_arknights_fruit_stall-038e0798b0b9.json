@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_fruit_stall",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3060,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_fruit_stall",
     "characterId": "ceobe_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing before a vibrant wooden fruit stall in a sunlit open-air market, Ceobe cups a round ripe peach in both hands with wide, sparkling golden eyes. Baskets of colorful summer fruits and canvas awnings frame her joyful smile.",
-    "animaCaption": "",
+    "animaCaption": "Standing before a wooden fruit stall in a bright open-air market, she cups a ripe orange in both hands with an eager, joyful smile. Striped awnings filter sunlit warmth over colorful crates and baskets of summer produce.",
     "promptTokens": [
       "standing",
       "market fruit stall",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_art_album",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3030,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "specter_arknights_art_album",
     "characterId": "specter_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "In a quiet cathedral-like archive room, Laurentina (Specter) slowly turns the heavy parchment pages of an antique illuminated maritime art book, her slender finger tracing the deep cobalt hues of a stormy seascape. Golden sunbeams lance through tall arched stained-glass windows, illuminating swirling marble dust on the oak table and the dark crimson glint in her mesmerizing eyes.",
-    "animaCaption": "",
+    "animaCaption": "Seated in a quiet archive room, she turns the heavy parchment page of an illuminated maritime book and traces a deep cobalt seascape with one slender finger. Sunbeams through stained glass catch swirling dust and her gaze.",
     "promptTokens": [
       "sitting",
       "cathedral archive room",

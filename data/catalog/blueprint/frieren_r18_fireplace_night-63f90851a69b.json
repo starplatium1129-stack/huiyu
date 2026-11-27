@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_fireplace_night",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "frieren_r18_fireplace_night",
     "title": "芙莉莲 · 炉火暖夜的轻语",
@@ -33,7 +33,6 @@
       "facing viewer",
       "looking at viewer",
       "eye contact",
-      "Frieren",
       "elf ears",
       "ivory silk sleep gown",
       "thin shoulder straps",

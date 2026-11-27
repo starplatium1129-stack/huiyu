@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_night_peignoir_enticement",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2158,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "atago_night_peignoir_enticement",
     "characterId": "atago_azur",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "atago_(azur_lane)",
-      "black_hair",
       "dog_ears",
       "golden_eyes",
       "nightgown",

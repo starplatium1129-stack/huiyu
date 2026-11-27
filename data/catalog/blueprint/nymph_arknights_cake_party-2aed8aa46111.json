@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_cake_party",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2886,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_cake_party",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing in a bright, festive kitchen decorated with paper pennants, Nymph carefully perches a glossy red strawberry atop a towering whipped-cream birthday cake. Bowls of rainbow sprinkles, frosting spatulas, and spilled flour dusted across the counter surround her playful, proud grin as she prepares for the celebration.",
-    "animaCaption": "",
+    "animaCaption": "Leaning over the flour-dusted counter, she perches a glossy red strawberry atop a tall whipped-cream cake with a proud, playful grin. Bright kitchen daylight lights up bowls of sprinkles and festive paper pennants.",
     "promptTokens": [
       "standing",
       "festive kitchen",

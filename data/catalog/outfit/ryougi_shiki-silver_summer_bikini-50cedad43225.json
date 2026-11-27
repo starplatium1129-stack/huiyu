@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2386,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
@@ -18,15 +18,10 @@
       "prose": "A strikingly minimalist Japanese crossover one-piece swimsuit in pure snowy white and vermilion crimson, mirroring her iconic kimono wrap neckline, paired with a leather cord at the hip and a red leather choker.",
       "tokens": [
         "kimono style swimsuit",
-        "white and red",
+        "white and red swimsuit",
         "cross-wrap neckline",
-        "red leather choker",
-        "short black hair",
-        "layered hair",
-        "blue eyes",
-        "mystic eyes",
-        "cool stoic gaze",
-        "slender athletic"
+        "hip cord",
+        "red leather choker"
       ]
     }
   }

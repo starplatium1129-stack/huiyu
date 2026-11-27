@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3904,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于初雪月台双手轻扶绯红围巾，微红鼻尖微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "rooftop_duffle_coat_winter",
     "promptProse": "On a quiet wooden train platform dusted with the season's first snow, Chisa wears a charcoal duffle coat and adjusts her soft crimson scarf with a warm morning smile.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "black coat",
       "duffle coat",

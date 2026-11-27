@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_wood_carving",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3027,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "specter_arknights_wood_carving",
     "characterId": "specter_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Perched over a rustic workbench inside a sculptor's studio, Specter delicately uses a curved gouge chisel on a small block of driftwood, shaping the sleek contours of a diving seabird. Fine wood shavings curl across the scarred tabletop, surrounded by sharpening stones, mallet tools, and slanting late-afternoon sunbeams highlighting her intense, creative focus.",
-    "animaCaption": "",
+    "animaCaption": "Seated over a scarred studio workbench, she guides a curved gouge chisel across a block of driftwood to shape a sleek seabird. Curling wood shavings scatter beside sharpening stones in slanting late-afternoon sunbeams.",
     "promptTokens": [
       "sitting",
       "sculptor studio workbench",

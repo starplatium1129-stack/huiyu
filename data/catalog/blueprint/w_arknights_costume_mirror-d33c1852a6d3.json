@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_costume_mirror",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2941,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "w_arknights_costume_mirror",
     "characterId": "w_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Before a backstage vanity surrounded by glowing marquee bulbs, Wis'adel frowns playfully at her reflection, adjusting a bright crimson satin ribbon around her collar. The dressing table is strewn with stage props, explosive dummies, and colorful pins, with costumes hanging on rolling racks in the warm, cluttered theater background.",
-    "animaCaption": "",
+    "animaCaption": "Before the backstage vanity lit by glowing marquee bulbs, she gives her reflection a playful frown while adjusting a crimson ribbon at her collar. Warm dressing-room light spills over scattered props and costume racks.",
     "promptTokens": [
       "standing",
       "backstage dressing room",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3706,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于雕花竖琴旁双手轻拨琴弦，神情宁静专注",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "celestial_harpist_gown",
     "promptProse": "In a moonlit marble colonnade overlooking the valley, Iuno sits beside a carved silver harp in a Grecian-draped silver-blue silk gown, her fingers coaxing gentle notes from the strings.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
-      "blue eyes",
       "crescent hair ornament",
       "blue dress",
       "grecian dress",

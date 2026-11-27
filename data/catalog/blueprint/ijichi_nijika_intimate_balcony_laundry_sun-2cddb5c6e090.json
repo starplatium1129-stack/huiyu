@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_balcony_laundry_sun",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2027,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "record_store",
@@ -21,10 +21,8 @@
     "mood": "神圣与明媚",
     "promptProse": "Peeking playfully from behind freshly washed white bedsheets hanging in the morning sun on the balcony, Ijichi Nijika beams like a true angel. Golden sunbeams backlight her blonde hair and signature dorito ahoge as she giggles warmly.",
     "promptTokens": [
-      "ijichi_nijika",
       "1girl",
       "solo",
-      "blonde_hair",
       "side_ponytail",
       "ahoge",
       "casual",

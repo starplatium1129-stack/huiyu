@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3503,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于雨中水榭栈道轻抚黑纱，低眸望向彼岸花海",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "mirror_lake_mourning_veil",
     "promptProse": "On a rain-darkened wooden jetty beside a mirror-still lake ringed with crimson spider lilies, Phrolova stands in a spider-lily embroidered black chiffon gown and sheer lace veil.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "black dress",

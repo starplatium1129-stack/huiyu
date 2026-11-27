@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_bed_sword_side",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 614,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "侧卧在大床上，手垂向床边的巨剑剑柄",
     "adult": true,
@@ -27,7 +27,6 @@
     "outfitId": "black_rest_dress",
     "promptProse": "Skadi lies on her side with the black dress gathered at her waist, one hand reaching toward the sheathed greatsword beside the bed; moonlight traces the red neckline and her profile.",
     "promptTokens": [
-      "Skadi",
       "black dress",
       "on side",
       "bed",

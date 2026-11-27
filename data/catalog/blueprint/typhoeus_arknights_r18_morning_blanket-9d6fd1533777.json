@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhoeus_arknights_r18_morning_blanket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 19092,
   "createdAt": "2026-11-27T02:39:02.455123100+00:00",
-  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "typhoeus_arknights_r18_morning_blanket",
     "characterId": "typhoeus_arknights",
@@ -52,8 +52,7 @@
     "animaCaption": "She rests naked among sunlit morning sheets with a blanket draped loosely at her hips, looking warmly at the viewer with a sleepy blush.",
     "nsfwTokens": [
       "nude",
-      "nipples",
-      "bare breasts"
+      "nipples"
     ],
     "nsfwProse": "Her unadorned upper body is bathed in warm morning sunlight with a soft blanket resting lightly across her lower hips."
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_pure_nude_sheets",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1884,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "chizuru_r18_pure_nude_sheets",
     "characterId": "mizuhara_chizuru",
@@ -23,8 +23,6 @@
     "lighting": "床头台灯洒在雪白肌肤上的暖光",
     "camera": "cowboy shot, lying on side on white sheets, intimate warm lighting",
     "promptTokens": [
-      "mizuhara chizuru",
-      "brown hair",
       "long hair",
       "hazel eyes",
       "bare shoulders",
@@ -53,7 +51,7 @@
       "holding_sheets",
       "blush"
     ],
-    "promptProse": "Mizuhara Chizuru lying on her side on white bedsheets, long wavy brown hair spread on pillow, hazel eyes, heavy blush, biting lip, looking at viewer with shy vulnerability, one hand holding white sheet up to chest, bare shoulders, cozy modern apartment bedroom, warm bedside lamp glow, soft shadows.",
+    "promptProse": "Mizuhara Chizuru lies on her side across white bedsheets in a quiet bedroom, her wavy hair spread across the pillow as one hand draws the sheet up to her chest. Biting her lip with a deep blush, she meets the viewer with candid vulnerability under the warm glow and soft shadows of a bedside lamp.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
@@ -62,7 +60,6 @@
     "animaCaption": "She rests on her side holding the white bedsheet to her chest.",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "compositionIntent": "single"

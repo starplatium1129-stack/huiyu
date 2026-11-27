@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_plant_gift",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3075,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_plant_gift",
     "characterId": "mon3tr_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Standing beside a sunlit windowsill in Kal'tsit's office, Mon3tr carefully holds a small terracotta plant pot with both hands, looking down at the green succulent as gentle morning sunlight illuminates the leaves and windowsill.",
-    "animaCaption": "",
+    "animaCaption": "Standing beside a sunlit office windowsill, she cradles a small terracotta pot holding a green succulent in both hands and gazes down gently at its leaves. Crisp morning sunlight brightens the windowsill and foliage.",
     "promptTokens": [
       "standing",
       "holding pot",

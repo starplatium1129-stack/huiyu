@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3410,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸仰靠花瓣浴池边缘，双臂舒展水珠滑落胸口",
     "adult": true,
@@ -30,20 +30,13 @@
     "nsfwProse": "Completely nude in the perfumed warm water, her wet violet waves spread across the surface while her bare breasts rise above the floating petals in breathless relaxation.",
     "nsfwTokens": [
       "nsfw",
-      "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
-      "wet skin",
-      "large breasts"
+      "explicit"
     ],
     "outfitId": "pearl_bath_sanctum_nude_r18",
     "promptProse": "Floating completely unclothed in a steaming marble bath strewn with lavender and white rose petals, Cantarella leans her head back against the rim, glistening water droplets clinging to her full bare breasts.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wet hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "nude",

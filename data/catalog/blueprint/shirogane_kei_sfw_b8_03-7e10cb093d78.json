@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1413,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "放学后学生会室，她把收据按日期排开贴进账本，动作精准得像机器",
     "adult": false,
@@ -25,7 +25,6 @@
     "outfitId": "sfw_school",
     "promptProse": "Kei pastes sorted receipts into the ledger after the council room empties, sunlight crossing the papers.",
     "promptTokens": [
-      "shirogane_kei",
       "receipts",
       "ledger",
       "student council room",

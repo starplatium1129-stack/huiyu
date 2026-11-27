@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_rune_notes",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2402,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_rune_notes",
     "characterId": "bazett_fraga_mcremitz",
@@ -30,7 +30,7 @@
       "focused expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated at a rustic wooden workshop table, she guides a fine chisel across a polished wooden talisman to carve crisp geometric runes. Warm brass oil-lamp light reveals curled wood shavings, parchment sketches, and her focused gaze.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

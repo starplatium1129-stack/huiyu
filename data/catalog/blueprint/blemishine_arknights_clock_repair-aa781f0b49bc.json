@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_clock_repair",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3006,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.727Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_clock_repair",
     "characterId": "blemishine_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "At a cluttered wooden workbench strewn with miniature gears and brass springs, Blemishine leans in with intense focus, wielding a precision screwdriver inside an opened retro alarm clock. Sunlight cuts across the workshop, illuminating floating brass dust, blueprint sketches pinned to the wall, and glass jars of clockwork components.",
-    "animaCaption": "",
+    "animaCaption": "Leaning closely over a cluttered wooden workbench, she guides a precision screwdriver into an opened mechanical alarm clock amid tiny brass gears. Directional daylight catches floating metal dust and her intense focus.",
     "promptTokens": [
       "sitting at workbench",
       "holding precision screwdriver",

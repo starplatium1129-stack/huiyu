@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_map_table",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2441,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_map_table",
     "characterId": "arihara_nanami",
@@ -33,7 +33,7 @@
       "evening",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Leaning over the tactical map on the wooden briefing table, she sets an acrylic route marker carefully beside sticky tabs and notes. Focused warm light from a brass desk lamp illuminates her hands against the dim room.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

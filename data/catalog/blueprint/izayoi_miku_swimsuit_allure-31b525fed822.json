@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3460,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:33:33.025688300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "izayoi_miku_swimsuit_allure",
     "characterId": "izayoi_miku",
@@ -39,9 +39,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "izayoi miku",
       "very long purple hair",
-      "purple eyes",
       "lavender swimdress",
       "pearl trim",
       "twirling on sandy beach",

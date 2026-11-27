@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3102,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "倚靠木柱手持漆器茶盏，唇角含笑",
     "adult": false,
@@ -31,10 +31,7 @@
     "promptProse": "Under the warm amber glow of hanging paper lanterns on a wooden veranda, Camellya leans against a timber column in an off-shoulder crimson camellia kimono, raising a teacup with an alluring smirk.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "black kimono",
       "floral print",

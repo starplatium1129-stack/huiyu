@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_watering_can",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2891,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_watering_can",
     "characterId": "nymph_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Tiptoeing on a low wooden stool beside a sun-flooded lounge window, Nymph uses a small bright yellow watering can to sprinkle potted succulents and trailing ivy on the sill. Water droplets sparkle like jewels on the thick green leaves, with floating dust motes and views of bright city rooftops framed through the sparkling glass.",
-    "animaCaption": "",
+    "animaCaption": "Balancing on tiptoe atop a low wooden stool, she tilts a bright yellow watering can to sprinkle potted succulents and trailing ivy on the sunlit sill. Crisp daylight catches sparkling droplets against the bright window glass.",
     "promptTokens": [
       "standing",
       "sun-flooded window sill",

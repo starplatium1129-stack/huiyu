@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_tea_biscuit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3044,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nightingale_arknights_tea_biscuit",
     "characterId": "nightingale_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Seated across an intimate round table set with vintage porcelain teacups, Nightingale offers a small floral plate of almond biscuits toward the viewer with a shy, heartwarming smile. Steaming chamomile tea, silver teaspoons, and afternoon sunbeams warming the linen tablecloth create a comforting, restorative tea-time atmosphere.",
-    "animaCaption": "",
+    "animaCaption": "Seated across a linen-draped table set with steaming porcelain teacups, she gently pushes a floral plate of almond biscuits toward the viewer with a shy, warm smile. Afternoon sunbeams brighten the comforting tea setting.",
     "promptTokens": [
       "sitting",
       "intimate round table",

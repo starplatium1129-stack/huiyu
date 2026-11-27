@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3437,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kurodate_haruna_swimsuit_allure",
     "characterId": "kurodate_haruna",
@@ -40,9 +40,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kurodate haruna",
       "long silver hair",
-      "red eyes",
       "halo",
       "black velvet monokini",
       "tasting gourmet seafood with silver fork",

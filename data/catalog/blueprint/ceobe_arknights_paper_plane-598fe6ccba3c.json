@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_paper_plane",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3065,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_paper_plane",
     "characterId": "ceobe_arknights",
@@ -27,7 +27,7 @@
       "full body"
     ],
     "promptProse": "Poised on a rolling green hilltop under an endless summer sky dotted with fluffy cumulus clouds, Ceobe draws back a crisp, colorful paper airplane, ready to launch it into the wind. Her eyes sparkle with playful competitive spirit, with wild daisies dancing around her boots and distant windmills turning gently along the horizon.",
-    "animaCaption": "",
+    "animaCaption": "Across a breezy daisy-dotted hilltop under fluffy summer clouds, she raises a folded paper airplane ready to launch, grinning playfully as the wind sweeps her hair. Bright daylight stretches toward distant turning windmills.",
     "promptTokens": [
       "running",
       "holding paper airplane",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_night_camisole_bed_stargaze",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2639,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "inaba_meguru_night_camisole_bed_stargaze",
     "characterId": "inaba_meguru",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "inaba_meguru",
-      "orange_hair",
       "short_hair",
       "green_eyes",
       "camisole",

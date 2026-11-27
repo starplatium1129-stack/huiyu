@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_stage_spotlight",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2435,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mitsukasa_ayase_stage_spotlight",
     "characterId": "mitsukasa_ayase",
@@ -32,7 +32,7 @@
       "radiant smile",
       "full body shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing poised at center stage, she waves gracefully toward the darkened hall with a radiant smile. A bright white spotlight pierces soft stage haze, illuminating her glossy costume and radial reflections on the floor.",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

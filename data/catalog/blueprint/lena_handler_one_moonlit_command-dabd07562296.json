@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_handler_one_moonlit_command",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1351,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "单手扶全息沙盘下达指令，指尖划过战线光点，颈侧耳机泛蓝光，银灰眼眸锐利坚定",
     "adult": false,
@@ -27,7 +27,6 @@
     "outfitId": "official_republic_military_uniform",
     "promptProse": "Lena traces a front-line marker with one fingertip while speaking through the glowing Para-RAID. The map’s blue light rises across her face and the underside of her cap.",
     "promptTokens": [
-      "vladilena_millize",
       "Para-RAID",
       "holographic map",
       "command room",

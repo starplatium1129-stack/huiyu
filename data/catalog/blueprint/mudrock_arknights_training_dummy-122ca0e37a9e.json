@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_training_dummy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "拄锤而立，气定神闲",
     "camera": "wide shot, low angle",
@@ -43,6 +43,7 @@
     "title": "泥岩 · 训练场",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "animaCaption": "Resting one hand on her planted warhammer at the center of the training yard, she stands composed as towering stone golems encircle the ground behind her. Cool morning sunlight slants upward from a low angle across the dusty arena."
   }
 }

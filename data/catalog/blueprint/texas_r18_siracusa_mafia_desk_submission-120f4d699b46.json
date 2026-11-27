@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_siracusa_mafia_desk_submission",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 667,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "西装大衣敞开露蕾丝内衣与酥胸，陷坐沙发单腿搭扶手，狼尾轻扫单手自抚低吟娇喘",
     "adult": true,
@@ -25,13 +25,11 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "masturbation",
       "hand under clothes"
     ],
     "outfitId": "omertosa_mafia",
     "promptProse": "Texas loosens her red ascot and touches herself beneath her trousers while reclining on the leather sofa before the fireplace, one leg draped over its arm.",
     "promptTokens": [
-      "Texas",
       "suit",
       "open white shirt",
       "black lingerie",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_flower_stall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2981,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:28:56.623Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiammetta_arknights_flower_stall",
     "characterId": "fiammetta_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Amidst a lively, sun-drenched street flower market, Fiammetta carefully inspects a vibrant bouquet of sunflowers and lavender at a rustic street stall. Woven baskets, vibrant floral displays, and colorful signage for the stall create a cheerful background, while bright daylight enhances the brilliant, contrasting colors of the flowers and her focused, soft gaze.",
-    "animaCaption": "",
+    "animaCaption": "At a sunlit street flower stall, she holds a fresh bouquet of sunflowers and lavender, tilting the blooms to inspect them with a soft, focused expression. Bright daylight brings out the lively colors of the woven baskets behind her.",
     "promptTokens": [
       "street flower stall",
       "holding vibrant bouquet",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3803,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于工作台前单手握持拆解的金属手枪，侧目浅笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "armory_vest_and_holster",
     "promptProse": "In a brick-walled underground armory lit by an overhead industrial lamp, Galbrena wears a slate shirt with rolled sleeves and leather shoulder holsters, inspecting a customized pistol at her workbench.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "grey shirt",
       "rolled-up sleeves",
       "navy vest",

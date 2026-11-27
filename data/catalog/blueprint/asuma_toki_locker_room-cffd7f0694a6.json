@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐在更衣室长凳上，黑白战术连体衣拉链滑落至腰侧，双手轻按长凳边缘，修长双腿并拢斜放，侧头露出无口冷娇浅笑",
     "adult": true,
@@ -24,19 +24,12 @@
     "mood": "冷静暴露",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "bare shoulders",
-      "cleavage",
-      "bare legs"
-    ],
+    "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "Toki sitting sideways on a wooden locker room bench, black and white combat suit unzipped down to the waist revealing bare shoulders and back, blonde side ponytail gently falling over neck, blue halo, blue eyes, legs placed neatly together, hands resting on bench, soft warm indoor lighting, rows of metal lockers in background.",
+    "promptProse": "Toki sits sideways on a wooden bench inside the Millennium C&C locker room, her black-and-white combat suit unzipped to the waist to bare her shoulders and upper back while her legs stay neatly together and both hands brace on the bench edge. Soft indoor lighting illuminates rows of metal lockers behind her composed profile.",
     "promptTokens": [
-      "toki (blue archive)",
       "halo",
-      "blonde hair",
       "side ponytail",
-      "blue eyes",
       "black and white combat suit",
       "front zipper unzipped",
       "off-shoulder",

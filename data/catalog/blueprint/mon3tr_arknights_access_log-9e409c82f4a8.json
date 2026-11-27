@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_access_log",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3066,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_access_log",
     "characterId": "mon3tr_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Standing before a luminous holographic terminal in a Rhodes Island server room, Mon3tr tilts her head with a focused gaze as cascading green data logs illuminate her face and cat ears, one hand raised toward the floating interface beside sleek server racks and indicator lights.",
-    "animaCaption": "",
+    "animaCaption": "Standing before a luminous holographic terminal in a sleek server room, she tilts her head with a focused gaze and raises one hand toward cascading green data logs. Cool screen glow illuminates her face and server indicators.",
     "promptTokens": [
       "standing",
       "holographic terminal",

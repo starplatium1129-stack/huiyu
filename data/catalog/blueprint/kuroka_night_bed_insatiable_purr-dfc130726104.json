@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_night_bed_insatiable_purr",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2207,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kuroka_night_bed_insatiable_purr",
     "characterId": "kuroka",
@@ -23,12 +23,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kuroka_(high_school_dxd)",
-      "black_hair",
       "cat_ears",
       "cat_tail",
       "twin_tails",
-      "yellow_eyes",
       "nightgown",
       "negligee",
       "lace_trim",

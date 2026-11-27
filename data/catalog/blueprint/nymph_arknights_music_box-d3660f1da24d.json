@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_music_box",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2892,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_music_box",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "At a small parlor table covered in embroidered lace, Nymph gingerly winds the key of an ornate wooden music box, watching a spinning metal carousel with sparkling, fascinated eyes. Soft golden lamp light reflects off miniature brass gears, ribbons, and her curved horns, creating an enchanting fairy-tale moment of childhood wonder.",
-    "animaCaption": "",
+    "animaCaption": "Seated at the lace-draped parlor table, she gently turns the key of an ornate wooden music box and watches its spinning carousel with sparkling, fascinated eyes. Warm golden lamplight glints across the miniature brass gears.",
     "promptTokens": [
       "sitting",
       "parlor lace table",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_boyfriend_shirt_morning_glance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1778,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_boyfriend_shirt_morning_glance",
     "title": "结城美柑 · 展会纪念宽大白衬衫与晨光回眸",
@@ -42,10 +42,8 @@
       "standing",
       "side_view",
       "hands_in_sleeves",
-      "brown_hair",
       "short_hair",
       "single_side_bun",
-      "brown_eyes",
       "heavy_blush",
       "pout",
       "embarrassed",

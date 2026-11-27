@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_balcony",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2405,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_balcony",
     "characterId": "bazett_fraga_mcremitz",
@@ -30,7 +30,7 @@
       "calm expression",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing on a narrow brick balcony in crisp morning air, she tilts a green metal watering can to hydrate potted red geraniums along the sill. Soft sunrise light warms the brickwork and distant city rooftops behind her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

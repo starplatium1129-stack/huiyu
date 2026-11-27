@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_intimate_kitchen_soup_spoon",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2040,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfitId": "weekend_salopette",
@@ -21,10 +21,8 @@
     "mood": "温存与治愈",
     "promptProse": "In a cozy apartment kitchen at dusk, Saten Ruiko offers a spoonful of warm homemade soup toward the viewer, gently blowing away the steam. In her plaid apron and black hair flower, her hazel eyes glow with wholesome, heartfelt domestic affection.",
     "promptTokens": [
-      "saten_ruiko",
       "1girl",
       "solo",
-      "black_hair",
       "long_hair",
       "hair_flower",
       "apron",

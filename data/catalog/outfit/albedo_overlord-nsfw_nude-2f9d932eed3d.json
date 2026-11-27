@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "albedo_overlord/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 709,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "albedo_overlord",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "Nude.",
+      "prose": "Completely unclothed without her white gown or gold mantle, revealing statuesque bare shoulders, collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare back",
+        "barefoot"
       ]
     }
   }

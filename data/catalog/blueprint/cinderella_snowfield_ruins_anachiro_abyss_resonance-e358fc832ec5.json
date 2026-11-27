@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_snowfield_ruins_anachiro_abyss_resonance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1813,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "cinderella_snowfield_ruins_anachiro_abyss_resonance",
     "title": "灰姑娘 · 漆黑极夜暴风雪中的异端侵蚀共鸣",
@@ -52,9 +52,7 @@
       "crimson_glow",
       "tattered_dark_cape",
       "floating_dark_crystals",
-      "white_hair",
       "long_hair",
-      "red_eyes",
       "melancholy_smile",
       "dramatic_shadows",
       "dark_fantasy",

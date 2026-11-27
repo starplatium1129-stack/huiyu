@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phrolova_sc04",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3504,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于三角钢琴前手持红笔批注总谱，抬头回望",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "chamber_rehearsal_blouse",
     "promptProse": "At a polished black grand piano in a sunlit chamber rehearsal hall, Phrolova wears a pleated ivory Victorian blouse and crimson brocade skirt, annotating handwritten orchestral scores.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "red eyes",
       "eyepatch",
       "red flower",
       "white blouse",

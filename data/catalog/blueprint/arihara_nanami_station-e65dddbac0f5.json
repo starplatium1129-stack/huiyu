@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_station",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2445,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_station",
     "characterId": "arihara_nanami",
@@ -32,7 +32,7 @@
       "clean transit scenery",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing behind the yellow tactile line on an open commuter platform, she holds a small ticket and glances up toward the overhead departure board. Crisp golden morning sunlight gleams along the railway tracks and safety railings.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

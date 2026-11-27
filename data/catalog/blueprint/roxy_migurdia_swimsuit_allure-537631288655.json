@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3171,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:32:54.561858100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "roxy_migurdia_swimsuit_allure",
     "characterId": "roxy_migurdia",
@@ -41,10 +41,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "roxy migurdia",
-      "blue hair",
       "twin braids",
-      "blue eyes",
       "mini mage hat clip",
       "sapphire blue striped bikini",
       "sitting on sea rock",

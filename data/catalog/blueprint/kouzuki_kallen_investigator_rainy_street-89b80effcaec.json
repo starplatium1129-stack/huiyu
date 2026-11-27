@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_investigator_rainy_street",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1987,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen_investigator_rainy_street",
     "characterId": "kouzuki_kallen",
@@ -21,12 +21,9 @@
     "mood": "冷艳机警",
     "promptProse": "On a sleek neon-lit Tokyo street glistening with light rain, Kallen Kouzuki walks with hands in her leather jacket pockets, her bright red hair illuminated by neon glow.",
     "promptTokens": [
-      "kallen_stadtfeld",
       "1girl",
       "solo",
-      "red_hair",
       "short_hair",
-      "blue_eyes",
       "rain",
       "neon_lights",
       "city",

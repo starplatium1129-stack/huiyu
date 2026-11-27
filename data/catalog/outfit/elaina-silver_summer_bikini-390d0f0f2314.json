@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "elaina/silver_summer_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2308,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
@@ -22,11 +22,7 @@
         "sweetheart neckline",
         "side-tie ribbon",
         "straw witch hat",
-        "violet ribbon",
-        "ash blonde hair",
-        "blue eyes",
-        "smug smile",
-        "slender build"
+        "violet ribbon"
       ]
     }
   }

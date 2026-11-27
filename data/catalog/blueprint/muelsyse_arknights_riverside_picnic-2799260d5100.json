@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_riverside_picnic",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2881,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "muelsyse_arknights_riverside_picnic",
     "characterId": "muelsyse_arknights",
@@ -27,7 +27,7 @@
       "wide shot"
     ],
     "promptProse": "Sitting cross-legged on a pale blue linen picnic blanket spread across a verdant riverbank, Muelsyse holds up a cluster of sweet purple grapes with a radiant smile. Clear sparkling river currents lap against polished stones nearby, with wildflowers, an overflowing wicker basket, and sun-warmed grassy slopes stretching across the cheerful outdoor setting.",
-    "animaCaption": "",
+    "animaCaption": "Sitting cross-legged on a pale linen blanket along the grassy riverbank, she holds up a cluster of purple grapes with a radiant smile. Bright sunlight sparkles off the flowing water beside a wicker basket and wildflowers.",
     "promptTokens": [
       "picnic on riverbank",
       "sitting cross-legged",

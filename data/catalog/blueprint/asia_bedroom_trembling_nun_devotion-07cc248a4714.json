@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_bedroom_trembling_nun_devotion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2235,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "asia_bedroom_trembling_nun_devotion",
     "characterId": "asia_argento",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "asia_argento",
-      "blonde_hair",
       "short_hair",
-      "green_eyes",
       "nightgown",
       "white_dress",
       "bare_shoulders",

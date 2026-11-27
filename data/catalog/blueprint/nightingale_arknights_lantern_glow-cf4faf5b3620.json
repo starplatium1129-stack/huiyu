@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_lantern_glow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3042,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nightingale_arknights_lantern_glow",
     "characterId": "nightingale_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Standing in a cobblestone town square at dusk during a lantern festival, Nightingale looks up in quiet awe as dozens of warm paper lanterns illuminate with golden candlelight. The soft amber glow reflects off her flowing white robes and luminous expression, while historic timbered buildings and quiet festival crowds recede into gentle shadow.",
-    "animaCaption": "",
+    "animaCaption": "Standing in a cobblestone town square at dusk, she lifts her gaze in quiet awe as glowing paper lanterns brighten overhead. Soft amber candlelight reflects across her flowing robes while timbered buildings recede into shadow.",
     "promptTokens": [
       "standing",
       "town square at dusk",

@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1006,
   "createdAt": null,
-  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "nsfw_boudoir",
       "name": "不知火舞·成人私密造型",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without her kunoichi garb or sashes, revealing sculpted bare shoulders, collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "wet skin",
+        "bare shoulders",
+        "collarbone",
+        "barefoot"
       ],
       "default": false,
       "isDefault": false

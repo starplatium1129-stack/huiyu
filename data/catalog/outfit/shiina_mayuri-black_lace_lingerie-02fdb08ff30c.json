@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiina_mayuri/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2537,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiina_mayuri",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shiina_mayuri",
-      "prose": "一件如晴空般清爽的天蓝色纯棉吊带娃娃裙，胸前缀有手工缝制的小白雏菊与松紧木耳边，蓬松可人，让人想要全力守护这份无暇纯真。",
+      "prose": "A clear sky-blue pure cotton babydoll camisole dress with a ruffled smocked bodice, airy flared hem, and small hand-stitched white daisy appliques.",
       "tokens": [
         "sky blue cotton babydoll camisole",
         "white daisy flower applique",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_noodle_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2986,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T11:35:00.000Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoshiguma_arknights_noodle_shop",
     "characterId": "hoshiguma_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Inside a bustling neighborhood restaurant, Hoshiguma stirs a steaming bowl of noodles at a wooden table. The warm, inviting light from above illuminates the bowl and seasoning containers, while the blurred background shows the busy shop atmosphere, creating a candid, lively scene.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a wooden table in a lively neighborhood shop, she lifts her chopsticks to stir a steaming bowl of noodles. Warm overhead lamplight catches the rising vapor and seasoning jars in the cozy room.",
     "promptTokens": [
       "sitting",
       "holding chopsticks",

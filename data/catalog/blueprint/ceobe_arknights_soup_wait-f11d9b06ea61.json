@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_soup_wait",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3064,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_soup_wait",
     "characterId": "ceobe_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Resting her chin on folded arms atop a sturdy cafeteria table, Ceobe watches a steaming ceramic bowl of hearty meat and vegetable soup with patient, longing eyes. Gentle steam rises in curling tendrils under the warm cafeteria pendant lights, while rows of tidy wooden dining benches and bread baskets in the background frame her adorable, expectant wait.",
-    "animaCaption": "",
+    "animaCaption": "Resting her chin on folded arms atop a wooden cafeteria table, she watches a steaming ceramic bowl of soup with patient, longing eyes. Warm pendant lights illuminate the curling tendrils of steam rising before her.",
     "promptTokens": [
       "sitting",
       "chin on arms",

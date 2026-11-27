@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_office_sofa_nap_dusk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2665,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rikuhachima_aru_office_sofa_nap_dusk",
     "characterId": "rikuhachima_aru",
@@ -23,11 +23,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "rikuhachima_aru",
-      "red_hair",
       "long_hair",
       "wavy_hair",
-      "yellow_eyes",
       "horns",
       "halo",
       "vest",

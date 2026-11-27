@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_night_balcony_breeze_relax",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2627,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "amiya_night_balcony_breeze_relax",
     "characterId": "amiya",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "amiya_(arknights)",
-      "brown_hair",
       "rabbit_ears",
       "brown_eyes",
       "sweater",

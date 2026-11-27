@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2290,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makinohara_shouko",
-      "prose": "一件飘逸温存的珍珠白双层真丝细吊带睡裙，胸前与下摆装饰着如微浪般的层叠小荷叶边，素净中蕴含着无与伦比的成熟包容与温柔情意。",
+      "prose": "A flowing pearl-white double-layer silk camisole slip dress trimmed with delicate tiered wave-like ruffles along the neckline and sheer hemline.",
       "tokens": [
         "pearl white ruffled silk slip dress",
         "delicate flutter sleeves",

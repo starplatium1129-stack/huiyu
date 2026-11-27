@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_sunny_park_meowy_cuddle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1994,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_sunny_park_meowy_cuddle",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "宁静与神圣",
     "promptProse": "Sprawled peacefully on a lush green lawn beneath sun-dappled trees, Power cuddles her beloved cat Meowy to her chest, her expression surprisingly calm and serene.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "lying_down",

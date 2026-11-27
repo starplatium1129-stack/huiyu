@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_amusement_park_carousel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3101,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_amusement_park_carousel",
     "characterId": "platinum_arknights",
@@ -28,7 +28,7 @@
       "gentle smile"
     ],
     "promptProse": "At an amusement park during dusk, warm golden lights illuminate a vintage merry-go-round in the soft blurred background. Platinum holds a sweet strawberry crepe wrapped in decorative paper, turning around with a gentle relaxed smile. Her long silver hair catches the twilight reflections, looking affectionately at the viewer.",
-    "animaCaption": "",
+    "animaCaption": "Pausing at a twilight amusement park with a paper-wrapped strawberry crepe in hand, she turns back toward the viewer with a gentle blush and soft smile. Warm golden carousel lights bloom into rich bokeh behind her.",
     "promptTokens": [
       "solo",
       "standing",

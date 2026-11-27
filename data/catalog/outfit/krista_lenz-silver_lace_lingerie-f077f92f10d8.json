@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2283,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "krista_lenz",
-      "prose": "一袭质感温润的象牙白粗支亚麻睡裙，领口与下摆以淡金细丝绣出野花纹样，松紧抽绳微收腰身，透着纯净神圣的田园诗意。",
+      "prose": "A warm ivory coarse-spun linen slip nightdress accented with pale-gold wildflower thread embroidery along the neckline and hem, gently cinched at the waist with slender cotton drawstrings.",
       "tokens": [
         "ivory white linen corset-slip",
         "gold thread floral embroidery",

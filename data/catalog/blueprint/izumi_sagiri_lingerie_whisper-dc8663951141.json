@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_lingerie_whisper",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 3326,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:17.365591300+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "id": "izumi_sagiri_lingerie_whisper",
     "characterId": "izumi_sagiri",
-    "title": "和泉纱雾 · 门缝探出面具的",
+    "title": "和泉纱雾 · 门缝探出面具的防备声明",
     "category": "私密内衣",
     "action": "房间门开了一条两指宽的缝隙，探出戴着滑稽面具的小脑袋，手拿着数位笔，防备地喊出名台词",
     "location": "和泉家二楼纱雾紧闭卧室门轴缝隙处",
@@ -46,7 +46,6 @@
       "hallway",
       "bedroom",
       "monitor light",
-      "high contrast",
       "night",
       "medium close-up"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2285,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
@@ -15,18 +15,14 @@
       "isDefault": false,
       "isNsfw": false,
       "characterId": "hoshimi_miyabi",
-      "prose": "A razor-sharp snow-white and obsidian-black monokini inspired by Section 6 tactical garb, featuring asymmetrical high-leg cuts, silver crest buckles, fox ears, and a waterproof sheath sash wrapped around her waist.",
+      "prose": "A razor-sharp snow-white and obsidian-black monokini inspired by Section 6 tactical garb, featuring asymmetrical high-leg cuts, silver crest buckles, and a waterproof sheath sash wrapped around her waist.",
       "tokens": [
         "white monokini",
         "black accents",
         "asymmetrical cut",
         "highleg",
-        "fox ears",
-        "fox tail",
-        "dark hair",
-        "purple eyes",
-        "stoic calm expression",
-        "slender lethal elegance"
+        "silver crest buckle",
+        "waist sash"
       ]
     }
   }

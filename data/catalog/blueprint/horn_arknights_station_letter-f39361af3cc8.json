@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_station_letter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2999,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_station_letter",
     "characterId": "horn_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Seated on a polished wooden waiting bench on a sunlit steam train platform, Horn methodically folds a handwritten dispatch into its envelope, sealing it with quiet deliberation. Billowing white steam from a departing locomotive catches the morning light, with iron platform trusses, baggage carts, and brass station clocks framing her composed solitary journey.",
-    "animaCaption": "",
+    "animaCaption": "Seated on a wooden platform bench, she methodically folds a handwritten letter into its envelope with quiet deliberation. Billowing white locomotive steam catches the morning sunlight around the iron station trusses.",
     "promptTokens": [
       "sitting",
       "steam train platform",

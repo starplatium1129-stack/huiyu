@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -12,9 +12,13 @@
       "id": "nsfw_boudoir",
       "isDefault": false,
       "name": "甘露寺蜜璃·成人私密造型",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without haori or socks, showing warm, supple bare shoulders, soft collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "kanroji_mitsuri"
     }

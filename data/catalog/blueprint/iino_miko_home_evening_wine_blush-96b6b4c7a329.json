@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_home_evening_wine_blush",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2008,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "iino_miko_home_evening_wine_blush",
     "characterId": "iino_miko",
@@ -21,13 +21,10 @@
     "mood": "浪漫温存",
     "promptProse": "In a cozy traditional tavern booth under warm paper lantern light, Iino Miko rests her chin in both hands with cheeks heavily flushed from sake, peering forward with sweet, tipsy sincerity.",
     "promptTokens": [
-      "iino_miko",
       "1girl",
       "solo",
       "short_hair",
       "low_twintails",
-      "brown_hair",
-      "brown_eyes",
       "open_collar",
       "blush",
       "heavy_blush",

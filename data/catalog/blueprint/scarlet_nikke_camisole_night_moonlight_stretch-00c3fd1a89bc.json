@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_camisole_night_moonlight_stretch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2703,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "scarlet_nikke_camisole_night_moonlight_stretch",
     "characterId": "scarlet_nikke",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "scarlet_(nikke)",
-      "white_hair",
       "long_hair",
       "ponytail",
       "yellow_eyes",

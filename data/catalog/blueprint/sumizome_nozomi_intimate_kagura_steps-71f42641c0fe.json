@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_kagura_steps",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2008,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "white_inner_kimono",
@@ -21,7 +21,6 @@
     "mood": "温存与神圣",
     "promptProse": "Resting on the wooden steps of the deserted shrine pavilion after the festival, Sumizome Nozomi appears in her simple white under-kimono. Silver moonlight touches her exposed neck and honey-brown hair as she gently presses her cheek against the viewer's palm. Only the viewer's hand enters the frame.",
     "promptTokens": [
-      "sumizome_nozomi",
       "1girl",
       "solo",
       "brown_hair",

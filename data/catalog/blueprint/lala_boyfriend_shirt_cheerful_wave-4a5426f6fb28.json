@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_boyfriend_shirt_cheerful_wave",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1772,
   "createdAt": "2026-10-21T13:45:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "lala_boyfriend_shirt_cheerful_wave",
     "title": "菈菈 · 阳台微风中的敞怀衬衫与活力挥手",
@@ -42,10 +42,8 @@
       "one_arm_raised",
       "waving",
       "bright_smile",
-      "pink_hair",
       "very_long_hair",
       "ahoge",
-      "green_eyes",
       "wind",
       "flying_hair",
       "demon_tail",

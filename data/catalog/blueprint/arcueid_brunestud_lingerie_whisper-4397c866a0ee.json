@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_brunestud_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3306,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.229Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arcueid_brunestud_lingerie_whisper",
     "characterId": "arcueid_brunestud",
@@ -41,7 +41,6 @@
       "lying on bed",
       "cheeks in hands",
       "feet up",
-      "blonde hair",
       "ruby red eyes",
       "moonlight skylight"
     ],

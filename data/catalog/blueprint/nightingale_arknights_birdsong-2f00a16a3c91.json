@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_birdsong",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3036,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nightingale_arknights_birdsong",
     "characterId": "nightingale_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Sitting serenely on a cushioned window seat in a quiet rehabilitation lounge, Nightingale tilts her head gently toward a small songbird perched outside on a blossoming plum branch. Translucent lace curtains filter soft morning sunlight, casting gentle light over her white dress, blonde hair, and Sarkaz horns.",
-    "animaCaption": "",
+    "animaCaption": "Seated serenely on a cushioned window seat behind translucent lace curtains, she tilts her head gently to listen to a songbird perched outside on a blossoming branch. Soft morning sunlight washes quietly across the lounge.",
     "promptTokens": [
       "sitting",
       "cushioned window seat",

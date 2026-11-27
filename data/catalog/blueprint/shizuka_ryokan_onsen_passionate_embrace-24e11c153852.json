@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_ryokan_onsen_passionate_embrace",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2248,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shizuka_ryokan_onsen_passionate_embrace",
     "characterId": "shizuka_hiratsuka",
@@ -24,7 +24,6 @@
       "1girl",
       "solo",
       "hiratsuka_shizuka",
-      "black_hair",
       "long_hair",
       "brown_eyes",
       "onsen",

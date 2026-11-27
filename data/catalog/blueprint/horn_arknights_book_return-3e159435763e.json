@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_book_return",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2998,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_book_return",
     "characterId": "horn_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a grand high-ceilinged military academy library, Horn stands before towering oak bookshelves, sliding a heavy leather-bound volume on Victorian campaign tactics into its designated slot. Tall arched windows cast dramatic geometric light beams across the polished parquet floor, illuminating floating dust motes, brass shelf plaques, and her composed expression.",
-    "animaCaption": "",
+    "animaCaption": "Pausing before towering oak shelves in an academy library, she slides a heavy leather-bound volume neatly back into place. Tall arched windows cast crisp beams of light across floating dust motes and her calm profile.",
     "promptTokens": [
       "walking",
       "academy library",

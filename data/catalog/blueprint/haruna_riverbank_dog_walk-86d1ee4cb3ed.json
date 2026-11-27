@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_riverbank_dog_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1763,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "haruna_riverbank_dog_walk",
     "title": "西连寺春菜 · 黄昏河堤与爱犬马隆的悠闲散步",
@@ -38,7 +38,6 @@
       "small_dog",
       "dog_leash",
       "holding_leash",
-      "purple_hair",
       "short_hair",
       "two_hair_clips",
       "gentle_smile",

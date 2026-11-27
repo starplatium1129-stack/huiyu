@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_scarf",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2371,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ogiso_setsuna_scarf",
     "characterId": "ogiso_setsuna",
@@ -33,7 +33,7 @@
       "street light",
       "warm lighting"
     ],
-    "animaCaption": "",
+    "animaCaption": "Waiting by a snowy crosswalk at night, she tucks her chin into her cable-knit scarf and looks up at the viewer with bright, sparkling eyes. Streetlamps and car taillights dissolve into warm red and gold bokeh through falling snow.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

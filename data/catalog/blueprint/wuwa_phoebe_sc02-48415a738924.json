@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3302,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于管风琴长凳轻抚琴键与乐谱，侧颜微笑",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "stained_glass_choir_robe",
     "promptProse": "At the carved wooden bench of an ornate pipe organ, Phoebe wears a sky-blue gold-embroidered choir mantle over her ivory pleated gown, her fingers poised gently over the ivory keys.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "ivory dress",
       "long dress",
       "blue capelet",

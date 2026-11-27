@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_workshop_hand_hold",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2022,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "endfield_work",
@@ -21,10 +21,8 @@
     "mood": "神圣与坚毅",
     "promptProse": "Resting against the heavy metal workbench in the quiet engineering hangar, Chen Qianyu removes her work gloves. She blushes softly as her calloused warrior fingers interlock with the Administrator's hand under the focused overhead spotlight.",
     "promptTokens": [
-      "chen_qianyu",
       "1girl",
       "solo",
-      "black_hair",
       "ponytail",
       "work_clothes",
       "unbuttoned_jacket",

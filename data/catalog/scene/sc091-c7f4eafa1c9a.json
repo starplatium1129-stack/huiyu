@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc091",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "id": "sc091",
     "title": "门外递来的换洗衣物",
@@ -44,7 +44,7 @@
     "camera": "门缝半身近景",
     "lighting": "公寓玄关走廊柔和暖色顶灯与浴室透出的朦胧水汽",
     "prompt": "1girl, solo, shiki_natsume, @rella, mole_under_eye, wet black hair, wrapped securely in white bath towel, peeking from behind apartment bathroom door, holding stack of fresh folded clothes, looking away shyly, heavy blush, apartment hallway with warm wooden flooring, hallway runner rug, coat rack with jackets, warm ceiling light illuminating doorway, soft steam curling from bathroom, face illuminated by warm hallway lighting, soft rim lighting, medium shot, depth of field",
-    "negative": "open towel, nudity, explicit, empty background, flat door",
+    "negative": "open towel, nudity, empty background, flat door",
     "usage": [
       "展示图",
       "R15"

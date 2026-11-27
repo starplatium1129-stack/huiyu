@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3609,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于床沿双臂向后撑开任由红披风滑落，全裸坦露喘息",
     "adult": true,
@@ -30,19 +30,13 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
-      "spread legs",
       "sweat"
     ],
     "outfitId": "unclasped_crimson_cloak_r18",
     "promptProse": "Having unclasped her armor and ceremonial dress in the privacy of her chamber, Augusta sits on the bed wearing only her golden sun-laurel crown and open crimson cloak, baring her full breasts and body in warm firelight.",
     "promptTokens": [
-      "red hair",
       "long hair",
-      "yellow eyes",
       "gold laurel crown",
       "tall",
       "nude",

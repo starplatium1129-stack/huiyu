@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3401,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "斜倚丝绒贵妃榻轻摇银匙，慵懒微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "fisalia_jellyfish_gown",
     "promptProse": "Lounging across a plush chaise inside the Fisalia conservatory as luminous jellyfish float beneath the glass dome, Cantarella cradles a delicate teacup in her jellyfish-ruffled violet gown.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "purple dress",

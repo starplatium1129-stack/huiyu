@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yor_forger/black_lace_lingerie",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2347,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
@@ -15,13 +15,13 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yor_forger",
-      "prose": "一袭延续其经典色彩的猩红细软针织露背长睡裙，后背大面积交叉镂空系带，胸前以隐蔽的黑色蕾丝勾边，将杀手无可挑剔的紧致蜂腰与熟女柔情融为一体。",
+      "prose": "A fitted scarlet-red fine-knit open-back slip gown featuring wide criss-cross lacing down the back and delicate black floral lace edging along the neckline.",
       "tokens": [
         "scarlet red soft-knit halter open-back slip gown",
         "criss-cross back strapping",
         "black floral lace trims",
         "body-skimming ribbed knit",
-        "deadly assassin sweet housewife loungewear"
+        "knit loungewear"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_iuno_sc11",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3711,
   "createdAt": "2026-11-18T05:36:32.260654700+00:00",
-  "updatedAt": "2026-11-18T05:36:32.260654700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于水镜池边大理石阶，双腿朝观者伸展，赤足点水",
     "adult": false,
@@ -28,11 +28,9 @@
     "outfitId": "moon_mirror_oracle_gown",
     "promptProse": "Beneath a full moon, Iuno sits on the marble steps of the moon temple's mirror pool in her white-and-gold oracle gown, legs stretched toward the viewer, her bare feet with golden anklets resting at the water's edge.",
     "promptTokens": [
-      "blue hair",
       "twin tails",
       "long hair",
       "gradient hair",
-      "blue eyes",
       "crescent hair ornament",
       "sitting",
       "marble steps",

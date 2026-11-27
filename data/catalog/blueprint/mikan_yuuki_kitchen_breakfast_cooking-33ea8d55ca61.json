@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_yuuki_kitchen_breakfast_cooking",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1776,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mikan_yuuki_kitchen_breakfast_cooking",
     "title": "结城美柑 · 结城家厨房的元气早餐料理",
@@ -41,10 +41,8 @@
       "holding_frying_pan",
       "standing",
       "turning_around",
-      "brown_hair",
       "short_hair",
       "single_side_bun",
-      "brown_eyes",
       "gentle_smile",
       "morning_light",
       "sunbeam",

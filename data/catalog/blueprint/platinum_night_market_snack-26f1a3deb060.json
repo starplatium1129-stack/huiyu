@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_night_market_snack",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3105,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_night_market_snack",
     "characterId": "platinum_arknights",
@@ -27,7 +27,7 @@
       "bokeh"
     ],
     "promptProse": "Strolling through a bustling neon-lit night market lined with lively street food stalls and hanging lanterns, Platinum holds up a shiny candy apple, glancing back over her shoulder with an amused, playful expression. Neon pink and cyan city lights reflect on her hair and casual street attire.",
-    "animaCaption": "",
+    "animaCaption": "Strolling through a lively neon-lit night market, she holds up a glossy candy apple and glances back over her shoulder with a playful smile. Pink and cyan neon signs mingle with glowing street lanterns in the bokeh behind her.",
     "promptTokens": [
       "solo",
       "walking",

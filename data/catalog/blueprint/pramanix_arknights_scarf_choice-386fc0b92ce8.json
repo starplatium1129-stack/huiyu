@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_scarf_choice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2851,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pramanix_arknights_scarf_choice",
     "characterId": "pramanix_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "In a cozy Kjerag textile boutique draped with hand-woven woolens, Pramanix gently compares two vibrant geometric-patterned scarves against the soft daylight filtering through the shopfront. Bales of raw fleece, wooden spinning wheels, and shelves of natural dyes create an authentic, artisanal craft setting as her snow leopard ears twitch with discerning focus.",
-    "animaCaption": "",
+    "animaCaption": "Inside a cozy wool textile shop, she holds two geometric-patterned woven scarves side by side to compare their hues with discerning focus. Soft storefront daylight and warm interior glow highlight fleece bales and wooden spinning wheels.",
     "promptTokens": [
       "standing",
       "textile boutique",

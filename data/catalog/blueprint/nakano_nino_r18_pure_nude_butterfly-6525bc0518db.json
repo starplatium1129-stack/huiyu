@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_pure_nude_butterfly",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1864,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nakano_nino_r18_pure_nude_butterfly",
     "characterId": "nakano_nino",
@@ -23,10 +23,7 @@
     "lighting": "柔和漫射壁灯与静谧夜色交织",
     "camera": "cowboy shot, lying on side on bed, warm nightstand lamp",
     "promptTokens": [
-      "nakano nino",
-      "pink hair",
       "long hair",
-      "blue eyes",
       "butterfly hair ornament",
       "black ribbon",
       "bare shoulders",
@@ -53,7 +50,7 @@
       "lying_on_side",
       "tsundere_blush"
     ],
-    "promptProse": "Nakano Nino lying on her side on comfortable white bedding, twin black butterfly hair ribbons in her long pink hair, blue eyes, tsundere blush, looking at viewer, one hand gripping the corner of the blanket near collarbone, bare shoulders, cozy bedroom, warm nightstand lamp, intimate soft lighting.",
+    "promptProse": "Nakano Nino lies on her side amid rumpled white bedding, her twin black butterfly ribbons resting in her loose pink hair while one hand clutches the corner of the blanket near her collarbone. Warm nightstand lamplight softens her bare shoulders and flustered, defiant blush as she locks eyes with the viewer.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
@@ -62,7 +59,6 @@
     "animaCaption": "She rests on her side with butterfly hair ornaments in soft light.",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "compositionIntent": "single"

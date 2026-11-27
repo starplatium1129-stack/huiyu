@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_thread_spool",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2867,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ines_arknights_thread_spool",
     "characterId": "ines_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "At a sewing table cluttered with colorful fabric swatches and spools of thread, Ines delicately threads a needle, her focused gaze fixed on the task. Warm indoor lamplight catches the shimmer of metallic thread, neat sewing shears, and pin cushions, conveying a sense of tranquil, focused domestic craft.",
-    "animaCaption": "",
+    "animaCaption": "At a sewing table scattered with fabric swatches and spools, she holds up a fine needle and threads it steadily with calm concentration. Warm indoor light glints on metallic thread, shears, and pincushions nearby.",
     "promptTokens": [
       "standing",
       "sewing table",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "faln_touden/gold_summer_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2488,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfit": {
@@ -17,15 +17,12 @@
       "characterId": "faln_touden",
       "prose": "A wholesome harvest-gold and soft-ivory retro monokini with a supportive sweetheart neckline, thick shoulder straps, ruffled boy-short leg cuts, and a tied natural-linen chef's half-apron.",
       "tokens": [
-        "harvest gold monokini",
+        "gold monokini",
         "sweetheart neckline",
         "ivory ruffles",
-        "tied linen apron",
-        "blonde hair",
-        "tall soft build",
-        "gentle smile",
-        "bare shoulders",
-        "warm radiance"
+        "boy shorts",
+        "linen half-apron",
+        "thick straps"
       ]
     }
   }

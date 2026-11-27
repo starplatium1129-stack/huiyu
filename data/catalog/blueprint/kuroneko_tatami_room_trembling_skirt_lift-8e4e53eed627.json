@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_tatami_room_trembling_skirt_lift",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2265,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kuroneko_tatami_room_trembling_skirt_lift",
     "characterId": "kuroneko",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "gokou_ruri",
-      "black_hair",
       "hime_cut",
-      "blue_eyes",
       "gothic_lolita",
       "black_dress",
       "lace_trim",

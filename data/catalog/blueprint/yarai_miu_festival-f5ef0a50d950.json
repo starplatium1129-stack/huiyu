@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_festival",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2399,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yarai_miu_festival",
     "characterId": "yarai_miu",
@@ -29,7 +29,7 @@
       "playful smile",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing along the lively night festival promenade, she holds up a glowing red paper lantern and turns with a cheerful, playful smile. Strings of warm lanterns and colorful market stalls brighten the summer evening behind her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

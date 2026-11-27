@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc06",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3406,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "肩扛蕾丝遮阳伞漫步紫藤花廊，回眸浅笑",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "sea_breeze_lace_parasol_set",
     "promptProse": "Under a sunlit arbor dripping with fragrant violet wisteria blossoms above the coast, Cantarella strolls in a lilac Chantilly lace dress with a frilled parasol resting over her shoulder.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "lilac dress",

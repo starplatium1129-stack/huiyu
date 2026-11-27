@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_garden_tomato",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3062,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_garden_tomato",
     "characterId": "ceobe_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Kneeling on rich soil beside wooden trellis stakes in a lush community garden, Ceobe gently cups a shiny, deep red tomato still on the vine, her canine tail wagging with pride. Golden afternoon sunlight illuminates dewdrops on broad green tomato leaves, yellow blossoms, and a woven harvest basket resting on the earthy path beside her.",
-    "animaCaption": "",
+    "animaCaption": "Kneeling on garden soil beside trellised vines and a woven harvest basket, she gently cups a glossy ripe red tomato with a proud smile. Golden afternoon sun catches dewdrops on the lush leaves around her.",
     "promptTokens": [
       "kneeling in garden",
       "cupping ripe red tomato",

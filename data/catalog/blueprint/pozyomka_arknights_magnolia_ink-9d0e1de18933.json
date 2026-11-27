@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_magnolia_ink",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2930,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pozyomka_arknights_magnolia_ink",
     "characterId": "pozyomka_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "Beside an open lattice window framing blooming white magnolia branches in the spring breeze, Pozyomka sits at a dark rosewood scholar's desk, holding a fine calligraphy brush above an ink-grinding stone. Morning sunbeams illuminate ink-washed parchment, fallen magnolia petals on the desk, and her calm, reflective expression.",
-    "animaCaption": "",
+    "animaCaption": "At a dark rosewood desk beside an open lattice window, she holds a calligraphy brush poised above the inkstone while admiring blooming white magnolias outside. Morning sunbeams warm the paper and fallen petals.",
     "promptTokens": [
       "sitting",
       "holding calligraphy brush",

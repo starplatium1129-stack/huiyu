@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_river_walk",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2993,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoshiguma_arknights_river_walk",
     "characterId": "hoshiguma_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Walking along a paved riverside promenade at dusk, Hoshiguma turns back with an open, affectionate smile, extending her hand toward the viewer. The deep indigo evening sky meets the wide river, reflecting the glittering skyline of Lungmen skyscrapers, while cool river breezes rustle the willows along the illuminated stone balustrade.",
-    "animaCaption": "",
+    "animaCaption": "Pausing along a paved riverside promenade at dusk, she looks back with an open, affectionate smile and extends a hand toward the viewer. Evening city lights shimmer across the wide river behind the lit stone railing.",
     "promptTokens": [
       "standing",
       "riverside promenade",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_resort_crystal_wave_sunset_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1815,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "cinderella_resort_crystal_wave_sunset_glance",
     "title": "灰姑娘 · 暮色海滨晶莹浪潮的水晶倒影",
@@ -53,7 +53,6 @@
       "pearl_blue_swimsuit",
       "two-piece_swimsuit",
       "sheer_sarong",
-      "white_hair",
       "long_wavy_hair",
       "ruby_eyes",
       "looking_back",

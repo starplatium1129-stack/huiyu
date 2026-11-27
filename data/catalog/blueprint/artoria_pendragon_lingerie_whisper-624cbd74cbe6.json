@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3212,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T11:55:13.650183+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "artoria_pendragon_lingerie_whisper",
     "characterId": "artoria_pendragon",
@@ -42,7 +42,6 @@
       "blonde hair down",
       "wooden engawa",
       "sword rack",
-      "green eyes",
       "gentle smile",
       "lantern",
       "warm lighting",

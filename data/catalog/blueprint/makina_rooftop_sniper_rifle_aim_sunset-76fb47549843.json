@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makina_rooftop_sniper_rifle_aim_sunset",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1794,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "makina_rooftop_sniper_rifle_aim_sunset",
     "title": "入巢莳菜 · 夕阳天台的巨型反器材狙击戒备",
@@ -57,10 +57,8 @@
       "steady_aim",
       "serious_expression",
       "cold_gaze",
-      "pink_hair",
       "low_twintails",
       "ahoge",
-      "brown_eyes",
       "cinematic_lighting",
       "dramatic_shadows",
       "tactical_ambiance",

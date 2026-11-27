@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_tea_pairing",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3019,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "entelechia_arknights_tea_pairing",
     "characterId": "entelechia_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Seated at an intimate, lacquered tea salon table, Entelechia considers two delicate porcelain plates of artisan fruit tarts and macarons, resting beside a steaming pot of Earl Grey tea. Soft daylight streams through leaded stained-glass windows, casting vibrant pastel hues across the white linen tablecloth, silverware, and her calm, discerning expression.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a linen-draped tea salon table beside a steaming porcelain teapot, she compares delicate plates of fruit tarts and macarons with a calm, discerning gaze. Pastel light from stained glass patterns the silverware.",
     "promptTokens": [
       "sitting",
       "tea salon table",

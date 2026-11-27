@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_motorcycle_coastal_sunset",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1989,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen_motorcycle_coastal_sunset",
     "characterId": "kouzuki_kallen",
@@ -21,12 +21,9 @@
     "mood": "落日快意",
     "promptProse": "Parked at a scenic coastal lookout at golden hour, Kallen Kouzuki leans against her sleek motorcycle, letting the twilight ocean wind ruffle her vibrant red hair.",
     "promptTokens": [
-      "kallen_stadtfeld",
       "1girl",
       "solo",
-      "red_hair",
       "short_hair",
-      "blue_eyes",
       "motorcycle",
       "ocean",
       "sunset",

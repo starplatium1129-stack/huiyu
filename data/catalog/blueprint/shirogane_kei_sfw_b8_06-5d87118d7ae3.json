@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1416,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "比好两本书后数零钱，把选中的一本抱在怀里。",
     "adult": false,
@@ -25,7 +25,6 @@
     "outfitId": "sfw_refined_daily",
     "promptProse": "Crouching beside the low book stacks, Kei holds a book against her chest with her forearm and counts coins in her open palm; reflected daylight catches her pleased expression.",
     "promptTokens": [
-      "Kei Shirogane",
       "coin purse",
       "book stall",
       "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_cafe_choice",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2412,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shiiba_tsumugi_cafe_choice",
     "characterId": "shiiba_tsumugi",
@@ -30,7 +30,7 @@
       "looking at cake",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Standing before the curved glass pastry case in a cozy bakery, she points eagerly at a strawberry shortcake with a bright, delighted smile. Warm chandelier light sparkles across rows of glazed tarts and the marble counter.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

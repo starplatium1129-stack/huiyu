@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_vermillion_royal_gown_candelabra_balcony",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2735,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "stella_vermillion_royal_gown_candelabra_balcony",
     "characterId": "stella_vermillion",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "stella_vermillion",
-      "red_hair",
       "twintails",
-      "red_eyes",
       "evening_gown",
       "royal_clothes",
       "off-shoulder_dress",

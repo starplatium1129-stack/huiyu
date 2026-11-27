@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc08",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3908,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于床沿双膝并拢双手轻护胸口，满面通红",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "crimson_ribbon_camisole_r15",
     "promptProse": "Backed by sheer white curtains glowing with late afternoon sun, Chisa sits neatly on her bed in a crimson-bowed black satin bra, matching panties, and black thigh-highs, blushing intensely.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "black bra",
       "satin",

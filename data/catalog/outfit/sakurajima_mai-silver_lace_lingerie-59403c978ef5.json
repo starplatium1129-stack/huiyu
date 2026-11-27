@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2298,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sakurajima_mai",
-      "prose": "一袭低调奢华的墨黑水波纹真丝高开叉睡裙，细带在背部交叉出极简几何，若隐若现的侧开叉展现惊艳长腿，充满顶级艺人的从容与诱惑力。",
+      "prose": "An understated, luxurious ink-black watered-silk slip nightgown with a high side slit and minimalist cross-back spaghetti straps, woven with a subtle rabbit-constellation jacquard sheen.",
       "tokens": [
         "inky black watered-silk slip dress",
         "thigh-high side slit",

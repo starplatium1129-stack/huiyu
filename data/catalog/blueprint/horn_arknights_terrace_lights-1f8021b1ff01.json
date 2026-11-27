@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_terrace_lights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3005,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_terrace_lights",
     "characterId": "horn_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Leaning against the stone balustrade of an elevated garden terrace at night, Horn turns her head with a gentle gaze toward the viewer. Warm amber terrace lantern light softly illuminates her blonde hair and expression, set against a glittering city skyline and night sky in the distance.",
-    "animaCaption": "",
+    "animaCaption": "Leaning against a stone terrace balustrade at night, she turns her head to meet the viewer's eyes with a gentle smile. Amber lantern light warms her face against the distant glittering city skyline.",
     "promptTokens": [
       "standing",
       "leaning on railing",

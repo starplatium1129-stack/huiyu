@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_morning_hair_down_bedroom",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1396,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
     "adult": false,
@@ -27,7 +27,6 @@
     "outfitId": "casual_summer_dress",
     "promptProse": "Kaguya hugs the pillow, face turned aside but sleepy eyes glancing at the viewer; lace-filtered light reaches her loose hair.",
     "promptTokens": [
-      "shinomiya_kaguya",
       "loose hair",
       "hugging pillow",
       "sitting",

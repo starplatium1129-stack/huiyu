@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_route_map",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2980,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:28:56.624Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiammetta_arknights_route_map",
     "characterId": "fiammetta_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "At a spacious, light-filled planning table, Fiammetta leans forward, pencil in hand, to meticulously mark a strategic path across a large-scale paper map. Scattered reference charts, topographic diagrams, and a ruler lie beside her, with soft, natural window light illuminating the crisp paper textures and her sharp, professional focus on the tactical details.",
-    "animaCaption": "",
+    "animaCaption": "Leaning forward over a wide planning table, she holds a pencil steady to trace a tactical route across a large paper map. Crisp window daylight highlights the scattered charts, ruler, and her sharp, focused gaze.",
     "promptTokens": [
       "sitting at planning table",
       "marking paper map with pencil",

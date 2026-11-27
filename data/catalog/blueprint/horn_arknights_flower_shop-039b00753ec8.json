@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_flower_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3000,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "horn_arknights_flower_shop",
     "characterId": "horn_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Standing outside a cobblestone street corner florist, Horn accepts a neat, kraft-paper wrapped bouquet of white lilies and silver eucalyptus with a gentle, appreciative nod. Buckets of colorful seasonal blooms, iron plant stands, and bright morning sunbeams bouncing off shop windows surround her structured military coat with crisp botanical freshness.",
-    "animaCaption": "",
+    "animaCaption": "Standing outside a cobblestone corner florist, she receives a kraft-paper bouquet of white lilies with a composed, appreciative nod. Bright morning sunbeams bounce off the shop window and colorful buckets of fresh blooms.",
     "promptTokens": [
       "standing",
       "cobblestone street flower shop",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_05",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1516,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_05",
     "title": "椎名真白 · 画室里的赭色指印",
@@ -32,7 +32,6 @@
     ],
     "promptProse": "Seated before the easel, Mashiro paints the ochre fingerprint into a leaf at the paper corner, cloth beside her; window light reaches the wet mark.",
     "promptTokens": [
-      "Mashiro Shiina",
       "paintbrush",
       "cloth",
       "easel",

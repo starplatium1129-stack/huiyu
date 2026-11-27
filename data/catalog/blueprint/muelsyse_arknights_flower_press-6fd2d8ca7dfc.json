@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_flower_press",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2882,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "muelsyse_arknights_flower_press",
     "characterId": "muelsyse_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Seated at a sun-splashed wooden studio table, Muelsyse delicately flattens a fresh blue wildflower between crisp sheets of absorbent paper inside an antique wooden botanical press. Tiny floating water droplets hover playfully around her fingertips, while scattered pressed ferns, drying herb bundles, and bottles of nutrient solution line the sunlit workshop shelves.",
-    "animaCaption": "",
+    "animaCaption": "Seated at the wooden workshop table, she smooths a fresh blue wildflower inside an open botanical press while tiny water droplets hover playfully near her fingertips. Golden hour light warms her gentle smile and pressed specimens.",
     "promptTokens": [
       "sitting",
       "wooden table",

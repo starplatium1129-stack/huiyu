@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/black_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2426,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "suou_yuki",
-      "prose": "一件兼具名媛优雅与小恶魔挑衅的烟墨色透视蕾丝吊带睡裙，胸前缀以小巧黑丝绒蝴蝶结，轻薄的裙身贴合娇小曼妙的少女躯体，散发着让人难以捉摸的危险吸引力。",
+      "prose": "A refined smoky-charcoal sheer floral lace slip dress with an empire waist, delicate layered sheer hem, and tiny black velvet ribbon bows at the bust.",
       "tokens": [
         "smoky charcoal sheer lace slip dress",
         "black velvet ribbon bows",

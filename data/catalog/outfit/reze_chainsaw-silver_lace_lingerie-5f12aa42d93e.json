@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2348,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "reze_chainsaw",
-      "prose": "一套透着危险魅力的烟熏灰紫半透蕾丝胸衣套装，标志性的黑天鹅绒锁骨颈圈与细碎花卉蕾丝相衬，将少女的致命危险与惊心动魄的美感凝结一体。",
+      "prose": "A smoky gray-violet sheer floral lace cropped bralette and low-rise briefs set with scalloped lace edges, paired with a black velvet choker featuring a small pin-ring charm.",
       "tokens": [
         "smoky violet sheer lace cropped bralette set",
         "iconic black velvet choker with pin ring",

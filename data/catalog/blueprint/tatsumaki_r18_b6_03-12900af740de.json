@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_03",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1601,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_03",
     "title": "战栗的龙卷 · 高叉黑裙被念动风压撕扯的走光事故",
@@ -32,7 +32,6 @@
     ],
     "promptProse": "Tatsumaki braces both palms against the broken window frame and looks back angrily above the smoking city, her black gown split along both sides to the underarms while the front fabric still covers her chest.",
     "promptTokens": [
-      "Tatsumaki",
       "torn black dress",
       "bent over",
       "looking back",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3210,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "frieren_lingerie_whisper",
     "characterId": "frieren",
@@ -39,7 +39,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "frieren",
       "elf ears",
       "wrapped in blanket cocoon",
       "sleepy eyes",

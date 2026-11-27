@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "honami_r18_pure_nude_climax",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1894,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "honami_r18_pure_nude_climax",
     "characterId": "ichinose_honami",
@@ -23,10 +23,8 @@
     "lighting": "床头台灯洒在雪白肌肤上的暖黄光芒",
     "camera": "cowboy shot, lying on side on white bed, warm bedside lamp",
     "promptTokens": [
-      "ichinose honami",
       "strawberry blonde hair",
       "long hair",
-      "blue eyes",
       "bare shoulders",
       "collarbone",
       "lying on side",
@@ -54,7 +52,7 @@
       "lying_on_side",
       "warm_lighting"
     ],
-    "promptProse": "Ichinose Honami lying on her side on a comfortable white bed, strawberry blonde hair spread over pillows, blue eyes, teary eyes, blush, parted lips, hugging a fluffy white pillow to chest, bare shoulders and collarbone, white bedsheets, cozy bedroom, warm bedside lamp light, intimate soft lighting.",
+    "promptProse": "Ichinose Honami reclines on her side across soft white sheets, hugging a fluffy white pillow against her chest while her bare shoulders and collarbone catch the warm amber light of the bedside lamp. With parted lips and shimmering tear-touched eyes, she looks tenderly toward the viewer.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
@@ -63,7 +61,6 @@
     "animaCaption": "She rests on her side on the bed holding a white pillow.",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs"
     ],
     "compositionIntent": "single"

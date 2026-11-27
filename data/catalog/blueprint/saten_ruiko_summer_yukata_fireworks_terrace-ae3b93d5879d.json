@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_summer_yukata_fireworks_terrace",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2641,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "saten_ruiko_summer_yukata_fireworks_terrace",
     "characterId": "saten_ruiko",
@@ -23,8 +23,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "saten_ruiko",
-      "black_hair",
       "long_hair",
       "brown_eyes",
       "flower_hair_ornament",

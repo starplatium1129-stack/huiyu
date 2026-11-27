@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcane_arknights_r18_moonlit_sheets",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 19102,
   "createdAt": "2026-11-27T02:39:02.455123100+00:00",
-  "updatedAt": "2026-11-27T02:39:02.455123100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arcane_arknights_r18_moonlit_sheets",
     "characterId": "arcane_arknights",
@@ -52,8 +52,7 @@
     "animaCaption": "She rests naked among moonlit white sheets with a soft flush across her skin, gazing warmly up at the viewer with parted lips.",
     "nsfwTokens": [
       "nude",
-      "nipples",
-      "bare breasts"
+      "nipples"
     ],
     "nsfwProse": "Her bare upper body and collarbones catch the soft silver moonlight above the loosely draped white sheet."
   }

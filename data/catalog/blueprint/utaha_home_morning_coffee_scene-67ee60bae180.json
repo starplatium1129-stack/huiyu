@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_home_morning_coffee_scene",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1432,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_home_morning_coffee_scene",
     "title": "霞之丘诗羽 · 居家的咖啡与睡袍",
@@ -29,7 +29,6 @@
     ],
     "promptProse": "Utaha beckons the offscreen viewer closer with coffee in one hand and an open magazine across her lap in curtain-filtered light.",
     "promptTokens": [
-      "Utaha Kasumigaoka",
       "hair down",
       "coffee",
       "magazine",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_augusta_sc10",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3610,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "全裸浸于露天浴池边双臂舒展倚靠池沿，双颊潮红仰望",
     "adult": true,
@@ -30,20 +30,13 @@
     "nsfwProse": "Completely nude in the warm steaming water, her wet crimson hair clings to her shoulders as she arches against the stone ledge with parted lips and flushed skin.",
     "nsfwTokens": [
       "nsfw",
-      "explicit",
-      "completely nude",
-      "bare breasts",
-      "nipples",
-      "wet skin",
-      "steam"
+      "explicit"
     ],
     "outfitId": "marble_thermae_nude_r18",
     "promptProse": "Soaking in a steaming outdoor marble bath lit by flickering torches beneath the stars, Augusta rests her arms along the stone edge completely unclothed, water droplets beading across her bare chest.",
     "promptTokens": [
-      "red hair",
       "long hair",
       "wet hair",
-      "yellow eyes",
       "tall",
       "nude",
       "completely nude",

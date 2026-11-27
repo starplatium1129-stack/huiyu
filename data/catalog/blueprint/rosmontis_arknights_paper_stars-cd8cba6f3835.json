@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_paper_stars",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2958,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_paper_stars",
     "characterId": "rosmontis_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting at a brightly lit craft table in the children's activity room, Rosmontis focuses intently on folding colorful pastel paper strips into small origami lucky stars. A glass mason jar half-filled with folded stars glows on the table beside scattered glitter, scissors, and felt pens under cheerful overhead paper lanterns.",
-    "animaCaption": "",
+    "animaCaption": "At the bright craft table, she bends in earnest focus as her small fingers fold pastel paper strips into origami lucky stars. Overhead lantern light glints off a glass jar half-filled with stars beside her.",
     "promptTokens": [
       "sitting",
       "activity room craft table",

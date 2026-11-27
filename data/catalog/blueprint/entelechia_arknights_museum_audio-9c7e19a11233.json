@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_museum_audio",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3020,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "entelechia_arknights_museum_audio",
     "characterId": "entelechia_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "In the hushed, cavernous hall of an antiquities museum, Entelechia presses a sleek audio guide receiver to her ear, standing before an illuminated glass display case containing an ancient ornate chalice. Recessed spotlighting casts dramatic, geometric shadows across the polished marble floor, while towering classical pillars and oil paintings recede into the dignified gloom.",
-    "animaCaption": "",
+    "animaCaption": "Standing in a hushed antiquities hall before a lit glass display case holding an ancient chalice, she presses a sleek audio guide receiver to her ear. Recessed spotlights carve crisp shadows across the polished marble floor.",
     "promptTokens": [
       "standing",
       "antiquities museum hall",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_gloves",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2400,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_gloves",
     "characterId": "bazett_fraga_mcremitz",
@@ -30,7 +30,7 @@
       "calm expression",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Paused at a misty cobbled corner at night, she pulls the wrist strap of her black leather glove snug with calm, steady focus. Amber streetlamp light glints across the damp granite pavement and quiet shopfronts.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

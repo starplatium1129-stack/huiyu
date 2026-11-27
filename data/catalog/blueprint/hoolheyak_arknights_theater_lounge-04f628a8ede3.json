@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_theater_lounge",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2903,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoolheyak_arknights_theater_lounge",
     "characterId": "hoolheyak_arknights",
@@ -29,7 +29,7 @@
       "medium close-up"
     ],
     "promptProse": "Sitting comfortably on a tufted crimson velvet settee in an opulent private theater lounge, Ho'olheyak holds a delicate bone china teacup and saucer, leaning slightly forward with a playful, teasing smile. Warm crystal wall sconces and gilded mirrors cast amber reflections across the lounge and rich jewel-toned draperies behind her.",
-    "animaCaption": "",
+    "animaCaption": "Seated on a tufted crimson velvet settee, she cradles a delicate bone china teacup and leans slightly toward the viewer with a playful, teasing smile. Amber glow from crystal wall sconces shimmers across gilded mirrors behind her.",
     "promptTokens": [
       "sitting",
       "leaning toward viewer",

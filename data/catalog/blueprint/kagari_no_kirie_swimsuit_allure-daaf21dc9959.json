@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kagari_no_kirie_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3487,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kagari_no_kirie_swimsuit_allure",
     "characterId": "kagari_no_kirie",
@@ -39,9 +39,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kagari no kirie",
       "very long black hair",
-      "red eyes",
       "black gothic kimono bikini",
       "crimson tassels",
       "holding slender kiseru pipe",

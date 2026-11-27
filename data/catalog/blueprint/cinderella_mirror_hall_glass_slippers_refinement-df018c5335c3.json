@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_mirror_hall_glass_slippers_refinement",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1812,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "cinderella_mirror_hall_glass_slippers_refinement",
     "title": "灰姑娘 · 水晶镜廊中的玻璃鞋高洁回眸",
@@ -52,7 +52,6 @@
       "floating_weapons",
       "silver_combat_dress",
       "corset_dress",
-      "white_hair",
       "very_long_hair",
       "wavy_hair",
       "ruby_red_eyes",

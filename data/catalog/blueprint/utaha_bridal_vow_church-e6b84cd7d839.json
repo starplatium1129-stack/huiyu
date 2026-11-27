@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_bridal_vow_church",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1431,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "utaha_bridal_vow_church",
     "title": "霞之丘诗羽 · 白纱下的作家誓言",
@@ -28,7 +28,6 @@
     ],
     "promptProse": "Utaha holds the vow paper before the altar and looks up with a steady expression. Colored window light falls over her veil and gown.",
     "promptTokens": [
-      "kasumigaoka_utaha",
       "loose hair",
       "vow paper",
       "church",

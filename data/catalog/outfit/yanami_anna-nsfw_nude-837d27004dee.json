@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1483,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装",
-      "prose": "no clothing",
+      "prose": "Completely unclothed without uniform or socks, revealing soft bare shoulders, smooth collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "yanami_anna",
       "default": false,

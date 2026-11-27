@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_festival",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 871,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_festival",
       "name": "文化祭落肩针织衫、围裙与褶裙",
-      "prose": "A blue off-shoulder cardigan over a collared shirt and pleated skirt with a waist apron, finished with black thigh-highs.",
+      "prose": "A slouchy blue knit sweater worn over a collared blouse and flared skirt with a crisp white cafe waist apron tied in a bow, paired with over-knee socks and sneakers.",
       "tokens": [
-        "cardigan",
-        "blue_cardigan",
-        "off_shoulder",
-        "white_shirt",
-        "pleated_skirt",
-        "miniskirt",
-        "white_apron",
-        "black_thighhighs"
+        "slouchy knit sweater",
+        "white cafe apron",
+        "apron waist bow",
+        "collared blouse",
+        "flared skirt",
+        "over-knee socks",
+        "sneakers"
       ],
       "characterId": "shinjou_akane",
       "default": false,

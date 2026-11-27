@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_punching_bag",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2401,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_punching_bag",
     "characterId": "bazett_fraga_mcremitz",
@@ -29,7 +29,7 @@
       "focused expression",
       "full body"
     ],
-    "animaCaption": "",
+    "animaCaption": "Set in a balanced southpaw stance before a heavy leather punching bag, she raises her wrapped fists with sharp, steady concentration. Bright overhead gym lights illuminate the mats and training gear surrounding her.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

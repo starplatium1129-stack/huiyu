@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_market_basket",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2988,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T11:30:00.000Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "hoshiguma_arknights_market_basket",
     "characterId": "hoshiguma_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Walking through a vibrant Lungmen night market, Hoshiguma carries a paper bag of freshly prepared snacks. Warm lantern lights from nearby stalls cast a cozy, orange glow on her face, while the bustling, blurred night scene in the background adds a lively atmosphere to the intimate moment.",
-    "animaCaption": "",
+    "animaCaption": "Walking through a bustling night market, she carries a paper bag of fresh snacks in one hand as she pauses in the crowd. Warm orange lantern glow from nearby food stalls softens her face against the blurred night street.",
     "promptTokens": [
       "standing",
       "holding paper bag",

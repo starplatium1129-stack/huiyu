@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_hotspring_inn",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 459,
   "createdAt": null,
-  "updatedAt": "2026-11-21T07:55:25.190699800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐在木质檐廊喝茶",
     "camera": "medium shot",
@@ -24,7 +24,6 @@
     "outfitId": "summer_yukata",
     "promptProse": "Roxy holds her tea in both hands on the inn veranda, with a twilight pond beyond the lantern-lit railing.",
     "promptTokens": [
-      "Roxy Migurdia",
       "cross-legged",
       "tea",
       "veranda",

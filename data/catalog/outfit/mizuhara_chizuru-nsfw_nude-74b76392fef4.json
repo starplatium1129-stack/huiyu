@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1595,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "nsfw_nude",
       "name": "私密全裸 / 纯粹形态",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without outerwear or jewelry, showing poised bare shoulders, smooth collarbones, and bare feet.",
       "isDefault": false,
       "default": false,
       "characterId": "mizuhara_chizuru",

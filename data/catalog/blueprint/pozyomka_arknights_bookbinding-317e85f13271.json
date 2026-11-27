@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_bookbinding",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2929,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pozyomka_arknights_bookbinding",
     "characterId": "pozyomka_arknights",
@@ -27,7 +27,7 @@
       "close-up"
     ],
     "promptProse": "At a sturdy oak bindery workbench laden with antique brass book presses and bone folders, Pozyomka meticulously glues and stitches the frayed leather spine of a rare literature tome. Warm directional lamp light illuminates curling leather trimmings, jars of paste, marble paper marbling tools, and the refined, artisan concentration in her soulful pink eyes.",
-    "animaCaption": "",
+    "animaCaption": "At the oak bindery workbench, she leans in with poised artisan focus to glue and mend the frayed leather spine of an antique volume. Directional warm lamplight highlights her steady hands, brass press, and marbled endpapers.",
     "promptTokens": [
       "sitting",
       "bookbinding workbench",

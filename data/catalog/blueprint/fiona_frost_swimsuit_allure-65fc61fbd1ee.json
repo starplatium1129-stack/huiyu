@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3362,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiona_frost_swimsuit_allure",
     "characterId": "fiona_frost",
@@ -39,7 +39,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "fiona frost",
       "short pale blue hair",
       "blue eyes",
       "white competition swimsuit",

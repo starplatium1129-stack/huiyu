@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_r18_report_reward",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2841,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "zeta_shadow_r18_report_reward",
     "characterId": "zeta_shadow",
@@ -45,7 +45,6 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@yoneyama_mai",
     "nsfwTokens": [
-      "unzipped bodysuit",
       "masturbation",
       "hand between legs"
     ],

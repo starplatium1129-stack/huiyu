@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_meat_feast_celebration",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1993,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "power_meat_feast_celebration",
     "characterId": "power",
@@ -21,11 +21,9 @@
     "mood": "温馨治愈",
     "promptProse": "Sitting at a lively yakiniku table surrounded by sizzling grills, Power happily chomps on a massive grilled meat bone with cheeks puffed full and eyes sparkling with glee.",
     "promptTokens": [
-      "power_(chainsaw_man)",
       "1girl",
       "solo",
       "long_hair",
-      "blonde_hair",
       "horns",
       "red_horns",
       "sharp_teeth",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_villa_hot_spring",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 2034,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-22T02:52:01.228988200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "weekend_apron",
@@ -48,8 +48,7 @@
       "submerged",
       "bare shoulders",
       "collarbone",
-      "water",
-      "steam"
+      "water"
     ],
     "nsfwProse": "Completely unclothed in the hot spring with the rippling water rising past her collarbone, droplets glisten across her bare shoulders and damp neck."
   }

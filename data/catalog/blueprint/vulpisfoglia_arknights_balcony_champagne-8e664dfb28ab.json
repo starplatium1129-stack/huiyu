@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_balcony_champagne",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2865,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_balcony_champagne",
     "characterId": "vulpisfoglia_arknights",
@@ -29,7 +29,7 @@
       "medium close-up"
     ],
     "promptProse": "Standing against the dark wrought-iron railing of a high hotel balcony overlooking the rain-slicked neon avenues of Siracusa, Vulpisfoglia raises a crystal flute of sparkling wine with a charismatic, confident smirk. Dazzling city lights and glowing reflections illuminate the wet pavement below, while evening winds gently flutter her golden fox ears and elegant champagne dress.",
-    "animaCaption": "",
+    "animaCaption": "Leaning against the wrought-iron hotel balcony railing above rain-slick neon streets, she raises a crystal champagne flute toward the viewer with a charismatic smirk. Evening breeze lifts her hair as warm city glow lights the night.",
     "promptTokens": [
       "leaning",
       "balcony",

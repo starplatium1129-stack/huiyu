@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3290,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:27:56.130917+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "viviana_arknights_lingerie_whisper",
     "characterId": "viviana_arknights",
@@ -65,8 +65,7 @@
       "chiffon slip",
       "see-through",
       "spaghetti straps",
-      "bare shoulders",
-      "barefoot"
+      "bare shoulders"
     ],
     "nsfwProse": "She wears a floor-length pale-golden double-layer chiffon slip gown embroidered with a delicate fleur-de-lis crest and suspended by slender gold cord straps.",
     "compositionIntent": "single"

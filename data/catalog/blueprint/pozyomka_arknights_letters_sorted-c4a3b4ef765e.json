@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_letters_sorted",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2932,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "pozyomka_arknights_letters_sorted",
     "characterId": "pozyomka_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "Seated at a grand mahogany writing desk in a private study at night, Pozyomka arranges handwritten correspondence and wax-sealed parchment envelopes into categorized wooden sorting trays. The warm amber pool of a classic brass banker's lamp illuminates an ornate glass inkpot, sealing wax sticks, and her fluffy Lupo ears perked with gentle reflection.",
-    "animaCaption": "",
+    "animaCaption": "Seated at a mahogany writing desk late at night, she neatly sorts handwritten letters and wax-sealed envelopes into wooden trays. Warm amber light from a brass banker's lamp illuminates her glass inkpot and calm reflective gaze.",
     "promptTokens": [
       "sitting",
       "mahogany writing desk",

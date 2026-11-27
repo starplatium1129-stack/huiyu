@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_cloud_shapes",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2964,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rosmontis_arknights_cloud_shapes",
     "characterId": "rosmontis_arknights",
@@ -27,7 +27,7 @@
       "wide shot"
     ],
     "promptProse": "Standing on an open rooftop greenhouse terrace overlooking rolling mountain peaks, Rosmontis points a small, pale hand upward at drifting cumulus clouds shaped like sleeping kittens. Warm golden sunlight kisses her silver hair and floating psychokinetic debris, with potted sky-lilies and glass railings framing the boundless azure sky.",
-    "animaCaption": "",
+    "animaCaption": "Standing on the open rooftop greenhouse terrace, she gazes up and points one small hand toward drifting cumulus clouds shaped like sleeping kittens. Golden sunlight warms the glass railings, potted lilies, and hovering debris.",
     "promptTokens": [
       "standing",
       "rooftop greenhouse terrace",

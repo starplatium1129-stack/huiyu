@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_night_sky",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3074,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "mon3tr_arknights_night_sky",
     "characterId": "mon3tr_arknights",
@@ -27,7 +27,7 @@
       "wide shot"
     ],
     "promptProse": "Sitting on an elevated metal catwalk under an open observation dome, Mon3tr looks upward at the starry night sky, her cat ears perked as soft starlight and gentle deck footlights illuminate her silhouette against the open starfield and shimmering constellations.",
-    "animaCaption": "",
+    "animaCaption": "Sitting on an elevated metal catwalk beneath an open observation dome, she looks upward at the shimmering constellations with perked ears. Soft starlight and gentle deck footlights trace her silhouette against the night sky.",
     "promptTokens": [
       "sitting",
       "observation catwalk",

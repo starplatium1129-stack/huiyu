@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_camellya_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3103,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐在玻璃栏杆边缘双腿轻晃，单手托腮",
     "adult": false,
@@ -31,10 +31,7 @@
     "promptProse": "High above a swirling sea of holographic starlight inside the Tethys observatory, Camellya balances effortlessly on a glass balustrade in a burgundy velvet trench coat, tilting her head with a mischievous smile.",
     "promptTokens": [
       "two-tone hair",
-      "white hair",
-      "red hair",
       "long hair",
-      "red eyes",
       "ahoge",
       "burgundy coat",
       "velvet",

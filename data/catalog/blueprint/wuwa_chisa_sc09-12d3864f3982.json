@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_chisa_sc09",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3909,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "跪坐榻榻米敞开水手服上衣露出雪白双峰，含泪潮红",
     "adult": true,
@@ -30,19 +30,14 @@
     "nsfwTokens": [
       "nsfw",
       "explicit",
-      "nude",
-      "bare breasts",
-      "nipples",
       "pussy",
       "spread legs"
     ],
     "outfitId": "unbuttoned_sailor_uniform_r18",
     "promptProse": "Kneeling on the tatami floor as sunset light filters through the shoji screens, Chisa lets her black sailor top fall open off her shoulders, revealing her bare breasts, crimson neckerchief, and black thigh-highs.",
     "promptTokens": [
-      "black hair",
       "long hair",
       "blunt bangs",
-      "red eyes",
       "red hair ribbon",
       "open clothes",
       "sailor collar",

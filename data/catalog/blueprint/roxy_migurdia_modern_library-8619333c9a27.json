@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_modern_library",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 457,
   "createdAt": null,
-  "updatedAt": "2026-11-21T07:55:25.190699800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "双前臂托住厚课本，双手撑住底书两侧，书堆低于眼睛，向阅读桌小步走去。",
     "animaStyleHint": "soft_daily_illustration",
@@ -27,7 +27,6 @@
     "outfitId": "sfw_library_tailored_vest",
     "promptProse": "Roxy supports the textbooks on both forearms, hands under the bottom corners and eyes above the stack. Slanting light from the high window on the right catches her braids and page edges, leaving layered shade between the volumes. The shelves and a low book cart frame the aisle toward the long reading table, with a reference rack beside the distant window.",
     "promptTokens": [
-      "Roxy Migurdia",
       "books",
       "library",
       "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_console",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2440,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_console",
     "characterId": "arihara_nanami",
@@ -33,7 +33,7 @@
       "night",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Seated before a glowing bank of monitors in the dark operations room, she presses two fingers lightly to her earpiece while scanning the routes with focused resolve. Blue and amber screen light reflects across her face and console notes.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

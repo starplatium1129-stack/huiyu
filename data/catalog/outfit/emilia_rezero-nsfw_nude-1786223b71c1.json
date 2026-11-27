@@ -1,19 +1,23 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/nsfw_nude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1171,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare back",
+        "barefoot"
       ],
-      "prose": "No clothing.",
+      "prose": "Completely unclothed with soft bare skin, graceful collarbones, unadorned shoulders, and bare feet.",
       "default": false,
       "isDefault": false,
       "characterId": "emilia_rezero"

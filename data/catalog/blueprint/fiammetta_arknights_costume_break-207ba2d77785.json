@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_costume_break",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2979,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "fiammetta_arknights_costume_break",
     "characterId": "fiammetta_arknights",
@@ -26,7 +26,7 @@
       "medium shot"
     ],
     "promptProse": "Inside a backstage dressing room, Fiammetta stands before a vanity mirror surrounded by bright marquee bulbs, adjusting the folds of her vibrant red performance cape with an amused smile. Costume racks laden with theater attire, stage props, and script pages on the table frame her reflection in the glass.",
-    "animaCaption": "",
+    "animaCaption": "Standing before a brightly lit backstage vanity mirror, she straightens the folds of her red cape with an amused smile. Marquee bulbs frame her reflection amid racks of stage costumes and scattered script pages.",
     "promptTokens": [
       "standing",
       "backstage dressing room",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/white_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2404,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
@@ -19,13 +19,11 @@
       "tokens": [
         "white bikini",
         "ribbed cotton",
-        "denim cut-off shorts",
+        "halterneck",
+        "denim shorts",
         "frayed hem",
         "braided bracelet",
-        "long brown hair",
-        "brown eyes",
-        "flustered blush",
-        "toned flat stomach"
+        "white linen overshirt"
       ]
     }
   }

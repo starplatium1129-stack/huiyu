@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiiba_tsumugi/azure_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2553,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "shiiba_tsumugi",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shiiba_tsumugi",
-      "prose": "一套满含纯真少女心愿的浅杏色双层棉纱睡裙，小巧的泡泡袖与领口碎褶将女孩子的娇柔完全唤醒，质地软糯，彻底褪去了平日的男装干练。",
+      "prose": "A soft pale-apricot double-gauze cotton babydoll short nightgown with dainty puff sleeves and a gently gathered pastel neckline.",
       "tokens": [
         "pale apricot double-gauze babydoll nightgown",
         "delicate puff sleeves",

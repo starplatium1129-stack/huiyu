@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 733,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without kimono or jacket, revealing lean bare shoulders, sharp collarbones, and unadorned bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare back",
+        "barefoot"
       ],
       "characterId": "ryougi_shiki",
       "default": false,

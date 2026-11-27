@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_snowfield_march",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "full-body shot",
@@ -46,6 +46,7 @@
       "solo",
       "arknights"
     ],
-    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet."
+    "identityProseOverride": "Mudrock from Arknights, enclosed in her sealed heavy armor and helmet.",
+    "animaCaption": "Striding steadily across the windswept snowfield with her heavy warhammer resting over one shoulder, she glances back over her shoulder with calm vigilance. Pale sunlight softens the blowing snow and crisp winter air around her."
   }
 }

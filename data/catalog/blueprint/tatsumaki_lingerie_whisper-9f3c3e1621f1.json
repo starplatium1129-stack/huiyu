@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3338,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-22T03:52:49.080019200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "tatsumaki_lingerie_whisper",
     "characterId": "tatsumaki",
@@ -58,8 +58,7 @@
       "see-through",
       "high slit",
       "spaghetti straps",
-      "bare legs",
-      "barefoot"
+      "bare legs"
     ],
     "nsfwProse": "She wears a minimalist inky-black sheer slip dress with slender straps and waist-high floating side slits revealing her bare shoulders and legs.",
     "compositionIntent": "single"

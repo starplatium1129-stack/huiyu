@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_phoebe_sc03",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3303,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "蹲在码头石阶双手捧起发光金色海灯，眼眸闪亮",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "harbor_lantern_sailor_dress",
     "promptProse": "Kneeling on the seaside stone steps during Ragunna's lantern festival, Phoebe holds a warm glowing paper lantern in both palms, wearing a nautical white-and-cerulean pleated sailor dress.",
     "promptTokens": [
-      "blonde hair",
       "long hair",
-      "blue eyes",
       "sailor collar",
       "white and blue dress",
       "pleated skirt",

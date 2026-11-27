@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc07",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3407,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "侧卧丝绸软枕单手支颐，微喘注视镜头",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "gossamer_jellyfish_negligee_r15",
     "promptProse": "Resting on her side amid satin pillows beneath billowing bed curtains, Cantarella wears an iridescent sheer violet negligee with a deep plunging neckline, gazing through the moonlight with parted lips.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "purple negligee",

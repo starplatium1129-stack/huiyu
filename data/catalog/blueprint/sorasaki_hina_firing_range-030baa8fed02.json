@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_firing_range",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "打完最后一发后双手稳住机枪，枪口沿靶道放低，回头看向老师",
     "adult": false,
@@ -28,7 +28,6 @@
     "outfitId": "combat_gear",
     "promptProse": "Hina holds the machine gun with both hands, barrel lowered along the firing lane after the last shot, looking toward the teacher; overhead light catches sweat at her temple.",
     "promptTokens": [
-      "Hina",
       "machine gun",
       "firing range",
       "from below",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 591,
   "createdAt": null,
-  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
@@ -12,10 +12,14 @@
       "id": "nsfw_nude",
       "isDefault": false,
       "name": "无衣装",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without tactical gear or sash, revealing poised bare shoulders, an athletic back, and bare feet.",
       "styleHint": "",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "toned back",
+        "barefoot"
       ],
       "characterId": "hoshimi_miyabi"
     }

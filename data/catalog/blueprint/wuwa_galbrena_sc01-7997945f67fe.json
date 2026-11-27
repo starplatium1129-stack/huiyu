@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_galbrena_sc01",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3801,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于钟楼石沿单手持枪指尖燃起幽蓝火焰，冷峻侧目",
     "adult": false,
@@ -31,10 +31,8 @@
     "outfitId": "azure_demon_hunter_coat",
     "promptProse": "High on the rain-slicked parapet of an old clock tower overlooking glowing city lights, Galbrena wears her cropped hunter coat and thigh-high boots, azure hellfire dancing around her pistol.",
     "promptTokens": [
-      "grey hair",
       "blue streaks",
       "medium hair",
-      "blue eyes",
       "black coat",
       "cropped jacket",
       "silver buckles",

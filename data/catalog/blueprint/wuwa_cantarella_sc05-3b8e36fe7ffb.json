@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_cantarella_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3405,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "坐于丝绒棋桌前指尖轻移国际象棋棋子，玩味微笑",
     "adult": false,
@@ -30,10 +30,8 @@
     "outfitId": "midnight_salon_bustier_skirt",
     "promptProse": "Across an ornate chessboard in a candlelit parlor, Cantarella wears an amethyst brocade bustier and flowing chiffon skirt, poised to make her next move with an enigmatic smile.",
     "promptTokens": [
-      "purple hair",
       "very long hair",
       "wavy hair",
-      "purple eyes",
       "mole under eye",
       "large breasts",
       "bustier",

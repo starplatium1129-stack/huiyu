@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iino_miko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 202,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-26T18:06:02.747949100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "iino_miko",
     "profile": {
@@ -361,7 +361,7 @@
         "小弥子",
         "kaguya-sama wa kokurasetai"
       ],
-      "identityProse": "Adult Iino Miko from Kaguya-sama: Love Is War, a poised, dignified, and earnest legal professional with neat low twintails resting on her shoulders, deep brown eyes, wearing a well-tailored business suit, exuding intellectual sharpness and heartfelt sincerity.",
+      "identityProse": "Adult Iino Miko from Kaguya-sama: Love Is War, a poised, dignified, and earnest legal professional with neat low twintails resting on her shoulders and deep brown eyes, exuding intellectual sharpness and heartfelt sincerity.",
       "identityTokens": [
         "iino miko",
         "1girl",

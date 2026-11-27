@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/sheer_bathrobe",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "sheer_bathrobe",
       "name": "狂野心弦 · 豹纹微透系带抹胸内衣套装",
-      "prose": "一套张扬辣妹魅力的暗纹豹纹拼接黑蕾丝内衣，抹胸式交叉系带胸衣搭配低腰系绳三角裤，锁骨处系着细黑缎带颈圈，兼具狂野与精致。",
+      "prose": "A bold sheer black lace and subtle leopard-print strappy crop bustier set with cross-laced underwire cups, low-rise tie-side briefs with sheer mesh panels, and a slim black satin ribbon choker.",
       "tokens": [
         "leopard print sheer lace bralette set",
         "strappy underwire crop bustier",

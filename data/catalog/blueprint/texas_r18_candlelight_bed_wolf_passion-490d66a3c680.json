@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_candlelight_bed_wolf_passion",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 668,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "独自侧卧在深色丝绸床榻上，黑色暗纹长袖衬衫微敞，狼耳与尾巴轻搭床面，琥珀双眸在柔和烛火下卸去防备凝视近处",
     "adult": true,
@@ -26,18 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [
       "cleavage",
-      "bare shoulders",
       "bare legs",
       "partially unbuttoned"
     ],
     "outfitId": "black_lounge_shirt",
-    "promptProse": "Texas relaxing on her side on dark silk bedsheets, wearing an oversized unbuttoned black pinstripe shirt slipping off one shoulder, collarbone visible, wolf ears and tail gently resting on bed, soft amber eyes, subtle blush, looking at viewer, bedside warm candlelight, intimate quiet bedroom.",
+    "promptProse": "Texas relaxes on her side atop dark silk bedsheets in a quiet bedroom, her oversized black pinstripe shirt unbuttoned and slipping off one bare shoulder while her wolf ears and tail rest calmly against the bedding. Flickering bedside candlelight softens her subtle blush and warm amber gaze directed at the viewer.",
     "promptTokens": [
-      "texas (arknights)",
       "wolf ears",
       "wolf tail",
-      "amber eyes",
-      "black hair",
       "medium hair",
       "black pinstripe shirt",
       "unbuttoned shirt",

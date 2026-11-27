@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_r18_rooftop_cooldown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2829,
   "createdAt": "2026-10-31T04:39:58.773044+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "zeta_shadow_r18_rooftop_cooldown",
     "characterId": "zeta_shadow",
@@ -47,7 +47,6 @@
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@yoneyama_mai",
     "nsfwTokens": [
-      "topless",
       "bodysuit_pull"
     ],
     "nsfwProse": "",

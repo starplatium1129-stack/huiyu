@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_bike_bell",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3007,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.727Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "blemishine_arknights_bike_bell",
     "characterId": "blemishine_arknights",
@@ -28,7 +28,7 @@
       "medium shot"
     ],
     "promptProse": "In a sun-dappled courtyard beside brick garden walls, Blemishine crouches beside a vintage bicycle, testing the crisp ping of a newly polished chrome bell with her thumb. An open red metal toolbox rests on the paved stones beside loose bolts, while climbing ivy, flowerbeds, and soft afternoon sunlight create a charming workshop nook.",
-    "animaCaption": "",
+    "animaCaption": "Crouching beside a vintage bicycle on sunlit courtyard stones, she taps a newly mounted chrome bell with her thumb and grins cheerfully. An open red toolbox rests beside loose bolts along the ivy-covered brick wall.",
     "promptTokens": [
       "crouching beside bicycle",
       "installing chrome bicycle bell",

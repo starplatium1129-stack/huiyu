@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3506,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:28:58.740024100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "alexia_midgar_lingerie_whisper",
     "characterId": "alexia_midgar",
@@ -40,10 +40,8 @@
       "ivory silk slip",
       "crimson trim",
       "canopy bed",
-      "silver hair",
       "haughty gaze",
       "blush",
-      "red eyes",
       "royal room",
       "chandelier",
       "soft lighting",

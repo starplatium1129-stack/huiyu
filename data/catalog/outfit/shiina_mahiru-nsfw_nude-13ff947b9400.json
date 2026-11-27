@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/nsfw_nude",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 819,
   "createdAt": null,
-  "updatedAt": "2026-11-26T14:45:50.125803100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "nsfw_nude",
       "name": "无衣装",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed and unadorned, showing soft bare shoulders, delicate collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare legs",
+        "barefoot"
       ],
       "characterId": "shiina_mahiru",
       "default": false,

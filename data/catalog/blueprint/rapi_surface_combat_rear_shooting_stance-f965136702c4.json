@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_surface_combat_rear_shooting_stance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1800,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "rapi_surface_combat_rear_shooting_stance",
     "title": "拉毗 · 硝烟废墟的经典背影射击战姿",
@@ -60,9 +60,7 @@
       "ejected_casings",
       "flying_casings",
       "peaked_cap",
-      "brown_hair",
       "long_hair",
-      "red_eyes",
       "looking_back",
       "serious_expression",
       "shapely_hips",

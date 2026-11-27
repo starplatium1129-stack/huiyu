@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_swimsuit_allure",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3216,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-26T12:31:57.988721700+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "yukinoshita_yukino_swimsuit_allure",
     "characterId": "yukinoshita_yukino",
@@ -41,8 +41,6 @@
       "white piping",
       "sitting on lounger",
       "reading book",
-      "black hair",
-      "blue eyes",
       "cool beauty",
       "morning",
       "sunlight",

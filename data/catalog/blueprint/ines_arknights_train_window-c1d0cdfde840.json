@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_train_window",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2868,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ines_arknights_train_window",
     "characterId": "ines_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Sitting beside the window of a slow countryside train carriage, Ines rests her cheek against the clear glass pane as she looks out at passing green fields and utility poles under soft afternoon window light.",
-    "animaCaption": "",
+    "animaCaption": "Seated beside the window of a slow countryside train, she rests her cheek lightly against the cool glass and gazes out at passing green fields and utility poles. Soft afternoon window light diffuses across her quiet profile.",
     "promptTokens": [
       "sitting by window",
       "cheek on glass",

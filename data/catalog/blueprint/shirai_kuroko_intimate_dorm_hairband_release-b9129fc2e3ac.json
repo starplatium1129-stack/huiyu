@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_dorm_hairband_release",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2036,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "tokiwadai_uniform",
@@ -21,10 +21,8 @@
     "mood": "宁静祥和",
     "promptProse": "Seated on the edge of her dorm bed at night, Shirai Kuroko removes her twin hair ribbons, letting her tea-red curly hair cascade freely down her shoulders. Her school blouse is gently unbuttoned at the neck as she gazes softly with tender, unguarded affection.",
     "promptTokens": [
-      "shirai_kuroko",
       "1girl",
       "solo",
-      "brown_hair",
       "long_hair",
       "hair_down",
       "school_uniform",

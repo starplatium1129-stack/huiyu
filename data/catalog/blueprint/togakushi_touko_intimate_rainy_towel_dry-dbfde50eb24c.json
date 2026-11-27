@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_rainy_towel_dry",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2006,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "quiet_silk_robe",
@@ -21,7 +21,6 @@
     "mood": "温存与柔媚",
     "promptProse": "In the warm amber light of the apartment entryway during a rainstorm, Togakushi Touko gently dries the viewer's damp hair with a soft towel. Wearing a delicate silk robe, her breath falters as her gaze lingers lovingly on the viewer's lips in close proximity.",
     "promptTokens": [
-      "togakushi_touko",
       "1girl",
       "solo",
       "long_hair",

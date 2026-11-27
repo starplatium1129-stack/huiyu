@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_comms",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2442,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_comms",
     "characterId": "arihara_nanami",
@@ -30,7 +30,7 @@
       "night",
       "cowboy shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Halted in a dim modern corridor at night, she lifts one hand to steady her earpiece while holding a leather notebook against her side in tense concentration. Overhead fluorescent lights cast crisp shadows along the sleek wall.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

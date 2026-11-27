@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_shore_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3033,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "specter_arknights_shore_whisper",
     "characterId": "specter_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "On a secluded shingle beach at dusk, Specter leans close to the viewer with a knowing smile against the backdrop of ocean waves. The twilight sky is painted in violet and gold, while wet shoreline pebbles shimmer under tidal foam as coastal breeze whips through her silver hair.",
-    "animaCaption": "",
+    "animaCaption": "Standing on a wet shingle beach at dusk, she leans close toward the viewer with a quiet, knowing smile as coastal wind whips her hair. Violet and gold twilight reflects across wet stones and foaming waves behind her.",
     "promptTokens": [
       "standing",
       "leaning toward viewer",

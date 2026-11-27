@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_library",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "sakurajima_mai_library",
     "title": "樱岛麻衣 · 闭馆书库的微光邂逅",
@@ -53,7 +53,6 @@
       "sunset light",
       "window blinds",
       "confident smirk",
-      "purple eyes",
       "full body"
     ],
     "negativeTokens": [

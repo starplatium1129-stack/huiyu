@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "karuizawa_kei_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3465,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "karuizawa_kei_lingerie_whisper",
     "characterId": "karuizawa_kei",
@@ -40,7 +40,6 @@
       "champagne silk slip dress",
       "painting toenails",
       "blonde wavy hair",
-      "blue eyes",
       "sweet blush",
       "bed corner",
       "cozy",

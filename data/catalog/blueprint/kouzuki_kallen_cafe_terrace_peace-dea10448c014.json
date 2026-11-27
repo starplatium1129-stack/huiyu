@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_cafe_terrace_peace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1988,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kouzuki_kallen_cafe_terrace_peace",
     "characterId": "kouzuki_kallen",
@@ -21,12 +21,9 @@
     "mood": "宁静与治愈",
     "promptProse": "At an open-air cafe under a white parasol on a clear afternoon, Kallen Kouzuki smiles softly as she looks up toward the tranquil blue sky holding an iced drink.",
     "promptTokens": [
-      "kallen_stadtfeld",
       "1girl",
       "solo",
-      "red_hair",
       "short_hair",
-      "blue_eyes",
       "outdoor_cafe",
       "table",
       "drink",

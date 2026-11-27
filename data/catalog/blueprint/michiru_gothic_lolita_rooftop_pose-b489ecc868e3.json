@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_gothic_lolita_rooftop_pose",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1912,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "michiru_gothic_lolita_rooftop_pose",
     "characterId": "matsushima_michiru",
@@ -38,7 +38,6 @@
       "holding skirt hem",
       "dramatic pose",
       "blonde twin tails",
-      "blue eyes",
       "pouting haughty expression",
       "slight blush on ears",
       "cowboy shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_shopping_list",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2448,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "arihara_nanami_shopping_list",
     "characterId": "arihara_nanami",
@@ -33,7 +33,7 @@
       "domestic life",
       "medium shot"
     ],
-    "animaCaption": "",
+    "animaCaption": "Beside a sunlit wooden kitchen counter, she holds a handwritten shopping list and checks off ripe tomatoes and greens spilling from a kraft paper bag. Soft daylight filters through window blinds across damp produce and spice jars.",
     "negativeTokens": [],
     "recommendedSize": "832x1216",
     "adult": false,

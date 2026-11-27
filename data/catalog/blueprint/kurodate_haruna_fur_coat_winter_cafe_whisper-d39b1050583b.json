@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_fur_coat_winter_cafe_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 2673,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-26T11:36:10.393289100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "kurodate_haruna_fur_coat_winter_cafe_whisper",
     "characterId": "kurodate_haruna",
@@ -23,10 +23,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "kurodate_haruna",
-      "grey_hair",
       "long_hair",
-      "red_eyes",
       "wings",
       "black_wings",
       "demon_wings",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc02",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3202,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "戴长手套手持羽毛假面置于颊侧，含笑凝视",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "ragunna_masquerade_dress",
     "promptProse": "Under a towering crystal chandelier at Ragunna's masquerade ball, Carlotta lowers a silver-feathered Venetian mask with a white opera-gloved hand, her plum velvet gown gleaming in the warm light.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "hair ornament",
       "earrings",
       "ball gown",

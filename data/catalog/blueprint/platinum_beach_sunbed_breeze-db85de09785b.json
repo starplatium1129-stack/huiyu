@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "platinum_beach_sunbed_breeze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3103,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "platinum_beach_sunbed_breeze",
     "characterId": "platinum_arknights",
@@ -28,7 +28,7 @@
       "drink in hand"
     ],
     "promptProse": "Lounging comfortably under a striped beach parasol on a tropical wooden boardwalk, Platinum rests on a sunbed with glistening turquoise ocean waves in the distance. Her semi-sheer chiffon cover-up flutters gently in the salty ocean breeze as she sips iced lemonade, looking towards the viewer with half-lidded relaxed eyes.",
-    "animaCaption": "",
+    "animaCaption": "Lounging on her side along a boardwalk sunbed beneath a striped beach parasol, she sips a chilled drink and regards the viewer with half-lidded eyes. Salty summer breeze lifts her sheer cover-up above turquoise waves.",
     "promptTokens": [
       "solo",
       "lying on side",

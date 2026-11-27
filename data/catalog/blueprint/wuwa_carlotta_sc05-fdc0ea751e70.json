@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wuwa_carlotta_sc05",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3205,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "action": "立于大型油画前侧身回眸，手持展览目录",
     "adult": false,
@@ -30,9 +30,7 @@
     "outfitId": "gallery_curator_suit",
     "promptProse": "Beneath the glass skylight of a private art gallery lined with gilded frames, Carlotta wears a tailored ivory tweed blazer and high-slit pencil skirt, holding an exhibition booklet with poised charm.",
     "promptTokens": [
-      "white hair",
       "long hair",
-      "pink eyes",
       "earrings",
       "white blazer",
       "tweed",

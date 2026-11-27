@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -30,11 +30,8 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "raiden shogun",
-      "purple hair",
       "long hair",
       "braid",
-      "purple eyes",
       "hair flower",
       "hair ornament",
       "nude",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_blue_hat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3024,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:27:53.529Z",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "entelechia_arknights_blue_hat",
     "characterId": "entelechia_arknights",
@@ -28,7 +28,7 @@
       "medium close-up"
     ],
     "promptProse": "On a high stone terrace overlooking the gilded spires of Victoria at sunset, Entelechia gracefully presses one gloved hand against the brim of her wide felt hat as evening gusts ruffle her dark waves. She leans intimately close to the viewer with a subtle, teasing smirk, while the golden twilight bathes the ornate balustrade and distant chimneys in warm romantic amber.",
-    "animaCaption": "",
+    "animaCaption": "On a high stone terrace overlooking city spires at dusk, she steadies her wide felt hat brim with one gloved hand as the breeze lifts her hair. Leaning close to the viewer, she offers a subtle smirk in warm sunset amber.",
     "promptTokens": [
       "holding wide felt hat",
       "leaning close to viewer",

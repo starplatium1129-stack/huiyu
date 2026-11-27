@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_library_return",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2887,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "nymph_arknights_library_return",
     "characterId": "nymph_arknights",
@@ -27,7 +27,7 @@
       "medium shot"
     ],
     "promptProse": "Staggering cheerfully toward a library return counter, Nymph balances a tall, wobbly stack of colorful illustrated storybooks against her chin. Soaring mahogany shelves, brass label holders, and broad sunlight beams piercing through stained glass cast playful prismatic patterns across the quiet, book-lined hall.",
-    "animaCaption": "",
+    "animaCaption": "Stepping toward the library return counter, she hugs a tall, wobbly stack of colorful storybooks tucked beneath her chin with cheerful energy. Prismatic sunbeams from stained glass sweep across the towering mahogany shelves.",
     "promptTokens": [
       "standing",
       "library return counter",

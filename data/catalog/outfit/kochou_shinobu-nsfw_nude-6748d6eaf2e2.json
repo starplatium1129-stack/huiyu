@@ -1,18 +1,22 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 805,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
       "id": "nsfw_nude",
       "name": "纯净圣洁胴体",
-      "prose": "No clothing.",
+      "prose": "Completely unclothed without haori or uniform, revealing slender bare shoulders, delicate collarbones, and bare feet.",
       "tokens": [
-        "nude"
+        "nude",
+        "bare shoulders",
+        "collarbone",
+        "bare back",
+        "barefoot"
       ],
       "characterId": "kochou_shinobu",
       "default": false,

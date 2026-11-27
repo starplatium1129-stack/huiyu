@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_hat_wind",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3059,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "ceobe_arknights_hat_wind",
     "characterId": "ceobe_arknights",
@@ -27,7 +27,7 @@
       "full body"
     ],
     "promptProse": "Along a breezy, tree-lined cobblestone park promenade, a sudden gust of wind catches Ceobe's straw sunhat, causing her to press both hands to her head with a burst of surprised, ringing laughter. Swirling emerald leaves flutter through the air around her, while sunlight dapples across blooming hydrangeas and park benches under the bright blue sky.",
-    "animaCaption": "",
+    "animaCaption": "Along a breezy tree-lined park path, she presses both hands onto her straw hat to keep a sudden gust from blowing it away, bursting into surprised laughter. Swirling leaves dance in dappled sunlight under the clear blue sky.",
     "promptTokens": [
       "standing",
       "holding hat against wind",

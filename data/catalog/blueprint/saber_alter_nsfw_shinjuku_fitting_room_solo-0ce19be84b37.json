@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
-  "revision": 15,
+  "revision": 16,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
     "title": "黑呆 · 新宿更衣室的冷傲回眸",
@@ -32,7 +32,6 @@
       "facing viewer",
       "looking directly at viewer",
       "eye contact",
-      "Saber Alter",
       "blonde hair",
       "golden eyes",
       "black leather jacket",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_theater_glance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3023,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "id": "entelechia_arknights_theater_glance",
     "characterId": "entelechia_arknights",
@@ -27,7 +27,7 @@
       "medium close-up"
     ],
     "promptProse": "In the opulent, velvet-lined grand foyer of an opera house after the final applause, Entelechia lightly touches the jewel at her collar, glancing back over her shoulder toward the viewer with a conspiratorial, bewitching smile. Enormous crystal chandeliers cast dazzling golden light over marble grand staircases, gilded railings, and the departing, murmuring crowd in the grand hall.",
-    "animaCaption": "",
+    "animaCaption": "Pausing in an opulent opera foyer after the show, she touches the jewel at her collar and glances back over her shoulder with a bewitching, conspiratorial smile. Crystal chandeliers bathe the marble staircase in golden light.",
     "promptTokens": [
       "standing",
       "opera house grand foyer",

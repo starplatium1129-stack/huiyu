@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_stage_closing_time",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2024,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:25:21.334879100+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "livehouse_staff",
@@ -21,10 +21,8 @@
     "mood": "温存与治愈",
     "promptProse": "Sitting on the empty LiveHouse stage steps after closing time, Ijichi Nijika relaxes in her sleeveless red band tee. A single warm stage light highlights her golden side-ponytail and iconic dorito ahoge as she massages her drum-tired wrist with a sweet, affectionate grin.",
     "promptTokens": [
-      "ijichi_nijika",
       "1girl",
       "solo",
-      "blonde_hair",
       "side_ponytail",
       "ahoge",
       "t-shirt",

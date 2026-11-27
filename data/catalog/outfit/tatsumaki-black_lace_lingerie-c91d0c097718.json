@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2412,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
@@ -15,7 +15,7 @@
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tatsumaki",
-      "prose": "一袭延续其标志性黑长裙风采的极简墨黑高开叉透视睡裙，侧摆开叉直达腰际，随着念动力无风自动，若隐若现地展现出惊人完美的纤细身姿与绝对领域。",
+      "prose": "A minimalist jet-black sheer slip gown echoing her signature silhouette, cut with ultra-thin straps and dramatic waist-high side slits that float freely.",
       "tokens": [
         "inky black sheer side-slit slip dress",
         "waist-high floating slit",

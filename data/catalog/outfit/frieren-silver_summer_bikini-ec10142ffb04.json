@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "frieren/silver_summer_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2299,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-27T10:13:24.962184700+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
@@ -18,14 +18,11 @@
       "prose": "A minimalist antique ivory-white one-piece swimsuit featuring a modest plunge neckline, matte vintage brass clasps, high-cut leg openings, and a breezy heather-gray linen traveler's shawl.",
       "tokens": [
         "white swimsuit",
-        "ivory one-piece",
+        "ivory one-piece swimsuit",
+        "plunge neckline",
         "vintage brass buckle",
-        "linen shawl",
-        "elf ears",
-        "white twintails",
-        "green eyes",
-        "calm expression",
-        "timeless aura"
+        "highleg",
+        "gray linen shawl"
       ]
     }
   }
