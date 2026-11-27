@@ -134,7 +134,7 @@ impl ControlService {
         let state = self.state.lock().unwrap();
         state
             .health_at
-            .filter(|at| at.elapsed() < Duration::from_secs(2))
+            .filter(|at| at.elapsed() < Duration::from_secs(7))
             .map(|_| state.health.clone())
     }
     pub(super) async fn health(&self, fresh: bool) -> Arc<Value> {

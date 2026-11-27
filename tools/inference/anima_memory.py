@@ -49,6 +49,14 @@ class Residency:
     def free_bytes(self):
         return _memory().memory_info(self.device.device)[0]
 
+    def ensure_free_bytes(self, needed):
+        free = self.free_bytes()
+        if free >= needed:
+            return True
+        # Resident mode skips per-job empty_cache(); flush allocator cache on demand before failing.
+        self.device.api.empty_cache()
+        return self.free_bytes() >= needed
+
     def bind(self, pipeline):
         self.scheduler.bind(pipeline)
         pipeline._huiyu_memory = self

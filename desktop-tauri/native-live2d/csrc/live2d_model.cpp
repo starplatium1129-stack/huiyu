@@ -12,6 +12,7 @@
 #include <new>
 #include <cstdio>
 #include <cstring>
+#include <vector>
 
 #include "CubismFramework.hpp"
 #include "CubismModelSettingJson.hpp"
@@ -26,7 +27,6 @@
 #include "Effect/CubismEyeBlink.hpp"
 #include "Id/CubismId.hpp"
 #include "Id/CubismIdManager.hpp"
-#include "Utils/CubismJson.hpp"
 #include "Type/csmVector.hpp"
 #include "Type/csmMap.hpp"
 
@@ -40,6 +40,7 @@ struct l2d_model
     CubismMoc* moc = nullptr;
     CubismModel* model = nullptr;
     CubismModelSettingJson* setting = nullptr;
+    std::vector<uint64_t> positionRevisions;
 
     CubismMotionManager* motionManager = nullptr;
     CubismExpressionMotionManager* expressionManager = nullptr;
@@ -94,10 +95,8 @@ l2d_model* l2d_model_create(const uint8_t* mocData, size_t mocSize,
     if (!mocData || mocSize == 0 || !model3Data || model3Size == 0) { return nullptr; }
     if (l2d_initialize() != 0) { return nullptr; }
 
-    l2d_model* m = new (std::nothrow) l2d_model(); fprintf(stderr, "[l2d] alloc ok\n");
+    l2d_model* m = new (std::nothrow) l2d_model();
     if (!m) { return nullptr; }
-
-    fprintf(stderr, "[l2d] setting ctor...\n");
     m->setting = new (std::nothrow) CubismModelSettingJson(
         reinterpret_cast<const csmByte*>(model3Data), static_cast<csmSizeInt>(model3Size));
     if (!m->setting)
@@ -105,51 +104,36 @@ l2d_model* l2d_model_create(const uint8_t* mocData, size_t mocSize,
         delete m;
         return nullptr;
     }
-
-    fprintf(stderr, "[l2d] moc create...\n");
     m->moc = CubismMoc::Create(reinterpret_cast<const csmByte*>(mocData), static_cast<csmSizeInt>(mocSize));
     if (!m->moc)
     {
         delete m;
         return nullptr;
     }
-
-    fprintf(stderr, "[l2d] model create...\n");
-    fflush(stderr);
     m->model = m->moc->CreateModel();
-    fprintf(stderr, "[l2d] model=%p\n", static_cast<void*>(m->model));
-    fflush(stderr);
     if (!m->model)
     {
-        fprintf(stderr, "[l2d] model create FAILED\n");
-        fflush(stderr);
         delete m;
         return nullptr;
     }
-
-    fprintf(stderr, "[l2d] save params...\n");
-    fflush(stderr);
+    const csmInt32 drawableCount = m->model->GetDrawableCount();
+    if (drawableCount < 0)
+    {
+        delete m;
+        return nullptr;
+    }
+    try
+    {
+        m->positionRevisions.resize(static_cast<size_t>(drawableCount), 1);
+    }
+    catch (...)
+    {
+        delete m;
+        return nullptr;
+    }
     m->model->SaveParameters();
-    fprintf(stderr, "[l2d] params saved ok\n");
-    fflush(stderr);
     m->motionManager = new (std::nothrow) CubismMotionManager();
     m->expressionManager = new (std::nothrow) CubismExpressionMotionManager();
-    fprintf(stderr, "[l2d] eye blink...\n");
-    fflush(stderr);
-    {
-        Utils::CubismJson* dbg = Utils::CubismJson::Create(
-            reinterpret_cast<const csmByte*>(model3Data), static_cast<csmSizeInt>(model3Size));
-        fprintf(stderr, "[l2d] dbg json=%p err=%s\n", static_cast<void*>(dbg),
-                dbg ? (dbg->GetParseError() ? dbg->GetParseError() : "ok") : "create-null");
-        fflush(stderr);
-        if (dbg) { Utils::CubismJson::Delete(dbg); }
-    }
-    fprintf(stderr, "[l2d] motions=%d hitareas=%d\n",
-            m->setting->GetMotionGroupCount(), m->setting->GetHitAreasCount());
-    fflush(stderr);
-    const csmInt32 blinkCount = m->setting->GetEyeBlinkParameterCount();
-    fprintf(stderr, "[l2d] blink count=%d\n", blinkCount);
-    fflush(stderr);
     m->eyeBlink = CubismEyeBlink::Create(m->setting);
     if (!m->motionManager || !m->expressionManager || !m->eyeBlink)
     {
@@ -157,7 +141,6 @@ l2d_model* l2d_model_create(const uint8_t* mocData, size_t mocSize,
         return nullptr;
     }
 
-    fprintf(stderr, "[l2d] updaters...\n");
     /* updaters replaced by manual update calls in l2d_model_update. */
     return m;
 }
@@ -274,6 +257,20 @@ float l2d_model_get_parameter(l2d_model* m, const char* id)
     return m->model->GetParameterValue(m->model->GetParameterIndex(paramId));
 }
 
+void l2d_model_set_parameter_by_index(l2d_model* m, int index, float value, float weight)
+{
+    if (m && m->model && index >= 0 && index < m->model->GetParameterCount())
+    {
+        m->model->SetParameterValue(index, value, weight);
+    }
+}
+
+float l2d_model_get_parameter_by_index(l2d_model* m, int index)
+{
+    return m && m->model && index >= 0 && index < m->model->GetParameterCount()
+        ? m->model->GetParameterValue(index) : 0.0f;
+}
+
 /* TEMP DIAG (2026-08-16): reset every parameter to its moc3 default value. */
 void l2d_model_reset_all_parameters(l2d_model* m)
 {
@@ -297,7 +294,16 @@ void l2d_model_update(l2d_model* m, float deltaTimeSeconds)
     }
     if (m->physics) { m->physics->Evaluate(m->model, deltaTimeSeconds); }
     if (m->pose) { m->pose->UpdateParameters(m->model, deltaTimeSeconds); }
-    m->model->Update();
+    // CubismModel::Update resets the change flags immediately. Record per-mesh
+    // revisions from Core first, so snapshots remain valid across skipped frames.
+    Core::csmModel* core = m->model->GetModel();
+    Core::csmUpdateModel(core);
+    const Core::csmFlags* flags = Core::csmGetDrawableDynamicFlags(core);
+    for (size_t index = 0; index < m->positionRevisions.size(); ++index)
+    {
+        if (flags[index] & Core::csmVertexPositionsDidChange) { ++m->positionRevisions[index]; }
+    }
+    Core::csmResetDrawableDynamicFlags(core);
 }
 
 float l2d_model_canvas_width(l2d_model* m)
@@ -314,7 +320,8 @@ int l2d_model_parameter_index(l2d_model* m, const char* id)
 {
     if (!m || !id || !m->model) { return -1; }
     CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(id);
-    return m->model->GetParameterIndex(paramId);
+    const csmInt32 index = m->model->GetParameterIndex(paramId);
+    return index >= 0 && index < m->model->GetParameterCount() ? index : -1;
 }
 
 int l2d_model_drawable_count(l2d_model* m)
@@ -357,11 +364,6 @@ int l2d_model_drawable_index_count(l2d_model* m, int index)
     return m && m->model ? m->model->GetDrawableVertexIndexCount(index) : 0;
 }
 
-float l2d_model_drawable_opacity(l2d_model* m, int index)
-{
-    return m && m->model ? m->model->GetDrawableOpacity(index) : 0.0f;
-}
-
 int l2d_model_drawable_culling(l2d_model* m, int index)
 {
     return m && m->model ? m->model->GetDrawableCulling(index) : 0;
@@ -370,16 +372,6 @@ int l2d_model_drawable_culling(l2d_model* m, int index)
 int l2d_model_drawable_texture_index(l2d_model* m, int index)
 {
     return m && m->model ? m->model->GetDrawableTextureIndex(index) : 0;
-}
-
-int l2d_model_drawable_visible(l2d_model* m, int index)
-{
-    return m && m->model ? m->model->GetDrawableDynamicFlagIsVisible(index) : 0;
-}
-
-int l2d_model_drawable_render_order(l2d_model* m, int index)
-{
-    return m && m->model ? m->model->GetRenderOrders()[index] : 0;
 }
 
 int l2d_model_drawable_color_blend(l2d_model* m, int index)
@@ -394,24 +386,21 @@ int l2d_model_drawable_alpha_blend(l2d_model* m, int index)
     return m->model->GetDrawableBlendModeType(index).GetAlphaBlendType();
 }
 
-void l2d_model_drawable_multiply_color(l2d_model* m, int index, float* rgba)
+void l2d_model_drawable_frame(l2d_model* m, l2d_drawable_frame* out, size_t count)
 {
-    if (!m || !m->model || !rgba) { return; }
-    const Core::csmVector4 color = m->model->GetDrawableMultiplyColor(index);
-    rgba[0] = color.X;
-    rgba[1] = color.Y;
-    rgba[2] = color.Z;
-    rgba[3] = color.W;
-}
-
-void l2d_model_drawable_screen_color(l2d_model* m, int index, float* rgba)
-{
-    if (!m || !m->model || !rgba) { return; }
-    const Core::csmVector4 color = m->model->GetDrawableScreenColor(index);
-    rgba[0] = color.X;
-    rgba[1] = color.Y;
-    rgba[2] = color.Z;
-    rgba[3] = color.W;
+    if (!m || !m->model || !out || count != m->positionRevisions.size()) { return; }
+    const csmInt32* order = m->model->GetRenderOrders();
+    for (size_t index = 0; index < count; ++index)
+    {
+        const auto drawable = static_cast<csmInt32>(index);
+        const Core::csmVector4 multiply = m->model->GetDrawableMultiplyColor(drawable);
+        const Core::csmVector4 screen = m->model->GetDrawableScreenColor(drawable);
+        out[index] = {m->positionRevisions[index], order[index],
+            m->model->GetDrawableDynamicFlagIsVisible(drawable) ? 1 : 0,
+            m->model->GetDrawableOpacity(drawable),
+            {multiply.X, multiply.Y, multiply.Z, multiply.W},
+            {screen.X, screen.Y, screen.Z, screen.W}};
+    }
 }
 
 int l2d_model_drawable_mask_count(l2d_model* m, int index)

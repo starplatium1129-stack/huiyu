@@ -7,7 +7,7 @@ mod precompressed;
 mod projection;
 
 pub use paths::{PUBLIC_DATA_FILES, is_private_asset_path};
-pub use precompressed::serve as precompressed;
+pub(crate) use precompressed::{content_type as compressed_content_type, select as precompressed};
 pub(crate) use precompressed::quality as encoding_quality;
 
 use crate::{
@@ -64,6 +64,7 @@ pub fn token_guard(
     }
 }
 pub struct RemoteContent {
+    catalog: Arc<crate::catalog::Reader>,
     app: PathBuf,
     assets: PathBuf,
     runtime: PathBuf,
@@ -86,6 +87,7 @@ impl RemoteContent {
             .into_iter()
             .collect();
         Self {
+            catalog: Arc::default(),
             app: config.content_root(),
             runtime: config.runtime_root.clone(),
             assets: absolute(
@@ -230,6 +232,7 @@ impl RemoteContent {
             seed_source: None,
             database: self.runtime.join("content/catalog.sqlite"),
         };
+        let catalog = self.catalog.clone();
         let (output, permit) = tokio::task::spawn_blocking(move || -> Result<_> {
             if bytes.len() != size || hex::encode(Sha256::digest(&bytes)) != digest {
                 return Err(unpublished());
@@ -240,8 +243,9 @@ impl RemoteContent {
                 let current = if options.database.is_file()
                     || options.database.with_extension("identity.json").exists()
                 {
-                    crate::catalog::Catalog::open_existing(options)
-                        .and_then(|catalog| catalog.projection(&name))
+                    // Reuse only the SQLite handle. Approval, revocation and
+                    // the current projection still have to match on every read.
+                    catalog.with(options, |catalog, _, _| catalog.projection(&name))
                         .map_err(|_| unpublished())?
                 } else {
                     None

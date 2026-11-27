@@ -66,7 +66,7 @@ pub struct ControlService {
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
     tunnel_action: tokio::sync::Mutex<()>,
-    build_cache: tokio::sync::Mutex<Option<(Instant, Value)>>,
+    build_cache: Mutex<http::WebBuildCache>,
     log_tails: Mutex<logs::Cache>,
 }
 #[derive(Default)]
@@ -205,7 +205,7 @@ impl ControlService {
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),
-            build_cache: tokio::sync::Mutex::new(None),
+            build_cache: Mutex::default(),
             log_tails: Mutex::default(),
         });
         // Restore only the explicitly managed Comfy intent. Opening the app does

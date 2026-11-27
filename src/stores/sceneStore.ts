@@ -112,14 +112,15 @@ function mergeScenes(...lists: Array<Scene[] | undefined>): Scene[] {
 }
 
 export const useSceneStore = defineStore('scenes', () => {
-  const scenes = ref<Scene[]>([])
-  const curation = ref<CurationData>({})
-  const characters = ref<Array<Record<string, unknown>>>([])
+  // Catalog records are read snapshots. Editors load and save independent drafts.
+  const scenes = shallowRef<Scene[]>([])
+  const curation = shallowRef<CurationData>({})
+  const characters = shallowRef<Array<Record<string, unknown>>>([])
   const drawingProfiles = shallowRef<Array<Record<string, unknown>>>([])
   const archiveProfiles = shallowRef<Array<Record<string, unknown>>>([])
-  const loras = ref<LoraMeta[]>([])
-  const tags = ref<TagMeta[]>([])
-  const presets = ref<Record<string, unknown> | unknown[]>([])
+  const loras = shallowRef<LoraMeta[]>([])
+  const tags = shallowRef<TagMeta[]>([])
+  const presets = shallowRef<Record<string, unknown> | unknown[]>([])
   const directoryCharacters = shallowRef<CharacterDirectoryEntry[]>([])
   const sceneTitles = shallowRef(new Map<string, string>())
   let cachedCuration: CurationData = {}
@@ -399,9 +400,8 @@ export const useSceneStore = defineStore('scenes', () => {
     ])
     if (epoch !== loadEpoch) throw new Error('场景目录已更新，请重新读取。')
     if (!curationResult.ok) throw curationResult.error
-    // Browser filters must not replace the studio's active scene list, nor edit
-    // cached JSON through a shared mutable reference.
-    return { scenes: structuredClone(mergeScenes(...lists)), curation: structuredClone(cachedCuration) }
+    // Merge creates a view-owned list of read-only catalog records.
+    return { scenes: mergeScenes(...lists), curation: structuredClone(cachedCuration) }
   }
 
   /**
@@ -418,7 +418,7 @@ export const useSceneStore = defineStore('scenes', () => {
     fullRequest = Promise.all([loadMeta(), loadShard('shared'), loadShard('nene'), loadShard('natsume')])
       .then(([, shared, nene, natsume]) => {
         if (epoch !== loadEpoch) return
-        scenes.value = structuredClone(mergeScenes(shared, nene, natsume))
+        scenes.value = mergeScenes(shared, nene, natsume)
         loaded.value = true
       })
       .catch(cause => { if (epoch === loadEpoch) error.value = cause instanceof Error ? cause.message : String(cause) })

@@ -1,11 +1,9 @@
-/* Default material is painted, never backdrop-filtered; liquid styling loads on opt-in. */
-:root:not([data-glass-material="liquid"]) body *,
-:root:not([data-glass-material="liquid"]) body *::before,
-:root:not([data-glass-material="liquid"]) body *::after,
-:root:not([data-glass-material="liquid"]) dialog::backdrop {
-  -webkit-backdrop-filter:none !important;
-  backdrop-filter:none !important;
-}
+/* Authored backdrop declarations use this inherited switch. Liquid mode
+   resets it so each surface can use its own filter. */
+:root,
+dialog::backdrop { --glass-disabled:none; }
+:root[data-glass-material="liquid"] { --glass-disabled:initial; }
+:root[data-glass-material="liquid"] dialog::backdrop { --glass-disabled:initial; }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material="light"]:not([data-reduced-glass="true"]) body :is(.nav,.nav-more-menu,.companion-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
   background:linear-gradient(125deg,color-mix(in srgb,var(--glass-highlight) 45%,transparent),transparent 42%),color-mix(in srgb,var(--bg-surface) 96%,transparent);
   box-shadow:var(--shadow-glass-sm);

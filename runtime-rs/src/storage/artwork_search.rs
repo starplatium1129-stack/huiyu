@@ -91,14 +91,6 @@ fn anchor(terms: &[String]) -> (&'static str, String) {
         .join(" AND ");
     ("artwork_search_chars", query)
 }
-pub(super) fn needs_index(command: &Value) -> bool {
-    command["terms"].as_array().is_some_and(|terms| {
-        terms
-            .iter()
-            .any(|term| term.as_str().is_some_and(|term| !term.is_empty()))
-    })
-}
-
 fn character_tokens(text: &str) -> String {
     let mut ascii = [false; 128];
     let mut other = BTreeSet::new();
@@ -127,17 +119,11 @@ pub(super) fn ready(c: &Context) -> Result<bool> {
         .exists([])?)
 }
 
-pub(super) fn refresh_small(c: &Context) -> Result<bool> {
-    let pending: i64 = c.db.query_row(
+pub(super) fn small_pending(c: &Context) -> Result<bool> {
+    let pending: i64 = c.db.prepare_cached(
         "SELECT count(*) FROM (SELECT id FROM artwork_search_dirty LIMIT 129)",
-        [],
-        |row| row.get(0),
-    )?;
-    if (1..=128).contains(&pending) {
-        refresh_chunk(c)
-    } else {
-        Ok(false)
-    }
+    )?.query_row([], |row| row.get(0))?;
+    Ok((1..=128).contains(&pending))
 }
 
 pub(super) fn warm(storage: &Storage) {

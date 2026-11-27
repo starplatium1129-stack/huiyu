@@ -14,11 +14,12 @@ pub(super) struct Worker {
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,
     model: String,
+    family: String,
     pub model_loaded: bool,
     settings: Settings,
 }
 impl Worker {
-    fn spawn(engine: &Engine, settings: &Settings, model: &str) -> Result<Self> {
+    fn spawn(engine: &Engine, settings: &Settings, model: &str, family: &str) -> Result<Self> {
         let mut command = settings.worker_command();
         command
             .arg("--serve")
@@ -51,6 +52,7 @@ impl Worker {
             stderr,
             idle: CancellationToken::new(),
             model: model.into(),
+            family: family.into(),
             model_loaded: false,
             settings: settings.clone(),
         })
@@ -210,7 +212,9 @@ impl Engine {
         .await
         .map_err(|_| release_error())?
     }
-    pub(super) async fn take_worker(&self, settings: &Settings, model: &str) -> Result<Worker> {
+    pub(super) async fn take_worker(&self, settings: &Settings, input: &Value) -> Result<Worker> {
+        let model = queue::model(input);
+        let family = queue::family(input);
         if let Some(mut worker) = self.worker.lock().await.take() {
             worker.idle.cancel();
             let exited = match worker.process.exited() {
@@ -221,13 +225,21 @@ impl Engine {
                     return Err(error);
                 }
             };
-            if exited.is_none() && worker.settings == *settings && worker.model == model {
+            // Only the Anima protocol reuses shared components on a model change.
+            if exited.is_none() && worker.settings == *settings && worker.family == family
+                && (worker.model == model || family == "anima")
+            {
+                if worker.model != model {
+                    worker.model = model.into();
+                    worker.model_loaded = false;
+                    self.queue.resident(None);
+                }
                 return Ok(worker);
             }
             worker.stop().await?;
             self.queue.resident(None);
         }
-        Worker::spawn(self, settings, model)
+        Worker::spawn(self, settings, model, family)
     }
     pub(super) async fn retain_worker(inner: Arc<Inner>, mut worker: Worker, timeout: Duration) {
         worker.idle = CancellationToken::new();

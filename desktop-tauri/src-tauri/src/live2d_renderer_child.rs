@@ -3,15 +3,15 @@ use crate::mutex::RecoverMutex;
 use std::io::{BufRead, Write};
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
-use std::sync::{Arc, Mutex};
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 
 use crate::live2d_process_protocol::{ChildMessage, Command, Request, MAX_MESSAGE_BYTES};
 use crate::live2d_renderer::live2d_adapter::Live2DAdapterConfig;
 use crate::live2d_renderer::{
     apply_frame, overlay_window_thread, send_command, state_snapshot, Live2DOverlayState,
-    OverlayCommand, RendererEnvironment, RendererEvents,
+    OverlayCommand, OverlayReply, RendererEnvironment, RendererEvents,
 };
 use serde_json::{json, Value};
 
@@ -82,11 +82,12 @@ impl ChildRuntime {
                 events_state.shutdown.store(true, Ordering::SeqCst);
             }
         }));
+        let (attached, wait_for_attach) = mpsc::sync_channel(1);
         self.worker = Some(thread::spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
                 overlay_window_thread(state, RendererEnvironment {
                     cache_root: local_root.as_ref().and_then(|path| path.parent()).map(|path| path.join("live2d-cache")),
-                    assets_root, local_root, prewarm: false, events: Some(events.clone()),
+                    assets_root, local_root, events: Some(events.clone()), attached: Some(attached),
                 });
             }));
             if result.is_err() {
@@ -95,33 +96,23 @@ impl ChildRuntime {
                 std::process::exit(1);
             }
         }));
-        let deadline = Instant::now() + Duration::from_secs(30);
-        while !self.state.renderer_attached.load(Ordering::SeqCst) {
-            if self.worker.as_ref().is_some_and(|worker| worker.is_finished()) {
-                return Err("renderer initialization failed; see stopped event".into());
-            }
-            if Instant::now() >= deadline { return Err("renderer initialization timed out".into()); }
-            thread::sleep(Duration::from_millis(10));
-        }
+        wait_for_attach.recv_timeout(Duration::from_secs(30)).map_err(|error| match error {
+            mpsc::RecvTimeoutError::Timeout => "renderer initialization timed out",
+            mpsc::RecvTimeoutError::Disconnected => "renderer initialization failed; see stopped event",
+        })?;
         Ok(state_snapshot(&self.state))
     }
 
-    fn wait<T>(&self, mut receiver: tokio::sync::oneshot::Receiver<T>) -> Result<T, String> {
-        let deadline = Instant::now() + Duration::from_secs(60);
-        loop {
-            match receiver.try_recv() {
-                Ok(value) => return Ok(value),
-                Err(tokio::sync::oneshot::error::TryRecvError::Closed) => return Err("renderer dropped command".into()),
-                Err(tokio::sync::oneshot::error::TryRecvError::Empty) => {}
-            }
-            if Instant::now() >= deadline { return Err("renderer command timed out".into()); }
-            thread::sleep(Duration::from_millis(5));
-        }
+    fn wait<T>(&self, receiver: mpsc::Receiver<T>) -> Result<T, String> {
+        receiver.recv_timeout(Duration::from_secs(60)).map_err(|error| match error {
+            mpsc::RecvTimeoutError::Disconnected => "renderer dropped command".into(),
+            mpsc::RecvTimeoutError::Timeout => "renderer command timed out".into(),
+        })
     }
 
-    fn acknowledged<T>(&self, make: impl FnOnce(tokio::sync::oneshot::Sender<Result<T, String>>) -> OverlayCommand) -> Result<T, String> {
-        let (sender, receiver) = tokio::sync::oneshot::channel();
-        send_command(&self.state, make(sender))?;
+    fn acknowledged<T>(&self, make: impl FnOnce(OverlayReply<Result<T, String>>) -> OverlayCommand) -> Result<T, String> {
+        let (sender, receiver) = mpsc::sync_channel(1);
+        send_command(&self.state, make(OverlayReply::Blocking(sender)))?;
         self.wait(receiver)?
     }
 
@@ -157,9 +148,9 @@ impl ChildRuntime {
             Command::SetExpression { name } => {
                 self.acknowledged(|reply| OverlayCommand::SetExpression { name, reply })?;
             }
-            Command::SetMouthLevel { level } => send_command(&self.state, OverlayCommand::SetMouthLevel(level))?,
+            Command::SetMouthLevel { level } => self.state.publish_mouth(level),
             Command::SetEmotion { name, intensity } => send_command(&self.state, OverlayCommand::SetEmotion { name, intensity })?,
-            Command::SetGaze { x, y } => send_command(&self.state, OverlayCommand::SetGaze(x, y))?,
+            Command::SetGaze { x, y } => self.state.publish_gaze(x, y),
             Command::SetMaxFps { fps } => send_command(&self.state, OverlayCommand::SetMaxFps(fps))?,
             Command::HitTest { x, y } => {
                 let areas = self.acknowledged(|reply| OverlayCommand::HitTest { x, y, reply })?;
@@ -170,8 +161,8 @@ impl ChildRuntime {
                 self.acknowledged(|reply| OverlayCommand::Snapshot { path, reply })?;
             }
             Command::Destroy => {
-                let (reply, receiver) = tokio::sync::oneshot::channel();
-                send_command(&self.state, OverlayCommand::Destroy { reply })?;
+                let (reply, receiver) = mpsc::sync_channel(1);
+                send_command(&self.state, OverlayCommand::Destroy { reply: OverlayReply::Blocking(reply) })?;
                 self.wait(receiver)?;
             }
         }

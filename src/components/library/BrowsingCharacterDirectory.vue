@@ -1,6 +1,6 @@
 <template>
   <div ref="root" class="browsing-directory tw:sticky tw:min-w-0">
-    <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" data-fluid-glass aria-haspopup="dialog"
+    <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" data-fluid-glass v-glass-optics aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
       <span class="pocket-copy tw:grid tw:gap-s-1 tw:min-w-0"><small>这一页的主角</small><strong>{{ selected?.name || '选择角色' }}</strong></span>

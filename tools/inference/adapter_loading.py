@@ -4,7 +4,6 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 import contextlib
 import os
-import sys
 import threading
 from types import SimpleNamespace
 from huiyu_worker_lifecycle import load_sibling as sibling
@@ -15,38 +14,8 @@ video = sibling("adapter_video")
 identity = sibling("adapter_identity")
 
 
-@contextlib.contextmanager
 def windows_weight_reads():
-    if sys.platform != "win32":
-        yield
-        return
-    import safetensors
-    import safetensors.torch
-    from transformers import modeling_utils as encoder_loading
-    # Diffusers imports safe_open inside its loading functions; changing the
-    # public entry point covers those imports without inventing module aliases.
-    readers = (safetensors, safetensors.torch, encoder_loading)
-    originals = [(module, module.safe_open) for module in readers]
-    reader_class = sibling("mapped_weights").ReadOnlyWeights
-    async_loading = os.environ.get("HF_DEACTIVATE_ASYNC_LOAD")
-    os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = "1"
-
-    def safe_open(*args, **kwargs):
-        return reader_class(*args, **kwargs)
-
-    # The pinned loader's writable mmap reserves Windows commit for whole files.
-    # Use immutable file views during weight loading, then restore readers.
-    for module, _ in originals:
-        module.safe_open = safe_open
-    try:
-        yield
-    finally:
-        for module, reader in originals:
-            module.safe_open = reader
-        if async_loading is None:
-            os.environ.pop("HF_DEACTIVATE_ASYNC_LOAD", None)
-        else:
-            os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
+    return sibling("mapped_weights").windows_weight_reads()
 
 
 def resolve_moss_text_precision(root, data):

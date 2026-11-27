@@ -152,7 +152,7 @@ def settle_resources(cancelled):
             api.empty_cache()
 
 
-def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None):
+def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None, keep_allocator=None):
     """Run generate(job, control, prepared); return a process exit code.
 
     initialize(job, imports_ready, control) releases the reader after imports and returns
@@ -192,7 +192,8 @@ def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cle
                 was_cancelled = True
                 if cancel_cleanup is not None:
                     cancel_cleanup()
-            settle_resources(was_cancelled)
+            if was_cancelled or keep_allocator is None or not keep_allocator():
+                settle_resources(was_cancelled)
             requests.finish(control)
             if was_cancelled:
                 emit(stream, job_id, "cancelled")

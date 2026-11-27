@@ -27,6 +27,7 @@ import { retargetParticles, simulateParticles, type RuntimeParticle } from '@/ut
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
 import { loadPortraitCloud, portraitCloudIdentity, samplePortraitPoints, legibleParticleColor, lightPortraitColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
+import { observeWindowVisibility } from '@/platform/windowVisibility'
 import { useParticlePerformanceLifecycle } from '@/composables/useParticlePerformanceLifecycle'
 import { preferredParticleCount, type PortraitReferenceSize } from '@/utils/particleDensity'
 import { createParticleSnapshot } from '@/utils/particleSnapshot'
@@ -113,6 +114,8 @@ let dpr = 1
 let particles: RuntimeParticle[] = []
 let palette: Palette = { primary: '#d9d5df', secondary: '#77717f', accent: '#ff8fc4' }
 let visible = true
+let windowVisible = !document.hidden
+let stopWindowVisibility: (() => void) | undefined
 let pointerX = -10000
 let pointerY = -10000
 let pointerClientX = 0, pointerClientY = 0, pointerDirty = false
@@ -120,6 +123,8 @@ let pointerActive = false
 let lastFrame = 0
 let lastPhysicsFrame = 0
 let lastAmbientFrame = 0
+let frameLimit: number | undefined
+const AMBIENT_FPS = 12
 let slowFrames = 0
 let qualityScale = 1
 const sampling = ref({ count: 0, spacing: 0, quality: 1 })
@@ -134,7 +139,7 @@ const performance = useParticlePerformanceLifecycle({
     gpuRenderer?.release(); gpuRenderer = undefined; gpuAvailable.value = false; gpuRevision.value++; bodyDirty = true
   },
   paletteChanged: schedulePaletteRead,
-  visible: () => visible,
+  visible: () => visible && windowVisible,
 })
 const { lowEffects, reduceMotion } = performance
 
@@ -194,6 +199,7 @@ function setShape(animate = true) {
   }
   if (!shape.length) return
   particles = retargetParticles(particles, shape, width, height, animate, Boolean(portraitCloud))
+  ensureAmbient()
 
   if (!animate || reduceMotion.value) {
     particles.forEach((particle) => {
@@ -208,7 +214,6 @@ function setShape(animate = true) {
   } else {
     startLoop()
   }
-  ensureAmbient()
 }
 
 /**
@@ -255,10 +260,9 @@ function updateAmbient(step: number) {
 }
 
 /* compositor-exempt: DESIGN.md 要求交互粒子形象，Canvas/WebGL 须重绘点阵。
- * 现有基线：点数上限 48000、DPR 上限 2，低效果 20fps；隐藏、停用或减弱动效时停止循环。
- * 常规模式保留原生刷新率、GPU/局部快照路径；真实设备的帧耗与显存仍需对应环境验收。 */
+ * 交互保留原生刷新率，低效果 20fps，静止漂浮点 12fps，无漂浮点时停表。 */
 function draw(freeze = false) {
-  if (!context || !canvas.value || (!freeze && !performance.active.value)) return
+  if (!context || !canvas.value || (!freeze && (!windowVisible || !performance.active.value))) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
   // Batch portrait colors, retaining distinct points in both themes.
@@ -279,7 +283,7 @@ function draw(freeze = false) {
   if (host.value && reportTime - lastDrawReport >= 1000) {
     host.value.dataset.particleDrawCount = String(drawnCount)
     host.value.dataset.particleRenderer = accelerated ? 'webgl2' : 'canvas2d'
-    host.value.dataset.particleFrameLimit = lowEffects.value ? '20' : '0'
+    host.value.dataset.particleFrameLimit = String(frameLimit ?? 0)
     lastDrawReport = reportTime
   }
   // 逸散发光碎屑（优化点 ③）：缓慢漂移 + 正弦闪烁；主粒子静止时它们仍微微
@@ -303,8 +307,9 @@ function draw(freeze = false) {
 }
 
 function renderFrame(now: number) {
-  if (!visible || document.hidden || reduceMotion.value) return
-  if (lastFrame) {
+  if (!visible || !windowVisible || document.hidden || reduceMotion.value) return
+  const simulate = particlesMoving || pointerActive
+  if (lastFrame && simulate) {
     const elapsed = now - lastFrame
     slowFrames = elapsed > (lowEffects.value ? 75 : 28) ? slowFrames + 1 : Math.max(0, slowFrames - 2)
     if (!props.portraitReferenceSize && slowFrames >= 20 && qualityScale > 0.48) {
@@ -313,36 +318,41 @@ function renderFrame(now: number) {
       setShape(false)
     }
   }
-  lastFrame = now
+  lastFrame = simulate ? now : 0
   if (pointerDirty && host.value) {
     const rect = host.value.getBoundingClientRect()
     pointerX = pointerClientX - rect.left; pointerY = pointerClientY - rect.top
     pointerDirty = false
   }
-  const simulate = particlesMoving || pointerActive
   const physicsElapsed = lastPhysicsFrame ? Math.min(32, Math.max(1, now - lastPhysicsFrame)) : 16.67
   const moving = simulate && simulateParticles(particles, physicsElapsed, props.interactive, pointerActive, pointerX, pointerY)
   lastPhysicsFrame = now
   particlesMoving = moving
   if (simulate) bodyDirty = true
-  const ambientElapsed = lastAmbientFrame ? Math.min(48, Math.max(1, now - lastAmbientFrame)) : 16.67
+  const ambientElapsed = lastAmbientFrame ? Math.min(110, Math.max(1, now - lastAmbientFrame)) : 16.67
   lastAmbientFrame = now
   updateAmbient(ambientElapsed / 16.67)
   draw()
-  if (!moving && props.density === 'backdrop') stopLoop()
+  if (!moving) startLoop()
 }
 
 function startLoop() {
-  if (stopScheduledFrame || !width || !height || !performance.active.value || !visible || document.hidden || reduceMotion.value) return
+  if (!width || !height || !performance.active.value || !visible || !windowVisible || document.hidden || reduceMotion.value) return
+  const nextFps = particlesMoving || pointerActive ? (lowEffects.value ? 20 : 0) : ambient.length ? AMBIENT_FPS : undefined
+  if (nextFps === frameLimit && stopScheduledFrame) return
+  stopScheduledFrame?.()
+  stopScheduledFrame = null
+  frameLimit = nextFps
+  if (nextFps === undefined) return
   lastFrame = 0
   lastPhysicsFrame = 0
-  // Keep native refresh; time-based physics and adaptive quality protect slower devices.
-  stopScheduledFrame = registerParticleFrame(renderFrame, lowEffects.value ? 20 : 0)
+  stopScheduledFrame = registerParticleFrame(renderFrame, nextFps)
 }
 
 function stopLoop(freeze = false) {
   stopScheduledFrame?.()
   stopScheduledFrame = null
+  frameLimit = undefined
   lastFrame = lastPhysicsFrame = lastAmbientFrame = 0
   // Vue can keep a leaving root visible after GPU disposal; retain its body on the existing 2D canvas.
   if (freeze && gpuAvailable.value) draw(true)
@@ -382,7 +392,7 @@ function resize(entries?: ResizeObserverEntry[]) {
 }
 
 function onPointerMove(event: PointerEvent) {
-  if (!host.value || event.pointerType === 'touch') return
+  if (!props.interactive || !host.value || event.pointerType === 'touch') return
   pointerClientX = event.clientX; pointerClientY = event.clientY
   pointerDirty = true
   pointerActive = true
@@ -440,7 +450,11 @@ onMounted(() => {
   intersectionObserver.observe(host.value)
   themeObserver = new MutationObserver(performance.onRootPreferenceChanged)
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass', 'data-motion'] })
-  document.addEventListener('visibilitychange', performance.onVisibilityChange)
+  stopWindowVisibility = observeWindowVisibility(value => {
+    windowVisible = value
+    if (value) { if (bodyDirty) draw(); startLoop() }
+    else { pointerActive = pointerDirty = false; stopLoop() }
+  })
   readPalette()
   if (props.portraitId) void applyPortrait(props.portraitId)
 })
@@ -456,7 +470,7 @@ onUnmounted(() => {
   intersectionObserver?.disconnect()
   themeObserver?.disconnect()
   motionMedia?.removeEventListener('change', performance.onMotionPreference)
-  document.removeEventListener('visibilitychange', performance.onVisibilityChange)
+  stopWindowVisibility?.()
 })
 </script>
 

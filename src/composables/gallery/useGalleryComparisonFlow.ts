@@ -13,8 +13,8 @@ export interface UseGalleryComparisonFlowOptions {
   route: RouteLocationNormalizedLoaded;
   router: Router;
   current: ComputedRef<ArtworkRecord | null>;
-  cardUrls: Readonly<Ref<Readonly<Record<string, string>>>>;
-  thumbUrls: Readonly<Ref<Readonly<Record<string, string>>>>;
+  cardUrls: ReadonlyMap<string, string>;
+  thumbUrls: ReadonlyMap<string, string>;
   galleryLoading: Readonly<Ref<boolean>>;
   galleryIndexLoading: Readonly<Ref<boolean>>;
   galleryError: Readonly<Ref<string>>;

@@ -161,7 +161,7 @@ class Composition:
                         white.close()
                     # The small extra is explicitly owned here, outside base/group-offload hooks.
                     weight_bytes = sum(value.numel() * value.element_size() for value in self.sketch.parameters())
-                    if pipeline._huiyu_memory.free_bytes() < weight_bytes * 2 + 64 * 1024 * 1024:
+                    if not pipeline._huiyu_memory.ensure_free_bytes(weight_bytes * 2 + 64 * 1024 * 1024):
                         raise ValueError("Insufficient accelerator memory for the task-owned Sketch adapter")
                     self.sketch.to(device=pipeline._execution_device, dtype=pipeline.transformer.dtype)
                     self.sketch.bind(pipeline.transformer)

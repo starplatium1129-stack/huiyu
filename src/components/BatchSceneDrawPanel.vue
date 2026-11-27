@@ -179,9 +179,9 @@
                   :aria-label="`查看大图：${job.sceneTitle}`"
                   @click="previewSource = ($event.currentTarget as HTMLElement).querySelector('img'); previewJob = job"
                 >
-                  <img v-if="batchMedia.urls[job.id]" :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="batchMedia.urls[job.id]" :alt="job.sceneTitle" loading="lazy" decoding="async" />
-                  <SensitivePreviewVeil v-if="job.snapshot?.adult && batchMedia.urls[job.id]" :src="batchMedia.urls[job.id]" :crossorigin="runtimeResourceCors()" />
-                  <span v-if="!batchMedia.urls[job.id]" class="batch-thumb batch-thumb-placeholder"><ArchiveIcon name="image" /><span>查看作品</span></span>
+                  <img v-if="batchMedia.urls.get(String(job.id))" :crossorigin="runtimeResourceCors()" class="batch-thumb" :src="batchMedia.urls.get(String(job.id))" :alt="job.sceneTitle" loading="lazy" decoding="async" />
+                  <SensitivePreviewVeil v-if="job.snapshot?.adult && batchMedia.urls.get(String(job.id))" :src="batchMedia.urls.get(String(job.id))" :crossorigin="runtimeResourceCors()" />
+                  <span v-if="!batchMedia.urls.get(String(job.id))" class="batch-thumb batch-thumb-placeholder"><ArchiveIcon name="image" /><span>查看作品</span></span>
                 </button>
               </StudioTooltip>
               <div v-else class="batch-thumb batch-thumb-placeholder" :data-state="job.status">
@@ -194,7 +194,7 @@
                   <span class="batch-card-title">{{ job.sceneTitle }}<em v-if="job.variant > 0"> · {{ job.variant + 1 }}</em></span>
                 </div>
                 <span class="batch-card-seed">{{ job.subtitle ? job.subtitle + ' · ' : '' }}{{ job.seed >= 0 ? 'seed ' + job.seed : '随机' }}</span>
-                <button v-if="hasBatchArtwork(job) && !batchMedia.urls[job.id]" class="btn btn-quiet btn-sm" type="button" @click="batchMedia.retry(job.id)">重新读取预览</button>
+                <button v-if="hasBatchArtwork(job) && !batchMedia.urls.get(String(job.id))" class="btn btn-quiet btn-sm" type="button" @click="batchMedia.retry(job.id)">重新读取预览</button>
                 <p v-if="job.error" class="batch-card-error">{{ job.error }}</p>
               </figcaption>
             </figure>

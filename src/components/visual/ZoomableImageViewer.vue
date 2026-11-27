@@ -161,7 +161,7 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 
 .zoom-controls {
   transform: translateX(-50%);
-  backdrop-filter: blur(8px);
+  backdrop-filter: var(--glass-disabled, blur(8px));
 }
 .zoom-control { width:var(--control-height); height:var(--control-height); }
 

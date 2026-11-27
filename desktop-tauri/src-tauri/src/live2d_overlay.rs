@@ -2,9 +2,9 @@
 
 use crate::mutex::RecoverMutex;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::{Arc, Mutex};
+use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 use tauri::{AppHandle, Emitter, Manager};
 pub use crate::live2d_renderer::{Live2DOverlayState, OverlayRect};
 use crate::live2d_renderer::*;
@@ -12,15 +12,16 @@ use crate::live2d_renderer::live2d_adapter::Live2DAdapterConfig;
 use crate::live2d_renderer::live2d_assets;
 use crate::live2d_process_protocol::Command as ProcessCommand;
 
-static OVERLAY_WORKER: Mutex<Option<thread::JoinHandle<()>>> = Mutex::new(None);
+struct OverlayWorker {
+    thread: thread::JoinHandle<()>,
+    finished: mpsc::Receiver<()>,
+}
+
+static OVERLAY_WORKER: Mutex<Option<OverlayWorker>> = Mutex::new(None);
 static OVERLAY_STOPPING: AtomicBool = AtomicBool::new(false);
 const MODEL_REPLY_TIMEOUT: Duration = Duration::from_secs(45);
 const COMMAND_REPLY_TIMEOUT: Duration = Duration::from_secs(5);
 pub fn ensure_overlay(app: &AppHandle, assets_root: std::path::PathBuf) -> Arc<Live2DOverlayState> {
-    start_overlay(app, assets_root, false)
-}
-
-fn start_overlay(app: &AppHandle, assets_root: std::path::PathBuf, prewarm: bool) -> Arc<Live2DOverlayState> {
     let mut worker = OVERLAY_WORKER.recover_lock();
     if OVERLAY_STOPPING.load(Ordering::Acquire)
         || app.state::<crate::state::AppState>().quitting.load(Ordering::Acquire)
@@ -48,9 +49,14 @@ fn start_overlay(app: &AppHandle, assets_root: std::path::PathBuf, prewarm: bool
             if name == "aics:live2d:first-frame" { crate::companion_window::native_frame(&app2); }
             let _ = app2.emit(name, value);
         }));
-        *worker = Some(thread::spawn(move || overlay_window_thread(handle, RendererEnvironment {
-            assets_root, local_root, cache_root, prewarm, events: Some(events),
-        })));
+        let (done, finished) = mpsc::sync_channel(1);
+        let thread = thread::spawn(move || {
+            overlay_window_thread(handle, RendererEnvironment {
+                assets_root, local_root, cache_root, events: Some(events), attached: None,
+            });
+            let _ = done.send(());
+        });
+        *worker = Some(OverlayWorker { thread, finished });
     }
     state
 }
@@ -70,21 +76,18 @@ pub fn shutdown(app: &AppHandle) {
         worker.take()
     };
     let Some(worker) = worker else { return; };
-    let deadline = Instant::now() + Duration::from_secs(2);
-    while !worker.is_finished() && Instant::now() < deadline {
-        thread::sleep(Duration::from_millis(10));
-    }
     let state = app.state::<crate::state::AppState>();
-    if !worker.is_finished() {
+    if matches!(worker.finished.recv_timeout(Duration::from_secs(2)), Err(mpsc::RecvTimeoutError::Timeout)) {
         state.warn("Live2D overlay shutdown timed out");
-    } else if worker.join().is_err() {
+    } else if worker.thread.join().is_err() {
         state.warn("Live2D overlay thread exited unexpectedly");
     }
 }
 
 pub fn prewarm(app: &AppHandle) {
     if crate::live2d_process::enabled() { return; }
-    start_overlay(app, overlay_assets_root(app), true);
+    // Prepare only the HWND and command channel. The GPU starts at SetCharacter.
+    ensure_overlay(app, overlay_assets_root(app));
 }
 
 pub fn first_frame_ready(app: &AppHandle) -> bool {
@@ -94,6 +97,12 @@ pub fn first_frame_ready(app: &AppHandle) -> bool {
 pub fn set_revealed(app: &AppHandle, visible: bool) {
     if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
         crate::live2d_renderer::set_revealed(&state, visible);
+        if !visible {
+            let _ = send_command(&state, OverlayCommand::ReleaseHidden);
+        }
+    }
+    if !visible && crate::live2d_process::enabled() {
+        crate::live2d_process::release_hidden();
     }
 }
 
@@ -112,14 +121,7 @@ pub async fn apply_frame(
     framing: crate::live2d_framing::StageFraming,
 ) -> Result<(), String> {
     let state = ensure_overlay(app, overlay_assets_root(app));
-    let deadline = Instant::now() + Duration::from_secs(1);
-    while !state.window_ready.load(Ordering::Acquire) {
-        if state.shutdown.load(Ordering::Acquire) || Instant::now() >= deadline {
-            return Err("overlay window not ready".into());
-        }
-        tokio::time::sleep(Duration::from_millis(10)).await;
-    }
-    if state.shutdown.load(Ordering::Acquire) { return Err("renderer is shutting down".into()); }
+    wait_for_attachment(&state, Duration::from_secs(1)).await?;
     *state.framing.recover_lock() = framing;
     let companion = app.get_webview_window("companion").and_then(|window| window.hwnd().ok()).map(|handle| handle.0 as isize);
     crate::live2d_renderer::apply_frame(&state, local_rect, visible, opacity, companion)
@@ -128,10 +130,10 @@ pub async fn apply_frame(
 async fn renderer_reply<T>(
     state: &Arc<Live2DOverlayState>,
     timeout: Duration,
-    command: impl FnOnce(tokio::sync::oneshot::Sender<T>) -> OverlayCommand,
+    command: impl FnOnce(OverlayReply<T>) -> OverlayCommand,
 ) -> Result<T, String> {
     let (reply, wait) = tokio::sync::oneshot::channel();
-    send_command_async(state, command(reply)).await?;
+    send_command_async(state, command(OverlayReply::Async(reply))).await?;
     tokio::time::timeout(timeout, wait).await
         .map_err(|_| "renderer reply timed out".to_string())?
         .map_err(|_| "renderer dropped command".to_string())
@@ -143,22 +145,26 @@ async fn send_command_async(
     state: &Arc<Live2DOverlayState>,
     cmd: OverlayCommand,
 ) -> Result<(), String> {
-    let deadline = Instant::now() + Duration::from_secs(2);
-    loop {
-        if state.shutdown.load(Ordering::Acquire) {
-            return Err("renderer is shutting down".into());
+    wait_for_attachment(state, Duration::from_secs(2)).await?;
+    send_command(state, cmd)
+}
+
+async fn wait_for_attachment(state: &Live2DOverlayState, timeout: Duration) -> Result<(), String> {
+    tokio::time::timeout(timeout, async {
+        loop {
+            let changed = state.startup_changed.notified();
+            if state.shutdown.load(Ordering::Acquire) {
+                return Err("renderer is shutting down".into());
+            }
+            if state.window_ready.load(Ordering::Acquire) {
+                return Ok(());
+            }
+            if !state.starting.load(Ordering::Acquire) {
+                return Err("renderer not attached".into());
+            }
+            changed.await;
         }
-        let tx = state.cmd_tx.recover_lock().clone();
-        if let Some(tx) = tx {
-            tx.send(cmd)
-                .map_err(|_| "renderer thread disconnected".to_string())?;
-            return Ok(());
-        }
-        if Instant::now() > deadline {
-            return Err("renderer not attached".to_string());
-        }
-        tokio::time::sleep(Duration::from_millis(20)).await;
-    }
+    }).await.map_err(|_| "renderer startup timed out".to_string())?
 }
 
 // ---------------- IPC 命令（aics_live2d_*） ----------------
@@ -250,9 +256,10 @@ pub async fn aics_live2d_set_expression(
 #[tauri::command]
 pub async fn aics_live2d_set_mouth_level(app: AppHandle, level: f64) -> Result<(), String> {
     if crate::live2d_process::enabled() { return crate::live2d_process::call(&app, ProcessCommand::SetMouthLevel { level: level as f32 }).await.map(|_| ()); }
-    let assets_root = overlay_assets_root(&app);
-    let state = ensure_overlay(&app, assets_root);
-    send_command_async(&state, OverlayCommand::SetMouthLevel(level as f32)).await
+    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
+        state.publish_mouth(level as f32);
+    }
+    Ok(())
 }
 
 #[tauri::command]
@@ -280,9 +287,10 @@ pub async fn aics_live2d_set_emotion(app: AppHandle, name: String, intensity: f6
 #[tauri::command]
 pub async fn aics_live2d_set_gaze(app: AppHandle, x: f64, y: f64) -> Result<(), String> {
     if crate::live2d_process::enabled() { return crate::live2d_process::call(&app, ProcessCommand::SetGaze { x: x as f32, y: y as f32 }).await.map(|_| ()); }
-    let assets_root = overlay_assets_root(&app);
-    let state = ensure_overlay(&app, assets_root);
-    send_command_async(&state, OverlayCommand::SetGaze(x as f32, y as f32)).await
+    if let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() {
+        state.publish_gaze(x as f32, y as f32);
+    }
+    Ok(())
 }
 
 #[tauri::command]

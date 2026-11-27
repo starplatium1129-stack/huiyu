@@ -24,6 +24,7 @@ RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-wor
                "cosmos-v3-sage220-cu128torch280-post3-triton340post21-norm-rope-v1" +
                ("-fusion-cpu-base-v1" if EXECUTION == "compiled-fused-sage" else "")}
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
+SHARED_COMPONENTS = ("text_encoder", "vae", "tokenizer", "t5_tokenizer")
 PROFILE_SET_KIND = "huiyu-teacache-profile-set"
 PROFILE_LIMIT = 65536
 PROFILE_COUNT_LIMIT = 16
@@ -90,13 +91,12 @@ def adapter_identity(loras):
     return [{"sha256": digest, "strength": row["strength"]} for row, digest in zip(loras, hashes)]
 
 
-def model_identity(root, loras):
-    """Hash exact local component bytes, not filenames/mtime or a model display ID.
+def model_identity(root, loras, *, shared_only=False):
+    """Identify a base and adapters. Calibration always uses exact bytes.
 
-    This primitive always reads all bytes. The resident Windows lease may reuse
-    its result only while OS write/delete protection and change watches remain
-    valid. Its acquisition cost belongs in cold-job measurements. Profile/output
-    files are excluded.
+    For ordinary resident generation NTFS denies modifications during load and
+    reuse. Hash only the independent pieces that can carry over to a different
+    model directory. The lease separately identifies its protected interval.
     """
     root = Path(root).resolve()
     files = [p for name in COMPONENTS for p in (root / name).rglob("*") if p.is_file()]
@@ -109,15 +109,19 @@ def model_identity(root, loras):
         raise TeaCacheError("No local model files to fingerprint")
     # Bound concurrent disk readers/buffers. map preserves canonical file and
     # adapter order; this primitive reads every byte on every call, including duplicates.
-    paths = files + [Path(row["path"]) for row in loras]
-    with ThreadPoolExecutor(max_workers=min(4, len(paths))) as pool:
+    base_files = files
+    if shared_only:
+        base_files = [path for path in files if path.relative_to(root).parts[0] in SHARED_COMPONENTS]
+    paths = base_files + [Path(row["path"]) for row in loras]
+    with ThreadPoolExecutor(max_workers=max(1, min(4, len(paths)))) as pool:
         hashes = list(pool.map(file_sha256, paths))
-    identities = [[path.relative_to(root).as_posix(), digest] for path, digest in zip(files, hashes)]
-    return {"modelSha256": canonical_sha256(identities),
+    identities = [[path.relative_to(root).as_posix(), digest] for path, digest in zip(base_files, hashes)]
+    components = SHARED_COMPONENTS if shared_only else COMPONENTS
+    return {**({} if shared_only else {"modelSha256": canonical_sha256(identities)}),
             "componentSha256": {name: canonical_sha256([[path[len(name) + 1:], digest]
-                for path, digest in identities if path.startswith(name + "/")]) for name in COMPONENTS},
+                for path, digest in identities if path.startswith(name + "/")]) for name in components},
             "loras": [{"sha256": digest, "strength": row["strength"]}
-                      for row, digest in zip(loras, hashes[len(files):])]}
+                      for row, digest in zip(loras, hashes[len(base_files):])]}
 
 
 def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir=None, upscale_model_path=None, identity=None):

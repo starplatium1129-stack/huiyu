@@ -5,7 +5,6 @@ use tauri::{AppHandle, Emitter, Manager, WebviewWindow};
 use tokio::sync::Notify;
 
 const HEALTH_INTERVAL: Duration = Duration::from_secs(5);
-const EXIT_INTERVAL: Duration = Duration::from_millis(250);
 const STABLE_AFTER: Duration = Duration::from_secs(25);
 const MAX_RESTARTS: u32 = 3;
 
@@ -31,6 +30,7 @@ pub(crate) struct Snapshot {
 pub(crate) struct Recovery {
     snapshot: Mutex<Snapshot>,
     retry: Notify,
+    changed: Notify,
 }
 
 impl Recovery {
@@ -44,6 +44,7 @@ impl Recovery {
             *snapshot
         };
         let _ = app.emit_to("atelier", "aics:gateway-recovery", next);
+        self.changed.notify_one();
     }
 }
 
@@ -70,7 +71,6 @@ async fn restart(app: &AppHandle, supervisor: &GatewaySupervisor) -> Result<(), 
     let state = app.state::<AppState>();
     let url = supervisor.start().await?;
     main_shared::authorize_gateway_origin(app, &url).map_err(|error| error.to_string())?;
-    *state.gateway_url.recover_lock() = url.clone();
     crate::window_state::save_desktop_gateway_port(&state.paths.gateway_port_file, supervisor.port());
     let _ = app.emit("aics:gateway-ready", &url);
     main_shared::dispatch_startup(app, &url);
@@ -82,30 +82,34 @@ pub(crate) fn start(app: AppHandle) {
         let state = app.state::<AppState>();
         let supervisor = app.state::<GatewaySupervisor>();
         let recovery = &state.gateway_recovery;
-        let mut tick = tokio::time::interval(EXIT_INTERVAL);
-        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
         let mut next_health = Instant::now() + HEALTH_INTERVAL;
         let mut failures = 0u32;
         let mut restarts = 0u32;
         let mut stable_since = None;
         let mut next_restart = None;
         loop {
+            let deadline = next_restart.map_or(next_health, |(scheduled, _)| scheduled);
             let manual = tokio::select! {
-                _ = tick.tick() => false,
+                _ = tokio::time::sleep_until(deadline.into()) => false,
+                _ = supervisor.child_exit.notified() => false,
+                _ = recovery.changed.notified() => false,
                 _ = recovery.retry.notified() => true,
             };
             if state.quitting.load(Ordering::Acquire) { break; }
-            if maintenance::active(&app) { continue; }
             let snapshot = *recovery.snapshot.recover_lock();
             let phase = snapshot.phase;
-            if phase == Phase::Starting { continue; }
+            let now = Instant::now();
+            if maintenance::active(&app) || phase == Phase::Starting || (phase == Phase::Failed && !manual) {
+                next_restart = None;
+                next_health = now + HEALTH_INTERVAL;
+                continue;
+            }
             if manual {
                 failures = 0;
                 restarts = 0;
                 stable_since = None;
-                next_restart = Some((Instant::now(), "manual"));
-            } else if phase == Phase::Failed { continue; }
-            let now = Instant::now();
+                next_restart = Some((now, "manual"));
+            }
             if next_restart.is_none() {
                 if phase == Phase::Reconnecting {
                     next_restart = Some((now, snapshot.reason));
@@ -131,6 +135,7 @@ pub(crate) fn start(app: AppHandle) {
             if now < scheduled { continue; }
             if restarts >= MAX_RESTARTS {
                 next_restart = None;
+                next_health = now + HEALTH_INTERVAL;
                 recovery.publish(&app, Phase::Failed, reason);
                 continue;
             }

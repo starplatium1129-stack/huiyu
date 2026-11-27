@@ -30,6 +30,11 @@ def _can_unload_adapters(components):
     return True
 
 
+def requires_exact_identity(job, tools, *, calibrated=False):
+    return calibrated or bool(job.get("teaCacheProfilePath")) \
+        or tools("anima_acceleration").MODE == "compiled-fused-sage"
+
+
 class PipelineCache:
     def __init__(self):
         self.identity = None
@@ -40,6 +45,7 @@ class PipelineCache:
         self.upscale_cache = None
         self.weights_loaded = False
         self.file_identity = None
+        self.exact_identity = None
         self.fusion = None
         self.memory = None
         self.device = None
@@ -53,30 +59,39 @@ class PipelineCache:
             return time.perf_counter() - started
         return 0.0
 
-    def fingerprint(self, root, loras, tools, *, compute_identity=None):
-        if self.file_identity is None:
-            self.file_identity = tools("locked_identity").IdentityLease()
+    def fingerprint(self, root, loras, tools, *, exact, compute_identity=None, protected_identity=None):
+        if self.file_identity is None or self.exact_identity != exact:
+            if self.file_identity is not None:
+                self.file_identity.close()
+            # Keep the same lease owner across policy changes so an epoch never
+            # repeats for a resident base. drop/reinitialize happens only on exit.
+            else:
+                self.file_identity = tools("locked_identity").IdentityLease()
+            self.exact_identity = exact
         profile = tools("teacache_profile")
-        return self.file_identity.acquire(root, loras, compute_identity or profile.model_identity, profile.adapter_identity)
+        if not exact and protected_identity is None:
+            protected_identity = lambda root, loras: profile.model_identity(root, loras, shared_only=True)
+        return self.file_identity.acquire(root, loras, compute_identity or profile.model_identity,
+            profile.adapter_identity, protected_identity=protected_identity)
 
-    def prepare_and_fingerprint(self, check, root, loras, tools):
+    def prepare_and_fingerprint(self, check, root, loras, tools, *, exact):
         # Capture the stdlib-only hash helpers before dependencies refreshes its
         # module cache. Lease ownership and DLL imports stay on the caller.
         helpers = {name: tools(name) for name in ("locked_identity", "teacache_profile")}
         dependency_seconds = hash_seconds = callback_seconds = 0.0
 
-        def identify_bytes(root, loras):
+        def identify_bytes(root, loras, shared_only):
             started = time.perf_counter()
-            identity = helpers["teacache_profile"].model_identity(root, loras)
+            identity = helpers["teacache_profile"].model_identity(root, loras, shared_only=shared_only)
             return identity, time.perf_counter() - started
 
-        def identify_while_preparing(root, loras):
+        def identify_while_preparing(root, loras, *, shared_only=False):
             nonlocal dependency_seconds, hash_seconds, callback_seconds
             started = time.perf_counter()
             with ThreadPoolExecutor(max_workers=1) as pool:
                 # acquire() already holds the lease, when supported. Only the
                 # full-byte digest runs in the pool; never move lease handles.
-                future = pool.submit(identify_bytes, root, loras)
+                future = pool.submit(identify_bytes, root, loras, shared_only)
                 dependency_seconds = self.prepare(check)
                 identity, hash_seconds = future.result()
             callback_seconds = time.perf_counter() - started
@@ -84,10 +99,12 @@ class PipelineCache:
 
         started = time.perf_counter()
         if self.runtime_ready:
-            identity = self.fingerprint(root, loras, helpers.__getitem__)
+            identity = self.fingerprint(root, loras, helpers.__getitem__, exact=exact)
             return identity, time.perf_counter() - started, 0.0
         try:
-            identity = self.fingerprint(root, loras, helpers.__getitem__, compute_identity=identify_while_preparing)
+            identity = self.fingerprint(root, loras, helpers.__getitem__, exact=exact,
+                compute_identity=identify_while_preparing, protected_identity=None if exact else
+                    lambda root, loras: identify_while_preparing(root, loras, shared_only=True))
             fingerprint_seconds = time.perf_counter() - started - callback_seconds + hash_seconds
             # A previously acquired lease can avoid the callback altogether.
             dependency_seconds += self.prepare(check)
@@ -108,7 +125,8 @@ class PipelineCache:
                 # Resume cancellation reads as soon as DLL initialization ends,
                 # including when a slow disk is still finishing its digest.
                 imports_ready()
-        identity = self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools)
+        identity = self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools,
+            exact=requires_exact_identity(job, tools))
         return data, root, identity
 
     def clear(self, *, keep_mask=False, keep_fingerprint=False, keep_text=False):
@@ -141,6 +159,9 @@ class PipelineCache:
         if self.upscale_cache is not None:
             self.upscale_cache.clear()
             self.upscale_cache = None
+
+    def keep_allocator(self):
+        return self.memory is not None and self.memory.policy == "resident"
 
     def cancel_cleanup(self):
         self.clear_upscaler()

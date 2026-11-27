@@ -1,4 +1,4 @@
-import { shallowRef } from 'vue'
+import { shallowReactive } from 'vue'
 import type { ArtworkDerivativeLease } from '@/application/artwork/artworkRepository'
 
 const CACHE_LIMIT = 96
@@ -6,9 +6,8 @@ const CACHE_BYTES = 8 * 1024 * 1024
 
 /** The wall owns one lease per displayed thumbnail. */
 export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
-  // Raw null-prototype snapshots support even Vue-reserved legacy IDs and
-  // publish a new identity to child stages receiving the whole URL dictionary.
-  const urls = shallowRef<Record<string, string>>(Object.create(null))
+  // A card subscribes to its own key, including legacy IDs matching Vue flags.
+  const urls = shallowReactive(new Map<string, string>())
   const order = new Map<string, { bytes: number; lease?: ArtworkDerivativeLease }>()
   let bytes = 0
   function forget(id: string | number) {
@@ -17,10 +16,7 @@ export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
     bytes -= entry?.bytes ?? 0
     entry?.lease?.release()
     order.delete(key)
-    if (Object.hasOwn(urls.value, key)) {
-      const next = Object.assign(Object.create(null), urls.value)
-      delete next[key]; urls.value = next
-    }
+    urls.delete(key)
   }
   function trim() {
     const protectedKeys = protectedIds()
@@ -37,7 +33,7 @@ export function useGalleryThumbnails(protectedIds: () => ReadonlySet<string>) {
     const key = String(id), size = key.length * 2 + (lease?.bytes ?? url.length * 2)
     forget(key)
     if (size > CACHE_BYTES) { lease?.release(); return }
-    urls.value = Object.assign(Object.create(null), urls.value, { [key]: url })
+    urls.set(key, url)
     order.set(key, { bytes: size, lease }); bytes += size
     trim()
   }

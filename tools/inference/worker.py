@@ -135,12 +135,15 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     else:
         data, root, fingerprint = prepared
     identity, resident_fingerprint, dependency_seconds = None, 0.0, 0.0
+    exact = False
     if resident is None:
         dependencies(full=False)
     else:
         stage("fingerprint")
+        exact = load_mask_tools("resident_anima").requires_exact_identity(job, load_mask_tools,
+            calibrated=collect_teacache or measure_teacache or teacache_profile is not None)
         identity, resident_fingerprint, dependency_seconds = fingerprint if fingerprint is not None else resident.prepare_and_fingerprint(
-            lambda: dependencies(full=False), root, job.get("loras", []), load_mask_tools)
+            lambda: dependencies(full=False), root, job.get("loras", []), load_mask_tools, exact=exact)
     try:
         device = load_mask_tools("anima_device").select()
     except (ValueError, RuntimeError) as exc:
@@ -215,7 +218,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         if resident.weights_loaded:
             protected_load = resident.file_identity.cached
             verified_at = time.perf_counter()
-            loaded_identity = resident.fingerprint(root, job.get("loras", []), load_mask_tools)
+            loaded_identity = resident.fingerprint(root, job.get("loras", []), load_mask_tools, exact=exact)
             post_load_fingerprint = time.perf_counter() - verified_at
             resident_fingerprint += post_load_fingerprint
             if loaded_identity != identity or (protected_load and not resident.file_identity.reused):
@@ -244,6 +247,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
                 cache=resident.text_cache if resident is not None and cache_text else None)
         if tea is not None:
+            tea.finish()
             if tea.stats["nonfinite"]:
                 raise WorkerError("NONFINITE_INFERENCE", "The first pass left the finite calibration scope; no result is published")
             tea.clear()
@@ -252,6 +256,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     def before_decode():
         stage("decoding")
         if tea is not None:
+            tea.finish()
             if tea.stats["nonfinite"]:
                 raise WorkerError("NONFINITE_INFERENCE", "Denoising left the finite calibration scope; no result is published")
             tea.clear()  # Retain observations, release GPU residuals before VAE.
@@ -274,6 +279,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
                 progress=control.progress if control is not None else lambda step, total, **extra: emit(
                     stream, job["id"], "progress", step=step, total=total, **extra))
+        if tea is not None:
+            tea.finish()
     finally:
         if tea is not None:
             tea.clear()
@@ -339,7 +346,7 @@ def main(argv=None):
                         return load_mask_tools("worker_lifecycle").serve(
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
-                            cancel_cleanup=resident.cancel_cleanup,
+                            cancel_cleanup=resident.cancel_cleanup, keep_allocator=resident.keep_allocator,
                             initialize=lambda job, ready, _control: resident.prepare_job(job, validate_job, validate_model, lambda: dependencies(full=False), load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:

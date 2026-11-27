@@ -37,8 +37,7 @@ impl Renderer {
         }
         let mut drawables = std::mem::take(&mut self.drawables_scratch);
         model.drawables_into(&mut drawables);
-        self.ensure_model_cache(model, textures, &drawables);
-        self.prewarm_model_resources(&drawables, options.uv_flipped, rw, rh);
+        self.ensure_model_cache(model, textures, &drawables, options.uv_flipped);
         let texture_count = self
             .model_cache
             .as_ref()
@@ -65,52 +64,36 @@ impl Renderer {
 
         // Mask membership is model-static. Visibility and only-drawable are
         // still evaluated per frame so debug renders preserve old behavior.
-        let active_channels: Vec<usize> = if no_mask {
-            Vec::new()
-        } else {
+        let mut active_channels = std::mem::take(&mut self.active_channels_scratch);
+        active_channels.clear();
+        if !no_mask {
             let cache = self.model_cache.as_ref().expect("model GPU cache");
-            cache
-                .channels
-                .iter()
-                .enumerate()
-                .filter_map(|(channel_index, channel)| {
-                    let active = channel.members.iter().any(|&member| {
-                        let Some(d) = drawables.get(member as usize) else {
-                            return false;
-                        };
-                        d.visible
-                            && (d.texture_index as usize) < texture_count
-                            && only_drawable.map(|only| d.index == only).unwrap_or(true)
-                    });
-                    active.then_some(channel_index)
-                })
-                .collect()
-        };
+            active_channels.extend(cache.channels.iter().enumerate().filter_map(|(index, channel)| {
+                channel.members.iter().any(|&member| {
+                    drawables.get(member as usize).is_some_and(|d| {
+                        d.visible && (d.texture_index as usize) < texture_count
+                            && only_drawable.is_none_or(|only| d.index == only)
+                    })
+                }).then_some(index)
+            }));
+        }
 
-        let mut order: Vec<usize> = drawables
-            .iter()
-            .enumerate()
-            .filter_map(|(drawable_index, d)| {
-                let only_indices_match = options
-                    .only_indices
-                    .as_ref()
-                    .map(|list| list.iter().any(|&value| value == d.index))
-                    .unwrap_or(true);
-                let matches = d.visible
-                    && (d.texture_index as usize) < texture_count
-                    && !d.positions.is_empty()
-                    && !d.indices.is_empty()
-                    && only_drawable.map(|o| d.index == o).unwrap_or(true)
-                    && only_indices_match
-                    && options
-                        .min_opacity
-                        .map(|min| d.opacity >= min)
-                        .unwrap_or(true)
-                    && (!options.only_unmasked || d.masks.is_empty());
-                matches.then_some(drawable_index)
-            })
-            .collect();
-        order.sort_by_key(|&drawable_index| drawables[drawable_index].render_order);
+        let mut order = std::mem::take(&mut self.draw_order_scratch);
+        order.clear();
+        order.extend(drawables.iter().enumerate().filter_map(|(drawable_index, d)| {
+            let only_indices_match = options.only_indices.as_ref()
+                .is_none_or(|list| list.contains(&d.index));
+            let matches = d.visible
+                && (d.texture_index as usize) < texture_count
+                && !d.positions.is_empty()
+                && !d.indices.is_empty()
+                && only_drawable.is_none_or(|only| d.index == only)
+                && only_indices_match
+                && options.min_opacity.is_none_or(|min| d.opacity >= min)
+                && (!options.only_unmasked || d.masks.is_empty());
+            matches.then_some(drawable_index)
+        }));
+        order.sort_unstable_by_key(|&index| (drawables[index].render_order, index));
         if let Some(limit) = options.order_limit {
             order.truncate(limit);
         }
@@ -137,35 +120,9 @@ impl Renderer {
             );
         }
 
-        let mut geometry_needed = vec![false; drawables.len()];
-        {
-            let cache = self.model_cache.as_ref().expect("model GPU cache");
-            for &channel_index in &active_channels {
-                for &drawable_index in &cache.channels[channel_index].mask_indices {
-                    geometry_needed[drawable_index as usize] = true;
-                }
-            }
-            for &drawable_index in &order {
-                geometry_needed[drawable_index] = true;
-            }
-        }
-        for (drawable_index, needed) in geometry_needed.iter().copied().enumerate() {
-            if needed {
-                self.ensure_geometry(&drawables[drawable_index], options.uv_flipped);
-            }
-        }
-        for &channel_index in &active_channels {
-            self.ensure_mask_resource(channel_index, rw, rh);
-        }
-
-        let mask_uniform_count: usize = {
-            let cache = self.model_cache.as_ref().expect("model GPU cache");
-            active_channels
-                .iter()
-                .map(|&channel_index| cache.channels[channel_index].mask_indices.len())
-                .sum()
-        };
-        let mut uniform_values = Vec::with_capacity(mask_uniform_count + order.len());
+        self.prepare_masks(&active_channels, rw, rh);
+        let mut uniform_values = std::mem::take(&mut self.uniform_values_scratch);
+        uniform_values.clear();
         for &channel_index in &active_channels {
             let cache = self.model_cache.as_ref().expect("model GPU cache");
             for &drawable_index in &cache.channels[channel_index].mask_indices {
@@ -196,15 +153,10 @@ impl Renderer {
                     options.x_shift,
                     options.debug_transform,
                 ));
-                if masked {
-                    cache.channel_for_drawable[drawable_index]
-                        .expect("masked drawable has a channel");
-                }
             }
         }
         self.ensure_uniform_cache(uniform_values.len());
-        let (position_uploads, uniform_upload) =
-            self.prepare_dynamic_uploads(&drawables, &geometry_needed, &uniform_values);
+        self.upload_frame(&drawables, &uniform_values);
 
         // Mask and main passes share one encoder. This preserves pass order but
         // removes one queue submission and all static resource creation per
@@ -214,32 +166,6 @@ impl Renderer {
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("live2d-frame-encoder"),
             });
-        if !position_uploads.is_empty() || uniform_upload.is_some() {
-            let upload_buffer = self.upload_buffer.as_ref().expect("upload buffer");
-            let cache = self.model_cache.as_ref().expect("model GPU cache");
-            for &(drawable_index, source_offset, size) in &position_uploads {
-                let geometry = cache.geometry[drawable_index]
-                    .as_ref()
-                    .expect("dynamic geometry");
-                encoder.copy_buffer_to_buffer(
-                    upload_buffer,
-                    source_offset,
-                    &geometry.positions,
-                    0,
-                    size,
-                );
-            }
-            if let Some((source_offset, size)) = uniform_upload {
-                let uniform = self.uniform_cache.as_ref().expect("uniform cache");
-                encoder.copy_buffer_to_buffer(
-                    upload_buffer,
-                    source_offset,
-                    &uniform.buffer,
-                    0,
-                    size,
-                );
-            }
-        }
         let cache = self.model_cache.as_ref().expect("model GPU cache");
         let uniform = self.uniform_cache.as_ref().expect("uniform cache");
         let mut uniform_slot = 0usize;
@@ -278,7 +204,7 @@ impl Renderer {
                     &uniform.bind_group,
                     &[(uniform_slot as u64 * UNIFORM_STRIDE) as u32],
                 );
-                pass.set_vertex_buffer(0, geometry.positions.slice(..));
+                pass.set_vertex_buffer(0, geometry.position_buffer(&cache.positions));
                 pass.set_vertex_buffer(1, geometry.uvs.slice(..));
                 pass.set_index_buffer(geometry.indices.slice(..), wgpu::IndexFormat::Uint16);
                 pass.draw_indexed(0..d.indices.len() as u32, 0, 0..1);
@@ -313,26 +239,30 @@ impl Renderer {
                 occlusion_query_set: None,
             });
 
+            let mut last_pipeline = None;
+            let mut last_mask = None;
+            let mut last_texture = None;
             for &drawable_index in &order {
                 let d = &drawables[drawable_index];
-                let blend = blend_for(d, options.force_normal_blend);
-                let masked = !no_mask && cache.channel_for_drawable[drawable_index].is_some();
-                if masked {
-                    let channel_index = cache.channel_for_drawable[drawable_index]
-                        .expect("masked drawable has a channel");
-                    pass.set_pipeline(&self.pipelines.masked[blend as usize]);
-                    pass.set_bind_group(
-                        1,
-                        &cache.channels[channel_index]
-                            .gpu
-                            .as_ref()
-                            .expect("mask GPU resource")
-                            .bind_group,
-                        &[],
-                    );
-                } else {
-                    pass.set_pipeline(&self.pipelines.standard[blend as usize]);
-                    pass.set_bind_group(1, &self.white_mask_bg, &[]);
+                let geometry = cache.geometry[drawable_index].as_ref().expect("main geometry");
+                let blend = geometry.blend;
+                let channel = if no_mask { None } else { cache.channel_for_drawable[drawable_index] };
+                let masked = channel.is_some();
+                if last_pipeline != Some((blend, masked)) {
+                    let pipelines = if masked { &self.pipelines.masked } else { &self.pipelines.standard };
+                    pass.set_pipeline(&pipelines[blend as usize]);
+                    last_pipeline = Some((blend, masked));
+                }
+                if last_mask != Some(channel) {
+                    let mask = channel.map_or(&self.white_mask_bg, |index| {
+                        &cache.channels[index].gpu.as_ref().expect("mask GPU resource").bind_group
+                    });
+                    pass.set_bind_group(1, mask, &[]);
+                    last_mask = Some(channel);
+                }
+                if last_texture != Some(d.texture_index) {
+                    pass.set_bind_group(0, &cache.color_bind_groups[d.texture_index as usize], &[]);
+                    last_texture = Some(d.texture_index);
                 }
                 pass.set_bind_group(
                     2,
@@ -352,12 +282,7 @@ impl Renderer {
                         d.texture_index
                     );
                 }
-                let geometry = cache.geometry[drawable_index]
-                    .as_ref()
-                    .expect("main geometry");
-                let color_bind = &cache.color_bind_groups[d.texture_index as usize];
-                pass.set_bind_group(0, color_bind, &[]);
-                pass.set_vertex_buffer(0, geometry.positions.slice(..));
+                pass.set_vertex_buffer(0, geometry.position_buffer(&cache.positions));
                 pass.set_vertex_buffer(1, geometry.uvs.slice(..));
                 pass.set_index_buffer(geometry.indices.slice(..), wgpu::IndexFormat::Uint16);
                 pass.draw_indexed(0..d.indices.len() as u32, 0, 0..1);
@@ -401,12 +326,15 @@ impl Renderer {
         self.stats.mask_textures = active_channels.len();
         self.stats.total_vertices = total_vertices;
         self.drawables_scratch = drawables;
+        self.active_channels_scratch = active_channels;
+        self.draw_order_scratch = order;
+        self.uniform_values_scratch = uniform_values;
         encoder
     }
 
 }
 
-fn blend_for(d: &Drawable, force_normal: bool) -> BlendKind {
+pub(super) fn blend_for(d: &Drawable, force_normal: bool) -> BlendKind {
     if force_normal {
         return BlendKind::Normal;
     }

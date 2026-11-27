@@ -32,6 +32,7 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "anima_prompt_weights.py",
     "anima_upscale.py",
     "native_hash.py",
+    "mapped_weights.py",
     "native_upload.py",
     "anima_loader.py",
     "anima_memory.py",

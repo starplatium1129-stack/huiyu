@@ -1,5 +1,5 @@
 import { startArtworkSession, stopArtworkSession } from './storage/artworkSession'
-import { createApp, h, type Component } from 'vue'
+import { createApp, h, watch, type Component } from 'vue'
 import { createPinia } from 'pinia'
 import { initializePlatform, isDesktopHost } from './platform/initializePlatform'
 import { setStartupProfile } from './platform/startupProfile'
@@ -8,12 +8,11 @@ import { attachDesktopWorkspace } from './composables/useDesktopWorkspace'
 import { installRouteRecovery } from './composables/useRouteRecovery'
 import { installNavigationFeedback } from './composables/useNavigationFeedback'
 import { initializeTheme } from './composables/useTheme'
-import { initializeDesktopPreferences, installDesktopInteraction } from './composables/useDesktopInteraction'
+import { initializeDesktopPreferences, installDesktopInteraction, useDesktopPreferences } from './composables/useDesktopInteraction'
 import { installFluidGlass } from './utils/fluidGlass'
+import { glassOptics } from './utils/fluidGlassSurfaces'
 import { installDesktopZoom } from './composables/useDesktopZoom'
 import { contentMotion, installContentMotion } from './directives/contentMotion'
-// Keep the existing fonts/weights, but let the workspace paint before their
-// declarations and glyph requests compete with initial modules and artwork.
 // 入口只加载主题、utilities 和跨页面材质。场景卡片、色彩卡和查看器
 // 样式由实际使用它们的组件/页面导入，与 director/chat 一起按路由加载。
 import './assets/css/design-system.css'
@@ -38,15 +37,19 @@ let stopNavigationFeedback = () => {}
 let stopDesktopWorkspace = () => {}
 let stopPlatform = () => {}
 let stopFontLoad = () => {}
+let stopFontPreference = () => {}
 void (async () => {
+  const role = getDesktopWindowRole()
+  const windowsDesktop = isDesktopHost() && /^Win/.test(navigator.platform)
+  if (windowsDesktop) document.documentElement.dataset.windowsDesktop = ''
   const appPromise = import('./App.vue')
   let root: Component
-  const app = createApp(() => h(root)).directive('content-motion', contentMotion).use(createPinia())
+  const app = createApp(() => h(root)).directive('content-motion', contentMotion).directive('glass-optics', glassOptics).use(createPinia())
   const routerReady = import('./router').then(async ({ default: router }) => {
     if (disposed) return
     installRouteRecovery(router)
     stopNavigationFeedback = installNavigationFeedback(router)
-    const atelier = getDesktopWindowRole() === 'atelier'
+    const atelier = role === 'atelier'
     if (atelier) stopDesktopWorkspace = attachDesktopWorkspace(router)
     const resolvingStartPage = atelier && router.options.history.location === '/'
     app.use(router)
@@ -76,7 +79,17 @@ void (async () => {
   let fontFrame = requestAnimationFrame(() => {
     fontFrame = requestAnimationFrame(() => {
       void platformReady.then(platform => { if (!disposed) return platform.afterMount() }).catch(error => console.warn('桌面辅助功能暂未就绪', error))
-      const load = () => { if (!disposed) void import('./assets/fonts').catch(error => console.warn('本地字体暂未加载', error)) }
+      const load = () => {
+        if (disposed) return
+        void import('./assets/fonts').catch(error => console.warn('等宽字体暂未加载', error))
+        const { themeStyle } = useDesktopPreferences()
+        const loadChineseFont = () => void import('./assets/fontsChinese').catch(error => console.warn('中文字体暂未加载', error))
+        if (windowsDesktop) {
+          stopFontPreference = watch(themeStyle, style => {
+            if (style === 'terraria') loadChineseFont()
+          }, { immediate: true })
+        } else loadChineseFont()
+      }
       if ('requestIdleCallback' in window) {
         const idle = window.requestIdleCallback(load, { timeout: 1000 })
         stopFontLoad = () => window.cancelIdleCallback(idle)
@@ -121,5 +134,6 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   stopNavigationFeedback()
   stopDesktopWorkspace()
   stopFontLoad()
+  stopFontPreference()
   void stopArtworkSession().catch(() => {})
 })

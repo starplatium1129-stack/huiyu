@@ -43,7 +43,7 @@ html.companion-mode body {
   @apply tw:rounded-lg;
   background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
   box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(14px);
+  backdrop-filter: var(--glass-disabled, blur(14px));
 }
 
 .companion-page .companion-identity {
@@ -141,7 +141,7 @@ html.companion-mode body {
   @apply tw:text-secondary;
   font: 600 var(--fs-mono-xs) var(--font-mono);
   @apply tw:leading-label tw:pointer-events-none;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-disabled, blur(12px));
   box-shadow: var(--shadow-md);
 }
 
@@ -192,7 +192,7 @@ html.companion-mode body {
   @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-deep) 82%, transparent);
   @apply tw:text-primary tw:cursor-pointer tw:text-left;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-disabled, blur(12px));
 }
 
 .companion-page .live2d-enable-cta span,

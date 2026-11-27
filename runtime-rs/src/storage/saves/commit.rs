@@ -107,7 +107,7 @@ pub(in crate::storage) fn prepare(
         ));
     }
     c.writer()?;
-    c.owner.check()?;
+    c.owner()?.check()?;
     let id = string(&command, "operationId")?;
     if id.is_empty() || id.len() > 200 {
         return Err(invalid("A stable operation ID is required"));

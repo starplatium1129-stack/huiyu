@@ -37,7 +37,9 @@ pub(crate) async fn request_export(app: AppHandle) -> Result<bool, String> {
     let paths = state.paths.clone();
     let preferences = state.preferences.recover_lock().clone();
     let version = app.package_info().version.to_string();
+    let logger = state.log.clone();
     tauri::async_runtime::spawn_blocking(move || {
+        logger.flush();
         let device = json!({
             "desktopVersion": version,
             "os": std::env::consts::OS,

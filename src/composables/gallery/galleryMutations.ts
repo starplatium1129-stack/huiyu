@@ -43,7 +43,14 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
     const { source } = currentWrite;
     const revision = ++state.revision;
     const desired = !item.favorite;
-    item.favorite = desired;
+    function updateFavorite(favorite: boolean) {
+        const history = ctx.history.value;
+        const index = history.findIndex(record => record.id === item.id);
+        if (index >= 0 && Boolean(history[index].favorite) !== favorite) {
+            ctx.history.value = history.toSpliced(index, 1, { ...history[index], favorite });
+        }
+    }
+    updateFavorite(desired);
     // Serialize writes for this artwork while immediately reflecting the latest click.
     state.tail = state.tail.then(async () => {
         try {
@@ -55,10 +62,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             currentWrite.confirmed = desired;
             currentWrite.unconfirmed = false;
             recordGalleryMutation(ctx.history, item.id, { favorite: desired });
-            if (revision === currentWrite.revision) {
-                const live = ctx.history.value.find(record => record.id === item.id);
-                if (live) live.favorite = desired;
-            }
+            if (revision === currentWrite.revision) updateFavorite(desired);
         }
         catch (error) {
             if (!source.isCurrent()) return;
@@ -69,9 +73,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
                 ctx.showToast('收藏结果尚未确认，请以重新读取的作品册为准，核对后再操作', 'warning');
                 if (revision === currentWrite.revision) await ctx.loadGalleryStorage();
             } else if (revision === currentWrite.revision) {
-                item.favorite = currentWrite.confirmed;
-                const live = ctx.history.value.find(record => record.id === item.id);
-                if (live) live.favorite = currentWrite.confirmed;
+                updateFavorite(currentWrite.confirmed);
             }
             if (!currentWrite.unconfirmed) ctx.showToast(storageWriteMessage(error, '收藏状态'), 'error');
         }

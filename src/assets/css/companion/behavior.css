@@ -158,8 +158,8 @@ html.companion-desktop .companion-toolbar,
 html.companion-desktop .companion-conversation,
 html.companion-desktop .companion-clipboard-card,
 html.companion-desktop .companion-reminder-bubble {
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
-  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(14px) saturate(1.25));
+  backdrop-filter: var(--glass-disabled, blur(14px) saturate(1.25));
 }
 
 html.companion-desktop .companion-conversation {

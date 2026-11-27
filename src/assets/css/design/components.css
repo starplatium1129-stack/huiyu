@@ -296,7 +296,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   @apply tw:grid; place-items: center;
   @apply tw:p-s-4;
   background: var(--art-backdrop);
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(6px)); backdrop-filter: var(--glass-disabled, blur(6px));
 }
 .overlay[hidden] { @apply tw:hidden; }
 /* ── 弹层统一进出场（Vue <Transition name="layer-pop">，2026-08-22 动效审计 #7；

@@ -45,13 +45,14 @@ fn authorize(app: &AppState, headers: &HeaderMap, peer: std::net::SocketAddr) ->
 }
 async fn work<T: Serialize + Send + 'static>(
     app: &AppState,
-    action: impl FnOnce(&mut Catalog) -> Result<T> + Send + 'static,
+    action: impl FnOnce(&Catalog) -> Result<T> + Send + 'static,
 ) -> Result<Response> {
     let options = Options::from_config(&app.config);
+    let reader = app.catalog_reader.clone();
     // JSON encoding and dropping the large Value tree are CPU work too. Keep
     // them off Tokio request workers together with the catalog query.
     blocking_response(move || {
-        Ok(Json(action(&mut Catalog::open_existing(options)?)?).into_response())
+        Ok(Json(reader.with(options, |catalog, _, _| action(catalog))?).into_response())
     })
     .await
 }

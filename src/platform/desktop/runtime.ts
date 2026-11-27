@@ -3,6 +3,7 @@ import { setRuntimeOrigin, setRuntimeFetch, resolveRuntimeUrl } from '../runtime
 import { readDesktopBootstrap } from './bootstrap.ts'
 import type { DesktopBootstrap } from '../../../types/desktop-bootstrap.ts'
 import { hostApi } from './hostApi.ts'
+import { observeWindowVisibility } from '../windowVisibility'
 
 export type DesktopConnectionState = { connection: 'starting' | 'ready' | 'unavailable'; bootstrap: DesktopBootstrap | null }
 let state: DesktopConnectionState = { connection: 'starting', bootstrap: null }
@@ -90,13 +91,28 @@ export function initializeDesktopRuntime() {
   setRuntimeOrigin(null, true)
   configureApiTransport(desktopRuntimeFetch)
   let disposed = false
-  const timer = setInterval(() => {
-    if (disposed) return
+  let timer: ReturnType<typeof setTimeout> | undefined
+  let visible = !document.hidden
+  function scheduleRenewal() {
+    clearTimeout(timer)
+    if (disposed || !visible) return
     const session = state.bootstrap?.runtime?.workspace
-    // Gateway-ready events and failed requests handle reconnection. Renew only
-    // near token expiry; an idle connected window needs no health RPC loop.
-    if (state.connection !== 'ready' || session && session.expiresAt <= Date.now() + 30_000) void refreshDesktopRuntime()
-  }, 10_000)
+    if (state.connection === 'ready' && !session) return
+    const delay = state.connection === 'ready' && session ? session.expiresAt - Date.now() - 30_000 : 10_000
+    // A visible disconnected window gets a fallback retry. A connected one
+    // sleeps until renewal instead of waking every ten seconds.
+    timer = setTimeout(() => { void refreshDesktopRuntime() }, Math.max(10_000, delay))
+  }
+  const stopRenewal = onDesktopRuntime(scheduleRenewal)
+  const stopVisibility = observeWindowVisibility(value => {
+    const resumed = !visible && value
+    visible = value
+    scheduleRenewal()
+    const expiresAt = state.bootstrap?.runtime?.workspace?.expiresAt
+    if (resumed && (state.connection !== 'ready' || expiresAt !== undefined && expiresAt <= Date.now() + 30_000)) {
+      void refreshDesktopRuntime()
+    }
+  })
   const unlisten: (() => void)[] = []
   const events = hostApi()?.event
   // Subscribe before taking the first snapshot. A later ready event supersedes
@@ -131,7 +147,8 @@ export function initializeDesktopRuntime() {
     disposed = true; runtimeSetup = undefined
     // A pending host handshake belongs to this lifetime, not a later initialization.
     refreshSequence++; refreshPending = null
-    clearInterval(timer); unlisten.splice(0).forEach(remove => remove()); epochController.abort(); listeners.clear()
+    clearTimeout(timer); stopVisibility(); stopRenewal()
+    unlisten.splice(0).forEach(remove => remove()); epochController.abort(); listeners.clear()
   }
   runtimeSetup = { stop, ready }
   return runtimeSetup

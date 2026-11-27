@@ -74,14 +74,13 @@
       />
       <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
       <img :crossorigin="cors"
-        ref="hdImage"
-        v-if="paintedImageUrl && !imageFailed"
-        :key="`image:${imageAttempt}`"
-        :data-image-attempt="imageAttempt"
+        v-for="frame in hdFrames"
+        :key="frame.attempt"
+        :data-image-attempt="frame.attempt"
         class="artwork-image artwork-image-hd"
-        :class="{ 'is-loaded': imageLoaded, 'artwork-image-hd-crossfade': thumbLoaded }"
-        :src="paintedImageUrl"
-        :alt="title"
+        :class="{ 'is-loaded': frame === previousFrame || imageLoaded, 'artwork-image-hd-crossfade': thumbLoaded && !frame.upgrade }"
+        :src="frame.url"
+        :alt="frame === currentFrame ? title : ''"
         decoding="async"
         referrerpolicy="no-referrer"
         @load="onImageLoad($event, 'image')"
@@ -112,8 +111,8 @@
 
 <script setup lang="ts">
 import type { ArtworkRecord } from '@/types/artwork'
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { computed, nextTick, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
+import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -125,7 +124,7 @@ import { useArtworkTilt } from '@/composables/useArtworkTilt'
 import { readStoryOrigin, storyOriginRoute } from '@/types/storyOrigin'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; characterAccent?: string; formattedDate: string; ratio: number;
-  thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
+  thumbUrls: ReadonlyMap<string, string>; cardUrls: ReadonlyMap<string, string>; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
 const continueTarget = computed(() => artworkContinueTarget(props.item, 'remix'))
@@ -135,62 +134,54 @@ const artworkButton = ref<HTMLElement | null>(null)
 let selectShift = false
 const artworkCheckbox = ref<InstanceType<typeof StudioCheckbox> | null>(null)
 const thumbImage = ref<HTMLImageElement | null>(null)
-const hdImage = ref<HTMLImageElement | null>(null)
+const thumbUrl = computed(() => resolveRuntimeUrl(props.thumbUrls.get(String(props.item.id)) || ''))
+const imageUrl = computed(() => resolveRuntimeUrl(props.cardUrls.get(String(props.item.id)) || ''))
 const thumbFailed = ref(false), imageFailed = ref(false)
 const thumbLoaded = ref(false), imageLoaded = ref(false)
 const imagePlane = ref<HTMLElement | null>(null)
-const tilt = useArtworkTilt(imagePlane, () => !props.selectionMode && !props.confirmingDelete && (thumbLoaded.value || imageLoaded.value))
+const tilt = useArtworkTilt(imagePlane, () => !props.selectionMode && !props.confirmingDelete && (thumbLoaded.value || hasHdFrame.value))
 function openArtwork(event: MouseEvent) {
   if (props.selectionMode) return
   tilt.flatten()
   emit('open', event)
 }
-const thumbAttempt = ref(0), imageAttempt = ref(0)
-const paintedImageUrl = ref(props.imageUrl)
-let pendingImage: HTMLImageElement | null = null
+const thumbAttempt = ref(0)
+let nextAttempt = 0
+type HdFrame = { url: string; attempt: number; upgrade: boolean }
+const currentFrame = shallowRef<HdFrame>()
+const previousFrame = shallowRef<HdFrame>()
+const hdFrames = computed(() => [previousFrame.value, imageFailed.value ? undefined : currentFrame.value]
+  .filter((frame): frame is HdFrame => Boolean(frame)))
+const hasHdFrame = computed(() => imageLoaded.value || Boolean(previousFrame.value))
 let alive = true
-onBeforeUnmount(() => { alive = false; pendingImage?.removeAttribute('src'); pendingImage = null })
-watch([() => props.thumbUrl, () => props.cors], () => {
+onBeforeUnmount(() => { alive = false })
+watch([thumbUrl, () => props.cors], () => {
   thumbAttempt.value++; thumbFailed.value = false; thumbLoaded.value = false
 }, { flush: 'sync' })
-watch([() => props.imageUrl, () => props.cors, runtimeResourceIdentity], ([url, cors, identity], [, previousCors, previousIdentity]) => {
-  pendingImage?.removeAttribute('src'); pendingImage = null
-  const preserve = imageLoaded.value && !!url && cors === previousCors && identity === previousIdentity
-  function commit(ready: boolean) {
-    paintedImageUrl.value = url
-    imageAttempt.value++; imageFailed.value = false; imageLoaded.value = ready
-  }
-  if (!preserve) { commit(false); return }
-  // Resolution upgrades keep the painted HD frame instead of fading back to
-  // the thumbnail. A replaced/retired request can never publish its pixels.
-  const candidate = new Image()
-  pendingImage = candidate
-  if (cors) candidate.crossOrigin = cors
-  candidate.referrerPolicy = 'no-referrer'
-  candidate.src = url
-  void candidate.decode().then(() => {
-    if (alive && pendingImage === candidate) commit(true)
-  }, () => {
-    if (alive && pendingImage === candidate) commit(false)
-  }).finally(() => {
-    if (pendingImage === candidate) pendingImage = null
-    candidate.removeAttribute('src')
-  })
-}, { flush: 'sync' })
-const previewFailed = computed(() => Boolean((props.imageUrl || props.thumbUrl)
-  && (!props.imageUrl || imageFailed.value) && (!props.thumbUrl || thumbFailed.value)))
-const previewPending = computed(() => !previewFailed.value && !thumbLoaded.value && !imageLoaded.value
-  && Boolean(props.imageUrl || props.thumbUrl || !props.missing))
+function setImage(url: string) {
+  currentFrame.value = url ? { url, attempt: ++nextAttempt, upgrade: !!previousFrame.value } : undefined
+  imageFailed.value = imageLoaded.value = false
+}
+watch([imageUrl, () => props.cors, runtimeResourceIdentity, () => props.item.image_id],
+  ([url, cors, identity, imageId], [, previousCors, previousIdentity, previousImageId]) => {
+    // Keep the last painted DOM image until the replacement image loads.
+    if (!url || cors !== previousCors || identity !== previousIdentity || imageId !== previousImageId) previousFrame.value = undefined
+    else if (imageLoaded.value) previousFrame.value = currentFrame.value
+    setImage(url)
+  }, { immediate: true })
+const previewFailed = computed(() => Boolean(!hasHdFrame.value && (imageUrl.value || thumbUrl.value)
+  && (!imageUrl.value || imageFailed.value) && (!thumbUrl.value || thumbFailed.value)))
+const previewPending = computed(() => !previewFailed.value && !thumbLoaded.value && !hasHdFrame.value
+  && Boolean(imageUrl.value || thumbUrl.value || !props.missing))
 type ImageKind = 'thumb' | 'image'
 function imageRequest(event: Event, kind: ImageKind) {
   const image = event.target
   if (!(image instanceof HTMLImageElement)) return
-  const element = kind === 'thumb' ? thumbImage : hdImage
-  const token = kind === 'thumb' ? thumbAttempt : imageAttempt
-  const source = () => kind === 'thumb' ? props.thumbUrl : paintedImageUrl.value
-  const attempt = token.value, url = source()
-  const current = () => alive && !!url && element.value === image && source() === url && token.value === attempt
-    && image.getAttribute('src') === url && image.getAttribute('data-image-attempt') === String(attempt)
+  const frame = currentFrame.value, attempt = thumbAttempt.value, thumb = thumbUrl.value
+  const current = () => alive && (kind === 'thumb'
+    ? thumbImage.value === image && thumbAttempt.value === attempt && thumbUrl.value === thumb && image.getAttribute('src') === thumb
+    : frame && currentFrame.value === frame && image.getAttribute('src') === frame.url
+      && image.getAttribute('data-image-attempt') === String(frame.attempt))
   return current() ? { image, current } : undefined
 }
 async function onImageLoad(event: Event, kind: ImageKind) {
@@ -200,26 +191,26 @@ async function onImageLoad(event: Event, kind: ImageKind) {
   // The card's reading frame enters independently. Its skeleton holds until a
   // current image is decoded; an already decoded thumbnail stays beneath HD.
   try { if (typeof request.image.decode === 'function') await request.image.decode() }
-  catch { if (request.current()) failed.value = true; return }
+  catch { if (request.current()) onImageError(event, kind); return }
   if (!request.current() || failed.value) return
   if (kind === 'thumb') { thumbLoaded.value = true; emit('measure', event) }
-  else { imageLoaded.value = true; emit('load', event) }
+  else { imageLoaded.value = true; previousFrame.value = undefined; emit('load', event) }
 }
 function onImageError(event: Event, kind: ImageKind) {
   if (!imageRequest(event, kind)) return
-  if (kind === 'thumb') { thumbLoaded.value = false; thumbFailed.value = true }
-  else { imageLoaded.value = false; imageFailed.value = true }
+  if (kind === 'thumb') { thumbLoaded.value = false; thumbFailed.value = true; emit('thumbnailError') }
+  else { imageLoaded.value = false; imageFailed.value = true; emit('imageError') }
 }
 function retryPreview() {
-  if (props.missing && !props.imageUrl && !props.thumbUrl) emit('retry')
+  if (props.missing && !imageUrl.value && !thumbUrl.value) emit('retry')
   thumbFailed.value = false; imageFailed.value = false
   thumbLoaded.value = false; imageLoaded.value = false
-  thumbAttempt.value++; imageAttempt.value++
+  thumbAttempt.value++; setImage(imageUrl.value)
   void nextTick(() => { if (alive) (props.selectionMode ? artworkCheckbox.value : artworkButton.value)?.focus({ preventScroll: true }) })
 }
 const emit = defineEmits<{
   select: [extend: boolean]; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];
-  measure: [event: Event]; load: [event: Event]; retry: [];
+  measure: [event: Event]; load: [event: Event]; retry: []; thumbnailError: []; imageError: [];
 }>()
 </script>
 

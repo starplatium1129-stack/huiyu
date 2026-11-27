@@ -1,5 +1,6 @@
 mod configuration;
 mod status;
+mod web_build;
 
 use super::*;
 use axum::{
@@ -13,6 +14,7 @@ use axum::{
 use configuration::{config, preference};
 use status::{diagnostics, logs, share, status};
 use std::net::SocketAddr;
+pub(super) use web_build::Cache as WebBuildCache;
 
 pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
     Router::new()
@@ -105,25 +107,6 @@ async fn stop(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value
         .map_err(|_| ApiError::new(503, "SHARE_STOP_INTERRUPTED", "好友试玩停止中断"))??;
     Ok(Json(json!({"ok":true,"message":"公网分享通道已停止"})))
 }
-async fn web_build(s: &ControlService) -> Value {
-    let mut cache = s.build_cache.lock().await;
-    if let Some((at, value)) = cache.as_ref()
-        && at.elapsed() < Duration::from_secs(30)
-    {
-        return value.clone();
-    }
-    let root = s.config.app_root.clone();
-    let value=tokio::task::spawn_blocking(move||{
-        let built=std::fs::metadata(root.join("dist/_guest/try.html")).ok().and_then(|m|m.modified().ok());
-        let mut newest=UNIX_EPOCH;let mut stack=vec![root.join("src"),root.join("public"),root.join("index.html"),root.join("try.html"),root.join("vite.config.ts")];let mut count=0;
-        while let Some(path)=stack.pop(){count+=1;if count>50000{break;}let Ok(meta)=std::fs::symlink_metadata(&path)else{continue};if meta.file_type().is_symlink(){continue;}
-if meta.is_dir(){if let Ok(entries)=std::fs::read_dir(path){stack.extend(entries.filter_map(|e|e.ok().map(|e|e.path())));}}else if let Ok(modified)=meta.modified(){newest=newest.max(modified);}}
-        let timestamp=|time:SystemTime|chrono::DateTime::from_timestamp_millis(time.duration_since(UNIX_EPOCH).unwrap_or_default().as_millis() as i64).map(|t|t.to_rfc3339());
-        json!({"distReady":built.is_some(),"builtAt":built.and_then(timestamp),"stale":built.is_some_and(|t|newest.duration_since(t).is_ok_and(|d|d>Duration::from_secs(5))),"sourceNewest":timestamp(newest)})
-    }).await.unwrap_or(json!({"distReady":false,"builtAt":null,"stale":false,"sourceNewest":null}));
-    *cache = Some((Instant::now(), value.clone()));
-    value
-}
 async fn build(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
     if std::env::var("AICS_DESKTOP_PACKAGED").as_deref() == Ok("1") {
         return Err(ApiError::new(
@@ -167,9 +150,9 @@ async fn build(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Valu
     {
         return Err(ApiError::new(status, code, message));
     }
-    *s.build_cache.lock().await = None;
+    let status = web_build::after_build(&s).await;
     Ok(Json(
-        json!({"ok":true,"durationMs":started.elapsed().as_millis(),"tail":"","webBuild":web_build(&s).await}),
+        json!({"ok":true,"durationMs":started.elapsed().as_millis(),"tail":"","webBuild":status}),
     ))
 }
 async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {

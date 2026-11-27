@@ -206,6 +206,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         {
             Ok(win) => {
                 state.info("open atelier: window built");
+                crate::webview_memory::install(&win);
                 if pathname == "/control?section=control-setup" {
                     // Consume only after a window exists. Failed startup keeps
                     // the destination available for the next application start.
@@ -217,6 +218,8 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
                 if presentation.maximized { let _ = win.maximize(); }
                 crate::window_presentation::restore_zoom(&win);
                 let show_result = if crate::ui_entry::isolated_hidden() { Ok(()) } else { win.show() };
+                let visible = win.is_visible().unwrap_or(false);
+                crate::webview_memory::visibility(&win, visible);
                 let focus_result = if crate::ui_entry::isolated_hidden() { Ok(()) } else { win.set_focus() };
                 state.info(&format!(
                     "open atelier: show={show_result:?} focus={focus_result:?} visible={}",
@@ -251,6 +254,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
         .skip_taskbar(true)
         .shadow(false)
         .build()?;
+    crate::webview_memory::install(&win);
     if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion bounds failed: {error}")); }
     #[cfg(windows)]
     if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion icons failed: {error}")); }
@@ -258,6 +262,8 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
         let _ = win.emit("aics:window-bounds", bounds);
     }
     crate::companion_window::configured(app);
+    crate::webview_memory::refresh(&win);
+    crate::chat_dock::attach_owner(app);
     Ok(())
 }
 
@@ -267,10 +273,7 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str) -> tauri::Res
 pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     if crate::maintenance::active(app) { return; }
     if let Some(w) = app.get_webview_window("companion-chat") {
-        if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); }
-        crate::chat_dock::follow(app);
-        if !crate::ui_entry::isolated_hidden() { let _ = w.set_focus(); }
-        let _ = app.emit("aics:chat-visibility", w.is_visible().unwrap_or(false));
+        show_companion_chat(app, &w);
         // Hiding preserves the WebView, its draft, and the reader's scroll position.
         return;
     }
@@ -279,35 +282,27 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
     if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let source = match crate::ui_entry::source(app, gateway_url, "/companion-chat") { Ok(source) => source, Err(_) => return };
     let app = app.clone();
-    let gateway_url = gateway_url.to_owned();
     tauri::async_runtime::spawn_blocking(move || {
-        let state = app.state::<AppState>();
-        if let Err(error) = create_companion_window(&app, &gateway_url) {
-            state.error(&format!("open companion-chat: start hidden companion failed: {error}"));
+        static OPEN_CHAT: std::sync::Mutex<()> = std::sync::Mutex::new(());
+        let _open = OPEN_CHAT.recover_lock();
+        if crate::maintenance::active(&app) { return; }
+        if let Some(window) = app.get_webview_window("companion-chat") {
+            show_companion_chat(&app, &window);
             return;
+        }
+        let state = app.state::<AppState>();
+        // CompanionView still owns the single chat writer; create the hidden
+        // companion window before revealing companion-chat so commands never
+        // drop/timeout and dock ownership attaches without a delayed snap.
+        if app.get_webview_window("companion").is_none() {
+            if let Err(error) = create_companion_window(&app, &state.gateway_url()) {
+                state.error(&format!("open companion-chat: start companion writer failed: {error}"));
+            }
         }
         let bounds = &placement.logical;
         let always_on_top = state.preferences.recover_lock().always_on_top;
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
-        let mut builder = webview_builder(&app, "companion-chat", source);
-        #[cfg(windows)]
-        {
-            // Keep the dialogue above the pet's transparent WebView even after
-            // the pet is activated. Windows maintains owned-window z-order
-            // without stealing focus or continuously raising either window.
-            let Some(companion) = app.get_webview_window("companion") else {
-                state.error("open companion-chat: companion window is unavailable");
-                return;
-            };
-            builder = match builder.owner(&companion) {
-                Ok(builder) => builder,
-                Err(error) => {
-                    state.error(&format!("open companion-chat: set owner failed: {error}"));
-                    return;
-                }
-            };
-        }
-        match builder
+        match webview_builder(&app, "companion-chat", source)
             .title("绘遇对白")
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
@@ -323,18 +318,42 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         {
             Ok(win) => {
                 state.info("open companion-chat: window built");
+                crate::webview_memory::install(&win);
+                crate::chat_dock::attach_owner(&app);
                 if let Err(error) = apply_window_placement(&win, &placement) { state.warn(&format!("restore companion-chat bounds failed: {error}")); }
                 #[cfg(windows)]
                 if let Err(error) = crate::window_icon::set_window_icons(&win) { state.warn(&format!("set companion-chat icons failed: {error}")); }
                 crate::window_presentation::restore_zoom(&win);
-                if !crate::ui_entry::isolated_hidden() { let _ = win.show(); }
-                crate::chat_dock::follow(&app);
-                if !crate::ui_entry::isolated_hidden() { let _ = win.set_focus(); }
-                let _ = app.emit("aics:chat-visibility", win.is_visible().unwrap_or(false));
+                show_companion_chat(&app, &win);
             }
             Err(e) => state.error(&format!("open companion-chat: window build failed: {e}")),
         }
     });
+}
+
+fn show_companion_chat(app: &AppHandle, window: &tauri::WebviewWindow) {
+    let isolated = crate::ui_entry::isolated_hidden();
+    if !isolated {
+        let _ = window.unminimize();
+        let _ = window.show();
+    }
+    crate::chat_dock::follow(app);
+    if !isolated { let _ = window.set_focus(); }
+    let visible = window.is_visible().unwrap_or(false);
+    crate::webview_memory::visibility(window, visible);
+    let _ = app.emit("aics:chat-visibility", visible);
+    if (visible || isolated) && app.get_webview_window("companion").is_none() {
+        let app = app.clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            if crate::maintenance::active(&app) || app.state::<AppState>().quitting.load(Ordering::Acquire) {
+                return;
+            }
+            let state = app.state::<AppState>();
+            if let Err(error) = create_companion_window(&app, &state.gateway_url()) {
+                state.error(&format!("open companion-chat: start companion writer failed: {error}"));
+            }
+        });
+    }
 }
 
 pub fn toggle_companion_chat(app: &AppHandle, gateway_url: &str) {
@@ -355,8 +374,10 @@ pub fn hide_companion_chat(app: &AppHandle) {
     if let Some(w) = app.get_webview_window("companion-chat") {
         if w.is_visible().unwrap_or(false) {
             crate::window_persistence::closing(app, "companion-chat");
-            let _ = w.hide();
-            let _ = app.emit("aics:chat-visibility", w.is_visible().unwrap_or(false));
+            if w.hide().is_ok() {
+                let _ = app.emit("aics:chat-visibility", false);
+                crate::webview_memory::visibility(&w, false);
+            }
         }
     }
 }
@@ -405,8 +426,8 @@ pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Opti
 }
 
 #[path = "gateway_origin.rs"]
-mod gateway_origin;
-pub use gateway_origin::{same_gateway_origin, registered_desktop_origin};
+pub(crate) mod gateway_origin;
+use gateway_origin::{Endpoint, LoopbackOrigin};
 
 pub fn is_gateway_navigation(app: &AppHandle, url: &tauri::Url) -> bool {
     if crate::ui_entry::bundled(app) && crate::ui_entry::native_origin(url) { return true; }
@@ -419,20 +440,21 @@ pub fn is_gateway_origin(app: &AppHandle, url: &tauri::Url) -> bool {
     let Some(state) = app.try_state::<AppState>() else { return false; };
     // Retain capabilities for an already loaded trusted document while the
     // runtime reconnects. Every new navigation still verifies fresh identity.
-    let expected = state.gateway_url.recover_lock().clone();
-    // Frequent pointer IPC from the loopback origin needs no migration-file read.
-    let bundled = crate::ui_entry::native_origin(url) && crate::ui_entry::bundled(app);
-    registered_desktop_origin(&expected, bundled, url)
+    if state.bundled_ui && crate::ui_entry::native_origin(url) { return true; }
+    let Some(origin) = LoopbackOrigin::from_url(url) else { return false; };
+    let matches = state.gateway_endpoint.recover_lock().origin == Some(origin);
+    matches
 }
 
 /// Static capabilities grant no remote origin. Add only the proven startup origin.
 pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String> {
     let parsed = tauri::Url::parse(url).map_err(|e| e.to_string())?;
-    if !same_gateway_origin(url, &parsed) { return Err("Untrusted gateway origin".into()); }
-    let current = app.state::<AppState>().gateway_url.recover_lock().clone();
-    if !current.is_empty() {
-        if same_gateway_origin(&current, &parsed) { return Ok(()); }
-        if !crate::ui_entry::bundled(app) { return Err("Gateway origin changed; restart the desktop before granting privileges".into()); }
+    let origin = LoopbackOrigin::from_url(&parsed).ok_or("Untrusted gateway origin")?;
+    let state = app.state::<AppState>();
+    let current = state.gateway_endpoint.recover_lock().origin;
+    if current == Some(origin) { return Ok(()); }
+    if current.is_some() && !state.bundled_ui {
+        return Err("Gateway origin changed; restart the desktop before granting privileges".into());
     }
     for template in [
         include_str!("../capabilities/default.json"),
@@ -443,9 +465,10 @@ pub fn authorize_gateway_origin(app: &AppHandle, url: &str) -> Result<(), String
         include_str!("../capabilities/clipboard-awareness.json"),
     ] {
         let mut capability: serde_json::Value = serde_json::from_str(template).map_err(|e| e.to_string())?;
-        capability["identifier"] = serde_json::json!(format!("{}-{}", capability["identifier"].as_str().unwrap(), parsed.port_or_known_default().unwrap()));
+        capability["identifier"] = serde_json::json!(format!("{}-{}", capability["identifier"].as_str().unwrap(), origin.0));
         capability["remote"] = serde_json::json!({ "urls": [format!("{}/*", parsed.origin().ascii_serialization())] });
         app.add_capability(serde_json::to_string(&capability).map_err(|e| e.to_string())?).map_err(|e| e.to_string())?;
     }
+    *state.gateway_endpoint.recover_lock() = Endpoint { url: url.to_owned(), origin: Some(origin) };
     Ok(())
 }

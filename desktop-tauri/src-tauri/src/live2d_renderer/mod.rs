@@ -8,9 +8,8 @@ mod frame_pacing;
 pub(crate) mod live2d_adapter;
 #[path = "../live2d_assets.rs"]
 pub(crate) mod live2d_assets;
-use live2d_adapter::{apply_overlay_defaults, Live2DAdapterConfig, OverlaySettler};
+use live2d_adapter::{Live2DAdapterConfig, OverlaySettler, ProfileParameters};
 use std::sync::{Arc, Mutex, RwLock};
-use std::thread;
 use std::time::{Duration, Instant};
 
 use windows_sys::Win32::Foundation::{HWND, LPARAM, LRESULT, POINT, WPARAM};
@@ -105,12 +104,14 @@ pub struct Live2DOverlayState {
     pub hwnd: Mutex<Option<isize>>,
     pub companion_hwnd: Mutex<Option<isize>>,
     pub companion_offset: Mutex<Option<(i32, i32)>>,
+    placement: Mutex<Option<(isize, OverlayRect)>>,
     /// 窗口线程消息循环就绪标记。
     pub window_ready: AtomicBool,
     /// 渲染线程就绪标记：true 后 setCharacter 等命令不再返回 not-attached。
     pub renderer_attached: AtomicBool,
     /// overlay/render thread 启动门控，避免并发 ensure_overlay 重复启动。
     pub starting: AtomicBool,
+    pub(crate) startup_changed: tokio::sync::Notify,
     /// 渲染线程的命令通道。
     pub cmd_tx: Mutex<Option<Sender<OverlayCommand>>>,
     /// 当前加载的角色（口型参数映射等）。
@@ -131,6 +132,7 @@ pub struct Live2DOverlayState {
     /// 最近一次规范化口型意图与角色映射值，仅供只读发布验收诊断。
     pub last_mouth_level: AtomicU32,
     pub last_mapped_mouth_value: AtomicU32,
+    pending_gaze: AtomicU64,
     /// 连续拿不到可绘制 surface 的帧数（镜像渲染线程计数，供诊断取证）。
     /// 持续 > 0 说明 swapchain 拿不到帧，是"画面雪花/冻结"的直接指标。
     pub surface_failures: AtomicU32,
@@ -153,9 +155,11 @@ impl Default for Live2DOverlayState {
             hwnd: Mutex::new(None),
             companion_hwnd: Mutex::new(None),
             companion_offset: Mutex::new(None),
+            placement: Mutex::new(None),
             window_ready: AtomicBool::new(false),
             renderer_attached: AtomicBool::new(false),
             starting: AtomicBool::new(false),
+            startup_changed: tokio::sync::Notify::new(),
             cmd_tx: Mutex::new(None),
             character: Mutex::new(None),
             frame_count: AtomicU64::new(0),
@@ -169,15 +173,37 @@ impl Default for Live2DOverlayState {
             model_ready: AtomicBool::new(false),
             last_mouth_level: AtomicU32::new(0.0f32.to_bits()),
             last_mapped_mouth_value: AtomicU32::new(0.0f32.to_bits()),
+            pending_gaze: AtomicU64::new(NO_GAZE),
             surface_failures: AtomicU32::new(0),
             surface_recoveries: AtomicU32::new(0),
         }
     }
 }
 
+const NO_GAZE: u64 = u64::MAX;
+
 pub(crate) type PointerFeedback = Arc<dyn Fn(Option<PointerHitSample>) + Send + Sync>;
 
 impl Live2DOverlayState {
+    pub(crate) fn publish_mouth(&self, level: f32) {
+        if !self.model_ready.load(Ordering::Acquire) { return; }
+        let level = if level.is_finite() { level.clamp(0.0, 1.0) } else { 0.0 };
+        self.last_mouth_level.store(level.to_bits(), Ordering::Relaxed);
+    }
+
+    pub(crate) fn publish_gaze(&self, x: f32, y: f32) {
+        if self.model_ready.load(Ordering::Acquire) && x.is_finite() && y.is_finite() {
+            let x = x.clamp(-1.0, 1.0).to_bits();
+            let y = y.clamp(-1.0, 1.0).to_bits();
+            self.pending_gaze.store(u64::from(x) << 32 | u64::from(y), Ordering::Relaxed);
+        }
+    }
+
+    fn take_gaze(&self) -> Option<(f32, f32)> {
+        let packed = self.pending_gaze.swap(NO_GAZE, Ordering::Relaxed);
+        (packed != NO_GAZE).then(|| (f32::from_bits((packed >> 32) as u32), f32::from_bits(packed as u32)))
+    }
+
     pub fn hit_opaque_pixel(&self, screen_x: i32, screen_y: i32) -> bool {
         if !self.visible.load(Ordering::Acquire) || !self.revealed.load(Ordering::Acquire) { return false; }
         let rect = *self.rect.recover_lock();
@@ -209,6 +235,7 @@ fn clear_model_state(state: &Live2DOverlayState) {
     *state.character.recover_lock() = None;
     *state.model_bounds.recover_lock() = None;
     reset_mouth_diagnostics(state);
+    state.pending_gaze.store(NO_GAZE, Ordering::Relaxed);
 }
 
 pub(crate) fn try_begin_startup(state: &Live2DOverlayState) -> bool {
@@ -228,9 +255,11 @@ fn reset_runtime_state(state: &Live2DOverlayState) {
     *state.hwnd.recover_lock() = None;
     *state.companion_hwnd.recover_lock() = None;
     *state.companion_offset.recover_lock() = None;
+    *state.placement.recover_lock() = None;
     state.window_ready.store(false, Ordering::SeqCst);
     state.renderer_attached.store(false, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
+    state.startup_changed.notify_waiters();
     state.visible.store(false, Ordering::SeqCst);
     state.target_fps.store(0, Ordering::Relaxed);
     state.render_suspended.store(false, Ordering::Relaxed);
@@ -265,43 +294,59 @@ fn followed_overlay_rect(
     }
 }
 
+pub enum OverlayReply<T> {
+    Async(tokio::sync::oneshot::Sender<T>),
+    Blocking(std::sync::mpsc::SyncSender<T>),
+}
+
+impl<T> OverlayReply<T> {
+    fn send(self, response: T) {
+        match self {
+            Self::Async(reply) => { let _ = reply.send(response); }
+            Self::Blocking(reply) => { let _ = reply.send(response); }
+        }
+    }
+}
+
 /// 意图命令：IPC → 渲染线程，带 reply 的命令返回处理结果。
 pub enum OverlayCommand {
     Shutdown,
+    ReleaseHidden,
+    SyncPlacement {
+        check_order: bool,
+    },
     SetCharacter {
         character: String,
         texture_scale: u32,
         adapter: Live2DAdapterConfig,
-        reply: tokio::sync::oneshot::Sender<Result<(), String>>,
+        reply: OverlayReply<Result<(), String>>,
     },
     PlayMotion {
         group: String,
         index: Option<i64>,
         priority: Option<String>,
-        reply: tokio::sync::oneshot::Sender<Result<(), String>>,
+        reply: OverlayReply<Result<(), String>>,
     },
     SetExpression {
         name: String,
-        reply: tokio::sync::oneshot::Sender<Result<(), String>>,
+        reply: OverlayReply<Result<(), String>>,
     },
-    SetMouthLevel(f32),
     SetEmotion {
         name: String,
         intensity: f32,
     },
-    SetGaze(f32, f32),
     SetMaxFps(u32),
     HitTest {
         x: f32,
         y: f32,
-        reply: tokio::sync::oneshot::Sender<Result<Vec<String>, String>>,
+        reply: OverlayReply<Result<Vec<String>, String>>,
     },
     Snapshot {
         path: String,
-        reply: tokio::sync::oneshot::Sender<Result<(), String>>,
+        reply: OverlayReply<Result<(), String>>,
     },
     Destroy {
-        reply: tokio::sync::oneshot::Sender<()>,
+        reply: OverlayReply<()>,
     },
 }
 
@@ -343,6 +388,7 @@ struct RenderContext {
     gaze: (f32, f32),
     character: Option<String>,
     profile: Option<Live2DAdapterConfig>,
+    parameters: ProfileParameters,
     overlay_settler: Option<OverlaySettler>,
     hit_area_names: Vec<String>,
     motion_counts: HashMap<String, usize>,
@@ -362,10 +408,10 @@ struct RenderContext {
 /// Renderer paths are selected by the native owner, never by a WebView command.
 #[derive(Clone)]
 pub(crate) struct RendererEnvironment {
+    pub attached: Option<std::sync::mpsc::SyncSender<()>>,
     pub assets_root: std::path::PathBuf,
     pub local_root: Option<std::path::PathBuf>,
     pub cache_root: Option<std::path::PathBuf>,
-    pub prewarm: bool,
     pub events: Option<RendererEvents>,
 }
 

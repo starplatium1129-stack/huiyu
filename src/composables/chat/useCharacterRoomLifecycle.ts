@@ -13,6 +13,8 @@ import { confirmAction } from '@/composables/useConfirm'
 import { withChatTurn } from '@/utils/chatTurnOwnership'
 import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
+import { observeWindowVisibility } from '@/platform/windowVisibility'
+import { usePolling } from '@/composables/usePolling'
 
 export function useCharacterRoomLifecycle(options: {
   route: RouteLocationNormalizedLoaded
@@ -66,7 +68,13 @@ export function useCharacterRoomLifecycle(options: {
     refreshChatStatus, onChatAuxStorage, destroyRoomSetup, destroyConversation,
   } = options
 
-  let statusTimer = 0
+  let statusVisible = true
+  let stopStatusVisibility: (() => void) | undefined
+  const statusPolling = usePolling({
+    intervalMs: 30_000,
+    paused: () => !statusVisible,
+    tick: async () => { await Promise.all([busy.value ? undefined : refreshChatStatus(), refreshVoiceStatus()]) },
+  })
   let selectionChanged = false
   let inputRevision = 0
   const confirmationController = new AbortController()
@@ -183,19 +191,16 @@ export function useCharacterRoomLifecycle(options: {
       }
     }
     voice.setVolume(volume.value / 100)
-    void Promise.all([refreshChatStatus(), refreshVoiceStatus()])
-    statusTimer = window.setInterval(() => {
-      if (document.hidden) return
-      if (!busy.value) void refreshChatStatus()
-      void refreshVoiceStatus()
-    }, 30000) as unknown as number
+    stopStatusVisibility = observeWindowVisibility(value => { statusVisible = value; statusPolling.sync() })
+    statusPolling.start()
   })
 
   onUnmounted(() => {
     markDisposed()
     confirmationController.abort()
     window.removeEventListener('storage', onChatAuxStorage)
-    clearInterval(statusTimer)
+    stopStatusVisibility?.()
+    statusPolling.stop()
     destroyRoomSetup()
     clearErrorTimer()
     destroyConversation()

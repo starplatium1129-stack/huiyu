@@ -134,7 +134,7 @@ body > *:has(+ .footer),
 .local-status-panel {
   @apply tw:absolute; top:calc(100% + 12px); @apply tw:right-0; width:min(330px,calc(100vw - 32px)); @apply tw:p-[14px];
   border:1px solid var(--glass-edge); @apply tw:rounded-2xl; background:var(--glass-fill-strong);
-  box-shadow:var(--shadow-lg); -webkit-backdrop-filter:blur(26px) saturate(145%); backdrop-filter:blur(26px) saturate(145%);
+  box-shadow:var(--shadow-lg); -webkit-backdrop-filter:var(--glass-disabled, blur(26px) saturate(145%)); backdrop-filter:var(--glass-disabled, blur(26px) saturate(145%));
 }
 .local-status-panel[hidden] { @apply tw:hidden; }
 .local-status-head { @apply tw:flex tw:items-center tw:justify-between tw:text-accent; font: 800 var(--fs-mono-xs) var(--font-mono); letter-spacing:.14em; }

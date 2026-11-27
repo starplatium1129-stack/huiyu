@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
+#[cfg(windows)]
+use std::sync::{atomic::AtomicBool, Arc};
 
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -140,6 +142,29 @@ impl Drop for GatewaySupervisor {
     fn drop(&mut self) {
         self.stop_sync();
     }
+}
+
+/// A duplicated kernel handle lets the waiter block without owning the Child
+/// or holding the supervisor lock needed to terminate it.
+#[cfg(windows)]
+pub(super) fn watch_process_exit(
+    process: &std::process::Child,
+    signal: Arc<tokio::sync::Notify>,
+) -> Option<Arc<AtomicBool>> {
+    use std::os::windows::io::{AsHandle, AsRawHandle};
+    use windows_sys::Win32::Foundation::WAIT_OBJECT_0;
+    use windows_sys::Win32::System::Threading::{WaitForSingleObject, INFINITE};
+
+    let handle = process.as_handle().try_clone_to_owned().ok()?;
+    let exited = Arc::new(AtomicBool::new(false));
+    let flag = Arc::clone(&exited);
+    std::thread::Builder::new().name("gateway-exit".into()).spawn(move || {
+        if unsafe { WaitForSingleObject(handle.as_raw_handle(), INFINITE) } == WAIT_OBJECT_0 {
+            flag.store(true, Ordering::Release);
+            signal.notify_one();
+        }
+    }).ok()?;
+    Some(exited)
 }
 
 fn terminate_child(child: &mut GatewayChild) {

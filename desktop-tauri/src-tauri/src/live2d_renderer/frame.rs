@@ -48,57 +48,80 @@ pub(crate) fn apply_frame(state: &Arc<Live2DOverlayState>, local_rect: OverlayRe
     // frame alpha would require multiplying every renderer output, which is
     // outside the allowed overlay files; retain the value for API/state
     // compatibility but intentionally do not apply it with layered-window APIs.
-    if visible {
-        place_overlay(state, hwnd, companion_hwnd, rect);
-    } else {
-        unsafe { ShowWindow(hwnd, SW_HIDE); }
+    // Route Win32 SetWindowPos/ShowWindow to the HWND-owning overlay thread so
+    // non-owner threads never hold locks across synchronous cross-thread sends.
+    if send_command(state, OverlayCommand::SyncPlacement { check_order: false }).is_err() && !visible {
+        unsafe {
+            windows_sys::Win32::UI::WindowsAndMessaging::ShowWindowAsync(hwnd, SW_HIDE);
+        }
     }
     Ok(())
 }
 
-pub(super) fn place_overlay(state: &Live2DOverlayState, hwnd: HWND, companion: HWND, rect: OverlayRect) {
+pub(super) fn place_overlay(
+    state: &Live2DOverlayState, hwnd: HWND, companion: HWND, mut rect: OverlayRect, check_order: bool,
+) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetWindow, GW_HWNDPREV, SWP_NOMOVE, SWP_NOZORDER,
+    };
+    let mut previous = state.placement.recover_lock();
+    if !state.visible.load(Ordering::Acquire) {
+        return;
+    }
     let on_desktop = state.revealed.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire);
-    // DirectComposition can present while the window is parked outside the
-    // virtual desktop. Move it to the pet's client area only with a real frame.
-    let (x, y) = if on_desktop { (rect.x, rect.y) } else { (-32_000, -32_000) };
-    unsafe {
-        SetWindowPos(hwnd, companion, x, y, rect.width as i32, rect.height as i32, SWP_NOACTIVATE | SWP_SHOWWINDOW);
+    // DirectComposition presents while parked. Reveal the visual only with a real frame.
+    if !on_desktop { (rect.x, rect.y) = (-32_000, -32_000); }
+    let moved = previous.is_none_or(|(_, old)| (old.x, old.y) != (rect.x, rect.y));
+    let resized = previous.is_none_or(|(_, old)| (old.width, old.height) != (rect.width, rect.height));
+    let reorder = previous.is_none_or(|(old, _)| old != companion as isize)
+        || (check_order && !companion.is_null() && unsafe { GetWindow(hwnd, GW_HWNDPREV) } != companion);
+    if !(moved || resized || reorder) { return; }
+    let mut flags = SWP_NOACTIVATE;
+    if !moved { flags |= SWP_NOMOVE; }
+    if !resized { flags |= SWP_NOSIZE; }
+    if !reorder { flags |= SWP_NOZORDER; }
+    if previous.is_none() { flags |= SWP_SHOWWINDOW; }
+    let placed = unsafe {
+        SetWindowPos(hwnd, companion, rect.x, rect.y, rect.width as i32, rect.height as i32, flags)
+    };
+    if placed != 0 {
+        *previous = Some((companion as isize, rect));
+    }
+}
+
+pub(super) fn hide_overlay(state: &Live2DOverlayState, hwnd: HWND) {
+    let mut placement = state.placement.recover_lock();
+    if placement.take().is_some() || unsafe { windows_sys::Win32::UI::WindowsAndMessaging::IsWindowVisible(hwnd) } != 0 {
+        unsafe { ShowWindow(hwnd, SW_HIDE); }
     }
 }
 
 pub(crate) fn set_revealed(state: &Live2DOverlayState, revealed: bool) {
     state.revealed.store(revealed, Ordering::Release);
+    if !revealed {
+        state.visible.store(false, Ordering::Release);
+    }
     let hwnd = *state.hwnd.recover_lock();
     let Some(hwnd) = hwnd.map(|value| value as HWND) else { return; };
-    if revealed && state.visible.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
-        let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
-        let rect = *state.rect.recover_lock();
-        place_overlay(state, hwnd, companion, rect);
-    } else if !revealed {
-        unsafe { ShowWindow(hwnd, SW_HIDE); }
+    let dispatched = !state.shutdown.load(Ordering::Acquire)
+        && state.cmd_tx.recover_lock().as_ref().is_some_and(|tx| {
+            tx.send(OverlayCommand::SyncPlacement { check_order: revealed }).is_ok()
+        });
+    if !dispatched && !revealed {
+        unsafe {
+            windows_sys::Win32::UI::WindowsAndMessaging::ShowWindowAsync(hwnd, SW_HIDE);
+        }
     }
 }
 
 /// 发送意图命令并等待渲染线程接收（IPC 同步命令的通道建立）。
 pub(crate) fn send_command(state: &Arc<Live2DOverlayState>, cmd: OverlayCommand) -> Result<(), String> {
-    let deadline = Instant::now() + Duration::from_secs(2);
-    loop {
-        if state.shutdown.load(Ordering::Acquire) {
-            return Err("renderer is shutting down".into());
-        }
-        let tx = state.cmd_tx.recover_lock().clone();
-        if let Some(tx) = tx {
-            tx.send(cmd)
-                .map_err(|_| "renderer thread disconnected".to_string())?;
-            return Ok(());
-        }
-        if Instant::now() > deadline {
-            return Err("renderer not attached".to_string());
-        }
-        thread::sleep(Duration::from_millis(20));
+    if state.shutdown.load(Ordering::Acquire) {
+        return Err("renderer is shutting down".into());
     }
+    state.cmd_tx.recover_lock().as_ref().ok_or("renderer not attached")?
+        .send(cmd).map_err(|_| "renderer thread disconnected".into())
 }
-
 
 pub(crate) fn state_snapshot(state: &Live2DOverlayState) -> serde_json::Value {
     let display_hz = state.display_hz.load(Ordering::Relaxed);

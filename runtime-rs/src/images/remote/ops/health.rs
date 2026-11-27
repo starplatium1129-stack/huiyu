@@ -55,7 +55,7 @@ pub(super) async fn health(
                     let _guard = cancel.clone().drop_guard();
                     if let Ok(Ok(status)) = tokio::time::timeout(
                         Duration::from_secs(3),
-                        crate::images::native::status(&images.backend, "", cancel),
+                        crate::images::native::status(&images.backend, &images.native_status, "", cancel),
                     )
                     .await
                     {

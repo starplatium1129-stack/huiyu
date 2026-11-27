@@ -6,7 +6,7 @@
 //! modes. Legacy-compatible blends (Normal/Add/Multiply/Screen) are fully
 //! implemented; exotic 5.3 color modes fall back to Normal with a warning.
 
-use std::sync::Arc;
+use std::{ops::Range, sync::Arc};
 
 mod frame;
 mod pipelines;
@@ -25,6 +25,7 @@ use crate::model::{Drawable, Model, ViewTransform};
 
 const SHADER: &str = include_str!("shader.wgsl");
 const UNIFORM_STRIDE: u64 = 256;
+const VERTEX_STRIDE: u64 = std::mem::size_of::<[f32; 2]>() as u64;
 const MASK_TEXTURE_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::R8Unorm;
 const COLOR_TEXTURE_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Rgba8UnormSrgb;
 
@@ -49,19 +50,18 @@ struct UniformCache {
     capacity_slots: usize,
 }
 
-struct TextureUploadState {
-    buffer: Option<wgpu::Buffer>,
-    capacity: u64,
-}
-
 struct GeometryBuffers {
-    positions: wgpu::Buffer,
+    vertices: Range<usize>,
+    revision: u64,
+    blend: BlendKind,
     uvs: wgpu::Buffer,
     indices: wgpu::Buffer,
-    uv_data: Vec<[f32; 2]>,
-    index_data: Vec<u16>,
-    uv_flipped: bool,
-    vertex_count: usize,
+}
+
+impl GeometryBuffers {
+    fn position_buffer<'a>(&self, buffer: &'a wgpu::Buffer) -> wgpu::BufferSlice<'a> {
+        buffer.slice(self.vertices.start as u64 * VERTEX_STRIDE..self.vertices.end as u64 * VERTEX_STRIDE)
+    }
 }
 
 struct MaskGpuResources {
@@ -70,8 +70,6 @@ struct MaskGpuResources {
     _texture: wgpu::Texture,
     view: wgpu::TextureView,
     bind_group: wgpu::BindGroup,
-    width: u32,
-    height: u32,
 }
 
 struct MaskChannel {
@@ -84,6 +82,9 @@ struct ModelGpuCache {
     model_id: u64,
     texture_source: usize,
     geometry: Vec<Option<GeometryBuffers>>,
+    positions: wgpu::Buffer,
+    position_staging: Vec<[f32; 2]>,
+    mask_size: Option<(u32, u32)>,
     channels: Vec<MaskChannel>,
     channel_for_drawable: Vec<Option<usize>>,
     color_bind_groups: Vec<wgpu::BindGroup>,
@@ -147,10 +148,11 @@ pub struct Renderer {
     uniform_cache: Option<UniformCache>,
     model_cache: Option<ModelGpuCache>,
     drawables_scratch: Vec<Drawable>,
-    upload_buffer: Option<wgpu::Buffer>,
-    upload_capacity: usize,
-    upload_staging: Vec<u8>,
-    texture_upload: TextureUploadState,
+    active_channels_scratch: Vec<usize>,
+    draw_order_scratch: Vec<usize>,
+    uniform_values_scratch: Vec<Uniforms>,
+    uniform_staging: Vec<u8>,
+    textures_pending: bool,
     stats: RenderStats,
     /// 2x supersample offscreen target: (width, height, texture, view).
     /// Recreated when the render size changes; cleared per frame by the main
@@ -253,12 +255,11 @@ impl Renderer {
     pub fn release_model_resources(&mut self) {
         self.model_cache = None;
         self.uniform_cache = None;
-        self.upload_buffer = None;
-        self.upload_capacity = 0;
-        self.upload_staging.clear();
-        self.upload_staging.shrink_to_fit();
-        self.drawables_scratch.clear();
-        self.drawables_scratch.shrink_to_fit();
+        self.active_channels_scratch = Vec::new();
+        self.draw_order_scratch = Vec::new();
+        self.uniform_values_scratch = Vec::new();
+        self.uniform_staging = Vec::new();
+        self.drawables_scratch = Vec::new();
         self.release_texture_uploads();
         self.ss_bg = None;
         self.ss_texture = None;

@@ -5,43 +5,6 @@ use std::{
     sync::{Arc, Mutex, Weak},
 };
 use tokio::sync::{Mutex as AsyncMutex, OwnedMutexGuard, OwnedSemaphorePermit, Semaphore};
-use tokio_util::{
-    sync::CancellationToken,
-    task::{TaskTracker, task_tracker::TaskTrackerToken},
-};
-
-pub(in crate::storage) struct Readers {
-    active: TaskTracker,
-    closed: Mutex<CancellationToken>,
-}
-
-impl Readers {
-    pub fn new() -> Self {
-        Self {
-            active: TaskTracker::new(),
-            closed: Mutex::new(CancellationToken::new()),
-        }
-    }
-
-    pub fn begin(&self) -> Result<(TaskTrackerToken, CancellationToken)> {
-        let closed = self.closed.lock().unwrap();
-        if closed.is_cancelled() {
-            return Err(super::super::unavailable());
-        }
-        // Register under the same lock as close: TaskTracker allows tokens after
-        // closure, which could otherwise let workspace shutdown miss a decoder.
-        Ok((self.active.token(), closed.child_token()))
-    }
-
-    pub async fn close(&self) {
-        {
-            let closed = self.closed.lock().unwrap();
-            closed.cancel();
-            self.active.close();
-        }
-        self.active.wait().await;
-    }
-}
 
 pub(super) struct Queue {
     decoders: Arc<Semaphore>,

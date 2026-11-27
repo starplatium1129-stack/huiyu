@@ -63,8 +63,13 @@ impl DownloadProgress {
 
 /// 启动后台检查一次（静默失败：更新不可达不影响正常使用）。
 pub fn spawn_startup_check(app: AppHandle) {
-    schedule_reminder(&app);
     tauri::async_runtime::spawn(async move {
+        tokio::time::sleep(Duration::from_secs(20)).await;
+        if app.state::<crate::state::AppState>().quitting.load(std::sync::atomic::Ordering::Acquire)
+            || crate::maintenance::active(&app) {
+            return;
+        }
+        schedule_reminder(&app);
         if let Err(error) = notify_if_update_available(&app).await {
             eprintln!("[aics-updater] startup check failed: {error}");
         }

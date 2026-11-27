@@ -166,31 +166,41 @@ pub(super) async fn derivative(
     method: &Method,
     alias: &str,
     width: Option<u64>,
+    version_hash: Option<&str>,
 ) -> Result<Response> {
-    let image = tokio::time::timeout(Duration::from_secs(30), storage.media_derivative(alias, width))
+    let tags = || request.get_all(header::IF_NONE_MATCH).iter()
+        .filter_map(|value| value.to_str().ok())
+        .flat_map(|value| value.split(','))
+        .map(str::trim);
+    let matches_tag = |etag: &str| tags().any(|value| {
+        value.trim_start_matches("W/") == etag.trim_start_matches("W/")
+    });
+    let result = tokio::time::timeout(
+        Duration::from_secs(30), storage.media_derivative(alias, width, version_hash, matches_tag),
+    )
         .await
         .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Artwork derivative timed out"))??
         .ok_or_else(|| ApiError::new(404, "MEDIA_NOT_FOUND", "Artwork derivative unavailable"))?;
-    let unchanged = request.get_all(header::IF_NONE_MATCH).iter()
-        .filter_map(|value| value.to_str().ok())
-        .flat_map(|value| value.split(','))
-        .map(str::trim)
-        .any(|value| value == "*" || value.strip_prefix("W/").unwrap_or(value) == image.etag);
-    let etag = HeaderValue::from_str(&image.etag)
+    let etag = HeaderValue::from_str(&result.etag)
         .map_err(|_| ApiError::new(500, "MEDIA_INVALID", "Artwork derivative digest is invalid"))?;
-    let mut response = if unchanged {
-        StatusCode::NOT_MODIFIED.into_response()
-    } else {
+    let mut response = if let Some(image) = result.image.filter(|_| !tags().any(|value| value == "*")) {
         let length = image.bytes.len();
         let mut response = if *method == Method::HEAD { Body::empty() } else { Body::from(image.bytes) }
             .into_response();
         response.headers_mut().insert(header::CONTENT_TYPE, HeaderValue::from_static(image.mime));
         response.headers_mut().insert(header::CONTENT_LENGTH, HeaderValue::from(length));
         response
+    } else {
+        StatusCode::NOT_MODIFIED.into_response()
     };
     let headers = response.headers_mut();
     headers.insert(header::ETAG, etag);
-    headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("private, no-cache, must-revalidate"));
+    headers.insert(header::CACHE_CONTROL, HeaderValue::from_static(if result.immutable {
+        "private, max-age=31536000, immutable"
+    } else {
+        "private, no-cache, must-revalidate"
+    }));
+    headers.append(header::VARY, HeaderValue::from_static("X-AICS-Workspace-Session"));
     Ok(response)
 }
 

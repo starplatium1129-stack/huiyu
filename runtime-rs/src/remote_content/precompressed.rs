@@ -1,14 +1,10 @@
-use super::{PUBLIC_DATA_FILES, is_private_asset_path, rooted};
-use axum::{
-    body::Body,
-    extract::Request,
-    http::{HeaderMap, HeaderValue, Method, StatusCode, Uri},
-    response::{IntoResponse, Response},
+use axum::http::HeaderMap;
+use std::{
+    path::{Path, PathBuf},
+    time::SystemTime,
 };
-use std::path::Path;
-use tower_http::services::ServeFile;
 
-fn mime(path: &str) -> Option<&'static str> {
+pub(crate) fn content_type(path: &str) -> Option<&'static str> {
     match path.rsplit_once('.')?.1.to_ascii_lowercase().as_str() {
         "js" => Some("application/javascript; charset=utf-8"),
         "css" => Some("text/css; charset=utf-8"),
@@ -43,115 +39,38 @@ pub(crate) fn quality(header: &str, encoding: &str) -> f32 {
     exact.or(wildcard).unwrap_or(0.0)
 }
 
-/// Invoke only after Host/token, remote projection and private path policy.
-/// Never redirects mutable content into precompressed bytes before review.
-pub async fn serve(
+/// Use the already confined and inspected source. Sidecars get their own
+/// confinement check because a valid source does not authorize its siblings.
+pub(crate) async fn select(
     root: &Path,
-    assets: &Path,
-    method: &Method,
-    uri: &Uri,
+    source: &Path,
+    modified: SystemTime,
     headers: &HeaderMap,
-) -> Option<Response> {
-    if !matches!(*method, Method::GET | Method::HEAD) {
-        return None;
+) -> Option<(PathBuf, &'static str)> {
+    let encoding = headers.get("accept-encoding")?.to_str().ok()?;
+    let mut candidates = [
+        ("br", ".br", quality(encoding, "br")),
+        ("gzip", ".gz", quality(encoding, "gzip")),
+    ];
+    if candidates[1].2 > candidates[0].2 {
+        candidates.swap(0, 1);
     }
-    let raw = uri.path();
-    if is_private_asset_path(raw) {
-        return Some(StatusCode::NOT_FOUND.into_response());
-    }
-    let path = percent_encoding::percent_decode_str(raw)
-        .decode_utf8()
-        .ok()?;
-    if path.contains(['\\', '\0']) || path.split('/').any(|part| part.starts_with('.')) {
-        return None;
-    }
-    let content_type = mime(&path)?;
-    let (base, relative, immutable) = if let Some(name) = path.strip_prefix("/assets/") {
-        (assets.to_path_buf(), name.to_owned(), false)
-    } else if let Some(name) = path.strip_prefix("/data/") {
-        if !PUBLIC_DATA_FILES.contains(&name) {
-            return None;
+    for (name, suffix, score) in candidates {
+        if score == 0.0 {
+            break;
         }
-        (root.to_path_buf(), format!("data/{name}"), false)
-    } else if path == "/index.html" || path.starts_with("/_app/") {
-        (
-            root.to_path_buf(),
-            format!("dist{path}"),
-            path.starts_with("/_app/"),
-        )
-    } else if path.starts_with("/css/") || path.starts_with("/src/assets/css/") {
-        let relative = path.trim_start_matches('/').to_owned();
-        let compiled = root.join("dist");
-        let base = if compiled.join(&relative).is_file() {
-            compiled
-        } else {
-            root.to_path_buf()
-        };
-        (base, relative, false)
-    } else if path.starts_with("/docs/") {
-        (
-            root.to_path_buf(),
-            path.trim_start_matches('/').to_owned(),
-            false,
-        )
-    } else {
-        return None;
-    };
-    let encoding = headers
-        .get("accept-encoding")
-        .and_then(|value| value.to_str().ok())
-        .unwrap_or("");
-    let source = rooted(&base, &relative).await.ok()?;
-    let metadata = tokio::fs::metadata(source).await.ok()?;
-    if !metadata.is_file() {
-        return None;
-    }
-    let modified = metadata.modified().ok()?;
-    let mut selected = None;
-    for (name, suffix) in [("br", ".br"), ("gzip", ".gz")] {
-        let q = quality(encoding, name);
-        if q == 0.0 || selected.as_ref().is_some_and(|(_, _, score)| *score >= q) {
-            continue;
-        }
-        let Ok(file) = rooted(&base, &format!("{relative}{suffix}")).await else {
+        let mut sibling = source.as_os_str().to_os_string();
+        sibling.push(suffix);
+        let Ok(file) = tokio::fs::canonicalize(sibling).await else {
             continue;
         };
-        if tokio::fs::metadata(&file)
-            .await
-            .is_ok_and(|meta| meta.is_file() && meta.modified().is_ok_and(|time| time >= modified))
+        if file.starts_with(root)
+            && tokio::fs::metadata(&file).await.is_ok_and(|meta| {
+                meta.is_file() && meta.modified().is_ok_and(|time| time >= modified)
+            })
         {
-            selected = Some((file, name, q));
+            return Some((file, name));
         }
     }
-    let (file, encoding, _) = selected?;
-    let mut request = Request::new(Body::empty());
-    *request.method_mut() = method.clone();
-    *request.uri_mut() = uri.clone();
-    *request.headers_mut() = headers.clone();
-    let mut response = ServeFile::new(file)
-        .try_call(request)
-        .await
-        .ok()?
-        .map(Body::new);
-    if response.status() == StatusCode::NOT_FOUND {
-        return None;
-    }
-    response
-        .headers_mut()
-        .insert("content-type", HeaderValue::from_static(content_type));
-    response
-        .headers_mut()
-        .insert("content-encoding", HeaderValue::from_static(encoding));
-    response
-        .headers_mut()
-        .insert("vary", HeaderValue::from_static("Accept-Encoding"));
-    response.headers_mut().insert(
-        "cache-control",
-        HeaderValue::from_static(if immutable {
-            "public, max-age=31536000, immutable"
-        } else {
-            "private, no-cache"
-        }),
-    );
-    Some(response)
+    None
 }

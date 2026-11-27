@@ -270,6 +270,10 @@ class LoraFusionState:
         self.restored_source_bytes += copied
         return dict(strategy="pinned-pipeline" if pipelined else "serial", copyCalls=calls)
 
+    @property
+    def active(self):
+        return bool(self._merged)
+
     def fuse(self, components, *, stage_device=None):
         import torch
         from peft.tuners.lora.layer import Linear

@@ -27,6 +27,7 @@ impl RenderContext {
         self.textures.clear();
         self.character = None;
         self.profile = None;
+        self.parameters = ProfileParameters::default();
         self.overlay_settler = None;
         self.hit_area_names.clear();
         self.motion_counts.clear();
@@ -97,6 +98,7 @@ impl RenderContext {
         }
         m.update(0.0);
         self.fit_bounds = Some(m.content_bounds());
+        self.parameters = ProfileParameters::bind(&m, &profile);
         self.model = Some(m);
         self.textures = textures;
         self.character = Some(character.to_string());

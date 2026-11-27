@@ -166,7 +166,7 @@ watch(flat, () => {
   padding: var(--search-inset) var(--s-4);
   padding-top:calc(var(--desktop-chrome-height,0px) + var(--search-inset));
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(8px)); backdrop-filter: var(--glass-disabled, blur(8px));
 }
 .gs-panel {
   --surface-enter-y:14px; --surface-enter-scale:.94; transform-origin:center top;

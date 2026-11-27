@@ -46,7 +46,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     crate::main_shared::toggle_companion_visibility(app);
                 }
                 MENU_OPEN_CHAT => {
-                    let url = state.gateway_url.recover_lock().clone();
+                    let url = state.gateway_url();
                     crate::main_shared::open_companion_chat(app, &url);
                 }
                 MENU_OPEN_ATELIER => {
@@ -77,6 +77,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     let _ = app.opener().open_path(state.paths.config_root.to_string_lossy().to_string(), None::<&str>);
                 }
                 MENU_OPEN_LOG => {
+                    state.log.flush();
                     let log = state.paths.desktop_log.to_string_lossy().to_string();
                     let _ = app.opener().open_path(log, None::<&str>);
                 }

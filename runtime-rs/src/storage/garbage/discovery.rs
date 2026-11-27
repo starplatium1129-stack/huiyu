@@ -67,7 +67,7 @@ impl Completion {
             return Err(conflict("WORKSPACE_IDENTITY", "Workspace root changed"));
         }
         c.writer()?;
-        c.owner.check()?;
+        c.owner()?.check()?;
         self.paths()
     }
 }

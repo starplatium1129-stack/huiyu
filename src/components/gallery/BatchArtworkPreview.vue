@@ -4,7 +4,7 @@
       @cancel.prevent="infoOpen ? closeInfo() : close()" @keydown="onKey">
       <ArtworkViewerStage :items="items" :index="index" :active="!closing" :original="original" :src="originalUrl"
         :load-failed="!!imageError" :reload="retryImage"
-        :preview-src="surface.previewSrc.value || thumbUrls[current?.id || ''] || ''" :thumb-urls="neighborThumbs" :title="job => job.sceneTitle" @select="select" @close="close"
+        :preview-src="surface.previewSrc.value || thumbUrls.get(String(current?.id || '')) || ''" :thumb-urls="neighborThumbs" :title="job => job.sceneTitle" @select="select" @close="close"
         @toggle-original="toggleOriginal" @dismiss-info="closeInfo" @close-button="viewerClose = $event">
         <template #tools><button ref="infoTrigger" class="viewer-info-toggle" type="button" aria-label="作品信息" :aria-controls="infoId" :aria-expanded="infoOpen" @click="openInfo"><ArchiveIcon name="info" /></button></template>
       </ArtworkViewerStage>
@@ -30,13 +30,13 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArtworkViewerStage from './ArtworkViewerStage.vue'
 
 const props = defineProps<{ jobs: readonly BatchArtworkJob[]; selectedId: string; source: HTMLImageElement | null;
-  thumbUrls: Record<string, string>; pendingImage: (requestKey: string) => Blob | null }>()
+  thumbUrls: ReadonlyMap<string, string>; pendingImage: (requestKey: string) => Blob | null }>()
 const emit = defineEmits<{ close: []; select: [id: string] }>()
 const items = computed(() => props.jobs.filter(hasBatchArtwork))
 const selected = ref(props.selectedId), original = ref(false), closing = ref(false), infoOpen = ref(false)
 const index = computed(() => Math.max(0, items.value.findIndex(job => job.id === selected.value)))
 const current = computed(() => items.value[index.value])
-const neighborThumbs = computed(() => Object.fromEntries(items.value.map(job => [job.id, props.thumbUrls[job.id] || ''])))
+const neighborThumbs = computed(() => new Map(items.value.map(job => [job.id, props.thumbUrls.get(String(job.id)) || ''])))
 const { url: originalUrl, error: imageError, retry: retryImage } = useBatchArtworkOriginal({ current, active: computed(() => !closing.value), pendingImage: props.pendingImage })
 const dialog = ref<HTMLDialogElement | null>(null)
 const infoId = useId(), infoPanel = ref<HTMLElement | null>(null), infoTrigger = ref<HTMLElement | null>(null)

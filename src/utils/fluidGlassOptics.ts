@@ -1,4 +1,5 @@
 import type { LensDimensions } from './fluidGlassLens.worker'
+import { observeGlassSurfaces } from './fluidGlassSurfaces'
 
 const CHROME_SELECTOR = [
   '.companion-toolbar',
@@ -10,7 +11,6 @@ const CHROME_SELECTOR = [
   '.viewer-mode-switch[data-fluid-glass]',
   '.directory-pocket[data-fluid-glass]',
 ].join(', ')
-const OPTICS_SELECTOR = CHROME_SELECTOR
 const SVG_NS = 'http://www.w3.org/2000/svg'
 let sequence = 0
 
@@ -29,7 +29,7 @@ function preloadMap(dataUrl: string): Promise<void> {
 
 /** Static backdrop refraction is sized only on mount/resize. Pointer motion
  * continues to use the existing transform/opacity light, never animated filters. */
-export function mountFluidGlassOptics(): () => void {
+export function mountFluidGlassOptics() {
   const definitions = document.createElementNS(SVG_NS, 'svg')
   definitions.classList.add('fluid-glass-definitions')
   definitions.setAttribute('aria-hidden', 'true'); definitions.setAttribute('focusable', 'false')
@@ -37,41 +37,36 @@ export function mountFluidGlassOptics(): () => void {
   const defs = document.createElementNS(SVG_NS, 'defs')
   definitions.append(defs); document.body.append(definitions)
   const filters = window.CSS.supports('backdrop-filter', 'url("#fluid-glass")')
-  type Surface = { filter?: SVGFilterElement; geometry: string; requested?: LensDimensions }
+  type Surface = { filter?: SVGFilterElement; geometry: string; visible: boolean; requested?: LensDimensions }
   const surfaces = new Map<HTMLElement, Surface>()
   const maps = new Map<string, string | null>()
   let worker: Worker | undefined
   let workingOn: string | undefined
   let canGenerate = filters && typeof Worker !== 'undefined' && typeof OffscreenCanvas !== 'undefined'
   const pending = new Set<HTMLElement>()
-  let frame = 0
+  let frame = 0, paused = false
   function queue(element: HTMLElement) {
     pending.add(element)
-    if (!frame) frame = requestAnimationFrame(paint)
+    if (!frame && !paused) frame = requestAnimationFrame(paint)
   }
   const sizes = new ResizeObserver(entries => {
     for (const entry of entries) if (entry.target instanceof HTMLElement) queue(entry.target)
   })
   function release(element: HTMLElement) {
-    sizes.unobserve(element); pending.delete(element)
+    sizes.unobserve(element); intersection.unobserve(element); pending.delete(element)
     surfaces.get(element)?.filter?.remove(); surfaces.delete(element)
     element.classList.remove('fluid-glass-chrome', 'fluid-glass-refractive')
     element.style.removeProperty('--fluid-glass-filter')
   }
-  function discover() {
-    for (const element of surfaces.keys()) {
-      if (!element.isConnected || !element.matches(OPTICS_SELECTOR) || element.parentElement?.closest(CHROME_SELECTOR)
-        || element.closest('.gallery-toolbar, .browse-toolbar')) release(element)
+  const intersection = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!(entry.target instanceof HTMLElement)) continue
+      const state = surfaces.get(entry.target)
+      if (!state) continue
+      state.visible = entry.isIntersecting
+      if (state.visible) queue(entry.target)
     }
-    for (const element of document.querySelectorAll<HTMLElement>(OPTICS_SELECTOR)) {
-      // A nested menu shares its parent's backdrop instead of filtering it twice.
-      if (element.parentElement?.closest(CHROME_SELECTOR) || element.closest('.gallery-toolbar, .browse-toolbar')) continue
-      if (surfaces.has(element)) continue
-      surfaces.set(element, { geometry: '' })
-      if (element.matches(CHROME_SELECTOR)) element.classList.add('fluid-glass-chrome')
-      sizes.observe(element); queue(element)
-    }
-  }
+  })
   function applyMap(element: HTMLElement, state: Surface, { width, height, rim }: LensDimensions, map: string) {
     const filter = state.filter ?? document.createElementNS(SVG_NS, 'filter')
     if (!state.filter) { filter.id = `atelier-glass-${++sequence}`; defs.append(filter); state.filter = filter }
@@ -112,9 +107,10 @@ export function mountFluidGlassOptics(): () => void {
   // Keep one job in flight. Resizing or removing a surface replaces its request
   // before the worker picks it up; reopened surfaces reuse a bounded map cache.
   function updateMaps() {
+    if (paused) return
     let next: Surface | undefined
     for (const [element, state] of surfaces) {
-      if (!state.requested || !element.isConnected) continue
+      if (!state.requested || !state.visible || !element.isConnected) continue
       const map = maps.get(state.geometry)
       if (map === undefined) {
         next ??= state
@@ -144,8 +140,9 @@ export function mountFluidGlassOptics(): () => void {
 
   function paint() {
     frame = 0
+    if (paused) return
     // Finish geometry reads before adding filters/classes to avoid layout thrash.
-    const measurements = [...pending].map(element => {
+    const measurements = [...pending].filter(element => element.isConnected && surfaces.get(element)?.visible).map(element => {
       const width = element.offsetWidth, height = element.offsetHeight
       const raw = getComputedStyle(element).borderTopLeftRadius
       const corner = Number.parseFloat(raw) || 0
@@ -164,17 +161,29 @@ export function mountFluidGlassOptics(): () => void {
     }
     updateMaps()
   }
-  const changes = new MutationObserver(records => {
-    const relevant = records.some(record => record.type === 'attributes' || [...record.addedNodes, ...record.removedNodes].some(node =>
-      node instanceof Element && (node.matches(OPTICS_SELECTOR) || !!node.querySelector(OPTICS_SELECTOR))))
-    if (relevant) discover()
+  const unobserve = observeGlassSurfaces((element, mounted) => {
+    if (!mounted) { release(element); return }
+    // A nested control shares its parent's backdrop.
+    if (element.parentElement?.closest(CHROME_SELECTOR) || element.closest('.gallery-toolbar, .browse-toolbar')) return
+    surfaces.set(element, { geometry: '', visible: false })
+    element.classList.add('fluid-glass-chrome')
+    sizes.observe(element); intersection.observe(element)
   })
-  changes.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-fluid-glass'] })
-  discover()
-  return () => {
-    changes.disconnect(); sizes.disconnect(); cancelAnimationFrame(frame); pending.clear()
-    stopWorker(); maps.clear()
-    for (const element of surfaces.keys()) release(element)
-    definitions.remove()
+  return {
+    setPaused(value: boolean) {
+      if (paused === value) return
+      paused = value
+      if (paused) { cancelAnimationFrame(frame); frame = 0 }
+      else {
+        if (pending.size) frame = requestAnimationFrame(paint)
+        else updateMaps()
+      }
+    },
+    stop() {
+      unobserve(); sizes.disconnect(); intersection.disconnect(); cancelAnimationFrame(frame); pending.clear()
+      stopWorker(); maps.clear()
+      for (const element of surfaces.keys()) release(element)
+      definitions.remove()
+    },
   }
 }

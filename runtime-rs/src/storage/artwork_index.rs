@@ -30,36 +30,48 @@ pub(super) fn revision(c: &Context) -> Result<i64> {
     )?)
 }
 
-pub(super) enum ReadOutcome {
-    Continue(Option<artwork_search::Search>),
+enum ReadOutcome {
+    Prepare(Option<artwork_search::Search>),
+    Continue(artwork_search::Search),
     Complete(Value, bool),
 }
 
-pub(super) async fn request(storage: &Storage, command: Value, principal: &str) -> Result<Value> {
+pub(super) async fn request(storage: &Storage, command: Value) -> Result<Value> {
     let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-    // Rejoining FIFO after each chunk must not copy all search terms again.
-    // The request and its queued turn share one immutable command allocation.
+    // The request and its bounded read steps share one immutable command.
     let command = Arc::new(command);
     let mut search = if command["kind"] == "searchArtworks" {
         Some(artwork_search::Search::new(&command)?)
     } else {
+        validate_operation_id(&command)?;
         None
     };
     loop {
-        let (reply, result) = oneshot::channel();
-        storage
-            .sender
-            .send(Work::ArtworkRead(
-                command.clone(),
-                principal.into(),
-                cancel.0.clone(),
-                search,
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        match result.await.map_err(|_| unavailable())?? {
-            ReadOutcome::Continue(next) => search = next,
+        let input = command.clone();
+        let outcome = storage.read(move |context| {
+            let dirty = context.db.prepare_cached("SELECT 1 FROM artwork_read_dirty LIMIT 1")?.exists([])?;
+            if dirty || (search.is_some() && artwork_search::small_pending(context)?) {
+                return Ok(ReadOutcome::Prepare(search));
+            }
+            if let Some(search) = search {
+                return match search.step(context)? {
+                    artwork_search::Step::Continue(next) => Ok(ReadOutcome::Continue(next)),
+                    artwork_search::Step::Complete(value) => {
+                        Ok(ReadOutcome::Complete(value, !artwork_search::ready(context)?))
+                    }
+                };
+            }
+            records::read(context, &input).map(|value| ReadOutcome::Complete(value, false))
+        }).await?;
+        match outcome {
+            ReadOutcome::Prepare(next) => {
+                let (reply, result) = oneshot::channel();
+                storage.sender.send(Work::PrepareArtworkRead(next.is_some(), cancel.0.clone(), reply))
+                    .await.map_err(|_| unavailable())?;
+                result.await.map_err(|_| unavailable())??;
+                search = next;
+            }
+            ReadOutcome::Continue(next) => search = Some(next),
             ReadOutcome::Complete(value, warm_search) => {
                 if warm_search {
                     artwork_search::warm(storage);

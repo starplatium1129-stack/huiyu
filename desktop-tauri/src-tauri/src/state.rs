@@ -7,7 +7,9 @@ use crate::window_state::CompanionPreferences;
 
 pub struct AppState {
     pub paths: DesktopPaths,
-    pub gateway_url: Mutex<String>,
+    pub(crate) gateway_endpoint: Mutex<crate::main_shared::gateway_origin::Endpoint>,
+    pub(crate) bundled_ui: bool,
+    pub(crate) atelier_maximized: AtomicBool,
     pub gateway_recovery: crate::gateway_monitor::Recovery,
     pub ignore_mouse_events: AtomicBool,
     pub quitting: AtomicBool,
@@ -25,9 +27,12 @@ impl AppState {
         let preferences = crate::window_state::load_companion_preferences(&paths.preferences_file);
         let workspace_root = crate::window_state::load_ai_workspace(&paths.ai_workspace_file);
         let log_path = paths.desktop_log.clone();
+        let bundled_ui = crate::ui_entry::read_activation(&paths.config_root);
         Self {
             paths,
-            gateway_url: Mutex::new(String::new()),
+            gateway_endpoint: Mutex::default(),
+            bundled_ui,
+            atelier_maximized: AtomicBool::default(),
             gateway_recovery: crate::gateway_monitor::Recovery::default(),
             ignore_mouse_events: AtomicBool::new(preferences.ignore_mouse_events),
             quitting: AtomicBool::new(false),
@@ -39,6 +44,10 @@ impl AppState {
             workspace_root: Mutex::new(workspace_root),
             log: crate::logger::FileLogger::new(&log_path),
         }
+    }
+
+    pub fn gateway_url(&self) -> String {
+        self.gateway_endpoint.recover_lock().url.clone()
     }
 
     pub fn save_preferences(&self) {

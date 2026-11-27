@@ -5,7 +5,7 @@
   padding:var(--s-4);
   padding-top:calc(var(--desktop-chrome-height,0px) + var(--s-4));
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
-  backdrop-filter: blur(4px);
+  backdrop-filter: var(--glass-disabled, blur(4px));
 }
 .batch-panel {
   @apply tw:relative;

@@ -88,7 +88,7 @@ pub(in crate::storage) fn prepare(
         ));
     }
     c.writer()?;
-    c.owner.check()?;
+    c.owner()?.check()?;
     let id = string(command, "taskId")?;
     let target = if command["kind"] == "task.input.commit" {
         let name = string(command, "name")?;

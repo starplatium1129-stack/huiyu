@@ -59,7 +59,8 @@ impl Storage {
             root: storage_root,
             native_images: None,
             verification: Arc::new(verification::Verifier::new()),
-            thumbnails: Arc::new(thumbnail::Readers::new()),
+            thumbnails: Arc::new(readers::Activity::new()),
+            readers: Arc::new(readers::Pool::new()),
             derivatives,
             result_writes: Arc::new(tokio::sync::Semaphore::new(1)),
             search_warming: Arc::new(AtomicBool::new(false)),
@@ -122,7 +123,14 @@ impl Storage {
                     | "readGalleryCatalog"
             )
         ) {
-            return artwork_index::request(self, command, principal).await;
+            return artwork_index::request(self, command).await;
+        }
+        if matches!(
+            command["kind"].as_str(),
+            Some("listArtworks" | "getArtwork" | "getArtworks" | "listProjects")
+        ) {
+            validate_operation_id(&command)?;
+            return self.read(move |context| records::read(context, &command)).await;
         }
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
         let cancellation = job
@@ -159,7 +167,10 @@ impl Storage {
         command: crate::task_contract::TaskCommand,
         principal: &str,
     ) -> Result<Value> {
-        let mutation = !command.is_read();
+        if command.is_read() {
+            let principal = principal.to_owned();
+            return self.read(move |context| tasks::query(context, &principal, command)).await;
+        }
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
         self.sender
@@ -171,13 +182,7 @@ impl Storage {
             ))
             .await
             .map_err(|_| unavailable())?;
-        result.await.map_err(|_| {
-            if mutation {
-                commit_unknown()
-            } else {
-                unavailable()
-            }
-        })?
+        result.await.map_err(|_| commit_unknown())?
     }
     pub(crate) async fn patch_task(
         &self,
@@ -222,36 +227,16 @@ impl Storage {
         key: tasks::RecordKey,
         principal: &str,
     ) -> Result<Option<crate::task_contract::TaskRecord>> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::TaskRecord(
-                key,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
+        let principal = principal.to_owned();
+        self.read(move |context| tasks::read_record(context, &principal, &key)).await
     }
     pub(crate) async fn task_recovery_page(
         &self,
         query: crate::task_contract::TaskListQuery,
         principal: &str,
     ) -> Result<tasks::RecoveryPage> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::TaskRecoveryPage(
-                query,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
+        let principal = principal.to_owned();
+        self.read(move |context| tasks::read_recovery_page(context, &principal, query)).await
     }
     pub(crate) async fn task_result_reference(
         &self,
@@ -259,37 +244,16 @@ impl Storage {
         index: u64,
         principal: &str,
     ) -> Result<tasks::ResultReference> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::TaskResultReference(
-                task_id.into(),
-                index,
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
+        let (principal, task_id) = (principal.to_owned(), task_id.to_owned());
+        self.read(move |context| tasks::read_result_reference(context, &principal, &task_id, index)).await
     }
     pub(crate) async fn task_revision(
         &self,
         task_id: &str,
         principal: &str,
     ) -> Result<Option<i64>> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::TaskRevision(
-                task_id.into(),
-                principal.into(),
-                cancel.0.clone(),
-                reply,
-            ))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
+        let (principal, task_id) = (principal.to_owned(), task_id.to_owned());
+        self.read(move |context| tasks::read_revision(context, &principal, &task_id)).await
     }
     pub(crate) async fn begin_task_result_import(
         &self,
@@ -372,8 +336,14 @@ impl Storage {
     pub async fn media(&self, alias: &str) -> Result<Media> {
         Ok(self.open_media(alias).await?.media)
     }
-    pub(crate) async fn media_derivative(&self, alias: &str, width: Option<u64>) -> Result<Option<Derivative>> {
-        thumbnail::read_binary(self, alias, width).await
+    pub(crate) async fn media_derivative(
+        &self,
+        alias: &str,
+        width: Option<u64>,
+        version_hash: Option<&str>,
+        matches_tag: impl FnOnce(&str) -> bool,
+    ) -> Result<Option<DerivativeResponse>> {
+        thumbnail::read_binary(self, alias, width, version_hash, matches_tag).await
     }
     pub(crate) async fn open_media(&self, alias: &str) -> Result<OpenedMedia> {
         let media = self.lookup_media(alias).await?;
@@ -387,14 +357,9 @@ impl Storage {
             .finish(self.root.clone(), source, media, self.sender.clone())
             .await
     }
-    async fn lookup_media(&self, alias: &str) -> Result<Media> {
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
-        let (reply, result) = oneshot::channel();
-        self.sender
-            .send(Work::Media(alias.into(), cancel.0.clone(), reply))
-            .await
-            .map_err(|_| unavailable())?;
-        result.await.map_err(|_| unavailable())?
+    pub(super) async fn lookup_media(&self, alias: &str) -> Result<Media> {
+        let alias = alias.to_owned();
+        self.read(move |context| context.lookup_media(&alias)).await
     }
     pub async fn close(&self) -> Result<()> {
         self.jobs.cancel_all();
@@ -403,6 +368,7 @@ impl Storage {
         self.jobs.close().await;
         self.verification.close().await;
         self.thumbnails.close().await;
+        self.readers.close().await;
         let (reply, result) = oneshot::channel();
         if self.sender.send(Work::Close(reply)).await.is_err() {
             return Ok(());

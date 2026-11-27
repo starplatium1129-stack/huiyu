@@ -32,8 +32,8 @@
   overflow: hidden;
   overscroll-behavior: contain;
   background: var(--art-backdrop);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(8px));
+  backdrop-filter: var(--glass-disabled, blur(8px));
 }
 
 .studio-dialog[data-size='sm'] {

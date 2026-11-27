@@ -230,8 +230,8 @@ onBeforeUnmount(() => { activeView = false; observer?.disconnect(); visible = fa
   overflow: hidden;
   overscroll-behavior: contain;
   background: var(--art-backdrop);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(8px));
+  backdrop-filter: var(--glass-disabled, blur(8px));
 }
 :root:not([data-theme-style='terraria']) .companion-chat-image-dialog::before {
   content: '';

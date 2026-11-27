@@ -55,6 +55,7 @@ impl ControlService {
             })
             .await
             .map_err(|_| ApiError::new(503, "CONFIG_WRITE_FAILED", "配置保存失败"))??;
+        self.state.lock().unwrap().health_at = None;
         Ok(())
     }
     pub(super) fn config_view(&self) -> Value {

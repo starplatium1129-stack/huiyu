@@ -155,29 +155,7 @@ pub(super) fn execute_command(
         c.writer()?;
     }
     match command {
-        TaskCommand::Get {
-            task_id,
-            request_key,
-            summary,
-        } => {
-            if summary {
-                listing::read_summary(
-                    c,
-                    principal,
-                    task_id
-                        .as_deref()
-                        .ok_or_else(|| invalid("Task summary requires taskId"))?,
-                )
-            } else {
-                Ok(
-                    read(c, principal, task_id.as_deref(), request_key.as_deref())?
-                        .map(TaskRecord::into_value)
-                        .transpose()?
-                        .unwrap_or(Value::Null),
-                )
-            }
-        }
-        TaskCommand::List { query } => listing::read(c, principal, query),
+        read @ (TaskCommand::Get { .. } | TaskCommand::List { .. }) => query(c, principal, read),
         TaskCommand::Accept { record, retry_of } => {
             accept::accept(c, principal, *record, retry_of.as_deref())
         }
@@ -192,6 +170,28 @@ pub(super) fn execute_command(
             expected_revision,
             upstream_stopped,
         } => resolve_webui(c, principal, &task_id, expected_revision, upstream_stopped),
+    }
+}
+
+pub(super) fn query(c: &Context, principal: &str, command: TaskCommand) -> Result<Value> {
+    c.check_cancel()?;
+    if principal.is_empty() {
+        return Err(ApiError::new(401, "UNAUTHORIZED", "Desktop principal is required"));
+    }
+    match command {
+        TaskCommand::Get { task_id, summary: true, .. } => listing::read_summary(
+            c,
+            principal,
+            task_id.as_deref().ok_or_else(|| invalid("Task summary requires taskId"))?,
+        ),
+        TaskCommand::Get { task_id, request_key, .. } => Ok(
+            read(c, principal, task_id.as_deref(), request_key.as_deref())?
+                .map(TaskRecord::into_value)
+                .transpose()?
+                .unwrap_or(Value::Null),
+        ),
+        TaskCommand::List { query } => listing::read(c, principal, query),
+        _ => Err(invalid("A task read command is required")),
     }
 }
 pub(super) fn patch_record(

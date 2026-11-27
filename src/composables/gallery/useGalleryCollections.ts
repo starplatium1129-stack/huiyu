@@ -96,7 +96,7 @@ export function useGalleryCollections(options: Options) {
     return options.history.value.filter(item => matches(item, index?.get(item)))
   })
   const previewCovers = computed(() => previewItems.value.slice(0, 3).map(item => {
-    const cached = options.thumbUrls.value[item.id] || options.cardUrls.value[item.id] || ''
+    const cached = options.thumbUrls.get(String(item.id)) || options.cardUrls.get(String(item.id)) || ''
     return { id: item.id, src: /^(blob:|data:image\/)/.test(cached) ? cached : safeImageUrl(cached) }
   }))
   // Read only album representatives while the wall is hidden, through its existing thumbnail owner.

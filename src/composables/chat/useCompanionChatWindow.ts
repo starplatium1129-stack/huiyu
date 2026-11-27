@@ -28,6 +28,7 @@ import { useChatRegenerationEligibility } from './useChatRegenerationEligibility
 import { useCompanionChatAttachments } from './useCompanionChatAttachments'
 import { decodeCompanionChatLiveState, type CompanionChatLiveState } from '@/utils/companionChatLiveState'
 import { copyText } from '@/utils/clipboard'
+import { observeWindowVisibility } from '@/platform/windowVisibility'
 
 export function useCompanionChatWindow() {
 
@@ -79,7 +80,7 @@ const speechSessionState = ref(speechSession.state())
 const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
 const behavior = createCompanionBehavior(readBehaviorConfig())
 const quietHint = ref(behavior.inQuietHours())
-const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () => {
+const quietClock = usePolling({ intervalMs: 30_000, immediate: false, paused: () => !windowVisible.value || pageHidden.value, tick: () => {
   quietHint.value = behavior.inQuietHours()
   reconcileAutoListen()
 } })
@@ -405,11 +406,12 @@ async function copyMessage(content: string) {
 }
 
 /* —— 生命周期 —— */
-let visibilitySub = 0
+let stopVisibility: (() => void) | undefined
 function onVisibilityChange() {
   pageHidden.value = document.hidden
   windowFocused.value = document.hasFocus()
   if (!windowVisible.value || pageHidden.value) cancelTextRelay()
+  quietClock.sync()
   reconcileAutoListen()
 }
 
@@ -432,8 +434,7 @@ onMounted(() => {
   window.addEventListener('keydown', onWindowKeydown, { passive: false })
   window.addEventListener('keyup', onWindowKeyup, { passive: false })
   window.addEventListener('pointerdown', onDocFocus, { passive: true })
-  document.addEventListener('visibilitychange', onVisibilityChange)
-  if (bridge?.onVisibilityChanged) visibilitySub = bridge.onVisibilityChanged(visible => {
+  stopVisibility = observeWindowVisibility(visible => {
     windowVisible.value = visible
     onVisibilityChange()
   })
@@ -477,8 +478,7 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onWindowKeydown)
   window.removeEventListener('keyup', onWindowKeyup)
   window.removeEventListener('pointerdown', onDocFocus)
-  document.removeEventListener('visibilitychange', onVisibilityChange)
-  if (bridge?.offVisibilityChanged && visibilitySub) bridge.offVisibilityChanged(visibilitySub)
+  stopVisibility?.()
   speechHold.cancel()
   speechRelease()
   speechSession.endSession()

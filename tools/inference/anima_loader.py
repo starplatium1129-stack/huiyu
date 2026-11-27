@@ -61,9 +61,12 @@ def load(root, cfg, blocks, reusable, tools, device, stage=None):
         if name == "tokenizer":
             kwargs.update(_qwen_options(root / name))
         if name in memory.WEIGHTS:
-            kwargs.update(use_safetensors=True, torch_dtype=dtype)
+            kwargs.update(use_safetensors=True, torch_dtype=dtype, low_cpu_mem_usage=True)
             started = time.perf_counter()
-            components[name] = tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
+            # Offloaded CPU components can be mutated by PEFT or outlive the
+            # checkpoint lease. Private tensors keep the file view immutable.
+            with tools("mapped_weights").windows_weight_reads(private_tensors=device.memory_policy == "offload"):
+                components[name] = tools("resident_anima").load_weights(name, cls, str(root / name), **kwargs)
             read_wall = time.perf_counter() - started
             started = time.perf_counter()
             if stage is not None:

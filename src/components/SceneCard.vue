@@ -7,7 +7,7 @@
     @click="onCardClick"
   >
     <div class="sc-band">
-      <ShowcasePreviewSource :src="thumbSource" :full-src="imageUrl" v-slot="{ image: thumbImage, loaded: thumbLoaded, failed: thumbFailed, preview, previewReady }" @load="measurePreview">
+      <ShowcasePreviewSource :src="thumbSource" :full-src="imageUrl" :fit="completePreview ? 'contain' : 'cover'" v-slot="{ image: thumbImage, loaded: thumbLoaded, failed: thumbFailed, preview, previewReady }" @load="measurePreview">
       <div v-if="thumbId && thumbImage.src" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
         v-if="thumbId && thumbImage.src"

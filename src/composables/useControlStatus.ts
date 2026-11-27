@@ -7,6 +7,7 @@
 
 import { ref, computed, nextTick, watch, getCurrentScope, onScopeDispose, type Ref } from 'vue'
 import { usePolling } from './usePolling.ts'
+import { observeWindowVisibility } from '@/platform/windowVisibility'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi } from '../api/controlApi.ts'
 import type {
@@ -405,31 +406,22 @@ export function useControlStatus({ showToast }: StatusHooks) {
   }, { flush: 'sync' })
   // 轮询底座（2026-08-28 审计 P1-9）：3s 状态/日志轮询收敛到 usePolling，
   // in-flight 去重、页面隐藏暂停（paused=document.hidden）、回前台 sync 续跑。
-  let visibilityBound = false
+  let pollingVisible = true
+  let stopVisibility: (() => void) | undefined
   const polling = usePolling({
     intervalMs: 3000,
     tick: async () => { await Promise.all([pollStatus(), pollLogs()]) },
-    paused: () => typeof document !== 'undefined' && document.hidden,
+    paused: () => !pollingVisible,
     immediate: true,
   })
-  function handleVisibilityChange() { polling.sync() }
-  function bindPollingVisibility() {
-    if (visibilityBound || typeof document === 'undefined') return
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    visibilityBound = true
-  }
-  function unbindPollingVisibility() {
-    if (!visibilityBound || typeof document === 'undefined') return
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
-    visibilityBound = false
-  }
   function startPolling() {
     if (disposed || polling.isActive()) return
-    bindPollingVisibility()
+    stopVisibility = observeWindowVisibility(visible => { pollingVisible = visible; polling.sync() })
     polling.start()
   }
   function stopPolling() {
-    unbindPollingVisibility()
+    stopVisibility?.()
+    stopVisibility = undefined
     polling.stop()
     statusRequest?.abort()
     cancelLogRead()

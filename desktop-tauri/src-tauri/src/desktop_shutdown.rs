@@ -16,6 +16,9 @@ fn cleanup(app: &AppHandle) {
     if let Some(supervisor) = app.try_state::<crate::gateway::GatewaySupervisor>() {
         supervisor.stop_sync();
     }
+    if let Some(state) = app.try_state::<crate::state::AppState>() {
+        state.log.flush();
+    }
 }
 
 pub fn close_renderers(app: &AppHandle) {

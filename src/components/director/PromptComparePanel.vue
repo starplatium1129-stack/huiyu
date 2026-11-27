@@ -75,5 +75,5 @@ useFocusTrap(dialog, () => props.open, {
 .pb-compare-facts .pb-compare-time { @apply tw:text-muted; }
 @media (max-width: 900px) { .pb-compare-grid { grid-template-columns:1fr; } .pb-compare-visual { max-height:56vh; } }
 @media (forced-colors:active) { .pb-compare-visual:focus-visible { outline:2px solid Highlight; outline-offset:-2px; } }
-.pb-compare-overlay { @apply tw:fixed; inset:var(--desktop-chrome-height, 0px) 0 0; z-index:var(--z-overlay); @apply tw:grid; place-items:center; @apply tw:p-s-4; background:color-mix(in srgb, var(--art-backdrop) 78%, transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+.pb-compare-overlay { @apply tw:fixed; inset:var(--desktop-chrome-height, 0px) 0 0; z-index:var(--z-overlay); @apply tw:grid; place-items:center; @apply tw:p-s-4; background:color-mix(in srgb, var(--art-backdrop) 78%, transparent); -webkit-backdrop-filter:var(--glass-disabled, blur(10px)); backdrop-filter:var(--glass-disabled, blur(10px)); }
 </style>

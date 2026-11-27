@@ -14,6 +14,46 @@ const inViewport = new Set<Element>()
 let intersection: IntersectionObserver | undefined, resize: ResizeObserver | undefined
 let densityQuery: MediaQueryList | undefined, workers = 0
 const waiting = new Set<() => void>()
+interface CachedPreview { url: string; width: number; bytes: number; readers: number }
+const previewCache = new Map<string, CachedPreview>()
+let cacheBytes = 0
+function evictPreview(key: string, entry: CachedPreview) {
+  if (previewCache.get(key) !== entry) return
+  previewCache.delete(key); cacheBytes -= entry.bytes
+  if (!entry.readers) URL.revokeObjectURL(entry.url)
+}
+function trimPreviews() {
+  for (const [key, entry] of previewCache) {
+    if (previewCache.size <= 32 && cacheBytes <= 16 * 1024 * 1024) break
+    if (!entry.readers) evictPreview(key, entry)
+  }
+}
+async function leasePreview(source: string, width: number, signal: AbortSignal) {
+  const key = JSON.stringify([runtimeResourceIdentity(), source, width])
+  let entry = previewCache.get(key)
+  if (!entry) {
+    const result = await createPreview(source, width, signal)
+    signal.throwIfAborted()
+    if (!result) return
+    entry = previewCache.get(key)
+    if (!entry) {
+      entry = { url: URL.createObjectURL(result.blob), width: result.width, bytes: result.blob.size, readers: 0 }
+      cacheBytes += entry.bytes
+    }
+  }
+  const current = entry
+  previewCache.delete(key); previewCache.set(key, current)
+  current.readers++
+  trimPreviews()
+  return {
+    url: current.url, width: current.width,
+    invalidate: () => evictPreview(key, current),
+    release() {
+      if (--current.readers === 0 && previewCache.get(key) !== current) URL.revokeObjectURL(current.url)
+      trimPreviews()
+    },
+  }
+}
 
 function watchDensity() {
   densityQuery?.removeEventListener('change', densityChanged)
@@ -83,19 +123,23 @@ async function createPreview(source: string, width: number, signal: AbortSignal)
 }
 
 /** Keep the thumbnail painted while a visible card gets display-sized pixels. */
-export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, original: MaybeRefOrGetter<string>) {
+export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, original: MaybeRefOrGetter<string>, fit: () => 'contain' | 'cover') {
   const previewSrc = ref(''), previewReady = ref(false)
   const source = computed(() => resolveRuntimeUrl(toValue(original)))
   let image: HTMLImageElement | undefined, active = true, visible = false, watching = false
   let boxWidth = 0, boxHeight = 0, satisfied = 0, failed = 0
   let request: AbortController | undefined
-  const retired = new Set<string>()
+  let lease: Awaited<ReturnType<typeof leasePreview>>
+  const retired = new Set<NonNullable<typeof lease>>()
+  function releaseRetired() {
+    for (const entry of retired) entry.release()
+    retired.clear()
+  }
 
   function clearPreview() {
     request?.abort(); request = undefined; satisfied = 0
-    if (previewSrc.value) URL.revokeObjectURL(previewSrc.value)
-    for (const url of retired) URL.revokeObjectURL(url)
-    retired.clear(); previewSrc.value = ''; previewReady.value = false
+    lease?.release(); lease = undefined
+    releaseRetired(); previewSrc.value = ''; previewReady.value = false
   }
   function stopWatching() {
     if (image && watching) unobserveImage(image)
@@ -105,47 +149,35 @@ export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, orig
   function requiredWidth() {
     if (!image || !boxWidth || !boxHeight || !image.naturalHeight) return 0
     const ratio = image.naturalWidth / image.naturalHeight
-    const fit = getComputedStyle(image).objectFit
-    const width = fit === 'cover' ? Math.max(boxWidth, boxHeight * ratio)
-      : fit === 'contain' ? Math.min(boxWidth, boxHeight * ratio) : boxWidth
+    const width = fit() === 'cover' ? Math.max(boxWidth, boxHeight * ratio) : Math.min(boxWidth, boxHeight * ratio)
     return width * (window.devicePixelRatio || 1) * 1.06
   }
   function requestPreview() {
     if (!active || !visible || request || !image || !source.value) return
     const required = requiredWidth(), currentImage = image, currentSource = source.value
     if (!required || required <= currentImage.naturalWidth || required <= satisfied) return
-    const width = Math.ceil(required / 560) * 560
+    const width = Math.min(3360, Math.ceil(required / 560) * 560)
     if (failed >= width) return
     const controller = new AbortController()
     request = controller
-    void createPreview(currentSource, width, controller.signal).then(async result => {
+    void leasePreview(currentSource, width, controller.signal).then(result => {
       if (!result) { if (!controller.signal.aborted && request === controller) failed = width; return }
       if (controller.signal.aborted || request !== controller || !active || !visible
-        || image !== currentImage || source.value !== currentSource) return
-      const url = URL.createObjectURL(result.blob)
-      const decoded = new Image()
-      const cancel = () => decoded.removeAttribute('src')
-      controller.signal.addEventListener('abort', cancel, { once: true })
-      try {
-        decoded.src = url
-        await decoded.decode()
-        controller.signal.throwIfAborted()
-      } catch (error) { URL.revokeObjectURL(url); throw error }
-      finally { controller.signal.removeEventListener('abort', cancel); decoded.removeAttribute('src') }
-      if (request !== controller || !active || !visible || image !== currentImage || source.value !== currentSource) {
-        URL.revokeObjectURL(url); return
+        || image !== currentImage || source.value !== currentSource) {
+        result.release(); return
       }
-      if (previewSrc.value) retired.add(previewSrc.value)
-      else previewReady.value = false
-      previewSrc.value = url
-      satisfied = result.width < width ? Infinity : result.width
+      if (lease) retired.add(lease)
+      lease = result
+      previewReady.value = false
+      previewSrc.value = result.url
+      satisfied = result.width < width || width === 3360 ? Infinity : result.width
     }).catch(() => {
       if (!controller.signal.aborted && request === controller) failed = width
     }).finally(() => {
       if (request !== controller) return
       request = undefined
       // A larger layout may have arrived while the previous image was decoding.
-      if (!controller.signal.aborted && requiredWidth() > width) requestPreview()
+      if (!controller.signal.aborted && width < 3360 && requiredWidth() > width) requestPreview()
     })
   }
   function beginWatching() {
@@ -165,17 +197,21 @@ export function useShowcaseCardPreview(thumbnail: MaybeRefOrGetter<string>, orig
     if (image !== element) { stopWatching(); image = element; failed = 0 }
     beginWatching()
   }
-  function onPreviewLoad(event: Event) {
+  async function onPreviewLoad(event: Event) {
     const target = event.target
     if (!(target instanceof HTMLImageElement) || target.getAttribute('src') !== previewSrc.value) return
+    const current = lease
+    try { await target.decode() }
+    catch { if (current === lease) onPreviewError(event); return }
+    if (current !== lease || !target.isConnected) return
     previewReady.value = true
-    for (const url of retired) URL.revokeObjectURL(url)
-    retired.clear()
+    releaseRetired()
   }
   function onPreviewError(event: Event) {
     const target = event.target
     if (!(target instanceof HTMLImageElement) || target.getAttribute('src') !== previewSrc.value) return
-    failed = Math.ceil(requiredWidth() / 560) * 560
+    failed = Math.min(3360, Math.ceil(requiredWidth() / 560) * 560)
+    lease?.invalidate()
     clearPreview()
   }
   watch([source, () => resolveRuntimeUrl(toValue(thumbnail)), runtimeResourceIdentity], ([, thumb, identity], previous) => {

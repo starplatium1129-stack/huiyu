@@ -12,4 +12,4 @@ bytemuck = { version = "1", features = ["derive"] }
 image = { version = "0.25", default-features = false, features = ["png", "webp"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-wgpu = "27"
+wgpu = { version = "27", default-features = false, features = ["dx12", "wgsl"] }

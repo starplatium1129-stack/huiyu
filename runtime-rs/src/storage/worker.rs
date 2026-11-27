@@ -81,89 +81,19 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
-            Work::TaskRecord(key, principal, cancel, reply) => {
+            Work::PrepareArtworkRead(search, cancel, reply) => {
+                context.cancel = cancel;
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = tasks::read_record(&context, &principal, &key);
-                    let _ = reply.send(result);
-                }
-            }
-            Work::TaskRecoveryPage(query, principal, cancel, reply) => {
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = tasks::read_recovery_page(&context, &principal, query);
-                    let _ = reply.send(result);
-                }
-            }
-            Work::TaskRevision(id, principal, cancel, reply) => {
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = tasks::read_revision(&context, &principal, &id);
-                    let _ = reply.send(result);
-                }
-            }
-            Work::TaskResultReference(id, index, principal, cancel, reply) => {
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = tasks::read_result_reference(&context, &principal, &id, index);
-                    let _ = reply.send(result);
-                }
-            }
-            Work::ArtworkRead(command, principal, cancel, search, reply) => {
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    // Index preparation and search scans each yield within one
-                    // bounded chunk. The caller owns progress and rejoins FIFO.
-                    let result = artwork_index::refresh_chunk(&context).and_then(|worked| {
-                        let worked = worked
-                            || (command["kind"] == "searchArtworks"
-                                && artwork_search::needs_index(&command)
-                                && artwork_search::refresh_small(&context)?);
-                        if worked {
-                            Ok(artwork_index::ReadOutcome::Continue(search))
-                        } else if let Some(search) = search {
-                            if principal.is_empty() {
-                                return Err(ApiError::new(
-                                    401,
-                                    "UNAUTHORIZED",
-                                    "Desktop principal is required",
-                                ));
-                            }
-                            match search.step(&context)? {
-                                artwork_search::Step::Continue(search) => {
-                                    Ok(artwork_index::ReadOutcome::Continue(Some(search)))
-                                }
-                                artwork_search::Step::Complete(value) => {
-                                    let warm = !artwork_search::ready(&context)?;
-                                    Ok(artwork_index::ReadOutcome::Complete(value, warm))
-                                }
-                            }
-                        } else {
-                            context
-                                .execute(&command, &principal)
-                                .map(|value| artwork_index::ReadOutcome::Complete(value, false))
+                } else if !reply.is_closed() {
+                    let result = (|| {
+                        if !artwork_index::refresh_chunk(&context)?
+                            && search && artwork_search::small_pending(&context)?
+                        {
+                            artwork_search::refresh_chunk(&context)?;
                         }
-                    });
+                        Ok(())
+                    })();
                     let _ = reply.send(result);
                 }
             }
@@ -351,17 +281,6 @@ pub(super) fn run(
                     }
                 } else {
                     let result = context.execute(&command, &principal);
-                    let _ = reply.send(result);
-                }
-            }
-            Work::Media(alias, cancel, reply) => {
-                if !closing.is_empty() {
-                    let _ = reply.send(Err(unavailable()));
-                    continue;
-                }
-                context.cancel = cancel;
-                if !reply.is_closed() {
-                    let result = context.lookup_media(&alias);
                     let _ = reply.send(result);
                 }
             }

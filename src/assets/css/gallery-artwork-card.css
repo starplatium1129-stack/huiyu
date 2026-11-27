@@ -14,7 +14,7 @@
 .artwork-selectable .artwork-button { cursor:pointer; }
 .artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
 .artwork-button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.artwork-tools { --text-disabled:var(--on-art-secondary); @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-md; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
+.artwork-tools { --text-disabled:var(--on-art-secondary); @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-md; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:var(--glass-disabled, blur(12px)); backdrop-filter:var(--glass-disabled, blur(12px)); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
 /* 选中只改变画框与题注，不改变展墙几何（严守 DESIGN.md:738-740 中性面与中性边）。 */
 .artwork-selected,.artwork-selected:hover { border-color:var(--border-strong); box-shadow:var(--selection-shadow); }

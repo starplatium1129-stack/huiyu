@@ -1,7 +1,9 @@
 @reference "./tailwind.css";
 .fluid-glass-definitions { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
-.fluid-glass-positioned { position:relative; }
-.fluid-glass-lit { isolation:isolate; }
+.fluid-glass-optics { display:none; }
+:root[data-glass-material='liquid'] .fluid-glass-positioned { position:relative; }
+:root[data-glass-material='liquid'] .fluid-glass-lit { isolation:isolate; }
+:root[data-glass-material='liquid'] .fluid-glass-optics { display:block; }
 .fluid-glass-optics { position:absolute; inset:0; z-index:var(--z-base); overflow:hidden; border-radius:inherit; pointer-events:none; mix-blend-mode:soft-light; }
 .fluid-glass-sheen { position:absolute; left:50%; top:50%; width:min(280px,115%); height:min(140px,170%); border-radius:50%; opacity:0; pointer-events:none;
   background:radial-gradient(ellipse at center,var(--on-art-primary) 0%,color-mix(in oklab,var(--on-art-primary) 34%,transparent) 34%,transparent 72%);

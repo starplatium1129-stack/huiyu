@@ -1,7 +1,7 @@
 @reference "./tailwind.css";
 .appearance-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(480px,calc(100vw - 32px)); height:min(680px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4))); margin:auto; padding:0; overflow:hidden; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); }
 .appearance-dialog[open] { display:grid; grid-template-rows:auto minmax(0,1fr); }
-.appearance-dialog::backdrop { background: var(--art-backdrop); backdrop-filter: blur(8px); }
+.appearance-dialog::backdrop { background: var(--art-backdrop); backdrop-filter: var(--glass-disabled, blur(8px)); }
 .appearance-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-4); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .appearance-heading h2 { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
 .appearance-save-note { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label-xs tw:leading-body; }

@@ -103,7 +103,7 @@ fn prepare(c: &Context, principal: &str, command: &Value) -> Result<Prepared> {
         return Err(invalid("A stable operation ID is required"));
     }
     c.writer()?;
-    c.owner.check()?;
+    c.owner()?.check()?;
     if let Some((_, Some(receipt))) = c.operation_receipt(principal, command)? {
         return Ok(Prepared::Complete(receipt));
     }

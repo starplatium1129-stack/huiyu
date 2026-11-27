@@ -7,6 +7,7 @@ import { controlApi } from '@/api/controlApi'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { observeWindowVisibility } from '@/platform/windowVisibility'
 import { createCompanionTaskReader } from './companionTaskSnapshot'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
@@ -55,12 +56,16 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
 
   const eventDetector = createCompanionEventDetector()
   const taskReader = createCompanionTaskReader()
-  // 工程审计 P1-9（2/2）：两只 30s 心跳迁到 usePolling 底座，语义不变。
-  // immediate=false 保持「首 tick 在 +30s」原时序（onMounted 里另有显式首跑）；
-  // pollCompanionEvents 自带 eventPolling 守卫，与 usePolling 的 in-flight 去重叠加无害；
-  // stop 由 onUnmounted 显式调用，setup 期 onScopeDispose 兜底 component 之外的手动实例。
-  const behaviorPoll = usePolling({ intervalMs: 30_000, immediate: false, tick: runBehaviorTick })
-  const eventPoll = usePolling({ intervalMs: 30_000, immediate: false, tick: pollCompanionEvents })
+  const pageVisible = ref(!document.hidden)
+  const paused = () => !pageVisible.value || !desktopWindowVisible()
+  let stopVisibility: (() => void) | undefined
+  const behaviorPoll = usePolling({ intervalMs: 30_000, immediate: false, paused, tick: runBehaviorTick })
+  const eventPoll = usePolling({ intervalMs: 30_000, paused, tick: pollCompanionEvents })
+  watch(paused, hidden => {
+    if (hidden) resetEventDetector()
+    behaviorPoll.sync()
+    eventPoll.sync()
+  }, { flush: 'sync' })
   let reminderLineOffset = 0
   let eventLineOffset = 0
   let eventPolling = false
@@ -248,16 +253,17 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   onMounted(() => {
     dnd.value = behavior.config().dnd
     window.addEventListener('storage', onBehaviorStorage)
+    stopVisibility = observeWindowVisibility(value => { pageVisible.value = value })
     behaviorPoll.start()
     eventPoll.start()
     syncReminders()
     maybeGreetByTime()
-    void pollCompanionEvents()
   })
 
   onUnmounted(() => {
     alive = false
     stopSource()
+    stopVisibility?.()
     eventPollController?.abort()
     window.removeEventListener('storage', onBehaviorStorage)
     eventPollController = null

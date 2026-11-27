@@ -16,8 +16,8 @@ export interface UseGalleryComparisonOptions {
   selectedIds: Ref<Set<string | number>>;
   route: RouteLocationNormalizedLoaded;
   current: ComputedRef<ArtworkRecord | null>;
-  cardUrls: Readonly<Ref<Readonly<Record<string, string>>>>;
-  thumbUrls: Readonly<Ref<Readonly<Record<string, string>>>>;
+  cardUrls: ReadonlyMap<string, string>;
+  thumbUrls: ReadonlyMap<string, string>;
 }
 
 /** Owns multi-artwork comparison modal state and parent-child comparison images. */
@@ -165,7 +165,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       } catch { return false; }
       finally { controller.signal.removeEventListener('abort', abort); release(); }
     }
-    const cached = thumbUrls.value[parent.id];
+    const cached = thumbUrls.get(String(parent.id));
     if (!compareMode.value && cached?.startsWith('data:image/')) { parentPreview.value = cached; parentRead = null; return; }
     parentLoading.value = true; parentError.value = '';
     const timer = setTimeout(() => {
@@ -225,13 +225,13 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     if (!parentArtwork.value)
       return '';
     const pId = parentArtwork.value.id;
-    return (compareMode.value ? parentPreview.value || cardUrls.value[pId] : cardUrls.value[pId] || parentPreview.value) || thumbUrls.value[pId] || '';
+    return (compareMode.value ? parentPreview.value || cardUrls.get(String(pId)) : cardUrls.get(String(pId)) || parentPreview.value) || thumbUrls.get(String(pId)) || '';
   });
 
   const hasComparableImage = computed(() => {
     if (!current.value)
       return false;
-    return Boolean(parentArtwork.value || parentImageUrl.value || thumbUrls.value[current.value.id]);
+    return Boolean(parentArtwork.value || parentImageUrl.value || thumbUrls.get(String(current.value.id)));
   });
   const parentImageLabel = computed(() => parentOriginal.value ? '修改前原图' : parentImageUrl.value ? '修改前预览' : '缩略图预览');
   const parentImageStatus = computed(() => ({

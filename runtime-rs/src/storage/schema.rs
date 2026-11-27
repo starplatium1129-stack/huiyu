@@ -346,7 +346,50 @@ pub(super) fn open(
     )?;
     super::tasks::initialize(&db)?;
     super::artwork_index::initialize(&db)?;
-    let mut context = Context {
+    let mut context = database_context(db, root, workspace_id, epoch, derivatives, Some(owner));
+    migration::repair_activated(&mut context)?;
+    super::verification::recover_staging(&context)?;
+    context.db.execute_batch(
+        "PRAGMA synchronous=FULL; PRAGMA temp_store=MEMORY;
+         PRAGMA cache_size=-32768; PRAGMA mmap_size=134217728;",
+    )?;
+    Ok(context)
+}
+
+pub(super) fn open_reader(
+    root: PathBuf,
+    workspace_id: String,
+    epoch: String,
+    derivatives: Arc<super::thumbnail::Cache>,
+) -> Result<Context> {
+    let root = normalize_root(root)?;
+    let file = safe(&root, "huiyu.sqlite3")?;
+    for suffix in ["-wal", "-shm"] {
+        safe(&root, format!("huiyu.sqlite3{suffix}"))?;
+    }
+    let db = Connection::open_with_flags(
+        file,
+        rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY | rusqlite::OpenFlags::SQLITE_OPEN_NO_MUTEX,
+    )?;
+    db.busy_timeout(std::time::Duration::from_secs(5))?;
+    db.set_prepared_statement_cache_capacity(32);
+    db.execute_batch(
+        "PRAGMA query_only=ON; PRAGMA cache_size=-4096;
+         PRAGMA mmap_size=33554432; PRAGMA temp_store=MEMORY;",
+    )?;
+    verify_identity(&db, &workspace_id, VERSION)?;
+    Ok(database_context(db, root, workspace_id, epoch, derivatives, None))
+}
+
+fn database_context(
+    db: Connection,
+    root: PathBuf,
+    workspace_id: String,
+    epoch: String,
+    derivatives: Arc<super::thumbnail::Cache>,
+    owner: Option<Owner>,
+) -> Context {
+    Context {
         db,
         derivatives,
         gallery_catalog: Default::default(),
@@ -364,14 +407,7 @@ pub(super) fn open(
         restore_commit: None,
         media_verified: None,
         job: None,
-    };
-    migration::repair_activated(&mut context)?;
-    super::verification::recover_staging(&context)?;
-    context.db.execute_batch(
-        "PRAGMA synchronous=NORMAL; PRAGMA temp_store=MEMORY;
-         PRAGMA cache_size=-32768; PRAGMA mmap_size=134217728;",
-    )?;
-    Ok(context)
+    }
 }
 fn normalize_root(root: PathBuf) -> Result<PathBuf> {
     if !root.is_absolute() {

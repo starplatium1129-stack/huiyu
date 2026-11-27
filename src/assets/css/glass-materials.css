@@ -81,9 +81,14 @@
   -webkit-backdrop-filter:blur(18px) saturate(185%) brightness(var(--liquid-brightness));
   backdrop-filter:blur(18px) saturate(185%) brightness(var(--liquid-brightness));
 }
-:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid']:not([data-glass-scrolling]) body .fluid-glass-chrome.fluid-glass-refractive,
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .companion-toolbar.fluid-glass-refractive {
   -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(175%) brightness(var(--liquid-brightness));
   backdrop-filter:var(--fluid-glass-filter) saturate(175%) brightness(var(--liquid-brightness));
+}
+:root[data-glass-material='liquid'][data-glass-scrolling] body .fluid-glass-chrome:not(.companion-toolbar) {
+  -webkit-backdrop-filter:blur(8px) saturate(150%) brightness(var(--liquid-brightness));
+  backdrop-filter:blur(8px) saturate(150%) brightness(var(--liquid-brightness));
 }
 
 /* Inline segmented controls stay clean inside panels: subtle recessed glass well + floating liquid droplet pill. */

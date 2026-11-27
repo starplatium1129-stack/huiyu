@@ -18,6 +18,7 @@ mod operations;
 mod organization;
 mod profile;
 mod project_commands;
+mod readers;
 mod recent;
 mod records;
 mod restore;
@@ -52,7 +53,7 @@ pub(crate) use canonical::{
 pub use media::Media;
 pub(crate) use media::detected_mime;
 pub(crate) use verification::OpenedMedia;
-pub(crate) use thumbnail::Derivative;
+pub(crate) use thumbnail::DerivativeResponse;
 
 pub(crate) enum TaskMediaSource {
     Staged(verification::Staged),
@@ -67,7 +68,8 @@ pub struct Storage {
     root: Arc<PathBuf>,
     native_images: Option<Arc<PathBuf>>,
     verification: Arc<verification::Verifier>,
-    thumbnails: Arc<thumbnail::Readers>,
+    thumbnails: Arc<readers::Activity>,
+    readers: Arc<readers::Pool>,
     derivatives: Arc<thumbnail::Cache>,
     result_writes: Arc<tokio::sync::Semaphore>,
     search_warming: Arc<AtomicBool>,
@@ -100,31 +102,6 @@ enum Work {
         Arc<AtomicBool>,
         oneshot::Sender<Result<crate::task_contract::TaskRecord>>,
     ),
-    TaskRecord(
-        tasks::RecordKey,
-        String,
-        Arc<AtomicBool>,
-        oneshot::Sender<Result<Option<crate::task_contract::TaskRecord>>>,
-    ),
-    TaskRecoveryPage(
-        crate::task_contract::TaskListQuery,
-        String,
-        Arc<AtomicBool>,
-        oneshot::Sender<Result<tasks::RecoveryPage>>,
-    ),
-    TaskRevision(
-        String,
-        String,
-        Arc<AtomicBool>,
-        oneshot::Sender<Result<Option<i64>>>,
-    ),
-    TaskResultReference(
-        String,
-        u64,
-        String,
-        Arc<AtomicBool>,
-        oneshot::Sender<Result<tasks::ResultReference>>,
-    ),
     Request(
         Value,
         String,
@@ -134,19 +111,12 @@ enum Work {
         Option<Arc<crate::workspace_jobs::Job>>,
         Option<Bytes>,
     ),
-    ArtworkRead(
-        Arc<Value>,
-        String,
-        Arc<AtomicBool>,
-        Option<artwork_search::Search>,
-        oneshot::Sender<Result<artwork_index::ReadOutcome>>,
-    ),
+    PrepareArtworkRead(bool, Arc<AtomicBool>, oneshot::Sender<Result<()>>),
     WarmArtworkSearch(
         Arc<AtomicBool>,
         Arc<AtomicBool>,
         oneshot::Sender<Result<bool>>,
     ),
-    Media(String, Arc<AtomicBool>, oneshot::Sender<Result<Media>>),
     CopyFinished(
         backup::Completion,
         Result<Value>,
@@ -176,7 +146,7 @@ pub(super) struct Context {
     root: PathBuf,
     workspace_id: String,
     epoch: String,
-    owner: schema::Owner,
+    owner: Option<schema::Owner>,
     cancel: Arc<AtomicBool>,
     result_commit: Option<result_commit::Pending>,
     restore_commit: Option<restore::Pending>,
@@ -284,11 +254,7 @@ impl Context {
                 "Workspace command is not implemented by the Rust runtime",
             ));
         }
-        if let Some(id) = command.get("operationId")
-            && id.as_str().is_none_or(|s| s.is_empty() || s.len() > 200)
-        {
-            return Err(invalid("A stable operation ID is required"));
-        }
+        validate_operation_id(command)?;
         let read = is_read(kind);
         if !read {
             self.writer()?;
@@ -298,7 +264,7 @@ impl Context {
             "status" => Ok(
                 json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":schema::VERSION,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
-            "readArtworkExportPage" => self.durable(|context| records::read(context, command)),
+            "readArtworkExportPage" => records::read(self, command),
             "listArtworks"
             | "readArtworkRecentIndex"
             | "readGalleryPage"
@@ -341,6 +307,7 @@ impl Context {
         }
     }
     fn writer(&self) -> Result<()> {
+        self.owner()?;
         let epoch: String =
             self.db
                 .query_row("SELECT value FROM meta WHERE key='writerEpoch'", [], |r| {
@@ -351,6 +318,9 @@ impl Context {
         } else {
             Err(conflict("WRITER_EPOCH", "Workspace writer epoch is stale"))
         }
+    }
+    fn owner(&self) -> Result<&schema::Owner> {
+        self.owner.as_ref().ok_or_else(unavailable)
     }
     fn transaction<T>(&mut self, work: impl FnOnce(&mut Self) -> Result<T>) -> Result<T> {
         self.db.execute_batch("BEGIN IMMEDIATE")?;
@@ -386,8 +356,16 @@ impl Context {
     }
     fn shutdown(&mut self) -> Result<()> {
         self.db.execute_batch("PRAGMA wal_checkpoint(TRUNCATE)")?;
-        self.owner.release()
+        self.owner.as_mut().ok_or_else(unavailable)?.release()
     }
+}
+fn validate_operation_id(command: &Value) -> Result<()> {
+    if command.get("operationId").is_some_and(|id| {
+        id.as_str().is_none_or(|value| value.is_empty() || value.len() > 200)
+    }) {
+        return Err(invalid("A stable operation ID is required"));
+    }
+    Ok(())
 }
 fn unavailable() -> ApiError {
     ApiError::new(503, "STORAGE_UNAVAILABLE", "Workspace storage is closed")

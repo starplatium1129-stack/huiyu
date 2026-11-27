@@ -6,7 +6,7 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use futures_util::StreamExt;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use tower_http::services::ServeFile;
 mod extra;
 pub(crate) mod preview;
@@ -192,25 +192,23 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     } else {
         return StatusCode::NOT_FOUND.into_response();
     };
-    let content_root = state.config.content_root();
-    let compressed_root = if path.starts_with("/data/") {
-        &content_root
+    let fallback = if path.starts_with("/assets/") {
+        state.media_packs.as_ref().and_then(|packs| packs.portraits_assets_root())
+    } else if path.starts_with("/css/") {
+        Some(root.join("css"))
+    } else if path.starts_with("/src/assets/css/") {
+        Some(root.join("src/assets/css"))
     } else {
-        root
+        None
     };
-    let file = base.join(&relative);
-    let (base, file, metadata) = if let Some(metadata) = inside(&base, &file).await {
-        (base, file, metadata)
-    } else if path.starts_with("/assets/")
-        && let Some(pack_assets) = state
-            .media_packs
-            .as_ref()
-            .and_then(|packs| packs.portraits_assets_root())
-        && let Some(metadata) = inside(&pack_assets, &pack_assets.join(&relative)).await
-    {
-        let pack_file = pack_assets.join(&relative);
-        (pack_assets, pack_file, metadata)
-    } else {
+    let located = match Located::resolve(&base, &relative).await {
+        Some(located) => Some(located),
+        None => match fallback {
+            Some(base) => Located::resolve(&base, &relative).await,
+            None => None,
+        },
+    };
+    let Some(located) = located else {
         return StatusCode::NOT_FOUND.into_response();
     };
     if path == "/scene-showcase/manifest.json" {
@@ -236,7 +234,7 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
             .and_then(|value| value.to_str().ok())
             .is_some_and(|value| crate::remote_content::encoding_quality(value, "gzip") > 0.0);
         return showcase::serve(
-            base,
+            located.root,
             request.method() == Method::HEAD,
             request.headers().get("if-none-match").cloned(),
             refresh,
@@ -250,39 +248,56 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
             .find_map(|(key, value)| (key == "preview").then(|| value.parse::<u32>().ok()).flatten())
             .filter(|width| [560, 1120, 1680, 2240, 2800, 3360].contains(width))
     {
-        return preview::serve(base, file, width, request.method() == Method::HEAD,
-            request.headers().get("if-none-match").cloned()).await;
+        return preview::serve(located.file, located.metadata, width, request.method() == Method::HEAD,
+            request.headers().get("if-none-match").cloned(), false).await;
     }
-    let modified = metadata
+    let modified = located.metadata
         .modified()
         .ok()
         .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
         .map(|d| d.as_nanos())
         .unwrap_or(0);
-    let tag = format!("{:x}-{modified:x}", metadata.len());
+    let tag = format!("{:x}-{modified:x}", located.metadata.len());
     let condition = request.headers().get("if-none-match").cloned();
+    let media_type = (!crate::remote_content::is_private_asset_path(raw) && !path.starts_with("/tools/"))
+        .then(|| crate::remote_content::compressed_content_type(&relative)).flatten();
     if condition.is_some() {
         request.headers_mut().remove("if-modified-since");
     }
-    if let Some(response) = crate::remote_content::precompressed(
-        compressed_root,
-        &assets,
-        request.method(),
-        request.uri(),
-        request.headers(),
-    )
-    .await
-    {
-        return conditional(
-            response.map(|body| {
-                Body::from_stream(
-                    body.into_data_stream()
-                        .take_until(state.shutdown.clone().cancelled_owned()),
-                )
-            }),
-            &tag,
-            condition.as_ref(),
-        );
+    let compressed = match (media_type, located.metadata.modified()) {
+        (Some(_), Ok(modified)) => crate::remote_content::precompressed(
+            &located.root, &located.logical, modified, request.headers(),
+        ).await,
+        _ => None,
+    };
+    let (file, encoding) = compressed
+        .map(|(file, encoding)| (file, Some(encoding)))
+        .unwrap_or((located.file, None));
+    let validator = validator(&tag, encoding.unwrap_or("identity"));
+    // Only content-hashed `/_app/*` assets are immutable; mutable `/assets/*` and
+    // `/scene-showcase/*` rely on cheap pre-open ETag 304 validation so in-place
+    // replacements never serve stale images for a year.
+    let cache = if immutable {
+        "public, max-age=31536000, immutable"
+    } else {
+        "private, no-cache"
+    };
+    let headers = |response: &mut Response| {
+        let headers = response.headers_mut();
+        headers.insert("cache-control", HeaderValue::from_static(cache));
+        if media_type.is_some() {
+            headers.append("vary", HeaderValue::from_static("Accept-Encoding"));
+        }
+        if let (Some(encoding), Some(media_type)) = (encoding, media_type) {
+            headers.insert("content-encoding", HeaderValue::from_static(encoding));
+            headers.insert("content-type", HeaderValue::from_static(media_type));
+        }
+        headers.insert("etag", validator.parse().unwrap());
+    };
+    if matches_condition(condition.as_ref(), &validator, true) {
+        let mut response = StatusCode::NOT_MODIFIED.into_response();
+        headers(&mut response);
+        return response;
     }
     // tower-http provides streaming, Range/HEAD and conditional date handling;
     // it never buffers entire images in the gateway heap.
@@ -296,34 +311,45 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
                         .take_until(state.shutdown.clone().cancelled_owned()),
                 )
             });
-            response.headers_mut().insert(
-                "cache-control",
-                HeaderValue::from_static(if immutable {
-                    "public, max-age=31536000, immutable"
-                } else {
-                    "private, no-cache"
-                }),
-            );
-            conditional(response, &tag, condition.as_ref())
+            if response.status().is_success() || response.status() == StatusCode::NOT_MODIFIED {
+                headers(&mut response);
+            }
+            response
         }
         Err(_) => StatusCode::NOT_FOUND.into_response(),
     }
 }
 
-async fn inside(root: &Path, file: &Path) -> Option<std::fs::Metadata> {
-    let Ok(root) = tokio::fs::canonicalize(root).await else {
-        return None;
-    };
-    let Ok(file) = tokio::fs::canonicalize(file).await else {
-        return None;
-    };
-    if !file.starts_with(root) {
-        return None;
+struct Located {
+    root: PathBuf,
+    file: PathBuf,
+    logical: PathBuf,
+    metadata: std::fs::Metadata,
+}
+impl Located {
+    async fn resolve(root: &Path, name: &str) -> Option<Self> {
+        let logical = root.join(name);
+        let (root, file) = tokio::try_join!(
+            tokio::fs::canonicalize(root),
+            tokio::fs::canonicalize(&logical),
+        ).ok()?;
+        if !file.starts_with(&root) {
+            return None;
+        }
+        let metadata = tokio::fs::metadata(&file).await.ok()?;
+        metadata.is_file().then_some(Self { root, file, logical, metadata })
     }
-    tokio::fs::metadata(file)
-        .await
-        .ok()
-        .filter(|metadata| metadata.is_file())
+}
+
+fn validator(tag: &str, encoding: &str) -> String {
+    format!("W/\"{tag}-{encoding}\"")
+}
+
+fn matches_condition(condition: Option<&HeaderValue>, etag: &str, wildcard: bool) -> bool {
+    condition.and_then(|h| h.to_str().ok()).is_some_and(|value| value.split(',').any(|part| {
+        let part = part.trim();
+        (wildcard && part == "*") || part.trim_start_matches("W/") == etag.trim_start_matches("W/")
+    }))
 }
 
 fn conditional(mut response: Response, tag: &str, condition: Option<&HeaderValue>) -> Response {
@@ -335,15 +361,8 @@ fn conditional(mut response: Response, tag: &str, condition: Option<&HeaderValue
         .get("content-encoding")
         .and_then(|v| v.to_str().ok())
         .unwrap_or("identity");
-    let etag = format!("W/\"{tag}-{encoding}\"");
-    let fresh = condition
-        .and_then(|h| h.to_str().ok())
-        .is_some_and(|value| {
-            value.split(',').any(|part| {
-                part.trim() == "*"
-                    || part.trim().trim_start_matches("W/") == etag.trim_start_matches("W/")
-            })
-        });
+    let etag = validator(tag, encoding);
+    let fresh = matches_condition(condition, &etag, true);
     response.headers_mut().insert("etag", etag.parse().unwrap());
     if fresh {
         *response.status_mut() = StatusCode::NOT_MODIFIED;

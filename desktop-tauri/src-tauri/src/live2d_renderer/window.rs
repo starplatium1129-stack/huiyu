@@ -109,7 +109,7 @@ fn emit_stopped(app: Option<&RendererEvents>, reason: &str) {
 /// 渲染线程：消息循环（非阻塞）+ 命令处理 + 帧渲染。
 pub(crate) fn overlay_window_thread(
     state: Arc<Live2DOverlayState>,
-    environment: RendererEnvironment,
+    mut environment: RendererEnvironment,
 ) {
     let app = environment.events.as_ref();
     // DPI 感知：进程级 per-monitor v2。前端 live2dOverlayLayout 已把 overlay
@@ -150,15 +150,12 @@ pub(crate) fn overlay_window_thread(
     state.renderer_attached.store(true, Ordering::SeqCst);
     state.window_ready.store(true, Ordering::SeqCst);
     state.starting.store(false, Ordering::SeqCst);
+    state.startup_changed.notify_waiters();
+    if let Some(attached) = environment.attached.take() { let _ = attached.send(()); }
 
     state.fps_limit.store(frame_pacing::initial_fps(std::env::var("L2D_TARGET_FPS").ok().as_deref()), Ordering::Relaxed);
 
-    let mut ctx = if environment.prewarm && !state.shutdown.load(Ordering::Acquire) {
-        RenderContext::new().and_then(|mut ctx| {
-            ctx.ensure_surface(hwnd)?;
-            Ok(ctx)
-        }).map_err(|error| eprintln!("[live2d] prewarm: {error}")).ok()
-    } else { None };
+    let mut ctx: Option<RenderContext> = None;
     let mut last_frame = Instant::now();
     let mut next_frame = last_frame;
     let mut next_display_check = last_frame;
@@ -207,7 +204,7 @@ pub(crate) fn overlay_window_thread(
         // apply_frame runs on the IPC thread; close the narrow race where it read
         // model_ready just before Destroy and made the now-empty window visible.
         if ctx.is_none() && state.visible.swap(false, Ordering::SeqCst) {
-            unsafe { ShowWindow(hwnd, SW_HIDE); }
+            frame::hide_overlay(&state, hwnd);
         }
         // 每帧 poll 一次以驱动 wgpu 的 device lost 回调（非阻塞，开销极小）。
         // 不 poll 就永远发现不了 GPU reset / TDR / 休眠唤醒后的设备失效：原实现
@@ -252,19 +249,7 @@ pub(crate) fn overlay_window_thread(
                     let moved = followed.x != rect.x || followed.y != rect.y;
                     let sync_z_order = last_z_order_sync.elapsed() >= Duration::from_millis(250);
                     if (moved || sync_z_order) && state.revealed.load(Ordering::Acquire) && state.first_frame_ready.load(Ordering::Acquire) {
-                        let mut flags = SWP_NOACTIVATE | SWP_NOSIZE;
-                        if !sync_z_order { flags |= windows_sys::Win32::UI::WindowsAndMessaging::SWP_NOZORDER; }
-                        unsafe {
-                            SetWindowPos(
-                                hwnd,
-                                companion,
-                                followed.x,
-                                followed.y,
-                                0,
-                                0,
-                                flags,
-                            );
-                        }
+                        frame::place_overlay(&state, hwnd, companion, followed, sync_z_order);
                         if sync_z_order { last_z_order_sync = iteration_started; }
                     }
                     if moved {
@@ -308,6 +293,16 @@ pub(crate) fn overlay_window_thread(
             previous_pointer = pointer;
             // Keep the last presented image attached to the moving input window
             // at display cadence, even if model updates are capped to save power.
+            let mouth = f32::from_bits(state.last_mouth_level.load(Ordering::Relaxed));
+            if renderer.mouth_level != mouth {
+                renderer.mouth_level = mouth;
+                let mapped = renderer.profile.as_ref().and_then(|profile| profile.mouth_value(mouth))
+                    .map_or(0.0, |(_, value)| value);
+                state.last_mapped_mouth_value.store(mapped.to_bits(), Ordering::Relaxed);
+            }
+            if let Some(gaze) = state.take_gaze() {
+                renderer.gaze = gaze;
+            }
             let fps_limit = state.fps_limit.load(Ordering::Relaxed);
             let active = iteration_started < follow_until || iteration_started < pointer_active_until
                 || renderer.mouth_level > 0.01 || renderer.overlay_settler.is_some()
@@ -342,7 +337,7 @@ pub(crate) fn overlay_window_thread(
                             && !state.first_frame_ready.swap(true, Ordering::AcqRel) {
                             if state.revealed.load(Ordering::Acquire) {
                                 let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
-                                frame::place_overlay(&state, hwnd, companion, rect);
+                                frame::place_overlay(&state, hwnd, companion, rect, true);
                             }
                             if let Some(events) = app { let _ = events.emit("aics:live2d:first-frame", ()); }
                         }

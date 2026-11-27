@@ -1,5 +1,5 @@
 mod status;
-pub(super) use status::status;
+pub(super) use status::{StatusCache, status};
 use super::*;
 use generation::native::resources::{self, REMACRI_FILE, ULTRASHARP_FILE};
 use generation::native::{Plan, Settings};

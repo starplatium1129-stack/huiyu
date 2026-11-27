@@ -7,8 +7,11 @@ pub fn isolated_hidden() -> bool { isolated_profile().is_some() && std::env::arg
 /// A verified activation enables the new origin on the following application
 /// launch. Existing windows keep the legacy origin until their export completes.
 pub fn bundled(app: &AppHandle) -> bool {
-    let Some(state) = app.try_state::<crate::state::AppState>() else { return false; };
-    let file = state.paths.config_root.join("workspace-active.json");
+    app.try_state::<crate::state::AppState>().is_some_and(|state| state.bundled_ui)
+}
+
+pub(crate) fn read_activation(config_root: &std::path::Path) -> bool {
+    let file = config_root.join("workspace-active.json");
     let Ok(bytes) = std::fs::read(file) else { return false; };
     let Ok(value) = serde_json::from_slice::<serde_json::Value>(&bytes) else { return false; };
     value["formatVersion"] == 1 && value["bundledUi"] == true
@@ -29,7 +32,9 @@ pub fn source(app: &AppHandle, gateway: &str, pathname: &str) -> Result<WebviewU
 }
 
 pub fn native_origin(url: &tauri::Url) -> bool {
-    matches!(url.origin().ascii_serialization().as_str(), "http://tauri.localhost" | "https://tauri.localhost" | "tauri://localhost")
+    matches!(url.scheme(), "http" | "https")
+        && url.host_str() == Some("tauri.localhost") && url.port().is_none()
+        && url.username().is_empty() && url.password().is_none()
 }
 
 /// Native acceptance can target an isolated directory without touching the real

@@ -37,7 +37,7 @@ impl Identity {
     pub(super) fn check(&self, c: &Context) -> Result<()> {
         self.cancelled()?;
         c.writer()?;
-        c.owner.check()?;
+        c.owner()?.check()?;
         if self.root != c.root || self.workspace_id != c.workspace_id || self.epoch != c.epoch {
             return Err(conflict(
                 "WORKSPACE_IDENTITY",

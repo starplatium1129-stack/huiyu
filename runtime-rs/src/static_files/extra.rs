@@ -21,13 +21,7 @@ pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)
             .then(|| (state.config.tools_root(), relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/css/") {
-        let compiled = root.join("dist/css");
-        let base = if compiled.join(relative).is_file() {
-            compiled
-        } else {
-            root.join("css")
-        };
-        return Some((base, relative.into()));
+        return Some((root.join("dist/css"), relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/src/assets/css/") {
         return [
@@ -40,15 +34,7 @@ pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)
             "design/accessibility-and-responsive.css",
         ]
             .contains(&relative)
-            .then(|| {
-                let compiled = root.join("dist/src/assets/css");
-                let base = if compiled.join(relative).is_file() {
-                    compiled
-                } else {
-                    root.join("src/assets/css")
-                };
-                (base, relative.into())
-            });
+            .then(|| (root.join("dist/src/assets/css"), relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/scene-showcase") {
         if relative.contains(['\\', '%', '?', '#'])

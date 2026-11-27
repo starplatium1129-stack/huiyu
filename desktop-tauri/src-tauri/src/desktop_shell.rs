@@ -187,8 +187,15 @@ pub fn close_atelier(app: &AppHandle) {
         crate::maintenance::request_atelier_quit(app);
     } else if let Some(window) = app.get_webview_window("atelier") {
         if window.hide().is_ok() {
-            let _ = window.emit("aics:atelier-visibility", false);
+            crate::webview_memory::visibility(&window, false);
         }
+    }
+}
+
+pub fn publish_maximized(window: &tauri::WebviewWindow) {
+    if let Ok(maximized) = window.is_maximized() {
+        let previous = window.state::<AppState>().atelier_maximized.swap(maximized, Ordering::Relaxed);
+        if previous != maximized { let _ = window.emit("aics:maximized", maximized); }
     }
 }
 
@@ -202,13 +209,16 @@ pub fn remember_focus(app: &AppHandle, label: &str) {
     if let Some(shell) = app.try_state::<ShellState>() {
         shell.last_window.store(value, Ordering::Relaxed);
     }
+    if let Some(window) = app.get_webview_window(label) {
+        crate::webview_memory::refresh(&window);
+    }
     if value == 1 {
         let _ = app.emit_to("atelier", "aics:atelier-visibility", true);
     }
 }
 
 fn gateway_url(app: &AppHandle) -> String {
-    lock(&app.state::<AppState>().gateway_url).clone()
+    app.state::<AppState>().gateway_url()
 }
 
 pub fn focus_atelier(app: &AppHandle) {
@@ -218,7 +228,7 @@ pub fn focus_atelier(app: &AppHandle) {
     if let Some(window) = app.get_webview_window("atelier") {
         let _ = window.unminimize();
         if window.show().is_ok() {
-            let _ = window.emit("aics:atelier-visibility", true);
+            crate::webview_memory::visibility(&window, true);
         }
         let _ = window.set_focus();
     } else {

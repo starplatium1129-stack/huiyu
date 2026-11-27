@@ -226,9 +226,12 @@ impl Drop for Ticket {
     }
 }
 
+pub(super) fn family(input: &Value) -> &str {
+    input["family"].as_str().unwrap_or("anima")
+}
+
 pub(super) fn model(input: &Value) -> &str {
     input["modelId"]
         .as_str()
-        .or_else(|| input["family"].as_str())
-        .unwrap_or("anima")
+        .unwrap_or_else(|| family(input))
 }

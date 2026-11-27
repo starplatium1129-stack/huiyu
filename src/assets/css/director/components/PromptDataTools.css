@@ -5,7 +5,7 @@
     保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
    ============================================================ */
    /* Teleport 到 body 的恢复弹层不能靠 `.pb` 祖先作用域；类名直接命名空间化。 */
-   .pb-backup-overlay { @apply tw:fixed; inset:var(--desktop-chrome-height,0px) 0 0; z-index:var(--z-overlay); @apply tw:grid; grid-template-rows:minmax(0,1fr); place-items:center; @apply tw:p-s-4 tw:overflow-hidden; background:var(--art-backdrop); backdrop-filter:blur(10px); }
+   .pb-backup-overlay { @apply tw:fixed; inset:var(--desktop-chrome-height,0px) 0 0; z-index:var(--z-overlay); @apply tw:grid; grid-template-rows:minmax(0,1fr); place-items:center; @apply tw:p-s-4 tw:overflow-hidden; background:var(--art-backdrop); backdrop-filter:var(--glass-disabled, blur(10px)); }
    .pb-backup-card { display:flex; flex-direction:column; width:min(520px,100%); min-width:0; min-height:0; max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4)); overflow:hidden; @apply tw:p-s-5; border:1px solid var(--border-strong); @apply tw:rounded-xl; box-shadow:var(--shadow-lg); transform-origin:50% 42%; }
    .pb-backup-card h3 { flex:none; margin:0 0 var(--s-3); @apply tw:text-title-xs; }
    .pb-backup-body { min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; scroll-padding-block:var(--s-2); overflow-wrap:anywhere; }

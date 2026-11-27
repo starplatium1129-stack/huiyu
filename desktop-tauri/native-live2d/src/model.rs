@@ -44,6 +44,8 @@ pub struct MotionHandle(pub i64);
 /// Snapshot of one drawable after `Model::update`.
 #[derive(Clone, Debug, Default)]
 pub struct Drawable {
+    model_id: u64,
+    pub(crate) position_revision: u64,
     pub index: i32,
     pub vertex_count: usize,
     pub positions: Vec<[f32; 2]>,
@@ -81,6 +83,8 @@ pub struct Model {
     /// that users perceive as a "transparent box" around the character).
     /// Rendering-only: hit tests and content bounds are unaffected.
     hidden_drawables: Vec<i32>,
+    static_drawables: Vec<Drawable>,
+    drawable_frame: Vec<ffi::DrawableFrame>,
 }
 
 unsafe impl Send for Model {}
@@ -96,11 +100,17 @@ impl Model {
             return Err("l2d_model_create failed".to_string());
         }
         let id = NEXT_MODEL_ID.fetch_add(1, Ordering::Relaxed);
-        Ok(Model {
+        let count = unsafe { ffi::l2d_model_drawable_count(ptr).max(0) };
+        let mut model = Model {
             ptr,
             id,
             hidden_drawables: Vec::new(),
-        })
+            static_drawables: Vec::new(),
+            drawable_frame: vec![ffi::DrawableFrame::default(); count as usize],
+        };
+        model.static_drawables = (0..count).map(|index| model.drawable_static(index)).collect();
+        model.refresh_drawable_frame();
+        Ok(model)
     }
 
     /// Drawables in `ids` are dropped from the painted frame (opacity 0 and
@@ -190,13 +200,26 @@ impl Model {
         unsafe { ffi::l2d_model_get_parameter(self.ptr, id.as_ptr()) }
     }
 
+    pub fn set_parameter_by_index(&mut self, index: i32, value: f32, weight: f32) {
+        unsafe { ffi::l2d_model_set_parameter_by_index(self.ptr, index, value, weight) }
+    }
+
+    pub fn get_parameter_by_index(&self, index: i32) -> f32 {
+        unsafe { ffi::l2d_model_get_parameter_by_index(self.ptr, index) }
+    }
+
     /// TEMP DIAG: 把所有参数重置为 moc3 默认值。
     pub fn reset_all_parameters(&mut self) {
         unsafe { ffi::l2d_model_reset_all_parameters(self.ptr) }
     }
 
     pub fn update(&mut self, delta_time_seconds: f32) {
-        unsafe { ffi::l2d_model_update(self.ptr, delta_time_seconds) }
+        unsafe { ffi::l2d_model_update(self.ptr, delta_time_seconds) };
+        self.refresh_drawable_frame();
+    }
+
+    fn refresh_drawable_frame(&mut self) {
+        unsafe { ffi::l2d_model_drawable_frame(self.ptr, self.drawable_frame.as_mut_ptr(), self.drawable_frame.len()) }
     }
 
     pub fn canvas_width(&self) -> f32 {
@@ -225,20 +248,31 @@ impl Model {
         out
     }
 
-    /// Refresh a caller-owned drawable snapshot without reallocating each
-    /// positions/UV/index/mask vector on every frame.
+    /// Refresh a caller-owned snapshot. Static mesh attributes are copied
+    /// only when the model changes, and positions only when Core moves a mesh.
     pub fn drawables_into(&self, out: &mut Vec<Drawable>) {
-        let count = self.drawable_count().max(0) as usize;
-        out.truncate(count);
-        while out.len() < count {
-            out.push(Drawable::default());
-        }
+        let count = self.static_drawables.len();
+        out.resize_with(count, Drawable::default);
         for (index, drawable) in out.iter_mut().enumerate() {
-            self.drawable_at_into(index as i32, drawable);
-            if self.hidden_drawables.contains(&(index as i32)) {
-                drawable.visible = false;
-                drawable.opacity = 0.0;
+            if drawable.model_id != self.id {
+                drawable.clone_from(&self.static_drawables[index]);
             }
+            let frame = self.drawable_frame[index];
+            if drawable.position_revision != frame.position_revision {
+                let positions = unsafe {
+                    slice_from_ffi(ffi::l2d_model_drawable_positions(self.ptr, index as i32) as *const [f32; 2],
+                        drawable.vertex_count as i32)
+                };
+                drawable.positions.clear();
+                drawable.positions.extend_from_slice(positions);
+                drawable.position_revision = frame.position_revision;
+            }
+            let hidden = self.hidden_drawables.contains(&(index as i32));
+            drawable.visible = frame.visible != 0 && !hidden;
+            drawable.opacity = if hidden { 0.0 } else { frame.opacity };
+            drawable.render_order = frame.render_order;
+            drawable.multiply_color = frame.multiply_color;
+            drawable.screen_color = frame.screen_color;
         }
     }
 
@@ -281,54 +315,36 @@ impl Model {
         found.then_some((min, max))
     }
 
-    fn drawable_at_into(&self, index: i32, drawable: &mut Drawable) {
+    fn drawable_static(&self, index: i32) -> Drawable {
         unsafe {
             let vertex_count = ffi::l2d_model_drawable_vertex_count(self.ptr, index);
-            let index_count = ffi::l2d_model_drawable_index_count(self.ptr, index);
-            let positions_ptr = ffi::l2d_model_drawable_positions(self.ptr, index);
-            let uvs_ptr = ffi::l2d_model_drawable_uvs(self.ptr, index);
-            let indices_ptr = ffi::l2d_model_drawable_indices(self.ptr, index);
-            let mask_count = ffi::l2d_model_drawable_mask_count(self.ptr, index);
-            let masks_ptr = ffi::l2d_model_drawable_masks(self.ptr, index);
-            let mut multiply = [0f32; 4];
-            let mut screen = [0f32; 4];
-            ffi::l2d_model_drawable_multiply_color(self.ptr, index, multiply.as_mut_ptr());
-            ffi::l2d_model_drawable_screen_color(self.ptr, index, screen.as_mut_ptr());
-
-            let positions = slice_from_ffi(positions_ptr as *const [f32; 2], vertex_count);
-            let uvs = slice_from_ffi(uvs_ptr as *const [f32; 2], vertex_count);
+            let positions = slice_from_ffi(
+                ffi::l2d_model_drawable_positions(self.ptr, index) as *const [f32; 2], vertex_count);
+            let uvs = slice_from_ffi(
+                ffi::l2d_model_drawable_uvs(self.ptr, index) as *const [f32; 2], vertex_count);
             let vertex_count = positions.len().min(uvs.len());
             let indices = if vertex_count == 0 {
                 &[]
             } else {
-                slice_from_ffi(indices_ptr, index_count)
+                slice_from_ffi(ffi::l2d_model_drawable_indices(self.ptr, index),
+                    ffi::l2d_model_drawable_index_count(self.ptr, index))
             };
-            let masks = slice_from_ffi(masks_ptr, mask_count);
-
-            drawable.index = index;
-            drawable.vertex_count = vertex_count;
-            drawable.positions.resize(vertex_count, [0.0; 2]);
-            drawable
-                .positions
-                .copy_from_slice(&positions[..vertex_count]);
-            drawable.uvs.resize(vertex_count, [0.0; 2]);
-            drawable.uvs.copy_from_slice(&uvs[..vertex_count]);
-            drawable.indices.resize(indices.len(), 0);
-            drawable.indices.copy_from_slice(indices);
-            drawable.masks.resize(masks.len(), 0);
-            drawable.masks.copy_from_slice(masks);
-            drawable.opacity = ffi::l2d_model_drawable_opacity(self.ptr, index);
-            drawable.culling = ffi::l2d_model_drawable_culling(self.ptr, index) != 0;
-            drawable.texture_index =
-                u32::try_from(ffi::l2d_model_drawable_texture_index(self.ptr, index))
-                    .unwrap_or(u32::MAX);
-            drawable.visible = ffi::l2d_model_drawable_visible(self.ptr, index) != 0;
-            drawable.render_order = ffi::l2d_model_drawable_render_order(self.ptr, index);
-            drawable.color_blend = ffi::l2d_model_drawable_color_blend(self.ptr, index);
-            drawable.alpha_blend = ffi::l2d_model_drawable_alpha_blend(self.ptr, index);
-            drawable.multiply_color = multiply;
-            drawable.screen_color = screen;
-            drawable.inverted_mask = ffi::l2d_model_drawable_inverted_mask(self.ptr, index) != 0;
+            let masks = slice_from_ffi(ffi::l2d_model_drawable_masks(self.ptr, index),
+                ffi::l2d_model_drawable_mask_count(self.ptr, index));
+            Drawable {
+                model_id: self.id,
+                index,
+                vertex_count,
+                uvs: uvs[..vertex_count].to_vec(),
+                indices: indices.to_vec(),
+                masks: masks.to_vec(),
+                culling: ffi::l2d_model_drawable_culling(self.ptr, index) != 0,
+                texture_index: u32::try_from(ffi::l2d_model_drawable_texture_index(self.ptr, index)).unwrap_or(u32::MAX),
+                color_blend: ffi::l2d_model_drawable_color_blend(self.ptr, index),
+                alpha_blend: ffi::l2d_model_drawable_alpha_blend(self.ptr, index),
+                inverted_mask: ffi::l2d_model_drawable_inverted_mask(self.ptr, index) != 0,
+                ..Drawable::default()
+            }
         }
     }
 

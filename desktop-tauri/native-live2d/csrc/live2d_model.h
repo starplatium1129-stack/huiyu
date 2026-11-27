@@ -16,6 +16,15 @@ extern "C" {
 
 typedef struct l2d_model l2d_model;
 
+typedef struct l2d_drawable_frame {
+    uint64_t position_revision;
+    int32_t render_order;
+    int32_t visible;
+    float opacity;
+    float multiply_color[4];
+    float screen_color[4];
+} l2d_drawable_frame;
+
 
 /* Blend types as reported by Cubism Core (Live2DCubismCore.h). */
 #define L2D_COLOR_BLEND_NORMAL 0
@@ -45,6 +54,8 @@ int l2d_model_is_finished(l2d_model* m, int64_t handle);
 /* Parameters. */
 void l2d_model_set_parameter(l2d_model* m, const char* id, float value, float weight);
 float l2d_model_get_parameter(l2d_model* m, const char* id);
+void l2d_model_set_parameter_by_index(l2d_model* m, int index, float value, float weight);
+float l2d_model_get_parameter_by_index(l2d_model* m, int index);
 /* TEMP DIAG: reset every parameter to its moc3 default value. */
 void l2d_model_reset_all_parameters(l2d_model* m);
 
@@ -64,15 +75,11 @@ const float* l2d_model_drawable_positions(l2d_model* m, int index);
 const float* l2d_model_drawable_uvs(l2d_model* m, int index);
 const uint16_t* l2d_model_drawable_indices(l2d_model* m, int index);
 int l2d_model_drawable_index_count(l2d_model* m, int index);
-float l2d_model_drawable_opacity(l2d_model* m, int index);
+void l2d_model_drawable_frame(l2d_model* m, l2d_drawable_frame* out, size_t count);
 int l2d_model_drawable_culling(l2d_model* m, int index);
 int l2d_model_drawable_texture_index(l2d_model* m, int index);
-int l2d_model_drawable_visible(l2d_model* m, int index);
-int l2d_model_drawable_render_order(l2d_model* m, int index);
 int l2d_model_drawable_color_blend(l2d_model* m, int index);
 int l2d_model_drawable_alpha_blend(l2d_model* m, int index);
-void l2d_model_drawable_multiply_color(l2d_model* m, int index, float* rgba);
-void l2d_model_drawable_screen_color(l2d_model* m, int index, float* rgba);
 int l2d_model_drawable_mask_count(l2d_model* m, int index);
 const int* l2d_model_drawable_masks(l2d_model* m, int index);
 int l2d_model_drawable_inverted_mask(l2d_model* m, int index);

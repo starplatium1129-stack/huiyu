@@ -125,7 +125,7 @@
   background: color-mix(in srgb, var(--bg-deep) 70%, transparent);
   box-shadow: 0 10px 30px color-mix(in srgb, var(--bg-deep) 34%, transparent);
   @apply tw:text-muted;
-  backdrop-filter: blur(9px);
+  backdrop-filter: var(--glass-disabled, blur(9px));
   @apply tw:pointer-events-none;
 }
 
@@ -237,7 +237,7 @@
   @apply tw:text-muted tw:cursor-default;
   font: 650 var(--fs-mono-sm) var(--font-sans);
   @apply tw:text-ellipsis tw:whitespace-nowrap;
-  backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: var(--glass-disabled, blur(18px) saturate(140%));
   box-shadow: var(--shadow-glass-sm);
 }
 
@@ -282,7 +282,7 @@
   @apply tw:text-primary tw:cursor-pointer tw:text-left;
   transform: translateX(-50%);
   box-shadow: var(--shadow-glass-md);
-  backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: var(--glass-disabled, blur(18px) saturate(145%));
   transition: border-color var(--motion-hover) ease, transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease;
 }
 
@@ -327,7 +327,7 @@
   @apply tw:text-secondary;
   font: 600 var(--fs-mono-xs) var(--font-mono);
   @apply tw:leading-label tw:pointer-events-none;
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-disabled, blur(12px));
   box-shadow: var(--shadow-md);
 }
 @keyframes live2d-response {

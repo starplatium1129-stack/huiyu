@@ -12,7 +12,7 @@
   >
     <button v-if="desktopBridge" type="button" class="skip-link" :aria-expanded="petGestures.controlsOpen.value"
       @click="petGestures.controlsOpen.value = !petGestures.controlsOpen.value">桌宠菜单</button>
-    <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }">
+    <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }" v-glass-optics>
       <div class="companion-identity" aria-live="polite">
         <span>陪伴模式</span>
         <h1>与{{ currentCharacter.name }}相伴</h1>
@@ -303,6 +303,7 @@
 <script setup lang="ts">
 
 import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { glassOptics as vGlassOptics } from '@/utils/fluidGlassSurfaces'
 const CompanionPreferences = defineAsyncComponent(() => import('@/components/CompanionPreferences.vue'))
 const VoiceGlow = defineAsyncComponent(() => import('@/components/visual/VoiceGlow.vue'))
 const CompanionScreenWatch = defineAsyncComponent(() => import('@/components/CompanionScreenWatch.vue'))
@@ -318,9 +319,9 @@ import '@/assets/css/companion-surface.css'
 const loadCharacterPicker = () => import('@/components/CompanionCharacterPicker.vue')
 const CompanionDesktopFloat = defineAsyncComponent(() => import('@/components/CompanionDesktopFloat.vue'))
 const CompanionWorkspaceSettings = defineAsyncComponent(() => import('@/components/CompanionWorkspaceSettings.vue'))
+const StudioPopover = defineAsyncComponent(() => import('@/components/ui/StudioPopover.vue'))
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
 import { useCompanionInput } from '@/composables/chat/useCompanionInput'
 import { companionWindow } from '@/platform/desktop/capabilities'

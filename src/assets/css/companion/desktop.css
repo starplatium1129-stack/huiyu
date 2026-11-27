@@ -164,8 +164,8 @@ html.companion-desktop .companion-page .companion-stage {
   background: color-mix(in srgb, var(--art-scrim) 68%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
-  backdrop-filter: blur(14px) saturate(1.25);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(14px) saturate(1.25));
+  backdrop-filter: var(--glass-disabled, blur(14px) saturate(1.25));
   @apply tw:cursor-pointer;
   font: 700 var(--fs-label) var(--font-sans);
   transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease, border-color var(--motion-hover) ease;
@@ -197,8 +197,8 @@ html.companion-desktop .companion-page .companion-stage {
   background: color-mix(in srgb, var(--art-scrim) 92%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
-  -webkit-backdrop-filter: blur(16px) saturate(1.25);
-  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(16px) saturate(1.25));
+  backdrop-filter: var(--glass-disabled, blur(16px) saturate(1.25));
   animation: companionReminderIn .34s var(--ease-out) both;
 }
 .companion-float-reminder > span {

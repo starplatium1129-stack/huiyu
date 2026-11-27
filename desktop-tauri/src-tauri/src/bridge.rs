@@ -302,7 +302,7 @@ pub fn notify(app: AppHandle, title: String, body: String) {
 
 #[tauri::command]
 pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<String>) {
-    let gateway = state.gateway_url.recover_lock().clone();
+    let gateway = state.gateway_url();
     state.info(&format!("open atelier: path={pathname:?} gateway={gateway}"));
     crate::main_shared::open_atelier(&app, &gateway, pathname.as_deref());
 }
@@ -310,7 +310,7 @@ pub fn open_atelier(app: AppHandle, state: State<AppState>, pathname: Option<Str
 /// 打开/聚焦聊天窗（companion-chat）。由角色窗悬停胶囊、托盘与快捷键调用。
 #[tauri::command]
 pub fn open_companion_chat(app: AppHandle, state: State<AppState>) {
-    let gateway = state.gateway_url.recover_lock().clone();
+    let gateway = state.gateway_url();
     crate::main_shared::open_companion_chat(&app, &gateway);
 }
 
@@ -400,6 +400,7 @@ pub fn window_minimize(app: AppHandle) {
     if let Some(w) = app.get_webview_window("atelier") {
         if w.is_visible().unwrap_or(false) {
             let _ = w.minimize();
+            crate::webview_memory::refresh(&w);
         }
     }
 }
@@ -413,7 +414,7 @@ pub fn window_maximize_toggle(app: AppHandle) {
             } else {
                 let _ = w.maximize();
             }
-            let _ = w.emit("aics:maximized", w.is_maximized().unwrap_or(false));
+            crate::desktop_shell::publish_maximized(&w);
         }
     }
 }

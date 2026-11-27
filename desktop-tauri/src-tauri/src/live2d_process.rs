@@ -2,7 +2,7 @@
 use crate::mutex::RecoverMutex;
 use std::collections::HashMap;
 use std::io::{BufRead, BufReader, Write};
-use std::os::windows::process::CommandExt;
+use std::os::windows::{io::{AsHandle, AsRawHandle}, process::CommandExt};
 use std::path::PathBuf;
 use std::process::{Child, Command as ProcessCommand, Stdio};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
@@ -11,6 +11,7 @@ use std::time::{Duration, Instant};
 use serde_json::{json, Value};
 use tauri::{AppHandle, Emitter, Manager};
 use tokio::sync::oneshot;
+use windows_sys::Win32::{Foundation::WAIT_OBJECT_0, System::Threading::{INFINITE, WaitForSingleObject}};
 use crate::live2d_process_protocol::{ChildMessage, Command, Request, CHILD_ARGUMENT, MAX_MESSAGE_BYTES};
 use crate::live2d_renderer::{OverlayRect, PointerHitSample};
 #[path = "process_job.rs"]
@@ -64,7 +65,7 @@ pub struct RendererProcess {
     pid: u32,
     child: Mutex<Child>,
     _job: job::ProcessJob,
-    writer: mpsc::SyncSender<Vec<u8>>,
+    writer: Mutex<Option<mpsc::SyncSender<Vec<u8>>>>,
     pending: Mutex<HashMap<u64, oneshot::Sender<Reply>>>,
     pointer_hit: Mutex<Option<(PointerHitSample, Instant)>>,
     next_id: AtomicU64,
@@ -97,6 +98,7 @@ impl RendererProcess {
 
     pub fn stop(&self, reason: &str) {
         if self.stopped.swap(true, Ordering::SeqCst) { return; }
+        self.writer.recover_lock().take();
         let _ = self.child.recover_lock().kill();
         for (_, reply) in self.pending.recover_lock().drain() {
             let _ = reply.send(Err(format!("renderer stopped: {reason}")));
@@ -120,7 +122,7 @@ impl RendererProcess {
             pending.insert(id, tx);
             // Keep enqueue order with admission: nothing may reach the pipe after
             // Shutdown and race its final reply by writing to the closed child.
-            if self.writer.try_send(bytes).is_err() {
+            if !self.writer.recover_lock().as_ref().is_some_and(|writer| writer.try_send(bytes).is_ok()) {
                 pending.remove(&id);
                 if is_shutdown { self.shutdown_requested.store(false, Ordering::SeqCst); }
                 return Err("renderer request queue unavailable".into());
@@ -179,6 +181,15 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
         Ok(job) => job,
         Err(error) => { let _ = child.kill(); let _ = child.wait(); return Err(format!("attach renderer job: {error}")); }
     };
+    // A second owned process handle can wait without locking Child against kill().
+    let exit_handle = match child.as_handle().try_clone_to_owned() {
+        Ok(handle) => handle,
+        Err(error) => {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err(format!("duplicate renderer process handle: {error}"));
+        }
+    };
     let mut stdin = child.stdin.take().ok_or("renderer stdin unavailable")?;
     let stdout = child.stdout.take().ok_or("renderer stdout unavailable")?;
     let (writer, queued) = mpsc::sync_channel::<Vec<u8>>(MAX_PENDING);
@@ -186,20 +197,17 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
     *EVENT_GENERATION.recover_lock() = generation;
     let process = Arc::new(RendererProcess {
         generation,
-        pid: child.id(), child: Mutex::new(child), _job: job, writer,
+        pid: child.id(), child: Mutex::new(child), _job: job, writer: Mutex::new(Some(writer)),
         pending: Mutex::new(HashMap::new()), next_id: AtomicU64::new(1),
         pointer_hit: Mutex::new(None),
         stopped: AtomicBool::new(false), shutdown_requested: AtomicBool::new(false), emit,
     });
-    let writing = process.clone();
+    let writing = Arc::downgrade(&process);
     std::thread::spawn(move || {
-        while !writing.stopped.load(Ordering::SeqCst) {
-            match queued.recv_timeout(Duration::from_millis(100)) {
-                Ok(bytes) => if stdin.write_all(&bytes).and_then(|_| stdin.flush()).is_err() {
-                    writing.stop("renderer stdin disconnected"); break;
-                },
-                Err(mpsc::RecvTimeoutError::Timeout) => continue,
-                Err(_) => break,
+        while let Ok(bytes) = queued.recv() {
+            if stdin.write_all(&bytes).and_then(|_| stdin.flush()).is_err() {
+                if let Some(process) = writing.upgrade() { process.stop("renderer stdin disconnected"); }
+                break;
             }
         }
     });
@@ -239,22 +247,35 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
         }
     });
     let waiting = process.clone();
-    std::thread::spawn(move || loop {
-        let status = waiting.child.recover_lock().try_wait();
-        match status {
-            Ok(Some(_)) => {
-                // A clean Shutdown writes its reply immediately before exiting.
-                // The reader must drain that pipe before EOF rejects leftovers.
-                if !waiting.shutdown_requested.load(Ordering::SeqCst) {
-                    waiting.stop("renderer process exited");
-                }
-                break;
-            }
-            Err(_) => { waiting.stop("renderer process wait failed"); break; }
-            Ok(None) => std::thread::sleep(Duration::from_millis(30)),
+    std::thread::spawn(move || {
+        let signaled = unsafe { WaitForSingleObject(exit_handle.as_raw_handle() as _, INFINITE) } == WAIT_OBJECT_0;
+        if !signaled {
+            waiting.stop("renderer process wait failed");
+            return;
+        }
+        let _ = waiting.child.recover_lock().wait();
+        // A clean shutdown writes its reply immediately before exiting. Let
+        // the stdout reader drain that reply before it settles pending calls.
+        if !waiting.shutdown_requested.load(Ordering::SeqCst) {
+            waiting.stop("renderer process exited");
         }
     });
     Ok(Starting { process, accepted: false })
+}
+
+pub(crate) fn release_hidden() {
+    let Some(process) = current() else { return; };
+    let id = process.next_id.fetch_add(1, Ordering::Relaxed);
+    let Ok(mut bytes) = serde_json::to_vec(&Request { id, command: Command::Destroy }) else { return; };
+    bytes.push(b'\n');
+    // Submit before returning to the window dispatcher, so a rapid reopen
+    // cannot queue a new model ahead of this unload. No reply slot is needed.
+    let queued = {
+        let _pending = process.pending.recover_lock();
+        if process.stopped.load(Ordering::Acquire) || process.shutdown_requested.load(Ordering::Acquire) { return; }
+        process.writer.recover_lock().as_ref().is_some_and(|writer| writer.try_send(bytes).is_ok())
+    };
+    if !queued { process.stop("unable to release the hidden renderer"); }
 }
 
 pub fn current() -> Option<Arc<RendererProcess>> {

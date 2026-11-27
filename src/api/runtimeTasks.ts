@@ -1,12 +1,14 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
-import { runtimeTasksEnabled, runtimeTaskError, runtimeTaskActiveCount, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeTaskActiveCount, pendingTaskRequests, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks, hasRuntimeTaskSession, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
 import { downloadBlob } from '../utils/downloadBlob'
 import { rememberWorkspaceMedia, workspaceMediaAuthority, assertWorkspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
+import { watch } from 'vue'
+import { observeWindowVisibility } from '../platform/windowVisibility'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord, TaskSummary } from '../../types/tasks'
 
@@ -303,7 +305,9 @@ export async function downloadTaskMedia(url: string, filename = '绘遇结果', 
 export function startRuntimeTaskPolling(): () => void {
   let timer: number | undefined
   let interval = 0
+  let visible = !document.hidden
   let pending: AbortController | undefined
+  const working = () => !!(runtimeTaskActiveCount.value || pendingTaskRequests.value.length)
   function stopReading() {
     window.clearInterval(timer)
     timer = undefined
@@ -319,22 +323,22 @@ export function startRuntimeTaskPolling(): () => void {
     finally {
       if (pending === current) {
         pending = undefined
-        if (document.hidden && !runtimeTaskActiveCount.value) stopReading()
+        if (!visible && !working()) stopReading()
       }
     }
   }
-  function reconcile() {
-    if ((document.hidden && !runtimeTaskActiveCount.value) || !runtimeTasksEnabled.value || getDesktopRuntime().connection !== 'ready') {
+  function reconcile(immediate = false) {
+    if ((!visible && !working()) || !runtimeTasksEnabled.value || getDesktopRuntime().connection !== 'ready') {
       stopReading()
       return
     }
-    const nextInterval = document.hidden ? 8000 : 2500
+    const nextInterval = !visible ? 8000 : working() ? 2500 : 20000
     if (timer === undefined || interval !== nextInterval) {
       window.clearInterval(timer)
       timer = window.setInterval(refresh, nextInterval)
       interval = nextInterval
     }
-    void refresh()
+    if (immediate) void refresh()
   }
   const unsubscribe = onDesktopRuntime(state => {
     runtimeTasksEnabled.value = hasRuntimeTasks()
@@ -343,14 +347,25 @@ export function startRuntimeTaskPolling(): () => void {
     const changedWorkspace = Boolean(workspace && activeWorkspace && workspace !== activeWorkspace)
     if (changedWorkspace) { resetRuntimeTaskWorkspace(); readEpoch = ''; readRevision = 0 }
     if (workspace) activeWorkspace = workspace
-    if (activeEpoch !== next || changedWorkspace) {
+    const changed = activeEpoch !== next || changedWorkspace
+    if (changed) {
       activeEpoch = next
       activeRead++
       stopReading()
       if (!runtimeTasksEnabled.value) clearRuntimeTasks()
     }
-    reconcile()
+    reconcile(changed || timer === undefined)
   })
-  document.addEventListener('visibilitychange', reconcile)
-  return () => { unsubscribe(); document.removeEventListener('visibilitychange', reconcile); stopReading() }
+  const stopVisibility = observeWindowVisibility(value => { visible = value; reconcile(value) })
+  const stopActivity = watch(working, active => reconcile(active))
+  const stopSubmissions = watch(() => pendingTaskRequests.value.length, (count, previous) => {
+    if (count > previous) reconcile(true)
+  })
+  const onFocus = () => { if (visible) reconcile(true) }
+  window.addEventListener('focus', onFocus)
+  return () => {
+    unsubscribe(); stopVisibility(); stopActivity(); stopSubmissions()
+    window.removeEventListener('focus', onFocus)
+    stopReading()
+  }
 }

@@ -49,10 +49,10 @@ pub fn texture_dimensions(width: u32, height: u32, scale: u32) -> (u32, u32) {
     ((width / divisor).max(1), (height / divisor).max(1))
 }
 
-/// Hidden windows wake for commands immediately, or every 100 ms to pump Win32 messages.
+/// Hidden windows wake for commands immediately, or every 250 ms to pump Win32 messages.
 /// Disconnection is handled by the owning loop's existing try_recv/stopped path.
 pub fn wait<T>(commands: &Receiver<T>, next_tick: Option<Instant>) -> Option<T> {
-    let timeout = next_tick.map_or(Duration::from_millis(100), |deadline| {
+    let timeout = next_tick.map_or(Duration::from_millis(250), |deadline| {
         deadline.saturating_duration_since(Instant::now())
     });
     commands.recv_timeout(timeout).ok()

@@ -13,7 +13,7 @@
   @apply tw:rounded-xl;
   background: color-mix(in srgb, var(--bg-deep) 80%, transparent);
   box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(18px);
+  backdrop-filter: var(--glass-disabled, blur(18px));
 }
 
 .companion-page .companion-bubbles {

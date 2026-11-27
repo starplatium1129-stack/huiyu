@@ -2,6 +2,7 @@ use std::fs::{self, File};
 use std::io::{BufReader, Read, Write};
 use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicU64, Ordering};
+use std::sync::{mpsc, OnceLock};
 use std::time::UNIX_EPOCH;
 
 use image::RgbaImage;
@@ -59,9 +60,42 @@ fn write(path: &Path, image: &RgbaImage) {
     if result.is_err() { let _ = fs::remove_file(temporary); }
 }
 
-fn decode(source: &Path, scale: u32, root: Option<&Path>) -> Result<RgbaImage, String> {
+fn cleanup_stale_tmp(root: &Path) {
+    let Ok(entries) = fs::read_dir(root) else { return; };
+    let own_marker = format!(".{}.", std::process::id());
+    for entry in entries.flatten() {
+        let path = entry.path();
+        if path.extension().and_then(|e| e.to_str()) == Some("tmp")
+            && !path.file_name().and_then(|n| n.to_str()).is_some_and(|n| n.contains(&own_marker))
+        {
+            let _ = fs::remove_file(path);
+        }
+    }
+}
+
+fn write_behind(path: PathBuf, image: RgbaImage) {
+    const MAX_CACHED_IMAGE_BYTES: usize = 64 * 1024 * 1024;
+    if image.as_raw().len() > MAX_CACHED_IMAGE_BYTES { return; }
+    type ImageWrite = (PathBuf, RgbaImage);
+    static WRITER: OnceLock<Option<mpsc::SyncSender<ImageWrite>>> = OnceLock::new();
+    let initial_root = path.parent().map(Path::to_path_buf);
+    if let Some(sender) = WRITER.get_or_init(|| {
+        if let Some(root) = initial_root { cleanup_stale_tmp(&root); }
+        let (sender, receiver) = mpsc::sync_channel::<ImageWrite>(8);
+        std::thread::Builder::new().name("live2d-texture-cache".into()).spawn(move || {
+            while let Ok((path, image)) = receiver.recv() {
+                write(&path, &image);
+            }
+        }).ok().map(|_| sender)
+    }) {
+        // The cache is optional. Skip a write if the bounded queue is full.
+        let _ = sender.try_send((path, image));
+    }
+}
+
+fn decode(source: &Path, scale: u32, root: Option<&Path>) -> Result<(RgbaImage, Option<PathBuf>), String> {
     let cached = fingerprint(source, scale, root);
-    if let Some(image) = cached.as_deref().and_then(read) { return Ok(image); }
+    if let Some(image) = cached.as_deref().and_then(read) { return Ok((image, None)); }
     let image = image::open(source).map_err(|error| format!("open texture {}: {error}", source.display()))?.into_rgba8();
     let (width, height) = super::frame_pacing::texture_dimensions(image.width(), image.height(), scale);
     if width > MAX_DIMENSION || height > MAX_DIMENSION {
@@ -71,10 +105,8 @@ fn decode(source: &Path, scale: u32, root: Option<&Path>) -> Result<RgbaImage, S
         image::imageops::resize(&image, width, height, image::imageops::FilterType::Lanczos3)
     } else { image };
     // An asset can be replaced while its previous bytes are decoding.
-    if let Some(path) = cached.filter(|path| fingerprint(source, scale, root).as_ref() == Some(path)) {
-        write(&path, &image);
-    }
-    Ok(image)
+    let cached = cached.filter(|path| fingerprint(source, scale, root).as_ref() == Some(path));
+    Ok((image, cached))
 }
 
 /// Keep upload order and bound the number of decoded textures held at once.
@@ -83,7 +115,7 @@ pub(super) fn load(
     textures: &[String],
     scale: u32,
     cache: Option<&Path>,
-    mut consume: impl FnMut(RgbaImage),
+    mut consume: impl FnMut(&RgbaImage),
 ) -> Result<(), String> {
     let workers = std::thread::available_parallelism().map_or(1, |parallelism| parallelism.get().min(4));
     for group in textures.chunks(workers) {
@@ -94,7 +126,10 @@ pub(super) fn load(
             let mut outcome = Ok(());
             for job in jobs {
                 match job.join().map_err(|_| "Live2D texture decoding stopped".to_owned()).and_then(|result| result) {
-                    Ok(image) if outcome.is_ok() => consume(image),
+                    Ok((image, path)) if outcome.is_ok() => {
+                        consume(&image);
+                        if let Some(path) = path { write_behind(path, image); }
+                    }
                     Ok(_) => {}
                     Err(error) => outcome = Err(error),
                 }

@@ -1,4 +1,4 @@
-"""Calibrated TeaCache for pinned Anima/Cosmos, using per-call instance wrappers.
+"""Calibrated TeaCache for pinned Anima/Cosmos, using task-owned instance wrappers.
 
 TeaCache algorithm: https://github.com/ali-vilab/TeaCache (Apache-2.0).
 The built-in polynomial and accumulation policy are adapted from CocyNoric's
@@ -89,11 +89,11 @@ def same_inputs(conditioning, padding, lane):
         return False
     if conditioning.device != padding.device or any(tensor.has_names() for pair in pairs for tensor in pair):
         return all(bool(torch.equal(current, previous)) for current, previous in pairs)
-    # Pinned CUDA equal uses eq(...).all().item(); keep both exact comparisons but
-    # combine their device scalars before synchronizing with the host once.
+    # Pinned CUDA equal uses eq(...).all().item(); return the combined device
+    # scalar so the caller can read it alongside the proxy and residual guards.
     # https://github.com/pytorch/pytorch/blob/v2.8.0/aten/src/ATen/native/cuda/Equal.cpp
     equal = (conditioning == lane["conditioning"]).all() & (padding == lane["padding"]).all()
-    return bool(equal.item())
+    return equal
 
 
 class TeaCacheController:
@@ -108,165 +108,215 @@ class TeaCacheController:
         if self.local_guard and local_tools is None:
             raise ValueError("Local cache requires the bundled local metric")
         self.lanes, self.samples, self.model = {}, [], None
+        self._active = None
+        self._originals, self._blocks = [], ()
+        self._pending_residuals = {}
         self.stats = dict(fullComputes=0, skippedComputes=0, skippedBlocks=0, resets=0, nonfinite=0)
         if self.local_guard:
             self.stats.update(localChecks=0, localRiskRejects=0)
 
     def clear(self):
         self.lanes.clear()
+        self._pending_residuals.clear()
+        self._active = None
+        for owner, original, owned in reversed(self._originals):
+            if owned:
+                owner.forward = original
+            else:
+                del owner.forward
+        self._originals.clear()
+        self._blocks = ()
         self.model = None
 
-    def _lane(self, model, branch, step, total, timestep, hidden, conditioning, padding):
-        if self.model is not model:
+    def finish(self):
+        """Drain final finite guards before releasing sampling state/publishing output."""
+        import torch
+        if self._pending_residuals:
+            checks = torch.stack(tuple(self._pending_residuals.values()))
+            self.stats["nonfinite"] += len(self._pending_residuals) - checks.count_nonzero().item()
+            self._pending_residuals.clear()
+
+    def _bind(self, model):
+        self.clear()
+        blocks = tuple(model.transformer_blocks)
+        if not blocks or any(getattr(block, name, None) is not None for block in blocks for name in ("before_proj", "after_proj")):
+            raise ValueError("TeaCache requires the pinned ordinary Cosmos transformer block stack")
+        self.model, self._blocks = model, blocks
+        try:
+            for index, block in enumerate(blocks):
+                registry = getattr(block, "_diffusers_hook", None)
+                hook = registry.get_hook("group_offloading") if registry is not None else None
+                # Keep Diffusers' onload outside this wrapper; the first norm
+                # needs the active group's weights. These hooks live for a job.
+                owner = hook.fn_ref if hook is not None else block
+                original = owner.forward
+                self._originals.append((owner, original, "forward" in owner.__dict__))
+                owner.forward = self._wrap_block(index, original)
+        except BaseException:
             self.clear()
-            self.model = model
+            raise
+
+    @staticmethod
+    def _new_lane(run):
+        return dict(shape=run["shape"], step=run["step"], timestep=run["timestep"],
+                    conditioning=snapshot(run["conditioning"]), padding=snapshot(run["padding"]),
+                    proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
+
+    def _start_block(self, hidden, embedded, temb, extra, run):
+        import torch
+        branch, step, total, timestep = (run[key] for key in ("branch", "step", "total", "timestep"))
         lane = self.lanes.get(branch)
-        shape = (tuple(hidden.shape), str(hidden.dtype), str(hidden.device), total)
-        valid = (lane is not None and lane["shape"] == shape and step == lane["step"] + 1
-                 and math.isfinite(timestep) and timestep < lane["timestep"]
-                 and same_inputs(conditioning, padding, lane))
-        if not valid:
-            if lane is not None:
-                self.stats["resets"] += 1
-            lane = dict(shape=shape, conditioning=snapshot(conditioning), padding=snapshot(padding),
-                        proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
+        compatible = (lane is not None and lane["shape"] == run["shape"] and step == lane["step"] + 1
+                      and math.isfinite(timestep) and timestep < lane["timestep"])
+        equal = same_inputs(run["conditioning"], run["padding"], lane) if compatible else False
+        norm_input = hidden + extra if extra is not None else hidden
+        proxy = self._blocks[0].norm1(norm_input, embedded, temb)[0]
+        safe = torch.isfinite(proxy).all() & torch.isfinite(hidden).all()
+        pending = self._pending_residuals.pop(branch, None)
+        change = local_change = None
+        observations = [safe.float()]
+        equal_index = len(observations) if isinstance(equal, torch.Tensor) else None
+        if equal_index is not None:
+            observations.append(equal.to(device=safe.device, dtype=torch.float32))
+        pending_index = len(observations) if pending is not None else None
+        if pending_index is not None:
+            observations.append(pending.to(device=safe.device, dtype=torch.float32))
+        change_index = None
+        if compatible and (equal_index is not None or equal) and lane["proxy"] is not None:
+            change_index = len(observations)
+            if self.local_guard:
+                observations.extend(self.local_tools.relative_changes(proxy, lane["proxy"]).unbind())
+            else:
+                metric = builtin_change if self.builtin else _relative_l1_tensor
+                observations.append(metric(proxy, lane["proxy"]))
+        # Transfer conditions, prior residual finiteness and the current proxy
+        # together. No residual scalar needs to block the previous branch.
+        values = torch.stack(observations).cpu().tolist()
+        same = bool(values[equal_index]) if equal_index is not None else equal
+        if not same:
+            self.stats["resets"] += int(lane is not None)
+            lane = self._new_lane(run)
             self.lanes[branch] = lane
-        lane.update(step=step, timestep=timestep)
-        return lane
+        else:
+            lane.update(step=step, timestep=timestep)
+        run["lane"] = lane
+        if pending_index is not None and not values[pending_index]:
+            self.stats["nonfinite"] += 1
+            lane["residual"] = None
+        safe = bool(values[0]) and math.isfinite(timestep)
+        if safe and same and change_index is not None:
+            change = values[change_index]
+            change = change if math.isfinite(change) else None
+            if self.local_guard:
+                self.stats["localChecks"] += 1
+                local_change = values[change_index + 1]
+                local_change = local_change if math.isfinite(local_change) else None
+        run.update(proxy=proxy if safe else None, change=change, local_change=local_change)
+        if not safe or (lane["proxy"] is not None and (change is None or (self.local_guard and local_change is None))):
+            self.stats["nonfinite"] += int(not self.builtin or not safe)
+            lane.update(proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
+        estimate = None
+        if change is not None and not self.collect:
+            estimate = builtin_estimate(change) if self.builtin else estimate_change(self.profile, change, step, total)
+        phase = phase_index(step, total)
+        phase_changed = self.profile is not None and self.profile["schemaVersion"] in (2, 3) and lane.get("phase") != phase
+        lane["phase"] = phase
+        accumulated = lane["accumulated"] + estimate if estimate is not None else math.inf
+        run["skip"] = (not self.collect and 0 < step < total - 1
+            and not phase_changed and lane["residual"] is not None and estimate is not None
+            and accumulated < self.threshold and (self.builtin or lane["skips"] < self.profile["maxConsecutiveSkips"]))
+        local_accumulated = math.inf
+        if self.local_guard and not self.collect:
+            local_estimate = (estimate_change(self.profile, local_change, step, total, "localPhaseEnvelopes")
+                if local_change is not None else None)
+            if local_estimate is not None:
+                local_accumulated = lane["local_accumulated"] + local_estimate
+            local_ok = local_accumulated < self.profile["localThreshold"]
+            self.stats["localRiskRejects"] += int(run["skip"] and not local_ok)
+            run["skip"] = run["skip"] and local_ok
+        if run["skip"]:
+            lane.update(accumulated=accumulated, local_accumulated=local_accumulated, skips=lane["skips"] + 1)
+            self.stats["skippedComputes"] += 1
+            self.stats["skippedBlocks"] += len(self._blocks)
+        else:
+            # Pinned Cosmos uses out-of-place residual additions.
+            run["input"] = hidden
+            lane.update(accumulated=0.0, local_accumulated=0.0, skips=0)
+            self.stats["fullComputes"] += 1
+
+    def _end_block(self, result, run):
+        import torch
+        lane = run["lane"]
+        residual_change = local_residual_change = None
+        if not run["skip"]:
+            residual = result - run["input"]
+            if self.builtin and run["proxy"] is not None:
+                lane["residual"] = residual
+                self._pending_residuals[run["branch"]] = torch.isfinite(residual).all()
+            elif run["proxy"] is not None and finite_tensor(residual):
+                if self.collect and lane["residual"] is not None:
+                    if self.local_guard:
+                        residual_change, local_residual_change = self.local_tools.relative_changes(residual, lane["residual"]).cpu().tolist()
+                        if not all(math.isfinite(value) for value in (residual_change, local_residual_change)):
+                            residual_change = local_residual_change = None
+                    else:
+                        residual_change = relative_l1(residual, lane["residual"])
+                    if residual_change is None:
+                        self.stats["nonfinite"] += 1
+                lane["residual"] = residual
+            else:
+                self.stats["nonfinite"] += 1
+                lane["residual"] = None
+        lane["proxy"] = run["proxy"]
+        if self.collect:
+            sample = {name: run[name] for name in ("branch", "step", "total", "timestep")}
+            sample.update(proxyRelativeL1=run["change"], residualRelativeL1=residual_change)
+            if self.local_guard:
+                sample.update(localProxyRelativeL1=run["local_change"], localResidualRelativeL1=local_residual_change)
+            self.samples.append(sample)
+
+    def _wrap_block(self, index, original):
+        def forward(hidden, encoder, embedded, temb, rotary, extra, mask, control):
+            run = self._active
+            if run is None:
+                return original(hidden, encoder, embedded, temb, rotary, extra, mask, control)
+            run["visited"] += 1
+            if index == 0:
+                self._start_block(hidden, embedded, temb, extra, run)
+            if run["skip"]:
+                result = hidden + run["lane"]["residual"] if index == 0 else hidden
+            else:
+                result = original(hidden, encoder, embedded, temb, rotary, extra, mask, control)
+            if index == len(self._blocks) - 1:
+                self._end_block(result, run)
+            return result
+        return forward
 
     def call(self, model, *, branch, step, total, timestep_value, **kwargs):
-        """Run stock model prep/head; skip the real attention/MLP stack when safe."""
+        """Run stock prep/head; reuse a finite residual when the proxy permits."""
         import torch
         if torch.is_grad_enabled() or getattr(model, "gradient_checkpointing", False):
             raise ValueError("TeaCache requires inference/no-grad with gradient checkpointing disabled")
-        blocks = list(model.transformer_blocks)
-        if not blocks or any(getattr(block, name, None) is not None for block in blocks for name in ("before_proj", "after_proj")):
-            raise ValueError("TeaCache requires the pinned ordinary Cosmos transformer block stack")
         if kwargs.get("block_controlnet_hidden_states") is not None or kwargs.get("condition_mask") is not None:
             raise ValueError("TeaCache calibration does not support ControlNet/condition-mask transformer inputs")
-        lane = self._lane(model, branch, step, total, float(timestep_value), kwargs["hidden_states"],
-                          kwargs["encoder_hidden_states"], kwargs["padding_mask"])
-        originals = []
-        for block in blocks:
-            registry = getattr(block, "_diffusers_hook", None)
-            hook = registry.get_hook("group_offloading") if registry is not None else None
-            # Pinned Diffusers hook slots keep onload outside our temporary
-            # wrapper: Tea's first norm must already have its CUDA weights.
-            # No prefetch is used, so skipped blocks cannot strand another group.
-            owner = hook.fn_ref if hook is not None else block
-            originals.append((owner, owner.forward, "forward" in owner.__dict__))
-        execution = dict(skip=False, input=None, proxy=None, change=None, local_change=None, visited=0)
-
-        def wrap(index, original):
-            def forward(hidden, encoder, embedded, temb, rotary, extra, mask, control):
-                execution["visited"] += 1
-                if index == 0:
-                    norm_input = hidden + extra if extra is not None else hidden
-                    proxy = blocks[0].norm1(norm_input, embedded, temb)[0]
-                    safe = torch.isfinite(proxy).all() & torch.isfinite(hidden).all()
-                    change, local_change = None, None
-                    if lane["proxy"] is None:
-                        safe = bool(safe.item())
-                    else:
-                        # Keep both observations distinct: finite tensors can still
-                        # overflow the metric. Transfer their float32 scalars together.
-                        if self.local_guard:
-                            changes = self.local_tools.relative_changes(proxy, lane["proxy"])
-                            safe, change, local_change = torch.cat((safe.float().reshape(1), changes)).cpu().tolist()
-                            self.stats["localChecks"] += 1
-                        else:
-                            metric = builtin_change if self.builtin else _relative_l1_tensor
-                            safe, change = torch.stack((safe.float(), metric(proxy, lane["proxy"]))).cpu().tolist()
-                    safe = bool(safe) and math.isfinite(float(timestep_value))
-                    change = change if safe and change is not None and math.isfinite(change) else None
-                    local_change = local_change if safe and local_change is not None and math.isfinite(local_change) else None
-                    # norm1 returns newly allocated normalized values; only
-                    # this controller sees this invocation's output.
-                    execution.update(proxy=proxy if safe else None, change=change, local_change=local_change)
-                    if not safe or (lane["proxy"] is not None and (change is None or (self.local_guard and local_change is None))):
-                        # A zero/overflowed metric forces full computation; only
-                        # nonfinite activations invalidate a built-in-cache job.
-                        self.stats["nonfinite"] += int(not self.builtin or not safe)
-                        lane.update(proxy=None, residual=None, accumulated=0.0, local_accumulated=0.0, skips=0)
-                    estimate = None
-                    if change is not None and not self.collect:
-                        estimate = builtin_estimate(change) if self.builtin else estimate_change(self.profile, change, step, total)
-                    phase = phase_index(step, total)
-                    phase_changed = self.profile is not None and self.profile["schemaVersion"] in (2, 3) and lane.get("phase") != phase
-                    lane["phase"] = phase
-                    accumulated = lane["accumulated"] + estimate if estimate is not None else math.inf
-                    execution["skip"] = (not self.collect and 0 < step < total - 1
-                        and not phase_changed and lane["residual"] is not None and estimate is not None
-                        and accumulated < self.threshold
-                        and (self.builtin or lane["skips"] < self.profile["maxConsecutiveSkips"]))
-                    local_accumulated = math.inf
-                    if self.local_guard and not self.collect:
-                        local_estimate = (estimate_change(self.profile, local_change, step, total, "localPhaseEnvelopes")
-                            if local_change is not None else None)
-                        if local_estimate is not None:
-                            local_accumulated = lane["local_accumulated"] + local_estimate
-                        local_ok = local_accumulated < self.profile["localThreshold"]
-                        self.stats["localRiskRejects"] += int(execution["skip"] and not local_ok)
-                        execution["skip"] = execution["skip"] and local_ok
-                    if execution["skip"]:
-                        lane.update(accumulated=accumulated, local_accumulated=local_accumulated, skips=lane["skips"] + 1)
-                        self.stats["skippedComputes"] += 1
-                        self.stats["skippedBlocks"] += len(blocks)
-                    else:
-                        # The pinned Cosmos stack uses out-of-place residual
-                        # additions and the control/projection paths are excluded.
-                        execution["input"] = hidden
-                        lane.update(accumulated=0.0, local_accumulated=0.0, skips=0)
-                        self.stats["fullComputes"] += 1
-                if execution["skip"]:
-                    result = hidden + lane["residual"] if index == 0 else hidden
-                else:
-                    result = original(hidden, encoder, embedded, temb, rotary, extra, mask, control)
-                if index == len(blocks) - 1:
-                    residual_change, local_residual_change = None, None
-                    if not execution["skip"]:
-                        residual = result - execution["input"]
-                        if finite_tensor(residual) and execution["proxy"] is not None:
-                            # Residual change is calibration-only; avoid its reduction/sync in generation.
-                            if self.collect and lane["residual"] is not None:
-                                if self.local_guard:
-                                    residual_change, local_residual_change = self.local_tools.relative_changes(residual, lane["residual"]).cpu().tolist()
-                                    if not all(math.isfinite(value) for value in (residual_change, local_residual_change)):
-                                        residual_change = local_residual_change = None
-                                else:
-                                    residual_change = relative_l1(residual, lane["residual"])
-                                if residual_change is None:
-                                    self.stats["nonfinite"] += 1
-                            lane["residual"] = residual
-                        else:
-                            self.stats["nonfinite"] += 1
-                            lane["residual"] = None
-                    lane["proxy"] = execution["proxy"]
-                    if self.collect:
-                        sample = dict(branch=branch, step=step, total=total, timestep=float(timestep_value),
-                            proxyRelativeL1=execution["change"], residualRelativeL1=residual_change)
-                        if self.local_guard:
-                            sample.update(localProxyRelativeL1=execution["local_change"], localResidualRelativeL1=local_residual_change)
-                        self.samples.append(sample)
-                return result
-            return forward
-
+        if self.model is not model:
+            self._bind(model)
+        hidden = kwargs["hidden_states"]
+        shape = (tuple(hidden.shape), str(hidden.dtype), str(hidden.device), total)
+        run = dict(branch=branch, step=step, total=total, timestep=float(timestep_value), shape=shape,
+                   conditioning=kwargs["encoder_hidden_states"], padding=kwargs["padding_mask"],
+                   skip=False, visited=0)
+        self._active = run
         try:
-            for index, (owner, original, _) in enumerate(originals):
-                owner.forward = wrap(index, original)
             result = model(**kwargs)
-            if execution["visited"] != len(blocks):
+            if run["visited"] != len(self._blocks):
                 raise ValueError("Pinned Cosmos transformer block traversal changed")
             return result
         except BaseException:
             self.clear()
             raise
         finally:
-            for owner, original, owned in originals:
-                if owned:
-                    owner.forward = original
-                else:
-                    del owner.forward
+            self._active = None
 
 
 def apply_blocks(blocks, controller):

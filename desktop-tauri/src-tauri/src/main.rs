@@ -36,6 +36,7 @@ mod maintenance_protocol;
 mod resource_assistant;
 mod desktop_shell;
 mod desktop_shutdown;
+mod webview_memory;
 
 use crate::mutex::RecoverMutex;
 use std::sync::atomic::Ordering;
@@ -43,13 +44,6 @@ use std::sync::atomic::Ordering;
 use tauri::{Emitter, Manager};
 
 use crate::state::AppState;
-
-pub fn now_iso() -> String {
-    let now = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap_or_default();
-    format!("{:?}", now.as_secs())
-}
 
 fn main() {
     // R12 compares the same renderer in a child process. Dispatch before Tauri
@@ -96,7 +90,7 @@ fn main() {
                     let target = arg.trim_start_matches("aics://").trim_start_matches('/').to_string();
                     let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
                     state.info("Opening atelier from a desktop deep link");
-                    let url = state.gateway_url.recover_lock().clone();
+                    let url = state.gateway_url();
                     main_shared::open_atelier(app, &url, Some(&path));
                     return;
                 }
@@ -247,7 +241,7 @@ fn main() {
                             .to_string();
                         let path = main_shared::normalize_atelier_path(Some(&format!("/{target}")));
                         state.info("Opening atelier from a desktop deep link");
-                        let gateway = state.gateway_url.recover_lock().clone();
+                        let gateway = state.gateway_url();
                         main_shared::open_atelier(&handle, &gateway, Some(&path));
                     }
                 });
@@ -320,7 +314,6 @@ fn main() {
                             s.gateway_recovery.publish(&handle, gateway_monitor::Phase::Reconnecting, "authorization");
                             return;
                         }
-                        *s.gateway_url.recover_lock() = url.clone();
                         window_state::save_desktop_gateway_port(&s.paths.gateway_port_file, supervisor.port());
                         s.info(&format!("Gateway {} at {url}", if supervisor.owns_gateway() { "started" } else { "attached" }));
                         let _ = handle.emit("aics:gateway-ready", &url);
@@ -382,9 +375,14 @@ fn main() {
                     if matches!(change, tauri::WindowEvent::Moved(_)) && label == "companion"
                         && app_handle.state::<AppState>().companion_input.recover_lock().moving { return; }
                     window_persistence::changed(app_handle, &label);
-                    if label == "atelier" {
-                        if let Some(window) = app_handle.get_webview_window("atelier") {
-                            let _ = window.emit("aics:maximized", window.is_maximized().unwrap_or(false));
+                    if matches!(change, tauri::WindowEvent::Resized(_)) {
+                        if let Some(window) = app_handle.get_webview_window(&label) {
+                            if label == "atelier" {
+                                desktop_shell::publish_maximized(&window);
+                            }
+                            if matches!(label.as_str(), "atelier" | "companion" | "companion-chat") {
+                                webview_memory::refresh(&window);
+                            }
                         }
                     }
                 }

@@ -25,7 +25,7 @@
     </div>
     <div class="gallery-orbit-caption">
       <p class="gallery-orbit-title">{{ currentTitle }}</p>
-      <div class="gallery-orbit-navigation" data-fluid-glass>
+      <div class="gallery-orbit-navigation" data-fluid-glass v-glass-optics>
         <span>{{ index + 1 }} / {{ total ?? items.length }}</span>
         <input
           class="studio-slider-input studio-slider-compact gallery-orbit-slider"
@@ -65,7 +65,7 @@ import '@/assets/css/gallery-orbit.css'
 
 const props = defineProps<{
   total?: number; items: T[]; index: number; active: boolean; currentSrc: string; previewSrc: string
-  cardUrls: Record<string, string>; thumbUrls: Record<string, string>; neighborUrls: Record<string, string>
+  cardUrls: ReadonlyMap<string, string>; thumbUrls: ReadonlyMap<string, string>; neighborUrls: Record<string, string>
   thumbnailFor?: (item: T) => string
   title: (item: T) => string
   loadFailed?: boolean; reload?: () => Promise<void>
@@ -105,7 +105,7 @@ const cards = computed(() => {
     return [{ index, item:props.items[index] }]
   })
 })
-function preview(item: T) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || props.thumbnailFor?.(item) || '' }
+function preview(item: T) { return props.cardUrls.get(String(item.id)) || props.neighborUrls[item.id] || props.thumbUrls.get(String(item.id)) || props.thumbnailFor?.(item) || '' }
 function imageRatio(item: T) {
   const width = Number(item.width || item.image_width || item.actual?.width), height = Number(item.height || item.image_height || item.actual?.height)
   return imageRatios.get(String(item.id)) || (width > 0 && height > 0 && Number.isFinite(width / height) ? width / height : .75)

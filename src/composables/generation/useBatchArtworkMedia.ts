@@ -100,7 +100,7 @@ export function useBatchArtworkThumbnails(options: {
     for (const id of demanded.value) {
       if (pending.size >= 2) break
       const source = jobs.value.get(id)
-      if (!source || !hasBatchArtwork(source) || cache.urls.value[id] || pending.has(id)) continue
+      if (!source || !hasBatchArtwork(source) || cache.urls.get(String(id)) || pending.has(id)) continue
       const identity = mediaKey(source)
       if (attempted.get(id) === identity) continue
       const job = { ...source }, repository = artworkRepository, runtime = runtimeResourceIdentity()
@@ -127,7 +127,7 @@ export function useBatchArtworkThumbnails(options: {
             && repository === artworkRepository && current && mediaKey(current) === identity && thumbnail?.startsWith('data:image/')) {
             if (demanded.value.has(id)) {
               cache.remember(id, thumbnail)
-              if (cache.urls.value[id]) attempted.delete(id)
+              if (cache.urls.get(String(id))) attempted.delete(id)
             } else attempted.delete(id)
           }
         } catch { /* Derived data may be absent; opening the item still reads its own original. */ }
@@ -148,7 +148,7 @@ export function useBatchArtworkThumbnails(options: {
     options.jobs.value.forEach(job => identities.set(job.id, mediaKey(job)))
     // A just-committed Web thumbnail may still be completing its best-effort
     // derivation. Later batch updates retry only missing demanded previews.
-    for (const id of attempted.keys()) if (!cache.urls.value[id] && !pending.has(id)) attempted.delete(id)
+    for (const id of attempted.keys()) if (!cache.urls.get(String(id)) && !pending.has(id)) attempted.delete(id)
     observeCards(); pump()
   }, { flush: 'post', immediate: true })
   watch([active, runtimeResourceIdentity], () => {
@@ -160,7 +160,7 @@ export function useBatchArtworkThumbnails(options: {
   onDeactivated(() => { pageActive.value = false; stop() })
   onUnmounted(() => { disposed = true; stop(); cards.clear() })
   function retry(id: string) { attempted.delete(id); pump() }
-  return { get urls() { return cache.urls.value }, bindCard, retry }
+  return { urls: cache.urls, bindCard, retry }
 }
 
 /** One owned original. Switching cancels the old read before admitting the next. */

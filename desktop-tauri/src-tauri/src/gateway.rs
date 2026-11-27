@@ -1,6 +1,6 @@
 use crate::mutex::RecoverMutex;
 use std::io::{BufRead, BufReader, Read, Write};
-use std::net::{TcpListener, TcpStream, ToSocketAddrs};
+use std::net::{SocketAddr, TcpListener, TcpStream};
 use std::process::{Child, Command, Stdio};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
@@ -41,18 +41,14 @@ pub struct GatewayHostResponse {
     pub owned: bool,
 }
 
-fn http_get(base_url: &str, path: &str, connect_timeout: Duration, challenge: &str) -> Option<String> {
-    let host_port = base_url
-        .trim_start_matches("http://")
-        .trim_start_matches("https://")
-        .to_string();
+fn http_get(port: u16, path: &str, connect_timeout: Duration, challenge: &str) -> Option<String> {
     let deadline = Instant::now().checked_add(HEALTH_TIMEOUT)?;
-    let address = host_port.to_socket_addrs().ok()?.next()?;
+    let address = SocketAddr::from(([127, 0, 0, 1], port));
     let mut stream = TcpStream::connect_timeout(&address, connect_timeout).ok()?;
     stream.set_read_timeout(Some(HEALTH_TIMEOUT)).ok()?;
     stream.set_write_timeout(Some(HEALTH_TIMEOUT)).ok()?;
     let request = format!(
-        "GET {path} HTTP/1.1\r\nHost: {host_port}\r\nX-AICS-Desktop-Challenge: {challenge}\r\nConnection: close\r\n\r\n"
+        "GET {path} HTTP/1.1\r\nHost: {GATEWAY_HOST}:{port}\r\nX-AICS-Desktop-Challenge: {challenge}\r\nConnection: close\r\n\r\n"
     );
     stream.write_all(request.as_bytes()).ok()?;
     let mut raw = Vec::new();
@@ -79,8 +75,8 @@ fn http_get(base_url: &str, path: &str, connect_timeout: Duration, challenge: &s
     Some(body.to_string())
 }
 
-fn read_health(base_url: &str, timeout: Duration, challenge: &str) -> Option<GatewayHealth> {
-    let body = http_get(base_url, "/api/health", timeout, challenge)?;
+fn read_health(port: u16, timeout: Duration, challenge: &str) -> Option<GatewayHealth> {
+    let body = http_get(port, "/api/health", timeout, challenge)?;
     let value: serde_json::Value = serde_json::from_str(&body).ok()?;
     let obj = value.as_object()?;
     Some(GatewayHealth {
@@ -95,14 +91,14 @@ pub fn is_desktop_gateway_compatible(health: &GatewayHealth) -> bool {
     health.ok && health.app == "ai-cg-studio" && health.desktop_protocol == DESKTOP_GATEWAY_PROTOCOL
 }
 
-pub fn is_port_available(host: &str, port: u16) -> bool {
-    TcpListener::bind((host, port)).is_ok()
+fn is_port_available(port: u16) -> bool {
+    TcpListener::bind(SocketAddr::from(([127, 0, 0, 1], port))).is_ok()
 }
 
-pub fn find_available_port(host: &str, start_port: u16, attempts: u16) -> Option<u16> {
+fn find_available_port(start_port: u16, attempts: u16) -> Option<u16> {
     for offset in 0..attempts {
         let candidate = start_port.saturating_add(offset);
-        if is_port_available(host, candidate) {
+        if is_port_available(candidate) {
             return Some(candidate);
         }
     }
@@ -112,8 +108,18 @@ pub fn find_available_port(host: &str, start_port: u16, attempts: u16) -> Option
 /// 自有网关进程的启动、认证、停止与日志转发。
 struct GatewayChild {
     process: Child,
+    exit: Option<Arc<AtomicBool>>,
     #[cfg(windows)]
     _job: job::ProcessJob,
+}
+
+impl GatewayChild {
+    fn exited(&mut self) -> bool {
+        self.exit.as_ref().map_or_else(
+            || matches!(self.process.try_wait(), Ok(Some(_))),
+            |flag| flag.load(Ordering::Acquire),
+        )
+    }
 }
 
 pub struct GatewaySupervisor {
@@ -122,6 +128,7 @@ pub struct GatewaySupervisor {
     env: Vec<(String, String)>,
     on_output: Arc<dyn Fn(&str, &str) + Send + Sync>,
     child: Mutex<Option<GatewayChild>>,
+    pub(crate) child_exit: Arc<tokio::sync::Notify>,
     start_lock: tokio::sync::Mutex<()>,
     owned: AtomicBool,
     stopping: AtomicBool,
@@ -146,6 +153,7 @@ impl GatewaySupervisor {
             env,
             on_output: Arc::new(on_output),
             child: Mutex::new(None),
+            child_exit: Arc::default(),
             start_lock: tokio::sync::Mutex::new(()),
             owned: AtomicBool::new(false),
             stopping: AtomicBool::new(false),
@@ -171,26 +179,26 @@ impl GatewaySupervisor {
 
     pub fn owned_child_exited(&self) -> bool {
         let mut child = self.child.recover_lock();
-        self.owns_gateway() && child.as_mut()
-            .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))))
+        self.owns_gateway() && child.as_mut().is_none_or(GatewayChild::exited)
     }
 
     pub fn host_request(&self, payload: serde_json::Value) -> Result<Option<GatewayHostResponse>, String> {
         let generation = self.stop_generation.load(Ordering::SeqCst);
         let Some(secret) = self.identity_token.recover_lock().clone() else { return Ok(None); };
-        let origin = self.base_url();
+        let port = self.port();
+        let origin = format!("http://{GATEWAY_HOST}:{port}");
         let owned = self.owns_gateway();
         let is_current = || {
             !self.stopping.load(Ordering::SeqCst)
                 && self.stop_generation.load(Ordering::SeqCst) == generation
-                && self.base_url() == origin
+                && self.port() == port
                 && self.identity_token.recover_lock().as_ref() == Some(&secret)
                 && self.owns_gateway() == owned
         };
         if !is_current() { return Ok(None); }
         // Each bootstrap proves this snapshot with a fresh challenge. A cached
         // authenticated flag cannot authorize a private host action.
-        let healthy = authenticated_health(&origin, &secret, HEALTH_TIMEOUT);
+        let healthy = authenticated_health(port, &secret, HEALTH_TIMEOUT);
         if !is_current() { return Ok(None); }
         self.authenticated.store(healthy, Ordering::SeqCst);
         if !healthy { return Ok(None); }
@@ -216,14 +224,14 @@ impl GatewaySupervisor {
 
     async fn probe_health(&self, connect_timeout: Duration) -> bool {
         let Some(token) = self.identity_token.recover_lock().clone() else { return false; };
-        let base = self.base_url();
+        let port = self.port();
         let generation = self.stop_generation.load(Ordering::SeqCst);
-        let (target, secret) = (base.clone(), token.clone());
-        let healthy = tauri::async_runtime::spawn_blocking(move || authenticated_health(&target, &secret, connect_timeout))
+        let secret = token.clone();
+        let healthy = tauri::async_runtime::spawn_blocking(move || authenticated_health(port, &secret, connect_timeout))
             .await.unwrap_or(false);
         // A probe from before stop/restart cannot authenticate the replacement.
         if self.stop_generation.load(Ordering::SeqCst) != generation
-            || self.base_url() != base
+            || self.port() != port
             || self.identity_token.recover_lock().as_ref() != Some(&token) {
             return false;
         }
@@ -233,7 +241,7 @@ impl GatewaySupervisor {
 
     fn check_authenticated_health(&self) -> bool {
         let Some(token) = self.identity_token.recover_lock().clone() else { return false; };
-        authenticated_health(&self.base_url(), &token, HEALTH_TIMEOUT)
+        authenticated_health(self.port(), &token, HEALTH_TIMEOUT)
     }
 
     pub async fn start(&self) -> Result<String, String> {
@@ -273,13 +281,13 @@ impl GatewaySupervisor {
             }
         }
         let current = *self.active_port.recover_lock();
-        if !is_port_available(GATEWAY_HOST, current) {
+        if !is_port_available(current) {
             let bundled = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_BUNDLED_UI" && value == "1");
             let preserve = self.env.iter().any(|(key, value)| key == "AICS_DESKTOP_PRESERVE_ORIGIN" && value == "1");
             if !bundled && (self.authenticated_port.recover_lock().is_some() || preserve) {
                 return Err("Legacy profile origin is occupied; close the conflicting service before migration".into());
             }
-            let next = find_available_port(GATEWAY_HOST, current.saturating_add(1), 32)
+            let next = find_available_port(current.saturating_add(1), 32)
                 .ok_or("No available desktop gateway port")?;
             *self.active_port.recover_lock() = next;
         }
@@ -329,7 +337,11 @@ impl GatewaySupervisor {
                     return Err(format!("attach gateway job: {error}"));
                 }
             };
-            *slot = Some(GatewayChild { process, #[cfg(windows)] _job: job });
+            #[cfg(windows)]
+            let exit = lifecycle::watch_process_exit(&process, Arc::clone(&self.child_exit));
+            #[cfg(not(windows))]
+            let exit = None;
+            *slot = Some(GatewayChild { process, exit, #[cfg(windows)] _job: job });
             self.owned.store(true, Ordering::Relaxed);
             let child = slot.as_mut().ok_or("gateway child unavailable")?;
             // The runtime cannot initialize or spawn model services until Windows
@@ -369,7 +381,7 @@ impl GatewaySupervisor {
                 return Err("Gateway start cancelled".into());
             }
             let exited = self.child.recover_lock().as_mut()
-                .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))));
+                .is_none_or(GatewayChild::exited);
             if exited {
                 // 网关提前退出
                 let _ = self.stop().await;
@@ -403,9 +415,9 @@ impl GatewaySupervisor {
 
 }
 
-fn authenticated_health(base: &str, token: &str, connect_timeout: Duration) -> bool {
+fn authenticated_health(port: u16, token: &str, connect_timeout: Duration) -> bool {
     let Ok(challenge) = identity::random_secret() else { return false; };
-    read_health(base, connect_timeout, &challenge)
+    read_health(port, connect_timeout, &challenge)
         .map(|health| is_desktop_gateway_compatible(&health) && identity::verify_proof(token, &challenge, &health.desktop_proof))
         .unwrap_or(false)
 }

@@ -8,6 +8,8 @@ use std::{
 };
 
 const MAX_BYTES: usize = 16 * 1024 * 1024;
+type Identity = (crate::file_identity::Identity, Vec<i64>);
+type Observation = (uuid::Uuid, i64);
 
 #[derive(Clone, Debug)]
 pub(crate) struct Projection {
@@ -23,12 +25,14 @@ impl Projection {
 
 #[derive(Default)]
 struct Encoded {
-    identities: HashMap<String, (crate::file_identity::Identity, Vec<i64>)>,
+    identities: HashMap<String, Identity>,
+    observations: HashMap<String, Observation>,
     entries: HashMap<String, Projection>,
     bytes: usize,
 }
 impl Encoded {
-    fn select(&mut self, name: &str, identity: &(crate::file_identity::Identity, Vec<i64>)) {
+    fn select(&mut self, name: &str, identity: &Identity, observed: Observation) {
+        self.observations.insert(name.into(), observed);
         if self.identities.get(name) != Some(identity) {
             if let Some(previous) = self.entries.remove(name) {
                 self.bytes -= previous.size();
@@ -38,7 +42,7 @@ impl Encoded {
     }
     fn publish(
         &mut self,
-        identity: &(crate::file_identity::Identity, Vec<i64>),
+        identity: &Identity,
         name: &str,
         projection: &Projection,
     ) {
@@ -62,10 +66,18 @@ impl Encoded {
 /// Local read projections only. Remote review/revocation always uses its own path.
 #[derive(Default)]
 pub(crate) struct ProjectionCache {
+    reader: Reader,
     encoded: Mutex<Encoded>,
     encoder: OnceLock<uuid::Uuid>,
     // Keys are restricted to the finite projected-file allowlist.
     flights: Mutex<HashMap<String, Arc<Mutex<()>>>>,
+}
+
+enum Read {
+    Hit(Projection),
+    Wait,
+    Unprojected,
+    Encode(Identity, Value),
 }
 
 impl ProjectionCache {
@@ -80,49 +92,54 @@ impl ProjectionCache {
             .entry(name.into())
             .or_default()
             .clone();
-        // A leader can use its first read snapshot. Warm followers still check
-        // authority in parallel, and only a cold follower waits/reopens.
+        // A leader can encode from its first read snapshot. Warm followers
+        // reuse the reader and only cold followers wait on the encoder.
         let mut guard = flight.try_lock().ok();
         let cold_follower =
             guard.is_none() && !self.encoded.lock().unwrap().entries.contains_key(name);
         if cold_follower {
-            // Release the cache lock before waiting. Reopen authority afterward.
+            // Release the cache lock before waiting. Recheck authority afterward.
             guard = Some(flight.lock().unwrap());
         }
         loop {
-            // Always reopen the authority: a warm cache must never hide a missing or
-            // invalid database. File identity also invalidates a restored/replaced DB.
-            let catalog = Catalog::open_existing(options.clone())?;
-            let transaction = catalog.connection.unchecked_transaction()?;
-            let identity = {
-                let mut cache = self.encoded.lock().unwrap();
-                // BEGIN is deferred: the first SELECT establishes the read snapshot.
-                // Select the cache generation under the same lock, so an old snapshot
-                // cannot arrive late and replace a newer generation before encoding.
-                let identity = (
-                    crate::file_identity::path(&catalog.options.database, false)?,
-                    catalog.projection_stamp(name)?,
-                );
-                cache.select(name, &identity);
-                if let Some(projection) = cache.entries.get(name) {
-                    return Ok(Some(projection.clone()));
+            let read = self.reader.with(options.clone(), |catalog, file, observed| {
+                {
+                    let cache = self.encoded.lock().unwrap();
+                    if cache.observations.get(name) == Some(&observed)
+                        && let Some(projection) = cache.entries.get(name)
+                    {
+                        return Ok(Read::Hit(projection.clone()));
+                    }
                 }
-                identity
+                let transaction = catalog.connection.unchecked_transaction()?;
+                let identity = (file.clone(), catalog.projection_stamp(name)?);
+                {
+                    let mut cache = self.encoded.lock().unwrap();
+                    cache.select(name, &identity, observed);
+                    if let Some(projection) = cache.entries.get(name) {
+                        return Ok(Read::Hit(projection.clone()));
+                    }
+                }
+                if guard.is_none() {
+                    // Don't pin a database snapshot while waiting for a flight.
+                    return Ok(Read::Wait);
+                }
+                let Some(value) = catalog.projection_owned(name)? else {
+                    return Ok(Read::Unprojected);
+                };
+                transaction.commit()?;
+                Ok(Read::Encode(identity, value))
+            })?;
+            let (identity, value) = match read {
+                Read::Hit(projection) => return Ok(Some(projection)),
+                Read::Unprojected => return Ok(None),
+                Read::Wait => {
+                    guard = Some(flight.lock().unwrap());
+                    continue;
+                }
+                Read::Encode(identity, value) => (identity, value),
             };
-            if guard.is_none() {
-                // Never pin an old SQLite snapshot while waiting for another encoder.
-                // Warm reads do not take this lock; cold followers recheck authority.
-                drop(transaction);
-                drop(catalog);
-                guard = Some(flight.lock().unwrap());
-                continue;
-            }
-            // Read the version and all payloads in one SQLite snapshot. Encoding and
-            // cache misses stay outside the mutex so unrelated page loads can proceed.
-            let Some(value) = catalog.projection_owned(name)? else {
-                return Ok(None);
-            };
-            transaction.commit()?;
+            // Serialize and compress after returning the connection to readers.
             let bytes = Bytes::from(serde_json::to_vec(&value)?);
             let gzip = if bytes.len() >= 32 * 1024 {
                 let mut encoder =

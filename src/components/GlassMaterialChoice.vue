@@ -73,8 +73,8 @@ const choices: Array<{ value: GlassMode; title: string }> = [
     inset 0 1px 0 color-mix(in oklab,var(--on-art-primary) 82%,transparent),
     inset 0 0 0 0.5px color-mix(in oklab,var(--on-art-primary) 42%,transparent),
     var(--shadow-md);
-  -webkit-backdrop-filter:blur(14px) saturate(180%);
-  backdrop-filter:blur(14px) saturate(180%);
+  -webkit-backdrop-filter:var(--glass-disabled, blur(14px) saturate(180%));
+  backdrop-filter:var(--glass-disabled, blur(14px) saturate(180%));
 }
 @media (forced-colors:active) { .glass-choice-body { background:Canvas; border-color:CanvasText; } .glass-choice-option[aria-checked='true'] .glass-choice-body { outline:2px solid Highlight; } .glass-choice-preview { @apply tw:hidden; } }
 </style>

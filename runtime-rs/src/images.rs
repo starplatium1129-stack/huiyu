@@ -72,6 +72,7 @@ pub struct Service {
     agent_cli_endpoint: std::sync::OnceLock<(u16, String)>,
     backend: Arc<generation::Service>,
     native: bool,
+    native_status: native::StatusCache,
     remote: Option<remote::Client>,
     config: Config,
     shutdown: CancellationToken,
@@ -149,6 +150,7 @@ impl Service {
             agent_cli_endpoint: Default::default(),
             backend,
             native,
+            native_status: Default::default(),
             remote,
             config,
             shutdown,
@@ -319,6 +321,7 @@ impl Service {
             // Creation and result routes retain their strict family checks.
             native::status(
                 &self.backend,
+                &self.native_status,
                 if family == "krea2" { "" } else { family },
                 cancel,
             )

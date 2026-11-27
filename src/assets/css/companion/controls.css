@@ -17,8 +17,8 @@
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(10px));
+  backdrop-filter: var(--glass-disabled, blur(10px));
   @apply tw:text-secondary tw:cursor-pointer;
   font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
   transition: border-color var(--motion-hover), color var(--motion-hover);
@@ -48,8 +48,8 @@
   border: 1px solid var(--border-soft);
   @apply tw:rounded-lg;
   background: var(--bg-surface);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(18px) saturate(1.25));
+  backdrop-filter: var(--glass-disabled, blur(18px) saturate(1.25));
   box-shadow: var(--shadow-lg);
 }
 .companion-page .companion-pop-group {
@@ -167,8 +167,8 @@
   border: 1px solid color-mix(in srgb, var(--danger-text) 45%, var(--border-soft));
   @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: var(--glass-disabled, blur(10px));
+  backdrop-filter: var(--glass-disabled, blur(10px));
   @apply tw:text-danger-text tw:text-label-xs;
   box-shadow: var(--shadow-md);
   overflow-wrap: anywhere;

@@ -4,11 +4,13 @@ The native asset lease keeps checkpoint files stable. Validate the safetensors
 layout before mapping; views retain their buffer until the resident model retires.
 This reader is scoped to immutable inference weights.
 """
+import contextlib
 import json
 import math
 import mmap
 import os
 import struct
+import sys
 import warnings
 
 TYPES = {"F64": ("float64", 8), "F32": ("float32", 4), "F16": ("float16", 2),
@@ -16,6 +18,39 @@ TYPES = {"F64": ("float64", 8), "F32": ("float32", 4), "F16": ("float16", 2),
          "I16": ("int16", 2), "I8": ("int8", 1), "U8": ("uint8", 1),
          "U16": ("uint16", 2), "U32": ("uint32", 4), "U64": ("uint64", 8),
          "BOOL": ("bool", 1), "F8_E4M3": ("float8_e4m3fn", 1), "F8_E5M2": ("float8_e5m2", 1)}
+
+
+@contextlib.contextmanager
+def windows_weight_reads(*, private_tensors=False):
+    if sys.platform != "win32":
+        yield
+        return
+    import safetensors
+    import safetensors.torch
+    from transformers import modeling_utils as encoder_loading
+    # Diffusers imports safe_open inside its loading functions; changing the
+    # public entry point covers those imports without inventing module aliases.
+    readers = (safetensors, safetensors.torch, encoder_loading)
+    originals = [(module, module.safe_open) for module in readers]
+    async_loading = os.environ.get("HF_DEACTIVATE_ASYNC_LOAD")
+    os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = "1"
+
+    def safe_open(*args, **kwargs):
+        return ReadOnlyWeights(*args, **kwargs, private_tensors=private_tensors)
+
+    # The pinned loader's writable mmap reserves Windows commit for whole files.
+    # Use immutable file views during weight loading, then restore readers.
+    for module, _ in originals:
+        module.safe_open = safe_open
+    try:
+        yield
+    finally:
+        for module, reader in originals:
+            module.safe_open = reader
+        if async_loading is None:
+            os.environ.pop("HF_DEACTIVATE_ASYNC_LOAD", None)
+        else:
+            os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
 
 
 def unique_object(pairs):
@@ -42,11 +77,12 @@ class TensorSlice:
 
 
 class ReadOnlyWeights:
-    def __init__(self, filename, framework="pt", device="cpu", *, backend=None):
+    def __init__(self, filename, framework="pt", device="cpu", *, backend=None, private_tensors=False):
         import torch
         if framework not in ("pt", "pytorch"):
             raise ValueError("Read-only weights support PyTorch only")
         self.device = torch.device(f"cuda:{device}" if isinstance(device, int) else device)
+        self.private_tensors = private_tensors
         self.file = open(filename, "rb", buffering=0)
         try:
             file_size = os.fstat(self.file.fileno()).st_size
@@ -122,7 +158,7 @@ class ReadOnlyWeights:
             warnings.filterwarnings("ignore", message="The given buffer is not writable")
             tensor = torch.frombuffer(buffer, dtype=dtype).reshape(entry["shape"])
         tensor.untyped_storage()._huiyu_file_slice = (self.file, self.offset + start)
-        return tensor.to(self.device)
+        return tensor.to(self.device, copy=self.private_tensors)
 
     def get_tensors(self):
         return {name: self.get_tensor(name) for name in self.names}

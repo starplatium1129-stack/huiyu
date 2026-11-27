@@ -15,6 +15,7 @@ mod provenance;
 mod query;
 mod showcase;
 mod snapshots;
+mod readers;
 
 mod validation;
 mod views;
@@ -25,6 +26,7 @@ pub use cli::run as cli;
 pub(crate) use facet_cache::FacetCache;
 pub use http::router;
 pub(crate) use projection_cache::ProjectionCache;
+pub(crate) use readers::Reader;
 pub use query::Query;
 use rusqlite::{Connection, OpenFlags, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
@@ -176,8 +178,8 @@ impl Catalog {
                 "已启用的内容库缺失，请恢复内容快照或备份",
             ));
         }
-        // Serving requests must never recreate a missing authority. Reopen on
-        // every request so restored/replaced files still pass live validation.
+        // Do not recreate a missing authority. Older authorities may need an
+        // additive index or seed provenance migration before they can be read.
         let connection = Connection::open_with_flags(
             &options.database,
             OpenFlags::SQLITE_OPEN_READ_WRITE | OpenFlags::SQLITE_OPEN_NO_MUTEX,

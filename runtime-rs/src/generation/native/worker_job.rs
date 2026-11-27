@@ -125,7 +125,7 @@ async fn attempt(
         return Err(closed());
     }
     let video = plan.input["mediaKind"] == "video";
-    let mut worker = inner.native.take_worker(&plan.settings, queue::model(&plan.input)).await?;
+    let mut worker = inner.native.take_worker(&plan.settings, &plan.input).await?;
     *worker.current_temp.lock().unwrap() = Some(files.clone());
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.

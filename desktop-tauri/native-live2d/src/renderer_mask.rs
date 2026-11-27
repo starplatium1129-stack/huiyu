@@ -3,14 +3,7 @@ use super::*;
 
 impl Renderer {
     pub(super) fn ensure_mask_resource(&mut self, channel_index: usize, width: u32, height: u32) {
-        let needs_new = self
-            .model_cache
-            .as_ref()
-            .and_then(|cache| cache.channels.get(channel_index))
-            .and_then(|channel| channel.gpu.as_ref())
-            .map(|gpu| gpu.width != width || gpu.height != height)
-            .unwrap_or(true);
-        if !needs_new {
+        if self.model_cache.as_ref().expect("model GPU cache").channels[channel_index].gpu.is_some() {
             return;
         }
         let texture = self.device.create_texture(&wgpu::TextureDescriptor {
@@ -47,8 +40,6 @@ impl Renderer {
             _texture: texture,
             view,
             bind_group,
-            width,
-            height,
         });
     }
 
@@ -66,23 +57,12 @@ impl Renderer {
             return None;
         }
         let drawables = model.drawables();
-        let mut key = mask_set.to_vec();
-        key.sort_unstable();
         let options = RenderOptions::from_env();
-        self.ensure_model_cache(model, textures, &drawables);
-        self.prewarm_model_resources(&drawables, options.uv_flipped, width, height);
-        let selected: Vec<usize> = drawables
-            .iter()
-            .enumerate()
-            .filter_map(|(drawable_index, d)| key.contains(&d.index).then_some(drawable_index))
-            .collect();
-        for &drawable_index in &selected {
-            self.ensure_geometry(&drawables[drawable_index], options.uv_flipped);
-        }
-        let mut geometry_needed = vec![false; drawables.len()];
-        for &drawable_index in &selected {
-            geometry_needed[drawable_index] = true;
-        }
+        self.ensure_model_cache(model, textures, &drawables, options.uv_flipped);
+        let cache = self.model_cache.as_ref().expect("model GPU cache");
+        let selected: Vec<usize> = drawables.iter().enumerate().filter_map(|(index, drawable)| {
+            (mask_set.contains(&drawable.index) && cache.geometry[index].is_some()).then_some(index)
+        }).collect();
         let uniform_values: Vec<Uniforms> = selected
             .iter()
             .map(|&drawable_index| {
@@ -99,8 +79,7 @@ impl Renderer {
             })
             .collect();
         self.ensure_uniform_cache(uniform_values.len());
-        let (position_uploads, uniform_upload) =
-            self.prepare_dynamic_uploads(&drawables, &geometry_needed, &uniform_values);
+        self.upload_frame(&drawables, &uniform_values);
 
         let mask_tex = self.device.create_texture(&wgpu::TextureDescriptor {
             label: Some("live2d-mask-dump"),
@@ -122,32 +101,6 @@ impl Renderer {
             .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                 label: Some("live2d-mask-dump-encoder"),
             });
-        if !position_uploads.is_empty() || uniform_upload.is_some() {
-            let upload_buffer = self.upload_buffer.as_ref().expect("upload buffer");
-            let cache = self.model_cache.as_ref().expect("model GPU cache");
-            for &(drawable_index, source_offset, size) in &position_uploads {
-                let geometry = cache.geometry[drawable_index]
-                    .as_ref()
-                    .expect("dynamic geometry");
-                encoder.copy_buffer_to_buffer(
-                    upload_buffer,
-                    source_offset,
-                    &geometry.positions,
-                    0,
-                    size,
-                );
-            }
-            if let Some((source_offset, size)) = uniform_upload {
-                let uniform = self.uniform_cache.as_ref().expect("uniform cache");
-                encoder.copy_buffer_to_buffer(
-                    upload_buffer,
-                    source_offset,
-                    &uniform.buffer,
-                    0,
-                    size,
-                );
-            }
-        }
         {
             let mut pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("live2d-mask-dump-pass"),
@@ -180,7 +133,7 @@ impl Renderer {
                     &uniform.bind_group,
                     &[(slot as u64 * UNIFORM_STRIDE) as u32],
                 );
-                pass.set_vertex_buffer(0, geometry.positions.slice(..));
+                pass.set_vertex_buffer(0, geometry.position_buffer(&cache.positions));
                 pass.set_vertex_buffer(1, geometry.uvs.slice(..));
                 pass.set_index_buffer(geometry.indices.slice(..), wgpu::IndexFormat::Uint16);
                 pass.draw_indexed(0..d.indices.len() as u32, 0, 0..1);

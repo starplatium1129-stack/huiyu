@@ -61,7 +61,7 @@ fn dispatch(app: &AppHandle, action: impl FnOnce(&AppHandle) + Send + 'static) {
 }
 
 pub fn show(app: &AppHandle, focus: bool, menu: bool) {
-    let gateway = app.state::<AppState>().gateway_url.recover_lock().clone();
+    let gateway = app.state::<AppState>().gateway_url();
     if gateway.is_empty() && !crate::ui_entry::bundled(app) { return; }
     dispatch(app, move |app| {
         if crate::maintenance::active(app) { return; }
@@ -69,6 +69,7 @@ pub fn show(app: &AppHandle, focus: bool, menu: bool) {
         let window = app.get_webview_window("companion");
         if let Some(window) = window.as_ref().filter(|window| window.is_visible().unwrap_or(false)) {
             let _ = window.unminimize();
+            crate::webview_memory::refresh(window);
             if focus { let _ = window.set_focus(); }
             if menu { let _ = window.emit("aics:companion-menu", ()); }
             return;
@@ -197,6 +198,7 @@ fn reveal_if_ready(app: &AppHandle) {
     }
     let _ = window.emit("aics:shown", ());
     let _ = window.emit("aics:visibility", true);
+    crate::webview_memory::visibility(&window, true);
     if request.menu { let _ = window.emit("aics:companion-menu", ()); }
     crate::tray::refresh_tray_menu(app);
 }
@@ -220,8 +222,10 @@ pub fn hide(app: &AppHandle) {
         if let Some(window) = app.get_webview_window("companion") {
             let was_visible = window.is_visible().unwrap_or(false);
             if was_visible { crate::window_persistence::closing(app, "companion"); }
-            let _ = window.hide();
-            let _ = window.emit("aics:visibility", false);
+            if window.hide().is_ok() {
+                let _ = window.emit("aics:visibility", false);
+                crate::webview_memory::visibility(&window, false);
+            }
         }
         let chat_docked = state.preferences.recover_lock().chat_docked;
         if chat_docked { crate::main_shared::hide_companion_chat(app); }

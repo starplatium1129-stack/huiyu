@@ -312,9 +312,10 @@ class IdentityLease:
         self._owner = threading.current_thread()
         self._acquiring = False
         self._base = self._adapters = None
-        self._root = self._model_sha256 = self._adapter_scope = None
+        self._root = self._adapter_scope = None
+        self._base_identity = {}
         self._adapter_hashes = {}
-        self._component_sha256 = {}
+        self._epoch = 0
         self.cached = self.reused = False
 
     def close(self):
@@ -323,9 +324,9 @@ class IdentityLease:
             if protected is not None:
                 protected.close()
         self._base = self._adapters = None
-        self._root = self._model_sha256 = self._adapter_scope = None
+        self._root = self._adapter_scope = None
+        self._base_identity = {}
         self._adapter_hashes = {}
-        self._component_sha256 = {}
         self.cached = self.reused = False
 
     def _require_owner(self):
@@ -341,7 +342,7 @@ class IdentityLease:
         try:
             if ((self._windows is not None and threading.current_thread() is not self._owner)
                     or (root is not None and str(_absolute(root)) != self._root)
-                    or (model_sha256 is not None and model_sha256 != self._model_sha256)):
+                    or (model_sha256 is not None and model_sha256 != self._base_identity.get("modelSha256"))):
                 return False
             return self._base is not None and self._base.valid()
         except OSError:
@@ -357,8 +358,7 @@ class IdentityLease:
         try:
             if not self.base_is_valid() or self._adapters is None or not self._adapters.valid():
                 return None
-            result = {"modelSha256": self._model_sha256,
-                      "componentSha256": copy.deepcopy(self._component_sha256),
+            result = {**copy.deepcopy(self._base_identity),
                       "loras": [{"sha256": self._adapter_hashes[path], "strength": row["strength"]}
                                 for path, row in zip(scope, loras)]}
             # A notification while constructing the detached result also forces
@@ -370,7 +370,7 @@ class IdentityLease:
         self.reused = True
         return result
 
-    def acquire(self, root, loras, compute_identity, compute_adapters):
+    def acquire(self, root, loras, compute_identity, compute_adapters, *, protected_identity=None):
         """Return a detached identity; cached/reused describe this acquisition.
 
         compute_identity(root, loras) remains the full-byte fallback. The pure
@@ -385,11 +385,11 @@ class IdentityLease:
             raise RuntimeError("Identity lease acquisition cannot be reentered")
         self._acquiring = True
         try:
-            return self._acquire(root, loras, compute_identity, compute_adapters)
+            return self._acquire(root, loras, compute_identity, compute_adapters, protected_identity)
         finally:
             self._acquiring = False
 
-    def _acquire(self, root, loras, compute_identity, compute_adapters):
+    def _acquire(self, root, loras, compute_identity, compute_adapters, protected_identity):
         self.reused = False
         root, loras = _absolute(root), copy.deepcopy(loras)
         if self._windows is None:
@@ -422,7 +422,12 @@ class IdentityLease:
                          and adapters.entries == self._adapters.entries)
         try:
             if not base_same:
-                result = copy.deepcopy(compute_identity(root, loras))
+                result = copy.deepcopy((protected_identity or compute_identity)(root, loras))
+                if protected_identity is not None:
+                    # A new lease cannot identify the old loaded transformer, even
+                    # if size, mtime and all separately hashed components still match.
+                    self._epoch += 1
+                    result["baseLeaseEpoch"] = self._epoch
             else:
                 hashes = {path: digest for path, digest in self._adapter_hashes.items()
                           if adapters_valid and adapters.file_ids.get(path) == self._adapters.file_ids[path]}
@@ -430,8 +435,7 @@ class IdentityLease:
                 if missing:
                     rows = compute_adapters(list(missing.values()))
                     hashes.update((path, row["sha256"]) for path, row in zip(missing, rows))
-                result = {"modelSha256": self._model_sha256,
-                          "componentSha256": copy.deepcopy(self._component_sha256),
+                result = {**copy.deepcopy(self._base_identity),
                           "loras": [{"sha256": hashes[path], "strength": row["strength"]}
                                     for path, row in zip(scope, loras)]}
             if (_inventory(root) != inventory or not base.valid() or not adapters.valid()
@@ -440,8 +444,7 @@ class IdentityLease:
                 raise OSError("Model membership changed while fingerprinting; retry after the model update completes")
             # Prepare detached cache values before adopting the new handles so a
             # malformed/failed callback cannot leave a partially installed lease.
-            model_sha256 = result["modelSha256"]
-            component_sha256 = copy.deepcopy(result.get("componentSha256", {}))
+            base_identity = copy.deepcopy({key: value for key, value in result.items() if key != "loras"})
             adapter_hashes = {path: row["sha256"] for path, row in zip(scope, result["loras"])}
         except BaseException:
             adapters.close()
@@ -462,7 +465,7 @@ class IdentityLease:
             if self._adapters is not None:
                 self._adapters.close()
             self._adapters = adapters
-        self._root, self._model_sha256, self._adapter_scope = str(root), model_sha256, scope
-        self._component_sha256, self._adapter_hashes = component_sha256, adapter_hashes
+        self._root, self._adapter_scope = str(root), scope
+        self._base_identity, self._adapter_hashes = base_identity, adapter_hashes
         self.cached, self.reused = True, bool(base_same and adapters_same)
         return result

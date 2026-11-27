@@ -10,16 +10,28 @@ use image::{
 };
 use sha2::{Digest, Sha256};
 use std::{
-    collections::VecDeque,
-    io::Cursor,
+    collections::HashMap,
+    fs::{File, Metadata},
+    io::{Cursor, Read},
+    num::NonZeroUsize,
     path::PathBuf,
-    sync::{LazyLock, Mutex},
+    sync::{Arc, LazyLock, Mutex, Weak},
 };
+use tokio::sync::{Mutex as AsyncMutex, OwnedMutexGuard, Semaphore};
 
 const CACHE_BYTES: usize = 24 * 1024 * 1024;
-static CACHE: LazyLock<Mutex<VecDeque<(String, Preview)>>> =
-    LazyLock::new(|| Mutex::new(VecDeque::new()));
-static DECODERS: tokio::sync::Semaphore = tokio::sync::Semaphore::const_new(2);
+const CACHE_ENTRIES: usize = 256;
+const MAX_SOURCE_BYTES: usize = 32 * 1024 * 1024;
+
+static CACHE: LazyLock<Mutex<Cache>> = LazyLock::new(|| {
+    Mutex::new(Cache {
+        entries: lru::LruCache::new(NonZeroUsize::new(CACHE_ENTRIES).unwrap()),
+        bytes: 0,
+    })
+});
+static FLIGHTS: LazyLock<Mutex<HashMap<String, Weak<AsyncMutex<()>>>>> =
+    LazyLock::new(|| Mutex::new(HashMap::new()));
+static DECODERS: Semaphore = Semaphore::const_new(2);
 
 #[derive(Clone)]
 pub(crate) struct Preview {
@@ -28,31 +40,64 @@ pub(crate) struct Preview {
     width: u32,
 }
 
+struct Cache {
+    entries: lru::LruCache<String, Preview>,
+    bytes: usize,
+}
+
+fn get(key: &str) -> Option<Preview> {
+    CACHE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .entries
+        .get(key)
+        .cloned()
+}
+
+fn insert(key: String, preview: Preview) {
+    if preview.bytes.len() > CACHE_BYTES {
+        return;
+    }
+    let mut cache = CACHE
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    if let Some(old) = cache.entries.pop(&key) {
+        cache.bytes -= old.bytes.len();
+    }
+    while cache.entries.len() >= CACHE_ENTRIES || cache.bytes + preview.bytes.len() > CACHE_BYTES {
+        let Some((_, old)) = cache.entries.pop_lru() else {
+            break;
+        };
+        cache.bytes -= old.bytes.len();
+    }
+    cache.bytes += preview.bytes.len();
+    cache.entries.put(key, preview);
+}
+
 pub(crate) fn cached(key: String, make: impl FnOnce() -> Option<Preview>) -> Option<Preview> {
-    {
-        let mut cache = CACHE.lock().ok()?;
-        if let Some(index) = cache.iter().position(|(id, _)| *id == key) {
-            let hit = cache.remove(index)?;
-            let preview = hit.1.clone();
-            cache.push_back(hit);
-            return Some(preview);
-        }
+    if let Some(preview) = get(&key) {
+        return Some(preview);
     }
     let preview = make()?;
-    let mut cache = CACHE.lock().ok()?;
-    cache.retain(|(id, _)| *id != key);
-    if preview.bytes.len() <= CACHE_BYTES {
-        let mut bytes = cache
-            .iter()
-            .map(|(_, entry)| entry.bytes.len())
-            .sum::<usize>()
-            + preview.bytes.len();
-        while bytes > CACHE_BYTES {
-            bytes -= cache.pop_front()?.1.bytes.len();
-        }
-        cache.push_back((key, preview.clone()));
-    }
+    insert(key, preview.clone());
     Some(preview)
+}
+
+async fn flight(key: &str) -> OwnedMutexGuard<()> {
+    let lock = {
+        let mut flights = FLIGHTS
+            .lock()
+            .unwrap_or_else(std::sync::PoisonError::into_inner);
+        flights.retain(|_, lock| lock.strong_count() > 0);
+        if let Some(lock) = flights.get(key).and_then(Weak::upgrade) {
+            lock
+        } else {
+            let lock = Arc::new(AsyncMutex::new(()));
+            flights.insert(key.into(), Arc::downgrade(&lock));
+            lock
+        }
+    };
+    lock.lock_owned().await
 }
 
 pub(crate) fn resize(bytes: &[u8], max_width: u32, webp: bool) -> Option<Preview> {
@@ -84,7 +129,11 @@ pub(crate) fn resize(bytes: &[u8], max_width: u32, webp: bool) -> Option<Preview
     }
     let mut encoded = Vec::new();
     let (width, height) = (image.width(), image.height());
-    let mime = if webp || image.color().has_alpha() {
+    let alpha = image.color().has_alpha()
+        && image
+            .as_rgba8()
+            .is_none_or(|rgba| rgba.pixels().any(|pixel| pixel[3] != u8::MAX));
+    let mime = if webp || alpha {
         WebPEncoder::new_lossless(&mut encoded)
             .encode(
                 &image.to_rgba8(),
@@ -108,68 +157,111 @@ pub(crate) fn resize(bytes: &[u8], max_width: u32, webp: bool) -> Option<Preview
 }
 
 pub(super) async fn serve(
-    base: PathBuf,
     file: PathBuf,
+    metadata: Metadata,
     width: u32,
     head: bool,
     condition: Option<HeaderValue>,
+    immutable: bool,
 ) -> Response {
-    let permit = match DECODERS.acquire().await {
-        Ok(permit) => permit,
-        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    let cache = if immutable {
+        "private, max-age=31536000, immutable"
+    } else {
+        "private, no-cache"
     };
-    let response = tokio::task::spawn_blocking(move || {
-        use std::io::Read;
-        let _permit = permit;
-        let base = base.canonicalize().ok()?;
-        let file = file.canonicalize().ok()?;
-        if !file.starts_with(base) {
-            return None;
-        }
-        let identity = crate::file_identity::path(&file, false).ok()?;
-        let key = format!("showcase/{file:?}/{identity:?}/{width}");
-        let image = cached(key.clone(), || {
-            let mut bytes = Vec::new();
-            std::fs::File::open(&file)
-                .ok()?
-                .take(32 * 1024 * 1024 + 1)
-                .read_to_end(&mut bytes)
-                .ok()?;
-            if bytes.len() > 32 * 1024 * 1024
-                || crate::file_identity::path(&file, false).ok()? != identity
-            {
-                return None;
+    let length = metadata.len();
+    let modified = metadata.modified().ok();
+    let created = metadata.created().ok();
+    let key = format!("showcase-v2/{file:?}/{length}/{modified:?}/{created:?}/{width}");
+    let tag = hex::encode(Sha256::digest(key.as_bytes()));
+    let etag = super::validator(&tag, "identity");
+    if super::matches_condition(condition.as_ref(), &etag, false) {
+        return super::conditional(
+            (
+                StatusCode::OK,
+                [
+                    ("cache-control", cache),
+                    (
+                        "access-control-expose-headers",
+                        "ETag, X-Huiyu-Preview-Width",
+                    ),
+                ],
+            )
+                .into_response(),
+            &tag,
+            condition.as_ref(),
+        );
+    }
+
+    let image = if let Some(image) = get(&key) {
+        Some(image)
+    } else {
+        // Coalesce by source version and width before consuming a decoder.
+        let flight = flight(&key).await;
+        if let Some(image) = get(&key) {
+            Some(image)
+        } else {
+            if length > MAX_SOURCE_BYTES as u64 {
+                return StatusCode::NOT_FOUND.into_response();
             }
-            resize(&bytes, width, false)
-        })?;
-        let tag = hex::encode(Sha256::digest(key.as_bytes()));
-        let length = image.bytes.len();
-        let mut response = (
-            [
-                ("content-type", image.mime),
-                ("cache-control", "private, no-cache"),
-                (
-                    "access-control-expose-headers",
-                    "ETag, X-Huiyu-Preview-Width",
-                ),
-            ],
-            image.bytes,
-        )
-            .into_response();
+            let Ok(permit) = DECODERS.acquire().await else {
+                return StatusCode::SERVICE_UNAVAILABLE.into_response();
+            };
+            tokio::task::spawn_blocking(move || {
+                let (_permit, _flight) = (permit, flight);
+                cached(key, || {
+                    let mut input = File::open(&file).ok()?;
+                    let stat = input.metadata().ok()?;
+                    if stat.len() != length
+                        || stat.modified().ok() != modified
+                        || stat.created().ok() != created
+                    {
+                        return None;
+                    }
+                    let version = crate::file_identity::Version::of(&input).ok()?;
+                    let mut bytes = Vec::with_capacity(length as usize);
+                    (&mut input)
+                        .take(MAX_SOURCE_BYTES as u64 + 1)
+                        .read_to_end(&mut bytes)
+                        .ok()?;
+                    let current = File::open(file).ok()?;
+                    if bytes.len() as u64 != length
+                        || crate::file_identity::Version::of(&current).ok()? != version
+                    {
+                        return None;
+                    }
+                    resize(&bytes, width, false)
+                })
+            })
+            .await
+            .ok()
+            .flatten()
+        }
+    };
+    let Some(image) = image else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    let length = image.bytes.len();
+    let mut response = (
+        [
+            ("content-type", image.mime),
+            ("cache-control", cache),
+            (
+                "access-control-expose-headers",
+                "ETag, X-Huiyu-Preview-Width",
+            ),
+        ],
+        image.bytes,
+    )
+        .into_response();
+    response
+        .headers_mut()
+        .insert("x-huiyu-preview-width", image.width.into());
+    if head {
+        *response.body_mut() = Body::empty();
         response
             .headers_mut()
-            .insert("x-huiyu-preview-width", image.width.into());
-        if head {
-            *response.body_mut() = Body::empty();
-            response
-                .headers_mut()
-                .insert("content-length", length.into());
-        }
-        Some(super::conditional(response, &tag, condition.as_ref()))
-    })
-    .await;
-    response
-        .ok()
-        .flatten()
-        .unwrap_or_else(|| StatusCode::NOT_FOUND.into_response())
+            .insert("content-length", length.into());
+    }
+    super::conditional(response, &tag, condition.as_ref())
 }

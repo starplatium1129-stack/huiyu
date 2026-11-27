@@ -85,7 +85,7 @@ onScopeDispose(clear)
 </template>
 
 <style scoped>
-.u001 { --liquid-h:var(--control-height); --liquid-half:calc(var(--liquid-h) / 2); --ux-ease:var(--ease-out); --ux-spring:var(--ease-out); --control-press-transform:none; position:relative; display:block; width:min(13.333rem,100%); max-width:100%; height:var(--liquid-h); padding:0; border:0; border-radius:var(--r-md); background:transparent; color:var(--text-primary); font:600 var(--fs-label) var(--font-sans); cursor:pointer; isolation:isolate; -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); }
+.u001 { --liquid-h:var(--control-height); --liquid-half:calc(var(--liquid-h) / 2); --ux-ease:var(--ease-out); --ux-spring:var(--ease-out); --control-press-transform:none; position:relative; display:block; width:min(13.333rem,100%); max-width:100%; height:var(--liquid-h); padding:0; border:0; border-radius:var(--r-md); background:transparent; color:var(--text-primary); font:600 var(--fs-label) var(--font-sans); cursor:pointer; isolation:isolate; -webkit-backdrop-filter:var(--glass-disabled, blur(18px) saturate(180%)); backdrop-filter:var(--glass-disabled, blur(18px) saturate(180%)); }
 .u001-surface,.u001-highlight,.u001-text,.u001-done { position:absolute; inset:0; pointer-events:none; }
 .u001-middle,.u001-cap::before { position:absolute; top:0; bottom:0; background:linear-gradient(180deg,var(--glass-highlight),transparent 55%,var(--glass-highlight)),var(--glass-fill); box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--border-strong); }
 .u001-surface { transition:transform var(--motion-press) var(--ux-ease); }

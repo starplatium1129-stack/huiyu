@@ -1,7 +1,4 @@
-use super::{
-    super::{ControlService, now},
-    web_build,
-};
+use super::{super::{ControlService, now}, web_build};
 use axum::{
     Extension, Json,
     extract::Query,
@@ -56,10 +53,10 @@ pub(super) async fn status(
     Extension(s): Extension<Arc<ControlService>>,
     Query(query): Query<HashMap<String, String>>,
 ) -> Response {
-    let (health, (tunnel_available, scripts), build) = tokio::join!(
+    let (build, health, (tunnel_available, scripts)) = tokio::join!(
+        web_build::snapshot_ready(&s),
         s.health(query.get("fresh").is_some_and(|v| v == "1")),
         file_status(&s),
-        web_build(&s),
     );
     let mut value = s.config_view();
     let (tunnel_status, tunnel_managed) = s.tunnel_status().await;
@@ -79,7 +76,7 @@ pub(super) async fn status(
     value["uptime"] = s.started.elapsed().as_secs().into();
     value["scripts"] = scripts;
     value["selfHealing"] = s.watchdog_status();
-    value["webBuild"] = build;
+    value["webBuild"] = build.or_else(|| web_build::current(&s)).unwrap_or(Value::Null);
     Json(StatusResponse {
         health,
         overlay: value,

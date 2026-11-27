@@ -138,7 +138,7 @@ impl Context {
         let (hash,bytes,mime)=self.db.prepare_cached("SELECT m.hash,m.bytes,m.mime FROM media_aliases a JOIN media_objects m ON m.hash=a.hash WHERE a.alias=?")?.query_row([alias],|r|Ok((r.get::<_,String>(0)?,r.get::<_,i64>(1)?,r.get::<_,String>(2)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Media does not exist"))?;
         let bytes = u64::try_from(bytes)
             .map_err(|_| conflict("MEDIA_INVALID", "Invalid media byte count"))?;
-        // Read-only lookup stays on SQLite's worker. The bounded verifier
+        // The bounded verifier
         // checks the directory chain immediately before opening the file.
         let path = self.root.join(object_relative(&hash)?);
         Ok(Media {

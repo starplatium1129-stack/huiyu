@@ -52,7 +52,7 @@ html.companion-mode:not(.companion-desktop) body {
   background: linear-gradient(105deg, color-mix(in srgb, var(--art-scrim) 78%, transparent), color-mix(in srgb, var(--art-scrim) 46%, transparent));
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);
   color: var(--companion-ink);
-  backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: var(--glass-disabled, blur(18px) saturate(135%));
 }
 
 .companion-page .companion-identity > span {
@@ -165,7 +165,7 @@ html.companion-mode:not(.companion-desktop) body {
   background: color-mix(in srgb, var(--art-scrim) 54%, transparent);
   color: var(--companion-ink-soft);
   box-shadow: var(--shadow-md), inset 0 1px 0 var(--companion-highlight);
-  backdrop-filter: blur(14px) saturate(125%);
+  backdrop-filter: var(--glass-disabled, blur(14px) saturate(125%));
   @apply tw:text-label-xs tw:pointer-events-none;
   transform: translateX(-50%);
   transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-control) var(--ease-out), border-color var(--motion-hover) ease;
@@ -206,7 +206,7 @@ html.companion-mode:not(.companion-desktop) body {
   background: color-mix(in srgb, var(--art-scrim) 48%, transparent);
   color: var(--companion-ink-soft);
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-disabled, blur(12px));
 }
 
 .companion-page .live2d-enable-cta {
@@ -263,7 +263,7 @@ html.companion-mode:not(.companion-desktop) body {
   background: color-mix(in srgb, var(--art-scrim) 74%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-md), inset 0 1px 0 var(--companion-highlight);
-  backdrop-filter: blur(16px) saturate(125%);
+  backdrop-filter: var(--glass-disabled, blur(16px) saturate(125%));
 }
 
 .companion-page .companion-empty > span,

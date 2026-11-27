@@ -9,7 +9,7 @@ import { useToast } from '@/composables/useToast';
 import { artworkRepository, type TrashEntry } from '@/storage/artworkRepository';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork';
-import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
+import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, shallowReactive, shallowRef, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { bulkDeleteAction, confirmDeleteAction, toggleFavoriteAction } from './galleryMutations';
 import { cancelGalleryStorageLoad, loadGalleryStorageAction, type GalleryProject } from './galleryStorage';
@@ -31,12 +31,12 @@ export function useGalleryWorkspace() {
     const route = useRoute();
     const router = useRouter();
 
-    const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]);
+    const history = shallowRef<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
     const idleMediaSuspended = ref(false);
     // Legacy/imported artwork IDs may also be Object prototype property names.
-    const cardUrls = shallowRef<Record<string, string>>(Object.create(null));
+    const cardUrls = shallowReactive(new Map<string, string>());
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
     const { urls: thumbUrls, remember: rememberThumbnail, forget: forgetThumbnail, trim: trimThumbnails, retain: retainThumbnails, clear: clearThumbnails } = useGalleryThumbnails(() =>
         collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds);
@@ -45,7 +45,7 @@ export function useGalleryWorkspace() {
     const thumbPending = new Set<string>();
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
-        hasThumb: item => Boolean(thumbUrls.value[item.id]),
+        hasThumb: item => Boolean(thumbUrls.get(String(item.id))),
         signal: () => imageReads.signal,
         current: item => mediaActive() && isMediaCurrent(item),
         saveThumb: async (item, dataUrl, imageId) => {
@@ -64,7 +64,7 @@ export function useGalleryWorkspace() {
     const bulkDeleting = ref(false);
     // ── 回收站视图（2026-08-31）：软删条目列表 + 逐条恢复 ────────────────────
     const trashMode = ref(false);
-    const trashItems = ref<TrashEntry[]>([]);
+    const trashItems = shallowRef<TrashEntry[]>([]);
     const trashBusy = ref<string | number | null>(null);
     function toggleTrashMode() {
         trashMode.value = !trashMode.value;
@@ -181,7 +181,7 @@ export function useGalleryWorkspace() {
     /* ---------- 可见缩略图与按显示像素生成的预览 ---------- */
     const THUMB_CONCURRENCY = 8;
     function mediaActive() { return !unmounted && viewActive && !idleMediaSuspended.value; }
-    const { returnThumbIds, viewportItems, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage } = useGalleryCardPreviews({
+    const { returnThumbIds, viewportItems, releaseCardImage, releaseCardImages, cancelCardHydration, retainCardReads, stopCardObservation, scheduleWallScan, retryCardImage, discardBrokenThumbnail, discardBrokenDerivative, thumbnailBlocked, resetPreviewFailures } = useGalleryCardPreviews({
         shell: shellEl, items: () => pagedVisible.value,
         active: mediaActive, wallActive: () => !trashMode.value && collectionPreviewItems.value === null,
         epoch: () => imageEpoch, signal: () => imageReads.signal, current: item => {
@@ -207,7 +207,7 @@ export function useGalleryWorkspace() {
                 // its remaining reads without fetching the same missing preview twice.
                 const demanded = trashMode.value ? [] : collectionPreviewItems.value ?? (returnThumbIds.size
                     ? viewportItems() : pagedVisible.value.slice(0, 12));
-                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls.value[item.id] && !thumbUrls.value[item.id]).map(item => ({ ...item }));
+                const pending = demanded.filter(item => item.image_id && !thumbnailBlocked(item.id) && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls.has(String(item.id)) && !thumbUrls.has(String(item.id))).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {
@@ -217,7 +217,7 @@ export function useGalleryWorkspace() {
                         try {
                             const thumb = await readGalleryDerivative(repository, item.image_id!, undefined, signal);
                             if (!mediaActive() || epoch !== imageEpoch || repository !== artworkRepository) { thumb?.release(); return; }
-                            if (thumb && isMediaCurrent(item)) rememberThumbnail(item.id, thumb);
+                            if (thumb && !thumbnailBlocked(item.id) && isMediaCurrent(item)) rememberThumbnail(item.id, thumb);
                             else thumb?.release();
                         }
                         catch { /* 缩略图缺失正常，直接走 HD */ }
@@ -393,6 +393,7 @@ export function useGalleryWorkspace() {
     const mediaRecords = computed(() => [...(collectionPreviewItems.value || []), ...history.value]);
     const isMediaCurrent = watchArtworkMedia(mediaRecords, id => {
         releaseCardImage(id); forgetThumbnail(id); forgetRatio(id);
+        resetPreviewFailures(id);
         cancelCardHydration(id);
         if (missingImageIds.value.has(id)) missingImageIds.value = new Set([...missingImageIds.value].filter(value => value !== id));
         void hydrateThumbs(); scheduleWallScan();
@@ -435,7 +436,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
         canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,
-        masonryGroups, scheduleWallScan, retryCardImage, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
+        masonryGroups, scheduleWallScan, retryCardImage, discardBrokenThumbnail, discardBrokenDerivative, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, idleMediaSuspended, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,

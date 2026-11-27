@@ -12,9 +12,14 @@ from pathlib import Path
 import math
 import re
 import time
+from weakref import ref
 
 
 def _targets(pipeline):
+    cached = getattr(pipeline.transformer, "_huiyu_kohya_targets", None)
+    if cached is not None and cached[0]() is pipeline.text_conditioner:
+        return cached[1]
+
     import torch
     from diffusers.loaders.lora_conversion_utils import _convert_non_diffusers_anima_lora_to_diffusers
 
@@ -52,6 +57,9 @@ def _targets(pipeline):
         if alias in result:
             raise ValueError(f"Ambiguous flattened Anima LoRA target: {alias}")
         result[alias] = (target, base.in_features, base.out_features)
+    # Only retain original names and dimensions. PEFT may replace wrapper
+    # objects between jobs, so later loads still look up live destination layers.
+    pipeline.transformer._huiyu_kohya_targets = (ref(pipeline.text_conditioner), result)
     return result
 
 

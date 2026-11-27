@@ -19,6 +19,27 @@ pub fn dock_position(pet: (i32, i32, i32, i32), chat: (i32, i32), area: (i32, i3
     (x.clamp(ax, ax + (aw - cw).max(0)), (py + (ph - ch) / 2).clamp(ay, ay + (ah - ch).max(0)), use_right)
 }
 
+/// Chat can appear before the pet WebView. Attach the native owner as soon as
+/// both windows exist so Windows keeps the dialogue above the pet.
+pub fn attach_owner(app: &AppHandle) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetWindowLongPtrW, SetWindowLongPtrW, GWLP_HWNDPARENT,
+    };
+
+    let handle = app.clone();
+    let _ = app.run_on_main_thread(move || {
+        let (Some(pet), Some(chat)) = (handle.get_webview_window("companion"), handle.get_webview_window("companion-chat")) else { return; };
+        let (Ok(pet), Ok(chat)) = (pet.hwnd(), chat.hwnd()) else { return; };
+        if unsafe { GetWindowLongPtrW(chat.0, GWLP_HWNDPARENT) } != pet.0 as isize {
+            unsafe { SetWindowLongPtrW(chat.0, GWLP_HWNDPARENT, pet.0 as isize); }
+            if unsafe { GetWindowLongPtrW(chat.0, GWLP_HWNDPARENT) } != pet.0 as isize {
+                handle.state::<AppState>().warn("Unable to attach the companion dialogue owner");
+            }
+        }
+        follow(&handle);
+    });
+}
+
 pub fn follow(app: &AppHandle) {
     if !app.state::<AppState>().preferences.recover_lock().chat_docked { return; }
     let (Some(pet), Some(chat)) = (app.get_webview_window("companion"), app.get_webview_window("companion-chat")) else { return };

@@ -44,7 +44,7 @@ async fn handle(
     if !output.contains_key("cache-control") {
         output.insert("cache-control", HeaderValue::from_static("private, no-store"));
     }
-    output.insert("vary", "Origin".parse().unwrap());
+    output.append("vary", HeaderValue::from_static("Origin"));
     if allowed && let Some(origin) = headers.get("origin") {
         output.insert("access-control-allow-origin", origin.clone());
     }
@@ -160,7 +160,9 @@ async fn perform(
         commands::text(&json!(&path[1]))?;
         let width = query.get("width").map(|value| value.parse::<u64>()
             .map_err(|_| ApiError::invalid("Invalid derivative width"))).transpose()?;
-        return media::derivative(&storage, headers, method, &path[1], width).await;
+        return media::derivative(
+            &storage, headers, method, &path[1], width, query.get("v").map(String::as_str),
+        ).await;
     }
     if path == ["video-images"] && method == Method::POST {
         if body.len() > 4096 {

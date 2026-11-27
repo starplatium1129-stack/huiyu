@@ -1,12 +1,67 @@
 use super::*;
+use std::time::{Duration, Instant};
+
+type Snapshot = tokio::sync::Mutex<Option<(Instant, Settings, Value)>>;
+
+#[derive(Default)]
+pub(in crate::images) struct StatusCache {
+    combined: Snapshot,
+    anima: Snapshot,
+    qwen: Snapshot,
+    moss: Snapshot,
+    keyframe: Snapshot,
+}
+
+impl StatusCache {
+    fn for_family(&self, family: &str) -> Option<&Snapshot> {
+        match family {
+            "" => Some(&self.combined),
+            "anima" => Some(&self.anima),
+            "qwen-image" => Some(&self.qwen),
+            "moss-image" => Some(&self.moss),
+            "keyframe" => Some(&self.keyframe),
+            _ => None,
+        }
+    }
+}
 
 pub(in crate::images) async fn status(
     backend: &generation::Service,
+    cache: &StatusCache,
     family: &str,
     cancel: CancellationToken,
 ) -> Result<Value> {
     status_check(&cancel)?;
     let runtime = backend.native_settings()?;
+    let mut value = if let Some(snapshot) = cache.for_family(family) {
+        let mut snapshot = tokio::select! {
+            biased;
+            _ = cancel.cancelled() => return Err(inputs::cancelled()),
+            guard = snapshot.lock() => guard,
+        };
+        if let Some((at, settings, cached)) = snapshot.as_ref()
+            && at.elapsed() < Duration::from_secs(3)
+            && *settings == runtime
+        {
+            cached.clone()
+        } else {
+            let value = scan(runtime.clone(), family, cancel.clone()).await?;
+            *snapshot = Some((Instant::now(), runtime, value.clone()));
+            value
+        }
+    } else {
+        scan(runtime, family, cancel.clone()).await?
+    };
+    status_check(&cancel)?;
+    value["pending"] = json!(backend.pending());
+    Ok(value)
+}
+
+async fn scan(
+    runtime: Settings,
+    family: &str,
+    cancel: CancellationToken,
+) -> Result<Value> {
     let runtime_error = if family.is_empty() || family == "anima" {
         runtime
             .validate_anima_files()
@@ -17,14 +72,11 @@ pub(in crate::images) async fn status(
         None
     };
     let family = family.to_owned();
-    // One bounded filesystem job per poll, with no completed-result cache.
-    let mut value = tokio::task::spawn_blocking(move || {
+    tokio::task::spawn_blocking(move || {
         local_status(&runtime, &family, runtime_error, &cancel)
     })
     .await
-    .map_err(|_| ApiError::new(503, "ANIMA_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))??;
-    value["pending"] = json!(backend.pending());
-    Ok(value)
+    .map_err(|_| ApiError::new(503, "ANIMA_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))?
 }
 fn status_check(cancel: &CancellationToken) -> Result<()> {
     if cancel.is_cancelled() {

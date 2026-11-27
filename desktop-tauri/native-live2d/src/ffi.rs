@@ -9,6 +9,17 @@ pub struct l2d_model {
     _private: [u8; 0],
 }
 
+#[repr(C)]
+#[derive(Clone, Copy, Default)]
+pub struct DrawableFrame {
+    pub position_revision: u64,
+    pub render_order: i32,
+    pub visible: i32,
+    pub opacity: f32,
+    pub multiply_color: [f32; 4],
+    pub screen_color: [f32; 4],
+}
+
 pub const L2D_COLOR_BLEND_NORMAL: c_int = 0;
 pub const L2D_COLOR_BLEND_ADD_COMPATIBLE: c_int = 1;
 pub const L2D_COLOR_BLEND_MULTIPLY_COMPATIBLE: c_int = 2;
@@ -76,6 +87,8 @@ extern "C" {
         weight: c_float,
     );
     pub fn l2d_model_get_parameter(m: *mut l2d_model, id: *const c_char) -> c_float;
+    pub fn l2d_model_set_parameter_by_index(m: *mut l2d_model, index: c_int, value: c_float, weight: c_float);
+    pub fn l2d_model_get_parameter_by_index(m: *mut l2d_model, index: c_int) -> c_float;
     pub fn l2d_model_reset_all_parameters(m: *mut l2d_model);
     pub fn l2d_model_update(m: *mut l2d_model, delta_time_seconds: c_float);
     pub fn l2d_model_canvas_width(m: *mut l2d_model) -> c_float;
@@ -88,15 +101,11 @@ extern "C" {
     pub fn l2d_model_drawable_uvs(m: *mut l2d_model, index: c_int) -> *const c_float;
     pub fn l2d_model_drawable_indices(m: *mut l2d_model, index: c_int) -> *const c_ushort;
     pub fn l2d_model_drawable_index_count(m: *mut l2d_model, index: c_int) -> c_int;
-    pub fn l2d_model_drawable_opacity(m: *mut l2d_model, index: c_int) -> c_float;
+    pub fn l2d_model_drawable_frame(m: *mut l2d_model, out: *mut DrawableFrame, count: usize);
     pub fn l2d_model_drawable_culling(m: *mut l2d_model, index: c_int) -> c_int;
     pub fn l2d_model_drawable_texture_index(m: *mut l2d_model, index: c_int) -> c_int;
-    pub fn l2d_model_drawable_visible(m: *mut l2d_model, index: c_int) -> c_int;
-    pub fn l2d_model_drawable_render_order(m: *mut l2d_model, index: c_int) -> c_int;
     pub fn l2d_model_drawable_color_blend(m: *mut l2d_model, index: c_int) -> c_int;
     pub fn l2d_model_drawable_alpha_blend(m: *mut l2d_model, index: c_int) -> c_int;
-    pub fn l2d_model_drawable_multiply_color(m: *mut l2d_model, index: c_int, rgba: *mut c_float);
-    pub fn l2d_model_drawable_screen_color(m: *mut l2d_model, index: c_int, rgba: *mut c_float);
     pub fn l2d_model_drawable_mask_count(m: *mut l2d_model, index: c_int) -> c_int;
     pub fn l2d_model_drawable_masks(m: *mut l2d_model, index: c_int) -> *const c_int;
     pub fn l2d_model_drawable_inverted_mask(m: *mut l2d_model, index: c_int) -> c_int;

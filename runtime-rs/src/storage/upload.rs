@@ -72,7 +72,7 @@ fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared
         ));
     }
     c.writer()?;
-    c.owner.check()?;
+    c.owner()?.check()?;
     let kind = string(command, "kind")?;
     if !kind.starts_with("task.") {
         let id = string(command, "operationId")?;

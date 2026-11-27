@@ -66,7 +66,7 @@ pub(crate) async fn drawing_options(
     if settings.engine != "native" {
         return Ok(json!({"available":false,"models":[]}));
     }
-    let status = crate::images::native::status(&images.backend, "", cancel).await?;
+    let status = crate::images::native::status(&images.backend, &images.native_status, "", cancel).await?;
     let mut models: Vec<_> = status["models"].as_array().into_iter().flatten()
         .filter(|model| matches!(model["family"].as_str(), Some("anima" | "krea2" | "moss-image" | "qwen-image" | "keyframe"))
             && (model["available"] == true || model_id.is_some_and(|id| model["id"] == id)))

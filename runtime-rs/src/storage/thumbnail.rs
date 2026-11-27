@@ -1,5 +1,4 @@
 mod queue;
-pub(super) use queue::Readers;
 
 use super::{Storage, schema, string};
 use crate::error::{ApiError, Result};
@@ -19,14 +18,12 @@ static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 pub(crate) struct Derivative {
     pub(crate) bytes: Bytes,
     pub(crate) mime: &'static str,
-    pub(crate) etag: String,
 }
 
-impl Derivative {
-    fn new(bytes: Bytes, mime: &'static str) -> Self {
-        let etag = format!("\"{}\"", super::canonical::digest(&bytes));
-        Self { bytes, mime, etag }
-    }
+pub(crate) struct DerivativeResponse {
+    pub(crate) etag: String,
+    pub(crate) immutable: bool,
+    pub(crate) image: Option<Derivative>,
 }
 
 #[derive(Default)]
@@ -68,7 +65,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         .get("width")
         .map(|value| value.as_u64().ok_or_else(invalid_width))
         .transpose()?;
-    Ok(read_binary(storage, string(command, "alias")?, requested).await?
+    Ok(read_binary(storage, string(command, "alias")?, requested, None, |_| false).await?
+        .and_then(|result| result.image)
         .map_or(Value::Null, |image| thumbnail_value(&image.bytes, image.mime)))
 }
 
@@ -76,7 +74,13 @@ fn invalid_width() -> ApiError {
     ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192")
 }
 
-pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Option<u64>) -> Result<Option<Derivative>> {
+pub(super) async fn read_binary(
+    storage: &Storage,
+    alias: &str,
+    requested: Option<u64>,
+    version_hash: Option<&str>,
+    matches_tag: impl FnOnce(&str) -> bool,
+) -> Result<Option<DerivativeResponse>> {
     let preview = requested.is_some();
     let requested = requested.unwrap_or(560);
     if !(1..=8192).contains(&requested) { return Err(invalid_width()); }
@@ -88,13 +92,13 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
     let _cancel = cancelled.clone().drop_guard();
     let source = match tokio::select! { biased;
         _ = cancelled.cancelled() => return Err(super::unavailable()),
-        source = storage.media(alias) => source,
+        source = storage.lookup_media(alias) => source,
     } {
         Ok(source) => source,
         Err(error) if error.status.as_u16() == 404 => return Ok(None),
         Err(error) => return Err(error),
     };
-    if !source.mime.starts_with("image/") {
+    if version_hash.is_some_and(|hash| hash != source.sha256) || !source.mime.starts_with("image/") {
         return Ok(None);
     }
     // Unsupported preview codecs must leave the browser's original fallback in
@@ -107,15 +111,29 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
     {
         return Ok(None);
     }
-    let root = storage.root.clone();
     // Different encoders/resampling must never share sharp's thumbnails-v1 cache.
     let native = storage.native_images.clone();
-    let (version, extension, mime) = match (native.is_some(), preview) {
-        (true, true) => ("previews-rust-vips-v1", "webp", "image/webp"),
-        (false, true) => ("previews-rust-v1", "webp", "image/webp"),
-        (true, false) => ("thumbnails-rust-vips-v1", "jpg", "image/jpeg"),
-        (false, false) => ("thumbnails-rust-v1", "jpg", "image/jpeg"),
+    let (version, extension) = match (native.is_some(), preview) {
+        (true, true) => ("previews-rust-vips-v1", "webp"),
+        (false, true) => ("previews-rust-v2", "img"),
+        (true, false) => ("thumbnails-rust-vips-v1", "jpg"),
+        (false, false) => ("thumbnails-rust-v2", "jpg"),
     };
+    let etag = format!("W/\"{version}-{}-{width}\"", source.sha256);
+    let immutable = version_hash.is_some();
+    if matches_tag(&etag) {
+        return Ok(Some(DerivativeResponse { etag, immutable, image: None }));
+    }
+    let root = storage.root.clone();
+    let source = match tokio::select! { biased;
+        _ = cancelled.cancelled() => return Err(super::unavailable()),
+        verified = storage.verification.verify(root.clone(), source, storage.sender.clone()) => verified,
+    } {
+        Ok(verified) => verified.media,
+        Err(error) if error.status.as_u16() == 404 => return Ok(None),
+        Err(error) => return Err(error),
+    };
+    let response = move |image| DerivativeResponse { etag, immutable, image: Some(image) };
     let suffix = if width == 560 {
         String::new()
     } else {
@@ -123,7 +141,7 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
     };
     let relative = format!("cache/{version}/{}{suffix}.{extension}", source.sha256);
     let memory = storage.derivatives.clone();
-    if let Some(value) = memory.get(&relative) { return Ok(Some(value)); }
+    if let Some(value) = memory.get(&relative) { return Ok(Some(response(value))); }
     let owner = storage.sender.clone();
     let (cache_root, cache_relative, read_cancel) =
         (root.clone(), relative.clone(), cancelled.clone());
@@ -134,7 +152,7 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
             return Err(super::unavailable());
         }
         let cache = schema::safe(&cache_root, Path::new(&cache_relative))?;
-        let cached = read_cached(&cache, mime)?;
+        let cached = read_cached(&cache)?;
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
@@ -144,7 +162,7 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
     .map_err(|_| worker_failed())??;
     if let Some(value) = cached {
         memory.put(relative, value.clone());
-        return Ok(Some(value));
+        return Ok(Some(response(value)));
     }
     let queue = DECODERS.get_or_init(queue::Queue::new);
     // Coalesce the same workspace/hash/cache-version before taking a decoder
@@ -153,13 +171,13 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
         _ = cancelled.cancelled() => return Err(super::unavailable()),
         guard = queue.image(cache.clone()) => guard,
     };
-    if let Some(value) = memory.get(&relative) { return Ok(Some(value)); }
+    if let Some(value) = memory.get(&relative) { return Ok(Some(response(value))); }
     let (cache_path, read_cancel) = (cache.clone(), cancelled.clone());
     let (cached, image_guard, reader, owner) = tokio::task::spawn_blocking(move || {
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
-        let cached = read_cached(&cache_path, mime)?;
+        let cached = read_cached(&cache_path)?;
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
@@ -169,7 +187,7 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
     .map_err(|_| worker_failed())??;
     if let Some(value) = cached {
         memory.put(relative, value.clone());
-        return Ok(Some(value));
+        return Ok(Some(response(value)));
     }
     let permit = tokio::select! { biased;
         _ = cancelled.cancelled() => return Err(super::unavailable()),
@@ -197,28 +215,34 @@ pub(super) async fn read_binary(storage: &Storage, alias: &str, requested: Optio
         if cancelled.is_cancelled() {
             return Ok(None);
         }
+        let Some(value) = derivative(bytes) else { return Err(worker_failed()); };
         let parent = cache.parent().expect("cache has a parent");
         fs::create_dir_all(parent)?;
         schema::safe(&root, Path::new(&relative))?;
         let mut temporary = tempfile::NamedTempFile::new_in(parent)?;
-        temporary.write_all(&bytes)?;
+        temporary.write_all(&value.bytes)?;
         // Temp ownership also reclaims a partially written thumbnail on error.
         if let Err(error) = temporary.persist(&cache)
             && !cache.is_file()
         {
             return Err(error.error.into());
         }
-        let value = Derivative::new(bytes, mime);
         memory.put(relative, value.clone());
         Ok(Some(value))
     })
     .await
     .map_err(|_| worker_failed())?
+    .map(|image| image.map(response))
 }
 
-fn read_cached(cache: &Path, mime: &'static str) -> Result<Option<Derivative>> {
+fn derivative(bytes: Bytes) -> Option<Derivative> {
+    let mime = super::media::detected_mime(&bytes)?;
+    matches!(mime, "image/jpeg" | "image/webp").then_some(Derivative { bytes, mime })
+}
+
+fn read_cached(cache: &Path) -> Result<Option<Derivative>> {
     match fs::read(cache) {
-        Ok(bytes) => Ok(Some(Derivative::new(bytes.into(), mime))),
+        Ok(bytes) => Ok(derivative(bytes.into())),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(error) => Err(error.into()),
     }
@@ -266,25 +290,28 @@ fn encode(path: &Path, max_width: u32, preserve_alpha: bool) -> Result<Option<Ve
     let height = ((f64::from(decoded.height()) * f64::from(width) / f64::from(decoded.width()))
         .round() as u32)
         .max(1);
-    let resized = decoded
-        .resize_exact(width, height, FilterType::Lanczos3)
-        .to_rgba8();
+    let resized = if width == decoded.width() {
+        decoded
+    } else {
+        decoded.resize_exact(width, height, FilterType::Triangle)
+    };
     let mut bytes = Vec::new();
-    if preserve_alpha {
-        WebPEncoder::new_lossless(&mut bytes)
-            .encode(&resized, width, height, image::ExtendedColorType::Rgba8)
-            .map_err(decode_error)?;
-        return Ok(Some(bytes));
-    }
-    let mut rgb = RgbImage::new(width, height);
-    for (input, output) in resized.pixels().zip(rgb.pixels_mut()) {
-        let alpha = u16::from(input[3]);
-        *output = Rgb([
-            ((u16::from(input[0]) * alpha + 127) / 255) as u8,
-            ((u16::from(input[1]) * alpha + 127) / 255) as u8,
-            ((u16::from(input[2]) * alpha + 127) / 255) as u8,
-        ]);
-    }
+    let rgb = if resized.color().has_alpha() {
+        let rgba = resized.into_rgba8();
+        if preserve_alpha && rgba.pixels().any(|pixel| pixel[3] != u8::MAX) {
+            WebPEncoder::new_lossless(&mut bytes)
+                .encode(&rgba, width, height, image::ExtendedColorType::Rgba8)
+                .map_err(decode_error)?;
+            return Ok(Some(bytes));
+        }
+        RgbImage::from_fn(width, height, |x, y| {
+            let pixel = rgba.get_pixel(x, y);
+            let alpha = u16::from(pixel[3]);
+            Rgb([pixel[0], pixel[1], pixel[2]].map(|value| ((u16::from(value) * alpha + 127) / 255) as u8))
+        })
+    } else {
+        resized.into_rgb8()
+    };
     JpegEncoder::new_with_quality(&mut bytes, 82)
         .encode_image(&rgb)
         .map_err(decode_error)?;

@@ -9,23 +9,21 @@ impl RenderContext {
         model.update(dt);
         // 覆写参数必须在 UpdateMotion 之后：动作曲线每帧写回参数，
         // 先写会被动作覆盖（实测 TapHead 播放中口型始终为动作姿态）。
-        if let (Some(profile), Some((name, intensity))) = (self.profile.as_ref(), self.emotion.clone()) {
-            profile.apply_emotion(model, &name, intensity);
+        if let Some((name, intensity)) = &self.emotion {
+            self.parameters.apply_emotion(model, name, *intensity);
         }
-        if let Some((param, value)) = self.profile.as_ref().and_then(|profile| profile.mouth_value(self.mouth_level)) {
-            if model.parameter_index(param).is_some() {
-                model.set_parameter(param, value, 0.7);
-            }
+        if let (Some(index), Some((_, value))) = (self.parameters.mouth,
+            self.profile.as_ref().and_then(|profile| profile.mouth_value(self.mouth_level)))
+        {
+            model.set_parameter_by_index(index, value, 0.7);
         }
         let (gx, gy) = self.gaze;
         if gx != 0.0 || gy != 0.0 {
-            let focus = self.profile.as_ref().map(|profile| profile.focus.as_slice()).unwrap_or_default();
-            for (id, value, weight) in [
-                ("ParamAngleX", 30.0 * gx, 0.6), ("ParamAngleY", 30.0 * gy, 0.6),
-                ("ParamEyeBallX", gx, 0.8), ("ParamEyeBallY", gy, 0.8),
-            ] {
-                if focus.iter().any(|candidate| candidate == id) {
-                    model.set_parameter(id, value, weight);
+            for (index, (value, weight)) in self.parameters.gaze.into_iter().zip([
+                (30.0 * gx, 0.6), (30.0 * gy, 0.6), (gx, 0.8), (gy, 0.8),
+            ]) {
+                if let Some(index) = index {
+                    model.set_parameter_by_index(index, value, weight);
                 }
             }
         }
@@ -37,10 +35,8 @@ impl RenderContext {
         let in_entrance = matches!(&self.active_motion, Some(m) if m.phase == MotionPhase::Entrance);
         if !in_entrance {
             let blink_value = self.blink.update(dt);
-            for id in self.profile.as_ref().map(|profile| profile.blink.as_slice()).unwrap_or_default() {
-                if model.parameter_index(id).is_some() {
-                    model.set_parameter(id, blink_value, 1.0);
-                }
+            for &index in &self.parameters.blink {
+                model.set_parameter_by_index(index, blink_value, 1.0);
             }
         }
         // 叠层参数每帧守卫（2026-08-16 静止发灰修复）：Idle 动作 Idle_6 把
@@ -59,8 +55,8 @@ impl RenderContext {
             let settling = self.overlay_settler.as_mut().is_some_and(|settler| settler.step(model, dt));
             if !settling {
                 self.overlay_settler = None;
-                if let Some(config) = self.profile.as_ref().and_then(|profile| profile.overlay_settle.as_ref()) {
-                    apply_overlay_defaults(model, config);
+                if let Some(overlays) = &self.parameters.overlays {
+                    overlays.apply_defaults(model);
                 }
             }
         }
@@ -176,9 +172,8 @@ impl RenderContext {
         // 实机"换装闪回"反馈）。回落期间 step() 跳过硬性隐藏守卫，结束后
         // 恢复（防 Idle_6 拉灰）。Idle→Idle 轮换参数本就处于隐藏态，无需回落。
         if matches!(phase, MotionPhase::Interaction | MotionPhase::Entrance) {
-            let config = self.profile.as_ref().and_then(|profile| profile.overlay_settle.as_ref());
-            if let (Some(model), Some(config)) = (self.model.as_ref(), config) {
-                self.overlay_settler = OverlaySettler::begin(model, config);
+            if let (Some(model), Some(overlays)) = (self.model.as_ref(), &self.parameters.overlays) {
+                self.overlay_settler = OverlaySettler::begin(model, overlays);
             }
         }
         self.start_idle_motion();

@@ -17,7 +17,7 @@ def check(tools, error, *, full):
                  "anima_local_cache", "teacache_profile", "resident_anima", "anima_text_cache",
                  "inference_metrics", "anima_execution", "anima_lora", "anima_lora_fusion", "anima_sampling",
                  "anima_refinement", "anima_vae", "anima_tiling", "anima_postprocess", "anima_prompt_weights",
-                 "anima_upscale", "native_hash", "native_upload", "anima_loader", "anima_device", "locked_identity"):
+                 "anima_upscale", "native_hash", "mapped_weights", "native_upload", "anima_loader", "anima_device", "locked_identity"):
         tools(name)
     tools("anima_memory").validate()
     if tools("anima_acceleration").validate() != "native":

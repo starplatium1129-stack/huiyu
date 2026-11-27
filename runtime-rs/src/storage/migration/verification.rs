@@ -143,7 +143,7 @@ pub(in crate::storage) fn start(
             return Err(invalid("A stable operation ID is required"));
         }
         c.writer()?;
-        c.owner.check()?;
+        c.owner()?.check()?;
         let id = string(command, "migrationId")?;
         let current = session(c, id, principal)?;
         if current.state != "importing" {

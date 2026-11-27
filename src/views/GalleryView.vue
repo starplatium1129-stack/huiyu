@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
+    <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined" v-glass-optics="selectMode">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
@@ -130,13 +130,14 @@
                 :title="cardLabels.get(item.id)!.title" :character="cardLabels.get(item.id)!.character"
                 :character-accent="cardLabels.get(item.id)!.accent"
                 :formatted-date="cardLabels.get(item.id)!.date" :ratio="ratioOf(item)"
-                :thumb-url="resolveRuntimeUrl(thumbUrls[item.id] || '')" :image-url="resolveRuntimeUrl(cardUrls[item.id] || '')"
+                :thumb-urls="thumbUrls" :card-urls="cardUrls"
                 :cors="runtimeResourceCors()" :missing="missingImageIds.has(item.id)"
                 :selection-mode="selectMode" :selected="selectedIds.has(item.id)"
                 :confirming-delete="pendingDeleteId === item.id" :deleting="pendingDeleteId === item.id && deleting"
                 @select="toggleSelect(item.id, $event)" @open="openFromCard(indexOf(item), $event)"
                 @favorite="toggleFavorite(item)" @request-delete="pendingDeleteId = item.id" @cancel-delete="pendingDeleteId = null"
                 @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)" @retry="retryCardImage(item)"
+                @thumbnail-error="discardBrokenThumbnail(item)" @image-error="discardBrokenDerivative(item)"
               />
               </template>
             </GalleryVirtualRows>
@@ -173,7 +174,7 @@
         <template v-if="(compareMode && hasComparableImage && viewerUrl) || (gestureViewer && current)" #image>
           <div v-if="compareMode && hasComparableImage && viewerUrl" class="viewer-compare-host">
             <ImageCompareSlider
-              :before-src="parentImageUrl || thumbUrls[current!.id]"
+              :before-src="parentImageUrl || thumbUrls.get(String(current!.id)) || ''"
               :after-src="viewerUrl"
               :before-label="parentImageLabel"
               after-label="当前成片"
@@ -279,7 +280,7 @@
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
 import { defineAsyncComponent } from 'vue'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { runtimeResourceCors } from '@/platform/runtimeUrl'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import GalleryRefinement from '@/components/gallery/GalleryRefinement.vue'
@@ -332,7 +333,7 @@ const {
   galleryError, canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage,
   comparisonMarksReading, history, resetGalleryFilters, masonryGroups, scheduleWallScan, retryCardImage,
   columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete, sceneTitle, toggleFavorite,
-  toggleSelect, openViewer, indexOf, thumbUrls, measure, cardUrls, onHdLoad, missingImageIds,
+  toggleSelect, openViewer, indexOf, thumbUrls, measure, cardUrls, onHdLoad, missingImageIds, discardBrokenThumbnail, discardBrokenDerivative,
   formatDate, stamp, hasMoreToRender, pagedVisible, viewerIndex, idleMediaSuspended, infoOpen, infoDrawerHidden,
   toggleInfoDrawer, closeInfoDrawer, closeViewer, compareMode, hasComparableImage, viewerUrl,
   viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, parentImageLabel,

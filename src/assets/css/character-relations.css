@@ -174,8 +174,8 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--r-md);
   background: color-mix(in srgb, var(--bg-surface) 90%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: var(--glass-disabled, blur(8px));
+  -webkit-backdrop-filter: var(--glass-disabled, blur(8px));
   box-shadow: var(--shadow-md);
   z-index: 10;
 }

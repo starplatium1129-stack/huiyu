@@ -1,7 +1,7 @@
 <template>
   <section class="viewer-stage" @click.self="emit('dismiss-info')">
-    <button :ref="element => emit('close-button', element as HTMLButtonElement | null)" class="viewer-close" data-fluid-glass type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
-    <button class="viewer-nav viewer-prev" data-fluid-glass type="button" aria-label="上一幅" :disabled="index <= 0" @click="emit('select', index - 1)"><ArchiveIcon name="chevron-down" /></button>
+    <button :ref="element => emit('close-button', element as HTMLButtonElement | null)" class="viewer-close" data-fluid-glass v-glass-optics type="button" aria-label="关闭" @click="emit('close')"><ArchiveIcon name="close" /></button>
+    <button class="viewer-nav viewer-prev" data-fluid-glass v-glass-optics type="button" aria-label="上一幅" :disabled="index <= 0" @click="emit('select', index - 1)"><ArchiveIcon name="chevron-down" /></button>
     <slot name="image">
       <GalleryOrbitStage v-if="!original && items[index]" :total="total" :items="items" :index="index" :active="active"
         :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :thumbnail-for="thumbnailFor" :load-failed="loadFailed" :reload="reload"
@@ -12,8 +12,8 @@
       </ZoomableImageViewer>
       <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
     </slot>
-    <button class="viewer-nav viewer-next" data-fluid-glass type="button" aria-label="下一幅" :disabled="index >= (total ?? items.length) - 1" @click="emit('select', index + 1)"><ArchiveIcon name="chevron-down" /></button>
-    <button class="viewer-mode-switch" data-fluid-glass type="button" :aria-pressed="original" @click="emit('toggle-original')"><ArchiveIcon name="image" />{{ original ? '立体观画' : '原图 / 缩放' }}</button>
+    <button class="viewer-nav viewer-next" data-fluid-glass v-glass-optics type="button" aria-label="下一幅" :disabled="index >= (total ?? items.length) - 1" @click="emit('select', index + 1)"><ArchiveIcon name="chevron-down" /></button>
+    <button class="viewer-mode-switch" data-fluid-glass v-glass-optics type="button" :aria-pressed="original" @click="emit('toggle-original')"><ArchiveIcon name="image" />{{ original ? '立体观画' : '原图 / 缩放' }}</button>
     <slot name="tools" />
     <div class="viewer-position">{{ index + 1 }} / {{ total ?? items.length }}</div>
   </section>
@@ -30,14 +30,14 @@ import '@/assets/css/gallery-viewer.css'
 
 const props = withDefaults(defineProps<{
   total?: number; items: T[]; index: number; active: boolean; original: boolean; src: string; previewSrc?: string;
-  cardUrls?: Record<string, string>; thumbUrls?: Record<string, string>; neighborUrls?: Record<string, string>;
+  cardUrls?: ReadonlyMap<string, string>; thumbUrls?: ReadonlyMap<string, string>; neighborUrls?: Record<string, string>;
   thumbnailFor?: (item: T) => string;
   title: (item: T) => string;
   loadFailed?: boolean; reload?: () => Promise<void>;
-}>(), { previewSrc: '', cardUrls: () => Object.create(null), thumbUrls: () => Object.create(null), neighborUrls: () => Object.create(null) })
+}>(), { previewSrc: '', cardUrls: () => new Map(), thumbUrls: () => new Map(), neighborUrls: () => Object.create(null) })
 const currentPreview = computed(() => {
   const item = props.items[props.index]
-  return props.previewSrc || (item ? props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || props.thumbnailFor?.(item) || '' : '')
+  return props.previewSrc || (item ? props.cardUrls.get(String(item.id)) || props.neighborUrls[item.id] || props.thumbUrls.get(String(item.id)) || props.thumbnailFor?.(item) || '' : '')
 })
 const emit = defineEmits<{
   close: []; select: [index: number]; 'toggle-original': []; 'dismiss-info': [];

@@ -27,7 +27,7 @@ async function lensMap({ width, height, radius, rim }: LensDimensions) {
       const px = (x + .5) * width / canvas.width - halfW
       const qx = Math.abs(px) - innerW
       const cx = Math.max(qx, 0)
-      const length = Math.hypot(cx, cy)
+      const length = cx && cy ? Math.sqrt(cx * cx + cy * cy) : cx + cy
       const depth = -(length + Math.min(Math.max(qx, qy), 0) - radius)
 
       let dx = 0

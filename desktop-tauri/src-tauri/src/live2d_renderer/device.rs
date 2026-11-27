@@ -14,8 +14,12 @@ impl RenderContext {
                 ..Default::default()
             },
         });
+        let power_preference = match std::env::var("AICS_LIVE2D_GPU").as_deref() {
+            Ok("high-performance") => wgpu::PowerPreference::HighPerformance,
+            _ => wgpu::PowerPreference::LowPower,
+        };
         let adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions {
-            power_preference: wgpu::PowerPreference::HighPerformance,
+            power_preference,
             compatible_surface: None,
             force_fallback_adapter: false,
         }))
@@ -68,6 +72,7 @@ impl RenderContext {
             gaze: (0.0, 0.0),
             character: None,
             profile: None,
+            parameters: ProfileParameters::default(),
             overlay_settler: None,
             hit_area_names: Vec::new(),
             motion_counts: HashMap::new(),

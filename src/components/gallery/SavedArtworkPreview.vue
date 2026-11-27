@@ -35,7 +35,7 @@ const emit = defineEmits<{ close: []; resume: [item: ArtworkRecord] }>()
 const items = computed(() => props.items)
 const selectedId = ref(props.item.id)
 const index = computed(() => Math.max(0, items.value.findIndex(item => item.id === selectedId.value)))
-const previews = computed(() => Object.fromEntries(items.value.map(item => [item.id, props.thumbnail(item)])))
+const previews = computed(() => new Map(items.value.map(item => [String(item.id), props.thumbnail(item)])))
 const title = (item: ArtworkRecord) => item.sceneTitle || item.story || '未命名作品'
 const original = ref(false), closing = ref(false), dialog = ref<HTMLElement | null>(null), closeButton = ref<HTMLElement | null>(null)
 const { viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current: viewerCurrent, openViewer, closeViewer, onViewerClosed } = useGalleryViewer({

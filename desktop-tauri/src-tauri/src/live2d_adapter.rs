@@ -93,28 +93,68 @@ impl Live2DAdapterConfig {
         Some((&mouth.id, value))
     }
 
+}
+
+const GAZE_PARAMETERS: [&str; 4] = ["ParamAngleX", "ParamAngleY", "ParamEyeBallX", "ParamEyeBallY"];
+
+#[derive(Default)]
+pub struct ProfileParameters {
+    pub mouth: Option<i32>,
+    pub blink: Vec<i32>,
+    pub gaze: [Option<i32>; GAZE_PARAMETERS.len()],
+    pub overlays: Option<OverlayParameters>,
+    emotions: HashMap<String, HashMap<i32, f32>>,
+}
+
+impl ProfileParameters {
+    pub fn bind(model: &Model, profile: &Live2DAdapterConfig) -> Self {
+        let resolve_values = |params: &HashMap<String, f32>| {
+            params.iter().filter_map(|(id, value)| model.parameter_index(id).map(|index| (index, *value))).collect::<Vec<_>>()
+        };
+        Self {
+            mouth: profile.mouth.as_ref().and_then(|mouth| model.parameter_index(&mouth.id)),
+            blink: profile.blink.iter().filter_map(|id| model.parameter_index(id)).collect(),
+            gaze: GAZE_PARAMETERS.map(|id| {
+                profile.focus.iter().any(|candidate| candidate == id).then(|| model.parameter_index(id)).flatten()
+            }),
+            overlays: profile.overlay_settle.as_ref().map(|config| OverlayParameters {
+                duration: config.settle_ms / 1000.0,
+                defaults: resolve_values(&config.reset_defaults),
+            }),
+            emotions: profile.emotion_params.iter().map(|(name, params)| {
+                (name.clone(), resolve_values(params).into_iter().collect())
+            }).collect(),
+        }
+    }
+
     pub fn apply_emotion(&self, model: &mut Model, name: &str, intensity: f32) {
         let intensity = intensity.clamp(0.0, 1.0);
-        let neutral = self.emotion_params.get("neutral");
-        let target = self.emotion_params.get(name);
+        let neutral = self.emotions.get("neutral");
+        let target = self.emotions.get(name);
         // Sparse presets release only explicitly calibrated face parameters.
-        // Nonzero defaults (for example eye highlight) remain neutral when
-        // intensity fades or the caller clears the selected expression.
-        for (id, value) in neutral.into_iter().flatten() {
-            if model.parameter_index(id).is_some() {
-                let desired = target.and_then(|params| params.get(id)).unwrap_or(value);
-                model.set_parameter(id, value + (desired - value) * intensity, 1.0);
+        for (&index, value) in neutral.into_iter().flatten() {
+            let desired = target.and_then(|params| params.get(&index)).unwrap_or(value);
+            model.set_parameter_by_index(index, value + (desired - value) * intensity, 1.0);
+        }
+        if intensity > 0.0 {
+            for (&index, &value) in target.into_iter().flatten() {
+                if !neutral.is_some_and(|params| params.contains_key(&index)) {
+                    model.set_parameter_by_index(index, value, 1.0);
+                }
             }
         }
-        for (id, value) in target.into_iter().flatten() {
-            if neutral.is_some_and(|params| params.contains_key(id)) {
-                continue;
-            }
-            if model.parameter_index(id).is_some() && intensity > 0.0 {
-                // Uncalibrated imported parameters keep their authored value;
-                // do not infer a zero baseline or offer manual expressions.
-                model.set_parameter(id, *value, 1.0);
-            }
+    }
+}
+
+pub struct OverlayParameters {
+    duration: f32,
+    defaults: Vec<(i32, f32)>,
+}
+
+impl OverlayParameters {
+    pub fn apply_defaults(&self, model: &mut Model) {
+        for &(index, value) in &self.defaults {
+            model.set_parameter_by_index(index, value, 1.0);
         }
     }
 }
@@ -122,20 +162,17 @@ impl Live2DAdapterConfig {
 pub struct OverlaySettler {
     elapsed: f32,
     duration: f32,
-    entries: Vec<(String, f32, f32)>,
+    entries: Vec<(i32, f32, f32)>,
 }
 
 impl OverlaySettler {
-    pub fn begin(model: &Model, config: &OverlaySettleConfig) -> Option<Self> {
-        let entries = config
-            .reset_defaults
-            .iter()
-            .filter(|(id, _)| model.parameter_index(id).is_some())
-            .map(|(id, target)| (id.clone(), model.get_parameter(id), *target))
-            .collect::<Vec<_>>();
+    pub fn begin(model: &Model, overlays: &OverlayParameters) -> Option<Self> {
+        let entries = overlays.defaults.iter().map(|&(index, target)| {
+            (index, model.get_parameter_by_index(index), target)
+        }).collect::<Vec<_>>();
         (!entries.is_empty()).then_some(Self {
             elapsed: 0.0,
-            duration: config.settle_ms / 1000.0,
+            duration: overlays.duration,
             entries,
         })
     }
@@ -144,18 +181,10 @@ impl OverlaySettler {
         self.elapsed = (self.elapsed + dt.max(0.0)).min(self.duration);
         let t = (self.elapsed / self.duration).clamp(0.0, 1.0);
         let eased = t * t * (3.0 - 2.0 * t);
-        for (id, from, target) in &self.entries {
-            model.set_parameter(id, from + (target - from) * eased, 1.0);
+        for &(index, from, target) in &self.entries {
+            model.set_parameter_by_index(index, from + (target - from) * eased, 1.0);
         }
         t < 1.0
-    }
-}
-
-pub fn apply_overlay_defaults(model: &mut Model, config: &OverlaySettleConfig) {
-    for (id, value) in &config.reset_defaults {
-        if model.parameter_index(id).is_some() {
-            model.set_parameter(id, *value, 1.0);
-        }
     }
 }
 

@@ -67,9 +67,8 @@ def configure(transformer, execution, tools, device):
     original = transformer.forward
 
     def forward(*args, **kwargs):
-        # On Ada, Sage's quantized attention can produce nonfinite denoiser
-        # activations with a character LoRA. A resident transformer can gain
-        # or lose PEFT adapters after configure(), between requests.
+        # Ada's Sage INT8 kernel can produce nonfinite activations with character
+        # LoRAs (including fused weights) and calibrated profiles lock native-sdpa-v1.
         backend = "native" if getattr(transformer, "peft_config", None) else "sage"
         with attention_backend(backend):
             return original(*args, **kwargs)

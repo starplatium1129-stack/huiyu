@@ -15,15 +15,22 @@ pub(super) fn handle_command(
         OverlayCommand::Shutdown => state.shutdown.store(true, Ordering::SeqCst),
         OverlayCommand::SetMaxFps(fps) => state.fps_limit.store(fps.min(1000), Ordering::Relaxed),
         OverlayCommand::Destroy { reply } => {
-            clear_model_state(state);
-            state.visible.store(false, Ordering::SeqCst);
-            unsafe { ShowWindow(hwnd, SW_HIDE); }
-            release_context(context);
-            state.surface_failures.store(0, Ordering::Relaxed);
-            state.surface_recoveries.store(0, Ordering::Relaxed);
-            // Keep HWND and command channel, but release the device and its pools.
-            // A subsequent SetCharacter recreates the GPU context on demand.
-            let _ = reply.send(());
+            unload_model(state, context, hwnd);
+            reply.send(());
+        }
+        OverlayCommand::ReleaseHidden => {
+            if !state.revealed.load(Ordering::Acquire) {
+                unload_model(state, context, hwnd);
+            }
+        }
+        OverlayCommand::SyncPlacement { check_order } => {
+            if state.visible.load(Ordering::Acquire) && context.is_some() {
+                let companion = state.companion_hwnd.recover_lock().unwrap_or(0) as HWND;
+                let rect = *state.rect.recover_lock();
+                frame::place_overlay(state, hwnd, companion, rect, check_order);
+            } else {
+                frame::hide_overlay(state, hwnd);
+            }
         }
         cmd => {
             if context.is_none() && matches!(&cmd, OverlayCommand::SetCharacter { .. }) {
@@ -43,6 +50,16 @@ pub(super) fn handle_command(
     }
 }
 
+fn unload_model(state: &Live2DOverlayState, context: &mut Option<RenderContext>, hwnd: HWND) {
+    clear_model_state(state);
+    state.visible.store(false, Ordering::Release);
+    frame::hide_overlay(state, hwnd);
+    // Keep the HWND and command channel. SetCharacter recreates the GPU on demand.
+    release_context(context);
+    state.surface_failures.store(0, Ordering::Relaxed);
+    state.surface_recoveries.store(0, Ordering::Relaxed);
+}
+
 fn release_context(context: &mut Option<RenderContext>) {
     if let Some(mut ctx) = context.take() {
         if let Some(renderer) = ctx.renderer.as_mut() {
@@ -59,8 +76,8 @@ fn reply_without_model(cmd: OverlayCommand, error: String) {
         OverlayCommand::SetCharacter { reply, .. }
         | OverlayCommand::PlayMotion { reply, .. }
         | OverlayCommand::SetExpression { reply, .. }
-        | OverlayCommand::Snapshot { reply, .. } => { let _ = reply.send(Err(error)); }
-        OverlayCommand::HitTest { reply, .. } => { let _ = reply.send(Ok(Vec::new())); }
+        | OverlayCommand::Snapshot { reply, .. } => { reply.send(Err(error)); }
+        OverlayCommand::HitTest { reply, .. } => { reply.send(Ok(Vec::new())); }
         // Frame inputs arriving after unload are stale and must not allocate a device.
         _ => {}
     }
@@ -80,9 +97,7 @@ fn handle_model_command(
             ctx.alpha_readback = None;
             ctx.mouth_level = 0.0;
             state.visible.store(false, Ordering::SeqCst);
-            unsafe {
-                ShowWindow(hwnd, SW_HIDE);
-            }
+            frame::hide_overlay(state, hwnd);
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
                 ctx.load_model(environment, &character, texture_scale, adapter)?;
@@ -97,7 +112,7 @@ fn handle_model_command(
                 state.model_ready.store(true, Ordering::SeqCst);
             }
             let loaded = result.is_ok();
-            let _ = reply.send(result);
+            reply.send(result);
             return loaded;
         }
         OverlayCommand::PlayMotion {
@@ -133,7 +148,7 @@ fn handle_model_command(
                     );
                 }
             }
-            let _ = reply.send(result);
+            reply.send(result);
         }
         OverlayCommand::SetExpression { name, reply } => {
             let result = (|| -> Result<(), String> {
@@ -143,30 +158,14 @@ fn handle_model_command(
                     .ok_or_else(|| format!("expression {name} not found"))?;
                 Ok(())
             })();
-            let _ = reply.send(result);
-        }
-        OverlayCommand::SetMouthLevel(level) => {
-            let normalized = level.clamp(0.0, 1.0);
-            let mapped = ctx.profile.as_ref()
-                .and_then(|profile| profile.mouth_value(normalized).map(|(_, value)| value))
-                .unwrap_or(0.0);
-            ctx.mouth_level = normalized;
-            state
-                .last_mouth_level
-                .store(normalized.to_bits(), Ordering::SeqCst);
-            state
-                .last_mapped_mouth_value
-                .store(mapped.to_bits(), Ordering::SeqCst);
+            reply.send(result);
         }
         OverlayCommand::SetEmotion { name, intensity } => {
             ctx.emotion = Some((name, intensity.clamp(0.0, 1.0)));
         }
-        OverlayCommand::SetGaze(x, y) => {
-            ctx.gaze = (x.clamp(-1.0, 1.0), y.clamp(-1.0, 1.0));
-        }
         OverlayCommand::HitTest { x, y, reply } => {
             let areas = ctx.hit_test(state, x, y);
-            let _ = reply.send(Ok(areas));
+            reply.send(Ok(areas));
         }
         OverlayCommand::Snapshot { path, reply } => {
             let result = (|| -> Result<(), String> {
@@ -188,9 +187,13 @@ fn handle_model_command(
                 img.save(&path).map_err(|e| format!("snapshot save: {e}"))?;
                 Ok(())
             })();
-            let _ = reply.send(result);
+            reply.send(result);
         }
-        OverlayCommand::Shutdown | OverlayCommand::SetMaxFps(_) | OverlayCommand::Destroy { .. } => unreachable!(),
+        OverlayCommand::Shutdown
+        | OverlayCommand::ReleaseHidden
+        | OverlayCommand::SyncPlacement { .. }
+        | OverlayCommand::SetMaxFps(_)
+        | OverlayCommand::Destroy { .. } => unreachable!(),
     }
     true
 }
