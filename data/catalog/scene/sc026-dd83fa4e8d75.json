@@ -1,53 +1,46 @@
 {
   "kind": "scene",
   "id": "sc026",
-  "revision": 11,
-  "sortOrder": 24,
+  "revision": 12,
+  "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-11-22T01:44:28.428547400+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "The latch of the shut door is under her palm as she turns back, revealing the wine-red edging on the cuff of her white gym shirt. Light from the high window crosses the narrow gap between the steel racks of balls.",
-    "auditRevision": "careful-batch08-2026-08-27",
-    "camera": "从器材架一侧看门锁和人物的侧前方中景",
-    "category": "恋爱",
-    "char": "natsume",
-    "character": [
-      "natsume"
-    ],
-    "emotion": "紧张",
     "id": "sc026",
-    "lighting": "高窗斜射光",
-    "location": "大学体育馆器材室",
-    "lora": "shiki_natsume_v21_anima",
+    "title": "冬夜暖桌下的白袜试探",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "category": "亲密微醺",
+    "rating": "R15",
     "mature": false,
+    "location": "只亮落地灯的冬夜客厅暖桌旁",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "冬",
+    "weather": "静谧",
+    "lighting": "暖桌橙光、台灯暖黄与屏幕淡蓝微光",
+    "camera": "暖桌对侧平视微仰中景",
+    "emotion": "羞怯撒娇",
+    "recommendedSize": "1216×832",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "adult, 1girl, solo, ayachi_nene, nene_r18, oversized cream cable-knit sweater slipping off one shoulder, bare collarbone, caramel corduroy shorts, white knit over-knee socks, sitting at kotatsu, chin resting on hands, leaning across low table, lifting edge of quilted kotatsu blanket with bare-toed socked foot, coy shy blush, looking at viewer, warm table lamp, dim television blue glow, tangerines and tea mug on table, cozy night living room, medium shot",
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white shirt, t-shirt, red trim, black shorts, standing, door, door handle, basketball, shelf, ball, indoors, window light, sunbeam, dust, looking at viewer, blush, three quarter view, medium shot",
-    "rating": "All",
-    "season": "夏",
-    "story": "大学体育馆活动结束后，夏目请你帮忙归还器材，门却被风意外带上。狭小仓库里只剩高窗漏进来的光，她检查门锁时还很冷静，转身发现你们距离过近才迅速红了耳根——「先想办法开门，别露出那种表情。还有……退后一点，我不是在紧张，只是这里太闷。」",
-    "storyJa": "【夏目・機器室に5分間閉じ込められる】大学の体育館での活動後、夏目さんから機材の返却を手伝ってほしいと頼まれましたが、風で誤ってドアが閉まってしまいました。狭い倉庫には高窓から光が漏れてくるだけだった。ドアの鍵を確認したときはまだ冷静だったが、振り返って二人が近すぎることに気づくと、すぐに顔を赤らめた。――「まずは扉を開ける方法を考えて。そんな顔しないの。それと……少し離れて。緊張してるんじゃなくて、ここが蒸し暑いだけだから。」",
+    "animaCaption": "Resting her chin on her palms across the low kotatsu while her oversized cream knit slips off one shoulder, she glances up with a coy blush as the quilt edge shifts around her socked toes. Warm lamp light and faint blue television glow mingle across the tangerines and tea mugs between you.",
+    "promptProse": "Seen from across a low wooden kotatsu in a hushed winter living room, Ayachi Nene leans forward on her elbows in an oversized cream cable-knit sweater that falls loosely off one bare shoulder, paired with caramel shorts and thick white over-knee knit socks. Resting her chin against her sleeves with a shy, teasing blush, she lets one corner of the quilted blanket lift slightly to hint at her socked foot nudging closer beneath the table. A warm shaded floor lamp gilds her silver hair and the porcelain tea mugs on the tabletop, balanced by a soft cool blue reflection from an off-screen television.",
+    "story": "深夜客厅只亮着落地灯和屏幕淡淡的蓝光。宁宁把下巴埋在过长的毛衣袖口里隔着暖桌看你，被褥底下却悄悄伸出穿着厚白袜的脚尖轻碰你的小腿，被你反手握住脚踝时瞬间红了眼尾——「明、明明是你先说脚冷的嘛。」",
     "tags": [
-      "mole_under_eye",
-      "equipment_room",
-      "closed_door",
-      "holding_door_handle",
-      "looking_at_viewer",
-      "blush",
-      "close_up",
-      "window_light",
-      "white_ringer_t-shirt",
-      "burgundy_collar",
-      "charcoal_gym_shorts",
-      "side_stripe"
+      "off_shoulder_sweater",
+      "kotatsu",
+      "white_socks",
+      "living_room",
+      "warm_lamp",
+      "teasing_blush",
+      "medium_shot"
     ],
-    "time": "午后",
-    "timeOfDay": "afternoon",
-    "title": "器材室里被困的五分钟",
     "usage": [
-      "展示图",
-      "头像"
-    ],
-    "weather": "晴",
-    "promptProse": "The gym storeroom door has swung shut. Natsume looks back with a slight blush, one palm still on its metal latch. She is in her white ringer shirt with burgundy collar and cuffs and charcoal running shorts with a pale side stripe. The near edge of a rack of basketballs crops the aisle. A narrow beam from a clerestory window crosses her sleeve and the rows of cones and canvas bags, making the room feel close without hiding the hand on the door."
+      "展示图"
+    ]
   }
 }

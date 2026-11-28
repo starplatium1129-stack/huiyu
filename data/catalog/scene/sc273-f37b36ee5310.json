@@ -1,56 +1,47 @@
 {
   "kind": "scene",
   "id": "sc273",
-  "revision": 5,
-  "sortOrder": 268,
+  "revision": 7,
+  "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T18:19:53.154699200+00:00",
   "data": {
-    "animaCaption": "Against the wooden door, she clasps both hands low at the skirt hem and glances shyly toward the viewer; warm light catches the red silk and gold floral embroidery.",
-    "audit": {
-      "attempt": 1,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs04-a1.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_04.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocs04:1"
-    },
-    "auditRevision": "careful-batch09-2026-08-27",
-    "camera": "门前略倾斜全身构图",
-    "category": "官方CG灵感",
+    "id": "sc273",
+    "title": "红金旗袍的木门前回眸",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "心动",
-    "id": "sc273",
-    "lighting": "室内暖光落在红丝绸与金绣上",
-    "location": "公寓木门前",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "blue qipao, green qipao, black qipao, hands at chest, lying, reclining, sitting, nsfw, nude, explicit",
-    "officialCgCandidate": "ocs04",
-    "prompt": "visual novel event CG, (bright red qipao), (crimson china dress), dutch angle, full body, 1girl, solo, shiki_natsume, natsume_official_qipao, braided buns, double bun, two_red_hairclips, red flower hair ornament, scarlet silk, gold floral embroidery, gold trim, high side slit, black thighhighs, garter straps, (standing), wooden door, (clasped hands), hands at skirt hem, lowered arms, blush, looking at viewer, warm indoor light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "红金旗袍贴着夏目的身形，她站在门前，双手紧张地交叠。迎上你的目光后，她偏过脸：「只准说适合，不接受其他答案。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
-    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "mature": false,
+    "location": "暖灯走廊的深色木门前",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "season": "秋",
+    "weather": "静谧",
+    "lighting": "玄关壁灯暖金侧光与丝绸高光",
+    "camera": "木门前略倾斜全身构图",
+    "emotion": "克制微羞",
+    "recommendedSize": "832×1216",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, natsume_official_qipao, red gold floral brocade china dress, long sleeves, high side slit, black thighhighs, double hair buns with red floral ornaments, standing before closed dark wooden apartment door, one hand resting gracefully on hip, glancing back over shoulder at viewer, poised slight blush, subtle restrained smile, warm hallway sconce lighting, sheen on red silk brocade, dutch angle, full body",
+    "negative": "rope, cord, string",
+    "animaCaption": "Standing before the closed dark wooden door in her red-and-gold brocade qipao and twin floral hair buns with one hand poised lightly at her hip, she glances back over her shoulder with cool grace and a faint blush. Warm hallway sconce light glides across the silk brocade.",
+    "promptProse": "Composed in a subtly tilted vertical full-body shot before a closed dark timber apartment door, Shiki Natsume wears her canonical crimson-and-gold floral brocade qipao with fitted long sleeves, high side slit, black thighhighs, and twin hair buns pinned with red blossoms. Resting one hand lightly at her hip, she turns back over her shoulder toward the viewer with poised elegance and a quiet touch of shyness as warm hallway wall light catches the golden floral sheen.",
+    "story": "推门前最后一步，换上红金织锦旗袍的夏目扶着木门轻轻回眸。双丸子头上的红花衬着黑发与金瞳，她克制地收起笑意——「看够了就快走吧，预约的时间要到了。」",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
+      "natsume_official_qipao",
+      "china_dress",
+      "hair_buns",
+      "looking_back",
+      "wooden_door",
+      "dutch_angle",
+      "full_body"
     ],
-    "time": "白天",
-    "timeOfDay": "afternoon",
-    "title": "红金旗袍的门前回眸",
     "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
-    ],
-    "weather": "晴"
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

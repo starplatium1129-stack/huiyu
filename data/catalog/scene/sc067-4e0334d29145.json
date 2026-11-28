@@ -1,53 +1,45 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 11,
-  "sortOrder": 65,
+  "revision": 12,
+  "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Rejected outfits hang beside her as she adjusts her hairclip, seeking the viewer's approval.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "半身中景",
-    "category": "恋爱",
+    "id": "sc067",
+    "title": "约会试衣镜前的第三套选择",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "期待",
-    "id": "sc067",
-    "lighting": "窗光",
-    "location": "更衣室",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "multiple outfits worn together",
-    "prompt": "1girl, shiki_natsume, grey cropped cardigan, pearl buttons, white blouse, small neck bow, navy pleated midi skirt, clothes hangers, adjusting hairclip, mirror, dressing room, medium shot, looking at viewer, window light, soft_lighting, cinematic_lighting, depth_of_field",
+    "category": "日常校园",
     "rating": "All",
-    "season": "春",
-    "story": "春日下午，夏目在更衣室前连续换了三套衣服，每次都说只是确认尺寸，却会在出来后先观察你的反应。最终她选了最简洁的一套，又把与衣服相配的发夹别好——「不是为了迎合你的喜好，只是这套行动方便。……如果你觉得好看，可以再说一次，我刚才没听清。」",
-    "storyJa": "【夏目・付き合う前の3番目のオプション】春の午後、夏目はロッカールームの前で3着の服を着替えました。毎回彼は、サイズを確認しているだけで、出てきた後のあなたの反応を観察すると言いました。結局、彼女は最もシンプルな衣装を選び、その衣装に合わせたヘアピンを留めました。――「あなたの好みに合わせたわけじゃない。ただ、これが動きやすかっただけ。……似合うと思うなら、もう一度言って。さっきはよく聞こえなかった。」",
-    "tags": [
-      "mole_under_eye",
-      "sheer_black_tights",
-      "dressing_room",
-      "medium_shot",
-      "mary_jane",
-      "three_outfit_hanger",
-      "hairclip",
-      "depth_of_field",
-      "grey_cropped_cardigan",
-      "pearl_buttons",
-      "white_blouse",
-      "small_neck_bow",
-      "navy_pleated_midi_skirt"
-    ],
+    "mature": false,
+    "location": "暖灯柔和的秋装精品店试衣镜前",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "title": "约会前的第三套选择",
-    "usage": [
-      "展示图"
-    ],
+    "season": "秋",
     "weather": "晴",
-    "promptProse": "Outside the dressing room, with rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for approval; window light crosses her chosen cardigan and blouse."
+    "lighting": "精品店轨道暖白灯光与镜面反射",
+    "camera": "三面镜微斜全身立绘构图",
+    "emotion": "克制期待",
+    "recommendedSize": "832×1216",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, caramel cropped suede lapel jacket, cream pleated midi skirt, brown leather ankle boots, holding wooden clothes hanger with alternate coat, standing in boutique dressing area, glancing sideways at viewer awaiting approval, subtle blush, poised slight smile, three-panel dressing mirror, warm boutique track lighting, wooden clothing racks blurred behind, full body",
+    "negative": "duplicate body",
+    "animaCaption": "Modeling a caramel cropped suede jacket over a cream pleated skirt in the boutique dressing area, she holds another coat on a wooden hanger and shoots you a composed sidelong glance for your verdict. Warm shop track lighting highlights her smooth dark hair and the rich suede texture.",
+    "promptProse": "Framed in a clean vertical full-body view inside a sunlit autumn fashion boutique, Shiki Natsume tries on a tailored caramel suede cropped jacket paired with a flowing cream pleated midi skirt and brown leather ankle boots. Holding a second outfit draped over a wooden hanger in one hand, she turns slightly toward the viewer with a faint flush and an expectant look disguised as indifference, warmly lit by overhead gallery-style store spotlights beside a tall dressing mirror.",
+    "story": "换完第三套秋装走出试衣间，夏目拎着另一件衣架在镜子前站定，表面镇定地抬眸看你，眼底却悄悄等着你的评价——「前两套你都说不错，太敷衍了。这次给个认真的答案，焦糖色这件怎么样？」",
+    "tags": [
+      "suede_jacket",
+      "pleated_skirt",
+      "boutique",
+      "clothes_hanger",
+      "full_body"
+    ],
+    "usage": [
+      "核心CG",
+      "立绘源"
+    ]
   }
 }

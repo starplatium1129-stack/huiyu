@@ -1,48 +1,46 @@
 {
   "kind": "scene",
   "id": "sc046",
-  "revision": 4,
-  "sortOrder": 44,
+  "revision": 5,
+  "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "At the stairwell landing, she holds the viewer near the wall by their apron, leaning close but stopping before a kiss. Warm light catches her flushed cheek against the dark corridor.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "主观近景特写",
-    "category": "恋爱",
+    "id": "sc046",
+    "title": "雨夜木廊浴衣滑肩的梅酒余温",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "热烈",
-    "id": "sc046",
-    "lighting": "楼梯间暖灯与阴影",
-    "location": "Café Stella 闭店楼梯间",
-    "lora": "shiki_natsume_v21_anima",
+    "category": "亲密微醺",
+    "rating": "R15",
     "mature": false,
+    "location": "细雨朦胧的温泉旅馆私密木廊",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "秋",
+    "weather": "秋雨",
+    "lighting": "室内纸灯暖光与廊外雨幕青灰微光",
+    "camera": "木廊低角贴身中景",
+    "emotion": "慵懒依恋",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, dark navy goldfish yukata worn loosely, wide collar slipping off one bare shoulder revealing collarbone and cleavage, loose red obi, damp black hair falling down bare shoulder, bare legs extending from parted hem, barefoot, sitting sideways on wooden corridor floor leaning back on one hand, holding small ceramic sake cup in other hand, rosy tipsy flush, soft lingering gaze at viewer, misty autumn rain outside wooden railing, warm shoji paper lantern light from left, cool blue rain mist on right, medium shot",
     "negative": "",
-    "prompt": "safe, 1girl, shiki_natsume, natsume_cafe_uniform, standing close, hand on chest, blush, stairwell, wall, cafe, night, pendant light, pov, close up, @rella",
-    "rating": "All",
-    "season": "春",
-    "story": "Café Stella 闭店后，夏目在楼梯转角叫住准备离开的你。她先替你取下围裙上沾着的纸屑，又把你推回墙边，像是终于决定执行某件计划。吻落下前，她眼下的泪痣都被红晕包围——「只给你一分钟，不准得寸进尺。还有……明天见面时，不许装作什么都没发生。」",
-    "storyJa": "【夏目・閉店した店舗の階段で1分】カフェステラが閉店し、帰ろうとしたところを夏目が階段の角で呼び止めた。彼女はまずあなたのエプロンについた紙切れを取り除き、それからまるである計画を実行することを最終的に決意したかのように、あなたを壁に押し戻しました。キスが落ちる前に、彼女の目は赤くなった――「一分だけ。調子に乗るのは禁止。それと……明日会ったとき、何もなかったみたいな顔をしないで。」",
+    "animaCaption": "Leaning back on one palm along the rainy inn veranda with her loose navy yukata slipping off one bare shoulder and parting over her legs, she holds a tiny porcelain cup and looks over with a warm tipsy blush. Soft paper-lantern light gilds her shoulder against the misty blue autumn rain outside.",
+    "promptProse": "Captured low along the warm wooden corridor of a quiet hot-spring inn while autumn rain falls softly outside the open railing, Shiki Natsume sits sideways leaning back on one hand in a loosely tied dark navy goldfish yukata. The wide kimono collar slides down to expose one bare shoulder and collarbone, and the lower folds part gently over her bare legs as she tilts a small ceramic cup of plum wine with a rosy flush and lingering amber eyes, split cleanly between golden shoji lantern light and the cool misty rain.",
+    "story": "檐外的秋雨把夜色洗得发凉，纸门透出的暖灯却把廊边照得发烫。微醺的夏目斜撑在木地板上，浴衣领口松松滑落一侧肩头，赤足悄悄碰了碰你的脚踝——「今晚的梅酒有点上头……别坐那么远，借我靠一下。」",
     "tags": [
-      "mole_under_eye",
-      "cafe_uniform",
-      "sheer_black_tights",
-      "cafe_stairs",
-      "about_to_kiss",
-      "close_up",
-      "mary_jane",
-      "depth_of_field"
+      "yukata",
+      "off_shoulder",
+      "sake_cup",
+      "rainy_veranda",
+      "barefoot",
+      "split_lighting",
+      "medium_shot"
     ],
-    "time": "夜晚",
-    "timeOfDay": "night",
-    "title": "闭店楼梯间的一分钟",
     "usage": [
-      "展示图",
-      "头像"
-    ],
-    "weather": "晴"
+      "展示图"
+    ]
   }
 }

@@ -1,55 +1,47 @@
 {
   "kind": "scene",
   "id": "sc033",
-  "revision": 5,
-  "sortOrder": 31,
+  "revision": 6,
+  "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Stepping out from behind the door into the warmly lit entrance hall, she presents the decorated birthday cake with both hands, its dancing candles and the overhead ceiling lamp lighting her blushing smile.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "门后半身中景",
-    "category": "恋爱",
+    "id": "sc033",
+    "title": "玄关门后藏不住的生日惊喜",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "期待",
-    "id": "sc033",
-    "lighting": "玄关明亮暖黄吸顶灯与生日蛋糕多重跳动烛光",
-    "location": "温馨公寓玄关",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "nsfw, nude, explicit, pitch black, darkness, dark hallway",
-    "prompt": "safe, 1girl, solo, shiki_natsume, @rella, mole_under_eye, white collared shirt, navy pleated skirt, black tights, holding birthday cake with glowing candles, doorway, warmly lit apartment entrance hallway, illuminated shoe cabinet, decorative wall mirror, warm ceiling pendant lamp, face illuminated by bright candle glow and hallway light, sweet flustered blush, happy smile, soft rim lighting, medium shot, depth of field",
+    "category": "恋爱约会",
     "rating": "All",
-    "season": "冬",
-    "story": "冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
-    "storyJa": "【夏目・ドアの後ろに隠せない誕生日サプライズ】冬の夜、アパートの入り口には明かりがついていなかった。夏目は小さなケーキを持ってドアの後ろに隠れていました。彼女はあなたが家に入るのを待ってからキャンドルに火を灯したかったのですが、早く帰宅しようとする足音に邪魔されました。彼女は数秒間その場で固まったが、ろうそくの明かりよりも頬を赤くして、ただケーキを手渡した。――「誕生日には、それらしいことをしたほうがいいって、みんなが言うから。早く願い事をして。クリームが溶けちゃう……別に、ずっと待ってたわけじゃないけど。」",
-    "tags": [
-      "mole_under_eye",
-      "white_shirt",
-      "navy_pleated_skirt",
-      "black_tights",
-      "holding_birthday_cake",
-      "glowing_candles",
-      "warmly_lit_apartment_hallway",
-      "ceiling_lamp",
-      "doorway",
-      "face_illuminated_by_candle_glow",
-      "blush",
-      "smile",
-      "soft_rim_lighting",
-      "medium_shot",
-      "depth_of_field"
-    ],
+    "mature": false,
+    "location": "微微敞开的温馨公寓木门玄关",
     "time": "夜晚",
     "timeOfDay": "night",
-    "title": "门后藏不住的生日惊喜",
-    "usage": [
-      "展示图"
+    "season": "秋",
+    "weather": "静谧",
+    "lighting": "蛋糕细烛火暖橙微光与玄关顶灯",
+    "camera": "门框前景主观近中景",
+    "emotion": "傲娇温柔",
+    "recommendedSize": "832×1216",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, dusty rose loose mohair knit sweater, dark grey cotton shorts, over-knee home socks, standing inside half-open apartment doorway, holding small strawberry shortcake on porcelain plate with lit birthday candle, looking slightly away with crimson blush, quiet tender smile, wooden door frame foreground, warm candle glow lighting face and amber eyes, cozy dimmed hallway, pov, medium shot",
+    "negative": "",
+    "animaCaption": "Standing just inside the half-open apartment doorway in a soft dusty-rose mohair sweater, she holds a strawberry shortcake with a single flickering birthday candle while looking half away in flustered sincerity. Warm candle glow illuminates her golden eyes and the mole beneath her eye.",
+    "promptProse": "Seen from the threshold through a half-opened wooden apartment door in the foreground, Shiki Natsume waits in the softly dimmed entryway dressed in a cozy dusty-rose mohair knit sweater, dark grey lounge shorts, and over-knee cotton socks. Cradling a porcelain saucer bearing a strawberry shortcake topped with one glowing birthday candle, she averts her gaze a fraction with flushed cheeks and a barely suppressed smile as the warm flame dances across her face and amber eyes.",
+    "story": "刚拧开家门，屋里没开大灯，只有门后一点跳动的暖黄烛光。穿着柔软藕粉毛衣的夏目端着插了根小蜡烛的草莓蛋糕站在玄关，耳根通红却依然绷着声音——「快点许愿吹灭，奶油都要化了……生日快乐。」",
+    "tags": [
+      "mohair_sweater",
+      "birthday_cake",
+      "candlelight",
+      "doorway",
+      "blush",
+      "pov",
+      "medium_shot"
     ],
-    "weather": "晴",
-    "promptProse": "Stepping out from behind the door into the warmly lit entrance hall, she presents the decorated birthday cake with both hands, its dancing candles and the overhead ceiling lamp lighting her blushing smile."
+    "usage": [
+      "核心CG",
+      "展示图"
+    ]
   }
 }

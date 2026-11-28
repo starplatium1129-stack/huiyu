@@ -1,56 +1,47 @@
 {
   "kind": "scene",
   "id": "sc262",
-  "revision": 6,
-  "sortOrder": 257,
+  "revision": 7,
+  "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Under golden stage lights and star decorations, she holds the open black flower box against her chest with both arms and smiles toward the viewer; pink and white flowers catch the warm light.",
-    "audit": {
-      "attempt": 3,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn07-a3.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_10.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocn07:3"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "舞台灯前低机位全身构图",
-    "category": "官方CG灵感",
+    "id": "sc262",
+    "title": "星灯舞台前的花束与礼盒",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "心动",
-    "id": "sc262",
-    "lighting": "舞台金色灯光与发丝边缘光",
-    "location": "舞台灯与星形装饰前",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "single rose, empty hands, shop, fluorescent light, nsfw, nude, explicit",
-    "officialCgCandidate": "ocn07",
-    "prompt": "visual novel event CG, portrait composition, from below, full body, 1girl, solo, ayachi_nene, nene_school_uniform, very_long_hair, ahoge, navy blazer, gold buttons, gold bow, gray plaid skirt, black thighhighs, standing, stage lights, star decorations, (holding gift box, bouquet), black box, pink flowers, white flowers, shy smile, flowing hair, <lora:ayachi_nene_v18_wd14:0.9>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "舞台灯火落在宁宁的银发上，她把装满花朵的礼盒抱在怀里。走到你面前时，她终于露出安心的笑：「这个，只想亲手交给你。」金色灯光照亮礼盒中的粉白花朵，也照出她终于放松的神情。",
-    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
+    "mature": false,
+    "location": "星形暖灯点缀的学园祭舞台前",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "season": "秋",
+    "weather": "晴",
+    "lighting": "舞台金色点光源与暖边光",
+    "camera": "低机位竖幅全身仰拍",
+    "emotion": "羞怯欣喜",
+    "recommendedSize": "832×1216",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, navy blazer, gold buttons, yellow bowtie, grey plaid pleated skirt, black thighhighs, brown loafers, standing, holding black gift box and pink white flower bouquet, gentle shy smile, slight blush, flowing silver hair, glowing stage lights, hanging star decorations, warm golden rim light, from below, full body",
+    "negative": "",
+    "animaCaption": "Standing beneath glowing star decorations in her full Himematsu uniform, she cradles a sleek black gift box and a bouquet of pink and white flowers while smiling shyly down toward you. Warm stage bulbs rim her flowing silver hair and blazer shoulders.",
+    "promptProse": "Framed in a clean vertical full-body shot from a slight low angle, Ayachi Nene stands before an illuminated festival stage draped with glowing star ornaments and warm fairy bulbs. Dressed in her crisp navy Himematsu blazer with gold buttons, yellow bowtie, grey plaid pleated skirt, black thighhighs, and polished loafers, she cradles a matte-black gift box beside a lush bouquet of pink and white blooms against her waist, offering a radiant shy smile as golden stage light rims her wind-lifted silver hair.",
+    "story": "学园祭晚会的星形灯饰在身后一盏盏亮起。宁宁怀里抱着刚收到的粉白花束和黑色礼盒，在温暖的舞台灯光下朝你微微侧身笑起来，眼里的光芒比身后整片灯海还要清澈。",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "solo"
+      "nene_school_uniform",
+      "stage_lights",
+      "bouquet",
+      "gift_box",
+      "from_below",
+      "full_body"
     ],
-    "time": "白天",
-    "timeOfDay": "afternoon",
-    "title": "灯火舞台前的礼物",
     "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
-    ],
-    "weather": "晴"
+      "核心CG",
+      "官方CG",
+      "立绘源"
+    ]
   }
 }

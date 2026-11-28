@@ -1,56 +1,46 @@
 {
   "kind": "scene",
   "id": "sc274",
-  "revision": 5,
-  "sortOrder": 269,
+  "revision": 6,
+  "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Still on her side beneath the blanket, she opens her eyes toward the viewer; morning light reaches her face against the white pillow and her pajama piping.",
-    "audit": {
-      "attempt": 1,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs08-a1.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_08.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocs08:1"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "枕边斜向面部近景横幅构图",
-    "category": "官方CG灵感",
+    "id": "sc274",
+    "title": "枕边醒来的安静目光",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "心动",
-    "id": "sc274",
-    "lighting": "柔和晨光照亮白色枕边",
-    "location": "卧室",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "nudity, nsfw, nude, explicit",
-    "officialCgCandidate": "ocs08",
-    "prompt": "visual novel event CG, dutch angle, close up, 1girl, solo, shiki_natsume, natsume_sleepwear, hair spread out, white pillows, two_red_hairclips, pale blue pajamas, red piping, lying, on side, bed, white blanket, looking at viewer, slight blush, soft morning light, sharp face focus, <lora:shiki_natsume_v18_wd14:0.85>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "清晨的被窝还带着余温，夏目从白色枕边睁开眼。她没有立刻起身，只看着你说：「早安。再躺一分钟，也不算赖床。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
-    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
-    ],
-    "time": "白天",
+    "mature": false,
+    "location": "晨光初入的纯白软枕床铺",
+    "time": "清晨",
     "timeOfDay": "morning",
-    "title": "枕边醒来的安静目光",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
+    "season": "春",
+    "weather": "晴",
+    "lighting": "清晨窗缝漫射淡金晨光",
+    "camera": "枕边贴近斜向面部特写横幅",
+    "emotion": "静谧依恋",
+    "recommendedSize": "1344×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, natsume_sleepwear, loose pale blue sleep shirt, lying on side in bed, head resting on white pillow, long black hair spread across pillowcase, hand tucked loosely under cheek, calm affectionate golden eyes looking at viewer, faint morning blush, white sheets, gentle early morning window light across face and pillow, dutch angle, close-up",
+    "negative": "",
+    "animaCaption": "Resting her cheek lightly against her fingers on the white pillow in her pale-blue sleep shirt, she greets you waking up with a calm, deeply fond gaze. Gentle early morning light softens her spread black hair and highlights the mole beneath her golden eye.",
+    "promptProse": "Framed in an ultra-intimate tilted pillow-level close-up at daybreak, Shiki Natsume lies on her side facing the viewer across crisp white linens in her canonical pale-blue sleep shirt. Long strands of silky black hair fan loosely over the pillow while she rests her cheek lightly near her fingertips, watching you wake with unguarded warmth and a whisper of morning color in her face as pale dawn light drifts gently across the sheets.",
+    "story": "醒来睁眼的第一刻，就撞进夏目安静注视着你的琥珀色眸子。她侧枕在纯白枕头上没有移开视线，清晨微凉的空气里，声音比平日柔软了不止一分——「……早安。难得看你睡得这么沉，就没叫你。」",
+    "tags": [
+      "natsume_sleepwear",
+      "pillow",
+      "morning_light",
+      "lying_on_side",
+      "dutch_angle",
+      "close_up"
     ],
-    "weather": "晴"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

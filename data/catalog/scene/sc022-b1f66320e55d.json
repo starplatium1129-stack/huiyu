@@ -1,51 +1,46 @@
 {
   "kind": "scene",
   "id": "sc022",
-  "revision": 4,
-  "sortOrder": 21,
+  "revision": 5,
+  "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "One hand rests on the just-closed album as she looks back at the viewer approaching her shoulder. Afternoon window light falls across its cover and her embarrassed face.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "半身中景",
-    "category": "日常",
-    "char": "natsume",
-    "character": [
-      "natsume"
-    ],
-    "emotion": "思念",
     "id": "sc022",
-    "lighting": "春日下午窗光",
-    "location": "公寓书房",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "1girl, shiki_natsume, cream oversized cardigan, white blouse, plaid skirt, black tights, sitting, closed photo album, low table, looking back, apartment, afternoon, window light, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
-    "rating": "All",
-    "season": "春",
-    "story": "春日午后，夏目在公寓整理大学毕业相册，翻到有你的小组照时停了很久。照片里的她仍刻意站得离人群稍远，目光却正好落在你身上。你从身后靠近，她立刻合上相册，却没有真正收走——「只是确认照片有没有拍糊。想看的话坐过来……但不准分析我的视线。」",
-    "storyJa": "【夏目・フォトアルバムが置かれているページ】春の午後、夏目はアパートで大学の卒業写真アルバムを整理していました。彼女はあなたの集合写真に目を向けたとき、長い間立ち止まりました。写真の中で、彼女はまだ人混みから意図的に少し離れて立っていますが、彼女の目はあなたに向かっています。あなたが後ろから近づくと、彼女はすぐにアルバムを閉じましたが、実際にはアルバムを取り上げませんでした。――「写真がぶれていないか確認していただけ。見たいならこっちに座って……でも、私の視線まで分析するのは禁止。」",
-    "tags": [
-      "mole_under_eye",
-      "photo_album",
-      "sitting_at_desk",
-      "sheer_black_tights",
-      "smooth_thighs",
-      "apartment",
-      "window_light",
-      "nostalgic",
-      "loafers",
-      "depth_of_field",
-      "medium_shot",
-      "closed_photo_album"
+    "title": "暴雨玄关的湿透条纹衬衫",
+    "char": "nene",
+    "character": [
+      "nene"
     ],
-    "time": "午后",
-    "timeOfDay": "afternoon",
-    "title": "相册停留的那一页",
+    "category": "亲密微醺",
+    "rating": "R15",
+    "mature": false,
+    "location": "刚关上防盗门的公寓窄玄关",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "season": "夏",
+    "weather": "暴雨",
+    "lighting": "门缝暴雨冷蓝与玄关暖黄顶灯对撞",
+    "camera": "玄关平视七分身主观中景",
+    "emotion": "慌张害羞",
+    "recommendedSize": "832×1216",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "adult, 1girl, solo, ayachi_nene, nene_r18, oversized pale blue striped men's dress shirt, buttoned crookedly, soaked wet shirt clinging to body, translucent wet fabric, faint white lace bra visible, bare legs, barefoot on wet wooden floor, drenched hair dripping water, clutching shirt hem defensively, heavy blush, flustered eyes, narrow apartment entryway, closed door with wet umbrella, puddles on floor, warm overhead entryway bulb, cool blue storm light from frosted transom, cowboy shot",
+    "negative": "",
+    "animaCaption": "Standing barefoot on the rain-spotted entryway floor in a borrowed pale-blue striped shirt buttoned crookedly and soaked nearly translucent, she clutches the damp hem defensively in scarlet embarrassment. Warm hallway bulb light glistens off her dripping hair against the cool blue glare of the storm outside the frosted glass.",
+    "promptProse": "Captured from a close first-person vantage inside a cozy apartment entryway, Ayachi Nene has just ducked out of a summer downpour wearing your oversized pale-blue striped shirt buttoned slightly askew. Rainwater saturates her silver twin tails and makes the thin cotton cling and turn softly translucent over faint white lace beneath; standing barefoot beside a dripping umbrella on the dark wood floor, she hugs the shirt hem with one arm while trying to wring out a lock of hair, blushing furiously under the warm entryway bulb as cold blue storm light glows through the frosted door pane.",
+    "story": "突如其来的暴雨把两个人都淋透了。宁宁胡乱套上你递来的条纹衬衫，扣子还扣错了一颗，湿润的棉布贴在身上微微透出轮廓；见你拿毛巾折返，她赤脚踩在水渍上慌忙捂住衣襟——「先、先把毛巾丢过来！不许一直盯着看！」",
+    "tags": [
+      "oversized_shirt",
+      "wet_clothes",
+      "translucent",
+      "entryway",
+      "rainstorm",
+      "barefoot",
+      "cowboy_shot"
+    ],
     "usage": [
       "展示图"
-    ],
-    "weather": "晴"
+    ]
   }
 }

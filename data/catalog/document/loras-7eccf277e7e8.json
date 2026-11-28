@@ -1,10 +1,10 @@
 {
   "kind": "document",
   "id": "loras",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-31T03:24:55.000000000+00:00",
+  "updatedAt": "2026-11-27T17:56:49.426185100+00:00",
   "data": [
     {
       "id": "L_NENE_V18_WD14",
@@ -384,13 +384,13 @@
         ]
       },
       "test_scene": [
-        "sc233",
+        "sc256",
         "sc273",
-        "sc065",
+        "sc038",
         "sc067",
         "sc033",
-        "sc294",
-        "sc281"
+        "sc285",
+        "sc282"
       ],
       "description": "四季夏目角色 LoRA v21（Anima unified）。落实 08-13「统一训练、不隔离质量先验」决策：R18 样张保留 natsume_r18 评级词但不做渲染隔离，所有样张共享统一高质量学习信号。两级实图矩阵 + 决赛 + 用户亲审：初赛 126 张（6 候选×7 场景×3 seed，Base+24s/CFG3）e16 均分第一（53.7）；official 组 126 张（Aesthetic+官方参数 30s/CFG4.5/er_sde）e04 均分第一（63.3）；决赛 42 张（Base+24s/CFG3，e16 vs e04 全场景）e16 胜出（身份近景 60 分、复杂低光通过 2/3，强项覆盖 v19 hard gate），用户终审 e16 晋级（e04 保留为回退）。生产默认 Aesthetic v1.1 底模。",
       "dataset": {
@@ -493,7 +493,7 @@
       },
       "test_scene": [
         "sc105",
-        "sc300",
+        "sc263",
         "sc002",
         "sc261",
         "sc014",

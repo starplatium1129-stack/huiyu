@@ -1,62 +1,46 @@
 {
   "kind": "scene",
   "id": "sc285",
-  "revision": 5,
-  "sortOrder": 280,
+  "revision": 6,
+  "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc285",
-    "recommendedSize": "1344×768",
-    "title": "储物架间掀起的裙摆",
-    "category": "恋爱/After_Story",
-    "story": "储物架间没有别人，夏目抬起女仆裙摆，俯视着你的反应。「这是闭店后的特别服务，」她笑了笑，“仅此一次。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "title": "储物架间低角仰拍的女仆裙摆",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
-    "time": "夜晚",
-    "timeOfDay": "night",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult",
-      "solo",
-      "maid",
-      "skirt_lift",
-      "yellow_panties",
-      "from_below"
-    ],
-    "mature": false,
-    "location": "咖啡馆储物室",
-    "weather": "晴",
-    "camera": "低机位仰视横幅构图",
-    "lighting": "储物室柔和暖光与微影",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "壁纸级",
-      "R15"
-    ],
-    "prompt": "natsume_r18, adult, visual novel event CG, 1girl, solo, shiki_natsume, natsume_maid_uniform, maid, maid headdress, two_red_hairclips, dark gray dress, white apron, skirt lift, yellow panties, white socks, kneehighs, blush, teasing smile, looking at viewer, from below, dutch angle, storage room, metal shelves, warm interior light, soft shadows, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "skirt down, high angle, extreme close-up",
-    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "category": "官方CG",
     "rating": "R15",
-    "officialCgCandidate": "ocs19",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocs19:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V20_Anima_Scientific_Unified\\train\\011_natsume_v17_0033.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs19-a1.png",
-      "result": "pass"
-    },
-    "animaCaption": "Standing before the storage shelves, she lifts her skirt and apron and looks down toward the viewer with a teasing blush; soft warm light fills the background.",
-    "auditRevision": "careful-batch15-2026-08-27"
+    "mature": false,
+    "location": "金属货架林立的咖啡馆储物室",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "season": "春",
+    "weather": "晴",
+    "lighting": "储物室暖白顶灯与货架投影",
+    "camera": "低机位斜角仰视横幅构图",
+    "emotion": "戏谑挑逗",
+    "recommendedSize": "1344×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, natsume_maid_uniform, dark grey long-sleeve maid dress, white ruffled apron, maid headdress, skirt lift holding dress and apron up, yellow panties, white kneehigh socks, standing before metal storage shelves, looking down at viewer, teasing smile, blush, storage room stocked with coffee supplies, warm overhead interior light, soft shelf shadows, from below, dutch angle, medium shot",
+    "negative": "skirt down, high angle, extreme close-up",
+    "animaCaption": "Standing before the stocked metal storage shelves in her classic long-sleeve maid uniform, she lifts her dark grey skirt and white apron while looking down at you with a teasing blush. Warm overhead storage-room light defines the frills of her apron and casts crisp shadows across the shelves.",
+    "promptProse": "Framed from a bold low tilted angle inside Café Stella's narrow supply room lined with metal shelving, Shiki Natsume wears her canonical long-sleeved dark grey maid dress, ruffled white apron, lace headdress, and white knee-high socks. Holding the hem of both skirt and apron lifted cleanly to show pale yellow panties beneath, she gazes down at the viewer with a sly, rosy-cheeked smirk under warm interior overhead light.",
+    "story": "帮忙清点咖啡豆的储物室里安静得落针可闻。站在金属货架前的夏目唇角微勾，大方提起女仆裙与白围裙一角低头看你，语气带着标志性的促狭——「前辈刚才眼神一直在往哪瞟呢？现在给你看清楚。」",
+    "tags": [
+      "natsume_maid_uniform",
+      "skirt_lift",
+      "storage_room",
+      "teasing_smile",
+      "from_below",
+      "dutch_angle"
+    ],
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

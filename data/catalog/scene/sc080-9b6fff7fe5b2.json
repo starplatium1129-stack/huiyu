@@ -1,50 +1,47 @@
 {
   "kind": "scene",
   "id": "sc080",
-  "revision": 4,
-  "sortOrder": 78,
+  "revision": 5,
+  "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "She faces the viewer at the waterline as the sea breeze lifts her hair; sunset edges her dress above the wet sand.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "半身中景",
-    "category": "恋爱",
+    "id": "sc080",
+    "title": "盛夏防波堤的按帽海风",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "害羞",
-    "id": "sc080",
-    "lighting": "黄金时刻",
-    "location": "海边",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "1girl, ayachi_nene, white sundress, puff sleeves, straw hat, barefoot, standing, looking at viewer, gentle smile, beach, shoreline, ocean, sunset, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "category": "恋爱约会",
     "rating": "All",
+    "mature": false,
+    "location": "海风拂过的白色防波堤栈桥",
+    "time": "午后",
+    "timeOfDay": "afternoon",
     "season": "夏",
-    "story": "黄昏海边，宁宁沿着潮线走了很久，终于停下来面对你。她说过去总把重要情绪拆成碎片藏好，害怕一旦交出去就无法收回。海风掀起银白长发，她却没有再避开视线——「现在我想把完整的心意告诉你。不是契约，也不是魔法……我喜欢你，一直都是。」",
-    "storyJa": "【寧々・海風に吹かれる心のかけら】夕暮れの海辺で、寧々は潮の流れに沿って長い間歩き、ついに立ち止まってあなたに向かいました。彼女は、一度手に渡ってしまうと取り返しがつかないのではないかと恐れ、大切な感情を細かく砕いて隠していたと語った。海風が彼女の長い銀髪をかき乱したが、彼女は目をそらさなかった。――「今は、私の気持ちを全部伝えたいんです。契約でも、魔法でもなくて……あなたが好きです。ずっと、好きでした。」",
+    "weather": "晴",
+    "lighting": "明澈盛夏顶侧日光与海面反光",
+    "camera": "动态斜角海平线七分身",
+    "emotion": "明朗心动",
+    "recommendedSize": "1216×832",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, pale yellow linen mini sundress, open sheer white beach shirt, wide-brim straw hat with ribbon, holding hat down, offering ramune bottle, windblown skirt and hair, laughing, squint smile, seaside breakwater, sparkling turquoise sea, white cumulus clouds, bright summer sunlight, ocean glare, dutch angle, cowboy shot",
+    "negative": "",
+    "animaCaption": "Holding her wide straw hat against a sudden sea gust with one hand, she leans toward you on the breakwater and offers a chilled glass ramune bottle with the other. Crisp summer sunlight and turquoise sea glare brighten her fluttering white shirt and yellow linen dress.",
+    "promptProse": "Captured at a lively tilted angle along a sunlit concrete breakwater overlooking a glittering turquoise bay, Ayachi Nene wears a breezy pale-yellow linen sundress under an unbuttoned sheer white cover-up shirt and a ribboned wide-brim straw hat. A strong salt breeze whips her silver twin tails and white shirt tails sideways; she clamps one hand onto the crown of her hat while offering a beaded blue glass ramune bottle forward with a radiant, slightly squinting smile beneath towering white summer clouds and dazzling coastal sunlight.",
+    "story": "海风忽然把草帽吹得晃了一下。宁宁连忙抬手按住帽檐，任凭白色防晒衫被风鼓起衣摆，笑着把还挂着水珠的弹珠汽水贴到你脸颊上——「冰不冰？刚从栈桥那头的小店买回来，快趁凉喝一口！」",
     "tags": [
-      "hair_ribbon",
+      "straw_hat",
       "sundress",
-      "bare_legs",
-      "smooth_thighs",
       "seaside",
-      "medium_shot",
-      "barefoot",
+      "ramune",
+      "summer_sky",
       "wind",
-      "depth_of_field"
+      "dutch_angle",
+      "cowboy_shot"
     ],
-    "time": "黄昏",
-    "timeOfDay": "sunset",
-    "title": "海风里的心之碎片",
     "usage": [
-      "展示图",
-      "头像",
-      "CG"
-    ],
-    "weather": "晴"
+      "展示图"
+    ]
   }
 }

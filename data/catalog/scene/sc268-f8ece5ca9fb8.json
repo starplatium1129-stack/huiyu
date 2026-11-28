@@ -1,58 +1,46 @@
 {
   "kind": "scene",
   "id": "sc268",
-  "revision": 6,
-  "sortOrder": 263,
+  "revision": 7,
+  "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc268",
-    "recommendedSize": "1344×768",
     "title": "薄荷睡衣下的清晨目光",
-    "category": "恋爱/After_Story",
-    "story": "薄荷色睡衣被晨风轻轻吹动，宁宁把衣摆攥在胸前。她从被窝里望来：「再五分钟就好……让我记住你醒来时的样子。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
+    "category": "官方CG",
+    "rating": "R15",
+    "mature": false,
+    "location": "晨光轻透的卧室床铺",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
-    ],
-    "mature": false,
-    "location": "卧室",
+    "season": "夏",
     "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "晨间窗光与白色被褥漫反射",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图",
-      "R15"
+    "lighting": "柔和窗纱漫射清晨日光",
+    "camera": "床沿略俯视斜向近景横幅",
+    "emotion": "羞怯试探",
+    "recommendedSize": "1344×768",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "adult, 1girl, solo, ayachi_nene, nene_r18, nene_green_sleepwear, mint green polka-dot short-sleeve nightgown, twin braids, loose neckline slipping off shoulder, bare collarbone, cleavage, kneeling on bed, leaning slightly forward, hands resting on white sheets, shy blush, soft parted lips, looking up at viewer, sunny bedroom, sheer white curtains, morning window light, dutch angle, medium close-up",
+    "negative": "",
+    "animaCaption": "Kneeling amid the crisp white sheets with her silver hair in loose twin braids and her mint polka-dot nightgown slipping off one shoulder, she leans slightly forward with a shy morning blush. Soft dawn light through sheer curtains brightens her eyes and collarbone.",
+    "promptProse": "Shot in a gently tilted horizontal close-up across a sunlit summer bed, Ayachi Nene kneels on rumpled white sheets wearing her canonical mint-green polka-dot short-sleeve nightgown, her silver hair plaited into soft twin braids resting over her chest. As she leans slightly forward with both palms pressed into the mattress, the wide neckline slips loosely off one shoulder to show her collarbone and gentle cleavage while her face warms with an earnest morning blush. Diffused early sunlight passes through sheer window curtains, casting delicate bright highlights over the bedding and her braids.",
+    "story": "清晨阳光透过薄纱帘照亮了整张床铺。编着双麻花辫、穿着薄荷圆点家居裙的宁宁跪坐在被单边轻轻探身靠近，刚醒的嗓音软糯又带着一丝试探——「醒了吗？今天的早晨……好像比平时安静得多呢。」",
+    "tags": [
+      "nene_green_sleepwear",
+      "twin_braids",
+      "morning_light",
+      "bedroom",
+      "dutch_angle",
+      "medium_close_up"
     ],
-    "prompt": "nene_r18, adult, visual novel event CG, dutch angle, close up, 1girl, solo, nene_green_sleepwear, twin braids, long hair, lying, on back, white bedding, mint green pajama shirt, polka dot, shirt lift, holding hem, bare abdomen, pink lace panties, white blanket, looking at viewer, shy, navy pillow, morning light, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "blue pajamas, closed shirt, sitting, standing, full body long shot",
-    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "R15",
-    "officialCgCandidate": "ocn13",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocn13:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_230938_392.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn13-a1.png",
-      "result": "pass"
-    },
-    "animaCaption": "Lying back, she holds the pajama hem in both hands near her chest and looks toward the viewer. Her panties show above the white blanket, with a navy pillow on the left; morning window light reaches her braids.",
-    "auditRevision": "careful-batch02-2026-08-27"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

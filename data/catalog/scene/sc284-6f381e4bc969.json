@@ -1,58 +1,46 @@
 {
   "kind": "scene",
   "id": "sc284",
-  "revision": 6,
-  "sortOrder": 279,
+  "revision": 7,
+  "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc284",
-    "recommendedSize": "1344×768",
-    "title": "沙发边松开的吊带裙",
-    "category": "恋爱/After_Story",
-    "story": "沙发边，夏目松开吊带裙与衬衫，回头确认你仍在身旁。「帮我整理好，」她轻声说，“但不许假装什么都没看见。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
+    "title": "红沙发边松开的背带裙",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
+    "category": "官方CG",
+    "rating": "R15",
+    "mature": false,
+    "location": "咖啡馆休息室深红皮质沙发边",
     "time": "夜晚",
     "timeOfDay": "night",
+    "season": "秋",
+    "weather": "静谧",
+    "lighting": "休息室暖黄壁灯侧照与柔和阴影",
+    "camera": "斜角贴身俯仰近景横幅",
+    "emotion": "羞怯动摇",
+    "recommendedSize": "1344×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, natsume_cafe_uniform, braided side ponytail with white rose and purple ribbon, open white shirt slipping off shoulders, lavender lace bra visible, dark brown suspender skirt with loosened straps, black thighhighs, kneeling on red sofa leaning forward, one hand braced on plush red cushion, raised hips, shy heavy blush, looking at viewer, warm indoor lamp lighting, soft dark background shadows, dutch angle, close-up",
+    "negative": "",
+    "animaCaption": "Kneeling forward on the deep red sofa with her unbuttoned white uniform shirt slipping off her shoulders over a lavender lace bra, she braces one hand on the cushion and meets your gaze in flustered shyness. Warm indoor lamp light catches her braided white-rose ornament and loosened brown suspender skirt.",
+    "promptProse": "Captured in a close tilted horizontal event-CG composition across a plush crimson sofa inside the closed café lounge, Shiki Natsume kneels forward with one hand pressed into the cushion. Her hair is gathered into a braided side ponytail pinned with a white rose and purple ribbon; her white uniform shirt hangs unbuttoned off her shoulders to expose a delicate lavender lace bra above her loosened brown suspender skirt and black thighhighs, her normally cool face deeply flushed beneath warm amber wall light.",
+    "story": "打烊后的休息室只亮着角落一盏暖灯。夏目单手撑在深红沙发靠垫上，白衬衫顺着肩头松散滑开，向来冷静的琥珀色眼睛此刻写满了难得的动摇与羞怯。",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult",
-      "natsume_r18"
+      "natsume_cafe_uniform",
+      "red_sofa",
+      "open_shirt",
+      "lavender_bra",
+      "dutch_angle",
+      "close_up"
     ],
-    "mature": false,
-    "location": "红色沙发边",
-    "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "室内暖光与红色沙发的柔和反射",
     "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图",
-      "R15"
-    ],
-    "prompt": "natsume_r18, adult, visual novel event CG, dutch angle, close up, 1girl, solo, natsume_cafe_uniform, braided side ponytail, white rose, purple ribbon, kneeling, leaning forward, red sofa, open white shirt, lavender lace bra, dark brown suspender skirt, black thighhighs, raised hips, looking at viewer, shy, hand on cushion, warm indoor light, <lora:shiki_natsume_v18_wd14:0.85>, long hair",
-    "negative": "moonlight",
-    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "rating": "R15",
-    "officialCgCandidate": "ocs18",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocs18:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_091245_649.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs18-a1.png",
-      "result": "pass"
-    },
-    "animaCaption": "Kneeling forward with one hand on the sofa cushion, she looks toward the viewer beside her, hips raised in the background; warm light catches her side braid, white rose and purple ribbon.",
-    "auditRevision": "careful-batch06-2026-08-27"
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

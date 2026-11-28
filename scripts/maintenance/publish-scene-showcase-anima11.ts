@@ -288,21 +288,20 @@ function verifyTarget(tempDir: string, manifest: ReturnType<typeof buildManifest
       }
     }
   }
-  for (const character of Object.keys(HOME_HERO_SCENES)) {
-    const file = path.join(tempDir, 'home', `${character}.jpg`);
-    if (!fs.existsSync(file) || fs.statSync(file).size === 0) {
-      throw new Error(`missing home hero: ${character}.jpg`);
-    }
-  }
   const heroManifest = path.join(tempDir, 'home-hero.json');
-  if (!fs.existsSync(heroManifest)) {
-    throw new Error('missing home-hero.json in the target showcase dir');
-  }
-  try {
-    const parsed: unknown = JSON.parse(fs.readFileSync(heroManifest, 'utf8'));
-    if (!isRecord(parsed) || !isRecord(parsed.entries)) throw new Error('home-hero.json shape invalid');
-  } catch (error) {
-    throw new Error(`home-hero.json unreadable: ${runtimeErrorMessage(error)}`);
+  if (fs.existsSync(heroManifest)) {
+    for (const character of Object.keys(HOME_HERO_SCENES)) {
+      const file = path.join(tempDir, 'home', `${character}.jpg`);
+      if (!fs.existsSync(file) || fs.statSync(file).size === 0) {
+        throw new Error(`missing home hero: ${character}.jpg`);
+      }
+    }
+    try {
+      const parsed: unknown = JSON.parse(fs.readFileSync(heroManifest, 'utf8'));
+      if (!isRecord(parsed) || !isRecord(parsed.entries)) throw new Error('home-hero.json shape invalid');
+    } catch (error) {
+      throw new Error(`home-hero.json unreadable: ${runtimeErrorMessage(error)}`);
+    }
   }
 }
 
@@ -398,27 +397,30 @@ async function main() {
         }
       }
     }
-    // 3) refresh home heroes from the approved scene images
-    for (const [character, sceneId] of Object.entries(HOME_HERO_SCENES)) {
-      const sourceHero = path.join(tempDir, 'images', `${sceneId}.jpg`);
-      const targetHero = path.join(tempDir, 'home', `${character}.jpg`);
-      if (!fs.existsSync(sourceHero)) throw new Error(`hero source missing: ${sourceHero}`);
-      fs.copyFileSync(sourceHero, targetHero);
-    }
-    // 4) bump home-hero.json so the home page heroes revalidate (new ?v=)
+    // 3) refresh home heroes only when the source edition carries an explicit home-hero manifest
     const heroManifestPath = path.join(tempDir, 'home-hero.json');
-    const heroManifest: unknown = JSON.parse(fs.readFileSync(heroManifestPath, 'utf8'));
-    if (!isRecord(heroManifest) || !isRecord(heroManifest.entries)) throw new Error('home-hero.json shape invalid');
-    const publishedAt = new Date().toISOString();
-    heroManifest.version = Math.max(1, Number(heroManifest.version) || 1) + 1;
-    for (const character of Object.keys(HOME_HERO_SCENES)) {
-      const entry = heroManifest.entries[character];
-      if (entry) {
-        if (!isRecord(entry)) throw new Error(`home-hero.json entry invalid: ${character}`);
-        entry.updatedAt = publishedAt;
+    if (fs.existsSync(heroManifestPath)) {
+      fs.mkdirSync(path.join(tempDir, 'home'), { recursive: true });
+      for (const [character, sceneId] of Object.entries(HOME_HERO_SCENES)) {
+        const sourceHero = path.join(tempDir, 'images', `${sceneId}.jpg`);
+        const targetHero = path.join(tempDir, 'home', `${character}.jpg`);
+        if (!fs.existsSync(sourceHero)) throw new Error(`hero source missing: ${sourceHero}`);
+        fs.copyFileSync(sourceHero, targetHero);
       }
+      // 4) bump home-hero.json so the home page heroes revalidate (new ?v=)
+      const heroManifest: unknown = JSON.parse(fs.readFileSync(heroManifestPath, 'utf8'));
+      if (!isRecord(heroManifest) || !isRecord(heroManifest.entries)) throw new Error('home-hero.json shape invalid');
+      const publishedAt = new Date().toISOString();
+      heroManifest.version = Math.max(1, Number(heroManifest.version) || 1) + 1;
+      for (const character of Object.keys(HOME_HERO_SCENES)) {
+        const entry = heroManifest.entries[character];
+        if (entry) {
+          if (!isRecord(entry)) throw new Error(`home-hero.json entry invalid: ${character}`);
+          entry.updatedAt = publishedAt;
+        }
+      }
+      writeJsonAtomic(heroManifestPath, heroManifest);
     }
-    writeJsonAtomic(heroManifestPath, heroManifest);
     writeJsonAtomic(path.join(tempDir, 'manifest.json'), manifest);
     verifyTarget(tempDir, manifest);
     switchTarget(tempDir, targetDir, force);

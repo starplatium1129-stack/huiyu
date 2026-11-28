@@ -1,56 +1,47 @@
 {
   "kind": "scene",
   "id": "sc275",
-  "revision": 5,
-  "sortOrder": 270,
+  "revision": 6,
+  "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "She brings the glowing object toward the viewer in both cupped hands; cyan light reaches her fingertips and eyes while the shelves and jars stay warm and dim behind her.",
-    "audit": {
-      "attempt": 1,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs09-a1.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\v12_cg_10.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocs09:1"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "木架前略倾斜半身中景",
-    "category": "官方CG灵感",
+    "id": "sc275",
+    "title": "咖啡馆木架前捧住的微光",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "心动",
-    "id": "sc275",
-    "lighting": "掌中蓝色微光与储物架暖色环境光",
-    "location": "咖啡馆木质储物架前",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "teacup, nsfw, nude, explicit",
-    "officialCgCandidate": "ocs09",
-    "prompt": "visual novel event CG, dutch angle, medium shot, 1girl, solo, shiki_natsume, natsume_maid_uniform, two_red_hairclips, dark gray maid dress, white frilled apron, white collar, gold bow, white cuffs, cupped hands, glowing blue object, surprised, cafe, wooden shelves, jars, cyan light, warm ambient light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "木架前的蓝色微光落进夏目的琥珀瞳。她把那枚小小的光点捧到你面前：「别碰得太急，它好像会回应人的心情。」柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
-    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "mature": false,
+    "location": "Café Stella 满排瓷杯的木质储物架前",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "season": "秋",
+    "weather": "晴",
+    "lighting": "橱窗夕阳余晖与架顶暖黄射灯",
+    "camera": "木架前略倾斜半身中景",
+    "emotion": "温柔认真",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, white collared shirt, purple ribbon, brown suspender skirt, hair flower, standing before wooden cup shelves, holding folded kraft pastry bag and porcelain cup gently in both hands, offering toward viewer, warm genuine smile, slight blush, cafe wooden shelves lined with coffee tins and cups, golden late-afternoon sunlight mixing with warm shelf lights, dutch angle, medium shot",
+    "negative": "",
+    "animaCaption": "Standing before Café Stella's wooden cup shelves in her brown suspender uniform, she holds a folded kraft pastry pouch gently in both hands and offers it toward you with an unusually warm smile. Late-afternoon sunlight and warm shelf bulbs illuminate her dark hair and the fine china behind her.",
+    "promptProse": "Captured at a gentle diagonal before tall wooden display shelves lined with bone-china teacups and coffee canisters in Café Stella, Shiki Natsume wears her canonical white shirt, purple tie, and brown suspender skirt. Cradling a neatly folded kraft pastry pouch in both hands as she offers it toward the viewer, she softens into a sincere, sunlit smile while golden late-afternoon rays through the front glass blend with warm amber shelf lights.",
+    "story": "傍晚的柔光穿过橱窗落满木质杯架。夏目双手捧着刚装好点的牛皮纸袋递到你面前，神情少有地毫无防备——「刚出炉的司康，凉音姐说给你留了一份。别站在过道发呆，快收下吧。」",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
+      "natsume_cafe_uniform",
+      "wooden_shelves",
+      "pastry_bag",
+      "offering_food",
+      "golden_hour",
+      "dutch_angle",
+      "medium_shot"
     ],
-    "time": "夜晚",
-    "timeOfDay": "night",
-    "title": "木架前捧住的微光",
     "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
-    ],
-    "weather": "晴"
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

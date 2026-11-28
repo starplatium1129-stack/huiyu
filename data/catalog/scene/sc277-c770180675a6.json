@@ -1,57 +1,46 @@
 {
   "kind": "scene",
   "id": "sc277",
-  "revision": 6,
-  "sortOrder": 272,
+  "revision": 7,
+  "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc277",
-    "recommendedSize": "1344×768",
-    "title": "更衣室椅上的紫色心事",
-    "category": "恋爱/After_Story",
-    "story": "演出后台的更衣室里，夏目斜靠在转椅上，双手正微微提拉着黑色过膝袜边缘的细系带。她将一条修长的大腿笔直抬向你的镜头前方，化妆镜一圈暖黄色的灯泡在她乌黑的发丝与白皙锁骨边缘勾勒出温润的光晕。撞见这一幕的你刚要退开，她却微微启唇，琥珀色的眼眸在羞赧中带着一丝不容置疑的克制与认真：「……既然是你选的，就负责看到最后。」",
+    "title": "后台化妆镜前的紫绣蕾丝与黑丝",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "lora": "shiki_natsume_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
-    "time": "白天",
-    "timeOfDay": "afternoon",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult",
-      "natsume_r18"
-    ],
-    "mature": false,
-    "location": "后台更衣室转椅与化妆镜前",
-    "weather": "晴",
-    "camera": "斜向俯视广角横幅构图",
-    "lighting": "化妆镜暖灯泡与更衣室柔和环境光",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图",
-      "R15"
-    ],
-    "prompt": "natsume_r18, adult, visual novel event CG, extreme dutch angle, from above, wide angle, 1girl, solo, two_red_hairclips, soft blush, parted lips, looking at viewer, purple bra, floral embroidery, purple panties, cleavage, black thighhighs, ribbon ties, thighhighs pull, sitting, chair, backstage dressing room, gray metal lockers, vanity mirror, warm light bulbs, warm rim light, soft ambient light, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
-    "negative": "standing",
-    "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
+    "category": "官方CG",
     "rating": "R15",
-    "officialCgCandidate": "ocs11",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocs11:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_085911_103.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs11-a1.png",
-      "result": "pass"
-    },
-    "animaCaption": "Leaning back in the chair, she adjusts one stocking with both hands while a leg extends toward the camera; soft ambient light and the vanity bulbs light her lavender lace."
+    "mature": false,
+    "location": "暖灯泡化妆镜与金属储物柜前的后台更衣室",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "season": "秋",
+    "weather": "静谧",
+    "lighting": "化妆镜串灯暖黄轮廓光与室内柔光",
+    "camera": "极限斜角广角俯拍横幅",
+    "emotion": "羞怯挑逗",
+    "recommendedSize": "1344×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, lavender floral embroidered bra, matching purple lace panties, cleavage, black thighhighs with ribbon ties, sitting leaned back on folding chair, pulling stocking up thigh with both hands, one leg extended toward foreground, soft blush, parted lips, looking at viewer, backstage dressing room, grey metal lockers, vanity mirror framed with glowing warm bulbs, warm rim light on dark hair and lavender lace, extreme dutch angle, from above, wide angle",
+    "negative": "standing",
+    "animaCaption": "Leaning back in the dressing-room chair with one stockinged leg extended toward the camera, she adjusts her ribbon-tied black thighhigh with both hands and meets your gaze with parted lips. Warm vanity mirror bulbs cast a golden rim across her lavender embroidered lace and long dark hair.",
+    "promptProse": "Rendered in a dramatic wide-angle tilted overhead shot inside a quiet backstage dressing room, Shiki Natsume leans back on a folding chair beside grey metal lockers and a bulb-lit vanity mirror. Wearing delicate lavender floral-embroidered lingerie and ribbon-tied black thighhighs, she extends one leg toward the foreground while both hands smooth the top of the other stocking up her thigh, looking toward the camera with parted lips and a warm blush as the glowing vanity bulbs rim her hair and lace.",
+    "story": "后台更衣室的化妆镜灯串亮着暖黄的光。靠在折椅上的夏目正伸手把黑丝袜口拉平，察觉你推门而入却没有慌乱躲闪，只带着一点微红的脸颊轻启唇角——「门都不敲就进来……既然看见了，就别急着移开视线。」",
+    "tags": [
+      "purple_lingerie",
+      "thighhighs_pull",
+      "dressing_room",
+      "vanity_mirror",
+      "extreme_dutch_angle",
+      "from_above"
+    ],
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

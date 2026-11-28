@@ -1,56 +1,46 @@
 {
   "kind": "scene",
   "id": "sc279",
-  "revision": 6,
-  "sortOrder": 274,
+  "revision": 7,
+  "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "From directly above, she rests beside the orange cushion with one finger at her lips and the other hand near her ear; warm reflected light reaches her eyes and the white rose ornaments beside her braids.",
-    "audit": {
-      "attempt": 1,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs13-a1.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Shiki_Natsume\\V12_Curated\\ScreenShot_2026-07-12_090719_815.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocs13:1"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "木地板上方的面部俯视特写横幅构图",
-    "category": "官方CG灵感",
+    "id": "sc279",
+    "title": "木地板上压低的嘘声提醒",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "心动",
-    "id": "sc279",
-    "lighting": "柔和自然光",
-    "location": "橙色靠垫旁的木地板",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "full body, medium shot, nsfw, nude, explicit",
-    "officialCgCandidate": "ocs13",
-    "prompt": "visual novel event CG, from above, face close up, 1girl, solo, side braids, white rose hair ornaments, purple ribbons, white shirt, lying, wooden floor, orange cushion, finger to lips, hand near ear, shy, looking at viewer, blush, <lora:shiki_natsume_v18_wd14:0.85>, adult, long hair",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "木地板的暖色映在夏目脸侧，她把手指轻轻抵住唇。「先别说话，」她看着你，“让我确认现在不是梦。”柔和的光落在她的黑色长发与琥珀色眼眸上，眼下泪痣也让克制的表情显得格外清晰。",
-    "storyJa": "【公式CGインスピレーション・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "solo"
-    ],
-    "time": "白天",
+    "mature": false,
+    "location": "铺着橙色靠垫的安静公寓木地板",
+    "time": "午后",
     "timeOfDay": "afternoon",
-    "title": "木地板上压低的提醒",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
+    "season": "春",
+    "weather": "晴",
+    "lighting": "室内自然窗光均匀柔照",
+    "camera": "正上方俯视面部特写横幅",
+    "emotion": "害羞叮嘱",
+    "recommendedSize": "1344×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, side braid with white rose hair ornament and purple ribbon, crisp white shirt, lying on polished wooden floor beside orange cushion, index finger pressed lightly to lips in hush pose, other hand resting near ear, shy blush, golden eyes gazing straight up at viewer, bright natural indoor window light, from directly above, face close-up",
+    "negative": "",
+    "animaCaption": "Lying on the warm wooden floor beside an orange floor cushion with a white rose woven into her side braid, she presses one slender finger gently against her lips and looks straight up at you with a shy blush. Clean indoor daylight brightens her crisp white shirt and golden eyes.",
+    "promptProse": "Framed directly from overhead in a tight horizontal close-up, Shiki Natsume lies on a sunlit hardwood floor beside a vivid orange cushion, her black hair styled in a delicate side braid adorned with a white rose and purple ribbon. Wearing a crisp white shirt, she lifts one index finger lightly to her lips in a hushed warning while her other hand rests near her ear, meeting the viewer's eyes with a quiet rosy flush under clean natural daylight.",
+    "story": "午后安静的房间里，侧编着白玫瑰发饰的夏目仰躺在微凉木地板上，竖起一根手指轻轻抵在唇边仰望你，眼底带着藏不住的窘迫与叮嘱——「嘘……声音太大了，会被隔壁听见的。」",
+    "tags": [
+      "side_braid",
+      "white_rose",
+      "finger_to_lips",
+      "wooden_floor",
+      "from_above",
+      "close_up"
     ],
-    "weather": "晴"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

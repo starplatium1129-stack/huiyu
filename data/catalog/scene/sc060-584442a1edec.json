@@ -1,52 +1,48 @@
 {
   "kind": "scene",
   "id": "sc060",
-  "revision": 7,
-  "sortOrder": 58,
+  "revision": 8,
+  "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-11-21T13:09:30.266145700+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "At the left of the bus shelter, silver-haired Ayachi Nene clutches the borrowed blazer around her school uniform. Her pink hair ribbons frame the face she tilts up in relief. Shuuji stands at the right, a boy with short rain-darkened brown hair, a white button-down shirt with rolled sleeves, and charcoal trousers. He has already given her his blazer. Both faces and their different silhouettes are visible under the awning.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "屋檐下双人中景",
-    "category": "恋爱",
-    "char": "nene",
-    "character": [
-      "nene"
-    ],
-    "emotion": "羞怯",
     "id": "sc060",
-    "lighting": "阴雨漫射光",
-    "location": "雨中校园",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "1girl, 1boy, ayachi_nene, nene_school_uniform, borrowed blazer, coat over shoulders, wet hair, holding clothes, bus stop, awning, rain, afternoon, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
-    "rating": "All",
-    "season": "夏",
-    "story": "放学时暴雨突至，宁宁的制服外套被雨水打湿，冷得缩起肩膀。你赶来把自己的外套披到她身上，她先担心你会着凉，确认两个人能一起躲进屋檐后才松口气。雨声里，她攥住外套前襟——「谢谢你来找我。衣服湿掉没关系……只是刚才一个人站着的时候，有一点害怕。」",
-    "storyJa": "【寧々・大雨の中での学生服の上着】学校が終わる頃に激しい雨が降りました。寧々さんの制服の上着は雨で濡れ、寒さで肩を縮めた。あなたは急いで駆け寄り、彼女の体にコートを掛けました。最初はあなたが風邪をひくのではないかと心配していましたが、二人で軒下に隠れられるのを確認してからは安心しました。雨の音の中、彼女はコートの前を握りしめた――「探しに来てくれて、ありがとうございます。服が濡れたことは平気です……ただ、さっき一人で立っていたとき、少しだけ怖くて。」",
-    "tags": [
-      "hair_ribbon",
-      "school_uniform",
-      "wet_hair",
-      "sheer_white_thighhigh_stockings",
-      "rain",
-      "medium_shot",
-      "loafers",
-      "viewer_coat",
-      "depth_of_field",
-      "wet_sheen"
+    "title": "撤离后安全屋的壁炉双人晨袍",
+    "char": "triad",
+    "character": [
+      "nene",
+      "natsume"
     ],
-    "time": "午后",
-    "timeOfDay": "afternoon",
-    "title": "暴雨里的校服外套",
-    "usage": [
-      "展示图",
-      "头像"
-    ],
-    "weather": "雨",
+    "category": "专属私密",
+    "rating": "R18",
+    "mature": true,
+    "location": "壁炉暖火明灭的安全屋丝绒长榻",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "冬",
+    "weather": "雪夜",
+    "lighting": "壁炉橙红火光与高窗冷蓝雪夜交映",
+    "camera": "长榻略俯视宽幅亲密中景",
+    "emotion": "卸防沉醉",
+    "recommendedSize": "1216×832",
+    "lora": "",
     "compositionIntent": "group",
-    "promptProse": "At the left of the bus shelter, silver-haired Ayachi Nene clutches the borrowed blazer around her school uniform. Her pink hair ribbons frame the face she tilts up in relief. Shuuji stands at the right, a boy with short rain-darkened brown hair, a white button-down shirt with rolled sleeves, and charcoal trousers. He has already given her his blazer. Both faces and their different silhouettes are visible under the awning."
+    "prompt": "nsfw, explicit, adult, 2girls, dim safehouse fireplace lounge, plush dark sofa, flickering warm orange firelight from foreground, cool snowy night window behind, from slightly above, medium shot, (ayachi_nene, ayachi_nene_on_left, silver white hair, purple eyes, ahoge, pearl white silk robe completely open slipping off shoulders, bare breasts, nipples, no panties, sitting curled close on left leaning gently against Natsume's shoulder, heavy blush, misty affectionate gaze at viewer) BREAK (shiki_natsume, shiki_natsume_on_right, long black hair, two red hairclips, golden eyes, mole under eye, deep wine-red silk robe parted wide open, bare breasts, nipples, black lace garter belt and black thighhighs, reclining closely on right with one arm around Nene's waist, flushed lips parted, heated loving gaze at viewer)",
+    "negative": "",
+    "animaCaption": "Cuddled closely on the plush sofa before the safehouse hearth in parted silk robes—Ayachi Nene on the left in open pearl-white silk and Shiki Natsume on the right in parted wine-red silk with black garter stockings—both look warmly up toward you with flushed cheeks. Flickering orange firelight sculpts their bare shoulders against the snowy night window.",
+    "promptProse": "Viewed from a gently elevated wide angle before the glowing stone fireplace of a quiet winter safehouse, Ayachi Nene and Shiki Natsume unwind together on a deep plush sofa after a long night mission. On the left, Nene curls close with her pearl-white silk robe slipped wide off her bare breasts and waist, resting her head lightly toward Natsume with misty violet eyes and a deep blush; on the right, Natsume slips one arm around Nene's waist in a parted wine-red silk robe and black lace garter stockings, meeting the viewer's gaze with heated tenderness as amber firelight warms their bare skin against the snowy blue night outside.",
+    "story": "风衣与武器全部卸在玄关外，壁炉橙红的火苗映暖了整张丝绒长榻。珍珠白与暗酒红两件真丝晨袍松松敞开，宁宁带着潮红轻靠在夏目肩头，夏目揽着她腰身抬眸望向走近的你——「门锁好了。今晚剩下的时间，全部属于我们三个。」",
+    "tags": [
+      "2girls",
+      "silk_robe",
+      "fireplace",
+      "safehouse",
+      "nude",
+      "from_above",
+      "medium_shot"
+    ],
+    "usage": [
+      "展示图"
+    ]
   }
 }

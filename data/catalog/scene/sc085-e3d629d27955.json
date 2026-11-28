@@ -1,52 +1,46 @@
 {
   "kind": "scene",
   "id": "sc085",
-  "revision": 10,
-  "sortOrder": 83,
+  "revision": 11,
+  "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "She strokes the sleeping cat on her lap while glancing toward the viewer beside the empty seat.",
-    "auditRevision": "careful-batch11-2026-08-27",
-    "camera": "半身中景",
-    "category": "日常",
+    "id": "sc085",
+    "title": "猫咖窗台借猫说出的喜欢",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "温柔",
-    "id": "sc085",
-    "lighting": "窗光",
-    "location": "猫咖啡",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "1girl, shiki_natsume, grey mock neck sweater, burgundy suede elbow patches, black wool skirt, sitting, petting cat, calico cat, cat cafe, window light, medium shot, looking at viewer, embarrassed, blush, lap cat, cafe, table, soft_lighting, cinematic_lighting, depth_of_field",
+    "category": "日常校园",
     "rating": "All",
-    "season": "冬",
-    "story": "冬日下午的猫咖里，一只猫蜷在夏目腿上睡得很熟。她表面嫌弃无法起身，手指却一直轻轻梳理猫毛。你说她其实很喜欢可爱的东西，她抬眼瞪你，又把旁边的位置让出来——「是它自己过来的。你如果也想坐，就安静一点……别把它吵醒。」",
-    "storyJa": "【夏目・猫はそれが好きだと言いました】冬の午後の猫カフェでは、一匹の猫が夏目さんの膝の上で丸まってぐっすり眠っていました。彼女は嫌な顔をして立ち上がることができませんでしたが、指で優しく猫の毛をとかし続けました。彼女は実は可愛いものが好きだとおっしゃっていましたね。彼女は目を上げてあなたを睨みつけ、それから隣の席を譲りました。――「この子が勝手に寄ってきただけ。あなたも座りたいなら、静かにして……起こさないであげて。」",
-    "tags": [
-      "mole_under_eye",
-      "sheer_black_tights",
-      "cat_cafe",
-      "medium_shot",
-      "cat",
-      "petting",
-      "sitting",
-      "window_light",
-      "grey_mock_neck_sweater",
-      "burgundy_suede_elbow_patches",
-      "black_wool_skirt"
-    ],
+    "mature": false,
+    "location": "午后阳光铺满的木质猫咖啡窗台",
     "time": "午后",
     "timeOfDay": "afternoon",
-    "title": "猫咪替她说出的喜欢",
-    "usage": [
-      "展示图",
-      "CG"
-    ],
+    "season": "春",
     "weather": "晴",
-    "promptProse": "Stroking the sleeping calico on her lap, she glances toward the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed face."
+    "lighting": "宽大落地窗斜射暖阳与毛绒高光",
+    "camera": "猫与人物同框平视近中景",
+    "emotion": "口是心非",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, dark olive cropped utility jacket, black ribbed top, blue jeans, sitting on sunlit wooden window bench, ginger tabby cat curled comfortably on her lap, gently scratching cat chin, glancing up at viewer with soft blush and faint smile, cozy cat cafe interior, wooden cat tree, bright afternoon window sunlight illuminating cat fur and her dark hair, warm natural glow, medium shot",
+    "negative": "",
+    "animaCaption": "Scratching the chin of a sleepy ginger tabby curled across her lap on the sunlit window bench, she glances up with a soft blush as if letting the cat speak for her. Bright afternoon window light turns the cat's fur golden and warms her calm expression.",
+    "promptProse": "Captured at eye level beside the sunny window bench of a quiet cat café, Shiki Natsume sits relaxed in her dark olive utility jacket, black ribbed top, and jeans with a plump ginger tabby cat purring contentedly across her lap. As her slender fingers gently scratch beneath the cat's chin, she glances up toward the viewer with softened golden eyes and a telltale rosy tint on her cheeks, bathed in rich afternoon sunlight streaming through the wide café window.",
+    "story": "午后的阳光把窗台烘得暖洋洋的，那只橘猫熟门熟路盘在夏目膝盖上打呼噜。夏目一边慢悠悠给它挠下巴，一边眼皮微抬看向对面的你，耳尖泛红却一脸严肃——「它刚才说，下周还想让你陪我再来一次。可不是我说的。」",
+    "tags": [
+      "cat_cafe",
+      "tabby_cat",
+      "utility_jacket",
+      "sunlit_window",
+      "soft_smile",
+      "medium_shot"
+    ],
+    "usage": [
+      "核心CG",
+      "展示图"
+    ]
   }
 }

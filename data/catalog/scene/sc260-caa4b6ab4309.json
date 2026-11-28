@@ -1,56 +1,46 @@
 {
   "kind": "scene",
   "id": "sc260",
-  "revision": 6,
-  "sortOrder": 255,
+  "revision": 7,
+  "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Hands clasped below her chin, she raises a hesitant gaze toward the viewer; afternoon window light follows her hair above the softly blurred desks.",
-    "audit": {
-      "attempt": 2,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn02-a2.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_02.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocn02:2"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "窗边正面胸上近景横幅构图",
-    "category": "官方CG灵感",
+    "id": "sc260",
+    "title": "窗边交握双手的请求",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "心动",
-    "id": "sc260",
-    "lighting": "柔和自然光",
-    "location": "教室窗边",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "full body, long shot, distant character, nsfw, nude, explicit",
-    "officialCgCandidate": "ocn02",
-    "prompt": "visual novel event CG, (upper body, close up), 1girl, solo, ayachi_nene, nene_sailor_uniform, very_long_hair, ahoge, navy blazer, gray sailor collar, gold bow, (clasped hands), front view, pleading, slight blush, classroom, window, blue sky, trees, empty desks, blurred background, <lora:ayachi_nene_v18_wd14:0.9>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "午后的教室只剩风吹窗帘的声音。宁宁把交握的手举到胸前，犹豫很久才望向你：「今天……能再陪我一会儿吗？」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
-    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "solo"
-    ],
-    "time": "白天",
+    "mature": false,
+    "location": "夏日晴空下的教室窗边",
+    "time": "午后",
     "timeOfDay": "afternoon",
-    "title": "窗边交握双手的请求",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
+    "season": "夏",
+    "weather": "晴",
+    "lighting": "明朗蓝天侧窗自然光",
+    "camera": "窗边正面胸上横幅特写",
+    "emotion": "恳切羞怯",
+    "recommendedSize": "1344×768",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, nene_sailor_uniform, grey sailor collar, white short-sleeve sailor shirt, gold ribbon bow, clasped hands at chest, leaning slightly forward, pleading eyes, slight blush, parted lips, looking at viewer, sunlit classroom, open window behind, blue sky, green trees outside, empty desks, clear daylight, front view, upper body, close-up",
+    "negative": "",
+    "animaCaption": "Clasping both hands tightly before her chest in her summer grey-collar sailor uniform, she leans slightly closer with earnest, pleading purple eyes. Crisp daylight from the classroom window behind her edges her silver hair against the summer sky and green trees.",
+    "promptProse": "Framed in an intimate horizontal chest-up close-up inspired by classic visual novel event CGs, Ayachi Nene faces the viewer beside a bright classroom window. Dressed in her Himematsu summer uniform with a crisp white short-sleeved shirt, grey sailor collar, and gold ribbon bow, she clasps both hands together near her chest and leans forward with wide, pleading violet eyes and a soft blush. Clear afternoon sunlight from the blue sky and green treetops outside softly illuminates the side of her face and brightens the edges of her silver hair and ahoge.",
+    "story": "窗外是耀眼的夏日蓝天和摇曳的绿荫。换上夏季水手服的宁宁在课桌旁双手交握在胸前，轻轻向前倾身，声音小得几乎融进蝉鸣里——「拜托你了……这件事，我真的只能找你商量。」",
+    "tags": [
+      "nene_sailor_uniform",
+      "clasped_hands",
+      "pleading",
+      "classroom",
+      "summer_sky",
+      "close_up"
     ],
-    "weather": "晴"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

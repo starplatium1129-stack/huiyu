@@ -1,57 +1,46 @@
 {
   "kind": "scene",
   "id": "sc030",
-  "revision": 4,
-  "sortOrder": 28,
+  "revision": 5,
+  "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Holding the detached sensor, she touches her flushed cheek with her free hand and turns from the heartbeat monitor. Its cool light outlines her face against the dark room.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "监测屏前半身中景",
-    "category": "Active_Sync_Scenes",
-    "char": "natsume",
-    "character": [
-      "natsume"
-    ],
-    "emotion": "克制动摇",
     "id": "sc030",
-    "lighting": "屏幕冷光与侧面轮廓光",
-    "location": "私人情绪研究室",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "safe, 1girl, shiki_natsume, white lab coat, black camisole, black thighhighs, sitting, sensor, touching cheek, monitor, waveform, laboratory, night, blue light, medium shot, @rella",
-    "rating": "All",
-    "season": "不限",
-    "story": "深夜私人研究室只亮着监测屏的冷光。成年的夏目坚持完成最后一轮压力测试，直到系统把她刻意压低的心率与真实情绪同时投上大屏。她沉默地摘下传感器，眼下泪痣旁已经泛红——「机器偶尔也会误判。你如果敢把刚才的数据保存下来……至少先让我确认加密等级。」",
-    "storyJa": "【夏目・大人のクロスオーバーAUのヒステリシス校正・】深夜、個室研究室は監視画面の冷たい光だけが照らしていた。大人の夏目さんは、システムが意図的に低い心拍数と本当の感情を同時に大画面に映し出すまで、ストレステストの最後のラウンドを完了することを主張しました。彼女が黙ってセンサーを外すと、泣きぼくろはすでに赤くなっていた。――「機械だって、たまには判定を間違えるものよ。さっきのデータを保存するつもりなら……せめて先に、暗号化の強度を確認させて。」",
-    "tags": [
-      "blushing",
-      "mole_under_eye",
-      "eye_contact",
-      "vulnerable_expression",
-      "adult",
-      "sensor_headset",
-      "holding_biometric_sensor_in_one_hand",
-      "heart_rate_monitor",
-      "heart_rate_graphs_on_large_monitors",
-      "screen_glow",
-      "restrained_expression",
-      "blush",
-      "laboratory",
-      "night",
-      "medium_shot",
-      "screen_light",
-      "shy",
-      "serious"
+    "title": "月夜古宅花窗的哥特解缚",
+    "char": "nene",
+    "character": [
+      "nene"
     ],
+    "category": "专属私密",
+    "rating": "R18",
+    "mature": true,
+    "location": "彩色花窗垂落黑纱床幔的古宅卧榻",
     "time": "深夜",
-    "timeOfDay": "night",
-    "title": "情绪迟滞：夏目的克制校准",
-    "usage": [
-      "实验CG"
+    "timeOfDay": "late_night",
+    "season": "秋",
+    "weather": "月夜",
+    "lighting": "彩窗冷银月光与床侧高脚烛台暖光",
+    "camera": "黑纱床幔前景低机位仰拍",
+    "emotion": "虔诚沉沦",
+    "recommendedSize": "832×1216",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "nsfw, explicit, adult, 1girl, solo, ayachi_nene, nene_r18, unlaced gothic black purple dress pushed down to waist, velvet choker, black lace wrist cuffs, black lace thighhighs, bare breasts, nipples, skirt gathered open, no panties, pussy, kneeling on crimson velvet canopy bed, sheer black bed curtains foreground, one hand holding lace ribbon at throat, head tilted back slightly, heavy blush, dreamy teary gaze, stained glass window, silver moonlight shaft, warm tall candelabra glow, gothic bedroom, from below, medium full shot",
+    "negative": "",
+    "animaCaption": "Kneeling amid crimson velvet sheets behind parted sheer black bed curtains, her unlaced gothic gown falls below her bare breasts while her velvet choker and lace thighhighs remain intact. Cool moonlight through the stained glass and warm candle flames weave across her flushed skin.",
+    "promptProse": "Framed through parted sheer black canopy curtains in the foreground, Ayachi Nene kneels upright on a crimson velvet four-poster bed inside a quiet gothic chamber. The front lacing of her black-and-purple gown is completely undone and slipped down around her waist, leaving her bare breasts exposed while her velvet choker, delicate lace cuffs, and black lace thighhighs stay fastened; the dark skirt parts across her lap as she rests one trembling hand near her throat. Cold silver moonlight pours from an arched stained-glass window to collide with warm golden glow from a bedside candelabra.",
+    "story": "黑纱床幔在夜风里轻轻晃动，彩窗倾泻的冷月光与案头高脚烛火交错落在暗红绒被上。宁宁松开哥特礼裙胸前繁复的丝带，只留颈间那枚黑丝绒颈链，在光影明灭中轻声唤出你的名字。",
+    "tags": [
+      "gothic_dress",
+      "velvet_choker",
+      "canopy_bed",
+      "stained_glass",
+      "candlelight",
+      "moonlight",
+      "nude"
     ],
-    "weather": "静谧"
+    "usage": [
+      "展示图"
+    ]
   }
 }

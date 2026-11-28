@@ -1,55 +1,46 @@
 {
   "kind": "scene",
   "id": "sc142",
-  "revision": 4,
-  "sortOrder": 140,
+  "revision": 5,
+  "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "She stares at the pan floating above the stove as the viewer appears in the doorway; morning window light reaches her apron over the borrowed shirt.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "半身中景",
-    "category": "日常",
+    "id": "sc142",
+    "title": "清晨厨房的悬浮平底锅事故",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "害羞",
-    "id": "sc142",
-    "lighting": "逆光晨曦",
-    "location": "新婚公寓厨房",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "nsfw, nude, explicit",
-    "prompt": "1girl, ayachi_nene, oversized white shirt, white apron, floating pan, magic, surprised, blush, kitchen, morning, window light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>",
+    "category": "日常校园",
     "rating": "All",
-    "season": "春",
-    "story": "婚后清晨的公寓厨房里弥漫着面包的焦味。宁宁穿着你那件大号的衬衫、套着围裙，正手忙脚乱地准备早餐。因为平底锅快烧焦了，她慌乱间下意识用了魔力让锅子自己悬浮在半空，结果正好被推门而入的你撞个正着。她瞬间满脸通红，头顶的呆毛直接害羞地弯成了心形——「啊啊啊！不准看！魔女的料理魔法失败现场也是家务最高机密！」",
-    "storyJa": "【寧々・アフターストーリー】結婚式の翌朝、アパートのキッチンは焼けたパンの匂いでいっぱいだった。寧々はあなたのオーバーサイズのシャツとエプロンを着て、朝食の準備に忙しいです。鍋が焦げそうになったので、彼女はパニックになり、無意識のうちに魔法を使って鍋を空中に浮かせました。その結果、彼女はドアを押し込んだあなたにぶつかってしまいました。彼女の顔はすぐに赤くなり、頭のアホ毛は恥ずかしそうにハート型に曲がりました。――「きゃあっ、見ちゃだめです！　魔女の料理魔法が失敗した現場も、家事の最高機密なんですから！」",
-    "tags": [
-      "oversized_shirt",
-      "apron",
-      "hair_ribbon",
-      "ahoge",
-      "kitchen",
-      "cooking_pan",
-      "floating_objects",
-      "magic_sparks",
-      "blush",
-      "panicked",
-      "indoors",
-      "morning_light",
-      "cozy",
-      "warm_lighting",
-      "medium_shot",
-      "viewer_shirt"
-    ],
+    "mature": false,
+    "location": "晨光透亮的公寓开放式厨房",
     "time": "清晨",
     "timeOfDay": "morning",
-    "title": "魔女小娇妻的厨房魔法事故",
-    "usage": [
-      "壁纸级"
+    "season": "春",
+    "weather": "晴",
+    "lighting": "明亮晨窗斜射暖光与蒸汽光斑",
+    "camera": "餐台前景平视动态中景",
+    "emotion": "慌乱可爱",
+    "recommendedSize": "1216×832",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, floral linen cross-back apron, ivory puff-sleeve cotton blouse, light grey midi skirt, floating frying pan, levitating egg, faint violet magic sparks, holding spatula, reaching up in panic, wide eyes, flustered blush, bright morning kitchen, breakfast counter foreground, rising steam, crisp morning window light, medium shot",
+    "negative": "",
+    "animaCaption": "Freezing mid-reach with a wooden spatula as a frying pan and cracked egg hover above the stove in faint violet sparks, she glances sheepishly toward you in the doorway. Crisp morning sunlight streams through the kitchen window across the steam and her floral linen apron.",
+    "promptProse": "Framed across a tidy wooden breakfast counter in the foreground, Ayachi Nene is caught red-handed during a minor magic mishap in a sunlit morning kitchen. Wearing a floral linen cross-back apron over an ivory puff-sleeve cotton blouse and grey midi skirt, she reaches up with a spatula in wide-eyed panic as a cast-iron frying pan and a hovering fried egg float midair above the stove surrounded by faint violet sparkles. Bright early-morning sunlight slices diagonally through the window blinds, illuminating curls of kettle steam and turning her silver ahoge bright white.",
+    "story": "推开厨房门时，一只平底锅正冒着淡紫色微光稳稳悬在燃气灶半空。宁宁举着木铲慌慌张张想把它按下来，见你已经看见全过程，整张脸瞬间红透——「不、不是偷懒！我只是想让煎蛋翻面漂亮一点……刚才那段请全部忘掉！」",
+    "tags": [
+      "apron",
+      "kitchen",
+      "magic",
+      "floating_pan",
+      "morning_light",
+      "panicked",
+      "medium_shot"
     ],
-    "weather": "晴朗晨曦"
+    "usage": [
+      "展示图"
+    ]
   }
 }

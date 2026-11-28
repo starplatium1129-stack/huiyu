@@ -1,56 +1,46 @@
 {
   "kind": "scene",
   "id": "sc261",
-  "revision": 6,
-  "sortOrder": 256,
+  "revision": 7,
+  "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Against the pink pillows, she rubs one sleepy eye and looks toward the viewer, the blanket at her waist; morning light catches her pajama collar.",
-    "audit": {
-      "attempt": 2,
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn04-a2.png",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\v12_cg_05.png",
-      "result": "pass",
-      "reviewer": "direct-vision",
-      "seedKey": "official-cg:ocn04:2"
-    },
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "卧室略俯视斜向半身近景横幅构图",
-    "category": "官方CG灵感",
+    "id": "sc261",
+    "title": "粉色卧室里的蓝色睡衣",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "心动",
-    "id": "sc261",
-    "lighting": "晨间窗光落在粉色枕被与蓝睡衣上",
-    "location": "卧室",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "pink pajamas, purple pajamas, crop top, exposed midriff, dark blue bedding, lying on side, nsfw, nude, explicit",
-    "officialCgCandidate": "ocn04",
-    "prompt": "visual novel event CG, medium close up, dutch angle, from above, 1girl, solo, ayachi_nene, nene_blue_pajamas, very_long_hair, ahoge, (sky blue pajamas), button-up shirt, animal print, pink collar, sitting, bed, pink blanket, pink pillows, hair spread out, looking at viewer, slight blush, morning, window light, <lora:ayachi_nene_v18_wd14:0.9>",
+    "category": "官方CG",
     "rating": "All",
-    "recommendedSize": "1344×768",
-    "season": "不限",
-    "story": "清晨的粉色卧室里，宁宁穿着蓝色睡衣从被子里坐起。她揉揉眼睛，小声提醒你：「早安，不过先说好，不准笑我的睡相。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
-    "storyJa": "【公式CGインスピレーション・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "solo"
-    ],
-    "time": "白天",
+    "mature": false,
+    "location": "洒满晨光的柔和粉色卧室床铺",
+    "time": "清晨",
     "timeOfDay": "morning",
-    "title": "粉色卧室里的蓝色睡衣",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图"
+    "season": "春",
+    "weather": "晴",
+    "lighting": "清透清晨斜窗柔光",
+    "camera": "略俯视斜角半身近景横幅",
+    "emotion": "慵懒害羞",
+    "recommendedSize": "1344×768",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, nene_blue_pajamas, sky blue button-up pajamas, cat animal print, pink collar trim, long sleeves, sitting on bed, legs tucked sideways, hair spread across shoulders, hands resting on pink quilt, slight blush, drowsy gentle gaze, looking up at viewer, pastel pink pillows, morning window light, dutch angle, from above, medium close-up",
+    "negative": "",
+    "animaCaption": "Sitting on the pastel pink quilt in her sky-blue cat-print pajamas with her silver hair spilled loose across her shoulders, she looks up from a gentle tilt with sleepy shyness. Soft morning window light warms the pillows and highlights her pink-trimmed collar.",
+    "promptProse": "Captured from a slightly tilted overhead angle across a cozy pastel bedroom, Ayachi Nene sits curled on rumpled pink bedding just after waking. She wears her canonical sky-blue long-sleeved button-up pajamas printed with tiny cat motifs and edged with a soft pink collar, her long silver hair tumbling unfastened around her shoulders as her hands rest lightly on the quilt. Fresh morning sunlight enters diagonally from a nearby window, softly illuminating her sleepy blush, parted lips, and the plush pillows nestled behind her.",
+    "story": "刚睡醒的卧室还带着暖烘烘的被窝气息。穿着天蓝小猫睡衣的宁宁坐在粉色被褥间，银白长发松松散在肩头，听见你叫她才带着一点睡意抬起眼睛——「早安……再让我靠着枕头缓一分钟嘛。」",
+    "tags": [
+      "nene_blue_pajamas",
+      "bedroom",
+      "morning_light",
+      "dutch_angle",
+      "from_above",
+      "medium_close_up"
     ],
-    "weather": "晴"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

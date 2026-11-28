@@ -1,58 +1,46 @@
 {
   "kind": "scene",
   "id": "sc266",
-  "revision": 6,
-  "sortOrder": 261,
+  "revision": 7,
+  "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc266",
-    "recommendedSize": "1344×768",
     "title": "金色软枕上的晨光告白",
-    "category": "恋爱/After_Story",
-    "story": "晨光越过金色软枕，宁宁红着脸拉住滑开的衣襟。她明明紧张得指尖发抖，仍认真地说：「不要躲开，我想让你看见真正的我。」窗边的光沿着她的银白长发缓缓移动，粉色发带与紫色眼眸让这一刻安静得像被珍藏起来。",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
+    "category": "官方CG",
+    "rating": "R18",
+    "mature": true,
+    "location": "晨光洒入的金色软枕卧室床榻",
     "time": "清晨",
     "timeOfDay": "morning",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
-    ],
-    "mature": true,
-    "location": "卧室",
+    "season": "春",
     "weather": "晴",
-    "camera": "官方CG横幅构图",
-    "lighting": "右上方晨光与金色软枕的柔和反射",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图",
-      "成人向"
+    "lighting": "斜照清晨明澈窗光",
+    "camera": "斜向俯视大透视近景横幅",
+    "emotion": "羞怯告白",
+    "recommendedSize": "1344×768",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "nsfw, explicit, adult, 1girl, solo, ayachi_nene, nene_r18, open white dress shirt slipping off shoulders, powder blue bra lifted above bare breasts, nipples, bare belly, lying on back, long silver hair fanned across golden yellow pillows, arms bent softly beside head, deep blush, parted lips, shy loving eyes looking up at viewer, bright morning bedroom, crisp morning sunlight across sheets, diagonal composition, from above, foreshortening, close-up",
+    "negative": "",
+    "animaCaption": "Lying back with her silver hair fanned across golden-yellow pillows as her unbuttoned white shirt slips off her shoulders and her powder-blue bra rests lifted above her bare breasts, she looks straight up at you with a deep blush. Bright morning sunlight warms her bare skin and the rumpled sheets.",
+    "promptProse": "Framed in an intimate diagonal overhead close-up with gentle foreshortening, Ayachi Nene lies back across plush golden-yellow pillows with her long silver hair spread wide around her shoulders. Her unbuttoned white shirt slides loosely off her arms and her powder-blue bra is pushed upward to bare her breasts and soft abdomen; looking straight up toward the viewer with parted lips and a deep crimson blush, she catches the crisp golden sunlight streaming diagonally across the morning bed.",
+    "story": "清晨阳光把金色软枕照得蓬松温暖。银白长发在枕面上散开，宁宁微微仰起脸迎着你的目光，连指尖都带着微颤的羞怯，轻声把藏在心底的喜欢再说了一遍。",
+    "tags": [
+      "bra_lift",
+      "open_shirt",
+      "morning_light",
+      "bedroom",
+      "from_above",
+      "close_up"
     ],
-    "prompt": "nene_r18, adult, visual novel event CG, close up, (diagonal composition), from above, foreshortening, 1girl, solo, long hair, hair spread out, topless, nipples, exactly two breasts, bra lift, powder blue bra, open white shirt, off shoulder, lying, on back, golden yellow pillows, bare abdomen, looking at viewer, shy, open mouth, deep blush, morning sunlight, <lora:ayachi_nene_v18_wd14:0.95>",
-    "negative": "extra breast, malformed torso, symmetrical front view, face centered, blanket, sitting, standing",
-    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "R18",
-    "officialCgCandidate": "ocn11",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 2,
-      "seedKey": "official-cg:ocn11:2",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_231408_046.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn11-a2.png",
-      "result": "pass"
-    },
-    "animaCaption": "From the diagonal overhead viewpoint looking along her body toward her face, her face rests at the upper left against the large golden pillows, while her abdomen and lower torso are foreshortened across the right foreground. Morning sunlight enters from the upper right as she looks toward the viewer.",
-    "auditRevision": "careful-batch02-2026-08-27"
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

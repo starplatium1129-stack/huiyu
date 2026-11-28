@@ -1,48 +1,46 @@
 {
   "kind": "scene",
   "id": "sc018",
-  "revision": 3,
-  "sortOrder": 17,
+  "revision": 5,
+  "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T18:19:53.154699200+00:00",
   "data": {
-    "animaCaption": "Under the convenience-store eaves, she places the sweeter coffee can in the viewer's hand while keeping the other can near her chest. The shop light warms her cheek above the rain-dark pavement.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "屋檐下半身中景",
-    "category": "日常",
+    "id": "sc018",
+    "title": "便利店屋檐下的罐装热咖啡",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "平静",
-    "id": "sc018",
-    "lighting": "便利店檐灯与雨夜反射",
-    "location": "便利店",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "1girl, shiki_natsume, beige sweater, navy pleated skirt, black tights, offering drink, canned coffee, convenience store, awning, rain, night, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "category": "日常校园",
     "rating": "All",
-    "season": "秋",
-    "story": "秋雨把夜色洗得发亮，你和夏目并肩困在便利店屋檐下。她买了两罐热咖啡，把更甜的那一罐塞进你手里，又自然地往你这边挪了半步替你避开溅起的雨水。你问她是不是担心，她看着街面回答——「只是买一送一。雨小一点再走，省得你感冒以后还要麻烦别人。」",
-    "storyJa": "【夏目・コンビニの軒下で温かい飲み物】秋の雨が夜を明るく染め、あなたと夏目はコンビニの軒下に並んで閉じ込められます。彼女はホットコーヒーを2缶購入し、甘い方をあなたの手に置き、しぶき雨を避けるために自然に半歩あなたのほうに移動しました。あなたは彼女に心配しているかと尋ねると、彼女は通りを見て答えました――「たまたま二つで一つの値段だっただけ。雨が弱くなるまで待ちなさい。風邪をひいて、あとで誰かに迷惑をかけないように。」",
-    "tags": [
-      "mole_under_eye",
-      "beige_sweater",
-      "sheer_black_tights",
-      "convenience_store",
-      "ankle_boots",
-      "depth_of_field",
-      "medium_shot",
-      "two_hot_drinks",
-      "offering_drink"
-    ],
+    "mature": false,
+    "location": "深夜微雨的街角便利店玻璃橱窗外",
     "time": "夜晚",
     "timeOfDay": "night",
-    "title": "便利店屋檐下的热饮",
+    "season": "秋",
+    "weather": "细雨",
+    "lighting": "便利店冷白荧光灯与雨夜路灯暖光",
+    "camera": "屋檐平视贴近中景",
+    "emotion": "面冷心热",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, dark olive cropped utility jacket, black ribbed tank top, high-waist straight blue jeans, standing under convenience store awning, offering warm canned coffee toward viewer, holding second coffee can in other hand, calm deadpan gaze with faint blush, raindrops falling off eaves foreground, softly blurred warm convenience store glass behind, cool overhead fluorescent light, wet asphalt reflections, medium shot",
+    "negative": "text, watermark, holding shoes",
+    "animaCaption": "Sheltering under the dripping awning in her dark olive utility jacket, she extends a hot canned coffee toward you while cradling a second tin in her other hand. Overhead awning light outlines her dark hair against the glistening night street.",
+    "promptProse": "Framed beneath the dripping roof edge of a corner convenience store on a rainy night, Shiki Natsume stands casually in a dark olive cropped utility jacket over a black ribbed top and straight high-waisted jeans. Holding one steaming coffee tin in her left hand, she offers a second warm canned coffee toward the viewer with her signature calm gaze and a faint flush at her ears while cool overhead light and warm wet-street reflections shimmer behind her.",
+    "story": "细雨把深夜的柏油路淋得发亮。夏目在便利店屋檐下停住脚步，面无表情地把刚买的热黑咖啡直接贴上你冰凉的手背——「手这么冰，明天感冒了谁替我搬咖啡豆？快拿着暖手。」",
+    "tags": [
+      "utility_jacket",
+      "jeans",
+      "convenience_store",
+      "canned_coffee",
+      "rain",
+      "night_street",
+      "medium_shot"
+    ],
     "usage": [
       "展示图"
-    ],
-    "weather": "雨"
+    ]
   }
 }

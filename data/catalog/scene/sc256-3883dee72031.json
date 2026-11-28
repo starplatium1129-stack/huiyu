@@ -1,56 +1,46 @@
 {
   "kind": "scene",
   "id": "sc256",
-  "revision": 4,
-  "sortOrder": 251,
+  "revision": 5,
+  "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "With cocoa before the viewer and a dry towel over the chair, she returns her hand to the ledger. The remaining counter lamp warms her face against the cooler rain-lit window.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "吧台侧面中景，人物与热饮同框",
-    "category": "日常",
+    "id": "sc256",
+    "title": "闭店吧台雨夜留给你的热可可",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "沉默的关心",
-    "id": "sc256",
-    "lighting": "单盏暖灯、窗外冷色雨光",
-    "location": "Café Stella 吧台",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "missing hairclip, nsfw, nude, explicit",
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, ledger, hot chocolate, cup on counter, towel on chair, slight blush, cafe counter, rainy window, night, warm lamp, medium shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "category": "日常校园",
     "rating": "All",
-    "season": "冬",
-    "story": "Café Stella 打烊后，夏目把最后一盏吧台灯留了下来。你刚从雨里进门，她没有问太多，只是把一杯热可可推到你面前，又把干毛巾搭在椅背上。等你抬头时，她已经假装在整理账本——「……别误会。客人感冒会影响明天的营业效率。喝完再走。」",
-    "storyJa": "【夏目・閉店後のホットココア】Café Stellaの閉店後、夏目はカウンターの灯りを一つだけ残していた。雨の中から入ってきたあなたへ、何も聞かずに温かいココアと乾いたタオルを差し出す。帳簿へ視線を落としたまま、彼女は小さく言った――「……勘違いしないで。風邪をひかれたら明日の営業に困るだけ。飲んでから帰って」",
-    "tags": [
-      "black_hair",
-      "long_hair",
-      "yellow_eyes",
-      "mole_under_eye",
-      "hairclip",
-      "cafe_uniform",
-      "suspender_dress",
-      "hot_chocolate",
-      "dry_towel",
-      "chair",
-      "ledger",
-      "rain",
-      "window",
-      "warm_lighting",
-      "medium_shot",
-      "reserved_expression"
-    ],
-    "time": "闭店后",
+    "mature": false,
+    "location": "挂上闭店牌的 Café Stella 大理石吧台",
+    "time": "夜晚",
     "timeOfDay": "night",
-    "title": "闭店后留给你的那杯热可可",
-    "usage": [
-      "角色还原",
-      "日常叙事"
+    "season": "秋",
+    "weather": "雨夜",
+    "lighting": "吧台低垂黄铜吊灯暖光与雨窗冷蓝光",
+    "camera": "吧台侧面中景热饮前景构图",
+    "emotion": "无声温柔",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, natsume_cafe_uniform, white collared long-sleeve shirt, purple ribbon tie, brown suspender skirt, hair flower, leaning forearms lightly on marble coffee counter, sliding steaming ceramic mug of hot cocoa with latte art toward viewer, quiet fond gaze, faint blush, closed cafe interior, steaming cocoa mug foreground, warm brass pendant lights, rain-streaked glass window with cool blue night street outside, medium shot",
+    "negative": "",
+    "animaCaption": "Leaning lightly across the closed Café Stella marble counter in her signature brown suspender uniform, she slides a steaming mug of hot cocoa toward you with a quiet blush. Warm brass pendant bulbs glow across the rising steam while rain streams down the blue-lit front window behind her.",
+    "promptProse": "Framed across a steaming ceramic mug of hot cocoa in the foreground on the polished marble counter of Café Stella after hours, Shiki Natsume wears her canonical waitress uniform—crisp white shirt, purple ribbon tie, brown suspender skirt, and floral hair clip. Leaning slightly forward as she pushes the warm mug toward the viewer, she lets a quiet, unmistakable warmth soften her amber eyes beneath the intimate amber glow of hanging brass pendant lamps while cool blue rain runs down the dark streetfront windows.",
+    "story": "门上的营业牌翻到了闭店那一面，外头正下着秋雨。夏目什么也没问，只把一杯刚拉好花、热气腾腾的可可推到你面前，指尖在杯壁轻轻一敲——「淋成这样还跑过来，先把这杯喝完再说正事。」",
+    "tags": [
+      "natsume_cafe_uniform",
+      "hot_cocoa",
+      "cafe_counter",
+      "rainy_window",
+      "pendant_lamp",
+      "medium_shot"
     ],
-    "weather": "冬夜小雨"
+    "usage": [
+      "核心CG",
+      "展示图"
+    ]
   }
 }

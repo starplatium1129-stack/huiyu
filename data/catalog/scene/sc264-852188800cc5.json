@@ -1,58 +1,46 @@
 {
   "kind": "scene",
   "id": "sc264",
-  "revision": 6,
-  "sortOrder": 259,
+  "revision": 7,
+  "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
     "id": "sc264",
-    "recommendedSize": "1344×768",
     "title": "夕照图书室里的失控一刻",
-    "category": "恋爱/After_Story",
-    "story": "黄昏的图书室深处，狭窄的书架通道被染成一片暖金。被突如其来的燥热与悸动俘获，宁宁侧倚在书架旁，指尖紧紧攥起格子百褶裙的裙摆向上撩起。夕阳的逆光穿透窗户，在她银白的发丝与泛红发烫的脸颊上镀上一层微光。泪光闪烁的紫色眼眸既羞耻又带着难以自持的渴望，小嘴轻喘着望向你：「既然……被你看到了，就不许丢下我一个人……」",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "lora": "ayachi_nene_v21_anima",
-    "emotion": "亲密",
-    "season": "不限",
+    "category": "官方CG",
+    "rating": "R15",
+    "mature": false,
+    "location": "夕阳斜照的图书室窄书架通道",
     "time": "黄昏",
     "timeOfDay": "sunset",
-    "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "nene",
-      "adult",
-      "nene_r18"
-    ],
-    "mature": false,
-    "location": "图书室",
+    "season": "秋",
     "weather": "晴",
-    "camera": "书架通道斜向半身近景横幅构图",
-    "lighting": "书架间夕阳逆光与暖色阴影",
-    "usage": [
-      "官方CG灵感",
-      "实机审核通过",
-      "展示图",
-      "R15"
-    ],
-    "prompt": "nene_r18, nene_school_uniform, adult, visual novel event CG, dutch angle, medium close up, 1girl, solo, very_long_hair, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, plaid skirt, pleated skirt, miniskirt, skirt lift, pink panties, bow panties, pantyshot, black thighhighs, zettai ryouiki, narrow aisle, bookshelf, library, golden hour, rim light, <lora:ayachi_nene_v18_wd14:0.95>",
+    "lighting": "窄过道夕阳暖金强轮廓光",
+    "camera": "书架通道斜向半身近景横幅",
+    "emotion": "羞耻慌乱",
+    "recommendedSize": "1344×768",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "adult, 1girl, solo, ayachi_nene, nene_r18, nene_school_uniform, navy blazer, yellow bowtie, grey plaid pleated miniskirt, skirt lift, pink bow panties, pantyshot, black thighhighs, zettai ryouiki, leaning back against wooden bookshelf, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, narrow library aisle, tall bookshelves framing sides, golden hour sunlight, warm sunset rim light, dutch angle, medium close-up",
     "negative": "",
-    "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "R15",
-    "officialCgCandidate": "ocn09",
-    "audit": {
-      "reviewer": "direct-vision",
-      "attempt": 1,
-      "seedKey": "official-cg:ocn09:1",
-      "reference": "E:\\code\\2\\lora\\AI\\Datasets\\Characters\\Ayachi_Nene\\V12_Curated\\ScreenShot_2026-07-12_230616_069.png",
-      "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocn09-a1.png",
-      "result": "pass"
-    },
-    "animaCaption": "Leaning against the shelves in the narrow aisle, she lifts her skirt with a tearful blush and parted lips; sunset rims her hair.",
-    "auditRevision": "careful-batch12-2026-08-27"
+    "animaCaption": "Pressed back against the bookshelves in the narrow library aisle, she grips the lifted hem of her plaid skirt with tearful, crimson-flushed embarrassment and parted lips. Low golden-hour sunlight pours down the passage and ignites a bright rim along her hair.",
+    "promptProse": "Framed at a tense tilted angle down a cramped wooden library aisle, Ayachi Nene leans breathlessly back against a towering bookshelf in her Himematsu navy blazer and black thighhighs. Caught mid-episode by the viewer, her trembling fingers hold the edge of her grey plaid pleated miniskirt lifted to reveal pale pink bow-trimmed panties while beads of sweat glisten on her heavily flushed cheeks and tears gather in her wide purple eyes. Late golden-hour sunlight floods down the narrow corridor from behind the stacks, casting vivid warm rim light along her silver hair and blazer.",
+    "story": "黄昏的图书室只剩书页和呼吸声。因魔石代价发作而躲在窄书架间的宁宁无处可逃，被夕阳照透的眼角沁出泪光，抓着格裙边缘的手指都在轻颤——「不、不要看……请把眼睛闭上，求你了……」",
+    "tags": [
+      "nene_school_uniform",
+      "library",
+      "skirt_lift",
+      "golden_hour",
+      "dutch_angle",
+      "teary_eyes"
+    ],
+    "usage": [
+      "核心CG",
+      "官方CG"
+    ]
   }
 }

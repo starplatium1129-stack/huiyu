@@ -1,48 +1,45 @@
 {
   "kind": "scene",
   "id": "sc011",
-  "revision": 4,
-  "sortOrder": 10,
+  "revision": 5,
+  "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Without looking up, she slides her marked notes toward the viewer taking the neighboring seat. Morning window light catches her reddening ear and the notebook edge.",
-    "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "窗边半身中景",
-    "category": "校园",
+    "id": "sc011",
+    "title": "大学阶梯教室的第一束晨光",
     "char": "natsume",
     "character": [
       "natsume"
     ],
-    "emotion": "认真",
-    "id": "sc011",
-    "lighting": "春日清晨窗光",
-    "location": "大学阶梯教室",
-    "lora": "shiki_natsume_v21_anima",
-    "mature": false,
-    "negative": "",
-    "prompt": "safe, 1girl, shiki_natsume, knit cardigan, checkered skirt, black tights, sitting, notebook, lecture hall, desk, morning, window light, medium shot, @rella",
+    "category": "日常校园",
     "rating": "All",
-    "season": "春",
-    "story": "春日清晨的大学阶梯教室还空着大半，夏目已经坐在窗边整理讲义，并顺手替你占了旁边的位置。你拉开椅子时，她没有抬头，只把一份标好重点的笔记推过来。晨光照亮她微红的耳廓——「昨天缺的内容我顺便整理了。别误会，我只是不想小组作业被你拖后腿。」",
-    "storyJa": "【夏目・大学の教室に朝の最初の光が射す】春先の朝、大学の講堂にはまだほとんど人がいなかった。夏目さんはすでに窓際に座って講義ノートを整理していて、あなたの隣の席に座りました。あなたが椅子を引くとき、彼女は顔を上げず、ただ重要事項が書かれたメモを押し倒しました。朝の光が彼女の赤みを照らす――「昨日抜けていたところ、ついでにまとめておいたから。勘違いしないで。グループ課題で足を引っ張られたくないだけ。」",
-    "tags": [
-      "mole_under_eye",
-      "school_blazer",
-      "sheer_black_tights",
-      "university_hall",
-      "loafers",
-      "depth_of_field",
-      "medium_shot",
-      "highlighted_notes",
-      "sliding_notes"
-    ],
+    "mature": false,
+    "location": "晨光斜照的大学木质阶梯教室",
     "time": "清晨",
     "timeOfDay": "morning",
-    "title": "大学教室的第一束晨光",
+    "season": "秋",
+    "weather": "晴",
+    "lighting": "高窗斜射冷暖交替清晨日光",
+    "camera": "邻座侧平视近中景",
+    "emotion": "别扭关照",
+    "recommendedSize": "1216×832",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, oatmeal chunky knit long cardigan, white collared shirt, charcoal checkered midi skirt, black tights, sitting at wooden lecture desk, sliding annotated notebook across desk without looking up, holding fountain pen, faint blush on ear, composed expression, university lecture hall, tiered wooden desks, tall side windows, angled morning sunlight beam, dust motes, medium shot",
+    "negative": "",
+    "animaCaption": "Without glancing up from her fountain pen, she slides her neatly annotated notebook across the lecture desk toward your seat. Crisp morning sunlight from the tall hall windows catches her reddening ear and the bright pages between you.",
+    "promptProse": "Viewed from the neighboring seat in a quiet university lecture hall before class begins, Shiki Natsume sits upright in an oatmeal chunky-knit cardigan layered over a white collared shirt, charcoal checkered midi skirt, and black tights. Keeping her eyes deliberately fixed on her textbook with a pen poised in one hand, she uses the other to push a neatly highlighted notebook across the long wooden desk toward the viewer, only the warm flush along her ear betraying her care as crisp morning sunlight slices diagonally through the tall windows.",
+    "story": "早课铃还没响，阶梯教室里只有翻书声。夏目目不斜视地转着钢笔，却顺手把划满红蓝重点的笔记往你这边推了半寸，晨光恰好落到她微微发红的耳尖上——「昨天又熬夜了吧？别误会，我只是不想被你拖累小组作业。」",
+    "tags": [
+      "cardigan",
+      "lecture_hall",
+      "notebook",
+      "morning_light",
+      "window_light",
+      "medium_shot"
+    ],
     "usage": [
       "展示图"
-    ],
-    "weather": "晴"
+    ]
   }
 }

@@ -1,52 +1,45 @@
 {
   "kind": "scene",
   "id": "sc070",
-  "revision": 9,
-  "sortOrder": 68,
+  "revision": 10,
+  "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-27T17:55:43.001674100+00:00",
   "data": {
-    "animaCaption": "Her right hand lowers the watering can while her left draws the curtain; the viewer reaches around to help.",
-    "auditRevision": "careful-batch11-2026-08-27",
-    "camera": "窗边浇花与拉帘的半身剪影",
-    "category": "恋爱/After_Story",
+    "id": "sc070",
+    "title": "傍晚落地窗边的金色剪影",
     "char": "nene",
     "character": [
       "nene"
     ],
-    "emotion": "诱惑",
-    "id": "sc070",
-    "lighting": "傍晚夕阳逆光",
-    "location": "同居公寓落地窗边",
-    "lora": "ayachi_nene_v21_anima",
-    "mature": false,
-    "negative": "stockings, thighhighs",
-    "prompt": "1girl, ayachi_nene, ivory silk nightdress, pink piping, scalloped neckline, watering can, curtain, window, potted flowers, cityscape, dusk, silhouette, backlighting, medium shot, holding watering can, holding curtain, sunset, warm_lighting, golden_hour, cinematic_lighting, depth_of_field",
+    "category": "恋爱约会",
     "rating": "All",
-    "season": "夏",
-    "story": "成年后的夏日黄昏，宁宁刚冲完凉，赤足站在公寓窗边给花浇水，逆光将身影映在纱帘上。听见你回家，她才意识到布料在夕阳下过于通透，慌忙拉拢窗帘。你从身后帮忙，她红着脸靠进怀里——「不准故意站在光后面看……先把窗帘关好，然后再让我抱一下。」",
-    "storyJa": "【寧々・大人のアフターストーリー・夕方の窓辺のシルエット】大人になった夏の夜、寧々さんは薄手のナイトガウンを着てアパートの窓辺に立って花に水をあげていました。逆光で彼の姿が紗のカーテンに映った。あなたが帰ってきたと聞いたとき、彼女は夕日の下で生地が透けすぎていることに気づき、急いでカーテンを閉めました。あなたが後ろから助けると、彼女は顔を赤らめてあなたの腕に寄りかかる――「わざと光の後ろに立って見ないでください……先にカーテンを閉めて、それからもう一度、抱きしめさせてください。」",
-    "tags": [
-      "hair_ribbon",
-      "bare_legs",
-      "floor_window",
-      "watering_can",
-      "sunset_backlight",
-      "barefoot",
-      "medium_shot",
-      "ivory_silk_nightdress",
-      "pink_piping",
-      "scalloped_neckline"
-    ],
+    "mature": false,
+    "location": "高楼公寓面向落日的落地窗前",
     "time": "黄昏",
     "timeOfDay": "sunset",
-    "title": "傍晚窗边的剪影",
-    "usage": [
-      "展示图",
-      "头像"
-    ],
+    "season": "秋",
     "weather": "晴",
-    "recommendedSize": "832x1216",
-    "promptProse": "She lowers the watering can in her right hand and draws the curtain with her left as the viewer's arm reaches around her to help; sunset outlines her hair and the curtain folds beside the potted flowers."
+    "lighting": "大片落地窗强烈逆光剪影",
+    "camera": "低饱和暗部托亮剪影全景",
+    "emotion": "安宁眷恋",
+    "recommendedSize": "1216×832",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, pearl white silk slip dress, sheer ivory silk robe, barefoot, standing by floor-to-ceiling window, fingertips on glass, profile turning toward viewer, soft serene smile, silhouetted figure, strong backlighting, glowing sunset sky, city skyline outside, long floor reflection, dark quiet interior, wide shot",
+    "negative": "",
+    "animaCaption": "Framed in dark silhouette against a blazing golden floor-to-ceiling window, she rests her fingertips on the glass and turns her face softly back toward the dim room. Sunset glare rims her sheer silk robe and stretches her reflection across the dark wooden floor.",
+    "promptProse": "Shot wide from inside a quiet, shadowed apartment looking straight toward an expansive floor-to-ceiling window, Ayachi Nene stands barefoot in a pearl-white silk slip dress beneath a flowing sheer ivory robe. One hand rests lightly against the warm windowpane while she turns her profile toward the viewer with a tranquil smile; the intense golden-amber sunset outside turns her figure into a luminous rim-lit silhouette, making the sheer fabric edges glow while the darkened hardwood floor reflects the blazing city horizon.",
+    "story": "傍晚的整面落地窗像烧起来一样金亮，屋里没开灯，安静得只听见空调微风。宁宁赤脚站在窗玻璃前转过侧脸，逆光把真丝晨袍的边缘勾出一圈暖金——「不用急着开灯，陪我再看五分钟日落好不好？」",
+    "tags": [
+      "silk_robe",
+      "floor_window",
+      "backlighting",
+      "silhouette",
+      "sunset",
+      "wide_shot"
+    ],
+    "usage": [
+      "展示图"
+    ]
   }
 }
