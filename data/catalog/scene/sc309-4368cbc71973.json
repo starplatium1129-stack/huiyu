@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc309",
+  "revision": 2,
+  "sortOrder": 88,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:58:51.732285+00:00",
+  "data": {
+    "id": "sc309",
+    "title": "Café Stella 雨夜粉笔招牌",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "category": "MOSS精选",
+    "rating": "All",
+    "mature": false,
+    "location": "细雨微亮的 Café Stella 木框店门与黑板架",
+    "time": "夜晚",
+    "timeOfDay": "night",
+    "season": "秋",
+    "weather": "细雨",
+    "lighting": "咖啡馆暖金橱窗光与冷青雨夜街色",
+    "camera": "黑板架前景侧平视中景",
+    "emotion": "沉静温柔",
+    "recommendedSize": "1280×768",
+    "lora": "shiki_natsume_v21_anima",
+    "prompt": "1girl, solo, shiki_natsume, tailored long black wool coat, amber plaid scarf, holding white chalk, standing beside wooden A-frame chalkboard easel outside cozy cafe entrance, turning head toward viewer with quiet soft smile, warm glowing cafe window behind, rainy night street, wet pavement reflections, text, english text, lettering, medium shot",
+    "negative": "extra text, random words",
+    "animaCaption": "Holding white chalk beside the wooden A-frame chalkboard outside Café Stella in her black wool coat and amber scarf, Shiki Natsume glances over with a quiet smile under the warm storefront glow.",
+    "promptProse": "Outside the glowing glass entrance of a cozy corner cafe on a glistening rainy night, Shiki Natsume wears a tailored long black wool coat and an amber plaid scarf, standing beside a freestanding wooden A-frame chalkboard easel with a piece of white chalk lightly touching the dark slate board as she turns calmly toward the viewer with a subtle, welcoming smile. Warm golden interior light spills onto the wet brick sidewalk and illuminates only two neat lines of crisp white chalk writing on the dark slate with no stray words: sign on the right: \"Cafe Stella\" and words at the bottom right: \"OPEN · RAINY NIGHT\".",
+    "story": "秋雨把街面洗得发亮，星光咖啡馆橱窗透出暖琥珀灯光。穿着黑色羊毛大衣的夏目拿着白粉笔在门侧木黑板上添完最后一笔招牌字，抬头见你走近，难得露出一点克制而温和的笑意。",
+    "tags": [
+      "chalkboard",
+      "sign",
+      "typography",
+      "text",
+      "moss_featured",
+      "black_coat",
+      "cafe",
+      "rainy_night"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

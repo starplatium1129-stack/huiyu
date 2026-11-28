@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc312",
+  "revision": 1,
+  "sortOrder": 91,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:52:58.432894400+00:00",
+  "data": {
+    "id": "sc312",
+    "title": "暗室机密档案：双人情报对峙",
+    "char": "triad",
+    "character": [
+      "nene",
+      "natsume"
+    ],
+    "category": "MOSS精选",
+    "rating": "R15",
+    "mature": false,
+    "location": "玻璃白板与红蓝暗光交错的地下情报室",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "不限",
+    "weather": "静谧",
+    "lighting": "暗房红光与终端冷青光对撞",
+    "camera": "双人宽幅分框与前景发光档案字样",
+    "emotion": "默契紧张",
+    "recommendedSize": "1280×768",
+    "lora": "",
+    "compositionIntent": "group",
+    "prompt": "adult, 2girls, underground intelligence briefing room, translucent glass evidence board foreground, red safelight on left, cool cyan monitor glow on right, dramatic split lighting, text, english text, lettering, medium shot, (ayachi_nene, ayachi_nene_on_left, silver white hair, purple eyes, ahoge, open white lab coat over fitted dark grey vest and black necktie, thin gold-rimmed glasses, holding translucent film negative up to red light, serious sharp gaze) BREAK (shiki_natsume, shiki_natsume_on_right, long black hair, two red hairclips, golden eyes, mole under eye, fitted charcoal waistcoat over unbuttoned wine-red silk shirt showing cleavage and loosened dark tie, leaning forward bracing palms on briefing table, cool commanding gaze)",
+    "negative": "",
+    "animaCaption": "On the left, Ayachi Nene examines a film negative in a white lab coat, vest, and gold-rimmed glasses under red safelight; on the right, Shiki Natsume leans across the briefing table in a charcoal waistcoat and unbuttoned wine silk shirt under cyan monitor light behind a marked glass dossier board.",
+    "promptProse": "A wide cinematic spy-thriller still inside an underground intelligence briefing room split cleanly by red darkroom light on the left and cool cyan terminal glow on the right. On the left, Ayachi Nene wears an unbuttoned white lab coat over a fitted dark grey vest, black tie, and thin gold-rimmed glasses as she inspects a film strip with focused sharpness; on the right, Shiki Natsume leans forward over the dossier table in a tailored charcoal waistcoat, unbuttoned wine-red silk shirt, and loosened necktie with cool commanding presence. Across the clear glass briefing board in the upper left foreground glows a crisp stamped warning label at the top left that reads \"TOP SECRET\" beside a smaller tactical screen caption at the bottom right that reads \"CASE 044\".",
+    "story": "红蓝双光切开地下情报室的暗影：左侧戴着细框眼镜的宁宁举起刚显影的底片，右侧解开酒红真丝领口的夏目撑桌俯身审视档案，前景玻璃白板上冷亮的机密印记将谍战氛围推到顶点。",
+    "tags": [
+      "2girls",
+      "spy_au",
+      "typography",
+      "text",
+      "moss_featured",
+      "lab_coat",
+      "waistcoat",
+      "split_lighting"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

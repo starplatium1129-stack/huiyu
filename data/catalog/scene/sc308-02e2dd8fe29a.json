@@ -1,0 +1,47 @@
+{
+  "kind": "scene",
+  "id": "sc308",
+  "revision": 2,
+  "sortOrder": 87,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:58:51.732285+00:00",
+  "data": {
+    "id": "sc308",
+    "title": "魔女之夜剧场版海报",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "category": "MOSS精选",
+    "rating": "All",
+    "mature": false,
+    "location": "紫蓝星海与魔法阵主视觉海报",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "不限",
+    "weather": "星尘夜色",
+    "lighting": "魔法阵冷蓝轮廓光与星海辉光",
+    "camera": "竖版电影海报构图与精确排字",
+    "emotion": "神秘优雅",
+    "recommendedSize": "768×1280",
+    "lora": "ayachi_nene_v21_anima",
+    "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, witch hat, pink striped hat ribbon, black cape with vivid pink lining, criss-cross halter top, black pleated miniskirt, floating silver hair, upper body three quarter view, turning back gracefully, glowing cyan magic circle, purple starfield, floating luminous particles, minimalist anime theatrical poster, text, english text, lettering",
+    "negative": "generic witch dress, plain black dress, full-length gown, credits, billing block, small text, barcode",
+    "animaCaption": "Posed gracefully against a swirling purple starfield and luminous cyan magic circles in her canonical witch outfit, Ayachi Nene turns back with glowing particles framing an elegant anime theatrical poster layout.",
+    "promptProse": "A clean minimalist theatrical anime poster framed from the knees up featuring Ayachi Nene in her canonical witch attire—pointed hat with pink-striped ribbon, billowing black cape with vivid pink lining, criss-cross halter top, and black pleated miniskirt—turning gracefully over her shoulder with one hand resting lightly near her cape clasp amid floating silver hair, rotating cyan magic circles, and deep violet starlight. Clean empty space above and below holds only two crisp pieces of gold and white serif lettering with no credit block or extra small print: title at the top: \"SABBAT OF THE WITCH\" and caption at the bottom: \"AYACHI NENE\".",
+    "story": "以剧场版主视觉规格打造的海报构图：紫蓝星海与旋转魔法阵映亮宁宁翻飞的魔女披风，上下精确落位的烫金衬线标题把整张插画收束成可直出收藏的官方级海报。",
+    "tags": [
+      "movie_poster",
+      "typography",
+      "text",
+      "moss_featured",
+      "nene_witch_canonical",
+      "starfield",
+      "magic_circle"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

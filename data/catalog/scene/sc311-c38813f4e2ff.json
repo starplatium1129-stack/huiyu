@@ -1,0 +1,50 @@
+{
+  "kind": "scene",
+  "id": "sc311",
+  "revision": 2,
+  "sortOrder": 90,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:58:51.732285+00:00",
+  "data": {
+    "id": "sc311",
+    "title": "秋冬时尚特刊双女主封面",
+    "char": "triad",
+    "character": [
+      "nene",
+      "natsume"
+    ],
+    "category": "MOSS精选",
+    "rating": "All",
+    "mature": false,
+    "location": "柔和暖冬街景与极简时尚杂志封面",
+    "time": "午后",
+    "timeOfDay": "afternoon",
+    "season": "冬",
+    "weather": "微雪",
+    "lighting": "清透冬日柔光与柔和暖色补光",
+    "camera": "双人杂志封面竖幅排版构图",
+    "emotion": "时尚默契",
+    "recommendedSize": "768×1280",
+    "lora": "",
+    "compositionIntent": "group",
+    "prompt": "2girls, minimalist winter fashion artbook cover, clean uncluttered sky background, crisp winter daylight, soft falling snow, warm stone street background, text, english text, lettering, medium shot, (ayachi_nene, ayachi_nene_on_left, silver white hair, low twintails, purple eyes, ahoge, camel wool duffel coat, red plaid scarf, white knit beret, holding warm paper coffee cup, bright warm smile looking at viewer) BREAK (shiki_natsume, shiki_natsume_on_right, long black hair, two red hairclips, golden eyes, mole under eye, tailored long black wool coat over ivory cashmere turtleneck, standing poised with hand in pocket, cool slight smile looking at viewer)",
+    "negative": "barcode, price tag, small text, subheadlines, magazine clutter, extra text, numbers",
+    "animaCaption": "On the left, Ayachi Nene smiles warmly in a camel duffel coat, red plaid scarf, and white beret holding a hot coffee cup; on the right, Shiki Natsume stands poised in a sleek black wool coat over an ivory turtleneck, framed as a crisp winter fashion magazine cover.",
+    "promptProse": "A clean minimalist winter fashion artbook cover photographed in crisp sunlit snow along a warm stone avenue with generous uncluttered sky space. On the left, Ayachi Nene wears a camel wool duffel coat, red plaid scarf, and white knit beret, smiling brightly toward the camera with a paper coffee cup; on the right, Shiki Natsume stands shoulder to shoulder in a tailored black wool coat over an ivory cashmere turtleneck with poised cool charm. The layout contains strictly two clean editorial titles and zero side blurbs, barcodes, or small text: title at the top: \"HUIYU ATELIER\" and headline at the bottom right: \"WINTER SPECIAL\".",
+    "story": "清透冬日微雪中的双女主时尚杂志特刊封面：左面是暖驼色牛角扣大衣与白贝雷帽的温柔笑意，右面是黑大衣配象牙白羊绒的冷冽气场，顶部干净利落的刊头排字让整张画面宛如实体精装特刊。",
+    "tags": [
+      "2girls",
+      "magazine_cover",
+      "typography",
+      "text",
+      "moss_featured",
+      "winter_fashion",
+      "duffel_coat",
+      "black_coat"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

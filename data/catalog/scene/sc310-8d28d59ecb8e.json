@@ -1,0 +1,48 @@
+{
+  "kind": "scene",
+  "id": "sc310",
+  "revision": 2,
+  "sortOrder": 89,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:58:51.732285+00:00",
+  "data": {
+    "id": "sc310",
+    "title": "特工三幕：潜入·暗号·撤离",
+    "char": "natsume",
+    "character": [
+      "natsume"
+    ],
+    "category": "MOSS精选",
+    "rating": "R15",
+    "mature": false,
+    "location": "爵士酒廊 → 安全屋百叶窗 → 暴雨车厢（三联谍战分镜）",
+    "time": "深夜",
+    "timeOfDay": "late_night",
+    "season": "冬",
+    "weather": "雨夜",
+    "lighting": "暗红酒廊暖光 → 百叶窗冷青条纹 → 霓虹雨夜车灯",
+    "camera": "MOSS 电影三联画动作分镜",
+    "emotion": "冷艳锐利",
+    "recommendedSize": "1280×768",
+    "lora": "shiki_natsume_v21_anima",
+    "compositionIntent": "triptych",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, triptych, split screen, three panels, spy noir cinema, wine-red backless velvet evening gown in amber jazz lounge, matte-black belted trench coat parting cyan venetian blinds in dark safehouse, half-unzipped black cropped leather jacket in rainy neon car backseat, dramatic lighting",
+    "negative": "",
+    "animaCaption": "Three cinematic panels follow Shiki Natsume through a single covert operation—passing a secret note in a wine velvet gown, parting safehouse blinds in a black trench coat, and catching her breath in a rain-streaked getaway sedan.",
+    "promptProse": "Left panel: In a dim amber jazz lounge, Shiki Natsume wears a plunging wine-red backless velvet gown and black opera gloves, glancing coolly over her bare shoulder beside a crystal whiskey glass; Middle panel: Inside a pitch-dark safehouse sliced by cyan neon venetian blind stripes, she wears a matte-black belted trench coat, her left hand parting one blind slat with two fingers while her right index finger presses lightly to her lips; Right panel: In the cramped leather backseat of a rain-pounded black getaway car streaked with red and blue night lights, she wears a half-unzipped black cropped leather jacket showing her collarbone, glancing sideways with flushed intensity.",
+    "story": "三格电影级竖屏分镜浓缩一整夜的秘密行动：左格酒廊露背红裙暗渡情报，中格安全屋冷蓝百叶窗后噤声警戒，右格暴雨撤离车厢内半拉皮衣微喘回眸。",
+    "tags": [
+      "triptych",
+      "multi_panel",
+      "moss_featured",
+      "spy_au",
+      "velvet_gown",
+      "black_trench_coat",
+      "leather_jacket"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

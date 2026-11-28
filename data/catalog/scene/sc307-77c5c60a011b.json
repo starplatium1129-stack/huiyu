@@ -1,0 +1,49 @@
+{
+  "kind": "scene",
+  "id": "sc307",
+  "revision": 2,
+  "sortOrder": 86,
+  "createdAt": "2026-11-28T01:52:58.432894400+00:00",
+  "updatedAt": "2026-11-28T01:58:51.732285+00:00",
+  "data": {
+    "id": "sc307",
+    "title": "黄昏三幕：放学到月夜",
+    "char": "nene",
+    "character": [
+      "nene"
+    ],
+    "category": "MOSS精选",
+    "rating": "All",
+    "mature": false,
+    "location": "教室窗边 → 黄昏天台 → 月夜书库（三联分镜）",
+    "time": "黄昏",
+    "timeOfDay": "sunset",
+    "season": "秋",
+    "weather": "晴",
+    "lighting": "午后斜阳 → 晚霞逆光 → 冷银月光三段渐变",
+    "camera": "MOSS 三联画分镜构图",
+    "emotion": "温柔递进",
+    "recommendedSize": "1280×768",
+    "lora": "ayachi_nene_v21_anima",
+    "compositionIntent": "triptych",
+    "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, triptych, split screen, three panels, navy blazer, yellow bowtie, grey plaid skirt, holding papers in sunlit classroom, windblown hair by sunset rooftop fence, opening glowing grimoire in moonlit library, medium shot",
+    "negative": "",
+    "animaCaption": "Three vertical panels trace Ayachi Nene from afternoon classroom sunlight to sunset rooftop breeze and finally moonlit library pages.",
+    "promptProse": "Left panel: In a bright afternoon classroom, Ayachi Nene wears her navy Himematsu school blazer and yellow bowtie, hugging lecture papers beside sunlit desks while adjusting her pink hair ribbon with a shy smile; Middle panel: Framed from the waist up against an amber sunset sky on the school rooftop, her silver twin tails stream in the warm breeze as she leans on the metal railing turning back gently; Right panel: Beneath a cool silver shaft of moonlight in a quiet midnight library, she wears her dark gothic lace dress and opens a faintly glowing grimoire with calm courage.",
+    "story": "三格竖向分镜串联起宁宁的一天：左格是放学空教室里抱着讲义微红耳尖的等待，中格是黄昏天台晚风里回眸轻笑的瞬间，右格则是深夜月光书库中翻开魔导笔记的静默勇气。",
+    "tags": [
+      "triptych",
+      "multi_panel",
+      "moss_featured",
+      "nene_school_uniform",
+      "rooftop",
+      "library",
+      "sunset",
+      "moonlight"
+    ],
+    "usage": [
+      "MOSS精选",
+      "展示图"
+    ]
+  }
+}

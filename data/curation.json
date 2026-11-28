@@ -1,9 +1,9 @@
 {
   "version": 2,
   "qualityGate": {
-    "audit": "2026-11-28_v44_scene_refactor",
+    "audit": "2026-11-28_v45_moss_featured",
     "reviewer": "catalog-refactor",
-    "passed": 86,
+    "passed": 92,
     "failed": 0
   },
   "curatedSceneIds": [
@@ -42,7 +42,13 @@
     "sc085",
     "sc256",
     "sc028",
-    "sc058"
+    "sc058",
+    "sc307",
+    "sc308",
+    "sc309",
+    "sc310",
+    "sc311",
+    "sc312"
   ],
   "signatureSceneIds": [
     "sc263",

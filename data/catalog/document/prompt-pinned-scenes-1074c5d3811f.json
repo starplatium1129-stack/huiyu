@@ -1,13 +1,13 @@
 {
   "kind": "document",
   "id": "prompt-pinned-scenes",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-11-27T18:28:00.531732500+00:00",
+  "updatedAt": "2026-11-28T02:03:20.069437900+00:00",
   "data": {
     "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-    "pinnedAt": "2026-11-27T18:27:40",
+    "pinnedAt": "2026-11-28T02:03:13",
     "scenes": {
       "sc001": {
         "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, navy blazer, gold buttons, yellow bowtie, grey plaid pleated skirt, standing, holding papers, hugging papers to chest, adjusting hair ribbon, blush, shy smile, looking at viewer, empty classroom, wooden desks foreground, open window, fluttering curtain, sunset, golden hour, diagonal window light, dust motes, three quarter view, medium shot",
@@ -1039,6 +1039,78 @@
         "pinSource": [
           "2026-11-28_v44",
           "candidate-sha256:ce9de5b4a12a6f2f236daeb52c08975bafa5189b98d329ded9d100440419f41a"
+        ]
+      },
+      "sc307": {
+        "prompt": "1girl, solo, ayachi_nene, nene_school_uniform, triptych, split screen, three panels, navy blazer, yellow bowtie, grey plaid skirt, holding papers in sunlit classroom, windblown hair by sunset rooftop fence, opening glowing grimoire in moonlit library, medium shot",
+        "negative": "",
+        "animaCaption": "Three vertical panels trace Ayachi Nene from afternoon classroom sunlight to sunset rooftop breeze and finally moonlit library pages.",
+        "recommendedSize": "1280×768",
+        "rating": "All",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:99bfcf96a68b83f92f2aa546b6caa44470d95f629f7fa52a2c6ae942758a4d99"
+        ]
+      },
+      "sc308": {
+        "prompt": "1girl, solo, ayachi_nene, nene_witch_canonical, witch hat, pink striped hat ribbon, black cape with vivid pink lining, criss-cross halter top, black pleated miniskirt, floating silver hair, upper body three quarter view, turning back gracefully, glowing cyan magic circle, purple starfield, floating luminous particles, minimalist anime theatrical poster, text, english text, lettering",
+        "negative": "generic witch dress, plain black dress, full-length gown, credits, billing block, small text, barcode",
+        "animaCaption": "Posed gracefully against a swirling purple starfield and luminous cyan magic circles in her canonical witch outfit, Ayachi Nene turns back with glowing particles framing an elegant anime theatrical poster layout.",
+        "recommendedSize": "768×1280",
+        "rating": "All",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:af53114fba911837ceb942e5676fe475f895b1680072b20a4e8296fc80bd4b13"
+        ]
+      },
+      "sc309": {
+        "prompt": "1girl, solo, shiki_natsume, tailored long black wool coat, amber plaid scarf, holding white chalk, standing beside wooden A-frame chalkboard easel outside cozy cafe entrance, turning head toward viewer with quiet soft smile, warm glowing cafe window behind, rainy night street, wet pavement reflections, text, english text, lettering, medium shot",
+        "negative": "extra text, random words",
+        "animaCaption": "Holding white chalk beside the wooden A-frame chalkboard outside Café Stella in her black wool coat and amber scarf, Shiki Natsume glances over with a quiet smile under the warm storefront glow.",
+        "recommendedSize": "1280×768",
+        "rating": "All",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:887eb44dec8f26933d624cc1cd8574b3a9c8fbf247eb527bf345bef36394a5e6"
+        ]
+      },
+      "sc310": {
+        "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, triptych, split screen, three panels, spy noir cinema, wine-red backless velvet evening gown in amber jazz lounge, matte-black belted trench coat parting cyan venetian blinds in dark safehouse, half-unzipped black cropped leather jacket in rainy neon car backseat, dramatic lighting",
+        "negative": "",
+        "animaCaption": "Three cinematic panels follow Shiki Natsume through a single covert operation—passing a secret note in a wine velvet gown, parting safehouse blinds in a black trench coat, and catching her breath in a rain-streaked getaway sedan.",
+        "recommendedSize": "1280×768",
+        "rating": "R15",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:bbbd08f61dc80e352a2884cfebeb23dedaa2f4de03aa28463737d27f20e1f5e9"
+        ]
+      },
+      "sc311": {
+        "prompt": "2girls, minimalist winter fashion artbook cover, clean uncluttered sky background, crisp winter daylight, soft falling snow, warm stone street background, text, english text, lettering, medium shot, (ayachi_nene, ayachi_nene_on_left, silver white hair, low twintails, purple eyes, ahoge, camel wool duffel coat, red plaid scarf, white knit beret, holding warm paper coffee cup, bright warm smile looking at viewer) BREAK (shiki_natsume, shiki_natsume_on_right, long black hair, two red hairclips, golden eyes, mole under eye, tailored long black wool coat over ivory cashmere turtleneck, standing poised with hand in pocket, cool slight smile looking at viewer)",
+        "negative": "barcode, price tag, small text, subheadlines, magazine clutter, extra text, numbers",
+        "animaCaption": "On the left, Ayachi Nene smiles warmly in a camel duffel coat, red plaid scarf, and white beret holding a hot coffee cup; on the right, Shiki Natsume stands poised in a sleek black wool coat over an ivory turtleneck, framed as a crisp winter fashion magazine cover.",
+        "recommendedSize": "768×1280",
+        "rating": "All",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:268f88131b80e9d8984e5a44156ee1a6d4862139b3140ee7c2d021d8da1530a0"
+        ]
+      },
+      "sc312": {
+        "prompt": "adult, 2girls, underground intelligence briefing room, translucent glass evidence board foreground, red safelight on left, cool cyan monitor glow on right, dramatic split lighting, text, english text, lettering, medium shot, (ayachi_nene, ayachi_nene_on_left, silver white hair, purple eyes, ahoge, open white lab coat over fitted dark grey vest and black necktie, thin gold-rimmed glasses, holding translucent film negative up to red light, serious sharp gaze) BREAK (shiki_natsume, shiki_natsume_on_right, long black hair, two red hairclips, golden eyes, mole under eye, fitted charcoal waistcoat over unbuttoned wine-red silk shirt showing cleavage and loosened dark tie, leaning forward bracing palms on briefing table, cool commanding gaze)",
+        "negative": "",
+        "animaCaption": "On the left, Ayachi Nene examines a film negative in a white lab coat, vest, and gold-rimmed glasses under red safelight; on the right, Shiki Natsume leans across the briefing table in a charcoal waistcoat and unbuttoned wine silk shirt under cyan monitor light behind a marked glass dossier board.",
+        "recommendedSize": "1280×768",
+        "rating": "R15",
+        "mature": false,
+        "pinSource": [
+          "2026-11-28_v45-moss",
+          "candidate-sha256:e8a49168f841ae175105e95c493649baade0d46f7ca85f6f17c09c4b55b9aa69"
         ]
       }
     }
