@@ -112,11 +112,14 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
         const sample = snapshot.samples?.get(id), popular = sample?.type === 'popular'
         const source = popular ? details.get(id) ?? sample : records.get(id)!
         const text = (key: 'title' | 'story' | 'category') => typeof source[key] === 'string' ? source[key] : sample?.[key] || ''
+        const scene = records.get(id)
+        const rating = sample?.rating ?? (typeof source.rating === 'string' ? source.rating : undefined)
+        const mature = scene?.mature === true || rating === 'R18'
         return {
           id, title: text('title'), story: text('story'), category: text('category'),
           thumb: sample?.thumb, thumbWidth: sample?.thumbWidth, thumbHeight: sample?.thumbHeight,
           image: sample?.image, width: sample?.width, height: sample?.height,
-          rating: sample?.rating ?? (typeof source.rating === 'string' ? source.rating : undefined),
+          rating, mature,
           fallbackTo: popular ? '/popular-scenes?character=' + encodeURIComponent(sample.char) : '/scene-explorer?scene=' + encodeURIComponent(id),
           fallbackLabel: popular ? '查看角色场景' : '查看场景设定',
         }
@@ -141,8 +144,9 @@ export function useHomeSceneHighlights(enabled: () => boolean) {
         }))
         if (!current()) return
         const masked = selection.featured.filter(id => {
+          const sample = snapshot.samples?.get(id)
           const scene = records.get(id)
-          return snapshot.samples?.get(id) ? false : scene?.rating === 'R18' || scene?.mature === true
+          return sample?.rating === 'R18' || scene?.rating === 'R18' || scene?.mature === true
         })
         if (masked.length) {
           // Without a sample classification, fall back to the scene's content rating.

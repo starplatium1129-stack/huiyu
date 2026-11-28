@@ -115,6 +115,7 @@ export function useGlobalSearchPanel(options: SearchPanelOptions) {
   const { returnFocus } = useFocusTrap(panelEl, () => open.value, {
     onEscape: close,
     initialFocus: inputEl,
+    lockScroll: false,
   })
 
   watch(() => route.fullPath, () => close(false), { flush: 'sync' })

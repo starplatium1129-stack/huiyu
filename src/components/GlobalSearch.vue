@@ -163,6 +163,8 @@ watch(flat, () => {
   --search-inset: clamp(var(--s-4), 10dvh, 96px);
   @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
   @apply tw:flex tw:items-start tw:justify-center;
+  overflow: hidden;
+  overscroll-behavior: contain;
   padding: var(--search-inset) var(--s-4);
   padding-top:calc(var(--desktop-chrome-height,0px) + var(--search-inset));
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
@@ -192,7 +194,7 @@ watch(flat, () => {
 .gs-catalog-state button { flex:none; }
 .gs-more { display:flex; flex-wrap:wrap; gap:var(--s-1); padding:var(--s-2) var(--s-4); border-top:1px solid var(--border-soft); }
 .gs-heading, .gs-input-row, .gs-footer { flex-shrink:0; }
-.gs-results { min-height:0; flex:1 1 auto; max-height:min(52dvh,480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
+.gs-results { min-height:min(240px, 34dvh); flex:1 1 auto; max-height:min(52dvh,480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
 .gs-group-title {
   display:flex;
   align-items:center;

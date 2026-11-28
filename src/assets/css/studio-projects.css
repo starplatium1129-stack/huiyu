@@ -8,6 +8,8 @@
 .studio-projects h3 { font-size:var(--fs-body,1rem); }
 .studio-projects .studio-caption,.studio-projects small,.studio-projects .studio-model-state { color:var(--text-secondary); font-size:var(--fs-label); }
 .studio-projects :is(.studio-project-bar,.studio-panel) { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); padding:var(--s-4); min-inline-size:0; }
+.studio-projects .studio-empty-art { display:block; width:min(360px,100%); height:auto; margin:0 auto; border-radius:var(--r-lg); border:1px solid var(--border-soft); box-shadow:var(--shadow-sm); }
+:root[data-theme-style='terraria'] .studio-projects .studio-empty-art { border-radius:0; image-rendering:pixelated; }
 .studio-projects .studio-project-bar { gap:var(--s-3); padding:var(--s-2) var(--s-3); margin-bottom:var(--s-4); }
 .studio-projects .studio-project-bar form { align-items:flex-end; }
 .studio-projects .studio-project-bar > div { min-width:min(100%,15rem); }

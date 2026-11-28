@@ -68,7 +68,8 @@
 </template>
 
 <script setup lang="ts">
-// Load the optional surfaces before a user can select their style.
+// Load the optional theme tokens and surfaces before a user can select their style.
+import '@/assets/css/terraria-theme.css'
 import '@/assets/css/terraria-surfaces.css'
 import { computed, useId } from 'vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'

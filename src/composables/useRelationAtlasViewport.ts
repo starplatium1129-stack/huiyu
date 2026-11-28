@@ -20,6 +20,20 @@ export function useRelationAtlasViewport(input: {
   function resizeCamera(viewport: ViewportTransform, previous: CanvasSize, size: CanvasSize) {
     return { ...viewport, x: viewport.x + (size.width - previous.width) / 2, y: viewport.y + (size.height - previous.height) / 2 }
   }
+  let needsInitialFrame = false
+
+  function scheduleFrame(ticket: number) {
+    if (typeof requestAnimationFrame !== 'function') {
+      if (ready && ticket === revision) input.frame()
+      return
+    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!ready || ticket !== revision) return
+        input.frame()
+      })
+    })
+  }
   async function restore() {
     const ticket = ++revision
     changing = true
@@ -27,8 +41,15 @@ export function useRelationAtlasViewport(input: {
     if (!ready || ticket !== revision) return
     currentView = input.view.value; currentSize = { ...input.size.value }
     const saved = cameras.get(currentView)
-    if (saved) await input.set(resizeCamera(saved.viewport, saved.size, currentSize))
-    else input.frame()
+    if (saved && currentSize.width && currentSize.height) {
+      needsInitialFrame = false
+      await input.set(resizeCamera(saved.viewport, saved.size, currentSize))
+    } else if (currentSize.width && currentSize.height) {
+      needsInitialFrame = false
+      scheduleFrame(ticket)
+    } else {
+      needsInitialFrame = true
+    }
     if (ticket === revision) changing = false
   }
   function initialize() {
@@ -37,7 +58,7 @@ export function useRelationAtlasViewport(input: {
     void restore()
   }
   function reframe(viewport?: ViewportTransform) {
-    revision++; changing = false
+    revision++; changing = false; needsInitialFrame = false
     currentView = input.view.value; currentSize = { ...input.size.value }
     cameras.delete(currentView)
     if (viewport) void input.set(viewport, true)
@@ -49,9 +70,15 @@ export function useRelationAtlasViewport(input: {
   }, { flush: 'pre' })
   watch(input.size, size => {
     if (!ready || changing || !size.width || !size.height) return
-    if (currentSize.width && currentSize.height) void input.set(resizeCamera(input.get(), currentSize, size))
+    if (needsInitialFrame || !currentSize.width || !currentSize.height) {
+      needsInitialFrame = false
+      currentSize = { ...size }
+      scheduleFrame(++revision)
+      return
+    }
+    void input.set(resizeCamera(input.get(), currentSize, size))
     currentSize = { ...size }
   }, { flush: 'post' })
-  onScopeDispose(() => { ready = false; revision++; cameras.clear() })
+  onScopeDispose(() => { ready = false; revision++; needsInitialFrame = false; cameras.clear() })
   return { initialize, reframe }
 }

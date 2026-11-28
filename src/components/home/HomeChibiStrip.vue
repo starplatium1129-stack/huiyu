@@ -3,6 +3,7 @@
     <div class="chibi-spread">
       <header class="chibi-intro">
         <h2 id="home-chibi-title" data-screentone-furniture>画室拍立得</h2>
+        <p class="chibi-lead">点击拍立得翻看角色留在画桌旁的深夜手帖。</p>
       </header>
 
       <div class="chibi-strip" role="list" aria-label="角色 Q 版拍立得手帖">
@@ -63,9 +64,8 @@ function openLightbox(entry: ChibiPolaroidEntry, event: MouseEvent) {
 
 .chibi-spread {
   display: grid;
-  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
-  align-items: center;
-  gap: clamp(24px, 3vw, 48px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-5);
   padding: clamp(20px, 2.4vw, 32px);
   border: 1px solid var(--border-soft);
   border-radius: var(--r-xl);
@@ -76,36 +76,36 @@ function openLightbox(entry: ChibiPolaroidEntry, event: MouseEvent) {
 }
 
 .chibi-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-4);
   min-width: 0;
 }
 
-.chibi-eyebrow {
-  display: block;
-  color: var(--text-muted);
-  font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-mono);
-  letter-spacing: 0.16em;
-}
-
 .chibi-intro h2 {
-  margin: var(--s-2) 0 var(--s-3);
+  margin: 0;
   color: var(--text-primary);
-  font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif);
+  font: 500 var(--fs-title)/var(--lh-tight) var(--font-serif);
   letter-spacing: 0;
 }
 
 .chibi-lead {
   margin: 0;
-  max-width: 28ch;
   color: var(--text-secondary);
-  font-size: var(--fs-body-sm);
-  line-height: var(--lh-loose);
+  font-size: var(--fs-label);
+  line-height: var(--lh-body);
 }
 
 .chibi-strip {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(18px, 2.4vw, 32px);
+  gap: clamp(20px, 3vw, 40px);
   align-items: start;
+  max-width: 960px;
+  width: 100%;
+  margin-inline: auto;
   padding-block: var(--s-2);
 }
 

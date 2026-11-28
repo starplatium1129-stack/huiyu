@@ -13,7 +13,10 @@
         :aria-pressed="selected?.id === m.id"
         @click="chooseMood(m.id)"
       >
-        <div class="mood-strip"><MoodPaletteFan :colors="m.palette" /></div>
+        <div class="mood-visual">
+          <img class="mood-art" :src="m.art" width="512" height="350" alt="" aria-hidden="true" loading="lazy" decoding="async" draggable="false" />
+          <div class="mood-strip"><MoodPaletteFan :colors="m.palette" /></div>
+        </div>
         <div class="mood-body">
           <div class="mood-name"><ArchiveIcon :name="m.iconName" /> {{ m.name }}</div>
           <div class="mood-en">{{ m.en }}</div>
@@ -30,6 +33,10 @@
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />进入工作台</RouterLink>
         </header>
         <div class="palette-content">
+          <figure class="palette-plate">
+            <img :src="selected.art" width="512" height="350" :alt="`${selected.name} 光影氛围样板`" decoding="async" draggable="false" />
+          </figure>
+          <div class="palette-details">
           <div class="palette tw:flex tw:flex-wrap tw:gap-s-2">
             <button v-for="c in selected.palette" :key="c" type="button" class="palette-swatch" :aria-label="`复制色号 ${c}`" @click="copyWithFeedback(c, `已复制色号 ${c}`)">
               <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
@@ -41,6 +48,7 @@
               <div class="mapping-label">{{ key }}</div>
               <div class="mapping-value">{{ val }}</div>
             </div>
+          </div>
           </div>
         </div>
         <div v-if="violations.length" class="art-warn show">
@@ -137,7 +145,17 @@ const GUIDANCE: Record<string, Record<string, string>> = {
   tension: {'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'},
   warmth: {'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'},
 }
-const MOODS = COLOR_MOODS.map(mood => ({ ...mood, palette: mood.colors, mapping: GUIDANCE[mood.id] }))
+import moodJoyArt from '@/assets/illustrations/mood-joy.webp'
+import moodLoveArt from '@/assets/illustrations/mood-love.webp'
+import moodCalmArt from '@/assets/illustrations/mood-calm.webp'
+import moodSadArt from '@/assets/illustrations/mood-sad.webp'
+import moodTensionArt from '@/assets/illustrations/mood-tension.webp'
+import moodWarmthArt from '@/assets/illustrations/mood-warmth.webp'
+const MOOD_ARTS: Record<string, string> = {
+  joy: moodJoyArt, love: moodLoveArt, calm: moodCalmArt,
+  sad: moodSadArt, tension: moodTensionArt, warmth: moodWarmthArt,
+}
+const MOODS = COLOR_MOODS.map(mood => ({ ...mood, palette: mood.colors, mapping: GUIDANCE[mood.id], art: MOOD_ARTS[mood.id] || moodCalmArt }))
 
 const route = useRoute(), router = useRouter()
 function routeMood() { return MOODS.find(mood => mood.id === route.query.mood) ?? null }
@@ -221,12 +239,15 @@ function exportTxt() {
 .color-current { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--text-primary); font-size:var(--fs-label-sm); }
 .color-current .archive-icon { width:16px; height:16px; }
 .color-script-page { --palette-duration:var(--motion-route); --palette-shift:-6px; --palette-press:.97; }
-.color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
+.color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); }
 .color-mood-grid .mood-card { position:relative; isolation:isolate; border-radius:var(--r-lg); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .color-mood-grid .mood-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
-.color-mood-grid .mood-strip { height:clamp(100px,9vw,134px); padding:var(--s-2); overflow:hidden; background:var(--art-mat); }
+.color-mood-grid .mood-visual { position:relative; aspect-ratio:16 / 10; overflow:hidden; background:var(--art-mat); }
+.color-mood-grid .mood-art { display:block; width:100%; height:100%; object-fit:cover; transition:transform var(--motion-route) var(--spring-soft); }
+.color-mood-grid .mood-visual::after { content:''; position:absolute; inset:auto 0 0; height:58%; pointer-events:none; background:linear-gradient(to top, color-mix(in srgb, var(--art-scrim) 82%, transparent), transparent); }
+.color-mood-grid .mood-strip { position:absolute; inset:auto 0 0; z-index:var(--z-base); height:52px; padding:var(--s-1) var(--s-2); overflow:hidden; background:transparent; }
 .color-mood-grid .mood-card.active { --fan-spread:15px; --fan-angle:15deg; }
-.color-mood-grid .mood-body { position:relative; padding:var(--s-4); padding-right:40px; transform:none; transition:none; }
+.color-mood-grid .mood-body { position:relative; padding:var(--s-3) var(--s-4); padding-right:40px; transform:none; transition:none; }
 .color-mood-grid .mood-card.active .mood-body { background:var(--bg-elevated); box-shadow:none; }
 .color-mood-grid .mood-name { display:flex; align-items:center; gap:var(--s-2); }
 .color-mood-grid .mood-name .archive-icon { width:18px; height:18px; color:var(--text-secondary); }
@@ -237,7 +258,11 @@ function exportTxt() {
 .palette-result-heading > div > p { @apply tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-xs; }
 .palette-result-heading h2 { @apply tw:flex tw:items-center tw:gap-s-2; }
 .palette-result-heading h2 .archive-icon { @apply tw:text-accent; }
-.palette-content { @apply tw:grid tw:gap-s-5 tw:mb-s-4; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); align-items:start; }
+.palette-content { @apply tw:grid tw:gap-s-5 tw:mb-s-4; grid-template-columns:minmax(220px, 320px) minmax(0, 1fr); align-items:start; }
+.palette-plate { margin:0; aspect-ratio:16 / 11; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--art-mat); box-shadow:var(--shadow-sm); }
+.palette-plate img { display:block; width:100%; height:100%; object-fit:cover; }
+.palette-details { display:grid; gap:var(--s-4); min-width:0; }
+@media (max-width:840px) { .palette-content { grid-template-columns:minmax(0,1fr); } }
 .color-reading { @apply tw:mt-s-6; border:1px solid var(--border-soft); border-radius:var(--r-lg); padding-inline:var(--s-4); background:var(--bg-surface); }
 .color-reading > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[72px] tw:cursor-pointer; list-style:none; padding:var(--s-3); margin-inline:calc(-1 * var(--s-3)); border-radius:var(--r-md); }
 .color-reading > summary::-webkit-details-marker { display:none; }
@@ -293,12 +318,14 @@ function exportTxt() {
 
 @media (hover:hover) and (pointer:fine) {
   .color-mood-grid .mood-card:hover:not(:focus-visible) { --fan-spread:16px; --fan-angle:17deg; }
+  .color-mood-grid .mood-card:hover:not(:focus-visible) .mood-art { transform:scale(1.04); }
   .palette-swatch:hover:not(:focus-visible) .palette-color { transform:translateY(var(--palette-shift)); }
 }
 .palette-swatch:active:not(:focus-visible) .palette-color { transform:scale(var(--palette-press)); transition-duration:var(--motion-press); }
 .color-mood-grid .mood-card:active:not(:focus-visible) { --fan-spread:10px; --fan-angle:10deg; }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; } :root:not([data-motion='full']) .color-mood-grid .mood-art { transition:none; transform:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .color-mood-grid .mood-art { transition:none; transform:none; }
 @media (forced-colors:active) { .palette-color { forced-color-adjust:none; } .color-mood-grid .mood-card.active { outline:2px solid Highlight; } .palette-swatch:focus-visible,.color-mood-grid .mood-card:focus-visible { outline:2px solid Highlight; } }
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
 @media(max-width:540px) { .mapping-grid { grid-template-columns:1fr; } }

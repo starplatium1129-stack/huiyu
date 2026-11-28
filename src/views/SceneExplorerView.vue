@@ -33,8 +33,9 @@
         </div>
       </div>
       <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" @reset="resetFilters" />
+    </section>
 
-    <!-- 单行主工具栏：常用视图直露 + 即时搜索 + 次级筛选进 StudioPopover，首次打开无需懂分类就能找场景。 -->
+    <!-- 单行主工具栏：移出 scene-atlas 成为直接子元素，长列表滚动时可平滑吸顶。 -->
     <div class="browse-toolbar scene-toolbar">
       <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="我的场景视图">
         <AnimatedSelection />
@@ -101,8 +102,6 @@
         匹配：<strong>{{ searchIntent.intents.join(' · ') }}</strong>
       </div>
     </div>
-
-    </section>
 
     <CharacterContextNav v-if="fChar === 'nene' || fChar === 'natsume'" :character-id="fChar" active="scenes" scene-path="/scene-explorer" class="tw:mb-s-3" />
 

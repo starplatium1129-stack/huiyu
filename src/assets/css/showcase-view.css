@@ -13,6 +13,7 @@
 .empty-block { padding:var(--s-8) 0; @apply tw:text-center; }
 
 .showcase-page .showcase-toolbar { position:relative; display:flex; flex-wrap:wrap; align-items:center; margin-bottom:var(--s-4); }
+.showcase-page .showcase-toolbar.is-albums { width:fit-content; max-width:100%; }
 .search-field { flex:1 1 300px; @apply tw:min-w-0; }
 .showcase-page .search-row { flex:1 1 min(100%,36rem); min-width:0; }
 .showcase-filters { margin:0; min-width:min(100%,160px); max-width:100%; }

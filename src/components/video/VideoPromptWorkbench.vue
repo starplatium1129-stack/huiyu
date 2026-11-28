@@ -346,9 +346,16 @@ function selectedChoiceLabel(choices: readonly { value: string; label: string }[
   font: 500 var(--fs-label-xs) var(--font-sans);
 }
 .workbench-grade {
-  margin-inline-start: var(--s-1);
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: var(--s-2);
+  padding: 1px 6px;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-elevated);
   color: var(--text-secondary);
-  font: 500 var(--fs-label-xs) var(--font-sans);
+  font: 600 var(--fs-mono-xs)/1.3 var(--font-mono);
+  vertical-align: middle;
 }
 .workbench-presets {
   display: grid;

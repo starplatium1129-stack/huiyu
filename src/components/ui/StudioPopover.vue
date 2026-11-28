@@ -66,10 +66,10 @@ function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: Ke
 <template>
   <PopoverRoot v-model:open="open">
     <PopoverTrigger ref="trigger" as-child @keydown.esc.capture="onEscape"><slot name="trigger" /></PopoverTrigger>
-    <PopoverPortal v-if="!instant || open" :to="portalTarget" :force-mount="instant">
+    <PopoverPortal v-if="!instant || open" :to="portalTarget" force-mount>
       <component :is="instant ? Transition : FluidTransition" v-bind="instant ? { css:false } : { small:true, panel:'.studio-popover' }">
         <PopoverContent v-if="open" force-mount :align="align" :side="side" :prioritize-position="prioritizePosition" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
-          hide-when-detached as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
+          as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
           <div ref="content" data-fluid-glass :aria-label="label" :aria-labelledby="undefined" class="studio-popover" :class="contentClass" @keydown.esc.capture="onEscape"><slot /></div>
         </PopoverContent>
       </component>

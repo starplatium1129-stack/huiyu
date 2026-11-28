@@ -28,9 +28,9 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   // Start at the current viewport, rather than a laptop-sized placeholder that
   // collapses and then reopens the materials rail on wide desktop windows.
   const width = ref(window.innerWidth), viewport = ref(window.innerWidth), dragging = ref<Side | null>(null)
-  // Keep laptop viewports compact; also collapse narrower theme workspaces on wide screens.
+  // Keep narrow laptop viewports compact; 1360px+ (including 1440x900) keeps all three columns usable.
   // Hiding the inspector leaves enough space for materials beside the canvas.
-  const compact = computed(() => viewport.value >= 1024 && (viewport.value <= 1440 || width.value < 1120) && !preferences.value.hideInspector)
+  const compact = computed(() => viewport.value >= 1024 && (viewport.value < 1360 || width.value < 1120) && !preferences.value.hideInspector)
   const compactMaterialsOpen = ref(false)
   watch(compact, async () => {
     // Capture ownership before Vue hides a rail; only that rail may hand off focus.
@@ -66,9 +66,9 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   // Theme navigation and page framing reduce the actual workspace even before
   // a user resizes either rail. Clamp defaults too, without rewriting preferences.
   function fitWidths(material: number | null, inspector: number | null) {
-    const preferredInspector = inspector ?? (viewport.value <= 1440 ? 320 : 368)
+    const preferredInspector = inspector ?? (viewport.value <= 1520 ? 320 : 368)
     const reserved = preferences.value.hideInspector ? 0 : Math.min(preferredInspector, Math.max(280, available.value - 240))
-    const materials = Math.max(240, Math.min(material ?? (viewport.value <= 1440 ? 300 : 336), available.value - reserved))
+    const materials = Math.max(240, Math.min(material ?? (viewport.value <= 1520 ? 288 : 336), available.value - reserved))
     return {
       materials,
       inspector: compact.value ? 320 : Math.max(280, Math.min(preferredInspector, available.value - (preferences.value.hideMaterials ? 0 : materials))),

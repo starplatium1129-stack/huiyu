@@ -15,7 +15,7 @@
     <button class="viewer-nav viewer-next" data-fluid-glass v-glass-optics type="button" aria-label="下一幅" :disabled="index >= (total ?? items.length) - 1" @click="emit('select', index + 1)"><ArchiveIcon name="chevron-down" /></button>
     <button class="viewer-mode-switch" data-fluid-glass v-glass-optics type="button" :aria-pressed="original" @click="emit('toggle-original')"><ArchiveIcon name="image" />{{ original ? '立体观画' : '原图 / 缩放' }}</button>
     <slot name="tools" />
-    <div class="viewer-position">{{ index + 1 }} / {{ total ?? items.length }}</div>
+    <div v-if="original || !items[index]" class="viewer-position">{{ index + 1 }} / {{ total ?? items.length }}</div>
   </section>
 </template>
 

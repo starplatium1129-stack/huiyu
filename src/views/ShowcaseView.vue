@@ -7,7 +7,7 @@
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机样张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />场景画廊</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>
 
-    <div class="browse-toolbar showcase-toolbar" aria-label="样张筛选" data-reveal>
+    <div class="browse-toolbar showcase-toolbar" :class="{ 'is-albums': albumsOpen }" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
         <div class="showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
         <StudioSearch v-show="!albumsOpen" ref="searchInput" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索样张、角色或场景…" />
@@ -117,15 +117,15 @@
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
             </div>
-            <details v-if="viewerMeta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
-              <span v-if="viewerMeta.engine">引擎 {{ viewerMeta.engine }}</span>
-              <span v-if="viewerMeta.checkpoint">Checkpoint {{ viewerMeta.checkpoint }}</span>
-              <span v-if="viewerMeta.model">模型 {{ viewerMeta.model }}</span>
-              <span v-if="viewerMeta.loraId">LoRA {{ viewerMeta.loraId }}<template v-if="viewerMeta.loraVersion"> · v{{ viewerMeta.loraVersion }}</template></span>
-              <span v-if="viewerMeta.seed !== undefined">Seed {{ viewerMeta.seed }}</span>
-              <span v-if="viewerMeta.steps !== undefined">步数 {{ viewerMeta.steps }}</span>
-              <span v-if="viewerMeta.cfg !== undefined">CFG {{ viewerMeta.cfg }}</span>
-            </div>
+            <details v-if="viewerMeta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><dl class="viewer-record viewer-meta-gen" data-disclosure-content>
+              <div v-if="viewerMeta.engine"><dt>引擎</dt><dd>{{ viewerMeta.engine }}</dd></div>
+              <div v-if="viewerMeta.checkpoint"><dt>底模</dt><dd>{{ viewerMeta.checkpoint }}</dd></div>
+              <div v-if="viewerMeta.model"><dt>模型</dt><dd>{{ viewerMeta.model }}</dd></div>
+              <div v-if="viewerMeta.loraId"><dt>LoRA</dt><dd>{{ viewerMeta.loraId }}<template v-if="viewerMeta.loraVersion"> · v{{ viewerMeta.loraVersion }}</template></dd></div>
+              <div v-if="viewerMeta.seed !== undefined"><dt>Seed</dt><dd class="mono">{{ viewerMeta.seed }}</dd></div>
+              <div v-if="viewerMeta.steps !== undefined"><dt>步数</dt><dd class="mono">{{ viewerMeta.steps }}</dd></div>
+              <div v-if="viewerMeta.cfg !== undefined"><dt>CFG</dt><dd class="mono">{{ viewerMeta.cfg }}</dd></div>
+            </dl>
             </details>
             </div>
           </aside>

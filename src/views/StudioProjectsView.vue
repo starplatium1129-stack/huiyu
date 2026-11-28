@@ -42,9 +42,17 @@
       {{ error }} <button class="btn btn-ghost btn-sm" type="button" @click="load">重新读取项目</button>
     </p>
     <p v-if="loading" class="studio-caption" role="status">正在读取创作项目…</p>
-    <p v-else-if="!error && !projects.length" class="studio-panel">
-      创建第一个项目后，就可以为镜头准备角色、场景和关键帧。
-    </p>
+    <ArchiveStatePanel
+      v-else-if="!error && !projects.length"
+      kind="empty"
+      heading-level="h2"
+      title="在画桌上开启你的第一个分镜项目"
+      message="创建项目后，就可以统一管理角色设定、参考素材、首尾关键帧与短片镜头。"
+    >
+      <template #illustration>
+        <img class="studio-empty-art" :src="projectsSpot" width="768" height="525" alt="" aria-hidden="true" draggable="false" />
+      </template>
+    </ArchiveStatePanel>
     <div v-if="snapshot && repo" :key="sessionKey + snapshot.project.id" class="studio-project-layout">
       <StudioAssetHub
         ref="hub"
@@ -107,10 +115,14 @@ import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioAssetHub from '@/components/studio/StudioAssetHub.vue'
 import StudioShotList from '@/components/studio/StudioShotList.vue'
 import KeyframeWorkbench from '@/components/studio/KeyframeWorkbench.vue'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+import projectsSpotOriginal from '@/assets/illustrations/atelier-projects-spot.webp'
+const projectsSpot = useThemeIllustration(projectsSpotOriginal, 'motion')
 const StudioShotVideoPanel = defineAsyncComponent(() => import('@/components/studio/StudioShotVideoPanel.vue'))
 const route = useRoute(),
   router = useRouter(),

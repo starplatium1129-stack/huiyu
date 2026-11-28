@@ -7,6 +7,7 @@ export interface HeroEntry {
   id: HomeHeroCharacter
   title: string
   image: string
+  alternateImage: string
   updatedAt: string
 }
 
@@ -20,16 +21,20 @@ function currentCache() {
 }
 
 /** 首页和维护预览共用来源；旧样张清单不代表用户主动替换了当前内置图。 */
-export function useHomeHeroes(active: () => boolean = () => true) {
+export function useHomeHeroes(active: () => boolean = () => true, theme: () => 'dark' | 'light' = () => 'dark') {
   const overrides = ref<HeroOverrides>({}), ready = ref(false)
   let request: AbortController | undefined
   let disposed = false
   const heroes = computed(() => {
+    const isLight = theme() === 'light'
     const entry = (id: HomeHeroCharacter, title: string): HeroEntry => {
       const custom = overrides.value[id]
+      const darkUrl = `/assets/characters/${id}-home-cg-1024.webp`
+      const lightUrl = `/assets/characters/${id}-home-cg-light-1024.webp`
       return {
         id, title,
-        image: custom?.image || `/assets/characters/${id}-home-cg-1024.webp`,
+        image: custom?.image || (isLight ? lightUrl : darkUrl),
+        alternateImage: custom?.image || (isLight ? darkUrl : lightUrl),
         updatedAt: custom?.updatedAt ? new Date(custom.updatedAt).toLocaleString('zh-CN') : '',
       }
     }

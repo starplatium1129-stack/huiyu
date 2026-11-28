@@ -3,13 +3,21 @@ import { characterArtEntry, characterArtRevision } from '../platform/characterAr
 import type { ParticlePoint } from './particleShapes.ts'
 import { isPopularPortraitPending } from './popularPortraitSource.ts'
 
-/** Prepare once per portrait: richer chroma on paper, preserving neutrals and hue. */
+/** Prepare once per portrait: deepen pale highlights and boost chroma so light paper silhouettes stay crisp. */
 export function lightPortraitColor(hex: string): string {
   const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim())
   if (!match) return hex
-  const channels = [0, 2, 4].map(offset => parseInt(match[1].slice(offset, offset + 2), 16))
-  const luminance = channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722
-  let saturation = 1.14
+  let channels = [0, 2, 4].map(offset => parseInt(match[1].slice(offset, offset + 2), 16))
+  let luminance = channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722
+  // Compress overly pale pastel tones (> 156/255) so dot silhouettes stay legible on warm paper.
+  const MAX_LUM = 158
+  if (luminance > MAX_LUM) {
+    const target = MAX_LUM - (luminance - MAX_LUM) * 0.12
+    const scale = target / Math.max(1, luminance)
+    channels = channels.map(value => value * scale)
+    luminance = channels[0] * .2126 + channels[1] * .7152 + channels[2] * .0722
+  }
+  let saturation = 1.24
   // Stop at the gamut boundary rather than clipping channels and shifting hue.
   for (const value of channels) {
     const delta = value - luminance

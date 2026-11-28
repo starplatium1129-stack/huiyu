@@ -131,7 +131,29 @@
 .pop-strip-head { margin-bottom: var(--s-4); }
 .pop-strip-title-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--s-3); }
 .pop-strip-count { color: var(--text-muted); font: 400 var(--fs-label-sm)/var(--lh-label) var(--font-sans); font-variant-numeric: tabular-nums; }
-.pop-scroll, .recent-scenes-row { @apply tw:flex tw:gap-s-3 tw:overflow-x-auto; padding: var(--s-1) var(--s-1) var(--s-3); scroll-snap-type: x proximity; scrollbar-width: thin; }
+@property --strip-fade-start { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --strip-fade-end { syntax: "<length>"; inherits: false; initial-value: 0px; }
+.pop-scroll, .recent-scenes-row {
+  @apply tw:flex tw:gap-s-3 tw:overflow-x-auto;
+  padding: var(--s-1) var(--s-1) var(--s-3);
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 2.5rem;
+  scrollbar-width: thin;
+}
+@supports (animation-timeline: scroll()) {
+  .pop-scroll, .recent-scenes-row {
+    --strip-fade-size: 2.5rem;
+    mask:
+      linear-gradient(#000, #000) no-clip subtract,
+      linear-gradient(to right, #000, transparent) 0 0 / var(--strip-fade-start) 100% no-repeat no-clip,
+      linear-gradient(to right, transparent, #000) 100% 0 / var(--strip-fade-end) 100% no-repeat no-clip;
+    animation: strip-reveal-fade-start linear both, strip-hide-fade-end linear both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--strip-fade-size), calc(100% - var(--strip-fade-size)) 100%;
+  }
+}
+@keyframes strip-reveal-fade-start { to { --strip-fade-start: var(--strip-fade-size); } }
+@keyframes strip-hide-fade-end { from { --strip-fade-end: var(--strip-fade-size); } }
 .sc-link { @apply tw:block; color: inherit; text-decoration: none; scroll-snap-align: start; }
 .pop-card-mini { position: relative; overflow: hidden; flex: 0 0 144px; @apply tw:min-w-0; scroll-snap-align: start; text-decoration: none; @apply tw:rounded-lg; border: 1px solid var(--border-soft); background: var(--bg-surface); padding: var(--s-1) var(--s-1) var(--s-2); box-shadow: var(--shadow-card); transition: transform var(--motion-hover) var(--ease-out); }
 .pop-card-mini :deep(img) { @apply tw:block tw:w-full; aspect-ratio: 4 / 5; @apply tw:object-cover; object-position: center 22%; @apply tw:rounded-md; background: var(--bg-elevated); }

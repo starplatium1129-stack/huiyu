@@ -1,20 +1,16 @@
 import { onBeforeUnmount, onDeactivated, type Ref } from 'vue'
 import { useFluidSurface } from './useFluidSurface'
 import { prepareNativeModal } from './useFocusTrap'
-import { acquirePageScrollLock } from '@/utils/pageScrollLock'
 import { createDialogExit } from '@/utils/dialogExit'
 import '@/assets/css/fluid-dialog.css'
 
 /**
- * 模态弹窗打开期间锁定页面滚动。
- *
- * 原生 `dialog.showModal()` 只让背景 inert，并不阻止背景页面继续滚动，
- * 视口右侧的页面滚动条也会留在原地，弹窗与背景滚动的职责因此含混。
- * 用模块级计数锁支持「同时/连续打开多个弹窗」与「关闭中重开」；
- * 锁定时补偿滚动条宽度，避免页面在弹窗开合瞬间横向跳动。
+ * 模态弹窗打开期间依靠原生 CSS 滚动隔离（dialog:modal 与 dialog::backdrop
+ * 的 overflow:hidden + overscroll-behavior:contain，见 fluid-dialog.css），
+ * 不再改写 html 的 overflow / scrollbar-gutter，避免弹窗遮罩右侧露出空白滚动条槽、
+ * 引起横向跳动或破坏底层 sticky 布局。仅记录打开前坐标以拦截原生 autofocus 误滚。
  */
 let modalLocks = 0
-let releasePageScroll: (() => void) | undefined
 let previousScrollX = 0
 let previousScrollY = 0
 let previousScrollPath = ''
@@ -27,16 +23,12 @@ function lockPageScroll() {
   previousScrollX = window.scrollX
   previousScrollY = window.scrollY
   previousScrollPath = scrollLocation()
-  releasePageScroll = acquirePageScrollLock()
 }
 
 function unlockPageScroll() {
   if (modalLocks === 0) return null
   modalLocks--
   scrollRevision++
-  if (!modalLocks) {
-    releasePageScroll?.(); releasePageScroll = undefined
-  }
   const x = previousScrollX, y = previousScrollY, path = previousScrollPath, revision = scrollRevision
   const restore = () => {
     if (revision !== scrollRevision || scrollLocation() !== path) return

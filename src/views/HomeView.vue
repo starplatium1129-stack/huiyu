@@ -154,6 +154,7 @@
 import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
+import { useTheme } from '@/composables/useTheme'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
 import { useHomeSceneHighlights } from '@/composables/useHomeSceneHighlights'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
@@ -292,17 +293,33 @@ const creationEntries = computed(() => [
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
-const { heroes } = useHomeHeroes()
+const { displayTheme } = useTheme()
+const { heroes } = useHomeHeroes(undefined, () => displayTheme.value)
 const { image: heroImage, loaded: heroLoaded, failed: heroFailed, retry: reloadHero } = useRuntimeImage(() => heroes.value[homeMuse.value].image)
 const displayedMuse = ref<'nene' | 'natsume' | null>(null)
 const paintedHeroes = reactive<Partial<Record<'nene' | 'natsume', { src: string; crossorigin?: '' | 'anonymous' | 'use-credentials' }>>>({})
+const preloadedHeroUrls = new Set<string>()
 const portraitName = computed(() => (displayedMuse.value || homeMuse.value) === 'nene' ? '绫地宁宁' : '四季夏目')
-// Prioritize the chosen portrait, keeping the last decoded image during swaps.
-watch([homeMuse, heroLoaded], ([muse, loaded]) => {
-  if (loaded) paintedHeroes[muse] = { src: heroImage.value.src, crossorigin: heroImage.value.crossorigin }
-  if (paintedHeroes[muse]?.src === heroImage.value.src) displayedMuse.value = muse
-}, { immediate: true })
-watch(runtimeResourceIdentity, () => { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null }, { flush: 'sync' })
+function warmAlternateHero(url: string) {
+  if (typeof Image === 'undefined' || !url) return
+  const resolved = resolveRuntimeUrl(url)
+  if (!resolved || preloadedHeroUrls.has(resolved)) return
+  const probe = new Image()
+  probe.decoding = 'async'
+  probe.onload = () => { preloadedHeroUrls.add(resolved) }
+  probe.src = resolved
+}
+// Prioritize the chosen portrait; swap synchronously when the opposite theme image is preloaded
+// so the circular view-transition reveals the day/night lighting change in one unified sweep.
+watch([homeMuse, () => heroImage.value.src, heroLoaded], ([muse, src, loaded]) => {
+  if (loaded || (src && preloadedHeroUrls.has(src))) {
+    paintedHeroes[muse] = { src, crossorigin: heroImage.value.crossorigin }
+    if (src) preloadedHeroUrls.add(src)
+  }
+  if (paintedHeroes[muse]?.src === src) displayedMuse.value = muse
+  if (loaded) warmAlternateHero(heroes.value[muse].alternateImage)
+}, { immediate: true, flush: 'sync' })
+watch(runtimeResourceIdentity, () => { delete paintedHeroes.nene; delete paintedHeroes.natsume; preloadedHeroUrls.clear(); displayedMuse.value = null }, { flush: 'sync' })
 function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
   if (muse !== homeMuse.value) {
     museDirection.value = muse === 'natsume' ? 'next' : 'prev'

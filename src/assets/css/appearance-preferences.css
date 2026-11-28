@@ -1,11 +1,55 @@
 @reference "./tailwind.css";
-.appearance-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(480px,calc(100vw - 32px)); height:min(680px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4))); margin:auto; padding:0; overflow:hidden; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); }
+.appearance-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(480px,calc(100vw - 32px)); height:fit-content; max-height:min(680px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4))); margin:auto; padding:0; overflow:hidden; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); }
 .appearance-dialog[open] { display:grid; grid-template-rows:auto minmax(0,1fr); }
 .appearance-dialog::backdrop { background: var(--art-backdrop); backdrop-filter: var(--glass-disabled, blur(8px)); }
 .appearance-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-4); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .appearance-heading h2 { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
 .appearance-save-note { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label-xs tw:leading-body; }
-.appearance-content { min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
+.appearance-content { position:relative; min-height:0; padding:var(--s-4); overflow-y:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); container-type:scroll-state; }
+.appearance-content::before,
+.appearance-content::after {
+  content:'';
+  display:block;
+  position:sticky;
+  block-size:.75rem;
+  margin-inline:calc(-1 * var(--s-4));
+  z-index:var(--z-raised);
+  pointer-events:none;
+  opacity:0;
+  transition:opacity var(--motion-hover) var(--ease-out);
+}
+.appearance-content::before {
+  inset-block-start:calc(-1 * var(--s-4));
+  margin-block-end:-.75rem;
+  background:radial-gradient(farthest-side at 50% 0, color-mix(in srgb, var(--ink-base) 22%, transparent), transparent);
+}
+.appearance-content::after {
+  inset-block-end:calc(-1 * var(--s-4));
+  margin-block-start:-.75rem;
+  background:radial-gradient(farthest-side at 50% 100%, color-mix(in srgb, var(--ink-base) 22%, transparent), transparent);
+}
+@container scroll-state(scrollable: block-start) {
+  .appearance-content::before { opacity:1; }
+}
+@container scroll-state(scrollable: block-end) {
+  .appearance-content::after { opacity:1; }
+}
+@supports not (container-type: scroll-state) {
+  @supports (animation-timeline: scroll()) {
+    .appearance-content::before,
+    .appearance-content::after {
+      animation:appearance-scroll-shadow linear both;
+      animation-timeline:scroll();
+    }
+    .appearance-content::before { animation-range:0 2rem; }
+    .appearance-content::after { animation-direction:reverse; animation-range:calc(100% - 2rem) 100%; }
+  }
+}
+@keyframes appearance-scroll-shadow { to { opacity:1; } }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .appearance-content::before,
+  :root:not([data-motion='full']) .appearance-content::after { transition:none; }
+}
 .appearance-feedback { display:grid; align-content:center; justify-items:start; gap:var(--s-4); min-height:100%; overflow-wrap:anywhere; }
 .appearance-feedback p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
 .appearance-feedback-mark { display:grid; place-items:center; width:48px; height:48px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--accent-soft); color:var(--accent); transform:rotate(-5deg); }
@@ -20,11 +64,10 @@
 .appearance-style-choices strong { font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .appearance-style-label { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); }
 .appearance-style-label .archive-icon { flex:none; width:16px; height:16px; color:var(--text-primary); }
-.appearance-style-preview { display:flex; align-items:end; gap:var(--s-2); height:48px; padding:var(--s-2); background:var(--bg-deep); border-radius:var(--r-sm); }
-.appearance-style-preview i { flex:1; height:65%; background:var(--accent-soft); border:1px solid var(--border-strong); border-radius:var(--r-sm); }
-.appearance-style-preview i:nth-child(2) { height:100%; }
-.appearance-style-preview.terraria { background:var(--terraria-preview-sky); border-radius:0; border-bottom:4px solid var(--terraria-preview-soil); }
-.appearance-style-preview.terraria i { border:2px solid var(--terraria-preview-soil); border-top:4px solid var(--terraria-preview-grass); border-radius:0; background:var(--terraria-preview-panel); }
+.appearance-style-preview { position:relative; display:flex; align-items:end; gap:var(--s-2); height:68px; padding:var(--s-2); background:var(--bg-deep); border:1px solid var(--border-soft); border-radius:var(--r-sm); overflow:hidden; }
+.appearance-style-preview i { display:none; }
+.appearance-style-preview.atelier { background:url('../illustrations/atelier-style-preview.webp') center / cover no-repeat, var(--bg-deep); }
+.appearance-style-preview.terraria { background:url('../illustrations/terraria-forest.webp') center / cover no-repeat, var(--terraria-preview-sky, #9ecddd); border-radius:0; border-bottom:4px solid var(--terraria-preview-soil, #765039); image-rendering:pixelated; }
 /* Geometry, selection and interaction belong to studio-segments.css. */
 .appearance-segments button { min-width:0; }
 .appearance-range { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2) var(--s-3); }

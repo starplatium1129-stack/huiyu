@@ -45,7 +45,7 @@
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu { @apply tw:hidden!; }
   /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
   .pb.focus-mode .voice-studio { @apply tw:hidden!; }
-  .pb.focus-mode .pb-topline { @apply tw:items-center tw:justify-end tw:mb-s-3; }
+  .pb.focus-mode .pb-topline { @apply tw:items-center tw:justify-center tw:mb-s-3; }
   /* 专注成片：舞台恢复大尺寸（单列全宽），输出控制台保持紧凑防空位 */
   .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
   .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }

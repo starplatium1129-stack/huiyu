@@ -1,10 +1,10 @@
 <template>
   <article class="video-studio page">
     <header class="video-header">
-      <div>
+      <div class="video-header-lead">
         <h1 class="page-title" data-screentone-furniture>故事短片</h1>
         <div class="video-project-entry">
-          <RouterLink to="/studio-projects?tool=video" class="btn btn-primary">
+          <RouterLink to="/studio-projects?tool=video" class="btn btn-primary btn-sm">
             <ArchiveIcon name="clap" />进入分镜首尾帧
           </RouterLink>
         </div>
